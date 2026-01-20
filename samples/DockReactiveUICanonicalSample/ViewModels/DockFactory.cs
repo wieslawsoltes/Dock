@@ -20,14 +20,7 @@ public class DockFactory : Factory
     private readonly IProjectRepository _repository;
     private readonly IDockNavigationService _dockNavigation;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
-    private readonly IBusyServiceFactory _busyServiceFactory;
-    private readonly IBusyServiceProvider _busyServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
-    private readonly IDockGlobalBusyService _globalBusyService;
-    private readonly IDialogServiceFactory _dialogServiceFactory;
-    private readonly IDockGlobalDialogService _globalDialogService;
-    private readonly IConfirmationServiceFactory _confirmationServiceFactory;
-    private readonly IDockGlobalConfirmationService _globalConfirmationService;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
     private readonly IWindowLifecycleService _windowLifecycleService;
     private readonly IDockDispatcher _dispatcher;
     private IDocumentDock? _documentDock;
@@ -37,14 +30,7 @@ public class DockFactory : Factory
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceFactory busyServiceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
-        IDockGlobalBusyService globalBusyService,
-        IDialogServiceFactory dialogServiceFactory,
-        IDockGlobalDialogService globalDialogService,
-        IConfirmationServiceFactory confirmationServiceFactory,
-        IDockGlobalConfirmationService globalConfirmationService,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IWindowLifecycleService windowLifecycleService,
         IDockDispatcher dispatcher)
     {
@@ -52,14 +38,7 @@ public class DockFactory : Factory
         _repository = repository;
         _dockNavigation = dockNavigation;
         _workspaceFactory = workspaceFactory;
-        _busyServiceFactory = busyServiceFactory;
-        _busyServiceProvider = busyServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
-        _globalBusyService = globalBusyService;
-        _dialogServiceFactory = dialogServiceFactory;
-        _globalDialogService = globalDialogService;
-        _confirmationServiceFactory = confirmationServiceFactory;
-        _globalConfirmationService = globalConfirmationService;
+        _overlayServicesProvider = overlayServicesProvider;
         _windowLifecycleService = windowLifecycleService;
         _dispatcher = dispatcher;
 
@@ -73,8 +52,7 @@ public class DockFactory : Factory
             _repository,
             _dockNavigation,
             _workspaceFactory,
-            _busyServiceProvider,
-            _confirmationServiceProvider,
+            _overlayServicesProvider,
             _dispatcher)
         {
             Id = "Projects",
@@ -111,12 +89,7 @@ public class DockFactory : Factory
     public override IRootDock CreateRootDock()
         => new BusyRootDock(
             _host,
-            _busyServiceFactory.Create(),
-            _globalBusyService,
-            _dialogServiceFactory.Create(),
-            _globalDialogService,
-            _confirmationServiceFactory.Create(),
-            _globalConfirmationService)
+            _overlayServicesProvider.GetServices(_host))
         {
             LeftPinnedDockables = CreateList<IDockable>(),
             RightPinnedDockables = CreateList<IDockable>(),

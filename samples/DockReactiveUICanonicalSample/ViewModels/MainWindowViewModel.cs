@@ -2,6 +2,7 @@ using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using Dock.Model.ReactiveUI.Services;
+using Dock.Model.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels;
@@ -14,14 +15,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceFactory busyServiceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
-        IDockGlobalBusyService globalBusyService,
-        IDialogServiceFactory dialogServiceFactory,
-        IDockGlobalDialogService globalDialogService,
-        IConfirmationServiceFactory confirmationServiceFactory,
-        IDockGlobalConfirmationService globalConfirmationService,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IWindowLifecycleService windowLifecycleService,
         IDockDispatcher dispatcher)
     {
@@ -30,14 +24,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
             repository,
             dockNavigation,
             workspaceFactory,
-            busyServiceFactory,
-            busyServiceProvider,
-            confirmationServiceProvider,
-            globalBusyService,
-            dialogServiceFactory,
-            globalDialogService,
-            confirmationServiceFactory,
-            globalConfirmationService,
+            overlayServicesProvider,
             windowLifecycleService,
             dispatcher);
         var dockViewModel = new DockViewModel(this, dockFactory);

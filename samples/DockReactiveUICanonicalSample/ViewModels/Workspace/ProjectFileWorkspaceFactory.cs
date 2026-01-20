@@ -6,8 +6,9 @@ using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using Dock.Model.ReactiveUI.Navigation.Controls;
+using Dock.Model.ReactiveUI.Services;
+using Dock.Model.Services;
 using DockReactiveUICanonicalSample.Models;
-using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
 using ReactiveUI;
 
@@ -15,37 +16,13 @@ namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public sealed class ProjectFileWorkspaceFactory
 {
-    private readonly IBusyServiceFactory _busyServiceFactory;
-    private readonly IDockGlobalBusyService _globalBusyService;
-    private readonly IDialogServiceFactory _dialogServiceFactory;
-    private readonly IDockGlobalDialogService _globalDialogService;
-    private readonly IConfirmationServiceFactory _confirmationServiceFactory;
-    private readonly IDockGlobalConfirmationService _globalConfirmationService;
-    private readonly IDialogServiceProvider _dialogServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
     private readonly IHostOverlayServicesProvider _overlayServicesProvider;
     private readonly IWindowLifecycleService _windowLifecycleService;
 
     public ProjectFileWorkspaceFactory(
-        IBusyServiceFactory busyServiceFactory,
-        IDockGlobalBusyService globalBusyService,
-        IDialogServiceFactory dialogServiceFactory,
-        IDockGlobalDialogService globalDialogService,
-        IConfirmationServiceFactory confirmationServiceFactory,
-        IDockGlobalConfirmationService globalConfirmationService,
-        IDialogServiceProvider dialogServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
         IHostOverlayServicesProvider overlayServicesProvider,
         IWindowLifecycleService windowLifecycleService)
     {
-        _busyServiceFactory = busyServiceFactory;
-        _globalBusyService = globalBusyService;
-        _dialogServiceFactory = dialogServiceFactory;
-        _globalDialogService = globalDialogService;
-        _confirmationServiceFactory = confirmationServiceFactory;
-        _globalConfirmationService = globalConfirmationService;
-        _dialogServiceProvider = dialogServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
         _overlayServicesProvider = overlayServicesProvider;
         _windowLifecycleService = windowLifecycleService;
     }
@@ -54,12 +31,7 @@ public sealed class ProjectFileWorkspaceFactory
     {
         var factory = new WorkspaceDockFactory(
             hostScreen,
-            _busyServiceFactory,
-            _globalBusyService,
-            _dialogServiceFactory,
-            _globalDialogService,
-            _confirmationServiceFactory,
-            _globalConfirmationService,
+            _overlayServicesProvider,
             _windowLifecycleService);
         var hostServices = _overlayServicesProvider.GetServices(hostScreen);
         var root = new WorkspaceRootDock(hostScreen, hostServices, "workspace-root")
@@ -76,8 +48,7 @@ public sealed class ProjectFileWorkspaceFactory
             root,
             project,
             file,
-            _dialogServiceProvider,
-            _confirmationServiceProvider)
+            _overlayServicesProvider)
         {
             Id = $"FileActions-{project.Id}-{file.Id}",
             Title = "File Actions",
@@ -93,8 +64,7 @@ public sealed class ProjectFileWorkspaceFactory
                 "outline",
                 "Outline",
                 "Symbols and declarations for quick navigation.",
-                _dialogServiceProvider,
-                _confirmationServiceProvider)
+                _overlayServicesProvider)
             {
                 Id = $"Outline-{project.Id}-{file.Id}",
                 Title = "Outline",
@@ -107,8 +77,7 @@ public sealed class ProjectFileWorkspaceFactory
                 "insights",
                 "Insights",
                 "Metrics, warnings, and quality signals.",
-                _dialogServiceProvider,
-                _confirmationServiceProvider)
+                _overlayServicesProvider)
             {
                 Id = $"Insights-{project.Id}-{file.Id}",
                 Title = "Insights",
@@ -121,8 +90,7 @@ public sealed class ProjectFileWorkspaceFactory
                 "history",
                 "History",
                 "Recent edits and change summaries.",
-                _dialogServiceProvider,
-                _confirmationServiceProvider)
+                _overlayServicesProvider)
             {
                 Id = $"History-{project.Id}-{file.Id}",
                 Title = "History",

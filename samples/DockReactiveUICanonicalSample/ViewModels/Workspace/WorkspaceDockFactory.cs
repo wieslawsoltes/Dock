@@ -4,7 +4,8 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
-using DockReactiveUICanonicalSample.Services;
+using Dock.Model.ReactiveUI.Services;
+using Dock.Model.Services;
 using DockReactiveUICanonicalSample.ViewModels;
 using ReactiveUI;
 
@@ -13,31 +14,16 @@ namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 public sealed class WorkspaceDockFactory : Factory
 {
     private readonly IScreen _host;
-    private readonly IBusyServiceFactory _busyServiceFactory;
-    private readonly IDockGlobalBusyService _globalBusyService;
-    private readonly IDialogServiceFactory _dialogServiceFactory;
-    private readonly IDockGlobalDialogService _globalDialogService;
-    private readonly IConfirmationServiceFactory _confirmationServiceFactory;
-    private readonly IDockGlobalConfirmationService _globalConfirmationService;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
     private readonly IWindowLifecycleService _windowLifecycleService;
 
     public WorkspaceDockFactory(
         IScreen host,
-        IBusyServiceFactory busyServiceFactory,
-        IDockGlobalBusyService globalBusyService,
-        IDialogServiceFactory dialogServiceFactory,
-        IDockGlobalDialogService globalDialogService,
-        IConfirmationServiceFactory confirmationServiceFactory,
-        IDockGlobalConfirmationService globalConfirmationService,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IWindowLifecycleService windowLifecycleService)
     {
         _host = host;
-        _busyServiceFactory = busyServiceFactory;
-        _globalBusyService = globalBusyService;
-        _dialogServiceFactory = dialogServiceFactory;
-        _globalDialogService = globalDialogService;
-        _confirmationServiceFactory = confirmationServiceFactory;
-        _globalConfirmationService = globalConfirmationService;
+        _overlayServicesProvider = overlayServicesProvider;
         _windowLifecycleService = windowLifecycleService;
 
         WindowLifecycleServices.Add(_windowLifecycleService);
@@ -46,12 +32,7 @@ public sealed class WorkspaceDockFactory : Factory
     public override IRootDock CreateRootDock()
         => new BusyRootDock(
             _host,
-            _busyServiceFactory.Create(),
-            _globalBusyService,
-            _dialogServiceFactory.Create(),
-            _globalDialogService,
-            _confirmationServiceFactory.Create(),
-            _globalConfirmationService)
+            _overlayServicesProvider.GetServices(_host))
         {
             LeftPinnedDockables = CreateList<IDockable>(),
             RightPinnedDockables = CreateList<IDockable>(),

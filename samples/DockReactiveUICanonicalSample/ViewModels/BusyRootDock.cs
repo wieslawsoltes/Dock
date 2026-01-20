@@ -1,76 +1,39 @@
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Dock.Model.Core;
+using Dock.Model.Services;
 using Dock.Model.ReactiveUI.Navigation.Controls;
-using DockReactiveUICanonicalSample.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels;
 
 public sealed class BusyRootDock : RoutableRootDock, IHostOverlayServices, IDisposable
 {
-    private bool _isBusy;
-    private string? _busyMessage;
+    private readonly IHostOverlayServices _hostServices;
     private bool _isDisposed;
 
     public BusyRootDock(
         IScreen host,
-        IDockBusyService busyService,
-        IDockGlobalBusyService globalBusyService,
-        IDockDialogService dialogService,
-        IDockGlobalDialogService globalDialogService,
-        IDockConfirmationService confirmationService,
-        IDockGlobalConfirmationService globalConfirmationService)
-        : base(host, "root")
+        IHostOverlayServices hostServices,
+        string? url = null)
+        : base(host, url)
     {
-        BusyService = busyService;
-        GlobalBusyService = globalBusyService;
-        DialogService = dialogService;
-        GlobalDialogService = globalDialogService;
-        ConfirmationService = confirmationService;
-        GlobalConfirmationService = globalConfirmationService;
-        SyncFromService();
-        BusyService.PropertyChanged += OnBusyServiceChanged;
-        BusyService.SetReloadHandler(ReloadCurrentAsync);
+        _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+        Busy.SetReloadHandler(ReloadCurrentAsync);
     }
 
-    public IDockBusyService BusyService { get; }
+    public IDockBusyService Busy => _hostServices.Busy;
 
-    public IDockGlobalBusyService GlobalBusyService { get; }
+    public IDockDialogService Dialogs => _hostServices.Dialogs;
 
-    public IDockDialogService DialogService { get; }
+    public IDockConfirmationService Confirmations => _hostServices.Confirmations;
 
-    public IDockGlobalDialogService GlobalDialogService { get; }
+    public IDockGlobalBusyService GlobalBusyService => _hostServices.GlobalBusyService;
 
-    public IDockConfirmationService ConfirmationService { get; }
+    public IDockGlobalDialogService GlobalDialogService => _hostServices.GlobalDialogService;
 
-    public IDockGlobalConfirmationService GlobalConfirmationService { get; }
-
-    public IDockBusyService Busy => BusyService;
-
-    public IDockDialogService Dialogs => DialogService;
-
-    public IDockConfirmationService Confirmations => ConfirmationService;
-
-    public bool IsBusy
-    {
-        get => _isBusy;
-        private set
-        {
-            this.RaiseAndSetIfChanged(ref _isBusy, value);
-            this.RaisePropertyChanged(nameof(IsDockEnabled));
-        }
-    }
-
-    public string? BusyMessage
-    {
-        get => _busyMessage;
-        private set => this.RaiseAndSetIfChanged(ref _busyMessage, value);
-    }
-
-    public bool IsDockEnabled => !IsBusy;
+    public IDockGlobalConfirmationService GlobalConfirmationService => _hostServices.GlobalConfirmationService;
 
     public void Dispose()
     {
@@ -80,25 +43,9 @@ public sealed class BusyRootDock : RoutableRootDock, IHostOverlayServices, IDisp
         }
 
         _isDisposed = true;
-        BusyService.PropertyChanged -= OnBusyServiceChanged;
-        BusyService.SetReloadHandler(null);
-        DialogService.CancelAll();
-        ConfirmationService.CancelAll();
-    }
-
-    private void OnBusyServiceChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(IDockBusyService.IsBusy)
-            || e.PropertyName == nameof(IDockBusyService.Message))
-        {
-            SyncFromService();
-        }
-    }
-
-    private void SyncFromService()
-    {
-        IsBusy = BusyService.IsBusy;
-        BusyMessage = BusyService.Message;
+        Busy.SetReloadHandler(null);
+        Dialogs.CancelAll();
+        Confirmations.CancelAll();
     }
 
     private async Task ReloadCurrentAsync()

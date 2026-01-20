@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0;net8.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
@@ -14,10 +14,12 @@
   <!--<Import Project="..\..\build\SignAssembly.props" />-->
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\Microsoft.Extensions.DependencyInjection.props" />
   <Import Project="..\..\build\ReactiveUI.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

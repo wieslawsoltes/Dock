@@ -1,55 +1,74 @@
 using System;
+using System.Reactive.Concurrency;
 using System.Threading;
 using System.Threading.Tasks;
+using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Services;
 
 internal sealed class ServiceDispatcher
 {
     private readonly SynchronizationContext? _context;
+    private readonly IScheduler _scheduler;
 
-    public ServiceDispatcher(SynchronizationContext? context = null)
+    public ServiceDispatcher(SynchronizationContext? context = null, IScheduler? scheduler = null)
     {
         _context = context ?? SynchronizationContext.Current;
+        _scheduler = scheduler ?? RxApp.MainThreadScheduler;
     }
 
     public bool CheckAccess()
     {
-        return _context is null || ReferenceEquals(SynchronizationContext.Current, _context);
+        return _context is not null && ReferenceEquals(SynchronizationContext.Current, _context);
     }
 
     public void Post(Action action)
     {
-        if (CheckAccess())
+        if (_context is not null)
         {
-            action();
+            if (CheckAccess())
+            {
+                action();
+                return;
+            }
+
+            _context.Post(_ => action(), null);
             return;
         }
 
-        _context!.Post(_ => action(), null);
+        _scheduler.Schedule(action);
     }
 
     public Task InvokeAsync(Action action)
     {
-        if (CheckAccess())
-        {
-            action();
-            return Task.CompletedTask;
-        }
-
         var tcs = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
-        _context!.Post(_ =>
+
+        void Execute()
         {
             try
             {
                 action();
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             }
             catch (Exception ex)
             {
-                tcs.SetException(ex);
+                tcs.TrySetException(ex);
             }
-        }, null);
+        }
+
+        if (_context is not null)
+        {
+            if (CheckAccess())
+            {
+                Execute();
+                return tcs.Task;
+            }
+
+            _context.Post(_ => Execute(), null);
+            return tcs.Task;
+        }
+
+        _scheduler.Schedule(Execute);
 
         return tcs.Task;
     }

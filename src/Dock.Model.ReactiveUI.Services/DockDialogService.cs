@@ -58,6 +58,11 @@ public sealed partial class DockDialogService : ReactiveObject, IDockDialogServi
 
         await _dispatcher.InvokeAsync(() =>
         {
+            if (request.Task.IsCompleted)
+            {
+                return;
+            }
+
             _dialogs.Add(request);
             ActiveDialog = request;
             this.RaisePropertyChanged(nameof(HasDialogs));
@@ -95,6 +100,8 @@ public sealed partial class DockDialogService : ReactiveObject, IDockDialogServi
     {
         if (!_dialogs.Contains(request))
         {
+            request.GlobalHandle?.Dispose();
+            request.Complete(result);
             return;
         }
 

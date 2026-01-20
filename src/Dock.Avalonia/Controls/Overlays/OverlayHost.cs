@@ -274,6 +274,7 @@ public sealed class OverlayHost : Decorator
             {
                 contentHost.Content = current;
                 contentHost.ContentTemplate = null;
+                contentHost.BlocksInput = layer.BlocksInput;
                 current = overlay;
                 continue;
             }
@@ -375,6 +376,34 @@ public sealed class OverlayHost : Decorator
             return _serviceLayers;
         }
 
+        var factoryProvider = OverlayLayerRegistry.FactoryProvider;
+        if (factoryProvider is not null)
+        {
+            var factories = factoryProvider.Invoke();
+            var factoryList = factories?.Where(factory => factory is not null).ToList()
+                ?? new List<IOverlayLayerFactory>();
+
+            if (factoryList.Count > 0)
+            {
+                var created = new OverlayLayerCollection();
+                foreach (var factory in factoryList)
+                {
+                    var layer = factory.Create();
+                    if (layer is not null)
+                    {
+                        created.Add(layer);
+                    }
+                }
+
+                if (created.Count > 0)
+                {
+                    AttachServiceLayers(created);
+                    _serviceLayers = created;
+                    return _serviceLayers;
+                }
+            }
+        }
+
         var provider = OverlayLayerRegistry.Provider;
         if (provider is null)
         {
@@ -395,14 +424,14 @@ public sealed class OverlayHost : Decorator
             return null;
         }
 
-        var created = new OverlayLayerCollection();
+        var createdLayers = new OverlayLayerCollection();
         foreach (var layer in list)
         {
-            created.Add(layer);
+            createdLayers.Add(layer);
         }
 
-        AttachServiceLayers(created);
-        _serviceLayers = created;
+        AttachServiceLayers(createdLayers);
+        _serviceLayers = createdLayers;
         return _serviceLayers;
     }
 

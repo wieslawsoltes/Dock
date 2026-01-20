@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls.Overlays;
 /// <summary>
 /// Displays busy and reload overlays for hosted content.
 /// </summary>
-public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost
+public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost, IVisualTreeLifecycle
 {
     /// <summary>
     /// Defines the <see cref="BusyService"/> Avalonia property.
@@ -37,6 +37,12 @@ public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost
     /// </summary>
     public static readonly StyledProperty<IDataTemplate?> ContentTemplateProperty =
         AvaloniaProperty.Register<BusyOverlayControl, IDataTemplate?>(nameof(ContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="BlocksInput"/> Avalonia property.
+    /// </summary>
+    public static readonly StyledProperty<bool> BlocksInputProperty =
+        AvaloniaProperty.Register<BusyOverlayControl, bool>(nameof(BlocksInput), true);
 
     /// <summary>
     /// Defines the <see cref="IsBusy"/> direct property.
@@ -118,6 +124,8 @@ public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost
             control.OnGlobalBusyServiceChanged(args));
         ShowReloadButtonProperty.Changed.AddClassHandler<BusyOverlayControl>((control, _) =>
             control.SyncFromServices());
+        BlocksInputProperty.Changed.AddClassHandler<BusyOverlayControl>((control, _) =>
+            control.SyncFromServices());
     }
 
     /// <summary>
@@ -156,6 +164,15 @@ public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost
     {
         get => GetValue(ContentTemplateProperty);
         set => SetValue(ContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the overlay blocks input to the hosted content.
+    /// </summary>
+    public bool BlocksInput
+    {
+        get => GetValue(BlocksInputProperty);
+        set => SetValue(BlocksInputProperty, value);
     }
 
     /// <summary>
@@ -234,53 +251,44 @@ public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost
     /// Detaches service subscriptions when the control leaves the visual tree.
     /// </summary>
     /// <param name="e">The visual tree attachment event arguments.</param>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        OnAttachedToVisualTree();
+    }
+
+    /// <summary>
+    /// Detaches service subscriptions when the control leaves the visual tree.
+    /// </summary>
+    /// <param name="e">The visual tree attachment event arguments.</param>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        OnDetachedFromVisualTree();
+    }
 
-        if (_attachedService is not null)
-        {
-            _attachedService.PropertyChanged -= OnBusyServicePropertyChanged;
-            _attachedService = null;
-        }
+    /// <inheritdoc />
+    public void OnAttachedToVisualTree()
+    {
+        RebindServices();
+    }
 
-        if (_attachedGlobalService is not null)
-        {
-            _attachedGlobalService.PropertyChanged -= OnGlobalBusyServicePropertyChanged;
-            _attachedGlobalService = null;
-        }
+    /// <inheritdoc />
+    public void OnDetachedFromVisualTree()
+    {
+        DetachServices();
     }
 
     private void OnBusyServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        if (_attachedService is not null)
-        {
-            _attachedService.PropertyChanged -= OnBusyServicePropertyChanged;
-        }
-
-        _attachedService = args.NewValue as IDockBusyService;
-
-        if (_attachedService is not null)
-        {
-            _attachedService.PropertyChanged += OnBusyServicePropertyChanged;
-        }
+        AttachService(args.NewValue as IDockBusyService, ref _attachedService, OnBusyServicePropertyChanged);
 
         SyncFromServices();
     }
 
     private void OnGlobalBusyServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        if (_attachedGlobalService is not null)
-        {
-            _attachedGlobalService.PropertyChanged -= OnGlobalBusyServicePropertyChanged;
-        }
-
-        _attachedGlobalService = args.NewValue as IDockGlobalBusyService;
-
-        if (_attachedGlobalService is not null)
-        {
-            _attachedGlobalService.PropertyChanged += OnGlobalBusyServicePropertyChanged;
-        }
+        AttachService(args.NewValue as IDockGlobalBusyService, ref _attachedGlobalService, OnGlobalBusyServicePropertyChanged);
 
         SyncFromServices();
     }
@@ -310,16 +318,65 @@ public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost
         var localBusy = _attachedService?.IsBusy ?? false;
         var globalBusy = _attachedGlobalService?.IsBusy ?? false;
         var isBusy = localBusy || globalBusy;
-        var showReload = ShowReloadButton ?? _attachedService?.IsReloadVisible ?? true;
+        var showReload = ShowReloadButton ?? _attachedService?.IsReloadVisible ?? false;
 
         IsBusy = isBusy;
         ShowProgress = localBusy;
         BusyMessage = localBusy
             ? _attachedService?.Message
             : _attachedGlobalService?.Message;
-        IsContentEnabled = !isBusy;
+        IsContentEnabled = !(isBusy && BlocksInput);
         ReloadCommand = _attachedService?.ReloadCommand;
         IsReloadVisible = showReload;
         IsReloadEnabled = !isBusy && (_attachedService?.CanReload ?? false);
+    }
+
+    private void RebindServices()
+    {
+        AttachService(BusyService, ref _attachedService, OnBusyServicePropertyChanged);
+        AttachService(GlobalBusyService, ref _attachedGlobalService, OnGlobalBusyServicePropertyChanged);
+        SyncFromServices();
+    }
+
+    private void DetachServices()
+    {
+        DetachService(ref _attachedService, OnBusyServicePropertyChanged);
+        DetachService(ref _attachedGlobalService, OnGlobalBusyServicePropertyChanged);
+    }
+
+    private static void AttachService<TService>(
+        TService? service,
+        ref TService? attached,
+        PropertyChangedEventHandler handler)
+        where TService : class, INotifyPropertyChanged
+    {
+        if (ReferenceEquals(attached, service))
+        {
+            return;
+        }
+
+        if (attached is not null)
+        {
+            attached.PropertyChanged -= handler;
+        }
+
+        attached = service;
+
+        if (attached is not null)
+        {
+            attached.PropertyChanged += handler;
+        }
+    }
+
+    private static void DetachService<TService>(ref TService? attached, PropertyChangedEventHandler handler)
+        where TService : class, INotifyPropertyChanged
+    {
+        if (attached is null)
+        {
+            return;
+        }
+
+        attached.PropertyChanged -= handler;
+        attached = null;
     }
 }

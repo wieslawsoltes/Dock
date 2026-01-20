@@ -4,17 +4,17 @@
   <overlays:OverlayLayerCollection x:Key="DockDefaultOverlayLayers" x:Shared="False">
     <overlays:OverlayLayer ZIndex="10"
                            StyleKey="{x:Static OverlayLayerStyleKeys.DialogLayerThemeKey}">
-      <DialogOverlayControl DialogService="{Binding DialogService}"
+      <DialogOverlayControl DialogService="{Binding Dialogs}"
                             GlobalDialogService="{Binding GlobalDialogService}" />
     </overlays:OverlayLayer>
     <overlays:OverlayLayer ZIndex="20"
                            StyleKey="{x:Static OverlayLayerStyleKeys.ConfirmationLayerThemeKey}">
-      <ConfirmationOverlayControl ConfirmationService="{Binding ConfirmationService}"
+      <ConfirmationOverlayControl ConfirmationService="{Binding Confirmations}"
                                   GlobalConfirmationService="{Binding GlobalConfirmationService}" />
     </overlays:OverlayLayer>
     <overlays:OverlayLayer ZIndex="30"
                            StyleKey="{x:Static OverlayLayerStyleKeys.BusyLayerThemeKey}">
-      <BusyOverlayControl BusyService="{Binding BusyService}"
+      <BusyOverlayControl BusyService="{Binding Busy}"
                           GlobalBusyService="{Binding GlobalBusyService}" />
     </overlays:OverlayLayer>
   </overlays:OverlayLayerCollection>

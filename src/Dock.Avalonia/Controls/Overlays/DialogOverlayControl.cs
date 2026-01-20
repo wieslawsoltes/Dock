@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls.Overlays;
 /// <summary>
 /// Displays dialog overlays for hosted content.
 /// </summary>
-public sealed class DialogOverlayControl : TemplatedControl, IOverlayContentHost
+public sealed class DialogOverlayControl : TemplatedControl, IOverlayContentHost, IVisualTreeLifecycle
 {
     /// <summary>
     /// Defines the <see cref="DialogService"/> Avalonia property.
@@ -37,6 +37,12 @@ public sealed class DialogOverlayControl : TemplatedControl, IOverlayContentHost
     /// </summary>
     public static readonly StyledProperty<IDataTemplate?> ContentTemplateProperty =
         AvaloniaProperty.Register<DialogOverlayControl, IDataTemplate?>(nameof(ContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="BlocksInput"/> Avalonia property.
+    /// </summary>
+    public static readonly StyledProperty<bool> BlocksInputProperty =
+        AvaloniaProperty.Register<DialogOverlayControl, bool>(nameof(BlocksInput), true);
 
     /// <summary>
     /// Defines the <see cref="IsOverlayVisible"/> direct property.
@@ -101,6 +107,8 @@ public sealed class DialogOverlayControl : TemplatedControl, IOverlayContentHost
             control.OnDialogServiceChanged(args));
         GlobalDialogServiceProperty.Changed.AddClassHandler<DialogOverlayControl>((control, args) =>
             control.OnGlobalDialogServiceChanged(args));
+        BlocksInputProperty.Changed.AddClassHandler<DialogOverlayControl>((control, _) =>
+            control.SyncFromServices());
     }
 
     /// <summary>
@@ -139,6 +147,15 @@ public sealed class DialogOverlayControl : TemplatedControl, IOverlayContentHost
     {
         get => GetValue(ContentTemplateProperty);
         set => SetValue(ContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the overlay blocks input to the hosted content.
+    /// </summary>
+    public bool BlocksInput
+    {
+        get => GetValue(BlocksInputProperty);
+        set => SetValue(BlocksInputProperty, value);
     }
 
     /// <summary>
@@ -199,56 +216,44 @@ public sealed class DialogOverlayControl : TemplatedControl, IOverlayContentHost
     /// Detaches service subscriptions when the control leaves the visual tree.
     /// </summary>
     /// <param name="e">The visual tree attachment event arguments.</param>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        OnAttachedToVisualTree();
+    }
+
+    /// <summary>
+    /// Detaches service subscriptions when the control leaves the visual tree.
+    /// </summary>
+    /// <param name="e">The visual tree attachment event arguments.</param>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        OnDetachedFromVisualTree();
+    }
 
-        if (_attachedDialogService is not null)
-        {
-            _attachedDialogService.PropertyChanged -= OnDialogServicePropertyChanged;
-            _attachedDialogService = null;
-        }
+    /// <inheritdoc />
+    public void OnAttachedToVisualTree()
+    {
+        RebindServices();
+    }
 
-        if (_attachedGlobalDialogService is not null)
-        {
-            _attachedGlobalDialogService.PropertyChanged -= OnGlobalDialogServicePropertyChanged;
-            _attachedGlobalDialogService = null;
-        }
-
-        Dialogs = null;
+    /// <inheritdoc />
+    public void OnDetachedFromVisualTree()
+    {
+        DetachServices();
     }
 
     private void OnDialogServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        if (_attachedDialogService is not null)
-        {
-            _attachedDialogService.PropertyChanged -= OnDialogServicePropertyChanged;
-        }
-
-        _attachedDialogService = args.NewValue as IDockDialogService;
-
-        if (_attachedDialogService is not null)
-        {
-            _attachedDialogService.PropertyChanged += OnDialogServicePropertyChanged;
-        }
-
+        AttachService(args.NewValue as IDockDialogService, ref _attachedDialogService, OnDialogServicePropertyChanged);
         Dialogs = _attachedDialogService?.Dialogs;
         SyncFromServices();
     }
 
     private void OnGlobalDialogServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        if (_attachedGlobalDialogService is not null)
-        {
-            _attachedGlobalDialogService.PropertyChanged -= OnGlobalDialogServicePropertyChanged;
-        }
-
-        _attachedGlobalDialogService = args.NewValue as IDockGlobalDialogService;
-
-        if (_attachedGlobalDialogService is not null)
-        {
-            _attachedGlobalDialogService.PropertyChanged += OnGlobalDialogServicePropertyChanged;
-        }
+        AttachService(args.NewValue as IDockGlobalDialogService, ref _attachedGlobalDialogService, OnGlobalDialogServicePropertyChanged);
 
         SyncFromServices();
     }
@@ -283,6 +288,57 @@ public sealed class DialogOverlayControl : TemplatedControl, IOverlayContentHost
         OverlayMessage = hasLocalDialogs
             ? null
             : _attachedGlobalDialogService?.Message;
-        IsContentEnabled = !overlayVisible;
+        IsContentEnabled = !(overlayVisible && BlocksInput);
+    }
+
+    private void RebindServices()
+    {
+        AttachService(DialogService, ref _attachedDialogService, OnDialogServicePropertyChanged);
+        AttachService(GlobalDialogService, ref _attachedGlobalDialogService, OnGlobalDialogServicePropertyChanged);
+        Dialogs = _attachedDialogService?.Dialogs;
+        SyncFromServices();
+    }
+
+    private void DetachServices()
+    {
+        DetachService(ref _attachedDialogService, OnDialogServicePropertyChanged);
+        DetachService(ref _attachedGlobalDialogService, OnGlobalDialogServicePropertyChanged);
+        Dialogs = null;
+    }
+
+    private static void AttachService<TService>(
+        TService? service,
+        ref TService? attached,
+        PropertyChangedEventHandler handler)
+        where TService : class, INotifyPropertyChanged
+    {
+        if (ReferenceEquals(attached, service))
+        {
+            return;
+        }
+
+        if (attached is not null)
+        {
+            attached.PropertyChanged -= handler;
+        }
+
+        attached = service;
+
+        if (attached is not null)
+        {
+            attached.PropertyChanged += handler;
+        }
+    }
+
+    private static void DetachService<TService>(ref TService? attached, PropertyChangedEventHandler handler)
+        where TService : class, INotifyPropertyChanged
+    {
+        if (attached is null)
+        {
+            return;
+        }
+
+        attached.PropertyChanged -= handler;
+        attached = null;
     }
 }

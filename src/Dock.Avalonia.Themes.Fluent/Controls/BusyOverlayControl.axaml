@@ -19,7 +19,7 @@
           <Border Background="{DynamicResource DockThemeBackgroundBrush}"
                   Opacity="0.65"
                   IsVisible="{TemplateBinding IsBusy}"
-                  IsHitTestVisible="True"
+                  IsHitTestVisible="{TemplateBinding BlocksInput}"
                   ZIndex="30">
             <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
                     BorderBrush="{DynamicResource DockThemeBorderLowBrush}"

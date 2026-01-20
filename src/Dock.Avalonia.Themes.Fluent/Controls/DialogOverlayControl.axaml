@@ -13,10 +13,12 @@
                 ZIndex="10">
             <Border Background="{DynamicResource DockThemeForegroundBrush}"
                     Opacity="0.35"
+                    IsHitTestVisible="{TemplateBinding BlocksInput}"
                     ZIndex="0" />
             <Grid ZIndex="1">
               <TextBlock Text="{Binding OverlayMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Dialog open}"
                          IsVisible="{TemplateBinding ShowGlobalMessage}"
+                         IsHitTestVisible="False"
                          FontSize="14"
                          FontWeight="SemiBold"
                          Foreground="{DynamicResource DockThemeForegroundBrush}"

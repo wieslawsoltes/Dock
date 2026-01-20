@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls.Overlays;
 /// <summary>
 /// Displays confirmation overlays for hosted content.
 /// </summary>
-public sealed class ConfirmationOverlayControl : TemplatedControl, IOverlayContentHost
+public sealed class ConfirmationOverlayControl : TemplatedControl, IOverlayContentHost, IVisualTreeLifecycle
 {
     /// <summary>
     /// Defines the <see cref="ConfirmationService"/> Avalonia property.
@@ -37,6 +37,12 @@ public sealed class ConfirmationOverlayControl : TemplatedControl, IOverlayConte
     /// </summary>
     public static readonly StyledProperty<IDataTemplate?> ContentTemplateProperty =
         AvaloniaProperty.Register<ConfirmationOverlayControl, IDataTemplate?>(nameof(ContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="BlocksInput"/> Avalonia property.
+    /// </summary>
+    public static readonly StyledProperty<bool> BlocksInputProperty =
+        AvaloniaProperty.Register<ConfirmationOverlayControl, bool>(nameof(BlocksInput), true);
 
     /// <summary>
     /// Defines the <see cref="IsOverlayVisible"/> direct property.
@@ -101,6 +107,8 @@ public sealed class ConfirmationOverlayControl : TemplatedControl, IOverlayConte
             control.OnConfirmationServiceChanged(args));
         GlobalConfirmationServiceProperty.Changed.AddClassHandler<ConfirmationOverlayControl>((control, args) =>
             control.OnGlobalConfirmationServiceChanged(args));
+        BlocksInputProperty.Changed.AddClassHandler<ConfirmationOverlayControl>((control, _) =>
+            control.SyncFromServices());
     }
 
     /// <summary>
@@ -139,6 +147,15 @@ public sealed class ConfirmationOverlayControl : TemplatedControl, IOverlayConte
     {
         get => GetValue(ContentTemplateProperty);
         set => SetValue(ContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the overlay blocks input to the hosted content.
+    /// </summary>
+    public bool BlocksInput
+    {
+        get => GetValue(BlocksInputProperty);
+        set => SetValue(BlocksInputProperty, value);
     }
 
     /// <summary>
@@ -199,56 +216,44 @@ public sealed class ConfirmationOverlayControl : TemplatedControl, IOverlayConte
     /// Detaches service subscriptions when the control leaves the visual tree.
     /// </summary>
     /// <param name="e">The visual tree attachment event arguments.</param>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        OnAttachedToVisualTree();
+    }
+
+    /// <summary>
+    /// Detaches service subscriptions when the control leaves the visual tree.
+    /// </summary>
+    /// <param name="e">The visual tree attachment event arguments.</param>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        OnDetachedFromVisualTree();
+    }
 
-        if (_attachedConfirmationService is not null)
-        {
-            _attachedConfirmationService.PropertyChanged -= OnConfirmationServicePropertyChanged;
-            _attachedConfirmationService = null;
-        }
+    /// <inheritdoc />
+    public void OnAttachedToVisualTree()
+    {
+        RebindServices();
+    }
 
-        if (_attachedGlobalConfirmationService is not null)
-        {
-            _attachedGlobalConfirmationService.PropertyChanged -= OnGlobalConfirmationServicePropertyChanged;
-            _attachedGlobalConfirmationService = null;
-        }
-
-        Confirmations = null;
+    /// <inheritdoc />
+    public void OnDetachedFromVisualTree()
+    {
+        DetachServices();
     }
 
     private void OnConfirmationServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        if (_attachedConfirmationService is not null)
-        {
-            _attachedConfirmationService.PropertyChanged -= OnConfirmationServicePropertyChanged;
-        }
-
-        _attachedConfirmationService = args.NewValue as IDockConfirmationService;
-
-        if (_attachedConfirmationService is not null)
-        {
-            _attachedConfirmationService.PropertyChanged += OnConfirmationServicePropertyChanged;
-        }
-
+        AttachService(args.NewValue as IDockConfirmationService, ref _attachedConfirmationService, OnConfirmationServicePropertyChanged);
         Confirmations = _attachedConfirmationService?.Confirmations;
         SyncFromServices();
     }
 
     private void OnGlobalConfirmationServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
-        if (_attachedGlobalConfirmationService is not null)
-        {
-            _attachedGlobalConfirmationService.PropertyChanged -= OnGlobalConfirmationServicePropertyChanged;
-        }
-
-        _attachedGlobalConfirmationService = args.NewValue as IDockGlobalConfirmationService;
-
-        if (_attachedGlobalConfirmationService is not null)
-        {
-            _attachedGlobalConfirmationService.PropertyChanged += OnGlobalConfirmationServicePropertyChanged;
-        }
+        AttachService(args.NewValue as IDockGlobalConfirmationService, ref _attachedGlobalConfirmationService, OnGlobalConfirmationServicePropertyChanged);
 
         SyncFromServices();
     }
@@ -283,6 +288,57 @@ public sealed class ConfirmationOverlayControl : TemplatedControl, IOverlayConte
         OverlayMessage = hasLocalConfirmations
             ? null
             : _attachedGlobalConfirmationService?.Message;
-        IsContentEnabled = !overlayVisible;
+        IsContentEnabled = !(overlayVisible && BlocksInput);
+    }
+
+    private void RebindServices()
+    {
+        AttachService(ConfirmationService, ref _attachedConfirmationService, OnConfirmationServicePropertyChanged);
+        AttachService(GlobalConfirmationService, ref _attachedGlobalConfirmationService, OnGlobalConfirmationServicePropertyChanged);
+        Confirmations = _attachedConfirmationService?.Confirmations;
+        SyncFromServices();
+    }
+
+    private void DetachServices()
+    {
+        DetachService(ref _attachedConfirmationService, OnConfirmationServicePropertyChanged);
+        DetachService(ref _attachedGlobalConfirmationService, OnGlobalConfirmationServicePropertyChanged);
+        Confirmations = null;
+    }
+
+    private static void AttachService<TService>(
+        TService? service,
+        ref TService? attached,
+        PropertyChangedEventHandler handler)
+        where TService : class, INotifyPropertyChanged
+    {
+        if (ReferenceEquals(attached, service))
+        {
+            return;
+        }
+
+        if (attached is not null)
+        {
+            attached.PropertyChanged -= handler;
+        }
+
+        attached = service;
+
+        if (attached is not null)
+        {
+            attached.PropertyChanged += handler;
+        }
+    }
+
+    private static void DetachService<TService>(ref TService? attached, PropertyChangedEventHandler handler)
+        where TService : class, INotifyPropertyChanged
+    {
+        if (attached is null)
+        {
+            return;
+        }
+
+        attached.PropertyChanged -= handler;
+        attached = null;
     }
 }

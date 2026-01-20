@@ -51,52 +51,21 @@ public class App : Application
 
         services.RegisterLazySingleton<IHostServiceResolver>(() => new AvaloniaHostServiceResolver());
         services.RegisterDockOverlayServices();
-        services.RegisterLazySingleton<IDockDispatcher>(() => new MainThreadDispatcher());
-
-        services.RegisterLazySingleton<IBusyServiceFactory>(() => new BusyServiceFactory(
-            Locator.Current.GetService<IDockGlobalBusyService>()!));
-        services.RegisterLazySingleton<IDialogServiceFactory>(() => new DialogServiceFactory(
-            Locator.Current.GetService<IDockGlobalDialogService>()!));
-        services.RegisterLazySingleton<IConfirmationServiceFactory>(() => new ConfirmationServiceFactory(
-            Locator.Current.GetService<IDockGlobalConfirmationService>()!));
-
         services.RegisterLazySingleton<IProjectRepository>(() => new ProjectRepository());
         services.RegisterLazySingleton(() => new ProjectFileWorkspaceFactory(
-            Locator.Current.GetService<IBusyServiceFactory>()!,
-            Locator.Current.GetService<IDockGlobalBusyService>()!,
-            Locator.Current.GetService<IDialogServiceFactory>()!,
-            Locator.Current.GetService<IDockGlobalDialogService>()!,
-            Locator.Current.GetService<IConfirmationServiceFactory>()!,
-            Locator.Current.GetService<IDockGlobalConfirmationService>()!,
-            Locator.Current.GetService<IDialogServiceProvider>()!,
-            Locator.Current.GetService<IConfirmationServiceProvider>()!,
             Locator.Current.GetService<IHostOverlayServicesProvider>()!,
             Locator.Current.GetService<IWindowLifecycleService>()!));
-        services.RegisterLazySingleton<IBusyServiceProvider>(() => new BusyServiceProvider(
-            Locator.Current.GetService<IHostOverlayServicesProvider>()!));
-        services.RegisterLazySingleton<IDialogServiceProvider>(() => new DialogServiceProvider(
-            Locator.Current.GetService<IHostOverlayServicesProvider>()!));
-        services.RegisterLazySingleton<IConfirmationServiceProvider>(() => new ConfirmationServiceProvider(
-            Locator.Current.GetService<IHostOverlayServicesProvider>()!));
         services.RegisterLazySingleton<IDockNavigationService>(() => new DockNavigationService(
             Locator.Current.GetService<IProjectRepository>()!,
             Locator.Current.GetService<ProjectFileWorkspaceFactory>()!,
-            Locator.Current.GetService<IBusyServiceProvider>()!,
-            Locator.Current.GetService<IConfirmationServiceProvider>()!,
+            Locator.Current.GetService<IHostOverlayServicesProvider>()!,
             Locator.Current.GetService<IDockDispatcher>()!));
 
         services.RegisterLazySingleton(() => new MainWindowViewModel(
             Locator.Current.GetService<IProjectRepository>()!,
             Locator.Current.GetService<IDockNavigationService>()!,
             Locator.Current.GetService<ProjectFileWorkspaceFactory>()!,
-            Locator.Current.GetService<IBusyServiceFactory>()!,
-            Locator.Current.GetService<IBusyServiceProvider>()!,
-            Locator.Current.GetService<IConfirmationServiceProvider>()!,
-            Locator.Current.GetService<IDockGlobalBusyService>()!,
-            Locator.Current.GetService<IDialogServiceFactory>()!,
-            Locator.Current.GetService<IDockGlobalDialogService>()!,
-            Locator.Current.GetService<IConfirmationServiceFactory>()!,
-            Locator.Current.GetService<IDockGlobalConfirmationService>()!,
+            Locator.Current.GetService<IHostOverlayServicesProvider>()!,
             Locator.Current.GetService<IWindowLifecycleService>()!,
             Locator.Current.GetService<IDockDispatcher>()!));
     }

@@ -10,21 +10,18 @@ public sealed class DockNavigationService : Dock.Model.ReactiveUI.Navigation.Ser
 {
     private readonly IProjectRepository _repository;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
-    private readonly IBusyServiceProvider _busyServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
     private readonly IDockDispatcher _dispatcher;
 
     public DockNavigationService(
         IProjectRepository repository,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IDockDispatcher dispatcher)
     {
         _repository = repository;
         _workspaceFactory = workspaceFactory;
-        _busyServiceProvider = busyServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
         _dispatcher = dispatcher;
     }
 
@@ -36,8 +33,7 @@ public sealed class DockNavigationService : Dock.Model.ReactiveUI.Navigation.Ser
             _repository,
             this,
             _workspaceFactory,
-            _busyServiceProvider,
-            _confirmationServiceProvider,
+            _overlayServicesProvider,
             _dispatcher)
         {
             Id = $"ProjectFiles-{project.Id}",
@@ -55,8 +51,7 @@ public sealed class DockNavigationService : Dock.Model.ReactiveUI.Navigation.Ser
             project,
             file,
             _workspaceFactory,
-            _busyServiceProvider,
-            _confirmationServiceProvider,
+            _overlayServicesProvider,
             _dispatcher)
         {
             Id = $"ProjectFile-{project.Id}-{file.Id}",

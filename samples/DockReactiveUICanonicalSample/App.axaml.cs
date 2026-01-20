@@ -32,7 +32,16 @@ public class App : Application
     private void RegisterDockableTemplate()
     {
         DataTemplates.Add(new FuncDataTemplate<IDockable>(
-            (item, _) => new ReactiveUI.Avalonia.ViewModelViewHost { ViewModel = item },
+            (item, existing) =>
+            {
+                if (existing is ReactiveUI.Avalonia.ViewModelViewHost existingHost)
+                {
+                    existingHost.ViewModel = item;
+                    return existingHost;
+                }
+
+                return new ReactiveUI.Avalonia.ViewModelViewHost { ViewModel = item };
+            },
             supportsRecycling: true));
     }
 

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Overlay Services and Host Resolution | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Overlay Services and Host Resolution | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-overlay-services-reference.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="overlay-services-and-host-resolution">Overlay Services and Host Resolution</h1>
+
+<p>This reference describes the overlay service contracts (busy, dialog, confirmation) and the host-resolution pipeline that binds them to the correct window or dock root. The contracts are defined in <code>Dock.Model</code> so view models can use them without Avalonia dependencies. Default implementations live in <code>Dock.Model.ReactiveUI.Services</code>.</p>
+<h2 id="packages-and-namespaces">Packages and namespaces</h2>
+<ul>
+<li><code>Dock.Model</code> (<code>Dock.Model.Services</code>): overlay service contracts and request DTOs.</li>
+<li><code>Dock.Model.ReactiveUI.Services</code>: ReactiveUI-friendly overlay infrastructure.</li>
+<li><code>Dock.Model.ReactiveUI.Services.Overlays.Services</code>: default overlay implementations.</li>
+<li><code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>: host resolution and overlay bindings.</li>
+<li><code>Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection</code>: DI helpers.</li>
+<li><code>Dock.Avalonia.Controls.Overlays</code>: overlay controls that bind to the services.</li>
+</ul>
+<h2 id="overlay-service-contracts">Overlay service contracts</h2>
+<h3 id="per-host-services">Per-host services</h3>
+<ul>
+<li><code>IDockBusyService</code>:
+<ul>
+<li>State: <code>IsBusy</code>, <code>Message</code>, <code>IsReloadVisible</code>, <code>CanReload</code>.</li>
+<li>Commands: <code>ReloadCommand</code>.</li>
+<li>API: <code>Begin</code>, <code>RunAsync</code>, <code>UpdateMessage</code>, <code>SetReloadHandler</code>.</li>
+</ul>
+</li>
+<li><code>IDockDialogService</code>:
+<ul>
+<li>State: <code>Dialogs</code>, <code>ActiveDialog</code>, <code>HasDialogs</code>.</li>
+<li>API: <code>ShowAsync</code>, <code>Close</code>, <code>CancelAll</code>.</li>
+</ul>
+</li>
+<li><code>IDockConfirmationService</code>:
+<ul>
+<li>State: <code>Confirmations</code>, <code>ActiveConfirmation</code>, <code>HasConfirmations</code>.</li>
+<li>API: <code>ConfirmAsync</code>, <code>Close</code>, <code>CancelAll</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="global-services">Global services</h3>
+<p>Global services signal to other windows that a busy state or modal is active elsewhere.</p>
+<ul>
+<li><code>IDockGlobalBusyService</code>: <code>IsBusy</code>, <code>Message</code>, <code>Begin</code>.</li>
+<li><code>IDockGlobalDialogService</code>: <code>IsDialogOpen</code>, <code>Message</code>, <code>Begin</code>.</li>
+<li><code>IDockGlobalConfirmationService</code>: <code>IsConfirmationOpen</code>, <code>Message</code>, <code>Begin</code>.</li>
+</ul>
+<h3 id="request-models-and-dialog-content">Request models and dialog content</h3>
+<ul>
+<li><code>DialogRequest</code>: wraps <code>Content</code>, <code>Title</code>, a <code>Close</code> command, and a completion task.</li>
+<li><code>ConfirmationRequest</code>: wraps <code>Title</code>, <code>Message</code>, button labels, confirm/cancel commands, and a completion task.</li>
+<li><code>IDockDialogContent</code>: dialog content can accept a close action via <code>SetCloseAction</code>.</li>
+</ul>
+<h2 id="host-overlay-services-facade">Host overlay services facade</h2>
+<p><code>IHostOverlayServices</code> provides a single entry point to all per-host and global services:</p>
+<ul>
+<li><code>Busy</code>, <code>Dialogs</code>, <code>Confirmations</code> for per-host overlays.</li>
+<li><code>GlobalBusyService</code>, <code>GlobalDialogService</code>, <code>GlobalConfirmationService</code> for cross-window overlays.</li>
+</ul>
+<p>Use this interface as the backing type for view models or overlay bindings instead of injecting individual services.</p>
+<h2 id="host-resolution-pipeline">Host resolution pipeline</h2>
+<h3 id="contracts">Contracts</h3>
+<ul>
+<li><code>IHostServiceResolver</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) resolves services scoped to the current <code>IScreen</code>.</li>
+<li><code>IHostOverlayServicesProvider</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) returns the <code>IHostOverlayServices</code> instance for a host screen.</li>
+</ul>
+<h3 id="default-resolver">Default resolver</h3>
+<p><code>OwnerChainHostServiceResolver</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) resolves services in this order:</p>
+<ol>
+<li>If the screen is an <code>IDockable</code>, scan host windows in the factory and return the layout-root service for the window containing the dockable.</li>
+<li>Walk the dockable owner chain and return the last matching service (outermost root).</li>
+<li>Scan factory roots and floating window layouts for a layout that contains the dockable.</li>
+<li>Scan the router navigation stack (last-in-first-checked) for a matching service.</li>
+<li>If the screen is a <code>IRoutableViewModel</code>, follow <code>HostScreen</code> and repeat.</li>
+</ol>
+<p>This keeps overlays bound to the correct host window when dockables are moved or floated.</p>
+<h3 id="provider-behavior">Provider behavior</h3>
+<p><code>HostOverlayServicesProvider</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) uses the resolver and falls back to a cached per-screen instance when no host service is found. This keeps overlays functional in screens that are not attached to a dock layout yet.</p>
+<h2 id="overlay-controls-integration">Overlay controls integration</h2>
+<p>Overlay controls bind directly to the service contracts:</p>
+<ul>
+<li><code>BusyOverlayControl</code>: <code>BusyService</code>, <code>GlobalBusyService</code>.</li>
+<li><code>DialogOverlayControl</code>: <code>DialogService</code>, <code>GlobalDialogService</code>.</li>
+<li><code>ConfirmationOverlayControl</code>: <code>ConfirmationService</code>, <code>GlobalConfirmationService</code>.</li>
+</ul>
+<p>Use <code>VisualTreeLifecycleBehavior.IsEnabled=&quot;True&quot;</code> on the root container so overlays rebind on attach/detach and do not hold stale service references.</p>
+<h2 id="dependency-registration">Dependency registration</h2>
+<p>Splat (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection</code>):</p>
+<pre><code class="lang-csharp">Locator.CurrentMutable.RegisterDockOverlayServices();
+</code></pre>
+<p>Microsoft.Extensions.DependencyInjection (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection</code>):</p>
+<pre><code class="lang-csharp">services.AddDockOverlayServices();
+</code></pre>
+<p>Both registration helpers register global services, per-host adapters, the default resolver, and lifecycle helpers. Replace <code>IHostServiceResolver</code> if you need custom host lookup logic.</p>
+<h2 id="custom-host-resolution">Custom host resolution</h2>
+<p>Provide your own resolver when integrating with external windowing systems or non-dock hosts:</p>
+<pre><code class="lang-csharp">services.AddSingleton&lt;IHostServiceResolver, MyHostServiceResolver&gt;();
+</code></pre>
+<p>Your resolver should map the current <code>IScreen</code> to the host layout or window that owns the overlay services.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="dock-overlay-customization.html">Overlay customization</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-overlay-services-reference.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

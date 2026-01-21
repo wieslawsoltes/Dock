@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Overlay customization guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Overlay customization guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-overlay-customization.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="overlay-customization-guide">Overlay customization guide</h1>
+
+<p>This guide explains how to customize the overlay stack and control themes used by <code>OverlayHost</code>, including custom layers, order changes, and template overrides.</p>
+<h2 id="default-overlay-stack">Default overlay stack</h2>
+<p>The Fluent theme ships a default layer collection (<code>DockDefaultOverlayLayers</code>) that contains:</p>
+<ul>
+<li>Dialog overlay (ZIndex 10)</li>
+<li>Confirmation overlay (ZIndex 20)</li>
+<li>Busy overlay (ZIndex 30)</li>
+</ul>
+<p>Each layer uses a style key from <code>OverlayLayerStyleKeys</code> so the control theme can be replaced without changing the layer definition.</p>
+<h2 id="replace-the-overlay-layer-stack">Replace the overlay layer stack</h2>
+<p>Use a custom <code>OverlayLayerCollection</code> to change ordering, input blocking, or the overlay controls used.</p>
+<pre><code class="lang-xml">&lt;ResourceDictionary xmlns=&quot;https://github.com/avaloniaui&quot;
+                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;&gt;
+  &lt;OverlayLayerCollection x:Key=&quot;MyOverlayLayers&quot; x:Shared=&quot;False&quot;&gt;
+    &lt;OverlayLayer ZIndex=&quot;5&quot;
+                  BlocksInput=&quot;False&quot;
+                  StyleKey=&quot;{x:Static OverlayLayerStyleKeys.DialogLayerThemeKey}&quot;&gt;
+      &lt;DialogOverlayControl DialogService=&quot;{Binding Dialogs}&quot;
+                            GlobalDialogService=&quot;{Binding GlobalDialogService}&quot; /&gt;
+    &lt;/OverlayLayer&gt;
+    &lt;OverlayLayer ZIndex=&quot;15&quot;
+                  StyleKey=&quot;{x:Static OverlayLayerStyleKeys.ConfirmationLayerThemeKey}&quot;&gt;
+      &lt;ConfirmationOverlayControl ConfirmationService=&quot;{Binding Confirmations}&quot;
+                                  GlobalConfirmationService=&quot;{Binding GlobalConfirmationService}&quot; /&gt;
+    &lt;/OverlayLayer&gt;
+    &lt;OverlayLayer ZIndex=&quot;25&quot;
+                  StyleKey=&quot;{x:Static OverlayLayerStyleKeys.BusyLayerThemeKey}&quot;&gt;
+      &lt;BusyOverlayControl BusyService=&quot;{Binding Busy}&quot;
+                          GlobalBusyService=&quot;{Binding GlobalBusyService}&quot; /&gt;
+    &lt;/OverlayLayer&gt;
+  &lt;/OverlayLayerCollection&gt;
+
+  &lt;ControlTheme x:Key=&quot;{x:Type OverlayHost}&quot; TargetType=&quot;OverlayHost&quot;&gt;
+    &lt;Setter Property=&quot;OverlayLayers&quot; Value=&quot;{DynamicResource MyOverlayLayers}&quot; /&gt;
+  &lt;/ControlTheme&gt;
+&lt;/ResourceDictionary&gt;
+</code></pre>
+<p>Notes:</p>
+<ul>
+<li>Set <code>x:Shared=&quot;False&quot;</code> for <code>OverlayLayerCollection</code> so each host window gets its own instances.</li>
+<li><code>BlocksInput=&quot;False&quot;</code> allows pointer input to pass through when the overlay is visible.</li>
+</ul>
+<h2 id="add-a-custom-overlay-layer">Add a custom overlay layer</h2>
+<p>Create a custom overlay control and insert it into the stack with a new <code>OverlayLayer</code>.</p>
+<pre><code class="lang-xml">&lt;OverlayLayerCollection x:Key=&quot;MyOverlayLayers&quot; x:Shared=&quot;False&quot;&gt;
+  &lt;OverlayLayer ZIndex=&quot;5&quot; BlocksInput=&quot;False&quot;&gt;
+    &lt;MyNotificationOverlay IsVisible=&quot;{Binding HasNotifications}&quot; /&gt;
+  &lt;/OverlayLayer&gt;
+  &lt;OverlayLayer ZIndex=&quot;10&quot;
+                StyleKey=&quot;{x:Static OverlayLayerStyleKeys.DialogLayerThemeKey}&quot;&gt;
+    &lt;DialogOverlayControl DialogService=&quot;{Binding Dialogs}&quot;
+                          GlobalDialogService=&quot;{Binding GlobalDialogService}&quot; /&gt;
+  &lt;/OverlayLayer&gt;
+  &lt;OverlayLayer ZIndex=&quot;20&quot;
+                StyleKey=&quot;{x:Static OverlayLayerStyleKeys.ConfirmationLayerThemeKey}&quot;&gt;
+    &lt;ConfirmationOverlayControl ConfirmationService=&quot;{Binding Confirmations}&quot;
+                                GlobalConfirmationService=&quot;{Binding GlobalConfirmationService}&quot; /&gt;
+  &lt;/OverlayLayer&gt;
+  &lt;OverlayLayer ZIndex=&quot;30&quot;
+                StyleKey=&quot;{x:Static OverlayLayerStyleKeys.BusyLayerThemeKey}&quot;&gt;
+    &lt;BusyOverlayControl BusyService=&quot;{Binding Busy}&quot;
+                        GlobalBusyService=&quot;{Binding GlobalBusyService}&quot; /&gt;
+  &lt;/OverlayLayer&gt;
+&lt;/OverlayLayerCollection&gt;
+</code></pre>
+<h2 id="override-overlay-control-themes">Override overlay control themes</h2>
+<p>You can replace the control templates or update visuals via <code>ControlTheme</code> resources. The overlay layers reference these keys:</p>
+<ul>
+<li><code>OverlayLayerStyleKeys.BusyLayerThemeKey</code></li>
+<li><code>OverlayLayerStyleKeys.DialogLayerThemeKey</code></li>
+<li><code>OverlayLayerStyleKeys.ConfirmationLayerThemeKey</code></li>
+</ul>
+<p>Example: override the busy overlay theme.</p>
+<pre><code class="lang-xml">&lt;ResourceDictionary xmlns=&quot;https://github.com/avaloniaui&quot;
+                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;&gt;
+  &lt;ControlTheme x:Key=&quot;{x:Static OverlayLayerStyleKeys.BusyLayerThemeKey}&quot;
+                TargetType=&quot;BusyOverlayControl&quot;
+                BasedOn=&quot;{StaticResource {x:Type BusyOverlayControl}}&quot;&gt;
+    &lt;Setter Property=&quot;Template&quot;&gt;
+      &lt;ControlTemplate&gt;
+        &lt;!-- Custom template markup here. --&gt;
+      &lt;/ControlTemplate&gt;
+    &lt;/Setter&gt;
+  &lt;/ControlTheme&gt;
+&lt;/ResourceDictionary&gt;
+</code></pre>
+<h2 id="replace-dialog-and-confirmation-shells">Replace dialog and confirmation shells</h2>
+<p>Dialog overlays use data templates defined in <code>OverlayDataTemplates.axaml</code>. Override them by replacing the resource keys:</p>
+<ul>
+<li><code>DockDialogRequestTemplate</code></li>
+<li><code>DockConfirmationRequestTemplate</code></li>
+</ul>
+<pre><code class="lang-xml">&lt;ResourceDictionary xmlns=&quot;https://github.com/avaloniaui&quot;
+                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+                    xmlns:services=&quot;using:Dock.Model.Services&quot;&gt;
+  &lt;DataTemplate x:Key=&quot;DockDialogRequestTemplate&quot; DataType=&quot;services:DialogRequest&quot;&gt;
+    &lt;MyDialogShell Title=&quot;{Binding Title}&quot; Content=&quot;{Binding Content}&quot; /&gt;
+  &lt;/DataTemplate&gt;
+  &lt;DataTemplate x:Key=&quot;DockConfirmationRequestTemplate&quot; DataType=&quot;services:ConfirmationRequest&quot;&gt;
+    &lt;MyConfirmationShell Title=&quot;{Binding Title}&quot; Message=&quot;{Binding Message}&quot; /&gt;
+  &lt;/DataTemplate&gt;
+&lt;/ResourceDictionary&gt;
+</code></pre>
+<h2 id="di-based-overlay-layer-registration">DI-based overlay layer registration</h2>
+<p>If you want to resolve layers from DI, register <code>IOverlayLayer</code> or <code>IOverlayLayerFactory</code> implementations and set the registry provider:</p>
+<pre><code class="lang-csharp">OverlayLayerRegistry.UseServiceProvider(serviceProvider);
+</code></pre>
+<p>Set <code>OverlayHost.UseServiceLayers=&quot;True&quot;</code> (default) to include DI-provided layers alongside the local <code>OverlayLayers</code> collection.</p>
+<h2 id="visual-tree-lifecycle">Visual tree lifecycle</h2>
+<p>Use <code>VisualTreeLifecycleBehavior.IsEnabled=&quot;True&quot;</code> on the root <code>OverlayHost</code> so overlays rebind when windows or dock controls move in the visual tree.</p>
+<pre><code class="lang-xml">&lt;OverlayHost VisualTreeLifecycleBehavior.IsEnabled=&quot;True&quot;&gt;
+  &lt;DockControl Layout=&quot;{Binding}&quot; /&gt;
+&lt;/OverlayHost&gt;
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-overlay-customization.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

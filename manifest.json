@@ -130,6 +130,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Behaviors.VisualTreeLifecycleBehavior.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Behaviors.VisualTreeLifecycleBehavior.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Behaviors.VisualTreeLifecycleBehavior",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Behaviors.VisualTreeLifecycleBehavior.yml\" sourcestartlinenumber=\"1\">Invokes <xref href=\"Dock.Model.Services.IVisualTreeLifecycle\" data-throw-if-not-resolved=\"false\"></xref> hooks for attached elements and their data contexts.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Behaviors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Behaviors.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Behaviors",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.CommandBars.DefaultDockCommandBarAdapter.yml",
       "output": {
         ".html": {
@@ -589,6 +617,202 @@
       "IsMRef": true,
       "Title": "Dock.Avalonia.Controls.MdiLayoutPanel",
       "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.MdiLayoutPanel.yml\" sourcestartlinenumber=\"1\">Panel used to arrange MDI document windows.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.BusyOverlayControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.BusyOverlayControl.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.BusyOverlayControl",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.BusyOverlayControl.yml\" sourcestartlinenumber=\"1\">Displays busy and reload overlays for hosted content.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.ConfirmationDialogControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.ConfirmationDialogControl.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.ConfirmationDialogControl",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.ConfirmationDialogControl.yml\" sourcestartlinenumber=\"1\">Provides a confirmation dialog shell with title, message, and buttons.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.ConfirmationOverlayControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.ConfirmationOverlayControl.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.ConfirmationOverlayControl",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.ConfirmationOverlayControl.yml\" sourcestartlinenumber=\"1\">Displays confirmation overlays for hosted content.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.DialogOverlayControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.DialogOverlayControl.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.DialogOverlayControl",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.DialogOverlayControl.yml\" sourcestartlinenumber=\"1\">Displays dialog overlays for hosted content.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.DialogShellControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.DialogShellControl.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.DialogShellControl",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.DialogShellControl.yml\" sourcestartlinenumber=\"1\">Provides a dialog container shell with title and close affordance.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.IOverlayLayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.IOverlayLayer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.IOverlayLayer",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.IOverlayLayer.yml\" sourcestartlinenumber=\"1\">Describes an overlay layer that can be composed by <xref href=\"Dock.Avalonia.Controls.Overlays.OverlayHost\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.IOverlayLayerFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.IOverlayLayerFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.IOverlayLayerFactory",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.IOverlayLayerFactory.yml\" sourcestartlinenumber=\"1\">Creates overlay layers on demand to avoid sharing instances between hosts.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayHost.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayHost.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.OverlayHost",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.OverlayHost.yml\" sourcestartlinenumber=\"1\">Composes overlay controls around hosted content in order.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.OverlayLayer",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.OverlayLayer.yml\" sourcestartlinenumber=\"1\">Wraps an overlay control with layer metadata.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerCollection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.OverlayLayerCollection",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.OverlayLayerCollection.yml\" sourcestartlinenumber=\"1\">Defines an ordered collection of overlay layers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.OverlayLayerFactory",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.OverlayLayerFactory.yml\" sourcestartlinenumber=\"1\">Wraps a delegate to create overlay layer instances.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerRegistry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.OverlayLayerRegistry",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.OverlayLayerRegistry.yml\" sourcestartlinenumber=\"1\">Provides access to overlay layer registrations from DI containers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerStyleKeys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.OverlayLayerStyleKeys.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays.OverlayLayerStyleKeys",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.Overlays.OverlayLayerStyleKeys.yml\" sourcestartlinenumber=\"1\">Defines theme keys for overlay layers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.Overlays.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.Overlays.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.Overlays",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -3924,34 +4148,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Dock.Model.Extensions.DependencyInjection.ServiceCollectionExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Dock.Model.Extensions.DependencyInjection.ServiceCollectionExtensions.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Dock.Model.Extensions.DependencyInjection.ServiceCollectionExtensions",
-      "Summary": "<p sourcefile=\"api/Dock.Model.Extensions.DependencyInjection.ServiceCollectionExtensions.yml\" sourcestartlinenumber=\"1\">Provides registration helpers for Dock model services.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Dock.Model.Extensions.DependencyInjection.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Dock.Model.Extensions.DependencyInjection.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Dock.Model.Extensions.DependencyInjection",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.FactoryBase.yml",
       "output": {
         ".html": {
@@ -5548,6 +5744,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocumentBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocumentBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocumentBase",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocumentBase.yml\" sourcestartlinenumber=\"1\">Base document that provides overlay service helpers and navigation utilities.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableRootDock.yml",
       "output": {
         ".html": {
@@ -5573,6 +5783,20 @@
       "IsMRef": true,
       "Title": "Dock.Model.ReactiveUI.Navigation.Controls.RoutableTool",
       "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableTool.yml\" sourcestartlinenumber=\"1\">Tool that supports ReactiveUI routing and acts as a screen for nested navigation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableToolBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableToolBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.Controls.RoutableToolBase",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Navigation.Controls.RoutableToolBase.yml\" sourcestartlinenumber=\"1\">Base tool that provides overlay service helpers and navigation utilities.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5618,6 +5842,510 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.yml\" sourcestartlinenumber=\"1\">Provides helper methods for navigation and dockable operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.DockNavigationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.DockNavigationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.Services.DockNavigationService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Navigation.Services.DockNavigationService.yml\" sourcestartlinenumber=\"1\">Default navigation service that opens documents in the current document dock context.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.IDockNavigationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.IDockNavigationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.Services.IDockNavigationService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Navigation.Services.IDockNavigationService.yml\" sourcestartlinenumber=\"1\">Provides navigation helpers for opening dockables in the current document context.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.ViewModels.DockViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.ViewModels.DockViewModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.ViewModels.DockViewModel",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Navigation.ViewModels.DockViewModel.yml\" sourcestartlinenumber=\"1\">View model that owns the dock layout and exposes overlay services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Navigation.ViewModels.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Navigation.ViewModels.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Navigation.ViewModels",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.AvaloniaHostServiceResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.AvaloniaHostServiceResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Avalonia.AvaloniaHostServiceResolver",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Avalonia.AvaloniaHostServiceResolver.yml\" sourcestartlinenumber=\"1\">Resolves overlay services by walking the Avalonia visual tree.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.Controls.DockReactiveUserControl-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.Controls.DockReactiveUserControl-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Avalonia.Controls.DockReactiveUserControl<TViewModel>",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Avalonia.Controls.DockReactiveUserControl-1.yml\" sourcestartlinenumber=\"1\">ReactiveUI view base that bridges view activation to view-model activation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.Controls.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.Controls.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Avalonia.Controls",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Avalonia.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Avalonia",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.IDockDispatcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.IDockDispatcher.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.IDockDispatcher",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.IDockDispatcher.yml\" sourcestartlinenumber=\"1\">Provides access to a UI-thread dispatcher without UI framework dependencies.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.DockActivationBridge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.DockActivationBridge.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Lifecycle.DockActivationBridge",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Lifecycle.DockActivationBridge.yml\" sourcestartlinenumber=\"1\">Default activation bridge for ReactiveUI view models.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.DockWindowLifecycleService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.DockWindowLifecycleService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Lifecycle.DockWindowLifecycleService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Lifecycle.DockWindowLifecycleService.yml\" sourcestartlinenumber=\"1\">Default window lifecycle service that cleans up overlay services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.IActivationBridge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.IActivationBridge.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Lifecycle.IActivationBridge",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Lifecycle.IActivationBridge.yml\" sourcestartlinenumber=\"1\">Bridges view activation to view-model activation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Lifecycle.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Lifecycle",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Controls.BusyRootDock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Controls.BusyRootDock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Controls.BusyRootDock",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Controls.BusyRootDock.yml\" sourcestartlinenumber=\"1\">Root dock that binds overlay services and supports reload handling.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Controls.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Controls.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Controls",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DependencyResolverExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DependencyResolverExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DependencyResolverExtensions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DependencyResolverExtensions.yml\" sourcestartlinenumber=\"1\">Provides Splat registration helpers for Dock overlay services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DockOverlayServiceCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DockOverlayServiceCollectionExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DockOverlayServiceCollectionExtensions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.DockOverlayServiceCollectionExtensions.yml\" sourcestartlinenumber=\"1\">Provides registration helpers for Dock overlay services with Microsoft.Extensions.DependencyInjection.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesAdapter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesAdapter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesAdapter",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesAdapter.yml\" sourcestartlinenumber=\"1\">Adapts existing overlay services into a host overlay services instance.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.yml\" sourcestartlinenumber=\"1\">Default overlay services resolver that uses the host service resolver.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider.yml\" sourcestartlinenumber=\"1\">Resolves overlay services for a host screen.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostServiceResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostServiceResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostServiceResolver",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostServiceResolver.yml\" sourcestartlinenumber=\"1\">Resolves services scoped to a host screen.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.OwnerChainHostServiceResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.OwnerChainHostServiceResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Hosting.OwnerChainHostServiceResolver",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.OwnerChainHostServiceResolver.yml\" sourcestartlinenumber=\"1\">Resolves services by walking the screen and owner chains.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Hosting.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Hosting",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.yml\" sourcestartlinenumber=\"1\">Default busy service implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockConfirmationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockConfirmationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Services.DockConfirmationService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockConfirmationService.yml\" sourcestartlinenumber=\"1\">Default confirmation service implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockDialogService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockDialogService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Services.DockDialogService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockDialogService.yml\" sourcestartlinenumber=\"1\">Default dialog service implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalBusyService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalBusyService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalBusyService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalBusyService.yml\" sourcestartlinenumber=\"1\">Default global busy service implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalConfirmationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalConfirmationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalConfirmationService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalConfirmationService.yml\" sourcestartlinenumber=\"1\">Default global confirmation service implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalDialogService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalDialogService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalDialogService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Overlays.Services.DockGlobalDialogService.yml\" sourcestartlinenumber=\"1\">Default global dialog service implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Overlays.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Overlays.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Threading.MainThreadDispatcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Threading.MainThreadDispatcher.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Threading.MainThreadDispatcher",
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Threading.MainThreadDispatcher.yml\" sourcestartlinenumber=\"1\">Default dispatcher implementation using <xref href=\"ReactiveUI.RxApp.MainThreadScheduler\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.Threading.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.Threading.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services.Threading",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.ReactiveUI.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.ReactiveUI.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.ReactiveUI.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.ReactiveUI.yml",
       "output": {
         ".html": {
@@ -5628,6 +6356,202 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Dock.Model.ReactiveUI",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.ConfirmationRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.ConfirmationRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.ConfirmationRequest",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.ConfirmationRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to show a confirmation dialog.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.DialogRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.DialogRequest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.DialogRequest",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.DialogRequest.yml\" sourcestartlinenumber=\"1\">Represents a request to show a dialog.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IDockBusyService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IDockBusyService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IDockBusyService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IDockBusyService.yml\" sourcestartlinenumber=\"1\">Defines a per-host busy state service used by overlay controls.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IDockConfirmationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IDockConfirmationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IDockConfirmationService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IDockConfirmationService.yml\" sourcestartlinenumber=\"1\">Manages confirmation requests for a host window.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IDockDialogContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IDockDialogContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IDockDialogContent",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IDockDialogContent.yml\" sourcestartlinenumber=\"1\">Provides a hook for dialog content to close itself with a result.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IDockDialogService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IDockDialogService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IDockDialogService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IDockDialogService.yml\" sourcestartlinenumber=\"1\">Manages dialog requests for a host window.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IDockGlobalBusyService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IDockGlobalBusyService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IDockGlobalBusyService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IDockGlobalBusyService.yml\" sourcestartlinenumber=\"1\">Tracks global busy state for cross-window overlays.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IDockGlobalConfirmationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IDockGlobalConfirmationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IDockGlobalConfirmationService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IDockGlobalConfirmationService.yml\" sourcestartlinenumber=\"1\">Tracks global confirmation state for cross-window overlays.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IDockGlobalDialogService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IDockGlobalDialogService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IDockGlobalDialogService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IDockGlobalDialogService.yml\" sourcestartlinenumber=\"1\">Tracks global dialog state for cross-window overlays.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IHostOverlayServices.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IHostOverlayServices.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IHostOverlayServices",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IHostOverlayServices.yml\" sourcestartlinenumber=\"1\">Provides access to per-host overlay services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IReloadable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IReloadable.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IReloadable",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IReloadable.yml\" sourcestartlinenumber=\"1\">Provides a reload contract for dockables or routed views.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IVisualTreeLifecycle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IVisualTreeLifecycle.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IVisualTreeLifecycle",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IVisualTreeLifecycle.yml\" sourcestartlinenumber=\"1\">Provides hooks for visual tree attachment and detachment.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.IWindowLifecycleService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.IWindowLifecycleService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services.IWindowLifecycleService",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Services.IWindowLifecycleService.yml\" sourcestartlinenumber=\"1\">Handles window lifecycle events for cleanup and service coordination.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Services",
       "Summary": null
     },
     {
@@ -6423,6 +7347,26 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-mvvm.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-overlay-customization.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-overlay-customization.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-overlay-services-reference.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-overlay-services-reference.html"
         }
       },
       "version": ""

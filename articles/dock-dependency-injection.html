@@ -83,12 +83,9 @@
         <article data-uid="">
 <h1 id="dependency-injection">Dependency injection</h1>
 
-<p>Dock provides an integration library for the default .NET service container. The <code>Dock.Model.Extensions.DependencyInjection</code> package exposes an <code>AddDock</code> extension for <code>IServiceCollection</code>.</p>
+<p>Dock does not ship a dedicated dependency injection helper package. Register the core services manually, or copy the <code>AddDock</code> helper from <code>samples/DockReactiveUIDiSample/ServiceCollectionExtensions.cs</code> into your application.</p>
 <h2 id="installation">Installation</h2>
-<p>First, install the dependency injection package:</p>
-<pre><code class="lang-bash">dotnet add package Dock.Model.Extensions.DependencyInjection
-</code></pre>
-<p>Also install your preferred serializer package:</p>
+<p>Install your preferred serializer package:</p>
 <pre><code class="lang-bash"># Choose one serializer:
 dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
 dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
@@ -96,43 +93,41 @@ dotnet add package Dock.Serializer.Protobuf          # Binary
 dotnet add package Dock.Serializer.Xml               # XML  
 dotnet add package Dock.Serializer.Yaml              # YAML
 </code></pre>
+<p>If you are using the default .NET service container, ensure you have the DI package:</p>
+<pre><code class="lang-bash">dotnet add package Microsoft.Extensions.DependencyInjection
+</code></pre>
 <h2 id="register-services">Register services</h2>
-<p>Reference the package and register your factory and serializer types during startup:</p>
-<pre><code class="lang-csharp">using Dock.Model.Extensions.DependencyInjection;
+<p>Register your factory and serializer types during startup:</p>
+<pre><code class="lang-csharp">using Dock.Model.Core;
 using Dock.Serializer; // or your preferred serializer namespace
+using Microsoft.Extensions.DependencyInjection;
 
-// Register with JSON serializer (Newtonsoft.Json)
-services.AddDock&lt;MyDockFactory, DockSerializer&gt;();
+services.AddSingleton&lt;IDockState, DockState&gt;();
+services.AddSingleton&lt;MyDockFactory&gt;();
+services.AddSingleton&lt;IFactory&gt;(static sp =&gt; sp.GetRequiredService&lt;MyDockFactory&gt;());
 
-// Or with System.Text.Json serializer
-services.AddDock&lt;MyDockFactory, Dock.Serializer.SystemTextJson.DockSerializer&gt;();
-
-// Or with Protobuf serializer
-services.AddDock&lt;MyDockFactory, ProtobufDockSerializer&gt;();
-
-// Or with XML serializer
-services.AddDock&lt;MyDockFactory, DockXmlSerializer&gt;();
-
-// Or with YAML serializer  
-services.AddDock&lt;MyDockFactory, DockYamlSerializer&gt;();
+services.AddSingleton&lt;DockSerializer&gt;();
+services.AddSingleton&lt;IDockSerializer&gt;(static sp =&gt; sp.GetRequiredService&lt;DockSerializer&gt;());
 </code></pre>
 <p>This registers <code>IDockState</code>, your factory implementation as <code>IFactory</code>, and the serializer as <code>IDockSerializer</code>.</p>
+<p>If you prefer an <code>AddDock</code> helper, copy the sample extension from <code>samples/DockReactiveUIDiSample/ServiceCollectionExtensions.cs</code>.</p>
 <h2 id="complete-example">Complete example</h2>
-<p>Here's a full example showing how to set up dependency injection with Dock:</p>
-<pre><code class="lang-csharp">using Microsoft.Extensions.DependencyInjection;
-using Dock.Model.Extensions.DependencyInjection;
+<pre><code class="lang-csharp">using Dock.Model.Core;
 using Dock.Serializer;
+using Microsoft.Extensions.DependencyInjection;
 
 public void ConfigureServices(IServiceCollection services)
 {
-    // Register your view models and views
     services.AddTransient&lt;MyDocumentViewModel&gt;();
     services.AddTransient&lt;MyToolViewModel&gt;();
-    
-    // Register Dock services
-    services.AddDock&lt;MyDockFactory, DockSerializer&gt;();
-    
-    // Register other application services
+
+    services.AddSingleton&lt;IDockState, DockState&gt;();
+    services.AddSingleton&lt;MyDockFactory&gt;();
+    services.AddSingleton&lt;IFactory&gt;(static sp =&gt; sp.GetRequiredService&lt;MyDockFactory&gt;());
+
+    services.AddSingleton&lt;DockSerializer&gt;();
+    services.AddSingleton&lt;IDockSerializer&gt;(static sp =&gt; sp.GetRequiredService&lt;DockSerializer&gt;());
+
     services.AddSingleton&lt;MyApplicationService&gt;();
 }
 </code></pre>
@@ -145,28 +140,33 @@ public void ConfigureServices(IServiceCollection services)
     private readonly IDockSerializer _serializer;
 
     public MainWindowViewModel(
-        IFactory factory, 
-        IDockState dockState, 
+        IFactory factory,
+        IDockState dockState,
         IDockSerializer serializer)
     {
         _factory = factory;
         _dockState = dockState;
         _serializer = serializer;
-        
-        // Create layout using the factory
+
         Layout = _factory.CreateLayout();
         _factory.InitLayout(Layout);
     }
-    
+
     public IRootDock Layout { get; }
 }
 </code></pre>
 <h2 id="framework-specific-registration">Framework-specific registration</h2>
-<p>For ReactiveUI applications, you can also register the ReactiveUI-specific factory:</p>
-<pre><code class="lang-csharp">using Dock.Model.Extensions.DependencyInjection;
-using Dock.Model.ReactiveUI;
+<p>For ReactiveUI applications, register your ReactiveUI factory in the same way:</p>
+<pre><code class="lang-csharp">using Dock.Model.Core;
+using Dock.Serializer;
+using Microsoft.Extensions.DependencyInjection;
 
-services.AddDock&lt;MyReactiveUIFactory, DockSerializer&gt;();
+services.AddSingleton&lt;IDockState, DockState&gt;();
+services.AddSingleton&lt;MyReactiveUIFactory&gt;();
+services.AddSingleton&lt;IFactory&gt;(static sp =&gt; sp.GetRequiredService&lt;MyReactiveUIFactory&gt;());
+
+services.AddSingleton&lt;DockSerializer&gt;();
+services.AddSingleton&lt;IDockSerializer&gt;(static sp =&gt; sp.GetRequiredService&lt;DockSerializer&gt;());
 </code></pre>
 <p>Where <code>MyReactiveUIFactory</code> derives from <code>Dock.Model.ReactiveUI.Factory</code>.</p>
 <p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>

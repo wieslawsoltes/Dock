@@ -99,17 +99,19 @@ cd MyDockApp
 <li><p><strong>Install the required packages</strong></p>
 <pre><code class="lang-bash">dotnet add package Dock.Avalonia
 dotnet add package Dock.Model.ReactiveUI
-dotnet add package Dock.Model.ReactiveUI.Navigation
+dotnet add package Dock.Model.ReactiveUI.Services
 dotnet add package Dock.Avalonia.Themes.Fluent
 dotnet add package ReactiveUI.Avalonia
 </code></pre>
+<p>Navigation types ship in <code>Dock.Model.ReactiveUI.Services</code> and keep the
+<code>Dock.Model.ReactiveUI.Navigation.*</code> namespaces for compatibility.</p>
 <p><strong>Optional packages:</strong></p>
 <pre><code class="lang-bash"># For serialization (choose one):
 dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
 dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
 
 # For dependency injection:
-dotnet add package Dock.Model.Extensions.DependencyInjection
+dotnet add package Microsoft.Extensions.DependencyInjection
 </code></pre>
 </li>
 <li><p><strong>Set up View Locator with Routing Support</strong></p>

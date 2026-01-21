@@ -110,12 +110,14 @@ dotnet add package Dock.Avalonia.Themes.Fluent
 dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
 dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
 
-# For navigation scenarios:
-dotnet add package Dock.Model.ReactiveUI.Navigation
+# For navigation helpers and overlay services:
+dotnet add package Dock.Model.ReactiveUI.Services
 
 # For dependency injection:
-dotnet add package Dock.Model.Extensions.DependencyInjection
+dotnet add package Microsoft.Extensions.DependencyInjection
 </code></pre>
+<p>Navigation types ship in <code>Dock.Model.ReactiveUI.Services</code> and keep the
+<code>Dock.Model.ReactiveUI.Navigation.*</code> namespaces for compatibility.</p>
 </li>
 <li><p><strong>Set up View Locator (Required)</strong></p>
 <p>ReactiveUI requires a view locator to map view models to their corresponding views. Choose one of the following approaches:</p>

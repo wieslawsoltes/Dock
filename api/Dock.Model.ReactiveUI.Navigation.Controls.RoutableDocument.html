@@ -85,12 +85,12 @@
 
 
   <h1 id="Dock_Model_ReactiveUI_Navigation_Controls_RoutableDocument" data-uid="Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocument" class="text-break">
-Class RoutableDocument  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Navigation/Controls/RoutableDocument.cs/#L10"><i class="bi bi-code-slash"></i></a>
+Class RoutableDocument  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableDocument.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
     <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Model.html">Model</a>.<a class="xref" href="Dock.Model.ReactiveUI.html">ReactiveUI</a>.<a class="xref" href="Dock.Model.ReactiveUI.Navigation.html">Navigation</a>.<a class="xref" href="Dock.Model.ReactiveUI.Navigation.Controls.html">Controls</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>Dock.Model.ReactiveUI.Navigation.dll</dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Model.ReactiveUI.Services.dll</dd></dl>
   </div>
 
   <div class="markdown summary"><p>Document that supports ReactiveUI routing and acts as a screen for nested navigation.</p>
@@ -137,6 +137,12 @@ public class RoutableDocument : Document, IReactiveNotifyPropertyChanged&lt;IRea
     </dd>
   </dl>
 
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocumentBase.html">RoutableDocumentBase</a></div>
+    </dd>
+  </dl>
 
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
@@ -354,7 +360,7 @@ public class RoutableDocument : Document, IReactiveNotifyPropertyChanged&lt;IRea
 
   <h3 id="Dock_Model_ReactiveUI_Navigation_Controls_RoutableDocument__ctor_ReactiveUI_IScreen_System_String_" data-uid="Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocument.#ctor(ReactiveUI.IScreen,System.String)">
   RoutableDocument(IScreen, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Navigation/Controls/RoutableDocument.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableDocument.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocument.html">RoutableDocument</a> class.</p>
@@ -394,7 +400,7 @@ public class RoutableDocument : Document, IReactiveNotifyPropertyChanged&lt;IRea
 
   <h3 id="Dock_Model_ReactiveUI_Navigation_Controls_RoutableDocument_HostScreen" data-uid="Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocument.HostScreen">
   HostScreen
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Navigation/Controls/RoutableDocument.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableDocument.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the IScreen that this ViewModel is currently being shown in. This
@@ -429,7 +435,7 @@ public IScreen HostScreen { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Navigation_Controls_RoutableDocument_Router" data-uid="Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocument.Router">
   Router
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Navigation/Controls/RoutableDocument.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableDocument.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets router used for nested navigation.</p>
@@ -462,7 +468,7 @@ public RoutingState Router { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Navigation_Controls_RoutableDocument_UrlPathSegment" data-uid="Dock.Model.ReactiveUI.Navigation.Controls.RoutableDocument.UrlPathSegment">
   UrlPathSegment
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Navigation/Controls/RoutableDocument.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableDocument.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a string token representing the current ViewModel, such as 'login' or 'user'.</p>
@@ -495,7 +501,7 @@ public string UrlPathSegment { get; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Navigation/Controls/RoutableDocument.cs/#L10" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableDocument.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

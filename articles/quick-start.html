@@ -106,11 +106,12 @@ dotnet add package Dock.Serializer.Xml               # XML
 dotnet add package Dock.Serializer.Yaml              # YAML
 
 # For dependency injection:
-dotnet add package Dock.Model.Extensions.DependencyInjection
+dotnet add package Microsoft.Extensions.DependencyInjection
 
 # For diagnostics and debugging:
 dotnet add package Dock.Avalonia.Diagnostics
 </code></pre>
+<p>See <a href="dock-dependency-injection.html">dependency injection</a> for manual Dock registrations.</p>
 <p><strong>Note</strong>: If you plan to use AXAML Controls <code>RootDock</code>, <code>ProportionalDock</code>, etc. also add:</p>
 <pre><code class="lang-bash">dotnet add package Dock.Model.Avalonia
 </code></pre>

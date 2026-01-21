@@ -99,7 +99,6 @@ cd MyDockApp
 <li><p><strong>Install the required packages</strong></p>
 <pre><code class="lang-bash">dotnet add package Dock.Avalonia
 dotnet add package Dock.Model.ReactiveUI
-dotnet add package Dock.Model.Extensions.DependencyInjection
 dotnet add package Dock.Avalonia.Themes.Fluent
 dotnet add package Microsoft.Extensions.DependencyInjection
 dotnet add package Microsoft.Extensions.Hosting
@@ -110,6 +109,7 @@ dotnet add package ReactiveUI.Avalonia
 dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
 dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
 </code></pre>
+<p>Dock does not ship a DI helper package. Register the Dock services manually, or copy the helper from <code>samples/DockReactiveUIDiSample/ServiceCollectionExtensions.cs</code>.</p>
 </li>
 <li><p><strong>Set up Dependency Injection View Locator</strong></p>
 <p>Create a service-based ViewLocator that resolves views through the DI container:</p>
@@ -425,7 +425,7 @@ public partial class ToolView : ReactiveUserControl&lt;ToolViewModel&gt;
 <pre><code class="lang-csharp">using System;
 using Avalonia;
 using ReactiveUI.Avalonia;
-using Dock.Model.Extensions.DependencyInjection;
+using Dock.Model.Core;
 using Dock.Serializer;
 using MyDockApp.Models;
 using MyDockApp.ViewModels;
@@ -475,7 +475,11 @@ internal class Program
         services.AddTransient&lt;IViewFor&lt;MainWindowViewModel&gt;, MainWindow&gt;();
 
         // Register Dock services
-        services.AddDock&lt;DockFactory, DockSerializer&gt;();
+        services.AddSingleton&lt;IDockState, DockState&gt;();
+        services.AddSingleton&lt;DockFactory&gt;();
+        services.AddSingleton&lt;IFactory&gt;(static sp =&gt; sp.GetRequiredService&lt;DockFactory&gt;());
+        services.AddSingleton&lt;DockSerializer&gt;();
+        services.AddSingleton&lt;IDockSerializer&gt;(static sp =&gt; sp.GetRequiredService&lt;DockSerializer&gt;());
     }
 
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)

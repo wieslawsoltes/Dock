@@ -1,19 +1,57 @@
 - name: Overview
   href: README.md
-- name: Get started
+- name: Getting started
   items:
   - name: Quick start
     href: quick-start.md
+  - name: XAML guide
+    href: dock-xaml.md
+  - name: Code-only guide
+    href: dock-code-only.md
+- name: Tutorials & how-to
+  items:
   - name: DocumentDock ItemsSource
     href: dock-itemssource.md
   - name: Document and Tool Content Guide
     href: dock-content-guide.md
-- name: Model Implementation Guides
+  - name: Complex layout tutorials
+    href: dock-complex-layouts.md
+  - name: DockControl initialization
+    href: dock-control-initialization.md
+  - name: Programmatic docking
+    href: dock-programmatic-docking.md
+  - name: DockManager guide
+    href: dock-manager-guide.md
+  - name: API scenarios
+    href: dock-api-scenarios.md
+  - name: Events guide
+    href: dock-events.md
+- name: Concepts
+  items:
+  - name: Active document
+    href: dock-active-document.md
+  - name: Docking groups
+    href: dock-docking-groups.md
+  - name: MDI document layout
+    href: dock-mdi.md
+  - name: MDI layout helpers
+    href: dock-mdi-layout-helpers.md
+  - name: Dock state guide
+    href: dock-state.md
+  - name: RestoreDockable behavior
+    href: dock-restore-dockable.md
+  - name: DockableLocator usage
+    href: dock-dockablelocator.md
+  - name: Context locators
+    href: dock-context-locator.md
+- name: Framework integration
   items:
   - name: MVVM guide
     href: dock-mvvm.md
   - name: Caliburn.Micro guide
     href: dock-caliburn-micro.md
+  - name: Prism guide
+    href: dock-prism.md
   - name: ReactiveUI guide
     href: dock-reactiveui.md
   - name: ReactiveProperty guide
@@ -24,106 +62,76 @@
     href: dock-reactiveui-di.md
   - name: ReactiveUI with Routing
     href: dock-reactiveui-routing.md
-- name: Other Approaches
-  items:
-  - name: XAML guide
-    href: dock-xaml.md
-  - name: Code-only guide
-    href: dock-code-only.md
+  - name: Dependency injection
+    href: dock-dependency-injection.md
   - name: User view model guide
     href: dock-user-viewmodel.md
   - name: Views guide
     href: dock-views.md
-- name: How-to guides
+- name: Windows & interaction
   items:
-  - name: Complex layout tutorials
-    href: dock-complex-layouts.md
-- name: Concepts
-  items:
-  - name: Active document
-    href: dock-active-document.md
-  - name: MDI document layout
-    href: dock-mdi.md
-  - name: MDI layout helpers
-    href: dock-mdi-layout-helpers.md
-  - name: Events guide
-    href: dock-events.md
-  - name: API scenarios
-    href: dock-api-scenarios.md
-  - name: DockableLocator usage
-    href: dock-dockablelocator.md
-  - name: Serialization and persistence
-    href: dock-serialization.md
-  - name: Serialization state
-    href: dock-serialization-state.md
-  - name: Dock state guide
-    href: dock-state.md
-  - name: RestoreDockable behavior
-    href: dock-restore-dockable.md
-  - name: Dependency injection
-    href: dock-dependency-injection.md
-  - name: Context locators
-    href: dock-context-locator.md
-  - name: Docking groups
-    href: dock-docking-groups.md
-  - name: Architecture overview
-    href: dock-architecture.md
-  - name: Deep dive
-    href: dock-deep-dive.md
-  - name: DockManager guide
-    href: dock-manager-guide.md
-  - name: DockControl initialization
-    href: dock-control-initialization.md
-  - name: Programmatic docking
-    href: dock-programmatic-docking.md
   - name: Drag actions and modifiers
     href: dock-drag-actions.md
-  - name: Fluent API extensions
-    href: dock-fluent-extensions.md
-  - name: Styling and theming
-    href: dock-styling.md
-  - name: Overlay customization
-    href: dock-overlay-customization.md
+  - name: Drag offset calculator
+    href: dock-drag-offset-calculator.md
+  - name: Dock targets and indicators
+    href: dock-targets.md
+  - name: Floating windows
+    href: dock-windows.md
+  - name: Floating dock adorners
+    href: dock-floating-adorners.md
+  - name: Enable window drag
+    href: dock-window-drag.md
+  - name: Floating window owner
+    href: dock-window-owner.md
+  - name: Host window locators
+    href: dock-host-window-locator.md
+  - name: Pinned dock window
+    href: dock-pinned-window.md
+- name: Styling & customization
+  items:
   - name: DataTemplates and custom dock types
     href: dock-datatemplates.md
+  - name: Styling and theming
+    href: dock-styling.md
   - name: Custom themes
     href: dock-custom-theme.md
   - name: Context menus
     href: dock-context-menus.md
+  - name: Command bars
+    href: dock-command-bars.md
+  - name: Overlay customization
+    href: dock-overlay-customization.md
+  - name: Selector overlay
+    href: dock-selector-overlay.md
   - name: Control recycling
     href: dock-control-recycling.md
   - name: Proportional StackPanel
     href: dock-proportional-stackpanel.md
   - name: Sizing guide
     href: dock-sizing.md
-  - name: Floating windows
-    href: dock-windows.md
-  - name: Enable window drag
-    href: dock-window-drag.md
-  - name: Host window locators
-    href: dock-host-window-locator.md
-  - name: Drag offset calculator
-    href: dock-drag-offset-calculator.md
-  - name: Floating dock adorners
-    href: dock-floating-adorners.md
-  - name: Dock targets and indicators
-    href: dock-targets.md
+- name: Persistence & diagnostics
+  items:
+  - name: Serialization and persistence
+    href: dock-serialization.md
+  - name: Serialization state
+    href: dock-serialization-state.md
   - name: Debug overlay
     href: dock-debug-overlay.md
   - name: Diagnostics logging
     href: dock-diagnostics-logging.md
-  - name: Selector overlay
-    href: dock-selector-overlay.md
-  - name: Command bars
-    href: dock-command-bars.md
-  - name: Pinned dock window
-    href: dock-pinned-window.md
-  - name: Floating window owner
-    href: dock-window-owner.md
   - name: RootDockDebug window
     href: dock-root-dock-debug.md
   - name: Debug views
     href: dock-debug-views.md
+- name: Architecture & advanced
+  items:
+  - name: Architecture overview
+    href: dock-architecture.md
+  - name: Deep dive
+    href: dock-deep-dive.md
+  - name: Fluent API extensions
+    href: dock-fluent-extensions.md
   - name: Advanced guide
     href: dock-advanced.md
   - name: Advanced Content Wrapper Pattern

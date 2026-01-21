@@ -318,7 +318,8 @@ public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost, 
         var localBusy = _attachedService?.IsBusy ?? false;
         var globalBusy = _attachedGlobalService?.IsBusy ?? false;
         var isBusy = localBusy || globalBusy;
-        var showReload = ShowReloadButton ?? _attachedService?.IsReloadVisible ?? false;
+        var hasReload = _attachedService?.ReloadCommand is not null;
+        var showReload = ShowReloadButton ?? (_attachedService?.IsReloadVisible ?? false);
 
         IsBusy = isBusy;
         ShowProgress = localBusy;
@@ -327,8 +328,8 @@ public sealed class BusyOverlayControl : TemplatedControl, IOverlayContentHost, 
             : _attachedGlobalService?.Message;
         IsContentEnabled = !(isBusy && BlocksInput);
         ReloadCommand = _attachedService?.ReloadCommand;
-        IsReloadVisible = showReload;
-        IsReloadEnabled = !isBusy && (_attachedService?.CanReload ?? false);
+        IsReloadVisible = showReload && hasReload;
+        IsReloadEnabled = !isBusy && hasReload && (_attachedService?.CanReload ?? false);
     }
 
     private void RebindServices()

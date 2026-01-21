@@ -15,9 +15,18 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
    ```bash
    dotnet add package Dock.Avalonia
-   dotnet add package Dock.Model.Mvvm
    dotnet add package Dock.Avalonia.Themes.Fluent
    # or use Dock.Avalonia.Themes.Simple
+   ```
+
+   Install the model layer that matches the approach you use below:
+
+   ```bash
+   # Option A (code-first factory)
+   dotnet add package Dock.Model.Mvvm
+
+   # Option B (XAML layout, ItemsSource, DocumentTemplate)
+   dotnet add package Dock.Model.Avalonia
    ```
 
    **Optional packages for specific scenarios:**
@@ -37,12 +46,6 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    ```
 
    See [dependency injection](dock-dependency-injection.md) for manual Dock registrations.
-
-   **Note**: If you plan to use AXAML Controls `RootDock`, `ProportionalDock`, etc. also add:
-
-   ```bash
-   dotnet add package Dock.Model.Avalonia
-   ```
 
 3. **Set up View Templates (Optional)**
 

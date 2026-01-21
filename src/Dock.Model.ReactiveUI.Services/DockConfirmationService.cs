@@ -93,6 +93,8 @@ public sealed partial class DockConfirmationService : ReactiveObject, IDockConfi
     {
         if (!_confirmations.Contains(request))
         {
+            request.GlobalHandle?.Dispose();
+            request.Complete(result);
             return;
         }
 

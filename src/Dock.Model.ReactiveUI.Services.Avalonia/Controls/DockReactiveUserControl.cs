@@ -1,11 +1,12 @@
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Dock.Model.ReactiveUI.Services.Lifecycle;
 using ReactiveUI;
 using ReactiveUI.Avalonia;
 using Splat;
 
-namespace DockReactiveUICanonicalSample.Views;
+namespace Dock.Model.ReactiveUI.Services.Avalonia.Controls;
 
 /// <summary>
 /// ReactiveUI view base that bridges view activation to view-model activation.

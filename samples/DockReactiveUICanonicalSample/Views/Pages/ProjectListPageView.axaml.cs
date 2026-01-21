@@ -1,5 +1,6 @@
 using Avalonia.Markup.Xaml;
 using DockReactiveUICanonicalSample.ViewModels.Pages;
+using Dock.Model.ReactiveUI.Services.Avalonia.Controls;
 
 namespace DockReactiveUICanonicalSample.Views.Pages;
 

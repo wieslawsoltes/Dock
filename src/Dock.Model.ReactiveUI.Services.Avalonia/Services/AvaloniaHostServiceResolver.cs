@@ -9,14 +9,19 @@ using Dock.Avalonia.Controls.Overlays;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Services;
+using Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 using ReactiveUI;
 
-namespace DockReactiveUICanonicalSample.Services;
+namespace Dock.Model.ReactiveUI.Services.Avalonia;
 
+/// <summary>
+/// Resolves overlay services by walking the Avalonia visual tree.
+/// </summary>
 public sealed class AvaloniaHostServiceResolver : IHostServiceResolver
 {
     private readonly IHostServiceResolver _fallback = new OwnerChainHostServiceResolver();
 
+    /// <inheritdoc />
     public TService? Resolve<TService>(IScreen screen) where TService : class
     {
         if (!Dispatcher.UIThread.CheckAccess())

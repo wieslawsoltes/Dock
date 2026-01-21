@@ -11,6 +11,11 @@
     <PackageId>Dock.Model.ReactiveUI.Services</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(IsDocFx)' == 'true'">
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
   <!--<Import Project="..\..\build\SignAssembly.props" />-->
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />

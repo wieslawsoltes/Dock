@@ -1,17 +1,31 @@
 using System;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using Dock.Model.Services;
 using ReactiveUI;
 
-namespace DockReactiveUICanonicalSample.ViewModels;
+namespace Dock.Model.ReactiveUI.Navigation.ViewModels;
 
+/// <summary>
+/// View model that owns the dock layout and exposes overlay services.
+/// </summary>
 public class DockViewModel : ReactiveObject, IRoutableViewModel, IHostOverlayServices
 {
-    private readonly DockFactory _factory;
+    private readonly IFactory _factory;
     private IRootDock? _layout;
 
-    public DockViewModel(IScreen hostScreen, DockFactory factory)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockViewModel"/> class.
+    /// </summary>
+    /// <param name="hostScreen">The host screen for routing.</param>
+    /// <param name="factory">The dock factory used to create the layout.</param>
+    public DockViewModel(IScreen hostScreen, IFactory factory)
     {
+        if (factory is null)
+        {
+            throw new ArgumentNullException(nameof(factory));
+        }
+
         HostScreen = hostScreen;
         _factory = factory;
 
@@ -24,10 +38,15 @@ public class DockViewModel : ReactiveObject, IRoutableViewModel, IHostOverlaySer
         Layout = layout;
     }
 
+    /// <inheritdoc />
     public string UrlPathSegment { get; } = "dock";
 
+    /// <inheritdoc />
     public IScreen HostScreen { get; }
 
+    /// <summary>
+    /// Gets or sets the current layout.
+    /// </summary>
     public IRootDock? Layout
     {
         get => _layout;

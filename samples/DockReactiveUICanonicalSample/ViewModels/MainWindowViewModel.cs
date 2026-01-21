@@ -3,6 +3,7 @@ using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using Dock.Model.Services;
+using Dock.Model.ReactiveUI.Navigation.ViewModels;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels;

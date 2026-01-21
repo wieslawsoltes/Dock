@@ -12,7 +12,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Proportional dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class ProportionalDock : DockBase, IProportionalDock
 {
     /// <summary>

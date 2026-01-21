@@ -8,7 +8,6 @@ namespace Dock.Model.ReactiveUI.Navigation.Core;
 /// <summary>
 /// Dock base class that also implements <see cref="IRoutableViewModel"/>.
 /// </summary>
-[DataContract(IsReference = true)]
 public abstract class RoutableDockBase : DockBase, IRoutableViewModel
 {
     /// <summary>

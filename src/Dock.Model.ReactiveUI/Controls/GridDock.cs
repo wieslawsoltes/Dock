@@ -10,7 +10,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Grid dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class GridDock : DockBase, IGridDock
 {
     /// <inheritdoc/>

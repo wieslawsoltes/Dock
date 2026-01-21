@@ -17,7 +17,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Document.
 /// </summary>
-[DataContract(IsReference = true)]
 public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<Control?>, IRecyclingDataTemplate
 {
     /// <summary>

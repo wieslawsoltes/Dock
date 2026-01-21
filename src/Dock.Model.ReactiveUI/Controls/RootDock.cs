@@ -14,7 +14,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Root dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class RootDock : DockBase, IRootDock
 {
     private bool _enableAdaptiveGlobalDockTargets;

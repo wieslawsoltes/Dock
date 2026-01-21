@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Stack dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class StackDock : DockBase, IStackDock
 {
     /// <inheritdoc/>

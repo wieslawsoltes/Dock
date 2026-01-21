@@ -12,7 +12,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Tool dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class ToolDock : DockBase, IToolDock
 {
     /// <summary>

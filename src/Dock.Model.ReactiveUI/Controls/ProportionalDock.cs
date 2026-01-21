@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Proportional dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class ProportionalDock : DockBase, IProportionalDock
 {
     /// <inheritdoc/>

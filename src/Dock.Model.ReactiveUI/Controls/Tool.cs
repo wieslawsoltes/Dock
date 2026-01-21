@@ -12,7 +12,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Tool.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class Tool : DockableBase, ITool, IDocument, IMdiDocument
 {
     /// <inheritdoc/>

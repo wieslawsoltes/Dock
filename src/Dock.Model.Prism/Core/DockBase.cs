@@ -12,7 +12,6 @@ namespace Dock.Model.Prism.Core;
 /// <summary>
 /// Dock base class.
 /// </summary>
-[DataContract(IsReference = true)]
 public abstract class DockBase : DockableBase, IDock
 {
     internal readonly INavigateAdapter _navigateAdapter;

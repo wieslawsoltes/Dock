@@ -10,7 +10,6 @@ namespace Dock.Model.Mvvm.Controls;
 /// <summary>
 /// Proportional dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class ProportionalDock : DockBase, IProportionalDock
 {
     private Orientation _orientation;

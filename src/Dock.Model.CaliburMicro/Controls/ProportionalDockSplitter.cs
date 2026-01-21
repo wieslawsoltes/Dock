@@ -10,7 +10,6 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// <summary>
 /// Proportional dock splitter.
 /// </summary>
-[DataContract(IsReference = true)]
 public class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
 {
     private bool _canResize = true;

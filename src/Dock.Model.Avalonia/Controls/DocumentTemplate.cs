@@ -15,7 +15,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Document template.
 /// </summary>
-[DataContract(IsReference = true)]
 public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control?>, IRecyclingDataTemplate
 {
     /// <summary>

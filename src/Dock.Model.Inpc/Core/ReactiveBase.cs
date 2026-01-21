@@ -2,12 +2,14 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace Dock.Model.Inpc.Core;
 
 /// <summary>
 /// Base class implementing <see cref="INotifyPropertyChanged"/>.
 /// </summary>
+[DataContract(IsReference = true)]
 public abstract class ReactiveBase : INotifyPropertyChanged
 {
     /// <inheritdoc/>

@@ -11,7 +11,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Docking panel dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DockDock : DockBase, IDockDock
 {        
     /// <summary>

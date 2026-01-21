@@ -10,7 +10,6 @@ namespace Dock.Model.Prism.Controls;
 /// <summary>
 /// Wrap dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class WrapDock : DockBase, IWrapDock
 {
     private Orientation _orientation;

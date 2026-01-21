@@ -12,7 +12,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Proportional dock splitter.
 /// </summary>
-[DataContract(IsReference = true)]
 public class ProportionalDockSplitter : DockBase, IProportionalDockSplitter
 {
     /// <summary>

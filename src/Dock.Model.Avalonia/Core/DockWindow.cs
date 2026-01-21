@@ -14,7 +14,6 @@ namespace Dock.Model.Avalonia.Core;
 /// <summary>
 /// Dock window.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DockWindow : ReactiveBase, IDockWindow
 {
     /// <summary>

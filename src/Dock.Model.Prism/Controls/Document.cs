@@ -10,7 +10,6 @@ namespace Dock.Model.Prism.Controls;
 /// <summary>
 /// Document.
 /// </summary>
-[DataContract(IsReference = true)]
 public class Document : DockableBase, IMdiDocument
 {
     private DockRect _mdiBounds;

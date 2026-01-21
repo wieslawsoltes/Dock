@@ -93,9 +93,15 @@ cd DockQuickStart
 </li>
 <li><p><strong>Install the Dock packages</strong></p>
 <pre><code class="lang-bash">dotnet add package Dock.Avalonia
-dotnet add package Dock.Model.Mvvm
 dotnet add package Dock.Avalonia.Themes.Fluent
 # or use Dock.Avalonia.Themes.Simple
+</code></pre>
+<p>Install the model layer that matches the approach you use below:</p>
+<pre><code class="lang-bash"># Option A (code-first factory)
+dotnet add package Dock.Model.Mvvm
+
+# Option B (XAML layout, ItemsSource, DocumentTemplate)
+dotnet add package Dock.Model.Avalonia
 </code></pre>
 <p><strong>Optional packages for specific scenarios:</strong></p>
 <pre><code class="lang-bash"># For serialization (choose one):
@@ -112,9 +118,6 @@ dotnet add package Microsoft.Extensions.DependencyInjection
 dotnet add package Dock.Avalonia.Diagnostics
 </code></pre>
 <p>See <a href="dock-dependency-injection.html">dependency injection</a> for manual Dock registrations.</p>
-<p><strong>Note</strong>: If you plan to use AXAML Controls <code>RootDock</code>, <code>ProportionalDock</code>, etc. also add:</p>
-<pre><code class="lang-bash">dotnet add package Dock.Model.Avalonia
-</code></pre>
 </li>
 <li><p><strong>Set up View Templates (Optional)</strong></p>
 <p>If you rely on view models via <code>Context</code>, register a view locator or data templates for your document and tool views. If you define <code>Document.Content</code> or use <code>DocumentTemplate</code> in XAML, you can skip this step.</p>

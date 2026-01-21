@@ -17,6 +17,7 @@
     <ProjectReference Include="..\..\src\Dock.Serializer.Yaml\Dock.Serializer.Yaml.csproj" />
     <ProjectReference Include="..\..\src\Dock.Serializer.Xml\Dock.Serializer.Xml.csproj" />
     <ProjectReference Include="..\..\src\Dock.Serializer.Protobuf\Dock.Serializer.Protobuf.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.Inpc\Dock.Model.Inpc.csproj" />
   </ItemGroup>
 
   <ItemGroup>

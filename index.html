@@ -69,22 +69,182 @@
         <article data-uid="">
 <h1 id="dock-for-avalonia">Dock for Avalonia</h1>
 
-<p>Dock is a docking layout system for Avalonia applications. It provides a flexible layout model, document and tool docking, multi-window support, and integrations for popular MVVM frameworks.</p>
+<p>Dock is a docking layout system for Avalonia applications. It provides document and tool panes, floating windows, docking targets, and layout persistence, with multiple MVVM integrations and both XAML and code-first layout options.</p>
+<h2 id="highlights">Highlights</h2>
+<ul>
+<li>Document and tool docking with configurable rules.</li>
+<li>Floating windows, docking targets, and drag behaviors.</li>
+<li>Layout persistence and restoration.</li>
+<li>Theme support and overlay customization.</li>
+<li>Integrations for MVVM, ReactiveUI, Prism, and more.</li>
+</ul>
+<h2 id="architecture">Architecture</h2>
+<p>Dock separates the model from the view:</p>
+<ul>
+<li>Dock.Model defines layout state, docking rules, and serialization.</li>
+<li>Dock.Avalonia provides the Avalonia controls and visual behavior.</li>
+<li>Framework integrations add view model bases and patterns for common MVVM stacks.</li>
+</ul>
+<p>This design keeps the layout engine reusable and lets you swap view models or frameworks without rewriting docking logic.</p>
 <h2 id="install">Install</h2>
 <pre><code class="lang-bash">dotnet add package Dock.Avalonia
 dotnet add package Dock.Model.Mvvm
 dotnet add package Dock.Avalonia.Themes.Fluent
 </code></pre>
-<h2 id="quick-start">Quick start</h2>
-<p>Follow the <a href="articles/quick-start.html">Quick start</a> guide to create a minimal layout with <code>RootDock</code>, <code>DocumentDock</code>, and tool panes.</p>
+<h2 id="get-started">Get started</h2>
+<p>Recommended path:</p>
+<ol>
+<li><a href="articles/quick-start.html">Quick start</a> to build a minimal layout.</li>
+<li><a href="articles/dock-content-guide.html">Document and tool content guide</a> for content setup.</li>
+<li><a href="articles/README.html">Framework integration</a> to choose the MVVM stack that matches your app.</li>
+</ol>
+<h2 id="nuget-packages">NuGet packages</h2>
+<table>
+<thead>
+<tr>
+<th>NuGet</th>
+<th>Package</th>
+<th>Downloads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia"><img src="https://img.shields.io/nuget/v/Dock.Avalonia.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia"><code>Dock.Avalonia</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia"><img src="https://img.shields.io/nuget/dt/Dock.Avalonia.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Diagnostics"><img src="https://img.shields.io/nuget/v/Dock.Avalonia.Diagnostics.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Diagnostics"><code>Dock.Avalonia.Diagnostics</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Diagnostics"><img src="https://img.shields.io/nuget/dt/Dock.Avalonia.Diagnostics.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent"><img src="https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Fluent.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent"><code>Dock.Avalonia.Themes.Fluent</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent"><img src="https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Fluent.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple"><img src="https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Simple.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple"><code>Dock.Avalonia.Themes.Simple</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple"><img src="https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Simple.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel"><img src="https://img.shields.io/nuget/v/Dock.Controls.ProportionalStackPanel.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel"><code>Dock.Controls.ProportionalStackPanel</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel"><img src="https://img.shields.io/nuget/dt/Dock.Controls.ProportionalStackPanel.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.Recycling"><img src="https://img.shields.io/nuget/v/Dock.Controls.Recycling.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.Recycling"><code>Dock.Controls.Recycling</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.Recycling"><img src="https://img.shields.io/nuget/dt/Dock.Controls.Recycling.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.Recycling.Model"><img src="https://img.shields.io/nuget/v/Dock.Controls.Recycling.Model.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.Recycling.Model"><code>Dock.Controls.Recycling.Model</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Controls.Recycling.Model"><img src="https://img.shields.io/nuget/dt/Dock.Controls.Recycling.Model.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.MarkupExtension"><img src="https://img.shields.io/nuget/v/Dock.MarkupExtension.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.MarkupExtension"><code>Dock.MarkupExtension</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.MarkupExtension"><img src="https://img.shields.io/nuget/dt/Dock.MarkupExtension.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model"><img src="https://img.shields.io/nuget/v/Dock.Model.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model"><code>Dock.Model</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model"><img src="https://img.shields.io/nuget/dt/Dock.Model.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Avalonia"><img src="https://img.shields.io/nuget/v/Dock.Model.Avalonia.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Avalonia"><code>Dock.Model.Avalonia</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Avalonia"><img src="https://img.shields.io/nuget/dt/Dock.Model.Avalonia.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.CaliburMicro"><img src="https://img.shields.io/nuget/v/Dock.Model.CaliburMicro.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.CaliburMicro"><code>Dock.Model.CaliburMicro</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.CaliburMicro"><img src="https://img.shields.io/nuget/dt/Dock.Model.CaliburMicro.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Inpc"><img src="https://img.shields.io/nuget/v/Dock.Model.Inpc.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Inpc"><code>Dock.Model.Inpc</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Inpc"><img src="https://img.shields.io/nuget/dt/Dock.Model.Inpc.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Mvvm"><img src="https://img.shields.io/nuget/v/Dock.Model.Mvvm.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Mvvm"><code>Dock.Model.Mvvm</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Mvvm"><img src="https://img.shields.io/nuget/dt/Dock.Model.Mvvm.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Prism"><img src="https://img.shields.io/nuget/v/Dock.Model.Prism.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Prism"><code>Dock.Model.Prism</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.Prism"><img src="https://img.shields.io/nuget/dt/Dock.Model.Prism.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveProperty"><img src="https://img.shields.io/nuget/v/Dock.Model.ReactiveProperty.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveProperty"><code>Dock.Model.ReactiveProperty</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveProperty"><img src="https://img.shields.io/nuget/dt/Dock.Model.ReactiveProperty.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI"><img src="https://img.shields.io/nuget/v/Dock.Model.ReactiveUI.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI"><code>Dock.Model.ReactiveUI</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI"><img src="https://img.shields.io/nuget/dt/Dock.Model.ReactiveUI.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI.Services"><img src="https://img.shields.io/nuget/v/Dock.Model.ReactiveUI.Services.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI.Services"><code>Dock.Model.ReactiveUI.Services</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI.Services"><img src="https://img.shields.io/nuget/dt/Dock.Model.ReactiveUI.Services.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI.Services.Avalonia"><img src="https://img.shields.io/nuget/v/Dock.Model.ReactiveUI.Services.Avalonia.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI.Services.Avalonia"><code>Dock.Model.ReactiveUI.Services.Avalonia</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Model.ReactiveUI.Services.Avalonia"><img src="https://img.shields.io/nuget/dt/Dock.Model.ReactiveUI.Services.Avalonia.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Newtonsoft"><img src="https://img.shields.io/nuget/v/Dock.Serializer.Newtonsoft.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Newtonsoft"><code>Dock.Serializer.Newtonsoft</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Newtonsoft"><img src="https://img.shields.io/nuget/dt/Dock.Serializer.Newtonsoft.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Protobuf"><img src="https://img.shields.io/nuget/v/Dock.Serializer.Protobuf.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Protobuf"><code>Dock.Serializer.Protobuf</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Protobuf"><img src="https://img.shields.io/nuget/dt/Dock.Serializer.Protobuf.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.SystemTextJson"><img src="https://img.shields.io/nuget/v/Dock.Serializer.SystemTextJson.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.SystemTextJson"><code>Dock.Serializer.SystemTextJson</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.SystemTextJson"><img src="https://img.shields.io/nuget/dt/Dock.Serializer.SystemTextJson.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Xml"><img src="https://img.shields.io/nuget/v/Dock.Serializer.Xml.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Xml"><code>Dock.Serializer.Xml</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Xml"><img src="https://img.shields.io/nuget/dt/Dock.Serializer.Xml.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Yaml"><img src="https://img.shields.io/nuget/v/Dock.Serializer.Yaml.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Yaml"><code>Dock.Serializer.Yaml</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Serializer.Yaml"><img src="https://img.shields.io/nuget/dt/Dock.Serializer.Yaml.svg" alt="Downloads"></a></td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Dock.Settings"><img src="https://img.shields.io/nuget/v/Dock.Settings.svg" alt="NuGet"></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Settings"><code>Dock.Settings</code></a></td>
+<td><a href="https://www.nuget.org/packages/Dock.Settings"><img src="https://img.shields.io/nuget/dt/Dock.Settings.svg" alt="Downloads"></a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="documentation">Documentation</h2>
 <ul>
 <li><a href="articles/README.html">Documentation index</a></li>
+<li><a href="articles/quick-start.html">Quick start</a></li>
 <li><a href="articles/dock-content-guide.html">Document and tool content guide</a></li>
 <li><a href="articles/dock-itemssource.html">ItemsSource guide</a></li>
 <li><a href="api/index.html">API documentation</a></li>
-<li><a href="https://github.com/wieslawsoltes/Dock/tree/master/samples">Samples</a></li>
 </ul>
+<h2 id="samples">Samples</h2>
+<ul>
+<li><a href="https://github.com/wieslawsoltes/Dock/tree/master/samples">Sample applications</a></li>
+</ul>
+<h2 id="github">GitHub</h2>
+<p>Dock is developed in the open. Visit the repository for source code, issues, and contributions:
+<a href="https://github.com/wieslawsoltes/Dock">Dock on GitHub</a>.</p>
 <h2 id="license">License</h2>
 <p>Dock is licensed under the <a href="https://github.com/wieslawsoltes/Dock/blob/master/LICENSE.TXT">MIT License</a>.</p>
 

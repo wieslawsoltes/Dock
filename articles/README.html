@@ -83,118 +83,66 @@
         <article data-uid="">
 <h1 id="dock-documentation">Dock documentation</h1>
 
-<h2 id="overview">Overview</h2>
-<p>Welcome to the Dock documentation. This page is the entry point for the
-documentation site and collects links to guides, reference topics and other
-resources. These articles explain how to use the Dock layout system from basic
-setup through advanced customization. The examples assume an Avalonia
-application created with the .NET SDK. For build instructions and an overview of the repository see the <a href="https://github.com/wieslawsoltes/Dock/blob/master/README.md">project README</a>. If you are new to Dock, start with the guides under <em>Get started</em>.</p>
-<h2 id="get-started">Get started</h2>
+<p>Welcome to the Dock documentation. This landing page provides a structured overview of the docking system, the conceptual model behind it, and how to approach the guides and reference material. Use the left navigation for the full table of contents.</p>
+<h2 id="dock-at-a-glance">Dock at a glance</h2>
+<p>Dock is a docking layout system for Avalonia. It provides document and tool panes, floating windows, docking targets, and layout persistence. Dock is designed to support both declarative XAML layouts and code-first factories, with multiple model implementations to match common MVVM frameworks.</p>
+<h2 id="core-concepts">Core concepts</h2>
+<p>Dock is built around a small set of concepts that you will see throughout the documentation:</p>
 <ul>
-<li><a href="quick-start.html">Quick start</a> – Set up a minimal Dock layout with modern approaches.</li>
-<li><strong><a href="dock-itemssource.html">DocumentDock ItemsSource</a></strong> – <strong>Automatic document management using data binding (recommended for most scenarios)</strong>.</li>
-<li><strong><a href="dock-content-guide.html">Document and Tool Content Guide</a></strong> – <strong>Comprehensive guide for setting up document and tool content with examples (START HERE for content setup)</strong>.</li>
+<li>Dockables: documents and tools that appear inside docks and windows.</li>
+<li>Docks: containers that host dockables (document docks, tool docks, split docks, stack docks).</li>
+<li>Root dock: the top-level dock that represents the layout for a window.</li>
+<li>Dock windows: floating or secondary windows created from dockables.</li>
+<li>Dock manager and services: runtime coordination of drag/drop, focus, and docking rules.</li>
+<li>Layout state: serializable representation of dock positions and active items.</li>
 </ul>
-<h3 id="model-implementation-guides">Model Implementation Guides</h3>
-<p>Choose the implementation that matches your MVVM framework:</p>
+<h2 id="architecture-overview">Architecture overview</h2>
+<p>Dock separates the model from the view:</p>
 <ul>
-<li><a href="dock-mvvm.html">MVVM guide</a> – Build layouts using MVVM view models with INotifyPropertyChanged.</li>
-<li><a href="dock-caliburn-micro.html">Caliburn.Micro guide</a> – Caliburn.Micro integration with Dock model base classes.</li>
-<li><a href="dock-reactiveui.html">ReactiveUI guide</a> – ReactiveUI integration with observables and reactive commands.</li>
-<li><a href="dock-reactive-property.html">ReactiveProperty guide</a> – ReactiveProperty framework integration with reactive properties and validation.</li>
-<li><a href="dock-inpc.html">INPC guide</a> – Basic INotifyPropertyChanged implementation without MVVM commands.</li>
-<li><a href="dock-reactiveui-di.html">ReactiveUI with Dependency Injection</a> – ReactiveUI with dependency injection for complex applications.</li>
-<li><a href="dock-reactiveui-routing.html">ReactiveUI with Routing</a> – ReactiveUI with routing for SPA-like navigation within dockables.</li>
+<li>Model layer (Dock.Model): abstract layout, state, and docking rules.</li>
+<li>View layer (Dock.Avalonia): Avalonia controls that render and interact with the model.</li>
+<li>Integration layers: framework-specific implementations such as ReactiveUI or Prism.</li>
 </ul>
-<h3 id="other-approaches">Other Approaches</h3>
+<p>This separation lets you customize layouts, replace view models, or integrate with different MVVM frameworks without rewriting the layout engine.</p>
+<h2 id="what-you-can-build">What you can build</h2>
+<p>Dock supports a wide range of UI patterns:</p>
 <ul>
-<li><a href="dock-xaml.html">XAML guide</a> – Declare layouts purely in XAML with ItemsSource support.</li>
-<li><a href="dock-code-only.html">Code-only guide</a> – Build Dock layouts entirely in C# with minimal dependencies.</li>
-<li><a href="dock-user-viewmodel.html">User view model guide</a> – Combine your own view models with Dock.</li>
-<li><a href="dock-views.html">Views guide</a> – Display content for documents and tools.</li>
+<li>Multi-document interfaces (MDI) with tabbed documents.</li>
+<li>Tool panes that auto-hide, pin, or float.</li>
+<li>Split layouts with proportional sizing and drag handles.</li>
+<li>Floating windows with docking indicators.</li>
+<li>Persisted layouts that restore across sessions.</li>
 </ul>
-<h2 id="how-to-guides">How-to guides</h2>
+<h2 id="key-features">Key features</h2>
 <ul>
-<li><a href="dock-complex-layouts.html">Complex layout tutorials</a> – Multi-window and plugin walkthroughs.</li>
+<li>Document and tool docking with configurable rules.</li>
+<li>Floating windows, docking targets, and drag gestures.</li>
+<li>Layout persistence and restoration.</li>
+<li>Custom themes and styling.</li>
+<li>Control recycling for performance.</li>
+<li>Overlay systems for busy states and dialogs.</li>
 </ul>
-<h2 id="concepts">Concepts</h2>
+<h2 id="how-to-approach-the-documentation">How to approach the documentation</h2>
+<p>Start with the Quick start, then continue with the content guides and the framework-specific integration that matches your app. The Concepts section explains behavior and terminology, while the Reference section documents the API surface in detail.</p>
+<p>If you are building a full application, the sample projects are the best end-to-end reference for layout construction, navigation, and overlays.</p>
+<h2 id="sample-applications">Sample applications</h2>
+<p>Sample apps demonstrate complete layouts and patterns:</p>
 <ul>
-<li><a href="dock-active-document.html">Active document</a> – Retrieve the currently focused document.</li>
-<li><a href="dock-mdi.html">MDI document layout</a> – Use classic MDI windows inside document docks.</li>
-<li><a href="dock-mdi-layout-helpers.html">MDI layout helpers</a> – Understand cascade/tile helpers and defaults.</li>
-<li><a href="dock-events.html">Events guide</a> – Subscribe to dock and window events.</li>
-<li><a href="dock-api-scenarios.html">API scenarios</a> – Common coding patterns.</li>
-<li><a href="dock-dockablelocator.html">DockableLocator usage</a> – Register and resolve dockables.</li>
-<li><a href="dock-serialization.html">Serialization and persistence</a> – Save and restore layouts.</li>
-<li><a href="dock-serialization-state.html">Serialization state</a> – Restore document/tool content and templates.</li>
-<li><a href="dock-state.html">Dock state guide</a> – Why and how to use <code>DockState</code>.</li>
-<li><a href="dock-restore-dockable.html">RestoreDockable behavior</a> – Understand dockable restoration and splitter management.</li>
-<li><a href="dock-dependency-injection.html">Dependency injection</a> – Register Dock services with <code>IServiceCollection</code>.</li>
-<li><a href="dock-context-locator.html">Context locators</a> – Provide <code>DataContext</code> objects for dockables.</li>
-<li><a href="dock-docking-groups.html">Docking groups</a> – Control which dockables can be docked together using group identifiers.</li>
-<li><a href="dock-architecture.html">Architecture overview</a> – High level design of the docking system.</li>
-<li><a href="dock-deep-dive.html">Deep dive</a> – Internals of <code>DockControl</code>.</li>
-<li><a href="dock-manager-guide.html">DockManager guide</a> – When and how to customize <code>DockManager</code>.</li>
-<li><a href="dock-control-initialization.html">DockControl initialization</a> – Defaults, locators, and setup flags.</li>
-<li><a href="dock-programmatic-docking.html">Programmatic docking</a> – Use <code>DockService</code> to validate and execute docking operations.</li>
-<li><a href="dock-drag-actions.html">Drag actions and modifiers</a> – How modifier keys map to docking actions.</li>
-<li><a href="dock-styling.html">Styling and theming</a> – Customize the appearance of Dock controls.</li>
-<li><a href="dock-overlay-customization.html">Overlay customization</a> – Customize overlay layers and control themes.</li>
-<li><a href="dock-datatemplates.html">DataTemplates and custom dock types</a> – Create custom dock types with their own visual representation.</li>
-<li><a href="dock-custom-theme.html">Custom themes</a> – Build and apply your own theme.</li>
-<li><a href="dock-context-menus.html">Context menus</a> – Localize or replace built-in menus.</li>
-<li><a href="dock-control-recycling.html">Control recycling</a> – Reuse visuals when dockables return.</li>
-<li><a href="dock-proportional-stackpanel.html">Proportional StackPanel</a> – Layout panel with adjustable proportions.</li>
-<li><a href="dock-sizing.html">Sizing guide</a> – Control pixel sizes and fixed dimensions.</li>
-<li><a href="dock-windows.html">Floating windows</a> – Detach dockables into separate windows.</li>
-<li><a href="dock-window-drag.html">Enable window drag</a> – Drag the host window via the document tab strip.</li>
-<li><a href="dock-host-window-locator.html">Host window locators</a> – Provide platform windows for floating docks.</li>
-<li><a href="dock-drag-offset-calculator.html">Drag offset calculator</a> – Control where the drag preview window appears.</li>
-<li><a href="dock-floating-adorners.html">Floating dock adorners</a> – Display drop indicators in a transparent window.</li>
-<li><a href="dock-targets.html">Dock targets and indicators</a> – Customize drop targets and selector visuals.</li>
-<li><a href="dock-debug-overlay.html">Debug overlay</a> – Visualize dock targets and drop areas.</li>
-<li><a href="dock-diagnostics-logging.html">Diagnostics logging</a> – Enable internal logging and route messages.</li>
-<li><a href="dock-selector-overlay.html">Selector overlay</a> – Switch documents and tools with keyboard gestures.</li>
-<li><a href="dock-command-bars.html">Command bars</a> – Merge menus and toolbars from active dockables.</li>
-<li><a href="dock-pinned-window.html">Pinned dock window</a> – Show auto-hidden tools in a floating window.</li>
-<li><a href="dock-window-owner.html">Floating window owner</a> – Keep floating windows in front of the main window.</li>
-<li><a href="dock-root-dock-debug.html">RootDockDebug window</a> – Toggle a runtime inspector for Dock layouts.</li>
-<li><a href="dock-debug-views.html">Debug views</a> – Reusable controls used by RootDockDebug.</li>
-<li><a href="dock-advanced.html">Advanced guide</a> – Custom factories and runtime features.</li>
-<li><a href="dock-content-wrapper-pattern.html">Advanced Content Wrapper Pattern</a> – Separate domain models from docking infrastructure.</li>
-<li><a href="dock-custom-model.html">Custom Dock.Model implementations</a> – Integrate Dock with other MVVM frameworks.</li>
+<li>Browse the sample projects in the <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/">samples</a> folder.</li>
+<li>Use them as reference implementations for navigation, overlays, and window orchestration.</li>
 </ul>
-<h2 id="reference">Reference</h2>
+<h2 id="packages">Packages</h2>
+<p>Dock is published on NuGet. Common packages include:</p>
 <ul>
-<li><a href="dock-reference.html">Reference guide</a> – Overview of the core APIs.</li>
-<li><a href="dock-controls-reference.html">Avalonia controls reference</a> – Dock-specific properties for Avalonia controls.</li>
-<li><a href="dock-geometry.html">Geometry types</a> – DockPoint and DockRect usage.</li>
-<li><a href="dock-glossary.html">Glossary</a> – Definitions of common Dock terms.</li>
-<li><a href="dock-dockable-properties.html">Dockable property settings</a> – Configure per item behavior.</li>
-<li><a href="dock-markup-extensions.html">Markup extensions</a> – Load and reference XAML fragments.</li>
-<li><a href="dock-adapters.html">Adapter classes</a> – Host, navigation and tracking helpers.</li>
-<li><a href="dock-tracking-controls.html">Tracking controls</a> – Collections that map dockables to their visuals.</li>
-<li><a href="dock-dockable-control.html">DockableControl tracking</a> – How tracking modes register dockable visuals.</li>
-<li><a href="dock-enums.html">Enumerations</a> – Values used by Dock APIs.</li>
-<li><a href="dock-model-controls.html">Model control interfaces</a> – Contracts used to define documents, tools and docks.</li>
-<li><a href="dock-layout-panels.html">Layout panels</a> – Dock, stack, grid and wrap style docks.</li>
-<li><a href="dock-settings.html">Dock settings</a> – Global drag/drop options and thresholds.</li>
-<li><a href="dock-properties.html">Dock properties</a> – Use attached properties to mark drag areas and drop targets.</li>
-<li><a href="dock-settings-controls.html">DockSettings in controls</a> – Apply global drag/drop settings when writing custom controls.</li>
-<li><a href="dock-overlay-services-reference.html">Overlay services and host resolution</a> – Busy/dialog/confirmation services and host lookup flow.</li>
+<li><code>Dock.Avalonia</code></li>
+<li><code>Dock.Model</code></li>
+<li>Framework integrations such as <code>Dock.Model.ReactiveUI</code></li>
 </ul>
-<h2 id="samples-and-additional-resources">Samples and additional resources</h2>
-<p>See the sample applications under the <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/">samples</a> directory for
-real-world usage. The <a href="https://github.com/wieslawsoltes/Dock/blob/master/README.md">project README</a> also lists the available
-guides and provides basic build instructions.</p>
-<p>For the complete source code visit the
-<a href="https://github.com/wieslawsoltes/Dock">GitHub repository</a>. NuGet packages are
-published on <a href="https://www.nuget.org/packages/Dock.Avalonia/">NuGet.org</a>,
-including both <code>Dock.Avalonia</code> and <code>Dock.Model.Mvvm</code>.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<ul>
-<li><a href="dock-faq.html">FAQ</a> – Solutions to common issues.</li>
-</ul>
+<p>See the repository README for the full list and build instructions:
+<a href="https://github.com/wieslawsoltes/Dock/blob/master/README.md">project README</a>.</p>
+<h2 id="getting-help">Getting help</h2>
+<p>For troubleshooting and common issues, see the FAQ in the docs. For questions, issues, or contributions, use the GitHub repository:
+<a href="https://github.com/wieslawsoltes/Dock">Dock on GitHub</a>.</p>
 
 </article>
 

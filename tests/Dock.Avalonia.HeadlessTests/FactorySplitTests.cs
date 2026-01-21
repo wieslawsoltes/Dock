@@ -66,6 +66,8 @@ public class FactorySplitTests
         root.Factory = factory;
         var dock = new ProportionalDock { VisibleDockables = factory.CreateList<IDockable>() };
         factory.AddDockable(root, dock);
+        root.ActiveDockable = dock;
+        root.DefaultDockable = dock;
         var doc = new Document();
 
         factory.SplitToDock(dock, doc, DockOperation.Right);
@@ -73,6 +75,8 @@ public class FactorySplitTests
         var layout = Assert.IsType<ProportionalDock>(root.VisibleDockables![0]);
         Assert.Equal(Orientation.Horizontal, layout.Orientation);
         Assert.Equal(3, layout.VisibleDockables!.Count);
+        Assert.Same(layout, root.ActiveDockable);
+        Assert.Same(layout, root.DefaultDockable);
     }
 
     [AvaloniaFact]

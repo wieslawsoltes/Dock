@@ -404,12 +404,17 @@ public abstract partial class FactoryBase : IFactory
 
                         // Fallback to the original behavior when optimization is not applicable
                         var layout = CreateSplitLayout(dock, dockable, operation);
+                        var wasDefaultDockable = ownerDock.DefaultDockable == dock;
                         RemoveVisibleDockableAt(ownerDock, index);
                         OnDockableRemoved(dockable);
                         OnDockableUndocked(dockable, operation);
                         InsertVisibleDockable(ownerDock, index, layout);
                         OnDockableAdded(dockable);
                         ownerDock.ActiveDockable = layout;
+                        if (wasDefaultDockable)
+                        {
+                            ownerDock.DefaultDockable = layout;
+                        }
                         InitDockable(layout, ownerDock);
                         OnDockableDocked(dockable, operation);
                     }

@@ -6,9 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model.Services;
 using Dock.Model.ReactiveUI.Navigation.Services;
 using DockReactiveUICanonicalSample.Models;
-using DockReactiveUICanonicalSample.ViewModels;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using ReactiveUI;
 

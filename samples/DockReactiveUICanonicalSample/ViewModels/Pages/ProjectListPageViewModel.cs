@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
+using Dock.Model.Services;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
-using DockReactiveUICanonicalSample.ViewModels;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using ReactiveUI;
 

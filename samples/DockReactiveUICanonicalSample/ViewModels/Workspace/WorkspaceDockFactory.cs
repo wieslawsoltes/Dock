@@ -5,7 +5,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.Services;
-using DockReactiveUICanonicalSample.ViewModels;
+using Dock.Model.ReactiveUI.Services.Overlays.Controls;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;

@@ -30,11 +30,13 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    dotnet add package Dock.Serializer.Yaml              # YAML
 
    # For dependency injection:
-   dotnet add package Dock.Model.Extensions.DependencyInjection
+   dotnet add package Microsoft.Extensions.DependencyInjection
 
    # For diagnostics and debugging:
    dotnet add package Dock.Avalonia.Diagnostics
    ```
+
+   See [dependency injection](dock-dependency-injection.md) for manual Dock registrations.
 
    **Note**: If you plan to use AXAML Controls `RootDock`, `ProportionalDock`, etc. also add:
 

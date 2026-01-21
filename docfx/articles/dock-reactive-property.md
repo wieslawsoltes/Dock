@@ -33,7 +33,7 @@ Follow these instructions to create a ReactiveProperty-based application using D
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    
    # For dependency injection:
-   dotnet add package Dock.Model.Extensions.DependencyInjection
+   dotnet add package Microsoft.Extensions.DependencyInjection
    
    # Additional ReactiveProperty features:
    dotnet add package ReactiveProperty.WPF               # For validation attributes

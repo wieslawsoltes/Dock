@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0;net10.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Dock.Model.ReactiveUI.Services.Avalonia</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsDocFx)' == 'true'">
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\SignAssembly.props" />
+  <Import Project="..\..\build\SourceLink.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\ReactiveUI.Avalonia.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Avalonia\Dock.Avalonia.csproj" />
+    <ProjectReference Include="..\Dock.Model.ReactiveUI.Services\Dock.Model.ReactiveUI.Services.csproj" />
+  </ItemGroup>
+
+</Project>

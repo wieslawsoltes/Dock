@@ -54,6 +54,7 @@
     <Project Path="samples/DockMvvmSample/DockMvvmSample.csproj" />
     <Project Path="samples/DockPrismSample/DockPrismSample.csproj" />
     <Project Path="samples/DockReactivePropertySample/DockReactivePropertySample.csproj" />
+    <Project Path="samples/DockReactiveUICanonicalSample/DockReactiveUICanonicalSample.csproj" />
     <Project Path="samples/DockReactiveUIDiSample/DockReactiveUIDiSample.csproj" />
     <Project Path="samples/DockReactiveUIRoutingSample/DockReactiveUIRoutingSample.csproj" />
     <Project Path="samples/DockReactiveUISample/DockReactiveUISample.csproj" />
@@ -75,13 +76,13 @@
     <Project Path="src/Dock.MarkupExtension/Dock.MarkupExtension.csproj" />
     <Project Path="src/Dock.Model.Avalonia/Dock.Model.Avalonia.csproj" />
     <Project Path="src/Dock.Model.CaliburMicro/Dock.Model.CaliburMicro.csproj" />
-    <Project Path="src/Dock.Model.Extensions.DependencyInjection/Dock.Model.Extensions.DependencyInjection.csproj" />
     <Project Path="src/Dock.Model.Inpc/Dock.Model.Inpc.csproj" />
     <Project Path="src/Dock.Model.Mvvm/Dock.Model.Mvvm.csproj" />
     <Project Path="src/Dock.Model.Prism/Dock.Model.Prism.csproj" />
     <Project Path="src/Dock.Model.ReactiveProperty/Dock.Model.ReactiveProperty.csproj" />
-    <Project Path="src/Dock.Model.ReactiveUI.Navigation/Dock.Model.ReactiveUI.Navigation.csproj" />
     <Project Path="src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj" />
+    <Project Path="src/Dock.Model.ReactiveUI.Services/Dock.Model.ReactiveUI.Services.csproj" />
+    <Project Path="src/Dock.Model.ReactiveUI.Services.Avalonia/Dock.Model.ReactiveUI.Services.Avalonia.csproj" />
     <Project Path="src/Dock.Model/Dock.Model.csproj" />
     <Project Path="src/Dock.Serializer.Newtonsoft/Dock.Serializer.Newtonsoft.csproj" />
     <Project Path="src/Dock.Serializer.Protobuf/Dock.Serializer.Protobuf.csproj" />

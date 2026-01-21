@@ -1,0 +1,16 @@
+<UserControl x:Class="DockReactiveUICanonicalSample.Views.Dialogs.TextPromptDialogView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:CompileBindings="True"
+             x:DataType="TextPromptDialogViewModel">
+  <StackPanel Spacing="12">
+    <TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
+    <TextBox Text="{Binding Input}"
+             Watermark="{Binding Placeholder}"
+             MinWidth="280" />
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+      <Button Content="{Binding SecondaryText}" Command="{Binding Cancel}" />
+      <Button Content="{Binding PrimaryText}" Command="{Binding Confirm}" />
+    </StackPanel>
+  </StackPanel>
+</UserControl>

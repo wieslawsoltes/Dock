@@ -1,0 +1,12 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ControlTheme x:Key="{x:Static OverlayLayerStyleKeys.BusyLayerThemeKey}"
+                TargetType="BusyOverlayControl"
+                BasedOn="{StaticResource {x:Type BusyOverlayControl}}" />
+  <ControlTheme x:Key="{x:Static OverlayLayerStyleKeys.DialogLayerThemeKey}"
+                TargetType="DialogOverlayControl"
+                BasedOn="{StaticResource {x:Type DialogOverlayControl}}" />
+  <ControlTheme x:Key="{x:Static OverlayLayerStyleKeys.ConfirmationLayerThemeKey}"
+                TargetType="ConfirmationOverlayControl"
+                BasedOn="{StaticResource {x:Type ConfirmationOverlayControl}}" />
+</ResourceDictionary>

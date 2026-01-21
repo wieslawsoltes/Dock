@@ -1,0 +1,27 @@
+<UserControl x:Class="DockReactiveUICanonicalSample.Views.Workspace.FileActionsPageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:CompileBindings="True"
+             x:DataType="FileActionsPageViewModel">
+  <StackPanel Margin="10" Spacing="8">
+    <TextBlock Text="File Actions" FontWeight="SemiBold" />
+    <ItemsControl ItemsSource="{Binding Actions}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="FileActionItemViewModel">
+          <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="6" Padding="8" Margin="0,0,0,6">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+              <StackPanel Spacing="2">
+                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Description}" FontSize="12" Opacity="0.7" />
+              </StackPanel>
+              <Button Grid.Column="1"
+                      Content="Run"
+                      Command="{Binding Command}"
+                      VerticalAlignment="Center" />
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </StackPanel>
+</UserControl>

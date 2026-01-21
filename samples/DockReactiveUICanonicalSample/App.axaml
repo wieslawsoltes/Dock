@@ -1,0 +1,63 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DockReactiveUICanonicalSample.App">
+  <Application.DataTemplates>
+    <DataTemplate DataType="TextPromptDialogViewModel">
+      <TextPromptDialogView />
+    </DataTemplate>
+    <DataTemplate DataType="MessageDialogViewModel">
+      <MessageDialogView />
+    </DataTemplate>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme />
+    <DockFluentTheme />
+    <Styles>
+      <Styles.Resources>
+        <ResourceDictionary>
+          <ResourceDictionary.MergedDictionaries>
+          </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+      </Styles.Resources>
+    </Styles>
+    <Style Selector="HostWindow">
+      <Setter Property="Content">
+        <Template>
+          <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
+            <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
+              <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
+                <DockControl Layout="{Binding}"
+                             ControlRecyclingDataTemplate.ControlRecycling="{DynamicResource DockControlRecycling}">
+                  <DockControl.Resources>
+                    <ControlRecycling x:Key="DockControlRecycling" TryToUseIdAsKey="True" />
+                  </DockControl.Resources>
+                </DockControl>
+              </OverlayHost>
+            </Panel>
+          </Panel>
+        </Template>
+      </Setter>
+    </Style>
+    <Style Selector="HostWindow:toolwindow">
+      <Setter Property="Content">
+        <Template>
+          <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
+            <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
+              <DockControl Layout="{Binding}"
+                           ControlRecyclingDataTemplate.ControlRecycling="{DynamicResource DockControlRecycling}">
+                <DockControl.Resources>
+                  <ControlRecycling x:Key="DockControlRecycling" TryToUseIdAsKey="True" />
+                </DockControl.Resources>
+              </DockControl>
+            </OverlayHost>
+          </Panel>
+        </Template>
+      </Setter>
+    </Style>
+    <Style Selector="HostWindow:toolchromecontrolswindow">
+      <Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
+      <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+    </Style>
+  </Application.Styles>
+</Application>

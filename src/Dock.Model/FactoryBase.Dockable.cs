@@ -1019,6 +1019,11 @@ public abstract partial class FactoryBase
             {
                 targetContent.DocumentTemplate = sourceContent.DocumentTemplate;
             }
+
+            if (sourceDoc is IDocumentDockFactory sourceDocFactory && targetDoc is IDocumentDockFactory targetDocFactory)
+            {
+                targetDocFactory.DocumentFactory = sourceDocFactory.DocumentFactory;
+            }
         }
 
         if (dock is IToolDock sourceTool && targetDock is IToolDock targetTool)
@@ -1235,10 +1240,15 @@ public abstract partial class FactoryBase
             {
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
             }
+
+            if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)
+            {
+                tfd.DocumentFactory = sfd.DocumentFactory;
+            }
         }
 
-        MoveDockable(dock, newDock, dockable, null);
         SplitToDock(dock, newDock, DockOperation.Right);
+        MoveDockable(dock, newDock, dockable, null);
     }
 
     /// <inheritdoc/>
@@ -1297,10 +1307,15 @@ public abstract partial class FactoryBase
             {
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
             }
+
+            if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)
+            {
+                tfd.DocumentFactory = sfd.DocumentFactory;
+            }
         }
 
-        MoveDockable(dock, newDock, dockable, null);
         SplitToDock(dock, newDock, DockOperation.Bottom);
+        MoveDockable(dock, newDock, dockable, null);
     }
 
     /// <inheritdoc/>

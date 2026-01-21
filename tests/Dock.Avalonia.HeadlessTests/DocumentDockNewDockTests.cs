@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -15,15 +16,19 @@ public class DocumentDockNewDockTests
         var root = new RootDock { VisibleDockables = factory.CreateList<IDockable>() };
         root.Factory = factory;
         var docDock = new DocumentDock { VisibleDockables = factory.CreateList<IDockable>() };
+        Func<IDockable> documentFactory = () => new Document();
+        docDock.DocumentFactory = documentFactory;
         factory.AddDockable(root, docDock);
         var doc = new Document();
         factory.AddDockable(docDock, doc);
 
         factory.NewHorizontalDocumentDock(doc);
 
-        Assert.IsType<DocumentDock>(doc.Owner);
-        Assert.NotEqual(docDock, doc.Owner);
-        Assert.Contains(doc, ((DocumentDock)doc.Owner!).VisibleDockables!);
+        var ownerDock = Assert.IsType<DocumentDock>(doc.Owner);
+        Assert.NotEqual(docDock, ownerDock);
+        Assert.Contains(doc, ownerDock.VisibleDockables!);
+        Assert.Same(documentFactory, ownerDock.DocumentFactory);
+        Assert.NotNull(factory.FindDockable(root, d => ReferenceEquals(d, ownerDock)));
     }
 
     [AvaloniaFact]
@@ -39,8 +44,9 @@ public class DocumentDockNewDockTests
 
         factory.NewVerticalDocumentDock(doc);
 
-        Assert.IsType<DocumentDock>(doc.Owner);
-        Assert.NotEqual(docDock, doc.Owner);
-        Assert.Contains(doc, ((DocumentDock)doc.Owner!).VisibleDockables!);
+        var ownerDock = Assert.IsType<DocumentDock>(doc.Owner);
+        Assert.NotEqual(docDock, ownerDock);
+        Assert.Contains(doc, ownerDock.VisibleDockables!);
+        Assert.NotNull(factory.FindDockable(root, d => ReferenceEquals(d, ownerDock)));
     }
 }

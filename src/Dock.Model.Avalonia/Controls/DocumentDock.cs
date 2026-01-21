@@ -23,7 +23,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItemsSourceDock
+public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItemsSourceDock, IDocumentDockFactory
 {
     /// <summary>
     /// Defines the <see cref="CanCreateDocument"/> property.

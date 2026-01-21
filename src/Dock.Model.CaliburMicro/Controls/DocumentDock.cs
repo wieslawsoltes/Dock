@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
@@ -12,7 +13,7 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DocumentDock : DockBase, IDocumentDock
+public class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
     private bool _canCreateDocument = true;
     private ICommand? _createDocument;
@@ -40,6 +41,12 @@ public class DocumentDock : DockBase, IDocumentDock
         get => _createDocument;
         set => Set(ref _createDocument, value);
     }
+
+    /// <summary>
+    /// Gets or sets factory method used to create new documents.
+    /// </summary>
+    [IgnoreDataMember]
+    public Func<IDockable>? DocumentFactory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

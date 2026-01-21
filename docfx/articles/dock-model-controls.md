@@ -18,6 +18,7 @@ when creating your own docks and documents.
 | `IDocumentContent` | Document containing arbitrary `Content`. |
 | `IDocumentDock` | Dock that hosts documents and exposes commands to create them. |
 | `IDocumentDockContent` | Dock that creates documents from a `DocumentTemplate`. |
+| `IDocumentDockFactory` | Dock that exposes a `DocumentFactory` delegate for creating documents. |
 | `IDocumentTemplate` | Template object used when creating new documents on demand. |
 | `IProportionalDock` | Dock that arranges children vertically or horizontally using proportions. |
 | `IStackDock` | Dock based on `StackPanel` with `Orientation` and `Spacing`. |
@@ -70,7 +71,7 @@ are placed.
 windows. When MDI mode is enabled the dock exposes commands for cascade and
 tile operations, and documents implement `IMdiDocument` to store window state.
 
-`DocumentDock` also exposes a `DocumentFactory` delegate that is used by
+`IDocumentDockFactory` exposes a `DocumentFactory` delegate that is used by
 the `CreateDocument` command. When assigned, this factory is invoked to
 create a new document which is then added and activated through the
 `AddDocument` helper.

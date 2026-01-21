@@ -28,6 +28,8 @@ public sealed class DockSerializer : IDockSerializer
             WriteIndented = true,
             ReferenceHandler = ReferenceHandler.Preserve,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+            TypeInfoResolver = new DockModelPolymorphicTypeResolver(),
             Converters =
             {
                 new JsonConverterFactoryList(listType)

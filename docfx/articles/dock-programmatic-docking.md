@@ -44,7 +44,7 @@ Splits the target dock into a new dock created by the factory:
 
 - `ITool` sources create a new `IToolDock`.
 - `IDocument` sources create a new `IDocumentDock`.
-- Document docks copy `Id`, `CanCreateDocument`, `EnableWindowDrag`, and `DocumentTemplate` (when the dock implements `IDocumentDockContent`).
+- Document docks copy `Id`, `CanCreateDocument`, `EnableWindowDrag`, `DocumentTemplate` (when the dock implements `IDocumentDockContent`), and `DocumentFactory` (when the dock implements `IDocumentDockFactory`).
 
 The split uses the specified `DockOperation` (Left, Right, Top, Bottom). Group compatibility is validated against the new empty dock before the split is applied.
 

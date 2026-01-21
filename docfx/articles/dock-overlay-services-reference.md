@@ -4,7 +4,10 @@ This reference describes the overlay service contracts (busy, dialog, confirmati
 
 ## Packages and namespaces
 - `Dock.Model` (`Dock.Model.Services`): overlay service contracts and request DTOs.
-- `Dock.Model.ReactiveUI.Services`: default implementations, host resolution, and DI helpers.
+- `Dock.Model.ReactiveUI.Services`: ReactiveUI-friendly overlay infrastructure.
+- `Dock.Model.ReactiveUI.Services.Overlays.Services`: default overlay implementations.
+- `Dock.Model.ReactiveUI.Services.Overlays.Hosting`: host resolution and overlay bindings.
+- `Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection`: DI helpers.
 - `Dock.Avalonia.Controls.Overlays`: overlay controls that bind to the services.
 
 ## Overlay service contracts
@@ -40,11 +43,11 @@ Use this interface as the backing type for view models or overlay bindings inste
 
 ## Host resolution pipeline
 ### Contracts
-- `IHostServiceResolver` resolves services scoped to the current `IScreen`.
-- `IHostOverlayServicesProvider` returns the `IHostOverlayServices` instance for a host screen.
+- `IHostServiceResolver` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) resolves services scoped to the current `IScreen`.
+- `IHostOverlayServicesProvider` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) returns the `IHostOverlayServices` instance for a host screen.
 
 ### Default resolver
-`OwnerChainHostServiceResolver` (in `Dock.Model.ReactiveUI.Services`) resolves services in this order:
+`OwnerChainHostServiceResolver` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) resolves services in this order:
 1. If the screen is an `IDockable`, scan host windows in the factory and return the layout-root service for the window containing the dockable.
 2. Walk the dockable owner chain and return the last matching service (outermost root).
 3. Scan factory roots and floating window layouts for a layout that contains the dockable.
@@ -54,7 +57,7 @@ Use this interface as the backing type for view models or overlay bindings inste
 This keeps overlays bound to the correct host window when dockables are moved or floated.
 
 ### Provider behavior
-`HostOverlayServicesProvider` uses the resolver and falls back to a cached per-screen instance when no host service is found. This keeps overlays functional in screens that are not attached to a dock layout yet.
+`HostOverlayServicesProvider` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) uses the resolver and falls back to a cached per-screen instance when no host service is found. This keeps overlays functional in screens that are not attached to a dock layout yet.
 
 ## Overlay controls integration
 Overlay controls bind directly to the service contracts:
@@ -65,12 +68,12 @@ Overlay controls bind directly to the service contracts:
 Use `VisualTreeLifecycleBehavior.IsEnabled="True"` on the root container so overlays rebind on attach/detach and do not hold stale service references.
 
 ## Dependency registration
-Splat:
+Splat (namespace `Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection`):
 ```csharp
 Locator.CurrentMutable.RegisterDockOverlayServices();
 ```
 
-Microsoft.Extensions.DependencyInjection:
+Microsoft.Extensions.DependencyInjection (namespace `Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection`):
 ```csharp
 services.AddDockOverlayServices();
 ```

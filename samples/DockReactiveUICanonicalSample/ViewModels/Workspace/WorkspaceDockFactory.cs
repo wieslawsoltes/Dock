@@ -4,7 +4,6 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
-using Dock.Model.ReactiveUI.Services;
 using Dock.Model.Services;
 using DockReactiveUICanonicalSample.ViewModels;
 using ReactiveUI;

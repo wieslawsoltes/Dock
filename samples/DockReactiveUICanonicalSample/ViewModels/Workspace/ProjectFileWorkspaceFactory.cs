@@ -7,7 +7,6 @@ using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using Dock.Model.ReactiveUI.Navigation.Controls;
-using Dock.Model.ReactiveUI.Services;
 using Dock.Model.Services;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.ViewModels;

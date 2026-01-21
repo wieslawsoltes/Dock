@@ -2,7 +2,6 @@ using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.ViewModels.Pages;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
-using Dock.Model.ReactiveUI.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Documents;

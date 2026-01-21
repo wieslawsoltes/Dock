@@ -14,7 +14,6 @@ using DockReactiveUICanonicalSample.Views.Documents;
 using DockReactiveUICanonicalSample.Views.Pages;
 using DockReactiveUICanonicalSample.Views.Workspace;
 using Dock.Model.Core;
-using Dock.Model.ReactiveUI.Services;
 using Dock.Model.Services;
 using ReactiveUI;
 using Splat;

@@ -10,7 +10,6 @@ using DockNavigationHelpers = Dock.Model.ReactiveUI.Navigation.Services.DockNavi
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
-using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using ReactiveUI;
 using SampleDockNavigationService = DockReactiveUICanonicalSample.Services.IDockNavigationService;

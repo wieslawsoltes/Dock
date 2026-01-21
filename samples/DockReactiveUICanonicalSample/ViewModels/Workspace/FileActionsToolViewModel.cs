@@ -1,5 +1,4 @@
 using Dock.Model.ReactiveUI.Navigation.Controls;
-using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.Models;
 using ReactiveUI;
 

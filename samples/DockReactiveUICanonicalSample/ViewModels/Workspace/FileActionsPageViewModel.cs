@@ -3,7 +3,6 @@ using System.Reactive;
 using System.Threading.Tasks;
 using Dock.Model.Services;
 using DockReactiveUICanonicalSample.Models;
-using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Dialogs;
 using ReactiveUI;
 

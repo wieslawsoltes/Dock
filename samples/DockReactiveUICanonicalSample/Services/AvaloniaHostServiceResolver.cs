@@ -8,7 +8,6 @@ using Dock.Avalonia.Controls;
 using Dock.Avalonia.Controls.Overlays;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using Dock.Model.ReactiveUI.Services;
 using Dock.Model.Services;
 using ReactiveUI;
 

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
-using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using ReactiveUI;
 

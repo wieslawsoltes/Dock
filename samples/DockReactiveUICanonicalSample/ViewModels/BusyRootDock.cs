@@ -15,11 +15,16 @@ public sealed class BusyRootDock : RoutableRootDock, IHostOverlayServices, IDisp
 
     public BusyRootDock(
         IScreen host,
-        IHostOverlayServices hostServices,
+        Func<IHostOverlayServices> hostServicesFactory,
         string? url = null)
         : base(host, url)
     {
-        _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+        if (hostServicesFactory is null)
+        {
+            throw new ArgumentNullException(nameof(hostServicesFactory));
+        }
+
+        _hostServices = hostServicesFactory();
         Busy.SetReloadHandler(ReloadCurrentAsync);
     }
 

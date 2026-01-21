@@ -1,3 +1,4 @@
+using System;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
@@ -16,6 +17,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
         IHostOverlayServicesProvider overlayServicesProvider,
+        Func<IHostOverlayServices> hostServicesFactory,
         IWindowLifecycleService windowLifecycleService,
         IDockDispatcher dispatcher)
     {
@@ -25,6 +27,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
             dockNavigation,
             workspaceFactory,
             overlayServicesProvider,
+            hostServicesFactory,
             windowLifecycleService,
             dispatcher);
         var dockViewModel = new DockViewModel(this, dockFactory);

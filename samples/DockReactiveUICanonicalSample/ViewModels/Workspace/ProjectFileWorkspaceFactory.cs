@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,13 +18,16 @@ namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 public sealed class ProjectFileWorkspaceFactory
 {
     private readonly IHostOverlayServicesProvider _overlayServicesProvider;
+    private readonly Func<IHostOverlayServices> _hostServicesFactory;
     private readonly IWindowLifecycleService _windowLifecycleService;
 
     public ProjectFileWorkspaceFactory(
         IHostOverlayServicesProvider overlayServicesProvider,
+        Func<IHostOverlayServices> hostServicesFactory,
         IWindowLifecycleService windowLifecycleService)
     {
         _overlayServicesProvider = overlayServicesProvider;
+        _hostServicesFactory = hostServicesFactory;
         _windowLifecycleService = windowLifecycleService;
     }
 
@@ -31,7 +35,7 @@ public sealed class ProjectFileWorkspaceFactory
     {
         var factory = new WorkspaceDockFactory(
             hostScreen,
-            _overlayServicesProvider,
+            _hostServicesFactory,
             _windowLifecycleService);
         var hostServices = _overlayServicesProvider.GetServices(hostScreen);
         var root = new WorkspaceRootDock(hostScreen, hostServices, "workspace-root")

@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
@@ -14,6 +15,7 @@ using DockReactiveUICanonicalSample.Views.Pages;
 using DockReactiveUICanonicalSample.Views.Workspace;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Services;
+using Dock.Model.Services;
 using ReactiveUI;
 using Splat;
 
@@ -54,6 +56,7 @@ public class App : Application
         services.RegisterLazySingleton<IProjectRepository>(() => new ProjectRepository());
         services.RegisterLazySingleton(() => new ProjectFileWorkspaceFactory(
             Locator.Current.GetService<IHostOverlayServicesProvider>()!,
+            Locator.Current.GetService<Func<IHostOverlayServices>>()!,
             Locator.Current.GetService<IWindowLifecycleService>()!));
         services.RegisterLazySingleton<IDockNavigationService>(() => new DockNavigationService(
             Locator.Current.GetService<IProjectRepository>()!,
@@ -66,6 +69,7 @@ public class App : Application
             Locator.Current.GetService<IDockNavigationService>()!,
             Locator.Current.GetService<ProjectFileWorkspaceFactory>()!,
             Locator.Current.GetService<IHostOverlayServicesProvider>()!,
+            Locator.Current.GetService<Func<IHostOverlayServices>>()!,
             Locator.Current.GetService<IWindowLifecycleService>()!,
             Locator.Current.GetService<IDockDispatcher>()!));
     }

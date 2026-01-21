@@ -21,6 +21,7 @@ public class DockFactory : Factory
     private readonly IDockNavigationService _dockNavigation;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
     private readonly IHostOverlayServicesProvider _overlayServicesProvider;
+    private readonly Func<IHostOverlayServices> _hostServicesFactory;
     private readonly IWindowLifecycleService _windowLifecycleService;
     private readonly IDockDispatcher _dispatcher;
     private IDocumentDock? _documentDock;
@@ -31,6 +32,7 @@ public class DockFactory : Factory
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
         IHostOverlayServicesProvider overlayServicesProvider,
+        Func<IHostOverlayServices> hostServicesFactory,
         IWindowLifecycleService windowLifecycleService,
         IDockDispatcher dispatcher)
     {
@@ -39,6 +41,7 @@ public class DockFactory : Factory
         _dockNavigation = dockNavigation;
         _workspaceFactory = workspaceFactory;
         _overlayServicesProvider = overlayServicesProvider;
+        _hostServicesFactory = hostServicesFactory;
         _windowLifecycleService = windowLifecycleService;
         _dispatcher = dispatcher;
 
@@ -47,8 +50,15 @@ public class DockFactory : Factory
 
     public override IRootDock CreateLayout()
     {
+        var root = (BusyRootDock)CreateRootDock();
+
+        var documentDock = CreateDocumentDock();
+        documentDock.Id = "Documents";
+        documentDock.CanCreateDocument = false;
+        documentDock.CanCloseLastDockable = true;
+
         var projectList = new ProjectListDocumentViewModel(
-            _host,
+            root,
             _repository,
             _dockNavigation,
             _workspaceFactory,
@@ -60,14 +70,9 @@ public class DockFactory : Factory
             CanClose = false
         };
 
-        var documentDock = CreateDocumentDock();
-        documentDock.Id = "Documents";
         documentDock.VisibleDockables = CreateList<IDockable>(projectList);
         documentDock.ActiveDockable = projectList;
-        documentDock.CanCreateDocument = false;
-        documentDock.CanCloseLastDockable = true;
 
-        var root = (BusyRootDock)CreateRootDock();
         root.VisibleDockables = CreateList<IDockable>(documentDock);
         root.DefaultDockable = documentDock;
         root.ActiveDockable = documentDock;
@@ -75,7 +80,7 @@ public class DockFactory : Factory
         root.PinnedDock = null;
 
         _documentDock = documentDock;
-        _dockNavigation.AttachFactory(this, _host);
+        _dockNavigation.AttachFactory(this, root);
 
         return root;
     }
@@ -89,7 +94,7 @@ public class DockFactory : Factory
     public override IRootDock CreateRootDock()
         => new BusyRootDock(
             _host,
-            _overlayServicesProvider.GetServices(_host))
+            _hostServicesFactory)
         {
             LeftPinnedDockables = CreateList<IDockable>(),
             RightPinnedDockables = CreateList<IDockable>(),

@@ -14,16 +14,16 @@ namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 public sealed class WorkspaceDockFactory : Factory
 {
     private readonly IScreen _host;
-    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
+    private readonly Func<IHostOverlayServices> _hostServicesFactory;
     private readonly IWindowLifecycleService _windowLifecycleService;
 
     public WorkspaceDockFactory(
         IScreen host,
-        IHostOverlayServicesProvider overlayServicesProvider,
+        Func<IHostOverlayServices> hostServicesFactory,
         IWindowLifecycleService windowLifecycleService)
     {
         _host = host;
-        _overlayServicesProvider = overlayServicesProvider;
+        _hostServicesFactory = hostServicesFactory;
         _windowLifecycleService = windowLifecycleService;
 
         WindowLifecycleServices.Add(_windowLifecycleService);
@@ -32,7 +32,7 @@ public sealed class WorkspaceDockFactory : Factory
     public override IRootDock CreateRootDock()
         => new BusyRootDock(
             _host,
-            _overlayServicesProvider.GetServices(_host))
+            _hostServicesFactory)
         {
             LeftPinnedDockables = CreateList<IDockable>(),
             RightPinnedDockables = CreateList<IDockable>(),

@@ -123,6 +123,10 @@ when creating your own docks and documents.</p>
 <td>Dock that creates documents from a <code>DocumentTemplate</code>.</td>
 </tr>
 <tr>
+<td><code>IDocumentDockFactory</code></td>
+<td>Dock that exposes a <code>DocumentFactory</code> delegate for creating documents.</td>
+</tr>
+<tr>
 <td><code>IDocumentTemplate</code></td>
 <td>Template object used when creating new documents on demand.</td>
 </tr>
@@ -204,7 +208,7 @@ are placed.</p>
 <p><code>IDocumentDock.LayoutMode</code> switches between tabbed documents and classic MDI
 windows. When MDI mode is enabled the dock exposes commands for cascade and
 tile operations, and documents implement <code>IMdiDocument</code> to store window state.</p>
-<p><code>DocumentDock</code> also exposes a <code>DocumentFactory</code> delegate that is used by
+<p><code>IDocumentDockFactory</code> exposes a <code>DocumentFactory</code> delegate that is used by
 the <code>CreateDocument</code> command. When assigned, this factory is invoked to
 create a new document which is then added and activated through the
 <code>AddDocument</code> helper.</p>

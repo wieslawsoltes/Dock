@@ -2902,6 +2902,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Controls.IDocumentDockFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Controls.IDocumentDockFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Controls.IDocumentDockFactory",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Controls.IDocumentDockFactory.yml\" sourcestartlinenumber=\"1\">Document dock factory contract.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Controls.IDocumentTemplate.yml",
       "output": {
         ".html": {

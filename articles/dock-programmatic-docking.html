@@ -114,7 +114,7 @@ if (dockService.MoveDockable(source, sourceOwner, targetDock, false))
 <ul>
 <li><code>ITool</code> sources create a new <code>IToolDock</code>.</li>
 <li><code>IDocument</code> sources create a new <code>IDocumentDock</code>.</li>
-<li>Document docks copy <code>Id</code>, <code>CanCreateDocument</code>, <code>EnableWindowDrag</code>, and <code>DocumentTemplate</code> (when the dock implements <code>IDocumentDockContent</code>).</li>
+<li>Document docks copy <code>Id</code>, <code>CanCreateDocument</code>, <code>EnableWindowDrag</code>, <code>DocumentTemplate</code> (when the dock implements <code>IDocumentDockContent</code>), and <code>DocumentFactory</code> (when the dock implements <code>IDocumentDockFactory</code>).</li>
 </ul>
 <p>The split uses the specified <code>DockOperation</code> (Left, Right, Top, Bottom). Group compatibility is validated against the new empty dock before the split is applied.</p>
 <h3 id="dockdockableintodockable">DockDockableIntoDockable</h3>

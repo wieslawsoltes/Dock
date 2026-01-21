@@ -12567,6 +12567,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Controls.DocumentDock.CreateDocument
   nameWithType: DocumentDock.CreateDocument
+- uid: Dock.Model.CaliburMicro.Controls.DocumentDock.DocumentFactory
+  name: DocumentFactory
+  href: api/Dock.Model.CaliburMicro.Controls.DocumentDock.html#Dock_Model_CaliburMicro_Controls_DocumentDock_DocumentFactory
+  commentId: P:Dock.Model.CaliburMicro.Controls.DocumentDock.DocumentFactory
+  fullName: Dock.Model.CaliburMicro.Controls.DocumentDock.DocumentFactory
+  nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.CaliburMicro.Controls.DocumentDock.DocumentFactory*
+  name: DocumentFactory
+  href: api/Dock.Model.CaliburMicro.Controls.DocumentDock.html#Dock_Model_CaliburMicro_Controls_DocumentDock_DocumentFactory_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.DocumentDock.DocumentFactory
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.DocumentDock.DocumentFactory
+  nameWithType: DocumentDock.DocumentFactory
 - uid: Dock.Model.CaliburMicro.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.CaliburMicro.Controls.DocumentDock.html#Dock_Model_CaliburMicro_Controls_DocumentDock_EnableWindowDrag
@@ -15576,6 +15589,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Controls.IDocumentDockContent.DocumentTemplate
   nameWithType: IDocumentDockContent.DocumentTemplate
+- uid: Dock.Model.Controls.IDocumentDockFactory
+  name: IDocumentDockFactory
+  href: api/Dock.Model.Controls.IDocumentDockFactory.html
+  commentId: T:Dock.Model.Controls.IDocumentDockFactory
+  fullName: Dock.Model.Controls.IDocumentDockFactory
+  nameWithType: IDocumentDockFactory
+- uid: Dock.Model.Controls.IDocumentDockFactory.DocumentFactory
+  name: DocumentFactory
+  href: api/Dock.Model.Controls.IDocumentDockFactory.html#Dock_Model_Controls_IDocumentDockFactory_DocumentFactory
+  commentId: P:Dock.Model.Controls.IDocumentDockFactory.DocumentFactory
+  fullName: Dock.Model.Controls.IDocumentDockFactory.DocumentFactory
+  nameWithType: IDocumentDockFactory.DocumentFactory
+- uid: Dock.Model.Controls.IDocumentDockFactory.DocumentFactory*
+  name: DocumentFactory
+  href: api/Dock.Model.Controls.IDocumentDockFactory.html#Dock_Model_Controls_IDocumentDockFactory_DocumentFactory_
+  commentId: Overload:Dock.Model.Controls.IDocumentDockFactory.DocumentFactory
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IDocumentDockFactory.DocumentFactory
+  nameWithType: IDocumentDockFactory.DocumentFactory
 - uid: Dock.Model.Controls.IDocumentTemplate
   name: IDocumentTemplate
   href: api/Dock.Model.Controls.IDocumentTemplate.html

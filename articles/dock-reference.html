@@ -130,6 +130,10 @@
 <td>Specialized docks used for tools and documents.</td>
 </tr>
 <tr>
+<td><code>IDocumentDockFactory</code></td>
+<td>Adds a <code>DocumentFactory</code> delegate used to create documents on demand.</td>
+</tr>
+<tr>
 <td><code>ITool</code></td>
 <td>Represents a tool pane. Tools can specify <code>MinWidth</code>, <code>MaxWidth</code>, <code>MinHeight</code> and <code>MaxHeight</code> to control their size.</td>
 </tr>
@@ -179,7 +183,7 @@ from a saved state.</p>
 <li><code>CascadeDocuments</code>, <code>TileDocumentsHorizontal</code>, <code>TileDocumentsVertical</code>, and <code>RestoreDocuments</code> are MDI helpers</li>
 </ul>
 <p>The factory provides helper methods <code>SetDocumentDockTabsLayoutLeft</code>, <code>SetDocumentDockTabsLayoutTop</code> and <code>SetDocumentDockTabsLayoutRight</code> to change the layout at runtime.</p>
-<p><code>IDocumentDockContent</code> (implemented by the Avalonia model layer) adds <code>DocumentTemplate</code> and <code>CreateDocumentFromTemplate</code>. The <code>DocumentDock</code> implementations in <code>Dock.Model.Mvvm</code>, <code>Dock.Model.ReactiveUI</code>, and <code>Dock.Model.Avalonia</code> also expose a <code>DocumentFactory</code> delegate; <code>CreateDocument</code> invokes it when set and adds the resulting document via <code>AddDocument</code>. In the Avalonia model, if <code>DocumentFactory</code> is not set, <code>CreateDocument</code> falls back to <code>CreateDocumentFromTemplate</code>.</p>
+<p><code>IDocumentDockContent</code> (implemented by the Avalonia model layer) adds <code>DocumentTemplate</code> and <code>CreateDocumentFromTemplate</code>. <code>IDocumentDockFactory</code> exposes a <code>DocumentFactory</code> delegate; the built-in document docks in <code>Dock.Model.Avalonia</code>, <code>Dock.Model.Mvvm</code>, <code>Dock.Model.ReactiveUI</code>, <code>Dock.Model.Prism</code>, <code>Dock.Model.Inpc</code>, <code>Dock.Model.CaliburMicro</code>, and <code>Dock.Model.ReactiveProperty</code> implement it. <code>CreateDocument</code> invokes the delegate when set and adds the resulting document via <code>AddDocument</code>. In the Avalonia model, if <code>DocumentFactory</code> is not set, <code>CreateDocument</code> falls back to <code>CreateDocumentFromTemplate</code>.</p>
 <h2 id="itemssource-document-generation">ItemsSource document generation</h2>
 <p><code>IItemsSourceDock</code> is implemented by <code>Dock.Model.Avalonia.Controls.DocumentDock</code> to provide automatic document management:</p>
 <ul>

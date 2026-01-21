@@ -1,16 +1,10 @@
 # Dependency injection
 
-Dock provides an integration library for the default .NET service container. The `Dock.Model.Extensions.DependencyInjection` package exposes an `AddDock` extension for `IServiceCollection`.
+Dock does not ship a dedicated dependency injection helper package. Register the core services manually, or copy the `AddDock` helper from `samples/DockReactiveUIDiSample/ServiceCollectionExtensions.cs` into your application.
 
 ## Installation
 
-First, install the dependency injection package:
-
-```bash
-dotnet add package Dock.Model.Extensions.DependencyInjection
-```
-
-Also install your preferred serializer package:
+Install your preferred serializer package:
 
 ```bash
 # Choose one serializer:
@@ -21,51 +15,52 @@ dotnet add package Dock.Serializer.Xml               # XML
 dotnet add package Dock.Serializer.Yaml              # YAML
 ```
 
+If you are using the default .NET service container, ensure you have the DI package:
+
+```bash
+dotnet add package Microsoft.Extensions.DependencyInjection
+```
+
 ## Register services
 
-Reference the package and register your factory and serializer types during startup:
+Register your factory and serializer types during startup:
 
 ```csharp
-using Dock.Model.Extensions.DependencyInjection;
+using Dock.Model.Core;
 using Dock.Serializer; // or your preferred serializer namespace
+using Microsoft.Extensions.DependencyInjection;
 
-// Register with JSON serializer (Newtonsoft.Json)
-services.AddDock<MyDockFactory, DockSerializer>();
+services.AddSingleton<IDockState, DockState>();
+services.AddSingleton<MyDockFactory>();
+services.AddSingleton<IFactory>(static sp => sp.GetRequiredService<MyDockFactory>());
 
-// Or with System.Text.Json serializer
-services.AddDock<MyDockFactory, Dock.Serializer.SystemTextJson.DockSerializer>();
-
-// Or with Protobuf serializer
-services.AddDock<MyDockFactory, ProtobufDockSerializer>();
-
-// Or with XML serializer
-services.AddDock<MyDockFactory, DockXmlSerializer>();
-
-// Or with YAML serializer  
-services.AddDock<MyDockFactory, DockYamlSerializer>();
+services.AddSingleton<DockSerializer>();
+services.AddSingleton<IDockSerializer>(static sp => sp.GetRequiredService<DockSerializer>());
 ```
 
 This registers `IDockState`, your factory implementation as `IFactory`, and the serializer as `IDockSerializer`.
 
+If you prefer an `AddDock` helper, copy the sample extension from `samples/DockReactiveUIDiSample/ServiceCollectionExtensions.cs`.
+
 ## Complete example
 
-Here's a full example showing how to set up dependency injection with Dock:
-
 ```csharp
-using Microsoft.Extensions.DependencyInjection;
-using Dock.Model.Extensions.DependencyInjection;
+using Dock.Model.Core;
 using Dock.Serializer;
+using Microsoft.Extensions.DependencyInjection;
 
 public void ConfigureServices(IServiceCollection services)
 {
-    // Register your view models and views
     services.AddTransient<MyDocumentViewModel>();
     services.AddTransient<MyToolViewModel>();
-    
-    // Register Dock services
-    services.AddDock<MyDockFactory, DockSerializer>();
-    
-    // Register other application services
+
+    services.AddSingleton<IDockState, DockState>();
+    services.AddSingleton<MyDockFactory>();
+    services.AddSingleton<IFactory>(static sp => sp.GetRequiredService<MyDockFactory>());
+
+    services.AddSingleton<DockSerializer>();
+    services.AddSingleton<IDockSerializer>(static sp => sp.GetRequiredService<DockSerializer>());
+
     services.AddSingleton<MyApplicationService>();
 }
 ```
@@ -82,36 +77,39 @@ public class MainWindowViewModel
     private readonly IDockSerializer _serializer;
 
     public MainWindowViewModel(
-        IFactory factory, 
-        IDockState dockState, 
+        IFactory factory,
+        IDockState dockState,
         IDockSerializer serializer)
     {
         _factory = factory;
         _dockState = dockState;
         _serializer = serializer;
-        
-        // Create layout using the factory
+
         Layout = _factory.CreateLayout();
         _factory.InitLayout(Layout);
     }
-    
+
     public IRootDock Layout { get; }
 }
 ```
 
 ## Framework-specific registration
 
-For ReactiveUI applications, you can also register the ReactiveUI-specific factory:
+For ReactiveUI applications, register your ReactiveUI factory in the same way:
 
 ```csharp
-using Dock.Model.Extensions.DependencyInjection;
-using Dock.Model.ReactiveUI;
+using Dock.Model.Core;
+using Dock.Serializer;
+using Microsoft.Extensions.DependencyInjection;
 
-services.AddDock<MyReactiveUIFactory, DockSerializer>();
+services.AddSingleton<IDockState, DockState>();
+services.AddSingleton<MyReactiveUIFactory>();
+services.AddSingleton<IFactory>(static sp => sp.GetRequiredService<MyReactiveUIFactory>());
+
+services.AddSingleton<DockSerializer>();
+services.AddSingleton<IDockSerializer>(static sp => sp.GetRequiredService<DockSerializer>());
 ```
 
 Where `MyReactiveUIFactory` derives from `Dock.Model.ReactiveUI.Factory`.
 
 For an overview of all guides see the [documentation index](README.md).
-
-

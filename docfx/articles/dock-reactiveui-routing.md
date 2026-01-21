@@ -37,7 +37,7 @@ Follow these instructions to create a ReactiveUI application with routing using 
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    
    # For dependency injection:
-   dotnet add package Dock.Model.Extensions.DependencyInjection
+   dotnet add package Microsoft.Extensions.DependencyInjection
    ```
 
 3. **Set up View Locator with Routing Support**

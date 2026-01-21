@@ -22,7 +22,6 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    ```bash
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.ReactiveUI
-   dotnet add package Dock.Model.Extensions.DependencyInjection
    dotnet add package Dock.Avalonia.Themes.Fluent
    dotnet add package Microsoft.Extensions.DependencyInjection
    dotnet add package Microsoft.Extensions.Hosting
@@ -35,6 +34,8 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    ```
+
+   Dock does not ship a DI helper package. Register the Dock services manually, or copy the helper from `samples/DockReactiveUIDiSample/ServiceCollectionExtensions.cs`.
 
 3. **Set up Dependency Injection View Locator**
 
@@ -370,7 +371,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    using System;
    using Avalonia;
    using ReactiveUI.Avalonia;
-   using Dock.Model.Extensions.DependencyInjection;
+   using Dock.Model.Core;
    using Dock.Serializer;
    using MyDockApp.Models;
    using MyDockApp.ViewModels;
@@ -420,7 +421,11 @@ Follow these instructions to create a ReactiveUI application with dependency inj
            services.AddTransient<IViewFor<MainWindowViewModel>, MainWindow>();
 
            // Register Dock services
-           services.AddDock<DockFactory, DockSerializer>();
+           services.AddSingleton<IDockState, DockState>();
+           services.AddSingleton<DockFactory>();
+           services.AddSingleton<IFactory>(static sp => sp.GetRequiredService<DockFactory>());
+           services.AddSingleton<DockSerializer>();
+           services.AddSingleton<IDockSerializer>(static sp => sp.GetRequiredService<DockSerializer>());
        }
 
        public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)

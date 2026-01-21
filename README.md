@@ -76,7 +76,6 @@ Model packages:
 - `Dock.Model.Prism` - Prism framework integration
 - `Dock.Model.Inpc` - INotifyPropertyChanged base implementation
 - `Dock.Model.Avalonia` - Avalonia-specific model extensions
-- `Dock.Model.Extensions.DependencyInjection` - .NET DI container integration
 
 Serialization packages:
 - `Dock.Serializer.Newtonsoft` - JSON serialization using Newtonsoft.Json

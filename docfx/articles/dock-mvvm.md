@@ -36,7 +36,7 @@ The following steps walk you through creating a very small application that uses
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    
    # For dependency injection:
-   dotnet add package Dock.Model.Extensions.DependencyInjection
+   dotnet add package Microsoft.Extensions.DependencyInjection
    ```
 
 3. **Set up View Locator (Required)**

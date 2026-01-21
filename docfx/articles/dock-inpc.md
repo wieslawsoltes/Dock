@@ -32,7 +32,7 @@ Follow these instructions to create a minimal INPC-based application using Dock.
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    
    # For dependency injection:
-   dotnet add package Dock.Model.Extensions.DependencyInjection
+   dotnet add package Microsoft.Extensions.DependencyInjection
    ```
 
 3. **Set up View Locator (Required)**

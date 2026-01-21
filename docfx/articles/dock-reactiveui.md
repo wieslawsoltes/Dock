@@ -38,7 +38,7 @@ Follow these instructions to create a minimal ReactiveUI based application using
    dotnet add package Dock.Model.ReactiveUI.Services
    
    # For dependency injection:
-   dotnet add package Dock.Model.Extensions.DependencyInjection
+   dotnet add package Microsoft.Extensions.DependencyInjection
    ```
 
    Navigation types ship in `Dock.Model.ReactiveUI.Services` and keep the

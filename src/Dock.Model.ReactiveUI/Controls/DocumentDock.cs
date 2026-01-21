@@ -15,7 +15,7 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public partial class DocumentDock : DockBase, IDocumentDock
+public partial class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
     private DocumentLayoutMode _layoutMode = DocumentLayoutMode.Tabbed;

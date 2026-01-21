@@ -268,6 +268,11 @@ public sealed class OverlayHost : Decorator
                 continue;
             }
 
+            if (!TryDetachOverlay(overlay))
+            {
+                continue;
+            }
+
             ApplyStyleKey(layer.StyleKey, overlay);
 
             if (overlay is IOverlayContentHost contentHost)
@@ -308,6 +313,32 @@ public sealed class OverlayHost : Decorator
         }
 
         Child = current;
+    }
+
+    private static bool TryDetachOverlay(Control overlay)
+    {
+        if (overlay.Parent is null)
+        {
+            return true;
+        }
+
+        switch (overlay.Parent)
+        {
+            case Panel panel:
+                panel.Children.Remove(overlay);
+                return true;
+            case Decorator decorator when ReferenceEquals(decorator.Child, overlay):
+                decorator.Child = null;
+                return true;
+            case ContentPresenter presenter when ReferenceEquals(presenter.Content, overlay):
+                presenter.Content = null;
+                return true;
+            case ContentControl contentControl when ReferenceEquals(contentControl.Content, overlay):
+                contentControl.Content = null;
+                return true;
+            default:
+                return false;
+        }
     }
 
     private IEnumerable<OverlayLayerEntry> GetLayerEntries()

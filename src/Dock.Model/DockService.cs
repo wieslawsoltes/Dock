@@ -192,6 +192,12 @@ public class DockService : IDockService
             {
                 targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
             }
+
+            if (sourceDocumentDock is IDocumentDockFactory sourceDocumentDockFactory
+                && targetDocumentDock is IDocumentDockFactory targetDocumentDockFactory)
+            {
+                targetDocumentDockFactory.DocumentFactory = sourceDocumentDockFactory.DocumentFactory;
+            }
         }
         // Local split into a new (empty) dock: allow per Empty Dock Rule
         if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, targetDocumentDock))

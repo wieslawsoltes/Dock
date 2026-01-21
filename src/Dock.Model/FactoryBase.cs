@@ -472,6 +472,12 @@ public abstract partial class FactoryBase : IFactory
                                 
                                 targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
                             }
+
+                            if (sourceDocumentDock is IDocumentDockFactory sourceDocumentDockFactory
+                                && targetDocumentDock is IDocumentDockFactory targetDocumentDockFactory)
+                            {
+                                targetDocumentDockFactory.DocumentFactory = sourceDocumentDockFactory.DocumentFactory;
+                            }
                         }
                     }
                     if (dock.VisibleDockables is not null)

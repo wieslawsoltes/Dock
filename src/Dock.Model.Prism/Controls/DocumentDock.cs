@@ -14,7 +14,7 @@ namespace Dock.Model.Prism.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DocumentDock : DockBase, IDocumentDock
+public class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
     private bool _canCreateDocument;
     private bool _enableWindowDrag;

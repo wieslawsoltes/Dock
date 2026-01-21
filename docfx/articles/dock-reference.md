@@ -15,6 +15,7 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 | `IWrapDock` | Dock built on `WrapPanel` exposing `Orientation`. |
 | `IUniformGridDock` | Dock that arranges items in equally sized cells using `Rows` and `Columns`. |
 | `IToolDock` / `IDocumentDock` | Specialized docks used for tools and documents. |
+| `IDocumentDockFactory` | Adds a `DocumentFactory` delegate used to create documents on demand. |
 | `ITool` | Represents a tool pane. Tools can specify `MinWidth`, `MaxWidth`, `MinHeight` and `MaxHeight` to control their size. |
 | `IProportionalDockSplitter` | Thin splitter placed between proportional docks. Exposes `CanResize` and `ResizePreview` to control dragging. With preview enabled the splitter highlights while dragging. |
 | `IGridDockSplitter` | Splitter for `IGridDock` controlling the resize direction. |
@@ -56,7 +57,7 @@ from a saved state.
 
 The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumentDockTabsLayoutTop` and `SetDocumentDockTabsLayoutRight` to change the layout at runtime.
 
-`IDocumentDockContent` (implemented by the Avalonia model layer) adds `DocumentTemplate` and `CreateDocumentFromTemplate`. The `DocumentDock` implementations in `Dock.Model.Mvvm`, `Dock.Model.ReactiveUI`, and `Dock.Model.Avalonia` also expose a `DocumentFactory` delegate; `CreateDocument` invokes it when set and adds the resulting document via `AddDocument`. In the Avalonia model, if `DocumentFactory` is not set, `CreateDocument` falls back to `CreateDocumentFromTemplate`.
+`IDocumentDockContent` (implemented by the Avalonia model layer) adds `DocumentTemplate` and `CreateDocumentFromTemplate`. `IDocumentDockFactory` exposes a `DocumentFactory` delegate; the built-in document docks in `Dock.Model.Avalonia`, `Dock.Model.Mvvm`, `Dock.Model.ReactiveUI`, `Dock.Model.Prism`, `Dock.Model.Inpc`, `Dock.Model.CaliburMicro`, and `Dock.Model.ReactiveProperty` implement it. `CreateDocument` invokes the delegate when set and adds the resulting document via `AddDocument`. In the Avalonia model, if `DocumentFactory` is not set, `CreateDocument` falls back to `CreateDocumentFromTemplate`.
 
 ## ItemsSource document generation
 

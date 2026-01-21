@@ -1,7 +1,7 @@
 using System;
 using Dock.Model.Services;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 
 /// <summary>
 /// Adapts existing overlay services into a host overlay services instance.

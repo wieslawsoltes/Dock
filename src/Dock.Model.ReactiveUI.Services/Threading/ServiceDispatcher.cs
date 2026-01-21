@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Threading;
 
 internal sealed class ServiceDispatcher
 {

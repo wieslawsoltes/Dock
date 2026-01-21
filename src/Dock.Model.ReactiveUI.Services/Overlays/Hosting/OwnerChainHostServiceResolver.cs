@@ -4,7 +4,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using ReactiveUI;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 
 /// <summary>
 /// Resolves services by walking the screen and owner chains.

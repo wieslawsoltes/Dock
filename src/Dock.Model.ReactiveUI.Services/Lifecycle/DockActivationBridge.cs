@@ -1,7 +1,7 @@
 using System;
 using ReactiveUI;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Lifecycle;
 
 /// <summary>
 /// Default activation bridge for ReactiveUI view models.

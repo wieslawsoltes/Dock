@@ -1,6 +1,6 @@
 using System;
 using Dock.Model.ReactiveUI.Navigation.Services;
-using Dock.Model.ReactiveUI.Services;
+using Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 using Dock.Model.Services;
 using ReactiveUI;
 

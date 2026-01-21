@@ -2,9 +2,10 @@ using System;
 using System.Runtime.CompilerServices;
 using Dock.Model.Core;
 using Dock.Model.Services;
+using Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 using ReactiveUI;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Lifecycle;
 
 /// <summary>
 /// Default window lifecycle service that cleans up overlay services.

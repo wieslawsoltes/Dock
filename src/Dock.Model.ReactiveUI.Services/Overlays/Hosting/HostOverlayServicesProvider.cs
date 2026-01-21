@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Dock.Model.Services;
 using ReactiveUI;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 
 /// <summary>
 /// Default overlay services resolver that uses the host service resolver.

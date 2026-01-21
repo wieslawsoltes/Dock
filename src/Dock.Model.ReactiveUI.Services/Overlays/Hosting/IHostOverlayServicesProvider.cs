@@ -1,7 +1,7 @@
 using Dock.Model.Services;
 using ReactiveUI;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 
 /// <summary>
 /// Resolves overlay services for a host screen.

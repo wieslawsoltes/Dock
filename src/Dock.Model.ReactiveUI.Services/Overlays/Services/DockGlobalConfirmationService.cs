@@ -3,36 +3,37 @@ using System.Threading;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using Dock.Model.Services;
+using Dock.Model.ReactiveUI.Services.Threading;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.Services;
 
 /// <summary>
-/// Default global dialog service implementation.
+/// Default global confirmation service implementation.
 /// </summary>
-public sealed partial class DockGlobalDialogService : ReactiveObject, IDockGlobalDialogService
+public sealed partial class DockGlobalConfirmationService : ReactiveObject, IDockGlobalConfirmationService
 {
     private readonly string _defaultMessage;
     private readonly ServiceDispatcher _dispatcher;
-    private int _dialogCount;
+    private int _confirmationCount;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DockGlobalDialogService"/> class.
+    /// Initializes a new instance of the <see cref="DockGlobalConfirmationService"/> class.
     /// </summary>
-    /// <param name="defaultMessage">The default message to display when dialogs are open.</param>
+    /// <param name="defaultMessage">The default message to display when confirmations are open.</param>
     /// <param name="synchronizationContext">The synchronization context used for notifications.</param>
-    public DockGlobalDialogService(
+    public DockGlobalConfirmationService(
         string? defaultMessage = null,
         SynchronizationContext? synchronizationContext = null)
     {
         _defaultMessage = string.IsNullOrWhiteSpace(defaultMessage)
-            ? "Dialog open in another window."
+            ? "Confirmation open in another window."
             : defaultMessage;
         _dispatcher = new ServiceDispatcher(synchronizationContext);
     }
 
     /// <inheritdoc />
     [Reactive]
-    public partial bool IsDialogOpen { get; private set; }
+    public partial bool IsConfirmationOpen { get; private set; }
 
     /// <inheritdoc />
     [Reactive]
@@ -41,14 +42,14 @@ public sealed partial class DockGlobalDialogService : ReactiveObject, IDockGloba
     /// <inheritdoc />
     public IDisposable Begin(string? message = null)
     {
-        Interlocked.Increment(ref _dialogCount);
+        Interlocked.Increment(ref _confirmationCount);
         UpdateState(true, message ?? _defaultMessage);
 
         return new ActionDisposable(() =>
         {
-            if (Interlocked.Decrement(ref _dialogCount) <= 0)
+            if (Interlocked.Decrement(ref _confirmationCount) <= 0)
             {
-                Interlocked.Exchange(ref _dialogCount, 0);
+                Interlocked.Exchange(ref _confirmationCount, 0);
                 UpdateState(false, null);
             }
         });
@@ -58,7 +59,7 @@ public sealed partial class DockGlobalDialogService : ReactiveObject, IDockGloba
     {
         _dispatcher.Post(() =>
         {
-            IsDialogOpen = isOpen;
+            IsConfirmationOpen = isOpen;
             Message = message;
         });
     }

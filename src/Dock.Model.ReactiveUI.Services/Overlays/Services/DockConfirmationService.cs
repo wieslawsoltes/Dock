@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using Dock.Model.Services;
+using Dock.Model.ReactiveUI.Services.Threading;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.Services;
 
 /// <summary>
 /// Default confirmation service implementation.

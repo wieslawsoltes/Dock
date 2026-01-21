@@ -1,9 +1,13 @@
 using System;
 using Dock.Model.Services;
+using Dock.Model.ReactiveUI.Services.Lifecycle;
+using Dock.Model.ReactiveUI.Services.Overlays.Hosting;
+using Dock.Model.ReactiveUI.Services.Overlays.Services;
+using Dock.Model.ReactiveUI.Services.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection;
 
 /// <summary>
 /// Provides registration helpers for Dock overlay services with Microsoft.Extensions.DependencyInjection.

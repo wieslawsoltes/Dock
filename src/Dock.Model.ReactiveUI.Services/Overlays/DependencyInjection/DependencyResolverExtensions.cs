@@ -1,8 +1,12 @@
 using System;
 using Dock.Model.Services;
+using Dock.Model.ReactiveUI.Services.Lifecycle;
+using Dock.Model.ReactiveUI.Services.Overlays.Hosting;
+using Dock.Model.ReactiveUI.Services.Overlays.Services;
+using Dock.Model.ReactiveUI.Services.Threading;
 using Splat;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Overlays.DependencyInjection;
 
 /// <summary>
 /// Provides Splat registration helpers for Dock overlay services.

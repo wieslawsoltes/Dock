@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Dock.Model.ReactiveUI.Services;
+namespace Dock.Model.ReactiveUI.Services.Threading;
 
 internal sealed class ActionDisposable : IDisposable
 {

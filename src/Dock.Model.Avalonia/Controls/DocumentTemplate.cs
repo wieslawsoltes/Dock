@@ -37,6 +37,7 @@ public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control?>, I
     /// <summary>
     /// 
     /// </summary>
+    [DataType]
     [IgnoreDataMember]
     [JsonIgnore]
     public Type? DataType { get; set; }

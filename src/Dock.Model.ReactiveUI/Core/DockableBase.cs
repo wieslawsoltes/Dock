@@ -35,6 +35,7 @@ public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelec
         _canFloat = true;
         _canDrag = true;
         _canDrop = true;
+        _canDockAsDocument = true;
         _minWidth = double.NaN;
         _maxWidth = double.NaN;
         _minHeight = double.NaN;
@@ -175,6 +176,11 @@ public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelec
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
     public partial bool CanDrop { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial bool CanDockAsDocument { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

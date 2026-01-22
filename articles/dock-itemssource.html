@@ -257,6 +257,18 @@
   &lt;/Grid&gt;
 &lt;/DocumentTemplate&gt;
 </code></pre>
+<blockquote>
+<p><strong>Compiled bindings + Context</strong>: When using compiled bindings, <code>Context</code> is <code>object?</code> on <code>Document</code>, so <code>{Binding Context.SomeProperty}</code> can fail to compile. Rebind a subtree to the model and set a concrete <code>x:DataType</code>, or cast in the binding path:</p>
+<pre><code class="lang-xaml">&lt;DocumentTemplate&gt;
+  &lt;StackPanel x:DataType=&quot;Document&quot;&gt;
+    &lt;StackPanel DataContext=&quot;{Binding Context}&quot;
+                x:DataType=&quot;models:FileDocument&quot;&gt;
+      &lt;TextBox Text=&quot;{Binding Content}&quot;/&gt;
+    &lt;/StackPanel&gt;
+  &lt;/StackPanel&gt;
+&lt;/DocumentTemplate&gt;
+</code></pre>
+</blockquote>
 <h2 id="common-use-cases">Common Use Cases</h2>
 <h3 id="file-editor">File Editor</h3>
 <pre><code class="lang-csharp">public class FileModel : INotifyPropertyChanged

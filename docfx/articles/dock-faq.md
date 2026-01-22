@@ -225,6 +225,13 @@ you.
 Dockables may still be floated programmatically unless their `CanFloat` property
 is set to `false`.
 
+To prevent a dockable from being docked into document docks (including the
+"Dock as Tabbed Document" command), set `CanDockAsDocument` to `false`:
+
+```csharp
+tool.CanDockAsDocument = false;
+```
+
 **How can I prevent certain dockables from docking together?**
 
 Use docking groups to control which dockables can dock together. Set the `DockGroup` property on your dockables:

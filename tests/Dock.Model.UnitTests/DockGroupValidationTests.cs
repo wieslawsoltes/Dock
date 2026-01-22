@@ -35,6 +35,7 @@ public class DockGroupValidationTests
         public bool CanFloat { get; set; } = true;
         public bool CanDrag { get; set; } = true;
         public bool CanDrop { get; set; } = true;
+        public bool CanDockAsDocument { get; set; } = true;
         public bool IsModified { get; set; }
         public string? DockGroup { get; set; }
         public IFactory? Factory { get; set; }

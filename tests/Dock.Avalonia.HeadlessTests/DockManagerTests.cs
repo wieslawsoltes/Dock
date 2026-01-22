@@ -54,4 +54,32 @@ public class DockManagerTests
         var result = manager.ValidateTool(tool, targetDock, DragAction.Move, DockOperation.Fill, false);
         Assert.True(result);
     }
+
+    [AvaloniaFact]
+    public void ValidateTool_ReturnsFalse_When_SourceCannotDockAsDocument_And_TargetIsDocumentDock()
+    {
+        var manager = new DockManager(new DockService());
+        var sourceDock = new ToolDock { VisibleDockables = new AvaloniaList<IDockable>() };
+        var tool = new Tool { Owner = sourceDock, CanDockAsDocument = false };
+        sourceDock.VisibleDockables!.Add(tool);
+        var targetDock = new DocumentDock { VisibleDockables = new AvaloniaList<IDockable>(), CanDrop = true };
+
+        var result = manager.ValidateTool(tool, targetDock, DragAction.Move, DockOperation.Fill, false);
+
+        Assert.False(result);
+    }
+
+    [AvaloniaFact]
+    public void ValidateTool_ReturnsTrue_When_SourceCanDockAsDocument_And_TargetIsDocumentDock()
+    {
+        var manager = new DockManager(new DockService());
+        var sourceDock = new ToolDock { VisibleDockables = new AvaloniaList<IDockable>() };
+        var tool = new Tool { Owner = sourceDock, CanDockAsDocument = true };
+        sourceDock.VisibleDockables!.Add(tool);
+        var targetDock = new DocumentDock { VisibleDockables = new AvaloniaList<IDockable>(), CanDrop = true };
+
+        var result = manager.ValidateTool(tool, targetDock, DragAction.Move, DockOperation.Fill, false);
+
+        Assert.True(result);
+    }
 }

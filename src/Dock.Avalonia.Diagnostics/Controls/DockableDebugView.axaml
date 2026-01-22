@@ -4,7 +4,7 @@
              x:Class="Dock.Avalonia.Diagnostics.Controls.DockableDebugView"
              x:DataType="core:IDockable"
              x:CompileBindings="True">
-  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
         ColumnDefinitions="Auto,*">
     <TextBlock Text="Id" Grid.Row="0" Grid.Column="0" />
     <TextBox Text="{Binding Id, Mode=TwoWay}" Margin="2" Grid.Row="0" Grid.Column="1" />
@@ -58,7 +58,9 @@
     <CheckBox IsChecked="{Binding CanDrag, Mode=TwoWay}" Margin="2" Grid.Row="24" Grid.Column="1" />
     <TextBlock Text="CanDrop" Grid.Row="25" Grid.Column="0" />
     <CheckBox IsChecked="{Binding CanDrop, Mode=TwoWay}" Margin="2" Grid.Row="25" Grid.Column="1" />
-    <TextBlock Text="IsModified" Grid.Row="26" Grid.Column="0" />
-    <CheckBox IsChecked="{Binding IsModified, Mode=TwoWay}" Margin="2" Grid.Row="26" Grid.Column="1" />
+    <TextBlock Text="CanDockAsDocument" Grid.Row="26" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding CanDockAsDocument, Mode=TwoWay}" Margin="2" Grid.Row="26" Grid.Column="1" />
+    <TextBlock Text="IsModified" Grid.Row="27" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding IsModified, Mode=TwoWay}" Margin="2" Grid.Row="27" Grid.Column="1" />
   </Grid>
 </UserControl>

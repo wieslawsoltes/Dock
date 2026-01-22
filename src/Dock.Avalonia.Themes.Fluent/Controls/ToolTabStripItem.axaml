@@ -51,8 +51,14 @@
               IsVisible="{Binding CanPin, FallbackValue=False}" />
     <MenuItem Header="{DynamicResource ToolTabStripItemDockAsDocumentString}"
               Command="{Binding Owner.Factory.DockAsDocument}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding Owner, Converter={x:Static converters:OwnerIsToolDockConverter.Instance}}" />
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanDockAsDocument" FallbackValue="{x:False}" />
+          <Binding Path="Owner" Converter="{x:Static converters:OwnerIsToolDockConverter.Instance}" />
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding }"

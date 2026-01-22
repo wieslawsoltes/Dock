@@ -30,8 +30,14 @@
               IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"/>
     <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}"
               Command="{Binding Owner.Factory.DockAsDocument}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.Owner, Converter={x:Static OwnerIsToolDockConverter.Instance}}"/>
+              CommandParameter="{Binding ActiveDockable}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="ActiveDockable.CanDockAsDocument" FallbackValue="{x:False}" />
+          <Binding Path="ActiveDockable.Owner" Converter="{x:Static OwnerIsToolDockConverter.Instance}" />
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"

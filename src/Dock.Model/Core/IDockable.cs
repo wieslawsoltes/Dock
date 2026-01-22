@@ -141,6 +141,11 @@ public interface IDockable : IControlRecyclingIdProvider
     bool CanDrop { get; set; }
 
     /// <summary>
+    /// Gets or sets if the dockable can be docked as a document.
+    /// </summary>
+    bool CanDockAsDocument { get; set; }
+
+    /// <summary>
     /// Gets or sets whether the dockable has unsaved changes.
     /// </summary>
     bool IsModified { get; set; }

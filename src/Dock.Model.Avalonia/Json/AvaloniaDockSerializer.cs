@@ -63,6 +63,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(IDocument)] = new List<string>
             {
@@ -78,6 +79,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(IDocumentContent)] = new List<string>
             {
@@ -93,6 +95,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(ITool)] = new List<string>
             {
@@ -108,6 +111,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(IToolContent)] = new List<string>
             {
@@ -123,6 +127,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(IDock)] = new List<string>
             {
@@ -138,6 +143,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -164,6 +170,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -192,6 +199,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -220,6 +228,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -246,6 +255,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -274,6 +284,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -300,6 +311,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -335,6 +347,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -366,6 +379,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(DockBase)] = new List<string>
             {
@@ -381,6 +395,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -407,6 +422,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(Tool)] = new List<string>
             {
@@ -422,6 +438,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
             },
             [typeof(DockDock)] = new List<string>
             {
@@ -437,6 +454,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -465,6 +483,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -493,6 +512,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -521,6 +541,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -546,6 +567,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",
@@ -581,6 +603,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanFloat",
                 "CanDrag",
                 "CanDrop",
+                "CanDockAsDocument",
                 // IDock
                 "VisibleDockables",
                 "ActiveDockable",

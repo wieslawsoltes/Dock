@@ -17,6 +17,13 @@ public class DockService : IDockService
         }
     }
 
+    private static void CopyToolDockSettings(IToolDock source, IToolDock target)
+    {
+        target.IsExpanded = source.IsExpanded;
+        target.AutoHide = source.AutoHide;
+        target.GripMode = source.GripMode;
+    }
+
     private static bool IsValidMove(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, IDockable targetDockable)
     {
         if (targetDockable is IDock)
@@ -158,6 +165,14 @@ public class DockService : IDockService
         targetToolDock.Title = nameof(IToolDock);
         targetToolDock.Alignment = operation.ToAlignment();
         targetToolDock.VisibleDockables = factory.CreateList<IDockable>();
+        if (targetDock is IToolDock targetToolDockSource)
+        {
+            CopyToolDockSettings(targetToolDockSource, targetToolDock);
+        }
+        else if (sourceDockableOwner is IToolDock sourceToolDock)
+        {
+            CopyToolDockSettings(sourceToolDock, targetToolDock);
+        }
         CopyDockGroup(sourceDockable, targetToolDock);
         
         // Local split into a new (empty) dock: allow per Empty Dock Rule

@@ -7,7 +7,6 @@ namespace Dock.Model.ReactiveUI.Navigation.Controls;
 /// <summary>
 /// Document that supports ReactiveUI routing and acts as a screen for nested navigation.
 /// </summary>
-[DataContract(IsReference = true)]
 public class RoutableDocument : Document, IRoutableViewModel, IScreen
 {
     /// <summary>

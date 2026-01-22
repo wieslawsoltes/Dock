@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Grid dock splitter.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class GridDockSplitter : DockableBase, IGridDockSplitter
 {
     /// <inheritdoc/>

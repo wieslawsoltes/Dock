@@ -12,7 +12,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Stack dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class StackDock : DockBase, IStackDock
 {
     /// <summary>

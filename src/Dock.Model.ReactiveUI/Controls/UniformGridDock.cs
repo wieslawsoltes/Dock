@@ -10,7 +10,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Uniform grid dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class UniformGridDock : DockBase, IUniformGridDock
 {
     /// <inheritdoc/>

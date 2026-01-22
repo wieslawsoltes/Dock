@@ -14,7 +14,6 @@ namespace Dock.Model.ReactiveUI.Core;
 /// <summary>
 /// Dock base class.
 /// </summary>
-[DataContract(IsReference = true)]
 public abstract partial class DockBase : DockableBase, IDock
 {
     internal readonly INavigateAdapter _navigateAdapter;

@@ -9,7 +9,6 @@ namespace Dock.Model.Prism.Core;
 /// <summary>
 /// Dockable base class.
 /// </summary>
-[DataContract(IsReference = true)]
 public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;

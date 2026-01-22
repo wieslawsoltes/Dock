@@ -8,7 +8,6 @@ namespace Dock.Model.ReactiveUI.Navigation.Controls;
 /// <summary>
 /// Root dock that supports <see cref="IRoutableViewModel"/> for ReactiveUI navigation.
 /// </summary>
-[DataContract(IsReference = true)]
 public class RoutableRootDock : RootDock, IRoutableViewModel, IScreen
 {
     /// <summary>

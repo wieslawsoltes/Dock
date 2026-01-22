@@ -10,7 +10,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Docking panel dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class DockDock : DockBase, IDockDock
 {
     /// <summary>

@@ -12,7 +12,6 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// <summary>
 /// Root dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class RootDock : DockBase, IRootDock
 {
     private bool _isFocusableRoot = true;

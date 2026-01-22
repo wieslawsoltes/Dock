@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Document.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class Document : DockableBase, IMdiDocument
 {
     /// <inheritdoc/>

@@ -10,7 +10,6 @@ namespace Dock.Model.Prism.Controls;
 /// <summary>
 /// Grid dock splitter.
 /// </summary>
-[DataContract(IsReference = true)]
 public class GridDockSplitter : DockableBase, IGridDockSplitter
 {
     private GridResizeDirection _resizeDirection;

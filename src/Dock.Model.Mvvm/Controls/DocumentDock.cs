@@ -13,7 +13,6 @@ namespace Dock.Model.Mvvm.Controls;
 /// <summary>
 /// Document dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
     private bool _canCreateDocument;

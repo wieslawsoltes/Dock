@@ -45,7 +45,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public double X
     {
         get => _x;
@@ -53,7 +53,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public double Y
     {
         get => _y;
@@ -61,7 +61,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public double Width
     {
         get => _width;
@@ -69,7 +69,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public double Height
     {
         get => _height;

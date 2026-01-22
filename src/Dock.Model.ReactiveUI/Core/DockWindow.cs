@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Core;
 /// <summary>
 /// Dock window.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class DockWindow : ReactiveBase, IDockWindow
 {
     private readonly IHostAdapter _hostAdapter;

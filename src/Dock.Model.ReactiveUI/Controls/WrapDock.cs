@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Wrap dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class WrapDock : DockBase, IWrapDock
 {
     /// <inheritdoc/>

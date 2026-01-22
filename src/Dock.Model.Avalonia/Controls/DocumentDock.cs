@@ -22,7 +22,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Document dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItemsSourceDock, IDocumentDockFactory
 {
     /// <summary>

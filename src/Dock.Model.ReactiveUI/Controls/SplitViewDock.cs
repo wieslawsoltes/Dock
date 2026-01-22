@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// SplitView dock implementation for ReactiveUI.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class SplitViewDock : DockBase, ISplitViewDock
 {
     /// <summary>

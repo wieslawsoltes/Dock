@@ -11,7 +11,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Tool dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public partial class ToolDock : DockBase, IToolDock
 {
     /// <summary>

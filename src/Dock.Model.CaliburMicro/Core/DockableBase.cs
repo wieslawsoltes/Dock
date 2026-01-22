@@ -9,7 +9,6 @@ namespace Dock.Model.CaliburMicro.Core;
 /// <summary>
 /// Dockable base class.
 /// </summary>
-[DataContract(IsReference = true)]
 public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;

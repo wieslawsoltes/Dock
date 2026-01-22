@@ -122,6 +122,9 @@ Interface IDockable  <a class="header-action link-secondary" title="View source"
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanClose__1___0_System_Boolean_">FluentExtensions.WithCanClose&lt;T&gt;(T, bool)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDockAsDocument__1___0_System_Boolean_">FluentExtensions.WithCanDockAsDocument&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDrag__1___0_System_Boolean_">FluentExtensions.WithCanDrag&lt;T&gt;(T, bool)</a>
   </div>
   <div>
@@ -216,6 +219,38 @@ Interface IDockable  <a class="header-action link-secondary" title="View source"
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">bool CanClose { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_IDockable_CanDockAsDocument_" data-uid="Dock.Model.Core.IDockable.CanDockAsDocument*"></a>
+
+  <h3 id="Dock_Model_Core_IDockable_CanDockAsDocument" data-uid="Dock.Model.Core.IDockable.CanDockAsDocument">
+  CanDockAsDocument
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable can be docked as a document.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool CanDockAsDocument { get; set; }</code></pre>
   </div>
 
 
@@ -527,7 +562,7 @@ Interface IDockable  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Dock_Model_Core_IDockable_DockGroup" data-uid="Dock.Model.Core.IDockable.DockGroup">
   DockGroup
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L159"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the docking group identifier.
@@ -690,7 +725,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_IsModified" data-uid="Dock.Model.Core.IDockable.IsModified">
   IsModified
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L151"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether the dockable has unsaved changes.</p>
@@ -1110,7 +1145,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_GetPinnedBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetPinnedBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetPinnedBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L206"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pinned bounds information used for tracking.</p>
@@ -1152,7 +1187,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_GetPointerPosition_System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetPointerPosition(System.Double@,System.Double@)">
   GetPointerPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L258"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer position used for tracking.</p>
@@ -1188,7 +1223,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_GetPointerScreenPosition_System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetPointerScreenPosition(System.Double@,System.Double@)">
   GetPointerScreenPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L274"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L279"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer screen position used for tracking.</p>
@@ -1224,7 +1259,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_GetTabBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetTabBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetTabBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L233"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable tab bounds information used for tracking.</p>
@@ -1266,7 +1301,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_GetVisibleBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetVisibleBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetVisibleBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L179"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable visible bounds information used for tracking.</p>
@@ -1308,7 +1343,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_OnClose" data-uid="Dock.Model.Core.IDockable.OnClose">
   OnClose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L165"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable is closed.</p>
@@ -1341,7 +1376,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_OnPinnedBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnPinnedBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnPinnedBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L224"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pinned bounds changed.</p>
@@ -1383,7 +1418,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_OnPointerPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnPointerPositionChanged(System.Double,System.Double)">
   OnPointerPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L272"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer position changed.</p>
@@ -1419,7 +1454,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_OnPointerScreenPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnPointerScreenPositionChanged(System.Double,System.Double)">
   OnPointerScreenPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L288"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L293"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer screen position changed.</p>
@@ -1455,7 +1490,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_OnSelected" data-uid="Dock.Model.Core.IDockable.OnSelected">
   OnSelected()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L170"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable becomes the selected dockable.</p>
@@ -1482,7 +1517,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_OnTabBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnTabBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnTabBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L251"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable tab bounds changed.</p>
@@ -1524,7 +1559,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_OnVisibleBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnVisibleBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnVisibleBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L197"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable visible bounds changed.</p>
@@ -1566,7 +1601,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_SetPinnedBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetPinnedBounds(System.Double,System.Double,System.Double,System.Double)">
   SetPinnedBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L215"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pinned bounds information used for tracking.</p>
@@ -1608,7 +1643,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_SetPointerPosition_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetPointerPosition(System.Double,System.Double)">
   SetPointerPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L265"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer position used for tracking.</p>
@@ -1644,7 +1679,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_SetPointerScreenPosition_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetPointerScreenPosition(System.Double,System.Double)">
   SetPointerScreenPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L286"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer screen position used for tracking.</p>
@@ -1680,7 +1715,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_SetTabBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetTabBounds(System.Double,System.Double,System.Double,System.Double)">
   SetTabBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L237"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L242"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable tab bounds information used for tracking.</p>
@@ -1722,7 +1757,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_SetVisibleBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetVisibleBounds(System.Double,System.Double,System.Double,System.Double)">
   SetVisibleBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L188"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable visible bounds information used for tracking.</p>

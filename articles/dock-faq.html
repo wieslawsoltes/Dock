@@ -252,6 +252,10 @@ properties on your view models and let the templates update <code>DockProperties
 you.</p>
 <p>Dockables may still be floated programmatically unless their <code>CanFloat</code> property
 is set to <code>false</code>.</p>
+<p>To prevent a dockable from being docked into document docks (including the
+&quot;Dock as Tabbed Document&quot; command), set <code>CanDockAsDocument</code> to <code>false</code>:</p>
+<pre><code class="lang-csharp">tool.CanDockAsDocument = false;
+</code></pre>
 <p><strong>How can I prevent certain dockables from docking together?</strong></p>
 <p>Use docking groups to control which dockables can dock together. Set the <code>DockGroup</code> property on your dockables:</p>
 <pre><code class="lang-csharp">// Documents can dock locally with other documents

@@ -10992,6 +10992,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockableBase.CanCloseProperty
   fullName: Dock.Model.Avalonia.Core.DockableBase.CanCloseProperty
   nameWithType: DockableBase.CanCloseProperty
+- uid: Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_CanDockAsDocument
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocument
+  fullName: Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocumentProperty
+  name: CanDockAsDocumentProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_CanDockAsDocumentProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocumentProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocumentProperty
+  nameWithType: DockableBase.CanDockAsDocumentProperty
 - uid: Dock.Model.Avalonia.Core.DockableBase.CanDrag
   name: CanDrag
   href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_CanDrag
@@ -13821,6 +13840,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockableBase.CanClose
   nameWithType: DockableBase.CanClose
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_CanDockAsDocument
+  commentId: P:Dock.Model.CaliburMicro.Core.DockableBase.CanDockAsDocument
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
 - uid: Dock.Model.CaliburMicro.Core.DockableBase.CanDrag
   name: CanDrag
   href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_CanDrag
@@ -18802,6 +18834,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockable.CanClose
   nameWithType: IDockable.CanClose
+- uid: Dock.Model.Core.IDockable.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_CanDockAsDocument
+  commentId: P:Dock.Model.Core.IDockable.CanDockAsDocument
+  fullName: Dock.Model.Core.IDockable.CanDockAsDocument
+  nameWithType: IDockable.CanDockAsDocument
+- uid: Dock.Model.Core.IDockable.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_CanDockAsDocument_
+  commentId: Overload:Dock.Model.Core.IDockable.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockable.CanDockAsDocument
+  nameWithType: IDockable.CanDockAsDocument
 - uid: Dock.Model.Core.IDockable.CanDrag
   name: CanDrag
   href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_CanDrag
@@ -24669,6 +24714,22 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FluentExtensions.WithCanCreateDocument
   nameWithType: FluentExtensions.WithCanCreateDocument
+- uid: Dock.Model.FluentExtensions.WithCanDockAsDocument*
+  name: WithCanDockAsDocument
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDockAsDocument_
+  commentId: Overload:Dock.Model.FluentExtensions.WithCanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithCanDockAsDocument
+  nameWithType: FluentExtensions.WithCanDockAsDocument
+- uid: Dock.Model.FluentExtensions.WithCanDockAsDocument``1(``0,System.Boolean)
+  name: WithCanDockAsDocument<T>(T, bool)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDockAsDocument__1___0_System_Boolean_
+  commentId: M:Dock.Model.FluentExtensions.WithCanDockAsDocument``1(``0,System.Boolean)
+  name.vb: WithCanDockAsDocument(Of T)(T, Boolean)
+  fullName: Dock.Model.FluentExtensions.WithCanDockAsDocument<T>(T, bool)
+  fullName.vb: Dock.Model.FluentExtensions.WithCanDockAsDocument(Of T)(T, Boolean)
+  nameWithType: FluentExtensions.WithCanDockAsDocument<T>(T, bool)
+  nameWithType.vb: FluentExtensions.WithCanDockAsDocument(Of T)(T, Boolean)
 - uid: Dock.Model.FluentExtensions.WithCanDrag*
   name: WithCanDrag
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDrag_
@@ -27242,6 +27303,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockableBase.CanClose
   nameWithType: DockableBase.CanClose
+- uid: Dock.Model.Inpc.Core.DockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_CanDockAsDocument
+  commentId: P:Dock.Model.Inpc.Core.DockableBase.CanDockAsDocument
+  fullName: Dock.Model.Inpc.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.Inpc.Core.DockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
 - uid: Dock.Model.Inpc.Core.DockableBase.CanDrag
   name: CanDrag
   href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_CanDrag
@@ -29913,6 +29987,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockableBase.CanClose
   nameWithType: DockableBase.CanClose
+- uid: Dock.Model.Mvvm.Core.DockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_CanDockAsDocument
+  commentId: P:Dock.Model.Mvvm.Core.DockableBase.CanDockAsDocument
+  fullName: Dock.Model.Mvvm.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.Mvvm.Core.DockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
 - uid: Dock.Model.Mvvm.Core.DockableBase.CanDrag
   name: CanDrag
   href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_CanDrag
@@ -32381,6 +32468,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockableBase.CanClose
   nameWithType: DockableBase.CanClose
+- uid: Dock.Model.Prism.Core.DockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_CanDockAsDocument
+  commentId: P:Dock.Model.Prism.Core.DockableBase.CanDockAsDocument
+  fullName: Dock.Model.Prism.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.Prism.Core.DockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
 - uid: Dock.Model.Prism.Core.DockableBase.CanDrag
   name: CanDrag
   href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_CanDrag
@@ -34849,6 +34949,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockableBase.CanClose
   nameWithType: DockableBase.CanClose
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_CanDockAsDocument
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockableBase.CanDockAsDocument
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
 - uid: Dock.Model.ReactiveProperty.Core.DockableBase.CanDrag
   name: CanDrag
   href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_CanDrag
@@ -37431,6 +37544,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockableBase.CanClose
   nameWithType: DockableBase.CanClose
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_CanDockAsDocument
+  commentId: P:Dock.Model.ReactiveUI.Core.DockableBase.CanDockAsDocument
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.CanDockAsDocument
+  nameWithType: DockableBase.CanDockAsDocument
 - uid: Dock.Model.ReactiveUI.Core.DockableBase.CanDrag
   name: CanDrag
   href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_CanDrag

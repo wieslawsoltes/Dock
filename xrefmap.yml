@@ -2113,6 +2113,63 @@ references:
   commentId: F:Dock.Avalonia.Controls.DragPreviewControl.ContentTemplateProperty
   fullName: Dock.Avalonia.Controls.DragPreviewControl.ContentTemplateProperty
   nameWithType: DragPreviewControl.ContentTemplateProperty
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeight
+  name: PreviewContentHeight
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentHeight
+  commentId: P:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeight
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeight
+  nameWithType: DragPreviewControl.PreviewContentHeight
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeight*
+  name: PreviewContentHeight
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentHeight_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeight
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeight
+  nameWithType: DragPreviewControl.PreviewContentHeight
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeightProperty
+  name: PreviewContentHeightProperty
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentHeightProperty
+  commentId: F:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeightProperty
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeightProperty
+  nameWithType: DragPreviewControl.PreviewContentHeightProperty
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidth
+  name: PreviewContentWidth
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentWidth
+  commentId: P:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidth
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidth
+  nameWithType: DragPreviewControl.PreviewContentWidth
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidth*
+  name: PreviewContentWidth
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentWidth_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidth
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidth
+  nameWithType: DragPreviewControl.PreviewContentWidth
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidthProperty
+  name: PreviewContentWidthProperty
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentWidthProperty
+  commentId: F:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidthProperty
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidthProperty
+  nameWithType: DragPreviewControl.PreviewContentWidthProperty
+- uid: Dock.Avalonia.Controls.DragPreviewControl.ShowContent
+  name: ShowContent
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_ShowContent
+  commentId: P:Dock.Avalonia.Controls.DragPreviewControl.ShowContent
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.ShowContent
+  nameWithType: DragPreviewControl.ShowContent
+- uid: Dock.Avalonia.Controls.DragPreviewControl.ShowContent*
+  name: ShowContent
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_ShowContent_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.ShowContent
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.ShowContent
+  nameWithType: DragPreviewControl.ShowContent
+- uid: Dock.Avalonia.Controls.DragPreviewControl.ShowContentProperty
+  name: ShowContentProperty
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_ShowContentProperty
+  commentId: F:Dock.Avalonia.Controls.DragPreviewControl.ShowContentProperty
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.ShowContentProperty
+  nameWithType: DragPreviewControl.ShowContentProperty
 - uid: Dock.Avalonia.Controls.DragPreviewControl.Status
   name: Status
   href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_Status
@@ -42171,6 +42228,22 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.AppBuilderExtensions.EnableWindowMagnetism
   nameWithType: AppBuilderExtensions.EnableWindowMagnetism
+- uid: Dock.Settings.AppBuilderExtensions.SetDragPreviewOpacity(Avalonia.AppBuilder,System.Double)
+  name: SetDragPreviewOpacity(AppBuilder, double)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_SetDragPreviewOpacity_Avalonia_AppBuilder_System_Double_
+  commentId: M:Dock.Settings.AppBuilderExtensions.SetDragPreviewOpacity(Avalonia.AppBuilder,System.Double)
+  name.vb: SetDragPreviewOpacity(AppBuilder, Double)
+  fullName: Dock.Settings.AppBuilderExtensions.SetDragPreviewOpacity(Avalonia.AppBuilder, double)
+  fullName.vb: Dock.Settings.AppBuilderExtensions.SetDragPreviewOpacity(Avalonia.AppBuilder, Double)
+  nameWithType: AppBuilderExtensions.SetDragPreviewOpacity(AppBuilder, double)
+  nameWithType.vb: AppBuilderExtensions.SetDragPreviewOpacity(AppBuilder, Double)
+- uid: Dock.Settings.AppBuilderExtensions.SetDragPreviewOpacity*
+  name: SetDragPreviewOpacity
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_SetDragPreviewOpacity_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.SetDragPreviewOpacity
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.SetDragPreviewOpacity
+  nameWithType: AppBuilderExtensions.SetDragPreviewOpacity
 - uid: Dock.Settings.AppBuilderExtensions.SetWindowMagnetDistance(Avalonia.AppBuilder,System.Double)
   name: SetWindowMagnetDistance(AppBuilder, double)
   href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_SetWindowMagnetDistance_Avalonia_AppBuilder_System_Double_
@@ -42187,6 +42260,22 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.AppBuilderExtensions.SetWindowMagnetDistance
   nameWithType: AppBuilderExtensions.SetWindowMagnetDistance
+- uid: Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag(Avalonia.AppBuilder,System.Boolean)
+  name: ShowDockablePreviewOnDrag(AppBuilder, bool)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_ShowDockablePreviewOnDrag_Avalonia_AppBuilder_System_Boolean_
+  commentId: M:Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag(Avalonia.AppBuilder,System.Boolean)
+  name.vb: ShowDockablePreviewOnDrag(AppBuilder, Boolean)
+  fullName: Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag(Avalonia.AppBuilder, bool)
+  fullName.vb: Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag(Avalonia.AppBuilder, Boolean)
+  nameWithType: AppBuilderExtensions.ShowDockablePreviewOnDrag(AppBuilder, bool)
+  nameWithType.vb: AppBuilderExtensions.ShowDockablePreviewOnDrag(AppBuilder, Boolean)
+- uid: Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag*
+  name: ShowDockablePreviewOnDrag
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_ShowDockablePreviewOnDrag_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag
+  nameWithType: AppBuilderExtensions.ShowDockablePreviewOnDrag
 - uid: Dock.Settings.AppBuilderExtensions.UseFloatingDockAdorner(Avalonia.AppBuilder,System.Boolean)
   name: UseFloatingDockAdorner(AppBuilder, bool)
   href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseFloatingDockAdorner_Avalonia_AppBuilder_System_Boolean_
@@ -42682,6 +42771,12 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettings.DocumentSelectorKeyGesture
   nameWithType: DockSettings.DocumentSelectorKeyGesture
+- uid: Dock.Settings.DockSettings.DragPreviewOpacity
+  name: DragPreviewOpacity
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_DragPreviewOpacity
+  commentId: F:Dock.Settings.DockSettings.DragPreviewOpacity
+  fullName: Dock.Settings.DockSettings.DragPreviewOpacity
+  nameWithType: DockSettings.DragPreviewOpacity
 - uid: Dock.Settings.DockSettings.EnableDiagnosticsLogging
   name: EnableDiagnosticsLogging
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_EnableDiagnosticsLogging
@@ -42744,6 +42839,12 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettings.SelectorEnabled
   nameWithType: DockSettings.SelectorEnabled
+- uid: Dock.Settings.DockSettings.ShowDockablePreviewOnDrag
+  name: ShowDockablePreviewOnDrag
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_ShowDockablePreviewOnDrag
+  commentId: F:Dock.Settings.DockSettings.ShowDockablePreviewOnDrag
+  fullName: Dock.Settings.DockSettings.ShowDockablePreviewOnDrag
+  nameWithType: DockSettings.ShowDockablePreviewOnDrag
 - uid: Dock.Settings.DockSettings.ToolSelectorKeyGesture
   name: ToolSelectorKeyGesture
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_ToolSelectorKeyGesture
@@ -42839,6 +42940,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.DocumentSelectorKeyGesture
   nameWithType: DockSettingsOptions.DocumentSelectorKeyGesture
+- uid: Dock.Settings.DockSettingsOptions.DragPreviewOpacity
+  name: DragPreviewOpacity
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_DragPreviewOpacity
+  commentId: P:Dock.Settings.DockSettingsOptions.DragPreviewOpacity
+  fullName: Dock.Settings.DockSettingsOptions.DragPreviewOpacity
+  nameWithType: DockSettingsOptions.DragPreviewOpacity
+- uid: Dock.Settings.DockSettingsOptions.DragPreviewOpacity*
+  name: DragPreviewOpacity
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_DragPreviewOpacity_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.DragPreviewOpacity
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.DragPreviewOpacity
+  nameWithType: DockSettingsOptions.DragPreviewOpacity
 - uid: Dock.Settings.DockSettingsOptions.EnableWindowMagnetism
   name: EnableWindowMagnetism
   href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_EnableWindowMagnetism
@@ -42891,6 +43005,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.SelectorEnabled
   nameWithType: DockSettingsOptions.SelectorEnabled
+- uid: Dock.Settings.DockSettingsOptions.ShowDockablePreviewOnDrag
+  name: ShowDockablePreviewOnDrag
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_ShowDockablePreviewOnDrag
+  commentId: P:Dock.Settings.DockSettingsOptions.ShowDockablePreviewOnDrag
+  fullName: Dock.Settings.DockSettingsOptions.ShowDockablePreviewOnDrag
+  nameWithType: DockSettingsOptions.ShowDockablePreviewOnDrag
+- uid: Dock.Settings.DockSettingsOptions.ShowDockablePreviewOnDrag*
+  name: ShowDockablePreviewOnDrag
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_ShowDockablePreviewOnDrag_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.ShowDockablePreviewOnDrag
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.ShowDockablePreviewOnDrag
+  nameWithType: DockSettingsOptions.ShowDockablePreviewOnDrag
 - uid: Dock.Settings.DockSettingsOptions.ToolSelectorKeyGesture
   name: ToolSelectorKeyGesture
   href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_ToolSelectorKeyGesture

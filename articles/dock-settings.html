@@ -204,6 +204,10 @@ is controlled by <code>DockSettings.WindowMagnetDistance</code>.</p>
 <p><code>DockSettings.BringWindowsToFrontOnDrag</code> determines whether all floating windows
 and any main window hosting a <code>DockControl</code> are activated when dragging begins.
 Enabled by default.</p>
+<h2 id="drag-preview">Drag preview</h2>
+<p><code>DockSettings.ShowDockablePreviewOnDrag</code> toggles whether the drag preview window
+renders the full dockable layout instead of only the title/status badge.</p>
+<p><code>DockSettings.DragPreviewOpacity</code> controls the preview window opacity (0.0 to 1.0).</p>
 <h2 id="selector-hotkeys">Selector hotkeys</h2>
 <p>Dock exposes a document and panel selector that can be toggled with keyboard gestures:</p>
 <pre><code class="lang-csharp">DockSettings.SelectorEnabled = true;
@@ -242,6 +246,8 @@ AppBuilder.Configure&lt;App&gt;()
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
     .BringWindowsToFrontOnDrag()
+    .ShowDockablePreviewOnDrag()
+    .SetDragPreviewOpacity(0.6)
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6
@@ -297,6 +303,16 @@ AppBuilder.Configure&lt;App&gt;()
 <td><code>BringWindowsToFrontOnDrag</code></td>
 <td><code>DockSettings.BringWindowsToFrontOnDrag</code></td>
 <td>Activate windows when dragging.</td>
+</tr>
+<tr>
+<td><code>ShowDockablePreviewOnDrag</code></td>
+<td><code>DockSettings.ShowDockablePreviewOnDrag</code></td>
+<td>Render dockable content in drag preview.</td>
+</tr>
+<tr>
+<td><code>DragPreviewOpacity</code></td>
+<td><code>DockSettings.DragPreviewOpacity</code></td>
+<td>Opacity for the drag preview window.</td>
 </tr>
 <tr>
 <td><code>SelectorEnabled</code></td>

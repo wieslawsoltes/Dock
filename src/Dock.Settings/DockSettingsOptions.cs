@@ -51,6 +51,16 @@ public class DockSettingsOptions
     public bool? BringWindowsToFrontOnDrag { get; set; }
 
     /// <summary>
+    /// Optional dockable drag preview flag.
+    /// </summary>
+    public bool? ShowDockablePreviewOnDrag { get; set; }
+
+    /// <summary>
+    /// Optional drag preview opacity.
+    /// </summary>
+    public double? DragPreviewOpacity { get; set; }
+
+    /// <summary>
     /// Optional selector enabled flag.
     /// </summary>
     public bool? SelectorEnabled { get; set; }
@@ -75,4 +85,3 @@ public class DockSettingsOptions
     /// </summary>
     public DockCommandBarMergingScope? CommandBarMergingScope { get; set; }
 }
-

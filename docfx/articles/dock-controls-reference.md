@@ -184,6 +184,9 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | --- | --- | --- |
 | `ContentTemplate` | `IDataTemplate` | Template for the dragged dockable content. |
 | `Status` | `string` | `Dock`, `Float`, or `None` status text. |
+| `ShowContent` | `bool` | Toggles rendering the full dockable preview. |
+| `PreviewContentWidth` | `double` | Width for the dockable preview content. |
+| `PreviewContentHeight` | `double` | Height for the dockable preview content. |
 
 ## Window hosts
 

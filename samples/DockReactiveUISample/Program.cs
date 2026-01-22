@@ -4,6 +4,7 @@ using Avalonia;
 using ReactiveUI.Avalonia;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Dock.Settings;
 
 namespace DockReactiveUISample;
 
@@ -22,5 +23,7 @@ internal class Program
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()
+            .ShowDockablePreviewOnDrag()
+            .SetDragPreviewOpacity(0.6)
             .LogToTrace();
 }

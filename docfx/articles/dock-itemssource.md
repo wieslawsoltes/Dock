@@ -177,6 +177,19 @@ public class DocumentModel
 </DocumentTemplate>
 ```
 
+> **Compiled bindings + Context**: When using compiled bindings, `Context` is `object?` on `Document`, so `{Binding Context.SomeProperty}` can fail to compile. Rebind a subtree to the model and set a concrete `x:DataType`, or cast in the binding path:
+>
+> ```xaml
+> <DocumentTemplate>
+>   <StackPanel x:DataType="Document">
+>     <StackPanel DataContext="{Binding Context}"
+>                 x:DataType="models:FileDocument">
+>       <TextBox Text="{Binding Content}"/>
+>     </StackPanel>
+>   </StackPanel>
+> </DocumentTemplate>
+> ```
+
 ## Common Use Cases
 
 ### File Editor

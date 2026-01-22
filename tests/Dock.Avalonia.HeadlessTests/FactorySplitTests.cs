@@ -729,6 +729,51 @@ public class FactorySplitTests
     }
 
     [AvaloniaFact]
+    public void CollapseDock_DoesNotSimplify_NonCollapsable_ProportionalDock()
+    {
+        var factory = new Factory();
+
+        var containerDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var mainArea = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            IsCollapsable = false,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var documentDock = new DocumentDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var splitter = new ProportionalDockSplitter();
+
+        var bottomPane = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        factory.AddDockable(containerDock, mainArea);
+        factory.AddDockable(mainArea, documentDock);
+        factory.AddDockable(mainArea, splitter);
+        factory.AddDockable(mainArea, bottomPane);
+
+        factory.CollapseDock(bottomPane);
+
+        Assert.Single(containerDock.VisibleDockables!);
+        Assert.Same(mainArea, containerDock.VisibleDockables[0]);
+        Assert.Single(mainArea.VisibleDockables!);
+        Assert.Same(documentDock, mainArea.VisibleDockables[0]);
+        Assert.Same(mainArea, documentDock.Owner);
+    }
+
+    [AvaloniaFact]
     public void CollapseDock_WithSingleDockable_StopsCleanupAtRootDock()
     {
         var factory = new Factory();

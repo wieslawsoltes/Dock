@@ -51,6 +51,16 @@ public static class DockSettings
     /// Bring all windows to the front when a window starts being dragged.
     /// </summary>
     public static bool BringWindowsToFrontOnDrag = true;
+
+    /// <summary>
+    /// Show dockable content inside the drag preview window while dragging.
+    /// </summary>
+    public static bool ShowDockablePreviewOnDrag = false;
+
+    /// <summary>
+    /// Opacity for the drag preview window.
+    /// </summary>
+    public static double DragPreviewOpacity = 1.0;
     
     /// <summary>
     /// Configures the proportion used for global docking split operations.

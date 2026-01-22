@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Model_ReactiveProperty_Core_ReactiveBase" data-uid="Dock.Model.ReactiveProperty.Core.ReactiveBase" class="text-break">
-Class ReactiveBase  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L11"><i class="bi bi-code-slash"></i></a>
+Class ReactiveBase  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -98,7 +98,8 @@ Class ReactiveBase  <a class="header-action link-secondary" title="View source" 
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class ReactiveBase : INotifyPropertyChanged</code></pre>
+    <pre><code class="lang-csharp hljs">[DataContract(IsReference = true)]
+public abstract class ReactiveBase : INotifyPropertyChanged</code></pre>
   </div>
 
 
@@ -166,7 +167,7 @@ Class ReactiveBase  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_ReactiveProperty_Core_ReactiveBase_OnPropertyChanged_System_String_" data-uid="Dock.Model.ReactiveProperty.Core.ReactiveBase.OnPropertyChanged(System.String)">
   OnPropertyChanged(string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Raises the <a class="xref" href="Dock.Model.ReactiveProperty.Core.ReactiveBase.html#Dock_Model_ReactiveProperty_Core_ReactiveBase_PropertyChanged">PropertyChanged</a> event.</p>
@@ -199,7 +200,7 @@ Class ReactiveBase  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_ReactiveProperty_Core_ReactiveBase_SetProperty__1___0____0_System_String_" data-uid="Dock.Model.ReactiveProperty.Core.ReactiveBase.SetProperty``1(``0@,``0,System.String)">
   SetProperty&lt;T&gt;(ref T, T, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the field and raises <a class="xref" href="Dock.Model.ReactiveProperty.Core.ReactiveBase.html#Dock_Model_ReactiveProperty_Core_ReactiveBase_PropertyChanged">PropertyChanged</a> if needed.</p>
@@ -248,7 +249,7 @@ Class ReactiveBase  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_ReactiveProperty_Core_ReactiveBase_PropertyChanged" data-uid="Dock.Model.ReactiveProperty.Core.ReactiveBase.PropertyChanged">
   PropertyChanged
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -279,7 +280,7 @@ Class ReactiveBase  <a class="header-action link-secondary" title="View source" 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L11" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/ReactiveBase.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 

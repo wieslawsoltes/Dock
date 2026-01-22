@@ -98,8 +98,7 @@ Class DockBase  <a class="header-action link-secondary" title="View source" href
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[DataContract(IsReference = true)]
-public abstract class DockBase : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DockBase : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -356,7 +355,7 @@ public abstract class DockBase : DockableBase, IReactiveNotifyPropertyChanged&lt
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase__ctor" data-uid="Dock.Model.ReactiveUI.Core.DockBase.#ctor">
   DockBase()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.ReactiveUI.Core.DockBase.html">DockBase</a> class.</p>
@@ -387,7 +386,7 @@ public abstract class DockBase : DockableBase, IReactiveNotifyPropertyChanged&lt
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_ActiveDockable" data-uid="Dock.Model.ReactiveUI.Core.DockBase.ActiveDockable">
   ActiveDockable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -420,7 +419,7 @@ public IDockable? ActiveDockable { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_CanCloseLastDockable" data-uid="Dock.Model.ReactiveUI.Core.DockBase.CanCloseLastDockable">
   CanCloseLastDockable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L82"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -453,7 +452,7 @@ public bool CanCloseLastDockable { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_CanGoBack" data-uid="Dock.Model.ReactiveUI.Core.DockBase.CanGoBack">
   CanGoBack
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value that indicates whether there is at least one entry in back navigation history.</p>
@@ -486,7 +485,7 @@ public bool CanGoBack { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_CanGoForward" data-uid="Dock.Model.ReactiveUI.Core.DockBase.CanGoForward">
   CanGoForward
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L91"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value that indicates whether there is at least one entry in forward navigation history.</p>
@@ -519,7 +518,7 @@ public bool CanGoForward { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_Close" data-uid="Dock.Model.ReactiveUI.Core.DockBase.Close">
   Close
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L107"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Close layout.</p>
@@ -552,7 +551,7 @@ public ICommand Close { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_DefaultDockable" data-uid="Dock.Model.ReactiveUI.Core.DockBase.DefaultDockable">
   DefaultDockable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -585,7 +584,7 @@ public IDockable? DefaultDockable { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_EnableGlobalDocking" data-uid="Dock.Model.ReactiveUI.Core.DockBase.EnableGlobalDocking">
   EnableGlobalDocking
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L111"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether global docking is enabled for this dock.
@@ -620,7 +619,7 @@ public bool EnableGlobalDocking { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_FocusedDockable" data-uid="Dock.Model.ReactiveUI.Core.DockBase.FocusedDockable">
   FocusedDockable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -653,7 +652,7 @@ public IDockable? FocusedDockable { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_GoBack" data-uid="Dock.Model.ReactiveUI.Core.DockBase.GoBack">
   GoBack
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Navigates to the most recent entry in back navigation history, if there is one.</p>
@@ -686,7 +685,7 @@ public ICommand GoBack { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_GoForward" data-uid="Dock.Model.ReactiveUI.Core.DockBase.GoForward">
   GoForward
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L99"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Navigate to the most recent entry in forward navigation history, if there is one.</p>
@@ -719,7 +718,7 @@ public ICommand GoForward { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_IsActive" data-uid="Dock.Model.ReactiveUI.Core.DockBase.IsActive">
   IsActive
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -752,7 +751,7 @@ public bool IsActive { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_Navigate" data-uid="Dock.Model.ReactiveUI.Core.DockBase.Navigate">
   Navigate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L103"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Navigate to content that is contained by an object.</p>
@@ -785,7 +784,7 @@ public ICommand Navigate { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_OpenedDockablesCount" data-uid="Dock.Model.ReactiveUI.Core.DockBase.OpenedDockablesCount">
   OpenedDockablesCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -818,7 +817,7 @@ public int OpenedDockablesCount { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Core_DockBase_VisibleDockables" data-uid="Dock.Model.ReactiveUI.Core.DockBase.VisibleDockables">
   VisibleDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Core/DockBase.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>

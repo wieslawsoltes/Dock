@@ -56,6 +56,16 @@ public class DockManager : IDockManager
         return widthConflict || heightConflict;
     }
 
+    private static bool AllowsDocumentDocking(IDockable sourceDockable, IDockable targetDockable)
+    {
+        if (sourceDockable.CanDockAsDocument)
+        {
+            return true;
+        }
+
+        return targetDockable is not IDocumentDock && targetDockable is not IDocument;
+    }
+
 
 
     private bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
@@ -221,6 +231,11 @@ public class DockManager : IDockManager
     public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
         if (!sourceTool.CanDrag || !targetDockable.CanDrop)
+        {
+            return false;
+        }
+
+        if (!AllowsDocumentDocking(sourceTool, targetDockable))
         {
             return false;
         }
@@ -399,6 +414,11 @@ public class DockManager : IDockManager
             return false;
         }
 
+        if (!AllowsDocumentDocking(sourceDocument, targetDockable))
+        {
+            return false;
+        }
+
         if (targetDockable is ITool or IToolDock)
         {
             return false;
@@ -418,6 +438,11 @@ public class DockManager : IDockManager
     public bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
         if (!sourceDock.CanDrag || !targetDockable.CanDrop)
+        {
+            return false;
+        }
+
+        if (!AllowsDocumentDocking(sourceDock, targetDockable))
         {
             return false;
         }

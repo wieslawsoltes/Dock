@@ -1065,6 +1065,11 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void DockAsDocument(IDockable dockable)
     {
+        if (!dockable.CanDockAsDocument)
+        {
+            return;
+        }
+
         if (dockable.Owner is not IDock sourceDock)
         {
             return;

@@ -98,6 +98,7 @@ public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<
     /// <summary>
     /// 
     /// </summary>
+    [DataType]
     [IgnoreDataMember]
     [JsonIgnore]
     public Type? DataType { get; set; }

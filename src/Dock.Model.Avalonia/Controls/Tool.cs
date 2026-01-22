@@ -100,6 +100,7 @@ public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, 
     /// <summary>
     /// 
     /// </summary>
+    [DataType]
     [IgnoreDataMember]
     [JsonIgnore]
     public Type? DataType { get; set; }

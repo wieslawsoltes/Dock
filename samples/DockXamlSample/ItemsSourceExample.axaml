@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dock="using:Dock.Model.Avalonia.Controls"
              xmlns:local="using:DockXamlSample"
              x:Class="DockXamlSample.ItemsSourceExample">
 
@@ -38,8 +39,15 @@
               <StackPanel Margin="10" x:DataType="Document">
                 <TextBlock Text="Document Title:" FontWeight="Bold"/>
                 <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
-                <TextBlock Text="Context Data:" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Context}" TextWrapping="Wrap" Height="100" Background="LightGray" Padding="5"/>
+                <TextBlock Text="Model Content:" FontWeight="Bold"/>
+                <StackPanel DataContext="{Binding Context}">
+                  <StackPanel x:DataType="local:MyDocumentModel">
+                    <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Height="80" Background="LightGray" Padding="5"/>
+                    <TextBlock Text="Editable Content:" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <TextBox Text="{Binding EditableContent}" AcceptsReturn="True" Height="80"/>
+                    <TextBlock Text="{Binding Status}" Opacity="0.7" Margin="0,8,0,0"/>
+                  </StackPanel>
+                </StackPanel>
               </StackPanel>
             </DocumentTemplate>
           </DocumentDock.DocumentTemplate>

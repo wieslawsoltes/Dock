@@ -532,6 +532,25 @@ var document = new Document
 </DocumentTemplate>
 ```
 
+### Issue: Compiled binding errors for `Context.*`
+
+**Problem**: Build errors like "Unable to resolve property or method ... on type 'Document'" when using `{Binding Context.SomeProperty}`.
+
+**Cause**: `Document.Context` is typed `object?`, so compiled bindings cannot infer model properties from `Context`.
+
+**Solution**: Rebind a subtree to the model and set `x:DataType`, or cast in the binding path (or disable compiled bindings for that subtree).
+
+```xaml
+<DocumentTemplate>
+  <StackPanel x:DataType="Document">
+    <StackPanel DataContext="{Binding Context}"
+                x:DataType="vm:MyDocumentModel">
+      <TextBox Text="{Binding Content}"/>
+    </StackPanel>
+  </StackPanel>
+</DocumentTemplate>
+```
+
 ### Issue: Empty/Blank Document Tabs with DataTemplates
 
 **Problem**: Document tabs show up but content is empty when using ViewModel approach.

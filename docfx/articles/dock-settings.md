@@ -108,6 +108,13 @@ is controlled by `DockSettings.WindowMagnetDistance`.
 and any main window hosting a `DockControl` are activated when dragging begins.
 Enabled by default.
 
+## Drag preview
+
+`DockSettings.ShowDockablePreviewOnDrag` toggles whether the drag preview window
+renders the full dockable layout instead of only the title/status badge.
+
+`DockSettings.DragPreviewOpacity` controls the preview window opacity (0.0 to 1.0).
+
 ## Selector hotkeys
 
 Dock exposes a document and panel selector that can be toggled with keyboard gestures:
@@ -169,6 +176,8 @@ AppBuilder.Configure<App>()
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
     .BringWindowsToFrontOnDrag()
+    .ShowDockablePreviewOnDrag()
+    .SetDragPreviewOpacity(0.6)
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6
@@ -189,6 +198,8 @@ AppBuilder.Configure<App>()
 | `EnableWindowMagnetism` | `DockSettings.EnableWindowMagnetism` | Snap floating windows. |
 | `WindowMagnetDistance` | `DockSettings.WindowMagnetDistance` | Snap distance in pixels. |
 | `BringWindowsToFrontOnDrag` | `DockSettings.BringWindowsToFrontOnDrag` | Activate windows when dragging. |
+| `ShowDockablePreviewOnDrag` | `DockSettings.ShowDockablePreviewOnDrag` | Render dockable content in drag preview. |
+| `DragPreviewOpacity` | `DockSettings.DragPreviewOpacity` | Opacity for the drag preview window. |
 | `SelectorEnabled` | `DockSettings.SelectorEnabled` | Toggle selector overlay. |
 | `DocumentSelectorKeyGesture` | `DockSettings.DocumentSelectorKeyGesture` | Document selector shortcut. |
 | `ToolSelectorKeyGesture` | `DockSettings.ToolSelectorKeyGesture` | Tool selector shortcut. |

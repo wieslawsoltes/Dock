@@ -139,6 +139,8 @@ Refer to the source code for the complete list of parts and classes.
 
 - `ContentTemplate` to render the dragged dockable.
 - `Status` set to `Dock`, `Float`, or `None`, which the default theme uses to show status icons and strings.
+- `ShowContent` to toggle showing the full dockable layout (set by `DockSettings.ShowDockablePreviewOnDrag`).
+- `PreviewContentWidth` and `PreviewContentHeight` to size the dockable preview.
 
 You can swap the content template in a theme:
 

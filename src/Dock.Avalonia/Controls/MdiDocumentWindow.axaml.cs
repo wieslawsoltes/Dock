@@ -17,6 +17,7 @@ using Dock.Avalonia.Internal;
 using Dock.Avalonia.Mdi;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -91,6 +92,9 @@ public class MdiDocumentWindow : TemplatedControl
     private Point _dragStartPoint;
     private Rect _dragStartBounds;
     private MdiResizeDirection _resizeDirection;
+    private Point _lastPointerPosition;
+    private bool _managedWindowDragActive;
+    private IDockWindow? _managedDragWindow;
 
     /// <summary>
     /// Gets or sets tab icon template.
@@ -170,6 +174,30 @@ public class MdiDocumentWindow : TemplatedControl
     public MdiDocumentWindow()
     {
         UpdatePseudoClasses(IsActive, MdiState);
+    }
+
+    internal bool TryGetContentOffset(out Point offset)
+    {
+        offset = default;
+
+        if (_contentBorder is null)
+        {
+            ApplyTemplate();
+        }
+
+        if (_contentBorder is null)
+        {
+            return false;
+        }
+
+        var origin = _contentBorder.TranslatePoint(new Point(0, 0), this);
+        if (!origin.HasValue)
+        {
+            return false;
+        }
+
+        offset = origin.Value;
+        return true;
     }
 
     /// <inheritdoc/>
@@ -388,12 +416,29 @@ public class MdiDocumentWindow : TemplatedControl
             return;
         }
 
+        if (GetValue(DockProperties.IsDragEnabledProperty) != true)
+        {
+            return;
+        }
+
+        if (_currentDocument is IDockable { CanDrag: false })
+        {
+            return;
+        }
+
+        if (!TryBeginManagedWindowDrag())
+        {
+            return;
+        }
+
         _isDragging = true;
         _dragStartPoint = GetPointerPosition(e);
+        _lastPointerPosition = _dragStartPoint;
         _dragStartBounds = ToAvaloniaRect(_currentDocument.MdiBounds);
         _capturedPointer = e.Pointer;
         e.Pointer.Capture(this);
         e.Handled = true;
+        ProcessManagedWindowDrag(_lastPointerPosition, EventType.Pressed);
     }
 
     private void PointerMovedHandler(object? sender, PointerEventArgs e)
@@ -412,11 +457,22 @@ public class MdiDocumentWindow : TemplatedControl
 
     private void PointerReleasedHandler(object? sender, PointerReleasedEventArgs e)
     {
+        if (_isDragging)
+        {
+            _lastPointerPosition = GetPointerPosition(e);
+            ProcessManagedWindowDrag(_lastPointerPosition, EventType.Released);
+        }
+
         EndDragOrResize();
     }
 
     private void PointerCaptureLostHandler(object? sender, PointerCaptureLostEventArgs e)
     {
+        if (_isDragging)
+        {
+            ProcessManagedWindowDrag(_lastPointerPosition, EventType.CaptureLost);
+        }
+
         EndDragOrResize();
     }
 
@@ -428,12 +484,20 @@ public class MdiDocumentWindow : TemplatedControl
         }
 
         var position = GetPointerPosition(e);
+        _lastPointerPosition = position;
         var delta = position - _dragStartPoint;
         var manager = GetLayoutManager(out var entries, out var finalSize);
         var bounds = manager.GetDragBounds(_currentDocument, _dragStartBounds, delta, finalSize, entries);
+        if (DockSettings.EnableWindowMagnetism && entries.Count > 0)
+        {
+            bounds = ApplyWindowMagnetism(bounds, _currentDocument, entries);
+            bounds = ClampToAvailableSize(bounds, entries, finalSize);
+        }
         _currentDocument.MdiBounds = ToDockRect(bounds);
         InvalidateMdiLayout();
         e.Handled = true;
+        ProcessManagedWindowDrag(_lastPointerPosition, EventType.Moved);
+        NotifyManagedWindowDrag();
     }
 
     private void ResizeMove(PointerEventArgs e)
@@ -454,6 +518,11 @@ public class MdiDocumentWindow : TemplatedControl
 
     private void EndDragOrResize()
     {
+        if (_managedWindowDragActive)
+        {
+            NotifyManagedWindowDragEnd();
+        }
+
         _isDragging = false;
         _isResizing = false;
         _resizeDirection = MdiResizeDirection.None;
@@ -462,6 +531,76 @@ public class MdiDocumentWindow : TemplatedControl
             _capturedPointer.Capture(null);
             _capturedPointer = null;
         }
+    }
+
+    private void ProcessManagedWindowDrag(Point localPosition, EventType eventType)
+    {
+        if (_currentDocument is not ManagedDockWindowDocument managedDocument)
+        {
+            return;
+        }
+
+        if (managedDocument.Window?.Host is not ManagedHostWindow managedHost)
+        {
+            return;
+        }
+
+        var relativeVisual = this.FindAncestorOfType<MdiLayoutPanel>() as Visual ?? this;
+        var screenPoint = relativeVisual.PointToScreen(localPosition);
+        managedHost.ProcessDrag(screenPoint, eventType);
+    }
+
+    private bool TryBeginManagedWindowDrag()
+    {
+        if (_currentDocument is not ManagedDockWindowDocument managedDocument)
+        {
+            _managedWindowDragActive = false;
+            _managedDragWindow = null;
+            return true;
+        }
+
+        var window = managedDocument.Window;
+        if (window?.Factory is not { } factory)
+        {
+            _managedWindowDragActive = false;
+            _managedDragWindow = null;
+            return true;
+        }
+
+        if (!factory.OnWindowMoveDragBegin(window))
+        {
+            _managedWindowDragActive = false;
+            _managedDragWindow = null;
+            return false;
+        }
+
+        if (DockSettings.BringWindowsToFrontOnDrag)
+        {
+            WindowActivationHelper.ActivateAllWindows(factory, this);
+        }
+
+        _managedWindowDragActive = true;
+        _managedDragWindow = window;
+        return true;
+    }
+
+    private void NotifyManagedWindowDrag()
+    {
+        if (_managedWindowDragActive && _managedDragWindow?.Factory is { } factory)
+        {
+            factory.OnWindowMoveDrag(_managedDragWindow);
+        }
+    }
+
+    private void NotifyManagedWindowDragEnd()
+    {
+        if (_managedWindowDragActive && _managedDragWindow?.Factory is { } factory)
+        {
+            factory.OnWindowMoveDragEnd(_managedDragWindow);
+        }
+
+        _managedWindowDragActive = false;
+        _managedDragWindow = null;
     }
 
     private void AttachResizeHandle(Control? handle, MdiResizeDirection direction)
@@ -631,6 +770,127 @@ public class MdiDocumentWindow : TemplatedControl
     private static DockRect ToDockRect(Rect bounds)
     {
         return new DockRect(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+    }
+
+    private static Rect ApplyWindowMagnetism(Rect bounds, IMdiDocument current, IReadOnlyList<MdiLayoutEntry> entries)
+    {
+        var snap = DockSettings.WindowMagnetDistance;
+        if (snap <= 0)
+        {
+            return bounds;
+        }
+
+        var rect = bounds;
+        var x = rect.X;
+        var y = rect.Y;
+
+        foreach (var entry in entries)
+        {
+            if (ReferenceEquals(entry.Document, current))
+            {
+                continue;
+            }
+
+            if (entry.Document.MdiState != MdiWindowState.Normal)
+            {
+                continue;
+            }
+
+            var other = ToAvaloniaRect(entry.Document.MdiBounds);
+            if (!IsValidBounds(other))
+            {
+                continue;
+            }
+
+            var verticalOverlap = rect.Top < other.Bottom && rect.Bottom > other.Top;
+            var horizontalOverlap = rect.Left < other.Right && rect.Right > other.Left;
+
+            if (verticalOverlap)
+            {
+                if (Math.Abs(rect.Left - other.Right) <= snap)
+                {
+                    x = other.Right;
+                }
+                else if (Math.Abs(rect.Right - other.Left) <= snap)
+                {
+                    x = other.Left - rect.Width;
+                }
+            }
+
+            if (horizontalOverlap)
+            {
+                if (Math.Abs(rect.Top - other.Bottom) <= snap)
+                {
+                    y = other.Bottom;
+                }
+                else if (Math.Abs(rect.Bottom - other.Top) <= snap)
+                {
+                    y = other.Top - rect.Height;
+                }
+            }
+        }
+
+        if (x == rect.X && y == rect.Y)
+        {
+            return rect;
+        }
+
+        return new Rect(x, y, rect.Width, rect.Height);
+    }
+
+    private static Rect ClampToAvailableSize(Rect bounds, IReadOnlyList<MdiLayoutEntry> entries, Size finalSize)
+    {
+        var availableSize = GetAvailableSize(entries, finalSize);
+        var maxX = Math.Max(0, availableSize.Width - bounds.Width);
+        var maxY = Math.Max(0, availableSize.Height - bounds.Height);
+
+        var x = bounds.X;
+        if (x < 0)
+        {
+            x = 0;
+        }
+        else if (x > maxX)
+        {
+            x = maxX;
+        }
+
+        var y = bounds.Y;
+        if (y < 0)
+        {
+            y = 0;
+        }
+        else if (y > maxY)
+        {
+            y = maxY;
+        }
+
+        return new Rect(x, y, bounds.Width, bounds.Height);
+    }
+
+    private static Size GetAvailableSize(IReadOnlyList<MdiLayoutEntry> entries, Size finalSize)
+    {
+        var minimizedCount = 0;
+        foreach (var entry in entries)
+        {
+            if (entry.Document.MdiState == MdiWindowState.Minimized)
+            {
+                minimizedCount++;
+            }
+        }
+
+        var reservedHeight = minimizedCount > 0
+            ? MdiLayoutDefaults.MinimizedHeight + MdiLayoutDefaults.MinimizedSpacing
+            : 0;
+
+        return new Size(finalSize.Width, Math.Max(0, finalSize.Height - reservedHeight));
+    }
+
+    private static bool IsValidBounds(Rect bounds)
+    {
+        return !double.IsNaN(bounds.Width)
+               && !double.IsNaN(bounds.Height)
+               && bounds.Width > 0
+               && bounds.Height > 0;
     }
 
     private bool IsWithinButton(Control? source)

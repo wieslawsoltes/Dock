@@ -25,6 +25,22 @@ public static class RootDockDebugExtensions
         this TopLevel topLevel,
         Func<object?> layoutProvider,
         KeyGesture? gesture = null)
+        => AttachDockDebug(topLevel, layoutProvider, gesture, null);
+
+    /// <summary>
+    /// Attaches <see cref="RootDockDebug"/> toggled by <paramref name="gesture"/>.
+    /// Allows providing a custom debug window factory.
+    /// </summary>
+    /// <param name="topLevel">The top level to attach to.</param>
+    /// <param name="layoutProvider">Function that returns the current layout.</param>
+    /// <param name="gesture">The key gesture used to toggle debug.</param>
+    /// <param name="windowFactory">Optional factory to create the debug window.</param>
+    /// <returns>IDisposable instance detaching the debug window.</returns>
+    public static IDisposable AttachDockDebug(
+        this TopLevel topLevel,
+        Func<object?> layoutProvider,
+        KeyGesture? gesture,
+        Func<TopLevel, Window>? windowFactory)
     {
         var keyGesture = gesture ?? new KeyGesture(Key.F11);
         Window? debugWindow = null;
@@ -40,12 +56,12 @@ public static class RootDockDebugExtensions
                     
                     if (currentLayout is not null)
                     {
-                        debugWindow = new Window
+                        debugWindow = windowFactory?.Invoke(topLevel) ?? new Window
                         {
                             Width = 400,
-                            Height = 680,
-                            Content = new RootDockDebug { DataContext = currentLayout }
+                            Height = 680
                         };
+                        debugWindow.Content = new RootDockDebug { DataContext = currentLayout };
                         debugWindow.Closed += (_, _) => debugWindow = null;
                         debugWindow.Show();
                     }
@@ -91,6 +107,22 @@ public static class RootDockDebugExtensions
             }
         });
     }
+
+    /// <summary>
+    /// Attaches <see cref="RootDockDebug"/> toggled by <paramref name="gesture"/>.
+    /// Allows providing a custom debug window factory.
+    /// </summary>
+    /// <param name="topLevel">The top level to attach to.</param>
+    /// <param name="layoutProvider">Function that returns the current layout.</param>
+    /// <param name="windowFactory">Optional factory to create the debug window.</param>
+    /// <param name="gesture">The key gesture used to toggle debug.</param>
+    /// <returns>IDisposable instance detaching the debug window.</returns>
+    public static IDisposable AttachDockDebug(
+        this TopLevel topLevel,
+        Func<object?> layoutProvider,
+        Func<TopLevel, Window>? windowFactory,
+        KeyGesture? gesture)
+        => AttachDockDebug(topLevel, layoutProvider, gesture, windowFactory);
 
 
 

@@ -1,6 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
                     xmlns:recycling="using:Avalonia.Controls.Recycling"
                     x:CompileBindings="True">
   <ControlTheme x:Key="{x:Type DragPreviewControl}" TargetType="DragPreviewControl">
@@ -28,16 +30,27 @@
             <Border x:Name="PART_ContentHost"
                     Background="{DynamicResource DockThemeBackgroundBrush}"
                     IsVisible="{TemplateBinding ShowContent}">
-              <ContentControl x:Name="PART_ContentPresenter"
-                              Width="{TemplateBinding PreviewContentWidth}"
-                              Height="{TemplateBinding PreviewContentHeight}"
-                              Content="{TemplateBinding DataContext}"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch">
-                <ContentControl.ContentTemplate>
-                  <recycling:ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                </ContentControl.ContentTemplate>
-              </ContentControl>
+              <Grid>
+                <ContentControl x:Name="PART_PreviewContentPresenter"
+                                Width="{TemplateBinding PreviewContentWidth}"
+                                Height="{TemplateBinding PreviewContentHeight}"
+                                Content="{TemplateBinding PreviewContent}"
+                                IsVisible="{Binding $parent[controls:DragPreviewControl].PreviewContent, Converter={x:Static converters:NotNullConverter.Instance}}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                <ContentControl x:Name="PART_ContentPresenter"
+                                Width="{TemplateBinding PreviewContentWidth}"
+                                Height="{TemplateBinding PreviewContentHeight}"
+                                Content="{TemplateBinding DataContext}"
+                                IsVisible="{Binding $parent[controls:DragPreviewControl].PreviewContent, Converter={x:Static converters:NotNullConverter.Instance}, ConverterParameter=Not}"
+                                recycling:ControlRecyclingDataTemplate.ControlRecycling="{Binding $parent[controls:DragPreviewControl].ControlRecycling}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                  <ContentControl.ContentTemplate>
+                    <recycling:ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                  </ContentControl.ContentTemplate>
+                </ContentControl>
+              </Grid>
             </Border>
           </DockPanel>
         </Border>

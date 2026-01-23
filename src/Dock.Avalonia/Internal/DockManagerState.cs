@@ -41,13 +41,13 @@ internal abstract class DockManagerState : IDockManagerState
     [Conditional("DEBUG")]
     protected static void LogDropRejection(string stage, string message)
     {
-    DockLogger.LogDebug(stage, message);
+        DockLogger.LogDebug(stage, message);
     }
 
     [Conditional("DEBUG")]
     protected static void LogDragState(string message)
     {
-    DockLogger.LogDebug("DragState", message);
+        DockLogger.LogDebug("DragState", message);
     }
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
@@ -331,10 +331,127 @@ internal abstract class DockManagerState : IDockManagerState
         return defaultValid;
     }
 
-    protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)
+    protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory, PixelPoint dragOffset)
     {
         var screen = inputActiveDockControl.PointToScreen(point);
-        dockable.SetPointerScreenPosition(screen.X, screen.Y);
+        var adjustedScreen = new PixelPoint(screen.X + dragOffset.X, screen.Y + dragOffset.Y);
+        var pointer = new Point(adjustedScreen.X, adjustedScreen.Y);
+
+        if (DockSettings.UseManagedWindows
+            && TryGetManagedPointerPosition(inputActiveDockControl, factory, point, dragOffset, out var managedPointer))
+        {
+            pointer = managedPointer;
+        }
+
+        dockable.SetPointerScreenPosition(pointer.X, pointer.Y);
         factory.FloatDockable(dockable);
+    }
+
+    private static bool TryGetManagedPointerPosition(
+        DockControl inputActiveDockControl,
+        IFactory factory,
+        Point point,
+        PixelPoint dragOffset,
+        out Point pointer)
+    {
+        pointer = default;
+
+        if (!TryResolveManagedLayer(inputActiveDockControl, factory, out var layer))
+        {
+            return false;
+        }
+
+        var translated = inputActiveDockControl.TranslatePoint(point, layer);
+        if (translated.HasValue)
+        {
+            var offset = GetDipOffset(inputActiveDockControl, dragOffset);
+            pointer = new Point(translated.Value.X + offset.X, translated.Value.Y + offset.Y);
+            return true;
+        }
+
+        if (layer.GetVisualRoot() is not TopLevel topLevel)
+        {
+            return false;
+        }
+
+        var screenPoint = inputActiveDockControl.PointToScreen(point);
+        var adjustedScreen = new PixelPoint(screenPoint.X + dragOffset.X, screenPoint.Y + dragOffset.Y);
+        var clientPoint = topLevel.PointToClient(adjustedScreen);
+        var layerOrigin = layer.TranslatePoint(new Point(0, 0), topLevel) ?? new Point(0, 0);
+        pointer = new Point(clientPoint.X - layerOrigin.X, clientPoint.Y - layerOrigin.Y);
+        return true;
+    }
+
+    private static bool TryResolveManagedLayer(DockControl context, IFactory factory, out ManagedWindowLayer layer)
+    {
+        layer = null!;
+        var contextRoot = context.GetVisualRoot();
+
+        var resolved = ManagedWindowLayer.TryGetLayer(context);
+        if (IsLayerReady(resolved) && IsLayerInRoot(resolved, contextRoot))
+        {
+            layer = resolved!;
+            return true;
+        }
+
+        var registered = ManagedWindowRegistry.TryGetLayer(factory);
+        if (IsLayerReady(registered) && IsLayerInRoot(registered, contextRoot))
+        {
+            layer = registered!;
+            return true;
+        }
+
+        foreach (var dockControl in factory.DockControls.OfType<DockControl>())
+        {
+            var candidate = dockControl.GetVisualDescendants().OfType<ManagedWindowLayer>().FirstOrDefault();
+            if (IsLayerReady(candidate) && IsLayerInRoot(candidate, contextRoot))
+            {
+                layer = candidate!;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryGetManagedContentOffset(DockControl context, IFactory factory, out Point offset)
+    {
+        offset = default;
+
+        if (!TryResolveManagedLayer(context, factory, out var layer))
+        {
+            return false;
+        }
+
+        return layer.TryGetWindowContentOffset(out offset);
+    }
+
+    private static Point GetDipOffset(Visual visual, PixelPoint dragOffset)
+    {
+        var scaling = (visual.GetVisualRoot() as TopLevel)
+            ?.Screens
+            ?.ScreenFromVisual(visual)
+            ?.Scaling ?? 1.0;
+        return new Point(dragOffset.X / scaling, dragOffset.Y / scaling);
+    }
+
+    private static bool IsLayerReady(ManagedWindowLayer? layer)
+    {
+        return layer is { IsVisible: true } && layer.GetVisualRoot() is not null;
+    }
+
+    private static bool IsLayerInRoot(ManagedWindowLayer? layer, object? contextRoot)
+    {
+        if (layer is null)
+        {
+            return false;
+        }
+
+        if (contextRoot is null)
+        {
+            return true;
+        }
+
+        return ReferenceEquals(layer.GetVisualRoot(), contextRoot);
     }
 }

@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Recycling;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
@@ -42,6 +44,26 @@ public class DragPreviewControl : TemplatedControl
     /// </summary>
     public static readonly StyledProperty<double> PreviewContentHeightProperty =
         AvaloniaProperty.Register<DragPreviewControl, double>(nameof(PreviewContentHeight), double.NaN);
+
+    /// <summary>
+    /// Defines <see cref="ControlRecycling"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IControlRecycling?> ControlRecyclingProperty =
+        AvaloniaProperty.Register<DragPreviewControl, IControlRecycling?>(nameof(ControlRecycling));
+
+    /// <summary>
+    /// Defines <see cref="PreviewContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Control?> PreviewContentProperty =
+        AvaloniaProperty.Register<DragPreviewControl, Control?>(nameof(PreviewContent));
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DragPreviewControl"/> class.
+    /// </summary>
+    public DragPreviewControl()
+    {
+        ControlRecycling = new ControlRecycling();
+    }
     
     /// <summary>
     /// Gets or sets tab header template.
@@ -86,5 +108,23 @@ public class DragPreviewControl : TemplatedControl
     {
         get => GetValue(PreviewContentHeightProperty);
         set => SetValue(PreviewContentHeightProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the control recycling instance for preview content.
+    /// </summary>
+    public IControlRecycling? ControlRecycling
+    {
+        get => GetValue(ControlRecyclingProperty);
+        set => SetValue(ControlRecyclingProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the managed preview content.
+    /// </summary>
+    public Control? PreviewContent
+    {
+        get => GetValue(PreviewContentProperty);
+        set => SetValue(PreviewContentProperty, value);
     }
 }

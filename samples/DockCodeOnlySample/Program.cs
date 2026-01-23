@@ -9,6 +9,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace DockCodeOnlySample;
 
@@ -23,7 +24,8 @@ internal class Program
     static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .LogToTrace();
+            .LogToTrace()
+            .UseManagedWindows();
 }
 
 public class App : Application

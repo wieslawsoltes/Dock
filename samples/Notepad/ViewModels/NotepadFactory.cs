@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dock.Avalonia.Controls;
+using Dock.Settings;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm;
@@ -136,7 +137,7 @@ public class NotepadFactory : Factory
 
         HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
         {
-            [nameof(IDockWindow)] = () => new HostWindow()
+            [nameof(IDockWindow)] = () => DockSettings.UseManagedWindows ? new ManagedHostWindow() : new HostWindow()
         };
 
         base.InitLayout(layout);

@@ -25,5 +25,6 @@ internal class Program
             .UseReactiveUI()
             .ShowDockablePreviewOnDrag()
             .SetDragPreviewOpacity(0.6)
+            .UseManagedWindows()
             .LogToTrace();
 }

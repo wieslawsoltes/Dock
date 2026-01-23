@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -17,6 +18,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     public Control? Adorner;
     private DockAdornerWindow? _window;
     private AdornerLayer? _layer;
+    private ManagedWindowLayer? _managedLayer;
 
     public void AddAdorner(Visual visual, bool indicatorsOnly, bool allowHorizontalDocking = true, bool allowVerticalDocking = true)
     {
@@ -32,6 +34,12 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     private void AddFloatingAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
     {
+        if (DockSettings.UseManagedWindows)
+        {
+            AddManagedAdorner(visual, indicatorsOnly, horizontalDocking, verticalDocking);
+            return;
+        }
+
         if (_window is not null)
         {
             // Ensure the content is properly detached before closing the window
@@ -167,6 +175,12 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     private void RemoveFloatingAdorner()
     {
+        if (DockSettings.UseManagedWindows)
+        {
+            RemoveManagedAdorner();
+            return;
+        }
+
         if (_window is not null)
         {
             // Ensure the content is properly detached before closing the window
@@ -180,6 +194,65 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
         Adorner = null;
         _adorner.Reset();
+    }
+
+    private void AddManagedAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
+    {
+        var layer = ManagedWindowLayer.TryGetLayer(visual);
+        if (layer is null)
+        {
+            return;
+        }
+
+        _managedLayer = layer;
+        Adorner = _adorner;
+
+        if (Adorner is { } adorner)
+        {
+            switch (adorner)
+            {
+                case DockTarget dockTarget:
+                    dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                    dockTarget.ShowHorizontalTargets = horizontalDocking;
+                    dockTarget.ShowVerticalTargets = verticalDocking;
+                    break;
+                case GlobalDockTarget globalDockTarget:
+                    globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                    globalDockTarget.ShowHorizontalTargets = horizontalDocking;
+                    globalDockTarget.ShowVerticalTargets = verticalDocking;
+                    break;
+            }
+        }
+
+        var position = visual.PointToScreen(new Point());
+        var bounds = new Rect(new Point(0, 0), visual.Bounds.Size);
+        bounds = ManagedBoundsFromScreen(layer, position, bounds.Size);
+        layer.ShowOverlay("DockAdorner", _adorner, bounds, true);
+    }
+
+    private void RemoveManagedAdorner()
+    {
+        if (_managedLayer is not null)
+        {
+            _managedLayer.HideOverlay("DockAdorner");
+            _managedLayer = null;
+        }
+
+        Adorner = null;
+        _adorner.Reset();
+    }
+
+    private static Rect ManagedBoundsFromScreen(ManagedWindowLayer layer, PixelPoint screenPoint, Size size)
+    {
+        if (layer.GetVisualRoot() is not TopLevel topLevel)
+        {
+            return new Rect(0, 0, size.Width, size.Height);
+        }
+
+        var clientPoint = topLevel.PointToClient(screenPoint);
+        var layerOrigin = layer.TranslatePoint(new Point(0, 0), topLevel) ?? new Point(0, 0);
+        var local = new Point(clientPoint.X - layerOrigin.X, clientPoint.Y - layerOrigin.Y);
+        return new Rect(local, size);
     }
 
     private void RemoveRegularAdorner()

@@ -1,11 +1,14 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Dock.Avalonia.Controls"
         x:Class="Dock.Avalonia.Themes.Fluent.DockFluentTheme">
   <Styles.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
         <ResourceInclude Source="/Controls/ControlStrings.axaml" />
+        <ResourceInclude Source="/Accents/Fluent.axaml" />
+        <ResourceInclude Source="/Controls/WindowChromeResources.axaml" />
         <ResourceInclude Source="/Controls/ScrollViewer.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStripItem.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStrip.axaml" />
@@ -36,6 +39,7 @@
         <ResourceInclude Source="/Controls/ToolDockControl.axaml" />
         <ResourceInclude Source="/Controls/SplitViewDockControl.axaml" />
         <ResourceInclude Source="/Controls/DockControl.axaml" />
+        <ResourceInclude Source="/Controls/ManagedWindowLayer.axaml" />
         <ResourceInclude Source="/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="/Controls/HostWindow.axaml" />
         <ResourceInclude Source="/Controls/BusyOverlayControl.axaml" />
@@ -50,8 +54,19 @@
         <ResourceInclude Source="/Controls/DragPreviewWindow.axaml" />
         <ResourceInclude Source="/Controls/PinnedDockWindow.axaml" />
         <ResourceInclude Source="/Controls/DockAdornerWindow.axaml" />
-        <ResourceInclude Source="/Accents/Fluent.axaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Styles.Resources>
+
+  <Style Selector="controls|ManagedWindowLayer controls|ToolChromeControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          Content="{TemplateBinding Content}"
+                          Padding="{TemplateBinding Padding}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
 </Styles>

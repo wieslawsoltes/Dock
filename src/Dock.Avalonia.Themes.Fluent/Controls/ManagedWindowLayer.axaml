@@ -1,0 +1,41 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <controls:ManagedWindowLayer Width="600" Height="400" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type controls:ManagedWindowLayer}" TargetType="controls:ManagedWindowLayer">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <ItemsControl x:Name="PART_Windows"
+                        Classes="ManagedWindowItems"
+                        ItemsSource="{Binding $parent[controls:ManagedWindowLayer].Dock.VisibleDockables}">
+            <ItemsControl.Styles>
+              <Style Selector="ItemsControl.ManagedWindowItems > ContentPresenter"
+                     x:DataType="dmc:IMdiDocument">
+                <Setter Property="ZIndex" Value="{Binding MdiZIndex}" />
+              </Style>
+            </ItemsControl.Styles>
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <controls:MdiLayoutPanel LayoutManager="{Binding $parent[controls:ManagedWindowLayer].LayoutManager}" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="controls:ManagedDockWindowDocument">
+                <controls:MdiDocumentWindow MdiState="{Binding MdiState}"
+                                            ZIndex="{Binding MdiZIndex}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <Canvas x:Name="PART_OverlayCanvas"
+                  ZIndex="10000" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

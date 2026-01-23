@@ -158,6 +158,20 @@ public sealed class AvaloniaHostServiceResolver : IHostServiceResolver
             return null;
         }
 
+        if (control.FindAncestorOfType<ManagedWindowLayer>() is { } managedLayer)
+        {
+            resolved = ResolveFromDataContext<TService>(managedLayer.DataContext);
+            if (resolved is not null)
+            {
+                return resolved;
+            }
+
+            if (managedLayer.Dock is TService fromDock)
+            {
+                return fromDock;
+            }
+        }
+
         if (topLevel is HostWindow hostWindow)
         {
             resolved = ResolveFromDataContext<TService>(hostWindow.DataContext);
@@ -181,6 +195,14 @@ public sealed class AvaloniaHostServiceResolver : IHostServiceResolver
             if (dockControl.Layout is TService fromLayout)
             {
                 return fromLayout;
+            }
+        }
+
+        foreach (var layer in topLevel.GetVisualDescendants().OfType<ManagedWindowLayer>())
+        {
+            if (layer.Dock is TService fromDock)
+            {
+                return fromDock;
             }
         }
 

@@ -85,11 +85,11 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
         if (TryGetValue(key, out var control))
         {
             // If the cached control is currently in the visual tree, remove it from its parent
-            if (control is Visual visual)
+            if (control is Visual visual && !ReferenceEquals(existing, control))
             {
                 RemoveFromVisualParent(visual);
             }
-            
+
             return control;
         }
 

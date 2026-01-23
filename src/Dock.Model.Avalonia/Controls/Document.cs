@@ -148,6 +148,6 @@ public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        return TemplateHelper.Build(Content, this);
+        return TemplateHelper.Build(Content, this, existing);
     }
 }

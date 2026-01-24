@@ -546,7 +546,8 @@ public class MdiDocumentWindow : TemplatedControl
         }
 
         var relativeVisual = this.FindAncestorOfType<MdiLayoutPanel>() as Visual ?? this;
-        var screenPoint = relativeVisual.PointToScreen(localPosition);
+        var translatedPoint = this.TranslatePoint(localPosition, relativeVisual) ?? localPosition;
+        var screenPoint = relativeVisual.PointToScreen(translatedPoint);
         managedHost.ProcessDrag(screenPoint, eventType);
     }
 

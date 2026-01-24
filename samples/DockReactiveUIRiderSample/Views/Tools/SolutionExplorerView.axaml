@@ -1,0 +1,32 @@
+<UserControl x:Class="DockReactiveUIRiderSample.Views.Tools.SolutionExplorerView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockReactiveUIRiderSample.ViewModels.Tools"
+             xmlns:models="using:DockReactiveUIRiderSample.Models"
+             xmlns:tools="using:DockReactiveUIRiderSample.Views.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="260" d:DesignHeight="400"
+             x:DataType="vm:SolutionExplorerViewModel" x:CompileBindings="True">
+  <UserControl.Resources>
+    <tools:SolutionItemKindToIconConverter x:Key="SolutionItemIconConverter" />
+  </UserControl.Resources>
+  <Border Background="{StaticResource RiderPanelBrush}">
+    <TreeView ItemsSource="{Binding Items}"
+              SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+              DoubleTapped="OnTreeViewDoubleTapped">
+      <TreeView.ItemTemplate>
+        <TreeDataTemplate DataType="models:SolutionItemViewModel" ItemsSource="{Binding Children}">
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <PathIcon Data="{Binding Kind, Converter={StaticResource SolutionItemIconConverter}}"
+                      Width="14"
+                      Height="14"
+                      Foreground="{StaticResource RiderMutedTextBrush}" />
+            <TextBlock Text="{Binding Name}" />
+          </StackPanel>
+        </TreeDataTemplate>
+      </TreeView.ItemTemplate>
+    </TreeView>
+  </Border>
+</UserControl>

@@ -1,0 +1,23 @@
+<UserControl x:Class="DockReactiveUIRiderSample.Views.Tools.PropertiesToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockReactiveUIRiderSample.ViewModels.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="260" d:DesignHeight="400"
+             x:DataType="vm:PropertiesToolViewModel" x:CompileBindings="True">
+  <Border Background="{StaticResource RiderPanelBrush}" Padding="12">
+    <StackPanel Spacing="8">
+      <TextBlock Text="{Binding ItemName}" FontWeight="SemiBold" />
+      <StackPanel>
+        <TextBlock Text="Kind" Foreground="{StaticResource RiderMutedTextBrush}" />
+        <TextBlock Text="{Binding ItemKind}" />
+      </StackPanel>
+      <StackPanel>
+        <TextBlock Text="Path" Foreground="{StaticResource RiderMutedTextBrush}" />
+        <TextBlock Text="{Binding ItemPath}" TextWrapping="Wrap" />
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</UserControl>

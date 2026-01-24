@@ -78,4 +78,61 @@ public class DockWorkspaceManagerTests
         Assert.Same(root, restored);
         Assert.Equal(workspace, manager.ActiveWorkspace);
     }
+
+    [Fact]
+    public void TrackFactory_MarksDirty_WhenDockableChanges()
+    {
+        var serializer = new StubDockSerializer();
+        var manager = new DockWorkspaceManager(serializer);
+        var factory = new Factory();
+        var dockable = factory.CreateDocument();
+
+        manager.TrackFactory(factory);
+
+        Assert.False(manager.IsDirty);
+
+        factory.OnDockableMoved(dockable);
+
+        Assert.True(manager.IsDirty);
+    }
+
+    [Fact]
+    public void Capture_ClearsDirtyState()
+    {
+        var serializer = new StubDockSerializer();
+        var manager = new DockWorkspaceManager(serializer);
+        var factory = new Factory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        factory.InitLayout(root);
+        var dockable = factory.CreateDocument();
+
+        manager.TrackFactory(factory);
+        factory.OnDockableDocked(dockable, DockOperation.Fill);
+
+        Assert.True(manager.IsDirty);
+
+        var workspace = manager.Capture("Layout", root, includeState: false);
+
+        Assert.False(manager.IsDirty);
+        Assert.False(workspace.IsDirty);
+    }
+
+    [Fact]
+    public void TrackFactory_RespectsDockableFilter()
+    {
+        var serializer = new StubDockSerializer();
+        var manager = new DockWorkspaceManager(serializer);
+        var factory = new Factory();
+        var dockable = factory.CreateDocument();
+
+        manager.TrackFactory(factory, new DockWorkspaceTrackingOptions
+        {
+            DockableFilter = _ => false
+        });
+
+        factory.OnDockableDocked(dockable, DockOperation.Fill);
+
+        Assert.False(manager.IsDirty);
+    }
 }

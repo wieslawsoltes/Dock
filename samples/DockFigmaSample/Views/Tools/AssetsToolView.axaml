@@ -1,0 +1,49 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.AssetsToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:AssetsToolViewModel" x:CompileBindings="True">
+  <Border Background="{DynamicResource PanelBackgroundBrush}" Padding="12">
+    <StackPanel Spacing="14">
+      <TextBlock Text="Assets" Classes="section-title" />
+
+      <StackPanel Spacing="8">
+        <TextBlock Text="Color styles" Classes="subtle-title" />
+        <ItemsControl ItemsSource="{Binding Swatches}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel ItemWidth="86" ItemHeight="86" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border CornerRadius="14" Background="{DynamicResource SoftPanelBrush}" Padding="8" Margin="0,0,10,10">
+                <StackPanel Spacing="6">
+                  <Border Height="36" CornerRadius="10" Background="{Binding Brush}" />
+                  <TextBlock Text="{Binding Name}" Classes="muted" />
+                  <TextBlock Text="{Binding Hex}" Classes="layer-meta" />
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+
+      <StackPanel Spacing="8">
+        <TextBlock Text="Components" Classes="subtle-title" />
+        <ItemsControl ItemsSource="{Binding Components}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="10" Margin="0,0,0,10">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="{Binding Name}" Classes="card-title" />
+                  <TextBlock Text="{Binding Description}" Classes="muted" />
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</UserControl>

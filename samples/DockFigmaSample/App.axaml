@@ -1,0 +1,19 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:DockFigmaSample.Converters"
+             xmlns:local="using:DockFigmaSample"
+             x:Class="DockFigmaSample.App">
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <converters:EnumEqualsConverter x:Key="EnumEqualsConverter" />
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+    <DockFluentTheme />
+    <StyleInclude Source="avares://DockFigmaSample/Styles/FigmaTheme.axaml" />
+  </Application.Styles>
+</Application>

@@ -1,0 +1,30 @@
+<UserControl x:Class="DockFigmaSample.Views.Documents.InspectCanvasView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Documents"
+             x:DataType="vm:InspectCanvasViewModel" x:CompileBindings="True">
+  <Grid Background="{DynamicResource CanvasBaseBrush}">
+    <Border Background="{DynamicResource CanvasGridBrush}" Opacity="0.6" />
+
+    <Border Width="780" Height="420"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Background="{DynamicResource PanelBackgroundBrush}"
+            BorderBrush="{DynamicResource AccentBrush}"
+            BorderThickness="2"
+            CornerRadius="18">
+      <Grid>
+        <Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16" Padding="8,4" CornerRadius="8" Background="{DynamicResource SoftPanelBrush}">
+          <TextBlock Text="Measured" Classes="muted" />
+        </Border>
+        <TextBlock Text="Spacing: 24" Classes="inspect-metric" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="16" />
+      </Grid>
+    </Border>
+
+    <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="24" Padding="12,8" CornerRadius="12" Background="{DynamicResource CanvasOverlayBrush}">
+      <StackPanel>
+        <TextBlock Text="{Binding SelectedLayer}" Classes="card-title" />
+        <TextBlock Text="{Binding Measurements}" Classes="muted" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

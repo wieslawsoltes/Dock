@@ -1,0 +1,61 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.InspectorDesignView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:InspectorDesignViewModel" x:CompileBindings="True">
+  <StackPanel Spacing="16">
+    <TextBlock Text="Design" Classes="section-title" />
+
+    <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="12">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Size" Classes="subtle-title" />
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+          <StackPanel Spacing="4">
+            <TextBlock Text="W" Classes="field-label" />
+            <TextBox Text="{Binding Width}" Classes="field-input" />
+          </StackPanel>
+          <StackPanel Grid.Column="1" Spacing="4">
+            <TextBlock Text="H" Classes="field-label" />
+            <TextBox Text="{Binding Height}" Classes="field-input" />
+          </StackPanel>
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="12">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Appearance" Classes="subtle-title" />
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+          <StackPanel Spacing="4">
+            <TextBlock Text="Radius" Classes="field-label" />
+            <TextBox Text="{Binding Radius}" Classes="field-input" />
+          </StackPanel>
+          <StackPanel Grid.Column="1" Spacing="4">
+            <TextBlock Text="Opacity" Classes="field-label" />
+            <TextBox Text="{Binding Opacity}" Classes="field-input" />
+          </StackPanel>
+        </Grid>
+        <StackPanel Spacing="4">
+          <TextBlock Text="Fill" Classes="field-label" />
+          <TextBox Text="{Binding Fill}" Classes="field-input" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="12">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Layout" Classes="subtle-title" />
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+          <StackPanel Spacing="4">
+            <TextBlock Text="Mode" Classes="field-label" />
+            <TextBox Text="{Binding Layout}" Classes="field-input" />
+          </StackPanel>
+          <StackPanel Grid.Column="1" Spacing="4">
+            <TextBlock Text="Spacing" Classes="field-label" />
+            <TextBox Text="{Binding Spacing}" Classes="field-input" />
+          </StackPanel>
+        </Grid>
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

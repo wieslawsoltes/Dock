@@ -1,0 +1,24 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.InspectorPrototypeView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:InspectorPrototypeViewModel" x:CompileBindings="True">
+  <StackPanel Spacing="16">
+    <TextBlock Text="Prototype" Classes="section-title" />
+    <TextBlock Text="Interactions" Classes="subtle-title" />
+    <ItemsControl ItemsSource="{Binding Flows}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="12" Margin="0,0,0,10">
+            <StackPanel Spacing="6">
+              <TextBlock Text="{Binding Trigger}" Classes="card-title" />
+              <TextBlock Text="{Binding Action}" Classes="muted" />
+              <TextBlock Text="{Binding Destination}" Classes="layer-meta" />
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+    <Button Content="Add interaction" Classes="ghost" />
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,40 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.CommentsToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:CommentsToolViewModel" x:CompileBindings="True">
+  <Border Background="{DynamicResource PanelBackgroundBrush}" Padding="12">
+    <StackPanel Spacing="12">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="Comments" Classes="section-title" />
+        <Button Grid.Column="1" Content="Resolve" Classes="ghost" />
+      </Grid>
+
+      <ScrollViewer VerticalScrollBarVisibility="Auto" Height="160">
+        <ItemsControl ItemsSource="{Binding Comments}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Margin="0,0,0,12">
+                <Border Width="30" Height="30" CornerRadius="15" Background="{DynamicResource AccentBrush}">
+                  <TextBlock Text="{Binding Initials}" HorizontalAlignment="Center" VerticalAlignment="Center" Classes="avatar" />
+                </Border>
+                <StackPanel Grid.Column="1" Spacing="4">
+                  <TextBlock Text="{Binding Author}" Classes="card-title" />
+                  <TextBlock Text="{Binding Body}" Classes="muted" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding Time}" Classes="layer-meta" />
+                </StackPanel>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+
+      <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="10">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Add a comment" Classes="subtle-title" />
+          <TextBox Watermark="Type your note" Classes="panel-search" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </Border>
+</UserControl>

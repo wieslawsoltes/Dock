@@ -1,0 +1,72 @@
+<UserControl x:Class="DockFigmaSample.Views.WorkspaceView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
+             xmlns:vm="using:DockFigmaSample.ViewModels"
+             x:DataType="vm:WorkspaceViewModel" x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,*,Auto">
+    <Border Grid.Row="0"
+            Background="{DynamicResource TopBarBrush}"
+            BorderBrush="{DynamicResource TopBarBorderBrush}"
+            BorderThickness="0,0,0,1"
+            Padding="16,10">
+      <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <Border Width="28" Height="28" CornerRadius="10" Background="{DynamicResource AccentBrush}">
+            <TextBlock Text="F" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="logo" />
+          </Border>
+          <StackPanel>
+            <TextBlock Text="{Binding FileName}" Classes="topbar-title" />
+            <TextBlock Text="{Binding ProjectName}" Classes="topbar-subtitle" />
+          </StackPanel>
+          <Button Content="Files" Command="{Binding HostScreen.Router.NavigateBack}" Classes="ghost-inverse" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+          <ToggleButton Content="Design"
+                        Classes="mode-toggle"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static vm:WorkspaceMode.Design}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static vm:WorkspaceMode.Design}" />
+          <ToggleButton Content="Prototype"
+                        Classes="mode-toggle"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static vm:WorkspaceMode.Prototype}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static vm:WorkspaceMode.Prototype}" />
+          <ToggleButton Content="Inspect"
+                        Classes="mode-toggle"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static vm:WorkspaceMode.Inspect}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static vm:WorkspaceMode.Inspect}" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center" HorizontalAlignment="Right">
+          <TextBox Width="180" Watermark="Search" Classes="search" />
+          <Button Content="Share" Classes="primary-inverse" />
+          <Border Width="28" Height="28" CornerRadius="14" Background="{DynamicResource AccentWarmBrush}">
+            <TextBlock Text="AF" HorizontalAlignment="Center" VerticalAlignment="Center" Classes="avatar" />
+          </Border>
+          <Border Width="28" Height="28" CornerRadius="14" Background="{DynamicResource AccentMintBrush}">
+            <TextBlock Text="NR" HorizontalAlignment="Center" VerticalAlignment="Center" Classes="avatar" />
+          </Border>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <DockControl Grid.Row="1" Layout="{Binding Layout}" Classes="figma-dock" />
+
+    <Border Grid.Row="2"
+            Background="{DynamicResource StatusBarBrush}"
+            BorderBrush="{DynamicResource PanelBorderBrush}"
+            BorderThickness="0,1,0,0"
+            Padding="16,8">
+      <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+        <TextBlock Text="{Binding StatusMessage}" Classes="muted" />
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+          <TextBlock Text="Zoom 100%" Classes="muted" />
+          <TextBlock Text="Snap On" Classes="muted" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

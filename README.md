@@ -122,6 +122,7 @@ Install-Package Dock.Avalonia.Themes.Fluent -Pre
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples
   - **`DockMvvmSample`** - Full MVVM implementation
   - **`DockReactiveUISample`** - ReactiveUI patterns
+  - **`DockOfficeSample`** - Office-style workspaces with ReactiveUI navigation
   - **`DockCodeOnlySample`** - Pure C# layouts
   - **`Notepad`** - Real-world text editor example
   - **`VisualStudioDemo`** - Visual Studio-like interface

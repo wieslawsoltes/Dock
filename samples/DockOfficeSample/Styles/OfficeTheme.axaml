@@ -1,0 +1,252 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Styles.Resources>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#F4F5F7" />
+    <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="PanelBorderBrush" Color="#D6DAE3" />
+    <SolidColorBrush x:Key="AccentNeutralBrush" Color="#9099AA" />
+    <SolidColorBrush x:Key="CanvasBrush" Color="#F6F7FA" />
+    <SolidColorBrush x:Key="CanvasBorderBrush" Color="#E1E4EA" />
+    <SolidColorBrush x:Key="LineBrush" Color="#D7DCE6" />
+    <SolidColorBrush x:Key="SlidePlaceholderBrush" Color="#EEF1F6" />
+    <SolidColorBrush x:Key="SlideThumbnailBrush" Color="#E6EAF2" />
+    <SolidColorBrush x:Key="GridHeaderBrush" Color="#EDF0F6" />
+
+    <SolidColorBrush x:Key="WordAccentBrush" Color="#2B579A" />
+    <SolidColorBrush x:Key="WordAccentDarkBrush" Color="#1B365C" />
+    <SolidColorBrush x:Key="ExcelAccentBrush" Color="#217346" />
+    <SolidColorBrush x:Key="ExcelAccentDarkBrush" Color="#0F3D23" />
+    <SolidColorBrush x:Key="PowerPointAccentBrush" Color="#D24726" />
+    <SolidColorBrush x:Key="PowerPointAccentDarkBrush" Color="#7A2A16" />
+
+    <LinearGradientBrush x:Key="HomeHeaderBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#1F2937" Offset="0" />
+      <GradientStop Color="#374151" Offset="1" />
+    </LinearGradientBrush>
+  </Styles.Resources>
+
+  <Style Selector="TextBlock.hero-title">
+    <Setter Property="FontSize" Value="28" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+
+  <Style Selector="TextBlock.hero-subtitle">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="Foreground" Value="#D1D5DB" />
+  </Style>
+
+  <Style Selector="TextBlock.section-title">
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="Button.app-card">
+    <Setter Property="Width" Value="240" />
+    <Setter Property="Height" Value="120" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="CornerRadius" Value="16" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Background" Value="#FFFFFF" />
+  </Style>
+
+  <Style Selector="Button.app-card.word">
+    <Setter Property="Background" Value="#E8EEF9" />
+  </Style>
+
+  <Style Selector="Button.app-card.excel">
+    <Setter Property="Background" Value="#E7F3EC" />
+  </Style>
+
+  <Style Selector="Button.app-card.powerpoint">
+    <Setter Property="Background" Value="#FCEEE8" />
+  </Style>
+
+  <Style Selector="TextBlock.card-title">
+    <Setter Property="FontSize" Value="18" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="TextBlock.card-subtitle">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="#4B5563" />
+  </Style>
+
+  <Style Selector="Border.recent-item">
+    <Setter Property="Background" Value="#FFFFFF" />
+    <Setter Property="BorderBrush" Value="#E5E7EB" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="Border.recent-badge">
+    <Setter Property="Background" Value="#EEF2F7" />
+  </Style>
+
+  <Style Selector="TextBlock.badge-text">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#374151" />
+  </Style>
+
+  <Style Selector="TextBlock.recent-title">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="TextBlock.recent-subtitle">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="#4B5563" />
+  </Style>
+
+  <Style Selector="TextBlock.recent-meta">
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="Foreground" Value="#6B7280" />
+  </Style>
+
+  <Style Selector="TextBlock.app-title">
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+
+  <Style Selector="TextBlock.app-subtitle">
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="Foreground" Value="#E5E7EB" />
+  </Style>
+
+  <Style Selector="TextBlock.app-badge">
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="ToggleButton.mode-toggle">
+    <Setter Property="Background" Value="#FFFFFF" />
+    <Setter Property="BorderBrush" Value="#E5E7EB" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="10,4" />
+  </Style>
+
+  <Style Selector="ToggleButton.mode-toggle:checked">
+    <Setter Property="Background" Value="#111827" />
+    <Setter Property="BorderBrush" Value="#111827" />
+    <Setter Property="Foreground" Value="#FFFFFF" />
+  </Style>
+
+  <Style Selector="Button.ghost">
+    <Setter Property="Background" Value="#F3F4F6" />
+    <Setter Property="BorderBrush" Value="#E5E7EB" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="10,4" />
+  </Style>
+
+  <Style Selector="Button.ghost-light">
+    <Setter Property="Background" Value="#FFFFFF" />
+    <Setter Property="BorderBrush" Value="#E5E7EB" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="10,4" />
+  </Style>
+
+  <Style Selector="TextBlock.status-text">
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="Foreground" Value="#6B7280" />
+  </Style>
+
+  <Style Selector="TextBlock.panel-title">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="TextBlock.panel-subtitle">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="#6B7280" />
+  </Style>
+
+  <Style Selector="TextBlock.panel-text">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="Border.panel-item">
+    <Setter Property="Background" Value="#F3F4F6" />
+  </Style>
+
+  <Style Selector="TextBlock.ribbon-tab-text">
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="Foreground" Value="#374151" />
+  </Style>
+
+  <Style Selector="Border.ribbon-tab">
+    <Setter Property="Background" Value="#F3F4F6" />
+  </Style>
+
+  <Style Selector="Border.ribbon-group">
+    <Setter Property="Background" Value="#FFFFFF" />
+    <Setter Property="BorderBrush" Value="#E5E7EB" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="TextBlock.ribbon-group-title">
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="Border.ribbon-action">
+    <Setter Property="Background" Value="#F3F4F6" />
+  </Style>
+
+  <Style Selector="TextBlock.ribbon-action-text">
+    <Setter Property="FontSize" Value="10" />
+    <Setter Property="Foreground" Value="#4B5563" />
+  </Style>
+
+  <Style Selector="TextBlock.doc-title">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="TextBlock.doc-subtitle">
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="Foreground" Value="#6B7280" />
+  </Style>
+
+  <Style Selector="TextBlock.page-title">
+    <Setter Property="FontSize" Value="20" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="TextBlock.page-subtitle">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="#4B5563" />
+  </Style>
+
+  <Style Selector="TextBlock.grid-title">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#111827" />
+  </Style>
+
+  <Style Selector="Border.grid-cell">
+    <Setter Property="BorderBrush" Value="#E5E7EB" />
+    <Setter Property="BorderThickness" Value="0.5" />
+    <Setter Property="Padding" Value="6" />
+  </Style>
+
+  <Style Selector="TextBlock.grid-cell-text">
+    <Setter Property="FontSize" Value="10" />
+    <Setter Property="Foreground" Value="#4B5563" />
+  </Style>
+</Styles>

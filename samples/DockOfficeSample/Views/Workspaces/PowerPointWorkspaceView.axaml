@@ -1,0 +1,57 @@
+<UserControl x:Class="DockOfficeSample.Views.Workspaces.PowerPointWorkspaceView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockOfficeSample.ViewModels.Workspaces"
+             xmlns:docs="using:DockOfficeSample.ViewModels.Documents"
+             x:DataType="vm:PowerPointWorkspaceViewModel" x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,*,Auto">
+    <Border Grid.Row="0" Background="{DynamicResource PowerPointAccentBrush}" Padding="18,12">
+      <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource PowerPointAccentDarkBrush}">
+            <TextBlock Text="P" Classes="app-badge" />
+          </Border>
+          <StackPanel>
+            <TextBlock Text="PowerPoint" Classes="app-title" />
+            <TextBlock Text="{Binding FileName}" Classes="app-subtitle" />
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+          <ToggleButton Classes="mode-toggle"
+                        Content="Normal"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static docs:PowerPointViewMode.Normal}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static docs:PowerPointViewMode.Normal}" />
+          <ToggleButton Classes="mode-toggle"
+                        Content="Slide Sorter"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static docs:PowerPointViewMode.SlideSorter}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static docs:PowerPointViewMode.SlideSorter}" />
+          <ToggleButton Classes="mode-toggle"
+                        Content="Presenter"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static docs:PowerPointViewMode.Presenter}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static docs:PowerPointViewMode.Presenter}" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+          <TextBlock Text="Rehearsal" Classes="app-subtitle" />
+          <Button Content="Home" Classes="ghost-light" Command="{Binding HostScreen.Router.NavigateBack}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <DockControl Grid.Row="1" Layout="{Binding Layout}" />
+
+    <Border Grid.Row="2" Background="{DynamicResource SurfaceElevatedBrush}" Padding="16,8" BorderBrush="{DynamicResource PanelBorderBrush}" BorderThickness="0,1,0,0">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="{Binding StatusMessage}" Classes="status-text" />
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+          <TextBlock Text="Notes" Classes="status-text" />
+          <TextBlock Text="Slide 3 of 18" Classes="status-text" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

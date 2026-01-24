@@ -1,0 +1,65 @@
+<UserControl x:Class="DockOfficeSample.Views.HomeView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockOfficeSample.ViewModels"
+             xmlns:models="using:DockOfficeSample.Models"
+             x:DataType="vm:HomeViewModel" x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,*" Background="{DynamicResource SurfaceBrush}">
+    <Border Grid.Row="0" Padding="32,28" Background="{DynamicResource HomeHeaderBrush}">
+      <StackPanel Spacing="6">
+        <TextBlock Text="Office Dock Showcase" Classes="hero-title" />
+        <TextBlock Text="Three Office-inspired workspaces built with Dock + ReactiveUI navigation." Classes="hero-subtitle" />
+      </StackPanel>
+    </Border>
+
+    <ScrollViewer Grid.Row="1" Padding="32" VerticalScrollBarVisibility="Auto">
+      <StackPanel Spacing="24">
+        <StackPanel Spacing="12">
+          <TextBlock Text="Launch a workspace" Classes="section-title" />
+          <StackPanel Orientation="Horizontal" Spacing="16">
+            <Button Classes="app-card word" Command="{Binding OpenWord}">
+              <StackPanel Spacing="6">
+                <TextBlock Text="Word" Classes="card-title" />
+                <TextBlock Text="Document authoring, styles, review." Classes="card-subtitle" />
+              </StackPanel>
+            </Button>
+            <Button Classes="app-card excel" Command="{Binding OpenExcel}">
+              <StackPanel Spacing="6">
+                <TextBlock Text="Excel" Classes="card-title" />
+                <TextBlock Text="Data grids, formulas, insights." Classes="card-subtitle" />
+              </StackPanel>
+            </Button>
+            <Button Classes="app-card powerpoint" Command="{Binding OpenPowerPoint}">
+              <StackPanel Spacing="6">
+                <TextBlock Text="PowerPoint" Classes="card-title" />
+                <TextBlock Text="Slides, notes, presenter tools." Classes="card-subtitle" />
+              </StackPanel>
+            </Button>
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel Spacing="12">
+          <TextBlock Text="Recent files" Classes="section-title" />
+          <ItemsControl ItemsSource="{Binding RecentFiles}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="models:OfficeRecentFile">
+                <Border Classes="recent-item" Padding="16" CornerRadius="12">
+                  <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="16">
+                    <Border Width="52" Height="52" CornerRadius="10" Classes="recent-badge">
+                      <TextBlock Text="{Binding AppKind}" HorizontalAlignment="Center" VerticalAlignment="Center" Classes="badge-text" />
+                    </Border>
+                    <TextBlock Grid.Column="1" Text="{Binding FileName}" Classes="recent-title" />
+                    <StackPanel Grid.Column="1" Grid.Row="1" Spacing="4">
+                      <TextBlock Text="{Binding Description}" Classes="recent-subtitle" />
+                      <TextBlock Text="{Binding UpdatedLabel}" Classes="recent-meta" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

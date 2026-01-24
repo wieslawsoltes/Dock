@@ -1,0 +1,29 @@
+<UserControl x:Class="DockOfficeSample.Views.Tools.OfficeInspectorToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
+             xmlns:tools="using:DockOfficeSample.ViewModels.Tools"
+             x:DataType="tools:OfficeInspectorToolViewModel" x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,*" Background="{DynamicResource SurfaceElevatedBrush}">
+    <Border Background="{DynamicResource SurfaceElevatedBrush}" Padding="12" BorderBrush="{DynamicResource PanelBorderBrush}" BorderThickness="0,0,0,1">
+      <ItemsControl ItemsSource="{Binding Sections}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Horizontal" Spacing="6" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="tools:InspectorSectionViewModel">
+            <ToggleButton Content="{Binding SectionTitle}"
+                          IsChecked="{Binding IsActive}"
+                          Classes="mode-toggle"
+                          Command="{Binding SwitchSection}"
+                          CommandParameter="{Binding}" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Border>
+
+    <rxui:RoutedViewHost Grid.Row="1" Router="{Binding Router}" />
+  </Grid>
+</UserControl>

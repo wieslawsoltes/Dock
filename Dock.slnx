@@ -49,6 +49,7 @@
     <Project Path="samples/DockCodeOnlyMvvmSample/DockCodeOnlyMvvmSample.csproj" />
     <Project Path="samples/DockCodeOnlySample/DockCodeOnlySample.csproj" />
     <Project Path="samples/DockControlPanelsSample/DockControlPanelsSample.csproj" />
+    <Project Path="samples/DockOfficeSample/DockOfficeSample.csproj" />
     <Project Path="samples/DockFigmaSample/DockFigmaSample.csproj" />
     <Project Path="samples/DockFluentCodeOnlySample/DockFluentCodeOnlySample.csproj" />
     <Project Path="samples/DockInpcSample/DockInpcSample.csproj" />

@@ -1,0 +1,57 @@
+<UserControl x:Class="DockOfficeSample.Views.Workspaces.WordWorkspaceView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockOfficeSample.ViewModels.Workspaces"
+             xmlns:docs="using:DockOfficeSample.ViewModels.Documents"
+             x:DataType="vm:WordWorkspaceViewModel" x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,*,Auto">
+    <Border Grid.Row="0" Background="{DynamicResource WordAccentBrush}" Padding="18,12">
+      <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource WordAccentDarkBrush}">
+            <TextBlock Text="W" Classes="app-badge" />
+          </Border>
+          <StackPanel>
+            <TextBlock Text="Word" Classes="app-title" />
+            <TextBlock Text="{Binding FileName}" Classes="app-subtitle" />
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+          <ToggleButton Classes="mode-toggle"
+                        Content="Read"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static docs:WordViewMode.Read}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static docs:WordViewMode.Read}" />
+          <ToggleButton Classes="mode-toggle"
+                        Content="Print"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static docs:WordViewMode.PrintLayout}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static docs:WordViewMode.PrintLayout}" />
+          <ToggleButton Classes="mode-toggle"
+                        Content="Web"
+                        IsChecked="{Binding EditorMode, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static docs:WordViewMode.WebLayout}}"
+                        Command="{Binding SwitchMode}"
+                        CommandParameter="{x:Static docs:WordViewMode.WebLayout}" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+          <TextBlock Text="Editing" Classes="app-subtitle" />
+          <Button Content="Home" Classes="ghost-light" Command="{Binding HostScreen.Router.NavigateBack}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <DockControl Grid.Row="1" Layout="{Binding Layout}" />
+
+    <Border Grid.Row="2" Background="{DynamicResource SurfaceElevatedBrush}" Padding="16,8" BorderBrush="{DynamicResource PanelBorderBrush}" BorderThickness="0,1,0,0">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="{Binding StatusMessage}" Classes="status-text" />
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+          <TextBlock Text="Zoom 110%" Classes="status-text" />
+          <TextBlock Text="English (US)" Classes="status-text" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

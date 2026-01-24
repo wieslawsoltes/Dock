@@ -1,0 +1,96 @@
+<UserControl x:Class="DockReactiveUIRiderSample.Views.MainView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockReactiveUIRiderSample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="1200" d:DesignHeight="720"
+             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
+             Background="{StaticResource RiderBackgroundBrush}"
+             FontFamily="JetBrains Sans, Segoe UI, Noto Sans, sans-serif">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <UserControl.Resources>
+    <StreamGeometry x:Key="IconOpen">M4 4H6L7 6H14V12H6L4 10V4Z</StreamGeometry>
+    <StreamGeometry x:Key="IconSave">M3 3H12L14 5V13H3V3ZM5 5V7H11V5H5Z</StreamGeometry>
+    <StreamGeometry x:Key="IconRun">M5 4L12 8L5 12V4Z</StreamGeometry>
+  </UserControl.Resources>
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
+      <Border Grid.ColumnSpan="2"
+              Background="{StaticResource RiderPanelBrush}"
+              IsHitTestVisible="False" />
+      <Menu x:Name="MainMenu"
+            Grid.Column="0"
+            Background="{x:Null}"
+            HorizontalAlignment="Left">
+        <MenuItem Header="_File">
+          <MenuItem Header="_Open Solution..." Click="OnOpenSolutionClicked" />
+          <MenuItem Header="_Close Solution" Command="{Binding CloseSolutionCommand}" />
+          <Separator />
+          <MenuItem Header="_Save" Command="{Binding SaveFileCommand}" />
+          <MenuItem Header="Save _All" Command="{Binding SaveAllCommand}" />
+          <Separator />
+          <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
+        </MenuItem>
+        <MenuItem Header="_Edit" IsEnabled="False" />
+        <MenuItem Header="_View" IsEnabled="False" />
+        <MenuItem Header="_Navigate" IsEnabled="False" />
+        <MenuItem Header="_Code" IsEnabled="False" />
+        <MenuItem Header="_Build" IsEnabled="False" />
+        <MenuItem Header="_Run" IsEnabled="False" />
+        <MenuItem Header="_Tools" IsEnabled="False" />
+        <MenuItem Header="_VCS" IsEnabled="False" />
+        <MenuItem Header="_Window" IsEnabled="False" />
+        <MenuItem Header="_Help" IsEnabled="False" />
+      </Menu>
+    </Grid>
+
+    <Border Grid.Row="1"
+            Background="{StaticResource RiderPanelBrush}"
+            BorderBrush="{StaticResource RiderBorderBrush}"
+            BorderThickness="0,0,0,1">
+      <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" Margin="8,6">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button x:Name="OpenSolutionButton" ToolTip.Tip="Open Solution" Click="OnOpenSolutionClicked">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <PathIcon Data="{StaticResource IconOpen}" Width="14" Height="14" />
+              <TextBlock Text="Open" />
+            </StackPanel>
+          </Button>
+          <Button ToolTip.Tip="Save" Command="{Binding SaveFileCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <PathIcon Data="{StaticResource IconSave}" Width="14" Height="14" />
+              <TextBlock Text="Save" />
+            </StackPanel>
+          </Button>
+          <Button ToolTip.Tip="Run" IsEnabled="False">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <PathIcon Data="{StaticResource IconRun}" Width="14" Height="14" />
+              <TextBlock Text="Run" />
+            </StackPanel>
+          </Button>
+        </StackPanel>
+        <TextBox Grid.Column="4"
+                 Width="240"
+                 Watermark="Search Everywhere"
+                 UseFloatingWatermark="True" />
+      </Grid>
+    </Border>
+
+    <DockControl Grid.Row="2" Layout="{Binding Layout}" Margin="6" />
+
+    <Border Grid.Row="3"
+            Background="{StaticResource RiderPanelBrush}"
+            BorderBrush="{StaticResource RiderBorderBrush}"
+            BorderThickness="1,1,1,0">
+      <Grid ColumnDefinitions="*,Auto,Auto" Margin="10,4">
+        <TextBlock Text="{Binding StatusText}" VerticalAlignment="Center" />
+        <TextBlock Text="{Binding SolutionName}" Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center" />
+        <TextBlock Text="{Binding ActiveDocumentStatus}" Grid.Column="2" Margin="12,0,0,0" VerticalAlignment="Center" />
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

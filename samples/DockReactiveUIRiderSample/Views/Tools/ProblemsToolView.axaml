@@ -1,0 +1,27 @@
+<UserControl x:Class="DockReactiveUIRiderSample.Views.Tools.ProblemsToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockReactiveUIRiderSample.ViewModels.Tools"
+             xmlns:models="using:DockReactiveUIRiderSample.Models"
+             mc:Ignorable="d"
+             d:DesignWidth="600" d:DesignHeight="200"
+             x:DataType="vm:ProblemsToolViewModel" x:CompileBindings="True">
+  <Border Background="{StaticResource RiderPanelBrush}">
+    <ListBox ItemsSource="{Binding Diagnostics}">
+      <ListBox.ItemTemplate>
+        <DataTemplate DataType="models:ProblemItemViewModel">
+          <Grid ColumnDefinitions="Auto,*" Margin="8,4">
+            <TextBlock Text="{Binding Severity}"
+                       Foreground="{StaticResource RiderAccentBrush}"
+                       Width="70" />
+            <TextBlock Text="{Binding Message}"
+                       Grid.Column="1"
+                       TextWrapping="Wrap" />
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </Border>
+</UserControl>

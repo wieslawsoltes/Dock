@@ -3,6 +3,8 @@
 ## Scope and goals
 This analysis focuses on every place the code base creates an Avalonia `Window` (or a derived type) and how those creation points can be overridden to support a managed window system or custom window implementations. The goal is to make all window creation paths consistent and easy to override, especially for floating dock windows created via factories.
 
+For practical setup guidance see the [Managed windows guide](dock-managed-windows-guide.md) and [Managed windows how-to](dock-managed-windows-howto.md).
+
 ## Current window creation points
 
 ### Library defaults

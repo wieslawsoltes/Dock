@@ -15,6 +15,7 @@
         <Button Content="Load B" Command="{Binding LoadWorkspaceB}" />
         <Button Content="Reset Layout" Command="{Binding ResetLayout}" />
         <CheckBox Content="Docking Enabled" IsChecked="{Binding IsDockingEnabled}" VerticalAlignment="Center" />
+        <TextBlock Text="{Binding WorkspaceStatus}" Margin="16,0,0,0" VerticalAlignment="Center" />
       </StackPanel>
     </Border>
 

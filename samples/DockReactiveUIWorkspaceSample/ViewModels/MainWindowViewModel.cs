@@ -16,6 +16,9 @@ public class MainWindowViewModel : ReactiveObject
     private readonly DockFactory _factory;
     private IRootDock? _layout;
     private bool _isDockingEnabled = true;
+    private bool _isWorkspaceDirty;
+    private string _workspaceStatus = "Workspace: Unsaved";
+    private DockWorkspace? _defaultWorkspace;
     private DockWorkspace? _workspaceA;
     private DockWorkspace? _workspaceB;
 
@@ -33,6 +36,18 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _isDockingEnabled, value);
     }
 
+    public bool IsWorkspaceDirty
+    {
+        get => _isWorkspaceDirty;
+        set => this.RaiseAndSetIfChanged(ref _isWorkspaceDirty, value);
+    }
+
+    public string WorkspaceStatus
+    {
+        get => _workspaceStatus;
+        set => this.RaiseAndSetIfChanged(ref _workspaceStatus, value);
+    }
+
     public ReactiveCommand<Unit, Unit> SaveWorkspaceA { get; }
     public ReactiveCommand<Unit, Unit> LoadWorkspaceA { get; }
     public ReactiveCommand<Unit, Unit> SaveWorkspaceB { get; }
@@ -44,6 +59,8 @@ public class MainWindowViewModel : ReactiveObject
         _factory = new DockFactory();
         Factory = _factory;
         _workspaceManager = new DockWorkspaceManager(new DockSerializer());
+        _workspaceManager.TrackFactory(_factory);
+        _workspaceManager.WorkspaceDirtyChanged += (_, _) => UpdateWorkspaceState();
 
         SaveWorkspaceA = ReactiveCommand.Create(() =>
         {
@@ -58,16 +75,21 @@ public class MainWindowViewModel : ReactiveObject
         ResetLayout = ReactiveCommand.Create(ResetLayoutImpl);
 
         Layout = _factory.CreateLayout();
+        _defaultWorkspace = SaveWorkspace("Default", "Default");
+        UpdateWorkspaceState();
     }
 
-    private DockWorkspace? SaveWorkspace(string id)
+    private DockWorkspace? SaveWorkspace(string id, string? name = null)
     {
         if (Layout is not IDock layout)
         {
             return null;
         }
 
-        return _workspaceManager.Capture(id, layout, includeState: true, name: $"Workspace {id}");
+        var workspaceName = string.IsNullOrWhiteSpace(name) ? $"Workspace {id}" : name;
+        var workspace = _workspaceManager.Capture(id, layout, includeState: true, name: workspaceName);
+        UpdateWorkspaceState();
+        return workspace;
     }
 
     private void LoadWorkspace(DockWorkspace? workspace)
@@ -82,11 +104,31 @@ public class MainWindowViewModel : ReactiveObject
         {
             Layout = root;
         }
+
+        UpdateWorkspaceState();
     }
 
     private void ResetLayoutImpl()
     {
+        if (_defaultWorkspace is not null)
+        {
+            LoadWorkspace(_defaultWorkspace);
+            return;
+        }
+
         Layout = _factory.CreateLayout();
+        _workspaceManager.MarkClean();
+        UpdateWorkspaceState();
+    }
+
+    private void UpdateWorkspaceState()
+    {
+        var workspace = _workspaceManager.ActiveWorkspace;
+        var label = workspace?.Name ?? workspace?.Id ?? "Unsaved";
+        var status = _workspaceManager.IsDirty ? $"Workspace: {label} *" : $"Workspace: {label}";
+
+        IsWorkspaceDirty = _workspaceManager.IsDirty;
+        WorkspaceStatus = status;
     }
 
     public void CloseLayout()

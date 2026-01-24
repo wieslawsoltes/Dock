@@ -8,6 +8,8 @@ Workspace profiles let you capture, name, and restore layout snapshots without w
 - `DockWorkspace` stores the serialized layout plus optional `DockState` for in-memory restores.
 - `DockWorkspaceManager.Capture` serializes the current layout and (optionally) captures dock state.
 - `DockWorkspaceManager.Restore` deserializes the layout and re-applies the saved state snapshot.
+- `DockWorkspaceManager.IsDirty` reports whether the current layout differs from the active workspace.
+- `DockWorkspaceManager.TrackLayout` hooks factory events to mark workspaces as dirty.
 
 ## Capture a workspace
 
@@ -39,6 +41,34 @@ if (restored is not null)
 }
 ```
 
+## Track layout changes
+
+Use tracking to drive UI indicators (for example, a dirty marker) when users move or undock panels.
+
+```csharp
+using Dock.Model.Controls;
+
+var options = new DockWorkspaceTrackingOptions
+{
+    DockableFilter = dockable => dockable is not IDocument
+};
+
+workspaceManager.TrackLayout(layout, options);
+workspaceManager.WorkspaceDirtyChanged += (_, args) =>
+{
+    if (args.IsDirty)
+    {
+        // Update your UI to show a dirty workspace indicator.
+    }
+};
+```
+
+Call `MarkClean` after you persist layout changes to disk or when you want to clear the dirty state:
+
+```csharp
+workspaceManager.MarkClean();
+```
+
 ## Persisting to disk
 
 `DockWorkspace.Layout` is the serialized layout string. You can store it alongside the workspace id/name in your own settings store. If you use `includeState`, the `DockState` snapshot is intended for in-memory switching during the same app session and should not be serialized.
@@ -47,4 +77,3 @@ if (restored is not null)
 
 - `DockState` captures content references (documents/tools) so it can restore them after deserialization.
 - To reset to defaults, keep a baseline workspace captured at startup and restore it as needed.
-

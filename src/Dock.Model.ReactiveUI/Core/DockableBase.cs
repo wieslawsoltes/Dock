@@ -10,7 +10,7 @@ namespace Dock.Model.ReactiveUI.Core;
 /// <summary>
 /// Dockable base class.
 /// </summary>
-public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
+public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo, IDockableDockingRestrictions
 {
     private readonly TrackingAdapter _trackingAdapter;
 
@@ -42,6 +42,8 @@ public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelec
         _maxHeight = double.NaN;
         _isModified = false;
         _dockGroup = null;
+        _allowedDockOperations = DockOperationMask.All;
+        _allowedDropOperations = DockOperationMask.All;
         _showInSelector = true;
         _selectorTitle = null;
         _trackingAdapter = new TrackingAdapter();
@@ -191,6 +193,16 @@ public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelec
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
     public partial string? DockGroup { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial DockOperationMask AllowedDockOperations { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial DockOperationMask AllowedDropOperations { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

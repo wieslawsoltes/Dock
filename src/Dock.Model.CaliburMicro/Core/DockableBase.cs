@@ -9,7 +9,7 @@ namespace Dock.Model.CaliburMicro.Core;
 /// <summary>
 /// Dockable base class.
 /// </summary>
-public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorInfo
+public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorInfo, IDockableDockingRestrictions
 {
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
@@ -41,6 +41,8 @@ public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorI
     private bool _canDockAsDocument = true;
     private bool _isModified;
     private string? _dockGroup;
+    private DockOperationMask _allowedDockOperations = DockOperationMask.All;
+    private DockOperationMask _allowedDropOperations = DockOperationMask.All;
     private bool _showInSelector = true;
     private string? _selectorTitle;
 
@@ -282,6 +284,22 @@ public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorI
     {
         get => _dockGroup;
         set => Set(ref _dockGroup, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DockOperationMask AllowedDockOperations
+    {
+        get => _allowedDockOperations;
+        set => Set(ref _allowedDockOperations, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DockOperationMask AllowedDropOperations
+    {
+        get => _allowedDropOperations;
+        set => Set(ref _allowedDropOperations, value);
     }
 
     /// <inheritdoc/>

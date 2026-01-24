@@ -23,7 +23,7 @@ namespace Dock.Model.Avalonia.Core;
 [JsonDerivedType(typeof(Tool), typeDiscriminator: "Tool")]
 [JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
 [JsonDerivedType(typeof(DockBase), typeDiscriminator: "DockBase")]
-public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
+public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo, IDockableDockingRestrictions
 {
     /// <summary>
     /// Defines the <see cref="Id"/> property.
@@ -176,6 +176,18 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
         AvaloniaProperty.RegisterDirect<DockableBase, string?>(nameof(DockGroup), o => o.DockGroup, (o, v) => o.DockGroup = v);
 
     /// <summary>
+    /// Defines the <see cref="AllowedDockOperations"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, DockOperationMask> AllowedDockOperationsProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, DockOperationMask>(nameof(AllowedDockOperations), o => o.AllowedDockOperations, (o, v) => o.AllowedDockOperations = v, DockOperationMask.All);
+
+    /// <summary>
+    /// Defines the <see cref="AllowedDropOperations"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, DockOperationMask> AllowedDropOperationsProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, DockOperationMask>(nameof(AllowedDropOperations), o => o.AllowedDropOperations, (o, v) => o.AllowedDropOperations = v, DockOperationMask.All);
+
+    /// <summary>
     /// Defines the <see cref="ShowInSelector"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, bool> ShowInSelectorProperty =
@@ -241,6 +253,8 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
     private double _maxHeight = double.NaN;
     private bool _isModified;
     private string? _dockGroup;
+    private DockOperationMask _allowedDockOperations = DockOperationMask.All;
+    private DockOperationMask _allowedDropOperations = DockOperationMask.All;
     private bool _showInSelector = true;
     private string? _selectorTitle;
 
@@ -513,6 +527,24 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
     {
         get => _dockGroup;
         set => SetAndRaise(DockGroupProperty, ref _dockGroup, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("AllowedDockOperations")]
+    public DockOperationMask AllowedDockOperations
+    {
+        get => _allowedDockOperations;
+        set => SetAndRaise(AllowedDockOperationsProperty, ref _allowedDockOperations, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("AllowedDropOperations")]
+    public DockOperationMask AllowedDropOperations
+    {
+        get => _allowedDropOperations;
+        set => SetAndRaise(AllowedDropOperationsProperty, ref _allowedDropOperations, value);
     }
 
     /// <inheritdoc/>

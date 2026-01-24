@@ -135,4 +135,58 @@ public class DockWorkspaceManagerTests
 
         Assert.False(manager.IsDirty);
     }
+
+    [Fact]
+    public void TrackLayout_IgnoresDockablesOutsideTrackedRoot()
+    {
+        var serializer = new StubDockSerializer();
+        var manager = new DockWorkspaceManager(serializer);
+        var factory = new Factory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        factory.InitLayout(root);
+
+        var otherRoot = factory.CreateRootDock();
+        otherRoot.VisibleDockables = factory.CreateList<IDockable>();
+        factory.InitLayout(otherRoot);
+
+        manager.TrackLayout(root);
+
+        var dockable = factory.CreateDocument();
+        dockable.Owner = otherRoot;
+
+        factory.OnDockableMoved(dockable);
+
+        Assert.False(manager.IsDirty);
+
+        dockable.Owner = root;
+        factory.OnDockableMoved(dockable);
+
+        Assert.True(manager.IsDirty);
+    }
+
+    [Fact]
+    public void TrackFactory_ClearsLayoutScope()
+    {
+        var serializer = new StubDockSerializer();
+        var manager = new DockWorkspaceManager(serializer);
+        var factory = new Factory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        factory.InitLayout(root);
+
+        var otherRoot = factory.CreateRootDock();
+        otherRoot.VisibleDockables = factory.CreateList<IDockable>();
+        factory.InitLayout(otherRoot);
+
+        manager.TrackLayout(root);
+        manager.TrackFactory(factory);
+
+        var dockable = factory.CreateDocument();
+        dockable.Owner = otherRoot;
+
+        factory.OnDockableMoved(dockable);
+
+        Assert.True(manager.IsDirty);
+    }
 }

@@ -1,0 +1,56 @@
+<UserControl x:Class="DockOfficeSample.Views.Tools.OfficeRibbonToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tools="using:DockOfficeSample.ViewModels.Tools"
+             xmlns:models="using:DockOfficeSample.Models"
+             x:DataType="tools:OfficeRibbonToolViewModel" x:CompileBindings="True">
+  <Border Background="{DynamicResource SurfaceElevatedBrush}" Padding="12">
+    <StackPanel Spacing="10">
+      <ItemsControl ItemsSource="{Binding Tabs}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Horizontal" Spacing="8" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="ribbon-tab" Padding="8,4" CornerRadius="6">
+              <TextBlock Text="{Binding}" Classes="ribbon-tab-text" />
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <ItemsControl ItemsSource="{Binding Groups}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Horizontal" Spacing="12" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="models:OfficeRibbonGroup">
+            <Border Classes="ribbon-group" Padding="10" CornerRadius="8">
+              <StackPanel Spacing="6">
+                <TextBlock Text="{Binding Title}" Classes="ribbon-group-title" />
+                <ItemsControl ItemsSource="{Binding Actions}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Horizontal" Spacing="6" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Classes="ribbon-action" Padding="6" CornerRadius="6">
+                        <TextBlock Text="{Binding}" Classes="ribbon-action-text" />
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </Border>
+</UserControl>

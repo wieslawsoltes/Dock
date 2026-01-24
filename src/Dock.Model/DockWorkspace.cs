@@ -48,6 +48,11 @@ public sealed class DockWorkspace
     public string Layout { get; private set; }
 
     /// <summary>
+    /// Gets whether the workspace has unsaved layout changes.
+    /// </summary>
+    public bool IsDirty { get; private set; }
+
+    /// <summary>
     /// Gets the optional dock state snapshot used for in-memory restores.
     /// </summary>
     public DockState? State { get; private set; }
@@ -56,6 +61,7 @@ public sealed class DockWorkspace
     {
         Layout = layout ?? throw new ArgumentNullException(nameof(layout));
         State = state;
+        IsDirty = false;
 
         if (!string.IsNullOrWhiteSpace(name))
         {
@@ -66,5 +72,16 @@ public sealed class DockWorkspace
         {
             Description = description;
         }
+    }
+
+    internal bool SetDirty(bool value)
+    {
+        if (IsDirty == value)
+        {
+            return false;
+        }
+
+        IsDirty = value;
+        return true;
     }
 }

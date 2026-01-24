@@ -232,6 +232,10 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         var relativePoint = DockHelpers.GetScreenPoint(relativeTo, point);
+        if (DockSettings.UseManagedWindows && TryGetManagedScreenPosition(relativeTo, point, out var managedPoint))
+        {
+            relativePoint = managedPoint;
+        }
         _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
 
         _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
@@ -259,6 +263,10 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
+        if (DockSettings.UseManagedWindows && TryGetManagedScreenPosition(relativeTo, point, out var managedPoint))
+        {
+            screenPoint = managedPoint;
+        }
         _dockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         var isValid = _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
@@ -391,6 +399,40 @@ internal abstract class DockManagerState : IDockManagerState
             pointer = new Point(pointer.X - fallbackOffset.X, pointer.Y - fallbackOffset.Y);
         }
 
+        return true;
+    }
+
+    private static bool TryGetManagedScreenPosition(Visual relativeTo, Point point, out Point managedPoint)
+    {
+        managedPoint = default;
+
+        var dockControl = relativeTo as DockControl ?? relativeTo.FindAncestorOfType<DockControl>();
+        if (dockControl?.Layout?.Factory is not { } factory)
+        {
+            return false;
+        }
+
+        if (!TryResolveManagedLayer(dockControl, factory, out var layer))
+        {
+            return false;
+        }
+
+        var translated = relativeTo.TranslatePoint(point, layer);
+        if (translated.HasValue)
+        {
+            managedPoint = translated.Value;
+            return true;
+        }
+
+        if (layer.GetVisualRoot() is not TopLevel topLevel)
+        {
+            return false;
+        }
+
+        var screenPoint = relativeTo.PointToScreen(point);
+        var clientPoint = topLevel.PointToClient(screenPoint);
+        var layerOrigin = layer.TranslatePoint(new Point(0, 0), topLevel) ?? new Point(0, 0);
+        managedPoint = new Point(clientPoint.X - layerOrigin.X, clientPoint.Y - layerOrigin.Y);
         return true;
     }
 

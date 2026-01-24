@@ -849,6 +849,68 @@ public class ManagedWindowParityTests
     }
 
     [AvaloniaFact]
+    public void DockManagerState_Execute_Uses_Managed_Layer_For_WindowDrop()
+    {
+        var originalManaged = DockSettings.UseManagedWindows;
+        DockSettings.UseManagedWindows = true;
+
+        Window? window = null;
+        ManagedWindowLayer? layer = null;
+        Factory? factory = null;
+
+        try
+        {
+            factory = new Factory();
+            var root = factory.CreateRootDock();
+            root.Factory = factory;
+
+            var dockControl = new DockControl { Layout = root };
+
+            window = new Window
+            {
+                Width = 400,
+                Height = 300,
+                Position = new PixelPoint(120, 80),
+                Content = dockControl
+            };
+
+            window.Show();
+            dockControl.ApplyTemplate();
+            window.UpdateLayout();
+
+            layer = dockControl.GetVisualDescendants().OfType<ManagedWindowLayer>().FirstOrDefault();
+            Assert.NotNull(layer);
+            layer!.IsVisible = true;
+
+            ManagedWindowRegistry.RegisterLayer(factory, layer);
+
+            var manager = new TestDockManager();
+            var state = new TestDockManagerState(manager);
+            var source = factory.CreateDocument();
+            var target = factory.CreateDocumentDock();
+            var point = new Point(30, 45);
+
+            state.InvokeExecute(point, DockOperation.Window, DragAction.Move, dockControl, source, target);
+
+            var translated = dockControl.TranslatePoint(point, layer);
+            Assert.True(translated.HasValue);
+
+            Assert.Equal(translated.Value.X, manager.ScreenPosition.X, 3);
+            Assert.Equal(translated.Value.Y, manager.ScreenPosition.Y, 3);
+        }
+        finally
+        {
+            if (layer is { } && factory is { })
+            {
+                ManagedWindowRegistry.UnregisterLayer(factory, layer);
+            }
+
+            window?.Close();
+            DockSettings.UseManagedWindows = originalManaged;
+        }
+    }
+
+    [AvaloniaFact]
     public void ManagedHostWindow_Present_Registers_Window_And_Document()
     {
         var factory = new Factory();
@@ -1678,6 +1740,40 @@ public class ManagedWindowParityTests
         public override bool OnClose() => true;
     }
 
+    private sealed class TestDockManager : IDockManager
+    {
+        public DockPoint Position { get; set; }
+
+        public DockPoint ScreenPosition { get; set; }
+
+        public bool PreventSizeConflicts { get; set; }
+
+        public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        {
+            return true;
+        }
+
+        public bool ValidateDocument(IDocument sourceDocument, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        {
+            return true;
+        }
+
+        public bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        {
+            return true;
+        }
+
+        public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        {
+            return true;
+        }
+
+        public bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation)
+        {
+            return true;
+        }
+    }
+
     private sealed class TestDockManagerState : DockManagerState
     {
         public TestDockManagerState(IDockManager dockManager)
@@ -1688,6 +1784,11 @@ public class ManagedWindowParityTests
         public void InvokeFloat(Point point, DockControl dockControl, IDockable dockable, IFactory factory, PixelPoint dragOffset)
         {
             Float(point, dockControl, dockable, factory, dragOffset);
+        }
+
+        public void InvokeExecute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
+        {
+            Execute(point, operation, dragAction, relativeTo, sourceDockable, targetDockable);
         }
     }
 }

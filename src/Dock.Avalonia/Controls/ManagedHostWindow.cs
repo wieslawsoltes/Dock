@@ -43,8 +43,22 @@ public sealed class ManagedHostWindow : IHostWindow
     public IDockWindow? Window { get; set; }
 
     public ManagedHostWindow()
+        : this(new DockManagerOptions())
     {
-        _hostWindowState = new ManagedHostWindowState(new DockManager(new DockService()), this);
+    }
+
+    /// <summary>
+    /// Initializes new instance of the <see cref="ManagedHostWindow"/> class with shared dock manager options.
+    /// </summary>
+    /// <param name="options">Dock manager options to share across windows.</param>
+    public ManagedHostWindow(DockManagerOptions options)
+    {
+        if (options is null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
+        _hostWindowState = new ManagedHostWindowState(new DockManager(new DockService(), options), this);
     }
 
     /// <inheritdoc />

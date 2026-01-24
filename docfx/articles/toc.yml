@@ -80,6 +80,8 @@
     href: dock-drag-offset-calculator.md
   - name: Dock targets and indicators
     href: dock-targets.md
+  - name: Docking constraints and layout lock
+    href: dock-docking-constraints.md
   - name: Floating windows
     href: dock-windows.md
   - name: Floating dock adorners
@@ -118,6 +120,8 @@
   items:
   - name: Serialization and persistence
     href: dock-serialization.md
+  - name: Workspace profiles
+    href: dock-workspaces.md
   - name: Serialization state
     href: dock-serialization-state.md
   - name: Debug overlay

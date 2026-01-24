@@ -60,6 +60,19 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     public void Process(PixelPoint screenPoint, EventType eventType)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            if (_context.PointerPressed || _context.DoDragDrop)
+            {
+                _dragPreviewHelper.Hide();
+                Leave();
+                _context.End();
+                DropControl = null;
+            }
+
+            return;
+        }
+
         switch (eventType)
         {
             case EventType.Pressed:
@@ -367,6 +380,11 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            return false;
+        }
+
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {
@@ -383,6 +401,11 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            return false;
+        }
+
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {

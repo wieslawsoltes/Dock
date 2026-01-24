@@ -1748,6 +1748,8 @@ public class ManagedWindowParityTests
 
         public bool PreventSizeConflicts { get; set; }
 
+        public bool IsDockingEnabled { get; set; } = true;
+
         public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             return true;

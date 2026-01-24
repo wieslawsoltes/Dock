@@ -25,6 +25,11 @@ public interface IDockManager
     bool PreventSizeConflicts { get; set; }
 
     /// <summary>
+    /// Gets or sets whether docking interactions are enabled.
+    /// </summary>
+    bool IsDockingEnabled { get; set; }
+
+    /// <summary>
     /// Validates tool docking operation.
     /// </summary>
     /// <param name="sourceTool">The source tool.</param>

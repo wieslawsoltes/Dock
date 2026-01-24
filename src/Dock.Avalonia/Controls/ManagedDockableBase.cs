@@ -8,7 +8,7 @@ using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
 
-public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, INotifyPropertyChanged
+public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDockableDockingRestrictions, INotifyPropertyChanged
 {
     private readonly TrackingAdapter _trackingAdapter = new();
     private string _id = string.Empty;
@@ -40,6 +40,8 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, INotif
     private bool _canDockAsDocument = true;
     private bool _isModified;
     private string? _dockGroup;
+    private DockOperationMask _allowedDockOperations = DockOperationMask.All;
+    private DockOperationMask _allowedDropOperations = DockOperationMask.All;
     private bool _showInSelector = true;
     private string? _selectorTitle;
 
@@ -217,6 +219,18 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, INotif
     {
         get => _dockGroup;
         set => SetProperty(ref _dockGroup, value);
+    }
+
+    public DockOperationMask AllowedDockOperations
+    {
+        get => _allowedDockOperations;
+        set => SetProperty(ref _allowedDockOperations, value);
+    }
+
+    public DockOperationMask AllowedDropOperations
+    {
+        get => _allowedDropOperations;
+        set => SetProperty(ref _allowedDropOperations, value);
     }
 
     public bool ShowInSelector

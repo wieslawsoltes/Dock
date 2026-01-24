@@ -36,6 +36,7 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_ManagedWindowLayer", typeof(ManagedWindowLayer))]
 public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 {
+    private readonly DockManagerOptions _dockManagerOptions;
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
     private bool _isInitialized;
@@ -88,6 +89,12 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         AvaloniaProperty.Register<DockControl, IFactory?>(nameof(Factory));
 
     /// <summary>
+    /// Defines the <see cref="IsDockingEnabled"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsDockingEnabledProperty =
+        AvaloniaProperty.Register<DockControl, bool>(nameof(IsDockingEnabled), true);
+
+    /// <summary>
     /// Defines the <see cref="IsDraggingDock"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsDraggingDockProperty =
@@ -107,6 +114,11 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
+
+    /// <summary>
+    /// Gets the shared dock manager options for this control.
+    /// </summary>
+    public DockManagerOptions DockManagerOptions => _dockManagerOptions;
 
     /// <inheritdoc/>
     public IDockControlState DockControlState => _dockControlState;
@@ -154,6 +166,15 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     {
         get => GetValue(FactoryProperty);
         set => SetValue(FactoryProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether docking interactions are enabled.
+    /// </summary>
+    public bool IsDockingEnabled
+    {
+        get => GetValue(IsDockingEnabledProperty);
+        set => SetValue(IsDockingEnabledProperty, value);
     }
 
     /// <summary>
@@ -211,7 +232,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     /// </summary>
     public DockControl()
     {
-        _dockManager = new DockManager(new DockService());
+        _dockManagerOptions = new DockManagerOptions();
+        _dockManager = new DockManager(new DockService(), _dockManagerOptions);
         _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
@@ -297,6 +319,10 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         {
             UpdateManagedWindowLayer(Layout);
         }
+        else if (change.Property == IsDockingEnabledProperty)
+        {
+            _dockManagerOptions.IsDockingEnabled = change.GetNewValue<bool>();
+        }
     }
 
     private void Initialize(IDock? layout)
@@ -345,8 +371,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
                 }
 
                 return DockSettings.UseManagedWindows
-                    ? new ManagedHostWindow()
-                    : new HostWindow();
+                    ? new ManagedHostWindow(_dockManagerOptions)
+                    : new HostWindow(_dockManagerOptions);
             }
 
             object? GetContext() => DefaultContext;

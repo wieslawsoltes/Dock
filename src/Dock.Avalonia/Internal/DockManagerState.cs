@@ -338,7 +338,7 @@ internal abstract class DockManagerState : IDockManagerState
         var pointer = new Point(adjustedScreen.X, adjustedScreen.Y);
 
         if (DockSettings.UseManagedWindows
-            && TryGetManagedPointerPosition(inputActiveDockControl, factory, point, dragOffset, out var managedPointer))
+            && TryGetManagedPointerPosition(inputActiveDockControl, factory, dockable, point, dragOffset, out var managedPointer))
         {
             pointer = managedPointer;
         }
@@ -350,6 +350,7 @@ internal abstract class DockManagerState : IDockManagerState
     private static bool TryGetManagedPointerPosition(
         DockControl inputActiveDockControl,
         IFactory factory,
+        IDockable dockable,
         Point point,
         PixelPoint dragOffset,
         out Point pointer)
@@ -366,6 +367,13 @@ internal abstract class DockManagerState : IDockManagerState
         {
             var offset = GetDipOffset(inputActiveDockControl, dragOffset);
             pointer = new Point(translated.Value.X + offset.X, translated.Value.Y + offset.Y);
+
+            if (ShouldAdjustForManagedContent(factory, dockable)
+                && TryGetManagedContentOffset(inputActiveDockControl, factory, out var contentOffset))
+            {
+                pointer = new Point(pointer.X - contentOffset.X, pointer.Y - contentOffset.Y);
+            }
+
             return true;
         }
 
@@ -379,6 +387,13 @@ internal abstract class DockManagerState : IDockManagerState
         var clientPoint = topLevel.PointToClient(adjustedScreen);
         var layerOrigin = layer.TranslatePoint(new Point(0, 0), topLevel) ?? new Point(0, 0);
         pointer = new Point(clientPoint.X - layerOrigin.X, clientPoint.Y - layerOrigin.Y);
+
+        if (ShouldAdjustForManagedContent(factory, dockable)
+            && TryGetManagedContentOffset(inputActiveDockControl, factory, out var fallbackOffset))
+        {
+            pointer = new Point(pointer.X - fallbackOffset.X, pointer.Y - fallbackOffset.Y);
+        }
+
         return true;
     }
 
@@ -424,6 +439,12 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         return layer.TryGetWindowContentOffset(out offset);
+    }
+
+    private static bool ShouldAdjustForManagedContent(IFactory factory, IDockable dockable)
+    {
+        var root = factory.FindRoot(dockable, _ => true);
+        return root?.Window?.Host is ManagedHostWindow;
     }
 
     private static Point GetDipOffset(Visual visual, PixelPoint dragOffset)

@@ -755,6 +755,101 @@ public class ManagedWindowParityTests
     }
 
     [AvaloniaFact]
+    public void FloatingDockable_From_ManagedWindow_Adjusts_For_ContentOffset()
+    {
+        var originalManaged = DockSettings.UseManagedWindows;
+        DockSettings.UseManagedWindows = true;
+
+        Window? window = null;
+        ManagedWindowLayer? layer = null;
+        Factory? factory = null;
+
+        try
+        {
+            factory = new Factory();
+            var mainRoot = factory.CreateRootDock();
+            mainRoot.Factory = factory;
+
+            var dockControlMain = new DockControl { Layout = mainRoot };
+
+            window = new Window
+            {
+                Width = 600,
+                Height = 400,
+                Position = new PixelPoint(0, 0),
+                Content = dockControlMain
+            };
+
+            window.Show();
+            dockControlMain.ApplyTemplate();
+            window.UpdateLayout();
+
+            layer = dockControlMain.GetVisualDescendants().OfType<ManagedWindowLayer>().FirstOrDefault();
+            Assert.NotNull(layer);
+            layer!.IsVisible = true;
+
+            ManagedWindowRegistry.RegisterLayer(factory, layer);
+
+            var (_, managedWindow, managedRoot) = CreateManagedWindow(factory);
+            var documentDock = factory.CreateDocumentDock();
+            var document = factory.CreateDocument();
+            documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
+            documentDock.ActiveDockable = document;
+            managedRoot.VisibleDockables = factory.CreateList<IDockable>(documentDock);
+            managedRoot.ActiveDockable = documentDock;
+            factory.InitLayout(managedRoot);
+
+            var managedDock = ManagedWindowRegistry.GetOrCreateDock(factory);
+            var managedDocument = managedDock.VisibleDockables!.OfType<ManagedDockWindowDocument>()
+                .Single(doc => ReferenceEquals(doc.Window, managedWindow));
+            managedDocument.MdiBounds = new DockRect(50, 70, 260, 180);
+
+            window.UpdateLayout();
+
+            var innerDockControl = window.GetVisualDescendants()
+                .OfType<DockControl>()
+                .FirstOrDefault(control => ReferenceEquals(control.Layout, managedRoot));
+            Assert.NotNull(innerDockControl);
+
+            var cachedOffset = new Point(12, 18);
+            var offsetField = typeof(ManagedWindowLayer)
+                .GetField("_cachedWindowContentOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(offsetField);
+            offsetField!.SetValue(layer, cachedOffset);
+
+            var point = new Point(40, 55);
+            var dragOffset = new PixelPoint(-6, -4);
+            var state = new TestDockManagerState(new DockManager(new DockService()));
+            state.InvokeFloat(point, innerDockControl!, document, factory, dragOffset);
+
+            var translated = innerDockControl!.TranslatePoint(point, layer);
+            Assert.True(translated.HasValue);
+            var scaling = (innerDockControl.GetVisualRoot() as TopLevel)
+                ?.Screens
+                ?.ScreenFromVisual(innerDockControl)
+                ?.Scaling ?? 1.0;
+            var expected = new Point(
+                translated!.Value.X + dragOffset.X / scaling - cachedOffset.X,
+                translated.Value.Y + dragOffset.Y / scaling - cachedOffset.Y);
+
+            document.GetPointerScreenPosition(out var pointerX, out var pointerY);
+
+            Assert.Equal(expected.X, pointerX, 3);
+            Assert.Equal(expected.Y, pointerY, 3);
+        }
+        finally
+        {
+            if (layer is { } && factory is { })
+            {
+                ManagedWindowRegistry.UnregisterLayer(factory, layer);
+            }
+
+            window?.Close();
+            DockSettings.UseManagedWindows = originalManaged;
+        }
+    }
+
+    [AvaloniaFact]
     public void ManagedHostWindow_Present_Registers_Window_And_Document()
     {
         var factory = new Factory();

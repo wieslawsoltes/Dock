@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>MDI Document Layout | Dock for Avalonia </title>
+      <title>Managed Windows Reference | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="MDI Document Layout | Dock for Avalonia ">
+      <meta name="title" content="Managed Windows Reference | Dock for Avalonia ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-mdi.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-managed-windows-reference.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -81,60 +81,141 @@
         </div>
 
         <article data-uid="">
-<h1 id="mdi-document-layout">MDI Document Layout</h1>
+<h1 id="managed-windows-reference">Managed Windows Reference</h1>
 
-<p>Dock can display documents as classic MDI windows inside a document dock. In this mode documents become movable, resizable windows with minimize, maximize, and restore states.</p>
-<h2 id="enable-mdi-mode">Enable MDI mode</h2>
-<p>Set the layout mode on a document dock:</p>
-<pre><code class="lang-csharp">var documents = new DocumentDock
-{
-    LayoutMode = DocumentLayoutMode.Mdi
-};
-</code></pre>
-<p>If you prefer fluent setup:</p>
-<pre><code class="lang-csharp">factory.DocumentDock(out var documents)
-       .WithLayoutMode(DocumentLayoutMode.Mdi);
-</code></pre>
-<h2 id="arrange-documents">Arrange documents</h2>
-<p>Document docks expose commands for common MDI layout operations:</p>
-<pre><code class="lang-csharp">documents.CascadeDocuments?.Execute(null);
-documents.TileDocumentsHorizontal?.Execute(null);
-documents.TileDocumentsVertical?.Execute(null);
-documents.RestoreDocuments?.Execute(null);
-</code></pre>
-<p>The commands use the dock’s current visible bounds to compute layouts.</p>
-<h2 id="document-state-and-bounds">Document state and bounds</h2>
-<p>Documents implement <code>IMdiDocument</code> and store their window bounds and state:</p>
-<ul>
-<li><code>MdiBounds</code> stores the normal window rectangle.</li>
-<li><code>MdiState</code> tracks <code>Normal</code>, <code>Minimized</code>, and <code>Maximized</code> states.</li>
-<li><code>MdiZIndex</code> controls stacking order.</li>
-</ul>
-<p>These values are serialized with the layout so windows restore to their previous positions.</p>
-<h2 id="mdi-control-customization">MDI control customization</h2>
-<p>The Avalonia controls expose additional properties for theming:</p>
-<ul>
-<li><code>MdiDocumentControl</code> forwards <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, and <code>CloseButtonTheme</code> to each window.</li>
-<li><code>MdiDocumentWindow</code> exposes <code>DocumentContextMenu</code>, <code>MdiState</code>, and <code>IsActive</code> for styling or interaction.</li>
-</ul>
-<p>To customize the layout algorithm, provide an <code>IMdiLayoutManager</code> implementation. It can be assigned on <code>MdiDocumentControl.LayoutManager</code> (which the default template forwards to <code>MdiLayoutPanel</code>):</p>
-<pre><code class="lang-csharp">var mdiLayoutManager = new MyMdiLayoutManager();
-mdiDocumentControl.LayoutManager = mdiLayoutManager;
-</code></pre>
-<p>For details on the built-in layout helpers and defaults see
-<a href="dock-mdi-layout-helpers.html">MDI layout helpers</a>.</p>
-<h2 id="notes">Notes</h2>
-<ul>
-<li>The document header contains a drag handle that starts docking operations when you drag it outside the MDI surface.</li>
-<li>When a document is maximized the stored bounds remain unchanged so restore returns to the previous size.</li>
-<li>Managed floating windows reuse <code>MdiDocumentWindow</code> inside <code>ManagedWindowLayer</code> when <code>DockSettings.UseManagedWindows</code> is enabled. See the <a href="dock-managed-windows-guide.html">Managed windows guide</a>.</li>
-</ul>
-<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+<p>This reference summarizes the main settings and types involved in managed window hosting.</p>
+<h2 id="settings">Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockSettings.UseManagedWindows</code></td>
+<td>Use in-app managed windows for floating dock windows.</td>
+</tr>
+<tr>
+<td><code>DockSettings.EnableWindowMagnetism</code></td>
+<td>Snap managed windows to nearby windows when dragging.</td>
+</tr>
+<tr>
+<td><code>DockSettings.WindowMagnetDistance</code></td>
+<td>Snap distance in pixels for managed window magnetism.</td>
+</tr>
+<tr>
+<td><code>DockSettings.BringWindowsToFrontOnDrag</code></td>
+<td>Activate managed windows when dragging begins.</td>
+</tr>
+<tr>
+<td><code>DockSettings.ShowDockablePreviewOnDrag</code></td>
+<td>Render dockable content inside drag previews.</td>
+</tr>
+<tr>
+<td><code>DockSettings.DragPreviewOpacity</code></td>
+<td>Opacity for drag previews in managed mode.</td>
+</tr>
+<tr>
+<td><code>DockSettings.UseOwnerForFloatingWindows</code></td>
+<td>Applies to native windows only.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="app-builder-and-options">App builder and options</h2>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AppBuilderExtensions.UseManagedWindows</code></td>
+<td>Enables managed windows in the app builder.</td>
+</tr>
+<tr>
+<td><code>DockSettingsOptions.UseManagedWindows</code></td>
+<td>Nullable option used by <code>WithDockSettings</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dockcontrol-integration">DockControl integration</h2>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockControl.EnableManagedWindowLayer</code></td>
+<td>Enables registration and display of the managed layer.</td>
+</tr>
+<tr>
+<td><code>DockControl.HostWindowFactory</code></td>
+<td>Override host window creation. Return <code>ManagedHostWindow</code> in managed mode.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="managed-window-types">Managed window types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ManagedHostWindow</code></td>
+<td><code>IHostWindow</code> implementation that inserts a managed window into the layer.</td>
+</tr>
+<tr>
+<td><code>ManagedWindowLayer</code></td>
+<td><code>TemplatedControl</code> that hosts managed windows and overlays.</td>
+</tr>
+<tr>
+<td><code>ManagedWindowDock</code></td>
+<td>Dock used to track managed floating windows.</td>
+</tr>
+<tr>
+<td><code>ManagedDockWindowDocument</code></td>
+<td><code>IMdiDocument</code> wrapper around <code>IDockWindow</code> with <code>MdiBounds</code>, <code>MdiState</code>, and <code>MdiZIndex</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mdi-integration">MDI integration</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MdiDocumentWindow</code></td>
+<td>Control that renders managed floating windows.</td>
+</tr>
+<tr>
+<td><code>IMdiLayoutManager</code></td>
+<td>Strategy for arranging MDI windows.</td>
+</tr>
+<tr>
+<td><code>ClassicMdiLayoutManager</code></td>
+<td>Default managed window layout manager.</td>
+</tr>
+</tbody>
+</table>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-mdi.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-managed-windows-reference.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

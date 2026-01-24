@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Avalonia_Controls_DockControl" data-uid="Dock.Avalonia.Controls.DockControl" class="text-break">
-Class DockControl  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L32"><i class="bi bi-code-slash"></i></a>
+Class DockControl  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -101,6 +101,7 @@ Class DockControl  <a class="header-action link-secondary" title="View source" h
     <pre><code class="lang-csharp hljs">[TemplatePart(&quot;PART_ContentControl&quot;, typeof(ContentControl))]
 [TemplatePart(&quot;PART_CommandBarHost&quot;, typeof(DockCommandBarHost))]
 [TemplatePart(&quot;PART_SelectorOverlay&quot;, typeof(DockSelectorOverlay))]
+[TemplatePart(&quot;PART_ManagedWindowLayer&quot;, typeof(ManagedWindowLayer))]
 public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, IDockControl, IDockSelectorService</code></pre>
   </div>
 
@@ -1045,7 +1046,7 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
   <h3 id="Dock_Avalonia_Controls_DockControl__ctor" data-uid="Dock.Avalonia.Controls.DockControl.#ctor">
   DockControl()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L212"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initialize the new instance of the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html">DockControl</a>.</p>
@@ -1075,7 +1076,7 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
   <h3 id="Dock_Avalonia_Controls_DockControl_AutoCreateDataTemplatesProperty" data-uid="Dock.Avalonia.Controls.DockControl.AutoCreateDataTemplatesProperty">
   AutoCreateDataTemplatesProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L105"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_AutoCreateDataTemplates">AutoCreateDataTemplates</a> property.</p>
@@ -1106,7 +1107,7 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
   <h3 id="Dock_Avalonia_Controls_DockControl_DefaultContextProperty" data-uid="Dock.Avalonia.Controls.DockControl.DefaultContextProperty">
   DefaultContextProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_DefaultContext">DefaultContext</a> property.</p>
@@ -1135,9 +1136,40 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
 
 
+  <h3 id="Dock_Avalonia_Controls_DockControl_EnableManagedWindowLayerProperty" data-uid="Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayerProperty">
+  EnableManagedWindowLayerProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_EnableManagedWindowLayer">EnableManagedWindowLayer</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;bool&gt; EnableManagedWindowLayerProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Avalonia_Controls_DockControl_FactoryProperty" data-uid="Dock.Avalonia.Controls.DockControl.FactoryProperty">
   FactoryProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_Factory">Factory</a> property.</p>
@@ -1166,9 +1198,40 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
 
 
+  <h3 id="Dock_Avalonia_Controls_DockControl_HostWindowFactoryProperty" data-uid="Dock.Avalonia.Controls.DockControl.HostWindowFactoryProperty">
+  HostWindowFactoryProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_HostWindowFactory">HostWindowFactory</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;Func&lt;IHostWindow?&gt;?&gt; HostWindowFactoryProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Avalonia_Controls_DockControl_InitializeFactoryProperty" data-uid="Dock.Avalonia.Controls.DockControl.InitializeFactoryProperty">
   InitializeFactoryProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_InitializeFactory">InitializeFactory</a> property.</p>
@@ -1199,7 +1262,7 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
   <h3 id="Dock_Avalonia_Controls_DockControl_InitializeLayoutProperty" data-uid="Dock.Avalonia.Controls.DockControl.InitializeLayoutProperty">
   InitializeLayoutProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_InitializeLayout">InitializeLayout</a> property.</p>
@@ -1230,7 +1293,7 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
   <h3 id="Dock_Avalonia_Controls_DockControl_IsDraggingDockProperty" data-uid="Dock.Avalonia.Controls.DockControl.IsDraggingDockProperty">
   IsDraggingDockProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_IsDraggingDock">IsDraggingDock</a> property.</p>
@@ -1261,7 +1324,7 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
   <h3 id="Dock_Avalonia_Controls_DockControl_LayoutProperty" data-uid="Dock.Avalonia.Controls.DockControl.LayoutProperty">
   LayoutProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_Layout">Layout</a> property.</p>
@@ -1297,7 +1360,7 @@ public class DockControl : TemplatedControl, INotifyPropertyChanged, IDataContex
 
   <h3 id="Dock_Avalonia_Controls_DockControl_AutoCreateDataTemplates" data-uid="Dock.Avalonia.Controls.DockControl.AutoCreateDataTemplates">
   AutoCreateDataTemplates
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L182"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether to automatically create default DataTemplates in code-behind.
@@ -1331,7 +1394,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_DefaultContext" data-uid="Dock.Avalonia.Controls.DockControl.DefaultContext">
   DefaultContext
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L123"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets default context.</p>
@@ -1363,7 +1426,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_DockControlState" data-uid="Dock.Avalonia.Controls.DockControl.DockControlState">
   DockControlState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dock control state.</p>
@@ -1395,7 +1458,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_DockManager" data-uid="Dock.Avalonia.Controls.DockControl.DockManager">
   DockManager
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L109"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dock manager.</p>
@@ -1427,7 +1490,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_DragOffsetCalculator" data-uid="Dock.Avalonia.Controls.DockControl.DragOffsetCalculator">
   DragOffsetCalculator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L196"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets drag offset calculator.</p>
@@ -1455,11 +1518,43 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
 
 
+  <a id="Dock_Avalonia_Controls_DockControl_EnableManagedWindowLayer_" data-uid="Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DockControl_EnableManagedWindowLayer" data-uid="Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer">
+  EnableManagedWindowLayer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the managed window layer is enabled for this control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableManagedWindowLayer { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Avalonia_Controls_DockControl_Factory_" data-uid="Dock.Avalonia.Controls.DockControl.Factory*"></a>
 
   <h3 id="Dock_Avalonia_Controls_DockControl_Factory" data-uid="Dock.Avalonia.Controls.DockControl.Factory">
   Factory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L153"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the factory.</p>
@@ -1487,11 +1582,43 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
 
 
+  <a id="Dock_Avalonia_Controls_DockControl_HostWindowFactory_" data-uid="Dock.Avalonia.Controls.DockControl.HostWindowFactory*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DockControl_HostWindowFactory" data-uid="Dock.Avalonia.Controls.DockControl.HostWindowFactory">
+  HostWindowFactory
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the factory used to create host windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;IHostWindow?&gt;? HostWindowFactory { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Avalonia_Controls_DockControl_InitializeFactory_" data-uid="Dock.Avalonia.Controls.DockControl.InitializeFactory*"></a>
 
   <h3 id="Dock_Avalonia_Controls_DockControl_InitializeFactory" data-uid="Dock.Avalonia.Controls.DockControl.InitializeFactory">
   InitializeFactory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L137"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the flag indicating whether to initialize factory.</p>
@@ -1523,7 +1650,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_InitializeLayout" data-uid="Dock.Avalonia.Controls.DockControl.InitializeLayout">
   InitializeLayout
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the flag indicating whether to initialize layout.</p>
@@ -1555,7 +1682,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_IsDraggingDock" data-uid="Dock.Avalonia.Controls.DockControl.IsDraggingDock">
   IsDraggingDock
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L162"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether any dock is being dragged.</p>
@@ -1587,7 +1714,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_IsOpen" data-uid="Dock.Avalonia.Controls.DockControl.IsOpen">
   IsOpen
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L189"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether the selector is currently open.</p>
@@ -1619,7 +1746,7 @@ When false, no DataTemplates are added, allowing complete user control via XAML.
 
   <h3 id="Dock_Avalonia_Controls_DockControl_Layout" data-uid="Dock.Avalonia.Controls.DockControl.Layout">
   Layout
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L115"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the dock layout.</p>
@@ -1656,7 +1783,7 @@ public IDock? Layout { get; set; }</code></pre>
 
   <h3 id="Dock_Avalonia_Controls_DockControl_HideSelector" data-uid="Dock.Avalonia.Controls.DockControl.HideSelector">
   HideSelector()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L396"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L505"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Hides the selector overlay.</p>
@@ -1683,7 +1810,7 @@ public IDock? Layout { get; set; }</code></pre>
 
   <h3 id="Dock_Avalonia_Controls_DockControl_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_" data-uid="Dock.Avalonia.Controls.DockControl.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)">
   OnApplyTemplate(TemplateAppliedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L194"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L228"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the control's template is applied.
@@ -1717,7 +1844,7 @@ In simple terms, this means the method is called just before the control is disp
 
   <h3 id="Dock_Avalonia_Controls_DockControl_OnAttachedToVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.DockControl.OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
   OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L815"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L924"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the control is added to a rooted visual tree.</p>
@@ -1750,7 +1877,7 @@ In simple terms, this means the method is called just before the control is disp
 
   <h3 id="Dock_Avalonia_Controls_DockControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.DockControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
   OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L845"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L954"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the control is removed from a rooted visual tree.</p>
@@ -1783,7 +1910,7 @@ In simple terms, this means the method is called just before the control is disp
 
   <h3 id="Dock_Avalonia_Controls_DockControl_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Avalonia.Controls.DockControl.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
   OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L283"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when a avalonia property changes on the object.</p>
@@ -1816,7 +1943,7 @@ In simple terms, this means the method is called just before the control is disp
 
   <h3 id="Dock_Avalonia_Controls_DockControl_ShowSelector_Dock_Avalonia_Selectors_DockSelectorMode_" data-uid="Dock.Avalonia.Controls.DockControl.ShowSelector(Dock.Avalonia.Selectors.DockSelectorMode)">
   ShowSelector(DockSelectorMode)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L385"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L494"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Shows the selector overlay for the specified mode.</p>
@@ -1849,7 +1976,7 @@ In simple terms, this means the method is called just before the control is disp
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L32" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockControl.axaml.cs/#L33" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -925,6 +925,25 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DockControl.DragOffsetCalculator
   nameWithType: DockControl.DragOffsetCalculator
+- uid: Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer
+  name: EnableManagedWindowLayer
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_EnableManagedWindowLayer
+  commentId: P:Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer
+  fullName: Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer
+  nameWithType: DockControl.EnableManagedWindowLayer
+- uid: Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer*
+  name: EnableManagedWindowLayer
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_EnableManagedWindowLayer_
+  commentId: Overload:Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayer
+  nameWithType: DockControl.EnableManagedWindowLayer
+- uid: Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayerProperty
+  name: EnableManagedWindowLayerProperty
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_EnableManagedWindowLayerProperty
+  commentId: F:Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayerProperty
+  fullName: Dock.Avalonia.Controls.DockControl.EnableManagedWindowLayerProperty
+  nameWithType: DockControl.EnableManagedWindowLayerProperty
 - uid: Dock.Avalonia.Controls.DockControl.Factory
   name: Factory
   href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_Factory
@@ -957,6 +976,25 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DockControl.HideSelector
   nameWithType: DockControl.HideSelector
+- uid: Dock.Avalonia.Controls.DockControl.HostWindowFactory
+  name: HostWindowFactory
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_HostWindowFactory
+  commentId: P:Dock.Avalonia.Controls.DockControl.HostWindowFactory
+  fullName: Dock.Avalonia.Controls.DockControl.HostWindowFactory
+  nameWithType: DockControl.HostWindowFactory
+- uid: Dock.Avalonia.Controls.DockControl.HostWindowFactory*
+  name: HostWindowFactory
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_HostWindowFactory_
+  commentId: Overload:Dock.Avalonia.Controls.DockControl.HostWindowFactory
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockControl.HostWindowFactory
+  nameWithType: DockControl.HostWindowFactory
+- uid: Dock.Avalonia.Controls.DockControl.HostWindowFactoryProperty
+  name: HostWindowFactoryProperty
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_HostWindowFactoryProperty
+  commentId: F:Dock.Avalonia.Controls.DockControl.HostWindowFactoryProperty
+  fullName: Dock.Avalonia.Controls.DockControl.HostWindowFactoryProperty
+  nameWithType: DockControl.HostWindowFactoryProperty
 - uid: Dock.Avalonia.Controls.DockControl.InitializeFactory
   name: InitializeFactory
   href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_InitializeFactory
@@ -2094,6 +2132,25 @@ references:
   commentId: T:Dock.Avalonia.Controls.DragPreviewControl
   fullName: Dock.Avalonia.Controls.DragPreviewControl
   nameWithType: DragPreviewControl
+- uid: Dock.Avalonia.Controls.DragPreviewControl.#ctor
+  name: DragPreviewControl()
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl__ctor
+  commentId: M:Dock.Avalonia.Controls.DragPreviewControl.#ctor
+  name.vb: New()
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.DragPreviewControl()
+  fullName.vb: Dock.Avalonia.Controls.DragPreviewControl.New()
+  nameWithType: DragPreviewControl.DragPreviewControl()
+  nameWithType.vb: DragPreviewControl.New()
+- uid: Dock.Avalonia.Controls.DragPreviewControl.#ctor*
+  name: DragPreviewControl
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl__ctor_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.DragPreviewControl
+  fullName.vb: Dock.Avalonia.Controls.DragPreviewControl.New
+  nameWithType: DragPreviewControl.DragPreviewControl
+  nameWithType.vb: DragPreviewControl.New
 - uid: Dock.Avalonia.Controls.DragPreviewControl.ContentTemplate
   name: ContentTemplate
   href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_ContentTemplate
@@ -2113,6 +2170,38 @@ references:
   commentId: F:Dock.Avalonia.Controls.DragPreviewControl.ContentTemplateProperty
   fullName: Dock.Avalonia.Controls.DragPreviewControl.ContentTemplateProperty
   nameWithType: DragPreviewControl.ContentTemplateProperty
+- uid: Dock.Avalonia.Controls.DragPreviewControl.ControlRecycling
+  name: ControlRecycling
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_ControlRecycling
+  commentId: P:Dock.Avalonia.Controls.DragPreviewControl.ControlRecycling
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.ControlRecycling
+  nameWithType: DragPreviewControl.ControlRecycling
+- uid: Dock.Avalonia.Controls.DragPreviewControl.ControlRecycling*
+  name: ControlRecycling
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_ControlRecycling_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.ControlRecycling
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.ControlRecycling
+  nameWithType: DragPreviewControl.ControlRecycling
+- uid: Dock.Avalonia.Controls.DragPreviewControl.ControlRecyclingProperty
+  name: ControlRecyclingProperty
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_ControlRecyclingProperty
+  commentId: F:Dock.Avalonia.Controls.DragPreviewControl.ControlRecyclingProperty
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.ControlRecyclingProperty
+  nameWithType: DragPreviewControl.ControlRecyclingProperty
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContent
+  name: PreviewContent
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContent
+  commentId: P:Dock.Avalonia.Controls.DragPreviewControl.PreviewContent
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContent
+  nameWithType: DragPreviewControl.PreviewContent
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContent*
+  name: PreviewContent
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContent_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.PreviewContent
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContent
+  nameWithType: DragPreviewControl.PreviewContent
 - uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeight
   name: PreviewContentHeight
   href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentHeight
@@ -2132,6 +2221,12 @@ references:
   commentId: F:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeightProperty
   fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentHeightProperty
   nameWithType: DragPreviewControl.PreviewContentHeightProperty
+- uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentProperty
+  name: PreviewContentProperty
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentProperty
+  commentId: F:Dock.Avalonia.Controls.DragPreviewControl.PreviewContentProperty
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentProperty
+  nameWithType: DragPreviewControl.PreviewContentProperty
 - uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContentWidth
   name: PreviewContentWidth
   href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContentWidth
@@ -2688,6 +2783,1513 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.IDockTarget.Reset
   nameWithType: IDockTarget.Reset
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument
+  name: ManagedDockWindowDocument
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html
+  commentId: T:Dock.Avalonia.Controls.ManagedDockWindowDocument
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument
+  nameWithType: ManagedDockWindowDocument
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.#ctor(Dock.Model.Core.IDockWindow)
+  name: ManagedDockWindowDocument(IDockWindow)
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument__ctor_Dock_Model_Core_IDockWindow_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockWindowDocument.#ctor(Dock.Model.Core.IDockWindow)
+  name.vb: New(IDockWindow)
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.ManagedDockWindowDocument(Dock.Model.Core.IDockWindow)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockWindowDocument.New(Dock.Model.Core.IDockWindow)
+  nameWithType: ManagedDockWindowDocument.ManagedDockWindowDocument(IDockWindow)
+  nameWithType.vb: ManagedDockWindowDocument.New(IDockWindow)
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.#ctor*
+  name: ManagedDockWindowDocument
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument__ctor_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.ManagedDockWindowDocument
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockWindowDocument.New
+  nameWithType: ManagedDockWindowDocument.ManagedDockWindowDocument
+  nameWithType.vb: ManagedDockWindowDocument.New
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(System.Object)
+  name: Build(object?)
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_System_Object_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(System.Object)
+  name.vb: Build(Object)
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(object?)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(Object)
+  nameWithType: ManagedDockWindowDocument.Build(object?)
+  nameWithType.vb: ManagedDockWindowDocument.Build(Object)
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(System.Object,Avalonia.Controls.Control)
+  name: Build(object?, Control?)
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_System_Object_Avalonia_Controls_Control_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(System.Object,Avalonia.Controls.Control)
+  name.vb: Build(Object, Control)
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(object?, Avalonia.Controls.Control?)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(Object, Avalonia.Controls.Control)
+  nameWithType: ManagedDockWindowDocument.Build(object?, Control?)
+  nameWithType.vb: ManagedDockWindowDocument.Build(Object, Control)
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build*
+  name: Build
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.Build
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Build
+  nameWithType: ManagedDockWindowDocument.Build
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Content
+  name: Content
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Content
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.Content
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Content
+  nameWithType: ManagedDockWindowDocument.Content
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Content*
+  name: Content
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Content_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.Content
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Content
+  nameWithType: ManagedDockWindowDocument.Content
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType
+  name: DataType
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_DataType
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType
+  nameWithType: ManagedDockWindowDocument.DataType
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType*
+  name: DataType
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_DataType_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType
+  nameWithType: ManagedDockWindowDocument.DataType
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose
+  name: Dispose()
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Dispose
+  commentId: M:Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose()
+  nameWithType: ManagedDockWindowDocument.Dispose()
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose*
+  name: Dispose
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Dispose_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose
+  nameWithType: ManagedDockWindowDocument.Dispose
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow
+  name: IsToolWindow
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_IsToolWindow
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow
+  nameWithType: ManagedDockWindowDocument.IsToolWindow
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow*
+  name: IsToolWindow
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_IsToolWindow_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow
+  nameWithType: ManagedDockWindowDocument.IsToolWindow
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Match(System.Object)
+  name: Match(object?)
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Match_System_Object_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockWindowDocument.Match(System.Object)
+  name.vb: Match(Object)
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Match(object?)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockWindowDocument.Match(Object)
+  nameWithType: ManagedDockWindowDocument.Match(object?)
+  nameWithType.vb: ManagedDockWindowDocument.Match(Object)
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Match*
+  name: Match
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Match_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.Match
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Match
+  nameWithType: ManagedDockWindowDocument.Match
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds
+  name: MdiBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiBounds
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds
+  nameWithType: ManagedDockWindowDocument.MdiBounds
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds*
+  name: MdiBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds
+  nameWithType: ManagedDockWindowDocument.MdiBounds
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState
+  name: MdiState
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiState
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState
+  nameWithType: ManagedDockWindowDocument.MdiState
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState*
+  name: MdiState
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiState_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState
+  nameWithType: ManagedDockWindowDocument.MdiState
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex
+  name: MdiZIndex
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiZIndex
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex
+  nameWithType: ManagedDockWindowDocument.MdiZIndex
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex*
+  name: MdiZIndex
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiZIndex_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex
+  nameWithType: ManagedDockWindowDocument.MdiZIndex
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose
+  name: OnClose()
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_OnClose
+  commentId: M:Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose()
+  nameWithType: ManagedDockWindowDocument.OnClose()
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose*
+  name: OnClose
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_OnClose_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose
+  nameWithType: ManagedDockWindowDocument.OnClose
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged(System.String)
+  name: OnPropertyChanged(string)
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_OnPropertyChanged_System_String_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged(System.String)
+  name.vb: OnPropertyChanged(String)
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged(string)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged(String)
+  nameWithType: ManagedDockWindowDocument.OnPropertyChanged(string)
+  nameWithType.vb: ManagedDockWindowDocument.OnPropertyChanged(String)
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_OnPropertyChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged
+  nameWithType: ManagedDockWindowDocument.OnPropertyChanged
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock
+  name: ToolDock
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_ToolDock
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock
+  nameWithType: ManagedDockWindowDocument.ToolDock
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock*
+  name: ToolDock
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_ToolDock_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock
+  nameWithType: ManagedDockWindowDocument.ToolDock
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Window
+  name: Window
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Window
+  commentId: P:Dock.Avalonia.Controls.ManagedDockWindowDocument.Window
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Window
+  nameWithType: ManagedDockWindowDocument.Window
+- uid: Dock.Avalonia.Controls.ManagedDockWindowDocument.Window*
+  name: Window
+  href: api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html#Dock_Avalonia_Controls_ManagedDockWindowDocument_Window_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockWindowDocument.Window
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockWindowDocument.Window
+  nameWithType: ManagedDockWindowDocument.Window
+- uid: Dock.Avalonia.Controls.ManagedDockableBase
+  name: ManagedDockableBase
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html
+  commentId: T:Dock.Avalonia.Controls.ManagedDockableBase
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase
+  nameWithType: ManagedDockableBase
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanClose
+  name: CanClose
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanClose
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.CanClose
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanClose
+  nameWithType: ManagedDockableBase.CanClose
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanClose*
+  name: CanClose
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanClose_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.CanClose
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanClose
+  nameWithType: ManagedDockableBase.CanClose
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDockAsDocument
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument
+  nameWithType: ManagedDockableBase.CanDockAsDocument
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDockAsDocument_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument
+  nameWithType: ManagedDockableBase.CanDockAsDocument
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanDrag
+  name: CanDrag
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDrag
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.CanDrag
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanDrag
+  nameWithType: ManagedDockableBase.CanDrag
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanDrag*
+  name: CanDrag
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDrag_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.CanDrag
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanDrag
+  nameWithType: ManagedDockableBase.CanDrag
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanDrop
+  name: CanDrop
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDrop
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.CanDrop
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanDrop
+  nameWithType: ManagedDockableBase.CanDrop
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanDrop*
+  name: CanDrop
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDrop_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.CanDrop
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanDrop
+  nameWithType: ManagedDockableBase.CanDrop
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanFloat
+  name: CanFloat
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanFloat
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.CanFloat
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanFloat
+  nameWithType: ManagedDockableBase.CanFloat
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanFloat*
+  name: CanFloat
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanFloat_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.CanFloat
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanFloat
+  nameWithType: ManagedDockableBase.CanFloat
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanPin
+  name: CanPin
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanPin
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.CanPin
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanPin
+  nameWithType: ManagedDockableBase.CanPin
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CanPin*
+  name: CanPin
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanPin_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.CanPin
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CanPin
+  nameWithType: ManagedDockableBase.CanPin
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion
+  name: CollapsedProportion
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CollapsedProportion
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion
+  nameWithType: ManagedDockableBase.CollapsedProportion
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion*
+  name: CollapsedProportion
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CollapsedProportion_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion
+  nameWithType: ManagedDockableBase.CollapsedProportion
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Column
+  name: Column
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Column
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Column
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Column
+  nameWithType: ManagedDockableBase.Column
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Column*
+  name: Column
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Column_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Column
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Column
+  nameWithType: ManagedDockableBase.Column
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan
+  name: ColumnSpan
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ColumnSpan
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan
+  nameWithType: ManagedDockableBase.ColumnSpan
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan*
+  name: ColumnSpan
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ColumnSpan_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan
+  nameWithType: ManagedDockableBase.ColumnSpan
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Context
+  name: Context
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Context
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Context
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Context
+  nameWithType: ManagedDockableBase.Context
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Context*
+  name: Context
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Context_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Context
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Context
+  nameWithType: ManagedDockableBase.Context
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Dock
+  name: Dock
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Dock
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Dock
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Dock
+  nameWithType: ManagedDockableBase.Dock
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Dock*
+  name: Dock
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Dock_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Dock
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Dock
+  nameWithType: ManagedDockableBase.Dock
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.DockGroup
+  name: DockGroup
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockGroup
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.DockGroup
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.DockGroup
+  nameWithType: ManagedDockableBase.DockGroup
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.DockGroup*
+  name: DockGroup
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockGroup_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.DockGroup
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.DockGroup
+  nameWithType: ManagedDockableBase.DockGroup
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Factory
+  name: Factory
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Factory
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Factory
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Factory
+  nameWithType: ManagedDockableBase.Factory
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Factory*
+  name: Factory
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Factory_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Factory
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Factory
+  nameWithType: ManagedDockableBase.Factory
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId
+  name: GetControlRecyclingId()
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetControlRecyclingId
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId()
+  nameWithType: ManagedDockableBase.GetControlRecyclingId()
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId*
+  name: GetControlRecyclingId
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetControlRecyclingId_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId
+  nameWithType: ManagedDockableBase.GetControlRecyclingId
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds(System.Double@,System.Double@,System.Double@,System.Double@)
+  name: GetPinnedBounds(out double, out double, out double, out double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPinnedBounds_System_Double__System_Double__System_Double__System_Double__
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds(System.Double@,System.Double@,System.Double@,System.Double@)
+  name.vb: GetPinnedBounds(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds(out double, out double, out double, out double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.GetPinnedBounds(out double, out double, out double, out double)
+  nameWithType.vb: ManagedDockableBase.GetPinnedBounds(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds*
+  name: GetPinnedBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPinnedBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds
+  nameWithType: ManagedDockableBase.GetPinnedBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition(System.Double@,System.Double@)
+  name: GetPointerPosition(out double, out double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPointerPosition_System_Double__System_Double__
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition(System.Double@,System.Double@)
+  name.vb: GetPointerPosition(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition(out double, out double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition(Double, Double)
+  nameWithType: ManagedDockableBase.GetPointerPosition(out double, out double)
+  nameWithType.vb: ManagedDockableBase.GetPointerPosition(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition*
+  name: GetPointerPosition
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPointerPosition_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition
+  nameWithType: ManagedDockableBase.GetPointerPosition
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition(System.Double@,System.Double@)
+  name: GetPointerScreenPosition(out double, out double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPointerScreenPosition_System_Double__System_Double__
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition(System.Double@,System.Double@)
+  name.vb: GetPointerScreenPosition(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition(out double, out double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition(Double, Double)
+  nameWithType: ManagedDockableBase.GetPointerScreenPosition(out double, out double)
+  nameWithType.vb: ManagedDockableBase.GetPointerScreenPosition(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition*
+  name: GetPointerScreenPosition
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPointerScreenPosition_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition
+  nameWithType: ManagedDockableBase.GetPointerScreenPosition
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds(System.Double@,System.Double@,System.Double@,System.Double@)
+  name: GetTabBounds(out double, out double, out double, out double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetTabBounds_System_Double__System_Double__System_Double__System_Double__
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds(System.Double@,System.Double@,System.Double@,System.Double@)
+  name.vb: GetTabBounds(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds(out double, out double, out double, out double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.GetTabBounds(out double, out double, out double, out double)
+  nameWithType.vb: ManagedDockableBase.GetTabBounds(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds*
+  name: GetTabBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetTabBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds
+  nameWithType: ManagedDockableBase.GetTabBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds(System.Double@,System.Double@,System.Double@,System.Double@)
+  name: GetVisibleBounds(out double, out double, out double, out double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetVisibleBounds_System_Double__System_Double__System_Double__System_Double__
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds(System.Double@,System.Double@,System.Double@,System.Double@)
+  name.vb: GetVisibleBounds(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds(out double, out double, out double, out double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.GetVisibleBounds(out double, out double, out double, out double)
+  nameWithType.vb: ManagedDockableBase.GetVisibleBounds(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds*
+  name: GetVisibleBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetVisibleBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds
+  nameWithType: ManagedDockableBase.GetVisibleBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Id
+  name: Id
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Id
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Id
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Id
+  nameWithType: ManagedDockableBase.Id
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Id*
+  name: Id
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Id_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Id
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Id
+  nameWithType: ManagedDockableBase.Id
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable
+  name: IsCollapsable
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsCollapsable
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable
+  nameWithType: ManagedDockableBase.IsCollapsable
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable*
+  name: IsCollapsable
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsCollapsable_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable
+  nameWithType: ManagedDockableBase.IsCollapsable
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty
+  name: IsEmpty
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsEmpty
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty
+  nameWithType: ManagedDockableBase.IsEmpty
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty*
+  name: IsEmpty
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsEmpty_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty
+  nameWithType: ManagedDockableBase.IsEmpty
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsModified
+  name: IsModified
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsModified
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.IsModified
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsModified
+  nameWithType: ManagedDockableBase.IsModified
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsModified*
+  name: IsModified
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsModified_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.IsModified
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsModified
+  nameWithType: ManagedDockableBase.IsModified
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope
+  name: IsSharedSizeScope
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsSharedSizeScope
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope
+  nameWithType: ManagedDockableBase.IsSharedSizeScope
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope*
+  name: IsSharedSizeScope
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsSharedSizeScope_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope
+  nameWithType: ManagedDockableBase.IsSharedSizeScope
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible
+  name: KeepPinnedDockableVisible
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_KeepPinnedDockableVisible
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible
+  nameWithType: ManagedDockableBase.KeepPinnedDockableVisible
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible*
+  name: KeepPinnedDockableVisible
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_KeepPinnedDockableVisible_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible
+  nameWithType: ManagedDockableBase.KeepPinnedDockableVisible
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight
+  name: MaxHeight
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MaxHeight
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight
+  nameWithType: ManagedDockableBase.MaxHeight
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight*
+  name: MaxHeight
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MaxHeight_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight
+  nameWithType: ManagedDockableBase.MaxHeight
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth
+  name: MaxWidth
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MaxWidth
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth
+  nameWithType: ManagedDockableBase.MaxWidth
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth*
+  name: MaxWidth
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MaxWidth_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth
+  nameWithType: ManagedDockableBase.MaxWidth
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MinHeight
+  name: MinHeight
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MinHeight
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.MinHeight
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MinHeight
+  nameWithType: ManagedDockableBase.MinHeight
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MinHeight*
+  name: MinHeight
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MinHeight_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.MinHeight
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MinHeight
+  nameWithType: ManagedDockableBase.MinHeight
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MinWidth
+  name: MinWidth
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MinWidth
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.MinWidth
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MinWidth
+  nameWithType: ManagedDockableBase.MinWidth
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.MinWidth*
+  name: MinWidth
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MinWidth_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.MinWidth
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.MinWidth
+  nameWithType: ManagedDockableBase.MinWidth
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnClose
+  name: OnClose()
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnClose
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnClose
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnClose()
+  nameWithType: ManagedDockableBase.OnClose()
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnClose*
+  name: OnClose
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnClose_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnClose
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnClose
+  nameWithType: ManagedDockableBase.OnClose
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged(System.Double,System.Double,System.Double,System.Double)
+  name: OnPinnedBoundsChanged(double, double, double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPinnedBoundsChanged_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged(System.Double,System.Double,System.Double,System.Double)
+  name.vb: OnPinnedBoundsChanged(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged(double, double, double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.OnPinnedBoundsChanged(double, double, double, double)
+  nameWithType.vb: ManagedDockableBase.OnPinnedBoundsChanged(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged*
+  name: OnPinnedBoundsChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPinnedBoundsChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged
+  nameWithType: ManagedDockableBase.OnPinnedBoundsChanged
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged(System.Double,System.Double)
+  name: OnPointerPositionChanged(double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPointerPositionChanged_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged(System.Double,System.Double)
+  name.vb: OnPointerPositionChanged(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged(double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged(Double, Double)
+  nameWithType: ManagedDockableBase.OnPointerPositionChanged(double, double)
+  nameWithType.vb: ManagedDockableBase.OnPointerPositionChanged(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged*
+  name: OnPointerPositionChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPointerPositionChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged
+  nameWithType: ManagedDockableBase.OnPointerPositionChanged
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged(System.Double,System.Double)
+  name: OnPointerScreenPositionChanged(double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPointerScreenPositionChanged_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged(System.Double,System.Double)
+  name.vb: OnPointerScreenPositionChanged(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged(double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged(Double, Double)
+  nameWithType: ManagedDockableBase.OnPointerScreenPositionChanged(double, double)
+  nameWithType.vb: ManagedDockableBase.OnPointerScreenPositionChanged(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged*
+  name: OnPointerScreenPositionChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPointerScreenPositionChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged
+  nameWithType: ManagedDockableBase.OnPointerScreenPositionChanged
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged(System.String)
+  name: OnPropertyChanged(string)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPropertyChanged_System_String_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged(System.String)
+  name.vb: OnPropertyChanged(String)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged(string)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged(String)
+  nameWithType: ManagedDockableBase.OnPropertyChanged(string)
+  nameWithType.vb: ManagedDockableBase.OnPropertyChanged(String)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPropertyChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged
+  nameWithType: ManagedDockableBase.OnPropertyChanged
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnSelected
+  name: OnSelected()
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnSelected
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnSelected
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnSelected()
+  nameWithType: ManagedDockableBase.OnSelected()
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnSelected*
+  name: OnSelected
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnSelected_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnSelected
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnSelected
+  nameWithType: ManagedDockableBase.OnSelected
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged(System.Double,System.Double,System.Double,System.Double)
+  name: OnTabBoundsChanged(double, double, double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnTabBoundsChanged_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged(System.Double,System.Double,System.Double,System.Double)
+  name.vb: OnTabBoundsChanged(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged(double, double, double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.OnTabBoundsChanged(double, double, double, double)
+  nameWithType.vb: ManagedDockableBase.OnTabBoundsChanged(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged*
+  name: OnTabBoundsChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnTabBoundsChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged
+  nameWithType: ManagedDockableBase.OnTabBoundsChanged
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged(System.Double,System.Double,System.Double,System.Double)
+  name: OnVisibleBoundsChanged(double, double, double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnVisibleBoundsChanged_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged(System.Double,System.Double,System.Double,System.Double)
+  name.vb: OnVisibleBoundsChanged(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged(double, double, double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.OnVisibleBoundsChanged(double, double, double, double)
+  nameWithType.vb: ManagedDockableBase.OnVisibleBoundsChanged(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged*
+  name: OnVisibleBoundsChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnVisibleBoundsChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged
+  nameWithType: ManagedDockableBase.OnVisibleBoundsChanged
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner
+  name: OriginalOwner
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OriginalOwner
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner
+  nameWithType: ManagedDockableBase.OriginalOwner
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner*
+  name: OriginalOwner
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OriginalOwner_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner
+  nameWithType: ManagedDockableBase.OriginalOwner
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Owner
+  name: Owner
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Owner
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Owner
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Owner
+  nameWithType: ManagedDockableBase.Owner
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Owner*
+  name: Owner
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Owner_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Owner
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Owner
+  nameWithType: ManagedDockableBase.Owner
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.PropertyChanged
+  name: PropertyChanged
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_PropertyChanged
+  commentId: E:Dock.Avalonia.Controls.ManagedDockableBase.PropertyChanged
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.PropertyChanged
+  nameWithType: ManagedDockableBase.PropertyChanged
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Proportion
+  name: Proportion
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Proportion
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Proportion
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Proportion
+  nameWithType: ManagedDockableBase.Proportion
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Proportion*
+  name: Proportion
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Proportion_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Proportion
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Proportion
+  nameWithType: ManagedDockableBase.Proportion
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Row
+  name: Row
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Row
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Row
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Row
+  nameWithType: ManagedDockableBase.Row
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Row*
+  name: Row
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Row_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Row
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Row
+  nameWithType: ManagedDockableBase.Row
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.RowSpan
+  name: RowSpan
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_RowSpan
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.RowSpan
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.RowSpan
+  nameWithType: ManagedDockableBase.RowSpan
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.RowSpan*
+  name: RowSpan
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_RowSpan_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.RowSpan
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.RowSpan
+  nameWithType: ManagedDockableBase.RowSpan
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle
+  name: SelectorTitle
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SelectorTitle
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle
+  nameWithType: ManagedDockableBase.SelectorTitle
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle*
+  name: SelectorTitle
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SelectorTitle_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle
+  nameWithType: ManagedDockableBase.SelectorTitle
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds(System.Double,System.Double,System.Double,System.Double)
+  name: SetPinnedBounds(double, double, double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPinnedBounds_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds(System.Double,System.Double,System.Double,System.Double)
+  name.vb: SetPinnedBounds(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds(double, double, double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.SetPinnedBounds(double, double, double, double)
+  nameWithType.vb: ManagedDockableBase.SetPinnedBounds(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds*
+  name: SetPinnedBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPinnedBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds
+  nameWithType: ManagedDockableBase.SetPinnedBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition(System.Double,System.Double)
+  name: SetPointerPosition(double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPointerPosition_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition(System.Double,System.Double)
+  name.vb: SetPointerPosition(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition(double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition(Double, Double)
+  nameWithType: ManagedDockableBase.SetPointerPosition(double, double)
+  nameWithType.vb: ManagedDockableBase.SetPointerPosition(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition*
+  name: SetPointerPosition
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPointerPosition_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition
+  nameWithType: ManagedDockableBase.SetPointerPosition
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition(System.Double,System.Double)
+  name: SetPointerScreenPosition(double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPointerScreenPosition_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition(System.Double,System.Double)
+  name.vb: SetPointerScreenPosition(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition(double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition(Double, Double)
+  nameWithType: ManagedDockableBase.SetPointerScreenPosition(double, double)
+  nameWithType.vb: ManagedDockableBase.SetPointerScreenPosition(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition*
+  name: SetPointerScreenPosition
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPointerScreenPosition_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition
+  nameWithType: ManagedDockableBase.SetPointerScreenPosition
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetProperty*
+  name: SetProperty
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetProperty_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.SetProperty
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetProperty
+  nameWithType: ManagedDockableBase.SetProperty
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetProperty``1(``0@,``0,System.String)
+  name: SetProperty<T>(ref T, T, string?)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetProperty__1___0____0_System_String_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.SetProperty``1(``0@,``0,System.String)
+  name.vb: SetProperty(Of T)(T, T, String)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetProperty<T>(ref T, T, string?)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.SetProperty(Of T)(T, T, String)
+  nameWithType: ManagedDockableBase.SetProperty<T>(ref T, T, string?)
+  nameWithType.vb: ManagedDockableBase.SetProperty(Of T)(T, T, String)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds(System.Double,System.Double,System.Double,System.Double)
+  name: SetTabBounds(double, double, double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetTabBounds_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds(System.Double,System.Double,System.Double,System.Double)
+  name.vb: SetTabBounds(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds(double, double, double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.SetTabBounds(double, double, double, double)
+  nameWithType.vb: ManagedDockableBase.SetTabBounds(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds*
+  name: SetTabBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetTabBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds
+  nameWithType: ManagedDockableBase.SetTabBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds(System.Double,System.Double,System.Double,System.Double)
+  name: SetVisibleBounds(double, double, double, double)
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetVisibleBounds_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds(System.Double,System.Double,System.Double,System.Double)
+  name.vb: SetVisibleBounds(Double, Double, Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds(double, double, double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds(Double, Double, Double, Double)
+  nameWithType: ManagedDockableBase.SetVisibleBounds(double, double, double, double)
+  nameWithType.vb: ManagedDockableBase.SetVisibleBounds(Double, Double, Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds*
+  name: SetVisibleBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetVisibleBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds
+  nameWithType: ManagedDockableBase.SetVisibleBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector
+  name: ShowInSelector
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ShowInSelector
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector
+  nameWithType: ManagedDockableBase.ShowInSelector
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector*
+  name: ShowInSelector
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ShowInSelector_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector
+  nameWithType: ManagedDockableBase.ShowInSelector
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Title
+  name: Title
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Title
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.Title
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Title
+  nameWithType: ManagedDockableBase.Title
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.Title*
+  name: Title
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Title_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.Title
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.Title
+  nameWithType: ManagedDockableBase.Title
+- uid: Dock.Avalonia.Controls.ManagedHostWindow
+  name: ManagedHostWindow
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html
+  commentId: T:Dock.Avalonia.Controls.ManagedHostWindow
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow
+  nameWithType: ManagedHostWindow
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.#ctor
+  name: ManagedHostWindow()
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow__ctor
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.#ctor
+  name.vb: New()
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.ManagedHostWindow()
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.New()
+  nameWithType: ManagedHostWindow.ManagedHostWindow()
+  nameWithType.vb: ManagedHostWindow.New()
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.#ctor*
+  name: ManagedHostWindow
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow__ctor_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.ManagedHostWindow
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.New
+  nameWithType: ManagedHostWindow.ManagedHostWindow
+  nameWithType.vb: ManagedHostWindow.New
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.Exit
+  name: Exit()
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_Exit
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.Exit
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.Exit()
+  nameWithType: ManagedHostWindow.Exit()
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.Exit*
+  name: Exit
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_Exit_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.Exit
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.Exit
+  nameWithType: ManagedHostWindow.Exit
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.GetPosition(System.Double@,System.Double@)
+  name: GetPosition(out double, out double)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_GetPosition_System_Double__System_Double__
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.GetPosition(System.Double@,System.Double@)
+  name.vb: GetPosition(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.GetPosition(out double, out double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.GetPosition(Double, Double)
+  nameWithType: ManagedHostWindow.GetPosition(out double, out double)
+  nameWithType.vb: ManagedHostWindow.GetPosition(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.GetPosition*
+  name: GetPosition
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_GetPosition_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.GetPosition
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.GetPosition
+  nameWithType: ManagedHostWindow.GetPosition
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.GetSize(System.Double@,System.Double@)
+  name: GetSize(out double, out double)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_GetSize_System_Double__System_Double__
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.GetSize(System.Double@,System.Double@)
+  name.vb: GetSize(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.GetSize(out double, out double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.GetSize(Double, Double)
+  nameWithType: ManagedHostWindow.GetSize(out double, out double)
+  nameWithType.vb: ManagedHostWindow.GetSize(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.GetSize*
+  name: GetSize
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_GetSize_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.GetSize
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.GetSize
+  nameWithType: ManagedHostWindow.GetSize
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.HostWindowState
+  name: HostWindowState
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_HostWindowState
+  commentId: P:Dock.Avalonia.Controls.ManagedHostWindow.HostWindowState
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.HostWindowState
+  nameWithType: ManagedHostWindow.HostWindowState
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.HostWindowState*
+  name: HostWindowState
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_HostWindowState_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.HostWindowState
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.HostWindowState
+  nameWithType: ManagedHostWindow.HostWindowState
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.IsTracked
+  name: IsTracked
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_IsTracked
+  commentId: P:Dock.Avalonia.Controls.ManagedHostWindow.IsTracked
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.IsTracked
+  nameWithType: ManagedHostWindow.IsTracked
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.IsTracked*
+  name: IsTracked
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_IsTracked_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.IsTracked
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.IsTracked
+  nameWithType: ManagedHostWindow.IsTracked
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.ManagedZIndex
+  name: ManagedZIndex
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_ManagedZIndex
+  commentId: P:Dock.Avalonia.Controls.ManagedHostWindow.ManagedZIndex
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.ManagedZIndex
+  nameWithType: ManagedHostWindow.ManagedZIndex
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.ManagedZIndex*
+  name: ManagedZIndex
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_ManagedZIndex_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.ManagedZIndex
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.ManagedZIndex
+  nameWithType: ManagedHostWindow.ManagedZIndex
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.Present(System.Boolean)
+  name: Present(bool)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_Present_System_Boolean_
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.Present(System.Boolean)
+  name.vb: Present(Boolean)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.Present(bool)
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.Present(Boolean)
+  nameWithType: ManagedHostWindow.Present(bool)
+  nameWithType.vb: ManagedHostWindow.Present(Boolean)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.Present*
+  name: Present
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_Present_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.Present
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.Present
+  nameWithType: ManagedHostWindow.Present
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetActive
+  name: SetActive()
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetActive
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.SetActive
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetActive()
+  nameWithType: ManagedHostWindow.SetActive()
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetActive*
+  name: SetActive
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetActive_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.SetActive
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetActive
+  nameWithType: ManagedHostWindow.SetActive
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetLayout(Dock.Model.Core.IDock)
+  name: SetLayout(IDock)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetLayout_Dock_Model_Core_IDock_
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.SetLayout(Dock.Model.Core.IDock)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetLayout(Dock.Model.Core.IDock)
+  nameWithType: ManagedHostWindow.SetLayout(IDock)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetLayout*
+  name: SetLayout
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetLayout_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.SetLayout
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetLayout
+  nameWithType: ManagedHostWindow.SetLayout
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetPosition(System.Double,System.Double)
+  name: SetPosition(double, double)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetPosition_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.SetPosition(System.Double,System.Double)
+  name.vb: SetPosition(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetPosition(double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.SetPosition(Double, Double)
+  nameWithType: ManagedHostWindow.SetPosition(double, double)
+  nameWithType.vb: ManagedHostWindow.SetPosition(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetPosition*
+  name: SetPosition
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetPosition_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.SetPosition
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetPosition
+  nameWithType: ManagedHostWindow.SetPosition
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetSize(System.Double,System.Double)
+  name: SetSize(double, double)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetSize_System_Double_System_Double_
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.SetSize(System.Double,System.Double)
+  name.vb: SetSize(Double, Double)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetSize(double, double)
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.SetSize(Double, Double)
+  nameWithType: ManagedHostWindow.SetSize(double, double)
+  nameWithType.vb: ManagedHostWindow.SetSize(Double, Double)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetSize*
+  name: SetSize
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetSize_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.SetSize
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetSize
+  nameWithType: ManagedHostWindow.SetSize
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetTitle(System.String)
+  name: SetTitle(string?)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetTitle_System_String_
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.SetTitle(System.String)
+  name.vb: SetTitle(String)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetTitle(string?)
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.SetTitle(String)
+  nameWithType: ManagedHostWindow.SetTitle(string?)
+  nameWithType.vb: ManagedHostWindow.SetTitle(String)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetTitle*
+  name: SetTitle
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetTitle_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.SetTitle
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetTitle
+  nameWithType: ManagedHostWindow.SetTitle
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.Window
+  name: Window
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_Window
+  commentId: P:Dock.Avalonia.Controls.ManagedHostWindow.Window
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.Window
+  nameWithType: ManagedHostWindow.Window
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.Window*
+  name: Window
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_Window_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.Window
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.Window
+  nameWithType: ManagedHostWindow.Window
+- uid: Dock.Avalonia.Controls.ManagedWindowDock
+  name: ManagedWindowDock
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html
+  commentId: T:Dock.Avalonia.Controls.ManagedWindowDock
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock
+  nameWithType: ManagedWindowDock
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.#ctor
+  name: ManagedWindowDock()
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock__ctor
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowDock.#ctor
+  name.vb: New()
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.ManagedWindowDock()
+  fullName.vb: Dock.Avalonia.Controls.ManagedWindowDock.New()
+  nameWithType: ManagedWindowDock.ManagedWindowDock()
+  nameWithType.vb: ManagedWindowDock.New()
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.#ctor*
+  name: ManagedWindowDock
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock__ctor_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.ManagedWindowDock
+  fullName.vb: Dock.Avalonia.Controls.ManagedWindowDock.New
+  nameWithType: ManagedWindowDock.ManagedWindowDock
+  nameWithType.vb: ManagedWindowDock.New
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.ActiveDockable
+  name: ActiveDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_ActiveDockable
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.ActiveDockable
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.ActiveDockable
+  nameWithType: ManagedWindowDock.ActiveDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.ActiveDockable*
+  name: ActiveDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_ActiveDockable_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.ActiveDockable
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.ActiveDockable
+  nameWithType: ManagedWindowDock.ActiveDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.AddWindow(Dock.Avalonia.Controls.ManagedDockWindowDocument)
+  name: AddWindow(ManagedDockWindowDocument)
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_AddWindow_Dock_Avalonia_Controls_ManagedDockWindowDocument_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowDock.AddWindow(Dock.Avalonia.Controls.ManagedDockWindowDocument)
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.AddWindow(Dock.Avalonia.Controls.ManagedDockWindowDocument)
+  nameWithType: ManagedWindowDock.AddWindow(ManagedDockWindowDocument)
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.AddWindow*
+  name: AddWindow
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_AddWindow_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.AddWindow
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.AddWindow
+  nameWithType: ManagedWindowDock.AddWindow
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.CanCloseLastDockable
+  name: CanCloseLastDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_CanCloseLastDockable
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.CanCloseLastDockable
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.CanCloseLastDockable
+  nameWithType: ManagedWindowDock.CanCloseLastDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.CanCloseLastDockable*
+  name: CanCloseLastDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_CanCloseLastDockable_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.CanCloseLastDockable
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.CanCloseLastDockable
+  nameWithType: ManagedWindowDock.CanCloseLastDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.CanGoBack
+  name: CanGoBack
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_CanGoBack
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.CanGoBack
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.CanGoBack
+  nameWithType: ManagedWindowDock.CanGoBack
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.CanGoBack*
+  name: CanGoBack
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_CanGoBack_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.CanGoBack
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.CanGoBack
+  nameWithType: ManagedWindowDock.CanGoBack
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.CanGoForward
+  name: CanGoForward
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_CanGoForward
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.CanGoForward
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.CanGoForward
+  nameWithType: ManagedWindowDock.CanGoForward
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.CanGoForward*
+  name: CanGoForward
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_CanGoForward_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.CanGoForward
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.CanGoForward
+  nameWithType: ManagedWindowDock.CanGoForward
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.Close
+  name: Close
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_Close
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.Close
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.Close
+  nameWithType: ManagedWindowDock.Close
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.Close*
+  name: Close
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_Close_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.Close
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.Close
+  nameWithType: ManagedWindowDock.Close
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.DefaultDockable
+  name: DefaultDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_DefaultDockable
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.DefaultDockable
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.DefaultDockable
+  nameWithType: ManagedWindowDock.DefaultDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.DefaultDockable*
+  name: DefaultDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_DefaultDockable_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.DefaultDockable
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.DefaultDockable
+  nameWithType: ManagedWindowDock.DefaultDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.EnableGlobalDocking
+  name: EnableGlobalDocking
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_EnableGlobalDocking
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.EnableGlobalDocking
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.EnableGlobalDocking
+  nameWithType: ManagedWindowDock.EnableGlobalDocking
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.EnableGlobalDocking*
+  name: EnableGlobalDocking
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_EnableGlobalDocking_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.EnableGlobalDocking
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.EnableGlobalDocking
+  nameWithType: ManagedWindowDock.EnableGlobalDocking
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.FocusedDockable
+  name: FocusedDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_FocusedDockable
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.FocusedDockable
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.FocusedDockable
+  nameWithType: ManagedWindowDock.FocusedDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.FocusedDockable*
+  name: FocusedDockable
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_FocusedDockable_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.FocusedDockable
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.FocusedDockable
+  nameWithType: ManagedWindowDock.FocusedDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.GoBack
+  name: GoBack
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_GoBack
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.GoBack
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.GoBack
+  nameWithType: ManagedWindowDock.GoBack
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.GoBack*
+  name: GoBack
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_GoBack_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.GoBack
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.GoBack
+  nameWithType: ManagedWindowDock.GoBack
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.GoForward
+  name: GoForward
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_GoForward
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.GoForward
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.GoForward
+  nameWithType: ManagedWindowDock.GoForward
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.GoForward*
+  name: GoForward
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_GoForward_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.GoForward
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.GoForward
+  nameWithType: ManagedWindowDock.GoForward
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.IsActive
+  name: IsActive
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_IsActive
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.IsActive
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.IsActive
+  nameWithType: ManagedWindowDock.IsActive
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.IsActive*
+  name: IsActive
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_IsActive_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.IsActive
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.IsActive
+  nameWithType: ManagedWindowDock.IsActive
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.Navigate
+  name: Navigate
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_Navigate
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.Navigate
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.Navigate
+  nameWithType: ManagedWindowDock.Navigate
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.Navigate*
+  name: Navigate
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_Navigate_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.Navigate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.Navigate
+  nameWithType: ManagedWindowDock.Navigate
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.OpenedDockablesCount
+  name: OpenedDockablesCount
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_OpenedDockablesCount
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.OpenedDockablesCount
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.OpenedDockablesCount
+  nameWithType: ManagedWindowDock.OpenedDockablesCount
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.OpenedDockablesCount*
+  name: OpenedDockablesCount
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_OpenedDockablesCount_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.OpenedDockablesCount
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.OpenedDockablesCount
+  nameWithType: ManagedWindowDock.OpenedDockablesCount
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.RemoveWindow(Dock.Avalonia.Controls.ManagedDockWindowDocument)
+  name: RemoveWindow(ManagedDockWindowDocument)
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_RemoveWindow_Dock_Avalonia_Controls_ManagedDockWindowDocument_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowDock.RemoveWindow(Dock.Avalonia.Controls.ManagedDockWindowDocument)
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.RemoveWindow(Dock.Avalonia.Controls.ManagedDockWindowDocument)
+  nameWithType: ManagedWindowDock.RemoveWindow(ManagedDockWindowDocument)
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.RemoveWindow*
+  name: RemoveWindow
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_RemoveWindow_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.RemoveWindow
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.RemoveWindow
+  nameWithType: ManagedWindowDock.RemoveWindow
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.VisibleDockables
+  name: VisibleDockables
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_VisibleDockables
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.VisibleDockables
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.VisibleDockables
+  nameWithType: ManagedWindowDock.VisibleDockables
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.VisibleDockables*
+  name: VisibleDockables
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_VisibleDockables_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.VisibleDockables
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.VisibleDockables
+  nameWithType: ManagedWindowDock.VisibleDockables
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer
+  name: ManagedWindowLayer
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html
+  commentId: T:Dock.Avalonia.Controls.ManagedWindowLayer
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer
+  nameWithType: ManagedWindowLayer
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.Dock
+  name: Dock
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_Dock
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowLayer.Dock
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.Dock
+  nameWithType: ManagedWindowLayer.Dock
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.Dock*
+  name: Dock
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_Dock_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.Dock
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.Dock
+  nameWithType: ManagedWindowLayer.Dock
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.DockProperty
+  name: DockProperty
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_DockProperty
+  commentId: F:Dock.Avalonia.Controls.ManagedWindowLayer.DockProperty
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.DockProperty
+  nameWithType: ManagedWindowLayer.DockProperty
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay(System.String)
+  name: HideOverlay(string)
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_HideOverlay_System_String_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay(System.String)
+  name.vb: HideOverlay(String)
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay(string)
+  fullName.vb: Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay(String)
+  nameWithType: ManagedWindowLayer.HideOverlay(string)
+  nameWithType.vb: ManagedWindowLayer.HideOverlay(String)
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay*
+  name: HideOverlay
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_HideOverlay_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay
+  nameWithType: ManagedWindowLayer.HideOverlay
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager
+  name: LayoutManager
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_LayoutManager
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager
+  nameWithType: ManagedWindowLayer.LayoutManager
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager*
+  name: LayoutManager
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_LayoutManager_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager
+  nameWithType: ManagedWindowLayer.LayoutManager
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManagerProperty
+  name: LayoutManagerProperty
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_LayoutManagerProperty
+  commentId: F:Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManagerProperty
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManagerProperty
+  nameWithType: ManagedWindowLayer.LayoutManagerProperty
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
+  name: OnApplyTemplate(TemplateAppliedEventArgs)
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
+  nameWithType: ManagedWindowLayer.OnApplyTemplate(TemplateAppliedEventArgs)
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate*
+  name: OnApplyTemplate
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_OnApplyTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate
+  nameWithType: ManagedWindowLayer.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  nameWithType: ManagedWindowLayer.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_OnPropertyChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged
+  nameWithType: ManagedWindowLayer.OnPropertyChanged
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(System.String,Avalonia.Controls.Control,Avalonia.Point,System.Nullable{Avalonia.Size},System.Boolean)
+  name: ShowOverlay(string, Control, Point, Size?, bool)
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_ShowOverlay_System_String_Avalonia_Controls_Control_Avalonia_Point_System_Nullable_Avalonia_Size__System_Boolean_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(System.String,Avalonia.Controls.Control,Avalonia.Point,System.Nullable{Avalonia.Size},System.Boolean)
+  name.vb: ShowOverlay(String, Control, Point, Size?, Boolean)
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(string, Avalonia.Controls.Control, Avalonia.Point, Avalonia.Size?, bool)
+  fullName.vb: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(String, Avalonia.Controls.Control, Avalonia.Point, Avalonia.Size?, Boolean)
+  nameWithType: ManagedWindowLayer.ShowOverlay(string, Control, Point, Size?, bool)
+  nameWithType.vb: ManagedWindowLayer.ShowOverlay(String, Control, Point, Size?, Boolean)
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(System.String,Avalonia.Controls.Control,Avalonia.Rect,System.Boolean)
+  name: ShowOverlay(string, Control, Rect, bool)
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_ShowOverlay_System_String_Avalonia_Controls_Control_Avalonia_Rect_System_Boolean_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(System.String,Avalonia.Controls.Control,Avalonia.Rect,System.Boolean)
+  name.vb: ShowOverlay(String, Control, Rect, Boolean)
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(string, Avalonia.Controls.Control, Avalonia.Rect, bool)
+  fullName.vb: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(String, Avalonia.Controls.Control, Avalonia.Rect, Boolean)
+  nameWithType: ManagedWindowLayer.ShowOverlay(string, Control, Rect, bool)
+  nameWithType.vb: ManagedWindowLayer.ShowOverlay(String, Control, Rect, Boolean)
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay*
+  name: ShowOverlay
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_ShowOverlay_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay
+  nameWithType: ManagedWindowLayer.ShowOverlay
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer(Avalonia.Visual)
+  name: TryGetLayer(Visual)
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_TryGetLayer_Avalonia_Visual_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer(Avalonia.Visual)
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer(Avalonia.Visual)
+  nameWithType: ManagedWindowLayer.TryGetLayer(Visual)
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer*
+  name: TryGetLayer
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_TryGetLayer_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer
+  nameWithType: ManagedWindowLayer.TryGetLayer
 - uid: Dock.Avalonia.Controls.MdiDocumentControl
   name: MdiDocumentControl
   href: api/Dock.Avalonia.Controls.MdiDocumentControl.html
@@ -6313,6 +7915,138 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Converters.ListCountMoreThanConverter.TrueIfMoreThan
   nameWithType: ListCountMoreThanConverter.TrueIfMoreThan
+- uid: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter
+  name: ManagedDockableIsToolWindowConverter
+  href: api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.html
+  commentId: T:Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter
+  fullName: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter
+  nameWithType: ManagedDockableIsToolWindowConverter
+- uid: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: Convert(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.html#Dock_Avalonia_Converters_ManagedDockableIsToolWindowConverter_Convert_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: Convert(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Convert(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Convert(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: ManagedDockableIsToolWindowConverter.Convert(object?, Type, object?, CultureInfo)
+  nameWithType.vb: ManagedDockableIsToolWindowConverter.Convert(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Convert*
+  name: Convert
+  href: api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.html#Dock_Avalonia_Converters_ManagedDockableIsToolWindowConverter_Convert_
+  commentId: Overload:Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Convert
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Convert
+  nameWithType: ManagedDockableIsToolWindowConverter.Convert
+- uid: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: ConvertBack(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.html#Dock_Avalonia_Converters_ManagedDockableIsToolWindowConverter_ConvertBack_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: ConvertBack(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.ConvertBack(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.ConvertBack(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: ManagedDockableIsToolWindowConverter.ConvertBack(object?, Type, object?, CultureInfo)
+  nameWithType.vb: ManagedDockableIsToolWindowConverter.ConvertBack(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.ConvertBack*
+  name: ConvertBack
+  href: api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.html#Dock_Avalonia_Converters_ManagedDockableIsToolWindowConverter_ConvertBack_
+  commentId: Overload:Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.ConvertBack
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.ConvertBack
+  nameWithType: ManagedDockableIsToolWindowConverter.ConvertBack
+- uid: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Instance
+  name: Instance
+  href: api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.html#Dock_Avalonia_Converters_ManagedDockableIsToolWindowConverter_Instance
+  commentId: F:Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Instance
+  fullName: Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.Instance
+  nameWithType: ManagedDockableIsToolWindowConverter.Instance
+- uid: Dock.Avalonia.Converters.ManagedDockableToolDockConverter
+  name: ManagedDockableToolDockConverter
+  href: api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.html
+  commentId: T:Dock.Avalonia.Converters.ManagedDockableToolDockConverter
+  fullName: Dock.Avalonia.Converters.ManagedDockableToolDockConverter
+  nameWithType: ManagedDockableToolDockConverter
+- uid: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: Convert(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.html#Dock_Avalonia_Converters_ManagedDockableToolDockConverter_Convert_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: Convert(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Convert(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Convert(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: ManagedDockableToolDockConverter.Convert(object?, Type, object?, CultureInfo)
+  nameWithType.vb: ManagedDockableToolDockConverter.Convert(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Convert*
+  name: Convert
+  href: api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.html#Dock_Avalonia_Converters_ManagedDockableToolDockConverter_Convert_
+  commentId: Overload:Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Convert
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Convert
+  nameWithType: ManagedDockableToolDockConverter.Convert
+- uid: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: ConvertBack(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.html#Dock_Avalonia_Converters_ManagedDockableToolDockConverter_ConvertBack_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.ManagedDockableToolDockConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: ConvertBack(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.ConvertBack(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.ConvertBack(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: ManagedDockableToolDockConverter.ConvertBack(object?, Type, object?, CultureInfo)
+  nameWithType.vb: ManagedDockableToolDockConverter.ConvertBack(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.ConvertBack*
+  name: ConvertBack
+  href: api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.html#Dock_Avalonia_Converters_ManagedDockableToolDockConverter_ConvertBack_
+  commentId: Overload:Dock.Avalonia.Converters.ManagedDockableToolDockConverter.ConvertBack
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.ConvertBack
+  nameWithType: ManagedDockableToolDockConverter.ConvertBack
+- uid: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Instance
+  name: Instance
+  href: api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.html#Dock_Avalonia_Converters_ManagedDockableToolDockConverter_Instance
+  commentId: F:Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Instance
+  fullName: Dock.Avalonia.Converters.ManagedDockableToolDockConverter.Instance
+  nameWithType: ManagedDockableToolDockConverter.Instance
+- uid: Dock.Avalonia.Converters.NotNullConverter
+  name: NotNullConverter
+  href: api/Dock.Avalonia.Converters.NotNullConverter.html
+  commentId: T:Dock.Avalonia.Converters.NotNullConverter
+  fullName: Dock.Avalonia.Converters.NotNullConverter
+  nameWithType: NotNullConverter
+- uid: Dock.Avalonia.Converters.NotNullConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: Convert(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.NotNullConverter.html#Dock_Avalonia_Converters_NotNullConverter_Convert_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.NotNullConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: Convert(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.NotNullConverter.Convert(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.NotNullConverter.Convert(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: NotNullConverter.Convert(object?, Type, object?, CultureInfo)
+  nameWithType.vb: NotNullConverter.Convert(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.NotNullConverter.Convert*
+  name: Convert
+  href: api/Dock.Avalonia.Converters.NotNullConverter.html#Dock_Avalonia_Converters_NotNullConverter_Convert_
+  commentId: Overload:Dock.Avalonia.Converters.NotNullConverter.Convert
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.NotNullConverter.Convert
+  nameWithType: NotNullConverter.Convert
+- uid: Dock.Avalonia.Converters.NotNullConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: ConvertBack(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.NotNullConverter.html#Dock_Avalonia_Converters_NotNullConverter_ConvertBack_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.NotNullConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: ConvertBack(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.NotNullConverter.ConvertBack(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.NotNullConverter.ConvertBack(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: NotNullConverter.ConvertBack(object?, Type, object?, CultureInfo)
+  nameWithType.vb: NotNullConverter.ConvertBack(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.NotNullConverter.ConvertBack*
+  name: ConvertBack
+  href: api/Dock.Avalonia.Converters.NotNullConverter.html#Dock_Avalonia_Converters_NotNullConverter_ConvertBack_
+  commentId: Overload:Dock.Avalonia.Converters.NotNullConverter.ConvertBack
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.NotNullConverter.ConvertBack
+  nameWithType: NotNullConverter.ConvertBack
+- uid: Dock.Avalonia.Converters.NotNullConverter.Instance
+  name: Instance
+  href: api/Dock.Avalonia.Converters.NotNullConverter.html#Dock_Avalonia_Converters_NotNullConverter_Instance
+  commentId: F:Dock.Avalonia.Converters.NotNullConverter.Instance
+  fullName: Dock.Avalonia.Converters.NotNullConverter.Instance
+  nameWithType: NotNullConverter.Instance
 - uid: Dock.Avalonia.Converters.OrientationConverter
   name: OrientationConverter
   href: api/Dock.Avalonia.Converters.OrientationConverter.html
@@ -7199,6 +8933,24 @@ references:
   fullName.vb: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel, System.Func(Of Object), Avalonia.Input.KeyGesture)
   nameWithType: RootDockDebugExtensions.AttachDockDebug(TopLevel, Func<object?>, KeyGesture?)
   nameWithType.vb: RootDockDebugExtensions.AttachDockDebug(TopLevel, Func(Of Object), KeyGesture)
+- uid: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel,System.Func{System.Object},Avalonia.Input.KeyGesture,System.Func{Avalonia.Controls.TopLevel,Avalonia.Controls.Window})
+  name: AttachDockDebug(TopLevel, Func<object?>, KeyGesture?, Func<TopLevel, Window>?)
+  href: api/Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.html#Dock_Avalonia_Diagnostics_Controls_RootDockDebugExtensions_AttachDockDebug_Avalonia_Controls_TopLevel_System_Func_System_Object__Avalonia_Input_KeyGesture_System_Func_Avalonia_Controls_TopLevel_Avalonia_Controls_Window__
+  commentId: M:Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel,System.Func{System.Object},Avalonia.Input.KeyGesture,System.Func{Avalonia.Controls.TopLevel,Avalonia.Controls.Window})
+  name.vb: AttachDockDebug(TopLevel, Func(Of Object), KeyGesture, Func(Of TopLevel, Window))
+  fullName: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel, System.Func<object?>, Avalonia.Input.KeyGesture?, System.Func<Avalonia.Controls.TopLevel, Avalonia.Controls.Window>?)
+  fullName.vb: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel, System.Func(Of Object), Avalonia.Input.KeyGesture, System.Func(Of Avalonia.Controls.TopLevel, Avalonia.Controls.Window))
+  nameWithType: RootDockDebugExtensions.AttachDockDebug(TopLevel, Func<object?>, KeyGesture?, Func<TopLevel, Window>?)
+  nameWithType.vb: RootDockDebugExtensions.AttachDockDebug(TopLevel, Func(Of Object), KeyGesture, Func(Of TopLevel, Window))
+- uid: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel,System.Func{System.Object},System.Func{Avalonia.Controls.TopLevel,Avalonia.Controls.Window},Avalonia.Input.KeyGesture)
+  name: AttachDockDebug(TopLevel, Func<object?>, Func<TopLevel, Window>?, KeyGesture?)
+  href: api/Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.html#Dock_Avalonia_Diagnostics_Controls_RootDockDebugExtensions_AttachDockDebug_Avalonia_Controls_TopLevel_System_Func_System_Object__System_Func_Avalonia_Controls_TopLevel_Avalonia_Controls_Window__Avalonia_Input_KeyGesture_
+  commentId: M:Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel,System.Func{System.Object},System.Func{Avalonia.Controls.TopLevel,Avalonia.Controls.Window},Avalonia.Input.KeyGesture)
+  name.vb: AttachDockDebug(TopLevel, Func(Of Object), Func(Of TopLevel, Window), KeyGesture)
+  fullName: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel, System.Func<object?>, System.Func<Avalonia.Controls.TopLevel, Avalonia.Controls.Window>?, Avalonia.Input.KeyGesture?)
+  fullName.vb: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel, System.Func(Of Object), System.Func(Of Avalonia.Controls.TopLevel, Avalonia.Controls.Window), Avalonia.Input.KeyGesture)
+  nameWithType: RootDockDebugExtensions.AttachDockDebug(TopLevel, Func<object?>, Func<TopLevel, Window>?, KeyGesture?)
+  nameWithType.vb: RootDockDebugExtensions.AttachDockDebug(TopLevel, Func(Of Object), Func(Of TopLevel, Window), KeyGesture)
 - uid: Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug*
   name: AttachDockDebug
   href: api/Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.html#Dock_Avalonia_Diagnostics_Controls_RootDockDebugExtensions_AttachDockDebug_
@@ -42292,6 +44044,22 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.AppBuilderExtensions.UseFloatingDockAdorner
   nameWithType: AppBuilderExtensions.UseFloatingDockAdorner
+- uid: Dock.Settings.AppBuilderExtensions.UseManagedWindows(Avalonia.AppBuilder,System.Boolean)
+  name: UseManagedWindows(AppBuilder, bool)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseManagedWindows_Avalonia_AppBuilder_System_Boolean_
+  commentId: M:Dock.Settings.AppBuilderExtensions.UseManagedWindows(Avalonia.AppBuilder,System.Boolean)
+  name.vb: UseManagedWindows(AppBuilder, Boolean)
+  fullName: Dock.Settings.AppBuilderExtensions.UseManagedWindows(Avalonia.AppBuilder, bool)
+  fullName.vb: Dock.Settings.AppBuilderExtensions.UseManagedWindows(Avalonia.AppBuilder, Boolean)
+  nameWithType: AppBuilderExtensions.UseManagedWindows(AppBuilder, bool)
+  nameWithType.vb: AppBuilderExtensions.UseManagedWindows(AppBuilder, Boolean)
+- uid: Dock.Settings.AppBuilderExtensions.UseManagedWindows*
+  name: UseManagedWindows
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseManagedWindows_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.UseManagedWindows
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.UseManagedWindows
+  nameWithType: AppBuilderExtensions.UseManagedWindows
 - uid: Dock.Settings.AppBuilderExtensions.UseOwnerForFloatingWindows(Avalonia.AppBuilder,System.Boolean)
   name: UseOwnerForFloatingWindows(AppBuilder, bool)
   href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseOwnerForFloatingWindows_Avalonia_AppBuilder_System_Boolean_
@@ -42864,6 +44632,12 @@ references:
   commentId: F:Dock.Settings.DockSettings.UseFloatingDockAdorner
   fullName: Dock.Settings.DockSettings.UseFloatingDockAdorner
   nameWithType: DockSettings.UseFloatingDockAdorner
+- uid: Dock.Settings.DockSettings.UseManagedWindows
+  name: UseManagedWindows
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_UseManagedWindows
+  commentId: F:Dock.Settings.DockSettings.UseManagedWindows
+  fullName: Dock.Settings.DockSettings.UseManagedWindows
+  nameWithType: DockSettings.UseManagedWindows
 - uid: Dock.Settings.DockSettings.UseOwnerForFloatingWindows
   name: UseOwnerForFloatingWindows
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_UseOwnerForFloatingWindows
@@ -43044,6 +44818,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.UseFloatingDockAdorner
   nameWithType: DockSettingsOptions.UseFloatingDockAdorner
+- uid: Dock.Settings.DockSettingsOptions.UseManagedWindows
+  name: UseManagedWindows
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_UseManagedWindows
+  commentId: P:Dock.Settings.DockSettingsOptions.UseManagedWindows
+  fullName: Dock.Settings.DockSettingsOptions.UseManagedWindows
+  nameWithType: DockSettingsOptions.UseManagedWindows
+- uid: Dock.Settings.DockSettingsOptions.UseManagedWindows*
+  name: UseManagedWindows
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_UseManagedWindows_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.UseManagedWindows
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.UseManagedWindows
+  nameWithType: DockSettingsOptions.UseManagedWindows
 - uid: Dock.Settings.DockSettingsOptions.UseOwnerForFloatingWindows
   name: UseOwnerForFloatingWindows
   href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_UseOwnerForFloatingWindows

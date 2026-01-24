@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class MdiDocumentWindow | Dock for Avalonia </title>
+      <title>Class ManagedWindowLayer | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class MdiDocumentWindow | Dock for Avalonia ">
+      <meta name="title" content="Class ManagedWindowLayer | Dock for Avalonia ">
       
-      <meta name="description" content="Interaction logic for  xaml.">
+      <meta name="description" content="Managed window layer hosting floating windows inside the main visual tree.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_MdiDocumentWindow.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.MdiDocumentWindow%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_ManagedWindowLayer.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.ManagedWindowLayer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -80,12 +80,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Dock.Avalonia.Controls.MdiDocumentWindow">
+        <article data-uid="Dock.Avalonia.Controls.ManagedWindowLayer">
 
 
 
-  <h1 id="Dock_Avalonia_Controls_MdiDocumentWindow" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow" class="text-break">
-Class MdiDocumentWindow  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <h1 id="Dock_Avalonia_Controls_ManagedWindowLayer" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer" class="text-break">
+Class ManagedWindowLayer  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -93,13 +93,13 @@ Class MdiDocumentWindow  <a class="header-action link-secondary" title="View sou
   <dl><dt>Assembly</dt><dd>Dock.Avalonia.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Interaction logic for <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html">MdiDocumentWindow</a> xaml.</p>
+  <div class="markdown summary"><p>Managed window layer hosting floating windows inside the main visual tree.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[PseudoClasses(new string[] { &quot;:active&quot;, &quot;:maximized&quot;, &quot;:minimized&quot; })]
-public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue</code></pre>
+    <pre><code class="lang-csharp hljs">[TemplatePart(&quot;PART_OverlayCanvas&quot;, typeof(Canvas))]
+public sealed class ManagedWindowLayer : TemplatedControl, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue</code></pre>
   </div>
 
 
@@ -118,7 +118,7 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <div><span class="xref">InputElement</span></div>
       <div><span class="xref">Control</span></div>
       <div><span class="xref">TemplatedControl</span></div>
-      <div><span class="xref">MdiDocumentWindow</span></div>
+      <div><span class="xref">ManagedWindowLayer</span></div>
     </dd>
   </dl>
 
@@ -205,18 +205,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">TemplatedControl.ApplyTemplate()</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.GetTemplateFocusTarget()</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnTemplateChanged(AvaloniaPropertyChangedEventArgs)</span>
-    </div>
-    <div>
       <span class="xref">TemplatedControl.Background</span>
     </div>
     <div>
@@ -287,36 +275,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
     </div>
     <div>
       <span class="xref">Control.SizeChangedEvent</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnLoaded(RoutedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnUnloaded(RoutedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnSizeChanged(SizeChangedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnAttachedToVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnGotFocus(GotFocusEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnCreateAutomationPeer()</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
     </div>
     <div>
       <span class="xref">Control.FocusAdorner</span>
@@ -430,36 +388,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">InputElement.Focus(NavigationMethod, KeyModifiers)</span>
     </div>
     <div>
-      <span class="xref">InputElement.OnAccessKey(RoutedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnKeyDown(KeyEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnTextInput(TextInputEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnPointerEntered(PointerEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnPointerExited(PointerEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
-    </div>
-    <div>
       <span class="xref">InputElement.Focusable</span>
     </div>
     <div>
@@ -491,9 +419,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
     </div>
     <div>
       <span class="xref">InputElement.KeyBindings</span>
-    </div>
-    <div>
-      <span class="xref">InputElement.IsEnabledCore</span>
     </div>
     <div>
       <span class="xref">InputElement.GestureRecognizers</span>
@@ -562,9 +487,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">Interactive.RaiseEvent(RoutedEventArgs)</span>
     </div>
     <div>
-      <span class="xref">Interactive.BuildEventRoute(RoutedEvent)</span>
-    </div>
-    <div>
       <span class="xref">Layoutable.DesiredSizeProperty</span>
     </div>
     <div>
@@ -611,30 +533,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
     </div>
     <div>
       <span class="xref">Layoutable.InvalidateArrange()</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.AffectsMeasure&lt;T&gt;(params AvaloniaProperty[])</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.AffectsArrange&lt;T&gt;(params AvaloniaProperty[])</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.MeasureCore(Size)</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.MeasureOverride(Size)</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.ArrangeCore(Rect)</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.ArrangeOverride(Size)</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.OnMeasureInvalidated()</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.OnVisualParentChanged(Visual, Visual)</span>
     </div>
     <div>
       <span class="xref">Layoutable.Width</span>
@@ -733,15 +631,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">Visual.Render(DrawingContext)</span>
     </div>
     <div>
-      <span class="xref">Visual.AffectsRender&lt;T&gt;(params AvaloniaProperty[])</span>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Visual.LogicalChildrenCollectionChanged(object, NotifyCollectionChangedEventArgs)</a>
-    </div>
-    <div>
-      <span class="xref">Visual.InvalidateMirrorTransform()</span>
-    </div>
-    <div>
       <span class="xref">Visual.Bounds</span>
     </div>
     <div>
@@ -781,15 +670,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">Visual.ZIndex</span>
     </div>
     <div>
-      <span class="xref">Visual.VisualChildren</span>
-    </div>
-    <div>
-      <span class="xref">Visual.VisualRoot</span>
-    </div>
-    <div>
-      <span class="xref">Visual.BypassFlowDirectionPolicies</span>
-    </div>
-    <div>
       <span class="xref">Visual.AttachedToVisualTree</span>
     </div>
     <div>
@@ -820,22 +700,7 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">StyledElement.ApplyStyling()</span>
     </div>
     <div>
-      <span class="xref">StyledElement.InitializeIfNeeded()</span>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">StyledElement.TryGetResource(object, ThemeVariant, out object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">StyledElement.OnDataContextChanged(EventArgs)</a>
-    </div>
-    <div>
-      <span class="xref">StyledElement.OnDataContextBeginUpdate()</span>
-    </div>
-    <div>
-      <span class="xref">StyledElement.OnDataContextEndUpdate()</span>
-    </div>
-    <div>
-      <span class="xref">StyledElement.OnInitialized()</span>
     </div>
     <div>
       <span class="xref">StyledElement.Name</span>
@@ -865,15 +730,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">StyledElement.Theme</span>
     </div>
     <div>
-      <span class="xref">StyledElement.LogicalChildren</span>
-    </div>
-    <div>
-      <span class="xref">StyledElement.PseudoClasses</span>
-    </div>
-    <div>
-      <span class="xref">StyledElement.StyleKeyOverride</span>
-    </div>
-    <div>
       <span class="xref">StyledElement.Parent</span>
     </div>
     <div>
@@ -899,9 +755,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
     </div>
     <div>
       <span class="xref">Animatable.TransitionsProperty</span>
-    </div>
-    <div>
-      <span class="xref">Animatable.OnPropertyChangedCore(AvaloniaPropertyChangedEventArgs)</span>
     </div>
     <div>
       <span class="xref">Animatable.Transitions</span>
@@ -991,18 +844,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">AvaloniaObject.CoerceValue(AvaloniaProperty)</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">AvaloniaObject.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
-    </div>
-    <div>
-      <span class="xref">AvaloniaObject.RaisePropertyChanged&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T, T)</span>
-    </div>
-    <div>
-      <span class="xref">AvaloniaObject.SetAndRaise&lt;T&gt;(DirectPropertyBase&lt;T&gt;, ref T, T)</span>
-    </div>
-    <div>
-      <span class="xref">AvaloniaObject.InheritanceParent</span>
-    </div>
-    <div>
       <span class="xref">AvaloniaObject.this[AvaloniaProperty]</span>
     </div>
     <div>
@@ -1018,9 +859,6 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
@@ -1033,53 +871,22 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 
 
 
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow__ctor_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.#ctor*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow__ctor" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.#ctor">
-  MdiDocumentWindow()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L174"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html">MdiDocumentWindow</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MdiDocumentWindow()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
   <h2 class="section" id="fields">Fields
 </h2>
 
 
 
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_CloseButtonThemeProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.CloseButtonThemeProperty">
-  CloseButtonThemeProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_DockProperty" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.DockProperty">
+  DockProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_CloseButtonTheme">CloseButtonTheme</a> property.</p>
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_Dock">Dock</a> property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;ControlTheme?&gt; CloseButtonThemeProperty</code></pre>
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;IDock?&gt; DockProperty</code></pre>
   </div>
 
 
@@ -1087,7 +894,7 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<span class="xref">ControlTheme</span>&gt;</dt>
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="Dock.Model.Core.IDock.html">IDock</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -1100,17 +907,17 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 
 
 
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_CloseTemplateProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.CloseTemplateProperty">
-  CloseTemplateProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_LayoutManagerProperty" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManagerProperty">
+  LayoutManagerProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_CloseTemplate">CloseTemplate</a> property.</p>
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_LayoutManager">LayoutManager</a> property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;IDataTemplate&gt; CloseTemplateProperty</code></pre>
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;IMdiLayoutManager?&gt; LayoutManagerProperty</code></pre>
   </div>
 
 
@@ -1118,193 +925,7 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<span class="xref">IDataTemplate</span>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_DocumentContextMenuProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.DocumentContextMenuProperty">
-  DocumentContextMenuProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L63"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_DocumentContextMenu">DocumentContextMenu</a> property.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;ContextMenu?&gt; DocumentContextMenuProperty</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<span class="xref">ContextMenu</span>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_HeaderTemplateProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.HeaderTemplateProperty">
-  HeaderTemplateProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L39"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_HeaderTemplate">HeaderTemplate</a> property.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;IDataTemplate&gt; HeaderTemplateProperty</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<span class="xref">IDataTemplate</span>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_IconTemplateProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.IconTemplateProperty">
-  IconTemplateProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L33"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_IconTemplate">IconTemplate</a> property.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;object?&gt; IconTemplateProperty</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_IsActiveProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.IsActiveProperty">
-  IsActiveProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L69"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_IsActive">IsActive</a> property.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;bool&gt; IsActiveProperty</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_MdiStateProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.MdiStateProperty">
-  MdiStateProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L75"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_MdiState">MdiState</a> property.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;MdiWindowState&gt; MdiStateProperty</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="Dock.Model.Core.MdiWindowState.html">MdiWindowState</a>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_ModifiedTemplateProperty" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.ModifiedTemplateProperty">
-  ModifiedTemplateProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L45"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_ModifiedTemplate">ModifiedTemplate</a> property.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;IDataTemplate&gt; ModifiedTemplateProperty</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<span class="xref">IDataTemplate</span>&gt;</dt>
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="Dock.Avalonia.Mdi.IMdiLayoutManager.html">IMdiLayoutManager</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -1320,19 +941,19 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 </h2>
 
 
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_CloseButtonTheme_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.CloseButtonTheme*"></a>
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_Dock_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.Dock*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_CloseButtonTheme" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.CloseButtonTheme">
-  CloseButtonTheme
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_Dock" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.Dock">
+  Dock
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L46"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets the close button theme.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the dock that owns managed windows.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ControlTheme? CloseButtonTheme { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IDock? Dock { get; set; }</code></pre>
   </div>
 
 
@@ -1341,7 +962,7 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">ControlTheme</span></dt>
+    <dt><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
     <dd></dd>
   </dl>
 
@@ -1352,19 +973,19 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 
 
 
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_CloseTemplate_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.CloseTemplate*"></a>
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_LayoutManager_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_CloseTemplate" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.CloseTemplate">
-  CloseTemplate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_LayoutManager" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.LayoutManager">
+  LayoutManager
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L55"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets tab close template.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the layout manager used for MDI layout.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IDataTemplate CloseTemplate { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IMdiLayoutManager? LayoutManager { get; set; }</code></pre>
   </div>
 
 
@@ -1373,199 +994,7 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">IDataTemplate</span></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_DocumentContextMenu_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.DocumentContextMenu*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_DocumentContextMenu" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.DocumentContextMenu">
-  DocumentContextMenu
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L147"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets the document context menu.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContextMenu? DocumentContextMenu { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">ContextMenu</span></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_HeaderTemplate_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.HeaderTemplate*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_HeaderTemplate" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.HeaderTemplate">
-  HeaderTemplate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L111"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets tab header template.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IDataTemplate HeaderTemplate { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">IDataTemplate</span></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_IconTemplate_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.IconTemplate*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_IconTemplate" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.IconTemplate">
-  IconTemplate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L102"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets tab icon template.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public object? IconTemplate { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_IsActive_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.IsActive*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_IsActive" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.IsActive">
-  IsActive
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L156"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets if this is the currently active dockable.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsActive { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_MdiState_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.MdiState*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_MdiState" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.MdiState">
-  MdiState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L165"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets MDI window state.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MdiWindowState MdiState { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="Dock.Model.Core.MdiWindowState.html">MdiWindowState</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_ModifiedTemplate_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.ModifiedTemplate*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_ModifiedTemplate" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.ModifiedTemplate">
-  ModifiedTemplate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L120"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets or sets tab modified template.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IDataTemplate ModifiedTemplate { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><span class="xref">IDataTemplate</span></dt>
+    <dt><a class="xref" href="Dock.Avalonia.Mdi.IMdiLayoutManager.html">IMdiLayoutManager</a></dt>
     <dd></dd>
   </dl>
 
@@ -1580,11 +1009,43 @@ public class MdiDocumentWindow : TemplatedControl, INotifyPropertyChanged, IData
 </h2>
 
 
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_OnApplyTemplate_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnApplyTemplate*"></a>
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_HideOverlay_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)">
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_HideOverlay_System_String_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.HideOverlay(System.String)">
+  HideOverlay(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes an overlay element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void HideOverlay(string key)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_OnApplyTemplate_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)">
   OnApplyTemplate(TemplateAppliedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the control's template is applied.
@@ -1614,77 +1075,11 @@ In simple terms, this means the method is called just before the control is disp
 
 
 
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_OnAttachedToVisualTree_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnAttachedToVisualTree*"></a>
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_OnPropertyChanged_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_OnAttachedToVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
-  OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L204"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Called when the control is added to a rooted visual tree.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>e</code> <span class="xref">VisualTreeAttachmentEventArgs</span></dt>
-    <dd><p>The event args.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_OnDetachedFromVisualTree_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnDetachedFromVisualTree*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
-  OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L217"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Called when the control is removed from a rooted visual tree.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>e</code> <span class="xref">VisualTreeAttachmentEventArgs</span></dt>
-    <dd><p>The event args.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_MdiDocumentWindow_OnPropertyChanged_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnPropertyChanged*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_MdiDocumentWindow_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Avalonia.Controls.MdiDocumentWindow.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
   OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L278"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when a avalonia property changes on the object.</p>
@@ -1713,11 +1108,126 @@ In simple terms, this means the method is called just before the control is disp
 
 
 
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_ShowOverlay_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_ShowOverlay_System_String_Avalonia_Controls_Control_Avalonia_Point_System_Nullable_Avalonia_Size__System_Boolean_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(System.String,Avalonia.Controls.Control,Avalonia.Point,System.Nullable{Avalonia.Size},System.Boolean)">
+  ShowOverlay(string, Control, Point, Size?, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Shows or updates an overlay element at the given position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ShowOverlay(string key, Control control, Point position, Size? size, bool hitTestVisible)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>control</code> <span class="xref">Control</span></dt>
+    <dd></dd>
+    <dt><code>position</code> <span class="xref">Point</span></dt>
+    <dd></dd>
+    <dt><code>size</code> <span class="xref">Size</span>?</dt>
+    <dd></dd>
+    <dt><code>hitTestVisible</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_ShowOverlay_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_ShowOverlay_System_String_Avalonia_Controls_Control_Avalonia_Rect_System_Boolean_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.ShowOverlay(System.String,Avalonia.Controls.Control,Avalonia.Rect,System.Boolean)">
+  ShowOverlay(string, Control, Rect, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Shows or updates an overlay element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ShowOverlay(string key, Control control, Rect bounds, bool hitTestVisible)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>control</code> <span class="xref">Control</span></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <span class="xref">Rect</span></dt>
+    <dd></dd>
+    <dt><code>hitTestVisible</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedWindowLayer_TryGetLayer_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedWindowLayer_TryGetLayer_Avalonia_Visual_" data-uid="Dock.Avalonia.Controls.ManagedWindowLayer.TryGetLayer(Avalonia.Visual)">
+  TryGetLayer(Visual)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to locate the managed window layer for a visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ManagedWindowLayer? TryGetLayer(Visual visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <span class="xref">Visual</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Avalonia.Controls.ManagedWindowLayer.html">ManagedWindowLayer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs/#L27" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedWindowLayer.cs/#L21" class="edit-link">Edit this page</a>
         </div>
 
 

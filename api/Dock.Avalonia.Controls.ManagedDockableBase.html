@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ManagedDockableBase | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ManagedDockableBase | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_ManagedDockableBase.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.ManagedDockableBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Dock.Avalonia.Controls.ManagedDockableBase">
+
+
+
+  <h1 id="Dock_Avalonia_Controls_ManagedDockableBase" data-uid="Dock.Avalonia.Controls.ManagedDockableBase" class="text-break">
+Class ManagedDockableBase  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Avalonia.html">Avalonia</a>.<a class="xref" href="Dock.Avalonia.Controls.html">Controls</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Avalonia.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class ManagedDockableBase : IDockable, IControlRecyclingIdProvider, IDockSelectorInfo, INotifyPropertyChanged</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">ManagedDockableBase</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
+      <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Dock.Avalonia.Controls.ManagedDockWindowDocument.html">ManagedDockWindowDocument</a></div>
+      <div><a class="xref" href="Dock.Avalonia.Controls.ManagedWindowDock.html">ManagedWindowDock</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanClose__1___0_System_Boolean_">FluentExtensions.WithCanClose&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDockAsDocument__1___0_System_Boolean_">FluentExtensions.WithCanDockAsDocument&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDrag__1___0_System_Boolean_">FluentExtensions.WithCanDrag&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDrop__1___0_System_Boolean_">FluentExtensions.WithCanDrop&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanFloat__1___0_System_Boolean_">FluentExtensions.WithCanFloat&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanPin__1___0_System_Boolean_">FluentExtensions.WithCanPin&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCollapsedProportion__1___0_System_Double_">FluentExtensions.WithCollapsedProportion&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithContext__1___0_System_Object_">FluentExtensions.WithContext&lt;T&gt;(T, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithDockGroup__1___0_System_String_">FluentExtensions.WithDockGroup&lt;T&gt;(T, string?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithDockMode__1___0_Dock_Model_Core_DockMode_">FluentExtensions.WithDockMode&lt;T&gt;(T, DockMode)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFactory__1___0_Dock_Model_Core_IFactory_">FluentExtensions.WithFactory&lt;T&gt;(T, IFactory?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithGrid__1___0_System_Int32_System_Int32_System_Int32_System_Int32_">FluentExtensions.WithGrid&lt;T&gt;(T, int, int, int, int)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithId__1___0_System_String_">FluentExtensions.WithId&lt;T&gt;(T, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithIsCollapsable__1___0_System_Boolean_">FluentExtensions.WithIsCollapsable&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithIsEmpty__1___0_System_Boolean_">FluentExtensions.WithIsEmpty&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithIsModified__1___0_System_Boolean_">FluentExtensions.WithIsModified&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithKeepPinnedDockableVisible__1___0_System_Boolean_">FluentExtensions.WithKeepPinnedDockableVisible&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMaxHeight__1___0_System_Double_">FluentExtensions.WithMaxHeight&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMaxWidth__1___0_System_Double_">FluentExtensions.WithMaxWidth&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMinHeight__1___0_System_Double_">FluentExtensions.WithMinHeight&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMinWidth__1___0_System_Double_">FluentExtensions.WithMinWidth&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOriginalOwner__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithOriginalOwner&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithProportion__1___0_System_Double_">FluentExtensions.WithProportion&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithSharedSizeScope__1___0_System_Boolean_">FluentExtensions.WithSharedSizeScope&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithTitle__1___0_System_String_">FluentExtensions.WithTitle&lt;T&gt;(T, string)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_CanClose_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanClose*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_CanClose" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanClose">
+  CanClose
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable can be closed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanClose { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_CanDockAsDocument_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_CanDockAsDocument" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanDockAsDocument">
+  CanDockAsDocument
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable can be docked as a document.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanDockAsDocument { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_CanDrag_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanDrag*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_CanDrag" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanDrag">
+  CanDrag
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable can be dragged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanDrag { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_CanDrop_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanDrop*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_CanDrop" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanDrop">
+  CanDrop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable can be dropped on.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanDrop { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_CanFloat_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanFloat*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_CanFloat" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanFloat">
+  CanFloat
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable can be floated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanFloat { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_CanPin_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanPin*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_CanPin" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CanPin">
+  CanPin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable can be pinned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanPin { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_CollapsedProportion_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_CollapsedProportion" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.CollapsedProportion">
+  CollapsedProportion
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets last known proportion before collapse.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double CollapsedProportion { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Column_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Column*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Column" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Column">
+  Column
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets grid column.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Column { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_ColumnSpan_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_ColumnSpan" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.ColumnSpan">
+  ColumnSpan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets grid column span.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ColumnSpan { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Context_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Context*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Context" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Context">
+  Context
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dockable context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? Context { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Dock_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Dock*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Dock" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Dock">
+  Dock
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets docking mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DockMode Dock { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockMode.html">DockMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_DockGroup_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.DockGroup*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_DockGroup" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.DockGroup">
+  DockGroup
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the docking group identifier.
+Dockables can only be docked with other dockables that have the same group identifier.
+If null or empty, the dockable can be docked with any other dockable.
+This enables creating isolated docking areas where only specific types of content can be docked together.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? DockGroup { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Factory_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Factory*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Factory" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Factory">
+  Factory
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dockable factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFactory? Factory { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IFactory.html">IFactory</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Id_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Id*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Id" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Id">
+  Id
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dockable id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Id { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_IsCollapsable_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_IsCollapsable" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsCollapsable">
+  IsCollapsable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets if the dockable collapses when all its children are removed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCollapsable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_IsEmpty_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_IsEmpty" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsEmpty">
+  IsEmpty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets if the dockable is empty.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEmpty { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_IsModified_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsModified*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_IsModified" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsModified">
+  IsModified
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable has unsaved changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsModified { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_IsSharedSizeScope_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_IsSharedSizeScope" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.IsSharedSizeScope">
+  IsSharedSizeScope
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether this dock participates in shared size scope.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSharedSizeScope { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_KeepPinnedDockableVisible_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_KeepPinnedDockableVisible" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.KeepPinnedDockableVisible">
+  KeepPinnedDockableVisible
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L180"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether a pinned dockable stays visible when previewed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool KeepPinnedDockableVisible { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_MaxHeight_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_MaxHeight" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MaxHeight">
+  MaxHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets maximum height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MaxHeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_MaxWidth_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_MaxWidth" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MaxWidth">
+  MaxWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets maximum width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MaxWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_MinHeight_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MinHeight*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_MinHeight" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MinHeight">
+  MinHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets minimum height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinHeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_MinWidth_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MinWidth*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_MinWidth" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.MinWidth">
+  MinWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets minimum width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OriginalOwner_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OriginalOwner" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OriginalOwner">
+  OriginalOwner
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dockable original owner.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDockable? OriginalOwner { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Owner_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Owner*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Owner" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Owner">
+  Owner
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dockable owner.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDockable? Owner { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Proportion_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Proportion*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Proportion" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Proportion">
+  Proportion
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets splitter proportion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Proportion { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Row_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Row*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Row" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Row">
+  Row
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets grid row.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Row { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_RowSpan_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.RowSpan*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_RowSpan" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.RowSpan">
+  RowSpan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets grid row span.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RowSpan { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_SelectorTitle_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_SelectorTitle" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SelectorTitle">
+  SelectorTitle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the text displayed in the selector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? SelectorTitle { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_ShowInSelector_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_ShowInSelector" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.ShowInSelector">
+  ShowInSelector
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether this dockable appears in the selector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowInSelector { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_Title_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Title*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_Title" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.Title">
+  Title
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dockable title.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Title { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_GetControlRecyclingId_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_GetControlRecyclingId" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetControlRecyclingId">
+  GetControlRecyclingId()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L234"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? GetControlRecyclingId()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_GetPinnedBounds_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_GetPinnedBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetPinnedBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
+  GetPinnedBounds(out double, out double, out double, out double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets dockable pinned bounds information used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetPinnedBounds(out double x, out double y, out double width, out double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_GetPointerPosition_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_GetPointerPosition_System_Double__System_Double__" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetPointerPosition(System.Double@,System.Double@)">
+  GetPointerPosition(out double, out double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L290"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets dockable pointer position used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetPointerPosition(out double x, out double y)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer y axis position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_GetPointerScreenPosition_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_GetPointerScreenPosition_System_Double__System_Double__" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetPointerScreenPosition(System.Double@,System.Double@)">
+  GetPointerScreenPosition(out double, out double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets dockable pointer screen position used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetPointerScreenPosition(out double x, out double y)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer y axis position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_GetTabBounds_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_GetTabBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetTabBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
+  GetTabBounds(out double, out double, out double, out double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets dockable tab bounds information used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetTabBounds(out double x, out double y, out double width, out double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_GetVisibleBounds_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_GetVisibleBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.GetVisibleBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
+  GetVisibleBounds(out double, out double, out double, out double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets dockable visible bounds information used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetVisibleBounds(out double x, out double y, out double width, out double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnClose_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnClose*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnClose" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnClose">
+  OnClose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable is closed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnClose()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>true to accept the close, and false to cancel the close.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnPinnedBoundsChanged_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnPinnedBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPinnedBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
+  OnPinnedBoundsChanged(double, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when dockable pinned bounds changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnPinnedBoundsChanged(double x, double y, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnPointerPositionChanged_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnPointerPositionChanged_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPointerPositionChanged(System.Double,System.Double)">
+  OnPointerPositionChanged(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when dockable pointer position changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnPointerPositionChanged(double x, double y)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer y axis position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnPointerScreenPositionChanged_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnPointerScreenPositionChanged_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPointerScreenPositionChanged(System.Double,System.Double)">
+  OnPointerScreenPositionChanged(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L316"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when dockable pointer screen position changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnPointerScreenPositionChanged(double x, double y)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer y axis position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnPropertyChanged_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnPropertyChanged_System_String_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnPropertyChanged(System.String)">
+  OnPropertyChanged(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L332"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnPropertyChanged(string propertyName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnSelected_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnSelected*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnSelected" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnSelected">
+  OnSelected()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable becomes the selected dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnSelected()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnTabBoundsChanged_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnTabBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnTabBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
+  OnTabBoundsChanged(double, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L286"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when dockable tab bounds changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnTabBoundsChanged(double x, double y, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_OnVisibleBoundsChanged_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_OnVisibleBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.OnVisibleBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
+  OnVisibleBoundsChanged(double, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L256"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when dockable visible bounds changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnVisibleBoundsChanged(double x, double y, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_SetPinnedBounds_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_SetPinnedBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetPinnedBounds(System.Double,System.Double,System.Double,System.Double)">
+  SetPinnedBounds(double, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L265"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets dockable pinned bounds information used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPinnedBounds(double x, double y, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_SetPointerPosition_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_SetPointerPosition_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetPointerPosition(System.Double,System.Double)">
+  SetPointerPosition(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets dockable pointer position used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPointerPosition(double x, double y)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer y axis position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_SetPointerScreenPosition_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_SetPointerScreenPosition_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetPointerScreenPosition(System.Double,System.Double)">
+  SetPointerScreenPosition(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets dockable pointer screen position used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPointerScreenPosition(double x, double y)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pointer y axis position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_SetProperty_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetProperty*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_SetProperty__1___0____0_System_String_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetProperty``1(``0@,``0,System.String)">
+  SetProperty&lt;T&gt;(ref T, T, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L320"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool SetProperty&lt;T&gt;(ref T field, T value, string? propertyName = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>field</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_SetTabBounds_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_SetTabBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetTabBounds(System.Double,System.Double,System.Double,System.Double)">
+  SetTabBounds(double, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L280"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets dockable tab bounds information used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetTabBounds(double x, double y, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockableBase_SetVisibleBounds_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_SetVisibleBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.SetVisibleBounds(System.Double,System.Double,System.Double,System.Double)">
+  SetVisibleBounds(double, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets dockable visible bounds information used for tracking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetVisibleBounds(double x, double y, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock x axis position.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dock y axis position.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dockable height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockableBase_PropertyChanged" data-uid="Dock.Avalonia.Controls.ManagedDockableBase.PropertyChanged">
+  PropertyChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event PropertyChangedEventHandler? PropertyChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.propertychangedeventhandler">PropertyChangedEventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockableBase.cs/#L11" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

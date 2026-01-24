@@ -97,6 +97,8 @@
 <pre><code class="lang-xml">&lt;DocumentDock EnableWindowDrag=&quot;True&quot; /&gt;
 </code></pre>
 <p>With the property enabled, <code>DocumentTabStrip</code> listens for pointer events on its background and initiates a window drag on the surrounding <code>HostWindow</code> (or window). The user can grab the tab area and drag the entire window.</p>
+<h2 id="managed-windows">Managed windows</h2>
+<p>In managed window mode (<code>DockSettings.UseManagedWindows = true</code>), floating windows are rendered inside the main window. Their drag behavior is provided by the managed window chrome (<code>MdiDocumentWindow</code>), not by <code>DocumentTabStrip</code>. <code>EnableWindowDrag</code> remains useful for dragging the main window or native floating windows.</p>
 <h2 id="scenarios">Scenarios</h2>
 <ul>
 <li><strong>Floating windows</strong> – Users can drag the tab bar of a floating document window to reposition it without relying on the window title bar.</li>

@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Enum DockCommandBarMergingScope | Dock for Avalonia </title>
+      <title>Managed Windows Guide | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Enum DockCommandBarMergingScope | Dock for Avalonia ">
+      <meta name="title" content="Managed Windows Guide | Dock for Avalonia ">
       
-      <meta name="description" content="Defines which dockable contributes command bars to a host window.">
+      
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Settings_DockCommandBarMergingScope.md&amp;value=---%0Auid%3A%20Dock.Settings.DockCommandBarMergingScope%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-managed-windows-guide.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -39,7 +39,7 @@
 
   </head>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
@@ -80,57 +80,57 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Dock.Settings.DockCommandBarMergingScope">
+        <article data-uid="">
+<h1 id="managed-windows-guide">Managed Windows Guide</h1>
 
-
-
-
-  <h1 id="Dock_Settings_DockCommandBarMergingScope" data-uid="Dock.Settings.DockCommandBarMergingScope" class="text-break">
-Enum DockCommandBarMergingScope  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L163"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Settings.html">Settings</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>Dock.Settings.dll</dd></dl>
-  </div>
-
-  <div class="markdown summary"><p>Defines which dockable contributes command bars to a host window.</p>
-</div>
-  <div class="markdown conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum DockCommandBarMergingScope</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-  <h2 id="fields">Fields
-</h2>
-  <dl class="parameters">
-    <dt id="Dock_Settings_DockCommandBarMergingScope_ActiveDockable"><code>ActiveDockable = 1</code></dt>
-  
-  <dd><p>Merge command bars from the active dockable (documents and tools).</p>
-</dd>
-    <dt id="Dock_Settings_DockCommandBarMergingScope_ActiveDocument"><code>ActiveDocument = 0</code></dt>
-  
-  <dd><p>Merge command bars from the active document only.</p>
-</dd>
-  </dl>
-
-
+<p>Managed windows host floating docks inside the main window instead of spawning native OS windows. When enabled, Dock uses the in-app MDI layer to render floating windows as <code>MdiDocumentWindow</code> controls.</p>
+<h2 id="when-to-use-managed-windows">When to use managed windows</h2>
+<p>Managed windows are useful when:</p>
+<ul>
+<li>Your app should stay inside a single top-level window.</li>
+<li>You want consistent window chrome across platforms.</li>
+<li>Native window restrictions or airspace issues make OS windows undesirable.</li>
+</ul>
+<p>The main window is still an OS window. Managed windows affect only floating dock windows.</p>
+<h2 id="how-managed-windows-work">How managed windows work</h2>
+<ol>
+<li><code>DockSettings.UseManagedWindows</code> switches floating windows to <code>ManagedHostWindow</code>.</li>
+<li><code>DockControl</code> registers its <code>ManagedWindowLayer</code> with the factory when <code>EnableManagedWindowLayer</code> is true.</li>
+<li><code>ManagedHostWindow</code> creates a <code>ManagedDockWindowDocument</code> that wraps the <code>IDockWindow</code> model.</li>
+<li><code>ManagedWindowLayer</code> renders managed windows using <code>MdiLayoutPanel</code> and <code>MdiDocumentWindow</code>.</li>
+</ol>
+<p>The managed windows remain in the main visual tree so they can share styles and resources with the rest of the app.</p>
+<h2 id="interaction-parity">Interaction parity</h2>
+<p>Managed windows reuse the same interaction model as native windows:</p>
+<ul>
+<li>Dragging and resizing are handled by <code>MdiDocumentWindow</code> and its layout manager.</li>
+<li>Dock targets, drag previews, and pinned windows are rendered inside the managed layer.</li>
+<li>Window magnetism and bring-to-front behavior apply within the managed layer.</li>
+</ul>
+<h2 id="differences-from-native-windows">Differences from native windows</h2>
+<p>Managed windows are not OS windows:</p>
+<ul>
+<li>They do not appear in the taskbar or window switchers.</li>
+<li>They cannot be moved outside the main window or across monitors.</li>
+<li>Owner relationships and OS-level z-order do not apply; ordering uses <code>MdiZIndex</code>.</li>
+</ul>
+<h2 id="theming-and-templates">Theming and templates</h2>
+<p><code>ManagedWindowLayer</code> is part of the <code>DockControl</code> template and must be named <code>PART_ManagedWindowLayer</code>. If you replace the template, include the layer and keep <code>EnableManagedWindowLayer</code> set to <code>true</code> so floating windows remain visible.</p>
+<h2 id="related-articles">Related articles</h2>
+<ul>
+<li><a href="dock-managed-windows-howto.html">Managed windows how-to</a></li>
+<li><a href="dock-managed-windows-reference.html">Managed windows reference</a></li>
+<li><a href="dock-windows.html">Floating windows</a></li>
+<li><a href="dock-mdi.html">MDI document layout</a></li>
+</ul>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L163" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-managed-windows-guide.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
 
       </div>
 

@@ -197,6 +197,8 @@ The default value is <code>0.25</code>.</p>
 <p><code>DockSettings.UseFloatingDockAdorner</code> enables showing drop indicators in a transparent floating window instead of overlays on the target controls. See <a href="dock-floating-adorners.html">Floating Dock Adorners</a> for details.</p>
 <h2 id="pinned-dock-windows">Pinned dock windows</h2>
 <p><code>DockSettings.UsePinnedDockWindow</code> shows auto-hidden dockables inside a floating window instead of sliding panels. See <a href="dock-pinned-window.html">Pinned Dock Window</a> for details.</p>
+<h2 id="managed-windows">Managed windows</h2>
+<p><code>DockSettings.UseManagedWindows</code> hosts floating windows inside the main window using the managed window layer. This affects only floating docks; the main window remains native. See <a href="dock-managed-windows-guide.html">Managed windows guide</a> for details.</p>
 <h2 id="window-magnetism">Window magnetism</h2>
 <p><code>DockSettings.EnableWindowMagnetism</code> toggles snapping of floating windows. The snap distance
 is controlled by <code>DockSettings.WindowMagnetDistance</code>.</p>
@@ -243,6 +245,7 @@ AppBuilder.Configure&lt;App&gt;()
     .UsePlatformDetect()
     .UseFloatingDockAdorner()
     .UseOwnerForFloatingWindows()
+    .UseManagedWindows()
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
     .BringWindowsToFrontOnDrag()
@@ -283,6 +286,11 @@ AppBuilder.Configure&lt;App&gt;()
 <td><code>UsePinnedDockWindow</code></td>
 <td><code>DockSettings.UsePinnedDockWindow</code></td>
 <td>Floating pinned dock window.</td>
+</tr>
+<tr>
+<td><code>UseManagedWindows</code></td>
+<td><code>DockSettings.UseManagedWindows</code></td>
+<td>Managed floating windows.</td>
 </tr>
 <tr>
 <td><code>UseOwnerForFloatingWindows</code></td>

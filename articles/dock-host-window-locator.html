@@ -113,6 +113,17 @@ one to pass to <code>GetHostWindow</code>.</p>
 windows work without extra setup, but it also overwrites any locators you
 configured earlier. Disable <code>InitializeFactory</code> if you want to provide your own
 locators up front.</p>
+<h2 id="managed-windows">Managed windows</h2>
+<p>Dock can host floating windows inside the main window (managed mode). When
+<code>DockSettings.UseManagedWindows</code> is enabled, the default locator returns a
+<code>ManagedHostWindow</code> instead of a native <code>HostWindow</code>. You can still override the
+locator or provide your own window factory via <code>DockControl.HostWindowFactory</code>.</p>
+<p>Managed windows also require <code>DockControl.EnableManagedWindowLayer</code> and a
+<code>ManagedWindowLayer</code> template part. See the <a href="dock-managed-windows-guide.html">Managed windows guide</a>
+for setup details and <a href="dock-managed-windows-reference.html">Managed windows reference</a>
+for API information.</p>
+<p>In managed mode, floating windows are rendered using the MDI layout system, so
+they remain part of the main visual tree and reuse the same theme resources.</p>
 <h2 id="fallback-locator">Fallback locator</h2>
 <p>If no entry matches the provided key, <code>GetHostWindow</code> calls
 <code>DefaultHostWindowLocator</code>. Set this delegate to return a generic host window

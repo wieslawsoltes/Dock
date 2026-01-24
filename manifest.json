@@ -578,6 +578,76 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.ManagedDockWindowDocument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.ManagedDockWindowDocument.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.ManagedDockWindowDocument",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.ManagedDockWindowDocument.yml\" sourcestartlinenumber=\"1\">Document model used for managed floating windows.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.ManagedDockableBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.ManagedDockableBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.ManagedDockableBase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.ManagedHostWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.ManagedHostWindow.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.ManagedHostWindow",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.ManagedHostWindow.yml\" sourcestartlinenumber=\"1\">Managed in-app host window implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.ManagedWindowDock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.ManagedWindowDock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.ManagedWindowDock",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.ManagedWindowDock.yml\" sourcestartlinenumber=\"1\">Dock used to host managed floating windows.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.ManagedWindowLayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.ManagedWindowLayer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.ManagedWindowLayer",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.ManagedWindowLayer.yml\" sourcestartlinenumber=\"1\">Managed window layer hosting floating windows inside the main visual tree.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Controls.MdiDocumentControl.yml",
       "output": {
         ".html": {
@@ -1303,6 +1373,48 @@
       "IsMRef": true,
       "Title": "Dock.Avalonia.Converters.ListCountMoreThanConverter",
       "Summary": "<p sourcefile=\"api/Dock.Avalonia.Converters.ListCountMoreThanConverter.yml\" sourcestartlinenumber=\"1\">Converts an <xref href=\"System.Collections.ICollection.Count\" data-throw-if-not-resolved=\"false\"></xref> to a boolean indicating whether it is more than a specified value.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Converters.ManagedDockableIsToolWindowConverter.yml\" sourcestartlinenumber=\"1\">Converter that resolves whether a managed dockable hosts a tool dock.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Converters.ManagedDockableToolDockConverter",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Converters.ManagedDockableToolDockConverter.yml\" sourcestartlinenumber=\"1\">Converter that extracts the tool dock from a managed window dockable.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Converters.NotNullConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Converters.NotNullConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Converters.NotNullConverter",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Converters.NotNullConverter.yml\" sourcestartlinenumber=\"1\">Converter that returns true when the value is not null.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7307,6 +7419,36 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/dock-managed-windows-guide.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-managed-windows-guide.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-managed-windows-howto.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-managed-windows-howto.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-managed-windows-reference.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-managed-windows-reference.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/dock-manager-guide.md",
       "output": {
         ".html": {
@@ -7621,6 +7763,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-views.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-window-creation-overrides.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-window-creation-overrides.html"
         }
       },
       "version": ""

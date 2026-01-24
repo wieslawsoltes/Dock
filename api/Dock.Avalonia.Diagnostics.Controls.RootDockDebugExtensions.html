@@ -195,6 +195,104 @@ The layout is resolved by calling the provided function when the debug window is
 
 
 
+  <a id="Dock_Avalonia_Diagnostics_Controls_RootDockDebugExtensions_AttachDockDebug_" data-uid="Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug*"></a>
+
+  <h3 id="Dock_Avalonia_Diagnostics_Controls_RootDockDebugExtensions_AttachDockDebug_Avalonia_Controls_TopLevel_System_Func_System_Object__Avalonia_Input_KeyGesture_System_Func_Avalonia_Controls_TopLevel_Avalonia_Controls_Window__" data-uid="Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel,System.Func{System.Object},Avalonia.Input.KeyGesture,System.Func{Avalonia.Controls.TopLevel,Avalonia.Controls.Window})">
+  AttachDockDebug(TopLevel, Func&lt;object?&gt;, KeyGesture?, Func&lt;TopLevel, Window&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia.Diagnostics/Controls/RootDockDebugExtensions.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches <a class="xref" href="Dock.Avalonia.Diagnostics.Controls.RootDockDebug.html">RootDockDebug</a> toggled by <code class="paramref">gesture</code>.
+Allows providing a custom debug window factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDisposable AttachDockDebug(this TopLevel topLevel, Func&lt;object?&gt; layoutProvider, KeyGesture? gesture, Func&lt;TopLevel, Window&gt;? windowFactory)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>topLevel</code> <span class="xref">TopLevel</span></dt>
+    <dd><p>The top level to attach to.</p>
+</dd>
+    <dt><code>layoutProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd><p>Function that returns the current layout.</p>
+</dd>
+    <dt><code>gesture</code> <span class="xref">KeyGesture</span></dt>
+    <dd><p>The key gesture used to toggle debug.</p>
+</dd>
+    <dt><code>windowFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<span class="xref">TopLevel</span>, <span class="xref">Window</span>&gt;</dt>
+    <dd><p>Optional factory to create the debug window.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></dt>
+    <dd><p>IDisposable instance detaching the debug window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Diagnostics_Controls_RootDockDebugExtensions_AttachDockDebug_" data-uid="Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug*"></a>
+
+  <h3 id="Dock_Avalonia_Diagnostics_Controls_RootDockDebugExtensions_AttachDockDebug_Avalonia_Controls_TopLevel_System_Func_System_Object__System_Func_Avalonia_Controls_TopLevel_Avalonia_Controls_Window__Avalonia_Input_KeyGesture_" data-uid="Dock.Avalonia.Diagnostics.Controls.RootDockDebugExtensions.AttachDockDebug(Avalonia.Controls.TopLevel,System.Func{System.Object},System.Func{Avalonia.Controls.TopLevel,Avalonia.Controls.Window},Avalonia.Input.KeyGesture)">
+  AttachDockDebug(TopLevel, Func&lt;object?&gt;, Func&lt;TopLevel, Window&gt;?, KeyGesture?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia.Diagnostics/Controls/RootDockDebugExtensions.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches <a class="xref" href="Dock.Avalonia.Diagnostics.Controls.RootDockDebug.html">RootDockDebug</a> toggled by <code class="paramref">gesture</code>.
+Allows providing a custom debug window factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDisposable AttachDockDebug(this TopLevel topLevel, Func&lt;object?&gt; layoutProvider, Func&lt;TopLevel, Window&gt;? windowFactory, KeyGesture? gesture)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>topLevel</code> <span class="xref">TopLevel</span></dt>
+    <dd><p>The top level to attach to.</p>
+</dd>
+    <dt><code>layoutProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd><p>Function that returns the current layout.</p>
+</dd>
+    <dt><code>windowFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<span class="xref">TopLevel</span>, <span class="xref">Window</span>&gt;</dt>
+    <dd><p>Optional factory to create the debug window.</p>
+</dd>
+    <dt><code>gesture</code> <span class="xref">KeyGesture</span></dt>
+    <dd><p>The key gesture used to toggle debug.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></dt>
+    <dd><p>IDisposable instance detaching the debug window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 

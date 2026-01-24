@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ManagedDockWindowDocument | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ManagedDockWindowDocument | Dock for Avalonia ">
+      
+      <meta name="description" content="Document model used for managed floating windows.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_ManagedDockWindowDocument.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.ManagedDockWindowDocument%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument">
+
+
+
+  <h1 id="Dock_Avalonia_Controls_ManagedDockWindowDocument" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument" class="text-break">
+Class ManagedDockWindowDocument  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Avalonia.html">Avalonia</a>.<a class="xref" href="Dock.Avalonia.Controls.html">Controls</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Avalonia.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Document model used for managed floating windows.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ManagedDockWindowDocument : ManagedDockableBase, IDockSelectorInfo, INotifyPropertyChanged, IMdiDocument, IDocument, ILocalTarget, IDocumentContent, IDockable, IControlRecyclingIdProvider, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html">ManagedDockableBase</a></div>
+      <div><span class="xref">ManagedDockWindowDocument</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><a class="xref" href="Dock.Model.Controls.IMdiDocument.html">IMdiDocument</a></div>
+      <div><a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a></div>
+      <div><a class="xref" href="Dock.Model.Core.ILocalTarget.html">ILocalTarget</a></div>
+      <div><a class="xref" href="Dock.Model.Controls.IDocumentContent.html">IDocumentContent</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
+      <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
+      <div><span class="xref">IRecyclingDataTemplate</span></div>
+      <div><span class="xref">IDataTemplate</span></div>
+      <div><span class="xref">ITemplate</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, <span class="xref">Control</span>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_PropertyChanged">ManagedDockableBase.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Id">ManagedDockableBase.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Title">ManagedDockableBase.Title</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Context">ManagedDockableBase.Context</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Owner">ManagedDockableBase.Owner</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OriginalOwner">ManagedDockableBase.OriginalOwner</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Factory">ManagedDockableBase.Factory</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsEmpty">ManagedDockableBase.IsEmpty</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsCollapsable">ManagedDockableBase.IsCollapsable</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Proportion">ManagedDockableBase.Proportion</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Dock">ManagedDockableBase.Dock</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Column">ManagedDockableBase.Column</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Row">ManagedDockableBase.Row</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ColumnSpan">ManagedDockableBase.ColumnSpan</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_RowSpan">ManagedDockableBase.RowSpan</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsSharedSizeScope">ManagedDockableBase.IsSharedSizeScope</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CollapsedProportion">ManagedDockableBase.CollapsedProportion</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MinWidth">ManagedDockableBase.MinWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MaxWidth">ManagedDockableBase.MaxWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MinHeight">ManagedDockableBase.MinHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_MaxHeight">ManagedDockableBase.MaxHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanClose">ManagedDockableBase.CanClose</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanPin">ManagedDockableBase.CanPin</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_KeepPinnedDockableVisible">ManagedDockableBase.KeepPinnedDockableVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanFloat">ManagedDockableBase.CanFloat</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDrag">ManagedDockableBase.CanDrag</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDrop">ManagedDockableBase.CanDrop</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanDockAsDocument">ManagedDockableBase.CanDockAsDocument</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_IsModified">ManagedDockableBase.IsModified</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockGroup">ManagedDockableBase.DockGroup</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ShowInSelector">ManagedDockableBase.ShowInSelector</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SelectorTitle">ManagedDockableBase.SelectorTitle</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetControlRecyclingId">ManagedDockableBase.GetControlRecyclingId()</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnSelected">ManagedDockableBase.OnSelected()</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetVisibleBounds_System_Double__System_Double__System_Double__System_Double__">ManagedDockableBase.GetVisibleBounds(out double, out double, out double, out double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetVisibleBounds_System_Double_System_Double_System_Double_System_Double_">ManagedDockableBase.SetVisibleBounds(double, double, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnVisibleBoundsChanged_System_Double_System_Double_System_Double_System_Double_">ManagedDockableBase.OnVisibleBoundsChanged(double, double, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPinnedBounds_System_Double__System_Double__System_Double__System_Double__">ManagedDockableBase.GetPinnedBounds(out double, out double, out double, out double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPinnedBounds_System_Double_System_Double_System_Double_System_Double_">ManagedDockableBase.SetPinnedBounds(double, double, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPinnedBoundsChanged_System_Double_System_Double_System_Double_System_Double_">ManagedDockableBase.OnPinnedBoundsChanged(double, double, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetTabBounds_System_Double__System_Double__System_Double__System_Double__">ManagedDockableBase.GetTabBounds(out double, out double, out double, out double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetTabBounds_System_Double_System_Double_System_Double_System_Double_">ManagedDockableBase.SetTabBounds(double, double, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnTabBoundsChanged_System_Double_System_Double_System_Double_System_Double_">ManagedDockableBase.OnTabBoundsChanged(double, double, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPointerPosition_System_Double__System_Double__">ManagedDockableBase.GetPointerPosition(out double, out double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPointerPosition_System_Double_System_Double_">ManagedDockableBase.SetPointerPosition(double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPointerPositionChanged_System_Double_System_Double_">ManagedDockableBase.OnPointerPositionChanged(double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_GetPointerScreenPosition_System_Double__System_Double__">ManagedDockableBase.GetPointerScreenPosition(out double, out double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_SetPointerScreenPosition_System_Double_System_Double_">ManagedDockableBase.SetPointerScreenPosition(double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_OnPointerScreenPositionChanged_System_Double_System_Double_">ManagedDockableBase.OnPointerScreenPositionChanged(double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanClose__1___0_System_Boolean_">FluentExtensions.WithCanClose&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDockAsDocument__1___0_System_Boolean_">FluentExtensions.WithCanDockAsDocument&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDrag__1___0_System_Boolean_">FluentExtensions.WithCanDrag&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanDrop__1___0_System_Boolean_">FluentExtensions.WithCanDrop&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanFloat__1___0_System_Boolean_">FluentExtensions.WithCanFloat&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanPin__1___0_System_Boolean_">FluentExtensions.WithCanPin&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCollapsedProportion__1___0_System_Double_">FluentExtensions.WithCollapsedProportion&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithContext__1___0_System_Object_">FluentExtensions.WithContext&lt;T&gt;(T, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithDockGroup__1___0_System_String_">FluentExtensions.WithDockGroup&lt;T&gt;(T, string?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithDockMode__1___0_Dock_Model_Core_DockMode_">FluentExtensions.WithDockMode&lt;T&gt;(T, DockMode)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFactory__1___0_Dock_Model_Core_IFactory_">FluentExtensions.WithFactory&lt;T&gt;(T, IFactory?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithGrid__1___0_System_Int32_System_Int32_System_Int32_System_Int32_">FluentExtensions.WithGrid&lt;T&gt;(T, int, int, int, int)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithId__1___0_System_String_">FluentExtensions.WithId&lt;T&gt;(T, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithIsCollapsable__1___0_System_Boolean_">FluentExtensions.WithIsCollapsable&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithIsEmpty__1___0_System_Boolean_">FluentExtensions.WithIsEmpty&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithIsModified__1___0_System_Boolean_">FluentExtensions.WithIsModified&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithKeepPinnedDockableVisible__1___0_System_Boolean_">FluentExtensions.WithKeepPinnedDockableVisible&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMaxHeight__1___0_System_Double_">FluentExtensions.WithMaxHeight&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMaxWidth__1___0_System_Double_">FluentExtensions.WithMaxWidth&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMinHeight__1___0_System_Double_">FluentExtensions.WithMinHeight&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithMinWidth__1___0_System_Double_">FluentExtensions.WithMinWidth&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOriginalOwner__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithOriginalOwner&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithProportion__1___0_System_Double_">FluentExtensions.WithProportion&lt;T&gt;(T, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithSharedSizeScope__1___0_System_Boolean_">FluentExtensions.WithSharedSizeScope&lt;T&gt;(T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithTitle__1___0_System_String_">FluentExtensions.WithTitle&lt;T&gt;(T, string)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument__ctor_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.#ctor*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument__ctor_Dock_Model_Core_IDockWindow_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.#ctor(Dock.Model.Core.IDockWindow)">
+  ManagedDockWindowDocument(IDockWindow)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Avalonia.Controls.ManagedDockWindowDocument.html">ManagedDockWindowDocument</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManagedDockWindowDocument(IDockWindow window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Content_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Content*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Content" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Content">
+  Content
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the content to display.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? Content { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_DataType_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_DataType" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.DataType">
+  DataType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the data type for template matching.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type? DataType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_IsToolWindow_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_IsToolWindow" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.IsToolWindow">
+  IsToolWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets whether the managed window hosts a tool dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsToolWindow { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiBounds_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiBounds" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiBounds">
+  MdiBounds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets MDI window bounds in dock coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DockRect MdiBounds { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockRect.html">DockRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiState_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiState" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiState">
+  MdiState
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets MDI window state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MdiWindowState MdiState { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.MdiWindowState.html">MdiWindowState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiZIndex_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_MdiZIndex" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.MdiZIndex">
+  MdiZIndex
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets MDI window Z index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MdiZIndex { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_ToolDock_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_ToolDock" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.ToolDock">
+  ToolDock
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the tool dock hosted by this managed window, if any.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IToolDock? ToolDock { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Window_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Window*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Window" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Window">
+  Window
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the associated dock window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDockWindow? Window { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Build*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_System_Object_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(System.Object)">
+  Build(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Control? Build(object? data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd><p>The created control.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Build*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_System_Object_Avalonia_Controls_Control_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Build(System.Object,Avalonia.Controls.Control)">
+  Build(object?, Control?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates or recycles a control to display the specified data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Control? Build(object? data, Control? existing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The data to display.</p>
+</dd>
+    <dt><code>existing</code> <span class="xref">Control</span></dt>
+    <dd><p>An optional control to recycle.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Control</span></dt>
+    <dd><p>The <code class="paramref">existing</code> control if supplied and applicable to
+<code class="paramref">data</code>, otherwise a new control or null.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Build_System_Object_Avalonia_Controls_Control__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The caller should ensure that any control passed to <code class="paramref">existing</code>
+originated from the same data template.</p>
+</div>
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Dispose_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Dispose" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Match_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Match*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_Match_System_Object_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.Match(System.Object)">
+  Match(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks to see if this data template matches the specified data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Match(object? data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The data.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the data template can build a control for the data, otherwise false.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_OnClose_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_OnClose" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.OnClose">
+  OnClose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable is closed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool OnClose()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>true to accept the close, and false to cancel the close.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_ManagedDockWindowDocument_OnPropertyChanged_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_ManagedDockWindowDocument_OnPropertyChanged_System_String_" data-uid="Dock.Avalonia.Controls.ManagedDockWindowDocument.OnPropertyChanged(System.String)">
+  OnPropertyChanged(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnPropertyChanged(string propertyName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/ManagedDockWindowDocument.cs/#L18" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

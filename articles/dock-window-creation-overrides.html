@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Window Creation Override Analysis | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Window Creation Override Analysis | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-window-creation-overrides.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="window-creation-override-analysis">Window Creation Override Analysis</h1>
+
+<h2 id="scope-and-goals">Scope and goals</h2>
+<p>This analysis focuses on every place the code base creates an Avalonia <code>Window</code> (or a derived type) and how those creation points can be overridden to support a managed window system or custom window implementations. The goal is to make all window creation paths consistent and easy to override, especially for floating dock windows created via factories.</p>
+<p>For practical setup guidance see the <a href="dock-managed-windows-guide.html">Managed windows guide</a> and <a href="dock-managed-windows-howto.html">Managed windows how-to</a>.</p>
+<h2 id="current-window-creation-points">Current window creation points</h2>
+<h3 id="library-defaults">Library defaults</h3>
+<ul>
+<li><code>DockControl.InitializeFactory</code> assigns <code>HostWindowLocator</code> and <code>DefaultHostWindowLocator</code> to <code>new HostWindow()</code> when no factory is provided. This is the primary source of floating window creation for docking. (<code>src/Dock.Avalonia/Controls/DockControl.axaml.cs</code>)</li>
+<li><code>HostAdapter.Present</code> lazily requests a host window via <code>Factory.GetHostWindow(id)</code> when an <code>IDockWindow</code> is shown. (<code>src/Dock.Model/Adapters/HostAdapter.cs</code>)</li>
+<li>The diagnostics helper creates a debug window directly via <code>new Window</code> and does not use a factory or locator. (<code>src/Dock.Avalonia.Diagnostics/Controls/RootDockDebugExtensions.cs</code>)</li>
+</ul>
+<h3 id="internal-helper-windows-overlaypreviewpinned">Internal helper windows (overlay/preview/pinned)</h3>
+<ul>
+<li><code>AdornerHelper&lt;T&gt;</code> creates a floating <code>DockAdornerWindow</code> when <code>DockSettings.UseFloatingDockAdorner</code> is enabled. (<code>src/Dock.Avalonia/Internal/AdornerHelper.cs</code>, <code>src/Dock.Avalonia/Controls/DockAdornerWindow.axaml.cs</code>, <code>src/Dock.Settings/DockSettings.cs</code>)</li>
+<li><code>DragPreviewHelper</code> creates and manages a singleton <code>DragPreviewWindow</code> for drag previews. (<code>src/Dock.Avalonia/Internal/DragPreviewHelper.cs</code>, <code>src/Dock.Avalonia/Controls/DragPreviewWindow.axaml.cs</code>)</li>
+<li><code>PinnedDockControl</code> creates a <code>PinnedDockWindow</code> when <code>DockSettings.UsePinnedDockWindow</code> is enabled. (<code>src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs</code>, <code>src/Dock.Avalonia/Controls/PinnedDockWindow.axaml.cs</code>, <code>src/Dock.Settings/DockSettings.cs</code>)</li>
+</ul>
+<h3 id="appsample-entry-points">App/sample entry points</h3>
+<ul>
+<li>Code-only samples set <code>desktop.MainWindow = new Window { ... }</code>. (<code>samples/DockCodeOnlySample/Program.cs</code>, <code>samples/DockCodeOnlyMvvmSample/Program.cs</code>, <code>samples/DockFluentCodeOnlySample/Program.cs</code>)</li>
+<li>XAML samples declare <code>&lt;Window ...&gt;</code> roots and code-behind <code>MainWindow : Window</code> classes. (multiple <code>samples/**/MainWindow.axaml*</code>)</li>
+</ul>
+<h3 id="modelwindow-separation">Model/window separation</h3>
+<ul>
+<li>Floating window instances are <code>IDockWindow</code> (model objects) created by <code>IFactory.CreateDockWindow</code>. These are not UI <code>Window</code> instances but control the <code>IHostWindow</code> that is created later. (<code>src/Dock.Model.Avalonia/Factory.cs</code> and similar in other model packages)</li>
+</ul>
+<h2 id="existing-extension-points">Existing extension points</h2>
+<ul>
+<li><code>IFactory.HostWindowLocator</code> and <code>IFactory.DefaultHostWindowLocator</code> are the intended customization points for floating window creation. (<code>src/Dock.Model/FactoryBase.Locator.cs</code>)</li>
+<li><code>FactoryBase.InitLayout</code> will create a default <code>HostWindowLocator</code> from <code>DefaultHostWindowLocator</code> if none was provided. (<code>src/Dock.Model/FactoryBase.Init.cs</code>)</li>
+<li>Custom <code>IHostWindow</code> implementations are supported, but most helpers assume an Avalonia <code>Window</code>/<code>TopLevel</code> underneath.</li>
+</ul>
+<h2 id="coupling-to-avaloniawindow">Coupling to Avalonia.Window</h2>
+<p>These call sites assume concrete <code>Window</code> behavior, which means custom host windows should be <code>Window</code>-derived (or provide equivalents) to keep features working:</p>
+<ul>
+<li>Window activation ordering uses <code>Window.SortWindowsByZOrder</code> and <code>Window.Activate</code>. (<code>src/Dock.Avalonia/Internal/WindowActivationHelper.cs</code>)</li>
+<li>Z-ordering for docking controls uses <code>Window.SortWindowsByZOrder</code>. (<code>src/Dock.Avalonia/Internal/DockHelpers.cs</code>)</li>
+<li>Controls expect <code>TopLevel.GetTopLevel(this)</code> to be an <code>IHostWindow</code> (so host windows must be <code>TopLevel</code> at minimum). (<code>src/Dock.Avalonia/Controls/DockControl.axaml.cs</code> and related controls)</li>
+<li>Window drag logic and chrome integrations are specialized for <code>HostWindow</code> and <code>Window</code>. (<code>src/Dock.Avalonia/Internal/WindowDragHelper.cs</code>, <code>src/Dock.Avalonia/Controls/ToolChromeControl.axaml.cs</code>, <code>src/Dock.Avalonia/Controls/DocumentTabStrip.axaml.cs</code>)</li>
+<li>Overlay resolution in Avalonia services explicitly checks <code>HostWindow</code> to resolve services from the DataContext. (<code>src/Dock.Model.ReactiveUI.Services.Avalonia/Services/AvaloniaHostServiceResolver.cs</code>)</li>
+<li>Pinned dock window hosting assumes a <code>Window</code> owner and attaches to <code>Window</code> events. (<code>src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs</code>)</li>
+</ul>
+<h2 id="how-windows-are-used-at-runtime">How windows are used at runtime</h2>
+<p>This section maps the window lifecycle and the code paths that depend on a real OS <code>Window</code> vs a managed in-app window.</p>
+<h3 id="lifecycle-and-tracking">Lifecycle and tracking</h3>
+<ul>
+<li><code>IDockWindow</code> is a model object; <code>IHostWindow</code> is the runtime UI host. <code>HostAdapter.Present</code> creates/attaches the host and pushes layout, size, and title. (<code>src/Dock.Model/Adapters/HostAdapter.cs</code>)</li>
+<li><code>HostWindow</code> registers itself in <code>Factory.HostWindows</code> on open/close and drives <code>WindowOpened/Closed</code> events. (<code>src/Dock.Avalonia/Controls/HostWindow.axaml.cs</code>)</li>
+<li><code>DockControl</code> wires the root window to the root dock and raises window lifecycle events when the main window closes. (<code>src/Dock.Avalonia/Controls/DockControl.axaml.cs</code>)</li>
+</ul>
+<h3 id="activation-and-z-order">Activation and z-order</h3>
+<ul>
+<li>Global activation uses <code>Window.SortWindowsByZOrder</code> and <code>Window.Activate</code>. (<code>src/Dock.Avalonia/Internal/WindowActivationHelper.cs</code>)</li>
+<li>Dock control z-order computations assume OS windows and <code>Window.SortWindowsByZOrder</code>. (<code>src/Dock.Avalonia/Internal/DockHelpers.cs</code>)</li>
+</ul>
+<h3 id="dragging-resizing-and-chrome">Dragging, resizing, and chrome</h3>
+<ul>
+<li>Floating window dragging uses <code>HostWindowState</code> + <code>BeginMoveDrag</code> and assumes a concrete <code>HostWindow</code>. (<code>src/Dock.Avalonia/Internal/HostWindowState.cs</code>, <code>src/Dock.Avalonia/Controls/HostWindow.axaml.cs</code>)</li>
+<li>Tool/document chrome controls attach to <code>HostWindow</code> and use OS drag behavior for Windows/macOS, with a <code>WindowDragHelper</code> fallback on Linux. (<code>src/Dock.Avalonia/Controls/ToolChromeControl.axaml.cs</code>, <code>src/Dock.Avalonia/Internal/WindowDragHelper.cs</code>)</li>
+<li>Managed MDI windows already include drag/resize/min/max logic within <code>MdiDocumentWindow</code>, which does not require an OS <code>Window</code>. (<code>src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs</code>)</li>
+</ul>
+<h3 id="overlays-diagnostics-and-helper-windows">Overlays, diagnostics, and helper windows</h3>
+<ul>
+<li>Debug windows and overlay helpers create their own <code>Window</code> instances and rely on <code>TopLevel</code> to host overlays. (<code>src/Dock.Avalonia.Diagnostics/Controls/RootDockDebugExtensions.cs</code>, <code>src/Dock.Avalonia.Diagnostics/DockDebugOverlayManager.cs</code>)</li>
+<li>Floating adorner, drag preview, and pinned dock windows are implemented as OS windows. (<code>src/Dock.Avalonia/Internal/AdornerHelper.cs</code>, <code>src/Dock.Avalonia/Internal/DragPreviewHelper.cs</code>, <code>src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs</code>)</li>
+</ul>
+<h3 id="service-resolution-and-data-context">Service resolution and data context</h3>
+<ul>
+<li>Overlay services resolve <code>HostWindow</code> and its <code>DataContext</code> explicitly. Managed windows must surface equivalent data for overlays/services. (<code>src/Dock.Model.ReactiveUI.Services.Avalonia/Services/AvaloniaHostServiceResolver.cs</code>)</li>
+</ul>
+<h2 id="native-vs-managed-window-requirements">Native vs managed window requirements</h2>
+<p>To ensure both OS windows and managed windows behave correctly, the same lifecycle contracts must be satisfied.</p>
+<h3 id="required-capabilities-both-modes">Required capabilities (both modes)</h3>
+<ul>
+<li><strong>Lifecycle</strong>: <code>Present</code>/<code>Exit</code> must add/remove the hosted layout and raise window events consistently.</li>
+<li><strong>Tracking</strong>: size and position must flow between <code>IDockWindow</code> and the host.</li>
+<li><strong>Activation</strong>: active window tracking and activation events must match dock state (<code>ActiveDockable</code>, focus).</li>
+<li><strong>Ownership</strong>: floating windows should respect owner/main window ordering and modal behavior where applicable.</li>
+</ul>
+<h3 id="native-os-window-specifics">Native (OS) window specifics</h3>
+<ul>
+<li>Use OS activation/z-order via <code>Window.SortWindowsByZOrder</code>, <code>Window.Activate</code>.</li>
+<li>Use OS move/resize via <code>BeginMoveDrag</code> and pointer capture.</li>
+<li>Use owner relationships for modal/float windows when <code>DockSettings.UseOwnerForFloatingWindows</code> is enabled.</li>
+</ul>
+<h3 id="managed-in-app-window-specifics">Managed (in-app) window specifics</h3>
+<ul>
+<li>Replace OS z-order with a managed ordering (e.g., <code>MdiZIndex</code>) and update it on activation.</li>
+<li>Replace OS drag/resize with MDI logic (already in <code>MdiDocumentWindow</code> + <code>IMdiLayoutManager</code>).</li>
+<li>Provide a managed “host layer” that can be queried for current window order and activation state.</li>
+<li>Bridge data context/service resolution (overlay services should resolve from managed host/root).</li>
+<li>Ensure managed window templates mirror native window themes (title bar, borders, shadows, resize grips, chrome buttons).</li>
+<li>Ensure input routing (pointer capture, drag handles, resize grips) mirrors native behavior so managed windows feel identical.</li>
+</ul>
+<h2 id="gaps-and-friction-points">Gaps and friction points</h2>
+<ul>
+<li><code>DockControl.InitializeFactory</code> overwrites any <code>HostWindowLocator</code> or <code>DefaultHostWindowLocator</code> that might already be configured on the factory, making it hard to inject custom window types unless <code>InitializeFactory</code> is disabled.</li>
+<li>The diagnostics debug window is hardcoded as <code>new Window</code> and cannot be swapped without modifying code.</li>
+<li>Overlay/preview/pinned windows are hardcoded to <code>DockAdornerWindow</code>, <code>DragPreviewWindow</code>, and <code>PinnedDockWindow</code> with no factory hook.</li>
+<li>There is no single window factory abstraction shared across DockControl defaults, diagnostics, and other window creation sites.</li>
+<li><code>HostWindowLocator</code> uses string IDs only; it cannot easily choose a window implementation based on richer context (e.g., tool window vs document window) unless IDs are manually encoded.</li>
+<li>Several runtime behaviors are hardcoded to OS windows (<code>HostWindowState</code>, z-order helpers, debug helpers, adorner/preview/pinned windows) and must be abstracted for managed windows.</li>
+<li>Overlay services and diagnostics assume <code>TopLevel</code>/<code>Window</code> roots, which do not exist for managed windows.</li>
+</ul>
+<h2 id="proposed-solutions">Proposed solutions</h2>
+<h3 id="a-add-a-host-window-factory-hook-to-dockcontrol">A. Add a host window factory hook to DockControl</h3>
+<ul>
+<li>Introduce a property such as <code>Func&lt;IHostWindow?&gt; HostWindowFactory</code> (or <code>Func&lt;string, IHostWindow?&gt; HostWindowLocatorFactory</code>).</li>
+<li>In <code>InitializeFactory</code>, only assign <code>HostWindowLocator</code> or <code>DefaultHostWindowLocator</code> if they are null, and use <code>HostWindowFactory</code> when provided.</li>
+<li>Consider an overload that provides richer context, such as <code>Func&lt;IDockWindow, IHostWindow?&gt;</code>, so callers can map to different host window types without string IDs.</li>
+</ul>
+<h3 id="b-centralize-window-creation-via-a-shared-factory-service">B. Centralize window creation via a shared factory service</h3>
+<ul>
+<li>Add an <code>IWindowFactory</code> (or <code>IHostWindowFactory</code>) in <code>Dock.Avalonia</code> and register a default implementation that returns <code>HostWindow</code>.</li>
+<li>Use this factory in DockControl defaults and in diagnostics (<code>RootDockDebugExtensions</code>), with optional overrides via DI or explicit parameters.</li>
+</ul>
+<h3 id="c-make-diagnostics-and-helper-windows-overridable">C. Make diagnostics and helper windows overridable</h3>
+<ul>
+<li>Add an overload to <code>AttachDockDebug</code> that accepts a <code>Func&lt;Window&gt;</code> or <code>Func&lt;TopLevel, Window&gt;</code>.</li>
+<li>Default to the current behavior when no delegate is provided, keeping compatibility.</li>
+<li>Provide similar factory hooks for <code>DockAdornerWindow</code>, <code>DragPreviewWindow</code>, and <code>PinnedDockWindow</code> (for example via <code>DockSettings</code>, a small <code>IWindowingServices</code> interface, or an <code>AppBuilder</code> extension).</li>
+</ul>
+<h3 id="d-managed-window-implementation-reuse-mdi">D. Managed window implementation (reuse MDI)</h3>
+<p>Goal: allow floating windows to be hosted inside the main window (managed/MDI-style) instead of creating OS windows, while preserving existing <code>IDockWindow</code> + <code>IHostWindow</code> plumbing.</p>
+<p>Key idea: reuse the existing MDI system (<code>IMdiDocument</code>, <code>MdiLayoutPanel</code>, <code>IMdiLayoutManager</code>, <code>MdiDocumentWindow</code>) as the managed window surface, with a thin adapter so the <code>IHostWindow</code> contract can drive it.</p>
+<p>Proposed shape:</p>
+<ul>
+<li>Add a <code>ManagedHostWindow : IHostWindow</code> that does <strong>not</strong> derive from <code>Window</code>. It inserts a managed “window” control into an in-app layer and mirrors size/position/title to <code>IMdiDocument</code> state.</li>
+<li>Add a <code>ManagedWindowLayer</code> (or similar) control that hosts MDI windows inside the main window. This can be an <code>ItemsControl</code> + <code>MdiLayoutPanel</code> pair, reusing existing <code>MdiDocumentWindow</code> templates.</li>
+<li>Provide a factory switch (<code>DockSettings.UseManagedWindows</code> or <code>IFactory.WindowingMode</code>) that swaps <code>HostWindowLocator</code>/<code>DefaultHostWindowLocator</code> from <code>HostWindow</code> to <code>ManagedHostWindow</code>.</li>
+<li>Adapt the MDI window control to be less <code>IDock</code>-specific:
+<ul>
+<li>Either introduce a small <code>IMdiHost</code> interface (ActiveItem/Items/InvalidateLayout) and use it instead of <code>IDock</code>.</li>
+<li>Or provide a lightweight <code>ManagedWindowDock : IDock</code> implementation in <code>Dock.Avalonia</code> for the managed layer, so existing <code>MdiDocumentWindow</code> logic keeps working without major changes.</li>
+</ul>
+</li>
+</ul>
+<h4 id="managed-window-details-from-analysis">Managed window details (from analysis)</h4>
+<ul>
+<li><strong>Reusable MDI components</strong>: <code>IMdiDocument</code>, <code>MdiLayoutPanel</code>, <code>IMdiLayoutManager</code>, and <code>ClassicMdiLayoutManager</code> are already generic and can be reused as-is. (<code>src/Dock.Avalonia/Mdi/*</code>, <code>src/Dock.Model/Core/IMdiDocument.cs</code>)</li>
+<li><strong>Current coupling</strong>: <code>MdiDocumentWindow</code> implements drag/resize/min/max logic, but assumes <code>IMdiDocument.Owner is IDock</code> and uses <code>IDock.ActiveDockable</code> for active state. (<code>src/Dock.Avalonia/Controls/MdiDocumentWindow.axaml.cs</code>)</li>
+</ul>
+<h4 id="refactors-needed-for-reuse">Refactors needed for reuse</h4>
+<ul>
+<li><strong>Decouple host assumptions</strong>: introduce a small host contract (for example <code>IMdiHost</code> with <code>ActiveItem</code>, <code>Items</code>, and <code>InvalidateLayout</code>) or provide an adapter dock used only by managed windows.</li>
+<li><strong>Managed window layer</strong>: add a <code>ManagedWindowLayer</code> control (standalone or inside <code>DockControl</code>) to host managed windows inside the main window.</li>
+<li><strong>Managed host implementation</strong>: create an <code>IHostWindow</code> implementation that inserts a managed window control into the layer rather than spawning an OS window.</li>
+</ul>
+<h4 id="minimal-concrete-approach">Minimal concrete approach</h4>
+<ol>
+<li>Create <code>ManagedWindowDock : IDock</code> (or a lighter <code>IMdiHost</code>) in <code>Dock.Avalonia</code> to own managed windows and track <code>ActiveDockable</code>. This allows <code>MdiDocumentWindow</code> to keep working with minimal changes.</li>
+<li>Create <code>ManagedHostWindow : IHostWindow</code> that:
+<ul>
+<li>Wraps a managed dock window model that implements <code>IMdiDocument</code>.</li>
+<li>On <code>Present</code>, inserts a <code>MdiDocumentWindow</code> into the <code>ManagedWindowLayer</code>.</li>
+<li>On <code>Exit</code>, removes the managed window from the layer.</li>
+<li>Maps <code>IDockWindow</code> bounds to <code>IMdiDocument.MdiBounds</code> (and back on save).</li>
+</ul>
+</li>
+<li>Add a factory hook to choose managed vs native windows:
+<ul>
+<li><code>HostWindowLocator</code> / <code>DefaultHostWindowLocator</code> returns <code>ManagedHostWindow</code> when managed mode is enabled.</li>
+<li>A <code>DockSettings</code> flag or <code>IFactory.WindowingMode</code> (<code>Native | Managed</code>) selects the path.</li>
+</ul>
+</li>
+</ol>
+<h4 id="why-this-fits-managed-windows">Why this fits managed windows</h4>
+<ul>
+<li>Managed windows render inside the main window (no OS window), and the MDI layout manager already provides drag/resize/min/max and z-ordering.</li>
+<li>The standard floating-window pipeline (<code>IDockWindow</code> + <code>IHostWindow</code>) remains intact, so app code does not need to change.</li>
+</ul>
+<h2 id="detailed-work-required-for-native--managed-parity">Detailed work required for native + managed parity</h2>
+<p>This list captures the additional refactors needed to ensure both window systems behave consistently.</p>
+<h3 id="window-lifecycle-abstraction">Window lifecycle abstraction</h3>
+<ul>
+<li>Introduce a small abstraction layer (for example <code>IWindowingServices</code>) that exposes:
+<ul>
+<li>Create host window (native/managed)</li>
+<li>Activate window / bring to front</li>
+<li>Z-order query/update</li>
+<li>Optional owner/parent relationships</li>
+</ul>
+</li>
+<li>Update <code>WindowActivationHelper</code> and <code>DockHelpers</code> to use this abstraction instead of <code>Window.SortWindowsByZOrder</code>.</li>
+</ul>
+<h3 id="host-state-and-drag-handling">Host state and drag handling</h3>
+<ul>
+<li>Extend the existing <code>IHostWindowState</code> contract with a managed implementation (or provide a managed <code>HostWindowState</code> variant) so both native and managed hosts can drive the same docking events.</li>
+<li>For managed windows, reuse <code>MdiDocumentWindow</code> drag/resize handling and ensure it raises the same docking events (<code>WindowMoveDragBegin/Move/End</code>).</li>
+</ul>
+<h3 id="overlay-and-diagnostics-compatibility">Overlay and diagnostics compatibility</h3>
+<ul>
+<li>Refactor <code>AvaloniaHostServiceResolver</code> to resolve services from a managed host layer as well as <code>HostWindow</code>.</li>
+<li>Add factory hooks for debug/overlay windows to allow managed equivalents or in-tree overlays.</li>
+</ul>
+<h3 id="helper-windows">Helper windows</h3>
+<ul>
+<li>Add explicit creation hooks for <code>DockAdornerWindow</code>, <code>DragPreviewWindow</code>, and <code>PinnedDockWindow</code>, and provide managed equivalents where appropriate.</li>
+<li>Ensure helper windows can attach to either a <code>TopLevel</code> or a managed host layer.</li>
+<li>Provide managed counterparts that can reuse the same styling resources as native windows.</li>
+</ul>
+<h3 id="data-context-and-layout-ownership">Data context and layout ownership</h3>
+<ul>
+<li>Managed host windows must expose a data context path for overlays and document tooling that currently assume <code>HostWindow</code>.</li>
+<li>Maintain the owner chain and active dockable in managed mode (either via <code>IMdiHost</code> or <code>ManagedWindowDock</code>).</li>
+</ul>
+<h2 id="managed-window-theming-and-template-parity">Managed window theming and template parity</h2>
+<p>Managed windows should look and feel like real windows. The goal is to reuse existing window themes (Fluent/Simple) and chrome resources so managed substitutes are visually consistent and require minimal additional styling.</p>
+<h3 id="theming-goals">Theming goals</h3>
+<ul>
+<li>Reuse existing <code>HostWindow</code> and window chrome resources where possible.</li>
+<li>Share title bar, button, and border templates between native and managed windows.</li>
+<li>Keep overlay/preview/pinned managed windows consistent with app themes.</li>
+<li>Support the same pseudo-classes (<code>:active</code>, <code>:maximized</code>, <code>:minimized</code>, <code>:dragging</code>) for consistent styling.</li>
+</ul>
+<h3 id="template-reuse-strategy">Template reuse strategy</h3>
+<ul>
+<li>Extract common window chrome into reusable control themes or styles (for example <code>WindowChromeTheme</code>, <code>TitleBarTheme</code>, <code>WindowButtonTheme</code>) that can be applied by both <code>HostWindow</code> and managed window controls (or expose common brush keys that both templates consume).</li>
+<li>Ensure <code>MdiDocumentWindow</code> and managed helper windows (adorner/preview/pinned) use the same resource keys as <code>HostWindow</code> templates.</li>
+<li>Avoid duplicating theme XAML by referencing shared resources in <code>Dock.Avalonia.Themes.*</code> (Fluent/Simple).</li>
+</ul>
+<h3 id="theme-resource-locations-current">Theme resource locations (current)</h3>
+<ul>
+<li><code>DockFluentTheme.axaml</code> includes window-related templates from <code>src/Dock.Avalonia.Themes.Fluent/Controls/*.axaml</code> (for example <code>HostWindow.axaml</code>, <code>HostWindowTitleBar.axaml</code>, <code>DragPreviewWindow.axaml</code>, <code>PinnedDockWindow.axaml</code>, <code>DockAdornerWindow.axaml</code>, <code>MdiDocumentWindow.axaml</code>, <code>ManagedWindowLayer.axaml</code>, <code>WindowChromeResources.axaml</code>).</li>
+<li><code>DockSimpleTheme.axaml</code> includes the same <code>/Controls/*.axaml</code> resources; the Simple theme links Fluent control resources via <code>Dock.Avalonia.Themes.Simple.csproj</code> (see <code>AvaloniaResource</code> link to <code>Dock.Avalonia.Themes.Fluent/Controls</code>).</li>
+<li>New managed-window templates/resources should be added to <code>src/Dock.Avalonia.Themes.Fluent/Controls/</code> and referenced in both <code>DockFluentTheme.axaml</code> and <code>DockSimpleTheme.axaml</code>.</li>
+</ul>
+<h3 id="managed-substitutes-that-need-templates">Managed substitutes that need templates</h3>
+<ul>
+<li><strong>Managed host surface</strong>: the managed window surface is the existing <code>MdiDocumentWindow</code> hosted by <code>ManagedWindowLayer</code>; no separate <code>ManagedHostWindowControl</code> is required unless future design calls for it.</li>
+<li><strong>Managed dock adorner overlay</strong>: overlay-hosted <code>DockTarget</code>/<code>GlobalDockTarget</code> visuals should reuse the same brush keys as window chrome where applicable.</li>
+<li><strong>Managed drag preview host</strong>: <code>DragPreviewControl</code> overlays should use the same theme resources as the native preview window.</li>
+<li><strong>Managed pinned dock host</strong>: <code>ToolDockControl</code> overlays should use the same theme resources as the native pinned dock window.</li>
+<li><strong>Managed debug/diagnostic window</strong> (optional): if added later, reuse the same window chrome resource keys for parity.</li>
+</ul>
+<h3 id="theme-integration-checklist">Theme integration checklist</h3>
+<ul>
+<li>Define shared resource keys for window chrome (background, border, shadow, title bar, buttons).</li>
+<li>Apply those keys in both native <code>HostWindow</code> templates and managed window controls.</li>
+<li>Provide theme resources for managed helper windows in <code>Dock.Avalonia.Themes.Fluent</code> and <code>Dock.Avalonia.Themes.Simple</code>.</li>
+<li>Verify visual parity across light/dark variants and scaling.</li>
+<li>Verify pointer hit targets, padding, and resize grip thickness match native windows.</li>
+</ul>
+<h2 id="app-and-sample-guidance">App and sample guidance</h2>
+<ul>
+<li>Document a supported pattern for custom host windows:
+<ul>
+<li>Set <code>Factory.DefaultHostWindowLocator = () =&gt; new MyHostWindow();</code></li>
+<li>Disable <code>DockControl.InitializeFactory</code> if needed to avoid overrides.</li>
+</ul>
+</li>
+<li>Provide at least one sample showing custom host windows (for example, a managed-window subclass or a themed host window).</li>
+</ul>
+<h2 id="backward-compatibility">Backward compatibility</h2>
+<ul>
+<li>Preserve existing defaults when no custom factory/locator is supplied.</li>
+<li>Introduce new properties/overloads instead of changing existing signatures.</li>
+</ul>
+<h2 id="suggested-implementation-steps">Suggested implementation steps</h2>
+<p>This is a concise summary. Use the checklist below as the source of truth for execution.</p>
+<ol>
+<li>Add a <code>HostWindowFactory</code> (or similar) property to <code>DockControl</code> and update <code>InitializeFactory</code> to respect existing locators and custom factories.</li>
+<li>Add an optional factory parameter to <code>RootDockDebugExtensions.AttachDockDebug</code>.</li>
+<li>Add creation hooks for <code>DockAdornerWindow</code>, <code>DragPreviewWindow</code>, and <code>PinnedDockWindow</code> (factory delegate or service).</li>
+<li>Implement managed window hosting (MDI reuse) via <code>ManagedWindowLayer</code> + <code>ManagedHostWindow</code>.</li>
+<li>Abstract activation/z-order/drag operations so managed windows can participate without <code>Window.SortWindowsByZOrder</code>.</li>
+<li>Add managed-aware service resolution for overlays/diagnostics.</li>
+<li>Extract shared chrome resources and apply them to managed window templates (host/adorner/preview/pinned/debug).</li>
+<li>Update docs and samples to demonstrate managed windows and custom host windows with theme parity.</li>
+</ol>
+<h2 id="implementation-plan-checkable-tasks">Implementation plan (checkable tasks)</h2>
+<ol>
+<li>[x] Add managed window mode flag (<code>DockSettings.UseManagedWindows</code> or <code>IFactory.WindowingMode</code>) and document default behavior.</li>
+<li>[x] Create <code>ManagedWindowLayer</code> control to host MDI windows in-app.</li>
+<li>[x] Add <code>ManagedHostWindow : IHostWindow</code> that maps <code>IDockWindow</code> to a managed MDI window item.</li>
+<li>[x] Wire <code>HostWindowLocator</code>/<code>DefaultHostWindowLocator</code> to return <code>ManagedHostWindow</code> when managed mode is enabled.</li>
+<li>[x] Update <code>MdiDocumentWindow</code> dependencies:
+<ul>
+<li>Option A: introduce <code>IMdiHost</code> and refactor to use it.</li>
+<li>Option B: add a <code>ManagedWindowDock : IDock</code> implementation used by <code>ManagedWindowLayer</code>.</li>
+</ul>
+</li>
+<li>[x] Add factory hooks for <code>DockAdornerWindow</code>, <code>DragPreviewWindow</code>, and <code>PinnedDockWindow</code>.</li>
+<li>[x] Add overloads/DI hooks for <code>RootDockDebugExtensions.AttachDockDebug</code>.</li>
+<li>[x] Add abstraction for activation/z-order so managed windows can be ordered/activated without <code>Window.SortWindowsByZOrder</code>.</li>
+<li>[x] Make overlay/service resolution work for managed windows (no <code>TopLevel</code>/<code>HostWindow</code>).</li>
+<li>[x] Define shared window chrome resources in <code>src/Dock.Avalonia.Themes.Fluent/Controls/*.axaml</code> and include them in <code>DockFluentTheme.axaml</code>.</li>
+<li>[x] Ensure <code>DockSimpleTheme.axaml</code> includes the same resources (linked from Fluent controls) and validate Simple theme overrides.</li>
+<li>[x] Apply shared chrome resources to managed windows (host, adorner, drag preview, pinned dock, debug).</li>
+<li>[x] Update docs (<code>dock-window-creation-overrides.md</code>, <code>dock-host-window-locator.md</code>) with managed window guidance and theming notes.</li>
+<li>[x] Add/update a sample showing managed window hosting (MDI-backed floating windows) with theme parity.</li>
+<li>[ ] Validate: drag/resize, activation, z-order, docking/undocking, theming consistency, input routing, and cleanup on window close.</li>
+</ol>
+<h2 id="reference-locations">Reference locations</h2>
+<ul>
+<li><code>src/Dock.Avalonia/Controls/DockControl.axaml.cs</code></li>
+<li><code>src/Dock.Model/FactoryBase.Locator.cs</code></li>
+<li><code>src/Dock.Model/FactoryBase.Init.cs</code></li>
+<li><code>src/Dock.Model/Adapters/HostAdapter.cs</code></li>
+<li><code>src/Dock.Avalonia.Diagnostics/Controls/RootDockDebugExtensions.cs</code></li>
+<li><code>src/Dock.Avalonia/Internal/AdornerHelper.cs</code></li>
+<li><code>src/Dock.Avalonia/Internal/DragPreviewHelper.cs</code></li>
+<li><code>src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs</code></li>
+<li><code>src/Dock.Avalonia/Internal/WindowActivationHelper.cs</code></li>
+<li><code>src/Dock.Avalonia/Internal/DockHelpers.cs</code></li>
+<li><code>src/Dock.Avalonia/Internal/WindowDragHelper.cs</code></li>
+<li><code>src/Dock.Model.ReactiveUI.Services.Avalonia/Services/AvaloniaHostServiceResolver.cs</code></li>
+<li><code>samples/*/Program.cs</code></li>
+<li><code>samples/**/MainWindow.axaml*</code></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-window-creation-overrides.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

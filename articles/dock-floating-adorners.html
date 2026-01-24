@@ -96,6 +96,7 @@ AppBuilder.Configure&lt;App&gt;()
 </code></pre>
 <p>When enabled <code>AdornerHelper</code> creates a lightweight <code>DockAdornerWindow</code> positioned above the drag source. The window is transparent and not topmost, so the drag preview window still appears above the adorner because only the preview is marked as <code>Topmost</code>.</p>
 <p>Use this option if dock targets fail to appear when dragging over native controls or popups. The default value is <code>false</code> which uses an <code>AdornerLayer</code> inside the same window.</p>
+<p>In managed window mode (<code>DockSettings.UseManagedWindows = true</code>), the floating adorner is rendered inside <code>ManagedWindowLayer</code> instead of a native window.</p>
 
 </article>
 

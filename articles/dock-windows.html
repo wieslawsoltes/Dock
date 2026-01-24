@@ -100,6 +100,10 @@
 </code></pre>
 <p>Calling <code>FloatDockable</code> on the factory opens a dockable in a new window. The new <code>IDockWindow</code> is tracked by the root dock and stores its bounds and title so it can be serialized together with the layout.</p>
 <p>To customize the platform window (<code>IHostWindow</code>) used by floating docks, use <code>HostWindowLocator</code> or <code>DefaultHostWindowLocator</code>. See <a href="dock-host-window-locator.html">Host window locators</a> for details.</p>
+<h2 id="managed-windows">Managed windows</h2>
+<p>When <code>DockSettings.UseManagedWindows</code> is enabled, floating windows are hosted inside the main window instead of spawning native OS windows. The default host window becomes <code>ManagedHostWindow</code>, which renders floating windows inside <code>ManagedWindowLayer</code> using the MDI layout system.</p>
+<p>If you override host window creation, return <code>ManagedHostWindow</code> when managed windows are enabled. <code>DockControl.EnableManagedWindowLayer</code> must remain <code>true</code> for managed windows to appear.</p>
+<p>For setup details see the <a href="dock-managed-windows-guide.html">Managed windows guide</a> and <a href="dock-managed-windows-howto.html">Managed windows how-to</a>.</p>
 <h2 id="idockwindow-model-members">IDockWindow model members</h2>
 <p><code>IDockWindow</code> represents the floating window model and includes:</p>
 <table>
@@ -286,11 +290,11 @@ This behavior is controlled by two settings on <code>DockSettings</code>:</p>
 </ul>
 <p>When magnetism is enabled, <code>HostWindow</code> compares its position against other tracked windows during a drag
 and adjusts the position if it falls within the snap distance. This makes it easy to align multiple floating
-windows.</p>
+windows. In managed mode, the same logic applies to managed floating windows within the managed layer.</p>
 <h2 id="bringing-windows-to-front">Bringing windows to front</h2>
 <p>If <code>DockSettings.BringWindowsToFrontOnDrag</code> is enabled, initiating a drag will activate
 all floating windows and any main window hosting a <code>DockControl</code> so they stay above other
-applications until the drag completes.</p>
+applications until the drag completes. In managed mode, this updates managed z-order so windows stay above their peers.</p>
 <p>For more advanced scenarios see <a href="dock-adapters.html">Adapter Classes</a> and the <a href="dock-advanced.html">Advanced Guide</a>.</p>
 
 </article>

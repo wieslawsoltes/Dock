@@ -88,6 +88,7 @@
 DockSettings.UsePinnedDockWindow = true;
 </code></pre>
 <p>When enabled the <code>PinnedDockControl</code> places the preview content inside a lightweight <code>PinnedDockWindow</code>. The window follows the host layout and closes automatically when the tool is hidden.</p>
+<p>In managed window mode (<code>DockSettings.UseManagedWindows = true</code>), pinned windows render inside <code>ManagedWindowLayer</code> instead of a native window.</p>
 <h2 id="alignment-and-orientation">Alignment and orientation</h2>
 <p><code>PinnedDockControl</code> exposes <code>PinnedDockAlignment</code> to control which edge the pinned preview occupies. The default templates bind it to the owning <code>ToolDock.Alignment</code>, but you can override it when building custom templates.</p>
 <p>Pinned tab strips use <code>ToolPinnedControl.Orientation</code> (propagated to <code>ToolPinItemControl.Orientation</code>) to arrange pinned tabs vertically or horizontally.</p>

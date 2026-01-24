@@ -35,6 +35,8 @@ Dockable items such as documents, tools and docks implement the `IDockable` inte
 | `CanDockAsDocument` | Controls whether the dockable can be docked as a tabbed document. |
 | `IsModified` | Marks a dockable as having unsaved changes. |
 | `DockGroup` | Group identifier that restricts which dockables can dock together. See [Docking Groups](dock-docking-groups.md). |
+| `AllowedDockOperations` | Allowed docking operations when the dockable is dragged (`DockOperationMask`). |
+| `AllowedDropOperations` | Allowed docking operations when the dockable is the drop target (`DockOperationMask`). |
 
 ## Sample usage
 

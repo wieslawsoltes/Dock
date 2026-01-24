@@ -330,7 +330,7 @@ public class ManagedWindowParityTests
     }
 
     [AvaloniaFact]
-    public void ManagedHostWindowDrag_Shows_And_Hides_DragPreview()
+    public void ManagedHostWindowDrag_Does_Not_Show_DragPreview()
     {
         var originalPreview = DockSettings.ShowDockablePreviewOnDrag;
         var originalManaged = DockSettings.UseManagedWindows;
@@ -351,8 +351,8 @@ public class ManagedWindowParityTests
             state.Process(new PixelPoint(10, 10), EventType.Pressed);
             state.Process(new PixelPoint(80, 80), EventType.Moved);
 
-            Assert.True(DragPreviewContext.IsActive);
-            Assert.Same(managedDocument, DragPreviewContext.Dockable);
+            Assert.False(DragPreviewContext.IsActive);
+            Assert.Null(DragPreviewContext.Dockable);
 
             state.Process(new PixelPoint(80, 80), EventType.Released);
             Assert.False(DragPreviewContext.IsActive);
@@ -366,7 +366,7 @@ public class ManagedWindowParityTests
     }
 
     [AvaloniaFact]
-    public void ManagedHostWindowDrag_CaptureLost_Clears_DragPreview()
+    public void ManagedHostWindowDrag_CaptureLost_Does_Not_Activate_DragPreview()
     {
         var originalPreview = DockSettings.ShowDockablePreviewOnDrag;
         var originalManaged = DockSettings.UseManagedWindows;
@@ -387,7 +387,7 @@ public class ManagedWindowParityTests
             state.Process(new PixelPoint(10, 10), EventType.Pressed);
             state.Process(new PixelPoint(80, 80), EventType.Moved);
 
-            Assert.True(DragPreviewContext.IsActive);
+            Assert.False(DragPreviewContext.IsActive);
 
             state.Process(new PixelPoint(80, 80), EventType.CaptureLost);
             Assert.False(DragPreviewContext.IsActive);

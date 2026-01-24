@@ -113,7 +113,8 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
                             _context.DragOffset = CalculateDragOffset(_context.DragDockable as ManagedDockWindowDocument, _context.DragStartPoint);
                         }
 
-                        if (_context.DragDockable is { } dockable)
+                        var showPreview = ShouldShowManagedDragPreview(_context.DragDockable);
+                        if (_context.DragDockable is { } dockable && showPreview)
                         {
                             var context = dockable is ManagedDockWindowDocument document
                                 ? document.Content as Visual
@@ -240,7 +241,10 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
                     preview = "Float";
                 }
 
-                _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
+                if (ShouldShowManagedDragPreview(_context.DragDockable))
+                {
+                    _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
+                }
 
                 break;
             }
@@ -447,6 +451,11 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
         var dock = ManagedWindowRegistry.GetOrCreateDock(factory);
         return dock.VisibleDockables?.OfType<ManagedDockWindowDocument>()
             .FirstOrDefault(document => ReferenceEquals(document.Window, _hostWindow.Window));
+    }
+
+    private static bool ShouldShowManagedDragPreview(IDockable? dockable)
+    {
+        return DockSettings.ShowDockablePreviewOnDrag && dockable is not ManagedDockWindowDocument;
     }
 
     private static PixelPoint CalculateDragOffset(ManagedDockWindowDocument? document, PixelPoint pointerPosition)

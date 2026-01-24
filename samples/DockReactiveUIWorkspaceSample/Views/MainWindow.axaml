@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        x:Class="DockReactiveUIWorkspaceSample.Views.MainWindow"
+        Title="Dock ReactiveUI Workspaces"
+        Width="1200"
+        Height="720">
+
+  <DockPanel>
+    <Border DockPanel.Dock="Top" Padding="12" Background="#F2F2F2">
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <Button Content="Save A" Command="{Binding SaveWorkspaceA}" />
+        <Button Content="Load A" Command="{Binding LoadWorkspaceA}" />
+        <Button Content="Save B" Command="{Binding SaveWorkspaceB}" />
+        <Button Content="Load B" Command="{Binding LoadWorkspaceB}" />
+        <Button Content="Reset Layout" Command="{Binding ResetLayout}" />
+        <CheckBox Content="Docking Enabled" IsChecked="{Binding IsDockingEnabled}" VerticalAlignment="Center" />
+      </StackPanel>
+    </Border>
+
+    <dock:DockControl Layout="{Binding Layout}"
+                      Factory="{Binding Factory}"
+                      IsDockingEnabled="{Binding IsDockingEnabled}"
+                      InitializeFactory="True"
+                      InitializeLayout="True" />
+  </DockPanel>
+</Window>

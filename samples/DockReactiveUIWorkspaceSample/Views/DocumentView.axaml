@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DockReactiveUIWorkspaceSample.Views.DocumentView">
+  <Border Padding="16">
+    <StackPanel Spacing="8">
+      <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="SemiBold" />
+      <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
+    </StackPanel>
+  </Border>
+</UserControl>

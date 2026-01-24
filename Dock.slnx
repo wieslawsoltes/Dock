@@ -62,6 +62,7 @@
     <Project Path="samples/DockReactiveUISample/DockReactiveUISample.csproj" />
     <Project Path="samples/DockReactiveUIRiderSample/DockReactiveUIRiderSample.csproj" />
     <Project Path="samples/DockReactiveUIManagedSample/DockReactiveUIManagedSample.csproj" />
+    <Project Path="samples/DockReactiveUIWorkspaceSample/DockReactiveUIWorkspaceSample.csproj" />
     <Project Path="samples/DockSimplifiedFluentSample/DockSimplifiedFluentSample.csproj" />
     <Project Path="samples/DockSimplifiedSample/DockSimplifiedSample.csproj" />
     <Project Path="samples/DockSplitViewSample/DockSplitViewSample.csproj" />

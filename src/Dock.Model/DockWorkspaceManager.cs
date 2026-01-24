@@ -223,6 +223,7 @@ public sealed class DockWorkspaceManager
         if (ReferenceEquals(_trackingFactory, factory))
         {
             _trackingOptions = options ?? new DockWorkspaceTrackingOptions();
+            _trackedRoot = null;
             return;
         }
 
@@ -423,7 +424,12 @@ public sealed class DockWorkspaceManager
         if (_trackedRoot is not null && dockable is not null)
         {
             var root = _trackingFactory.FindRoot(dockable);
-            if (root is not null && !ReferenceEquals(root, _trackedRoot))
+            if (root is null)
+            {
+                return false;
+            }
+
+            if (!ReferenceEquals(root, _trackedRoot))
             {
                 return false;
             }
@@ -453,7 +459,12 @@ public sealed class DockWorkspaceManager
                 root = _trackingFactory.FindRoot(owner);
             }
 
-            if (root is not null && !ReferenceEquals(root, _trackedRoot))
+            if (root is null)
+            {
+                return false;
+            }
+
+            if (!ReferenceEquals(root, _trackedRoot))
             {
                 return false;
             }

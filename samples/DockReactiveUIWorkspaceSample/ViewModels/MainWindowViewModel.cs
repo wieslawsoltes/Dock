@@ -3,7 +3,7 @@ using System.Reactive;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using Dock.Serializer.Newtonsoft;
+using Dock.Serializer;
 using ReactiveUI;
 
 namespace DockReactiveUIWorkspaceSample.ViewModels;
@@ -45,9 +45,15 @@ public class MainWindowViewModel : ReactiveObject
         Factory = _factory;
         _workspaceManager = new DockWorkspaceManager(new DockSerializer());
 
-        SaveWorkspaceA = ReactiveCommand.Create(() => _workspaceA = SaveWorkspace("A"));
+        SaveWorkspaceA = ReactiveCommand.Create(() =>
+        {
+            _workspaceA = SaveWorkspace("A");
+        });
         LoadWorkspaceA = ReactiveCommand.Create(() => LoadWorkspace(_workspaceA));
-        SaveWorkspaceB = ReactiveCommand.Create(() => _workspaceB = SaveWorkspace("B"));
+        SaveWorkspaceB = ReactiveCommand.Create(() =>
+        {
+            _workspaceB = SaveWorkspace("B");
+        });
         LoadWorkspaceB = ReactiveCommand.Create(() => LoadWorkspace(_workspaceB));
         ResetLayout = ReactiveCommand.Create(ResetLayoutImpl);
 

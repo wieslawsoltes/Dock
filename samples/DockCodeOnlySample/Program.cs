@@ -160,7 +160,7 @@ public class App : Application
 
             var toolbar = new StackPanel
             {
-                Orientation = Orientation.Horizontal,
+                Orientation = Avalonia.Layout.Orientation.Horizontal,
                 Spacing = 8,
                 Margin = new Thickness(8)
             };
@@ -171,7 +171,7 @@ public class App : Application
             toolbar.Children.Add(lockLayout);
 
             var content = new DockPanel();
-            DockPanel.SetDock(toolbar, Dock.Top);
+            DockPanel.SetDock(toolbar, Avalonia.Controls.Dock.Top);
             content.Children.Add(toolbar);
             content.Children.Add(dockControl);
 

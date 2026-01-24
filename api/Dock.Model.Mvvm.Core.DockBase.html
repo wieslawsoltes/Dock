@@ -98,7 +98,7 @@ Class DockBase  <a class="header-action link-secondary" title="View source" href
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DockBase : DockableBase, INotifyPropertyChanged, INotifyPropertyChanging, IDockSelectorInfo, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DockBase : DockableBase, INotifyPropertyChanged, INotifyPropertyChanging, IDockSelectorInfo, IDockableDockingRestrictions, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -121,6 +121,7 @@ Class DockBase  <a class="header-action link-secondary" title="View source" href
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
@@ -232,6 +233,12 @@ Class DockBase  <a class="header-action link-secondary" title="View source" href
     </div>
     <div>
       <a class="xref" href="Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_DockGroup">DockableBase.DockGroup</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_AllowedDockOperations">DockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_AllowedDropOperations">DockableBase.AllowedDropOperations</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_ShowInSelector">DockableBase.ShowInSelector</a>
@@ -372,6 +379,12 @@ Class DockBase  <a class="header-action link-secondary" title="View source" href
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithActiveDockable__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithActiveDockable&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDockOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDropOperations&lt;T&gt;(T, DockOperationMask)</a>
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanCloseLastDockable__1___0_System_Boolean_">FluentExtensions.WithCanCloseLastDockable&lt;T&gt;(T, bool)</a>

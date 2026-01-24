@@ -98,7 +98,7 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GridDockSplitter : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IGridDockSplitter, ISplitter, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class GridDockSplitter : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IGridDockSplitter, ISplitter, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -133,6 +133,7 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
       <div><span class="xref">IStyleable</span></div>
       <div><span class="xref">INamed</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a></div>
       <div><a class="xref" href="Dock.Model.Controls.ISplitter.html">ISplitter</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
@@ -218,6 +219,12 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockGroupProperty">DockableBase.DockGroupProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperationsProperty">DockableBase.AllowedDockOperationsProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperationsProperty">DockableBase.AllowedDropOperationsProperty</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ShowInSelectorProperty">DockableBase.ShowInSelectorProperty</a>
@@ -323,6 +330,12 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockGroup">DockableBase.DockGroup</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperations">DockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperations">DockableBase.AllowedDropOperations</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ShowInSelector">DockableBase.ShowInSelector</a>
@@ -632,6 +645,12 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
   <dl class="typelist extensionMethods">
     <dt>Extension Methods</dt>
     <dd>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDockOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDropOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanClose__1___0_System_Boolean_">FluentExtensions.WithCanClose&lt;T&gt;(T, bool)</a>
   </div>

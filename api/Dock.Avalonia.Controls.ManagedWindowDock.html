@@ -98,7 +98,7 @@ Class ManagedWindowDock  <a class="header-action link-secondary" title="View sou
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ManagedWindowDock : ManagedDockableBase, IDockSelectorInfo, INotifyPropertyChanged, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ManagedWindowDock : ManagedDockableBase, IDockSelectorInfo, IDockableDockingRestrictions, INotifyPropertyChanged, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -117,6 +117,7 @@ Class ManagedWindowDock  <a class="header-action link-secondary" title="View sou
     <dt>Implements</dt>
     <dd>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
@@ -219,6 +220,12 @@ Class ManagedWindowDock  <a class="header-action link-secondary" title="View sou
       <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockGroup">ManagedDockableBase.DockGroup</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDockOperations">ManagedDockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDropOperations">ManagedDockableBase.AllowedDropOperations</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ShowInSelector">ManagedDockableBase.ShowInSelector</a>
     </div>
     <div>
@@ -306,6 +313,12 @@ Class ManagedWindowDock  <a class="header-action link-secondary" title="View sou
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithActiveDockable__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithActiveDockable&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDockOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDropOperations&lt;T&gt;(T, DockOperationMask)</a>
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanCloseLastDockable__1___0_System_Boolean_">FluentExtensions.WithCanCloseLastDockable&lt;T&gt;(T, bool)</a>

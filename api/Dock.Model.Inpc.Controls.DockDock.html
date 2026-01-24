@@ -99,7 +99,7 @@ Class DockDock  <a class="header-action link-secondary" title="View source" href
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DataContract(IsReference = true)]
-public class DockDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDockDock, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+public class DockDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDockableDockingRestrictions, IDockDock, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -121,6 +121,7 @@ public class DockDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
@@ -262,6 +263,12 @@ public class DockDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
       <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_DockGroup">DockableBase.DockGroup</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_AllowedDockOperations">DockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_AllowedDropOperations">DockableBase.AllowedDropOperations</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_ShowInSelector">DockableBase.ShowInSelector</a>
     </div>
     <div>
@@ -364,6 +371,12 @@ public class DockDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithActiveDockable__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithActiveDockable&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDockOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDropOperations&lt;T&gt;(T, DockOperationMask)</a>
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanCloseLastDockable__1___0_System_Boolean_">FluentExtensions.WithCanCloseLastDockable&lt;T&gt;(T, bool)</a>

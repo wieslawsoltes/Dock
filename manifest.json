@@ -3294,6 +3294,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockManagerOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockManagerOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockManagerOptions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockManagerOptions.yml\" sourcestartlinenumber=\"1\">Dock manager options shared across docking surfaces.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.DockMode.yml",
       "output": {
         ".html": {
@@ -3319,6 +3333,34 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core.DockOperation",
       "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockOperation.yml\" sourcestartlinenumber=\"1\">Defines the available dock operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockOperationMask.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockOperationMask.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockOperationMask",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockOperationMask.yml\" sourcestartlinenumber=\"1\">Flags describing allowed docking operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockOperationMaskExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockOperationMaskExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockOperationMaskExtensions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockOperationMaskExtensions.yml\" sourcestartlinenumber=\"1\">Helpers for working with <xref href=\"Dock.Model.Core.DockOperationMask\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3994,6 +4036,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IDockableDockingRestrictions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IDockableDockingRestrictions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IDockableDockingRestrictions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockableDockingRestrictions.yml\" sourcestartlinenumber=\"1\">Optional docking restrictions for dockables.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.IFactory.yml",
       "output": {
         ".html": {
@@ -4271,6 +4327,62 @@
       "IsMRef": true,
       "Title": "Dock.Model.DockState",
       "Summary": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.DockWorkspace.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.DockWorkspace.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.DockWorkspace",
+      "Summary": "<p sourcefile=\"api/Dock.Model.DockWorkspace.yml\" sourcestartlinenumber=\"1\">Represents a named layout workspace snapshot.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.DockWorkspaceDirtyChangedEventArgs",
+      "Summary": "<p sourcefile=\"api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.yml\" sourcestartlinenumber=\"1\">Workspace dirty state change event args.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.DockWorkspaceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.DockWorkspaceManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.DockWorkspaceManager",
+      "Summary": "<p sourcefile=\"api/Dock.Model.DockWorkspaceManager.yml\" sourcestartlinenumber=\"1\">Manages named workspace snapshots for docking layouts.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.DockWorkspaceTrackingOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.DockWorkspaceTrackingOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.DockWorkspaceTrackingOptions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.DockWorkspaceTrackingOptions.yml\" sourcestartlinenumber=\"1\">Options for tracking layout changes to mark workspaces as dirty.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7279,6 +7391,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/dock-docking-constraints.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-docking-constraints.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/dock-docking-groups.md",
       "output": {
         ".html": {
@@ -7803,6 +7925,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-windows.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-workspaces.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-workspaces.html"
         }
       },
       "version": ""

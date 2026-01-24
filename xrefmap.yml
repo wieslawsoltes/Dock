@@ -912,6 +912,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DockControl.DockManager
   nameWithType: DockControl.DockManager
+- uid: Dock.Avalonia.Controls.DockControl.DockManagerOptions
+  name: DockManagerOptions
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_DockManagerOptions
+  commentId: P:Dock.Avalonia.Controls.DockControl.DockManagerOptions
+  fullName: Dock.Avalonia.Controls.DockControl.DockManagerOptions
+  nameWithType: DockControl.DockManagerOptions
+- uid: Dock.Avalonia.Controls.DockControl.DockManagerOptions*
+  name: DockManagerOptions
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_DockManagerOptions_
+  commentId: Overload:Dock.Avalonia.Controls.DockControl.DockManagerOptions
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockControl.DockManagerOptions
+  nameWithType: DockControl.DockManagerOptions
 - uid: Dock.Avalonia.Controls.DockControl.DragOffsetCalculator
   name: DragOffsetCalculator
   href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_DragOffsetCalculator
@@ -1033,6 +1046,25 @@ references:
   commentId: F:Dock.Avalonia.Controls.DockControl.InitializeLayoutProperty
   fullName: Dock.Avalonia.Controls.DockControl.InitializeLayoutProperty
   nameWithType: DockControl.InitializeLayoutProperty
+- uid: Dock.Avalonia.Controls.DockControl.IsDockingEnabled
+  name: IsDockingEnabled
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_IsDockingEnabled
+  commentId: P:Dock.Avalonia.Controls.DockControl.IsDockingEnabled
+  fullName: Dock.Avalonia.Controls.DockControl.IsDockingEnabled
+  nameWithType: DockControl.IsDockingEnabled
+- uid: Dock.Avalonia.Controls.DockControl.IsDockingEnabled*
+  name: IsDockingEnabled
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_IsDockingEnabled_
+  commentId: Overload:Dock.Avalonia.Controls.DockControl.IsDockingEnabled
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockControl.IsDockingEnabled
+  nameWithType: DockControl.IsDockingEnabled
+- uid: Dock.Avalonia.Controls.DockControl.IsDockingEnabledProperty
+  name: IsDockingEnabledProperty
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_IsDockingEnabledProperty
+  commentId: F:Dock.Avalonia.Controls.DockControl.IsDockingEnabledProperty
+  fullName: Dock.Avalonia.Controls.DockControl.IsDockingEnabledProperty
+  nameWithType: DockControl.IsDockingEnabledProperty
 - uid: Dock.Avalonia.Controls.DockControl.IsDraggingDock
   name: IsDraggingDock
   href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_IsDraggingDock
@@ -2356,6 +2388,15 @@ references:
   fullName.vb: Dock.Avalonia.Controls.HostWindow.New()
   nameWithType: HostWindow.HostWindow()
   nameWithType.vb: HostWindow.New()
+- uid: Dock.Avalonia.Controls.HostWindow.#ctor(Dock.Model.Core.DockManagerOptions)
+  name: HostWindow(DockManagerOptions)
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow__ctor_Dock_Model_Core_DockManagerOptions_
+  commentId: M:Dock.Avalonia.Controls.HostWindow.#ctor(Dock.Model.Core.DockManagerOptions)
+  name.vb: New(DockManagerOptions)
+  fullName: Dock.Avalonia.Controls.HostWindow.HostWindow(Dock.Model.Core.DockManagerOptions)
+  fullName.vb: Dock.Avalonia.Controls.HostWindow.New(Dock.Model.Core.DockManagerOptions)
+  nameWithType: HostWindow.HostWindow(DockManagerOptions)
+  nameWithType.vb: HostWindow.New(DockManagerOptions)
 - uid: Dock.Avalonia.Controls.HostWindow.#ctor*
   name: HostWindow
   href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow__ctor_
@@ -3001,6 +3042,32 @@ references:
   commentId: T:Dock.Avalonia.Controls.ManagedDockableBase
   fullName: Dock.Avalonia.Controls.ManagedDockableBase
   nameWithType: ManagedDockableBase
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDockOperations
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.AllowedDockOperations
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDockOperations
+  nameWithType: ManagedDockableBase.AllowedDockOperations
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDockOperations
+  nameWithType: ManagedDockableBase.AllowedDockOperations
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDropOperations
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.AllowedDropOperations
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDropOperations
+  nameWithType: ManagedDockableBase.AllowedDropOperations
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.AllowedDropOperations
+  nameWithType: ManagedDockableBase.AllowedDropOperations
 - uid: Dock.Avalonia.Controls.ManagedDockableBase.CanClose
   name: CanClose
   href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_CanClose
@@ -3736,6 +3803,15 @@ references:
   fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.New()
   nameWithType: ManagedHostWindow.ManagedHostWindow()
   nameWithType.vb: ManagedHostWindow.New()
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.#ctor(Dock.Model.Core.DockManagerOptions)
+  name: ManagedHostWindow(DockManagerOptions)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow__ctor_Dock_Model_Core_DockManagerOptions_
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.#ctor(Dock.Model.Core.DockManagerOptions)
+  name.vb: New(DockManagerOptions)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.ManagedHostWindow(Dock.Model.Core.DockManagerOptions)
+  fullName.vb: Dock.Avalonia.Controls.ManagedHostWindow.New(Dock.Model.Core.DockManagerOptions)
+  nameWithType: ManagedHostWindow.ManagedHostWindow(DockManagerOptions)
+  nameWithType.vb: ManagedHostWindow.New(DockManagerOptions)
 - uid: Dock.Avalonia.Controls.ManagedHostWindow.#ctor*
   name: ManagedHostWindow
   href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow__ctor_
@@ -12782,6 +12858,44 @@ references:
   fullName.vb: Dock.Model.Avalonia.Core.DockableBase.New
   nameWithType: DockableBase.DockableBase
   nameWithType.vb: DockableBase.New
+- uid: Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperations
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperations
+  fullName: Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperationsProperty
+  name: AllowedDockOperationsProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperationsProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperationsProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperationsProperty
+  nameWithType: DockableBase.AllowedDockOperationsProperty
+- uid: Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperations
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperations
+  fullName: Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperationsProperty
+  name: AllowedDropOperationsProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperationsProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperationsProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperationsProperty
+  nameWithType: DockableBase.AllowedDropOperationsProperty
 - uid: Dock.Model.Avalonia.Core.DockableBase.CanClose
   name: CanClose
   href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_CanClose
@@ -15636,6 +15750,32 @@ references:
   fullName.vb: Dock.Model.CaliburMicro.Core.DockableBase.New
   nameWithType: DockableBase.DockableBase
   nameWithType.vb: DockableBase.New
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_AllowedDockOperations
+  commentId: P:Dock.Model.CaliburMicro.Core.DockableBase.AllowedDockOperations
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_AllowedDropOperations
+  commentId: P:Dock.Model.CaliburMicro.Core.DockableBase.AllowedDropOperations
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
 - uid: Dock.Model.CaliburMicro.Core.DockableBase.CanClose
   name: CanClose
   href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_CanClose
@@ -18230,6 +18370,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.DockInheritanceHelper.GetEffectiveEnableGlobalDocking
   nameWithType: DockInheritanceHelper.GetEffectiveEnableGlobalDocking
+- uid: Dock.Model.Core.DockManagerOptions
+  name: DockManagerOptions
+  href: api/Dock.Model.Core.DockManagerOptions.html
+  commentId: T:Dock.Model.Core.DockManagerOptions
+  fullName: Dock.Model.Core.DockManagerOptions
+  nameWithType: DockManagerOptions
+- uid: Dock.Model.Core.DockManagerOptions.IsDockingEnabled
+  name: IsDockingEnabled
+  href: api/Dock.Model.Core.DockManagerOptions.html#Dock_Model_Core_DockManagerOptions_IsDockingEnabled
+  commentId: P:Dock.Model.Core.DockManagerOptions.IsDockingEnabled
+  fullName: Dock.Model.Core.DockManagerOptions.IsDockingEnabled
+  nameWithType: DockManagerOptions.IsDockingEnabled
+- uid: Dock.Model.Core.DockManagerOptions.IsDockingEnabled*
+  name: IsDockingEnabled
+  href: api/Dock.Model.Core.DockManagerOptions.html#Dock_Model_Core_DockManagerOptions_IsDockingEnabled_
+  commentId: Overload:Dock.Model.Core.DockManagerOptions.IsDockingEnabled
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockManagerOptions.IsDockingEnabled
+  nameWithType: DockManagerOptions.IsDockingEnabled
 - uid: Dock.Model.Core.DockMode
   name: DockMode
   href: api/Dock.Model.Core.DockMode.html
@@ -18314,6 +18473,79 @@ references:
   commentId: F:Dock.Model.Core.DockOperation.Window
   fullName: Dock.Model.Core.DockOperation.Window
   nameWithType: DockOperation.Window
+- uid: Dock.Model.Core.DockOperationMask
+  name: DockOperationMask
+  href: api/Dock.Model.Core.DockOperationMask.html
+  commentId: T:Dock.Model.Core.DockOperationMask
+  fullName: Dock.Model.Core.DockOperationMask
+  nameWithType: DockOperationMask
+- uid: Dock.Model.Core.DockOperationMask.All
+  name: All
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_All
+  commentId: F:Dock.Model.Core.DockOperationMask.All
+  fullName: Dock.Model.Core.DockOperationMask.All
+  nameWithType: DockOperationMask.All
+- uid: Dock.Model.Core.DockOperationMask.Bottom
+  name: Bottom
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_Bottom
+  commentId: F:Dock.Model.Core.DockOperationMask.Bottom
+  fullName: Dock.Model.Core.DockOperationMask.Bottom
+  nameWithType: DockOperationMask.Bottom
+- uid: Dock.Model.Core.DockOperationMask.Fill
+  name: Fill
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_Fill
+  commentId: F:Dock.Model.Core.DockOperationMask.Fill
+  fullName: Dock.Model.Core.DockOperationMask.Fill
+  nameWithType: DockOperationMask.Fill
+- uid: Dock.Model.Core.DockOperationMask.Left
+  name: Left
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_Left
+  commentId: F:Dock.Model.Core.DockOperationMask.Left
+  fullName: Dock.Model.Core.DockOperationMask.Left
+  nameWithType: DockOperationMask.Left
+- uid: Dock.Model.Core.DockOperationMask.None
+  name: None
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_None
+  commentId: F:Dock.Model.Core.DockOperationMask.None
+  fullName: Dock.Model.Core.DockOperationMask.None
+  nameWithType: DockOperationMask.None
+- uid: Dock.Model.Core.DockOperationMask.Right
+  name: Right
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_Right
+  commentId: F:Dock.Model.Core.DockOperationMask.Right
+  fullName: Dock.Model.Core.DockOperationMask.Right
+  nameWithType: DockOperationMask.Right
+- uid: Dock.Model.Core.DockOperationMask.Top
+  name: Top
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_Top
+  commentId: F:Dock.Model.Core.DockOperationMask.Top
+  fullName: Dock.Model.Core.DockOperationMask.Top
+  nameWithType: DockOperationMask.Top
+- uid: Dock.Model.Core.DockOperationMask.Window
+  name: Window
+  href: api/Dock.Model.Core.DockOperationMask.html#Dock_Model_Core_DockOperationMask_Window
+  commentId: F:Dock.Model.Core.DockOperationMask.Window
+  fullName: Dock.Model.Core.DockOperationMask.Window
+  nameWithType: DockOperationMask.Window
+- uid: Dock.Model.Core.DockOperationMaskExtensions
+  name: DockOperationMaskExtensions
+  href: api/Dock.Model.Core.DockOperationMaskExtensions.html
+  commentId: T:Dock.Model.Core.DockOperationMaskExtensions
+  fullName: Dock.Model.Core.DockOperationMaskExtensions
+  nameWithType: DockOperationMaskExtensions
+- uid: Dock.Model.Core.DockOperationMaskExtensions.Allows(Dock.Model.Core.DockOperationMask,Dock.Model.Core.DockOperation)
+  name: Allows(DockOperationMask, DockOperation)
+  href: api/Dock.Model.Core.DockOperationMaskExtensions.html#Dock_Model_Core_DockOperationMaskExtensions_Allows_Dock_Model_Core_DockOperationMask_Dock_Model_Core_DockOperation_
+  commentId: M:Dock.Model.Core.DockOperationMaskExtensions.Allows(Dock.Model.Core.DockOperationMask,Dock.Model.Core.DockOperation)
+  fullName: Dock.Model.Core.DockOperationMaskExtensions.Allows(Dock.Model.Core.DockOperationMask, Dock.Model.Core.DockOperation)
+  nameWithType: DockOperationMaskExtensions.Allows(DockOperationMask, DockOperation)
+- uid: Dock.Model.Core.DockOperationMaskExtensions.Allows*
+  name: Allows
+  href: api/Dock.Model.Core.DockOperationMaskExtensions.html#Dock_Model_Core_DockOperationMaskExtensions_Allows_
+  commentId: Overload:Dock.Model.Core.DockOperationMaskExtensions.Allows
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockOperationMaskExtensions.Allows
+  nameWithType: DockOperationMaskExtensions.Allows
 - uid: Dock.Model.Core.DockPoint
   name: DockPoint
   href: api/Dock.Model.Core.DockPoint.html
@@ -20026,6 +20258,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockManager.IsDockTargetVisible
   nameWithType: IDockManager.IsDockTargetVisible
+- uid: Dock.Model.Core.IDockManager.IsDockingEnabled
+  name: IsDockingEnabled
+  href: api/Dock.Model.Core.IDockManager.html#Dock_Model_Core_IDockManager_IsDockingEnabled
+  commentId: P:Dock.Model.Core.IDockManager.IsDockingEnabled
+  fullName: Dock.Model.Core.IDockManager.IsDockingEnabled
+  nameWithType: IDockManager.IsDockingEnabled
+- uid: Dock.Model.Core.IDockManager.IsDockingEnabled*
+  name: IsDockingEnabled
+  href: api/Dock.Model.Core.IDockManager.html#Dock_Model_Core_IDockManager_IsDockingEnabled_
+  commentId: Overload:Dock.Model.Core.IDockManager.IsDockingEnabled
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockManager.IsDockingEnabled
+  nameWithType: IDockManager.IsDockingEnabled
 - uid: Dock.Model.Core.IDockManager.Position
   name: Position
   href: api/Dock.Model.Core.IDockManager.html#Dock_Model_Core_IDockManager_Position
@@ -21279,6 +21524,38 @@ references:
   commentId: T:Dock.Model.Core.IDockableControl
   fullName: Dock.Model.Core.IDockableControl
   nameWithType: IDockableControl
+- uid: Dock.Model.Core.IDockableDockingRestrictions
+  name: IDockableDockingRestrictions
+  href: api/Dock.Model.Core.IDockableDockingRestrictions.html
+  commentId: T:Dock.Model.Core.IDockableDockingRestrictions
+  fullName: Dock.Model.Core.IDockableDockingRestrictions
+  nameWithType: IDockableDockingRestrictions
+- uid: Dock.Model.Core.IDockableDockingRestrictions.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.Core.IDockableDockingRestrictions.html#Dock_Model_Core_IDockableDockingRestrictions_AllowedDockOperations
+  commentId: P:Dock.Model.Core.IDockableDockingRestrictions.AllowedDockOperations
+  fullName: Dock.Model.Core.IDockableDockingRestrictions.AllowedDockOperations
+  nameWithType: IDockableDockingRestrictions.AllowedDockOperations
+- uid: Dock.Model.Core.IDockableDockingRestrictions.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.Core.IDockableDockingRestrictions.html#Dock_Model_Core_IDockableDockingRestrictions_AllowedDockOperations_
+  commentId: Overload:Dock.Model.Core.IDockableDockingRestrictions.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockableDockingRestrictions.AllowedDockOperations
+  nameWithType: IDockableDockingRestrictions.AllowedDockOperations
+- uid: Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.Core.IDockableDockingRestrictions.html#Dock_Model_Core_IDockableDockingRestrictions_AllowedDropOperations
+  commentId: P:Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations
+  fullName: Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations
+  nameWithType: IDockableDockingRestrictions.AllowedDropOperations
+- uid: Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.Core.IDockableDockingRestrictions.html#Dock_Model_Core_IDockableDockingRestrictions_AllowedDropOperations_
+  commentId: Overload:Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations
+  nameWithType: IDockableDockingRestrictions.AllowedDropOperations
 - uid: Dock.Model.Core.IFactory
   name: IFactory
   href: api/Dock.Model.Core.IFactory.html
@@ -23775,6 +24052,15 @@ references:
   fullName.vb: Dock.Model.DockManager.New(Dock.Model.Core.IDockService)
   nameWithType: DockManager.DockManager(IDockService)
   nameWithType.vb: DockManager.New(IDockService)
+- uid: Dock.Model.DockManager.#ctor(Dock.Model.Core.IDockService,Dock.Model.Core.DockManagerOptions)
+  name: DockManager(IDockService, DockManagerOptions)
+  href: api/Dock.Model.DockManager.html#Dock_Model_DockManager__ctor_Dock_Model_Core_IDockService_Dock_Model_Core_DockManagerOptions_
+  commentId: M:Dock.Model.DockManager.#ctor(Dock.Model.Core.IDockService,Dock.Model.Core.DockManagerOptions)
+  name.vb: New(IDockService, DockManagerOptions)
+  fullName: Dock.Model.DockManager.DockManager(Dock.Model.Core.IDockService, Dock.Model.Core.DockManagerOptions)
+  fullName.vb: Dock.Model.DockManager.New(Dock.Model.Core.IDockService, Dock.Model.Core.DockManagerOptions)
+  nameWithType: DockManager.DockManager(IDockService, DockManagerOptions)
+  nameWithType.vb: DockManager.New(IDockService, DockManagerOptions)
 - uid: Dock.Model.DockManager.#ctor*
   name: DockManager
   href: api/Dock.Model.DockManager.html#Dock_Model_DockManager__ctor_
@@ -23798,6 +24084,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.DockManager.IsDockTargetVisible
   nameWithType: DockManager.IsDockTargetVisible
+- uid: Dock.Model.DockManager.IsDockingEnabled
+  name: IsDockingEnabled
+  href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_IsDockingEnabled
+  commentId: P:Dock.Model.DockManager.IsDockingEnabled
+  fullName: Dock.Model.DockManager.IsDockingEnabled
+  nameWithType: DockManager.IsDockingEnabled
+- uid: Dock.Model.DockManager.IsDockingEnabled*
+  name: IsDockingEnabled
+  href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_IsDockingEnabled_
+  commentId: Overload:Dock.Model.DockManager.IsDockingEnabled
+  isSpec: "True"
+  fullName: Dock.Model.DockManager.IsDockingEnabled
+  nameWithType: DockManager.IsDockingEnabled
+- uid: Dock.Model.DockManager.Options
+  name: Options
+  href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_Options
+  commentId: P:Dock.Model.DockManager.Options
+  fullName: Dock.Model.DockManager.Options
+  nameWithType: DockManager.Options
+- uid: Dock.Model.DockManager.Options*
+  name: Options
+  href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_Options_
+  commentId: Overload:Dock.Model.DockManager.Options
+  isSpec: "True"
+  fullName: Dock.Model.DockManager.Options
+  nameWithType: DockManager.Options
 - uid: Dock.Model.DockManager.Position
   name: Position
   href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_Position
@@ -24051,6 +24363,436 @@ references:
   isSpec: "True"
   fullName: Dock.Model.DockState.Save
   nameWithType: DockState.Save
+- uid: Dock.Model.DockWorkspace
+  name: DockWorkspace
+  href: api/Dock.Model.DockWorkspace.html
+  commentId: T:Dock.Model.DockWorkspace
+  fullName: Dock.Model.DockWorkspace
+  nameWithType: DockWorkspace
+- uid: Dock.Model.DockWorkspace.#ctor(System.String,System.String,Dock.Model.DockState)
+  name: DockWorkspace(string, string, DockState?)
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace__ctor_System_String_System_String_Dock_Model_DockState_
+  commentId: M:Dock.Model.DockWorkspace.#ctor(System.String,System.String,Dock.Model.DockState)
+  name.vb: New(String, String, DockState)
+  fullName: Dock.Model.DockWorkspace.DockWorkspace(string, string, Dock.Model.DockState?)
+  fullName.vb: Dock.Model.DockWorkspace.New(String, String, Dock.Model.DockState)
+  nameWithType: DockWorkspace.DockWorkspace(string, string, DockState?)
+  nameWithType.vb: DockWorkspace.New(String, String, DockState)
+- uid: Dock.Model.DockWorkspace.#ctor*
+  name: DockWorkspace
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace__ctor_
+  commentId: Overload:Dock.Model.DockWorkspace.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Model.DockWorkspace.DockWorkspace
+  fullName.vb: Dock.Model.DockWorkspace.New
+  nameWithType: DockWorkspace.DockWorkspace
+  nameWithType.vb: DockWorkspace.New
+- uid: Dock.Model.DockWorkspace.Description
+  name: Description
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Description
+  commentId: P:Dock.Model.DockWorkspace.Description
+  fullName: Dock.Model.DockWorkspace.Description
+  nameWithType: DockWorkspace.Description
+- uid: Dock.Model.DockWorkspace.Description*
+  name: Description
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Description_
+  commentId: Overload:Dock.Model.DockWorkspace.Description
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspace.Description
+  nameWithType: DockWorkspace.Description
+- uid: Dock.Model.DockWorkspace.Id
+  name: Id
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Id
+  commentId: P:Dock.Model.DockWorkspace.Id
+  fullName: Dock.Model.DockWorkspace.Id
+  nameWithType: DockWorkspace.Id
+- uid: Dock.Model.DockWorkspace.Id*
+  name: Id
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Id_
+  commentId: Overload:Dock.Model.DockWorkspace.Id
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspace.Id
+  nameWithType: DockWorkspace.Id
+- uid: Dock.Model.DockWorkspace.IsDirty
+  name: IsDirty
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_IsDirty
+  commentId: P:Dock.Model.DockWorkspace.IsDirty
+  fullName: Dock.Model.DockWorkspace.IsDirty
+  nameWithType: DockWorkspace.IsDirty
+- uid: Dock.Model.DockWorkspace.IsDirty*
+  name: IsDirty
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_IsDirty_
+  commentId: Overload:Dock.Model.DockWorkspace.IsDirty
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspace.IsDirty
+  nameWithType: DockWorkspace.IsDirty
+- uid: Dock.Model.DockWorkspace.Layout
+  name: Layout
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Layout
+  commentId: P:Dock.Model.DockWorkspace.Layout
+  fullName: Dock.Model.DockWorkspace.Layout
+  nameWithType: DockWorkspace.Layout
+- uid: Dock.Model.DockWorkspace.Layout*
+  name: Layout
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Layout_
+  commentId: Overload:Dock.Model.DockWorkspace.Layout
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspace.Layout
+  nameWithType: DockWorkspace.Layout
+- uid: Dock.Model.DockWorkspace.Name
+  name: Name
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Name
+  commentId: P:Dock.Model.DockWorkspace.Name
+  fullName: Dock.Model.DockWorkspace.Name
+  nameWithType: DockWorkspace.Name
+- uid: Dock.Model.DockWorkspace.Name*
+  name: Name
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_Name_
+  commentId: Overload:Dock.Model.DockWorkspace.Name
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspace.Name
+  nameWithType: DockWorkspace.Name
+- uid: Dock.Model.DockWorkspace.State
+  name: State
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_State
+  commentId: P:Dock.Model.DockWorkspace.State
+  fullName: Dock.Model.DockWorkspace.State
+  nameWithType: DockWorkspace.State
+- uid: Dock.Model.DockWorkspace.State*
+  name: State
+  href: api/Dock.Model.DockWorkspace.html#Dock_Model_DockWorkspace_State_
+  commentId: Overload:Dock.Model.DockWorkspace.State
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspace.State
+  nameWithType: DockWorkspace.State
+- uid: Dock.Model.DockWorkspaceDirtyChangedEventArgs
+  name: DockWorkspaceDirtyChangedEventArgs
+  href: api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html
+  commentId: T:Dock.Model.DockWorkspaceDirtyChangedEventArgs
+  fullName: Dock.Model.DockWorkspaceDirtyChangedEventArgs
+  nameWithType: DockWorkspaceDirtyChangedEventArgs
+- uid: Dock.Model.DockWorkspaceDirtyChangedEventArgs.#ctor(Dock.Model.DockWorkspace,System.Boolean)
+  name: DockWorkspaceDirtyChangedEventArgs(DockWorkspace?, bool)
+  href: api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html#Dock_Model_DockWorkspaceDirtyChangedEventArgs__ctor_Dock_Model_DockWorkspace_System_Boolean_
+  commentId: M:Dock.Model.DockWorkspaceDirtyChangedEventArgs.#ctor(Dock.Model.DockWorkspace,System.Boolean)
+  name.vb: New(DockWorkspace, Boolean)
+  fullName: Dock.Model.DockWorkspaceDirtyChangedEventArgs.DockWorkspaceDirtyChangedEventArgs(Dock.Model.DockWorkspace?, bool)
+  fullName.vb: Dock.Model.DockWorkspaceDirtyChangedEventArgs.New(Dock.Model.DockWorkspace, Boolean)
+  nameWithType: DockWorkspaceDirtyChangedEventArgs.DockWorkspaceDirtyChangedEventArgs(DockWorkspace?, bool)
+  nameWithType.vb: DockWorkspaceDirtyChangedEventArgs.New(DockWorkspace, Boolean)
+- uid: Dock.Model.DockWorkspaceDirtyChangedEventArgs.#ctor*
+  name: DockWorkspaceDirtyChangedEventArgs
+  href: api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html#Dock_Model_DockWorkspaceDirtyChangedEventArgs__ctor_
+  commentId: Overload:Dock.Model.DockWorkspaceDirtyChangedEventArgs.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Model.DockWorkspaceDirtyChangedEventArgs.DockWorkspaceDirtyChangedEventArgs
+  fullName.vb: Dock.Model.DockWorkspaceDirtyChangedEventArgs.New
+  nameWithType: DockWorkspaceDirtyChangedEventArgs.DockWorkspaceDirtyChangedEventArgs
+  nameWithType.vb: DockWorkspaceDirtyChangedEventArgs.New
+- uid: Dock.Model.DockWorkspaceDirtyChangedEventArgs.IsDirty
+  name: IsDirty
+  href: api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html#Dock_Model_DockWorkspaceDirtyChangedEventArgs_IsDirty
+  commentId: P:Dock.Model.DockWorkspaceDirtyChangedEventArgs.IsDirty
+  fullName: Dock.Model.DockWorkspaceDirtyChangedEventArgs.IsDirty
+  nameWithType: DockWorkspaceDirtyChangedEventArgs.IsDirty
+- uid: Dock.Model.DockWorkspaceDirtyChangedEventArgs.IsDirty*
+  name: IsDirty
+  href: api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html#Dock_Model_DockWorkspaceDirtyChangedEventArgs_IsDirty_
+  commentId: Overload:Dock.Model.DockWorkspaceDirtyChangedEventArgs.IsDirty
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceDirtyChangedEventArgs.IsDirty
+  nameWithType: DockWorkspaceDirtyChangedEventArgs.IsDirty
+- uid: Dock.Model.DockWorkspaceDirtyChangedEventArgs.Workspace
+  name: Workspace
+  href: api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html#Dock_Model_DockWorkspaceDirtyChangedEventArgs_Workspace
+  commentId: P:Dock.Model.DockWorkspaceDirtyChangedEventArgs.Workspace
+  fullName: Dock.Model.DockWorkspaceDirtyChangedEventArgs.Workspace
+  nameWithType: DockWorkspaceDirtyChangedEventArgs.Workspace
+- uid: Dock.Model.DockWorkspaceDirtyChangedEventArgs.Workspace*
+  name: Workspace
+  href: api/Dock.Model.DockWorkspaceDirtyChangedEventArgs.html#Dock_Model_DockWorkspaceDirtyChangedEventArgs_Workspace_
+  commentId: Overload:Dock.Model.DockWorkspaceDirtyChangedEventArgs.Workspace
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceDirtyChangedEventArgs.Workspace
+  nameWithType: DockWorkspaceDirtyChangedEventArgs.Workspace
+- uid: Dock.Model.DockWorkspaceManager
+  name: DockWorkspaceManager
+  href: api/Dock.Model.DockWorkspaceManager.html
+  commentId: T:Dock.Model.DockWorkspaceManager
+  fullName: Dock.Model.DockWorkspaceManager
+  nameWithType: DockWorkspaceManager
+- uid: Dock.Model.DockWorkspaceManager.#ctor(Dock.Model.Core.IDockSerializer)
+  name: DockWorkspaceManager(IDockSerializer)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager__ctor_Dock_Model_Core_IDockSerializer_
+  commentId: M:Dock.Model.DockWorkspaceManager.#ctor(Dock.Model.Core.IDockSerializer)
+  name.vb: New(IDockSerializer)
+  fullName: Dock.Model.DockWorkspaceManager.DockWorkspaceManager(Dock.Model.Core.IDockSerializer)
+  fullName.vb: Dock.Model.DockWorkspaceManager.New(Dock.Model.Core.IDockSerializer)
+  nameWithType: DockWorkspaceManager.DockWorkspaceManager(IDockSerializer)
+  nameWithType.vb: DockWorkspaceManager.New(IDockSerializer)
+- uid: Dock.Model.DockWorkspaceManager.#ctor*
+  name: DockWorkspaceManager
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager__ctor_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Model.DockWorkspaceManager.DockWorkspaceManager
+  fullName.vb: Dock.Model.DockWorkspaceManager.New
+  nameWithType: DockWorkspaceManager.DockWorkspaceManager
+  nameWithType.vb: DockWorkspaceManager.New
+- uid: Dock.Model.DockWorkspaceManager.ActiveWorkspace
+  name: ActiveWorkspace
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_ActiveWorkspace
+  commentId: P:Dock.Model.DockWorkspaceManager.ActiveWorkspace
+  fullName: Dock.Model.DockWorkspaceManager.ActiveWorkspace
+  nameWithType: DockWorkspaceManager.ActiveWorkspace
+- uid: Dock.Model.DockWorkspaceManager.ActiveWorkspace*
+  name: ActiveWorkspace
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_ActiveWorkspace_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.ActiveWorkspace
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.ActiveWorkspace
+  nameWithType: DockWorkspaceManager.ActiveWorkspace
+- uid: Dock.Model.DockWorkspaceManager.Capture(System.String,Dock.Model.Core.IDock,System.Boolean,System.String,System.String)
+  name: Capture(string, IDock, bool, string?, string?)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Capture_System_String_Dock_Model_Core_IDock_System_Boolean_System_String_System_String_
+  commentId: M:Dock.Model.DockWorkspaceManager.Capture(System.String,Dock.Model.Core.IDock,System.Boolean,System.String,System.String)
+  name.vb: Capture(String, IDock, Boolean, String, String)
+  fullName: Dock.Model.DockWorkspaceManager.Capture(string, Dock.Model.Core.IDock, bool, string?, string?)
+  fullName.vb: Dock.Model.DockWorkspaceManager.Capture(String, Dock.Model.Core.IDock, Boolean, String, String)
+  nameWithType: DockWorkspaceManager.Capture(string, IDock, bool, string?, string?)
+  nameWithType.vb: DockWorkspaceManager.Capture(String, IDock, Boolean, String, String)
+- uid: Dock.Model.DockWorkspaceManager.Capture*
+  name: Capture
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Capture_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.Capture
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.Capture
+  nameWithType: DockWorkspaceManager.Capture
+- uid: Dock.Model.DockWorkspaceManager.Clear
+  name: Clear()
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Clear
+  commentId: M:Dock.Model.DockWorkspaceManager.Clear
+  fullName: Dock.Model.DockWorkspaceManager.Clear()
+  nameWithType: DockWorkspaceManager.Clear()
+- uid: Dock.Model.DockWorkspaceManager.Clear*
+  name: Clear
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Clear_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.Clear
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.Clear
+  nameWithType: DockWorkspaceManager.Clear
+- uid: Dock.Model.DockWorkspaceManager.Get(System.String)
+  name: Get(string)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Get_System_String_
+  commentId: M:Dock.Model.DockWorkspaceManager.Get(System.String)
+  name.vb: Get(String)
+  fullName: Dock.Model.DockWorkspaceManager.Get(string)
+  fullName.vb: Dock.Model.DockWorkspaceManager.Get(String)
+  nameWithType: DockWorkspaceManager.Get(string)
+  nameWithType.vb: DockWorkspaceManager.Get(String)
+- uid: Dock.Model.DockWorkspaceManager.Get*
+  name: Get
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Get_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.Get
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.Get
+  nameWithType: DockWorkspaceManager.Get
+- uid: Dock.Model.DockWorkspaceManager.IsDirty
+  name: IsDirty
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_IsDirty
+  commentId: P:Dock.Model.DockWorkspaceManager.IsDirty
+  fullName: Dock.Model.DockWorkspaceManager.IsDirty
+  nameWithType: DockWorkspaceManager.IsDirty
+- uid: Dock.Model.DockWorkspaceManager.IsDirty*
+  name: IsDirty
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_IsDirty_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.IsDirty
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.IsDirty
+  nameWithType: DockWorkspaceManager.IsDirty
+- uid: Dock.Model.DockWorkspaceManager.IsTracking
+  name: IsTracking
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_IsTracking
+  commentId: P:Dock.Model.DockWorkspaceManager.IsTracking
+  fullName: Dock.Model.DockWorkspaceManager.IsTracking
+  nameWithType: DockWorkspaceManager.IsTracking
+- uid: Dock.Model.DockWorkspaceManager.IsTracking*
+  name: IsTracking
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_IsTracking_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.IsTracking
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.IsTracking
+  nameWithType: DockWorkspaceManager.IsTracking
+- uid: Dock.Model.DockWorkspaceManager.MarkClean
+  name: MarkClean()
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_MarkClean
+  commentId: M:Dock.Model.DockWorkspaceManager.MarkClean
+  fullName: Dock.Model.DockWorkspaceManager.MarkClean()
+  nameWithType: DockWorkspaceManager.MarkClean()
+- uid: Dock.Model.DockWorkspaceManager.MarkClean*
+  name: MarkClean
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_MarkClean_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.MarkClean
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.MarkClean
+  nameWithType: DockWorkspaceManager.MarkClean
+- uid: Dock.Model.DockWorkspaceManager.Remove(System.String)
+  name: Remove(string)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Remove_System_String_
+  commentId: M:Dock.Model.DockWorkspaceManager.Remove(System.String)
+  name.vb: Remove(String)
+  fullName: Dock.Model.DockWorkspaceManager.Remove(string)
+  fullName.vb: Dock.Model.DockWorkspaceManager.Remove(String)
+  nameWithType: DockWorkspaceManager.Remove(string)
+  nameWithType.vb: DockWorkspaceManager.Remove(String)
+- uid: Dock.Model.DockWorkspaceManager.Remove*
+  name: Remove
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Remove_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.Remove
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.Remove
+  nameWithType: DockWorkspaceManager.Remove
+- uid: Dock.Model.DockWorkspaceManager.Restore(Dock.Model.DockWorkspace)
+  name: Restore(DockWorkspace)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Restore_Dock_Model_DockWorkspace_
+  commentId: M:Dock.Model.DockWorkspaceManager.Restore(Dock.Model.DockWorkspace)
+  fullName: Dock.Model.DockWorkspaceManager.Restore(Dock.Model.DockWorkspace)
+  nameWithType: DockWorkspaceManager.Restore(DockWorkspace)
+- uid: Dock.Model.DockWorkspaceManager.Restore*
+  name: Restore
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Restore_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.Restore
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.Restore
+  nameWithType: DockWorkspaceManager.Restore
+- uid: Dock.Model.DockWorkspaceManager.StopTracking
+  name: StopTracking()
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_StopTracking
+  commentId: M:Dock.Model.DockWorkspaceManager.StopTracking
+  fullName: Dock.Model.DockWorkspaceManager.StopTracking()
+  nameWithType: DockWorkspaceManager.StopTracking()
+- uid: Dock.Model.DockWorkspaceManager.StopTracking*
+  name: StopTracking
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_StopTracking_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.StopTracking
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.StopTracking
+  nameWithType: DockWorkspaceManager.StopTracking
+- uid: Dock.Model.DockWorkspaceManager.TrackFactory(Dock.Model.Core.IFactory,Dock.Model.DockWorkspaceTrackingOptions)
+  name: TrackFactory(IFactory, DockWorkspaceTrackingOptions?)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TrackFactory_Dock_Model_Core_IFactory_Dock_Model_DockWorkspaceTrackingOptions_
+  commentId: M:Dock.Model.DockWorkspaceManager.TrackFactory(Dock.Model.Core.IFactory,Dock.Model.DockWorkspaceTrackingOptions)
+  name.vb: TrackFactory(IFactory, DockWorkspaceTrackingOptions)
+  fullName: Dock.Model.DockWorkspaceManager.TrackFactory(Dock.Model.Core.IFactory, Dock.Model.DockWorkspaceTrackingOptions?)
+  fullName.vb: Dock.Model.DockWorkspaceManager.TrackFactory(Dock.Model.Core.IFactory, Dock.Model.DockWorkspaceTrackingOptions)
+  nameWithType: DockWorkspaceManager.TrackFactory(IFactory, DockWorkspaceTrackingOptions?)
+  nameWithType.vb: DockWorkspaceManager.TrackFactory(IFactory, DockWorkspaceTrackingOptions)
+- uid: Dock.Model.DockWorkspaceManager.TrackFactory*
+  name: TrackFactory
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TrackFactory_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.TrackFactory
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.TrackFactory
+  nameWithType: DockWorkspaceManager.TrackFactory
+- uid: Dock.Model.DockWorkspaceManager.TrackLayout(Dock.Model.Core.IDock,Dock.Model.DockWorkspaceTrackingOptions)
+  name: TrackLayout(IDock, DockWorkspaceTrackingOptions?)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TrackLayout_Dock_Model_Core_IDock_Dock_Model_DockWorkspaceTrackingOptions_
+  commentId: M:Dock.Model.DockWorkspaceManager.TrackLayout(Dock.Model.Core.IDock,Dock.Model.DockWorkspaceTrackingOptions)
+  name.vb: TrackLayout(IDock, DockWorkspaceTrackingOptions)
+  fullName: Dock.Model.DockWorkspaceManager.TrackLayout(Dock.Model.Core.IDock, Dock.Model.DockWorkspaceTrackingOptions?)
+  fullName.vb: Dock.Model.DockWorkspaceManager.TrackLayout(Dock.Model.Core.IDock, Dock.Model.DockWorkspaceTrackingOptions)
+  nameWithType: DockWorkspaceManager.TrackLayout(IDock, DockWorkspaceTrackingOptions?)
+  nameWithType.vb: DockWorkspaceManager.TrackLayout(IDock, DockWorkspaceTrackingOptions)
+- uid: Dock.Model.DockWorkspaceManager.TrackLayout*
+  name: TrackLayout
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TrackLayout_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.TrackLayout
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.TrackLayout
+  nameWithType: DockWorkspaceManager.TrackLayout
+- uid: Dock.Model.DockWorkspaceManager.TrackingOptions
+  name: TrackingOptions
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TrackingOptions
+  commentId: P:Dock.Model.DockWorkspaceManager.TrackingOptions
+  fullName: Dock.Model.DockWorkspaceManager.TrackingOptions
+  nameWithType: DockWorkspaceManager.TrackingOptions
+- uid: Dock.Model.DockWorkspaceManager.TrackingOptions*
+  name: TrackingOptions
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TrackingOptions_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.TrackingOptions
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.TrackingOptions
+  nameWithType: DockWorkspaceManager.TrackingOptions
+- uid: Dock.Model.DockWorkspaceManager.TryRestore(System.String,Dock.Model.Core.IDock@)
+  name: TryRestore(string, out IDock?)
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TryRestore_System_String_Dock_Model_Core_IDock__
+  commentId: M:Dock.Model.DockWorkspaceManager.TryRestore(System.String,Dock.Model.Core.IDock@)
+  name.vb: TryRestore(String, IDock)
+  fullName: Dock.Model.DockWorkspaceManager.TryRestore(string, out Dock.Model.Core.IDock?)
+  fullName.vb: Dock.Model.DockWorkspaceManager.TryRestore(String, Dock.Model.Core.IDock)
+  nameWithType: DockWorkspaceManager.TryRestore(string, out IDock?)
+  nameWithType.vb: DockWorkspaceManager.TryRestore(String, IDock)
+- uid: Dock.Model.DockWorkspaceManager.TryRestore*
+  name: TryRestore
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_TryRestore_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.TryRestore
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.TryRestore
+  nameWithType: DockWorkspaceManager.TryRestore
+- uid: Dock.Model.DockWorkspaceManager.WorkspaceDirtyChanged
+  name: WorkspaceDirtyChanged
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_WorkspaceDirtyChanged
+  commentId: E:Dock.Model.DockWorkspaceManager.WorkspaceDirtyChanged
+  fullName: Dock.Model.DockWorkspaceManager.WorkspaceDirtyChanged
+  nameWithType: DockWorkspaceManager.WorkspaceDirtyChanged
+- uid: Dock.Model.DockWorkspaceManager.Workspaces
+  name: Workspaces
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Workspaces
+  commentId: P:Dock.Model.DockWorkspaceManager.Workspaces
+  fullName: Dock.Model.DockWorkspaceManager.Workspaces
+  nameWithType: DockWorkspaceManager.Workspaces
+- uid: Dock.Model.DockWorkspaceManager.Workspaces*
+  name: Workspaces
+  href: api/Dock.Model.DockWorkspaceManager.html#Dock_Model_DockWorkspaceManager_Workspaces_
+  commentId: Overload:Dock.Model.DockWorkspaceManager.Workspaces
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceManager.Workspaces
+  nameWithType: DockWorkspaceManager.Workspaces
+- uid: Dock.Model.DockWorkspaceTrackingOptions
+  name: DockWorkspaceTrackingOptions
+  href: api/Dock.Model.DockWorkspaceTrackingOptions.html
+  commentId: T:Dock.Model.DockWorkspaceTrackingOptions
+  fullName: Dock.Model.DockWorkspaceTrackingOptions
+  nameWithType: DockWorkspaceTrackingOptions
+- uid: Dock.Model.DockWorkspaceTrackingOptions.DockableFilter
+  name: DockableFilter
+  href: api/Dock.Model.DockWorkspaceTrackingOptions.html#Dock_Model_DockWorkspaceTrackingOptions_DockableFilter
+  commentId: P:Dock.Model.DockWorkspaceTrackingOptions.DockableFilter
+  fullName: Dock.Model.DockWorkspaceTrackingOptions.DockableFilter
+  nameWithType: DockWorkspaceTrackingOptions.DockableFilter
+- uid: Dock.Model.DockWorkspaceTrackingOptions.DockableFilter*
+  name: DockableFilter
+  href: api/Dock.Model.DockWorkspaceTrackingOptions.html#Dock_Model_DockWorkspaceTrackingOptions_DockableFilter_
+  commentId: Overload:Dock.Model.DockWorkspaceTrackingOptions.DockableFilter
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceTrackingOptions.DockableFilter
+  nameWithType: DockWorkspaceTrackingOptions.DockableFilter
+- uid: Dock.Model.DockWorkspaceTrackingOptions.TrackWindowMoves
+  name: TrackWindowMoves
+  href: api/Dock.Model.DockWorkspaceTrackingOptions.html#Dock_Model_DockWorkspaceTrackingOptions_TrackWindowMoves
+  commentId: P:Dock.Model.DockWorkspaceTrackingOptions.TrackWindowMoves
+  fullName: Dock.Model.DockWorkspaceTrackingOptions.TrackWindowMoves
+  nameWithType: DockWorkspaceTrackingOptions.TrackWindowMoves
+- uid: Dock.Model.DockWorkspaceTrackingOptions.TrackWindowMoves*
+  name: TrackWindowMoves
+  href: api/Dock.Model.DockWorkspaceTrackingOptions.html#Dock_Model_DockWorkspaceTrackingOptions_TrackWindowMoves_
+  commentId: Overload:Dock.Model.DockWorkspaceTrackingOptions.TrackWindowMoves
+  isSpec: "True"
+  fullName: Dock.Model.DockWorkspaceTrackingOptions.TrackWindowMoves
+  nameWithType: DockWorkspaceTrackingOptions.TrackWindowMoves
 - uid: Dock.Model.FactoryBase
   name: FactoryBase
   href: api/Dock.Model.FactoryBase.html
@@ -26443,6 +27185,38 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FluentExtensions.WithAlignment
   nameWithType: FluentExtensions.WithAlignment
+- uid: Dock.Model.FluentExtensions.WithAllowedDockOperations*
+  name: WithAllowedDockOperations
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations_
+  commentId: Overload:Dock.Model.FluentExtensions.WithAllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithAllowedDockOperations
+  nameWithType: FluentExtensions.WithAllowedDockOperations
+- uid: Dock.Model.FluentExtensions.WithAllowedDockOperations``1(``0,Dock.Model.Core.DockOperationMask)
+  name: WithAllowedDockOperations<T>(T, DockOperationMask)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations__1___0_Dock_Model_Core_DockOperationMask_
+  commentId: M:Dock.Model.FluentExtensions.WithAllowedDockOperations``1(``0,Dock.Model.Core.DockOperationMask)
+  name.vb: WithAllowedDockOperations(Of T)(T, DockOperationMask)
+  fullName: Dock.Model.FluentExtensions.WithAllowedDockOperations<T>(T, Dock.Model.Core.DockOperationMask)
+  fullName.vb: Dock.Model.FluentExtensions.WithAllowedDockOperations(Of T)(T, Dock.Model.Core.DockOperationMask)
+  nameWithType: FluentExtensions.WithAllowedDockOperations<T>(T, DockOperationMask)
+  nameWithType.vb: FluentExtensions.WithAllowedDockOperations(Of T)(T, DockOperationMask)
+- uid: Dock.Model.FluentExtensions.WithAllowedDropOperations*
+  name: WithAllowedDropOperations
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations_
+  commentId: Overload:Dock.Model.FluentExtensions.WithAllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithAllowedDropOperations
+  nameWithType: FluentExtensions.WithAllowedDropOperations
+- uid: Dock.Model.FluentExtensions.WithAllowedDropOperations``1(``0,Dock.Model.Core.DockOperationMask)
+  name: WithAllowedDropOperations<T>(T, DockOperationMask)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations__1___0_Dock_Model_Core_DockOperationMask_
+  commentId: M:Dock.Model.FluentExtensions.WithAllowedDropOperations``1(``0,Dock.Model.Core.DockOperationMask)
+  name.vb: WithAllowedDropOperations(Of T)(T, DockOperationMask)
+  fullName: Dock.Model.FluentExtensions.WithAllowedDropOperations<T>(T, Dock.Model.Core.DockOperationMask)
+  fullName.vb: Dock.Model.FluentExtensions.WithAllowedDropOperations(Of T)(T, Dock.Model.Core.DockOperationMask)
+  nameWithType: FluentExtensions.WithAllowedDropOperations<T>(T, DockOperationMask)
+  nameWithType.vb: FluentExtensions.WithAllowedDropOperations(Of T)(T, DockOperationMask)
 - uid: Dock.Model.FluentExtensions.WithAutoHide(Dock.Model.Controls.IToolDock,System.Boolean)
   name: WithAutoHide(IToolDock, bool)
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAutoHide_Dock_Model_Controls_IToolDock_System_Boolean_
@@ -29099,6 +29873,32 @@ references:
   fullName.vb: Dock.Model.Inpc.Core.DockableBase.New
   nameWithType: DockableBase.DockableBase
   nameWithType.vb: DockableBase.New
+- uid: Dock.Model.Inpc.Core.DockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_AllowedDockOperations
+  commentId: P:Dock.Model.Inpc.Core.DockableBase.AllowedDockOperations
+  fullName: Dock.Model.Inpc.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Inpc.Core.DockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Inpc.Core.DockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_AllowedDropOperations
+  commentId: P:Dock.Model.Inpc.Core.DockableBase.AllowedDropOperations
+  fullName: Dock.Model.Inpc.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.Inpc.Core.DockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
 - uid: Dock.Model.Inpc.Core.DockableBase.CanClose
   name: CanClose
   href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_CanClose
@@ -31783,6 +32583,32 @@ references:
   fullName.vb: Dock.Model.Mvvm.Core.DockableBase.New
   nameWithType: DockableBase.DockableBase
   nameWithType.vb: DockableBase.New
+- uid: Dock.Model.Mvvm.Core.DockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_AllowedDockOperations
+  commentId: P:Dock.Model.Mvvm.Core.DockableBase.AllowedDockOperations
+  fullName: Dock.Model.Mvvm.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Mvvm.Core.DockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Mvvm.Core.DockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_AllowedDropOperations
+  commentId: P:Dock.Model.Mvvm.Core.DockableBase.AllowedDropOperations
+  fullName: Dock.Model.Mvvm.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.Mvvm.Core.DockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
 - uid: Dock.Model.Mvvm.Core.DockableBase.CanClose
   name: CanClose
   href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_CanClose
@@ -34264,6 +35090,32 @@ references:
   fullName.vb: Dock.Model.Prism.Core.DockableBase.New
   nameWithType: DockableBase.DockableBase
   nameWithType.vb: DockableBase.New
+- uid: Dock.Model.Prism.Core.DockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_AllowedDockOperations
+  commentId: P:Dock.Model.Prism.Core.DockableBase.AllowedDockOperations
+  fullName: Dock.Model.Prism.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Prism.Core.DockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.Prism.Core.DockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_AllowedDropOperations
+  commentId: P:Dock.Model.Prism.Core.DockableBase.AllowedDropOperations
+  fullName: Dock.Model.Prism.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.Prism.Core.DockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
 - uid: Dock.Model.Prism.Core.DockableBase.CanClose
   name: CanClose
   href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_CanClose
@@ -36745,6 +37597,32 @@ references:
   fullName.vb: Dock.Model.ReactiveProperty.Core.DockableBase.New
   nameWithType: DockableBase.DockableBase
   nameWithType.vb: DockableBase.New
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_AllowedDockOperations
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDockOperations
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_AllowedDropOperations
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDropOperations
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
 - uid: Dock.Model.ReactiveProperty.Core.DockableBase.CanClose
   name: CanClose
   href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_CanClose
@@ -39340,6 +40218,32 @@ references:
   fullName.vb: Dock.Model.ReactiveUI.Core.DockableBase.New
   nameWithType: DockableBase.DockableBase
   nameWithType.vb: DockableBase.New
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDockOperations
+  name: AllowedDockOperations
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDockOperations
+  commentId: P:Dock.Model.ReactiveUI.Core.DockableBase.AllowedDockOperations
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDockOperations*
+  name: AllowedDockOperations
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDockOperations_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.AllowedDockOperations
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDockOperations
+  nameWithType: DockableBase.AllowedDockOperations
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDropOperations
+  name: AllowedDropOperations
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDropOperations
+  commentId: P:Dock.Model.ReactiveUI.Core.DockableBase.AllowedDropOperations
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDropOperations*
+  name: AllowedDropOperations
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDropOperations_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.AllowedDropOperations
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.AllowedDropOperations
+  nameWithType: DockableBase.AllowedDropOperations
 - uid: Dock.Model.ReactiveUI.Core.DockableBase.CanClose
   name: CanClose
   href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_CanClose

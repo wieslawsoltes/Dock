@@ -159,7 +159,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager__ctor_Dock_Model_Core_IDockService_" data-uid="Dock.Model.DockManager.#ctor(Dock.Model.Core.IDockService)">
   DockManager(IDockService)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Model.DockManager.html">DockManager</a> class.</p>
@@ -188,15 +188,115 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
 
 
+  <a id="Dock_Model_DockManager__ctor_" data-uid="Dock.Model.DockManager.#ctor*"></a>
+
+  <h3 id="Dock_Model_DockManager__ctor_Dock_Model_Core_IDockService_Dock_Model_Core_DockManagerOptions_" data-uid="Dock.Model.DockManager.#ctor(Dock.Model.Core.IDockService,Dock.Model.Core.DockManagerOptions)">
+  DockManager(IDockService, DockManagerOptions)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Model.DockManager.html">DockManager</a> class with shared options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DockManager(IDockService dockService, DockManagerOptions options)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockService</code> <a class="xref" href="Dock.Model.Core.IDockService.html">IDockService</a></dt>
+    <dd><p>The dock service.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Dock.Model.Core.DockManagerOptions.html">DockManagerOptions</a></dt>
+    <dd><p>The dock manager options.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
+
+
+  <a id="Dock_Model_DockManager_IsDockingEnabled_" data-uid="Dock.Model.DockManager.IsDockingEnabled*"></a>
+
+  <h3 id="Dock_Model_DockManager_IsDockingEnabled" data-uid="Dock.Model.DockManager.IsDockingEnabled">
+  IsDockingEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether docking interactions are enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDockingEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_DockManager_Options_" data-uid="Dock.Model.DockManager.Options*"></a>
+
+  <h3 id="Dock_Model_DockManager_Options" data-uid="Dock.Model.DockManager.Options">
+  Options
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the dock manager options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DockManagerOptions Options { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockManagerOptions.html">DockManagerOptions</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
 
 
   <a id="Dock_Model_DockManager_Position_" data-uid="Dock.Model.DockManager.Position*"></a>
 
   <h3 id="Dock_Model_DockManager_Position" data-uid="Dock.Model.DockManager.Position">
   Position
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets pointer position relative to event source.</p>
@@ -228,7 +328,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager_PreventSizeConflicts" data-uid="Dock.Model.DockManager.PreventSizeConflicts">
   PreventSizeConflicts
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets flag that prevents docking when fixed sizes conflict.</p>
@@ -260,7 +360,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager_ScreenPosition" data-uid="Dock.Model.DockManager.ScreenPosition">
   ScreenPosition
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets pointer position relative to event source and translated to screen coordinates.</p>
@@ -296,7 +396,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager_IsDockTargetVisible_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.DockManager.IsDockTargetVisible(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   IsDockTargetVisible(IDockable, IDockable, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L591"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L666"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines if a dock target indicator should be visible.</p>
@@ -341,7 +441,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager_ValidateDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.DockManager.ValidateDock(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateDock(IDock, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L438"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L503"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates dock docking operation.</p>
@@ -392,7 +492,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager_ValidateDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.DockManager.ValidateDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateDockable(IDockable, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L573"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L643"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates dockable docking operation.</p>
@@ -443,7 +543,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager_ValidateDocument_Dock_Model_Controls_IDocument_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.DockManager.ValidateDocument(Dock.Model.Controls.IDocument,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateDocument(IDocument, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L410"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L470"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates document docking operation.</p>
@@ -494,7 +594,7 @@ Class DockManager  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_DockManager_ValidateTool_Dock_Model_Controls_ITool_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.DockManager.ValidateTool(Dock.Model.Controls.ITool,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateTool(ITool, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/DockManager.cs/#L286"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates tool docking operation.</p>

@@ -98,7 +98,7 @@ Class ManagedDockWindowDocument  <a class="header-action link-secondary" title="
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ManagedDockWindowDocument : ManagedDockableBase, IDockSelectorInfo, INotifyPropertyChanged, IMdiDocument, IDocument, ILocalTarget, IDocumentContent, IDockable, IControlRecyclingIdProvider, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ManagedDockWindowDocument : ManagedDockableBase, IDockSelectorInfo, IDockableDockingRestrictions, INotifyPropertyChanged, IMdiDocument, IDocument, ILocalTarget, IDocumentContent, IDockable, IControlRecyclingIdProvider, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;, IDisposable</code></pre>
   </div>
 
 
@@ -117,6 +117,7 @@ Class ManagedDockWindowDocument  <a class="header-action link-secondary" title="
     <dt>Implements</dt>
     <dd>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IMdiDocument.html">IMdiDocument</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a></div>
@@ -226,6 +227,12 @@ Class ManagedDockWindowDocument  <a class="header-action link-secondary" title="
       <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockGroup">ManagedDockableBase.DockGroup</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDockOperations">ManagedDockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_AllowedDropOperations">ManagedDockableBase.AllowedDropOperations</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_ShowInSelector">ManagedDockableBase.ShowInSelector</a>
     </div>
     <div>
@@ -305,6 +312,12 @@ Class ManagedDockWindowDocument  <a class="header-action link-secondary" title="
   <dl class="typelist extensionMethods">
     <dt>Extension Methods</dt>
     <dd>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDockOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDropOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanClose__1___0_System_Boolean_">FluentExtensions.WithCanClose&lt;T&gt;(T, bool)</a>
   </div>

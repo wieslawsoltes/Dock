@@ -106,7 +106,7 @@ Class DockBase  <a class="header-action link-secondary" title="View source" href
 [JsonDerivedType(typeof(RootDock), &quot;RootDock&quot;)]
 [JsonDerivedType(typeof(SplitViewDock), &quot;SplitViewDock&quot;)]
 [JsonDerivedType(typeof(ToolDock), &quot;ToolDock&quot;)]
-public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -141,6 +141,7 @@ public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataCont
       <div><span class="xref">IStyleable</span></div>
       <div><span class="xref">INamed</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
@@ -241,6 +242,12 @@ public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataCont
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockGroupProperty">DockableBase.DockGroupProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperationsProperty">DockableBase.AllowedDockOperationsProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperationsProperty">DockableBase.AllowedDropOperationsProperty</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ShowInSelectorProperty">DockableBase.ShowInSelectorProperty</a>
@@ -346,6 +353,12 @@ public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataCont
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockGroup">DockableBase.DockGroup</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperations">DockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperations">DockableBase.AllowedDropOperations</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ShowInSelector">DockableBase.ShowInSelector</a>
@@ -660,6 +673,12 @@ public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataCont
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithActiveDockable__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithActiveDockable&lt;T&gt;(T, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDockOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDockOperations&lt;T&gt;(T, DockOperationMask)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithAllowedDropOperations__1___0_Dock_Model_Core_DockOperationMask_">FluentExtensions.WithAllowedDropOperations&lt;T&gt;(T, DockOperationMask)</a>
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithCanCloseLastDockable__1___0_System_Boolean_">FluentExtensions.WithCanCloseLastDockable&lt;T&gt;(T, bool)</a>

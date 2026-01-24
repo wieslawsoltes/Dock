@@ -98,7 +98,7 @@ Class BusyRootDock  <a class="header-action link-secondary" title="View source" 
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class BusyRootDock : RoutableRootDock, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IDockSelectorInfo, IRootDock, IDock, IDockable, IControlRecyclingIdProvider, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen, IHostOverlayServices, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class BusyRootDock : RoutableRootDock, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IDockSelectorInfo, IDockableDockingRestrictions, IRootDock, IDock, IDockable, IControlRecyclingIdProvider, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen, IHostOverlayServices, IDisposable</code></pre>
   </div>
 
 
@@ -124,6 +124,7 @@ Class BusyRootDock  <a class="header-action link-secondary" title="View source" 
       <div><span class="xref">IReactiveNotifyPropertyChanged</span>&lt;<span class="xref">IReactiveObject</span>&gt;</div>
       <div><span class="xref">IHandleObservableErrors</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
@@ -316,6 +317,12 @@ Class BusyRootDock  <a class="header-action link-secondary" title="View source" 
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockGroup">DockableBase.DockGroup</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDockOperations">DockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDropOperations">DockableBase.AllowedDropOperations</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_ShowInSelector">DockableBase.ShowInSelector</a>

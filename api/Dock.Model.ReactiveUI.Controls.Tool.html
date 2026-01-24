@@ -98,7 +98,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Tool : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, ITool, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget</code></pre>
+    <pre><code class="lang-csharp hljs">public class Tool : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, IDockableDockingRestrictions, ITool, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget</code></pre>
   </div>
 
 
@@ -125,6 +125,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IMdiDocument.html">IMdiDocument</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a></div>
@@ -230,6 +231,12 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockGroup">DockableBase.DockGroup</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDockOperations">DockableBase.AllowedDockOperations</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_AllowedDropOperations">DockableBase.AllowedDropOperations</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_ShowInSelector">DockableBase.ShowInSelector</a>

@@ -168,6 +168,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            LogDropRejection(nameof(ValidateLocal), "Docking is disabled.");
+            return false;
+        }
+
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {
@@ -195,6 +201,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            LogDropRejection(nameof(ValidateGlobal), "Docking is disabled.");
+            return false;
+        }
+
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {
@@ -281,6 +293,18 @@ internal class HostWindowState : DockManagerState, IHostWindowState
     /// <param name="eventType">The pointer event type.</param>
     public void Process(PixelPoint point, EventType eventType)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            if (_context.PointerPressed || _context.DoDragDrop)
+            {
+                Leave();
+                _context.End();
+                DropControl = null;
+            }
+
+            return;
+        }
+
         switch (eventType)
         {
             case EventType.Pressed:

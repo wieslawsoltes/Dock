@@ -235,6 +235,12 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            LogDropRejection(nameof(ValidateLocal), "Docking is disabled.");
+            return false;
+        }
+
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             LogDropRejection(nameof(ValidateLocal), "DragControl DataContext is not an IDockable.");
@@ -261,6 +267,12 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            LogDropRejection(nameof(ValidateGlobal), "Docking is disabled.");
+            return false;
+        }
+
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             LogDropRejection(nameof(ValidateGlobal), "DragControl DataContext is not an IDockable.");
@@ -372,6 +384,21 @@ internal class DockControlState : DockManagerState, IDockControlState
         if (activeDockControl is not { } inputActiveDockControl)
         {
             LogDragState("Process aborted: activeDockControl is null.");
+            return;
+        }
+
+        if (!DockManager.IsDockingEnabled)
+        {
+            if (_context.PointerPressed || _context.DoDragDrop)
+            {
+                _dragPreviewHelper.Hide();
+                Leave();
+                _context.End();
+                DropControl = null;
+                activeDockControl.IsDraggingDock = false;
+            }
+
+            LogDragState("Process skipped: docking disabled.");
             return;
         }
 

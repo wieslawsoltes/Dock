@@ -409,14 +409,12 @@ public class ManagedWindowParityTests
         DockSettings.UseManagedWindows = true;
 
         var factory = new Factory();
-        var (host, window, _) = CreateManagedWindow(factory);
-        var dock = ManagedWindowRegistry.GetOrCreateDock(factory);
-        var managedDocument = dock.VisibleDockables!.OfType<ManagedDockWindowDocument>()
-            .Single(document => ReferenceEquals(document.Window, window));
+        var document = factory.CreateDocument();
+        document.Title = "Doc";
+        document.Factory = factory;
 
         var layer = new ManagedWindowLayer
         {
-            Dock = dock,
             Width = 300,
             Height = 200,
             IsVisible = true
@@ -440,7 +438,7 @@ public class ManagedWindowParityTests
             ManagedWindowRegistry.RegisterLayer(factory, layer);
 
             helper = new DragPreviewHelper();
-            helper.Show(managedDocument, new PixelPoint(50, 60), new PixelPoint(0, 0));
+            helper.Show(document, new PixelPoint(50, 60), new PixelPoint(0, 0));
 
             windowHost.UpdateLayout();
 
@@ -464,14 +462,13 @@ public class ManagedWindowParityTests
             DragPreviewContext.Clear();
             ManagedWindowRegistry.UnregisterLayer(factory, layer);
             windowHost.Close();
-            host.Exit();
             DockSettings.ShowDockablePreviewOnDrag = originalPreview;
             DockSettings.UseManagedWindows = originalManaged;
         }
     }
 
     [AvaloniaFact]
-    public void DragPreviewHelper_ManagedToolWindow_Disables_PreviewContent()
+    public void DragPreviewHelper_Does_Not_Show_For_ManagedWindow()
     {
         var originalPreview = DockSettings.ShowDockablePreviewOnDrag;
         var originalManaged = DockSettings.UseManagedWindows;
@@ -479,24 +476,10 @@ public class ManagedWindowParityTests
         DockSettings.UseManagedWindows = true;
 
         var factory = new Factory();
-        var root = factory.CreateRootDock();
-        root.Factory = factory;
-
-        var toolDock = factory.CreateToolDock();
-        root.VisibleDockables = factory.CreateList<IDockable>(toolDock);
-        root.ActiveDockable = toolDock;
-        root.FocusedDockable = toolDock;
-
-        var dockWindow = new DockWindow
-        {
-            Factory = factory,
-            Layout = root
-        };
-        root.Window = dockWindow;
-
-        var managedDocument = new ManagedDockWindowDocument(dockWindow);
+        var (host, window, _) = CreateManagedWindow(factory);
         var dock = ManagedWindowRegistry.GetOrCreateDock(factory);
-        dock.AddWindow(managedDocument);
+        var managedDocument = dock.VisibleDockables!.OfType<ManagedDockWindowDocument>()
+            .Single(document => ReferenceEquals(document.Window, window));
 
         var layer = new ManagedWindowLayer
         {
@@ -533,9 +516,9 @@ public class ManagedWindowParityTests
                 .FirstOrDefault(candidate => candidate.Name == "PART_OverlayCanvas");
 
             Assert.NotNull(canvas);
-            var preview = canvas!.Children.OfType<DragPreviewControl>().FirstOrDefault();
-            Assert.NotNull(preview);
-            Assert.False(preview!.ShowContent);
+            Assert.DoesNotContain(canvas!.Children, child => child is DragPreviewControl);
+            Assert.False(DragPreviewContext.IsActive);
+            Assert.Null(DragPreviewContext.Dockable);
 
             helper.Hide();
             Assert.DoesNotContain(canvas.Children, child => child is DragPreviewControl);
@@ -546,6 +529,7 @@ public class ManagedWindowParityTests
             DragPreviewContext.Clear();
             ManagedWindowRegistry.UnregisterLayer(factory, layer);
             windowHost.Close();
+            host.Exit();
             DockSettings.ShowDockablePreviewOnDrag = originalPreview;
             DockSettings.UseManagedWindows = originalManaged;
         }

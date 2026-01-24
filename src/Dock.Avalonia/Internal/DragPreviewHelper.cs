@@ -102,11 +102,13 @@ internal class DragPreviewHelper
     {
         lock (s_sync)
         {
-            var showDockablePreview = ShouldShowPreviewContent(dockable);
-            if (dockable is ManagedDockWindowDocument { IsToolWindow: true })
+            if (dockable is ManagedDockWindowDocument)
             {
-                showDockablePreview = false;
+                Hide();
+                return;
             }
+
+            var showDockablePreview = ShouldShowPreviewContent(dockable);
             DragPreviewContext.IsActive = showDockablePreview && dockable is ManagedDockWindowDocument;
             DragPreviewContext.Dockable = dockable;
             if (DockSettings.UseManagedWindows && TryGetManagedLayer(dockable, context, out var layer))

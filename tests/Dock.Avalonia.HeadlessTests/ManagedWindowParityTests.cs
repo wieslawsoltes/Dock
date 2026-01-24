@@ -719,6 +719,12 @@ public class ManagedWindowParityTests
             ManagedWindowRegistry.RegisterLayer(factory, layerA);
             layerB.IsVisible = true;
 
+            var cachedOffset = new Point(10, 14);
+            var offsetField = typeof(ManagedWindowLayer)
+                .GetField("_cachedWindowContentOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(offsetField);
+            offsetField!.SetValue(layerB, cachedOffset);
+
             var dockable = new Document { Title = "Doc" };
             var state = new TestDockManagerState(new DockManager(new DockService()));
             var point = new Point(50, 60);
@@ -733,8 +739,8 @@ public class ManagedWindowParityTests
                 ?.ScreenFromVisual(dockControlB)
                 ?.Scaling ?? 1.0;
             var expected = new Point(
-                translated!.Value.X + dragOffset.X / scaling,
-                translated.Value.Y + dragOffset.Y / scaling);
+                translated!.Value.X + dragOffset.X / scaling - cachedOffset.X,
+                translated.Value.Y + dragOffset.Y / scaling - cachedOffset.Y);
 
             dockable.GetPointerScreenPosition(out var pointerX, out var pointerY);
 
@@ -811,16 +817,25 @@ public class ManagedWindowParityTests
                 .FirstOrDefault(control => ReferenceEquals(control.Layout, managedRoot));
             Assert.NotNull(innerDockControl);
 
-            var cachedOffset = new Point(12, 18);
-            var offsetField = typeof(ManagedWindowLayer)
-                .GetField("_cachedWindowContentOffset", BindingFlags.Instance | BindingFlags.NonPublic);
-            Assert.NotNull(offsetField);
-            offsetField!.SetValue(layer, cachedOffset);
-
             var point = new Point(40, 55);
             var dragOffset = new PixelPoint(-6, -4);
             var state = new TestDockManagerState(new DockManager(new DockService()));
             state.InvokeFloat(point, innerDockControl!, document, factory, dragOffset);
+
+            var managedWindowControl = window.GetVisualDescendants()
+                .OfType<MdiDocumentWindow>()
+                .FirstOrDefault(candidate => ReferenceEquals(candidate.DataContext, managedDocument));
+            Assert.NotNull(managedWindowControl);
+            managedWindowControl!.ApplyTemplate();
+            managedWindowControl.UpdateLayout();
+
+            var contentBorder = managedWindowControl.GetVisualDescendants()
+                .OfType<Border>()
+                .FirstOrDefault(candidate => candidate.Name == "PART_ContentBorder");
+            Assert.NotNull(contentBorder);
+            var origin = contentBorder!.TranslatePoint(new Point(0, 0), managedWindowControl);
+            Assert.True(origin.HasValue);
+            var contentOffset = origin.Value;
 
             var translated = innerDockControl!.TranslatePoint(point, layer);
             Assert.True(translated.HasValue);
@@ -829,8 +844,8 @@ public class ManagedWindowParityTests
                 ?.ScreenFromVisual(innerDockControl)
                 ?.Scaling ?? 1.0;
             var expected = new Point(
-                translated!.Value.X + dragOffset.X / scaling - cachedOffset.X,
-                translated.Value.Y + dragOffset.Y / scaling - cachedOffset.Y);
+                translated!.Value.X + dragOffset.X / scaling - contentOffset.X,
+                translated.Value.Y + dragOffset.Y / scaling - contentOffset.Y);
 
             document.GetPointerScreenPosition(out var pointerX, out var pointerY);
 

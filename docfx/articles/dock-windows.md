@@ -24,6 +24,14 @@ Calling `FloatDockable` on the factory opens a dockable in a new window. The new
 
 To customize the platform window (`IHostWindow`) used by floating docks, use `HostWindowLocator` or `DefaultHostWindowLocator`. See [Host window locators](dock-host-window-locator.md) for details.
 
+## Managed windows
+
+When `DockSettings.UseManagedWindows` is enabled, floating windows are hosted inside the main window instead of spawning native OS windows. The default host window becomes `ManagedHostWindow`, which renders floating windows inside `ManagedWindowLayer` using the MDI layout system.
+
+If you override host window creation, return `ManagedHostWindow` when managed windows are enabled. `DockControl.EnableManagedWindowLayer` must remain `true` for managed windows to appear.
+
+For setup details see the [Managed windows guide](dock-managed-windows-guide.md) and [Managed windows how-to](dock-managed-windows-howto.md).
+
 ## IDockWindow model members
 
 `IDockWindow` represents the floating window model and includes:
@@ -98,12 +106,12 @@ This behavior is controlled by two settings on `DockSettings`:
 
 When magnetism is enabled, `HostWindow` compares its position against other tracked windows during a drag
 and adjusts the position if it falls within the snap distance. This makes it easy to align multiple floating
-windows.
+windows. In managed mode, the same logic applies to managed floating windows within the managed layer.
 
 ## Bringing windows to front
 
 If `DockSettings.BringWindowsToFrontOnDrag` is enabled, initiating a drag will activate
 all floating windows and any main window hosting a `DockControl` so they stay above other
-applications until the drag completes.
+applications until the drag completes. In managed mode, this updates managed z-order so windows stay above their peers.
 
 For more advanced scenarios see [Adapter Classes](dock-adapters.md) and the [Advanced Guide](dock-advanced.md).

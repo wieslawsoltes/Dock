@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Recycling;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
@@ -32,12 +33,14 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_ContentControl", typeof(ContentControl))]
 [TemplatePart("PART_CommandBarHost", typeof(DockCommandBarHost))]
 [TemplatePart("PART_SelectorOverlay", typeof(DockSelectorOverlay))]
+[TemplatePart("PART_ManagedWindowLayer", typeof(ManagedWindowLayer))]
 public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 {
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
     private bool _isInitialized;
     private ContentControl? _contentControl;
+    private ManagedWindowLayer? _managedWindowLayer;
     private DockCommandBarHost? _commandBarHost;
     private DockCommandBarManager? _commandBarManager;
     private DockSelectorOverlay? _selectorOverlay;
@@ -46,6 +49,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private readonly Dictionary<IDockable, long> _activationOrder = new();
     private long _activationCounter;
     private IFactory? _subscribedFactory;
+    private IFactory? _managedLayerFactory;
 
     /// <summary>
     /// Defines the <see cref="Layout"/> property.
@@ -72,6 +76,12 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory));
 
     /// <summary>
+    /// Defines the <see cref="HostWindowFactory"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Func<IHostWindow?>?> HostWindowFactoryProperty =
+        AvaloniaProperty.Register<DockControl, Func<IHostWindow?>?>(nameof(HostWindowFactory));
+
+    /// <summary>
     /// Defines the <see cref="Factory"/> property.
     /// </summary>
     public static readonly StyledProperty<IFactory?> FactoryProperty =
@@ -82,6 +92,12 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     /// </summary>
     public static readonly StyledProperty<bool> IsDraggingDockProperty =
         AvaloniaProperty.Register<DockControl, bool>(nameof(IsDraggingDock));
+
+    /// <summary>
+    /// Defines the <see cref="EnableManagedWindowLayer"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> EnableManagedWindowLayerProperty =
+        AvaloniaProperty.Register<DockControl, bool>(nameof(EnableManagedWindowLayer), true);
 
     /// <summary>
     /// Defines the <see cref="AutoCreateDataTemplates"/> property.
@@ -124,6 +140,15 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         set => SetValue(InitializeFactoryProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the factory used to create host windows.
+    /// </summary>
+    public Func<IHostWindow?>? HostWindowFactory
+    {
+        get => GetValue(HostWindowFactoryProperty);
+        set => SetValue(HostWindowFactoryProperty, value);
+    }
+
     /// <inheritdoc/>
     public IFactory? Factory
     {
@@ -138,6 +163,15 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     {
         get => GetValue(IsDraggingDockProperty);
         set => SetValue(IsDraggingDockProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether the managed window layer is enabled for this control.
+    /// </summary>
+    public bool EnableManagedWindowLayer
+    {
+        get => GetValue(EnableManagedWindowLayerProperty);
+        set => SetValue(EnableManagedWindowLayerProperty, value);
     }
 
     /// <summary>
@@ -198,13 +232,31 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         _contentControl = e.NameScope.Find<ContentControl>("PART_ContentControl");
         _commandBarHost = e.NameScope.Find<DockCommandBarHost>("PART_CommandBarHost");
         _selectorOverlay = e.NameScope.Find<DockSelectorOverlay>("PART_SelectorOverlay");
+        _managedWindowLayer = e.NameScope.Find<ManagedWindowLayer>("PART_ManagedWindowLayer");
+
+        InitializeControlRecycling();
         
         if (_contentControl is not null)
         {
             InitializeDefaultDataTemplates();
         }
 
+        UpdateManagedWindowLayer(Layout);
         InitializeCommandBars();
+    }
+
+    private void InitializeControlRecycling()
+    {
+        var recycling = ControlRecyclingDataTemplate.GetControlRecycling(this);
+        if (recycling is ControlRecycling shared)
+        {
+            var local = new ControlRecycling
+            {
+                TryToUseIdAsKey = shared.TryToUseIdAsKey
+            };
+
+            ControlRecyclingDataTemplate.SetControlRecycling(this, local);
+        }
     }
 
     private void InitializeDefaultDataTemplates()
@@ -241,6 +293,10 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
             Initialize(change.GetNewValue<IDock>());
         }
+        else if (change.Property == EnableManagedWindowLayerProperty)
+        {
+            UpdateManagedWindowLayer(Layout);
+        }
     }
 
     private void Initialize(IDock? layout)
@@ -264,18 +320,34 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         layout.Factory.DockControls.Add(this);
 
+        UpdateManagedWindowLayer(layout);
+
         if (InitializeFactory)
         {
-            layout.Factory.ContextLocator = new Dictionary<string, Func<object?>>();
-            layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
-            {
-                [nameof(IDockWindow)] = () => new HostWindow()
-            };
-            layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
-            layout.Factory.DefaultContextLocator = GetContext;
-            layout.Factory.DefaultHostWindowLocator = GetHostWindow;
+            layout.Factory.ContextLocator ??= new Dictionary<string, Func<object?>>();
+            layout.Factory.DockableLocator ??= new Dictionary<string, Func<IDockable?>>();
+            layout.Factory.DefaultContextLocator ??= GetContext;
+            layout.Factory.DefaultHostWindowLocator ??= GetHostWindow;
 
-            IHostWindow GetHostWindow() => new HostWindow();
+            if (layout.Factory.HostWindowLocator is null)
+            {
+                layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+                {
+                    [nameof(IDockWindow)] = GetHostWindow
+                };
+            }
+
+            IHostWindow GetHostWindow()
+            {
+                if (HostWindowFactory is { } factory)
+                {
+                    return factory();
+                }
+
+                return DockSettings.UseManagedWindows
+                    ? new ManagedHostWindow()
+                    : new HostWindow();
+            }
 
             object? GetContext() => DefaultContext;
         }
@@ -297,6 +369,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
     private void DeInitialize(IDock? layout)
     {
+        UnregisterManagedWindowLayer();
+
         if (layout?.Factory is null)
         {
             return;
@@ -379,6 +453,41 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         }
 
         _activationOrder[e.Dockable] = ++_activationCounter;
+    }
+
+    private void UpdateManagedWindowLayer(IDock? layout)
+    {
+        if (_managedWindowLayer is null)
+        {
+            return;
+        }
+
+        if (EnableManagedWindowLayer && DockSettings.UseManagedWindows && layout?.Factory is { } factory)
+        {
+            if (!ReferenceEquals(_managedLayerFactory, factory))
+            {
+                UnregisterManagedWindowLayer();
+            }
+
+            ManagedWindowRegistry.RegisterLayer(factory, _managedWindowLayer);
+            _managedLayerFactory = factory;
+            _managedWindowLayer.IsVisible = true;
+            return;
+        }
+
+        UnregisterManagedWindowLayer();
+        _managedWindowLayer.IsVisible = false;
+    }
+
+    private void UnregisterManagedWindowLayer()
+    {
+        if (_managedWindowLayer is null || _managedLayerFactory is null)
+        {
+            return;
+        }
+
+        ManagedWindowRegistry.UnregisterLayer(_managedLayerFactory, _managedWindowLayer);
+        _managedLayerFactory = null;
     }
 
     /// <inheritdoc/>

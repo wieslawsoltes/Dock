@@ -3,15 +3,18 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
+using Avalonia.VisualTree;
 
 namespace Dock.Model.Avalonia.Controls;
 
 internal static class TemplateHelper
 {
-    internal static Control? Build(object? content, AvaloniaObject parent)
+    internal static Control? Build(object? content, AvaloniaObject parent, Control? existing)
     {
         if (content is null)
         {
@@ -26,21 +29,67 @@ internal static class TemplateHelper
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(parent);
         if (controlRecycling is not null)
         {
-            if (controlRecycling.TryGetValue(content, out var control))
+            var key = GetCacheKey(controlRecycling, parent, content);
+            if (controlRecycling.TryGetValue(key, out var control))
             {
+                if (control is Control cachedControl)
+                {
+                    if (!ReferenceEquals(existing, cachedControl))
+                    {
+                        RemoveFromVisualParent(cachedControl);
+                    }
+
+                    return cachedControl;
+                }
+
                 return control as Control;
             }
 
             control = TemplateContent.Load(content)?.Result;
             if (control is not null)
             {
-                controlRecycling.Add(content, control);
+                controlRecycling.Add(key, control);
             }
 
             return control as Control;
         }
 
         return TemplateContent.Load(content)?.Result;
+    }
+
+    private static object GetCacheKey(IControlRecycling controlRecycling, AvaloniaObject parent, object content)
+    {
+        if (controlRecycling.TryToUseIdAsKey && parent is IControlRecyclingIdProvider idProvider)
+        {
+            var id = idProvider.GetControlRecyclingId();
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                return id;
+            }
+        }
+
+        return content;
+    }
+
+    private static void RemoveFromVisualParent(Visual visual)
+    {
+        var parent = visual.GetVisualParent();
+
+        switch (parent)
+        {
+            case Panel panel when visual is Control control:
+                panel.Children.Remove(control);
+                break;
+            case ContentPresenter contentPresenter:
+                contentPresenter.Content = null;
+                break;
+            case ContentControl contentControl:
+                contentControl.Content = null;
+                break;
+            case Decorator decorator:
+                decorator.Child = null;
+                break;
+        }
     }
 
     internal static TemplateResult<Control>? Load(object? templateContent)

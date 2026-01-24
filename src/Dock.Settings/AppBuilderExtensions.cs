@@ -45,6 +45,11 @@ public static class AppBuilderExtensions
             DockSettings.UsePinnedDockWindow = options.UsePinnedDockWindow.Value;
         }
 
+        if (options.UseManagedWindows != null)
+        {
+            DockSettings.UseManagedWindows = options.UseManagedWindows.Value;
+        }
+
         if (options.UseOwnerForFloatingWindows != null)
         {
             DockSettings.UseOwnerForFloatingWindows = options.UseOwnerForFloatingWindows.Value;
@@ -128,6 +133,20 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UsePinnedDockWindow = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.UseManagedWindows"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether to use managed windows for floating windows.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseManagedWindows(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.UseManagedWindows = enable;
         return builder;
     }
 

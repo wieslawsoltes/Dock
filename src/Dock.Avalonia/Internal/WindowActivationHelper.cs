@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Internal;
@@ -14,10 +15,16 @@ internal static class WindowActivationHelper
     public static void ActivateAllWindows(IFactory factory, Visual? initiator)
     {
         var windows = new HashSet<Window>();
+        var managedHosts = new List<ManagedHostWindow>();
 
         foreach (var host in factory.HostWindows.OfType<Window>())
         {
             windows.Add(host);
+        }
+
+        foreach (var host in factory.HostWindows.OfType<ManagedHostWindow>())
+        {
+            managedHosts.Add(host);
         }
 
         foreach (var dockControl in factory.DockControls.OfType<Control>())
@@ -42,6 +49,12 @@ internal static class WindowActivationHelper
         foreach (var window in sortedWindows)
         {
             window.Activate();
+        }
+
+        foreach (var managed in managedHosts
+            .OrderBy(host => host.ManagedZIndex))
+        {
+            managed.SetActive();
         }
 
         rootWindow?.Activate();

@@ -137,9 +137,56 @@
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
-    <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+    <Setter Property="CloseButtonTheme" Value="{DynamicResource ChromeButton}" />
+    <Setter Property="DocumentContextMenu" Value="{DynamicResource MdiDocumentWindowContextMenu}" />
+    <Setter Property="Background" Value="{DynamicResource DockWindowChromeBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockWindowChromeBorderBrush}" />
     <Setter Property="BorderThickness" Value="1" />
+
+    <Setter Property="IconTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Panel />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="HeaderTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock Text="{Binding Title}"
+                   VerticalAlignment="Center"
+                   Padding="2"
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="NoWrap" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="ModifiedTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock VerticalAlignment="Center"
+                   Text="*"
+                   Margin="0,0,2,0" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="CloseTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Viewbox Width="12" Height="12">
+          <Path x:Name="PART_ClosePath"
+                Data="{DynamicResource DockToolIconCloseGeometry}"
+                UseLayoutRounding="False"
+                Classes.active="{Binding $parent[controls:MdiDocumentWindow].IsActive}">
+            <Path.Styles>
+              <Style Selector="Path">
+                <Setter Property="Stretch" Value="UniformToFill" />
+                <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+              </Style>
+              <Style Selector="Path.active">
+                <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+              </Style>
+            </Path.Styles>
+          </Path>
+        </Viewbox>
+      </DataTemplate>
+    </Setter>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -152,7 +199,7 @@
               <DockPanel>
                 <Border x:Name="PART_Header"
                         DockPanel.Dock="Top"
-                        Background="{DynamicResource DockThemeBorderLowBrush}"
+                        Background="{DynamicResource DockWindowChromeTitleBarBackgroundBrush}"
                         ContextMenu="{TemplateBinding DocumentContextMenu}">
                   <Grid ColumnDefinitions="*,Auto">
                     <DockPanel Grid.Column="0" LastChildFill="True">
@@ -161,20 +208,35 @@
                               DockProperties.IsDragArea="True"
                               Padding="6,4"
                               Background="Transparent">
-                        <Grid ColumnDefinitions="Auto,*,Auto"
-                              ColumnSpacing="4">
-                          <ContentPresenter Grid.Column="0"
-                                            ContentTemplate="{TemplateBinding IconTemplate}"
-                                            Content="{Binding}" />
-                          <ContentPresenter Grid.Column="1"
-                                            ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                            Content="{Binding}"
-                                            HorizontalAlignment="Stretch"
-                                            MinWidth="0" />
-                          <ContentPresenter Grid.Column="2"
-                                            ContentTemplate="{TemplateBinding ModifiedTemplate}"
-                                            Content="{Binding}"
-                                            IsVisible="{Binding IsModified}" />
+                        <Grid>
+                          <Grid x:Name="PART_DocumentHeader"
+                                ColumnDefinitions="Auto,*,Auto"
+                                ColumnSpacing="4"
+                                IsVisible="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableIsToolWindowConverter.Instance}, ConverterParameter=Not, FallbackValue=True}">
+                            <ContentPresenter Grid.Column="0"
+                                              ContentTemplate="{TemplateBinding IconTemplate}"
+                                              Content="{Binding}" />
+                            <ContentPresenter Grid.Column="1"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                              Content="{Binding}"
+                                              HorizontalAlignment="Stretch"
+                                              MinWidth="0" />
+                            <ContentPresenter Grid.Column="2"
+                                              ContentTemplate="{TemplateBinding ModifiedTemplate}"
+                                              Content="{Binding}"
+                                              IsVisible="{Binding IsModified}" />
+                          </Grid>
+                          <DockPanel x:Name="PART_ToolHeader"
+                                     x:DataType="dmc:IToolDock"
+                                     DataContext="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableToolDockConverter.Instance}}"
+                                     IsVisible="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableIsToolWindowConverter.Instance}, FallbackValue=False}"
+                                     LastChildFill="True">
+                            <TextBlock Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}"
+                                       VerticalAlignment="Center"
+                                       Padding="2"
+                                       TextTrimming="CharacterEllipsis"
+                                       TextWrapping="NoWrap" />
+                          </DockPanel>
                         </Grid>
                       </Border>
                       <Grid x:Name="PART_Grid" />
@@ -182,7 +244,8 @@
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal"
                                 Spacing="2"
-                                Margin="2,0">
+                                Margin="2,0"
+                                IsVisible="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableIsToolWindowConverter.Instance}, ConverterParameter=Not, FallbackValue=True}">
                       <Button x:Name="PART_MinimizeButton"
                               Theme="{TemplateBinding CloseButtonTheme}">
                         <Viewbox Width="12" Height="12">
@@ -214,6 +277,56 @@
                         </Button.IsVisible>
                         <ContentPresenter ContentTemplate="{TemplateBinding CloseTemplate}"
                                           Content="{Binding}" />
+                      </Button>
+                    </StackPanel>
+                    <StackPanel x:Name="PART_ToolButtons"
+                                Grid.Column="1"
+                                Orientation="Horizontal"
+                                Spacing="2"
+                                Margin="2,0"
+                                x:DataType="dmc:IToolDock"
+                                DataContext="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableToolDockConverter.Instance}}"
+                                IsVisible="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableIsToolWindowConverter.Instance}, FallbackValue=False}">
+                      <Button x:Name="PART_ToolMenuButton"
+                              Theme="{TemplateBinding CloseButtonTheme}"
+                              Flyout="{DynamicResource ToolChromeControlContextMenu}">
+                        <Viewbox Width="12" Height="12">
+                          <Path x:Name="PART_ToolMenuPath"
+                                Data="{DynamicResource DockIconMenuGeometry}" />
+                        </Viewbox>
+                      </Button>
+                      <Button x:Name="PART_ToolPinButton"
+                              Command="{Binding Owner.Factory.PinDockable}"
+                              CommandParameter="{Binding ActiveDockable}"
+                              Theme="{TemplateBinding CloseButtonTheme}">
+                        <Button.IsVisible>
+                          <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
+                          </MultiBinding>
+                        </Button.IsVisible>
+                        <Viewbox Width="12" Height="12">
+                          <Path x:Name="PART_ToolPinPath"
+                                Data="{DynamicResource DockIconPinGeometry}"
+                                Classes.pinned="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        </Viewbox>
+                      </Button>
+                      <Button x:Name="PART_ToolCloseButton"
+                              Command="{Binding Owner.Factory.CloseDockable}"
+                              CommandParameter="{Binding ActiveDockable}"
+                              Theme="{TemplateBinding CloseButtonTheme}">
+                        <Button.IsVisible>
+                          <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
+                            <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                              <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
+                              <Binding Path="(core:IDock).VisibleDockables.Count" FallbackValue="0" />
+                            </MultiBinding>
+                          </MultiBinding>
+                        </Button.IsVisible>
+                        <Viewbox Width="12" Height="12">
+                          <Path x:Name="PART_ToolClosePath"
+                                Data="{DynamicResource DockToolIconCloseGeometry}" />
+                        </Viewbox>
                       </Button>
                     </StackPanel>
                   </Grid>
@@ -326,6 +439,10 @@
 
     <Style Selector="^/template/ Path#PART_MaximizeRestorePath">
       <Setter Property="Data" Value="{DynamicResource DockIconMaximizeGeometry}" />
+    </Style>
+
+    <Style Selector="^/template/ Path#PART_ToolPinPath.pinned">
+      <Setter Property="Data" Value="{DynamicResource DockIconPinnedGeometry}" />
     </Style>
 
     <Style Selector="^:maximized /template/ Path#PART_MaximizeRestorePath">

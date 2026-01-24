@@ -9,6 +9,7 @@ using Avalonia.Reactive;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -207,9 +208,20 @@ public class DockableControl : Panel, IDockableControl
         }
 
         var screenPoint = DockHelpers.GetScreenPoint(this, position);
-        var screenPosition = DockHelpers.ToDockPoint(screenPoint);
+        var pointerX = screenPoint.X;
+        var pointerY = screenPoint.Y;
+
+        if (DockSettings.UseManagedWindows && ManagedWindowLayer.TryGetLayer(this) is { } layer)
+        {
+            var layerPoint = this.TranslatePoint(position, layer);
+            if (layerPoint.HasValue)
+            {
+                pointerX = layerPoint.Value.X;
+                pointerY = layerPoint.Value.Y;
+            }
+        }
 
         dockable.SetPointerPosition(position.X, position.Y);
-        dockable.SetPointerScreenPosition(screenPosition.X, screenPosition.Y);
+        dockable.SetPointerScreenPosition(pointerX, pointerY);
     }
 }

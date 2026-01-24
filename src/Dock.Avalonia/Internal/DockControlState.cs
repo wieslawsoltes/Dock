@@ -84,7 +84,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 dragControl,
                 activeDockControl,
                 _context.DragStartPoint);
-            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, activeDockControl);
             _context.DoDragDrop = true;
         }
     }
@@ -177,7 +177,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
                             var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
                             var activePoint = active.PointToClient(screenPixel);
-                            Float(activePoint, active, sourceDockable, factory);
+                            Float(activePoint, active, sourceDockable, factory, _context.DragOffset);
                         }
                      }
                      return;
@@ -217,7 +217,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
                             var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
                             var activePoint = active.PointToClient(screenPixel);
-                            Float(activePoint, active, sourceDockable, factory);
+                            Float(activePoint, active, sourceDockable, factory, _context.DragOffset);
                         }
                      }
                      return;
@@ -430,7 +430,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         dockable.CanFloat &&
                         inputActiveDockControl.Layout?.Factory is { } factory)
                     {
-                        Float(point, inputActiveDockControl, dockable, factory);
+                        Float(point, inputActiveDockControl, dockable, factory, _context.DragOffset);
                         LogDragState($"Drop fallback: floating dockable '{dockable.Title}'.");
                     }
                 }
@@ -470,7 +470,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, inputActiveDockControl);
                             LogDragState($"Drag threshold reached for dockable '{targetDockable.Title}'. Showing preview.");
                         }
                         _context.DoDragDrop = true;

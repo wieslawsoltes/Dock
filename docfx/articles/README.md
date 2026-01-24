@@ -35,6 +35,7 @@ Dock supports a wide range of UI patterns:
 - Tool panes that auto-hide, pin, or float.
 - Split layouts with proportional sizing and drag handles.
 - Floating windows with docking indicators.
+- Managed floating windows hosted inside the main window.
 - Persisted layouts that restore across sessions.
 
 ## Key features

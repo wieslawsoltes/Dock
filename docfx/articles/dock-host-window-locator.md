@@ -41,6 +41,21 @@ windows work without extra setup, but it also overwrites any locators you
 configured earlier. Disable `InitializeFactory` if you want to provide your own
 locators up front.
 
+## Managed windows
+
+Dock can host floating windows inside the main window (managed mode). When
+`DockSettings.UseManagedWindows` is enabled, the default locator returns a
+`ManagedHostWindow` instead of a native `HostWindow`. You can still override the
+locator or provide your own window factory via `DockControl.HostWindowFactory`.
+
+Managed windows also require `DockControl.EnableManagedWindowLayer` and a
+`ManagedWindowLayer` template part. See the [Managed windows guide](dock-managed-windows-guide.md)
+for setup details and [Managed windows reference](dock-managed-windows-reference.md)
+for API information.
+
+In managed mode, floating windows are rendered using the MDI layout system, so
+they remain part of the main visual tree and reuse the same theme resources.
+
 ## Fallback locator
 
 If no entry matches the provided key, `GetHostWindow` calls

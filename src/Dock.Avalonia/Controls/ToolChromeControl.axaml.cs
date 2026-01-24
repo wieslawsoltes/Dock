@@ -223,8 +223,11 @@ public class ToolChromeControl : ContentControl
 
         AttachToWindow();
 
-        var maximizeRestoreButton = e.NameScope.Get<Button>("PART_MaximizeRestoreButton");
-        maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;
+        var maximizeRestoreButton = e.NameScope.Find<Button>("PART_MaximizeRestoreButton");
+        if (maximizeRestoreButton is not null)
+        {
+            maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;
+        }
     }
 
     private WindowDragHelper CreateDragHelper(Control grip)

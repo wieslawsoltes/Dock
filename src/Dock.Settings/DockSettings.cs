@@ -31,6 +31,11 @@ public static class DockSettings
     /// Show auto-hidden dockables inside a floating window.
     /// </summary>
     public static bool UsePinnedDockWindow = false;
+
+    /// <summary>
+    /// Use managed (in-app) windows instead of native OS windows for floating windows.
+    /// </summary>
+    public static bool UseManagedWindows = false;
     
     /// <summary>
     /// Floating windows use the main window as their owner so they stay in front.

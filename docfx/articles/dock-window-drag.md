@@ -24,6 +24,10 @@ The same property is available on the Avalonia control `DocumentDock` and can al
 
 With the property enabled, `DocumentTabStrip` listens for pointer events on its background and initiates a window drag on the surrounding `HostWindow` (or window). The user can grab the tab area and drag the entire window.
 
+## Managed windows
+
+In managed window mode (`DockSettings.UseManagedWindows = true`), floating windows are rendered inside the main window. Their drag behavior is provided by the managed window chrome (`MdiDocumentWindow`), not by `DocumentTabStrip`. `EnableWindowDrag` remains useful for dragging the main window or native floating windows.
+
 ## Scenarios
 
 - **Floating windows** – Users can drag the tab bar of a floating document window to reposition it without relying on the window title bar.

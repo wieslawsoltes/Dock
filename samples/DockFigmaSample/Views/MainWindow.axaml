@@ -1,0 +1,12 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
+        xmlns:vm="using:DockFigmaSample.ViewModels"
+        x:Class="DockFigmaSample.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
+        Width="1400" Height="900"
+        MinWidth="360" MinHeight="640"
+        WindowStartupLocation="CenterScreen"
+        Title="Dock Figma Editor Sample">
+  <rxui:RoutedViewHost Router="{Binding Router}" />
+</Window>

@@ -1,0 +1,10 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.InspectorToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:InspectorToolViewModel" x:CompileBindings="True">
+  <Border Background="{DynamicResource PanelBackgroundBrush}" Padding="12">
+    <rxui:RoutedViewHost Router="{Binding Router}" />
+  </Border>
+</UserControl>

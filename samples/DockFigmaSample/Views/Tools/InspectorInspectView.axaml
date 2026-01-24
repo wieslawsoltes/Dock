@@ -1,0 +1,28 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.InspectorInspectView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:InspectorInspectViewModel" x:CompileBindings="True">
+  <StackPanel Spacing="16">
+    <TextBlock Text="Inspect" Classes="section-title" />
+    <TextBlock Text="Specs" Classes="subtle-title" />
+    <ItemsControl ItemsSource="{Binding Specs}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+            <TextBlock Text="{Binding Label}" Classes="muted" />
+            <TextBlock Grid.Column="1" Text="{Binding Value}" Classes="card-title" />
+          </Grid>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="12">
+      <StackPanel Spacing="6">
+        <TextBlock Text="CSS" Classes="subtle-title" />
+        <TextBlock Text="box-shadow: 0 24px 48px rgba(0,0,0,0.12);" Classes="code" />
+        <TextBlock Text="border-radius: 24px;" Classes="code" />
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

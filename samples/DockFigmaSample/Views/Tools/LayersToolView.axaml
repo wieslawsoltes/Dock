@@ -1,0 +1,33 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.LayersToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:LayersToolViewModel" x:CompileBindings="True">
+  <Border Background="{DynamicResource PanelBackgroundBrush}" Padding="12">
+    <StackPanel Spacing="12">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="Layers" Classes="section-title" />
+        <Button Grid.Column="1" Content="+" Classes="ghost" Width="28" Height="28" />
+      </Grid>
+      <TextBox Watermark="Search layers" Classes="panel-search" />
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding Layers}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="{Binding Indent}" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                <Border Width="30" Height="20" CornerRadius="6" Background="{DynamicResource SoftPanelBrush}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Type}" HorizontalAlignment="Center" VerticalAlignment="Center" Classes="layer-tag" />
+                </Border>
+                <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10,0,0,0" VerticalAlignment="Center" Classes="layer-name" />
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                  <TextBlock Text="V" IsVisible="{Binding IsVisible}" Classes="layer-meta" />
+                  <TextBlock Text="L" IsVisible="{Binding IsLocked}" Classes="layer-meta" />
+                </StackPanel>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </StackPanel>
+  </Border>
+</UserControl>

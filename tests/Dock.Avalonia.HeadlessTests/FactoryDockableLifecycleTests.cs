@@ -104,4 +104,25 @@ public class FactoryDockableLifecycleTests
         Assert.Same(doc2, dock.ActiveDockable);
         Assert.Single(dock.VisibleDockables!);
     }
+
+    [AvaloniaFact]
+    public void CloseDockable_Active_Clears_FocusedDockable()
+    {
+        var factory = new Factory();
+        var root = new RootDock { VisibleDockables = factory.CreateList<IDockable>() };
+        root.Factory = factory;
+
+        var doc = new Document();
+        factory.AddDockable(root, doc);
+
+        root.ActiveDockable = doc;
+
+        Assert.Same(doc, root.FocusedDockable);
+
+        factory.CloseDockable(doc);
+
+        Assert.Null(root.ActiveDockable);
+        Assert.Null(root.FocusedDockable);
+        Assert.Empty(root.VisibleDockables!);
+    }
 }

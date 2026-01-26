@@ -616,6 +616,33 @@ public static class FluentExtensions
     /// <param name="group">Dock group identifier.</param>
     /// <returns>The same instance for chaining.</returns>
     public static T WithDockGroup<T>(this T dockable, string? group) where T : IDockable { dockable.DockGroup = group; return dockable; }
+    /// <summary>
+    /// Sets the allowed dock operations when this dockable is the drag source.
+    /// </summary>
+    /// <typeparam name="T">Dockable type.</typeparam>
+    /// <param name="dockable">The instance to configure.</param>
+    /// <param name="value">Allowed dock operations.</param>
+    /// <returns>The same instance for chaining.</returns>
+    public static T WithAllowedDockOperations<T>(this T dockable, DockOperationMask value)
+        where T : IDockableDockingRestrictions
+    {
+        dockable.AllowedDockOperations = value;
+        return dockable;
+    }
+
+    /// <summary>
+    /// Sets the allowed dock operations when this dockable is the drop target.
+    /// </summary>
+    /// <typeparam name="T">Dockable type.</typeparam>
+    /// <param name="dockable">The instance to configure.</param>
+    /// <param name="value">Allowed drop operations.</param>
+    /// <returns>The same instance for chaining.</returns>
+    public static T WithAllowedDropOperations<T>(this T dockable, DockOperationMask value)
+        where T : IDockableDockingRestrictions
+    {
+        dockable.AllowedDropOperations = value;
+        return dockable;
+    }
 
     // IDock fluent setters and helpers
     /// <summary>

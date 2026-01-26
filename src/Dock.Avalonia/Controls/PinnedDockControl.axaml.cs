@@ -45,6 +45,8 @@ public class PinnedDockControl : TemplatedControl
     private GridSplitter? _pinnedDockSplitter;
     private PinnedDockWindow? _window;
     private Window? _ownerWindow;
+    private ManagedWindowLayer? _managedLayer;
+    private Control? _managedPinnedHost;
     private IDockable? _lastPinnedDockable;
     private double _lastPinnedWidth = double.NaN;
     private double _lastPinnedHeight = double.NaN;
@@ -170,10 +172,15 @@ public class PinnedDockControl : TemplatedControl
             return;
         }
 
-
         if (DataContext is not IRootDock root || root.PinnedDock is null)
         {
             CloseWindow();
+            return;
+        }
+
+        if (DockSettings.UseManagedWindows)
+        {
+            UpdateManagedWindow(root);
             return;
         }
 
@@ -221,6 +228,14 @@ public class PinnedDockControl : TemplatedControl
 
     private void CloseWindow()
     {
+        if (_managedLayer is not null)
+        {
+            _managedLayer.HideOverlay("PinnedDock");
+            _managedLayer = null;
+        }
+
+        _managedPinnedHost = null;
+
         if (_window is not null)
         {
             _window.Close();
@@ -242,6 +257,52 @@ public class PinnedDockControl : TemplatedControl
             _pinnedDock.ClearValue(IsHitTestVisibleProperty);
         }
 
+    }
+
+    private void UpdateManagedWindow(IRootDock root)
+    {
+        if (root.PinnedDock is null || root.PinnedDock.IsEmpty)
+        {
+            CloseWindow();
+            return;
+        }
+
+        _managedLayer = ManagedWindowLayer.TryGetLayer(this);
+        if (_managedLayer is null)
+        {
+            return;
+        }
+
+        if (_managedPinnedHost is null)
+        {
+            _managedPinnedHost = new ToolDockControl
+            {
+                DataContext = root.PinnedDock
+            };
+        }
+
+        var point = _pinnedDock!.PointToScreen(new Point());
+        var bounds = GetManagedBounds(_managedLayer, point, _pinnedDock.Bounds.Size);
+        _managedLayer.ShowOverlay("PinnedDock", _managedPinnedHost, bounds, true);
+
+        if (_pinnedDock.Opacity != 0)
+        {
+            _pinnedDock.Opacity = 0;
+            _pinnedDock.IsHitTestVisible = false;
+        }
+    }
+
+    private static Rect GetManagedBounds(ManagedWindowLayer layer, PixelPoint screenPoint, Size size)
+    {
+        if (layer.GetVisualRoot() is not TopLevel topLevel)
+        {
+            return new Rect(0, 0, size.Width, size.Height);
+        }
+
+        var clientPoint = topLevel.PointToClient(screenPoint);
+        var layerOrigin = layer.TranslatePoint(new Point(0, 0), topLevel) ?? new Point(0, 0);
+        var local = new Point(clientPoint.X - layerOrigin.X, clientPoint.Y - layerOrigin.Y);
+        return new Rect(local, size);
     }
 
     private void ApplyPinnedDockSize()

@@ -91,12 +91,26 @@ public class HostWindow : Window, IHostWindow
     /// Initializes new instance of the <see cref="HostWindow"/> class.
     /// </summary>
     public HostWindow()
+        : this(new DockManagerOptions())
     {
+    }
+
+    /// <summary>
+    /// Initializes new instance of the <see cref="HostWindow"/> class with shared dock manager options.
+    /// </summary>
+    /// <param name="options">Dock manager options to share across windows.</param>
+    public HostWindow(DockManagerOptions options)
+    {
+        if (options is null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
         Activated += HostWindow_Activated;
         Deactivated += HostWindow_Deactivated;
-        _hostWindowState = new HostWindowState(new DockManager(new DockService()), this);
+        _hostWindowState = new HostWindowState(new DockManager(new DockService(), options), this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
     }
 

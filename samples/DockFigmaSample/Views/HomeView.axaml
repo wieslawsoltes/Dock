@@ -1,0 +1,51 @@
+<UserControl x:Class="DockFigmaSample.Views.HomeView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels"
+             x:DataType="vm:HomeViewModel" x:CompileBindings="True">
+  <Grid>
+    <Border Background="{DynamicResource HomeHeroBrush}" />
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Margin="40" Spacing="28">
+        <StackPanel Spacing="8">
+          <TextBlock Text="Figma Dock Lab" Classes="display" />
+          <TextBlock Text="Docked panels, reactive navigation, and a canvas-first workflow." Classes="subtitle" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <Button Content="Open Workspace" Command="{Binding OpenWorkspace}" Classes="primary" />
+          <Button Content="New Draft" Classes="ghost" />
+          <Button Content="Import" Classes="ghost" />
+        </StackPanel>
+
+        <StackPanel Spacing="12">
+          <TextBlock Text="Recent files" Classes="section-title" />
+          <ItemsControl ItemsSource="{Binding RecentFiles}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" ItemWidth="260" ItemHeight="150" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border CornerRadius="16"
+                        Background="{DynamicResource PanelBackgroundBrush}"
+                        BorderBrush="{DynamicResource PanelBorderBrush}"
+                        BorderThickness="1"
+                        Padding="16"
+                        Margin="0,0,16,16">
+                  <StackPanel Spacing="8">
+                    <Border Height="6" CornerRadius="6" Background="{Binding AccentBrush}" />
+                    <TextBlock Text="{Binding Name}" Classes="card-title" />
+                    <TextBlock Text="{Binding Team}" Classes="muted" />
+                    <TextBlock Text="{Binding Updated}" Classes="muted" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

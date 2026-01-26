@@ -1,0 +1,19 @@
+<UserControl x:Class="DockReactiveUIRiderSample.Views.Tools.TerminalToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockReactiveUIRiderSample.ViewModels.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="600" d:DesignHeight="200"
+             x:DataType="vm:TerminalToolViewModel" x:CompileBindings="True">
+  <Border Background="{StaticResource RiderPanelBrush}">
+    <TextBox Text="{Binding Output}"
+             IsReadOnly="True"
+             AcceptsReturn="True"
+             BorderThickness="0"
+             Background="{StaticResource RiderPanelBrush}"
+             FontFamily="JetBrains Mono, Cascadia Mono, Consolas"
+             FontSize="12" />
+  </Border>
+</UserControl>

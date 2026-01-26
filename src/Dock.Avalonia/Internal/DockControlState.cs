@@ -84,7 +84,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 dragControl,
                 activeDockControl,
                 _context.DragStartPoint);
-            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, activeDockControl);
             _context.DoDragDrop = true;
         }
     }
@@ -177,7 +177,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
                             var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
                             var activePoint = active.PointToClient(screenPixel);
-                            Float(activePoint, active, sourceDockable, factory);
+                            Float(activePoint, active, sourceDockable, factory, _context.DragOffset);
                         }
                      }
                      return;
@@ -217,7 +217,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
                             var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
                             var activePoint = active.PointToClient(screenPixel);
-                            Float(activePoint, active, sourceDockable, factory);
+                            Float(activePoint, active, sourceDockable, factory, _context.DragOffset);
                         }
                      }
                      return;
@@ -235,6 +235,12 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            LogDropRejection(nameof(ValidateLocal), "Docking is disabled.");
+            return false;
+        }
+
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             LogDropRejection(nameof(ValidateLocal), "DragControl DataContext is not an IDockable.");
@@ -261,6 +267,12 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockManager.IsDockingEnabled)
+        {
+            LogDropRejection(nameof(ValidateGlobal), "Docking is disabled.");
+            return false;
+        }
+
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             LogDropRejection(nameof(ValidateGlobal), "DragControl DataContext is not an IDockable.");
@@ -375,6 +387,21 @@ internal class DockControlState : DockManagerState, IDockControlState
             return;
         }
 
+        if (!DockManager.IsDockingEnabled)
+        {
+            if (_context.PointerPressed || _context.DoDragDrop)
+            {
+                _dragPreviewHelper.Hide();
+                Leave();
+                _context.End();
+                DropControl = null;
+                activeDockControl.IsDraggingDock = false;
+            }
+
+            LogDragState("Process skipped: docking disabled.");
+            return;
+        }
+
         switch (eventType)
         {
             case EventType.Pressed:
@@ -430,7 +457,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         dockable.CanFloat &&
                         inputActiveDockControl.Layout?.Factory is { } factory)
                     {
-                        Float(point, inputActiveDockControl, dockable, factory);
+                        Float(point, inputActiveDockControl, dockable, factory, _context.DragOffset);
                         LogDragState($"Drop fallback: floating dockable '{dockable.Title}'.");
                     }
                 }
@@ -470,7 +497,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, inputActiveDockControl);
                             LogDragState($"Drag threshold reached for dockable '{targetDockable.Title}'. Showing preview.");
                         }
                         _context.DoDragDrop = true;

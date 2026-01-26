@@ -1,0 +1,15 @@
+<UserControl x:Class="DockReactiveUIManagedSample.Views.DockableOptionsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dm="using:Dock.Model.Core"
+             x:DataType="dm:IDockable" x:CompileBindings="True">
+  <StackPanel Orientation="Horizontal" Spacing="2">
+    <CheckBox IsChecked="{Binding CanClose}" ToolTip.Tip="CanClose" />
+    <CheckBox IsChecked="{Binding CanFloat}" ToolTip.Tip="CanFloat" />
+    <CheckBox IsChecked="{Binding CanPin}" ToolTip.Tip="CanPin" />
+    <CheckBox IsChecked="{Binding KeepPinnedDockableVisible}" ToolTip.Tip="KeepPinnedDockableVisible" />
+    <CheckBox IsChecked="{Binding CanDrag}" ToolTip.Tip="CanDrag" />
+    <CheckBox IsChecked="{Binding CanDrop}" ToolTip.Tip="CanDrop" />
+    <CheckBox IsChecked="{Binding IsModified}" ToolTip.Tip="IsModified" />
+  </StackPanel>
+</UserControl>

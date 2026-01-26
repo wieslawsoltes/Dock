@@ -17,3 +17,5 @@ AppBuilder.Configure<App>()
 ```
 
 When enabled Dock sets the main window as the owner for floating windows, preventing them from appearing behind it. Disable this if you want windows to be independent.
+
+Managed windows do not use OS-level owners, so this setting applies to native floating windows only.

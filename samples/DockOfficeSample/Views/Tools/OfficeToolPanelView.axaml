@@ -1,0 +1,23 @@
+<UserControl x:Class="DockOfficeSample.Views.Tools.OfficeToolPanelView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tools="using:DockOfficeSample.ViewModels.Tools"
+             x:DataType="tools:OfficeToolPanelViewModel" x:CompileBindings="True">
+  <Border Background="{DynamicResource SurfaceElevatedBrush}" Padding="16">
+    <StackPanel Spacing="12">
+      <StackPanel Spacing="2">
+        <TextBlock Text="{Binding Title}" Classes="panel-title" />
+        <TextBlock Text="{Binding Subtitle}" Classes="panel-subtitle" />
+      </StackPanel>
+      <ItemsControl ItemsSource="{Binding Items}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="panel-item" Padding="8" CornerRadius="8">
+              <TextBlock Text="{Binding}" Classes="panel-text" />
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </Border>
+</UserControl>

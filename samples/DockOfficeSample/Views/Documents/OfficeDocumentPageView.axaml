@@ -1,0 +1,111 @@
+<UserControl x:Class="DockOfficeSample.Views.Documents.OfficeDocumentPageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:docs="using:DockOfficeSample.ViewModels.Documents"
+             xmlns:models="using:DockOfficeSample.Models"
+             x:DataType="docs:OfficeDocumentPageViewModel" x:CompileBindings="True">
+  <Border Padding="24">
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*">
+      <StackPanel Spacing="4">
+        <TextBlock Text="{Binding ModeTitle}" Classes="page-title" />
+        <TextBlock Text="{Binding Description}" Classes="page-subtitle" />
+      </StackPanel>
+
+      <Grid Grid.Row="1" ColumnDefinitions="*,220" ColumnSpacing="24" Margin="0,16,0,0">
+        <Border Background="{DynamicResource CanvasBrush}" CornerRadius="16" Padding="20">
+          <Grid>
+            <Border IsVisible="{Binding AppKind, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static models:OfficeAppKind.Word}}">
+              <Border Background="White" CornerRadius="10" Padding="20" BorderBrush="{DynamicResource CanvasBorderBrush}" BorderThickness="1">
+                <StackPanel Spacing="10">
+                  <Border Height="12" Width="240" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                  <Border Height="12" Width="320" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                  <Border Height="12" Width="280" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                  <Border Height="12" Width="300" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                  <Border Height="12" Width="220" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                  <Border Height="12" Width="260" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                </StackPanel>
+              </Border>
+            </Border>
+
+            <Border IsVisible="{Binding AppKind, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static models:OfficeAppKind.Excel}}">
+              <Border Background="White" CornerRadius="10" BorderBrush="{DynamicResource CanvasBorderBrush}" BorderThickness="1">
+                <Grid RowDefinitions="Auto,*">
+                  <Border Background="{DynamicResource GridHeaderBrush}" Padding="12">
+                    <TextBlock Text="Q3 Forecast" Classes="grid-title" />
+                  </Border>
+                  <UniformGrid Grid.Row="1" Rows="6" Columns="5" Margin="12">
+                    <Border Classes="grid-cell"><TextBlock Text="A" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="B" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="C" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="D" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="E" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="120" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="98" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="104" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="140" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="89" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                    <Border Classes="grid-cell"><TextBlock Text="" Classes="grid-cell-text" /></Border>
+                  </UniformGrid>
+                </Grid>
+              </Border>
+            </Border>
+
+            <Border IsVisible="{Binding AppKind, Converter={StaticResource EnumEqualsConverter}, ConverterParameter={x:Static models:OfficeAppKind.PowerPoint}}">
+              <Border Background="White" CornerRadius="10" BorderBrush="{DynamicResource CanvasBorderBrush}" BorderThickness="1" Padding="16">
+                <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,140" ColumnSpacing="16">
+                  <StackPanel Grid.Column="0" Spacing="12">
+                    <Border Height="18" Width="240" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                    <Border Height="120" Background="{DynamicResource SlidePlaceholderBrush}" CornerRadius="8" />
+                    <Border Height="12" Width="200" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                    <Border Height="12" Width="160" Background="{DynamicResource LineBrush}" CornerRadius="6" />
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Spacing="12">
+                    <Border Height="60" Background="{DynamicResource SlideThumbnailBrush}" CornerRadius="6" />
+                    <Border Height="60" Background="{DynamicResource SlideThumbnailBrush}" CornerRadius="6" />
+                    <Border Height="60" Background="{DynamicResource SlideThumbnailBrush}" CornerRadius="6" />
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </Border>
+          </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Background="{DynamicResource SurfaceElevatedBrush}" CornerRadius="16" Padding="16">
+          <StackPanel Spacing="12">
+            <TextBlock Text="Highlights" Classes="panel-title" />
+            <ItemsControl ItemsSource="{Binding Highlights}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Border Width="8" Height="8" CornerRadius="4" Background="{DynamicResource AccentNeutralBrush}" Margin="0,6,0,0" />
+                    <TextBlock Text="{Binding}" Classes="panel-text" />
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Grid>
+  </Border>
+</UserControl>

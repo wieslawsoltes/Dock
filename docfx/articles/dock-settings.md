@@ -97,6 +97,10 @@ The default value is `0.25`.
 
 `DockSettings.UsePinnedDockWindow` shows auto-hidden dockables inside a floating window instead of sliding panels. See [Pinned Dock Window](dock-pinned-window.md) for details.
 
+## Managed windows
+
+`DockSettings.UseManagedWindows` hosts floating windows inside the main window using the managed window layer. This affects only floating docks; the main window remains native. See [Managed windows guide](dock-managed-windows-guide.md) for details.
+
 ## Window magnetism
 
 `DockSettings.EnableWindowMagnetism` toggles snapping of floating windows. The snap distance
@@ -173,6 +177,7 @@ AppBuilder.Configure<App>()
     .UsePlatformDetect()
     .UseFloatingDockAdorner()
     .UseOwnerForFloatingWindows()
+    .UseManagedWindows()
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
     .BringWindowsToFrontOnDrag()
@@ -194,6 +199,7 @@ AppBuilder.Configure<App>()
 | `MinimumVerticalDragDistance` | `DockSettings.MinimumVerticalDragDistance` | Vertical drag threshold. |
 | `UseFloatingDockAdorner` | `DockSettings.UseFloatingDockAdorner` | Floating adorner window. |
 | `UsePinnedDockWindow` | `DockSettings.UsePinnedDockWindow` | Floating pinned dock window. |
+| `UseManagedWindows` | `DockSettings.UseManagedWindows` | Managed floating windows. |
 | `UseOwnerForFloatingWindows` | `DockSettings.UseOwnerForFloatingWindows` | Assign owners to floating windows. |
 | `EnableWindowMagnetism` | `DockSettings.EnableWindowMagnetism` | Snap floating windows. |
 | `WindowMagnetDistance` | `DockSettings.WindowMagnetDistance` | Snap distance in pixels. |

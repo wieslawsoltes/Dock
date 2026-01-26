@@ -150,7 +150,7 @@ public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, 
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        return TemplateHelper.Build(Content, this);
+        return TemplateHelper.Build(Content, this, existing);
     }
 
 }

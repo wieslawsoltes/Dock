@@ -1,0 +1,23 @@
+<UserControl x:Class="DockOfficeSample.Views.Tools.InspectorSectionView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tools="using:DockOfficeSample.ViewModels.Tools"
+             x:DataType="tools:InspectorSectionViewModel" x:CompileBindings="True">
+  <Border Padding="16" Background="{DynamicResource SurfaceBrush}">
+    <StackPanel Spacing="12">
+      <StackPanel Spacing="4">
+        <TextBlock Text="{Binding SectionTitle}" Classes="panel-title" />
+        <TextBlock Text="{Binding Description}" Classes="panel-subtitle" />
+      </StackPanel>
+      <ItemsControl ItemsSource="{Binding Items}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="panel-item" Padding="8" CornerRadius="8">
+              <TextBlock Text="{Binding}" Classes="panel-text" />
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </Border>
+</UserControl>

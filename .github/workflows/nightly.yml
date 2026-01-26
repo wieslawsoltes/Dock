@@ -1,0 +1,72 @@
+name: Nightly Packages
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  nightly:
+    name: Build and Publish Nightly
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      NUGET_SOURCE: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Install workloads
+        run: dotnet workload install wasm-tools wasm-experimental
+
+      - name: Determine version suffix
+        id: version
+        run: |
+          DATE=$(date -u +%Y%m%d)
+          echo "version-suffix=nightly.${DATE}.${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore -p:VersionSuffix="${{ steps.version.outputs.version-suffix }}"
+
+      - name: Test
+        run: dotnet test -c Release --no-build --logger trx --results-directory artifacts/test
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nightly-test-results
+          path: artifacts/test/**/*.trx
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Pack
+        run: dotnet pack -c Release --no-build -p:VersionSuffix="${{ steps.version.outputs.version-suffix }}" -o artifacts/packages
+
+      - name: Publish to GitHub Packages
+        run: |
+          shopt -s nullglob
+          for package in artifacts/packages/*.nupkg; do
+            echo "Publishing $package..."
+            dotnet nuget push "$package" \
+              --api-key ${{ secrets.GITHUB_TOKEN }} \
+              --source "${{ env.NUGET_SOURCE }}" \
+              --skip-duplicate
+          done

@@ -25,6 +25,9 @@
           <ContentControl x:Name="PART_ContentControl"
                           Grid.Row="1"
                           Content="{TemplateBinding Layout}" />
+          <controls:ManagedWindowLayer x:Name="PART_ManagedWindowLayer"
+                                       Grid.Row="1"
+                                       IsVisible="False" />
           <controls:DockSelectorOverlay x:Name="PART_SelectorOverlay"
                                         Grid.Row="0"
                                         Grid.RowSpan="2"

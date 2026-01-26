@@ -1,0 +1,28 @@
+<UserControl x:Class="DockFigmaSample.Views.Tools.ToolbarToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
+             x:DataType="vm:ToolbarToolViewModel" x:CompileBindings="True">
+  <Border Background="{DynamicResource ToolbarBackgroundBrush}"
+          BorderBrush="{DynamicResource PanelBorderBrush}"
+          BorderThickness="0,0,1,0"
+          Padding="8">
+    <StackPanel Spacing="12" HorizontalAlignment="Center">
+      <ItemsControl ItemsSource="{Binding Tools}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <ToggleButton Width="38" Height="38"
+                          IsChecked="{Binding IsActive}"
+                          Classes="tool-button"
+                          ToolTip.Tip="{Binding Name}">
+              <TextBlock Text="{Binding Glyph}" Classes="tool-glyph" />
+            </ToggleButton>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <Border Width="36" Height="36" CornerRadius="18" Background="{DynamicResource AccentWarmBrush}">
+        <TextBlock Text="+" HorizontalAlignment="Center" VerticalAlignment="Center" Classes="tool-glyph" />
+      </Border>
+    </StackPanel>
+  </Border>
+</UserControl>

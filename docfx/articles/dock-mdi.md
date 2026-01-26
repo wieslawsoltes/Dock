@@ -64,5 +64,6 @@ For details on the built-in layout helpers and defaults see
 
 - The document header contains a drag handle that starts docking operations when you drag it outside the MDI surface.
 - When a document is maximized the stored bounds remain unchanged so restore returns to the previous size.
+- Managed floating windows reuse `MdiDocumentWindow` inside `ManagedWindowLayer` when `DockSettings.UseManagedWindows` is enabled. See the [Managed windows guide](dock-managed-windows-guide.md).
 
 For an overview of all guides see the [documentation index](README.md).

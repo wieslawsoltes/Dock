@@ -197,6 +197,16 @@ internal static class DockHelpers
         return -1;
     }
 
+    private static int GetManagedWindowZOrder(DockControl dockControl)
+    {
+        if (dockControl.FindAncestorOfType<MdiDocumentWindow>() is { DataContext: IMdiDocument document })
+        {
+            return document.MdiZIndex;
+        }
+
+        return int.MinValue;
+    }
+
     public static IEnumerable<DockControl> GetZOrderedDockControls(IList<IDockControl> dockControls)
     {
         var windows = dockControls
@@ -210,8 +220,9 @@ internal static class DockHelpers
 
         return dockControls
             .OfType<DockControl>()
-            .Select(dock => (dock, order: IndexOf(windows, dock.GetVisualRoot() as Window)))
-            .OrderByDescending(x => x.order)
+            .Select(dock => (dock, windowOrder: IndexOf(windows, dock.GetVisualRoot() as Window), managedOrder: GetManagedWindowZOrder(dock)))
+            .OrderByDescending(x => x.windowOrder)
+            .ThenByDescending(x => x.managedOrder)
             .Select(pair => pair.dock);
     }
 }

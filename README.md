@@ -92,12 +92,20 @@ Install-Package Dock.Avalonia.Themes.Fluent
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Serializer.Yaml.svg)](https://www.nuget.org/packages/Dock.Serializer.Yaml) | [`Dock.Serializer.Yaml`](https://www.nuget.org/packages/Dock.Serializer.Yaml) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Serializer.Yaml.svg)](https://www.nuget.org/packages/Dock.Serializer.Yaml) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Settings.svg)](https://www.nuget.org/packages/Dock.Settings) | [`Dock.Settings`](https://www.nuget.org/packages/Dock.Settings) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Settings.svg)](https://www.nuget.org/packages/Dock.Settings) |
 
-or by using nightly build feed:
-* Add `https://www.myget.org/F/dock-nightly/api/v2` to your package sources
-* Alternative nightly build feed `https://pkgs.dev.azure.com/wieslawsoltes/GitHub/_packaging/Nightly/nuget/v3/index.json`
-* Update your package using `Dock` feed
+## Nightly Packages
 
-and install the package like this:
+Nightly builds are published to GitHub Packages on pushes to `master`. Versions use the `nightly.YYYYMMDD.RUN` suffix.
+
+Add the GitHub Packages source (replace `OWNER` with the repository owner):
+* `https://nuget.pkg.github.com/OWNER/index.json`
+
+Authenticate with a GitHub token that has `read:packages`:
+
+```powershell
+dotnet nuget add source https://nuget.pkg.github.com/wieslawsoltes/index.json -n github -u YOUR_GITHUB_USERNAME -p YOUR_GITHUB_TOKEN --store-password-in-clear-text
+```
+
+Install pre-release packages:
 
 ```powershell
 Install-Package Dock.Avalonia -Pre
@@ -106,6 +114,7 @@ Install-Package Dock.Serializer.Newtonsoft -Pre
 Install-Package Dock.Avalonia.Themes.Fluent -Pre
 ```
 
+
 ## Resources
 * [Documentation index](https://wieslawsoltes.github.io/Dock/)
 * Sample applications can be found under the [samples](samples/) directory
@@ -113,6 +122,7 @@ Install-Package Dock.Avalonia.Themes.Fluent -Pre
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples
   - **`DockMvvmSample`** - Full MVVM implementation
   - **`DockReactiveUISample`** - ReactiveUI patterns
+  - **`DockOfficeSample`** - Office-style workspaces with ReactiveUI navigation
   - **`DockCodeOnlySample`** - Pure C# layouts
   - **`Notepad`** - Real-world text editor example
   - **`VisualStudioDemo`** - Visual Studio-like interface

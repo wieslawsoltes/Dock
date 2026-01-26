@@ -1,0 +1,93 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:DockReactiveUIRiderSample"
+             xmlns:core="using:Dock.Model.Core"
+             RequestedThemeVariant="Dark"
+             Name="Dock Rider Sample"
+             x:Class="DockReactiveUIRiderSample.App">
+
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+          <ControlRecycling x:Key="ControlRecyclingKey" />
+        </ResourceDictionary>
+      </ResourceDictionary.MergedDictionaries>
+      <Color x:Key="RiderBackgroundColor">#1E1F22</Color>
+      <Color x:Key="RiderPanelColor">#2B2D30</Color>
+      <Color x:Key="RiderPanelAltColor">#313335</Color>
+      <Color x:Key="RiderBorderColor">#3C3F41</Color>
+      <Color x:Key="RiderAccentColor">#4C8BF5</Color>
+      <Color x:Key="RiderTextColor">#D7D7D7</Color>
+      <Color x:Key="RiderMutedTextColor">#9AA1A9</Color>
+
+      <SolidColorBrush x:Key="RiderBackgroundBrush" Color="{StaticResource RiderBackgroundColor}" />
+      <SolidColorBrush x:Key="RiderPanelBrush" Color="{StaticResource RiderPanelColor}" />
+      <SolidColorBrush x:Key="RiderPanelAltBrush" Color="{StaticResource RiderPanelAltColor}" />
+      <SolidColorBrush x:Key="RiderBorderBrush" Color="{StaticResource RiderBorderColor}" />
+      <SolidColorBrush x:Key="RiderAccentBrush" Color="{StaticResource RiderAccentColor}" />
+      <SolidColorBrush x:Key="RiderTextBrush" Color="{StaticResource RiderTextColor}" />
+      <SolidColorBrush x:Key="RiderMutedTextBrush" Color="{StaticResource RiderMutedTextColor}" />
+
+      <SolidColorBrush x:Key="TextControlBackground">#2B2D30</SolidColorBrush>
+      <SolidColorBrush x:Key="TextControlBackgroundFocused">#2B2D30</SolidColorBrush>
+      <SolidColorBrush x:Key="TextControlBackgroundPointerOver">#2B2D30</SolidColorBrush>
+      <SolidColorBrush x:Key="TextControlForeground">#D7D7D7</SolidColorBrush>
+      <SolidColorBrush x:Key="TextForegroundColor">#D7D7D7</SolidColorBrush>
+      <SolidColorBrush x:Key="TextControlBorderBrush">#3C3F41</SolidColorBrush>
+      <SolidColorBrush x:Key="TextControlBorderBrushPointerOver">#3C3F41</SolidColorBrush>
+      <Color x:Key="RegionColor">#1E1F22</Color>
+      <Color x:Key="AcrylicFallbackColor">#1E1F22</Color>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+
+    <DockFluentTheme />
+
+    <Style Selector="DockControl">
+      <Setter Property="Background" Value="{StaticResource RiderBackgroundBrush}" />
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    </Style>
+
+    <Style Selector="ToolChromeControl">
+      <Setter Property="Background" Value="{StaticResource RiderPanelBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource RiderBorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="DocumentControl">
+      <Setter Property="HeaderTemplate">
+        <DataTemplate DataType="core:IDockable">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6">
+            <PathIcon
+              Data="M5 2C3.895 2 3 2.895 3 4V14C3 15.105 3.895 16 5 16H11C12.105 16 13 15.105 13 14V6.414C13 6.015 12.842 5.634 12.561 5.354L9.646 2.439C9.365 2.158 8.984 2 8.586 2H5ZM4 4C4 3.448 4.448 3 5 3H8V5.5C8 6.328 8.672 7 9.5 7H12V14C12 14.552 11.552 15 11 15H5C4.448 15 4 14.552 4 14V4Z"
+              Width="14"
+              Height="14"
+              Foreground="{StaticResource RiderAccentBrush}" />
+            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" />
+            <TextBlock Text="*"
+                       VerticalAlignment="Center"
+                       Foreground="{StaticResource RiderAccentBrush}"
+                       IsVisible="{Binding IsModified}" />
+          </StackPanel>
+        </DataTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="ToolControl">
+      <Setter Property="HeaderTemplate">
+        <DataTemplate DataType="core:IDockable">
+          <TextBlock Text="{Binding Title}" Padding="4,0" />
+        </DataTemplate>
+      </Setter>
+    </Style>
+  </Application.Styles>
+
+</Application>

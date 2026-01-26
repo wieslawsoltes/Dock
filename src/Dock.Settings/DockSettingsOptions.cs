@@ -31,6 +31,11 @@ public class DockSettingsOptions
     public bool? UsePinnedDockWindow { get; set; }
 
     /// <summary>
+    /// Optional managed window hosting flag.
+    /// </summary>
+    public bool? UseManagedWindows { get; set; }
+
+    /// <summary>
     /// Optional floating window owner flag.
     /// </summary>
     public bool? UseOwnerForFloatingWindows { get; set; }

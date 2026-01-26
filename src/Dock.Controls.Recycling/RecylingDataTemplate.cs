@@ -84,6 +84,16 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
+        if (data is IRecyclingDataTemplate recyclingTemplate && !ReferenceEquals(recyclingTemplate, this))
+        {
+            return recyclingTemplate.Build(data, existing);
+        }
+
+        if (data is Control control)
+        {
+            return control;
+        }
+
         if (Parent is not { } parent)
         {
             return null;

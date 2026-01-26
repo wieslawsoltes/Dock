@@ -49,6 +49,8 @@
     <Project Path="samples/DockCodeOnlyMvvmSample/DockCodeOnlyMvvmSample.csproj" />
     <Project Path="samples/DockCodeOnlySample/DockCodeOnlySample.csproj" />
     <Project Path="samples/DockControlPanelsSample/DockControlPanelsSample.csproj" />
+    <Project Path="samples/DockOfficeSample/DockOfficeSample.csproj" />
+    <Project Path="samples/DockFigmaSample/DockFigmaSample.csproj" />
     <Project Path="samples/DockFluentCodeOnlySample/DockFluentCodeOnlySample.csproj" />
     <Project Path="samples/DockInpcSample/DockInpcSample.csproj" />
     <Project Path="samples/DockMvvmSample/DockMvvmSample.csproj" />
@@ -58,6 +60,9 @@
     <Project Path="samples/DockReactiveUIDiSample/DockReactiveUIDiSample.csproj" />
     <Project Path="samples/DockReactiveUIRoutingSample/DockReactiveUIRoutingSample.csproj" />
     <Project Path="samples/DockReactiveUISample/DockReactiveUISample.csproj" />
+    <Project Path="samples/DockReactiveUIRiderSample/DockReactiveUIRiderSample.csproj" />
+    <Project Path="samples/DockReactiveUIManagedSample/DockReactiveUIManagedSample.csproj" />
+    <Project Path="samples/DockReactiveUIWorkspaceSample/DockReactiveUIWorkspaceSample.csproj" />
     <Project Path="samples/DockSimplifiedFluentSample/DockSimplifiedFluentSample.csproj" />
     <Project Path="samples/DockSimplifiedSample/DockSimplifiedSample.csproj" />
     <Project Path="samples/DockSplitViewSample/DockSplitViewSample.csproj" />

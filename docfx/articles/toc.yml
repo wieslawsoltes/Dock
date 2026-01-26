@@ -20,6 +20,8 @@
     href: dock-control-initialization.md
   - name: Programmatic docking
     href: dock-programmatic-docking.md
+  - name: Managed windows how-to
+    href: dock-managed-windows-howto.md
   - name: DockManager guide
     href: dock-manager-guide.md
   - name: API scenarios
@@ -36,6 +38,8 @@
     href: dock-mdi.md
   - name: MDI layout helpers
     href: dock-mdi-layout-helpers.md
+  - name: Managed windows guide
+    href: dock-managed-windows-guide.md
   - name: Dock state guide
     href: dock-state.md
   - name: RestoreDockable behavior
@@ -76,6 +80,8 @@
     href: dock-drag-offset-calculator.md
   - name: Dock targets and indicators
     href: dock-targets.md
+  - name: Docking constraints and layout lock
+    href: dock-docking-constraints.md
   - name: Floating windows
     href: dock-windows.md
   - name: Floating dock adorners
@@ -114,6 +120,8 @@
   items:
   - name: Serialization and persistence
     href: dock-serialization.md
+  - name: Workspace profiles
+    href: dock-workspaces.md
   - name: Serialization state
     href: dock-serialization-state.md
   - name: Debug overlay
@@ -166,6 +174,8 @@
     href: dock-layout-panels.md
   - name: Dock settings
     href: dock-settings.md
+  - name: Managed windows reference
+    href: dock-managed-windows-reference.md
   - name: Dock properties
     href: dock-properties.md
   - name: DockSettings in controls

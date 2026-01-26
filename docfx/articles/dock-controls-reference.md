@@ -16,6 +16,7 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `InitializeLayout` | `bool` | When `true`, calls `InitLayout` on the factory. |
 | `DefaultContext` | `object?` | Fallback context for the default context locator. |
 | `AutoCreateDataTemplates` | `bool` | Automatically injects Dock DataTemplates when `true`. |
+| `IsDockingEnabled` | `bool` | Enables or disables docking interactions (layout lock). |
 | `IsDraggingDock` | `bool` | Set while a drag operation is active; useful for styling. |
 | `DragOffsetCalculator` | `IDragOffsetCalculator` | CLR property that controls drag preview positioning. |
 | `DockManager` | `IDockManager` | CLR property for the dock manager service (read-only). |

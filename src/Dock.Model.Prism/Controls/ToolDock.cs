@@ -10,7 +10,6 @@ namespace Dock.Model.Prism.Controls;
 /// <summary>
 /// Tool dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class ToolDock : DockBase, IToolDock
 {
     private Alignment _alignment = Alignment.Unset;

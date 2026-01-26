@@ -11,7 +11,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Uniform grid dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class UniformGridDock : DockBase, IUniformGridDock
 {
     /// <summary>

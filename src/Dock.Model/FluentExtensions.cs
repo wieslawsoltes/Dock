@@ -593,6 +593,14 @@ public static class FluentExtensions
     /// <returns>The same instance for chaining.</returns>
     public static T WithCanDrop<T>(this T dockable, bool value) where T : IDockable { dockable.CanDrop = value; return dockable; }
     /// <summary>
+    /// Sets the <see cref="IDockable.CanDockAsDocument"/> flag.
+    /// </summary>
+    /// <typeparam name="T">Dockable type.</typeparam>
+    /// <param name="dockable">The instance to configure.</param>
+    /// <param name="value">Whether it can be docked as a document.</param>
+    /// <returns>The same instance for chaining.</returns>
+    public static T WithCanDockAsDocument<T>(this T dockable, bool value) where T : IDockable { dockable.CanDockAsDocument = value; return dockable; }
+    /// <summary>
     /// Sets the <see cref="IDockable.IsModified"/> flag.
     /// </summary>
     /// <typeparam name="T">Dockable type.</typeparam>

@@ -13,7 +13,6 @@ namespace Dock.Model.Mvvm.Controls;
 /// <summary>
 /// Root dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class RootDock : DockBase, IRootDock, ILocalTarget
 {
     private bool _isFocusableRoot = true;

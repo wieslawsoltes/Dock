@@ -846,11 +846,34 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     {
         base.OnDetachedFromVisualTree(e);
 
+        var layout = Layout;
+
         if (_isInitialized)
         {
-            DeInitialize(Layout);
+            DeInitialize(layout);
         }
 
+        NotifyRootWindowClosed(layout);
+    }
+
+    private void NotifyRootWindowClosed(IDock? layout)
+    {
+        if (layout is not IRootDock root)
+        {
+            return;
+        }
+
+        if (TopLevel.GetTopLevel(this) is IHostWindow)
+        {
+            return;
+        }
+
+        if (root.Window is null)
+        {
+            return;
+        }
+
+        root.Factory?.OnWindowClosed(root.Window);
     }
 
     private static DragAction ToDragAction(PointerEventArgs e)

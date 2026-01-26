@@ -12,7 +12,7 @@ These guidelines apply to the entire repository.
 ## Documentation
 - Write documentation in Markdown.
 - Use `#` headings with a single space after the hash.
-- Place new docs under the `docs/` folder unless another location is more suitable.
+- Place new docs under the `docfx/articles/` folder unless another location is more suitable.
 - Enclose code samples in fenced blocks and specify the language where possible.
 
 ## Workflow

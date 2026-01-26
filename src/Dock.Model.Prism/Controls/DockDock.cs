@@ -9,7 +9,6 @@ namespace Dock.Model.Prism.Controls;
 /// <summary>
 /// Docking panel dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DockDock : DockBase, IDockDock
 {        
     private bool _lastChildFill = true;

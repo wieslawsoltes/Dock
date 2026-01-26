@@ -9,7 +9,6 @@ namespace Dock.Model.Mvvm.Controls;
 /// <summary>
 /// Grid dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class GridDock : DockBase, IGridDock
 {
     private string? _columnDefinitions;

@@ -1,12 +1,14 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>11.3.9</VersionPrefix>
+    <VersionPrefix>11.3.11</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>
     <Description>A docking layout system.</Description>
-    <Copyright>Copyright © Wiesław Šoltés 2025</Copyright>
+    <Copyright>Copyright © Wiesław Šoltés 2026</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/wieslawsoltes/Dock</PackageProjectUrl>
     <PackageTags>dock;docking;layout;avalonia</PackageTags>
   </PropertyGroup>
@@ -17,4 +19,8 @@
   <PropertyGroup>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
+  <ItemGroup Label="PackageIcon">
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)build/Assets/Icon.png" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
 </Project>

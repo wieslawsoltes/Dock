@@ -9,7 +9,6 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// <summary>
 /// Uniform grid dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class UniformGridDock : DockBase, IUniformGridDock
 {
     private int _columns;

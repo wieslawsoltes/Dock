@@ -41,6 +41,8 @@ public abstract partial class FactoryBase : IFactory
     {
         if (dock.VisibleDockables == null || dock.Owner is not IDock owner || dock.Owner is IRootDock)
             return;
+        if (!dock.IsCollapsable)
+            return;
 
         // Check if this dock has only one visible dockable
         if (dock.VisibleDockables.Count == 1)
@@ -404,12 +406,17 @@ public abstract partial class FactoryBase : IFactory
 
                         // Fallback to the original behavior when optimization is not applicable
                         var layout = CreateSplitLayout(dock, dockable, operation);
+                        var wasDefaultDockable = ownerDock.DefaultDockable == dock;
                         RemoveVisibleDockableAt(ownerDock, index);
                         OnDockableRemoved(dockable);
                         OnDockableUndocked(dockable, operation);
                         InsertVisibleDockable(ownerDock, index, layout);
                         OnDockableAdded(dockable);
                         ownerDock.ActiveDockable = layout;
+                        if (wasDefaultDockable)
+                        {
+                            ownerDock.DefaultDockable = layout;
+                        }
                         InitDockable(layout, ownerDock);
                         OnDockableDocked(dockable, operation);
                     }
@@ -466,6 +473,12 @@ public abstract partial class FactoryBase : IFactory
                             {
                                 
                                 targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+                            }
+
+                            if (sourceDocumentDock is IDocumentDockFactory sourceDocumentDockFactory
+                                && targetDocumentDock is IDocumentDockFactory targetDocumentDockFactory)
+                            {
+                                targetDocumentDockFactory.DocumentFactory = sourceDocumentDockFactory.DocumentFactory;
                             }
                         }
                     }

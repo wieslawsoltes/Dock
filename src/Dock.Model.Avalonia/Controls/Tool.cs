@@ -17,7 +17,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Tool.
 /// </summary>
-[DataContract(IsReference = true)]
 public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, ITemplate<Control?>, IRecyclingDataTemplate
 {
     /// <summary>
@@ -101,6 +100,7 @@ public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, 
     /// <summary>
     /// 
     /// </summary>
+    [DataType]
     [IgnoreDataMember]
     [JsonIgnore]
     public Type? DataType { get; set; }

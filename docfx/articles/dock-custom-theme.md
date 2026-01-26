@@ -1,0 +1,62 @@
+# Custom Dock Themes
+
+This guide walks through creating a theme file from scratch. Use it when the built-in Fluent and Simple themes do not match your application branding.
+
+## 1. Create an accent dictionary
+
+Define brushes and colors in a new `.axaml` file. Start from
+`src/Dock.Avalonia.Themes.Fluent/Accents/Fluent.axaml` to see the full set of
+resource keys used by the built-in templates:
+
+```xaml
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="DockThemeBackgroundBrush" Color="#202020" />
+    <SolidColorBrush x:Key="DockThemeAccentBrush" Color="#675EDC" />
+    <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="#EEEEEE" />
+    <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
+    <StreamGeometry x:Key="DockIconCloseGeometry" />
+    <StreamGeometry x:Key="DockToolIconCloseGeometry" />
+</ResourceDictionary>
+```
+
+`StreamGeometry` resources like `DockIconCloseGeometry` let you replace the built-in vector icons.
+
+## 2. Merge Dock control styles
+
+Create another `.axaml` file that merges the Dock controls together with your
+accent dictionary. The Simple theme reuses the Fluent control templates, so you
+can reference them directly via `avares://Dock.Avalonia.Themes.Fluent/Controls/...`
+or copy them into your own assembly and include `/Controls/...` resources.
+
+```xaml
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="MyApp.MyDockTheme">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+                <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/ControlStrings.axaml" />
+                <ResourceInclude Source="avares://MyApp/Styles/MyDockAccent.axaml" />
+                <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/DockControl.axaml" />
+                <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/ToolControl.axaml" />
+                <!-- include additional Dock controls as desired -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+</Styles>
+```
+
+## 3. Apply the theme
+
+Reference the theme from `App.axaml`:
+
+```xaml
+<Application.Styles>
+    <FluentTheme Mode="Dark" />
+    <local:MyDockTheme />
+</Application.Styles>
+```
+
+Your Dock layout now uses the brushes defined in `MyDockAccent.axaml`. You can further customize control templates by copying them from the Dock source and adjusting the XAML. When editing templates remember to set the [DockProperties](dock-properties.md) so that drag and drop continues to work.

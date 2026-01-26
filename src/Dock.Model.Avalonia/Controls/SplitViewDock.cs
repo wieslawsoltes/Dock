@@ -12,7 +12,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// SplitView dock implementation for Avalonia.
 /// </summary>
-[DataContract(IsReference = true)]
 public class SplitViewDock : DockBase, ISplitViewDock
 {
     /// <summary>

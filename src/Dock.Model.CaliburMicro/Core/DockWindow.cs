@@ -10,7 +10,6 @@ namespace Dock.Model.CaliburMicro.Core;
 /// <summary>
 /// Dock window.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DockWindow : CaliburMicroBase, IDockWindow
 {
     private readonly IHostAdapter _hostAdapter;

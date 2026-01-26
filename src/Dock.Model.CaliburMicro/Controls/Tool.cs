@@ -10,7 +10,6 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// <summary>
 /// Tool.
 /// </summary>
-[DataContract(IsReference = true)]
 public class Tool : DockableBase, ITool, IMdiDocument
 {
     private DockRect _mdiBounds;

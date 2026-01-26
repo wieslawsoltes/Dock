@@ -289,3 +289,11 @@ tools/**
 
 # macOS
 .DS_Store
+
+
+
+# DocFX output
+/_site
+docfx/api/*.yml
+docfx/api/*.manifest
+

@@ -1,3 +1,4 @@
+using System.Linq;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -33,6 +34,23 @@ public class PreviewPinnedDockTests
         factory.PinDockable(rightTool);
 
         return (factory, root, leftDock, rightDock, leftTool, rightTool);
+    }
+
+    private static (Factory factory, RootDock root, Tool tool) CreateRootWithLeftPinnedTool()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>()
+        };
+
+        var tool = new Tool();
+        root.LeftPinnedDockables.Add(tool);
+
+        factory.InitDockable(root, null);
+
+        return (factory, root, tool);
     }
 
     [AvaloniaFact]
@@ -128,5 +146,205 @@ public class PreviewPinnedDockTests
         Assert.Null(tool.OriginalOwner);
         Assert.Contains(tool, toolDock.VisibleDockables!);
         Assert.DoesNotContain(tool, root.LeftPinnedDockables!);
+    }
+
+    [AvaloniaFact]
+    public void PreviewPinnedDockable_RootOwned_PreservesOwnerChain()
+    {
+        var (factory, root, tool) = CreateRootWithLeftPinnedTool();
+
+        factory.PreviewPinnedDockable(tool);
+
+        Assert.NotNull(root.PinnedDock);
+        Assert.Equal(root.PinnedDock, tool.Owner);
+
+        factory.HidePreviewingDockables(root);
+
+        Assert.Null(root.PinnedDock);
+        Assert.Equal(root, tool.Owner);
+        Assert.Null(tool.OriginalOwner);
+    }
+
+    [AvaloniaFact]
+    public void UnpinDockable_RootOwned_CreatesToolDock()
+    {
+        var (factory, root, tool) = CreateRootWithLeftPinnedTool();
+
+        factory.UnpinDockable(tool);
+
+        Assert.DoesNotContain(tool, root.LeftPinnedDockables!);
+        var toolDock = factory.Find(root, d => d is ToolDock td && td.Alignment == Alignment.Left)
+            .OfType<ToolDock>()
+            .FirstOrDefault();
+        Assert.NotNull(toolDock);
+        Assert.Contains(tool, toolDock!.VisibleDockables!);
+        Assert.Equal(toolDock, tool.Owner);
+        Assert.Null(tool.OriginalOwner);
+    }
+
+    [AvaloniaFact]
+    public void UnpinDockable_RootOwned_FromPreview_ClosesPreview()
+    {
+        var (factory, root, tool) = CreateRootWithLeftPinnedTool();
+
+        factory.PreviewPinnedDockable(tool);
+        Assert.NotNull(root.PinnedDock);
+
+        factory.UnpinDockable(tool);
+
+        Assert.Null(root.PinnedDock);
+        Assert.DoesNotContain(tool, root.LeftPinnedDockables!);
+        var toolDock = factory.Find(root, d => d is ToolDock td && td.Alignment == Alignment.Left)
+            .OfType<ToolDock>()
+            .FirstOrDefault();
+        Assert.NotNull(toolDock);
+        Assert.Contains(tool, toolDock!.VisibleDockables!);
+        Assert.Equal(toolDock, tool.Owner);
+    }
+
+    [AvaloniaFact]
+    public void UnpinDockable_UsesExistingAlignedToolDock()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>()
+        };
+
+        var toolDock = new ToolDock
+        {
+            Alignment = Alignment.Left,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.VisibleDockables.Add(toolDock);
+
+        var tool = new Tool();
+        root.LeftPinnedDockables.Add(tool);
+
+        factory.InitDockable(root, null);
+
+        factory.UnpinDockable(tool);
+
+        Assert.Single(root.VisibleDockables!.OfType<ToolDock>());
+        Assert.Contains(tool, toolDock.VisibleDockables!);
+        Assert.Equal(toolDock, tool.Owner);
+    }
+
+    [AvaloniaFact]
+    public void UnpinDockable_PinnedMovedToDifferentSide_UsesTargetAlignment()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>(),
+            RightPinnedDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var leftDock = new ToolDock { Alignment = Alignment.Left, VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, leftDock);
+        var tool = new Tool();
+        factory.AddDockable(leftDock, tool);
+
+        factory.PinDockable(tool);
+
+        root.LeftPinnedDockables!.Remove(tool);
+        root.RightPinnedDockables!.Add(tool);
+
+        factory.UnpinDockable(tool);
+
+        Assert.DoesNotContain(tool, root.LeftPinnedDockables!);
+        Assert.DoesNotContain(tool, root.RightPinnedDockables!);
+        var rightDock = factory.Find(root, d => d is ToolDock td && td.Alignment == Alignment.Right)
+            .OfType<ToolDock>()
+            .FirstOrDefault();
+        Assert.NotNull(rightDock);
+        Assert.Contains(tool, rightDock!.VisibleDockables!);
+        Assert.Equal(rightDock, tool.Owner);
+    }
+
+    [AvaloniaFact]
+    public void UnpinDockable_DetachedOwner_CreatesReplacementDock()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var leftDock = new ToolDock { Alignment = Alignment.Left, VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, leftDock);
+        var tool = new Tool();
+        factory.AddDockable(leftDock, tool);
+
+        factory.PinDockable(tool);
+
+        root.VisibleDockables!.Remove(leftDock);
+
+        factory.UnpinDockable(tool);
+
+        var replacement = factory.Find(root, d => d is ToolDock td && td.Alignment == Alignment.Left)
+            .OfType<ToolDock>()
+            .FirstOrDefault();
+        Assert.NotNull(replacement);
+        Assert.NotSame(leftDock, replacement);
+        Assert.Contains(tool, replacement!.VisibleDockables!);
+        Assert.Equal(replacement, tool.Owner);
+    }
+
+    [AvaloniaFact]
+    public void UnpinDockable_Removes_From_All_Pinned_Collections()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>(),
+            RightPinnedDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var tool = new Tool();
+        root.LeftPinnedDockables.Add(tool);
+        root.RightPinnedDockables.Add(tool);
+
+        factory.InitDockable(root, null);
+
+        factory.UnpinDockable(tool);
+
+        Assert.DoesNotContain(tool, root.LeftPinnedDockables);
+        Assert.DoesNotContain(tool, root.RightPinnedDockables);
+    }
+
+    [AvaloniaFact]
+    public void HidePreviewingDockables_DetachedOwner_FallsBackToRoot()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var toolDock = new ToolDock { Alignment = Alignment.Left, VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, toolDock);
+        var tool = new Tool();
+        factory.AddDockable(toolDock, tool);
+
+        factory.PinDockable(tool);
+        factory.PreviewPinnedDockable(tool);
+
+        root.VisibleDockables!.Remove(toolDock);
+
+        factory.HidePreviewingDockables(root);
+
+        Assert.Null(root.PinnedDock);
+        Assert.Equal(root, tool.Owner);
+        Assert.Null(tool.OriginalOwner);
     }
 }

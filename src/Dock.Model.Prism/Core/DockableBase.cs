@@ -9,7 +9,6 @@ namespace Dock.Model.Prism.Core;
 /// <summary>
 /// Dockable base class.
 /// </summary>
-[DataContract(IsReference = true)]
 public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;
@@ -35,6 +34,7 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
+    private bool _canDockAsDocument = true;
     private double _minWidth = double.NaN;
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
@@ -259,6 +259,14 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
     {
         get => _canDrop;
         set => SetProperty(ref _canDrop, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool CanDockAsDocument
+    {
+        get => _canDockAsDocument;
+        set => SetProperty(ref _canDockAsDocument, value);
     }
 
     /// <inheritdoc/>

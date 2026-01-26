@@ -1,0 +1,13 @@
+<UserControl x:Class="DockReactiveUICanonicalSample.Views.Documents.ProjectFileEditorDocumentView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:CompileBindings="True"
+             x:DataType="ProjectFileEditorDocumentViewModel">
+  <DockPanel Margin="10" LastChildFill="True">
+    <StackPanel DockPanel.Dock="Top" Spacing="4">
+      <TextBlock Text="File Editor" FontWeight="SemiBold" FontSize="16" />
+      <TextBlock Text="{Binding File.Path}" FontSize="12" Opacity="0.7" />
+    </StackPanel>
+    <TextBox Text="{Binding Content}" AcceptsReturn="True" IsReadOnly="True" FontFamily="Consolas" />
+  </DockPanel>
+</UserControl>

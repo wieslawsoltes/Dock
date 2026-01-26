@@ -10,7 +10,6 @@ namespace Dock.Model.Mvvm.Core;
 /// <summary>
 /// Dock window.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DockWindow : ReactiveBase, IDockWindow
 {
     private readonly IHostAdapter _hostAdapter;

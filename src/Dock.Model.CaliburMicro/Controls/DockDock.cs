@@ -10,7 +10,6 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// <summary>
 /// Dock dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class DockDock : DockBase, IDockDock
 {
     private bool _lastChildFill = true;

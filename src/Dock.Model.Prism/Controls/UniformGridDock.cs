@@ -9,7 +9,6 @@ namespace Dock.Model.Prism.Controls;
 /// <summary>
 /// Uniform grid dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class UniformGridDock : DockBase, IUniformGridDock
 {
     private int _rows;

@@ -1,0 +1,106 @@
+# Dock Complex Layout Tutorials
+
+This document walks through building more advanced Dock setups. It extends the basic guides with end-to-end examples that cover multi-window layouts and plugin-based scenarios. Each section also shows how to persist and reload the resulting layout.
+
+## Multi-window layouts
+
+The default factory can open any dockable in a separate window. This allows you to split your application across multiple top-level windows.
+
+1. **Create the project and install packages**
+
+   ```bash
+   dotnet new avalonia.app -o MultiDockApp
+   cd MultiDockApp
+   dotnet add package Dock.Avalonia
+   dotnet add package Dock.Model.Mvvm
+   dotnet add package Dock.Serializer.Newtonsoft
+   # or use Dock.Serializer.SystemTextJson / Dock.Serializer.Protobuf / Dock.Serializer.Xml / Dock.Serializer.Yaml
+   ```
+
+2. **Define a custom factory**
+
+   Derive from `Factory` (for example `Dock.Model.Mvvm.Factory`) and build the initial layout. Floating windows are created by calling `FloatDockable` on a dockable.
+
+   ```csharp
+   public class MultiFactory : Factory
+   {
+       public override IRootDock CreateLayout()
+       {
+           var doc1 = new DocumentViewModel { Id = "Doc1", Title = "Document" };
+
+           var root = CreateRootDock();
+           root.VisibleDockables = CreateList<IDockable>(
+               new DocumentDock
+               {
+                   VisibleDockables = CreateList<IDockable>(doc1),
+                   ActiveDockable = doc1
+               });
+           return root;
+       }
+   }
+   ```
+
+3. **Open a floating window**
+
+   ```csharp
+   var document = factory.GetDockable<IDocument>("Doc1");
+   if (document is { })
+   {
+       factory.FloatDockable(document);
+   }
+   ```
+
+   Override `CreateWindowFrom` to set the title or dimensions of the new window.
+
+4. **Persist and restore**
+
+   ```csharp
+   await using var write = File.OpenWrite("layout.json");
+   _dockState.Save(dockControl.Layout);
+   _serializer.Save(write, dockControl.Layout);
+
+   await using var read = File.OpenRead("layout.json");
+   var layout = _serializer.Load<IDock?>(read);
+   if (layout is { })
+   {
+       dockControl.Factory?.InitLayout(layout);
+       dockControl.Layout = layout;
+       _dockState.Restore(layout);
+   }
+   ```
+
+## Plugin-Based Layouts
+
+Applications can load additional dockables from plugins at runtime. Plugins typically expose documents or tools that the host adds to the layout.
+
+1. **Define a plugin contract**
+
+   ```csharp
+   public interface IPlugin
+   {
+       IDockable CreateDockable();
+   }
+   ```
+
+2. **Load plugins**
+
+   ```csharp
+   var assembly = Assembly.LoadFrom(path);
+   var plugins = assembly
+       .GetTypes()
+       .Where(t => typeof(IPlugin).IsAssignableFrom(t) && !t.IsAbstract)
+       .Select(t => (IPlugin)Activator.CreateInstance(t)!);
+   foreach (var plugin in plugins)
+   {
+       var dockable = plugin.CreateDockable();
+       factory.AddDockable(rootLayout, dockable);
+   }
+   ```
+
+3. **Save the layout**
+
+   Use the same serializer calls shown above so that plugin windows reappear on the next run.
+
+## Summary
+
+Multi-window layouts and plugin-loaded dockables follow the same workflow as the basic examples. After creating or loading dockables, call `InitLayout` once and persist the state with `DockSerializer` and `DockState`.

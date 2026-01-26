@@ -7,14 +7,14 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
 /// <summary>
 /// Document dock.
 /// </summary>
-[DataContract(IsReference = true)]
-public partial class DocumentDock : DockBase, IDocumentDock
+public partial class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
     private DocumentLayoutMode _layoutMode = DocumentLayoutMode.Tabbed;
@@ -34,6 +34,7 @@ public partial class DocumentDock : DockBase, IDocumentDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool CanCreateDocument { get; set; }
 
     /// <inheritdoc/>
@@ -64,6 +65,7 @@ public partial class DocumentDock : DockBase, IDocumentDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool EnableWindowDrag { get; set; }
 
     /// <inheritdoc/>

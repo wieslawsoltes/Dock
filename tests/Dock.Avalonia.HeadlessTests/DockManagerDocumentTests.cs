@@ -34,6 +34,20 @@ public class DockManagerDocumentTests
     }
 
     [AvaloniaFact]
+    public void ValidateDocument_ReturnsFalse_When_SourceCannotDockAsDocument_And_TargetIsDocumentDock()
+    {
+        var manager = new DockManager(new DockService());
+        var sourceDock = new DocumentDock { VisibleDockables = new AvaloniaList<IDockable>() };
+        var source = new Document { Owner = sourceDock, CanDockAsDocument = false };
+        sourceDock.VisibleDockables!.Add(source);
+        var target = new DocumentDock { VisibleDockables = new AvaloniaList<IDockable>(), CanDrop = true };
+
+        var result = manager.ValidateDocument(source, target, DragAction.Move, DockOperation.Fill, false);
+
+        Assert.False(result);
+    }
+
+    [AvaloniaFact]
     public void IsDockTargetVisible_ReturnsFalse_For_Same_Dockable()
     {
         var manager = new DockManager(new DockService());

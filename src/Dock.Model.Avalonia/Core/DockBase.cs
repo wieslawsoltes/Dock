@@ -18,7 +18,6 @@ namespace Dock.Model.Avalonia.Core;
 /// <summary>
 /// Dock base class.
 /// </summary>
-[DataContract(IsReference = true)]
 [JsonPolymorphic]
 [JsonDerivedType(typeof(DockDock), typeDiscriminator: "DockDock")]
 [JsonDerivedType(typeof(DocumentDock), typeDiscriminator: "DocumentDock")]

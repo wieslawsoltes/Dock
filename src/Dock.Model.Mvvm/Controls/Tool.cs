@@ -10,7 +10,6 @@ namespace Dock.Model.Mvvm.Controls;
 /// <summary>
 /// Tool.
 /// </summary>
-[DataContract(IsReference = true)]
 public class Tool : DockableBase, ITool, IDocument, IMdiDocument
 {
     private DockRect _mdiBounds;

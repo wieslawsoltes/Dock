@@ -1,0 +1,49 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ControlTheme x:Key="{x:Type BusyOverlayControl}" TargetType="BusyOverlayControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            IsEnabled="{TemplateBinding IsContentEnabled}"
+                            IsHitTestVisible="{TemplateBinding IsContentEnabled}" />
+          <Button Content="Reload"
+                  Command="{TemplateBinding ReloadCommand}"
+                  IsEnabled="{TemplateBinding IsReloadEnabled}"
+                  IsVisible="{TemplateBinding IsReloadVisible}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom"
+                  Margin="16"
+                  ZIndex="31" />
+          <Border Background="{DynamicResource DockThemeBackgroundBrush}"
+                  Opacity="0.65"
+                  IsVisible="{TemplateBinding IsBusy}"
+                  IsHitTestVisible="{TemplateBinding BlocksInput}"
+                  ZIndex="30">
+            <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
+                    BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BoxShadow="0 6 18 #33000000">
+              <StackPanel Spacing="8" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding BusyMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Loading...}"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource DockThemeForegroundBrush}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar IsIndeterminate="True"
+                             Width="200"
+                             Height="6"
+                             IsVisible="{Binding ShowProgress, RelativeSource={RelativeSource TemplatedParent}}" />
+              </StackPanel>
+            </Border>
+          </Border>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

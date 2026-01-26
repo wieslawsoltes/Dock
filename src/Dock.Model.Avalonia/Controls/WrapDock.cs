@@ -12,7 +12,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Wrap dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class WrapDock : DockBase, IWrapDock
 {
     /// <summary>

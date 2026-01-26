@@ -94,22 +94,22 @@ public abstract partial class FactoryBase
 
             if (rootDock.LeftPinnedDockables is not null)
             {
-                InitPinnedDockables(rootDock.LeftPinnedDockables);
+                InitPinnedDockables(rootDock, rootDock.LeftPinnedDockables);
             }
 
             if (rootDock.RightPinnedDockables is not null)
             {
-                InitPinnedDockables(rootDock.RightPinnedDockables);
+                InitPinnedDockables(rootDock, rootDock.RightPinnedDockables);
             }
 
             if (rootDock.TopPinnedDockables is not null)
             {
-                InitPinnedDockables(rootDock.TopPinnedDockables);
+                InitPinnedDockables(rootDock, rootDock.TopPinnedDockables);
             }
 
             if (rootDock.BottomPinnedDockables is not null)
             {
-                InitPinnedDockables(rootDock.BottomPinnedDockables);
+                InitPinnedDockables(rootDock, rootDock.BottomPinnedDockables);
             }
 
             if (rootDock.Windows is not null)
@@ -187,11 +187,15 @@ public abstract partial class FactoryBase
         }
     }
 
-    private void InitPinnedDockables(IList<IDockable> dockables)
+    private void InitPinnedDockables(IRootDock root, IList<IDockable> dockables)
     {
         foreach (var child in dockables)
         {
-            InitDockable(child, child.Owner);
+            // For pinned dockables provided at layout creation time, ensure they are owned by the root.
+            // This establishes a valid owner chain required by preview/restore logic without implying
+            // any previous (unpinned) location.
+            InitDockable(child, root);
+            // Do not assign OriginalOwner here; if a tool is previewed, preview logic will manage it.
         }
     }
 

@@ -10,7 +10,6 @@ namespace Dock.Model.Mvvm.Controls;
 /// <summary>
 /// SplitView dock implementation for MVVM pattern.
 /// </summary>
-[DataContract(IsReference = true)]
 public class SplitViewDock : DockBase, ISplitViewDock
 {
     private double _compactPaneLength = 48.0;

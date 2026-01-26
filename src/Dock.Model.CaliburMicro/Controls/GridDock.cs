@@ -10,7 +10,6 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// <summary>
 /// Grid dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class GridDock : DockBase, IGridDock
 {
     private string? _columnDefinitions;

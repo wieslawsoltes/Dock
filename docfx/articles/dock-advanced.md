@@ -1,0 +1,183 @@
+# Dock Advanced Guide
+
+This guide highlights advanced features from the Dock samples. The API is shared across the MVVM, ReactiveUI, and Avalonia/XAML model variants (plus INPC/Prism/Caliburn.Micro), so the same concepts apply no matter which approach you use. This guide assumes you are familiar with the basics from the other guides. Interface descriptions are available in the [Dock API Reference](dock-reference.md). It focuses on runtime customization and advanced APIs.
+
+## Custom factories
+
+Many samples derive from a `Factory` implementation and override methods to configure the layout. In addition to `CreateLayout`, you can override:
+
+- `CreateWindowFrom` to customize new floating windows
+- `CreateDocumentDock` to provide a custom `IDocumentDock` implementation
+- `InitLayout` to wire up `ContextLocator`, `DockableLocator` and `HostWindowLocator`
+
+The MVVM and ReactiveUI samples use these hooks to register view models,
+window factories and other services required at runtime. By overriding the
+factory methods you can control how floating windows are created, inject your
+own tool or document types and tie into application specific services such as
+dependency injection containers.
+
+```csharp
+public override void InitLayout(IDockable layout)
+{
+    ContextLocator = new Dictionary<string, Func<object?>>
+    {
+        ["Document1"] = () => new DemoDocument(),
+        ["Tool1"] = () => new Tool1(),
+        // additional entries omitted
+    };
+
+    HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+    {
+        [nameof(IDockWindow)] = () => new HostWindow()
+    };
+
+    base.InitLayout(layout);
+}
+```
+
+## Handling events
+
+`FactoryBase` exposes events for virtually every docking action. The samples subscribe to them to trace runtime changes.
+
+Events are useful for hooking into your application's own logging or
+analytics system. For example you might record when documents are opened
+or closed so that the next run can restore them.
+
+```csharp
+factory.DockableAdded += (_, args) =>
+{
+    Debug.WriteLine($"[DockableAdded] {args.Dockable?.Title}");
+};
+factory.ActiveDockableChanged += (_, args) =>
+{
+    Debug.WriteLine($"[ActiveDockableChanged] {args.Dockable?.Title}");
+};
+factory.FocusedDockableChanged += (_, args) =>
+{
+    Debug.WriteLine($"[FocusedDockableChanged] {args.Dockable?.Title}");
+};
+```
+
+You can react to focus changes, window moves or when dockables are pinned and unpinned.
+
+## Saving and loading layouts
+
+The XAML sample demonstrates persisting layouts with an `IDockSerializer` implementation:
+
+```csharp
+await using var stream = await file.OpenReadAsync();
+var layout = _serializer.Load<IDock?>(stream);
+if (layout is { })
+{
+    dock.Layout = layout;
+    dock.Factory?.InitLayout(layout);
+    _dockState.Restore(layout);
+}
+```
+
+When saving, call `DockState.Save` before serializing the layout:
+
+```csharp
+if (dock.Layout is { } layout)
+{
+    _dockState.Save(layout);
+    _serializer.Save(stream, layout);
+}
+```
+
+`DockState` tracks document/tool content (and document templates) so that state can be restored after loading.
+
+## Dynamic documents and tools
+
+### Traditional approach
+
+The Notepad sample shows how to create documents at runtime. New `FileViewModel` instances are added to an `IDocumentDock` using factory methods:
+
+```csharp
+files.AddDocument(fileViewModel);
+```
+
+`ToolDock` offers a matching `AddTool` helper for dynamically created tools.
+
+`DocumentDock` includes a `DocumentFactory` delegate that works with the
+`CreateDocument` command. Assigning this factory lets the dock create a
+new document on demand which is then passed to `AddDocument` and
+activated automatically.
+
+### Modern ItemsSource approach
+
+For more efficient document management in the Avalonia model, use `DocumentDock.ItemsSource` to bind directly to data collections:
+
+```csharp
+// In your ViewModel
+public ObservableCollection<FileModel> OpenFiles { get; } = new();
+
+// Add/remove documents by manipulating the collection
+OpenFiles.Add(new FileModel { Title = "New File", Content = "..." });
+OpenFiles.Remove(fileToClose);
+```
+
+With XAML binding:
+```xaml
+<DocumentDock ItemsSource="{Binding OpenFiles}">
+    <DocumentDock.DocumentTemplate>
+        <DocumentTemplate>
+            <TextEditor Text="{Binding Context.Content}" x:DataType="Document"/>
+        </DocumentTemplate>
+    </DocumentDock.DocumentTemplate>
+</DocumentDock>
+```
+
+This approach automatically creates and removes documents as the collection changes, provides automatic title mapping from properties like `Title` or `Name`, and integrates seamlessly with MVVM patterns. `ItemsSource` requires a `DocumentTemplate`; without one, documents are not generated. See the [DocumentDock ItemsSource guide](dock-itemssource.md) for comprehensive details.
+
+Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.
+
+## Floating windows
+
+Calling `FloatDockable` opens a dockable in a separate window. You can override `CreateWindowFrom` to tweak the new dock window:
+
+```csharp
+public override IDockWindow? CreateWindowFrom(IDockable dockable)
+{
+    var window = base.CreateWindowFrom(dockable);
+    if (window is null)
+    {
+        return null;
+    }
+
+    window.Title = $"Floating - {dockable.Title}";
+    window.Width = 800;
+    window.Height = 600;
+    return window;
+}
+```
+
+If `EnableWindowDrag` on a `DocumentDock` is set to `true`, the tab strip doubles as a drag handle for the entire window. This lets users reposition floating windows by dragging the tabs themselves.
+
+## Tracking bounds
+
+`DockableBase` keeps track of several coordinate sets used while dragging or
+pinning dockables. Methods like `SetVisibleBounds`, `SetPinnedBounds` and
+`SetTabBounds` store the latest position, whereas the matching `Get*` methods
+return the values. Two additional methods record the pointer location relative to
+the dock control and to the screen.
+
+```csharp
+// Record the bounds of a tool while it is pinned
+tool.SetPinnedBounds(x, y, width, height);
+
+// Retrieve the saved pointer location from the last drag
+tool.GetPointerScreenPosition(out var screenX, out var screenY);
+```
+
+Override `OnVisibleBoundsChanged`, `OnPinnedBoundsChanged`, `OnTabBoundsChanged`
+and the pointer variants if you need to react when these coordinates change,
+for example to persist them or to show custom overlays.
+
+## Conclusion
+
+Explore the samples under `samples/` for complete implementations. Mixing these techniques with the basics lets you build complex layouts that can be persisted and restored.
+
+If you are new to Dock, start with the [MVVM Guide](dock-mvvm.md) before diving into these topics.
+
+For an overview of all guides see the [documentation index](README.md).

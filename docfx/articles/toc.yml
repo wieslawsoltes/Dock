@@ -1,0 +1,178 @@
+- name: Overview
+  href: README.md
+- name: Getting started
+  items:
+  - name: Quick start
+    href: quick-start.md
+  - name: XAML guide
+    href: dock-xaml.md
+  - name: Code-only guide
+    href: dock-code-only.md
+- name: Tutorials & how-to
+  items:
+  - name: DocumentDock ItemsSource
+    href: dock-itemssource.md
+  - name: Document and Tool Content Guide
+    href: dock-content-guide.md
+  - name: Complex layout tutorials
+    href: dock-complex-layouts.md
+  - name: DockControl initialization
+    href: dock-control-initialization.md
+  - name: Programmatic docking
+    href: dock-programmatic-docking.md
+  - name: DockManager guide
+    href: dock-manager-guide.md
+  - name: API scenarios
+    href: dock-api-scenarios.md
+  - name: Events guide
+    href: dock-events.md
+- name: Concepts
+  items:
+  - name: Active document
+    href: dock-active-document.md
+  - name: Docking groups
+    href: dock-docking-groups.md
+  - name: MDI document layout
+    href: dock-mdi.md
+  - name: MDI layout helpers
+    href: dock-mdi-layout-helpers.md
+  - name: Dock state guide
+    href: dock-state.md
+  - name: RestoreDockable behavior
+    href: dock-restore-dockable.md
+  - name: DockableLocator usage
+    href: dock-dockablelocator.md
+  - name: Context locators
+    href: dock-context-locator.md
+- name: Framework integration
+  items:
+  - name: MVVM guide
+    href: dock-mvvm.md
+  - name: Caliburn.Micro guide
+    href: dock-caliburn-micro.md
+  - name: Prism guide
+    href: dock-prism.md
+  - name: ReactiveUI guide
+    href: dock-reactiveui.md
+  - name: ReactiveProperty guide
+    href: dock-reactive-property.md
+  - name: INPC guide
+    href: dock-inpc.md
+  - name: ReactiveUI with Dependency Injection
+    href: dock-reactiveui-di.md
+  - name: ReactiveUI with Routing
+    href: dock-reactiveui-routing.md
+  - name: Dependency injection
+    href: dock-dependency-injection.md
+  - name: User view model guide
+    href: dock-user-viewmodel.md
+  - name: Views guide
+    href: dock-views.md
+- name: Windows & interaction
+  items:
+  - name: Drag actions and modifiers
+    href: dock-drag-actions.md
+  - name: Drag offset calculator
+    href: dock-drag-offset-calculator.md
+  - name: Dock targets and indicators
+    href: dock-targets.md
+  - name: Floating windows
+    href: dock-windows.md
+  - name: Floating dock adorners
+    href: dock-floating-adorners.md
+  - name: Enable window drag
+    href: dock-window-drag.md
+  - name: Floating window owner
+    href: dock-window-owner.md
+  - name: Host window locators
+    href: dock-host-window-locator.md
+  - name: Pinned dock window
+    href: dock-pinned-window.md
+- name: Styling & customization
+  items:
+  - name: DataTemplates and custom dock types
+    href: dock-datatemplates.md
+  - name: Styling and theming
+    href: dock-styling.md
+  - name: Custom themes
+    href: dock-custom-theme.md
+  - name: Context menus
+    href: dock-context-menus.md
+  - name: Command bars
+    href: dock-command-bars.md
+  - name: Overlay customization
+    href: dock-overlay-customization.md
+  - name: Selector overlay
+    href: dock-selector-overlay.md
+  - name: Control recycling
+    href: dock-control-recycling.md
+  - name: Proportional StackPanel
+    href: dock-proportional-stackpanel.md
+  - name: Sizing guide
+    href: dock-sizing.md
+- name: Persistence & diagnostics
+  items:
+  - name: Serialization and persistence
+    href: dock-serialization.md
+  - name: Serialization state
+    href: dock-serialization-state.md
+  - name: Debug overlay
+    href: dock-debug-overlay.md
+  - name: Diagnostics logging
+    href: dock-diagnostics-logging.md
+  - name: RootDockDebug window
+    href: dock-root-dock-debug.md
+  - name: Debug views
+    href: dock-debug-views.md
+- name: Architecture & advanced
+  items:
+  - name: Architecture overview
+    href: dock-architecture.md
+  - name: Deep dive
+    href: dock-deep-dive.md
+  - name: Fluent API extensions
+    href: dock-fluent-extensions.md
+  - name: Advanced guide
+    href: dock-advanced.md
+  - name: Advanced Content Wrapper Pattern
+    href: dock-content-wrapper-pattern.md
+  - name: Custom Dock.Model implementations
+    href: dock-custom-model.md
+- name: Reference
+  items:
+  - name: Reference guide
+    href: dock-reference.md
+  - name: Avalonia controls reference
+    href: dock-controls-reference.md
+  - name: Geometry types
+    href: dock-geometry.md
+  - name: Glossary
+    href: dock-glossary.md
+  - name: Dockable property settings
+    href: dock-dockable-properties.md
+  - name: Markup extensions
+    href: dock-markup-extensions.md
+  - name: Adapter classes
+    href: dock-adapters.md
+  - name: Tracking controls
+    href: dock-tracking-controls.md
+  - name: DockableControl tracking
+    href: dock-dockable-control.md
+  - name: Enumerations
+    href: dock-enums.md
+  - name: Model control interfaces
+    href: dock-model-controls.md
+  - name: Layout panels
+    href: dock-layout-panels.md
+  - name: Dock settings
+    href: dock-settings.md
+  - name: Dock properties
+    href: dock-properties.md
+  - name: DockSettings in controls
+    href: dock-settings-controls.md
+  - name: Overlay services and host resolution
+    href: dock-overlay-services-reference.md
+- name: Troubleshooting
+  items:
+  - name: FAQ
+    href: dock-faq.md

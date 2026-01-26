@@ -1,0 +1,41 @@
+<UserControl x:Class="DockReactiveUICanonicalSample.Views.Pages.ProjectListPageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:CompileBindings="True"
+             x:DataType="ProjectListPageViewModel">
+  <Grid RowDefinitions="Auto,*" Margin="12" RowSpacing="10">
+    <StackPanel Spacing="4">
+      <TextBlock Text="Projects" FontSize="18" FontWeight="SemiBold" />
+      <TextBlock Text="Browse projects or open a floating files tab from the context menu." FontSize="12" Opacity="0.7" />
+    </StackPanel>
+
+    <ListBox Grid.Row="1" ItemsSource="{Binding Projects}" Background="Transparent">
+      <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="ProjectListItemViewModel">
+          <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="6" Padding="10" Margin="0,0,0,8">
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
+              <StackPanel Grid.Column="0" Spacing="4">
+                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Description}" FontSize="12" Opacity="0.7" />
+              </StackPanel>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                <Button Content="Open Files"
+                        Command="{Binding OpenFiles}" />
+                <Button Content="Open Tab"
+                        Command="{Binding OpenFilesTab}" />
+                <Button Content="Float"
+                        Command="{Binding OpenFilesFloating}" />
+              </StackPanel>
+            </Grid>
+            <Border.ContextMenu>
+              <ContextMenu>
+                <MenuItem Header="Open Files in Floating Tab"
+                          Command="{Binding OpenFilesFloating}" />
+              </ContextMenu>
+            </Border.ContextMenu>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </Grid>
+</UserControl>

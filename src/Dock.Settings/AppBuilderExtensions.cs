@@ -65,6 +65,16 @@ public static class AppBuilderExtensions
             DockSettings.BringWindowsToFrontOnDrag = options.BringWindowsToFrontOnDrag.Value;
         }
 
+        if (options.ShowDockablePreviewOnDrag != null)
+        {
+            DockSettings.ShowDockablePreviewOnDrag = options.ShowDockablePreviewOnDrag.Value;
+        }
+
+        if (options.DragPreviewOpacity != null)
+        {
+            DockSettings.DragPreviewOpacity = options.DragPreviewOpacity.Value;
+        }
+
         if (options.SelectorEnabled != null)
         {
             DockSettings.SelectorEnabled = options.SelectorEnabled.Value;
@@ -165,6 +175,34 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.BringWindowsToFrontOnDrag = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.ShowDockablePreviewOnDrag"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether to show dockable previews while dragging.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder ShowDockablePreviewOnDrag(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.ShowDockablePreviewOnDrag = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.DragPreviewOpacity"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="opacity">Opacity from 0.0 to 1.0.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder SetDragPreviewOpacity(
+        this AppBuilder builder,
+        double opacity)
+    {
+        DockSettings.DragPreviewOpacity = opacity;
         return builder;
     }
 

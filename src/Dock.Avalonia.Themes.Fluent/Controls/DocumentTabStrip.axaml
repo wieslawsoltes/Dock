@@ -141,6 +141,7 @@
     </Style>
 
     <Style Selector="^[Orientation=Vertical]/template/ ScrollViewer#PART_ScrollViewer">
+      <Setter Property="Theme" Value="{DynamicResource DockTabStripScrollViewerHorizontal}" />
       <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
       <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
     </Style>
@@ -154,6 +155,7 @@
     </Style>
 
     <Style Selector="^[Orientation=Horizontal]/template/ ScrollViewer#PART_ScrollViewer">
+      <Setter Property="Theme" Value="{DynamicResource DockTabStripScrollViewerHorizontal}" />
       <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
       <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
     </Style>

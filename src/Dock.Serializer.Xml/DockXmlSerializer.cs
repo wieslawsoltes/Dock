@@ -1,11 +1,14 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Serializer.Xml;
@@ -15,8 +18,8 @@ namespace Dock.Serializer.Xml;
 /// </summary>
 public sealed class DockXmlSerializer : IDockSerializer
 {
-    private readonly DataContractSerializerSettings _settings;
     private readonly Type _listType;
+    private readonly Type[] _knownTypes;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DockXmlSerializer"/> class with optional known types and a list type.
@@ -26,11 +29,7 @@ public sealed class DockXmlSerializer : IDockSerializer
     public DockXmlSerializer(Type listType, params Type[] knownTypes)
     {
         _listType = listType;
-        _settings = new DataContractSerializerSettings
-        {
-            PreserveObjectReferences = true,
-            KnownTypes = knownTypes
-        };
+        _knownTypes = knownTypes ?? Array.Empty<Type>();
     }
 
     /// <summary>
@@ -42,7 +41,112 @@ public sealed class DockXmlSerializer : IDockSerializer
 
     private DataContractSerializer CreateSerializer(Type type)
     {
-        return new DataContractSerializer(type, _settings);
+        var settings = new DataContractSerializerSettings
+        {
+            PreserveObjectReferences = true,
+            KnownTypes = GetKnownTypes()
+        };
+        return new DataContractSerializer(type, settings);
+    }
+
+    private IEnumerable<Type> GetKnownTypes()
+    {
+        if (_knownTypes.Length == 0)
+        {
+            return BuildDefaultKnownTypes();
+        }
+
+        var types = new HashSet<Type>(_knownTypes);
+        foreach (var type in BuildDefaultKnownTypes())
+        {
+            types.Add(type);
+        }
+
+        return types;
+    }
+
+    private static IEnumerable<Type> BuildDefaultKnownTypes()
+    {
+        var types = new HashSet<Type>();
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            if (assembly.IsDynamic)
+            {
+                continue;
+            }
+
+            foreach (var type in GetAssemblyTypesSafely(assembly))
+            {
+                if (type is null || !type.IsClass || type.IsAbstract || type.ContainsGenericParameters)
+                {
+                    continue;
+                }
+
+                if (!IsPublicType(type) || !ImplementsDockContracts(type))
+                {
+                    continue;
+                }
+
+                if (!IsDataContractCompatible(type))
+                {
+                    continue;
+                }
+
+                types.Add(type);
+            }
+        }
+
+        return types;
+    }
+
+    private static IEnumerable<Type?> GetAssemblyTypesSafely(Assembly assembly)
+    {
+        try
+        {
+            return assembly.GetTypes();
+        }
+        catch (ReflectionTypeLoadException exception)
+        {
+            return exception.Types;
+        }
+    }
+
+    private static bool IsPublicType(Type type)
+    {
+        return type.IsPublic || type.IsNestedPublic;
+    }
+
+    private static bool ImplementsDockContracts(Type type)
+    {
+        return typeof(IDockable).IsAssignableFrom(type)
+            || typeof(IDockWindow).IsAssignableFrom(type)
+            || typeof(IDocumentTemplate).IsAssignableFrom(type);
+    }
+
+    private static bool IsDataContractCompatible(Type type)
+    {
+        var current = type;
+        while (current is not null && current != typeof(object))
+        {
+            if (HasDataContractOrSerializable(current))
+            {
+                var baseType = current.BaseType;
+                if (baseType is not null && baseType != typeof(object) && !HasDataContractOrSerializable(baseType))
+                {
+                    return false;
+                }
+            }
+
+            current = current.BaseType;
+        }
+
+        return true;
+    }
+
+    private static bool HasDataContractOrSerializable(Type type)
+    {
+        return type.IsDefined(typeof(SerializableAttribute), false)
+            || type.IsDefined(typeof(DataContractAttribute), false);
     }
 
     /// <inheritdoc/>

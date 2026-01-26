@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -493,7 +492,12 @@ public abstract partial class FactoryBase
                 continue;
             }
 
-            dockable.Owner = dockable.OriginalOwner;
+            var restoreOwner = dockable.OriginalOwner as IDock;
+            if (restoreOwner is null || !IsOwnerAttached(rootDock, restoreOwner))
+            {
+                restoreOwner = rootDock;
+            }
+            dockable.Owner = restoreOwner;
             dockable.OriginalOwner = null;
             RemoveVisibleDockable(rootDock.PinnedDock, dockable);
         }
@@ -536,9 +540,10 @@ public abstract partial class FactoryBase
 
         if (rootDock.PinnedDock.VisibleDockables?.Contains(dockable) != true)
         {
-            if (dockable.OriginalOwner is null)
+            if (dockable.OriginalOwner is null && owner is IDock ownerDock)
             {
-                dockable.OriginalOwner = owner;
+                // Track the previous dock owner to restore previewed dockables safely.
+                dockable.OriginalOwner = ownerDock;
             }
             AddVisibleDockable(rootDock.PinnedDock!, dockable);
         }
@@ -571,193 +576,355 @@ public abstract partial class FactoryBase
         return Alignment.Unset;
     }
 
+    private void UpdatePinnedBoundsFromVisible(IDockable dockable, IDock owner)
+    {
+        dockable.GetVisibleBounds(out _, out _, out var width, out var height);
+
+        if (!IsValidSize(width) || !IsValidSize(height))
+        {
+            owner.GetVisibleBounds(out _, out _, out width, out height);
+        }
+
+        if (!IsValidSize(width) || !IsValidSize(height))
+        {
+            return;
+        }
+
+        dockable.SetPinnedBounds(0, 0, width, height);
+    }
+
+    private static bool IsValidSize(double value)
+    {
+        return !double.IsNaN(value) && !double.IsInfinity(value) && value > 0;
+    }
+
     /// <inheritdoc/>
     public virtual void PinDockable(IDockable dockable)
     {
-        switch (dockable.Owner)
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock is null)
         {
-            case IToolDock toolDock:
+            return;
+        }
+
+        if (dockable.Owner is not IToolDock toolDock)
+        {
+            if (IsDockablePinned(dockable, rootDock))
             {
-                var rootDock = FindRoot(dockable, _ => true);
-                if (rootDock is null)
+                UnpinDockableInternal(dockable, rootDock, null, isVisible: false);
+            }
+            return;
+        }
+
+        var isVisible = toolDock.VisibleDockables?.Contains(dockable) == true;
+        var isPinned = IsDockablePinned(dockable, rootDock);
+
+        var originalToolDock = dockable.OriginalOwner as IToolDock;
+        var alignment = originalToolDock?.Alignment ?? toolDock.Alignment;
+
+        if (isVisible && !isPinned)
+        {
+            // Pin dockable.
+            UpdatePinnedBoundsFromVisible(dockable, toolDock);
+
+            switch (alignment)
+            {
+                case Alignment.Unset:
+                case Alignment.Left:
                 {
-                    return;
+                    rootDock.LeftPinnedDockables ??= CreateList<IDockable>();
+                    break;
                 }
-
-                var isVisible = false;
-
-                if (toolDock.VisibleDockables is not null)
+                case Alignment.Right:
                 {
-                    isVisible = toolDock.VisibleDockables.Contains(dockable);
+                    rootDock.RightPinnedDockables ??= CreateList<IDockable>();
+                    break;
                 }
-
-                var isPinned = IsDockablePinned(dockable, rootDock);
-
-                var originalToolDock = dockable.OriginalOwner as IToolDock;
-
-                var alignment = originalToolDock?.Alignment ?? toolDock.Alignment;
-
-                if (isVisible && !isPinned)
+                case Alignment.Top:
                 {
-                    // Pin dockable.
-
-                    switch (alignment)
-                    {
-                        case Alignment.Unset:
-                        case Alignment.Left:
-                        {
-                            rootDock.LeftPinnedDockables ??= CreateList<IDockable>();
-                            break;
-                        }
-                        case Alignment.Right:
-                        {
-                            rootDock.RightPinnedDockables ??= CreateList<IDockable>();
-                            break;
-                        }
-                        case Alignment.Top:
-                        {
-                            rootDock.TopPinnedDockables ??= CreateList<IDockable>();
-                            break;
-                        }
-                        case Alignment.Bottom:
-                        {
-                            rootDock.BottomPinnedDockables ??= CreateList<IDockable>();
-                            break;
-                        }
-                    }
-
-                    if (toolDock.VisibleDockables is not null)
-                    {
-                        RemoveVisibleDockable(toolDock, dockable);
-                        OnDockableRemoved(dockable);
-                    }
-
-                    switch (alignment)
-                    {
-                        case Alignment.Unset:
-                        case Alignment.Left:
-                        {
-                            if (rootDock.LeftPinnedDockables is not null)
-                            {
-                                rootDock.LeftPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
-                            }
-
-                            break;
-                        }
-                        case Alignment.Right:
-                        {
-                            if (rootDock.RightPinnedDockables is not null)
-                            {
-                                rootDock.RightPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
-                            }
-
-                            break;
-                        }
-                        case Alignment.Top:
-                        {
-                            if (rootDock.TopPinnedDockables is not null)
-                            {
-                                rootDock.TopPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
-                            }
-
-                            break;
-                        }
-                        case Alignment.Bottom:
-                        {
-                            if (rootDock.BottomPinnedDockables is not null)
-                            {
-                                rootDock.BottomPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
-                            }
-
-                            break;
-                        }
-                    }
-
-                    // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    rootDock.TopPinnedDockables ??= CreateList<IDockable>();
+                    break;
                 }
-                else if (isPinned)
+                case Alignment.Bottom:
                 {
-                    // Unpin dockable.
-
-                    toolDock.VisibleDockables ??= CreateList<IDockable>();
-
-                    switch (alignment)
-                    {
-                        case Alignment.Unset:
-                        case Alignment.Left:
-                        {
-                            if (rootDock.LeftPinnedDockables is not null)
-                            {
-                                rootDock.LeftPinnedDockables.Remove(dockable);
-                                OnDockableUnpinned(dockable);
-                            }
-
-                            break;
-                        }
-                        case Alignment.Right:
-                        {
-                            if (rootDock.RightPinnedDockables is not null)
-                            {
-                                rootDock.RightPinnedDockables.Remove(dockable);
-                                OnDockableUnpinned(dockable);
-                            }
-
-                            break;
-                        }
-                        case Alignment.Top:
-                        {
-                            if (rootDock.TopPinnedDockables is not null)
-                            {
-                                rootDock.TopPinnedDockables.Remove(dockable);
-                                OnDockableUnpinned(dockable);
-                            }
-
-                            break;
-                        }
-                        case Alignment.Bottom:
-                        {
-                            if (rootDock.BottomPinnedDockables is not null)
-                            {
-                                rootDock.BottomPinnedDockables.Remove(dockable);
-                                OnDockableUnpinned(dockable);
-                            }
-
-                            break;
-                        }
-                    }
-
-                    if (!isVisible)
-                    {
-                        AddVisibleDockable(toolDock, dockable);
-                    }
-                    else
-                    {
-                        Debug.Assert(dockable.OriginalOwner is IDock);
-                        var originalOwner = (IDock)dockable.OriginalOwner!;
-                        HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
-                        AddVisibleDockable(originalOwner, dockable);
-                    }
-
-                    OnDockableAdded(dockable);
-
-                    // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    rootDock.BottomPinnedDockables ??= CreateList<IDockable>();
+                    break;
                 }
-                else
+            }
+
+            if (toolDock.VisibleDockables is not null)
+            {
+                RemoveVisibleDockable(toolDock, dockable);
+                OnDockableRemoved(dockable);
+            }
+
+            switch (alignment)
+            {
+                case Alignment.Unset:
+                case Alignment.Left:
                 {
-                    // TODO: Handle invalid state.
-                }
+                    if (rootDock.LeftPinnedDockables is not null)
+                    {
+                        rootDock.LeftPinnedDockables.Add(dockable);
+                        OnDockablePinned(dockable);
+                    }
 
-                break;
+                    break;
+                }
+                case Alignment.Right:
+                {
+                    if (rootDock.RightPinnedDockables is not null)
+                    {
+                        rootDock.RightPinnedDockables.Add(dockable);
+                        OnDockablePinned(dockable);
+                    }
+
+                    break;
+                }
+                case Alignment.Top:
+                {
+                    if (rootDock.TopPinnedDockables is not null)
+                    {
+                        rootDock.TopPinnedDockables.Add(dockable);
+                        OnDockablePinned(dockable);
+                    }
+
+                    break;
+                }
+                case Alignment.Bottom:
+                {
+                    if (rootDock.BottomPinnedDockables is not null)
+                    {
+                        rootDock.BottomPinnedDockables.Add(dockable);
+                        OnDockablePinned(dockable);
+                    }
+
+                    break;
+                }
+            }
+
+            // TODO: Handle ActiveDockable state.
+            // TODO: Handle IsExpanded property of IToolDock.
+            // TODO: Handle AutoHide property of IToolDock.
+        }
+        else if (isPinned)
+        {
+            // Unpin dockable.
+            UnpinDockableInternal(dockable, rootDock, toolDock, isVisible);
+
+            // TODO: Handle ActiveDockable state.
+            // TODO: Handle IsExpanded property of IToolDock.
+            // TODO: Handle AutoHide property of IToolDock.
+        }
+        else
+        {
+            // TODO: Handle invalid state.
+        }
+    }
+
+    private void UnpinDockableInternal(IDockable dockable, IRootDock rootDock, IToolDock? currentOwner, bool isVisible)
+    {
+        var previewDock = rootDock.PinnedDock;
+        var originalOwner = dockable.OriginalOwner as IToolDock;
+        var alignment = GetPinnedDockableAlignment(dockable, rootDock);
+        if (alignment == Alignment.Unset)
+        {
+            alignment = originalOwner?.Alignment ?? currentOwner?.Alignment ?? Alignment.Left;
+        }
+
+        RemovePinnedDockable(rootDock, dockable, alignment);
+
+        if (isVisible)
+        {
+            // Close preview and reset Owner/OriginalOwner for all previewed items.
+            HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
+        }
+
+        var targetOwner = originalOwner;
+        if (targetOwner is not null && (!IsOwnerAttached(rootDock, targetOwner) || !IsOwnerAligned(targetOwner, alignment)))
+        {
+            targetOwner = null;
+        }
+
+        if (targetOwner is null && currentOwner is not null && currentOwner != previewDock)
+        {
+            if (IsOwnerAttached(rootDock, currentOwner) && IsOwnerAligned(currentOwner, alignment))
+            {
+                targetOwner = currentOwner;
             }
         }
+
+        if (targetOwner is null)
+        {
+            targetOwner = FindToolDockByAlignment(rootDock, alignment) ?? CreateToolDockForUnpin(rootDock, alignment);
+        }
+
+        AddVisibleDockable(targetOwner, dockable);
+        OnDockableAdded(dockable);
+        InitDockable(dockable, targetOwner);
+        targetOwner.ActiveDockable = dockable;
+        dockable.OriginalOwner = null;
+    }
+
+    private bool IsOwnerAttached(IRootDock rootDock, IDock owner)
+    {
+        if (ReferenceEquals(rootDock, owner))
+        {
+            return true;
+        }
+
+        if (Find(rootDock, dockable => ReferenceEquals(dockable, owner)).Any())
+        {
+            return true;
+        }
+
+        if (rootDock.HiddenDockables is not null)
+        {
+            if (rootDock.HiddenDockables.Contains(owner))
+            {
+                return true;
+            }
+
+            foreach (var hiddenDock in rootDock.HiddenDockables.OfType<IDock>())
+            {
+                if (Find(hiddenDock, dockable => ReferenceEquals(dockable, owner)).Any())
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (rootDock.Windows is null)
+        {
+            return false;
+        }
+
+        foreach (var window in rootDock.Windows)
+        {
+            var layout = window.Layout;
+            if (layout is null)
+            {
+                continue;
+            }
+
+            if (ReferenceEquals(layout, owner))
+            {
+                return true;
+            }
+
+            if (layout is IDock dock && Find(dock, dockable => ReferenceEquals(dockable, owner)).Any())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsOwnerAligned(IDock owner, Alignment alignment)
+    {
+        if (alignment == Alignment.Unset)
+        {
+            return true;
+        }
+
+        return owner is IToolDock toolDock && toolDock.Alignment == alignment;
+    }
+
+    private void RemovePinnedDockable(IRootDock rootDock, IDockable dockable, Alignment alignment)
+    {
+        var removed = false;
+
+        void TryRemove(IList<IDockable>? list)
+        {
+            if (list?.Remove(dockable) == true)
+            {
+                removed = true;
+            }
+        }
+
+        switch (alignment)
+        {
+            case Alignment.Left:
+                TryRemove(rootDock.LeftPinnedDockables);
+                break;
+            case Alignment.Right:
+                TryRemove(rootDock.RightPinnedDockables);
+                break;
+            case Alignment.Top:
+                TryRemove(rootDock.TopPinnedDockables);
+                break;
+            case Alignment.Bottom:
+                TryRemove(rootDock.BottomPinnedDockables);
+                break;
+            case Alignment.Unset:
+                break;
+        }
+
+        // Defensive cleanup if duplicates slipped in.
+        TryRemove(rootDock.LeftPinnedDockables);
+        TryRemove(rootDock.RightPinnedDockables);
+        TryRemove(rootDock.TopPinnedDockables);
+        TryRemove(rootDock.BottomPinnedDockables);
+
+        if (removed)
+        {
+            OnDockableUnpinned(dockable);
+        }
+    }
+
+    private IToolDock CreateToolDockForUnpin(IRootDock rootDock, Alignment alignment)
+    {
+        var targetToolDock = CreateToolDock();
+        targetToolDock.Title = nameof(IToolDock);
+        targetToolDock.Alignment = alignment;
+        targetToolDock.VisibleDockables = CreateList<IDockable>();
+
+        // Choose an anchor dock to split next to.
+        var anchorDock = GetPreferredAnchorDock(rootDock) ?? rootDock.ActiveDockable as IDock;
+        if (anchorDock is not null)
+        {
+            var op = alignment switch
+            {
+                Alignment.Left => DockOperation.Left,
+                Alignment.Right => DockOperation.Right,
+                Alignment.Top => DockOperation.Top,
+                Alignment.Bottom => DockOperation.Bottom,
+                _ => DockOperation.Left
+            };
+            SplitToDock(anchorDock, targetToolDock, op);
+        }
+        else
+        {
+            // As a last resort, attach directly to root if empty structure.
+            rootDock.VisibleDockables ??= CreateList<IDockable>();
+            AddVisibleDockable(rootDock, targetToolDock);
+            OnDockableAdded(targetToolDock);
+            InitDockable(targetToolDock, rootDock);
+        }
+
+        return targetToolDock;
+    }
+
+    private IToolDock? FindToolDockByAlignment(IRootDock root, Alignment alignment)
+    {
+        foreach (var d in Find(root, x => x is IToolDock td && td.Alignment == alignment))
+        {
+            if (d is IToolDock td)
+                return td;
+        }
+        return null;
+    }
+
+    private IDock? GetPreferredAnchorDock(IRootDock root)
+    {
+        // Prefer the first visible dockable that is a dock and not the PinnedDock
+        var result = Find(root, x => x is IDock && x != root && x != root.PinnedDock);
+        foreach (var item in result)
+        {
+            return (IDock)item;
+        }
+        return null;
     }
 
     /// <inheritdoc/>
@@ -863,6 +1030,11 @@ public abstract partial class FactoryBase
             {
                 targetContent.DocumentTemplate = sourceContent.DocumentTemplate;
             }
+
+            if (sourceDoc is IDocumentDockFactory sourceDocFactory && targetDoc is IDocumentDockFactory targetDocFactory)
+            {
+                targetDocFactory.DocumentFactory = sourceDocFactory.DocumentFactory;
+            }
         }
 
         if (dock is IToolDock sourceTool && targetDock is IToolDock targetTool)
@@ -904,6 +1076,11 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void DockAsDocument(IDockable dockable)
     {
+        if (!dockable.CanDockAsDocument)
+        {
+            return;
+        }
+
         if (dockable.Owner is not IDock sourceDock)
         {
             return;
@@ -1079,10 +1256,15 @@ public abstract partial class FactoryBase
             {
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
             }
+
+            if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)
+            {
+                tfd.DocumentFactory = sfd.DocumentFactory;
+            }
         }
 
-        MoveDockable(dock, newDock, dockable, null);
         SplitToDock(dock, newDock, DockOperation.Right);
+        MoveDockable(dock, newDock, dockable, null);
     }
 
     /// <inheritdoc/>
@@ -1141,10 +1323,15 @@ public abstract partial class FactoryBase
             {
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
             }
+
+            if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)
+            {
+                tfd.DocumentFactory = sfd.DocumentFactory;
+            }
         }
 
-        MoveDockable(dock, newDock, dockable, null);
         SplitToDock(dock, newDock, DockOperation.Bottom);
+        MoveDockable(dock, newDock, dockable, null);
     }
 
     /// <inheritdoc/>

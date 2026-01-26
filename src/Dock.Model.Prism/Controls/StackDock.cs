@@ -10,7 +10,6 @@ namespace Dock.Model.Prism.Controls;
 /// <summary>
 /// Stack dock.
 /// </summary>
-[DataContract(IsReference = true)]
 public class StackDock : DockBase, IStackDock
 {
     private Orientation _orientation;

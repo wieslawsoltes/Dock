@@ -15,7 +15,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Document template.
 /// </summary>
-[DataContract(IsReference = true)]
 public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control?>, IRecyclingDataTemplate
 {
     /// <summary>
@@ -38,6 +37,7 @@ public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control?>, I
     /// <summary>
     /// 
     /// </summary>
+    [DataType]
     [IgnoreDataMember]
     [JsonIgnore]
     public Type? DataType { get; set; }

@@ -48,6 +48,11 @@ public abstract partial class FactoryBase
         var index = dock.VisibleDockables.IndexOf(dockable);
         if (index < 0)
         {
+            if (FindRoot(dockable, x => x.IsFocusableRoot) is { } root &&
+                ReferenceEquals(root.FocusedDockable, dockable))
+            {
+                SetFocusedDockable(dock, dock.ActiveDockable);
+            }
             return;
         }
 
@@ -68,6 +73,12 @@ public abstract partial class FactoryBase
             {
                 dock.ActiveDockable = null;
             }
+        }
+
+        if (FindRoot(dockable, x => x.IsFocusableRoot) is { } rootDock &&
+            ReferenceEquals(rootDock.FocusedDockable, dockable))
+        {
+            SetFocusedDockable(dock, dock.ActiveDockable);
         }
 
         // Clean up orphaned splitters

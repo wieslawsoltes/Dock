@@ -271,47 +271,53 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual void SetFocusedDockable(IDock dock, IDockable? dockable)
     {
-        if (dock.ActiveDockable is not null && FindRoot(dock.ActiveDockable, x => x.IsFocusableRoot) is { } root)
+        if (FindRoot(dock, x => x.IsFocusableRoot) is not { } root)
         {
-            if (dockable is not null)
-            {
-                var results = Find(x => x is IRootDock);
+            return;
+        }
 
-                foreach (var result in results)
+        if (dockable is not null)
+        {
+            var results = Find(x => x is IRootDock);
+
+            foreach (var result in results)
+            {
+                if (result is IRootDock rootDock 
+                    && rootDock.IsFocusableRoot
+                    && rootDock != root)
                 {
-                    if (result is IRootDock rootDock 
-                        && rootDock.IsFocusableRoot
-                        && rootDock != root)
+                    if (rootDock.FocusedDockable?.Owner is not null)
                     {
-                        if (rootDock.FocusedDockable?.Owner is not null)
-                        {
-                            SetIsActive(rootDock.FocusedDockable.Owner, false);
-                            // Trigger deactivation event for the dockable that lost focus
-                            OnDockableDeactivated(rootDock.FocusedDockable);
-                        }
+                        SetIsActive(rootDock.FocusedDockable.Owner, false);
+                        // Trigger deactivation event for the dockable that lost focus
+                        OnDockableDeactivated(rootDock.FocusedDockable);
                     }
                 }
             }
+        }
 
-            if (root.FocusedDockable?.Owner is not null)
-            {
-                SetIsActive(root.FocusedDockable.Owner, false);
-                // Trigger deactivation event for the dockable that lost focus
-                OnDockableDeactivated(root.FocusedDockable);
-            }
+        if (root.FocusedDockable?.Owner is not null)
+        {
+            SetIsActive(root.FocusedDockable.Owner, false);
+            // Trigger deactivation event for the dockable that lost focus
+            OnDockableDeactivated(root.FocusedDockable);
+        }
 
-            if (dockable is not null)
+        if (dockable is not null)
+        {
+            if (root.FocusedDockable != dockable)
             {
-                if (root.FocusedDockable != dockable)
-                {
-                    root.FocusedDockable = dockable;
-                }
+                root.FocusedDockable = dockable;
             }
+        }
+        else
+        {
+            root.FocusedDockable = null;
+        }
 
-            if (root.FocusedDockable?.Owner is not null)
-            {
-                SetIsActive(root.FocusedDockable.Owner, true);
-            }
+        if (root.FocusedDockable?.Owner is not null)
+        {
+            SetIsActive(root.FocusedDockable.Owner, true);
         }
     }
 }

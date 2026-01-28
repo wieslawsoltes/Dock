@@ -19,6 +19,30 @@ public class ControlRecyclingTests
         public string? GetControlRecyclingId() => Id;
     }
 
+    private class RecyclingIdData(string id, string value) : AvaloniaObject, IControlRecyclingIdProvider
+    {
+        public string Id { get; } = id;
+        public string Value { get; } = value;
+        public string? GetControlRecyclingId() => Id;
+    }
+
+    private class TrackingRecyclingTemplate : IRecyclingDataTemplate
+    {
+        public int BuildCalls { get; private set; }
+
+        public Control? Build(object? data) => Build(data, null);
+
+        public bool Match(object? data) => data is RecyclingIdData;
+
+        public Control? Build(object? data, Control? existing)
+        {
+            BuildCalls++;
+            var control = existing ?? new TextBlock();
+            control.Tag = data is RecyclingIdData recyclingData ? recyclingData.Value : null;
+            return control;
+        }
+    }
+
     [AvaloniaFact]
     public void Add_And_TryGetValue_Work()
     {
@@ -74,6 +98,25 @@ public class ControlRecyclingTests
     }
 
     [AvaloniaFact]
+    public void Build_Updates_Cached_Control_When_Recycling_Template_Is_Used()
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var parent = new Control();
+        var template = new TrackingRecyclingTemplate();
+        parent.DataTemplates.Add(template);
+
+        var data1 = new RecyclingIdData("a", "first");
+        var data2 = new RecyclingIdData("a", "second");
+
+        var result1 = recycling.Build(data1, null, parent) as Control;
+        var result2 = recycling.Build(data2, null, parent) as Control;
+
+        Assert.Same(result1, result2);
+        Assert.Equal("second", result1?.Tag);
+        Assert.Equal(2, template.BuildCalls);
+    }
+
+    [AvaloniaFact]
     public void Build_Uses_Id_When_Enabled()
     {
         var recycling = new ControlRecycling { TryToUseIdAsKey = true };
@@ -124,6 +167,33 @@ public class ControlRecyclingTests
         
         Assert.Same(control, result);
         Assert.Empty(parentPanel.Children); // Parent should no longer contain the control
+    }
+
+    [AvaloniaFact]
+    public void Build_Removes_Cached_Control_From_ContentPresenter()
+    {
+        var recycling = new ControlRecycling();
+        var data = new object();
+        var control = new TextBlock { Background = Brushes.Red };
+        var presenter = new ContentPresenter { Content = control };
+        var window = new Window { Content = presenter };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            recycling.Add(data, control);
+
+            var result = recycling.Build(data, null, null);
+
+            Assert.Same(control, result);
+            Assert.Null(presenter.Content);
+        }
+        finally
+        {
+            window.Close();
+        }
     }
 
     [AvaloniaFact]

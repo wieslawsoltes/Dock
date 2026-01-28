@@ -1,6 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling.Model;
@@ -15,7 +16,20 @@ namespace Avalonia.Controls.Recycling;
 public class ControlRecycling : AvaloniaObject, IControlRecycling
 {
     private readonly Dictionary<object, object> _cache = new();
+    private readonly Dictionary<object, object> _instanceCache = new(ReferenceEqualityComparer.Instance);
     private bool _tryToUseIdAsKey;
+
+    private sealed class ReferenceEqualityComparer : IEqualityComparer<object>
+    {
+        public static readonly ReferenceEqualityComparer Instance = new();
+
+        bool IEqualityComparer<object>.Equals(object? x, object? y) => ReferenceEquals(x, y);
+
+        int IEqualityComparer<object>.GetHashCode(object obj) => RuntimeHelpers.GetHashCode(obj);
+    }
+
+    private static readonly AttachedProperty<object?> RecyclingDataProperty =
+        AvaloniaProperty.RegisterAttached<ControlRecycling, Control, object?>("RecyclingData");
 
     /// <summary>
     /// 
@@ -46,6 +60,20 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             return false;
         }
 
+        if (_instanceCache.TryGetValue(data, out control))
+        {
+            return true;
+        }
+
+        if (TryToUseIdAsKey && data is IControlRecyclingIdProvider idProvider)
+        {
+            var id = idProvider.GetControlRecyclingId();
+            if (!string.IsNullOrWhiteSpace(id) && _cache.TryGetValue(id, out control))
+            {
+                return true;
+            }
+        }
+
         return _cache.TryGetValue(data, out control);
     }
 
@@ -74,58 +102,24 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             return null;
         }
 
-        if (TryToUseIdAsKey && key is IControlRecyclingIdProvider idProvider)
+        var idKey = TryToUseIdAsKey && key is IControlRecyclingIdProvider idProvider
+            ? idProvider.GetControlRecyclingId()
+            : null;
+        if (!string.IsNullOrWhiteSpace(idKey))
         {
-            if (!string.IsNullOrWhiteSpace(idProvider.GetControlRecyclingId()))
+            if (_instanceCache.TryGetValue(key, out var instanceControl))
             {
-                key = idProvider.GetControlRecyclingId();
+                return UseCachedControl(key, idKey!, data, instanceControl, existing, parent as Control);
             }
+
+            key = idKey!;
         }
 
         var parentControl = parent as Control;
 
         if (TryGetValue(key, out var control))
         {
-            if (control is Control cachedControl)
-            {
-                var updatedControl = cachedControl;
-
-                if (parentControl is not null)
-                {
-                    var template = parentControl.FindDataTemplate(data);
-                    if (template is IRecyclingDataTemplate recyclingTemplate)
-                    {
-                        var recycled = recyclingTemplate.Build(data, cachedControl);
-                        if (recycled is not null)
-                        {
-                            updatedControl = recycled;
-                        }
-                    }
-                }
-
-                if (!ReferenceEquals(updatedControl, cachedControl))
-                {
-                    Add(key!, updatedControl);
-                }
-
-                if (!ReferenceEquals(existing, updatedControl))
-                {
-                    if (!TryDetachFromParent(updatedControl))
-                    {
-                        var fallback = BuildFallback(parentControl, data, existing);
-                        if (fallback is not null)
-                        {
-                            Add(key!, fallback);
-                        }
-
-                        return fallback;
-                    }
-                }
-
-                return updatedControl;
-            }
-
-            return control;
+            return UseCachedControl(key!, key!, data, control, existing, parentControl);
         }
 
         var dataTemplate = parentControl?.FindDataTemplate(data);
@@ -152,11 +146,13 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
                     Add(key!, fallback);
                 }
 
+                TrackInstanceControl(data, fallback);
                 return fallback;
             }
         }
 
         Add(key!, control);
+        TrackInstanceControl(data, control);
 
         return control;
     }
@@ -167,6 +163,109 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     public void Clear()
     {
         _cache.Clear();
+        _instanceCache.Clear();
+    }
+
+    private static object? GetRecyclingData(Control control)
+    {
+        return control.GetValue(RecyclingDataProperty);
+    }
+
+    private void TrackInstanceControl(object? data, object? control)
+    {
+        if (data is null || control is not Control controlValue)
+        {
+            return;
+        }
+
+        SetCurrentInstance(controlValue, data);
+    }
+
+    private void RemoveInstanceControl(Control control)
+    {
+        var existing = GetRecyclingData(control);
+        if (existing is not null)
+        {
+            _instanceCache.Remove(existing);
+        }
+    }
+
+    private void SetCurrentInstance(Control control, object data)
+    {
+        var existing = GetRecyclingData(control);
+        if (existing is not null && !ReferenceEquals(existing, data))
+        {
+            _instanceCache.Remove(existing);
+        }
+
+        control.SetValue(RecyclingDataProperty, data);
+        _instanceCache[data] = control;
+    }
+
+    private object? UseCachedControl(object originalKey, object cacheKey, object? data, object? cached, object? existing, Control? parentControl)
+    {
+        if (cached is not Control cachedControl)
+        {
+            return cached;
+        }
+
+        if (data is not null && !ReferenceEquals(originalKey, data))
+        {
+            if (!ReferenceEquals(GetRecyclingData(cachedControl), data))
+            {
+                if (cachedControl.GetVisualParent() is not null)
+                {
+                    var fallbackControl = BuildFallback(parentControl, data, existing);
+                    if (fallbackControl is not null)
+                    {
+                        Add(cacheKey, fallbackControl);
+                    }
+
+                    TrackInstanceControl(data, fallbackControl);
+                    return fallbackControl;
+                }
+
+                RemoveInstanceControl(cachedControl);
+            }
+        }
+
+        var updatedControl = cachedControl;
+
+        if (parentControl is not null)
+        {
+            var template = parentControl.FindDataTemplate(data);
+            if (template is IRecyclingDataTemplate recyclingTemplate)
+            {
+                var recycled = recyclingTemplate.Build(data, cachedControl);
+                if (recycled is not null)
+                {
+                    updatedControl = recycled;
+                }
+            }
+        }
+
+        if (!ReferenceEquals(updatedControl, cachedControl))
+        {
+            Add(cacheKey, updatedControl);
+        }
+
+        if (!ReferenceEquals(existing, updatedControl))
+        {
+            if (!TryDetachFromParent(updatedControl))
+            {
+                var fallback = BuildFallback(parentControl, data, existing);
+                if (fallback is not null)
+                {
+                    Add(cacheKey, fallback);
+                }
+
+                TrackInstanceControl(data, fallback);
+                return fallback;
+            }
+        }
+
+        TrackInstanceControl(data, updatedControl);
+        return updatedControl;
     }
 
     /// <summary>

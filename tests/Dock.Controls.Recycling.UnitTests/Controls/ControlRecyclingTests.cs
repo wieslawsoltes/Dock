@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -5,6 +6,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling;
 using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
+using Avalonia.Data;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
 using Avalonia.VisualTree;
@@ -42,6 +44,28 @@ public class ControlRecyclingTests
             control.Tag = data is RecyclingIdData recyclingData ? recyclingData.Value : null;
             return control;
         }
+    }
+
+    private sealed class TestViewModel : INotifyPropertyChanged
+    {
+        private object? _item;
+
+        public object? Item
+        {
+            get => _item;
+            set
+            {
+                if (ReferenceEquals(_item, value))
+                {
+                    return;
+                }
+
+                _item = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Item)));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 
     [AvaloniaFact]
@@ -214,11 +238,14 @@ public class ControlRecyclingTests
     }
 
     [AvaloniaFact]
-    public void Build_Does_Not_Clear_Detached_ContentPresenter_Content()
+    public void Build_Preserves_ContentPresenter_Binding_When_Cached_Control_Attached()
     {
         var data = new object();
-        var template = new FuncDataTemplate<object>((_, _) => new Border(), true);
-        var presenter = new ContentPresenter { Content = data, ContentTemplate = template };
+        var updated = new object();
+        var viewModel = new TestViewModel { Item = data };
+        var template = new FuncDataTemplate<object>((value, _) => new Border { Tag = value }, true);
+        var presenter = new ContentPresenter { ContentTemplate = template };
+        presenter.Bind(ContentPresenter.ContentProperty, new Binding(nameof(TestViewModel.Item)) { Source = viewModel });
         var window = new Window { Content = presenter };
         var parent = new Control();
         parent.DataTemplates.Add(template);
@@ -230,11 +257,6 @@ public class ControlRecyclingTests
 
             var cached = presenter.GetVisualChildren().OfType<Control>().FirstOrDefault();
             Assert.NotNull(cached);
-            var cachedParent = cached!.GetVisualParent();
-            Assert.NotNull(cachedParent);
-
-            window.Content = null;
-            window.UpdateLayout();
 
             var recycling = new ControlRecycling();
             recycling.Add(data, cached!);
@@ -242,15 +264,15 @@ public class ControlRecyclingTests
             var result = recycling.Build(data, null, parent) as Control;
 
             Assert.NotNull(result);
+            Assert.NotSame(cached, result);
+            Assert.Null(result!.GetVisualParent());
             Assert.Same(data, presenter.Content);
-            if (ReferenceEquals(result, cached))
-            {
-                Assert.Null(cached.GetVisualParent());
-            }
-            else
-            {
-                Assert.Same(cachedParent, cached.GetVisualParent());
-            }
+            Assert.NotNull(BindingOperations.GetBindingExpressionBase(presenter, ContentPresenter.ContentProperty));
+
+            viewModel.Item = updated;
+            window.UpdateLayout();
+
+            Assert.Same(updated, presenter.Content);
         }
         finally
         {
@@ -259,7 +281,7 @@ public class ControlRecyclingTests
     }
 
     [AvaloniaFact]
-    public void Build_Does_Not_Return_Existing_When_Cached_Control_Is_Attached()
+    public void Build_Uses_Fallback_When_Cached_Control_Is_Attached()
     {
         var dataOld = new object();
         var dataNew = new object();
@@ -276,8 +298,6 @@ public class ControlRecyclingTests
 
             var cached = presenter.GetVisualChildren().OfType<Control>().FirstOrDefault();
             Assert.NotNull(cached);
-            var cachedParent = cached!.GetVisualParent();
-            Assert.NotNull(cachedParent);
 
             var existing = template.Build(dataOld) as Control;
             Assert.NotNull(existing);
@@ -287,16 +307,9 @@ public class ControlRecyclingTests
 
             var result = recycling.Build(dataNew, existing, parent) as Control;
 
-            Assert.NotNull(result);
+            Assert.Same(existing, result);
+            Assert.NotSame(cached, result);
             Assert.Same(dataNew, presenter.Content);
-            if (ReferenceEquals(result, cached))
-            {
-                Assert.Null(cached.GetVisualParent());
-            }
-            else
-            {
-                Assert.Same(cachedParent, cached.GetVisualParent());
-            }
         }
         finally
         {

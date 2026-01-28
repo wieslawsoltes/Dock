@@ -206,12 +206,6 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             return false;
         }
 
-        var template = presenter.ContentTemplate ?? presenter.FindDataTemplate(presenter.Content);
-        if (template is IRecyclingDataTemplate)
-        {
-            return false;
-        }
-
         presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
         presenter.UpdateChild();
 

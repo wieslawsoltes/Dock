@@ -3,9 +3,11 @@
 using System;
 using System.ComponentModel;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -130,7 +132,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
 
     public Control? Build(object? data, Control? existing)
     {
-        return BuildContent(Content, this);
+        return BuildContent(Content, this, existing);
     }
 
     public void Dispose()
@@ -316,7 +318,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         }
     }
 
-    private static Control? BuildContent(object? content, IDockable dockable)
+    private static Control? BuildContent(object? content, IDockable dockable, Control? existing)
     {
         if (DragPreviewContext.IsPreviewing(dockable))
         {
@@ -330,15 +332,47 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
 
         if (content is Control directControl)
         {
-            return directControl;
+            return DetachIfNeeded(directControl, existing);
         }
 
         if (content is Func<IServiceProvider, object> direct)
         {
-            return direct(null!) as Control;
+            return DetachIfNeeded(direct(null!) as Control, existing);
         }
 
-        return TemplateContent.Load(content)?.Result;
+        return DetachIfNeeded(TemplateContent.Load(content)?.Result, existing);
+    }
+
+    private static Control? DetachIfNeeded(Control? control, Control? existing)
+    {
+        if (control is null || ReferenceEquals(control, existing))
+        {
+            return control;
+        }
+
+        DetachFromParent(control);
+        return control;
+    }
+
+    private static void DetachFromParent(Control control)
+    {
+        var parent = control.Parent ?? control.GetVisualParent();
+
+        switch (parent)
+        {
+            case Panel panel:
+                panel.Children.Remove(control);
+                break;
+            case ContentPresenter presenter:
+                presenter.Content = null;
+                break;
+            case ContentControl contentControl:
+                contentControl.Content = null;
+                break;
+            case Decorator decorator when ReferenceEquals(decorator.Child, control):
+                decorator.Child = null;
+                break;
+        }
     }
 
     private static Control BuildPreviewContent(object? content)

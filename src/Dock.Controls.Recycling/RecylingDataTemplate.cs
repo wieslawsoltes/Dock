@@ -1,8 +1,10 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.VisualTree;
 
 namespace Avalonia.Controls.Recycling;
 
@@ -63,7 +65,7 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
     /// <returns></returns>
     public Control? Build(object? param)
     {
-        return null;
+        return Build(param, null);
     }
 
     /// <summary>
@@ -86,12 +88,12 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
     {
         if (data is IRecyclingDataTemplate recyclingTemplate && !ReferenceEquals(recyclingTemplate, this))
         {
-            return recyclingTemplate.Build(data, existing);
+            return DetachIfNeeded(recyclingTemplate.Build(data, existing), existing);
         }
 
         if (data is Control control)
         {
-            return control;
+            return DetachIfNeeded(control, existing);
         }
 
         if (Parent is not { } parent)
@@ -102,9 +104,47 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(parent);
         if (controlRecycling is not null)
         {
-            return controlRecycling.Build(data, existing, parent) as Control;
+            return DetachIfNeeded(controlRecycling.Build(data, existing, parent) as Control, existing);
         }
 
-        return parent.FindDataTemplate(data)?.Build(data);
+        var dataTemplate = parent.FindDataTemplate(data);
+        if (dataTemplate is IRecyclingDataTemplate recyclingDataTemplate)
+        {
+            return DetachIfNeeded(recyclingDataTemplate.Build(data, existing), existing);
+        }
+
+        return DetachIfNeeded(dataTemplate?.Build(data), existing);
+    }
+
+    private static Control? DetachIfNeeded(Control? control, Control? existing)
+    {
+        if (control is null || ReferenceEquals(control, existing))
+        {
+            return control;
+        }
+
+        DetachFromParent(control);
+        return control;
+    }
+
+    private static void DetachFromParent(Control control)
+    {
+        var parent = control.Parent ?? control.GetVisualParent();
+
+        switch (parent)
+        {
+            case Panel panel:
+                panel.Children.Remove(control);
+                break;
+            case ContentPresenter presenter:
+                presenter.Content = null;
+                break;
+            case ContentControl contentControl:
+                contentControl.Content = null;
+                break;
+            case Decorator decorator when ReferenceEquals(decorator.Child, control):
+                decorator.Child = null;
+                break;
+        }
     }
 }

@@ -23,6 +23,10 @@ internal static class TemplateHelper
 
         if (content is Control directControl)
         {
+            if (!ReferenceEquals(existing, directControl))
+            {
+                RemoveFromVisualParent(directControl);
+            }
             return directControl;
         }
 
@@ -73,12 +77,12 @@ internal static class TemplateHelper
 
     private static void RemoveFromVisualParent(Visual visual)
     {
-        var parent = visual.GetVisualParent();
+        var parent = (visual as Control)?.Parent ?? visual.GetVisualParent();
 
         switch (parent)
         {
-            case Panel panel when visual is Control control:
-                panel.Children.Remove(control);
+            case Panel panel when visual is Control child:
+                panel.Children.Remove(child);
                 break;
             case ContentPresenter contentPresenter:
                 contentPresenter.Content = null;

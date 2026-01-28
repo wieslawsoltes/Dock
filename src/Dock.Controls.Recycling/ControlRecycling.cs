@@ -82,23 +82,60 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             }
         }
 
+        var parentControl = parent as Control;
+
         if (TryGetValue(key, out var control))
         {
-            // If the cached control is currently in the visual tree, remove it from its parent
-            if (control is Visual visual && !ReferenceEquals(existing, control))
+            if (control is Control cachedControl)
             {
-                RemoveFromVisualParent(visual);
+                var updatedControl = cachedControl;
+
+                if (parentControl is not null)
+                {
+                    var template = parentControl.FindDataTemplate(data);
+                    if (template is IRecyclingDataTemplate recyclingTemplate)
+                    {
+                        var recycled = recyclingTemplate.Build(data, cachedControl);
+                        if (recycled is not null)
+                        {
+                            updatedControl = recycled;
+                        }
+                    }
+                }
+
+                if (!ReferenceEquals(updatedControl, cachedControl))
+                {
+                    Add(key!, updatedControl);
+                }
+
+                if (!ReferenceEquals(existing, updatedControl))
+                {
+                    RemoveFromVisualParent(updatedControl);
+                }
+
+                return updatedControl;
             }
 
             return control;
         }
 
-        var dataTemplate = (parent as Control)?.FindDataTemplate(data);
-
-        control = dataTemplate?.Build(data);
+        var dataTemplate = parentControl?.FindDataTemplate(data);
+        if (dataTemplate is IRecyclingDataTemplate recyclingDataTemplate)
+        {
+            control = recyclingDataTemplate.Build(data, existing as Control);
+        }
+        else
+        {
+            control = dataTemplate?.Build(data);
+        }
         if (control is null)
         {
             return null;
+        }
+
+        if (control is Control createdControl && !ReferenceEquals(existing, createdControl))
+        {
+            RemoveFromVisualParent(createdControl);
         }
 
         Add(key!, control);
@@ -120,12 +157,12 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     /// <param name="visual">The visual to remove from its parent.</param>
     private static void RemoveFromVisualParent(Visual visual)
     {
-        var parent = visual.GetVisualParent();
+        var parent = (visual as Control)?.Parent ?? visual.GetVisualParent();
         
         switch (parent)
         {
-            case Panel panel when visual is Control control:
-                panel.Children.Remove(control);
+            case Panel panel when visual is Control child:
+                panel.Children.Remove(child);
                 break;
             case ContentPresenter contentPresenter:
                 contentPresenter.Content = null;

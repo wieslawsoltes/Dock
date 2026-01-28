@@ -23,6 +23,13 @@ internal static class TemplateHelper
 
         if (content is Control directControl)
         {
+            if (!ReferenceEquals(existing, directControl))
+            {
+                if (!TryDetachFromParent(directControl))
+                {
+                    return existing;
+                }
+            }
             return directControl;
         }
 
@@ -36,7 +43,16 @@ internal static class TemplateHelper
                 {
                     if (!ReferenceEquals(existing, cachedControl))
                     {
-                        RemoveFromVisualParent(cachedControl);
+                        if (!TryDetachFromParent(cachedControl))
+                        {
+                            var fallback = BuildFallback(content, existing);
+                            if (fallback is not null)
+                            {
+                                controlRecycling.Add(key, fallback);
+                            }
+
+                            return fallback;
+                        }
                     }
 
                     return cachedControl;
@@ -48,6 +64,20 @@ internal static class TemplateHelper
             control = TemplateContent.Load(content)?.Result;
             if (control is not null)
             {
+                if (control is Control builtControl && !ReferenceEquals(existing, builtControl))
+                {
+                    if (!TryDetachFromParent(builtControl))
+                    {
+                        var fallback = BuildFallback(content, existing);
+                        if (fallback is not null)
+                        {
+                            controlRecycling.Add(key, fallback);
+                        }
+
+                        return fallback;
+                    }
+                }
+
                 controlRecycling.Add(key, control);
             }
 
@@ -71,25 +101,75 @@ internal static class TemplateHelper
         return content;
     }
 
-    private static void RemoveFromVisualParent(Visual visual)
+    private static bool TryDetachFromParent(Visual visual)
     {
-        var parent = visual.GetVisualParent();
+        var parent = (visual as Control)?.Parent ?? visual.GetVisualParent();
+
+        if (parent is null)
+        {
+            return true;
+        }
 
         switch (parent)
         {
-            case Panel panel when visual is Control control:
-                panel.Children.Remove(control);
-                break;
+            case Panel panel when visual is Control child:
+                return panel.Children.Remove(child);
             case ContentPresenter contentPresenter:
-                contentPresenter.Content = null;
-                break;
-            case ContentControl contentControl:
-                contentControl.Content = null;
-                break;
-            case Decorator decorator:
+                return TryDetachFromContentPresenter(contentPresenter, visual);
+            case ContentControl contentControl when ReferenceEquals(contentControl.Content, visual):
+                contentControl.SetCurrentValue(ContentControl.ContentProperty, null);
+                return true;
+            case Decorator decorator when ReferenceEquals(decorator.Child, visual):
                 decorator.Child = null;
-                break;
+                return true;
+            default:
+                return false;
         }
+    }
+
+    private static bool TryDetachFromContentPresenter(ContentPresenter presenter, Visual visual)
+    {
+        if (!ReferenceEquals(presenter.Child, visual))
+        {
+            return false;
+        }
+
+        presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
+        presenter.UpdateChild();
+
+        return visual.GetVisualParent() is null;
+    }
+
+    private static Control? BuildFallback(object? content, Control? existing)
+    {
+        var built = TemplateContent.Load(content)?.Result;
+        if (built is null)
+        {
+            return existing;
+        }
+
+        if (ReferenceEquals(built, existing))
+        {
+            return built;
+        }
+
+        if (TryDetachFromParent(built))
+        {
+            return built;
+        }
+
+        var rebuilt = TemplateContent.Load(content)?.Result;
+        if (rebuilt is null)
+        {
+            return existing;
+        }
+
+        if (ReferenceEquals(rebuilt, existing))
+        {
+            return rebuilt;
+        }
+
+        return TryDetachFromParent(rebuilt) ? rebuilt : existing;
     }
 
     internal static TemplateResult<Control>? Load(object? templateContent)

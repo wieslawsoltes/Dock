@@ -2,10 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -130,7 +133,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
 
     public Control? Build(object? data, Control? existing)
     {
-        return BuildContent(Content, this);
+        return BuildContent(Content, this, existing);
     }
 
     public void Dispose()
@@ -316,7 +319,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         }
     }
 
-    private static Control? BuildContent(object? content, IDockable dockable)
+    private static Control? BuildContent(object? content, IDockable dockable, Control? existing)
     {
         if (DragPreviewContext.IsPreviewing(dockable))
         {
@@ -330,15 +333,85 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
 
         if (content is Control directControl)
         {
-            return directControl;
+            return DetachOrFallback(directControl, existing, null);
         }
 
         if (content is Func<IServiceProvider, object> direct)
         {
-            return direct(null!) as Control;
+            return DetachOrFallback(direct(null!) as Control, existing, () => direct(null!) as Control);
         }
 
-        return TemplateContent.Load(content)?.Result;
+        return DetachOrFallback(TemplateContent.Load(content)?.Result, existing, () => TemplateContent.Load(content)?.Result);
+    }
+
+    private static Control? DetachOrFallback(Control? control, Control? existing, Func<Control?>? fallbackFactory)
+    {
+        if (control is null || ReferenceEquals(control, existing))
+        {
+            return control;
+        }
+
+        if (TryDetachFromParent(control))
+        {
+            return control;
+        }
+
+        if (fallbackFactory is null)
+        {
+            return existing;
+        }
+
+        var fallback = fallbackFactory();
+        if (fallback is null)
+        {
+            return existing;
+        }
+
+        if (ReferenceEquals(fallback, existing))
+        {
+            return fallback;
+        }
+
+        return TryDetachFromParent(fallback) ? fallback : existing;
+    }
+
+    private static bool TryDetachFromParent(Control control)
+    {
+        var parent = control.Parent ?? control.GetVisualParent();
+
+        if (parent is null)
+        {
+            return true;
+        }
+
+        switch (parent)
+        {
+            case Panel panel:
+                return panel.Children.Remove(control);
+            case ContentPresenter presenter:
+                return TryDetachFromContentPresenter(presenter, control);
+            case ContentControl contentControl when ReferenceEquals(contentControl.Content, control):
+                contentControl.SetCurrentValue(ContentControl.ContentProperty, null);
+                return true;
+            case Decorator decorator when ReferenceEquals(decorator.Child, control):
+                decorator.Child = null;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private static bool TryDetachFromContentPresenter(ContentPresenter presenter, Control control)
+    {
+        if (!ReferenceEquals(presenter.Child, control))
+        {
+            return false;
+        }
+
+        presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
+        presenter.UpdateChild();
+
+        return control.GetVisualParent() is null;
     }
 
     private static Control BuildPreviewContent(object? content)

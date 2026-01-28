@@ -39,7 +39,10 @@ public class App : Application
             {
                 if (existing is ReactiveUI.Avalonia.ViewModelViewHost existingHost)
                 {
-                    existingHost.ViewModel = item;
+                    if (!ReferenceEquals(existingHost.ViewModel, item))
+                    {
+                        existingHost.ViewModel = item;
+                    }
                     return existingHost;
                 }
 

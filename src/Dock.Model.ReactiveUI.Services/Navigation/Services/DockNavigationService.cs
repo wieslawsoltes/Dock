@@ -39,6 +39,21 @@ public class DockNavigationService : IDockNavigationService
             return;
         }
 
+        if (document.Owner is IDock ownerDock
+            && ownerDock.VisibleDockables?.Contains(document) == true)
+        {
+            factory.SetActiveDockable(document);
+            factory.SetFocusedDockable(ownerDock, document);
+            factory.ActivateWindow(document);
+
+            if (floatWindow)
+            {
+                factory.FloatDockable(document);
+            }
+
+            return;
+        }
+
         factory.AddDockable(documentDock, document);
         factory.SetActiveDockable(document);
         factory.SetFocusedDockable(documentDock, document);

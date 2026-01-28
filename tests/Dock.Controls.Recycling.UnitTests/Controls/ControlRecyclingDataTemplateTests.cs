@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
@@ -13,6 +14,30 @@ public class ControlRecyclingDataTemplateTests
     {
         var template = new ControlRecyclingDataTemplate();
         Assert.Null(template.Build(new object(), null));
+    }
+
+    [AvaloniaFact]
+    public void Build_Detaches_Control_From_ContentPresenter()
+    {
+        var control = new TextBlock();
+        var presenter = new ContentPresenter { Content = control };
+        var window = new Window { Content = presenter };
+        var template = new ControlRecyclingDataTemplate();
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var result = template.Build(control, null);
+
+            Assert.Same(control, result);
+            Assert.Null(presenter.Content);
+        }
+        finally
+        {
+            window.Close();
+        }
     }
 
     [AvaloniaFact]

@@ -140,6 +140,41 @@ public class ControlRecyclingTests
     }
 
     [AvaloniaFact]
+    public void Build_Does_Not_Recycle_Attached_Control_For_Different_Data()
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var parent = new Control();
+        var template = new TrackingRecyclingTemplate();
+        parent.DataTemplates.Add(template);
+
+        var data1 = new RecyclingIdData("a", "first");
+        var data2 = new RecyclingIdData("a", "second");
+
+        var control1 = recycling.Build(data1, null, parent) as Control;
+        Assert.NotNull(control1);
+
+        var presenter = new ContentPresenter { Content = control1 };
+        var window = new Window { Content = presenter };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var control2 = recycling.Build(data2, null, parent) as Control;
+
+            Assert.NotNull(control2);
+            Assert.NotSame(control1, control2);
+            Assert.Same(control1, presenter.Content);
+            Assert.Equal("second", control2?.Tag);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
     public void Build_Uses_Id_When_Enabled()
     {
         var recycling = new ControlRecycling { TryToUseIdAsKey = true };

@@ -158,6 +158,28 @@ public class DockNavigationServiceTests
     }
 
     [Fact]
+    public void OpenDocument_Readds_Document_When_Removed_From_Owner()
+    {
+        var factory = CreateFactory(out var hostScreen, out var documentDock);
+        var document = new Document { Id = "Doc1" };
+        factory.AddDockable(documentDock, document);
+        factory.RemoveDockable(document, true);
+
+        Assert.NotNull(documentDock.VisibleDockables);
+        Assert.Empty(documentDock.VisibleDockables!);
+
+        var service = new DockNavigationService();
+
+        service.AttachFactory(factory, hostScreen);
+        service.OpenDocument(hostScreen, document, floatWindow: false);
+
+        var dockables = documentDock.VisibleDockables;
+        Assert.NotNull(dockables);
+        Assert.Single(dockables!);
+        Assert.Same(document, dockables![0]);
+    }
+
+    [Fact]
     public void OpenDocument_Adds_New_Document_When_Id_Matches_Existing()
     {
         var factory = CreateFactory(out var hostScreen, out var documentDock);

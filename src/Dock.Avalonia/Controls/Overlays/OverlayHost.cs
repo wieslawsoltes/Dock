@@ -250,6 +250,14 @@ public sealed class OverlayHost : Decorator
 
     private void RebuildPipeline()
     {
+        if (Content is Control hostedContent && hostedContent.Parent is not null)
+        {
+            if (!TryDetachControl(hostedContent))
+            {
+                return;
+            }
+        }
+
         Child = null;
 
         var contentPresenter = new ContentPresenter
@@ -268,7 +276,7 @@ public sealed class OverlayHost : Decorator
                 continue;
             }
 
-            if (!TryDetachOverlay(overlay))
+            if (!TryDetachControl(overlay))
             {
                 continue;
             }
@@ -315,25 +323,25 @@ public sealed class OverlayHost : Decorator
         Child = current;
     }
 
-    private static bool TryDetachOverlay(Control overlay)
+    private static bool TryDetachControl(Control control)
     {
-        if (overlay.Parent is null)
+        if (control.Parent is null)
         {
             return true;
         }
 
-        switch (overlay.Parent)
+        switch (control.Parent)
         {
             case Panel panel:
-                panel.Children.Remove(overlay);
+                panel.Children.Remove(control);
                 return true;
-            case Decorator decorator when ReferenceEquals(decorator.Child, overlay):
+            case Decorator decorator when ReferenceEquals(decorator.Child, control):
                 decorator.Child = null;
                 return true;
-            case ContentPresenter presenter when ReferenceEquals(presenter.Content, overlay):
+            case ContentPresenter presenter when ReferenceEquals(presenter.Content, control):
                 presenter.Content = null;
                 return true;
-            case ContentControl contentControl when ReferenceEquals(contentControl.Content, overlay):
+            case ContentControl contentControl when ReferenceEquals(contentControl.Content, control):
                 contentControl.Content = null;
                 return true;
             default:

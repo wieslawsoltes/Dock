@@ -22,8 +22,9 @@
       </Styles.Resources>
     </Styles>
     <Style Selector="HostWindow">
-      <Setter Property="Content">
-        <Template>
+      <Setter Property="Content" Value="{Binding}" />
+      <Setter Property="ContentTemplate">
+        <DataTemplate>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
               <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
@@ -36,12 +37,13 @@
               </OverlayHost>
             </Panel>
           </Panel>
-        </Template>
+        </DataTemplate>
       </Setter>
     </Style>
     <Style Selector="HostWindow:toolwindow">
-      <Setter Property="Content">
-        <Template>
+      <Setter Property="Content" Value="{Binding}" />
+      <Setter Property="ContentTemplate">
+        <DataTemplate>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
               <DockControl Layout="{Binding}"
@@ -52,7 +54,7 @@
               </DockControl>
             </OverlayHost>
           </Panel>
-        </Template>
+        </DataTemplate>
       </Setter>
     </Style>
     <Style Selector="HostWindow:toolchromecontrolswindow">

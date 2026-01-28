@@ -285,7 +285,23 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         if (s_controlRecycling.TryGetValue(factory, out var shared))
         {
-            if (!ReferenceEquals(shared, controlRecycling))
+            if (ReferenceEquals(shared, controlRecycling))
+            {
+                return;
+            }
+
+            if (shared is ControlRecycling sharedRecycling && controlRecycling is ControlRecycling localRecycling)
+            {
+                if (sharedRecycling.TryToUseIdAsKey != localRecycling.TryToUseIdAsKey)
+                {
+                    sharedRecycling.TryToUseIdAsKey = localRecycling.TryToUseIdAsKey;
+                }
+
+                ControlRecyclingDataTemplate.SetControlRecycling(this, sharedRecycling);
+                return;
+            }
+
+            if (controlRecycling is ControlRecycling)
             {
                 ControlRecyclingDataTemplate.SetControlRecycling(this, shared);
             }

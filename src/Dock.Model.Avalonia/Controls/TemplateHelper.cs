@@ -25,7 +25,10 @@ internal static class TemplateHelper
         {
             if (!ReferenceEquals(existing, directControl))
             {
-                RemoveFromVisualParent(directControl);
+                if (!TryDetachFromParent(directControl))
+                {
+                    return existing;
+                }
             }
             return directControl;
         }
@@ -40,7 +43,16 @@ internal static class TemplateHelper
                 {
                     if (!ReferenceEquals(existing, cachedControl))
                     {
-                        RemoveFromVisualParent(cachedControl);
+                        if (!TryDetachFromParent(cachedControl))
+                        {
+                            var fallback = BuildFallback(content, existing);
+                            if (fallback is not null)
+                            {
+                                controlRecycling.Add(key, fallback);
+                            }
+
+                            return fallback;
+                        }
                     }
 
                     return cachedControl;
@@ -52,6 +64,20 @@ internal static class TemplateHelper
             control = TemplateContent.Load(content)?.Result;
             if (control is not null)
             {
+                if (control is Control builtControl && !ReferenceEquals(existing, builtControl))
+                {
+                    if (!TryDetachFromParent(builtControl))
+                    {
+                        var fallback = BuildFallback(content, existing);
+                        if (fallback is not null)
+                        {
+                            controlRecycling.Add(key, fallback);
+                        }
+
+                        return fallback;
+                    }
+                }
+
                 controlRecycling.Add(key, control);
             }
 
@@ -75,25 +101,63 @@ internal static class TemplateHelper
         return content;
     }
 
-    private static void RemoveFromVisualParent(Visual visual)
+    private static bool TryDetachFromParent(Visual visual)
     {
         var parent = (visual as Control)?.Parent ?? visual.GetVisualParent();
+
+        if (parent is null)
+        {
+            return true;
+        }
 
         switch (parent)
         {
             case Panel panel when visual is Control child:
-                panel.Children.Remove(child);
-                break;
-            case ContentPresenter contentPresenter:
+                return panel.Children.Remove(child);
+            case ContentPresenter contentPresenter when ReferenceEquals(contentPresenter.Content, visual):
                 contentPresenter.Content = null;
-                break;
-            case ContentControl contentControl:
+                return true;
+            case ContentControl contentControl when ReferenceEquals(contentControl.Content, visual):
                 contentControl.Content = null;
-                break;
-            case Decorator decorator:
+                return true;
+            case Decorator decorator when ReferenceEquals(decorator.Child, visual):
                 decorator.Child = null;
-                break;
+                return true;
+            default:
+                return false;
         }
+    }
+
+    private static Control? BuildFallback(object? content, Control? existing)
+    {
+        var built = TemplateContent.Load(content)?.Result;
+        if (built is null)
+        {
+            return existing;
+        }
+
+        if (ReferenceEquals(built, existing))
+        {
+            return built;
+        }
+
+        if (TryDetachFromParent(built))
+        {
+            return built;
+        }
+
+        var rebuilt = TemplateContent.Load(content)?.Result;
+        if (rebuilt is null)
+        {
+            return existing;
+        }
+
+        if (ReferenceEquals(rebuilt, existing))
+        {
+            return rebuilt;
+        }
+
+        return TryDetachFromParent(rebuilt) ? rebuilt : existing;
     }
 
     internal static TemplateResult<Control>? Load(object? templateContent)

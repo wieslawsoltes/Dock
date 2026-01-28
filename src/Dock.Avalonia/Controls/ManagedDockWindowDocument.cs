@@ -332,46 +332,72 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
 
         if (content is Control directControl)
         {
-            return DetachIfNeeded(directControl, existing);
+            return DetachOrFallback(directControl, existing, null);
         }
 
         if (content is Func<IServiceProvider, object> direct)
         {
-            return DetachIfNeeded(direct(null!) as Control, existing);
+            return DetachOrFallback(direct(null!) as Control, existing, () => direct(null!) as Control);
         }
 
-        return DetachIfNeeded(TemplateContent.Load(content)?.Result, existing);
+        return DetachOrFallback(TemplateContent.Load(content)?.Result, existing, () => TemplateContent.Load(content)?.Result);
     }
 
-    private static Control? DetachIfNeeded(Control? control, Control? existing)
+    private static Control? DetachOrFallback(Control? control, Control? existing, Func<Control?>? fallbackFactory)
     {
         if (control is null || ReferenceEquals(control, existing))
         {
             return control;
         }
 
-        DetachFromParent(control);
-        return control;
+        if (TryDetachFromParent(control))
+        {
+            return control;
+        }
+
+        if (fallbackFactory is null)
+        {
+            return existing;
+        }
+
+        var fallback = fallbackFactory();
+        if (fallback is null)
+        {
+            return existing;
+        }
+
+        if (ReferenceEquals(fallback, existing))
+        {
+            return fallback;
+        }
+
+        return TryDetachFromParent(fallback) ? fallback : existing;
     }
 
-    private static void DetachFromParent(Control control)
+    private static bool TryDetachFromParent(Control control)
     {
         var parent = control.Parent ?? control.GetVisualParent();
+
+        if (parent is null)
+        {
+            return true;
+        }
 
         switch (parent)
         {
             case Panel panel:
-                panel.Children.Remove(control);
-                break;
-            case ContentPresenter presenter:
+                return panel.Children.Remove(control);
+            case ContentPresenter presenter when ReferenceEquals(presenter.Content, control):
                 presenter.Content = null;
-                break;
-            case ContentControl contentControl:
+                return true;
+            case ContentControl contentControl when ReferenceEquals(contentControl.Content, control):
                 contentControl.Content = null;
-                break;
+                return true;
             case Decorator decorator when ReferenceEquals(decorator.Child, control):
                 decorator.Child = null;
-                break;
+                return true;
+            default:
+                return false;
         }
     }
 

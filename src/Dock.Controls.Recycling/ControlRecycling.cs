@@ -110,7 +110,16 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
 
                 if (!ReferenceEquals(existing, updatedControl))
                 {
-                    RemoveFromVisualParent(updatedControl);
+                    if (!TryDetachFromParent(updatedControl))
+                    {
+                        var fallback = BuildFallback(parentControl, data, existing);
+                        if (fallback is not null)
+                        {
+                            Add(key!, fallback);
+                        }
+
+                        return fallback;
+                    }
                 }
 
                 return updatedControl;
@@ -135,7 +144,16 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
 
         if (control is Control createdControl && !ReferenceEquals(existing, createdControl))
         {
-            RemoveFromVisualParent(createdControl);
+            if (!TryDetachFromParent(createdControl))
+            {
+                var fallback = BuildFallback(parentControl, data, existing);
+                if (fallback is not null)
+                {
+                    Add(key!, fallback);
+                }
+
+                return fallback;
+            }
         }
 
         Add(key!, control);
@@ -155,24 +173,96 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     /// Removes a visual control from its current parent in the visual tree.
     /// </summary>
     /// <param name="visual">The visual to remove from its parent.</param>
-    private static void RemoveFromVisualParent(Visual visual)
+    private static bool TryDetachFromParent(Visual visual)
     {
         var parent = (visual as Control)?.Parent ?? visual.GetVisualParent();
+
+        if (parent is null)
+        {
+            return true;
+        }
         
         switch (parent)
         {
             case Panel panel when visual is Control child:
-                panel.Children.Remove(child);
-                break;
-            case ContentPresenter contentPresenter:
+                return panel.Children.Remove(child);
+            case ContentPresenter contentPresenter when ReferenceEquals(contentPresenter.Content, visual):
                 contentPresenter.Content = null;
-                break;
+                return true;
             case ContentControl contentControl:
-                contentControl.Content = null;
-                break;
-            case Decorator decorator:
+                if (ReferenceEquals(contentControl.Content, visual))
+                {
+                    contentControl.Content = null;
+                    return true;
+                }
+
+                return false;
+            case Decorator decorator when ReferenceEquals(decorator.Child, visual):
                 decorator.Child = null;
-                break;
+                return true;
+            default:
+                return false;
         }
+    }
+
+    private static object? BuildFallback(Control? parentControl, object? data, object? existing)
+    {
+        if (parentControl is null)
+        {
+            return null;
+        }
+
+        var dataTemplate = parentControl.FindDataTemplate(data);
+        if (dataTemplate is IRecyclingDataTemplate recyclingDataTemplate)
+        {
+            var existingControl = existing as Control;
+            var control = recyclingDataTemplate.Build(data, existingControl);
+            if (control is null)
+            {
+                control = recyclingDataTemplate.Build(data, null);
+            }
+
+            if (control is Control fallbackControl)
+            {
+                if (ReferenceEquals(fallbackControl, existingControl))
+                {
+                    return fallbackControl;
+                }
+
+                if (TryDetachFromParent(fallbackControl))
+                {
+                    return fallbackControl;
+                }
+
+                var rebuilt = recyclingDataTemplate.Build(data, null);
+                if (rebuilt is Control rebuiltControl && TryDetachFromParent(rebuiltControl))
+                {
+                    return rebuiltControl;
+                }
+
+                return null;
+            }
+
+            return control;
+        }
+
+        var built = dataTemplate?.Build(data);
+        if (built is Control builtControl)
+        {
+            if (TryDetachFromParent(builtControl))
+            {
+                return builtControl;
+            }
+
+            var rebuilt = dataTemplate?.Build(data);
+            if (rebuilt is Control rebuiltControl && TryDetachFromParent(rebuiltControl))
+            {
+                return rebuiltControl;
+            }
+
+            return null;
+        }
+
+        return built;
     }
 }

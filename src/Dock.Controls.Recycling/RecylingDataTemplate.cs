@@ -88,12 +88,17 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
     {
         if (data is IRecyclingDataTemplate recyclingTemplate && !ReferenceEquals(recyclingTemplate, this))
         {
-            return DetachIfNeeded(recyclingTemplate.Build(data, existing), existing);
+            return BuildFromRecyclingTemplate(recyclingTemplate, data, existing);
         }
 
         if (data is Control control)
         {
-            return DetachIfNeeded(control, existing);
+            if (ReferenceEquals(control, existing))
+            {
+                return control;
+            }
+
+            return TryDetachFromParent(control) ? control : null;
         }
 
         if (Parent is not { } parent)
@@ -104,47 +109,111 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(parent);
         if (controlRecycling is not null)
         {
-            return DetachIfNeeded(controlRecycling.Build(data, existing, parent) as Control, existing);
+            return controlRecycling.Build(data, existing, parent) as Control;
         }
 
         var dataTemplate = parent.FindDataTemplate(data);
         if (dataTemplate is IRecyclingDataTemplate recyclingDataTemplate)
         {
-            return DetachIfNeeded(recyclingDataTemplate.Build(data, existing), existing);
+            return BuildFromRecyclingTemplate(recyclingDataTemplate, data, existing);
         }
 
-        return DetachIfNeeded(dataTemplate?.Build(data), existing);
+        return BuildFromDataTemplate(dataTemplate, data, existing);
     }
 
-    private static Control? DetachIfNeeded(Control? control, Control? existing)
+    private static Control? BuildFromRecyclingTemplate(IRecyclingDataTemplate template, object? data, Control? existing)
     {
-        if (control is null || ReferenceEquals(control, existing))
+        var control = template.Build(data, existing);
+        if (control is null)
+        {
+            return null;
+        }
+
+        if (ReferenceEquals(control, existing))
         {
             return control;
         }
 
-        DetachFromParent(control);
-        return control;
+        if (TryDetachFromParent(control))
+        {
+            return control;
+        }
+
+        var rebuilt = template.Build(data, null);
+        if (rebuilt is null)
+        {
+            return null;
+        }
+
+        if (ReferenceEquals(rebuilt, existing))
+        {
+            return rebuilt;
+        }
+
+        return TryDetachFromParent(rebuilt) ? rebuilt : null;
     }
 
-    private static void DetachFromParent(Control control)
+    private static Control? BuildFromDataTemplate(IDataTemplate? template, object? data, Control? existing)
+    {
+        var control = template?.Build(data) as Control;
+        if (control is null)
+        {
+            return null;
+        }
+
+        if (ReferenceEquals(control, existing))
+        {
+            return control;
+        }
+
+        if (TryDetachFromParent(control))
+        {
+            return control;
+        }
+
+        var rebuilt = template?.Build(data) as Control;
+        if (rebuilt is null)
+        {
+            return null;
+        }
+
+        if (ReferenceEquals(rebuilt, existing))
+        {
+            return rebuilt;
+        }
+
+        return TryDetachFromParent(rebuilt) ? rebuilt : null;
+    }
+
+    private static bool TryDetachFromParent(Control control)
     {
         var parent = control.Parent ?? control.GetVisualParent();
+
+        if (parent is null)
+        {
+            return true;
+        }
 
         switch (parent)
         {
             case Panel panel:
-                panel.Children.Remove(control);
-                break;
-            case ContentPresenter presenter:
+                return panel.Children.Remove(control);
+            case ContentPresenter presenter when ReferenceEquals(presenter.Content, control):
                 presenter.Content = null;
-                break;
+                return true;
             case ContentControl contentControl:
-                contentControl.Content = null;
-                break;
+                if (ReferenceEquals(contentControl.Content, control))
+                {
+                    contentControl.Content = null;
+                    return true;
+                }
+
+                return false;
             case Decorator decorator when ReferenceEquals(decorator.Child, control):
                 decorator.Child = null;
-                break;
+                return true;
+            default:
+                return false;
         }
     }
 }

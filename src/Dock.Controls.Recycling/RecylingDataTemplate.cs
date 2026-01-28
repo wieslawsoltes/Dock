@@ -198,22 +198,35 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
         {
             case Panel panel:
                 return panel.Children.Remove(control);
-            case ContentPresenter presenter when ReferenceEquals(presenter.Content, control):
-                presenter.Content = null;
+            case ContentPresenter presenter:
+                return TryDetachFromContentPresenter(presenter, control);
+            case ContentControl contentControl when ReferenceEquals(contentControl.Content, control):
+                contentControl.SetCurrentValue(ContentControl.ContentProperty, null);
                 return true;
-            case ContentControl contentControl:
-                if (ReferenceEquals(contentControl.Content, control))
-                {
-                    contentControl.Content = null;
-                    return true;
-                }
-
-                return false;
             case Decorator decorator when ReferenceEquals(decorator.Child, control):
                 decorator.Child = null;
                 return true;
             default:
                 return false;
         }
+    }
+
+    private static bool TryDetachFromContentPresenter(ContentPresenter presenter, Control control)
+    {
+        if (!ReferenceEquals(presenter.Child, control))
+        {
+            return false;
+        }
+
+        var template = presenter.ContentTemplate ?? presenter.FindDataTemplate(presenter.Content);
+        if (template is IRecyclingDataTemplate)
+        {
+            return false;
+        }
+
+        presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
+        presenter.UpdateChild();
+
+        return control.GetVisualParent() is null;
     }
 }

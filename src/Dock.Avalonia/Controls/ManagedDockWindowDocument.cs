@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
@@ -387,11 +388,10 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         {
             case Panel panel:
                 return panel.Children.Remove(control);
-            case ContentPresenter presenter when ReferenceEquals(presenter.Content, control):
-                presenter.Content = null;
-                return true;
+            case ContentPresenter presenter:
+                return TryDetachFromContentPresenter(presenter, control);
             case ContentControl contentControl when ReferenceEquals(contentControl.Content, control):
-                contentControl.Content = null;
+                contentControl.SetCurrentValue(ContentControl.ContentProperty, null);
                 return true;
             case Decorator decorator when ReferenceEquals(decorator.Child, control):
                 decorator.Child = null;
@@ -399,6 +399,25 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
             default:
                 return false;
         }
+    }
+
+    private static bool TryDetachFromContentPresenter(ContentPresenter presenter, Control control)
+    {
+        if (!ReferenceEquals(presenter.Child, control))
+        {
+            return false;
+        }
+
+        var template = presenter.ContentTemplate ?? presenter.FindDataTemplate(presenter.Content);
+        if (template is IRecyclingDataTemplate)
+        {
+            return false;
+        }
+
+        presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
+        presenter.UpdateChild();
+
+        return control.GetVisualParent() is null;
     }
 
     private static Control BuildPreviewContent(object? content)

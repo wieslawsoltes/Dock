@@ -114,11 +114,10 @@ internal static class TemplateHelper
         {
             case Panel panel when visual is Control child:
                 return panel.Children.Remove(child);
-            case ContentPresenter contentPresenter when ReferenceEquals(contentPresenter.Content, visual):
-                contentPresenter.Content = null;
-                return true;
+            case ContentPresenter contentPresenter:
+                return TryDetachFromContentPresenter(contentPresenter, visual);
             case ContentControl contentControl when ReferenceEquals(contentControl.Content, visual):
-                contentControl.Content = null;
+                contentControl.SetCurrentValue(ContentControl.ContentProperty, null);
                 return true;
             case Decorator decorator when ReferenceEquals(decorator.Child, visual):
                 decorator.Child = null;
@@ -126,6 +125,25 @@ internal static class TemplateHelper
             default:
                 return false;
         }
+    }
+
+    private static bool TryDetachFromContentPresenter(ContentPresenter presenter, Visual visual)
+    {
+        if (!ReferenceEquals(presenter.Child, visual))
+        {
+            return false;
+        }
+
+        var template = presenter.ContentTemplate ?? presenter.FindDataTemplate(presenter.Content);
+        if (template is IRecyclingDataTemplate)
+        {
+            return false;
+        }
+
+        presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
+        presenter.UpdateChild();
+
+        return visual.GetVisualParent() is null;
     }
 
     private static Control? BuildFallback(object? content, Control? existing)

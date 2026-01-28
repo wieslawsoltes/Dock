@@ -341,9 +341,22 @@ public sealed class OverlayHost : Decorator
             case Decorator decorator when ReferenceEquals(decorator.Child, control):
                 decorator.Child = null;
                 return true;
-            case ContentPresenter presenter when ReferenceEquals(presenter.Content, control):
-                presenter.Content = null;
-                return true;
+            case ContentPresenter presenter:
+                if (ReferenceEquals(presenter.Child, control))
+                {
+                    presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
+                    presenter.UpdateChild();
+                    return control.GetVisualParent() is null;
+                }
+
+                if (ReferenceEquals(presenter.Content, control))
+                {
+                    presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
+                    presenter.UpdateChild();
+                    return true;
+                }
+
+                return false;
             case ContentControl contentControl when ReferenceEquals(contentControl.Content, control):
                 contentControl.Content = null;
                 return true;

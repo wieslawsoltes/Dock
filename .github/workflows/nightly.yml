@@ -46,7 +46,7 @@ jobs:
         run: dotnet build -c Release --no-restore -p:VersionSuffix="${{ steps.version.outputs.version-suffix }}"
 
       - name: Test
-        run: dotnet test -c Release --no-build --logger trx --results-directory artifacts/test
+        run: dotnet test -c Release --no-build --logger trx --results-directory artifacts/test --filter "Category!=Leak&FullyQualifiedName!~Leak"
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

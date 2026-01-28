@@ -158,37 +158,25 @@ public class DockNavigationServiceTests
     }
 
     [Fact]
-    public void OpenDocument_Uses_Existing_Document_With_Same_Id()
+    public void OpenDocument_Adds_New_Document_When_Id_Matches_Existing()
     {
         var factory = CreateFactory(out var hostScreen, out var documentDock);
         var existing = new Document { Id = "Doc1" };
         factory.AddDockable(documentDock, existing);
+        var newDocument = new Document { Id = "Doc1" };
         var service = new DockNavigationService();
 
         service.AttachFactory(factory, hostScreen);
-        service.OpenDocument(hostScreen, new Document { Id = "Doc1" }, floatWindow: false);
+        service.OpenDocument(hostScreen, newDocument, floatWindow: false);
 
         var dockables = documentDock.VisibleDockables;
         Assert.NotNull(dockables);
-        Assert.Single(dockables!);
-        Assert.Same(existing, factory.ActiveDockable);
+        Assert.Equal(2, dockables!.Count);
+        Assert.Contains(existing, dockables);
+        Assert.Contains(newDocument, dockables);
+        Assert.Same(newDocument, factory.ActiveDockable);
         Assert.Same(documentDock, factory.FocusedDock);
-        Assert.Same(existing, factory.FocusedDockable);
-    }
-
-    [Fact]
-    public void OpenDocument_Floats_Existing_Document_When_Requested()
-    {
-        var factory = CreateFactory(out var hostScreen, out var documentDock);
-        var existing = new Document { Id = "Doc1" };
-        factory.AddDockable(documentDock, existing);
-        var service = new DockNavigationService();
-
-        service.AttachFactory(factory, hostScreen);
-        service.OpenDocument(hostScreen, new Document { Id = "Doc1" }, floatWindow: true);
-
-        Assert.Equal(1, factory.FloatDockableCalls);
-        Assert.Same(existing, factory.FloatedDockable);
+        Assert.Same(newDocument, factory.FocusedDockable);
     }
 
     private static TestFactory CreateFactory(out TestScreenDockable hostScreen, out DocumentDock documentDock)

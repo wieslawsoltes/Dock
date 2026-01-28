@@ -9,6 +9,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 
 namespace Dock.Avalonia.Controls.Overlays;
 
@@ -250,9 +251,10 @@ public sealed class OverlayHost : Decorator
 
     private void RebuildPipeline()
     {
-        if (Content is Control hostedContent && hostedContent.Parent is not null)
+        if (Content is Control hostedContent)
         {
-            if (!TryDetachControl(hostedContent))
+            var parent = hostedContent.Parent ?? hostedContent.GetVisualParent();
+            if (parent is not null && !TryDetachControl(hostedContent))
             {
                 return;
             }
@@ -325,12 +327,13 @@ public sealed class OverlayHost : Decorator
 
     private static bool TryDetachControl(Control control)
     {
-        if (control.Parent is null)
+        var parent = control.Parent ?? control.GetVisualParent();
+        if (parent is null)
         {
             return true;
         }
 
-        switch (control.Parent)
+        switch (parent)
         {
             case Panel panel:
                 panel.Children.Remove(control);

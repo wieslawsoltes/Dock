@@ -131,7 +131,7 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
         var dataTemplate = parentControl?.FindDataTemplate(data);
         if (dataTemplate is IRecyclingDataTemplate recyclingDataTemplate)
         {
-            control = recyclingDataTemplate.Build(data, existing as Control);
+            control = recyclingDataTemplate.Build(data, null);
         }
         else
         {

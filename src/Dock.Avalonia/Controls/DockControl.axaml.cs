@@ -3,9 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Recycling;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
@@ -36,6 +38,7 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_ManagedWindowLayer", typeof(ManagedWindowLayer))]
 public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 {
+    private static readonly ConditionalWeakTable<IFactory, IControlRecycling> s_controlRecycling = new();
     private readonly DockManagerOptions _dockManagerOptions;
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
@@ -269,16 +272,37 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
     private void InitializeControlRecycling()
     {
-        var recycling = ControlRecyclingDataTemplate.GetControlRecycling(this);
-        if (recycling is ControlRecycling shared)
+        if (Layout?.Factory is not { } factory)
         {
-            var local = new ControlRecycling
-            {
-                TryToUseIdAsKey = shared.TryToUseIdAsKey
-            };
-
-            ControlRecyclingDataTemplate.SetControlRecycling(this, local);
+            return;
         }
+
+        var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(this);
+        if (controlRecycling is null)
+        {
+            return;
+        }
+
+        if (s_controlRecycling.TryGetValue(factory, out var shared))
+        {
+            if (!ReferenceEquals(shared, controlRecycling))
+            {
+                ControlRecyclingDataTemplate.SetControlRecycling(this, shared);
+            }
+
+            return;
+        }
+
+        if (controlRecycling is ControlRecycling defaultRecycling)
+        {
+            controlRecycling = new ControlRecycling
+            {
+                TryToUseIdAsKey = defaultRecycling.TryToUseIdAsKey
+            };
+            ControlRecyclingDataTemplate.SetControlRecycling(this, controlRecycling);
+        }
+
+        s_controlRecycling.Add(factory, controlRecycling);
     }
 
     private void InitializeDefaultDataTemplates()
@@ -346,6 +370,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         layout.Factory.DockControls.Add(this);
 
+        InitializeControlRecycling();
         UpdateManagedWindowLayer(layout);
 
         if (InitializeFactory)

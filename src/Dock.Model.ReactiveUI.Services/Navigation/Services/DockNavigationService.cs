@@ -39,6 +39,43 @@ public class DockNavigationService : IDockNavigationService
             return;
         }
 
+        if (document.Owner is IDock ownerDock)
+        {
+            factory.SetActiveDockable(document);
+            factory.SetFocusedDockable(ownerDock, document);
+            factory.ActivateWindow(document);
+
+            if (floatWindow)
+            {
+                factory.FloatDockable(document);
+            }
+
+            return;
+        }
+
+        var existing = TryFindExistingDocument(factory, documentDock, document);
+        if (existing is not null)
+        {
+            if (existing.Owner is IDock existingOwner)
+            {
+                factory.SetActiveDockable(existing);
+                factory.SetFocusedDockable(existingOwner, existing);
+            }
+            else
+            {
+                factory.SetActiveDockable(existing);
+            }
+
+            factory.ActivateWindow(existing);
+
+            if (floatWindow)
+            {
+                factory.FloatDockable(existing);
+            }
+
+            return;
+        }
+
         factory.AddDockable(documentDock, document);
         factory.SetActiveDockable(document);
         factory.SetFocusedDockable(documentDock, document);
@@ -47,6 +84,35 @@ public class DockNavigationService : IDockNavigationService
         {
             factory.FloatDockable(document);
         }
+    }
+
+    private static IDockable? TryFindExistingDocument(IFactory factory, IDocumentDock documentDock, IDockable document)
+    {
+        if (string.IsNullOrWhiteSpace(document.Id))
+        {
+            return null;
+        }
+
+        IDock searchDock = factory.FindRoot(documentDock) ?? (IDock)documentDock;
+        return factory.FindDockable(searchDock, dockable =>
+        {
+            if (ReferenceEquals(dockable, document))
+            {
+                return false;
+            }
+
+            if (dockable is IDock)
+            {
+                return false;
+            }
+
+            if (!string.Equals(dockable.Id, document.Id, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            return document is not IDocument || dockable is IDocument;
+        });
     }
 
     /// <summary>

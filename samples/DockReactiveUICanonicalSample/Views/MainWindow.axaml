@@ -1,10 +1,12 @@
 <Window x:Class="DockReactiveUICanonicalSample.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:DockReactiveUICanonicalSample"
         xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
         x:DataType="MainWindowViewModel"
         Width="1280"
         Height="800"
         Title="Dock ReactiveUI Canonical Sample">
-  <rxui:RoutedViewHost Router="{Binding Router}" />
+  <rxui:RoutedViewHost Router="{Binding Router}"
+                       ViewLocator="{x:Static local:App.ViewLocator}" />
 </Window>

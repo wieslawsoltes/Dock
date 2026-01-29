@@ -1,5 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:DockReactiveUICanonicalSample"
+             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
              x:Class="DockReactiveUICanonicalSample.App">
   <Application.DataTemplates>
     <DataTemplate DataType="TextPromptDialogViewModel">
@@ -10,9 +12,18 @@
     </DataTemplate>
   </Application.DataTemplates>
 
+  <Application.Resources>
+    <ResourceDictionary>
+      <ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
+    </ResourceDictionary>
+  </Application.Resources>
+
   <Application.Styles>
     <FluentTheme />
     <DockFluentTheme />
+    <Style Selector="DockControl">
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    </Style>
     <Styles>
       <Styles.Resources>
         <ResourceDictionary>
@@ -28,11 +39,7 @@
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
               <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
-                <DockControl Layout="{Binding}"
-                             ControlRecyclingDataTemplate.ControlRecycling="{DynamicResource DockControlRecycling}">
-                  <DockControl.Resources>
-                    <ControlRecycling x:Key="DockControlRecycling" TryToUseIdAsKey="True" />
-                  </DockControl.Resources>
+                <DockControl Layout="{Binding}">
                 </DockControl>
               </OverlayHost>
             </Panel>
@@ -46,11 +53,7 @@
         <DataTemplate>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
-              <DockControl Layout="{Binding}"
-                           ControlRecyclingDataTemplate.ControlRecycling="{DynamicResource DockControlRecycling}">
-                <DockControl.Resources>
-                  <ControlRecycling x:Key="DockControlRecycling" TryToUseIdAsKey="True" />
-                </DockControl.Resources>
+              <DockControl Layout="{Binding}">
               </DockControl>
             </OverlayHost>
           </Panel>

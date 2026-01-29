@@ -8,11 +8,7 @@
   <OverlayHost Margin="8"
                DataContext="{Binding Layout}">
     <DockControl Layout="{Binding}"
-                 ControlRecyclingDataTemplate.ControlRecycling="{DynamicResource DockControlRecycling}"
                  x:DataType="controls:IRootDock">
-      <DockControl.Resources>
-        <ControlRecycling x:Key="DockControlRecycling" TryToUseIdAsKey="True" />
-      </DockControl.Resources>
     </DockControl>
   </OverlayHost>
 </UserControl>

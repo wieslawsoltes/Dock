@@ -24,6 +24,8 @@ namespace DockReactiveUICanonicalSample;
 
 public class App : Application
 {
+    public static IViewLocator ViewLocator { get; } = new ReactiveViewLocator();
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -34,11 +36,19 @@ public class App : Application
 
     private void RegisterDockableTemplate()
     {
-        DataTemplates.Add(new FuncDataTemplate<IDockable>(
+        var viewLocator = ViewLocator;
+
+        DataTemplates.Insert(0, new FuncDataTemplate<IDockable>(
             (item, existing) =>
             {
+                if (item is null)
+                {
+                    return null;
+                }
+
                 if (existing is ReactiveUI.Avalonia.ViewModelViewHost existingHost)
                 {
+                    existingHost.ViewLocator = viewLocator;
                     if (!ReferenceEquals(existingHost.ViewModel, item))
                     {
                         existingHost.ViewModel = item;
@@ -46,7 +56,11 @@ public class App : Application
                     return existingHost;
                 }
 
-                return new ReactiveUI.Avalonia.ViewModelViewHost { ViewModel = item };
+                return new ReactiveUI.Avalonia.ViewModelViewHost
+                {
+                    ViewLocator = viewLocator,
+                    ViewModel = item
+                };
             },
             supportsRecycling: true));
     }

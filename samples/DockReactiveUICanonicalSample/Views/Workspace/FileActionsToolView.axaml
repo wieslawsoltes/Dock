@@ -1,8 +1,10 @@
 <UserControl x:Class="DockReactiveUICanonicalSample.Views.Workspace.FileActionsToolView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:DockReactiveUICanonicalSample"
              xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
              x:CompileBindings="True"
              x:DataType="FileActionsToolViewModel">
-  <rxui:RoutedViewHost Router="{Binding Router}" />
+  <rxui:RoutedViewHost Router="{Binding Router}"
+                       ViewLocator="{x:Static local:App.ViewLocator}" />
 </UserControl>

@@ -230,19 +230,41 @@ public class ToolChromeControl : ContentControl
         }
     }
 
-    private WindowDragHelper CreateDragHelper(Control grip)
+    private static bool IsFocusableChild(Control owner, Control source)
+    {
+        var current = source;
+        while (current != null && current != owner)
+        {
+            if (current.Focusable)
+            {
+                return true;
+            }
+
+            current = current.Parent as Control;
+        }
+
+        return false;
+    }
+
+    private WindowDragHelper CreateDragHelper(Control owner, bool ignoreFocusable = false, bool handlePointerPressed = true)
     {
         return new WindowDragHelper(
-            grip,
+            owner,
             () => true,
             source =>
             {
                 if (source is null)
                     return false;
 
+                if (ignoreFocusable && IsFocusableChild(owner, source))
+                {
+                    return false;
+                }
+
                 return !(source is Button) &&
-                       !WindowDragHelper.IsChildOfType<Button>(grip, source);
-            });
+                       !WindowDragHelper.IsChildOfType<Button>(owner, source);
+            },
+            handlePointerPressed);
     }
 
     private void AttachToWindow()
@@ -252,7 +274,7 @@ public class ToolChromeControl : ContentControl
             return;
         }
 
-        // On linux we dont attach to the HostWindow because of inconsistent drag behaviour
+        // On linux we use WindowDragHelper because of inconsistent drag behaviour with BeginMoveDrag.
         if (VisualRoot is Window window)
         {
             if (window is HostWindow hostWindow)
@@ -267,7 +289,7 @@ public class ToolChromeControl : ContentControl
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    _windowDragHelper = CreateDragHelper(hostWindow);
+                    _windowDragHelper = CreateDragHelper(hostWindow, ignoreFocusable: true, handlePointerPressed: false);
                     _windowDragHelper.Attach();
                 }
             }

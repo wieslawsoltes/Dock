@@ -20,6 +20,8 @@ internal class WindowDragHelper
     private readonly Control _owner;
     private readonly Func<bool> _isEnabled;
     private readonly Func<Control?, bool> _canStartDrag;
+    private readonly bool _handlePointerPressed;
+    private bool _handledPointerPressed;
     private Point _dragStartPoint;
     private bool _pointerPressed;
     private bool _isDragging;
@@ -29,11 +31,12 @@ internal class WindowDragHelper
     private IDisposable[]? _disposables;
     private IDisposable? _releasedEventDisposable;
 
-    public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag)
+    public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag, bool handlePointerPressed = true)
     {
         _owner = owner;
         _isEnabled = isEnabled;
         _canStartDrag = canStartDrag;
+        _handlePointerPressed = handlePointerPressed;
     }
 
     public void Attach()
@@ -67,6 +70,7 @@ internal class WindowDragHelper
         }
 
         _lastPointerPressedArgs = e;
+        _handledPointerPressed = false;
 
         if (!e.GetCurrentPoint(_owner).Properties.IsLeftButtonPressed)
         {
@@ -78,7 +82,15 @@ internal class WindowDragHelper
         {
             _dragStartPoint = e.GetPosition(_owner);
             _pointerPressed = true;
-            e.Handled = true;
+            if (_handlePointerPressed)
+            {
+                e.Handled = true;
+                _handledPointerPressed = true;
+            }
+            else
+            {
+                _handledPointerPressed = false;
+            }
         }
     }
 
@@ -92,8 +104,11 @@ internal class WindowDragHelper
             return;
         }
 
+        var shouldHandleRelease = _isDragging || _handledPointerPressed;
+
         _pointerPressed = false;
         _isDragging = false;
+        _handledPointerPressed = false;
 
         if (_dragWindow is not null)
         {
@@ -118,7 +133,10 @@ internal class WindowDragHelper
 
         _dragWindow = null;
 
-        e.Handled = true;
+        if (shouldHandleRelease)
+        {
+            e.Handled = true;
+        }
     }
 
     private void OnPointerMoved(object? sender, PointerEventArgs e)

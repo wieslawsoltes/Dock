@@ -70,4 +70,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nightly-nuget-packages
-        path: artifacts/nuget/*.nupkg
+        path: |
+          artifacts/nuget/*.nupkg
+          artifacts/nuget/*.snupkg

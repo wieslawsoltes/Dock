@@ -63,7 +63,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nuget-packages
-        path: artifacts/nuget/*.nupkg
+        path: |
+          artifacts/nuget/*.nupkg
+          artifacts/nuget/*.snupkg
 
   artifacts:
     runs-on: ubuntu-latest
@@ -77,7 +79,7 @@ jobs:
     - name: Create release bundle
       run: |
         mkdir -p bundle
-        zip -j bundle/dock-packages.zip release/*.nupkg
+        zip -j bundle/dock-packages.zip release/*.nupkg release/*.snupkg
     - name: Upload release bundle
       uses: actions/upload-artifact@v4
       with:
@@ -107,7 +109,11 @@ jobs:
         unzip -o "$zip_path" -d nuget
     - name: Push packages to NuGet
       if: env.NUGET_API_KEY != ''
-      run: dotnet nuget push nuget/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      run: |
+        shopt -s nullglob
+        for package in nuget/*.nupkg nuget/*.snupkg; do
+          dotnet nuget push "$package" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        done
 
   github_release:
     runs-on: ubuntu-latest
@@ -127,5 +133,6 @@ jobs:
         prerelease: false
         files: |
           release/*.nupkg
+          release/*.snupkg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

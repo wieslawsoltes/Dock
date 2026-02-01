@@ -55,6 +55,14 @@ public class RootDock : DockBase, IRootDock
             (o, v) => o.PinnedDock = v);
 
     /// <summary>
+    /// Defines the <see cref="PinnedDockDisplayMode"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, PinnedDockDisplayMode> PinnedDockDisplayModeProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, PinnedDockDisplayMode>(
+            nameof(PinnedDockDisplayMode), o => o.PinnedDockDisplayMode,
+            (o, v) => o.PinnedDockDisplayMode = v);
+
+    /// <summary>
     /// Defines the <see cref="RightPinnedDockables"/> property.
     /// </summary>
     public static readonly DirectProperty<RootDock, IList<IDockable>?> RightPinnedDockablesProperty =
@@ -111,6 +119,7 @@ public class RootDock : DockBase, IRootDock
     private IList<IDockable>? _topPinnedDockables;
     private IList<IDockable>? _bottomPinnedDockables;
     private IToolDock? _pinnedDock;
+    private PinnedDockDisplayMode _pinnedDockDisplayMode = PinnedDockDisplayMode.Overlay;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
     private bool _enableAdaptiveGlobalDockTargets;
@@ -165,6 +174,15 @@ public class RootDock : DockBase, IRootDock
     {
         get => _pinnedDock;
         set => SetAndRaise(PinnedDockProperty, ref _pinnedDock, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("PinnedDockDisplayMode")]
+    public PinnedDockDisplayMode PinnedDockDisplayMode
+    {
+        get => _pinnedDockDisplayMode;
+        set => SetAndRaise(PinnedDockDisplayModeProperty, ref _pinnedDockDisplayMode, value);
     }
 
     /// <inheritdoc/>

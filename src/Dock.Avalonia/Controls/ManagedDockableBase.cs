@@ -10,7 +10,9 @@ namespace Dock.Avalonia.Controls;
 
 public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDockableDockingRestrictions, INotifyPropertyChanged
 {
-    private readonly TrackingAdapter _trackingAdapter = new();
+    private TrackingAdapter? _trackingAdapter;
+
+    private TrackingAdapter TrackingAdapter => _trackingAdapter ??= new TrackingAdapter();
     private string _id = string.Empty;
     private string _title = string.Empty;
     private object? _context;
@@ -34,6 +36,7 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
     private bool _canClose = true;
     private bool _canPin = true;
     private bool _keepPinnedDockableVisible;
+    private PinnedDockDisplayMode? _pinnedDockDisplayModeOverride;
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
@@ -185,6 +188,31 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
         set => SetProperty(ref _keepPinnedDockableVisible, value);
     }
 
+    public PinnedDockDisplayMode? PinnedDockDisplayModeOverride
+    {
+        get => _pinnedDockDisplayModeOverride;
+        set => SetProperty(ref _pinnedDockDisplayModeOverride, value);
+    }
+
+    public DockRect? PinnedBounds
+    {
+        get
+        {
+            GetPinnedBounds(out var x, out var y, out var width, out var height);
+            return IsPinnedBoundsValid(width, height) ? new DockRect(x, y, width, height) : null;
+        }
+        set
+        {
+            if (value is null)
+            {
+                SetPinnedBounds(double.NaN, double.NaN, double.NaN, double.NaN);
+                return;
+            }
+
+            SetPinnedBounds(value.Value.X, value.Value.Y, value.Value.Width, value.Value.Height);
+        }
+    }
+
     public bool CanFloat
     {
         get => _canFloat;
@@ -258,12 +286,12 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
 
     public void GetVisibleBounds(out double x, out double y, out double width, out double height)
     {
-        _trackingAdapter.GetVisibleBounds(out x, out y, out width, out height);
+        TrackingAdapter.GetVisibleBounds(out x, out y, out width, out height);
     }
 
     public void SetVisibleBounds(double x, double y, double width, double height)
     {
-        _trackingAdapter.SetVisibleBounds(x, y, width, height);
+        TrackingAdapter.SetVisibleBounds(x, y, width, height);
         OnVisibleBoundsChanged(x, y, width, height);
     }
 
@@ -273,12 +301,12 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
 
     public void GetPinnedBounds(out double x, out double y, out double width, out double height)
     {
-        _trackingAdapter.GetPinnedBounds(out x, out y, out width, out height);
+        TrackingAdapter.GetPinnedBounds(out x, out y, out width, out height);
     }
 
     public void SetPinnedBounds(double x, double y, double width, double height)
     {
-        _trackingAdapter.SetPinnedBounds(x, y, width, height);
+        TrackingAdapter.SetPinnedBounds(x, y, width, height);
         OnPinnedBoundsChanged(x, y, width, height);
     }
 
@@ -288,12 +316,12 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
 
     public void GetTabBounds(out double x, out double y, out double width, out double height)
     {
-        _trackingAdapter.GetTabBounds(out x, out y, out width, out height);
+        TrackingAdapter.GetTabBounds(out x, out y, out width, out height);
     }
 
     public void SetTabBounds(double x, double y, double width, double height)
     {
-        _trackingAdapter.SetTabBounds(x, y, width, height);
+        TrackingAdapter.SetTabBounds(x, y, width, height);
         OnTabBoundsChanged(x, y, width, height);
     }
 
@@ -303,12 +331,12 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
 
     public void GetPointerPosition(out double x, out double y)
     {
-        _trackingAdapter.GetPointerPosition(out x, out y);
+        TrackingAdapter.GetPointerPosition(out x, out y);
     }
 
     public void SetPointerPosition(double x, double y)
     {
-        _trackingAdapter.SetPointerPosition(x, y);
+        TrackingAdapter.SetPointerPosition(x, y);
         OnPointerPositionChanged(x, y);
     }
 
@@ -318,17 +346,23 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
 
     public void GetPointerScreenPosition(out double x, out double y)
     {
-        _trackingAdapter.GetPointerScreenPosition(out x, out y);
+        TrackingAdapter.GetPointerScreenPosition(out x, out y);
     }
 
     public void SetPointerScreenPosition(double x, double y)
     {
-        _trackingAdapter.SetPointerScreenPosition(x, y);
+        TrackingAdapter.SetPointerScreenPosition(x, y);
         OnPointerScreenPositionChanged(x, y);
     }
 
     public virtual void OnPointerScreenPositionChanged(double x, double y)
     {
+    }
+
+    private static bool IsPinnedBoundsValid(double width, double height)
+    {
+        return !double.IsNaN(width) && !double.IsNaN(height) &&
+               !double.IsInfinity(width) && !double.IsInfinity(height);
     }
 
     protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)

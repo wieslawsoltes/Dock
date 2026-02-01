@@ -1,5 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model"
                     xmlns:dmc="using:Dock.Model.Controls"
                     x:DataType="dmc:IRootDock"
                     x:CompileBindings="True">
@@ -37,10 +39,11 @@
                                Orientation="Horizontal"
                                ItemsSource="{Binding BottomPinnedDockables}"
                                IsVisible="{Binding !!BottomPinnedDockables.Count, FallbackValue={x:False}}" />
-            <Panel>
+            <controls:PinnedDockHostPanel PinnedDockDisplayMode="{Binding PinnedDockDisplayMode}"
+                                          PinnedDockAlignment="{Binding PinnedDock.Alignment, FallbackValue={x:Static core:Alignment.Unset}}">
               <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />
               <PinnedDockControl />
-            </Panel>
+            </controls:PinnedDockHostPanel>
           </DockPanel>
         </DockableControl>
       </ControlTemplate>

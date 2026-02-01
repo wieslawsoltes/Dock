@@ -20,6 +20,7 @@
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
 
     <Setter Property="PinnedDockAlignment" Value="{Binding PinnedDock.Alignment, FallbackValue={x:Static core:Alignment.Unset}}" />
+    <Setter Property="PinnedDockDisplayMode" Value="{Binding PinnedDockDisplayMode, FallbackValue={x:Static core:PinnedDockDisplayMode.Overlay}}" />
 
     <Setter Property="Template">
       <ControlTemplate>

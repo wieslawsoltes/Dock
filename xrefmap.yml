@@ -23261,6 +23261,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IFactory.TabRootControls
   nameWithType: IFactory.TabRootControls
+- uid: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
+  name: TogglePreviewPinnedDockable(IDockable)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_TogglePreviewPinnedDockable_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
+  nameWithType: IFactory.TogglePreviewPinnedDockable(IDockable)
+- uid: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable*
+  name: TogglePreviewPinnedDockable
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_TogglePreviewPinnedDockable_
+  commentId: Overload:Dock.Model.Core.IFactory.TogglePreviewPinnedDockable
+  isSpec: "True"
+  fullName: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable
+  nameWithType: IFactory.TogglePreviewPinnedDockable
 - uid: Dock.Model.Core.IFactory.ToolControls
   name: ToolControls
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_ToolControls
@@ -26627,6 +26640,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.TabRootControls
   nameWithType: FactoryBase.TabRootControls
+- uid: Dock.Model.FactoryBase.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
+  name: TogglePreviewPinnedDockable(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_TogglePreviewPinnedDockable_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.TogglePreviewPinnedDockable(IDockable)
+- uid: Dock.Model.FactoryBase.TogglePreviewPinnedDockable*
+  name: TogglePreviewPinnedDockable
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_TogglePreviewPinnedDockable_
+  commentId: Overload:Dock.Model.FactoryBase.TogglePreviewPinnedDockable
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.TogglePreviewPinnedDockable
+  nameWithType: FactoryBase.TogglePreviewPinnedDockable
 - uid: Dock.Model.FactoryBase.ToolControls
   name: ToolControls
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ToolControls

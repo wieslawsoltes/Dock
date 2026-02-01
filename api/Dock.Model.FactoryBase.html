@@ -914,7 +914,7 @@ Class FactoryBase  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="Dock_Model_FactoryBase_AddVisibleDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.AddVisibleDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
   AddVisibleDockable(IDock, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1429"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1447"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds the dockable to the visible dockables list of the dock.</p>
@@ -1023,7 +1023,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_CloseAllDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseAllDockables(Dock.Model.Core.IDockable)">
   CloseAllDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1192"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1210"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> of the dockable owner.</p>
@@ -1056,7 +1056,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_CloseDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseDockable(Dock.Model.Core.IDockable)">
   CloseDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1107"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1125"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes dockable from owner <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection, and call IDockable.OnClose.</p>
@@ -1089,7 +1089,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_CloseLeftDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseLeftDockables(Dock.Model.Core.IDockable)">
   CloseLeftDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1203"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1221"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all tabs to the left of the dockable, from the <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection of the dockable owner.</p>
@@ -1122,7 +1122,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_CloseOtherDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseOtherDockables(Dock.Model.Core.IDockable)">
   CloseOtherDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1181"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1199"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> of the dockable owner, excluding the dockable itself.</p>
@@ -1155,7 +1155,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_CloseRightDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseRightDockables(Dock.Model.Core.IDockable)">
   CloseRightDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1220"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1238"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all tabs to the right of the dockable, from the <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection of the dockable owner.</p>
@@ -1911,7 +1911,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_DockAsDocument_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.DockAsDocument(Dock.Model.Core.IDockable)">
   DockAsDocument(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1077"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1095"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Docks dockable as tabbed document in the nearest document dock.</p>
@@ -2108,7 +2108,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_FloatAllDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable)">
   FloatAllDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L985"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1003"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Floats owner dock with all dockables.</p>
@@ -2141,7 +2141,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_FloatDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable)">
   FloatDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L940"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L958"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Floats dockable.</p>
@@ -2297,7 +2297,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_HandleItemsSourceDocumentClosing_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing(Dock.Model.Core.IDockable)">
   HandleItemsSourceDocumentClosing(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1141"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1159"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles closing of documents that were generated from ItemsSource by removing the source item from the collection.</p>
@@ -2330,7 +2330,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_HideDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.HideDockable(Dock.Model.Core.IDockable)">
   HideDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1338"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1356"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Hides the dockable and stores it in <a class="xref" href="Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_HiddenDockables">HiddenDockables</a>.</p>
@@ -2363,7 +2363,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_HideDockable_System_String_" data-uid="Dock.Model.FactoryBase.HideDockable(System.String)">
   HideDockable(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1366"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1384"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Hides the dockable with the specified id.</p>
@@ -2647,7 +2647,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_InsertVisibleDockable_Dock_Model_Core_IDock_System_Int32_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.InsertVisibleDockable(Dock.Model.Core.IDock,System.Int32,Dock.Model.Core.IDockable)">
   InsertVisibleDockable(IDock, int, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1442"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1460"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Inserts the dockable to the visible dockables list of the dock at the specified index.</p>
@@ -2880,7 +2880,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_NewHorizontalDocumentDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.NewHorizontalDocumentDock(Dock.Model.Core.IDockable)">
   NewHorizontalDocumentDock(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1237"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1255"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Splits document into a new horizontal document dock.</p>
@@ -2913,7 +2913,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_NewVerticalDocumentDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.NewVerticalDocumentDock(Dock.Model.Core.IDockable)">
   NewVerticalDocumentDock(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1304"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1322"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Splits document into a new vertical document dock.</p>
@@ -3927,7 +3927,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_PinDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.PinDockable(Dock.Model.Core.IDockable)">
   PinDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L602"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L620"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Pins or unpins a dockable.</p>
@@ -3993,7 +3993,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_RemoveAllVisibleDockables_Dock_Model_Core_IDock_" data-uid="Dock.Model.FactoryBase.RemoveAllVisibleDockables(Dock.Model.Core.IDock)">
   RemoveAllVisibleDockables(IDock)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1467"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1485"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes all visible dockable of the dock.</p>
@@ -4061,7 +4061,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_RemoveVisibleDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.RemoveVisibleDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
   RemoveVisibleDockable(IDock, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1455"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1473"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes the dockable from the visible dockables list of the dock.</p>
@@ -4095,7 +4095,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_RemoveVisibleDockableAt_Dock_Model_Core_IDock_System_Int32_" data-uid="Dock.Model.FactoryBase.RemoveVisibleDockableAt(Dock.Model.Core.IDock,System.Int32)">
   RemoveVisibleDockableAt(IDock, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1482"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1500"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes the dockable at the specified index from the visible dockables list of the dock.</p>
@@ -4162,7 +4162,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_RestoreDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.RestoreDockable(Dock.Model.Core.IDockable)">
   RestoreDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1376"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1394"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Restores a hidden dockable to its original dock.</p>
@@ -4195,7 +4195,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_RestoreDockable_System_String_" data-uid="Dock.Model.FactoryBase.RestoreDockable(System.String)">
   RestoreDockable(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1406"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1424"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Restores a hidden dockable to its original dock.</p>
@@ -4268,7 +4268,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_SetDocumentDockLayoutMode_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentLayoutMode_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutMode(Dock.Model.Core.IDockable,Dock.Model.Core.DocumentLayoutMode)">
   SetDocumentDockLayoutMode(IDockable, DocumentLayoutMode)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1289"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1307"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the layout mode for the specified document dock.</p>
@@ -4304,7 +4304,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_SetDocumentDockLayoutModeMdi_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutModeMdi(Dock.Model.Core.IDockable)">
   SetDocumentDockLayoutModeMdi(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1301"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1319"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the layout mode to MDI.</p>
@@ -4337,7 +4337,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_SetDocumentDockLayoutModeTabbed_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutModeTabbed(Dock.Model.Core.IDockable)">
   SetDocumentDockLayoutModeTabbed(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1298"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1316"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the layout mode to tabbed.</p>
@@ -4370,7 +4370,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayout_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentTabLayout_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayout(Dock.Model.Core.IDockable,Dock.Model.Core.DocumentTabLayout)">
   SetDocumentDockTabsLayout(IDockable, DocumentTabLayout)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1271"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1289"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout for the specified document dock.</p>
@@ -4406,7 +4406,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutLeft_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutLeft(Dock.Model.Core.IDockable)">
   SetDocumentDockTabsLayoutLeft(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1280"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1298"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout to left.</p>
@@ -4439,7 +4439,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutRight_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutRight(Dock.Model.Core.IDockable)">
   SetDocumentDockTabsLayoutRight(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1286"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1304"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout to right.</p>
@@ -4472,7 +4472,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutTop_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutTop(Dock.Model.Core.IDockable)">
   SetDocumentDockTabsLayoutTop(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1283"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1301"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout to top.</p>
@@ -4705,11 +4705,44 @@ will become the selected dockable.</p>
 
 
 
+  <a id="Dock_Model_FactoryBase_TogglePreviewPinnedDockable_" data-uid="Dock.Model.FactoryBase.TogglePreviewPinnedDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_TogglePreviewPinnedDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)">
+  TogglePreviewPinnedDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L555"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Toggles preview for a pinned dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TogglePreviewPinnedDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to toggle.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Dock_Model_FactoryBase_UnpinDockable_" data-uid="Dock.Model.FactoryBase.UnpinDockable*"></a>
 
   <h3 id="Dock_Model_FactoryBase_UnpinDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.UnpinDockable(Dock.Model.Core.IDockable)">
   UnpinDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L931"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L949"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Unpins a dockable.</p>

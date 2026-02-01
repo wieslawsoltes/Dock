@@ -92,6 +92,8 @@ DockSettings.UsePinnedDockWindow = true;
 <h2 id="alignment-and-orientation">Alignment and orientation</h2>
 <p><code>PinnedDockControl</code> exposes <code>PinnedDockAlignment</code> to control which edge the pinned preview occupies. The default templates bind it to the owning <code>ToolDock.Alignment</code>, but you can override it when building custom templates.</p>
 <p>Pinned tab strips use <code>ToolPinnedControl.Orientation</code> (propagated to <code>ToolPinItemControl.Orientation</code>) to arrange pinned tabs vertically or horizontally.</p>
+<h2 id="pinned-tab-behavior">Pinned tab behavior</h2>
+<p>Pinned tab items toggle the preview for the selected tool. Clicking the same pinned tab again hides the preview instead of closing the dockable. Use the pinned tab context menu (or <code>IFactory.CloseDockable</code>) when you want to close or remove a pinned tool.</p>
 
 </article>
 

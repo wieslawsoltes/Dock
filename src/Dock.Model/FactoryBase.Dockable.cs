@@ -547,8 +547,26 @@ public abstract partial class FactoryBase
             }
             AddVisibleDockable(rootDock.PinnedDock!, dockable);
         }
- 
+
         InitDockable(rootDock.PinnedDock, rootDock);
+    }
+
+    /// <inheritdoc/>
+    public void TogglePreviewPinnedDockable(IDockable dockable)
+    {
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        if (rootDock.PinnedDock?.VisibleDockables?.Contains(dockable) == true)
+        {
+            HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
+            return;
+        }
+
+        PreviewPinnedDockable(dockable);
     }
 
     private Alignment GetPinnedDockableAlignment(IDockable dockable, IRootDock rootDock)

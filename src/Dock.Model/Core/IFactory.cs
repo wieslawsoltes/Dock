@@ -383,6 +383,12 @@ public partial interface IFactory
     void PreviewPinnedDockable(IDockable dockable);
 
     /// <summary>
+    /// Toggles preview for a pinned dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to toggle.</param>
+    void TogglePreviewPinnedDockable(IDockable dockable);
+
+    /// <summary>
     /// Hides all temporarily shown pinned dockables.
     /// </summary>
     /// <param name="rootDock">The owner of the pinned dockables</param>

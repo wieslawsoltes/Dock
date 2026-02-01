@@ -81,11 +81,74 @@ public class PinnedDockControlTests
         }
     }
 
-    private static (Window window, PinnedDockControl control, Tool tool, Grid grid) CreatePinnedDockControl(double width, double height)
+    [AvaloniaFact]
+    public void PinnedDockControl_UsesDockableOverride_ForInlineLayout()
+    {
+        var previousUsePinnedWindow = DockSettings.UsePinnedDockWindow;
+        DockSettings.UsePinnedDockWindow = false;
+
+        try
+        {
+            var (window, _, _, grid) = CreatePinnedDockControl(
+                200,
+                150,
+                PinnedDockDisplayMode.Overlay,
+                PinnedDockDisplayMode.Inline);
+
+            try
+            {
+                Assert.Equal(2, grid.ColumnDefinitions.Count);
+            }
+            finally
+            {
+                window.Close();
+            }
+        }
+        finally
+        {
+            DockSettings.UsePinnedDockWindow = previousUsePinnedWindow;
+        }
+    }
+
+    [AvaloniaFact]
+    public void PinnedDockControl_InlineResize_UpdatesPinnedBounds()
+    {
+        var previousUsePinnedWindow = DockSettings.UsePinnedDockWindow;
+        DockSettings.UsePinnedDockWindow = false;
+
+        try
+        {
+            var (window, control, tool, grid) = CreatePinnedDockControl(200, 150, PinnedDockDisplayMode.Inline);
+            try
+            {
+                var resized = control.TryResizeInlinePinnedDock(new Vector(40, 0));
+                Assert.True(resized);
+
+                tool.GetPinnedBounds(out _, out _, out var width, out _);
+                Assert.Equal(240, width, 3);
+                Assert.Equal(240, grid.ColumnDefinitions[0].Width.Value, 3);
+            }
+            finally
+            {
+                window.Close();
+            }
+        }
+        finally
+        {
+            DockSettings.UsePinnedDockWindow = previousUsePinnedWindow;
+        }
+    }
+
+    private static (Window window, PinnedDockControl control, Tool tool, Grid grid) CreatePinnedDockControl(
+        double width,
+        double height,
+        PinnedDockDisplayMode rootDisplayMode = PinnedDockDisplayMode.Overlay,
+        PinnedDockDisplayMode? dockableOverride = null)
     {
         var factory = new Factory();
         var root = new RootDock { VisibleDockables = factory.CreateList<IDockable>() };
         root.Factory = factory;
+        root.PinnedDockDisplayMode = rootDisplayMode;
 
         var pinnedDock = new ToolDock
         {
@@ -96,6 +159,7 @@ public class PinnedDockControlTests
         root.PinnedDock = pinnedDock;
 
         var tool = new Tool();
+        tool.PinnedDockDisplayModeOverride = dockableOverride;
         pinnedDock.VisibleDockables.Add(tool);
         tool.SetPinnedBounds(0, 0, width, height);
 

@@ -59,7 +59,11 @@ public class PinnedDockHostPanel : Panel
         }
 
         var (main, pinned) = ResolveChildren();
-        if (GetEffectiveDisplayMode() != PinnedDockDisplayMode.Inline || pinned is null || PinnedDockAlignment == Alignment.Unset)
+        var alignment = GetEffectiveAlignment(pinned);
+        if (GetEffectiveDisplayMode() != PinnedDockDisplayMode.Inline
+            || pinned is null
+            || alignment == Alignment.Unset
+            || !HasPinnedDockable(pinned))
         {
             return MeasureOverlay(availableSize);
         }
@@ -67,11 +71,11 @@ public class PinnedDockHostPanel : Panel
         pinned.Measure(availableSize);
         var pinnedSize = GetPinnedSize(pinned);
 
-        var remainingSize = GetRemainingSize(availableSize, pinnedSize);
+        var remainingSize = GetRemainingSize(availableSize, pinnedSize, alignment);
         main?.Measure(remainingSize);
 
         var mainSize = main?.DesiredSize ?? new Size();
-        return GetDesiredSize(mainSize, pinnedSize);
+        return GetDesiredSize(mainSize, pinnedSize, alignment);
     }
 
     /// <inheritdoc/>
@@ -83,7 +87,11 @@ public class PinnedDockHostPanel : Panel
         }
 
         var (main, pinned) = ResolveChildren();
-        if (GetEffectiveDisplayMode() != PinnedDockDisplayMode.Inline || pinned is null || PinnedDockAlignment == Alignment.Unset)
+        var alignment = GetEffectiveAlignment(pinned);
+        if (GetEffectiveDisplayMode() != PinnedDockDisplayMode.Inline
+            || pinned is null
+            || alignment == Alignment.Unset
+            || !HasPinnedDockable(pinned))
         {
             ArrangeOverlay(finalSize);
             return finalSize;
@@ -99,7 +107,7 @@ public class PinnedDockHostPanel : Panel
         Rect pinnedRect;
         Rect mainRect;
 
-        switch (PinnedDockAlignment)
+        switch (alignment)
         {
             case Alignment.Left:
                 pinnedRect = new Rect(0, 0, pinnedWidth, finalSize.Height);
@@ -167,11 +175,33 @@ public class PinnedDockHostPanel : Panel
         return (main, pinned);
     }
 
+    private bool HasPinnedDockable(Control pinned)
+    {
+        if (!pinned.IsVisible)
+        {
+            return false;
+        }
+
+        if (DataContext is not IRootDock rootDock)
+        {
+            return true;
+        }
+
+        var pinnedDock = rootDock.PinnedDock;
+        if (pinnedDock is null)
+        {
+            return false;
+        }
+
+        var visibleDockables = pinnedDock.VisibleDockables;
+        return visibleDockables is not null && visibleDockables.Count > 0;
+    }
+
     private PinnedDockDisplayMode GetEffectiveDisplayMode()
     {
         if (DataContext is IRootDock rootDock)
         {
-            var dockable = rootDock.PinnedDock?.VisibleDockables?.FirstOrDefault();
+            var dockable = GetPinnedDockable(rootDock);
             if (dockable?.PinnedDockDisplayModeOverride is { } overrideMode)
             {
                 return overrideMode;
@@ -179,6 +209,42 @@ public class PinnedDockHostPanel : Panel
         }
 
         return PinnedDockDisplayMode;
+    }
+
+    private static IDockable? GetPinnedDockable(IRootDock rootDock)
+    {
+        var pinnedDock = rootDock.PinnedDock;
+        if (pinnedDock is null)
+        {
+            return null;
+        }
+
+        if (pinnedDock.ActiveDockable is { } activeDockable
+            && activeDockable is not ISplitter
+            && pinnedDock.VisibleDockables?.Contains(activeDockable) == true)
+        {
+            return activeDockable;
+        }
+
+        return pinnedDock.VisibleDockables?.FirstOrDefault(dockable => dockable is not ISplitter);
+    }
+
+    private Alignment GetEffectiveAlignment(Control? pinned)
+    {
+        if (pinned is PinnedDockControl pinnedControl && pinnedControl.PinnedDockAlignment != Alignment.Unset)
+        {
+            return pinnedControl.PinnedDockAlignment;
+        }
+
+        if (DataContext is IRootDock rootDock && rootDock.PinnedDock is { } pinnedDock)
+        {
+            if (pinnedDock.Alignment != Alignment.Unset)
+            {
+                return pinnedDock.Alignment;
+            }
+        }
+
+        return PinnedDockAlignment;
     }
 
     private Size MeasureOverlay(Size availableSize)
@@ -204,9 +270,9 @@ public class PinnedDockHostPanel : Panel
         }
     }
 
-    private Size GetRemainingSize(Size availableSize, Size pinnedSize)
+    private static Size GetRemainingSize(Size availableSize, Size pinnedSize, Alignment alignment)
     {
-        return PinnedDockAlignment switch
+        return alignment switch
         {
             Alignment.Left => new Size(Math.Max(0, availableSize.Width - pinnedSize.Width), availableSize.Height),
             Alignment.Right => new Size(Math.Max(0, availableSize.Width - pinnedSize.Width), availableSize.Height),
@@ -216,9 +282,9 @@ public class PinnedDockHostPanel : Panel
         };
     }
 
-    private Size GetDesiredSize(Size mainSize, Size pinnedSize)
+    private static Size GetDesiredSize(Size mainSize, Size pinnedSize, Alignment alignment)
     {
-        return PinnedDockAlignment switch
+        return alignment switch
         {
             Alignment.Left => new Size(mainSize.Width + pinnedSize.Width, Math.Max(mainSize.Height, pinnedSize.Height)),
             Alignment.Right => new Size(mainSize.Width + pinnedSize.Width, Math.Max(mainSize.Height, pinnedSize.Height)),

@@ -72,6 +72,8 @@ public class PinnedDockControl : TemplatedControl
     private IDockable? _trackedDockable;
     private AvaloniaObject? _trackedAvaloniaDockable;
     private INotifyPropertyChanged? _trackedNotifyDockable;
+    private bool _isPinnedDockEmpty = true;
+    private bool _skipPinnedBoundsUpdate;
 
     static PinnedDockControl()
     {
@@ -202,6 +204,7 @@ public class PinnedDockControl : TemplatedControl
         }
 
         ApplyPinnedDockSize();
+        InvalidateMeasure();
     }
 
     /// <inheritdoc/>
@@ -221,6 +224,13 @@ public class PinnedDockControl : TemplatedControl
         LayoutUpdated += OnLayoutUpdated;
         this.AttachedToVisualTree += OnAttached;
         this.DetachedFromVisualTree += OnDetached;
+    }
+
+    /// <inheritdoc/>
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        ApplyPinnedDockSize();
+        return base.MeasureOverride(availableSize);
     }
 
     private void OnAttached(object? sender, VisualTreeAttachmentEventArgs e)
@@ -244,6 +254,7 @@ public class PinnedDockControl : TemplatedControl
     private void OnLayoutUpdated(object? sender, EventArgs e)
     {
         UpdatePinnedDockableSubscription();
+        UpdatePinnedDockEmptyState();
         var effectiveMode = GetEffectiveDisplayMode();
         if (effectiveMode != _lastEffectiveDisplayMode)
         {
@@ -251,9 +262,34 @@ public class PinnedDockControl : TemplatedControl
             OnDisplayModeChanged();
         }
 
-        ApplyPinnedDockSize();
         UpdatePinnedDockableBounds();
         UpdateWindow();
+    }
+
+    private void UpdatePinnedDockEmptyState()
+    {
+        var isEmpty = true;
+        if (DataContext is IRootDock rootDock)
+        {
+            var pinnedDock = rootDock.PinnedDock;
+            var visibleDockables = pinnedDock?.VisibleDockables;
+            isEmpty = visibleDockables is null || visibleDockables.Count == 0;
+        }
+
+        if (isEmpty == _isPinnedDockEmpty)
+        {
+            return;
+        }
+
+        _isPinnedDockEmpty = isEmpty;
+        if (isEmpty)
+        {
+            _lastPinnedDockable = null;
+            _lastPinnedWidth = double.NaN;
+            _lastPinnedHeight = double.NaN;
+            _skipPinnedBoundsUpdate = false;
+        }
+        InvalidateMeasure();
     }
 
     private void UpdatePinnedDockableSubscription()
@@ -270,6 +306,9 @@ public class PinnedDockControl : TemplatedControl
             return;
         }
 
+        _skipPinnedBoundsUpdate = true;
+        ResetPinnedDockSize();
+        InvalidateMeasure();
         ClearPinnedDockableSubscription();
 
         if (dockable is null)
@@ -288,6 +327,8 @@ public class PinnedDockControl : TemplatedControl
             _trackedNotifyDockable = notifyDockable;
             _trackedNotifyDockable.PropertyChanged += OnDockablePropertyChanged;
         }
+
+        UpdateGrid();
     }
 
     private void ClearPinnedDockableSubscription()
@@ -501,6 +542,16 @@ public class PinnedDockControl : TemplatedControl
             return;
         }
 
+        var dockableChanged = !ReferenceEquals(_lastPinnedDockable, dockable);
+        if (dockableChanged)
+        {
+            ResetPinnedDockSize();
+            _lastPinnedDockable = dockable;
+            _lastPinnedWidth = double.NaN;
+            _lastPinnedHeight = double.NaN;
+            _skipPinnedBoundsUpdate = true;
+        }
+
         dockable.GetPinnedBounds(out _, out _, out var width, out var height);
         var isOverlay = IsOverlayDisplayMode();
 
@@ -519,6 +570,7 @@ public class PinnedDockControl : TemplatedControl
                 SetColumnSize(_pinnedDockGrid.ColumnDefinitions, 0, width);
                 _lastPinnedDockable = dockable;
                 _lastPinnedWidth = width;
+                InvalidateMeasure();
                 break;
             case Alignment.Right:
                 if (!IsValidSize(width))
@@ -533,6 +585,7 @@ public class PinnedDockControl : TemplatedControl
                 SetColumnSize(_pinnedDockGrid.ColumnDefinitions, rightIndex, width);
                 _lastPinnedDockable = dockable;
                 _lastPinnedWidth = width;
+                InvalidateMeasure();
                 break;
             case Alignment.Top:
                 if (!IsValidSize(height))
@@ -546,6 +599,7 @@ public class PinnedDockControl : TemplatedControl
                 SetRowSize(_pinnedDockGrid.RowDefinitions, 0, height);
                 _lastPinnedDockable = dockable;
                 _lastPinnedHeight = height;
+                InvalidateMeasure();
                 break;
             case Alignment.Bottom:
                 if (!IsValidSize(height))
@@ -560,10 +614,42 @@ public class PinnedDockControl : TemplatedControl
                 SetRowSize(_pinnedDockGrid.RowDefinitions, bottomIndex, height);
                 _lastPinnedDockable = dockable;
                 _lastPinnedHeight = height;
+                InvalidateMeasure();
                 break;
             default:
                 break;
         }
+    }
+
+    private void ResetPinnedDockSize()
+    {
+        if (_pinnedDockGrid is null)
+        {
+            return;
+        }
+
+        var isOverlay = IsOverlayDisplayMode();
+
+        switch (PinnedDockAlignment)
+        {
+            case Alignment.Unset:
+            case Alignment.Left:
+                ResetColumnSize(_pinnedDockGrid.ColumnDefinitions, 0);
+                break;
+            case Alignment.Right:
+                ResetColumnSize(_pinnedDockGrid.ColumnDefinitions, isOverlay ? 2 : 1);
+                break;
+            case Alignment.Top:
+                ResetRowSize(_pinnedDockGrid.RowDefinitions, 0);
+                break;
+            case Alignment.Bottom:
+                ResetRowSize(_pinnedDockGrid.RowDefinitions, isOverlay ? 2 : 1);
+                break;
+            default:
+                break;
+        }
+
+        InvalidateMeasure();
     }
 
     private void UpdatePinnedDockableBounds()
@@ -582,6 +668,14 @@ public class PinnedDockControl : TemplatedControl
         dockable.GetPinnedBounds(out _, out _, out var storedWidth, out var storedHeight);
 
         var hasStoredBounds = IsValidSize(storedWidth) && IsValidSize(storedHeight);
+        if (_skipPinnedBoundsUpdate)
+        {
+            _skipPinnedBoundsUpdate = false;
+            if (!_isResizingPinnedDock && !hasStoredBounds)
+            {
+                return;
+            }
+        }
         if (!_isResizingPinnedDock && hasStoredBounds)
         {
             return;
@@ -608,7 +702,20 @@ public class PinnedDockControl : TemplatedControl
 
     private static IDockable? GetPinnedDockable(IRootDock rootDock)
     {
-        return rootDock.PinnedDock?.VisibleDockables?.FirstOrDefault();
+        var pinnedDock = rootDock.PinnedDock;
+        if (pinnedDock is null)
+        {
+            return null;
+        }
+
+        if (pinnedDock.ActiveDockable is { } activeDockable
+            && activeDockable is not ISplitter
+            && pinnedDock.VisibleDockables?.Contains(activeDockable) == true)
+        {
+            return activeDockable;
+        }
+
+        return pinnedDock.VisibleDockables?.FirstOrDefault(dockable => dockable is not ISplitter);
     }
 
     private static void SetColumnSize(ColumnDefinitions definitions, int index, double size)
@@ -621,6 +728,16 @@ public class PinnedDockControl : TemplatedControl
         definitions[index].Width = new GridLength(size, GridUnitType.Pixel);
     }
 
+    private static void ResetColumnSize(ColumnDefinitions definitions, int index)
+    {
+        if (index < 0 || index >= definitions.Count)
+        {
+            return;
+        }
+
+        definitions[index].Width = GridLength.Auto;
+    }
+
     private static void SetRowSize(RowDefinitions definitions, int index, double size)
     {
         if (index < 0 || index >= definitions.Count)
@@ -629,6 +746,16 @@ public class PinnedDockControl : TemplatedControl
         }
 
         definitions[index].Height = new GridLength(size, GridUnitType.Pixel);
+    }
+
+    private static void ResetRowSize(RowDefinitions definitions, int index)
+    {
+        if (index < 0 || index >= definitions.Count)
+        {
+            return;
+        }
+
+        definitions[index].Height = GridLength.Auto;
     }
 
     private static bool IsColumnSizeApplied(ColumnDefinitions definitions, int index, double size)

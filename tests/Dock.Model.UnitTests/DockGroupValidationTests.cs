@@ -32,6 +32,8 @@ public class DockGroupValidationTests
         public bool CanClose { get; set; } = true;
         public bool CanPin { get; set; } = true;
         public bool KeepPinnedDockableVisible { get; set; }
+        public PinnedDockDisplayMode? PinnedDockDisplayModeOverride { get; set; }
+        public DockRect? PinnedBounds { get; set; }
         public bool CanFloat { get; set; } = true;
         public bool CanDrag { get; set; } = true;
         public bool CanDrop { get; set; } = true;

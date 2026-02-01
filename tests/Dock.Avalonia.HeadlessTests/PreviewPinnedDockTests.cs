@@ -347,4 +347,79 @@ public class PreviewPinnedDockTests
         Assert.Equal(root, tool.Owner);
         Assert.Null(tool.OriginalOwner);
     }
+
+    [AvaloniaFact]
+    public void TogglePreviewPinnedDockable_Hides_Pinned_Preview()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var toolDock = new ToolDock { Alignment = Alignment.Left, VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, toolDock);
+        var tool = new Tool();
+        factory.AddDockable(toolDock, tool);
+
+        factory.PinDockable(tool);
+        factory.PreviewPinnedDockable(tool);
+        factory.TogglePreviewPinnedDockable(tool);
+
+        Assert.Null(root.PinnedDock);
+        Assert.Contains(tool, root.LeftPinnedDockables!);
+        Assert.DoesNotContain(tool, toolDock.VisibleDockables!);
+        Assert.Equal(toolDock, tool.Owner);
+        Assert.Null(tool.OriginalOwner);
+    }
+
+    [AvaloniaFact]
+    public void TogglePreviewPinnedDockable_Hides_Pinned_Preview_When_CanClose_False()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            LeftPinnedDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var toolDock = new ToolDock { Alignment = Alignment.Left, VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, toolDock);
+        var tool = new Tool { CanClose = false };
+        factory.AddDockable(toolDock, tool);
+
+        factory.PinDockable(tool);
+        factory.PreviewPinnedDockable(tool);
+        factory.TogglePreviewPinnedDockable(tool);
+
+        Assert.Null(root.PinnedDock);
+        Assert.Contains(tool, root.LeftPinnedDockables!);
+        Assert.DoesNotContain(tool, toolDock.VisibleDockables!);
+        Assert.Equal(toolDock, tool.Owner);
+        Assert.Null(tool.OriginalOwner);
+    }
+
+    [AvaloniaFact]
+    public void TogglePreviewPinnedDockable_Hides_Unpinned_Preview()
+    {
+        var factory = new Factory();
+        var root = new RootDock { VisibleDockables = factory.CreateList<IDockable>() };
+        root.Factory = factory;
+
+        var toolDock = new ToolDock { Alignment = Alignment.Right, VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, toolDock);
+        var tool = new Tool();
+        factory.AddDockable(toolDock, tool);
+
+        factory.PreviewPinnedDockable(tool);
+        factory.TogglePreviewPinnedDockable(tool);
+
+        Assert.Null(root.PinnedDock);
+        Assert.Contains(tool, toolDock.VisibleDockables!);
+        Assert.Equal(toolDock, tool.Owner);
+        Assert.Null(tool.OriginalOwner);
+    }
 }

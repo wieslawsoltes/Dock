@@ -29,6 +29,8 @@ Dockable items such as documents, tools and docks implement the `IDockable` inte
 | `CanClose` | Whether the user can close the dockable via UI commands. |
 | `CanPin` | Allows pinning and unpinning of tools. |
 | `KeepPinnedDockableVisible` | Keeps pinned previews visible instead of auto-hiding. |
+| `PinnedDockDisplayModeOverride` | Optional override for how pinned previews are displayed (`Overlay` or `Inline`). When `null`, the root dock setting is used. |
+| `PinnedBounds` | Optional stored bounds for pinned previews. Used to persist inline/overlay preview sizes. |
 | `CanFloat` | Controls if the item may be detached into a floating window. |
 | `CanDrag` | Enables dragging the dockable to another position. |
 | `CanDrop` | Determines if other dockables can be dropped onto this one. |

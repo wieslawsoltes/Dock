@@ -26,6 +26,7 @@ In addition to the properties above, `IRootDock` provides settings that control 
 
 | Property | Type | Default | Purpose |
 | -------- | ---- | ------- | ------- |
+| `PinnedDockDisplayMode` | `PinnedDockDisplayMode` | `Overlay` | Controls whether pinned previews overlay content or take layout space. |
 | `EnableAdaptiveGlobalDockTargets` | `bool` | `false` | When enabled, reduces global dock targets to only show options where the layout would change. Recommended for dashboards and widget areas to simplify the user experience by reducing the number of drop options presented. |
 
 This setting must be configured on your root dock instance and is particularly useful in scenarios where you want to minimize visual clutter and provide a more focused docking experience.

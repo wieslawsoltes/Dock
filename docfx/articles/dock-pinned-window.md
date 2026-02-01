@@ -16,3 +16,7 @@ In managed window mode (`DockSettings.UseManagedWindows = true`), pinned windows
 `PinnedDockControl` exposes `PinnedDockAlignment` to control which edge the pinned preview occupies. The default templates bind it to the owning `ToolDock.Alignment`, but you can override it when building custom templates.
 
 Pinned tab strips use `ToolPinnedControl.Orientation` (propagated to `ToolPinItemControl.Orientation`) to arrange pinned tabs vertically or horizontally.
+
+## Pinned tab behavior
+
+Pinned tab items toggle the preview for the selected tool. Clicking the same pinned tab again hides the preview instead of closing the dockable. Use the pinned tab context menu (or `IFactory.CloseDockable`) when you want to close or remove a pinned tool.

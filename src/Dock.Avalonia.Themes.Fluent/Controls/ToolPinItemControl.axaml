@@ -78,7 +78,7 @@
                       BorderBrush="Transparent"
                       BorderThickness="0"
                       CornerRadius="0"
-                      Command="{Binding Owner.Factory.PreviewPinnedDockable}"
+                      Command="{Binding Owner.Factory.TogglePreviewPinnedDockable}"
                       CommandParameter="{Binding}"
                       IsVisible="{Binding CanPin}">
                 <TextBlock Text="{Binding Title}"

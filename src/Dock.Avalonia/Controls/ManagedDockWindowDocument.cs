@@ -78,6 +78,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         set => SetProperty(ref _dataType, value);
     }
 
+    /// <inheritdoc />
     public DockRect MdiBounds
     {
         get => _mdiBounds;
@@ -90,18 +91,21 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         }
     }
 
+    /// <inheritdoc />
     public MdiWindowState MdiState
     {
         get => _mdiState;
         set => SetProperty(ref _mdiState, value);
     }
 
+    /// <inheritdoc />
     public int MdiZIndex
     {
         get => _mdiZIndex;
         set => SetProperty(ref _mdiZIndex, value);
     }
 
+    /// <inheritdoc />
     public override bool OnClose()
     {
         if (_window is null)
@@ -119,6 +123,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         return true;
     }
 
+    /// <inheritdoc />
     public bool Match(object? data)
     {
         if (DataType is null)
@@ -129,13 +134,16 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         return DataType.IsInstanceOfType(data);
     }
 
+    /// <inheritdoc />
     public Control? Build(object? data) => Build(data, null);
 
+    /// <inheritdoc />
     public Control? Build(object? data, Control? existing)
     {
         return BuildContent(Content, this, existing);
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         DetachFocusedDockable();
@@ -145,6 +153,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         Content = null;
     }
 
+    /// <inheritdoc />
     protected override void OnPropertyChanged(string propertyName)
     {
         base.OnPropertyChanged(propertyName);

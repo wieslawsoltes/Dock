@@ -32,12 +32,14 @@ public sealed class ManagedWindowDock : ManagedDockableBase, IDock
         IsCollapsable = false;
     }
 
+    /// <inheritdoc />
     public IList<IDockable>? VisibleDockables
     {
         get => _visibleDockables;
         set => SetProperty(ref _visibleDockables, value);
     }
 
+    /// <inheritdoc />
     public IDockable? ActiveDockable
     {
         get => _activeDockable;
@@ -59,12 +61,14 @@ public sealed class ManagedWindowDock : ManagedDockableBase, IDock
         }
     }
 
+    /// <inheritdoc />
     public IDockable? DefaultDockable
     {
         get => _defaultDockable;
         set => SetProperty(ref _defaultDockable, value);
     }
 
+    /// <inheritdoc />
     public IDockable? FocusedDockable
     {
         get => _focusedDockable;
@@ -77,36 +81,46 @@ public sealed class ManagedWindowDock : ManagedDockableBase, IDock
         }
     }
 
+    /// <inheritdoc />
     public bool IsActive
     {
         get => _isActive;
         set => SetProperty(ref _isActive, value);
     }
 
+    /// <inheritdoc />
     public int OpenedDockablesCount
     {
         get => _openedDockablesCount;
         set => SetProperty(ref _openedDockablesCount, value);
     }
 
+    /// <inheritdoc />
     public bool CanCloseLastDockable
     {
         get => _canCloseLastDockable;
         set => SetProperty(ref _canCloseLastDockable, value);
     }
 
+    /// <inheritdoc />
     public bool CanGoBack => false;
 
+    /// <inheritdoc />
     public bool CanGoForward => false;
 
+    /// <inheritdoc />
     public ICommand GoBack => s_noOpCommand;
 
+    /// <inheritdoc />
     public ICommand GoForward => s_noOpCommand;
 
+    /// <inheritdoc />
     public ICommand Navigate => s_noOpCommand;
 
+    /// <inheritdoc />
     public ICommand Close => s_noOpCommand;
 
+    /// <inheritdoc />
     public bool EnableGlobalDocking
     {
         get => _enableGlobalDocking;

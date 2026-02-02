@@ -42,6 +42,9 @@ public sealed class ManagedHostWindow : IHostWindow
     /// <inheritdoc />
     public IDockWindow? Window { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ManagedHostWindow"/> class.
+    /// </summary>
     public ManagedHostWindow()
         : this(new DockManagerOptions())
     {

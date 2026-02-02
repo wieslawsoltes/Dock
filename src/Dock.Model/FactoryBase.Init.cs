@@ -112,6 +112,11 @@ public abstract partial class FactoryBase
                 InitPinnedDockables(rootDock, rootDock.BottomPinnedDockables);
             }
 
+            if (rootDock.PinnedDock is not null)
+            {
+                InitDockable(rootDock.PinnedDock, rootDock);
+            }
+
             if (rootDock.Windows is not null)
             {
                 foreach (var child in rootDock.Windows)

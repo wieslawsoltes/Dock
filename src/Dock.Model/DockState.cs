@@ -55,6 +55,11 @@ public class DockState : IDockState
                 SaveDockables(rootDock.BottomPinnedDockables);
             }
 
+            if (rootDock.PinnedDock is { } pinnedDock)
+            {
+                Save(pinnedDock);
+            }
+
             if (rootDock.Windows is { })
             {
                 SaveWindows(rootDock.Windows);
@@ -100,6 +105,11 @@ public class DockState : IDockState
             if (rootDock.BottomPinnedDockables is { })
             {
                 RestoreDockables(rootDock.BottomPinnedDockables);
+            }
+
+            if (rootDock.PinnedDock is { } pinnedDock)
+            {
+                Restore(pinnedDock);
             }
 
             if (rootDock.Windows is { })

@@ -232,7 +232,7 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         var relativePoint = DockHelpers.GetScreenPoint(relativeTo, point);
-        if (DockSettings.UseManagedWindows && TryGetManagedScreenPosition(relativeTo, point, out var managedPoint))
+        if (DockHelpers.IsManagedWindowHostingEnabled(relativeTo) && TryGetManagedScreenPosition(relativeTo, point, out var managedPoint))
         {
             relativePoint = managedPoint;
         }
@@ -263,7 +263,7 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
-        if (DockSettings.UseManagedWindows && TryGetManagedScreenPosition(relativeTo, point, out var managedPoint))
+        if (DockHelpers.IsManagedWindowHostingEnabled(relativeTo) && TryGetManagedScreenPosition(relativeTo, point, out var managedPoint))
         {
             screenPoint = managedPoint;
         }
@@ -345,7 +345,7 @@ internal abstract class DockManagerState : IDockManagerState
         var adjustedScreen = new PixelPoint(screen.X + dragOffset.X, screen.Y + dragOffset.Y);
         var pointer = new Point(adjustedScreen.X, adjustedScreen.Y);
 
-        if (DockSettings.UseManagedWindows
+        if (DockHelpers.IsManagedWindowHostingEnabled(inputActiveDockControl)
             && TryGetManagedPointerPosition(inputActiveDockControl, factory, point, dragOffset, out var managedPointer))
         {
             pointer = managedPointer;

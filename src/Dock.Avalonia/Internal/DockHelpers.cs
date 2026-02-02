@@ -20,6 +20,49 @@ namespace Dock.Avalonia.Internal;
 /// </summary>
 internal static class DockHelpers
 {
+    public static DockFloatingWindowHostMode ResolveFloatingWindowHostMode(Visual? visual)
+    {
+        if (visual is null)
+        {
+            return DockSettings.ResolveFloatingWindowHostMode();
+        }
+
+        var dockControl = visual as DockControl ?? visual.FindAncestorOfType<DockControl>();
+        var root = dockControl?.Layout as IRootDock;
+        return DockSettings.ResolveFloatingWindowHostMode(root);
+    }
+
+    public static DockFloatingWindowHostMode ResolveFloatingWindowHostMode(IDockable? dockable)
+    {
+        if (dockable is IRootDock rootDock)
+        {
+            return DockSettings.ResolveFloatingWindowHostMode(rootDock);
+        }
+
+        if (dockable is { Owner: not null, Owner: IRootDock ownerRoot })
+        {
+            return DockSettings.ResolveFloatingWindowHostMode(ownerRoot);
+        }
+
+        if (dockable?.Owner is { Factory: { } factory })
+        {
+            var root = factory.FindRoot(dockable, _ => true);
+            return DockSettings.ResolveFloatingWindowHostMode(root);
+        }
+
+        return DockSettings.ResolveFloatingWindowHostMode();
+    }
+
+    public static bool IsManagedWindowHostingEnabled(Visual? visual)
+    {
+        return ResolveFloatingWindowHostMode(visual) == DockFloatingWindowHostMode.Managed;
+    }
+
+    public static bool IsManagedWindowHostingEnabled(IDockable? dockable)
+    {
+        return ResolveFloatingWindowHostMode(dockable) == DockFloatingWindowHostMode.Managed;
+    }
+
     public static Point GetScreenPoint(Visual visual, Point point)
     {
         // var scaling = (visual.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1.0;

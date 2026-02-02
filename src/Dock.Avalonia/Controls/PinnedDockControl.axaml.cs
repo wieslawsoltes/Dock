@@ -391,7 +391,7 @@ public class PinnedDockControl : TemplatedControl
             return;
         }
 
-        if (DockSettings.UseManagedWindows)
+        if (DockSettings.IsManagedWindowHostingEnabled(root))
         {
             UpdateManagedWindow(root);
             return;

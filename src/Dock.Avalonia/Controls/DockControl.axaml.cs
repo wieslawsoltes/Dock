@@ -411,7 +411,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
                     return factory();
                 }
 
-                return DockSettings.UseManagedWindows
+                var hostMode = DockSettings.ResolveFloatingWindowHostMode(layout as IRootDock);
+                return hostMode == DockFloatingWindowHostMode.Managed
                     ? new ManagedHostWindow(_dockManagerOptions)
                     : new HostWindow(_dockManagerOptions);
             }
@@ -529,7 +530,9 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             return;
         }
 
-        if (EnableManagedWindowLayer && DockSettings.UseManagedWindows && layout?.Factory is { } factory)
+        if (EnableManagedWindowLayer
+            && DockSettings.IsManagedWindowHostingEnabled(layout as IRootDock)
+            && layout?.Factory is { } factory)
         {
             if (!ReferenceEquals(_managedLayerFactory, factory))
             {
@@ -984,7 +987,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         }
 
         window.SetActive();
-        window.Present(false);
+        window.Present(window.IsModal);
     }
 
     /// <inheritdoc/>

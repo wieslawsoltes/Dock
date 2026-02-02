@@ -126,6 +126,17 @@ public interface IDockable : IControlRecyclingIdProvider
     bool KeepPinnedDockableVisible { get; set; }
 
     /// <summary>
+    /// Gets or sets an optional pinned dock display mode override.
+    /// When null, the root display mode is used.
+    /// </summary>
+    PinnedDockDisplayMode? PinnedDockDisplayModeOverride { get; set; }
+
+    /// <summary>
+    /// Gets or sets the stored bounds for pinned previews.
+    /// </summary>
+    DockRect? PinnedBounds { get; set; }
+
+    /// <summary>
     /// Gets or sets if the dockable can be floated.
     /// </summary>
     bool CanFloat { get; set; }

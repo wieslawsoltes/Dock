@@ -178,6 +178,14 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | Property | Type | Description |
 | --- | --- | --- |
 | `PinnedDockAlignment` | `Alignment` | Edge alignment for the pinned preview. |
+| `PinnedDockDisplayMode` | `PinnedDockDisplayMode` | Controls whether pinned previews overlay content or take layout space. |
+
+### PinnedDockHostPanel
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `PinnedDockDisplayMode` | `PinnedDockDisplayMode` | Controls whether the pinned preview overlays content or takes layout space. |
+| `PinnedDockAlignment` | `Alignment` | Edge alignment used when the preview is arranged inline. |
 
 ### DragPreviewControl
 

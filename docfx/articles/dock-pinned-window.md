@@ -11,6 +11,10 @@ When enabled the `PinnedDockControl` places the preview content inside a lightwe
 
 In managed window mode (`DockSettings.UseManagedWindows = true`), pinned windows render inside `ManagedWindowLayer` instead of a native window.
 
+## Pinned preview layout
+
+Pinned previews can either overlay the main content or take real layout space. Configure the root dock with `PinnedDockDisplayMode` (`Overlay` or `Inline`) to pick the default behavior. Individual dockables can override this by setting `PinnedDockDisplayModeOverride` to force a specific mode for that tool or document.
+
 ## Alignment and orientation
 
 `PinnedDockControl` exposes `PinnedDockAlignment` to control which edge the pinned preview occupies. The default templates bind it to the owning `ToolDock.Alignment`, but you can override it when building custom templates.

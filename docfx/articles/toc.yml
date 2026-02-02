@@ -92,8 +92,10 @@
     href: dock-window-owner.md
   - name: Host window locators
     href: dock-host-window-locator.md
-  - name: Pinned dock window
-    href: dock-pinned-window.md
+- name: Pinned dock window
+  href: dock-pinned-window.md
+- name: Inline pinned previews
+  href: pinned-dock-inline-display.md
 - name: Styling & customization
   items:
   - name: DataTemplates and custom dock types

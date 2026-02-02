@@ -21,6 +21,7 @@ public class RootDock : DockBase, IRootDock
     private IList<IDockable>? _topPinnedDockables;
     private IList<IDockable>? _bottomPinnedDockables;
     private IToolDock? _pinnedDock;
+    private PinnedDockDisplayMode _pinnedDockDisplayMode = PinnedDockDisplayMode.Overlay;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
     private bool _enableAdaptiveGlobalDockTargets;
@@ -88,6 +89,14 @@ public class RootDock : DockBase, IRootDock
     {
         get => _pinnedDock;
         set => Set(ref _pinnedDock, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public PinnedDockDisplayMode PinnedDockDisplayMode
+    {
+        get => _pinnedDockDisplayMode;
+        set => Set(ref _pinnedDockDisplayMode, value);
     }
 
     /// <inheritdoc/>

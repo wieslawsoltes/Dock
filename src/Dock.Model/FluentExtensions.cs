@@ -569,6 +569,14 @@ public static class FluentExtensions
     /// <returns>The same instance for chaining.</returns>
     public static T WithKeepPinnedDockableVisible<T>(this T dockable, bool value) where T : IDockable { dockable.KeepPinnedDockableVisible = value; return dockable; }
     /// <summary>
+    /// Sets the <see cref="IDockable.PinnedDockDisplayModeOverride"/> override.
+    /// </summary>
+    /// <typeparam name="T">Dockable type.</typeparam>
+    /// <param name="dockable">The instance to configure.</param>
+    /// <param name="mode">Pinned dock display mode override.</param>
+    /// <returns>The same instance for chaining.</returns>
+    public static T WithPinnedDockDisplayModeOverride<T>(this T dockable, PinnedDockDisplayMode? mode) where T : IDockable { dockable.PinnedDockDisplayModeOverride = mode; return dockable; }
+    /// <summary>
     /// Sets the <see cref="IDockable.CanFloat"/> flag.
     /// </summary>
     /// <typeparam name="T">Dockable type.</typeparam>
@@ -809,6 +817,13 @@ public static class FluentExtensions
     /// <param name="pinned">Pinned tool dock.</param>
     /// <returns>The same root dock.</returns>
     public static IRootDock WithPinnedDock(this IRootDock dock, IToolDock? pinned) { dock.PinnedDock = pinned; return dock; }
+    /// <summary>
+    /// Sets the pinned dock display mode of the root.
+    /// </summary>
+    /// <param name="dock">The root dock.</param>
+    /// <param name="mode">Pinned dock display mode.</param>
+    /// <returns>The same root dock.</returns>
+    public static IRootDock WithPinnedDockDisplayMode(this IRootDock dock, PinnedDockDisplayMode mode) { dock.PinnedDockDisplayMode = mode; return dock; }
     /// <summary>
     /// Sets the main window of the root.
     /// </summary>

@@ -479,12 +479,12 @@ public abstract partial class FactoryBase
 
     private void HidePreviewingDockablesInternal(IRootDock rootDock, bool respectKeepVisible)
     {
-        if (rootDock.PinnedDock?.VisibleDockables is null)
+        if (rootDock.PinnedDock is not { VisibleDockables: { } visibleDockables } pinnedDock)
         {
             return;
         }
 
-        var dockables = rootDock.PinnedDock.VisibleDockables.ToList();
+        var dockables = visibleDockables.ToList();
         foreach (var dockable in dockables)
         {
             if (respectKeepVisible && dockable.KeepPinnedDockableVisible)
@@ -502,9 +502,16 @@ public abstract partial class FactoryBase
             RemoveVisibleDockable(rootDock.PinnedDock, dockable);
         }
 
-        if (rootDock.PinnedDock.VisibleDockables?.Count == 0)
+        if (visibleDockables.Count == 0)
         {
+            pinnedDock.ActiveDockable = null;
             rootDock.PinnedDock = null;
+        }
+        else if (pinnedDock.ActiveDockable is null
+                 || pinnedDock.ActiveDockable is ISplitter
+                 || !visibleDockables.Contains(pinnedDock.ActiveDockable))
+        {
+            pinnedDock.ActiveDockable = visibleDockables.FirstOrDefault(d => d is not ISplitter);
         }
     }
 
@@ -549,6 +556,7 @@ public abstract partial class FactoryBase
         }
 
         InitDockable(rootDock.PinnedDock, rootDock);
+        rootDock.PinnedDock.ActiveDockable = dockable;
     }
 
     /// <inheritdoc/>

@@ -48,6 +48,11 @@ public interface IRootDock : IDock
     IToolDock? PinnedDock { get; set; }
 
     /// <summary>
+    /// Gets or sets pinned dock display mode.
+    /// </summary>
+    PinnedDockDisplayMode PinnedDockDisplayMode { get; set; }
+
+    /// <summary>
     /// Gets or sets owner window.
     /// </summary>
     IDockWindow? Window { get; set; }

@@ -24,6 +24,7 @@ public partial class RootDock : DockBase, IRootDock
     public RootDock()
     {
         _isFocusableRoot = true;
+        PinnedDockDisplayMode = PinnedDockDisplayMode.Overlay;
         ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
     }
@@ -62,6 +63,11 @@ public partial class RootDock : DockBase, IRootDock
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
     public partial IToolDock? PinnedDock { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial PinnedDockDisplayMode PinnedDockDisplayMode { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

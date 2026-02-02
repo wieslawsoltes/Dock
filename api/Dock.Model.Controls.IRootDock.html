@@ -222,6 +222,12 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
       <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_KeepPinnedDockableVisible">IDockable.KeepPinnedDockableVisible</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_PinnedDockDisplayModeOverride">IDockable.PinnedDockDisplayModeOverride</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_PinnedBounds">IDockable.PinnedBounds</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_CanFloat">IDockable.CanFloat</a>
     </div>
     <div>
@@ -404,6 +410,12 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDock_Dock_Model_Controls_IRootDock_Dock_Model_Controls_IToolDock_">FluentExtensions.WithPinnedDock(IRootDock, IToolDock?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayMode_Dock_Model_Controls_IRootDock_Dock_Model_Core_PinnedDockDisplayMode_">FluentExtensions.WithPinnedDockDisplayMode(IRootDock, PinnedDockDisplayMode)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayModeOverride__1___0_System_Nullable_Dock_Model_Core_PinnedDockDisplayMode__">FluentExtensions.WithPinnedDockDisplayModeOverride&lt;T&gt;(T, PinnedDockDisplayMode?)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithProportion__1___0_System_Double_">FluentExtensions.WithProportion&lt;T&gt;(T, double)</a>
   </div>
   <div>
@@ -476,7 +488,7 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Dock_Model_Controls_IRootDock_EnableAdaptiveGlobalDockTargets" data-uid="Dock.Model.Controls.IRootDock.EnableAdaptiveGlobalDockTargets">
   EnableAdaptiveGlobalDockTargets
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L80"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether adaptive global dock targets are enabled.
@@ -510,7 +522,7 @@ This is typically used for dashboards and widget areas.</p>
 
   <h3 id="Dock_Model_Controls_IRootDock_ExitWindows" data-uid="Dock.Model.Controls.IRootDock.ExitWindows">
   ExitWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exit windows.</p>
@@ -666,6 +678,38 @@ This is typically used for dashboards and widget areas.</p>
 
 
 
+  <a id="Dock_Model_Controls_IRootDock_PinnedDockDisplayMode_" data-uid="Dock.Model.Controls.IRootDock.PinnedDockDisplayMode*"></a>
+
+  <h3 id="Dock_Model_Controls_IRootDock_PinnedDockDisplayMode" data-uid="Dock.Model.Controls.IRootDock.PinnedDockDisplayMode">
+  PinnedDockDisplayMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets pinned dock display mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">PinnedDockDisplayMode PinnedDockDisplayMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.PinnedDockDisplayMode.html">PinnedDockDisplayMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Controls_IRootDock_RightPinnedDockables_" data-uid="Dock.Model.Controls.IRootDock.RightPinnedDockables*"></a>
 
   <h3 id="Dock_Model_Controls_IRootDock_RightPinnedDockables" data-uid="Dock.Model.Controls.IRootDock.RightPinnedDockables">
@@ -702,7 +746,7 @@ This is typically used for dashboards and widget areas.</p>
 
   <h3 id="Dock_Model_Controls_IRootDock_ShowWindows" data-uid="Dock.Model.Controls.IRootDock.ShowWindows">
   ShowWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Show windows.</p>
@@ -766,7 +810,7 @@ This is typically used for dashboards and widget areas.</p>
 
   <h3 id="Dock_Model_Controls_IRootDock_Window" data-uid="Dock.Model.Controls.IRootDock.Window">
   Window
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets owner window.</p>
@@ -798,7 +842,7 @@ This is typically used for dashboards and widget areas.</p>
 
   <h3 id="Dock_Model_Controls_IRootDock_Windows" data-uid="Dock.Model.Controls.IRootDock.Windows">
   Windows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets windows.</p>

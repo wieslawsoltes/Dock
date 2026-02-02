@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class PinnedDockControl | Dock for Avalonia </title>
+      <title>Class PinnedDockHostPanel | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class PinnedDockControl | Dock for Avalonia ">
+      <meta name="title" content="Class PinnedDockHostPanel | Dock for Avalonia ">
       
-      <meta name="description" content="Interaction logic for  xaml.">
+      <meta name="description" content="Hosts main content and pinned dock previews, arranging them inline or overlay.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_PinnedDockControl.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.PinnedDockControl%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_PinnedDockHostPanel.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.PinnedDockHostPanel%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -80,12 +80,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Dock.Avalonia.Controls.PinnedDockControl">
+        <article data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel">
 
 
 
-  <h1 id="Dock_Avalonia_Controls_PinnedDockControl" data-uid="Dock.Avalonia.Controls.PinnedDockControl" class="text-break">
-Class PinnedDockControl  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <h1 id="Dock_Avalonia_Controls_PinnedDockHostPanel" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel" class="text-break">
+Class PinnedDockHostPanel  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -93,15 +93,12 @@ Class PinnedDockControl  <a class="header-action link-secondary" title="View sou
   <dl><dt>Assembly</dt><dd>Dock.Avalonia.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Interaction logic for <a class="xref" href="Dock.Avalonia.Controls.PinnedDockControl.html">PinnedDockControl</a> xaml.</p>
+  <div class="markdown summary"><p>Hosts main content and pinned dock previews, arranging them inline or overlay.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[TemplatePart(&quot;PART_PinnedDock&quot;, typeof(ContentControl))]
-[TemplatePart(&quot;PART_PinnedDockGrid&quot;, typeof(Grid))]
-[TemplatePart(&quot;PART_PinnedDockSplitter&quot;, typeof(GridSplitter))]
-public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue</code></pre>
+    <pre><code class="lang-csharp hljs">public class PinnedDockHostPanel : Panel, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, IChildIndexProvider</code></pre>
   </div>
 
 
@@ -119,8 +116,8 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
       <div><span class="xref">Interactive</span></div>
       <div><span class="xref">InputElement</span></div>
       <div><span class="xref">Control</span></div>
-      <div><span class="xref">TemplatedControl</span></div>
-      <div><span class="xref">PinnedDockControl</span></div>
+      <div><span class="xref">Panel</span></div>
+      <div><span class="xref">PinnedDockHostPanel</span></div>
     </dd>
   </dl>
 
@@ -142,6 +139,7 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
       <div><span class="xref">IInputElement</span></div>
       <div><span class="xref">IDataTemplateHost</span></div>
       <div><span class="xref">ISetterValue</span></div>
+      <div><span class="xref">IChildIndexProvider</span></div>
     </dd>
   </dl>
 
@@ -150,118 +148,28 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <span class="xref">TemplatedControl.BackgroundProperty</span>
+      <span class="xref">Panel.BackgroundProperty</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.BackgroundSizingProperty</span>
+      <span class="xref">Panel.Render(DrawingContext)</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.BorderBrushProperty</span>
+      <span class="xref">Panel.AffectsParentArrange&lt;TPanel&gt;(params AvaloniaProperty[])</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.BorderThicknessProperty</span>
+      <span class="xref">Panel.AffectsParentMeasure&lt;TPanel&gt;(params AvaloniaProperty[])</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.CornerRadiusProperty</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Panel.ChildrenChanged(object, NotifyCollectionChangedEventArgs)</a>
     </div>
     <div>
-      <span class="xref">TemplatedControl.FontFamilyProperty</span>
+      <span class="xref">Panel.Children</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.FontFeaturesProperty</span>
+      <span class="xref">Panel.Background</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.FontSizeProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStyleProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontWeightProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStretchProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.ForegroundProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.PaddingProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.TemplateProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.IsTemplateFocusTargetProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.TemplateAppliedEvent</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.GetIsTemplateFocusTarget(Control)</span>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">TemplatedControl.SetIsTemplateFocusTarget(Control, bool)</a>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.ApplyTemplate()</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.GetTemplateFocusTarget()</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnTemplateChanged(AvaloniaPropertyChangedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Background</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BackgroundSizing</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BorderBrush</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BorderThickness</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.CornerRadius</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontFamily</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontFeatures</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontSize</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStyle</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontWeight</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStretch</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Foreground</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Padding</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Template</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.TemplateApplied</span>
+      <span class="xref">Panel.IsItemsHost</span>
     </div>
     <div>
       <span class="xref">Control.FocusAdornerProperty</span>
@@ -289,6 +197,9 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
     </div>
     <div>
       <span class="xref">Control.SizeChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.GetTemplateFocusTarget()</span>
     </div>
     <div>
       <span class="xref">Control.OnLoaded(RoutedEventArgs)</span>
@@ -606,6 +517,9 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">Layoutable.UpdateLayout()</span>
     </div>
     <div>
+      <span class="xref">Layoutable.ApplyTemplate()</span>
+    </div>
+    <div>
       <span class="xref">Layoutable.Measure(Size)</span>
     </div>
     <div>
@@ -628,9 +542,6 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
     </div>
     <div>
       <span class="xref">Layoutable.ArrangeCore(Rect)</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.ArrangeOverride(Size)</span>
     </div>
     <div>
       <span class="xref">Layoutable.OnMeasureInvalidated()</span>
@@ -732,9 +643,6 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
       <span class="xref">Visual.InvalidateVisual()</span>
     </div>
     <div>
-      <span class="xref">Visual.Render(DrawingContext)</span>
-    </div>
-    <div>
       <span class="xref">Visual.AffectsRender&lt;T&gt;(params AvaloniaProperty[])</span>
     </div>
     <div>
@@ -832,6 +740,12 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">StyledElement.TryGetResource(object, ThemeVariant, out object)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">StyledElement.OnDataContextChanged(EventArgs)</a>
@@ -1046,12 +960,12 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
 
 
 
-  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_PinnedDockAlignmentProperty" data-uid="Dock.Avalonia.Controls.PinnedDockControl.PinnedDockAlignmentProperty">
+  <h3 id="Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockAlignmentProperty" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignmentProperty">
   PinnedDockAlignmentProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L26"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_PinnedDockAlignment">PinnedDockAlignment</a> property.</p>
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockAlignment">PinnedDockAlignment</a> property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -1077,12 +991,12 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
 
 
 
-  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_PinnedDockDisplayModeProperty" data-uid="Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayModeProperty">
+  <h3 id="Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockDisplayModeProperty" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayModeProperty">
   PinnedDockDisplayModeProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_PinnedDockDisplayMode">PinnedDockDisplayMode</a> property.</p>
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockDisplayMode">PinnedDockDisplayMode</a> property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -1111,14 +1025,14 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
 </h2>
 
 
-  <a id="Dock_Avalonia_Controls_PinnedDockControl_PinnedDockAlignment_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.PinnedDockAlignment*"></a>
+  <a id="Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockAlignment_" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_PinnedDockAlignment" data-uid="Dock.Avalonia.Controls.PinnedDockControl.PinnedDockAlignment">
+  <h3 id="Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockAlignment" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment">
   PinnedDockAlignment
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets pinned dock alignment</p>
+  <div class="markdown level1 summary"><p>Gets or sets pinned dock alignment.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -1143,11 +1057,11 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
 
 
 
-  <a id="Dock_Avalonia_Controls_PinnedDockControl_PinnedDockDisplayMode_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode*"></a>
+  <a id="Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockDisplayMode_" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_PinnedDockDisplayMode" data-uid="Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode">
+  <h3 id="Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockDisplayMode" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode">
   PinnedDockDisplayMode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets pinned dock display mode.</p>
@@ -1179,11 +1093,50 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
 </h2>
 
 
-  <a id="Dock_Avalonia_Controls_PinnedDockControl_MeasureOverride_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride*"></a>
+  <a id="Dock_Avalonia_Controls_PinnedDockHostPanel_ArrangeOverride_" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_MeasureOverride_Avalonia_Size_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride(Avalonia.Size)">
+  <h3 id="Dock_Avalonia_Controls_PinnedDockHostPanel_ArrangeOverride_Avalonia_Size_" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride(Avalonia.Size)">
+  ArrangeOverride(Size)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Positions child elements as part of a layout pass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Size ArrangeOverride(Size finalSize)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>finalSize</code> <span class="xref">Size</span></dt>
+    <dd><p>The size available to the control.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Size</span></dt>
+    <dd><p>The actual size used.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_PinnedDockHostPanel_MeasureOverride_" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_PinnedDockHostPanel_MeasureOverride_Avalonia_Size_" data-uid="Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride(Avalonia.Size)">
   MeasureOverride(Size)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L230"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Measures the control and its child elements as part of a layout pass.</p>
@@ -1218,45 +1171,11 @@ public class PinnedDockControl : TemplatedControl, INotifyPropertyChanged, IData
 
 
 
-  <a id="Dock_Avalonia_Controls_PinnedDockControl_OnApplyTemplate_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.OnApplyTemplate*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)">
-  OnApplyTemplate(TemplateAppliedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L211"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Called when the control's template is applied.
-In simple terms, this means the method is called just before the control is displayed.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void OnApplyTemplate(TemplateAppliedEventArgs e)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>e</code> <span class="xref">TemplateAppliedEventArgs</span></dt>
-    <dd><p>The event args.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs/#L23" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockHostPanel.cs/#L15" class="edit-link">Edit this page</a>
         </div>
 
 

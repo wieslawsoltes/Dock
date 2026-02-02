@@ -3608,6 +3608,32 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ManagedDockableBase.Owner
   nameWithType: ManagedDockableBase.Owner
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_PinnedBounds
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.PinnedBounds
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.PinnedBounds
+  nameWithType: ManagedDockableBase.PinnedBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_PinnedBounds_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.PinnedBounds
+  nameWithType: ManagedDockableBase.PinnedBounds
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.PinnedDockDisplayModeOverride
+  nameWithType: ManagedDockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.PinnedDockDisplayModeOverride
+  nameWithType: ManagedDockableBase.PinnedDockDisplayModeOverride
 - uid: Dock.Avalonia.Controls.ManagedDockableBase.PropertyChanged
   name: PropertyChanged
   href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_PropertyChanged
@@ -6358,6 +6384,19 @@ references:
   commentId: T:Dock.Avalonia.Controls.PinnedDockControl
   fullName: Dock.Avalonia.Controls.PinnedDockControl
   nameWithType: PinnedDockControl
+- uid: Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride(Avalonia.Size)
+  name: MeasureOverride(Size)
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_MeasureOverride_Avalonia_Size_
+  commentId: M:Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride(Avalonia.Size)
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride(Avalonia.Size)
+  nameWithType: PinnedDockControl.MeasureOverride(Size)
+- uid: Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride*
+  name: MeasureOverride
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_MeasureOverride_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride
+  nameWithType: PinnedDockControl.MeasureOverride
 - uid: Dock.Avalonia.Controls.PinnedDockControl.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
   name: OnApplyTemplate(TemplateAppliedEventArgs)
   href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_
@@ -6390,6 +6429,95 @@ references:
   commentId: F:Dock.Avalonia.Controls.PinnedDockControl.PinnedDockAlignmentProperty
   fullName: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockAlignmentProperty
   nameWithType: PinnedDockControl.PinnedDockAlignmentProperty
+- uid: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_PinnedDockDisplayMode
+  commentId: P:Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode
+  nameWithType: PinnedDockControl.PinnedDockDisplayMode
+- uid: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayMode
+  nameWithType: PinnedDockControl.PinnedDockDisplayMode
+- uid: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayModeProperty
+  name: PinnedDockDisplayModeProperty
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_PinnedDockDisplayModeProperty
+  commentId: F:Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayModeProperty
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayModeProperty
+  nameWithType: PinnedDockControl.PinnedDockDisplayModeProperty
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel
+  name: PinnedDockHostPanel
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html
+  commentId: T:Dock.Avalonia.Controls.PinnedDockHostPanel
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel
+  nameWithType: PinnedDockHostPanel
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride(Avalonia.Size)
+  name: ArrangeOverride(Size)
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_ArrangeOverride_Avalonia_Size_
+  commentId: M:Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride(Avalonia.Size)
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride(Avalonia.Size)
+  nameWithType: PinnedDockHostPanel.ArrangeOverride(Size)
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride*
+  name: ArrangeOverride
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_ArrangeOverride_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.ArrangeOverride
+  nameWithType: PinnedDockHostPanel.ArrangeOverride
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride(Avalonia.Size)
+  name: MeasureOverride(Size)
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_MeasureOverride_Avalonia_Size_
+  commentId: M:Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride(Avalonia.Size)
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride(Avalonia.Size)
+  nameWithType: PinnedDockHostPanel.MeasureOverride(Size)
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride*
+  name: MeasureOverride
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_MeasureOverride_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.MeasureOverride
+  nameWithType: PinnedDockHostPanel.MeasureOverride
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment
+  name: PinnedDockAlignment
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockAlignment
+  commentId: P:Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment
+  nameWithType: PinnedDockHostPanel.PinnedDockAlignment
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment*
+  name: PinnedDockAlignment
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockAlignment_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignment
+  nameWithType: PinnedDockHostPanel.PinnedDockAlignment
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignmentProperty
+  name: PinnedDockAlignmentProperty
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockAlignmentProperty
+  commentId: F:Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignmentProperty
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockAlignmentProperty
+  nameWithType: PinnedDockHostPanel.PinnedDockAlignmentProperty
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockDisplayMode
+  commentId: P:Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode
+  nameWithType: PinnedDockHostPanel.PinnedDockDisplayMode
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayMode
+  nameWithType: PinnedDockHostPanel.PinnedDockDisplayMode
+- uid: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayModeProperty
+  name: PinnedDockDisplayModeProperty
+  href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html#Dock_Avalonia_Controls_PinnedDockHostPanel_PinnedDockDisplayModeProperty
+  commentId: F:Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayModeProperty
+  fullName: Dock.Avalonia.Controls.PinnedDockHostPanel.PinnedDockDisplayModeProperty
+  nameWithType: PinnedDockHostPanel.PinnedDockDisplayModeProperty
 - uid: Dock.Avalonia.Controls.PinnedDockWindow
   name: PinnedDockWindow
   href: api/Dock.Avalonia.Controls.PinnedDockWindow.html
@@ -11520,6 +11648,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.RootDock.PinnedDock
   nameWithType: RootDock.PinnedDock
+- uid: Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayModeProperty
+  name: PinnedDockDisplayModeProperty
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_PinnedDockDisplayModeProperty
+  commentId: F:Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayModeProperty
+  fullName: Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayModeProperty
+  nameWithType: RootDock.PinnedDockDisplayModeProperty
 - uid: Dock.Model.Avalonia.Controls.RootDock.PinnedDockProperty
   name: PinnedDockProperty
   href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_PinnedDockProperty
@@ -13570,6 +13717,38 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockableBase.OwnerProperty
   fullName: Dock.Model.Avalonia.Core.DockableBase.OwnerProperty
   nameWithType: DockableBase.OwnerProperty
+- uid: Dock.Model.Avalonia.Core.DockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_PinnedBounds
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.PinnedBounds
+  fullName: Dock.Model.Avalonia.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Avalonia.Core.DockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_PinnedBounds_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverrideProperty
+  name: PinnedDockDisplayModeOverrideProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_PinnedDockDisplayModeOverrideProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverrideProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverrideProperty
+  nameWithType: DockableBase.PinnedDockDisplayModeOverrideProperty
 - uid: Dock.Model.Avalonia.Core.DockableBase.Proportion
   name: Proportion
   href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_Proportion
@@ -14818,6 +14997,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Controls.RootDock.PinnedDock
   nameWithType: RootDock.PinnedDock
+- uid: Dock.Model.CaliburMicro.Controls.RootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.CaliburMicro.Controls.RootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.CaliburMicro.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.CaliburMicro.Controls.RootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.RootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
 - uid: Dock.Model.CaliburMicro.Controls.RootDock.RightPinnedDockables
   name: RightPinnedDockables
   href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_RightPinnedDockables
@@ -16300,6 +16492,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockableBase.Owner
   nameWithType: DockableBase.Owner
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_PinnedBounds
+  commentId: P:Dock.Model.CaliburMicro.Core.DockableBase.PinnedBounds
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_PinnedBounds_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.CaliburMicro.Core.DockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
 - uid: Dock.Model.CaliburMicro.Core.DockableBase.Proportion
   name: Proportion
   href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_Proportion
@@ -17852,6 +18070,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Controls.IRootDock.PinnedDock
   nameWithType: IRootDock.PinnedDock
+- uid: Dock.Model.Controls.IRootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.Controls.IRootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.Controls.IRootDock.PinnedDockDisplayMode
+  nameWithType: IRootDock.PinnedDockDisplayMode
+- uid: Dock.Model.Controls.IRootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.Controls.IRootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IRootDock.PinnedDockDisplayMode
+  nameWithType: IRootDock.PinnedDockDisplayMode
 - uid: Dock.Model.Controls.IRootDock.RightPinnedDockables
   name: RightPinnedDockables
   href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_RightPinnedDockables
@@ -21386,6 +21617,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockable.Owner
   nameWithType: IDockable.Owner
+- uid: Dock.Model.Core.IDockable.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_PinnedBounds
+  commentId: P:Dock.Model.Core.IDockable.PinnedBounds
+  fullName: Dock.Model.Core.IDockable.PinnedBounds
+  nameWithType: IDockable.PinnedBounds
+- uid: Dock.Model.Core.IDockable.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_PinnedBounds_
+  commentId: Overload:Dock.Model.Core.IDockable.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockable.PinnedBounds
+  nameWithType: IDockable.PinnedBounds
+- uid: Dock.Model.Core.IDockable.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.Core.IDockable.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.Core.IDockable.PinnedDockDisplayModeOverride
+  nameWithType: IDockable.PinnedDockDisplayModeOverride
+- uid: Dock.Model.Core.IDockable.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.Core.IDockable.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockable.PinnedDockDisplayModeOverride
+  nameWithType: IDockable.PinnedDockDisplayModeOverride
 - uid: Dock.Model.Core.IDockable.Proportion
   name: Proportion
   href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Proportion
@@ -23960,6 +24217,24 @@ references:
   commentId: F:Dock.Model.Core.Orientation.Vertical
   fullName: Dock.Model.Core.Orientation.Vertical
   nameWithType: Orientation.Vertical
+- uid: Dock.Model.Core.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Core.PinnedDockDisplayMode.html
+  commentId: T:Dock.Model.Core.PinnedDockDisplayMode
+  fullName: Dock.Model.Core.PinnedDockDisplayMode
+  nameWithType: PinnedDockDisplayMode
+- uid: Dock.Model.Core.PinnedDockDisplayMode.Inline
+  name: Inline
+  href: api/Dock.Model.Core.PinnedDockDisplayMode.html#Dock_Model_Core_PinnedDockDisplayMode_Inline
+  commentId: F:Dock.Model.Core.PinnedDockDisplayMode.Inline
+  fullName: Dock.Model.Core.PinnedDockDisplayMode.Inline
+  nameWithType: PinnedDockDisplayMode.Inline
+- uid: Dock.Model.Core.PinnedDockDisplayMode.Overlay
+  name: Overlay
+  href: api/Dock.Model.Core.PinnedDockDisplayMode.html#Dock_Model_Core_PinnedDockDisplayMode_Overlay
+  commentId: F:Dock.Model.Core.PinnedDockDisplayMode.Overlay
+  fullName: Dock.Model.Core.PinnedDockDisplayMode.Overlay
+  nameWithType: PinnedDockDisplayMode.Overlay
 - uid: Dock.Model.Core.RequiresDataTemplateAttribute
   name: RequiresDataTemplateAttribute
   href: api/Dock.Model.Core.RequiresDataTemplateAttribute.html
@@ -28160,6 +28435,35 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FluentExtensions.WithPinnedDock
   nameWithType: FluentExtensions.WithPinnedDock
+- uid: Dock.Model.FluentExtensions.WithPinnedDockDisplayMode(Dock.Model.Controls.IRootDock,Dock.Model.Core.PinnedDockDisplayMode)
+  name: WithPinnedDockDisplayMode(IRootDock, PinnedDockDisplayMode)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayMode_Dock_Model_Controls_IRootDock_Dock_Model_Core_PinnedDockDisplayMode_
+  commentId: M:Dock.Model.FluentExtensions.WithPinnedDockDisplayMode(Dock.Model.Controls.IRootDock,Dock.Model.Core.PinnedDockDisplayMode)
+  fullName: Dock.Model.FluentExtensions.WithPinnedDockDisplayMode(Dock.Model.Controls.IRootDock, Dock.Model.Core.PinnedDockDisplayMode)
+  nameWithType: FluentExtensions.WithPinnedDockDisplayMode(IRootDock, PinnedDockDisplayMode)
+- uid: Dock.Model.FluentExtensions.WithPinnedDockDisplayMode*
+  name: WithPinnedDockDisplayMode
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.FluentExtensions.WithPinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithPinnedDockDisplayMode
+  nameWithType: FluentExtensions.WithPinnedDockDisplayMode
+- uid: Dock.Model.FluentExtensions.WithPinnedDockDisplayModeOverride*
+  name: WithPinnedDockDisplayModeOverride
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.FluentExtensions.WithPinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithPinnedDockDisplayModeOverride
+  nameWithType: FluentExtensions.WithPinnedDockDisplayModeOverride
+- uid: Dock.Model.FluentExtensions.WithPinnedDockDisplayModeOverride``1(``0,System.Nullable{Dock.Model.Core.PinnedDockDisplayMode})
+  name: WithPinnedDockDisplayModeOverride<T>(T, PinnedDockDisplayMode?)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayModeOverride__1___0_System_Nullable_Dock_Model_Core_PinnedDockDisplayMode__
+  commentId: M:Dock.Model.FluentExtensions.WithPinnedDockDisplayModeOverride``1(``0,System.Nullable{Dock.Model.Core.PinnedDockDisplayMode})
+  name.vb: WithPinnedDockDisplayModeOverride(Of T)(T, PinnedDockDisplayMode?)
+  fullName: Dock.Model.FluentExtensions.WithPinnedDockDisplayModeOverride<T>(T, Dock.Model.Core.PinnedDockDisplayMode?)
+  fullName.vb: Dock.Model.FluentExtensions.WithPinnedDockDisplayModeOverride(Of T)(T, Dock.Model.Core.PinnedDockDisplayMode?)
+  nameWithType: FluentExtensions.WithPinnedDockDisplayModeOverride<T>(T, PinnedDockDisplayMode?)
+  nameWithType.vb: FluentExtensions.WithPinnedDockDisplayModeOverride(Of T)(T, PinnedDockDisplayMode?)
 - uid: Dock.Model.FluentExtensions.WithPosition(Dock.Model.Core.IDockWindow,System.Double,System.Double)
   name: WithPosition(IDockWindow, double, double)
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPosition_Dock_Model_Core_IDockWindow_System_Double_System_Double_
@@ -28973,6 +29277,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Controls.RootDock.PinnedDock
   nameWithType: RootDock.PinnedDock
+- uid: Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
 - uid: Dock.Model.Inpc.Controls.RootDock.RightPinnedDockables
   name: RightPinnedDockables
   href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_RightPinnedDockables
@@ -30449,6 +30766,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockableBase.Owner
   nameWithType: DockableBase.Owner
+- uid: Dock.Model.Inpc.Core.DockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_PinnedBounds
+  commentId: P:Dock.Model.Inpc.Core.DockableBase.PinnedBounds
+  fullName: Dock.Model.Inpc.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Inpc.Core.DockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_PinnedBounds_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Inpc.Core.DockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.Inpc.Core.DockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.Inpc.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.Inpc.Core.DockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
 - uid: Dock.Model.Inpc.Core.DockableBase.Proportion
   name: Proportion
   href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_Proportion
@@ -31683,6 +32026,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Controls.RootDock.PinnedDock
   nameWithType: RootDock.PinnedDock
+- uid: Dock.Model.Mvvm.Controls.RootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.Mvvm.Controls.RootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.Mvvm.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.Mvvm.Controls.RootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.Mvvm.Controls.RootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
 - uid: Dock.Model.Mvvm.Controls.RootDock.RightPinnedDockables
   name: RightPinnedDockables
   href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_RightPinnedDockables
@@ -33159,6 +33515,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockableBase.Owner
   nameWithType: DockableBase.Owner
+- uid: Dock.Model.Mvvm.Core.DockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_PinnedBounds
+  commentId: P:Dock.Model.Mvvm.Core.DockableBase.PinnedBounds
+  fullName: Dock.Model.Mvvm.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Mvvm.Core.DockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_PinnedBounds_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Mvvm.Core.DockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.Mvvm.Core.DockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.Mvvm.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.Mvvm.Core.DockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
 - uid: Dock.Model.Mvvm.Core.DockableBase.Proportion
   name: Proportion
   href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_Proportion
@@ -34190,6 +34572,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Controls.RootDock.PinnedDock
   nameWithType: RootDock.PinnedDock
+- uid: Dock.Model.Prism.Controls.RootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.Prism.Controls.RootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.Prism.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.Prism.Controls.RootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.Prism.Controls.RootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
 - uid: Dock.Model.Prism.Controls.RootDock.RightPinnedDockables
   name: RightPinnedDockables
   href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_RightPinnedDockables
@@ -35666,6 +36061,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockableBase.Owner
   nameWithType: DockableBase.Owner
+- uid: Dock.Model.Prism.Core.DockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_PinnedBounds
+  commentId: P:Dock.Model.Prism.Core.DockableBase.PinnedBounds
+  fullName: Dock.Model.Prism.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Prism.Core.DockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_PinnedBounds_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.Prism.Core.DockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.Prism.Core.DockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.Prism.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.Prism.Core.DockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
 - uid: Dock.Model.Prism.Core.DockableBase.Proportion
   name: Proportion
   href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_Proportion
@@ -36697,6 +37118,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Controls.RootDock.PinnedDock
   nameWithType: RootDock.PinnedDock
+- uid: Dock.Model.ReactiveProperty.Controls.RootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.ReactiveProperty.Controls.RootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.ReactiveProperty.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.ReactiveProperty.Controls.RootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.RootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
 - uid: Dock.Model.ReactiveProperty.Controls.RootDock.RightPinnedDockables
   name: RightPinnedDockables
   href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_RightPinnedDockables
@@ -38173,6 +38607,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockableBase.Owner
   nameWithType: DockableBase.Owner
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_PinnedBounds
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_PinnedBounds_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
 - uid: Dock.Model.ReactiveProperty.Core.DockableBase.Proportion
   name: Proportion
   href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_Proportion
@@ -39280,6 +39740,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Controls.RootDock.PinnedDock
   nameWithType: RootDock.PinnedDock
+- uid: Dock.Model.ReactiveUI.Controls.RootDock.PinnedDockDisplayMode
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_PinnedDockDisplayMode
+  commentId: P:Dock.Model.ReactiveUI.Controls.RootDock.PinnedDockDisplayMode
+  fullName: Dock.Model.ReactiveUI.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
+- uid: Dock.Model.ReactiveUI.Controls.RootDock.PinnedDockDisplayMode*
+  name: PinnedDockDisplayMode
+  href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_PinnedDockDisplayMode_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.RootDock.PinnedDockDisplayMode
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.RootDock.PinnedDockDisplayMode
+  nameWithType: RootDock.PinnedDockDisplayMode
 - uid: Dock.Model.ReactiveUI.Controls.RootDock.RightPinnedDockables
   name: RightPinnedDockables
   href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_RightPinnedDockables
@@ -40794,6 +41267,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockableBase.Owner
   nameWithType: DockableBase.Owner
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.PinnedBounds
+  name: PinnedBounds
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_PinnedBounds
+  commentId: P:Dock.Model.ReactiveUI.Core.DockableBase.PinnedBounds
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.PinnedBounds*
+  name: PinnedBounds
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_PinnedBounds_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.PinnedBounds
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.PinnedBounds
+  nameWithType: DockableBase.PinnedBounds
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.PinnedDockDisplayModeOverride
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_PinnedDockDisplayModeOverride
+  commentId: P:Dock.Model.ReactiveUI.Core.DockableBase.PinnedDockDisplayModeOverride
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.PinnedDockDisplayModeOverride*
+  name: PinnedDockDisplayModeOverride
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_PinnedDockDisplayModeOverride_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.PinnedDockDisplayModeOverride
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.PinnedDockDisplayModeOverride
+  nameWithType: DockableBase.PinnedDockDisplayModeOverride
 - uid: Dock.Model.ReactiveUI.Core.DockableBase.Proportion
   name: Proportion
   href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_Proportion

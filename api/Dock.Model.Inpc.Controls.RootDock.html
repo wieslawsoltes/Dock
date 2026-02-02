@@ -245,6 +245,12 @@ public class RootDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
       <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_KeepPinnedDockableVisible">DockableBase.KeepPinnedDockableVisible</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_PinnedDockDisplayModeOverride">DockableBase.PinnedDockDisplayModeOverride</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_PinnedBounds">DockableBase.PinnedBounds</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_CanFloat">DockableBase.CanFloat</a>
     </div>
     <div>
@@ -379,6 +385,9 @@ public class RootDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDock_Dock_Model_Controls_IRootDock_Dock_Model_Controls_IToolDock_">FluentExtensions.WithPinnedDock(IRootDock, IToolDock?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayMode_Dock_Model_Controls_IRootDock_Dock_Model_Core_PinnedDockDisplayMode_">FluentExtensions.WithPinnedDockDisplayMode(IRootDock, PinnedDockDisplayMode)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithRightPinned_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockable___">FluentExtensions.WithRightPinned(IRootDock, params IDockable[])</a>
   </div>
   <div>
@@ -487,6 +496,9 @@ public class RootDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner&lt;T&gt;(T, IDockable?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayModeOverride__1___0_System_Nullable_Dock_Model_Core_PinnedDockDisplayMode__">FluentExtensions.WithPinnedDockDisplayModeOverride&lt;T&gt;(T, PinnedDockDisplayMode?)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithProportion__1___0_System_Double_">FluentExtensions.WithProportion&lt;T&gt;(T, double)</a>
   </div>
   <div>
@@ -515,7 +527,7 @@ public class RootDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock__ctor" data-uid="Dock.Model.Inpc.Controls.RootDock.#ctor">
   RootDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Inpc.Controls.RootDock.html">RootDock</a> class.</p>
@@ -546,7 +558,7 @@ public class RootDock : DockBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_BottomPinnedDockables" data-uid="Dock.Model.Inpc.Controls.RootDock.BottomPinnedDockables">
   BottomPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L80"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets bottom pinned dockables.</p>
@@ -579,7 +591,7 @@ public IList&lt;IDockable&gt;? BottomPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_EnableAdaptiveGlobalDockTargets" data-uid="Dock.Model.Inpc.Controls.RootDock.EnableAdaptiveGlobalDockTargets">
   EnableAdaptiveGlobalDockTargets
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L128"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether adaptive global dock targets are enabled.
@@ -614,7 +626,7 @@ public bool EnableAdaptiveGlobalDockTargets { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_ExitWindows" data-uid="Dock.Model.Inpc.Controls.RootDock.ExitWindows">
   ExitWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L124"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exit windows.</p>
@@ -647,7 +659,7 @@ public ICommand ExitWindows { get; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_HiddenDockables" data-uid="Dock.Model.Inpc.Controls.RootDock.HiddenDockables">
   HiddenDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets hidden dockables.</p>
@@ -680,7 +692,7 @@ public IList&lt;IDockable&gt;? HiddenDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_IsFocusableRoot" data-uid="Dock.Model.Inpc.Controls.RootDock.IsFocusableRoot">
   IsFocusableRoot
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if root dock is focusable.</p>
@@ -713,7 +725,7 @@ public bool IsFocusableRoot { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_LeftPinnedDockables" data-uid="Dock.Model.Inpc.Controls.RootDock.LeftPinnedDockables">
   LeftPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets left pinned dockables.</p>
@@ -746,7 +758,7 @@ public IList&lt;IDockable&gt;? LeftPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_PinnedDock" data-uid="Dock.Model.Inpc.Controls.RootDock.PinnedDock">
   PinnedDock
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets pinned tool dock.</p>
@@ -775,11 +787,44 @@ public IToolDock? PinnedDock { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Inpc_Controls_RootDock_PinnedDockDisplayMode_" data-uid="Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode*"></a>
+
+  <h3 id="Dock_Model_Inpc_Controls_RootDock_PinnedDockDisplayMode" data-uid="Dock.Model.Inpc.Controls.RootDock.PinnedDockDisplayMode">
+  PinnedDockDisplayMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets pinned dock display mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public PinnedDockDisplayMode PinnedDockDisplayMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.PinnedDockDisplayMode.html">PinnedDockDisplayMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Inpc_Controls_RootDock_RightPinnedDockables_" data-uid="Dock.Model.Inpc.Controls.RootDock.RightPinnedDockables*"></a>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_RightPinnedDockables" data-uid="Dock.Model.Inpc.Controls.RootDock.RightPinnedDockables">
   RightPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets right pinned dockables.</p>
@@ -812,7 +857,7 @@ public IList&lt;IDockable&gt;? RightPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_ShowWindows" data-uid="Dock.Model.Inpc.Controls.RootDock.ShowWindows">
   ShowWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L120"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Show windows.</p>
@@ -845,7 +890,7 @@ public ICommand ShowWindows { get; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_TopPinnedDockables" data-uid="Dock.Model.Inpc.Controls.RootDock.TopPinnedDockables">
   TopPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets top pinned dockables.</p>
@@ -878,7 +923,7 @@ public IList&lt;IDockable&gt;? TopPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_Window" data-uid="Dock.Model.Inpc.Controls.RootDock.Window">
   Window
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L104"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets owner window.</p>
@@ -911,7 +956,7 @@ public IDockWindow? Window { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_RootDock_Windows" data-uid="Dock.Model.Inpc.Controls.RootDock.Windows">
   Windows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/RootDock.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets windows.</p>

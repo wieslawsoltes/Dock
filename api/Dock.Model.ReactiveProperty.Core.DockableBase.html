@@ -250,6 +250,9 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IDock
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner&lt;T&gt;(T, IDockable?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDockDisplayModeOverride__1___0_System_Nullable_Dock_Model_Core_PinnedDockDisplayMode__">FluentExtensions.WithPinnedDockDisplayModeOverride&lt;T&gt;(T, PinnedDockDisplayMode?)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithProportion__1___0_System_Double_">FluentExtensions.WithProportion&lt;T&gt;(T, double)</a>
   </div>
   <div>
@@ -272,7 +275,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IDock
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase__ctor" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.#ctor">
   DockableBase()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.ReactiveProperty.Core.DockableBase.html">DockableBase</a> class.</p>
@@ -303,7 +306,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IDock
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_AllowedDockOperations" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDockOperations">
   AllowedDockOperations
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L323"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets allowed operations when this dockable is the drag source.</p>
@@ -336,7 +339,7 @@ public DockOperationMask AllowedDockOperations { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_AllowedDropOperations" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.AllowedDropOperations">
   AllowedDropOperations
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L331"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets allowed operations when this dockable is the drop target.</p>
@@ -369,7 +372,7 @@ public DockOperationMask AllowedDropOperations { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_CanClose" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.CanClose">
   CanClose
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L222"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be closed.</p>
@@ -402,7 +405,7 @@ public bool CanClose { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_CanDockAsDocument" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.CanDockAsDocument">
   CanDockAsDocument
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L299"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be docked as a document.</p>
@@ -435,7 +438,7 @@ public bool CanDockAsDocument { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_CanDrag" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.CanDrag">
   CanDrag
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L283"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be dragged.</p>
@@ -468,7 +471,7 @@ public bool CanDrag { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_CanDrop" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.CanDrop">
   CanDrop
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L291"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be dropped on.</p>
@@ -501,7 +504,7 @@ public bool CanDrop { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_CanFloat" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.CanFloat">
   CanFloat
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L275"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be floated.</p>
@@ -534,7 +537,7 @@ public bool CanFloat { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_CanPin" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.CanPin">
   CanPin
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L230"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be pinned.</p>
@@ -567,7 +570,7 @@ public bool CanPin { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_CollapsedProportion" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.CollapsedProportion">
   CollapsedProportion
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L182"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets last known proportion before collapse.</p>
@@ -600,7 +603,7 @@ public double CollapsedProportion { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Column" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Column">
   Column
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L142"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid column.</p>
@@ -633,7 +636,7 @@ public int Column { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_ColumnSpan" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.ColumnSpan">
   ColumnSpan
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L158"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid column span.</p>
@@ -666,7 +669,7 @@ public int ColumnSpan { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Context" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Context">
   Context
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable context.</p>
@@ -699,7 +702,7 @@ public object? Context { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Dock" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Dock">
   Dock
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L134"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets docking mode.</p>
@@ -732,7 +735,7 @@ public DockMode Dock { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_DockGroup" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.DockGroup">
   DockGroup
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L315"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the docking group identifier.
@@ -768,7 +771,7 @@ public string? DockGroup { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Factory" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Factory">
   Factory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L102"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable factory.</p>
@@ -801,7 +804,7 @@ public IFactory? Factory { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Id" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable id.</p>
@@ -834,7 +837,7 @@ public string Id { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_IsCollapsable" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.IsCollapsable">
   IsCollapsable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L118"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable collapses when all its children are removed.</p>
@@ -867,7 +870,7 @@ public bool IsCollapsable { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_IsEmpty" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.IsEmpty">
   IsEmpty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L110"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets if the dockable is empty.</p>
@@ -900,7 +903,7 @@ public bool IsEmpty { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_IsModified" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.IsModified">
   IsModified
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L307"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether the dockable has unsaved changes.</p>
@@ -933,7 +936,7 @@ public bool IsModified { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_IsSharedSizeScope" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.IsSharedSizeScope">
   IsSharedSizeScope
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L174"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether this dock participates in shared size scope.</p>
@@ -966,7 +969,7 @@ public bool IsSharedSizeScope { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_KeepPinnedDockableVisible" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.KeepPinnedDockableVisible">
   KeepPinnedDockableVisible
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L238"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether a pinned dockable stays visible when previewed.</p>
@@ -999,7 +1002,7 @@ public bool KeepPinnedDockableVisible { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_MaxHeight" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.MaxHeight">
   MaxHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L214"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets maximum height.</p>
@@ -1032,7 +1035,7 @@ public double MaxHeight { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_MaxWidth" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.MaxWidth">
   MaxWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L198"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets maximum width.</p>
@@ -1065,7 +1068,7 @@ public double MaxWidth { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_MinHeight" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.MinHeight">
   MinHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L206"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets minimum height.</p>
@@ -1098,7 +1101,7 @@ public double MinHeight { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_MinWidth" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.MinWidth">
   MinWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L190"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets minimum width.</p>
@@ -1131,7 +1134,7 @@ public double MinWidth { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OriginalOwner" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OriginalOwner">
   OriginalOwner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable original owner.</p>
@@ -1164,7 +1167,7 @@ public IDockable? OriginalOwner { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Owner" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Owner">
   Owner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable owner.</p>
@@ -1193,11 +1196,78 @@ public IDockable? Owner { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_ReactiveProperty_Core_DockableBase_PinnedBounds_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_PinnedBounds" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.PinnedBounds">
+  PinnedBounds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L254"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the stored bounds for pinned previews.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = false)]
+public DockRect? PinnedBounds { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockRect.html">DockRect</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Core_DockableBase_PinnedDockDisplayModeOverride_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_PinnedDockDisplayModeOverride" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.PinnedDockDisplayModeOverride">
+  PinnedDockDisplayModeOverride
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets an optional pinned dock display mode override.
+When null, the root display mode is used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public PinnedDockDisplayMode? PinnedDockDisplayModeOverride { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.PinnedDockDisplayMode.html">PinnedDockDisplayMode</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_ReactiveProperty_Core_DockableBase_Proportion_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Proportion*"></a>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Proportion" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Proportion">
   Proportion
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L126"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets splitter proportion.</p>
@@ -1230,7 +1300,7 @@ public double Proportion { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Row" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Row">
   Row
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L150"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid row.</p>
@@ -1263,7 +1333,7 @@ public int Row { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_RowSpan" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.RowSpan">
   RowSpan
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L166"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid row span.</p>
@@ -1296,7 +1366,7 @@ public int RowSpan { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_SelectorTitle" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.SelectorTitle">
   SelectorTitle
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L347"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the text displayed in the selector.</p>
@@ -1329,7 +1399,7 @@ public string? SelectorTitle { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_ShowInSelector" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.ShowInSelector">
   ShowInSelector
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L339"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether this dockable appears in the selector.</p>
@@ -1362,7 +1432,7 @@ public bool ShowInSelector { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_Title" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.Title">
   Title
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L70"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable title.</p>
@@ -1399,7 +1469,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_GetControlRecyclingId" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.GetControlRecyclingId">
   GetControlRecyclingId()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L323"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L355"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1430,7 +1500,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_GetPinnedBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.GetPinnedBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetPinnedBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L355"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L387"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pinned bounds information used for tracking.</p>
@@ -1472,7 +1542,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_GetPointerPosition_System_Double__System_Double__" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.GetPointerPosition(System.Double@,System.Double@)">
   GetPointerPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L391"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L423"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer position used for tracking.</p>
@@ -1508,7 +1578,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_GetPointerScreenPosition_System_Double__System_Double__" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.GetPointerScreenPosition(System.Double@,System.Double@)">
   GetPointerScreenPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L409"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L441"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer screen position used for tracking.</p>
@@ -1544,7 +1614,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_GetTabBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.GetTabBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetTabBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L373"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L405"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable tab bounds information used for tracking.</p>
@@ -1586,7 +1656,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_GetVisibleBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.GetVisibleBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetVisibleBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L337"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L369"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable visible bounds information used for tracking.</p>
@@ -1628,7 +1698,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OnClose" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OnClose">
   OnClose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L326"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L358"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable is closed.</p>
@@ -1661,7 +1731,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OnPinnedBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OnPinnedBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnPinnedBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L368"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L400"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pinned bounds changed.</p>
@@ -1703,7 +1773,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OnPointerPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OnPointerPositionChanged(System.Double,System.Double)">
   OnPointerPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L436"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer position changed.</p>
@@ -1739,7 +1809,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OnPointerScreenPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OnPointerScreenPositionChanged(System.Double,System.Double)">
   OnPointerScreenPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L422"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L454"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer screen position changed.</p>
@@ -1775,7 +1845,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OnSelected" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OnSelected">
   OnSelected()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L332"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L364"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable becomes the selected dockable.</p>
@@ -1802,7 +1872,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OnTabBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OnTabBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnTabBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L386"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L418"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable tab bounds changed.</p>
@@ -1844,7 +1914,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_OnVisibleBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.OnVisibleBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnVisibleBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L350"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L382"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable visible bounds changed.</p>
@@ -1886,7 +1956,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_SetPinnedBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.SetPinnedBounds(System.Double,System.Double,System.Double,System.Double)">
   SetPinnedBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L361"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L393"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pinned bounds information used for tracking.</p>
@@ -1928,7 +1998,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_SetPointerPosition_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.SetPointerPosition(System.Double,System.Double)">
   SetPointerPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L397"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L429"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer position used for tracking.</p>
@@ -1964,7 +2034,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_SetPointerScreenPosition_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.SetPointerScreenPosition(System.Double,System.Double)">
   SetPointerScreenPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L415"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L447"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer screen position used for tracking.</p>
@@ -2000,7 +2070,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_SetTabBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.SetTabBounds(System.Double,System.Double,System.Double,System.Double)">
   SetTabBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L379"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L411"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable tab bounds information used for tracking.</p>
@@ -2042,7 +2112,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Core_DockableBase_SetVisibleBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.ReactiveProperty.Core.DockableBase.SetVisibleBounds(System.Double,System.Double,System.Double,System.Double)">
   SetVisibleBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L343"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Core/DockableBase.cs/#L375"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable visible bounds information used for tracking.</p>

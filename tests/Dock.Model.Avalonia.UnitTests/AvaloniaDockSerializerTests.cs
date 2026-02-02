@@ -1,9 +1,12 @@
 using System.Text.Json;
 using Avalonia.Collections;
 using Avalonia.Headless.XUnit;
+using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Json;
+using Dock.Model.Controls;
 using Dock.Model.Core;
+using System.Linq;
 using Xunit;
 
 namespace Dock.Model.Avalonia.UnitTests;
@@ -64,5 +67,49 @@ public class AvaloniaDockSerializerTests
         using var document = JsonDocument.Parse(json);
         Assert.True(document.RootElement.TryGetProperty("PinnedDock", out var pinnedDockElement), json);
         Assert.True(pinnedDockElement.TryGetProperty("VisibleDockables", out _), json);
+    }
+
+    [AvaloniaFact]
+    public void Deserialize_RootDock_RestoresPinnedDock()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var factory = new Factory();
+
+        var tool = new Tool { Id = "PinnedTool" };
+        tool.SetPinnedBounds(0, 0, 240, 180);
+
+        var pinnedDock = new ToolDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { tool },
+            ActiveDockable = tool
+        };
+
+        var root = new RootDock
+        {
+            LeftPinnedDockables = new AvaloniaList<IDockable> { tool },
+            PinnedDock = pinnedDock
+        };
+
+        var json = serializer.Serialize(root);
+        var restored = serializer.Deserialize<IRootDock>(json);
+
+        Assert.NotNull(restored);
+
+        factory.InitLayout((IDockable)restored!);
+
+        Assert.NotNull(restored.PinnedDock);
+        Assert.NotNull(restored.PinnedDock!.VisibleDockables);
+        Assert.Single(restored.PinnedDock.VisibleDockables!);
+        Assert.NotNull(restored.LeftPinnedDockables);
+        Assert.Single(restored.LeftPinnedDockables!);
+
+        var pinnedTool = restored.PinnedDock.VisibleDockables!.OfType<ITool>().Single();
+
+        Assert.Same(restored.LeftPinnedDockables![0], pinnedTool);
+        Assert.Same(pinnedTool, restored.PinnedDock.ActiveDockable);
+
+        pinnedTool.GetPinnedBounds(out _, out _, out var width, out var height);
+        Assert.Equal(240, width, 3);
+        Assert.Equal(180, height, 3);
     }
 }

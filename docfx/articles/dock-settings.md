@@ -87,7 +87,13 @@ The default value is `0.25`.
 
 ## Floating window owner
 
-`DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner.
+`DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner. This is applied when `IDockWindow.OwnerMode` is `DockWindowOwnerMode.Default` and can be overridden per window.
+
+`DockSettings.FloatingWindowOwnerPolicy` provides an explicit global owner policy (`Default`, `AlwaysOwned`, `NeverOwned`). When set to `Default`, Dock falls back to `UseOwnerForFloatingWindows` to preserve compatibility.
+
+## Floating window host mode
+
+`DockSettings.FloatingWindowHostMode` controls whether floating windows are hosted as native OS windows or managed in-app windows. `Default` defers to `DockSettings.UseManagedWindows`.
 
 ## Floating dock adorners
 
@@ -100,6 +106,8 @@ The default value is `0.25`.
 ## Managed windows
 
 `DockSettings.UseManagedWindows` hosts floating windows inside the main window using the managed window layer. This affects only floating docks; the main window remains native. See [Managed windows guide](dock-managed-windows-guide.md) for details.
+
+`IRootDock.FloatingWindowHostMode` can override the host mode for a specific root dock.
 
 ## Window magnetism
 

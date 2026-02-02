@@ -22,11 +22,28 @@ public override IDockWindow? CreateWindowFrom(IDockable dockable)
 
 Calling `FloatDockable` on the factory opens a dockable in a new window. The new `IDockWindow` is tracked by the root dock and stores its bounds and title so it can be serialized together with the layout.
 
+To control parent/owner relationships and modality at creation time, use the `DockWindowOptions` overloads:
+
+```csharp
+var options = new DockWindowOptions
+{
+    OwnerMode = DockWindowOwnerMode.ParentWindow,
+    ParentWindow = root.Window,
+    IsModal = true
+};
+
+factory.FloatDockable(tool, options);
+```
+
+For an overview of ownership and windowing behavior see `windowing/ownership.md` and `windowing/overview.md`.
+
 To customize the platform window (`IHostWindow`) used by floating docks, use `HostWindowLocator` or `DefaultHostWindowLocator`. See [Host window locators](dock-host-window-locator.md) for details.
 
 ## Managed windows
 
-When `DockSettings.UseManagedWindows` is enabled, floating windows are hosted inside the main window instead of spawning native OS windows. The default host window becomes `ManagedHostWindow`, which renders floating windows inside `ManagedWindowLayer` using the MDI layout system.
+When managed hosting is enabled, floating windows are hosted inside the main window instead of spawning native OS windows. The default host window becomes `ManagedHostWindow`, which renders floating windows inside `ManagedWindowLayer` using the MDI layout system.
+
+Managed hosting can be enabled globally with `DockSettings.FloatingWindowHostMode` or per root with `IRootDock.FloatingWindowHostMode`. When both are `Default`, Dock falls back to `DockSettings.UseManagedWindows` to keep compatibility.
 
 If you override host window creation, return `ManagedHostWindow` when managed windows are enabled. `DockControl.EnableManagedWindowLayer` must remain `true` for managed windows to appear.
 
@@ -43,6 +60,10 @@ For setup details see the [Managed windows guide](dock-managed-windows-guide.md)
 | `Width`, `Height` | `double` | Window size. |
 | `Topmost` | `bool` | Keeps the window on top when `true`. |
 | `Title` | `string` | Window title. |
+| `OwnerMode` | `DockWindowOwnerMode` | Owner resolution mode for the host window. |
+| `ParentWindow` | `IDockWindow?` | Explicit parent window for ownership/modality. |
+| `IsModal` | `bool` | Presents the window as a dialog when `true`. |
+| `ShowInTaskbar` | `bool?` | Taskbar visibility override (`null` leaves platform default). |
 | `Owner` | `IDockable?` | Dockable that owns the window. |
 | `Factory` | `IFactory?` | Factory used by the window. |
 | `Layout` | `IRootDock?` | Root layout hosted in the window. |

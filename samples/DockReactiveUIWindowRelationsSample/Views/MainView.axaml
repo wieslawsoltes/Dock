@@ -1,0 +1,30 @@
+<UserControl x:Class="DockReactiveUIWindowRelationsSample.Views.MainView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dm="using:Dock.Model.Core"
+             xmlns:dmc="using:Dock.Model.Controls"
+             xmlns:vm="using:DockReactiveUIWindowRelationsSample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="1200" d:DesignHeight="720"
+             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8" Spacing="8">
+      <Button Content="Reset Layout" Command="{Binding ResetLayout}" />
+      <StackPanel DataContext="{Binding Layout}" Orientation="Horizontal" Spacing="8" x:DataType="dmc:IRootDock">
+        <Button Content="Show Windows" Command="{Binding ShowWindows}" />
+        <Button Content="Exit Windows" Command="{Binding ExitWindows}" />
+      </StackPanel>
+    </StackPanel>
+    <DockControl Layout="{Binding Layout}" Margin="8" />
+    <Border DockPanel.Dock="Bottom" Padding="8" Background="#1F000000">
+      <TextBlock DataContext="{Binding Layout}"
+                 Text="{Binding FocusedDockable, FallbackValue=''}"
+                 x:DataType="dm:IDock" />
+    </Border>
+  </DockPanel>
+</UserControl>

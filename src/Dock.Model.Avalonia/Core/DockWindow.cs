@@ -59,6 +59,30 @@ public class DockWindow : ReactiveBase, IDockWindow
         AvaloniaProperty.RegisterDirect<DockWindow, string>(nameof(Title), o => o.Title, (o, v) => o.Title = v);
 
     /// <summary>
+    /// Defines the <see cref="OwnerMode"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockWindow, DockWindowOwnerMode> OwnerModeProperty =
+        AvaloniaProperty.RegisterDirect<DockWindow, DockWindowOwnerMode>(nameof(OwnerMode), o => o.OwnerMode, (o, v) => o.OwnerMode = v);
+
+    /// <summary>
+    /// Defines the <see cref="ParentWindow"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockWindow, IDockWindow?> ParentWindowProperty =
+        AvaloniaProperty.RegisterDirect<DockWindow, IDockWindow?>(nameof(ParentWindow), o => o.ParentWindow, (o, v) => o.ParentWindow = v);
+
+    /// <summary>
+    /// Defines the <see cref="IsModal"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockWindow, bool> IsModalProperty =
+        AvaloniaProperty.RegisterDirect<DockWindow, bool>(nameof(IsModal), o => o.IsModal, (o, v) => o.IsModal = v);
+
+    /// <summary>
+    /// Defines the <see cref="ShowInTaskbar"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockWindow, bool?> ShowInTaskbarProperty =
+        AvaloniaProperty.RegisterDirect<DockWindow, bool?>(nameof(ShowInTaskbar), o => o.ShowInTaskbar, (o, v) => o.ShowInTaskbar = v);
+
+    /// <summary>
     /// Defines the <see cref="Owner"/> property.
     /// </summary>
     public static readonly DirectProperty<DockWindow, IDockable?> OwnerProperty =
@@ -90,6 +114,10 @@ public class DockWindow : ReactiveBase, IDockWindow
     private double _height;
     private bool _topmost;
     private string _title;
+    private DockWindowOwnerMode _ownerMode;
+    private IDockWindow? _parentWindow;
+    private bool _isModal;
+    private bool? _showInTaskbar;
     private IDockable? _owner;
     private IFactory? _factory;
     private IRootDock? _layout;
@@ -102,6 +130,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     {
         _id = nameof(IDockWindow);
         _title = nameof(IDockWindow);
+        _ownerMode = DockWindowOwnerMode.Default;
         _hostAdapter = new HostAdapter(this);
     }
 
@@ -166,6 +195,42 @@ public class DockWindow : ReactiveBase, IDockWindow
     {
         get => _title;
         set => SetAndRaise(TitleProperty, ref _title, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("OwnerMode")]
+    public DockWindowOwnerMode OwnerMode
+    {
+        get => _ownerMode;
+        set => SetAndRaise(OwnerModeProperty, ref _ownerMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("ParentWindow")]
+    public IDockWindow? ParentWindow
+    {
+        get => _parentWindow;
+        set => SetAndRaise(ParentWindowProperty, ref _parentWindow, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("IsModal")]
+    public bool IsModal
+    {
+        get => _isModal;
+        set => SetAndRaise(IsModalProperty, ref _isModal, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("ShowInTaskbar")]
+    public bool? ShowInTaskbar
+    {
+        get => _showInTaskbar;
+        set => SetAndRaise(ShowInTaskbarProperty, ref _showInTaskbar, value);
     }
 
     /// <inheritdoc/>

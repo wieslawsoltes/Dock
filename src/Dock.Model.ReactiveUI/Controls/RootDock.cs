@@ -25,6 +25,7 @@ public partial class RootDock : DockBase, IRootDock
     {
         _isFocusableRoot = true;
         PinnedDockDisplayMode = PinnedDockDisplayMode.Overlay;
+        FloatingWindowHostMode = DockFloatingWindowHostMode.Default;
         ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
     }
@@ -78,6 +79,11 @@ public partial class RootDock : DockBase, IRootDock
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
     public partial IList<IDockWindow>? Windows { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial DockFloatingWindowHostMode FloatingWindowHostMode { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]

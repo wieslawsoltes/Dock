@@ -415,10 +415,24 @@ public partial interface IFactory
     void FloatDockable(IDockable dockable);
 
     /// <summary>
+    /// Floats dockable with the specified window options.
+    /// </summary>
+    /// <param name="dockable">The dockable to float.</param>
+    /// <param name="options">The window options.</param>
+    void FloatDockable(IDockable dockable, DockWindowOptions? options);
+
+    /// <summary>
     /// Floats owner dock with all dockables.
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void FloatAllDockables(IDockable dockable);
+
+    /// <summary>
+    /// Floats owner dock with all dockables using the specified window options.
+    /// </summary>
+    /// <param name="dockable">The dockable owner source.</param>
+    /// <param name="options">The window options.</param>
+    void FloatAllDockables(IDockable dockable, DockWindowOptions? options);
 
     /// <summary>
     /// Docks dockable as tabbed document in the nearest document dock.
@@ -583,6 +597,14 @@ public partial interface IFactory
     IDockWindow? CreateWindowFrom(IDockable dockable);
 
     /// <summary>
+    /// Creates dock window from source dockable with the specified options.
+    /// </summary>
+    /// <param name="dockable">The dockable to embed into window.</param>
+    /// <param name="options">The window options.</param>
+    /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
+    IDockWindow? CreateWindowFrom(IDockable dockable, DockWindowOptions? options);
+
+    /// <summary>
     /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.
     /// </summary>
     /// <param name="dock">The window owner.</param>
@@ -592,6 +614,18 @@ public partial interface IFactory
     /// <param name="width">The window width.</param>
     /// <param name="height">The window height.</param>
     void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height);
+
+    /// <summary>
+    /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout with the specified window options.
+    /// </summary>
+    /// <param name="dock">The window owner.</param>
+    /// <param name="dockable">The dockable to add to a split window.</param>
+    /// <param name="x">The window X coordinate.</param>
+    /// <param name="y">The window Y coordinate.</param>
+    /// <param name="width">The window width.</param>
+    /// <param name="height">The window height.</param>
+    /// <param name="options">The window options.</param>
+    void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height, DockWindowOptions? options);
 
     /// <summary>
     /// Splits document into a new horizontal document dock.

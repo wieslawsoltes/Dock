@@ -105,6 +105,15 @@ public class RootDock : DockBase, IRootDock
             (o, v) => o.Windows = v);
 
     /// <summary>
+    /// Defines the <see cref="FloatingWindowHostMode"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, DockFloatingWindowHostMode> FloatingWindowHostModeProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, DockFloatingWindowHostMode>(
+            nameof(FloatingWindowHostMode),
+            o => o.FloatingWindowHostMode,
+            (o, v) => o.FloatingWindowHostMode = v);
+
+    /// <summary>
     /// Defines the <see cref="EnableAdaptiveGlobalDockTargets"/> property.
     /// </summary>
     public static readonly DirectProperty<RootDock, bool> EnableAdaptiveGlobalDockTargetsProperty =
@@ -122,6 +131,7 @@ public class RootDock : DockBase, IRootDock
     private PinnedDockDisplayMode _pinnedDockDisplayMode = PinnedDockDisplayMode.Overlay;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
+    private DockFloatingWindowHostMode _floatingWindowHostMode;
     private bool _enableAdaptiveGlobalDockTargets;
 
     /// <summary>
@@ -136,6 +146,7 @@ public class RootDock : DockBase, IRootDock
         _topPinnedDockables = new AvaloniaList<IDockable>();
         _bottomPinnedDockables = new AvaloniaList<IDockable>();
         _windows = new AvaloniaList<IDockWindow>();
+        _floatingWindowHostMode = DockFloatingWindowHostMode.Default;
         ShowWindows = Command.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = Command.Create(() => _navigateAdapter.ExitWindows());
     }
@@ -229,6 +240,15 @@ public class RootDock : DockBase, IRootDock
     {
         get => _windows;
         set => SetAndRaise(WindowsProperty, ref _windows, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("FloatingWindowHostMode")]
+    public DockFloatingWindowHostMode FloatingWindowHostMode
+    {
+        get => _floatingWindowHostMode;
+        set => SetAndRaise(FloatingWindowHostModeProperty, ref _floatingWindowHostMode, value);
     }
 
     /// <inheritdoc/>

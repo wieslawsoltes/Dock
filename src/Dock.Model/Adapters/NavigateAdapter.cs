@@ -252,7 +252,7 @@ public class NavigateAdapter : INavigateAdapter
         {
             foreach (var window in rootDock.Windows)
             {
-                window.Present(false);
+                window.Present(window.IsModal);
             }
         }
         if (_dock.ActiveDockable is IRootDock activeRootDockWindows)

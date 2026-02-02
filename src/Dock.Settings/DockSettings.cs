@@ -4,6 +4,8 @@
 using System;
 using Avalonia;
 using Avalonia.Input;
+using Dock.Model.Controls;
+using Dock.Model.Core;
 
 namespace Dock.Settings;
 
@@ -36,11 +38,21 @@ public static class DockSettings
     /// Use managed (in-app) windows instead of native OS windows for floating windows.
     /// </summary>
     public static bool UseManagedWindows = false;
+
+    /// <summary>
+    /// Sets the global floating window host mode.
+    /// </summary>
+    public static DockFloatingWindowHostMode FloatingWindowHostMode = DockFloatingWindowHostMode.Default;
     
     /// <summary>
     /// Floating windows use the main window as their owner so they stay in front.
     /// </summary>
     public static bool UseOwnerForFloatingWindows = true;
+
+    /// <summary>
+    /// Sets the global floating window owner policy.
+    /// </summary>
+    public static DockFloatingWindowOwnerPolicy FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.Default;
 
     /// <summary>
     /// Snap floating windows to nearby windows when dragging.
@@ -154,6 +166,47 @@ public static class DockSettings
     {
         return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
                 || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
+    }
+
+    /// <summary>
+    /// Resolves the effective floating window host mode.
+    /// </summary>
+    /// <param name="root">Optional root dock override.</param>
+    public static DockFloatingWindowHostMode ResolveFloatingWindowHostMode(IRootDock? root = null)
+    {
+        if (root is { FloatingWindowHostMode: var hostMode } && hostMode != DockFloatingWindowHostMode.Default)
+        {
+            return hostMode;
+        }
+
+        if (FloatingWindowHostMode != DockFloatingWindowHostMode.Default)
+        {
+            return FloatingWindowHostMode;
+        }
+
+        return UseManagedWindows ? DockFloatingWindowHostMode.Managed : DockFloatingWindowHostMode.Native;
+    }
+
+    /// <summary>
+    /// Returns true when managed window hosting is enabled.
+    /// </summary>
+    /// <param name="root">Optional root dock override.</param>
+    public static bool IsManagedWindowHostingEnabled(IRootDock? root = null)
+    {
+        return ResolveFloatingWindowHostMode(root) == DockFloatingWindowHostMode.Managed;
+    }
+
+    /// <summary>
+    /// Returns true when floating windows should use an owner by default.
+    /// </summary>
+    public static bool ShouldUseOwnerForFloatingWindows()
+    {
+        return FloatingWindowOwnerPolicy switch
+        {
+            DockFloatingWindowOwnerPolicy.AlwaysOwned => true,
+            DockFloatingWindowOwnerPolicy.NeverOwned => false,
+            _ => UseOwnerForFloatingWindows
+        };
     }
 }
 

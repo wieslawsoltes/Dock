@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using Avalonia.Input;
+using Dock.Model.Core;
 
 namespace Dock.Settings;
 
@@ -36,9 +37,19 @@ public class DockSettingsOptions
     public bool? UseManagedWindows { get; set; }
 
     /// <summary>
+    /// Optional floating window host mode.
+    /// </summary>
+    public DockFloatingWindowHostMode? FloatingWindowHostMode { get; set; }
+
+    /// <summary>
     /// Optional floating window owner flag.
     /// </summary>
     public bool? UseOwnerForFloatingWindows { get; set; }
+
+    /// <summary>
+    /// Optional floating window owner policy.
+    /// </summary>
+    public DockFloatingWindowOwnerPolicy? FloatingWindowOwnerPolicy { get; set; }
 
     /// <summary>
     /// Optional window magnetism flag.

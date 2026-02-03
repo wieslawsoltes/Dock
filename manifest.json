@@ -602,7 +602,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Dock.Avalonia.Controls.ManagedDockableBase",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.ManagedDockableBase.yml\" sourcestartlinenumber=\"1\">Base implementation of dockable state, selection metadata, and docking restrictions.</p>\n"
     },
     {
       "type": "ManagedReference",

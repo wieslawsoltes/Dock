@@ -3280,6 +3280,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockFloatingWindowHostMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockFloatingWindowHostMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockFloatingWindowHostMode",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockFloatingWindowHostMode.yml\" sourcestartlinenumber=\"1\">Defines how floating dock windows are hosted.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.DockGroupValidator.yml",
       "output": {
         ".html": {
@@ -3403,6 +3417,34 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core.DockRect",
       "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockRect.yml\" sourcestartlinenumber=\"1\">Rectangle structure.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockWindowOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockWindowOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockWindowOptions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockWindowOptions.yml\" sourcestartlinenumber=\"1\">Options used to configure dock window relationships and presentation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockWindowOwnerMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockWindowOwnerMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockWindowOwnerMode",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockWindowOwnerMode.yml\" sourcestartlinenumber=\"1\">Defines how a dock window resolves its host owner.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7046,6 +7088,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Settings.DockFloatingWindowOwnerPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Settings.DockFloatingWindowOwnerPolicy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Settings.DockFloatingWindowOwnerPolicy",
+      "Summary": "<p sourcefile=\"api/Dock.Settings.DockFloatingWindowOwnerPolicy.yml\" sourcestartlinenumber=\"1\">Defines the global owner policy for floating windows.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Settings.DockLogger.yml",
       "output": {
         ".html": {
@@ -8006,6 +8062,46 @@
         },
         ".json": {
           "relative_path": "articles/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/windowing/hosting.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/windowing/hosting.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/windowing/overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/windowing/overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/windowing/ownership.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/windowing/ownership.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/windowing/taskbar-and-modal.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/windowing/taskbar-and-modal.html"
         }
       },
       "version": ""

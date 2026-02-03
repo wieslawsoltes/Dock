@@ -845,6 +845,9 @@ Class RootDock  <a class="header-action link-secondary" title="View source" href
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithBottomPinned_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockable___">FluentExtensions.WithBottomPinned(IRootDock, params IDockable[])</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFloatingWindowHostMode_Dock_Model_Controls_IRootDock_Dock_Model_Core_DockFloatingWindowHostMode_">FluentExtensions.WithFloatingWindowHostMode(IRootDock, DockFloatingWindowHostMode)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithHiddenDockables_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockable___">FluentExtensions.WithHiddenDockables(IRootDock, params IDockable[])</a>
   </div>
   <div>
@@ -885,7 +888,7 @@ Class RootDock  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock__ctor" data-uid="Dock.Model.Avalonia.Controls.RootDock.#ctor">
   RootDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L140"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Avalonia.Controls.RootDock.html">RootDock</a> class.</p>
@@ -946,7 +949,7 @@ Class RootDock  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_EnableAdaptiveGlobalDockTargetsProperty" data-uid="Dock.Model.Avalonia.Controls.RootDock.EnableAdaptiveGlobalDockTargetsProperty">
   EnableAdaptiveGlobalDockTargetsProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L119"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_EnableAdaptiveGlobalDockTargets">EnableAdaptiveGlobalDockTargets</a> property.</p>
@@ -963,6 +966,37 @@ Class RootDock  <a class="header-action link-secondary" title="View source" href
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
     <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.RootDock.html">RootDock</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_RootDock_FloatingWindowHostModeProperty" data-uid="Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostModeProperty">
+  FloatingWindowHostModeProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_FloatingWindowHostMode">FloatingWindowHostMode</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;RootDock, DockFloatingWindowHostMode&gt; FloatingWindowHostModeProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.RootDock.html">RootDock</a>, <a class="xref" href="Dock.Model.Core.DockFloatingWindowHostMode.html">DockFloatingWindowHostMode</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -1261,7 +1295,7 @@ Class RootDock  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_BottomPinnedDockables" data-uid="Dock.Model.Avalonia.Controls.RootDock.BottomPinnedDockables">
   BottomPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L218"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets bottom pinned dockables.</p>
@@ -1295,7 +1329,7 @@ public IList&lt;IDockable&gt;? BottomPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_EnableAdaptiveGlobalDockTargets" data-uid="Dock.Model.Avalonia.Controls.RootDock.EnableAdaptiveGlobalDockTargets">
   EnableAdaptiveGlobalDockTargets
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L248"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L268"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether adaptive global dock targets are enabled.
@@ -1331,7 +1365,7 @@ public bool EnableAdaptiveGlobalDockTargets { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_ExitWindows" data-uid="Dock.Model.Avalonia.Controls.RootDock.ExitWindows">
   ExitWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L260"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exit windows.</p>
@@ -1361,11 +1395,45 @@ public ICommand ExitWindows { get; }</code></pre>
 
 
 
+  <a id="Dock_Model_Avalonia_Controls_RootDock_FloatingWindowHostMode_" data-uid="Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_RootDock_FloatingWindowHostMode" data-uid="Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode">
+  FloatingWindowHostMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the floating window host mode override.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+[JsonPropertyName(&quot;FloatingWindowHostMode&quot;)]
+public DockFloatingWindowHostMode FloatingWindowHostMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockFloatingWindowHostMode.html">DockFloatingWindowHostMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Avalonia_Controls_RootDock_HiddenDockables_" data-uid="Dock.Model.Avalonia.Controls.RootDock.HiddenDockables*"></a>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_HiddenDockables" data-uid="Dock.Model.Avalonia.Controls.RootDock.HiddenDockables">
   HiddenDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L164"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets hidden dockables.</p>
@@ -1399,7 +1467,7 @@ public IList&lt;IDockable&gt;? HiddenDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_IsFocusableRoot" data-uid="Dock.Model.Avalonia.Controls.RootDock.IsFocusableRoot">
   IsFocusableRoot
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L155"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if root dock is focusable.</p>
@@ -1433,7 +1501,7 @@ public bool IsFocusableRoot { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_LeftPinnedDockables" data-uid="Dock.Model.Avalonia.Controls.RootDock.LeftPinnedDockables">
   LeftPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L173"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets left pinned dockables.</p>
@@ -1467,7 +1535,7 @@ public IList&lt;IDockable&gt;? LeftPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_PinnedDock" data-uid="Dock.Model.Avalonia.Controls.RootDock.PinnedDock">
   PinnedDock
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L182"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets pinned tool dock.</p>
@@ -1501,7 +1569,7 @@ public IToolDock? PinnedDock { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_PinnedDockDisplayMode" data-uid="Dock.Model.Avalonia.Controls.RootDock.PinnedDockDisplayMode">
   PinnedDockDisplayMode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L180"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L191"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets pinned dock display mode.</p>
@@ -1535,7 +1603,7 @@ public PinnedDockDisplayMode PinnedDockDisplayMode { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_RightPinnedDockables" data-uid="Dock.Model.Avalonia.Controls.RootDock.RightPinnedDockables">
   RightPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L200"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets right pinned dockables.</p>
@@ -1569,7 +1637,7 @@ public IList&lt;IDockable&gt;? RightPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_ShowWindows" data-uid="Dock.Model.Avalonia.Controls.RootDock.ShowWindows">
   ShowWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L255"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Show windows.</p>
@@ -1603,7 +1671,7 @@ public ICommand ShowWindows { get; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_TopPinnedDockables" data-uid="Dock.Model.Avalonia.Controls.RootDock.TopPinnedDockables">
   TopPinnedDockables
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L209"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets top pinned dockables.</p>
@@ -1637,7 +1705,7 @@ public IList&lt;IDockable&gt;? TopPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_Window" data-uid="Dock.Model.Avalonia.Controls.RootDock.Window">
   Window
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L227"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets owner window.</p>
@@ -1672,7 +1740,7 @@ public IDockWindow? Window { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_RootDock_Windows" data-uid="Dock.Model.Avalonia.Controls.RootDock.Windows">
   Windows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/RootDock.cs/#L237"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets windows.</p>

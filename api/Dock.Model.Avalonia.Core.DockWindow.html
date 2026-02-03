@@ -400,10 +400,22 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithLayout_Dock_Model_Core_IDockWindow_Dock_Model_Controls_IRootDock_">FluentExtensions.WithLayout(IDockWindow, IRootDock?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithModal_Dock_Model_Core_IDockWindow_System_Boolean_">FluentExtensions.WithModal(IDockWindow, bool)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner(IDockWindow, IDockable?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwnerMode_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockWindowOwnerMode_">FluentExtensions.WithOwnerMode(IDockWindow, DockWindowOwnerMode)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithParentWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockWindow_">FluentExtensions.WithParentWindow(IDockWindow, IDockWindow?)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPosition_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithPosition(IDockWindow, double, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithShowInTaskbar_Dock_Model_Core_IDockWindow_System_Nullable_System_Boolean__">FluentExtensions.WithShowInTaskbar(IDockWindow, bool?)</a>
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithSize_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithSize(IDockWindow, double, double)</a>
@@ -428,7 +440,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow__ctor" data-uid="Dock.Model.Avalonia.Core.DockWindow.#ctor">
   DockWindow()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L129"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html">DockWindow</a> class.</p>
@@ -458,7 +470,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_FactoryProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.FactoryProperty">
   FactoryProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_Factory">Factory</a> property.</p>
@@ -520,7 +532,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_HostProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.HostProperty">
   HostProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_Host">Host</a> property.</p>
@@ -580,9 +592,40 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
 
 
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_IsModalProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.IsModalProperty">
+  IsModalProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_IsModal">IsModal</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;DockWindow, bool&gt; IsModalProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html">DockWindow</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_LayoutProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.LayoutProperty">
   LayoutProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L100"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_Layout">Layout</a> property.</p>
@@ -611,9 +654,40 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
 
 
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_OwnerModeProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.OwnerModeProperty">
+  OwnerModeProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_OwnerMode">OwnerMode</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;DockWindow, DockWindowOwnerMode&gt; OwnerModeProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html">DockWindow</a>, <a class="xref" href="Dock.Model.Core.DockWindowOwnerMode.html">DockWindowOwnerMode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_OwnerProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.OwnerProperty">
   OwnerProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_Owner">Owner</a> property.</p>
@@ -630,6 +704,68 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
     <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html">DockWindow</a>, <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_ParentWindowProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.ParentWindowProperty">
+  ParentWindowProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ParentWindow">ParentWindow</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;DockWindow, IDockWindow?&gt; ParentWindowProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html">DockWindow</a>, <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_ShowInTaskbarProperty" data-uid="Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbarProperty">
+  ShowInTaskbarProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ShowInTaskbar">ShowInTaskbar</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;DockWindow, bool?&gt; ShowInTaskbarProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Core.DockWindow.html">DockWindow</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -804,7 +940,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Factory" data-uid="Dock.Model.Avalonia.Core.DockWindow.Factory">
   Factory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L247"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock factory.</p>
@@ -838,7 +974,7 @@ public IFactory? Factory { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Height" data-uid="Dock.Model.Avalonia.Core.DockWindow.Height">
   Height
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L174"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window height.</p>
@@ -872,7 +1008,7 @@ public double Height { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Host" data-uid="Dock.Model.Avalonia.Core.DockWindow.Host">
   Host
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L267"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock window.</p>
@@ -907,7 +1043,7 @@ public IHostWindow? Host { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Id" data-uid="Dock.Model.Avalonia.Core.DockWindow.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L138"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets id.</p>
@@ -937,11 +1073,45 @@ public string Id { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Avalonia_Core_DockWindow_IsModal_" data-uid="Dock.Model.Avalonia.Core.DockWindow.IsModal*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_IsModal" data-uid="Dock.Model.Avalonia.Core.DockWindow.IsModal">
+  IsModal
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the window should be presented modally.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+[JsonPropertyName(&quot;IsModal&quot;)]
+public bool IsModal { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Avalonia_Core_DockWindow_Layout_" data-uid="Dock.Model.Avalonia.Core.DockWindow.Layout*"></a>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Layout" data-uid="Dock.Model.Avalonia.Core.DockWindow.Layout">
   Layout
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L256"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets layout.</p>
@@ -977,7 +1147,7 @@ public IRootDock? Layout { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Owner" data-uid="Dock.Model.Avalonia.Core.DockWindow.Owner">
   Owner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L237"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window owner dockable.</p>
@@ -1008,11 +1178,113 @@ public IDockable? Owner { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Avalonia_Core_DockWindow_OwnerMode_" data-uid="Dock.Model.Avalonia.Core.DockWindow.OwnerMode*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_OwnerMode" data-uid="Dock.Model.Avalonia.Core.DockWindow.OwnerMode">
+  OwnerMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the owner resolution mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+[JsonPropertyName(&quot;OwnerMode&quot;)]
+public DockWindowOwnerMode OwnerMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockWindowOwnerMode.html">DockWindowOwnerMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Core_DockWindow_ParentWindow_" data-uid="Dock.Model.Avalonia.Core.DockWindow.ParentWindow*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_ParentWindow" data-uid="Dock.Model.Avalonia.Core.DockWindow.ParentWindow">
+  ParentWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the parent window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+[JsonPropertyName(&quot;ParentWindow&quot;)]
+public IDockWindow? ParentWindow { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Core_DockWindow_ShowInTaskbar_" data-uid="Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Core_DockWindow_ShowInTaskbar" data-uid="Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar">
+  ShowInTaskbar
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the window should appear in the taskbar.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+[JsonPropertyName(&quot;ShowInTaskbar&quot;)]
+public bool? ShowInTaskbar { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Avalonia_Core_DockWindow_Title_" data-uid="Dock.Model.Avalonia.Core.DockWindow.Title*"></a>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Title" data-uid="Dock.Model.Avalonia.Core.DockWindow.Title">
   Title
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L192"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window title.</p>
@@ -1046,7 +1318,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Topmost" data-uid="Dock.Model.Avalonia.Core.DockWindow.Topmost">
   Topmost
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L183"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether this window appears on top of all other windows.</p>
@@ -1080,7 +1352,7 @@ public bool Topmost { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Width" data-uid="Dock.Model.Avalonia.Core.DockWindow.Width">
   Width
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L165"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window width.</p>
@@ -1114,7 +1386,7 @@ public double Width { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_X" data-uid="Dock.Model.Avalonia.Core.DockWindow.X">
   X
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L147"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window X coordinate.</p>
@@ -1148,7 +1420,7 @@ public double X { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Y" data-uid="Dock.Model.Avalonia.Core.DockWindow.Y">
   Y
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L156"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window X coordinate.</p>
@@ -1186,7 +1458,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Exit" data-uid="Dock.Model.Avalonia.Core.DockWindow.Exit">
   Exit()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L247"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L312"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exits window.</p>
@@ -1213,7 +1485,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_OnClose" data-uid="Dock.Model.Avalonia.Core.DockWindow.OnClose">
   OnClose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L277"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is closed.</p>
@@ -1246,7 +1518,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_OnMoveDrag" data-uid="Dock.Model.Avalonia.Core.DockWindow.OnMoveDrag">
   OnMoveDrag()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L225"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L290"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is dragged.</p>
@@ -1273,7 +1545,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_OnMoveDragBegin" data-uid="Dock.Model.Avalonia.Core.DockWindow.OnMoveDragBegin">
   OnMoveDragBegin()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L284"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called before the window dragging start.</p>
@@ -1306,7 +1578,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_OnMoveDragEnd" data-uid="Dock.Model.Avalonia.Core.DockWindow.OnMoveDragEnd">
   OnMoveDragEnd()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L230"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L295"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called after the window dragging ended.</p>
@@ -1333,7 +1605,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Present_System_Boolean_" data-uid="Dock.Model.Avalonia.Core.DockWindow.Present(System.Boolean)">
   Present(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L306"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Presents window.</p>
@@ -1366,7 +1638,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_Save" data-uid="Dock.Model.Avalonia.Core.DockWindow.Save">
   Save()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L300"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Saves window properties.</p>
@@ -1393,7 +1665,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockWindow_SetActive" data-uid="Dock.Model.Avalonia.Core.DockWindow.SetActive">
   SetActive()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockWindow.cs/#L318"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Activates the window.</p>

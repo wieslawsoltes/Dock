@@ -83,7 +83,7 @@
         <article data-uid="">
 <h1 id="floating-window-owner">Floating window owner</h1>
 
-<p><code>DockSettings</code> exposes an option to make floating windows owned by the main window so they stay in front.</p>
+<p><code>DockSettings</code> exposes options to make floating windows owned by the main window so they stay in front. This is the default when <code>IDockWindow.OwnerMode</code> is <code>DockWindowOwnerMode.Default</code>.</p>
 <pre><code class="lang-csharp">// Keep floating windows above the main window
 DockSettings.UseOwnerForFloatingWindows = true;
 </code></pre>
@@ -95,6 +95,44 @@ AppBuilder.Configure&lt;App&gt;()
     .UseOwnerForFloatingWindows();
 </code></pre>
 <p>When enabled Dock sets the main window as the owner for floating windows, preventing them from appearing behind it. Disable this if you want windows to be independent.</p>
+<h2 id="global-owner-policy">Global owner policy</h2>
+<p>Use <code>DockSettings.FloatingWindowOwnerPolicy</code> to explicitly control global ownership behavior. When set to <code>Default</code>, Dock falls back to <code>UseOwnerForFloatingWindows</code> for backward compatibility.</p>
+<pre><code class="lang-csharp">DockSettings.FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.NeverOwned;
+</code></pre>
+<h2 id="per-window-ownership">Per-window ownership</h2>
+<p>Use <code>DockWindowOwnerMode</code> and <code>ParentWindow</code> to explicitly control ownership for a specific window. This overrides the global setting.</p>
+<pre><code class="lang-csharp">var options = new DockWindowOptions
+{
+    OwnerMode = DockWindowOwnerMode.ParentWindow,
+    ParentWindow = root.Window
+};
+
+factory.FloatDockable(tool, options);
+</code></pre>
+<p>To force a floating window to have no owner even when <code>UseOwnerForFloatingWindows</code> is enabled:</p>
+<pre><code class="lang-csharp">var options = new DockWindowOptions
+{
+    OwnerMode = DockWindowOwnerMode.None
+};
+
+factory.FloatDockable(tool, options);
+</code></pre>
+<p>To always use the root window as the owner:</p>
+<pre><code class="lang-csharp">var options = new DockWindowOptions
+{
+    OwnerMode = DockWindowOwnerMode.RootWindow
+};
+
+factory.FloatDockable(tool, options);
+</code></pre>
+<p>To use the window that currently hosts the dockable being floated:</p>
+<pre><code class="lang-csharp">var options = new DockWindowOptions
+{
+    OwnerMode = DockWindowOwnerMode.DockableWindow
+};
+
+factory.FloatDockable(tool, options);
+</code></pre>
 <p>Managed windows do not use OS-level owners, so this setting applies to native floating windows only.</p>
 
 </article>

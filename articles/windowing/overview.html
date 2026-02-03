@@ -2,21 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Enum DockCommandBarMergingScope | Dock for Avalonia </title>
+      <title>Windowing Overview | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Enum DockCommandBarMergingScope | Dock for Avalonia ">
-      
-      <meta name="description" content="Defines which dockable contributes command bars to a host window.">
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
+      <meta name="title" content="Windowing Overview | Dock for Avalonia ">
       
       
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Settings_DockCommandBarMergingScope.md&amp;value=---%0Auid%3A%20Dock.Settings.DockCommandBarMergingScope%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/windowing/overview.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -30,7 +30,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js"></script>
+      <script type="module" src="./../../public/docfx.min.js"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -39,12 +39,12 @@
 
   </head>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../images/logo.svg" alt="">
             
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,57 +80,37 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Dock.Settings.DockCommandBarMergingScope">
+        <article data-uid="">
+<h1 id="windowing-overview">Windowing Overview</h1>
 
-
-
-
-  <h1 id="Dock_Settings_DockCommandBarMergingScope" data-uid="Dock.Settings.DockCommandBarMergingScope" class="text-break">
-Enum DockCommandBarMergingScope  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L216"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Settings.html">Settings</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>Dock.Settings.dll</dd></dl>
-  </div>
-
-  <div class="markdown summary"><p>Defines which dockable contributes command bars to a host window.</p>
-</div>
-  <div class="markdown conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum DockCommandBarMergingScope</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-  <h2 id="fields">Fields
-</h2>
-  <dl class="parameters">
-    <dt id="Dock_Settings_DockCommandBarMergingScope_ActiveDockable"><code>ActiveDockable = 1</code></dt>
-  
-  <dd><p>Merge command bars from the active dockable (documents and tools).</p>
-</dd>
-    <dt id="Dock_Settings_DockCommandBarMergingScope_ActiveDocument"><code>ActiveDocument = 0</code></dt>
-  
-  <dd><p>Merge command bars from the active document only.</p>
-</dd>
-  </dl>
-
-
+<p>Dock uses <code>IDockWindow</code> to represent floating windows and a host window (<code>IHostWindow</code>) to present them. The default behavior stays the same as before: floating windows are owned by the main window and use native OS windows unless you change settings.</p>
+<h2 id="key-concepts">Key Concepts</h2>
+<ul>
+<li><code>IDockWindow</code> is the model for a floating window (title, bounds, owner, modality, taskbar visibility).</li>
+<li><code>IHostWindow</code> is the platform host that presents the window (native or managed).</li>
+<li><code>DockWindowOptions</code> lets you configure ownership, modality, and taskbar visibility when creating windows.</li>
+<li><code>IRootDock</code> can override the host mode for the windows it owns.</li>
+</ul>
+<h2 id="defaults">Defaults</h2>
+<ul>
+<li>Floating windows are <strong>owned</strong> by the main window when <code>DockSettings.UseOwnerForFloatingWindows = true</code>.</li>
+<li>Floating windows are <strong>native</strong> when <code>DockSettings.UseManagedWindows = false</code>.</li>
+<li>Modal windows require a resolved owner; if none can be found they are shown non-modally with diagnostics logging enabled.</li>
+</ul>
+<h2 id="related-articles">Related Articles</h2>
+<ul>
+<li>Ownership and owner policies: <code>windowing/ownership.md</code></li>
+<li>Host mode (managed vs native): <code>windowing/hosting.md</code></li>
+<li>Taskbar visibility and modality: <code>windowing/taskbar-and-modal.md</code></li>
+</ul>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L216" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/windowing/overview.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
 
       </div>
 

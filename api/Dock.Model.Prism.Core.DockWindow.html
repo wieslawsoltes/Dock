@@ -180,10 +180,22 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithLayout_Dock_Model_Core_IDockWindow_Dock_Model_Controls_IRootDock_">FluentExtensions.WithLayout(IDockWindow, IRootDock?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithModal_Dock_Model_Core_IDockWindow_System_Boolean_">FluentExtensions.WithModal(IDockWindow, bool)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner(IDockWindow, IDockable?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwnerMode_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockWindowOwnerMode_">FluentExtensions.WithOwnerMode(IDockWindow, DockWindowOwnerMode)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithParentWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockWindow_">FluentExtensions.WithParentWindow(IDockWindow, IDockWindow?)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPosition_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithPosition(IDockWindow, double, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithShowInTaskbar_Dock_Model_Core_IDockWindow_System_Nullable_System_Boolean__">FluentExtensions.WithShowInTaskbar(IDockWindow, bool?)</a>
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithSize_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithSize(IDockWindow, double, double)</a>
@@ -208,7 +220,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="Dock_Model_Prism_Core_DockWindow__ctor" data-uid="Dock.Model.Prism.Core.DockWindow.#ctor">
   DockWindow()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Prism.Core.DockWindow.html">DockWindow</a> class.</p>
@@ -239,7 +251,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Factory" data-uid="Dock.Model.Prism.Core.DockWindow.Factory">
   Factory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L140"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock factory.</p>
@@ -272,7 +284,7 @@ public IFactory? Factory { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Height" data-uid="Dock.Model.Prism.Core.DockWindow.Height">
   Height
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window height.</p>
@@ -305,7 +317,7 @@ public double Height { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Host" data-uid="Dock.Model.Prism.Core.DockWindow.Host">
   Host
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L156"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock window.</p>
@@ -338,7 +350,7 @@ public IHostWindow? Host { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Id" data-uid="Dock.Model.Prism.Core.DockWindow.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets id.</p>
@@ -367,11 +379,44 @@ public string Id { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Prism_Core_DockWindow_IsModal_" data-uid="Dock.Model.Prism.Core.DockWindow.IsModal*"></a>
+
+  <h3 id="Dock_Model_Prism_Core_DockWindow_IsModal" data-uid="Dock.Model.Prism.Core.DockWindow.IsModal">
+  IsModal
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the window should be presented modally.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public bool IsModal { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Prism_Core_DockWindow_Layout_" data-uid="Dock.Model.Prism.Core.DockWindow.Layout*"></a>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Layout" data-uid="Dock.Model.Prism.Core.DockWindow.Layout">
   Layout
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L148"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets layout.</p>
@@ -404,7 +449,7 @@ public IRootDock? Layout { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Owner" data-uid="Dock.Model.Prism.Core.DockWindow.Owner">
   Owner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L132"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window owner dockable.</p>
@@ -433,11 +478,110 @@ public IDockable? Owner { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Prism_Core_DockWindow_OwnerMode_" data-uid="Dock.Model.Prism.Core.DockWindow.OwnerMode*"></a>
+
+  <h3 id="Dock_Model_Prism_Core_DockWindow_OwnerMode" data-uid="Dock.Model.Prism.Core.DockWindow.OwnerMode">
+  OwnerMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the owner resolution mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public DockWindowOwnerMode OwnerMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockWindowOwnerMode.html">DockWindowOwnerMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Prism_Core_DockWindow_ParentWindow_" data-uid="Dock.Model.Prism.Core.DockWindow.ParentWindow*"></a>
+
+  <h3 id="Dock_Model_Prism_Core_DockWindow_ParentWindow" data-uid="Dock.Model.Prism.Core.DockWindow.ParentWindow">
+  ParentWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the parent window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public IDockWindow? ParentWindow { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Prism_Core_DockWindow_ShowInTaskbar_" data-uid="Dock.Model.Prism.Core.DockWindow.ShowInTaskbar*"></a>
+
+  <h3 id="Dock_Model_Prism_Core_DockWindow_ShowInTaskbar" data-uid="Dock.Model.Prism.Core.DockWindow.ShowInTaskbar">
+  ShowInTaskbar
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the window should appear in the taskbar.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public bool? ShowInTaskbar { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Prism_Core_DockWindow_Title_" data-uid="Dock.Model.Prism.Core.DockWindow.Title*"></a>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Title" data-uid="Dock.Model.Prism.Core.DockWindow.Title">
   Title
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window title.</p>
@@ -470,7 +614,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Topmost" data-uid="Dock.Model.Prism.Core.DockWindow.Topmost">
   Topmost
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether this window appears on top of all other windows.</p>
@@ -503,7 +647,7 @@ public bool Topmost { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Width" data-uid="Dock.Model.Prism.Core.DockWindow.Width">
   Width
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window width.</p>
@@ -536,7 +680,7 @@ public double Width { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_X" data-uid="Dock.Model.Prism.Core.DockWindow.X">
   X
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window X coordinate.</p>
@@ -569,7 +713,7 @@ public double X { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Y" data-uid="Dock.Model.Prism.Core.DockWindow.Y">
   Y
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window X coordinate.</p>
@@ -606,7 +750,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Exit" data-uid="Dock.Model.Prism.Core.DockWindow.Exit">
   Exit()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L198"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exits window.</p>
@@ -633,7 +777,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_OnClose" data-uid="Dock.Model.Prism.Core.DockWindow.OnClose">
   OnClose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L164"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is closed.</p>
@@ -666,7 +810,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_OnMoveDrag" data-uid="Dock.Model.Prism.Core.DockWindow.OnMoveDrag">
   OnMoveDrag()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L176"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is dragged.</p>
@@ -693,7 +837,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_OnMoveDragBegin" data-uid="Dock.Model.Prism.Core.DockWindow.OnMoveDragBegin">
   OnMoveDragBegin()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L170"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called before the window dragging start.</p>
@@ -726,7 +870,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_OnMoveDragEnd" data-uid="Dock.Model.Prism.Core.DockWindow.OnMoveDragEnd">
   OnMoveDragEnd()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L181"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called after the window dragging ended.</p>
@@ -753,7 +897,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Present_System_Boolean_" data-uid="Dock.Model.Prism.Core.DockWindow.Present(System.Boolean)">
   Present(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L192"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Presents window.</p>
@@ -786,7 +930,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_Save" data-uid="Dock.Model.Prism.Core.DockWindow.Save">
   Save()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L186"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Saves window properties.</p>
@@ -813,7 +957,7 @@ public double Y { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Prism_Core_DockWindow_SetActive" data-uid="Dock.Model.Prism.Core.DockWindow.SetActive">
   SetActive()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Prism/Core/DockWindow.cs/#L204"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Activates the window.</p>

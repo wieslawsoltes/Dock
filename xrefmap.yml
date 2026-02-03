@@ -11578,6 +11578,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.RootDock.ExitWindows
   nameWithType: RootDock.ExitWindows
+- uid: Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode
+  fullName: Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostModeProperty
+  name: FloatingWindowHostModeProperty
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_FloatingWindowHostModeProperty
+  commentId: F:Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostModeProperty
+  fullName: Dock.Model.Avalonia.Controls.RootDock.FloatingWindowHostModeProperty
+  nameWithType: RootDock.FloatingWindowHostModeProperty
 - uid: Dock.Model.Avalonia.Controls.RootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_HiddenDockables
@@ -12753,6 +12772,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockWindow.IdProperty
   fullName: Dock.Model.Avalonia.Core.DockWindow.IdProperty
   nameWithType: DockWindow.IdProperty
+- uid: Dock.Model.Avalonia.Core.DockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_IsModal
+  commentId: P:Dock.Model.Avalonia.Core.DockWindow.IsModal
+  fullName: Dock.Model.Avalonia.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.Avalonia.Core.DockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_IsModal_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.Avalonia.Core.DockWindow.IsModalProperty
+  name: IsModalProperty
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_IsModalProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockWindow.IsModalProperty
+  fullName: Dock.Model.Avalonia.Core.DockWindow.IsModalProperty
+  nameWithType: DockWindow.IsModalProperty
 - uid: Dock.Model.Avalonia.Core.DockWindow.Layout
   name: Layout
   href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_Layout
@@ -12837,12 +12875,50 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Core.DockWindow.Owner
   nameWithType: DockWindow.Owner
+- uid: Dock.Model.Avalonia.Core.DockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_OwnerMode
+  commentId: P:Dock.Model.Avalonia.Core.DockWindow.OwnerMode
+  fullName: Dock.Model.Avalonia.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Avalonia.Core.DockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Avalonia.Core.DockWindow.OwnerModeProperty
+  name: OwnerModeProperty
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_OwnerModeProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockWindow.OwnerModeProperty
+  fullName: Dock.Model.Avalonia.Core.DockWindow.OwnerModeProperty
+  nameWithType: DockWindow.OwnerModeProperty
 - uid: Dock.Model.Avalonia.Core.DockWindow.OwnerProperty
   name: OwnerProperty
   href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_OwnerProperty
   commentId: F:Dock.Model.Avalonia.Core.DockWindow.OwnerProperty
   fullName: Dock.Model.Avalonia.Core.DockWindow.OwnerProperty
   nameWithType: DockWindow.OwnerProperty
+- uid: Dock.Model.Avalonia.Core.DockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ParentWindow
+  commentId: P:Dock.Model.Avalonia.Core.DockWindow.ParentWindow
+  fullName: Dock.Model.Avalonia.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.Avalonia.Core.DockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.Avalonia.Core.DockWindow.ParentWindowProperty
+  name: ParentWindowProperty
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ParentWindowProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockWindow.ParentWindowProperty
+  fullName: Dock.Model.Avalonia.Core.DockWindow.ParentWindowProperty
+  nameWithType: DockWindow.ParentWindowProperty
 - uid: Dock.Model.Avalonia.Core.DockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_Present_System_Boolean_
@@ -12885,6 +12961,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Core.DockWindow.SetActive
   nameWithType: DockWindow.SetActive
+- uid: Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar
+  fullName: Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbarProperty
+  name: ShowInTaskbarProperty
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_ShowInTaskbarProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbarProperty
+  fullName: Dock.Model.Avalonia.Core.DockWindow.ShowInTaskbarProperty
+  nameWithType: DockWindow.ShowInTaskbarProperty
 - uid: Dock.Model.Avalonia.Core.DockWindow.Title
   name: Title
   href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_Title
@@ -14945,6 +15040,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Controls.RootDock.ExitWindows
   nameWithType: RootDock.ExitWindows
+- uid: Dock.Model.CaliburMicro.Controls.RootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.CaliburMicro.Controls.RootDock.FloatingWindowHostMode
+  fullName: Dock.Model.CaliburMicro.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.CaliburMicro.Controls.RootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.RootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
 - uid: Dock.Model.CaliburMicro.Controls.RootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_HiddenDockables
@@ -15732,6 +15840,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockWindow.Id
   nameWithType: DockWindow.Id
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_IsModal
+  commentId: P:Dock.Model.CaliburMicro.Core.DockWindow.IsModal
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_IsModal_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
 - uid: Dock.Model.CaliburMicro.Core.DockWindow.Layout
   name: Layout
   href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_Layout
@@ -15810,6 +15931,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockWindow.Owner
   nameWithType: DockWindow.Owner
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_OwnerMode
+  commentId: P:Dock.Model.CaliburMicro.Core.DockWindow.OwnerMode
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_ParentWindow
+  commentId: P:Dock.Model.CaliburMicro.Core.DockWindow.ParentWindow
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
 - uid: Dock.Model.CaliburMicro.Core.DockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_Present_System_Boolean_
@@ -15852,6 +15999,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockWindow.SetActive
   nameWithType: DockWindow.SetActive
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.CaliburMicro.Core.DockWindow.ShowInTaskbar
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
 - uid: Dock.Model.CaliburMicro.Core.DockWindow.Title
   name: Title
   href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_Title
@@ -18018,6 +18178,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Controls.IRootDock.ExitWindows
   nameWithType: IRootDock.ExitWindows
+- uid: Dock.Model.Controls.IRootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.Controls.IRootDock.FloatingWindowHostMode
+  fullName: Dock.Model.Controls.IRootDock.FloatingWindowHostMode
+  nameWithType: IRootDock.FloatingWindowHostMode
+- uid: Dock.Model.Controls.IRootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.Controls.IRootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IRootDock.FloatingWindowHostMode
+  nameWithType: IRootDock.FloatingWindowHostMode
 - uid: Dock.Model.Controls.IRootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_HiddenDockables
@@ -18524,6 +18697,30 @@ references:
   commentId: F:Dock.Model.Core.Alignment.Unset
   fullName: Dock.Model.Core.Alignment.Unset
   nameWithType: Alignment.Unset
+- uid: Dock.Model.Core.DockFloatingWindowHostMode
+  name: DockFloatingWindowHostMode
+  href: api/Dock.Model.Core.DockFloatingWindowHostMode.html
+  commentId: T:Dock.Model.Core.DockFloatingWindowHostMode
+  fullName: Dock.Model.Core.DockFloatingWindowHostMode
+  nameWithType: DockFloatingWindowHostMode
+- uid: Dock.Model.Core.DockFloatingWindowHostMode.Default
+  name: Default
+  href: api/Dock.Model.Core.DockFloatingWindowHostMode.html#Dock_Model_Core_DockFloatingWindowHostMode_Default
+  commentId: F:Dock.Model.Core.DockFloatingWindowHostMode.Default
+  fullName: Dock.Model.Core.DockFloatingWindowHostMode.Default
+  nameWithType: DockFloatingWindowHostMode.Default
+- uid: Dock.Model.Core.DockFloatingWindowHostMode.Managed
+  name: Managed
+  href: api/Dock.Model.Core.DockFloatingWindowHostMode.html#Dock_Model_Core_DockFloatingWindowHostMode_Managed
+  commentId: F:Dock.Model.Core.DockFloatingWindowHostMode.Managed
+  fullName: Dock.Model.Core.DockFloatingWindowHostMode.Managed
+  nameWithType: DockFloatingWindowHostMode.Managed
+- uid: Dock.Model.Core.DockFloatingWindowHostMode.Native
+  name: Native
+  href: api/Dock.Model.Core.DockFloatingWindowHostMode.html#Dock_Model_Core_DockFloatingWindowHostMode_Native
+  commentId: F:Dock.Model.Core.DockFloatingWindowHostMode.Native
+  fullName: Dock.Model.Core.DockFloatingWindowHostMode.Native
+  nameWithType: DockFloatingWindowHostMode.Native
 - uid: Dock.Model.Core.DockGroupValidator
   name: DockGroupValidator
   href: api/Dock.Model.Core.DockGroupValidator.html
@@ -18931,6 +19128,113 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.DockRect.Y
   nameWithType: DockRect.Y
+- uid: Dock.Model.Core.DockWindowOptions
+  name: DockWindowOptions
+  href: api/Dock.Model.Core.DockWindowOptions.html
+  commentId: T:Dock.Model.Core.DockWindowOptions
+  fullName: Dock.Model.Core.DockWindowOptions
+  nameWithType: DockWindowOptions
+- uid: Dock.Model.Core.DockWindowOptions.ApplyTo(Dock.Model.Core.IDockWindow)
+  name: ApplyTo(IDockWindow)
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_ApplyTo_Dock_Model_Core_IDockWindow_
+  commentId: M:Dock.Model.Core.DockWindowOptions.ApplyTo(Dock.Model.Core.IDockWindow)
+  fullName: Dock.Model.Core.DockWindowOptions.ApplyTo(Dock.Model.Core.IDockWindow)
+  nameWithType: DockWindowOptions.ApplyTo(IDockWindow)
+- uid: Dock.Model.Core.DockWindowOptions.ApplyTo*
+  name: ApplyTo
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_ApplyTo_
+  commentId: Overload:Dock.Model.Core.DockWindowOptions.ApplyTo
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockWindowOptions.ApplyTo
+  nameWithType: DockWindowOptions.ApplyTo
+- uid: Dock.Model.Core.DockWindowOptions.IsModal
+  name: IsModal
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_IsModal
+  commentId: P:Dock.Model.Core.DockWindowOptions.IsModal
+  fullName: Dock.Model.Core.DockWindowOptions.IsModal
+  nameWithType: DockWindowOptions.IsModal
+- uid: Dock.Model.Core.DockWindowOptions.IsModal*
+  name: IsModal
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_IsModal_
+  commentId: Overload:Dock.Model.Core.DockWindowOptions.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockWindowOptions.IsModal
+  nameWithType: DockWindowOptions.IsModal
+- uid: Dock.Model.Core.DockWindowOptions.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_OwnerMode
+  commentId: P:Dock.Model.Core.DockWindowOptions.OwnerMode
+  fullName: Dock.Model.Core.DockWindowOptions.OwnerMode
+  nameWithType: DockWindowOptions.OwnerMode
+- uid: Dock.Model.Core.DockWindowOptions.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_OwnerMode_
+  commentId: Overload:Dock.Model.Core.DockWindowOptions.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockWindowOptions.OwnerMode
+  nameWithType: DockWindowOptions.OwnerMode
+- uid: Dock.Model.Core.DockWindowOptions.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_ParentWindow
+  commentId: P:Dock.Model.Core.DockWindowOptions.ParentWindow
+  fullName: Dock.Model.Core.DockWindowOptions.ParentWindow
+  nameWithType: DockWindowOptions.ParentWindow
+- uid: Dock.Model.Core.DockWindowOptions.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_ParentWindow_
+  commentId: Overload:Dock.Model.Core.DockWindowOptions.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockWindowOptions.ParentWindow
+  nameWithType: DockWindowOptions.ParentWindow
+- uid: Dock.Model.Core.DockWindowOptions.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_ShowInTaskbar
+  commentId: P:Dock.Model.Core.DockWindowOptions.ShowInTaskbar
+  fullName: Dock.Model.Core.DockWindowOptions.ShowInTaskbar
+  nameWithType: DockWindowOptions.ShowInTaskbar
+- uid: Dock.Model.Core.DockWindowOptions.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.Core.DockWindowOptions.html#Dock_Model_Core_DockWindowOptions_ShowInTaskbar_
+  commentId: Overload:Dock.Model.Core.DockWindowOptions.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockWindowOptions.ShowInTaskbar
+  nameWithType: DockWindowOptions.ShowInTaskbar
+- uid: Dock.Model.Core.DockWindowOwnerMode
+  name: DockWindowOwnerMode
+  href: api/Dock.Model.Core.DockWindowOwnerMode.html
+  commentId: T:Dock.Model.Core.DockWindowOwnerMode
+  fullName: Dock.Model.Core.DockWindowOwnerMode
+  nameWithType: DockWindowOwnerMode
+- uid: Dock.Model.Core.DockWindowOwnerMode.Default
+  name: Default
+  href: api/Dock.Model.Core.DockWindowOwnerMode.html#Dock_Model_Core_DockWindowOwnerMode_Default
+  commentId: F:Dock.Model.Core.DockWindowOwnerMode.Default
+  fullName: Dock.Model.Core.DockWindowOwnerMode.Default
+  nameWithType: DockWindowOwnerMode.Default
+- uid: Dock.Model.Core.DockWindowOwnerMode.DockableWindow
+  name: DockableWindow
+  href: api/Dock.Model.Core.DockWindowOwnerMode.html#Dock_Model_Core_DockWindowOwnerMode_DockableWindow
+  commentId: F:Dock.Model.Core.DockWindowOwnerMode.DockableWindow
+  fullName: Dock.Model.Core.DockWindowOwnerMode.DockableWindow
+  nameWithType: DockWindowOwnerMode.DockableWindow
+- uid: Dock.Model.Core.DockWindowOwnerMode.None
+  name: None
+  href: api/Dock.Model.Core.DockWindowOwnerMode.html#Dock_Model_Core_DockWindowOwnerMode_None
+  commentId: F:Dock.Model.Core.DockWindowOwnerMode.None
+  fullName: Dock.Model.Core.DockWindowOwnerMode.None
+  nameWithType: DockWindowOwnerMode.None
+- uid: Dock.Model.Core.DockWindowOwnerMode.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.Core.DockWindowOwnerMode.html#Dock_Model_Core_DockWindowOwnerMode_ParentWindow
+  commentId: F:Dock.Model.Core.DockWindowOwnerMode.ParentWindow
+  fullName: Dock.Model.Core.DockWindowOwnerMode.ParentWindow
+  nameWithType: DockWindowOwnerMode.ParentWindow
+- uid: Dock.Model.Core.DockWindowOwnerMode.RootWindow
+  name: RootWindow
+  href: api/Dock.Model.Core.DockWindowOwnerMode.html#Dock_Model_Core_DockWindowOwnerMode_RootWindow
+  commentId: F:Dock.Model.Core.DockWindowOwnerMode.RootWindow
+  fullName: Dock.Model.Core.DockWindowOwnerMode.RootWindow
+  nameWithType: DockWindowOwnerMode.RootWindow
 - uid: Dock.Model.Core.DocumentCloseButtonShowMode
   name: DocumentCloseButtonShowMode
   href: api/Dock.Model.Core.DocumentCloseButtonShowMode.html
@@ -20915,6 +21219,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockWindow.Id
   nameWithType: IDockWindow.Id
+- uid: Dock.Model.Core.IDockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_IsModal
+  commentId: P:Dock.Model.Core.IDockWindow.IsModal
+  fullName: Dock.Model.Core.IDockWindow.IsModal
+  nameWithType: IDockWindow.IsModal
+- uid: Dock.Model.Core.IDockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_IsModal_
+  commentId: Overload:Dock.Model.Core.IDockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockWindow.IsModal
+  nameWithType: IDockWindow.IsModal
 - uid: Dock.Model.Core.IDockWindow.Layout
   name: Layout
   href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_Layout
@@ -20993,6 +21310,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockWindow.Owner
   nameWithType: IDockWindow.Owner
+- uid: Dock.Model.Core.IDockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_OwnerMode
+  commentId: P:Dock.Model.Core.IDockWindow.OwnerMode
+  fullName: Dock.Model.Core.IDockWindow.OwnerMode
+  nameWithType: IDockWindow.OwnerMode
+- uid: Dock.Model.Core.IDockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.Core.IDockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockWindow.OwnerMode
+  nameWithType: IDockWindow.OwnerMode
+- uid: Dock.Model.Core.IDockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_ParentWindow
+  commentId: P:Dock.Model.Core.IDockWindow.ParentWindow
+  fullName: Dock.Model.Core.IDockWindow.ParentWindow
+  nameWithType: IDockWindow.ParentWindow
+- uid: Dock.Model.Core.IDockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.Core.IDockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockWindow.ParentWindow
+  nameWithType: IDockWindow.ParentWindow
 - uid: Dock.Model.Core.IDockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_Present_System_Boolean_
@@ -21035,6 +21378,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockWindow.SetActive
   nameWithType: IDockWindow.SetActive
+- uid: Dock.Model.Core.IDockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.Core.IDockWindow.ShowInTaskbar
+  fullName: Dock.Model.Core.IDockWindow.ShowInTaskbar
+  nameWithType: IDockWindow.ShowInTaskbar
+- uid: Dock.Model.Core.IDockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.Core.IDockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockWindow.ShowInTaskbar
+  nameWithType: IDockWindow.ShowInTaskbar
 - uid: Dock.Model.Core.IDockWindow.Title
   name: Title
   href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_Title
@@ -22198,6 +22554,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable)
   nameWithType: IFactory.CreateWindowFrom(IDockable)
+- uid: Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name: CreateWindowFrom(IDockable, DockWindowOptions?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CreateWindowFrom_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name.vb: CreateWindowFrom(IDockable, DockWindowOptions)
+  fullName: Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
+  nameWithType: IFactory.CreateWindowFrom(IDockable, DockWindowOptions?)
+  nameWithType.vb: IFactory.CreateWindowFrom(IDockable, DockWindowOptions)
 - uid: Dock.Model.Core.IFactory.CreateWindowFrom*
   name: CreateWindowFrom
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CreateWindowFrom_
@@ -22449,6 +22814,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable)
   nameWithType: IFactory.FloatAllDockables(IDockable)
+- uid: Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name: FloatAllDockables(IDockable, DockWindowOptions?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatAllDockables_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name.vb: FloatAllDockables(IDockable, DockWindowOptions)
+  fullName: Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
+  nameWithType: IFactory.FloatAllDockables(IDockable, DockWindowOptions?)
+  nameWithType.vb: IFactory.FloatAllDockables(IDockable, DockWindowOptions)
 - uid: Dock.Model.Core.IFactory.FloatAllDockables*
   name: FloatAllDockables
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatAllDockables_
@@ -22462,6 +22836,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable)
   nameWithType: IFactory.FloatDockable(IDockable)
+- uid: Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name: FloatDockable(IDockable, DockWindowOptions?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name.vb: FloatDockable(IDockable, DockWindowOptions)
+  fullName: Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
+  nameWithType: IFactory.FloatDockable(IDockable, DockWindowOptions?)
+  nameWithType.vb: IFactory.FloatDockable(IDockable, DockWindowOptions)
 - uid: Dock.Model.Core.IFactory.FloatDockable*
   name: FloatDockable
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatDockable_
@@ -23466,6 +23849,15 @@ references:
   fullName.vb: Dock.Model.Core.IFactory.SplitToWindow(Dock.Model.Core.IDock, Dock.Model.Core.IDockable, Double, Double, Double, Double)
   nameWithType: IFactory.SplitToWindow(IDock, IDockable, double, double, double, double)
   nameWithType.vb: IFactory.SplitToWindow(IDock, IDockable, Double, Double, Double, Double)
+- uid: Dock.Model.Core.IFactory.SplitToWindow(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Double,System.Double,System.Double,System.Double,Dock.Model.Core.DockWindowOptions)
+  name: SplitToWindow(IDock, IDockable, double, double, double, double, DockWindowOptions?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SplitToWindow_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Double_System_Double_System_Double_System_Double_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.Core.IFactory.SplitToWindow(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Double,System.Double,System.Double,System.Double,Dock.Model.Core.DockWindowOptions)
+  name.vb: SplitToWindow(IDock, IDockable, Double, Double, Double, Double, DockWindowOptions)
+  fullName: Dock.Model.Core.IFactory.SplitToWindow(Dock.Model.Core.IDock, Dock.Model.Core.IDockable, double, double, double, double, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.Core.IFactory.SplitToWindow(Dock.Model.Core.IDock, Dock.Model.Core.IDockable, Double, Double, Double, Double, Dock.Model.Core.DockWindowOptions)
+  nameWithType: IFactory.SplitToWindow(IDock, IDockable, double, double, double, double, DockWindowOptions?)
+  nameWithType.vb: IFactory.SplitToWindow(IDock, IDockable, Double, Double, Double, Double, DockWindowOptions)
 - uid: Dock.Model.Core.IFactory.SplitToWindow*
   name: SplitToWindow
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SplitToWindow_
@@ -25145,6 +25537,22 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.AddWindow
   nameWithType: FactoryBase.AddWindow
+- uid: Dock.Model.FactoryBase.ApplyWindowOptions(Dock.Model.Core.IDockWindow,Dock.Model.Core.DockWindowOptions)
+  name: ApplyWindowOptions(IDockWindow, DockWindowOptions?)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ApplyWindowOptions_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.FactoryBase.ApplyWindowOptions(Dock.Model.Core.IDockWindow,Dock.Model.Core.DockWindowOptions)
+  name.vb: ApplyWindowOptions(IDockWindow, DockWindowOptions)
+  fullName: Dock.Model.FactoryBase.ApplyWindowOptions(Dock.Model.Core.IDockWindow, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.FactoryBase.ApplyWindowOptions(Dock.Model.Core.IDockWindow, Dock.Model.Core.DockWindowOptions)
+  nameWithType: FactoryBase.ApplyWindowOptions(IDockWindow, DockWindowOptions?)
+  nameWithType.vb: FactoryBase.ApplyWindowOptions(IDockWindow, DockWindowOptions)
+- uid: Dock.Model.FactoryBase.ApplyWindowOptions*
+  name: ApplyWindowOptions
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ApplyWindowOptions_
+  commentId: Overload:Dock.Model.FactoryBase.ApplyWindowOptions
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.ApplyWindowOptions
+  nameWithType: FactoryBase.ApplyWindowOptions
 - uid: Dock.Model.FactoryBase.CleanupOrphanedSplitters(Dock.Model.Core.IDock)
   name: CleanupOrphanedSplitters(IDock)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CleanupOrphanedSplitters_Dock_Model_Core_IDock_
@@ -25492,6 +25900,15 @@ references:
   commentId: M:Dock.Model.FactoryBase.CreateWindowFrom(Dock.Model.Core.IDockable)
   fullName: Dock.Model.FactoryBase.CreateWindowFrom(Dock.Model.Core.IDockable)
   nameWithType: FactoryBase.CreateWindowFrom(IDockable)
+- uid: Dock.Model.FactoryBase.CreateWindowFrom(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name: CreateWindowFrom(IDockable, DockWindowOptions?)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CreateWindowFrom_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.FactoryBase.CreateWindowFrom(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name.vb: CreateWindowFrom(IDockable, DockWindowOptions)
+  fullName: Dock.Model.FactoryBase.CreateWindowFrom(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.FactoryBase.CreateWindowFrom(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
+  nameWithType: FactoryBase.CreateWindowFrom(IDockable, DockWindowOptions?)
+  nameWithType.vb: FactoryBase.CreateWindowFrom(IDockable, DockWindowOptions)
 - uid: Dock.Model.FactoryBase.CreateWindowFrom*
   name: CreateWindowFrom
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CreateWindowFrom_
@@ -25743,6 +26160,15 @@ references:
   commentId: M:Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable)
   fullName: Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable)
   nameWithType: FactoryBase.FloatAllDockables(IDockable)
+- uid: Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name: FloatAllDockables(IDockable, DockWindowOptions?)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FloatAllDockables_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name.vb: FloatAllDockables(IDockable, DockWindowOptions)
+  fullName: Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
+  nameWithType: FactoryBase.FloatAllDockables(IDockable, DockWindowOptions?)
+  nameWithType.vb: FactoryBase.FloatAllDockables(IDockable, DockWindowOptions)
 - uid: Dock.Model.FactoryBase.FloatAllDockables*
   name: FloatAllDockables
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FloatAllDockables_
@@ -25756,6 +26182,15 @@ references:
   commentId: M:Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable)
   fullName: Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable)
   nameWithType: FactoryBase.FloatDockable(IDockable)
+- uid: Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name: FloatDockable(IDockable, DockWindowOptions?)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FloatDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name.vb: FloatDockable(IDockable, DockWindowOptions)
+  fullName: Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
+  nameWithType: FactoryBase.FloatDockable(IDockable, DockWindowOptions?)
+  nameWithType.vb: FactoryBase.FloatDockable(IDockable, DockWindowOptions)
 - uid: Dock.Model.FactoryBase.FloatDockable*
   name: FloatDockable
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FloatDockable_
@@ -26615,6 +27050,22 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.PinnedRootControls
   nameWithType: FactoryBase.PinnedRootControls
+- uid: Dock.Model.FactoryBase.PrepareWindowOptionsForDockable(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name: PrepareWindowOptionsForDockable(IDockable, DockWindowOptions?)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_PrepareWindowOptionsForDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.FactoryBase.PrepareWindowOptionsForDockable(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)
+  name.vb: PrepareWindowOptionsForDockable(IDockable, DockWindowOptions)
+  fullName: Dock.Model.FactoryBase.PrepareWindowOptionsForDockable(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.FactoryBase.PrepareWindowOptionsForDockable(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
+  nameWithType: FactoryBase.PrepareWindowOptionsForDockable(IDockable, DockWindowOptions?)
+  nameWithType.vb: FactoryBase.PrepareWindowOptionsForDockable(IDockable, DockWindowOptions)
+- uid: Dock.Model.FactoryBase.PrepareWindowOptionsForDockable*
+  name: PrepareWindowOptionsForDockable
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_PrepareWindowOptionsForDockable_
+  commentId: Overload:Dock.Model.FactoryBase.PrepareWindowOptionsForDockable
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.PrepareWindowOptionsForDockable
+  nameWithType: FactoryBase.PrepareWindowOptionsForDockable
 - uid: Dock.Model.FactoryBase.PreviewPinnedDockable(Dock.Model.Core.IDockable)
   name: PreviewPinnedDockable(IDockable)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_PreviewPinnedDockable_Dock_Model_Core_IDockable_
@@ -26863,6 +27314,15 @@ references:
   fullName.vb: Dock.Model.FactoryBase.SplitToWindow(Dock.Model.Core.IDock, Dock.Model.Core.IDockable, Double, Double, Double, Double)
   nameWithType: FactoryBase.SplitToWindow(IDock, IDockable, double, double, double, double)
   nameWithType.vb: FactoryBase.SplitToWindow(IDock, IDockable, Double, Double, Double, Double)
+- uid: Dock.Model.FactoryBase.SplitToWindow(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Double,System.Double,System.Double,System.Double,Dock.Model.Core.DockWindowOptions)
+  name: SplitToWindow(IDock, IDockable, double, double, double, double, DockWindowOptions?)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SplitToWindow_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Double_System_Double_System_Double_System_Double_Dock_Model_Core_DockWindowOptions_
+  commentId: M:Dock.Model.FactoryBase.SplitToWindow(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Double,System.Double,System.Double,System.Double,Dock.Model.Core.DockWindowOptions)
+  name.vb: SplitToWindow(IDock, IDockable, Double, Double, Double, Double, DockWindowOptions)
+  fullName: Dock.Model.FactoryBase.SplitToWindow(Dock.Model.Core.IDock, Dock.Model.Core.IDockable, double, double, double, double, Dock.Model.Core.DockWindowOptions?)
+  fullName.vb: Dock.Model.FactoryBase.SplitToWindow(Dock.Model.Core.IDock, Dock.Model.Core.IDockable, Double, Double, Double, Double, Dock.Model.Core.DockWindowOptions)
+  nameWithType: FactoryBase.SplitToWindow(IDock, IDockable, double, double, double, double, DockWindowOptions?)
+  nameWithType.vb: FactoryBase.SplitToWindow(IDock, IDockable, Double, Double, Double, Double, DockWindowOptions)
 - uid: Dock.Model.FactoryBase.SplitToWindow*
   name: SplitToWindow
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SplitToWindow_
@@ -27953,6 +28413,19 @@ references:
   fullName.vb: Dock.Model.FluentExtensions.WithFactory(Of T)(T, Dock.Model.Core.IFactory)
   nameWithType: FluentExtensions.WithFactory<T>(T, IFactory?)
   nameWithType.vb: FluentExtensions.WithFactory(Of T)(T, IFactory)
+- uid: Dock.Model.FluentExtensions.WithFloatingWindowHostMode(Dock.Model.Controls.IRootDock,Dock.Model.Core.DockFloatingWindowHostMode)
+  name: WithFloatingWindowHostMode(IRootDock, DockFloatingWindowHostMode)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFloatingWindowHostMode_Dock_Model_Controls_IRootDock_Dock_Model_Core_DockFloatingWindowHostMode_
+  commentId: M:Dock.Model.FluentExtensions.WithFloatingWindowHostMode(Dock.Model.Controls.IRootDock,Dock.Model.Core.DockFloatingWindowHostMode)
+  fullName: Dock.Model.FluentExtensions.WithFloatingWindowHostMode(Dock.Model.Controls.IRootDock, Dock.Model.Core.DockFloatingWindowHostMode)
+  nameWithType: FluentExtensions.WithFloatingWindowHostMode(IRootDock, DockFloatingWindowHostMode)
+- uid: Dock.Model.FluentExtensions.WithFloatingWindowHostMode*
+  name: WithFloatingWindowHostMode
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFloatingWindowHostMode_
+  commentId: Overload:Dock.Model.FluentExtensions.WithFloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithFloatingWindowHostMode
+  nameWithType: FluentExtensions.WithFloatingWindowHostMode
 - uid: Dock.Model.FluentExtensions.WithFocusedDockable*
   name: WithFocusedDockable
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFocusedDockable_
@@ -28308,6 +28781,22 @@ references:
   fullName.vb: Dock.Model.FluentExtensions.WithMinWidth(Of T)(T, Double)
   nameWithType: FluentExtensions.WithMinWidth<T>(T, double)
   nameWithType.vb: FluentExtensions.WithMinWidth(Of T)(T, Double)
+- uid: Dock.Model.FluentExtensions.WithModal(Dock.Model.Core.IDockWindow,System.Boolean)
+  name: WithModal(IDockWindow, bool)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithModal_Dock_Model_Core_IDockWindow_System_Boolean_
+  commentId: M:Dock.Model.FluentExtensions.WithModal(Dock.Model.Core.IDockWindow,System.Boolean)
+  name.vb: WithModal(IDockWindow, Boolean)
+  fullName: Dock.Model.FluentExtensions.WithModal(Dock.Model.Core.IDockWindow, bool)
+  fullName.vb: Dock.Model.FluentExtensions.WithModal(Dock.Model.Core.IDockWindow, Boolean)
+  nameWithType: FluentExtensions.WithModal(IDockWindow, bool)
+  nameWithType.vb: FluentExtensions.WithModal(IDockWindow, Boolean)
+- uid: Dock.Model.FluentExtensions.WithModal*
+  name: WithModal
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithModal_
+  commentId: Overload:Dock.Model.FluentExtensions.WithModal
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithModal
+  nameWithType: FluentExtensions.WithModal
 - uid: Dock.Model.FluentExtensions.WithOpenPaneLength(Dock.Model.Controls.ISplitViewDock,System.Double)
   name: WithOpenPaneLength(ISplitViewDock, double)
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOpenPaneLength_Dock_Model_Controls_ISplitViewDock_System_Double_
@@ -28381,6 +28870,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FluentExtensions.WithOwner
   nameWithType: FluentExtensions.WithOwner
+- uid: Dock.Model.FluentExtensions.WithOwnerMode(Dock.Model.Core.IDockWindow,Dock.Model.Core.DockWindowOwnerMode)
+  name: WithOwnerMode(IDockWindow, DockWindowOwnerMode)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwnerMode_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockWindowOwnerMode_
+  commentId: M:Dock.Model.FluentExtensions.WithOwnerMode(Dock.Model.Core.IDockWindow,Dock.Model.Core.DockWindowOwnerMode)
+  fullName: Dock.Model.FluentExtensions.WithOwnerMode(Dock.Model.Core.IDockWindow, Dock.Model.Core.DockWindowOwnerMode)
+  nameWithType: FluentExtensions.WithOwnerMode(IDockWindow, DockWindowOwnerMode)
+- uid: Dock.Model.FluentExtensions.WithOwnerMode*
+  name: WithOwnerMode
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwnerMode_
+  commentId: Overload:Dock.Model.FluentExtensions.WithOwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithOwnerMode
+  nameWithType: FluentExtensions.WithOwnerMode
 - uid: Dock.Model.FluentExtensions.WithOwner``1(``0,Dock.Model.Core.IDockable)
   name: WithOwner<T>(T, IDockable?)
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner__1___0_Dock_Model_Core_IDockable_
@@ -28419,6 +28921,22 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FluentExtensions.WithPanePlacement
   nameWithType: FluentExtensions.WithPanePlacement
+- uid: Dock.Model.FluentExtensions.WithParentWindow(Dock.Model.Core.IDockWindow,Dock.Model.Core.IDockWindow)
+  name: WithParentWindow(IDockWindow, IDockWindow?)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithParentWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockWindow_
+  commentId: M:Dock.Model.FluentExtensions.WithParentWindow(Dock.Model.Core.IDockWindow,Dock.Model.Core.IDockWindow)
+  name.vb: WithParentWindow(IDockWindow, IDockWindow)
+  fullName: Dock.Model.FluentExtensions.WithParentWindow(Dock.Model.Core.IDockWindow, Dock.Model.Core.IDockWindow?)
+  fullName.vb: Dock.Model.FluentExtensions.WithParentWindow(Dock.Model.Core.IDockWindow, Dock.Model.Core.IDockWindow)
+  nameWithType: FluentExtensions.WithParentWindow(IDockWindow, IDockWindow?)
+  nameWithType.vb: FluentExtensions.WithParentWindow(IDockWindow, IDockWindow)
+- uid: Dock.Model.FluentExtensions.WithParentWindow*
+  name: WithParentWindow
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithParentWindow_
+  commentId: Overload:Dock.Model.FluentExtensions.WithParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithParentWindow
+  nameWithType: FluentExtensions.WithParentWindow
 - uid: Dock.Model.FluentExtensions.WithPinnedDock(Dock.Model.Controls.IRootDock,Dock.Model.Controls.IToolDock)
   name: WithPinnedDock(IRootDock, IToolDock?)
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPinnedDock_Dock_Model_Controls_IRootDock_Dock_Model_Controls_IToolDock_
@@ -28589,6 +29107,22 @@ references:
   fullName.vb: Dock.Model.FluentExtensions.WithSharedSizeScope(Of T)(T, Boolean)
   nameWithType: FluentExtensions.WithSharedSizeScope<T>(T, bool)
   nameWithType.vb: FluentExtensions.WithSharedSizeScope(Of T)(T, Boolean)
+- uid: Dock.Model.FluentExtensions.WithShowInTaskbar(Dock.Model.Core.IDockWindow,System.Nullable{System.Boolean})
+  name: WithShowInTaskbar(IDockWindow, bool?)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithShowInTaskbar_Dock_Model_Core_IDockWindow_System_Nullable_System_Boolean__
+  commentId: M:Dock.Model.FluentExtensions.WithShowInTaskbar(Dock.Model.Core.IDockWindow,System.Nullable{System.Boolean})
+  name.vb: WithShowInTaskbar(IDockWindow, Boolean?)
+  fullName: Dock.Model.FluentExtensions.WithShowInTaskbar(Dock.Model.Core.IDockWindow, bool?)
+  fullName.vb: Dock.Model.FluentExtensions.WithShowInTaskbar(Dock.Model.Core.IDockWindow, Boolean?)
+  nameWithType: FluentExtensions.WithShowInTaskbar(IDockWindow, bool?)
+  nameWithType.vb: FluentExtensions.WithShowInTaskbar(IDockWindow, Boolean?)
+- uid: Dock.Model.FluentExtensions.WithShowInTaskbar*
+  name: WithShowInTaskbar
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithShowInTaskbar_
+  commentId: Overload:Dock.Model.FluentExtensions.WithShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithShowInTaskbar
+  nameWithType: FluentExtensions.WithShowInTaskbar
 - uid: Dock.Model.FluentExtensions.WithSize(Dock.Model.Core.IDockWindow,System.Double,System.Double)
   name: WithSize(IDockWindow, double, double)
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithSize_Dock_Model_Core_IDockWindow_System_Double_System_Double_
@@ -29225,6 +29759,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Controls.RootDock.ExitWindows
   nameWithType: RootDock.ExitWindows
+- uid: Dock.Model.Inpc.Controls.RootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.Inpc.Controls.RootDock.FloatingWindowHostMode
+  fullName: Dock.Model.Inpc.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.Inpc.Controls.RootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.Inpc.Controls.RootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
 - uid: Dock.Model.Inpc.Controls.RootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_HiddenDockables
@@ -30006,6 +30553,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockWindow.Id
   nameWithType: DockWindow.Id
+- uid: Dock.Model.Inpc.Core.DockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_IsModal
+  commentId: P:Dock.Model.Inpc.Core.DockWindow.IsModal
+  fullName: Dock.Model.Inpc.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.Inpc.Core.DockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_IsModal_
+  commentId: Overload:Dock.Model.Inpc.Core.DockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
 - uid: Dock.Model.Inpc.Core.DockWindow.Layout
   name: Layout
   href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_Layout
@@ -30084,6 +30644,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockWindow.Owner
   nameWithType: DockWindow.Owner
+- uid: Dock.Model.Inpc.Core.DockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_OwnerMode
+  commentId: P:Dock.Model.Inpc.Core.DockWindow.OwnerMode
+  fullName: Dock.Model.Inpc.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Inpc.Core.DockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.Inpc.Core.DockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Inpc.Core.DockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_ParentWindow
+  commentId: P:Dock.Model.Inpc.Core.DockWindow.ParentWindow
+  fullName: Dock.Model.Inpc.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.Inpc.Core.DockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.Inpc.Core.DockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
 - uid: Dock.Model.Inpc.Core.DockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_Present_System_Boolean_
@@ -30126,6 +30712,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockWindow.SetActive
   nameWithType: DockWindow.SetActive
+- uid: Dock.Model.Inpc.Core.DockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.Inpc.Core.DockWindow.ShowInTaskbar
+  fullName: Dock.Model.Inpc.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.Inpc.Core.DockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.Inpc.Core.DockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
 - uid: Dock.Model.Inpc.Core.DockWindow.Title
   name: Title
   href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_Title
@@ -31974,6 +32573,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Controls.RootDock.ExitWindows
   nameWithType: RootDock.ExitWindows
+- uid: Dock.Model.Mvvm.Controls.RootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.Mvvm.Controls.RootDock.FloatingWindowHostMode
+  fullName: Dock.Model.Mvvm.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.Mvvm.Controls.RootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.Mvvm.Controls.RootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
 - uid: Dock.Model.Mvvm.Controls.RootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_HiddenDockables
@@ -32755,6 +33367,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockWindow.Id
   nameWithType: DockWindow.Id
+- uid: Dock.Model.Mvvm.Core.DockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_IsModal
+  commentId: P:Dock.Model.Mvvm.Core.DockWindow.IsModal
+  fullName: Dock.Model.Mvvm.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.Mvvm.Core.DockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_IsModal_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
 - uid: Dock.Model.Mvvm.Core.DockWindow.Layout
   name: Layout
   href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_Layout
@@ -32833,6 +33458,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockWindow.Owner
   nameWithType: DockWindow.Owner
+- uid: Dock.Model.Mvvm.Core.DockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_OwnerMode
+  commentId: P:Dock.Model.Mvvm.Core.DockWindow.OwnerMode
+  fullName: Dock.Model.Mvvm.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Mvvm.Core.DockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Mvvm.Core.DockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_ParentWindow
+  commentId: P:Dock.Model.Mvvm.Core.DockWindow.ParentWindow
+  fullName: Dock.Model.Mvvm.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.Mvvm.Core.DockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
 - uid: Dock.Model.Mvvm.Core.DockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_Present_System_Boolean_
@@ -32875,6 +33526,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockWindow.SetActive
   nameWithType: DockWindow.SetActive
+- uid: Dock.Model.Mvvm.Core.DockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.Mvvm.Core.DockWindow.ShowInTaskbar
+  fullName: Dock.Model.Mvvm.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.Mvvm.Core.DockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
 - uid: Dock.Model.Mvvm.Core.DockWindow.Title
   name: Title
   href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_Title
@@ -34520,6 +35184,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Controls.RootDock.ExitWindows
   nameWithType: RootDock.ExitWindows
+- uid: Dock.Model.Prism.Controls.RootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.Prism.Controls.RootDock.FloatingWindowHostMode
+  fullName: Dock.Model.Prism.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.Prism.Controls.RootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.Prism.Controls.RootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
 - uid: Dock.Model.Prism.Controls.RootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_HiddenDockables
@@ -35301,6 +35978,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockWindow.Id
   nameWithType: DockWindow.Id
+- uid: Dock.Model.Prism.Core.DockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_IsModal
+  commentId: P:Dock.Model.Prism.Core.DockWindow.IsModal
+  fullName: Dock.Model.Prism.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.Prism.Core.DockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_IsModal_
+  commentId: Overload:Dock.Model.Prism.Core.DockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
 - uid: Dock.Model.Prism.Core.DockWindow.Layout
   name: Layout
   href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_Layout
@@ -35379,6 +36069,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockWindow.Owner
   nameWithType: DockWindow.Owner
+- uid: Dock.Model.Prism.Core.DockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_OwnerMode
+  commentId: P:Dock.Model.Prism.Core.DockWindow.OwnerMode
+  fullName: Dock.Model.Prism.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Prism.Core.DockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.Prism.Core.DockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.Prism.Core.DockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_ParentWindow
+  commentId: P:Dock.Model.Prism.Core.DockWindow.ParentWindow
+  fullName: Dock.Model.Prism.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.Prism.Core.DockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.Prism.Core.DockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
 - uid: Dock.Model.Prism.Core.DockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_Present_System_Boolean_
@@ -35421,6 +36137,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockWindow.SetActive
   nameWithType: DockWindow.SetActive
+- uid: Dock.Model.Prism.Core.DockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.Prism.Core.DockWindow.ShowInTaskbar
+  fullName: Dock.Model.Prism.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.Prism.Core.DockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.Prism.Core.DockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
 - uid: Dock.Model.Prism.Core.DockWindow.Title
   name: Title
   href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_Title
@@ -37066,6 +37795,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Controls.RootDock.ExitWindows
   nameWithType: RootDock.ExitWindows
+- uid: Dock.Model.ReactiveProperty.Controls.RootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.ReactiveProperty.Controls.RootDock.FloatingWindowHostMode
+  fullName: Dock.Model.ReactiveProperty.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.ReactiveProperty.Controls.RootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.RootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
 - uid: Dock.Model.ReactiveProperty.Controls.RootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_HiddenDockables
@@ -37847,6 +38589,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockWindow.Id
   nameWithType: DockWindow.Id
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_IsModal
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockWindow.IsModal
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_IsModal_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
 - uid: Dock.Model.ReactiveProperty.Core.DockWindow.Layout
   name: Layout
   href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_Layout
@@ -37925,6 +38680,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockWindow.Owner
   nameWithType: DockWindow.Owner
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_OwnerMode
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockWindow.OwnerMode
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_ParentWindow
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockWindow.ParentWindow
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
 - uid: Dock.Model.ReactiveProperty.Core.DockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_Present_System_Boolean_
@@ -37967,6 +38748,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockWindow.SetActive
   nameWithType: DockWindow.SetActive
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockWindow.ShowInTaskbar
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
 - uid: Dock.Model.ReactiveProperty.Core.DockWindow.Title
   name: Title
   href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_Title
@@ -39688,6 +40482,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Controls.RootDock.ExitWindows
   nameWithType: RootDock.ExitWindows
+- uid: Dock.Model.ReactiveUI.Controls.RootDock.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_FloatingWindowHostMode
+  commentId: P:Dock.Model.ReactiveUI.Controls.RootDock.FloatingWindowHostMode
+  fullName: Dock.Model.ReactiveUI.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
+- uid: Dock.Model.ReactiveUI.Controls.RootDock.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_FloatingWindowHostMode_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.RootDock.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.RootDock.FloatingWindowHostMode
+  nameWithType: RootDock.FloatingWindowHostMode
 - uid: Dock.Model.ReactiveUI.Controls.RootDock.HiddenDockables
   name: HiddenDockables
   href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_HiddenDockables
@@ -40507,6 +41314,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockWindow.Id
   nameWithType: DockWindow.Id
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.IsModal
+  name: IsModal
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_IsModal
+  commentId: P:Dock.Model.ReactiveUI.Core.DockWindow.IsModal
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.IsModal*
+  name: IsModal
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_IsModal_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockWindow.IsModal
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.IsModal
+  nameWithType: DockWindow.IsModal
 - uid: Dock.Model.ReactiveUI.Core.DockWindow.Layout
   name: Layout
   href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_Layout
@@ -40585,6 +41405,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockWindow.Owner
   nameWithType: DockWindow.Owner
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.OwnerMode
+  name: OwnerMode
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_OwnerMode
+  commentId: P:Dock.Model.ReactiveUI.Core.DockWindow.OwnerMode
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.OwnerMode*
+  name: OwnerMode
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_OwnerMode_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockWindow.OwnerMode
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.OwnerMode
+  nameWithType: DockWindow.OwnerMode
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.ParentWindow
+  name: ParentWindow
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_ParentWindow
+  commentId: P:Dock.Model.ReactiveUI.Core.DockWindow.ParentWindow
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.ParentWindow*
+  name: ParentWindow
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_ParentWindow_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockWindow.ParentWindow
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.ParentWindow
+  nameWithType: DockWindow.ParentWindow
 - uid: Dock.Model.ReactiveUI.Core.DockWindow.Present(System.Boolean)
   name: Present(bool)
   href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_Present_System_Boolean_
@@ -40627,6 +41473,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockWindow.SetActive
   nameWithType: DockWindow.SetActive
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.ShowInTaskbar
+  name: ShowInTaskbar
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_ShowInTaskbar
+  commentId: P:Dock.Model.ReactiveUI.Core.DockWindow.ShowInTaskbar
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.ShowInTaskbar*
+  name: ShowInTaskbar
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_ShowInTaskbar_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockWindow.ShowInTaskbar
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.ShowInTaskbar
+  nameWithType: DockWindow.ShowInTaskbar
 - uid: Dock.Model.ReactiveUI.Core.DockWindow.Title
   name: Title
   href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_Title
@@ -45473,6 +46332,32 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.AppBuilderExtensions.UseFloatingDockAdorner
   nameWithType: AppBuilderExtensions.UseFloatingDockAdorner
+- uid: Dock.Settings.AppBuilderExtensions.UseFloatingWindowHostMode(Avalonia.AppBuilder,Dock.Model.Core.DockFloatingWindowHostMode)
+  name: UseFloatingWindowHostMode(AppBuilder, DockFloatingWindowHostMode)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseFloatingWindowHostMode_Avalonia_AppBuilder_Dock_Model_Core_DockFloatingWindowHostMode_
+  commentId: M:Dock.Settings.AppBuilderExtensions.UseFloatingWindowHostMode(Avalonia.AppBuilder,Dock.Model.Core.DockFloatingWindowHostMode)
+  fullName: Dock.Settings.AppBuilderExtensions.UseFloatingWindowHostMode(Avalonia.AppBuilder, Dock.Model.Core.DockFloatingWindowHostMode)
+  nameWithType: AppBuilderExtensions.UseFloatingWindowHostMode(AppBuilder, DockFloatingWindowHostMode)
+- uid: Dock.Settings.AppBuilderExtensions.UseFloatingWindowHostMode*
+  name: UseFloatingWindowHostMode
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseFloatingWindowHostMode_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.UseFloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.UseFloatingWindowHostMode
+  nameWithType: AppBuilderExtensions.UseFloatingWindowHostMode
+- uid: Dock.Settings.AppBuilderExtensions.UseFloatingWindowOwnerPolicy(Avalonia.AppBuilder,Dock.Settings.DockFloatingWindowOwnerPolicy)
+  name: UseFloatingWindowOwnerPolicy(AppBuilder, DockFloatingWindowOwnerPolicy)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseFloatingWindowOwnerPolicy_Avalonia_AppBuilder_Dock_Settings_DockFloatingWindowOwnerPolicy_
+  commentId: M:Dock.Settings.AppBuilderExtensions.UseFloatingWindowOwnerPolicy(Avalonia.AppBuilder,Dock.Settings.DockFloatingWindowOwnerPolicy)
+  fullName: Dock.Settings.AppBuilderExtensions.UseFloatingWindowOwnerPolicy(Avalonia.AppBuilder, Dock.Settings.DockFloatingWindowOwnerPolicy)
+  nameWithType: AppBuilderExtensions.UseFloatingWindowOwnerPolicy(AppBuilder, DockFloatingWindowOwnerPolicy)
+- uid: Dock.Settings.AppBuilderExtensions.UseFloatingWindowOwnerPolicy*
+  name: UseFloatingWindowOwnerPolicy
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseFloatingWindowOwnerPolicy_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.UseFloatingWindowOwnerPolicy
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.UseFloatingWindowOwnerPolicy
+  nameWithType: AppBuilderExtensions.UseFloatingWindowOwnerPolicy
 - uid: Dock.Settings.AppBuilderExtensions.UseManagedWindows(Avalonia.AppBuilder,System.Boolean)
   name: UseManagedWindows(AppBuilder, bool)
   href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseManagedWindows_Avalonia_AppBuilder_System_Boolean_
@@ -45555,6 +46440,30 @@ references:
   commentId: F:Dock.Settings.DockCommandBarMergingScope.ActiveDocument
   fullName: Dock.Settings.DockCommandBarMergingScope.ActiveDocument
   nameWithType: DockCommandBarMergingScope.ActiveDocument
+- uid: Dock.Settings.DockFloatingWindowOwnerPolicy
+  name: DockFloatingWindowOwnerPolicy
+  href: api/Dock.Settings.DockFloatingWindowOwnerPolicy.html
+  commentId: T:Dock.Settings.DockFloatingWindowOwnerPolicy
+  fullName: Dock.Settings.DockFloatingWindowOwnerPolicy
+  nameWithType: DockFloatingWindowOwnerPolicy
+- uid: Dock.Settings.DockFloatingWindowOwnerPolicy.AlwaysOwned
+  name: AlwaysOwned
+  href: api/Dock.Settings.DockFloatingWindowOwnerPolicy.html#Dock_Settings_DockFloatingWindowOwnerPolicy_AlwaysOwned
+  commentId: F:Dock.Settings.DockFloatingWindowOwnerPolicy.AlwaysOwned
+  fullName: Dock.Settings.DockFloatingWindowOwnerPolicy.AlwaysOwned
+  nameWithType: DockFloatingWindowOwnerPolicy.AlwaysOwned
+- uid: Dock.Settings.DockFloatingWindowOwnerPolicy.Default
+  name: Default
+  href: api/Dock.Settings.DockFloatingWindowOwnerPolicy.html#Dock_Settings_DockFloatingWindowOwnerPolicy_Default
+  commentId: F:Dock.Settings.DockFloatingWindowOwnerPolicy.Default
+  fullName: Dock.Settings.DockFloatingWindowOwnerPolicy.Default
+  nameWithType: DockFloatingWindowOwnerPolicy.Default
+- uid: Dock.Settings.DockFloatingWindowOwnerPolicy.NeverOwned
+  name: NeverOwned
+  href: api/Dock.Settings.DockFloatingWindowOwnerPolicy.html#Dock_Settings_DockFloatingWindowOwnerPolicy_NeverOwned
+  commentId: F:Dock.Settings.DockFloatingWindowOwnerPolicy.NeverOwned
+  fullName: Dock.Settings.DockFloatingWindowOwnerPolicy.NeverOwned
+  nameWithType: DockFloatingWindowOwnerPolicy.NeverOwned
 - uid: Dock.Settings.DockLogger
   name: DockLogger
   href: api/Dock.Settings.DockLogger.html
@@ -45986,12 +46895,40 @@ references:
   commentId: F:Dock.Settings.DockSettings.EnableWindowMagnetism
   fullName: Dock.Settings.DockSettings.EnableWindowMagnetism
   nameWithType: DockSettings.EnableWindowMagnetism
+- uid: Dock.Settings.DockSettings.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_FloatingWindowHostMode
+  commentId: F:Dock.Settings.DockSettings.FloatingWindowHostMode
+  fullName: Dock.Settings.DockSettings.FloatingWindowHostMode
+  nameWithType: DockSettings.FloatingWindowHostMode
+- uid: Dock.Settings.DockSettings.FloatingWindowOwnerPolicy
+  name: FloatingWindowOwnerPolicy
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_FloatingWindowOwnerPolicy
+  commentId: F:Dock.Settings.DockSettings.FloatingWindowOwnerPolicy
+  fullName: Dock.Settings.DockSettings.FloatingWindowOwnerPolicy
+  nameWithType: DockSettings.FloatingWindowOwnerPolicy
 - uid: Dock.Settings.DockSettings.GlobalDockingProportion
   name: GlobalDockingProportion
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_GlobalDockingProportion
   commentId: F:Dock.Settings.DockSettings.GlobalDockingProportion
   fullName: Dock.Settings.DockSettings.GlobalDockingProportion
   nameWithType: DockSettings.GlobalDockingProportion
+- uid: Dock.Settings.DockSettings.IsManagedWindowHostingEnabled(Dock.Model.Controls.IRootDock)
+  name: IsManagedWindowHostingEnabled(IRootDock?)
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_IsManagedWindowHostingEnabled_Dock_Model_Controls_IRootDock_
+  commentId: M:Dock.Settings.DockSettings.IsManagedWindowHostingEnabled(Dock.Model.Controls.IRootDock)
+  name.vb: IsManagedWindowHostingEnabled(IRootDock)
+  fullName: Dock.Settings.DockSettings.IsManagedWindowHostingEnabled(Dock.Model.Controls.IRootDock?)
+  fullName.vb: Dock.Settings.DockSettings.IsManagedWindowHostingEnabled(Dock.Model.Controls.IRootDock)
+  nameWithType: DockSettings.IsManagedWindowHostingEnabled(IRootDock?)
+  nameWithType.vb: DockSettings.IsManagedWindowHostingEnabled(IRootDock)
+- uid: Dock.Settings.DockSettings.IsManagedWindowHostingEnabled*
+  name: IsManagedWindowHostingEnabled
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_IsManagedWindowHostingEnabled_
+  commentId: Overload:Dock.Settings.DockSettings.IsManagedWindowHostingEnabled
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettings.IsManagedWindowHostingEnabled
+  nameWithType: DockSettings.IsManagedWindowHostingEnabled
 - uid: Dock.Settings.DockSettings.IsMinimumDragDistance(Avalonia.PixelPoint)
   name: IsMinimumDragDistance(PixelPoint)
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_IsMinimumDragDistance_Avalonia_PixelPoint_
@@ -46023,6 +46960,22 @@ references:
   commentId: F:Dock.Settings.DockSettings.MinimumVerticalDragDistance
   fullName: Dock.Settings.DockSettings.MinimumVerticalDragDistance
   nameWithType: DockSettings.MinimumVerticalDragDistance
+- uid: Dock.Settings.DockSettings.ResolveFloatingWindowHostMode(Dock.Model.Controls.IRootDock)
+  name: ResolveFloatingWindowHostMode(IRootDock?)
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_ResolveFloatingWindowHostMode_Dock_Model_Controls_IRootDock_
+  commentId: M:Dock.Settings.DockSettings.ResolveFloatingWindowHostMode(Dock.Model.Controls.IRootDock)
+  name.vb: ResolveFloatingWindowHostMode(IRootDock)
+  fullName: Dock.Settings.DockSettings.ResolveFloatingWindowHostMode(Dock.Model.Controls.IRootDock?)
+  fullName.vb: Dock.Settings.DockSettings.ResolveFloatingWindowHostMode(Dock.Model.Controls.IRootDock)
+  nameWithType: DockSettings.ResolveFloatingWindowHostMode(IRootDock?)
+  nameWithType.vb: DockSettings.ResolveFloatingWindowHostMode(IRootDock)
+- uid: Dock.Settings.DockSettings.ResolveFloatingWindowHostMode*
+  name: ResolveFloatingWindowHostMode
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_ResolveFloatingWindowHostMode_
+  commentId: Overload:Dock.Settings.DockSettings.ResolveFloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettings.ResolveFloatingWindowHostMode
+  nameWithType: DockSettings.ResolveFloatingWindowHostMode
 - uid: Dock.Settings.DockSettings.SelectorEnabled
   name: SelectorEnabled
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_SelectorEnabled
@@ -46036,6 +46989,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettings.SelectorEnabled
   nameWithType: DockSettings.SelectorEnabled
+- uid: Dock.Settings.DockSettings.ShouldUseOwnerForFloatingWindows
+  name: ShouldUseOwnerForFloatingWindows()
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_ShouldUseOwnerForFloatingWindows
+  commentId: M:Dock.Settings.DockSettings.ShouldUseOwnerForFloatingWindows
+  fullName: Dock.Settings.DockSettings.ShouldUseOwnerForFloatingWindows()
+  nameWithType: DockSettings.ShouldUseOwnerForFloatingWindows()
+- uid: Dock.Settings.DockSettings.ShouldUseOwnerForFloatingWindows*
+  name: ShouldUseOwnerForFloatingWindows
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_ShouldUseOwnerForFloatingWindows_
+  commentId: Overload:Dock.Settings.DockSettings.ShouldUseOwnerForFloatingWindows
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettings.ShouldUseOwnerForFloatingWindows
+  nameWithType: DockSettings.ShouldUseOwnerForFloatingWindows
 - uid: Dock.Settings.DockSettings.ShowDockablePreviewOnDrag
   name: ShowDockablePreviewOnDrag
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_ShowDockablePreviewOnDrag
@@ -46169,6 +47135,32 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.EnableWindowMagnetism
   nameWithType: DockSettingsOptions.EnableWindowMagnetism
+- uid: Dock.Settings.DockSettingsOptions.FloatingWindowHostMode
+  name: FloatingWindowHostMode
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_FloatingWindowHostMode
+  commentId: P:Dock.Settings.DockSettingsOptions.FloatingWindowHostMode
+  fullName: Dock.Settings.DockSettingsOptions.FloatingWindowHostMode
+  nameWithType: DockSettingsOptions.FloatingWindowHostMode
+- uid: Dock.Settings.DockSettingsOptions.FloatingWindowHostMode*
+  name: FloatingWindowHostMode
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_FloatingWindowHostMode_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.FloatingWindowHostMode
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.FloatingWindowHostMode
+  nameWithType: DockSettingsOptions.FloatingWindowHostMode
+- uid: Dock.Settings.DockSettingsOptions.FloatingWindowOwnerPolicy
+  name: FloatingWindowOwnerPolicy
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_FloatingWindowOwnerPolicy
+  commentId: P:Dock.Settings.DockSettingsOptions.FloatingWindowOwnerPolicy
+  fullName: Dock.Settings.DockSettingsOptions.FloatingWindowOwnerPolicy
+  nameWithType: DockSettingsOptions.FloatingWindowOwnerPolicy
+- uid: Dock.Settings.DockSettingsOptions.FloatingWindowOwnerPolicy*
+  name: FloatingWindowOwnerPolicy
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_FloatingWindowOwnerPolicy_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.FloatingWindowOwnerPolicy
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.FloatingWindowOwnerPolicy
+  nameWithType: DockSettingsOptions.FloatingWindowOwnerPolicy
 - uid: Dock.Settings.DockSettingsOptions.MinimumHorizontalDragDistance
   name: MinimumHorizontalDragDistance
   href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_MinimumHorizontalDragDistance

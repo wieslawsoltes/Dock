@@ -192,13 +192,17 @@ property instead.</p>
 is dropped as a global dock target (for example, dropping into a different window).
 The default value is <code>0.25</code>.</p>
 <h2 id="floating-window-owner">Floating window owner</h2>
-<p><code>DockSettings.UseOwnerForFloatingWindows</code> keeps floating windows above the main window by setting it as their owner.</p>
+<p><code>DockSettings.UseOwnerForFloatingWindows</code> keeps floating windows above the main window by setting it as their owner. This is applied when <code>IDockWindow.OwnerMode</code> is <code>DockWindowOwnerMode.Default</code> and can be overridden per window.</p>
+<p><code>DockSettings.FloatingWindowOwnerPolicy</code> provides an explicit global owner policy (<code>Default</code>, <code>AlwaysOwned</code>, <code>NeverOwned</code>). When set to <code>Default</code>, Dock falls back to <code>UseOwnerForFloatingWindows</code> to preserve compatibility.</p>
+<h2 id="floating-window-host-mode">Floating window host mode</h2>
+<p><code>DockSettings.FloatingWindowHostMode</code> controls whether floating windows are hosted as native OS windows or managed in-app windows. <code>Default</code> defers to <code>DockSettings.UseManagedWindows</code>.</p>
 <h2 id="floating-dock-adorners">Floating dock adorners</h2>
 <p><code>DockSettings.UseFloatingDockAdorner</code> enables showing drop indicators in a transparent floating window instead of overlays on the target controls. See <a href="dock-floating-adorners.html">Floating Dock Adorners</a> for details.</p>
 <h2 id="pinned-dock-windows">Pinned dock windows</h2>
 <p><code>DockSettings.UsePinnedDockWindow</code> shows auto-hidden dockables inside a floating window instead of sliding panels. See <a href="dock-pinned-window.html">Pinned Dock Window</a> for details.</p>
 <h2 id="managed-windows">Managed windows</h2>
 <p><code>DockSettings.UseManagedWindows</code> hosts floating windows inside the main window using the managed window layer. This affects only floating docks; the main window remains native. See <a href="dock-managed-windows-guide.html">Managed windows guide</a> for details.</p>
+<p><code>IRootDock.FloatingWindowHostMode</code> can override the host mode for a specific root dock.</p>
 <h2 id="window-magnetism">Window magnetism</h2>
 <p><code>DockSettings.EnableWindowMagnetism</code> toggles snapping of floating windows. The snap distance
 is controlled by <code>DockSettings.WindowMagnetDistance</code>.</p>

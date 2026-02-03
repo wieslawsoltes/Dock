@@ -356,6 +356,9 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFactory__1___0_Dock_Model_Core_IFactory_">FluentExtensions.WithFactory&lt;T&gt;(T, IFactory?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFloatingWindowHostMode_Dock_Model_Controls_IRootDock_Dock_Model_Core_DockFloatingWindowHostMode_">FluentExtensions.WithFloatingWindowHostMode(IRootDock, DockFloatingWindowHostMode)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFocusedDockable__1___0_Dock_Model_Core_IDockable_">FluentExtensions.WithFocusedDockable&lt;T&gt;(T, IDockable?)</a>
   </div>
   <div>
@@ -488,7 +491,7 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Dock_Model_Controls_IRootDock_EnableAdaptiveGlobalDockTargets" data-uid="Dock.Model.Controls.IRootDock.EnableAdaptiveGlobalDockTargets">
   EnableAdaptiveGlobalDockTargets
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L85"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether adaptive global dock targets are enabled.
@@ -522,7 +525,7 @@ This is typically used for dashboards and widget areas.</p>
 
   <h3 id="Dock_Model_Controls_IRootDock_ExitWindows" data-uid="Dock.Model.Controls.IRootDock.ExitWindows">
   ExitWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exit windows.</p>
@@ -540,6 +543,38 @@ This is typically used for dashboards and widget areas.</p>
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.icommand">ICommand</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Controls_IRootDock_FloatingWindowHostMode_" data-uid="Dock.Model.Controls.IRootDock.FloatingWindowHostMode*"></a>
+
+  <h3 id="Dock_Model_Controls_IRootDock_FloatingWindowHostMode" data-uid="Dock.Model.Controls.IRootDock.FloatingWindowHostMode">
+  FloatingWindowHostMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the floating window host mode override.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">DockFloatingWindowHostMode FloatingWindowHostMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockFloatingWindowHostMode.html">DockFloatingWindowHostMode</a></dt>
     <dd></dd>
   </dl>
 
@@ -746,7 +781,7 @@ This is typically used for dashboards and widget areas.</p>
 
   <h3 id="Dock_Model_Controls_IRootDock_ShowWindows" data-uid="Dock.Model.Controls.IRootDock.ShowWindows">
   ShowWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Show windows.</p>

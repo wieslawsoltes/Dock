@@ -124,10 +124,22 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithLayout_Dock_Model_Core_IDockWindow_Dock_Model_Controls_IRootDock_">FluentExtensions.WithLayout(IDockWindow, IRootDock?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithModal_Dock_Model_Core_IDockWindow_System_Boolean_">FluentExtensions.WithModal(IDockWindow, bool)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner(IDockWindow, IDockable?)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwnerMode_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockWindowOwnerMode_">FluentExtensions.WithOwnerMode(IDockWindow, DockWindowOwnerMode)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithParentWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockWindow_">FluentExtensions.WithParentWindow(IDockWindow, IDockWindow?)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPosition_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithPosition(IDockWindow, double, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithShowInTaskbar_Dock_Model_Core_IDockWindow_System_Nullable_System_Boolean__">FluentExtensions.WithShowInTaskbar(IDockWindow, bool?)</a>
   </div>
   <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithSize_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithSize(IDockWindow, double, double)</a>
@@ -152,7 +164,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_Factory" data-uid="Dock.Model.Core.IDockWindow.Factory">
   Factory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock factory.</p>
@@ -216,7 +228,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_Host" data-uid="Dock.Model.Core.IDockWindow.Host">
   Host
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L85"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock window.</p>
@@ -276,11 +288,43 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
 
 
+  <a id="Dock_Model_Core_IDockWindow_IsModal_" data-uid="Dock.Model.Core.IDockWindow.IsModal*"></a>
+
+  <h3 id="Dock_Model_Core_IDockWindow_IsModal" data-uid="Dock.Model.Core.IDockWindow.IsModal">
+  IsModal
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the window should be presented modally.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsModal { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Core_IDockWindow_Layout_" data-uid="Dock.Model.Core.IDockWindow.Layout*"></a>
 
   <h3 id="Dock_Model_Core_IDockWindow_Layout" data-uid="Dock.Model.Core.IDockWindow.Layout">
   Layout
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L80"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets layout.</p>
@@ -312,7 +356,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_Owner" data-uid="Dock.Model.Core.IDockWindow.Owner">
   Owner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L70"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets window owner dockable.</p>
@@ -330,6 +374,102 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_IDockWindow_OwnerMode_" data-uid="Dock.Model.Core.IDockWindow.OwnerMode*"></a>
+
+  <h3 id="Dock_Model_Core_IDockWindow_OwnerMode" data-uid="Dock.Model.Core.IDockWindow.OwnerMode">
+  OwnerMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the owner resolution mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">DockWindowOwnerMode OwnerMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockWindowOwnerMode.html">DockWindowOwnerMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_IDockWindow_ParentWindow_" data-uid="Dock.Model.Core.IDockWindow.ParentWindow*"></a>
+
+  <h3 id="Dock_Model_Core_IDockWindow_ParentWindow" data-uid="Dock.Model.Core.IDockWindow.ParentWindow">
+  ParentWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the parent window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDockWindow? ParentWindow { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_IDockWindow_ShowInTaskbar_" data-uid="Dock.Model.Core.IDockWindow.ShowInTaskbar*"></a>
+
+  <h3 id="Dock_Model_Core_IDockWindow_ShowInTaskbar" data-uid="Dock.Model.Core.IDockWindow.ShowInTaskbar">
+  ShowInTaskbar
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the window should appear in the taskbar.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool? ShowInTaskbar { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
     <dd></dd>
   </dl>
 
@@ -508,7 +648,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_Exit" data-uid="Dock.Model.Core.IDockWindow.Exit">
   Exit()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L123"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exits window.</p>
@@ -535,7 +675,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_OnClose" data-uid="Dock.Model.Core.IDockWindow.OnClose">
   OnClose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L91"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is closed.</p>
@@ -568,7 +708,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_OnMoveDrag" data-uid="Dock.Model.Core.IDockWindow.OnMoveDrag">
   OnMoveDrag()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L102"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is dragged.</p>
@@ -595,7 +735,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_OnMoveDragBegin" data-uid="Dock.Model.Core.IDockWindow.OnMoveDragBegin">
   OnMoveDragBegin()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L97"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called before the window dragging start.</p>
@@ -628,7 +768,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_OnMoveDragEnd" data-uid="Dock.Model.Core.IDockWindow.OnMoveDragEnd">
   OnMoveDragEnd()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L107"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called after the window dragging ended.</p>
@@ -655,7 +795,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_Present_System_Boolean_" data-uid="Dock.Model.Core.IDockWindow.Present(System.Boolean)">
   Present(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L118"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Presents window.</p>
@@ -688,7 +828,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_Save" data-uid="Dock.Model.Core.IDockWindow.Save">
   Save()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Saves window properties.</p>
@@ -715,7 +855,7 @@ Interface IDockWindow  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_Core_IDockWindow_SetActive" data-uid="Dock.Model.Core.IDockWindow.SetActive">
   SetActive()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockWindow.cs/#L128"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Activates the window.</p>

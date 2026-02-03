@@ -99,9 +99,21 @@
 }
 </code></pre>
 <p>Calling <code>FloatDockable</code> on the factory opens a dockable in a new window. The new <code>IDockWindow</code> is tracked by the root dock and stores its bounds and title so it can be serialized together with the layout.</p>
+<p>To control parent/owner relationships and modality at creation time, use the <code>DockWindowOptions</code> overloads:</p>
+<pre><code class="lang-csharp">var options = new DockWindowOptions
+{
+    OwnerMode = DockWindowOwnerMode.ParentWindow,
+    ParentWindow = root.Window,
+    IsModal = true
+};
+
+factory.FloatDockable(tool, options);
+</code></pre>
+<p>For an overview of ownership and windowing behavior see <code>windowing/ownership.md</code> and <code>windowing/overview.md</code>.</p>
 <p>To customize the platform window (<code>IHostWindow</code>) used by floating docks, use <code>HostWindowLocator</code> or <code>DefaultHostWindowLocator</code>. See <a href="dock-host-window-locator.html">Host window locators</a> for details.</p>
 <h2 id="managed-windows">Managed windows</h2>
-<p>When <code>DockSettings.UseManagedWindows</code> is enabled, floating windows are hosted inside the main window instead of spawning native OS windows. The default host window becomes <code>ManagedHostWindow</code>, which renders floating windows inside <code>ManagedWindowLayer</code> using the MDI layout system.</p>
+<p>When managed hosting is enabled, floating windows are hosted inside the main window instead of spawning native OS windows. The default host window becomes <code>ManagedHostWindow</code>, which renders floating windows inside <code>ManagedWindowLayer</code> using the MDI layout system.</p>
+<p>Managed hosting can be enabled globally with <code>DockSettings.FloatingWindowHostMode</code> or per root with <code>IRootDock.FloatingWindowHostMode</code>. When both are <code>Default</code>, Dock falls back to <code>DockSettings.UseManagedWindows</code> to keep compatibility.</p>
 <p>If you override host window creation, return <code>ManagedHostWindow</code> when managed windows are enabled. <code>DockControl.EnableManagedWindowLayer</code> must remain <code>true</code> for managed windows to appear.</p>
 <p>For setup details see the <a href="dock-managed-windows-guide.html">Managed windows guide</a> and <a href="dock-managed-windows-howto.html">Managed windows how-to</a>.</p>
 <h2 id="idockwindow-model-members">IDockWindow model members</h2>
@@ -139,6 +151,26 @@
 <td><code>Title</code></td>
 <td><code>string</code></td>
 <td>Window title.</td>
+</tr>
+<tr>
+<td><code>OwnerMode</code></td>
+<td><code>DockWindowOwnerMode</code></td>
+<td>Owner resolution mode for the host window.</td>
+</tr>
+<tr>
+<td><code>ParentWindow</code></td>
+<td><code>IDockWindow?</code></td>
+<td>Explicit parent window for ownership/modality.</td>
+</tr>
+<tr>
+<td><code>IsModal</code></td>
+<td><code>bool</code></td>
+<td>Presents the window as a dialog when <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>ShowInTaskbar</code></td>
+<td><code>bool?</code></td>
+<td>Taskbar visibility override (<code>null</code> leaves platform default).</td>
 </tr>
 <tr>
 <td><code>Owner</code></td>

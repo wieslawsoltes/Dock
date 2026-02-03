@@ -99,6 +99,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Dock.Avalonia.Diagnostics.UnitTests/Dock.Avalonia.Diagnostics.UnitTests.csproj" />
+    <Project Path="tests/Dock.Avalonia.LeakTests/Dock.Avalonia.LeakTests.csproj" />
     <Project Path="tests/Dock.Avalonia.HeadlessTests/Dock.Avalonia.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Avalonia.Themes.UnitTests/Dock.Avalonia.Themes.UnitTests.csproj" />
     <Project Path="tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj" />
@@ -107,9 +108,11 @@
     <Project Path="tests/Dock.MarkupExtension.UnitTests/Dock.MarkupExtension.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.Avalonia.UnitTests/Dock.Model.Avalonia.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.CaliburMicro.UnitTests/Dock.Model.CaliburMicro.UnitTests.csproj" />
+    <Project Path="tests/Dock.Model.Mvvm.LeakTests/Dock.Model.Mvvm.LeakTests.csproj" />
     <Project Path="tests/Dock.Model.Mvvm.UnitTests/Dock.Model.Mvvm.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.Prism.UnitTests/Dock.Model.Prism.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.ReactiveProperty.UnitTests/Dock.Model.ReactiveProperty.UnitTests.csproj" />
+    <Project Path="tests/Dock.Model.ReactiveUI.LeakTests/Dock.Model.ReactiveUI.LeakTests.csproj" />
     <Project Path="tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj" />
     <Project Path="tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj" />

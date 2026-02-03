@@ -365,6 +365,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "PinnedDockDisplayMode",
                 "Window",
                 "Windows",
+                "FloatingWindowHostMode",
             },
             [typeof(IToolDock)] = new List<string>
             {
@@ -643,6 +644,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "PinnedDockDisplayMode",
                 "Window",
                 "Windows",
+                "FloatingWindowHostMode",
             },
             [typeof(ToolDock)] = new List<string>
             {
@@ -688,6 +690,10 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Height",
                 "Topmost",
                 "Title",
+                "OwnerMode",
+                "ParentWindow",
+                "IsModal",
+                "ShowInTaskbar",
                 "Layout",
             },
             [typeof(DockWindow)] = new List<string>
@@ -700,6 +706,10 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Height",
                 "Topmost",
                 "Title",
+                "OwnerMode",
+                "ParentWindow",
+                "IsModal",
+                "ShowInTaskbar",
                 "Layout",
             },
         };

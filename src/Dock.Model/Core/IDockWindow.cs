@@ -45,6 +45,26 @@ public interface IDockWindow
     string Title { get; set; }
 
     /// <summary>
+    /// Gets or sets the owner resolution mode.
+    /// </summary>
+    DockWindowOwnerMode OwnerMode { get; set; }
+
+    /// <summary>
+    /// Gets or sets the parent window.
+    /// </summary>
+    IDockWindow? ParentWindow { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the window should be presented modally.
+    /// </summary>
+    bool IsModal { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the window should appear in the taskbar.
+    /// </summary>
+    bool? ShowInTaskbar { get; set; }
+
+    /// <summary>
     /// Gets or sets window owner dockable.
     /// </summary>
     IDockable? Owner { get; set; }

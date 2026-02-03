@@ -832,6 +832,13 @@ public static class FluentExtensions
     /// <returns>The same root dock.</returns>
     public static IRootDock WithWindow(this IRootDock dock, IDockWindow? window) { dock.Window = window; return dock; }
     /// <summary>
+    /// Sets the floating window host mode for the root.
+    /// </summary>
+    /// <param name="dock">The root dock.</param>
+    /// <param name="mode">Host mode.</param>
+    /// <returns>The same root dock.</returns>
+    public static IRootDock WithFloatingWindowHostMode(this IRootDock dock, DockFloatingWindowHostMode mode) { dock.FloatingWindowHostMode = mode; return dock; }
+    /// <summary>
     /// Adds owned windows to the root.
     /// </summary>
     /// <param name="dock">The root dock.</param>
@@ -1087,6 +1094,34 @@ public static class FluentExtensions
     /// <param name="title">Title text.</param>
     /// <returns>The same window.</returns>
     public static IDockWindow WithTitle(this IDockWindow window, string title) { window.Title = title; return window; }
+    /// <summary>
+    /// Sets the owner resolution mode for the window.
+    /// </summary>
+    /// <param name="window">The dock window.</param>
+    /// <param name="ownerMode">Owner resolution mode.</param>
+    /// <returns>The same window.</returns>
+    public static IDockWindow WithOwnerMode(this IDockWindow window, DockWindowOwnerMode ownerMode) { window.OwnerMode = ownerMode; return window; }
+    /// <summary>
+    /// Sets the parent window for owner relationships.
+    /// </summary>
+    /// <param name="window">The dock window.</param>
+    /// <param name="parentWindow">Parent window.</param>
+    /// <returns>The same window.</returns>
+    public static IDockWindow WithParentWindow(this IDockWindow window, IDockWindow? parentWindow) { window.ParentWindow = parentWindow; return window; }
+    /// <summary>
+    /// Sets whether the window should be presented modally.
+    /// </summary>
+    /// <param name="window">The dock window.</param>
+    /// <param name="isModal">Modal flag.</param>
+    /// <returns>The same window.</returns>
+    public static IDockWindow WithModal(this IDockWindow window, bool isModal) { window.IsModal = isModal; return window; }
+    /// <summary>
+    /// Sets whether the window should appear in the taskbar.
+    /// </summary>
+    /// <param name="window">The dock window.</param>
+    /// <param name="showInTaskbar">Taskbar visibility.</param>
+    /// <returns>The same window.</returns>
+    public static IDockWindow WithShowInTaskbar(this IDockWindow window, bool? showInTaskbar) { window.ShowInTaskbar = showInTaskbar; return window; }
     /// <summary>
     /// Sets the owner dockable for the window.
     /// </summary>

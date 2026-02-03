@@ -91,6 +91,10 @@ public class DockWindowTests
         Assert.Equal(0, window.Width);
         Assert.Equal(0, window.Height);
         Assert.False(window.Topmost);
+        Assert.Equal(DockWindowOwnerMode.Default, window.OwnerMode);
+        Assert.Null(window.ParentWindow);
+        Assert.False(window.IsModal);
+        Assert.Null(window.ShowInTaskbar);
     }
 
     [Fact]

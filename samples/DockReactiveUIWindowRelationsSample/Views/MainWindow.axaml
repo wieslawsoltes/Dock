@@ -1,0 +1,17 @@
+<Window x:Class="DockReactiveUIWindowRelationsSample.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="using:DockReactiveUIWindowRelationsSample.ViewModels"
+        xmlns:views="using:DockReactiveUIWindowRelationsSample.Views"
+        mc:Ignorable="d"
+        d:DesignWidth="1200" d:DesignHeight="720"
+        x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
+        Title="Dock Window Relations Sample" Height="720" Width="1200"
+        WindowStartupLocation="CenterScreen">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <views:MainView />
+</Window>

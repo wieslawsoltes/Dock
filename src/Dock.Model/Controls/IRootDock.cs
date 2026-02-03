@@ -63,6 +63,11 @@ public interface IRootDock : IDock
     IList<IDockWindow>? Windows { get; set; }
 
     /// <summary>
+    /// Gets or sets the floating window host mode override.
+    /// </summary>
+    DockFloatingWindowHostMode FloatingWindowHostMode { get; set; }
+
+    /// <summary>
     /// Show windows.
     /// </summary>
     ICommand ShowWindows { get; }

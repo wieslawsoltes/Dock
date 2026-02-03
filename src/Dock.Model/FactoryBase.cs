@@ -555,7 +555,26 @@ public abstract partial class FactoryBase : IFactory
     }
 
     /// <inheritdoc/>
+    public virtual IDockWindow? CreateWindowFrom(IDockable dockable, DockWindowOptions? options)
+    {
+        PrepareWindowOptionsForDockable(dockable, options);
+        var window = CreateWindowFrom(dockable);
+        if (window is not null)
+        {
+            ApplyWindowOptions(window, options);
+        }
+
+        return window;
+    }
+
+    /// <inheritdoc/>
     public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
+    {
+        SplitToWindow(dock, dockable, x, y, width, height, null);
+    }
+
+    /// <inheritdoc/>
+    public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height, DockWindowOptions? options)
     {
         var rootDock = FindRoot(dock, _ => true);
         if (rootDock is null)
@@ -563,10 +582,11 @@ public abstract partial class FactoryBase : IFactory
             return;
         }
 
+        PrepareWindowOptionsForDockable(dockable, options);
         RemoveDockable(dockable, true);
         OnDockableUndocked(dockable, DockOperation.Window);
 
-        var window = CreateWindowFrom(dockable);
+        var window = CreateWindowFrom(dockable, options);
         if (window is not null)
         {
             AddWindow(rootDock, window);
@@ -574,7 +594,7 @@ public abstract partial class FactoryBase : IFactory
             window.Y = y;
             window.Width = width;
             window.Height = height;
-            window.Present(false);
+            window.Present(window.IsModal);
 
             OnDockableDocked(dockable, DockOperation.Window);
 

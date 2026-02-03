@@ -1,0 +1,42 @@
+<UserControl x:Class="DockReactiveUIWindowRelationsSample.Views.Tools.WindowCasesToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockReactiveUIWindowRelationsSample.ViewModels.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="320" d:DesignHeight="640"
+             x:DataType="vm:WindowCasesToolViewModel" x:CompileBindings="True">
+  <ScrollViewer>
+    <StackPanel Margin="12" Spacing="8">
+      <TextBlock Text="Window Cases" FontSize="16" FontWeight="SemiBold" />
+      <TextBlock Text="Create floating windows with explicit owner and modal settings." TextWrapping="Wrap" />
+      <Separator />
+      <TextBlock Text="Tool Windows" FontWeight="Bold" />
+      <Button Content="Default Owner" Command="{Binding OpenDefaultTool}" />
+      <Button Content="Dockable Owner" Command="{Binding OpenDockableOwnedTool}" />
+      <Button Content="No Owner" Command="{Binding OpenNoOwnerTool}" />
+      <Button Content="Parent Owner" Command="{Binding OpenParentOwnedTool}" />
+      <Button Content="Root Owner" Command="{Binding OpenRootOwnedTool}" />
+      <Button Content="Modal (Root Owner)" Command="{Binding OpenModalRootTool}" />
+      <Button Content="Modal (No Owner)" Command="{Binding OpenModalNoOwnerTool}" />
+      <Button Content="No Taskbar" Command="{Binding OpenNoTaskbarTool}" />
+      <Separator />
+      <TextBlock Text="Document Windows" FontWeight="Bold" />
+      <Button Content="Document Default" Command="{Binding OpenDefaultDocument}" />
+      <Button Content="Document Root Owner" Command="{Binding OpenRootOwnedDocument}" />
+      <Separator />
+      <TextBlock Text="Global Owner Policy" FontWeight="Bold" />
+      <Button Content="Policy: Default" Command="{Binding SetOwnerPolicyDefault}" />
+      <Button Content="Policy: Always Owned" Command="{Binding SetOwnerPolicyAlwaysOwned}" />
+      <Button Content="Policy: Never Owned" Command="{Binding SetOwnerPolicyNeverOwned}" />
+      <Separator />
+      <TextBlock Text="Host Mode" FontWeight="Bold" />
+      <Button Content="Host: Default" Command="{Binding SetHostModeDefault}" />
+      <Button Content="Host: Native" Command="{Binding SetHostModeNative}" />
+      <Button Content="Host: Managed" Command="{Binding SetHostModeManaged}" />
+      <Separator />
+      <TextBlock Text="{Binding Status, FallbackValue='Ready.'}" TextWrapping="Wrap" />
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

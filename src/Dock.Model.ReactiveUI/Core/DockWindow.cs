@@ -22,6 +22,7 @@ public partial class DockWindow : ReactiveBase, IDockWindow
     {
         _id = nameof(IDockWindow);
         _title = nameof(IDockWindow);
+        OwnerMode = DockWindowOwnerMode.Default;
         _hostAdapter = new HostAdapter(this);
     }
 
@@ -59,6 +60,26 @@ public partial class DockWindow : ReactiveBase, IDockWindow
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
     public partial string Title { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial DockWindowOwnerMode OwnerMode { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial IDockWindow? ParentWindow { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial bool IsModal { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial bool? ShowInTaskbar { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]

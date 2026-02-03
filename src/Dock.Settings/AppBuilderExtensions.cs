@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using Avalonia;
+using Dock.Model.Core;
 
 namespace Dock.Settings;
 
@@ -50,9 +51,19 @@ public static class AppBuilderExtensions
             DockSettings.UseManagedWindows = options.UseManagedWindows.Value;
         }
 
+        if (options.FloatingWindowHostMode != null)
+        {
+            DockSettings.FloatingWindowHostMode = options.FloatingWindowHostMode.Value;
+        }
+
         if (options.UseOwnerForFloatingWindows != null)
         {
             DockSettings.UseOwnerForFloatingWindows = options.UseOwnerForFloatingWindows.Value;
+        }
+
+        if (options.FloatingWindowOwnerPolicy != null)
+        {
+            DockSettings.FloatingWindowOwnerPolicy = options.FloatingWindowOwnerPolicy.Value;
         }
 
         if (options.EnableWindowMagnetism != null)
@@ -151,6 +162,20 @@ public static class AppBuilderExtensions
     }
 
     /// <summary>
+    /// Sets <see cref="DockSettings.FloatingWindowHostMode"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="mode">The floating window host mode.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseFloatingWindowHostMode(
+        this AppBuilder builder,
+        DockFloatingWindowHostMode mode)
+    {
+        DockSettings.FloatingWindowHostMode = mode;
+        return builder;
+    }
+
+    /// <summary>
     /// Sets <see cref="DockSettings.UseOwnerForFloatingWindows"/> to the given value.
     /// </summary>
     /// <param name="builder">The app builder.</param>
@@ -161,6 +186,20 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UseOwnerForFloatingWindows = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.FloatingWindowOwnerPolicy"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="policy">The floating window owner policy.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseFloatingWindowOwnerPolicy(
+        this AppBuilder builder,
+        DockFloatingWindowOwnerPolicy policy)
+    {
+        DockSettings.FloatingWindowOwnerPolicy = policy;
         return builder;
     }
 

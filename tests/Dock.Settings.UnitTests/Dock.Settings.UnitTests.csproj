@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Settings\Dock.Settings.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />
   </ItemGroup>
 
   <ItemGroup>

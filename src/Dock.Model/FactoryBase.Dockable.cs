@@ -965,6 +965,12 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void FloatDockable(IDockable dockable)
     {
+        FloatDockable(dockable, null);
+    }
+
+    /// <inheritdoc/>
+    public virtual void FloatDockable(IDockable dockable, DockWindowOptions? options)
+    {
         if (dockable.Owner is not IDock dock)
         {
             return;
@@ -1004,11 +1010,18 @@ public abstract partial class FactoryBase
             dockableHeight = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
         }
 
-        SplitToWindow(dock, dockable, dockablePointerScreenX, dockablePointerScreenY, dockableWidth, dockableHeight);
+        PrepareWindowOptionsForDockable(dockable, options);
+        SplitToWindow(dock, dockable, dockablePointerScreenX, dockablePointerScreenY, dockableWidth, dockableHeight, options);
     }
 
     /// <inheritdoc/>
     public virtual void FloatAllDockables(IDockable dockable)
+    {
+        FloatAllDockables(dockable, null);
+    }
+
+    /// <inheritdoc/>
+    public virtual void FloatAllDockables(IDockable dockable, DockWindowOptions? options)
     {
         if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
         {
@@ -1020,6 +1033,8 @@ public abstract partial class FactoryBase
         {
             return;
         }
+
+        PrepareWindowOptionsForDockable(dockable, options);
 
         dock.GetPointerScreenPosition(out var pointerX, out var pointerY);
         dock.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
@@ -1082,7 +1097,7 @@ public abstract partial class FactoryBase
             targetDock.ActiveDockable = d;
         }
 
-        var window = CreateWindowFrom(targetDock);
+        var window = CreateWindowFrom(targetDock, options);
         if (window is not null)
         {
             AddWindow(rootDock, window);
@@ -1090,7 +1105,7 @@ public abstract partial class FactoryBase
             window.Y = pointerY;
             window.Width = width;
             window.Height = height;
-            window.Present(false);
+            window.Present(window.IsModal);
 
             if (window.Layout is { })
             {

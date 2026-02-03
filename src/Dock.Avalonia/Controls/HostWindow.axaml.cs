@@ -460,6 +460,112 @@ public class HostWindow : Window, IHostWindow
         }
     }
 
+    private Window? ResolveOwnerWindow(IDockWindow windowModel, out bool copyOwnerChrome)
+    {
+        copyOwnerChrome = false;
+        var parentWindow = windowModel.ParentWindow;
+
+        if (ReferenceEquals(parentWindow, windowModel))
+        {
+            parentWindow = null;
+        }
+
+        if (windowModel.OwnerMode == DockWindowOwnerMode.None)
+        {
+            return null;
+        }
+
+        if (windowModel.OwnerMode == DockWindowOwnerMode.ParentWindow)
+        {
+            return parentWindow?.Host as Window;
+        }
+
+        if (windowModel.OwnerMode == DockWindowOwnerMode.DockableWindow)
+        {
+            return parentWindow?.Host as Window;
+        }
+
+        if (windowModel.OwnerMode == DockWindowOwnerMode.RootWindow)
+        {
+            if (windowModel.Owner is IRootDock root && root.Window is { } rootWindow)
+            {
+                if (!ReferenceEquals(rootWindow, windowModel))
+                {
+                    return rootWindow.Host as Window;
+                }
+            }
+
+            if (windowModel.Factory is { } factory && windowModel.Owner is { } owner)
+            {
+                var ownerRoot = factory.FindRoot(owner);
+                if (ownerRoot?.Window is { } rootDockWindow && !ReferenceEquals(rootDockWindow, windowModel))
+                {
+                    return rootDockWindow.Host as Window;
+                }
+            }
+
+            return null;
+        }
+
+        if (parentWindow?.Host is Window explicitOwner)
+        {
+            return explicitOwner;
+        }
+
+        if (DockSettings.ShouldUseOwnerForFloatingWindows())
+        {
+            var ownerDockControl = windowModel.Layout?.Factory?.DockControls.FirstOrDefault();
+            if (ownerDockControl is Control control && control.GetVisualRoot() is Window visualOwnerWindow)
+            {
+                copyOwnerChrome = true;
+                return visualOwnerWindow;
+            }
+        }
+
+        return null;
+    }
+
+    private Window? ResolveFallbackOwnerWindow(IDockWindow windowModel)
+    {
+        if (windowModel.ParentWindow?.Host is Window explicitOwner)
+        {
+            return explicitOwner;
+        }
+
+        if (windowModel.Owner is IRootDock root && root.Window is { } rootWindow)
+        {
+            if (!ReferenceEquals(rootWindow, windowModel))
+            {
+                return rootWindow.Host as Window;
+            }
+        }
+
+        if (windowModel.Factory is { } factory && windowModel.Owner is { } owner)
+        {
+            var ownerRoot = factory.FindRoot(owner);
+            if (ownerRoot?.Window is { } rootDockWindow && !ReferenceEquals(rootDockWindow, windowModel))
+            {
+                return rootDockWindow.Host as Window;
+            }
+        }
+
+        var ownerDockControl = windowModel.Layout?.Factory?.DockControls.FirstOrDefault();
+        if (ownerDockControl is Control control && control.GetVisualRoot() is Window parentWindow)
+        {
+            return parentWindow;
+        }
+
+        return null;
+    }
+
+    private void ApplyPresentationOptions(IDockWindow windowModel)
+    {
+        if (windowModel.ShowInTaskbar is { } showInTaskbar)
+        {
+            ShowInTaskbar = showInTaskbar;
+        }
+    }
+
     /// <inheritdoc/>
     public void Present(bool isDialog)
     {
@@ -467,29 +573,61 @@ public class HostWindow : Window, IHostWindow
         {
             if (!IsVisible)
             {
-                if (Window is { })
+                if (Window is { } windowModel)
                 {
-                    Window.Factory?.OnWindowOpened(Window);
+                    windowModel.Factory?.OnWindowOpened(windowModel);
+                    ApplyPresentationOptions(windowModel);
                 }
 
-                ShowDialog(null!); // FIXME: Set correct parent window.
+                var ownerWindow = Window is { } modalWindowModel
+                    ? ResolveOwnerWindow(modalWindowModel, out _)
+                    : null;
+
+                if (ownerWindow is null && Window is { } fallbackWindowModel)
+                {
+                    var policyDisallowsOwner = fallbackWindowModel.OwnerMode == DockWindowOwnerMode.None
+                                               || DockSettings.FloatingWindowOwnerPolicy == DockFloatingWindowOwnerPolicy.NeverOwned;
+                    if (!policyDisallowsOwner)
+                    {
+                        ownerWindow = ResolveFallbackOwnerWindow(fallbackWindowModel);
+                    }
+                }
+
+                if (ownerWindow is not null)
+                {
+                    ShowDialog(ownerWindow);
+                }
+                else
+                {
+                    DockLogger.LogDebug("Windowing", "Modal window has no owner; presenting non-modally.");
+                    Show();
+                }
             }
         }
         else
         {
             if (!IsVisible)
             {
-                if (Window is { })
+                if (Window is { } windowModel)
                 {
-                    Window.Factory?.OnWindowOpened(Window);
+                    windowModel.Factory?.OnWindowOpened(windowModel);
+                    ApplyPresentationOptions(windowModel);
                 }
 
-                var ownerDockControl = Window?.Layout?.Factory?.DockControls.FirstOrDefault();
-                if (ownerDockControl is Control control && control.GetVisualRoot() is Window parentWindow && DockSettings.UseOwnerForFloatingWindows)
+                var copyOwnerChrome = false;
+                var ownerWindow = Window is { } ownerWindowModel
+                    ? ResolveOwnerWindow(ownerWindowModel, out copyOwnerChrome)
+                    : null;
+
+                if (ownerWindow is not null)
                 {
-                    Title = parentWindow.Title;
-                    Icon = parentWindow.Icon;
-                    Show(parentWindow);
+                    if (copyOwnerChrome)
+                    {
+                        Title = ownerWindow.Title;
+                        Icon = ownerWindow.Icon;
+                    }
+
+                    Show(ownerWindow);
                 }
                 else
                 {

@@ -111,7 +111,7 @@ internal class DragPreviewHelper
             var showDockablePreview = ShouldShowPreviewContent(dockable);
             DragPreviewContext.IsActive = showDockablePreview && dockable is ManagedDockWindowDocument;
             DragPreviewContext.Dockable = dockable;
-            if (DockSettings.UseManagedWindows && TryGetManagedLayer(dockable, context, out var layer))
+            if (DockHelpers.IsManagedWindowHostingEnabled(dockable) && TryGetManagedLayer(dockable, context, out var layer))
             {
                 ShowManaged(layer, dockable, position, offset, showDockablePreview);
                 return;
@@ -161,7 +161,7 @@ internal class DragPreviewHelper
     {
         lock (s_sync)
         {
-            if (DockSettings.UseManagedWindows && s_managedLayer is { } layer && s_managedControl is { })
+            if (DockHelpers.IsManagedWindowHostingEnabled(DragPreviewContext.Dockable) && s_managedLayer is { } layer && s_managedControl is { })
             {
                 MoveManaged(layer, position, offset, status);
                 return;
@@ -181,8 +181,7 @@ internal class DragPreviewHelper
     {
         lock (s_sync)
         {
-            DragPreviewContext.Clear();
-            if (DockSettings.UseManagedWindows && s_managedLayer is { })
+            if (s_managedLayer is { })
             {
                 s_managedLayer.HideOverlay("DragPreview");
                 if (s_managedControl is { })
@@ -192,8 +191,11 @@ internal class DragPreviewHelper
                 s_managedLayer = null;
                 s_managedControl = null;
                 s_managedTemplatesInitialized = false;
+                DragPreviewContext.Clear();
                 return;
             }
+
+            DragPreviewContext.Clear();
 
             if (s_window is null)
             {

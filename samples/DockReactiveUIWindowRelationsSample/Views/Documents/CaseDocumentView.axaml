@@ -1,0 +1,18 @@
+<UserControl x:Class="DockReactiveUIWindowRelationsSample.Views.Documents.CaseDocumentView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockReactiveUIWindowRelationsSample.ViewModels.Documents"
+             mc:Ignorable="d"
+             d:DesignWidth="480" d:DesignHeight="360"
+             x:DataType="vm:CaseDocumentViewModel" x:CompileBindings="True">
+  <Grid Margin="12" RowDefinitions="Auto,*">
+    <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="SemiBold" />
+    <TextBox Grid.Row="1"
+             Text="{Binding Content}"
+             AcceptsReturn="True"
+             TextWrapping="Wrap"
+             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+  </Grid>
+</UserControl>

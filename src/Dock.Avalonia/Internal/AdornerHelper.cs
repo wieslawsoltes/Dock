@@ -7,7 +7,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
-using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -34,7 +33,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     private void AddFloatingAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
     {
-        if (DockSettings.UseManagedWindows)
+        if (DockHelpers.IsManagedWindowHostingEnabled(visual))
         {
             AddManagedAdorner(visual, indicatorsOnly, horizontalDocking, verticalDocking);
             return;
@@ -175,7 +174,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     private void RemoveFloatingAdorner()
     {
-        if (DockSettings.UseManagedWindows)
+        if (_managedLayer is not null)
         {
             RemoveManagedAdorner();
             return;

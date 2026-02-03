@@ -211,7 +211,7 @@ public class DockableControl : Panel, IDockableControl
         var pointerX = screenPoint.X;
         var pointerY = screenPoint.Y;
 
-        if (DockSettings.UseManagedWindows && ManagedWindowLayer.TryGetLayer(this) is { } layer)
+        if (DockHelpers.IsManagedWindowHostingEnabled(this) && ManagedWindowLayer.TryGetLayer(this) is { } layer)
         {
             var layerPoint = this.TranslatePoint(position, layer);
             if (layerPoint.HasValue)

@@ -1786,6 +1786,11 @@ internal static class LeakTestHelpers
             return;
         }
 
+        if (target is Delegate)
+        {
+            return;
+        }
+
         if (!visited.Add(target))
         {
             return;

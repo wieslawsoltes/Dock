@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using Avalonia.Headless;
 
@@ -12,11 +13,22 @@ internal static class LeakTestSession
         try
         {
             session = HeadlessUnitTestSession.StartNew(typeof(LeakTestsApp));
-            session.Dispatch(action, CancellationToken.None).GetAwaiter().GetResult();
+            session.Dispatch(() =>
+            {
+                LeakTestHelpers.EnsureFontManager();
+                action();
+            }, CancellationToken.None).GetAwaiter().GetResult();
+            session.Dispatch(LeakTestHelpers.DrainDispatcher, CancellationToken.None).GetAwaiter().GetResult();
         }
         finally
         {
-            session?.Dispose();
+            try
+            {
+                session?.Dispose();
+            }
+            catch (AggregateException ex) when (ex.InnerExceptions.All(IsCompletedCollectionError))
+            {
+            }
             LeakTestHelpers.DrainDispatcher();
         }
     }
@@ -27,12 +39,30 @@ internal static class LeakTestSession
         try
         {
             session = HeadlessUnitTestSession.StartNew(typeof(LeakTestsApp));
-            return session.Dispatch(action, CancellationToken.None).GetAwaiter().GetResult();
+            var result = session.Dispatch(() =>
+            {
+                LeakTestHelpers.EnsureFontManager();
+                return action();
+            }, CancellationToken.None).GetAwaiter().GetResult();
+            session.Dispatch(LeakTestHelpers.DrainDispatcher, CancellationToken.None).GetAwaiter().GetResult();
+            return result;
         }
         finally
         {
-            session?.Dispose();
+            try
+            {
+                session?.Dispose();
+            }
+            catch (AggregateException ex) when (ex.InnerExceptions.All(IsCompletedCollectionError))
+            {
+            }
             LeakTestHelpers.DrainDispatcher();
         }
+    }
+
+    private static bool IsCompletedCollectionError(Exception exception)
+    {
+        return exception is InvalidOperationException { Message: not null } invalidOperation
+               && invalidOperation.Message.Contains("marked as complete", StringComparison.OrdinalIgnoreCase);
     }
 }

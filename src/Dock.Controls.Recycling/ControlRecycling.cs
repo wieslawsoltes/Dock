@@ -68,19 +68,12 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     /// <returns></returns>
     public object? Build(object? data, object? existing, object? parent)
     {
-        var key = data;
-        if (key is null)
+        if (data is null)
         {
             return null;
         }
 
-        if (TryToUseIdAsKey && key is IControlRecyclingIdProvider idProvider)
-        {
-            if (!string.IsNullOrWhiteSpace(idProvider.GetControlRecyclingId()))
-            {
-                key = idProvider.GetControlRecyclingId();
-            }
-        }
+        var key = GetCacheKey(data);
 
         var parentControl = parent as Control;
 
@@ -164,9 +157,39 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="data"></param>
+    public bool Remove(object data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        var key = GetCacheKey(data);
+        return _cache.Remove(key);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void Clear()
     {
         _cache.Clear();
+    }
+
+    private object GetCacheKey(object data)
+    {
+        var key = data;
+        if (TryToUseIdAsKey && data is IControlRecyclingIdProvider idProvider)
+        {
+            var id = idProvider.GetControlRecyclingId();
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                key = id;
+            }
+        }
+
+        return key;
     }
 
     /// <summary>

@@ -825,6 +825,7 @@ internal static class LeakTestHelpers
             topLevel.ClearValue(TopLevel.PointerOverElementProperty);
             ClearInputManagerPointerState(topLevel);
             ClearInputManagerObservers(topLevel);
+            ScrubInputManagerInstance(topLevel);
         }
 
         ClearKeyboardDeviceState();
@@ -1058,6 +1059,21 @@ internal static class LeakTestHelpers
                 observers.Clear();
             }
         }
+    }
+
+    private static void ScrubInputManagerInstance(TopLevel topLevel)
+    {
+        var inputManagerField = typeof(TopLevel).GetField("_inputManager", BindingFlags.Instance | BindingFlags.NonPublic);
+        var inputManager = inputManagerField?.GetValue(topLevel);
+        if (inputManager is null)
+        {
+            return;
+        }
+
+        var inputRootType = typeof(IInputRoot);
+        var inputElementType = typeof(IInputElement);
+        var visited = new HashSet<object>(ReferenceEqualityComparer.Instance);
+        ScrubObject(inputManager, inputRootType, inputElementType, visited, depth: 0);
     }
 
     private static void InvokeInputManager(object inputManager, RawInputEventArgs args)

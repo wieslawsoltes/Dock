@@ -11,7 +11,7 @@ public class ControlInputLeakTests
         foreach (var testCase in LeakTestCases.ControlCases)
         {
             var result = LeakTestCaseRunner.RunControlCase(testCase, exerciseInput: true);
-            LeakTestCaseRunner.AssertCollectedForCase(result, keepAlive: false);
+            LeakTestCaseRunner.AssertCollectedForCase(result, keepAlive: true);
         }
     }
 }

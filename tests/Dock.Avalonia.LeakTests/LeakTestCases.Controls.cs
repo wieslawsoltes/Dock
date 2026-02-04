@@ -124,7 +124,7 @@ internal static partial class LeakTestCases
             {
                 var toolControl = (ToolControl)control;
                 var tabStrip = FindVisualDescendant<ToolTabStrip>(toolControl);
-                var tabItem = tabStrip?.ItemContainerGenerator.ContainerFromIndex(0) as ToolTabStripItem
+                var tabItem = tabStrip?.ContainerFromIndex(0) as ToolTabStripItem
                               ?? FindVisualDescendant<ToolTabStripItem>(toolControl);
                 if (tabItem is not null)
                 {
@@ -235,7 +235,7 @@ internal static partial class LeakTestCases
                 ExerciseButtonInteractions(createButton);
 
                 var tabStrip = (DocumentTabStrip)dockControl;
-                var tabItem = tabStrip.ItemContainerGenerator.ContainerFromIndex(0) as DocumentTabStripItem
+                var tabItem = tabStrip.ContainerFromIndex(0) as DocumentTabStripItem
                               ?? FindVisualDescendant<DocumentTabStripItem>(tabStrip);
                 if (tabItem is not null)
                 {
@@ -251,7 +251,7 @@ internal static partial class LeakTestCases
             new ControlSetup(new ToolTabStrip { ItemsSource = new[] { context.Tool } }, Array.Empty<object?>(), AfterShow: control =>
             {
                 var tabStrip = (ToolTabStrip)control;
-                var tabItem = tabStrip.ItemContainerGenerator.ContainerFromIndex(0) as ToolTabStripItem
+                var tabItem = tabStrip.ContainerFromIndex(0) as ToolTabStripItem
                               ?? FindVisualDescendant<ToolTabStripItem>(tabStrip);
                 if (tabItem is not null)
                 {

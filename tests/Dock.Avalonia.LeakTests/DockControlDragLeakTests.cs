@@ -66,7 +66,7 @@ public class DockControlDragLeakTests
                 DrainDispatcher();
             }
 
-            var tabItem = tabStrip?.ItemContainerGenerator.ContainerFromIndex(0) as DocumentTabStripItem
+            var tabItem = tabStrip?.ContainerFromIndex(0) as DocumentTabStripItem
                           ?? FindVisualDescendant<DocumentTabStripItem>(dockControl);
             if (tabStrip is null)
             {

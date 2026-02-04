@@ -18,6 +18,58 @@ namespace Dock.Avalonia.LeakTests;
 public class DockControlPinnedLeakTests
 {
     [ReleaseFact]
+    public void PinnedDockControl_DetachWhileWindowAlive_DoesNotLeak()
+    {
+        var previousPinned = DockSettings.UsePinnedDockWindow;
+        var previousMode = DockSettings.FloatingWindowHostMode;
+        DockSettings.UsePinnedDockWindow = true;
+        DockSettings.FloatingWindowHostMode = DockFloatingWindowHostMode.Native;
+
+        try
+        {
+            var result = RunInSession(() =>
+            {
+                var context = LeakContext.Create();
+                context.Factory.InitLayout(context.Root);
+                context.Root.PinnedDockDisplayMode = PinnedDockDisplayMode.Overlay;
+
+                var rootControl = new RootDockControl { DataContext = context.Root };
+                var window = new Window { Content = rootControl };
+                window.Styles.Add(new FluentTheme());
+                window.Styles.Add(new DockFluentTheme());
+
+                ShowWindow(window);
+                DrainDispatcher();
+                rootControl.ApplyTemplate();
+                rootControl.UpdateLayout();
+                DrainDispatcher();
+
+                var pinnedDockControl = FindVisualDescendant<PinnedDockControl>(rootControl);
+                Assert.NotNull(pinnedDockControl);
+
+                window.Content = new Border();
+                DrainDispatcher();
+                ClearFactoryCaches(context.Factory);
+
+                var pinnedRef = new WeakReference(pinnedDockControl);
+                pinnedDockControl = null;
+                rootControl = null;
+
+                return new PinnedDetachLeakResult(pinnedRef, window, context.Factory);
+            });
+
+            AssertCollected(result.ControlRef);
+            GC.KeepAlive(result.WindowKeepAlive);
+            GC.KeepAlive(result.FactoryKeepAlive);
+        }
+        finally
+        {
+            DockSettings.UsePinnedDockWindow = previousPinned;
+            DockSettings.FloatingWindowHostMode = previousMode;
+        }
+    }
+
+    [ReleaseFact]
     public void PinnedDockControl_OverlayWindow_DoesNotLeak()
     {
         var result = RunInSession(() =>
@@ -113,4 +165,9 @@ public class DockControlPinnedLeakTests
             AssertCollected(result.LayoutRef);
         }
     }
+
+    private sealed record PinnedDetachLeakResult(
+        WeakReference ControlRef,
+        Window WindowKeepAlive,
+        Dock.Model.Core.IFactory FactoryKeepAlive);
 }

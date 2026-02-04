@@ -3,11 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Recycling;
-using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
@@ -21,6 +18,7 @@ using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
 using Dock.Avalonia.Selectors;
+using Dock.Avalonia.Services;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -38,10 +36,10 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_ManagedWindowLayer", typeof(ManagedWindowLayer))]
 public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 {
-    private static readonly ConditionalWeakTable<IFactory, IControlRecycling> s_controlRecycling = new();
     private readonly DockManagerOptions _dockManagerOptions;
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
+    private readonly IDockControlFactoryService _factoryService;
     private bool _isInitialized;
     private ContentControl? _contentControl;
     private ManagedWindowLayer? _managedWindowLayer;
@@ -238,6 +236,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         _dockManagerOptions = new DockManagerOptions();
         _dockManager = new DockManager(new DockService(), _dockManagerOptions);
         _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
+        _factoryService = new DockControlFactoryService();
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
@@ -259,7 +258,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         _selectorOverlay = e.NameScope.Find<DockSelectorOverlay>("PART_SelectorOverlay");
         _managedWindowLayer = e.NameScope.Find<ManagedWindowLayer>("PART_ManagedWindowLayer");
 
-        InitializeControlRecycling();
+        _factoryService.InitializeControlRecycling(this);
         
         if (_contentControl is not null)
         {
@@ -268,57 +267,6 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         UpdateManagedWindowLayer(Layout);
         InitializeCommandBars();
-    }
-
-    private void InitializeControlRecycling()
-    {
-        if (Layout?.Factory is not { } factory)
-        {
-            return;
-        }
-
-        var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(this);
-        if (controlRecycling is null)
-        {
-            return;
-        }
-
-        if (s_controlRecycling.TryGetValue(factory, out var shared))
-        {
-            if (ReferenceEquals(shared, controlRecycling))
-            {
-                return;
-            }
-
-            if (shared is ControlRecycling sharedRecycling && controlRecycling is ControlRecycling localRecycling)
-            {
-                if (sharedRecycling.TryToUseIdAsKey != localRecycling.TryToUseIdAsKey)
-                {
-                    sharedRecycling.TryToUseIdAsKey = localRecycling.TryToUseIdAsKey;
-                }
-
-                ControlRecyclingDataTemplate.SetControlRecycling(this, sharedRecycling);
-                return;
-            }
-
-            if (controlRecycling is ControlRecycling)
-            {
-                ControlRecyclingDataTemplate.SetControlRecycling(this, shared);
-            }
-
-            return;
-        }
-
-        if (controlRecycling is ControlRecycling defaultRecycling)
-        {
-            controlRecycling = new ControlRecycling
-            {
-                TryToUseIdAsKey = defaultRecycling.TryToUseIdAsKey
-            };
-            ControlRecyclingDataTemplate.SetControlRecycling(this, controlRecycling);
-        }
-
-        s_controlRecycling.Add(factory, controlRecycling);
     }
 
     private void InitializeDefaultDataTemplates()
@@ -386,7 +334,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         layout.Factory.DockControls.Add(this);
 
-        InitializeControlRecycling();
+        _factoryService.InitializeControlRecycling(this);
         UpdateManagedWindowLayer(layout);
 
         if (InitializeFactory)
@@ -441,12 +389,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         _activationOrder.Clear();
         _activationCounter = 0;
 
-        if (!HasOtherDockControlForLayout(layout.Factory, layout))
-        {
-            PruneFactoryCaches(layout.Factory, layout);
-        }
-
-        ReleaseFactoryDefaults(layout.Factory);
+        _factoryService.CleanupFactory(this, layout);
 
         if (InitializeLayout)
         {
@@ -460,142 +403,6 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         _commandBarManager?.Detach();
 
         _isInitialized = false;
-    }
-
-    private static bool HasOtherDockControlForLayout(IFactory factory, IDock layout)
-    {
-        foreach (var control in factory.DockControls.OfType<DockControl>())
-        {
-            if (!ReferenceEquals(control.Layout, layout))
-            {
-                continue;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private static void PruneFactoryCaches(IFactory factory, IDock layout)
-    {
-        var dockables = new HashSet<IDockable>();
-        CollectAllDockables(layout, dockables);
-
-        PruneDictionary(factory.VisibleDockableControls, dockables);
-        PruneDictionary(factory.PinnedDockableControls, dockables);
-        PruneDictionary(factory.TabDockableControls, dockables);
-        PruneDictionary(factory.VisibleRootControls, dockables);
-        PruneDictionary(factory.PinnedRootControls, dockables);
-        PruneDictionary(factory.TabRootControls, dockables);
-        PruneDictionary(factory.ToolControls, dockables);
-        PruneDictionary(factory.DocumentControls, dockables);
-        PruneControlRecycling(factory, dockables);
-    }
-
-    private static void PruneDictionary<TValue>(IDictionary<IDockable, TValue> dictionary, HashSet<IDockable> dockables)
-    {
-        if (dictionary.Count == 0)
-        {
-            return;
-        }
-
-        var keys = dictionary.Keys.Where(dockables.Contains).ToList();
-        foreach (var key in keys)
-        {
-            dictionary.Remove(key);
-        }
-    }
-
-    private static void PruneControlRecycling(IFactory factory, HashSet<IDockable> dockables)
-    {
-        if (!s_controlRecycling.TryGetValue(factory, out var recycling))
-        {
-            return;
-        }
-
-        if (recycling is not ControlRecycling controlRecycling)
-        {
-            return;
-        }
-
-        foreach (var dockable in dockables)
-        {
-            controlRecycling.Remove(dockable);
-        }
-    }
-
-    private static void CollectAllDockables(IDockable dockable, HashSet<IDockable> dockables)
-    {
-        if (!dockables.Add(dockable))
-        {
-            return;
-        }
-
-        if (dockable is IRootDock root)
-        {
-            AddDockablesAll(root.HiddenDockables, dockables);
-            AddDockablesAll(root.LeftPinnedDockables, dockables);
-            AddDockablesAll(root.RightPinnedDockables, dockables);
-            AddDockablesAll(root.TopPinnedDockables, dockables);
-            AddDockablesAll(root.BottomPinnedDockables, dockables);
-
-            if (root.PinnedDock is { } pinnedDock)
-            {
-                CollectAllDockables(pinnedDock, dockables);
-            }
-
-            if (root.Windows is { })
-            {
-                foreach (var window in root.Windows)
-                {
-                    if (window.Layout is { } layout)
-                    {
-                        CollectAllDockables(layout, dockables);
-                    }
-                }
-            }
-        }
-
-        if (dockable is IDock dock && dock.VisibleDockables is { })
-        {
-            foreach (var child in dock.VisibleDockables)
-            {
-                CollectAllDockables(child, dockables);
-            }
-        }
-
-        if (dockable is ISplitViewDock splitViewDock)
-        {
-            if (splitViewDock.PaneDockable is { } paneDockable)
-            {
-                CollectAllDockables(paneDockable, dockables);
-            }
-
-            if (splitViewDock.ContentDockable is { } contentDockable
-                && !ReferenceEquals(contentDockable, splitViewDock.PaneDockable))
-            {
-                CollectAllDockables(contentDockable, dockables);
-            }
-        }
-
-        if (dockable is IDockWindow dockWindow && dockWindow.Layout is { } dockLayout)
-        {
-            CollectAllDockables(dockLayout, dockables);
-        }
-    }
-
-    private static void AddDockablesAll(IList<IDockable>? source, HashSet<IDockable> dockables)
-    {
-        if (source is null)
-        {
-            return;
-        }
-
-        foreach (var dockable in source)
-        {
-            CollectAllDockables(dockable, dockables);
-        }
     }
 
     private void InitializeCommandBars()
@@ -615,9 +422,9 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         }
     }
 
-    private object? ResolveDefaultContext() => DefaultContext;
+    internal object? ResolveDefaultContext() => DefaultContext;
 
-    private IHostWindow? ResolveDefaultHostWindow()
+    internal IHostWindow? ResolveDefaultHostWindow()
     {
         if (HostWindowFactory is { } factory)
         {
@@ -628,46 +435,6 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         return hostMode == DockFloatingWindowHostMode.Managed
             ? new ManagedHostWindow(_dockManagerOptions)
             : new HostWindow(_dockManagerOptions);
-    }
-
-    private void ReleaseFactoryDefaults(IFactory factory)
-    {
-        var remaining = factory.DockControls
-            .OfType<DockControl>()
-            .FirstOrDefault(control => !ReferenceEquals(control, this));
-
-        if (ReferenceEquals(factory.DefaultContextLocator?.Target, this))
-        {
-            factory.DefaultContextLocator = remaining is null ? null : remaining.ResolveDefaultContext;
-        }
-
-        if (ReferenceEquals(factory.DefaultHostWindowLocator?.Target, this))
-        {
-            factory.DefaultHostWindowLocator = remaining is null ? null : remaining.ResolveDefaultHostWindow;
-        }
-
-        var hostWindowLocator = factory.HostWindowLocator;
-        if (hostWindowLocator is null)
-        {
-            return;
-        }
-
-        if (hostWindowLocator.TryGetValue(nameof(IDockWindow), out var locator)
-            && ReferenceEquals(locator?.Target, this))
-        {
-            if (remaining is null)
-            {
-                hostWindowLocator.Remove(nameof(IDockWindow));
-                if (hostWindowLocator.Count == 0 && ReferenceEquals(factory.HostWindowLocator, hostWindowLocator))
-                {
-                    factory.HostWindowLocator = null;
-                }
-            }
-            else
-            {
-                hostWindowLocator[nameof(IDockWindow)] = remaining.ResolveDefaultHostWindow;
-            }
-        }
     }
 
     private void AttachFactoryEvents(IFactory? factory)

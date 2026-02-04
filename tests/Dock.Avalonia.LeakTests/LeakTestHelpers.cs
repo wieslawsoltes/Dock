@@ -356,6 +356,7 @@ internal static class LeakTestHelpers
         window.DataContext = null;
         window.Close();
         DrainDispatcher();
+        ForceHandleClosed(window);
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime
             && lifetime.Windows is IList<Window> windows)
         {
@@ -379,6 +380,7 @@ internal static class LeakTestHelpers
             }
         }
         ClearPlatformImpl(window);
+        ClearLayoutState(window);
         ClearInputState(window);
     }
 
@@ -833,6 +835,68 @@ internal static class LeakTestHelpers
         ClearRenderState();
         ClearDispatcherState();
         ScrubInputReferences();
+    }
+
+    private static void ClearLayoutState(TopLevel? topLevel)
+    {
+        if (topLevel is null)
+        {
+            return;
+        }
+
+        var layoutManagerField = typeof(TopLevel).GetField("_layoutManager", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (layoutManagerField?.GetValue(topLevel) is not object layoutManager)
+        {
+            return;
+        }
+
+        if (layoutManager is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+
+        ClearCollectionField(layoutManager, "_toMeasure");
+        ClearCollectionField(layoutManager, "_toArrange");
+        ClearCollectionField(layoutManager, "_toArrangeAfterMeasure");
+        ClearCollectionField(layoutManager, "_effectiveViewportChangedListeners");
+
+        layoutManagerField.SetValue(topLevel, null);
+    }
+
+    private static void ForceHandleClosed(TopLevel topLevel)
+    {
+        var handleClosed = typeof(TopLevel).GetMethod("HandleClosed", BindingFlags.Instance | BindingFlags.NonPublic);
+        handleClosed?.Invoke(topLevel, null);
+    }
+
+    private static void ClearCollectionField(object target, string fieldName)
+    {
+        var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (field is null)
+        {
+            return;
+        }
+
+        var value = field.GetValue(target);
+        switch (value)
+        {
+            case null:
+                return;
+            case System.Collections.IDictionary dictionary:
+                dictionary.Clear();
+                return;
+            case IList list:
+                list.Clear();
+                return;
+            default:
+                var clearMethod = value.GetType().GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                clearMethod?.Invoke(value, null);
+                if (value is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+                return;
+        }
     }
 
     internal static void ClearPinnedDockControlState(PinnedDockControl? control)

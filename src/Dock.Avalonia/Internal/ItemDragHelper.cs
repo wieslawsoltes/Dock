@@ -297,25 +297,7 @@ internal class ItemDragHelper
             Interval = TimeSpan.FromMilliseconds(AutoScrollTimerInterval)
         };
 
-        _autoScrollTimer.Tick += (_, _) =>
-        {
-            if (_currentScrollViewer == null)
-            {
-                StopAutoScroll();
-                return;
-            }
-
-            var deltaTime = AutoScrollTimerInterval / 1000.0; // Convert to seconds
-            var deltaX = _autoScrollVelocity.X * deltaTime;
-            var deltaY = _autoScrollVelocity.Y * deltaTime;
-
-            var newOffsetX = Math.Max(0, Math.Min(_currentScrollViewer.Extent.Width - _currentScrollViewer.Viewport.Width, 
-                _currentScrollViewer.Offset.X + deltaX));
-            var newOffsetY = Math.Max(0, Math.Min(_currentScrollViewer.Extent.Height - _currentScrollViewer.Viewport.Height, 
-                _currentScrollViewer.Offset.Y + deltaY));
-
-            _currentScrollViewer.Offset = new Vector(newOffsetX, newOffsetY);
-        };
+        _autoScrollTimer.Tick += OnAutoScrollTick;
 
         _autoScrollTimer.Start();
     }
@@ -324,11 +306,33 @@ internal class ItemDragHelper
     {
         if (_autoScrollTimer != null)
         {
+            _autoScrollTimer.Tick -= OnAutoScrollTick;
             _autoScrollTimer.Stop();
             _autoScrollTimer = null;
         }
+
         _currentScrollViewer = null;
         _autoScrollVelocity = default;
+    }
+
+    private void OnAutoScrollTick(object? sender, EventArgs e)
+    {
+        if (_currentScrollViewer == null)
+        {
+            StopAutoScroll();
+            return;
+        }
+
+        var deltaTime = AutoScrollTimerInterval / 1000.0; // Convert to seconds
+        var deltaX = _autoScrollVelocity.X * deltaTime;
+        var deltaY = _autoScrollVelocity.Y * deltaTime;
+
+        var newOffsetX = Math.Max(0, Math.Min(_currentScrollViewer.Extent.Width - _currentScrollViewer.Viewport.Width,
+            _currentScrollViewer.Offset.X + deltaX));
+        var newOffsetY = Math.Max(0, Math.Min(_currentScrollViewer.Extent.Height - _currentScrollViewer.Viewport.Height,
+            _currentScrollViewer.Offset.Y + deltaY));
+
+        _currentScrollViewer.Offset = new Vector(newOffsetX, newOffsetY);
     }
 
     private Vector CalculateAutoScrollVelocity(Point position, ScrollViewer scrollViewer)

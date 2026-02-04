@@ -70,7 +70,7 @@ internal static class LeakTestHelpers
         }
     }
 
-    private static void ScrubStaticReferences(object target)
+    internal static void ScrubStaticReferences(object target)
     {
         var targetType = target.GetType();
         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

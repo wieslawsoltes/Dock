@@ -84,6 +84,8 @@ public sealed class ManagedWindowLayer : TemplatedControl
     {
         base.OnDetachedFromVisualTree(e);
 
+        DetachDock();
+
         if (Dock?.Factory is { } factory)
         {
             ManagedWindowRegistry.UnregisterLayer(factory, this);

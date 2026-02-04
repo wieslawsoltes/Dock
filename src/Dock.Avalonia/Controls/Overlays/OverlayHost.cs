@@ -9,6 +9,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace Dock.Avalonia.Controls.Overlays;
@@ -51,6 +52,7 @@ public sealed class OverlayHost : Decorator
     private IList<Control> _overlays = new List<Control>();
     private OverlayLayerCollection _overlayLayers = new();
     private OverlayLayerCollection? _serviceLayers;
+    private bool _isAttached;
 
     static OverlayHost()
     {
@@ -67,12 +69,6 @@ public sealed class OverlayHost : Decorator
     public OverlayHost()
     {
         Overlays = new AvaloniaList<Control>();
-        if (_overlayLayers is INotifyCollectionChanged list)
-        {
-            list.CollectionChanged += OnOverlayLayersCollectionChanged;
-        }
-
-        SubscribeLayerChanges(_overlayLayers);
     }
 
     /// <summary>
@@ -126,6 +122,8 @@ public sealed class OverlayHost : Decorator
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
+        _isAttached = true;
+        AttachOverlayCollections();
         OverlayLayerRegistry.ProviderChanged += OnOverlayLayerProviderChanged;
         ResetServiceLayers();
         RebuildPipeline();
@@ -135,7 +133,9 @@ public sealed class OverlayHost : Decorator
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        _isAttached = false;
         OverlayLayerRegistry.ProviderChanged -= OnOverlayLayerProviderChanged;
+        DetachOverlayCollections();
         ResetServiceLayers();
     }
 
@@ -148,7 +148,7 @@ public sealed class OverlayHost : Decorator
 
         _overlays = args.NewValue as IList<Control> ?? new List<Control>();
 
-        if (_overlays is INotifyCollectionChanged newList)
+        if (_isAttached && _overlays is INotifyCollectionChanged newList)
         {
             newList.CollectionChanged += OnOverlaysCollectionChanged;
         }
@@ -170,9 +170,12 @@ public sealed class OverlayHost : Decorator
 
         UnsubscribeLayerChanges(_overlayLayers);
         _overlayLayers = args.NewValue as OverlayLayerCollection ?? new OverlayLayerCollection();
-        SubscribeLayerChanges(_overlayLayers);
+        if (_isAttached)
+        {
+            SubscribeLayerChanges(_overlayLayers);
+        }
 
-        if (_overlayLayers is INotifyCollectionChanged newList)
+        if (_isAttached && _overlayLayers is INotifyCollectionChanged newList)
         {
             newList.CollectionChanged += OnOverlayLayersCollectionChanged;
         }
@@ -218,8 +221,58 @@ public sealed class OverlayHost : Decorator
 
     private void OnOverlayLayerProviderChanged(object? sender, EventArgs e)
     {
+        if (!_isAttached)
+        {
+            return;
+        }
+
+        if (!Dispatcher.UIThread.CheckAccess())
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (!_isAttached)
+                {
+                    return;
+                }
+
+                ResetServiceLayers();
+                RebuildPipeline();
+            });
+            return;
+        }
+
         ResetServiceLayers();
         RebuildPipeline();
+    }
+
+    private void AttachOverlayCollections()
+    {
+        if (_overlays is INotifyCollectionChanged overlaysList)
+        {
+            overlaysList.CollectionChanged += OnOverlaysCollectionChanged;
+        }
+
+        if (_overlayLayers is INotifyCollectionChanged layersList)
+        {
+            layersList.CollectionChanged += OnOverlayLayersCollectionChanged;
+        }
+
+        SubscribeLayerChanges(_overlayLayers);
+    }
+
+    private void DetachOverlayCollections()
+    {
+        if (_overlays is INotifyCollectionChanged overlaysList)
+        {
+            overlaysList.CollectionChanged -= OnOverlaysCollectionChanged;
+        }
+
+        if (_overlayLayers is INotifyCollectionChanged layersList)
+        {
+            layersList.CollectionChanged -= OnOverlayLayersCollectionChanged;
+        }
+
+        UnsubscribeLayerChanges(_overlayLayers);
     }
 
     private void SubscribeLayerChanges(IEnumerable<IOverlayLayer> layers)

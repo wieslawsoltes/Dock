@@ -84,6 +84,48 @@ public class DockableControlLeakTests
         GC.KeepAlive(result.FactoryKeepAlive);
     }
 
+    [ReleaseFact]
+    public void DockableControl_DetachWhileWindowAlive_DoesNotLeak()
+    {
+        var result = RunInSession(() =>
+        {
+            var context = LeakContext.Create();
+            var dockable = context.Document;
+
+            var control = new DockableControl
+            {
+                TrackingMode = TrackingMode.Visible,
+                DataContext = dockable
+            };
+            var detached = false;
+            control.DetachedFromVisualTree += (_, _) => detached = true;
+
+            var window = new Window { Content = control };
+            window.Styles.Add(new FluentTheme());
+            window.Styles.Add(new DockFluentTheme());
+
+            ShowWindow(window);
+            control.ApplyTemplate();
+            control.UpdateLayout();
+            DrainDispatcher();
+
+            window.Content = null;
+            DrainDispatcher();
+            ClearInputState(window);
+
+            var controlRef = new WeakReference(control);
+            control = null;
+
+            return new DockableControlDetachLeakResult(controlRef, window, dockable, context.Factory, detached);
+        });
+
+        Assert.True(result.DetachedFromVisualTree, "DockableControl did not detach from visual tree.");
+        AssertCollected(result.ControlRef);
+        GC.KeepAlive(result.WindowKeepAlive);
+        GC.KeepAlive(result.DockableKeepAlive);
+        GC.KeepAlive(result.FactoryKeepAlive);
+    }
+
     private static DockableControlLeakResult RunTrackingModeLeak(TrackingMode trackingMode)
     {
         return RunInSession(() =>
@@ -123,4 +165,11 @@ public class DockableControlLeakTests
         IDockable DockableAKeepAlive,
         IDockable DockableBKeepAlive,
         IFactory FactoryKeepAlive);
+
+    private sealed record DockableControlDetachLeakResult(
+        WeakReference ControlRef,
+        Window WindowKeepAlive,
+        IDockable DockableKeepAlive,
+        IFactory FactoryKeepAlive,
+        bool DetachedFromVisualTree);
 }

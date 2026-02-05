@@ -3,11 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Recycling;
-using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
@@ -21,6 +18,7 @@ using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
 using Dock.Avalonia.Selectors;
+using Dock.Avalonia.Services;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -38,10 +36,10 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_ManagedWindowLayer", typeof(ManagedWindowLayer))]
 public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 {
-    private static readonly ConditionalWeakTable<IFactory, IControlRecycling> s_controlRecycling = new();
     private readonly DockManagerOptions _dockManagerOptions;
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
+    private readonly IDockControlFactoryService _factoryService;
     private bool _isInitialized;
     private ContentControl? _contentControl;
     private ManagedWindowLayer? _managedWindowLayer;
@@ -238,6 +236,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         _dockManagerOptions = new DockManagerOptions();
         _dockManager = new DockManager(new DockService(), _dockManagerOptions);
         _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
+        _factoryService = new DockControlFactoryService();
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
@@ -259,7 +258,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         _selectorOverlay = e.NameScope.Find<DockSelectorOverlay>("PART_SelectorOverlay");
         _managedWindowLayer = e.NameScope.Find<ManagedWindowLayer>("PART_ManagedWindowLayer");
 
-        InitializeControlRecycling();
+        _factoryService.InitializeControlRecycling(this);
         
         if (_contentControl is not null)
         {
@@ -268,57 +267,6 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         UpdateManagedWindowLayer(Layout);
         InitializeCommandBars();
-    }
-
-    private void InitializeControlRecycling()
-    {
-        if (Layout?.Factory is not { } factory)
-        {
-            return;
-        }
-
-        var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(this);
-        if (controlRecycling is null)
-        {
-            return;
-        }
-
-        if (s_controlRecycling.TryGetValue(factory, out var shared))
-        {
-            if (ReferenceEquals(shared, controlRecycling))
-            {
-                return;
-            }
-
-            if (shared is ControlRecycling sharedRecycling && controlRecycling is ControlRecycling localRecycling)
-            {
-                if (sharedRecycling.TryToUseIdAsKey != localRecycling.TryToUseIdAsKey)
-                {
-                    sharedRecycling.TryToUseIdAsKey = localRecycling.TryToUseIdAsKey;
-                }
-
-                ControlRecyclingDataTemplate.SetControlRecycling(this, sharedRecycling);
-                return;
-            }
-
-            if (controlRecycling is ControlRecycling)
-            {
-                ControlRecyclingDataTemplate.SetControlRecycling(this, shared);
-            }
-
-            return;
-        }
-
-        if (controlRecycling is ControlRecycling defaultRecycling)
-        {
-            controlRecycling = new ControlRecycling
-            {
-                TryToUseIdAsKey = defaultRecycling.TryToUseIdAsKey
-            };
-            ControlRecyclingDataTemplate.SetControlRecycling(this, controlRecycling);
-        }
-
-        s_controlRecycling.Add(factory, controlRecycling);
     }
 
     private void InitializeDefaultDataTemplates()
@@ -386,38 +334,30 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         layout.Factory.DockControls.Add(this);
 
-        InitializeControlRecycling();
+        _factoryService.InitializeControlRecycling(this);
         UpdateManagedWindowLayer(layout);
 
         if (InitializeFactory)
         {
             layout.Factory.ContextLocator ??= new Dictionary<string, Func<object?>>();
             layout.Factory.DockableLocator ??= new Dictionary<string, Func<IDockable?>>();
-            layout.Factory.DefaultContextLocator ??= GetContext;
-            layout.Factory.DefaultHostWindowLocator ??= GetHostWindow;
+            if (layout.Factory.DefaultContextLocator is null)
+            {
+                layout.Factory.DefaultContextLocator = ResolveDefaultContext;
+            }
+
+            if (layout.Factory.DefaultHostWindowLocator is null)
+            {
+                layout.Factory.DefaultHostWindowLocator = ResolveDefaultHostWindow;
+            }
 
             if (layout.Factory.HostWindowLocator is null)
             {
                 layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
                 {
-                    [nameof(IDockWindow)] = GetHostWindow
+                    [nameof(IDockWindow)] = ResolveDefaultHostWindow
                 };
             }
-
-            IHostWindow GetHostWindow()
-            {
-                if (HostWindowFactory is { } factory)
-                {
-                    return factory();
-                }
-
-                var hostMode = DockSettings.ResolveFloatingWindowHostMode(layout as IRootDock);
-                return hostMode == DockFloatingWindowHostMode.Managed
-                    ? new ManagedHostWindow(_dockManagerOptions)
-                    : new HostWindow(_dockManagerOptions);
-            }
-
-            object? GetContext() => DefaultContext;
         }
 
         if (InitializeLayout)
@@ -445,6 +385,11 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         }
 
         layout.Factory.DockControls.Remove(this);
+
+        _activationOrder.Clear();
+        _activationCounter = 0;
+
+        _factoryService.CleanupFactory(this, layout);
 
         if (InitializeLayout)
         {
@@ -475,6 +420,21 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         {
             _commandBarManager.Attach(Layout);
         }
+    }
+
+    internal object? ResolveDefaultContext() => DefaultContext;
+
+    internal IHostWindow? ResolveDefaultHostWindow()
+    {
+        if (HostWindowFactory is { } factory)
+        {
+            return factory();
+        }
+
+        var hostMode = DockSettings.ResolveFloatingWindowHostMode(Layout as IRootDock);
+        return hostMode == DockFloatingWindowHostMode.Managed
+            ? new ManagedHostWindow(_dockManagerOptions)
+            : new HostWindow(_dockManagerOptions);
     }
 
     private void AttachFactoryEvents(IFactory? factory)

@@ -34,8 +34,11 @@
 
         <Grid Grid.Row="1" ColumnDefinitions="2*,*" ColumnSpacing="32">
           <StackPanel Spacing="16">
-            <TextBlock Text="Design tools with
-real-time momentum" Classes="hero-title" />
+            <TextBlock Classes="hero-title">
+              <Run Text="Design tools with" />
+              <LineBreak />
+              <Run Text="real-time momentum" />
+            </TextBlock>
             <TextBlock Text="Build interactive flows faster with components, tokens, and smart docking." Classes="hero-body" />
             <StackPanel Orientation="Horizontal" Spacing="12">
               <Border Background="{DynamicResource AccentBrush}" CornerRadius="14" Padding="16,10">
@@ -85,7 +88,11 @@ real-time momentum" Classes="hero-title" />
             Padding="10,6"
             CornerRadius="12"
             Background="{DynamicResource CanvasOverlayBrush}">
-      <TextBlock Text="{Binding FrameName}  |  {Binding FrameSize}" Classes="muted" />
+      <TextBlock Classes="muted">
+        <Run Text="{Binding FrameName}" />
+        <Run Text="  |  " />
+        <Run Text="{Binding FrameSize}" />
+      </TextBlock>
     </Border>
   </Grid>
 </UserControl>

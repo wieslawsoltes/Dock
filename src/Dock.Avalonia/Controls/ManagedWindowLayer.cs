@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Internal;
 using Dock.Avalonia.Mdi;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -75,6 +76,19 @@ public sealed class ManagedWindowLayer : TemplatedControl
         if (change.Property == DockProperty)
         {
             AttachDock(change.GetNewValue<IDock>());
+        }
+    }
+
+    /// <inheritdoc />
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        DetachDock();
+
+        if (Dock?.Factory is { } factory)
+        {
+            ManagedWindowRegistry.UnregisterLayer(factory, this);
         }
     }
 

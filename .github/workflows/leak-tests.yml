@@ -1,0 +1,36 @@
+name: Leak Tests
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+    - master
+    - release/*
+  pull_request:
+    branches:
+    - master
+    - release/*
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+jobs:
+  leak-tests:
+    name: Leak Tests (Release)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+    - name: Install workloads
+      run: dotnet workload install wasm-tools wasm-experimental
+    - name: Run Dock.Avalonia leak tests
+      run: dotnet test -c Release tests/Dock.Avalonia.LeakTests/Dock.Avalonia.LeakTests.csproj
+    - name: Run Dock.Model.Mvvm leak tests
+      run: dotnet test -c Release tests/Dock.Model.Mvvm.LeakTests/Dock.Model.Mvvm.LeakTests.csproj
+    - name: Run Dock.Model.ReactiveUI leak tests
+      run: dotnet test -c Release tests/Dock.Model.ReactiveUI.LeakTests/Dock.Model.ReactiveUI.LeakTests.csproj

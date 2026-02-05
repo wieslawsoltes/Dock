@@ -60,6 +60,21 @@ internal class WindowDragHelper
             }
             _disposables = null;
         }
+
+        _releasedEventDisposable?.Dispose();
+        _releasedEventDisposable = null;
+
+        if (_dragWindow is not null && _positionChangedHandler is not null)
+        {
+            _dragWindow.PositionChanged -= _positionChangedHandler;
+            _positionChangedHandler = null;
+        }
+
+        _dragWindow = null;
+        _pointerPressed = false;
+        _isDragging = false;
+        _handledPointerPressed = false;
+        _lastPointerPressedArgs = null;
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)

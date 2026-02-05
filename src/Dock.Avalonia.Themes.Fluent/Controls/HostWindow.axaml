@@ -53,7 +53,7 @@
 
     <Setter Property="Content" Value="{Binding}" />
     <Setter Property="ContentTemplate">
-      <DataTemplate>
+      <DataTemplate x:DataType="controls:IRootDock">
         <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
           <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
             <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
@@ -107,7 +107,7 @@
 
       <Setter Property="Content" Value="{Binding}" />
       <Setter Property="ContentTemplate">
-        <DataTemplate>
+        <DataTemplate x:DataType="controls:IRootDock">
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
               <DockControl Layout="{Binding}" />

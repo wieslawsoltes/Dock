@@ -351,12 +351,12 @@ internal static class LeakTestHelpers
     internal static void CleanupWindow(Window window)
     {
         window.FocusManager?.ClearFocus();
-        ClearInputState(window);
         window.Content = null;
         window.DataContext = null;
         window.Close();
         DrainDispatcher();
         ForceHandleClosed(window);
+        ClearInputState(window);
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime
             && lifetime.Windows is IList<Window> windows)
         {
@@ -552,7 +552,7 @@ internal static class LeakTestHelpers
         }
     }
 
-    internal static void OpenAndCloseContextMenu(Control target, ContextMenu? menu)
+    internal static void OpenAndCloseContextMenu(Control target, ContextMenu? menu, Action? whileOpen = null)
     {
         if (menu is null)
         {
@@ -569,6 +569,8 @@ internal static class LeakTestHelpers
 
         menu.PlacementTarget = placementTarget;
         menu.Open(placementTarget);
+        DrainDispatcher();
+        whileOpen?.Invoke();
         DrainDispatcher();
         menu.Close();
         DrainDispatcher();
@@ -592,7 +594,7 @@ internal static class LeakTestHelpers
         return null;
     }
 
-    internal static void OpenAndCloseFlyout(Control target, FlyoutBase? flyout)
+    internal static void OpenAndCloseFlyout(Control target, FlyoutBase? flyout, Action? whileOpen = null)
     {
         if (flyout is null)
         {
@@ -601,8 +603,34 @@ internal static class LeakTestHelpers
 
         flyout.ShowAt(target);
         DrainDispatcher();
+        whileOpen?.Invoke();
+        DrainDispatcher();
         flyout.Hide();
         DrainDispatcher();
+    }
+
+    internal static void InvokeButtonClick(Button? button)
+    {
+        if (button is null)
+        {
+            return;
+        }
+
+        ExerciseInputInteractions(
+            button,
+            interactionMask: InputInteractionMask.PointerEnterExit | InputInteractionMask.PointerPressRelease);
+    }
+
+    internal static void InvokeMenuItemClick(MenuItem? menuItem)
+    {
+        if (menuItem is null)
+        {
+            return;
+        }
+
+        ExerciseInputInteractions(
+            menuItem,
+            interactionMask: InputInteractionMask.PointerEnterExit | InputInteractionMask.PointerPressRelease);
     }
 
     internal static T? FindVisualDescendant<T>(Visual root, Func<T, bool>? predicate = null) where T : Visual

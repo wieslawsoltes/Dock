@@ -58,6 +58,22 @@ references:
   isSpec: "True"
   fullName: Avalonia.Controls.Recycling.ControlRecycling.Clear
   nameWithType: ControlRecycling.Clear
+- uid: Avalonia.Controls.Recycling.ControlRecycling.Remove(System.Object)
+  name: Remove(object)
+  href: api/Avalonia.Controls.Recycling.ControlRecycling.html#Avalonia_Controls_Recycling_ControlRecycling_Remove_System_Object_
+  commentId: M:Avalonia.Controls.Recycling.ControlRecycling.Remove(System.Object)
+  name.vb: Remove(Object)
+  fullName: Avalonia.Controls.Recycling.ControlRecycling.Remove(object)
+  fullName.vb: Avalonia.Controls.Recycling.ControlRecycling.Remove(Object)
+  nameWithType: ControlRecycling.Remove(object)
+  nameWithType.vb: ControlRecycling.Remove(Object)
+- uid: Avalonia.Controls.Recycling.ControlRecycling.Remove*
+  name: Remove
+  href: api/Avalonia.Controls.Recycling.ControlRecycling.html#Avalonia_Controls_Recycling_ControlRecycling_Remove_
+  commentId: Overload:Avalonia.Controls.Recycling.ControlRecycling.Remove
+  isSpec: "True"
+  fullName: Avalonia.Controls.Recycling.ControlRecycling.Remove
+  nameWithType: ControlRecycling.Remove
 - uid: Avalonia.Controls.Recycling.ControlRecycling.TryGetValue(System.Object,System.Object@)
   name: TryGetValue(object?, out object?)
   href: api/Avalonia.Controls.Recycling.ControlRecycling.html#Avalonia_Controls_Recycling_ControlRecycling_TryGetValue_System_Object_System_Object__
@@ -4341,6 +4357,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ManagedWindowLayer.OnApplyTemplate
   nameWithType: ManagedWindowLayer.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
+  commentId: M:Dock.Avalonia.Controls.ManagedWindowLayer.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  nameWithType: ManagedWindowLayer.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+- uid: Dock.Avalonia.Controls.ManagedWindowLayer.OnDetachedFromVisualTree*
+  name: OnDetachedFromVisualTree
+  href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_OnDetachedFromVisualTree_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowLayer.OnDetachedFromVisualTree
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowLayer.OnDetachedFromVisualTree
+  nameWithType: ManagedWindowLayer.OnDetachedFromVisualTree
 - uid: Dock.Avalonia.Controls.ManagedWindowLayer.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
   name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
   href: api/Dock.Avalonia.Controls.ManagedWindowLayer.html#Dock_Avalonia_Controls_ManagedWindowLayer_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_

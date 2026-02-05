@@ -71,7 +71,7 @@ public class ThemeMenuInteractionLeakTests
     {
         var result = RunInSession(() =>
         {
-            var context = LeakContext.Create();
+            var context = LeakContext.Create(new NoOpFactory());
             context.Root.ActiveDockable = context.DocumentDock;
             context.Root.DefaultDockable = context.DocumentDock;
             context.DocumentDock.CanCloseLastDockable = true;
@@ -116,7 +116,6 @@ public class ThemeMenuInteractionLeakTests
             Assert.NotNull(menu);
 
             var menuItems = CollectMenuItems(menu!);
-            AssignNoOpCommands(menuItems);
 
             OpenAndCloseContextMenu(tabItem, menu, () =>
             {
@@ -163,7 +162,7 @@ public class ThemeMenuInteractionLeakTests
     {
         var result = RunInSession(() =>
         {
-            var context = LeakContext.Create();
+            var context = LeakContext.Create(new NoOpFactory());
             context.Root.ActiveDockable = context.ToolDock;
             context.Root.DefaultDockable = context.ToolDock;
             context.ToolDock.CanCloseLastDockable = true;
@@ -202,7 +201,6 @@ public class ThemeMenuInteractionLeakTests
             Assert.NotNull(menu);
 
             var menuItems = CollectMenuItems(menu!);
-            AssignNoOpCommands(menuItems);
 
             OpenAndCloseContextMenu(tabItem, menu, () =>
             {
@@ -249,7 +247,7 @@ public class ThemeMenuInteractionLeakTests
     {
         var result = RunInSession(() =>
         {
-            var context = LeakContext.Create();
+            var context = LeakContext.Create(new NoOpFactory());
             context.ToolDock.CanCloseLastDockable = true;
             context.Tool.CanClose = true;
             context.Tool.CanFloat = true;
@@ -277,7 +275,6 @@ public class ThemeMenuInteractionLeakTests
             Assert.NotNull(menu);
 
             var menuItems = CollectMenuItems(menu!);
-            AssignNoOpCommands(menuItems);
 
             OpenAndCloseContextMenu(pinItem, menu, () =>
             {
@@ -320,7 +317,7 @@ public class ThemeMenuInteractionLeakTests
     {
         var result = RunInSession(() =>
         {
-            var context = LeakContext.Create();
+            var context = LeakContext.Create(new NoOpFactory());
             context.ToolDock.CanCloseLastDockable = true;
             context.Tool.CanClose = true;
             context.Tool.CanFloat = true;
@@ -343,7 +340,6 @@ public class ThemeMenuInteractionLeakTests
             Assert.NotNull(flyout);
 
             var menuItems = CollectMenuItems(flyout!);
-            AssignNoOpCommands(menuItems);
 
             OpenAndCloseFlyout(chrome, flyout, () =>
             {
@@ -385,7 +381,7 @@ public class ThemeMenuInteractionLeakTests
     {
         var result = RunInSession(() =>
         {
-            var context = LeakContext.Create();
+            var context = LeakContext.Create(new NoOpFactory());
             var document = context.Document;
             document.MdiState = MdiWindowState.Normal;
             document.CanClose = true;
@@ -422,7 +418,6 @@ public class ThemeMenuInteractionLeakTests
             Assert.NotNull(menu);
 
             var menuItems = CollectMenuItems(menu!);
-            AssignNoOpCommands(menuItems);
 
             OpenAndCloseContextMenu(control, menu, () =>
             {
@@ -466,7 +461,7 @@ public class ThemeMenuInteractionLeakTests
     {
         var result = RunInSession(() =>
         {
-            var context = LeakContext.Create();
+            var context = LeakContext.Create(new NoOpFactory());
             context.Root.ActiveDockable = context.ToolDock;
             context.Root.DefaultDockable = context.ToolDock;
             context.ToolDock.Owner = context.Root;
@@ -511,7 +506,6 @@ public class ThemeMenuInteractionLeakTests
                 if (flyout is not null)
                 {
                     var menuItems = CollectMenuItems(flyout);
-                    AssignNoOpCommands(menuItems);
 
                     OpenAndCloseFlyout(menuButton, flyout, () =>
                     {
@@ -588,14 +582,6 @@ public class ThemeMenuInteractionLeakTests
                 target.Add(menuItem);
                 CollectMenuItems(menuItem.Items, target);
             }
-        }
-    }
-
-    private static void AssignNoOpCommands(IEnumerable<MenuItem> items)
-    {
-        foreach (var item in items)
-        {
-            item.Command = new NoOpCommand();
         }
     }
 

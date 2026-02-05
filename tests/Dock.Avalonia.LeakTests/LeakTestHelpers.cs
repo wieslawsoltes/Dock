@@ -2013,7 +2013,7 @@ internal static class LeakTestHelpers
             .Take(maxTypes)
             .Select(group => $"{group.Key}={group.Count()}");
 
-        Trace($"[LeakTrace:{label}] Root={root.GetType().Name} Attached={root.IsAttachedToVisualTree}{templateInfo} Visual descendants: {string.Join(", ", groups)}");
+        Trace($"[LeakTrace:{label}] Root={root.GetType().Name} Attached={TopLevel.GetTopLevel(root) is not null}{templateInfo} Visual descendants: {string.Join(", ", groups)}");
     }
 
 }

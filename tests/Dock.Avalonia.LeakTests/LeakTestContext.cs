@@ -67,9 +67,9 @@ internal sealed class LeakContext
 
     public ManagedWindowDock ManagedWindowDock { get; }
 
-    public static LeakContext Create()
+    public static LeakContext Create(Factory? factoryOverride = null)
     {
-        var factory = new Factory();
+        var factory = factoryOverride ?? new Factory();
 
         var root = (RootDock)factory.CreateRootDock();
         root.Factory = factory;

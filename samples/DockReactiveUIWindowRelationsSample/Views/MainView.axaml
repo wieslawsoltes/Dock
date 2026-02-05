@@ -15,15 +15,16 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8" Spacing="8">
       <Button Content="Reset Layout" Command="{Binding ResetLayout}" />
-      <StackPanel DataContext="{Binding Layout}" Orientation="Horizontal" Spacing="8" x:DataType="dmc:IRootDock">
-        <Button Content="Show Windows" Command="{Binding ShowWindows}" />
-        <Button Content="Exit Windows" Command="{Binding ExitWindows}" />
+      <StackPanel DataContext="{Binding Layout}">
+        <StackPanel Orientation="Horizontal" Spacing="8" x:DataType="dmc:IRootDock">
+          <Button Content="Show Windows" Command="{Binding ShowWindows}" />
+          <Button Content="Exit Windows" Command="{Binding ExitWindows}" />
+        </StackPanel>
       </StackPanel>
     </StackPanel>
     <DockControl Layout="{Binding Layout}" Margin="8" />
-    <Border DockPanel.Dock="Bottom" Padding="8" Background="#1F000000">
-      <TextBlock DataContext="{Binding Layout}"
-                 Text="{Binding FocusedDockable, FallbackValue=''}"
+    <Border DockPanel.Dock="Bottom" Padding="8" Background="#1F000000" DataContext="{Binding Layout}">
+      <TextBlock Text="{Binding FocusedDockable, FallbackValue=''}"
                  x:DataType="dm:IDock" />
     </Border>
   </DockPanel>

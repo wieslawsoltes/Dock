@@ -3,7 +3,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Dock.Model.Avalonia;
 using Dock.Model.Services;
+using Dock.Model.Core;
+using Dock.Model.Avalonia.Core;
 
 namespace Dock.Avalonia.LeakTests;
 
@@ -21,6 +24,85 @@ internal sealed class NoOpCommand : ICommand
     public bool CanExecute(object? parameter) => true;
 
     public void Execute(object? parameter)
+    {
+    }
+}
+
+internal sealed class NoOpFactory : Factory, IFactory
+{
+    public override void FloatDockable(IDockable dockable)
+    {
+    }
+
+    public override void FloatDockable(IDockable dockable, DockWindowOptions? options)
+    {
+    }
+
+    public override void FloatAllDockables(IDockable dockable)
+    {
+    }
+
+    public override void FloatAllDockables(IDockable dockable, DockWindowOptions? options)
+    {
+    }
+
+    public override void PinDockable(IDockable dockable)
+    {
+    }
+
+    public new void PreviewPinnedDockable(IDockable dockable)
+    {
+    }
+
+    public new void TogglePreviewPinnedDockable(IDockable dockable)
+    {
+    }
+
+    void IFactory.PreviewPinnedDockable(IDockable dockable)
+    {
+    }
+
+    void IFactory.TogglePreviewPinnedDockable(IDockable dockable)
+    {
+    }
+
+    public override void DockAsDocument(IDockable dockable)
+    {
+    }
+
+    public override void CloseDockable(IDockable dockable)
+    {
+    }
+
+    public override void CloseOtherDockables(IDockable dockable)
+    {
+    }
+
+    public override void CloseAllDockables(IDockable dockable)
+    {
+    }
+
+    public override void CloseLeftDockables(IDockable dockable)
+    {
+    }
+
+    public override void CloseRightDockables(IDockable dockable)
+    {
+    }
+
+    public override void NewHorizontalDocumentDock(IDockable dockable)
+    {
+    }
+
+    public override void NewVerticalDocumentDock(IDockable dockable)
+    {
+    }
+
+    public override void SetDocumentDockTabsLayout(IDockable dockable, DocumentTabLayout layout)
+    {
+    }
+
+    public override void SetDocumentDockLayoutMode(IDockable dockable, DocumentLayoutMode layoutMode)
     {
     }
 }

@@ -7,11 +7,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
-using Dock.Avalonia.Internal;
 using Avalonia.Reactive;
+using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -26,6 +25,7 @@ public class ToolTabStrip : TabStrip
     private Border? _borderRightFill;
     private ItemsPresenter? _itemsPresenter;
     private ScrollViewer? _scrollViewer;
+    private IDisposable? _scrollViewerWheelSubscription;
 
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -75,10 +75,13 @@ public class ToolTabStrip : TabStrip
     {
         base.OnApplyTemplate(e);
 
+        AttachScrollViewerWheel(null);
+
         _borderLeftFill = e.NameScope.Find<Border>("PART_BorderLeftFill");
         _borderRightFill = e.NameScope.Find<Border>("PART_BorderRightFill");
         _itemsPresenter = e.NameScope.Find<ItemsPresenter>("PART_ItemsPresenter");
         _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
+        AttachScrollViewerWheel(_scrollViewer);
 
         _itemsPresenter?.GetObservable(Border.BoundsProperty)
             .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
@@ -96,16 +99,17 @@ public class ToolTabStrip : TabStrip
     }
 
     /// <inheritdoc/>
-    protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        if (!e.Handled
-            && TabStripMouseWheelScrollHelper.TryHandle(_scrollViewer, MouseWheelScrollOrientation, e.Delta))
-        {
-            e.Handled = true;
-            return;
-        }
+        base.OnDetachedFromVisualTree(e);
+        AttachScrollViewerWheel(null);
+    }
 
-        base.OnPointerWheelChanged(e);
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        AttachScrollViewerWheel(_scrollViewer);
     }
 
     private void OnContainerAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
@@ -208,10 +212,21 @@ public class ToolTabStrip : TabStrip
         {
             UpdatePseudoClasses(change.GetNewValue<bool>());
         }
+
+        if (change.Property == MouseWheelScrollOrientationProperty)
+        {
+            AttachScrollViewerWheel(_scrollViewer);
+        }
     }
 
     private void UpdatePseudoClasses(bool canCreate)
     {
         PseudoClasses.Set(":create", canCreate);
+    }
+
+    private void AttachScrollViewerWheel(ScrollViewer? scrollViewer)
+    {
+        _scrollViewerWheelSubscription?.Dispose();
+        _scrollViewerWheelSubscription = ScrollViewerMouseWheelHookHelper.Attach(scrollViewer, MouseWheelScrollOrientation);
     }
 }

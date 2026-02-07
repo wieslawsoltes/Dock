@@ -6,7 +6,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Dock.Avalonia.Internal;
-using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Styling;
 
@@ -21,6 +20,7 @@ public class DocumentTabStrip : TabStrip
     private HostWindow? _attachedWindow;
     private Control? _grip;
     private ScrollViewer? _scrollViewer;
+    private IDisposable? _scrollViewerWheelSubscription;
     private WindowDragHelper? _windowDragHelper;
     
     /// <summary>
@@ -131,22 +131,14 @@ public class DocumentTabStrip : TabStrip
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+
+        DetachScrollViewerWheel();
+
         _grip = e.NameScope.Find<Control>("PART_BorderFill");
         _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
+        AttachScrollViewerWheel();
+
         AttachToWindow();
-    }
-
-    /// <inheritdoc/>
-    protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
-    {
-        if (!e.Handled
-            && TabStripMouseWheelScrollHelper.TryHandle(_scrollViewer, MouseWheelScrollOrientation, e.Delta))
-        {
-            e.Handled = true;
-            return;
-        }
-
-        base.OnPointerWheelChanged(e);
     }
 
     /// <inheritdoc/>
@@ -154,6 +146,7 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnAttachedToVisualTree(e);
 
+        AttachScrollViewerWheel();
         AttachToWindow();
     }
 
@@ -161,6 +154,7 @@ public class DocumentTabStrip : TabStrip
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        DetachScrollViewerWheel();
         DetachFromWindow();
     }
 
@@ -201,6 +195,11 @@ public class DocumentTabStrip : TabStrip
             {
                 DetachFromWindow();
             }
+        }
+
+        if (change.Property == MouseWheelScrollOrientationProperty)
+        {
+            AttachScrollViewerWheel();
         }
     }
 
@@ -269,5 +268,17 @@ public class DocumentTabStrip : TabStrip
             _windowDragHelper.Detach();
             _windowDragHelper = null;
         }
+    }
+
+    private void DetachScrollViewerWheel()
+    {
+        _scrollViewerWheelSubscription?.Dispose();
+        _scrollViewerWheelSubscription = null;
+    }
+
+    private void AttachScrollViewerWheel()
+    {
+        _scrollViewerWheelSubscription?.Dispose();
+        _scrollViewerWheelSubscription = ScrollViewerMouseWheelHookHelper.Attach(_scrollViewer, MouseWheelScrollOrientation);
     }
 }

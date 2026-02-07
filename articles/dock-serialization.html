@@ -175,7 +175,7 @@ DI-based construction, use the <code>Dock.Serializer.DockSerializer</code> overl
 <li>Load the layout and call <code>_dockState.Restore</code> to restore content/templates if needed.</li>
 <li>Handle the case where the layout file does not exist or fails to deserialize.</li>
 </ol>
-<p>Following this pattern keeps the window arrangement consistent across sessions.</p>
+<p>Following this pattern keeps the window arrangement consistent across sessions. Floating window bounds, title, and <code>WindowState</code> are serialized as part of <code>IDockWindow</code>.</p>
 <h2 id="dockable-identifiers">Dockable identifiers</h2>
 <p>Every dockable stores an <code>Id</code> string that is written to the layout file. The
 value is application-defined and can be used with <code>ContextLocator</code> or

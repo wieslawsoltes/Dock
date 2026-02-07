@@ -98,7 +98,7 @@
     return window;
 }
 </code></pre>
-<p>Calling <code>FloatDockable</code> on the factory opens a dockable in a new window. The new <code>IDockWindow</code> is tracked by the root dock and stores its bounds and title so it can be serialized together with the layout.</p>
+<p>Calling <code>FloatDockable</code> on the factory opens a dockable in a new window. The new <code>IDockWindow</code> is tracked by the root dock and stores its bounds, title, and <code>WindowState</code> so it can be serialized together with the layout.</p>
 <p>To control parent/owner relationships and modality at creation time, use the <code>DockWindowOptions</code> overloads:</p>
 <pre><code class="lang-csharp">var options = new DockWindowOptions
 {
@@ -141,6 +141,11 @@ factory.FloatDockable(tool, options);
 <td><code>Width</code>, <code>Height</code></td>
 <td><code>double</code></td>
 <td>Window size.</td>
+</tr>
+<tr>
+<td><code>WindowState</code></td>
+<td><code>DockWindowState</code></td>
+<td>Window state (<code>Normal</code>, <code>Minimized</code>, <code>Maximized</code>, <code>FullScreen</code>).</td>
 </tr>
 <tr>
 <td><code>Topmost</code></td>
@@ -215,7 +220,7 @@ factory.FloatDockable(tool, options);
 <tr>
 <td><code>Save()</code></td>
 <td><code>void</code></td>
-<td>Persist size/position into the model.</td>
+<td>Persist size/position/window state into the model.</td>
 </tr>
 <tr>
 <td><code>Present(bool)</code></td>
@@ -279,6 +284,11 @@ factory.FloatDockable(tool, options);
 <td><code>SetSize/GetSize</code></td>
 <td><code>void</code></td>
 <td>Read/write the host size.</td>
+</tr>
+<tr>
+<td><code>SetWindowState/GetWindowState</code></td>
+<td><code>void</code> / <code>DockWindowState</code></td>
+<td>Read/write the host window state.</td>
 </tr>
 <tr>
 <td><code>SetTitle</code></td>

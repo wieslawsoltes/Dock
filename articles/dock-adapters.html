@@ -85,12 +85,12 @@
 
 <p>Dock exposes a small set of helper classes that adapt the core interfaces to different host environments or provide additional runtime services. The built-in model base classes (<code>DockWindow</code>, <code>DockBase</code>, <code>DockableBase</code>) wire these adapters in, so most applications interact with them through <code>IDock</code>, <code>IDockable</code>, and <code>IDockWindow</code>. You can use the adapters directly when implementing custom base types or host integrations.</p>
 <h2 id="hostadapter">HostAdapter</h2>
-<p><code>HostAdapter</code> implements <code>IHostAdapter</code> and bridges a dock window (<code>IDockWindow</code>) with a platform-specific host window (<code>IHostWindow</code>). It resolves the host window via <code>IFactory.GetHostWindow</code> when needed, pushes layout, title, size, and position into the host when presenting, and reads the current size and position back when saving.</p>
+<p><code>HostAdapter</code> implements <code>IHostAdapter</code> and bridges a dock window (<code>IDockWindow</code>) with a platform-specific host window (<code>IHostWindow</code>). It resolves the host window via <code>IFactory.GetHostWindow</code> when needed, pushes layout, title, size, position, and <code>WindowState</code> into the host when presenting, and reads the current size, position, and state back when saving.</p>
 <p>Typical usage looks like the following:</p>
 <pre><code class="lang-csharp">var hostAdapter = new HostAdapter(dockWindow);
 hostAdapter.Present(isDialog: false);
 </code></pre>
-<p>The adapter fetches the host window instance from <code>IFactory.GetHostWindow</code> if it has not already been assigned. Calling <code>Save</code> stores the last known position and dimensions so they can be restored later. <code>Exit</code> closes the host and clears the reference, and <code>SetActive</code> forwards the activation request to the host window.</p>
+<p>The adapter fetches the host window instance from <code>IFactory.GetHostWindow</code> if it has not already been assigned. Calling <code>Save</code> stores the last known position, dimensions, and window state so they can be restored later. <code>Exit</code> closes the host and clears the reference, and <code>SetActive</code> forwards the activation request to the host window.</p>
 <h2 id="navigateadapter">NavigateAdapter</h2>
 <p><code>NavigateAdapter</code> implements <code>INavigateAdapter</code> and provides history-based navigation for docks. It maintains two stacks for back and forward navigation and exposes methods such as <code>GoBack</code>, <code>GoForward</code>, and <code>Navigate</code>. <code>Navigate</code> accepts an <code>IDockable</code>, a dockable ID (<code>string</code>), or <code>null</code> to reset navigation.</p>
 <p>Create an instance for a given <code>IDock</code> and use it to issue navigation commands:</p>

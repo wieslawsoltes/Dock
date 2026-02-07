@@ -2550,6 +2550,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.HostWindow.GetSize
   nameWithType: HostWindow.GetSize
+- uid: Dock.Avalonia.Controls.HostWindow.GetWindowState
+  name: GetWindowState()
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_GetWindowState
+  commentId: M:Dock.Avalonia.Controls.HostWindow.GetWindowState
+  fullName: Dock.Avalonia.Controls.HostWindow.GetWindowState()
+  nameWithType: HostWindow.GetWindowState()
+- uid: Dock.Avalonia.Controls.HostWindow.GetWindowState*
+  name: GetWindowState
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_GetWindowState_
+  commentId: Overload:Dock.Avalonia.Controls.HostWindow.GetWindowState
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.HostWindow.GetWindowState
+  nameWithType: HostWindow.GetWindowState
 - uid: Dock.Avalonia.Controls.HostWindow.HostWindowState
   name: HostWindowState
   href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_HostWindowState
@@ -2763,6 +2776,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.HostWindow.SetTitle
   nameWithType: HostWindow.SetTitle
+- uid: Dock.Avalonia.Controls.HostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  name: SetWindowState(DockWindowState)
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_SetWindowState_Dock_Model_Core_DockWindowState_
+  commentId: M:Dock.Avalonia.Controls.HostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  fullName: Dock.Avalonia.Controls.HostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  nameWithType: HostWindow.SetWindowState(DockWindowState)
+- uid: Dock.Avalonia.Controls.HostWindow.SetWindowState*
+  name: SetWindowState
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_SetWindowState_
+  commentId: Overload:Dock.Avalonia.Controls.HostWindow.SetWindowState
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.HostWindow.SetWindowState
+  nameWithType: HostWindow.SetWindowState
 - uid: Dock.Avalonia.Controls.HostWindow.StyleKeyOverride
   name: StyleKeyOverride
   href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_StyleKeyOverride
@@ -3928,6 +3954,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ManagedHostWindow.GetSize
   nameWithType: ManagedHostWindow.GetSize
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.GetWindowState
+  name: GetWindowState()
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_GetWindowState
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.GetWindowState
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.GetWindowState()
+  nameWithType: ManagedHostWindow.GetWindowState()
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.GetWindowState*
+  name: GetWindowState
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_GetWindowState_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.GetWindowState
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.GetWindowState
+  nameWithType: ManagedHostWindow.GetWindowState
 - uid: Dock.Avalonia.Controls.ManagedHostWindow.HostWindowState
   name: HostWindowState
   href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_HostWindowState
@@ -4057,6 +4096,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetTitle
   nameWithType: ManagedHostWindow.SetTitle
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  name: SetWindowState(DockWindowState)
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetWindowState_Dock_Model_Core_DockWindowState_
+  commentId: M:Dock.Avalonia.Controls.ManagedHostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  nameWithType: ManagedHostWindow.SetWindowState(DockWindowState)
+- uid: Dock.Avalonia.Controls.ManagedHostWindow.SetWindowState*
+  name: SetWindowState
+  href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_SetWindowState_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedHostWindow.SetWindowState
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedHostWindow.SetWindowState
+  nameWithType: ManagedHostWindow.SetWindowState
 - uid: Dock.Avalonia.Controls.ManagedHostWindow.Window
   name: Window
   href: api/Dock.Avalonia.Controls.ManagedHostWindow.html#Dock_Avalonia_Controls_ManagedHostWindow_Window
@@ -13130,6 +13182,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockWindow.WidthProperty
   fullName: Dock.Model.Avalonia.Core.DockWindow.WidthProperty
   nameWithType: DockWindow.WidthProperty
+- uid: Dock.Model.Avalonia.Core.DockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_WindowState
+  commentId: P:Dock.Model.Avalonia.Core.DockWindow.WindowState
+  fullName: Dock.Model.Avalonia.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.Avalonia.Core.DockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_WindowState_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.Avalonia.Core.DockWindow.WindowStateProperty
+  name: WindowStateProperty
+  href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_WindowStateProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockWindow.WindowStateProperty
+  fullName: Dock.Model.Avalonia.Core.DockWindow.WindowStateProperty
+  nameWithType: DockWindow.WindowStateProperty
 - uid: Dock.Model.Avalonia.Core.DockWindow.X
   name: X
   href: api/Dock.Model.Avalonia.Core.DockWindow.html#Dock_Model_Avalonia_Core_DockWindow_X
@@ -16144,6 +16215,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockWindow.Width
   nameWithType: DockWindow.Width
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_WindowState
+  commentId: P:Dock.Model.CaliburMicro.Core.DockWindow.WindowState
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.CaliburMicro.Core.DockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_WindowState_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
 - uid: Dock.Model.CaliburMicro.Core.DockWindow.X
   name: X
   href: api/Dock.Model.CaliburMicro.Core.DockWindow.html#Dock_Model_CaliburMicro_Core_DockWindow_X
@@ -19328,6 +19412,36 @@ references:
   commentId: F:Dock.Model.Core.DockWindowOwnerMode.RootWindow
   fullName: Dock.Model.Core.DockWindowOwnerMode.RootWindow
   nameWithType: DockWindowOwnerMode.RootWindow
+- uid: Dock.Model.Core.DockWindowState
+  name: DockWindowState
+  href: api/Dock.Model.Core.DockWindowState.html
+  commentId: T:Dock.Model.Core.DockWindowState
+  fullName: Dock.Model.Core.DockWindowState
+  nameWithType: DockWindowState
+- uid: Dock.Model.Core.DockWindowState.FullScreen
+  name: FullScreen
+  href: api/Dock.Model.Core.DockWindowState.html#Dock_Model_Core_DockWindowState_FullScreen
+  commentId: F:Dock.Model.Core.DockWindowState.FullScreen
+  fullName: Dock.Model.Core.DockWindowState.FullScreen
+  nameWithType: DockWindowState.FullScreen
+- uid: Dock.Model.Core.DockWindowState.Maximized
+  name: Maximized
+  href: api/Dock.Model.Core.DockWindowState.html#Dock_Model_Core_DockWindowState_Maximized
+  commentId: F:Dock.Model.Core.DockWindowState.Maximized
+  fullName: Dock.Model.Core.DockWindowState.Maximized
+  nameWithType: DockWindowState.Maximized
+- uid: Dock.Model.Core.DockWindowState.Minimized
+  name: Minimized
+  href: api/Dock.Model.Core.DockWindowState.html#Dock_Model_Core_DockWindowState_Minimized
+  commentId: F:Dock.Model.Core.DockWindowState.Minimized
+  fullName: Dock.Model.Core.DockWindowState.Minimized
+  nameWithType: DockWindowState.Minimized
+- uid: Dock.Model.Core.DockWindowState.Normal
+  name: Normal
+  href: api/Dock.Model.Core.DockWindowState.html#Dock_Model_Core_DockWindowState_Normal
+  commentId: F:Dock.Model.Core.DockWindowState.Normal
+  fullName: Dock.Model.Core.DockWindowState.Normal
+  nameWithType: DockWindowState.Normal
 - uid: Dock.Model.Core.DocumentCloseButtonShowMode
   name: DocumentCloseButtonShowMode
   href: api/Dock.Model.Core.DocumentCloseButtonShowMode.html
@@ -21523,6 +21637,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockWindow.Width
   nameWithType: IDockWindow.Width
+- uid: Dock.Model.Core.IDockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_WindowState
+  commentId: P:Dock.Model.Core.IDockWindow.WindowState
+  fullName: Dock.Model.Core.IDockWindow.WindowState
+  nameWithType: IDockWindow.WindowState
+- uid: Dock.Model.Core.IDockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_WindowState_
+  commentId: Overload:Dock.Model.Core.IDockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockWindow.WindowState
+  nameWithType: IDockWindow.WindowState
 - uid: Dock.Model.Core.IDockWindow.X
   name: X
   href: api/Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_X
@@ -24246,6 +24373,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IHostWindow.GetSize
   nameWithType: IHostWindow.GetSize
+- uid: Dock.Model.Core.IHostWindow.GetWindowState
+  name: GetWindowState()
+  href: api/Dock.Model.Core.IHostWindow.html#Dock_Model_Core_IHostWindow_GetWindowState
+  commentId: M:Dock.Model.Core.IHostWindow.GetWindowState
+  fullName: Dock.Model.Core.IHostWindow.GetWindowState()
+  nameWithType: IHostWindow.GetWindowState()
+- uid: Dock.Model.Core.IHostWindow.GetWindowState*
+  name: GetWindowState
+  href: api/Dock.Model.Core.IHostWindow.html#Dock_Model_Core_IHostWindow_GetWindowState_
+  commentId: Overload:Dock.Model.Core.IHostWindow.GetWindowState
+  isSpec: "True"
+  fullName: Dock.Model.Core.IHostWindow.GetWindowState
+  nameWithType: IHostWindow.GetWindowState
 - uid: Dock.Model.Core.IHostWindow.HostWindowState
   name: HostWindowState
   href: api/Dock.Model.Core.IHostWindow.html#Dock_Model_Core_IHostWindow_HostWindowState
@@ -24362,6 +24502,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IHostWindow.SetTitle
   nameWithType: IHostWindow.SetTitle
+- uid: Dock.Model.Core.IHostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  name: SetWindowState(DockWindowState)
+  href: api/Dock.Model.Core.IHostWindow.html#Dock_Model_Core_IHostWindow_SetWindowState_Dock_Model_Core_DockWindowState_
+  commentId: M:Dock.Model.Core.IHostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  fullName: Dock.Model.Core.IHostWindow.SetWindowState(Dock.Model.Core.DockWindowState)
+  nameWithType: IHostWindow.SetWindowState(DockWindowState)
+- uid: Dock.Model.Core.IHostWindow.SetWindowState*
+  name: SetWindowState
+  href: api/Dock.Model.Core.IHostWindow.html#Dock_Model_Core_IHostWindow_SetWindowState_
+  commentId: Overload:Dock.Model.Core.IHostWindow.SetWindowState
+  isSpec: "True"
+  fullName: Dock.Model.Core.IHostWindow.SetWindowState
+  nameWithType: IHostWindow.SetWindowState
 - uid: Dock.Model.Core.IHostWindow.Window
   name: Window
   href: api/Dock.Model.Core.IHostWindow.html#Dock_Model_Core_IHostWindow_Window
@@ -29375,6 +29528,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FluentExtensions.WithWindow
   nameWithType: FluentExtensions.WithWindow
+- uid: Dock.Model.FluentExtensions.WithWindowState(Dock.Model.Core.IDockWindow,Dock.Model.Core.DockWindowState)
+  name: WithWindowState(IDockWindow, DockWindowState)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithWindowState_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockWindowState_
+  commentId: M:Dock.Model.FluentExtensions.WithWindowState(Dock.Model.Core.IDockWindow,Dock.Model.Core.DockWindowState)
+  fullName: Dock.Model.FluentExtensions.WithWindowState(Dock.Model.Core.IDockWindow, Dock.Model.Core.DockWindowState)
+  nameWithType: FluentExtensions.WithWindowState(IDockWindow, DockWindowState)
+- uid: Dock.Model.FluentExtensions.WithWindowState*
+  name: WithWindowState
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithWindowState_
+  commentId: Overload:Dock.Model.FluentExtensions.WithWindowState
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithWindowState
+  nameWithType: FluentExtensions.WithWindowState
 - uid: Dock.Model.FluentExtensions.WithWindows(Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow[])
   name: WithWindows(IRootDock, params IDockWindow[])
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithWindows_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow___
@@ -30857,6 +31023,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockWindow.Width
   nameWithType: DockWindow.Width
+- uid: Dock.Model.Inpc.Core.DockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_WindowState
+  commentId: P:Dock.Model.Inpc.Core.DockWindow.WindowState
+  fullName: Dock.Model.Inpc.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.Inpc.Core.DockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_WindowState_
+  commentId: Overload:Dock.Model.Inpc.Core.DockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
 - uid: Dock.Model.Inpc.Core.DockWindow.X
   name: X
   href: api/Dock.Model.Inpc.Core.DockWindow.html#Dock_Model_Inpc_Core_DockWindow_X
@@ -33671,6 +33850,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockWindow.Width
   nameWithType: DockWindow.Width
+- uid: Dock.Model.Mvvm.Core.DockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_WindowState
+  commentId: P:Dock.Model.Mvvm.Core.DockWindow.WindowState
+  fullName: Dock.Model.Mvvm.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.Mvvm.Core.DockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_WindowState_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
 - uid: Dock.Model.Mvvm.Core.DockWindow.X
   name: X
   href: api/Dock.Model.Mvvm.Core.DockWindow.html#Dock_Model_Mvvm_Core_DockWindow_X
@@ -36282,6 +36474,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockWindow.Width
   nameWithType: DockWindow.Width
+- uid: Dock.Model.Prism.Core.DockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_WindowState
+  commentId: P:Dock.Model.Prism.Core.DockWindow.WindowState
+  fullName: Dock.Model.Prism.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.Prism.Core.DockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_WindowState_
+  commentId: Overload:Dock.Model.Prism.Core.DockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
 - uid: Dock.Model.Prism.Core.DockWindow.X
   name: X
   href: api/Dock.Model.Prism.Core.DockWindow.html#Dock_Model_Prism_Core_DockWindow_X
@@ -38893,6 +39098,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockWindow.Width
   nameWithType: DockWindow.Width
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_WindowState
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockWindow.WindowState
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.ReactiveProperty.Core.DockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_WindowState_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
 - uid: Dock.Model.ReactiveProperty.Core.DockWindow.X
   name: X
   href: api/Dock.Model.ReactiveProperty.Core.DockWindow.html#Dock_Model_ReactiveProperty_Core_DockWindow_X
@@ -41618,6 +41836,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockWindow.Width
   nameWithType: DockWindow.Width
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.WindowState
+  name: WindowState
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_WindowState
+  commentId: P:Dock.Model.ReactiveUI.Core.DockWindow.WindowState
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
+- uid: Dock.Model.ReactiveUI.Core.DockWindow.WindowState*
+  name: WindowState
+  href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_WindowState_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockWindow.WindowState
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockWindow.WindowState
+  nameWithType: DockWindow.WindowState
 - uid: Dock.Model.ReactiveUI.Core.DockWindow.X
   name: X
   href: api/Dock.Model.ReactiveUI.Core.DockWindow.html#Dock_Model_ReactiveUI_Core_DockWindow_X

@@ -3448,6 +3448,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockWindowState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockWindowState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockWindowState",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockWindowState.yml\" sourcestartlinenumber=\"1\">Represents the presentation state of a floating dock window.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.DocumentCloseButtonShowMode.yml",
       "output": {
         ".html": {

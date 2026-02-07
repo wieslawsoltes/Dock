@@ -62,6 +62,18 @@ public interface IHostWindow
     void GetSize(out double width, out double height);
 
     /// <summary>
+    /// Sets host window state.
+    /// </summary>
+    /// <param name="windowState">The host window state.</param>
+    void SetWindowState(DockWindowState windowState);
+
+    /// <summary>
+    /// Gets host window state.
+    /// </summary>
+    /// <returns>The host window state.</returns>
+    DockWindowState GetWindowState();
+
+    /// <summary>
     /// Sets host title.
     /// </summary>
     /// <param name="title">The host title.</param>

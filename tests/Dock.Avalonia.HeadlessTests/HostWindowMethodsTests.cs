@@ -1,5 +1,6 @@
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
+using Dock.Model.Core;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
@@ -44,5 +45,15 @@ public class HostWindowMethodsTests
         window.GetSize(out var w, out var h);
         Assert.True(double.IsNaN(w));
         Assert.True(double.IsNaN(h));
+    }
+
+    [AvaloniaFact]
+    public void SetWindowState_And_GetWindowState_Work()
+    {
+        var window = new HostWindow();
+
+        window.SetWindowState(DockWindowState.Maximized);
+
+        Assert.Equal(DockWindowState.Maximized, window.GetWindowState());
     }
 }

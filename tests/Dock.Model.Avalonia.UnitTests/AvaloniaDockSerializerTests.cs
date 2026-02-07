@@ -3,6 +3,7 @@ using Avalonia.Collections;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Json;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -111,5 +112,23 @@ public class AvaloniaDockSerializerTests
         pinnedTool.GetPinnedBounds(out _, out _, out var width, out var height);
         Assert.Equal(240, width, 3);
         Assert.Equal(180, height, 3);
+    }
+
+    [AvaloniaFact]
+    public void Serialize_DockWindow_IncludesWindowState()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var window = new DockWindow
+        {
+            Id = "Window",
+            Title = "Window",
+            WindowState = DockWindowState.Maximized
+        };
+
+        var json = serializer.Serialize(window);
+
+        using var document = JsonDocument.Parse(json);
+        Assert.True(document.RootElement.TryGetProperty("WindowState", out var value), json);
+        Assert.Equal((int)DockWindowState.Maximized, value.GetInt32());
     }
 }

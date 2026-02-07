@@ -20,7 +20,7 @@ public override IDockWindow? CreateWindowFrom(IDockable dockable)
 }
 ```
 
-Calling `FloatDockable` on the factory opens a dockable in a new window. The new `IDockWindow` is tracked by the root dock and stores its bounds and title so it can be serialized together with the layout.
+Calling `FloatDockable` on the factory opens a dockable in a new window. The new `IDockWindow` is tracked by the root dock and stores its bounds, title, and `WindowState` so it can be serialized together with the layout.
 
 To control parent/owner relationships and modality at creation time, use the `DockWindowOptions` overloads:
 
@@ -58,6 +58,7 @@ For setup details see the [Managed windows guide](dock-managed-windows-guide.md)
 | `Id` | `string` | Window identifier. |
 | `X`, `Y` | `double` | Window position. |
 | `Width`, `Height` | `double` | Window size. |
+| `WindowState` | `DockWindowState` | Window state (`Normal`, `Minimized`, `Maximized`, `FullScreen`). |
 | `Topmost` | `bool` | Keeps the window on top when `true`. |
 | `Title` | `string` | Window title. |
 | `OwnerMode` | `DockWindowOwnerMode` | Owner resolution mode for the host window. |
@@ -72,7 +73,7 @@ For setup details see the [Managed windows guide](dock-managed-windows-guide.md)
 | `OnMoveDragBegin()` | `bool` | Drag begin callback (return `false` to cancel). |
 | `OnMoveDrag()` | `void` | Drag in progress callback. |
 | `OnMoveDragEnd()` | `void` | Drag end callback. |
-| `Save()` | `void` | Persist size/position into the model. |
+| `Save()` | `void` | Persist size/position/window state into the model. |
 | `Present(bool)` | `void` | Show the window. |
 | `Exit()` | `void` | Close the window. |
 | `SetActive()` | `void` | Activate the window. |
@@ -90,6 +91,7 @@ For setup details see the [Managed windows guide](dock-managed-windows-guide.md)
 | `Exit()` | `void` | Close the host window. |
 | `SetPosition/GetPosition` | `void` | Read/write the host position. |
 | `SetSize/GetSize` | `void` | Read/write the host size. |
+| `SetWindowState/GetWindowState` | `void` / `DockWindowState` | Read/write the host window state. |
 | `SetTitle` | `void` | Update the host title. |
 | `SetLayout` | `void` | Assign the hosted layout. |
 | `SetActive` | `void` | Activate the host window. |

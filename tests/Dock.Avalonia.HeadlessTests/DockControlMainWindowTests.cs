@@ -24,6 +24,7 @@ public class TestHostWindow : Window, IHostWindow
     private bool _presented;
     private bool _exited;
     private double _x, _y, _width, _height;
+    private DockWindowState _windowState = DockWindowState.Normal;
     private string? _title;
     private IDock? _layout;
     private bool _activated;
@@ -58,6 +59,7 @@ public class TestHostWindow : Window, IHostWindow
     public double TestHeight => _height;
     public string? TestTitle => _title;
     public IDock? TestLayout => _layout;
+    public DockWindowState TestWindowState => _windowState;
 
     public void Present(bool isDialog)
     {
@@ -96,6 +98,16 @@ public class TestHostWindow : Window, IHostWindow
     {
         width = _width;
         height = _height;
+    }
+
+    public void SetWindowState(DockWindowState windowState)
+    {
+        _windowState = windowState;
+    }
+
+    public DockWindowState GetWindowState()
+    {
+        return _windowState;
     }
 
     public void SetTitle(string? title)
@@ -178,6 +190,18 @@ public class DockControlMainWindowTests
         Assert.Equal(200, y);
         Assert.Equal(800, width);
         Assert.Equal(600, height);
+    }
+
+    [AvaloniaFact]
+    public void HostWindow_WindowState_Methods_Work()
+    {
+        var hostWindow = new TestHostWindow();
+
+        hostWindow.SetWindowState(DockWindowState.Maximized);
+        var state = hostWindow.GetWindowState();
+
+        Assert.Equal(DockWindowState.Maximized, state);
+        Assert.Equal(DockWindowState.Maximized, hostWindow.TestWindowState);
     }
 
     [AvaloniaFact]

@@ -23,6 +23,7 @@ public sealed class ManagedHostWindow : IHostWindow
     private double _y;
     private double _width = 400;
     private double _height = 300;
+    private DockWindowState _windowState = DockWindowState.Normal;
     private bool _closed;
     private bool _lastCloseCanceled;
 
@@ -81,10 +82,15 @@ public sealed class ManagedHostWindow : IHostWindow
             _document = new ManagedDockWindowDocument(Window);
             _document.Title = _title ?? _document.Title;
             _document.MdiBounds = new DockRect(_x, _y, _width, _height);
+            _document.MdiState = DockWindowStateHelper.ToMdiWindowState(_windowState);
             if (_layout is { } root)
             {
                 _document.Content = ManagedDockWindowDocumentContent.Create(root);
             }
+        }
+        else
+        {
+            _document.MdiState = DockWindowStateHelper.ToMdiWindowState(_windowState);
         }
 
         _dock.AddWindow(_document);
@@ -212,6 +218,36 @@ public sealed class ManagedHostWindow : IHostWindow
     }
 
     /// <inheritdoc />
+    public void SetWindowState(DockWindowState windowState)
+    {
+        _windowState = windowState;
+        if (Window is { } window)
+        {
+            window.WindowState = windowState;
+        }
+
+        if (_document is not null)
+        {
+            _document.MdiState = DockWindowStateHelper.ToMdiWindowState(windowState);
+        }
+    }
+
+    /// <inheritdoc />
+    public DockWindowState GetWindowState()
+    {
+        if (_document is not null)
+        {
+            var mappedState = DockWindowStateHelper.ToDockWindowState(_document.MdiState);
+            if (!(_windowState == DockWindowState.FullScreen && mappedState == DockWindowState.Normal))
+            {
+                _windowState = mappedState;
+            }
+        }
+
+        return _windowState;
+    }
+
+    /// <inheritdoc />
     public void SetTitle(string? title)
     {
         _title = title;
@@ -236,6 +272,11 @@ public sealed class ManagedHostWindow : IHostWindow
     {
         if (_dock is { } && _document is { })
         {
+            if (_document.MdiState == MdiWindowState.Minimized)
+            {
+                _document.MdiState = MdiWindowState.Normal;
+            }
+
             _dock.ActiveDockable = _document;
         }
     }

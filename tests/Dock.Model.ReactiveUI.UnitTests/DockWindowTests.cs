@@ -21,6 +21,7 @@ public class DockWindowTests
         public double Y { get; private set; }
         public double Width { get; private set; }
         public double Height { get; private set; }
+        public DockWindowState WindowState { get; private set; }
         public string? Title { get; private set; }
         public IDock? Layout { get; private set; }
 
@@ -57,6 +58,16 @@ public class DockWindowTests
             width = Width; height = Height;
         }
 
+        public void SetWindowState(DockWindowState windowState)
+        {
+            WindowState = windowState;
+        }
+
+        public DockWindowState GetWindowState()
+        {
+            return WindowState;
+        }
+
         public void SetTitle(string? title)
         {
             Title = title;
@@ -90,6 +101,7 @@ public class DockWindowTests
         Assert.Equal(0, window.Y);
         Assert.Equal(0, window.Width);
         Assert.Equal(0, window.Height);
+        Assert.Equal(DockWindowState.Normal, window.WindowState);
         Assert.False(window.Topmost);
         Assert.Equal(DockWindowOwnerMode.Default, window.OwnerMode);
         Assert.Null(window.ParentWindow);
@@ -105,6 +117,7 @@ public class DockWindowTests
         window.Host = host;
         host.SetPosition(10, 20);
         host.SetSize(300, 200);
+        host.SetWindowState(DockWindowState.Maximized);
 
         window.Save();
 
@@ -112,13 +125,19 @@ public class DockWindowTests
         Assert.Equal(20, window.Y);
         Assert.Equal(300, window.Width);
         Assert.Equal(200, window.Height);
+        Assert.Equal(DockWindowState.Maximized, window.WindowState);
     }
 
     [Fact]
     public void Present_Creates_Host_And_Presents()
     {
         var factory = new HostFactory();
-        var window = new DockWindow { Factory = factory, Layout = new RootDock() };
+        var window = new DockWindow
+        {
+            Factory = factory,
+            Layout = new RootDock(),
+            WindowState = DockWindowState.Maximized
+        };
 
         window.Present(false);
 
@@ -129,6 +148,7 @@ public class DockWindowTests
         Assert.Same(window, host.Window);
         Assert.Equal(window.Title, host.Title);
         Assert.Equal(window.Layout, host.Layout);
+        Assert.Equal(DockWindowState.Maximized, host.WindowState);
     }
 
     [Fact]
@@ -138,6 +158,7 @@ public class DockWindowTests
         var window = new DockWindow { Factory = factory, Layout = new RootDock(), Host = factory.Host };
         factory.Host.SetPosition(5, 6);
         factory.Host.SetSize(100, 120);
+        factory.Host.SetWindowState(DockWindowState.FullScreen);
 
         window.Exit();
 
@@ -148,5 +169,6 @@ public class DockWindowTests
         Assert.Equal(6, window.Y);
         Assert.Equal(100, window.Width);
         Assert.Equal(120, window.Height);
+        Assert.Equal(DockWindowState.FullScreen, window.WindowState);
     }
 }

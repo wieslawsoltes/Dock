@@ -53,6 +53,12 @@ public class DockWindow : ReactiveBase, IDockWindow
         AvaloniaProperty.RegisterDirect<DockWindow, bool>(nameof(Topmost), o => o.Topmost, (o, v) => o.Topmost = v);
 
     /// <summary>
+    /// Defines the <see cref="WindowState"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockWindow, DockWindowState> WindowStateProperty =
+        AvaloniaProperty.RegisterDirect<DockWindow, DockWindowState>(nameof(WindowState), o => o.WindowState, (o, v) => o.WindowState = v);
+
+    /// <summary>
     /// Defines the <see cref="Title"/> property.
     /// </summary>
     public static readonly DirectProperty<DockWindow, string> TitleProperty =
@@ -112,6 +118,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     private double _y;
     private double _width;
     private double _height;
+    private DockWindowState _windowState;
     private bool _topmost;
     private string _title;
     private DockWindowOwnerMode _ownerMode;
@@ -130,6 +137,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     {
         _id = nameof(IDockWindow);
         _title = nameof(IDockWindow);
+        _windowState = DockWindowState.Normal;
         _ownerMode = DockWindowOwnerMode.Default;
         _hostAdapter = new HostAdapter(this);
     }
@@ -177,6 +185,15 @@ public class DockWindow : ReactiveBase, IDockWindow
     {
         get => _height;
         set => SetAndRaise(HeightProperty, ref _height, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("WindowState")]
+    public DockWindowState WindowState
+    {
+        get => _windowState;
+        set => SetAndRaise(WindowStateProperty, ref _windowState, value);
     }
 
     /// <inheritdoc/>

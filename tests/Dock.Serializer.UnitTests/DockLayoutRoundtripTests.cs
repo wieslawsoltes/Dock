@@ -4,6 +4,7 @@ using System.IO;
 using Dock.Model.Core;
 using Dock.Model.Inpc;
 using Dock.Model.Inpc.Controls;
+using Dock.Model.Inpc.Core;
 using Dock.Serializer.Protobuf;
 using Dock.Serializer.Xml;
 using Dock.Serializer.Yaml;
@@ -94,7 +95,23 @@ public class DockLayoutRoundtripTests
         root.Title = "Root";
         root.VisibleDockables = factory.CreateList<IDockable>(layout);
         root.ActiveDockable = layout;
-        root.Windows = factory.CreateList<IDockWindow>();
+        root.Windows = factory.CreateList<IDockWindow>(
+            new DockWindow
+            {
+                Id = "Window1",
+                Title = "Window 1",
+                X = 120,
+                Y = 80,
+                Width = 640,
+                Height = 480,
+                WindowState = DockWindowState.Maximized,
+                Layout = new RootDock
+                {
+                    Id = "FloatingRoot",
+                    Title = "Floating Root",
+                    VisibleDockables = factory.CreateList<IDockable>()
+                }
+            });
 
         return root;
     }
@@ -129,5 +146,18 @@ public class DockLayoutRoundtripTests
         Assert.Single(documentDock.VisibleDockables!);
         Assert.Equal("Doc1", documentDock.VisibleDockables[0].Id);
         Assert.Equal("Doc1", documentDock.ActiveDockable?.Id);
+
+        Assert.NotNull(root.Windows);
+        Assert.Single(root.Windows!);
+        var window = root.Windows![0];
+        Assert.Equal("Window1", window.Id);
+        Assert.Equal("Window 1", window.Title);
+        Assert.Equal(120, window.X);
+        Assert.Equal(80, window.Y);
+        Assert.Equal(640, window.Width);
+        Assert.Equal(480, window.Height);
+        Assert.Equal(DockWindowState.Maximized, window.WindowState);
+        Assert.NotNull(window.Layout);
+        Assert.Equal("FloatingRoot", window.Layout!.Id);
     }
 }

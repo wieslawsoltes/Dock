@@ -29,6 +29,10 @@ public class HostWindow : Window, IHostWindow
     private List<Control> _chromeGrips = new();
     private HostWindowTitleBar? _hostWindowTitleBar;
     private bool _mouseDown, _draggingWindow;
+    private double _normalX = double.NaN;
+    private double _normalY = double.NaN;
+    private double _normalWidth = double.NaN;
+    private double _normalHeight = double.NaN;
 
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
@@ -214,6 +218,7 @@ public class HostWindow : Window, IHostWindow
     {
         if (Window is { } && IsTracked)
         {
+            CaptureNormalBounds();
             Window.Save();
 
             if (_mouseDown)
@@ -267,6 +272,7 @@ public class HostWindow : Window, IHostWindow
     {
         if (Window is { } && IsTracked)
         {
+            CaptureNormalBounds();
             Window.Save();
         }
     }
@@ -374,6 +380,10 @@ public class HostWindow : Window, IHostWindow
         else if (change.Property == DocumentChromeControlsWholeWindowProperty)
         {
             UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, change.GetNewValue<bool>());
+        }
+        else if (change.Property == WindowStateProperty && Window is { } && IsTracked)
+        {
+            Window.Save();
         }
     }
 
@@ -659,12 +669,21 @@ public class HostWindow : Window, IHostWindow
         if (!double.IsNaN(x) && !double.IsNaN(y))
         {
             Position = new PixelPoint((int)x, (int)y);
+            _normalX = x;
+            _normalY = y;
         }
     }
 
     /// <inheritdoc/>
     public void GetPosition(out double x, out double y)
     {
+        if (WindowState != WindowState.Normal && TryGetNormalBounds(out var normalX, out var normalY, out _, out _))
+        {
+            x = normalX;
+            y = normalY;
+            return;
+        }
+
         x = Position.X;
         y = Position.Y;
     }
@@ -675,19 +694,40 @@ public class HostWindow : Window, IHostWindow
         if (!double.IsNaN(width))
         {
             Width = width;
+            _normalWidth = width;
         }
 
         if (!double.IsNaN(height))
         {
             Height = height;
+            _normalHeight = height;
         }
     }
 
     /// <inheritdoc/>
     public void GetSize(out double width, out double height)
     {
+        if (WindowState != WindowState.Normal && TryGetNormalBounds(out _, out _, out var normalWidth, out var normalHeight))
+        {
+            width = normalWidth;
+            height = normalHeight;
+            return;
+        }
+
         width = Width;
         height = Height;
+    }
+
+    /// <inheritdoc/>
+    public void SetWindowState(DockWindowState windowState)
+    {
+        WindowState = DockWindowStateHelper.ToAvaloniaWindowState(windowState);
+    }
+
+    /// <inheritdoc/>
+    public DockWindowState GetWindowState()
+    {
+        return DockWindowStateHelper.ToDockWindowState(WindowState);
     }
 
     /// <inheritdoc/>
@@ -705,6 +745,39 @@ public class HostWindow : Window, IHostWindow
     public void SetLayout(IDock layout)
     {
         DataContext = layout;
+    }
+
+    private void CaptureNormalBounds()
+    {
+        if (WindowState != WindowState.Normal)
+        {
+            return;
+        }
+
+        if (double.IsNaN(Width) || double.IsNaN(Height))
+        {
+            return;
+        }
+
+        _normalX = Position.X;
+        _normalY = Position.Y;
+        _normalWidth = Width;
+        _normalHeight = Height;
+    }
+
+    private bool TryGetNormalBounds(out double x, out double y, out double width, out double height)
+    {
+        x = _normalX;
+        y = _normalY;
+        width = _normalWidth;
+        height = _normalHeight;
+
+        return !double.IsNaN(x)
+               && !double.IsNaN(y)
+               && !double.IsNaN(width)
+               && !double.IsNaN(height)
+               && width > 0
+               && height > 0;
     }
 
     void IHostWindow.SetActive()

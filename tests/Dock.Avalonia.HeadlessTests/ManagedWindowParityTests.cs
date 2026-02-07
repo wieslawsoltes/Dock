@@ -1041,6 +1041,49 @@ public class ManagedWindowParityTests
     }
 
     [AvaloniaFact]
+    public void ManagedHostWindow_WindowState_Roundtrips_With_Window_Model()
+    {
+        var factory = new Factory();
+        var (host, window, _) = CreateManagedWindow(factory);
+        var dock = ManagedWindowRegistry.GetOrCreateDock(factory);
+        var managedDocument = dock.VisibleDockables!.OfType<ManagedDockWindowDocument>()
+            .Single(document => ReferenceEquals(document.Window, window));
+
+        host.SetWindowState(DockWindowState.Maximized);
+
+        Assert.Equal(DockWindowState.Maximized, host.GetWindowState());
+        Assert.Equal(DockWindowState.Maximized, window.WindowState);
+        Assert.Equal(MdiWindowState.Maximized, managedDocument.MdiState);
+
+        managedDocument.MdiState = MdiWindowState.Minimized;
+
+        Assert.Equal(DockWindowState.Minimized, window.WindowState);
+        Assert.Equal(DockWindowState.Minimized, host.GetWindowState());
+    }
+
+    [AvaloniaFact]
+    public void ManagedHostWindow_FullScreen_State_Is_Not_Lost_When_Mdi_Maps_To_Normal()
+    {
+        var factory = new Factory();
+        var (host, window, _) = CreateManagedWindow(factory);
+        var dock = ManagedWindowRegistry.GetOrCreateDock(factory);
+        var managedDocument = dock.VisibleDockables!.OfType<ManagedDockWindowDocument>()
+            .Single(document => ReferenceEquals(document.Window, window));
+
+        managedDocument.MdiState = MdiWindowState.Maximized;
+        window.WindowState = DockWindowState.Maximized;
+
+        host.SetWindowState(DockWindowState.FullScreen);
+
+        Assert.Equal(MdiWindowState.Normal, managedDocument.MdiState);
+        Assert.Equal(DockWindowState.FullScreen, window.WindowState);
+        Assert.Equal(DockWindowState.FullScreen, host.GetWindowState());
+
+        window.Save();
+        Assert.Equal(DockWindowState.FullScreen, window.WindowState);
+    }
+
+    [AvaloniaFact]
     public void ManagedHostWindow_SetLayout_Updates_Content()
     {
         var factory = new Factory();
@@ -1680,6 +1723,7 @@ public class ManagedWindowParityTests
         private double _y;
         private double _width;
         private double _height;
+        private DockWindowState _windowState = DockWindowState.Normal;
 
         public bool ExitCalled { get; private set; }
 
@@ -1720,6 +1764,16 @@ public class ManagedWindowParityTests
         {
             width = _width;
             height = _height;
+        }
+
+        public void SetWindowState(DockWindowState windowState)
+        {
+            _windowState = windowState;
+        }
+
+        public DockWindowState GetWindowState()
+        {
+            return _windowState;
         }
 
         public void SetTitle(string? title)

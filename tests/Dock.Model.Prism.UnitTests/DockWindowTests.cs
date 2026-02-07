@@ -18,9 +18,11 @@ public class DockWindowTests
         public bool PresentCalled; public bool ExitCalled;
         public (double X,double Y)? SetPositionValue;
         public (double W,double H)? SetSizeValue;
+        public DockWindowState SetWindowStateValue { get; private set; } = DockWindowState.Normal;
         public string? Title;
         public IDock? Layout;
         public double GetX=1, GetY=2, GetW=3, GetH=4;
+        public DockWindowState GetWindowStateValue = DockWindowState.Normal;
 
         public void Present(bool isDialog) { PresentCalled = true; }
         public void Exit() { ExitCalled = true; }
@@ -28,6 +30,8 @@ public class DockWindowTests
         public void GetPosition(out double x, out double y) { x=GetX; y=GetY; }
         public void SetSize(double width, double height) { SetSizeValue=(width,height); }
         public void GetSize(out double width, out double height) { width=GetW; height=GetH; }
+        public void SetWindowState(DockWindowState windowState) { SetWindowStateValue = windowState; }
+        public DockWindowState GetWindowState() { return GetWindowStateValue; }
         public void SetTitle(string? title) { Title = title; }
         public void SetLayout(IDock layout) { Layout = layout; }
         public void SetActive() { }
@@ -36,7 +40,7 @@ public class DockWindowTests
     [Fact]
     public void Save_Stores_Host_Bounds()
     {
-        var host = new FakeHostWindow { GetX = 10, GetY = 20, GetW = 30, GetH = 40 };
+        var host = new FakeHostWindow { GetX = 10, GetY = 20, GetW = 30, GetH = 40, GetWindowStateValue = DockWindowState.Maximized };
         var window = new DockWindow { Host = host };
 
         window.Save();
@@ -45,6 +49,7 @@ public class DockWindowTests
         Assert.Equal(20, window.Y);
         Assert.Equal(30, window.Width);
         Assert.Equal(40, window.Height);
+        Assert.Equal(DockWindowState.Maximized, window.WindowState);
     }
 
     [Fact]
@@ -60,6 +65,7 @@ public class DockWindowTests
             Y = 6,
             Width = 7,
             Height = 8,
+            WindowState = DockWindowState.FullScreen,
             Title = "test"
         };
 
@@ -69,6 +75,7 @@ public class DockWindowTests
         Assert.True(host.IsTracked);
         Assert.Equal((5d,6d), host.SetPositionValue);
         Assert.Equal((7d,8d), host.SetSizeValue);
+        Assert.Equal(DockWindowState.FullScreen, host.SetWindowStateValue);
         Assert.Equal("test", host.Title);
         Assert.Same(root, host.Layout);
     }

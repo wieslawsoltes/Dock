@@ -7,8 +7,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Reactive;
+using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -23,6 +25,7 @@ public class ToolTabStrip : TabStrip
     private Border? _borderRightFill;
     private ItemsPresenter? _itemsPresenter;
     private ScrollViewer? _scrollViewer;
+    private IDisposable? _scrollViewerWheelSubscription;
 
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -31,12 +34,29 @@ public class ToolTabStrip : TabStrip
         AvaloniaProperty.Register<ToolTabStrip, bool>(nameof(CanCreateItem));
 
     /// <summary>
+    /// Defines the <see cref="MouseWheelScrollOrientation"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Orientation> MouseWheelScrollOrientationProperty =
+        AvaloniaProperty.Register<ToolTabStrip, Orientation>(
+            nameof(MouseWheelScrollOrientation),
+            defaultValue: Orientation.Horizontal);
+
+    /// <summary>
     /// Gets or sets if tab strop dock can create new items.
     /// </summary>
     public bool CanCreateItem
     {
         get => GetValue(CanCreateItemProperty);
         set => SetValue(CanCreateItemProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets orientation used for mouse wheel scrolling in the tab strip.
+    /// </summary>
+    public Orientation MouseWheelScrollOrientation
+    {
+        get => GetValue(MouseWheelScrollOrientationProperty);
+        set => SetValue(MouseWheelScrollOrientationProperty, value);
     }
 
     /// <inheritdoc/>
@@ -55,10 +75,13 @@ public class ToolTabStrip : TabStrip
     {
         base.OnApplyTemplate(e);
 
+        AttachScrollViewerWheel(null);
+
         _borderLeftFill = e.NameScope.Find<Border>("PART_BorderLeftFill");
         _borderRightFill = e.NameScope.Find<Border>("PART_BorderRightFill");
         _itemsPresenter = e.NameScope.Find<ItemsPresenter>("PART_ItemsPresenter");
         _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
+        AttachScrollViewerWheel(_scrollViewer);
 
         _itemsPresenter?.GetObservable(Border.BoundsProperty)
             .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
@@ -73,6 +96,20 @@ public class ToolTabStrip : TabStrip
             .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
 
         UpdateBorders();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        AttachScrollViewerWheel(null);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        AttachScrollViewerWheel(_scrollViewer);
     }
 
     private void OnContainerAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
@@ -175,10 +212,21 @@ public class ToolTabStrip : TabStrip
         {
             UpdatePseudoClasses(change.GetNewValue<bool>());
         }
+
+        if (change.Property == MouseWheelScrollOrientationProperty)
+        {
+            AttachScrollViewerWheel(_scrollViewer);
+        }
     }
 
     private void UpdatePseudoClasses(bool canCreate)
     {
         PseudoClasses.Set(":create", canCreate);
+    }
+
+    private void AttachScrollViewerWheel(ScrollViewer? scrollViewer)
+    {
+        _scrollViewerWheelSubscription?.Dispose();
+        _scrollViewerWheelSubscription = ScrollViewerMouseWheelHookHelper.Attach(scrollViewer, MouseWheelScrollOrientation);
     }
 }

@@ -24,6 +24,13 @@ public class DockControlInstantiationTests
     }
 
     [AvaloniaFact]
+    public void DocumentTabStrip_Default_MouseWheelScrollOrientation_Horizontal()
+    {
+        var control = new DocumentTabStrip();
+        Assert.Equal(LayoutOrientation.Horizontal, control.MouseWheelScrollOrientation);
+    }
+
+    [AvaloniaFact]
     public void DockableControl_Default_TrackingMode_Visible()
     {
         var control = new DockableControl();
@@ -195,6 +202,13 @@ public class DockControlInstantiationTests
     {
         var control = new ToolTabStrip();
         Assert.NotNull(control);
+    }
+
+    [AvaloniaFact]
+    public void ToolTabStrip_Default_MouseWheelScrollOrientation_Horizontal()
+    {
+        var control = new ToolTabStrip();
+        Assert.Equal(LayoutOrientation.Horizontal, control.MouseWheelScrollOrientation);
     }
 
     [AvaloniaFact]

@@ -32,6 +32,8 @@
   items:
   - name: Active document
     href: dock-active-document.md
+  - name: Global dock tracking
+    href: dock-global-tracking.md
   - name: Docking groups
     href: dock-docking-groups.md
   - name: MDI document layout

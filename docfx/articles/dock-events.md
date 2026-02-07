@@ -3,8 +3,9 @@
 Dock exposes a large set of runtime events through `FactoryBase` so that applications can react to changes in the layout. The other guides only briefly mention these hooks. This document lists the most commonly used events and shows how to subscribe to them.
 
 Each event uses a dedicated arguments type that exposes the affected
-dockable or window. Some events (such as `DockableClosing` and `WindowClosing`)
-support cancellation via a `Cancel` flag.
+dockable or window. Focus/active dockable args also include `RootDock`,
+`Window`, and `HostWindow` for multi-window context. Some events (such as
+`DockableClosing` and `WindowClosing`) support cancellation via a `Cancel` flag.
 
 ## Common events
 
@@ -14,6 +15,7 @@ support cancellation via a `Cancel` flag.
 | ----- | ----------- |
 | `ActiveDockableChanged` | Fired when the active dockable within a dock changes. |
 | `FocusedDockableChanged` | Triggered when focus moves to another dockable. |
+| `GlobalDockTrackingChanged` | Fired when global dock/root/window context changes. |
 | `DockableAdded` | Raised after a dockable is inserted into a dock. |
 | `DockableRemoved` | Raised after a dockable has been removed. |
 | `DockableClosing` | Fired before a dockable is closed so it can be cancelled. |
@@ -48,7 +50,9 @@ Create a factory instance and attach handlers before initializing the layout:
 var factory = new Factory();
 
 factory.ActiveDockableChanged += (_, args) =>
-    Console.WriteLine($"Active dockable: {args.Dockable?.Title}");
+    Console.WriteLine($"Active dockable: {args.Dockable?.Title} (root={args.RootDock?.Id}, window={args.Window?.Id})");
+factory.GlobalDockTrackingChanged += (_, args) =>
+    Console.WriteLine($"Global context: {args.Current.Dockable?.Title} / {args.Current.RootDock?.Id} / {args.Current.Window?.Id}");
 factory.DockableAdded += (_, args) =>
     Console.WriteLine($"Added: {args.Dockable?.Title}");
 factory.DockableDocked += (_, args) =>

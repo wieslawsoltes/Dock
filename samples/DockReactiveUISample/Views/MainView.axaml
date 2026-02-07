@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:DockReactiveUISample.ViewModels"
              mc:Ignorable="d"
@@ -16,7 +15,7 @@
   <UserControl.Resources>
     <StreamGeometry x:Key="DarkTheme">M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Zm0-2V4a8 8 0 1 1 0 16Z</StreamGeometry>
   </UserControl.Resources>
-  <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="Auto,*" Background="Transparent">
+  <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="Auto,*" Background="Transparent">
     <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
       <MenuItem Header="_File">
         <MenuItem Header="_New Layout" Command="{Binding NewLayout}" />
@@ -65,11 +64,18 @@
     </Panel>
     <DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"
                      Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
-    <Panel DataContext="{Binding Layout.ActiveDockable}"
-           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-      <TextBlock Text="{Binding FocusedDockable, FallbackValue={}}"
-                 Margin="4"
-                 x:DataType="dm:IDock" />
-    </Panel>
+    <Border Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="4,0,4,4"
+            Padding="6,2"
+            Background="{DynamicResource DockThemeBackgroundLowBrush}"
+            BorderBrush="{DynamicResource DockThemeBorderMidBrush}"
+            BorderThickness="1"
+            CornerRadius="4">
+      <TextBlock Text="{Binding GlobalStatus}"
+                 VerticalAlignment="Center"
+                 TextTrimming="CharacterEllipsis" />
+    </Border>
   </Grid>
 </UserControl>

@@ -7,7 +7,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.Media;
+using Dock.Avalonia.Internal;
 using Avalonia.Reactive;
 
 namespace Dock.Avalonia.Controls;
@@ -31,12 +34,29 @@ public class ToolTabStrip : TabStrip
         AvaloniaProperty.Register<ToolTabStrip, bool>(nameof(CanCreateItem));
 
     /// <summary>
+    /// Defines the <see cref="MouseWheelScrollOrientation"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Orientation> MouseWheelScrollOrientationProperty =
+        AvaloniaProperty.Register<ToolTabStrip, Orientation>(
+            nameof(MouseWheelScrollOrientation),
+            defaultValue: Orientation.Horizontal);
+
+    /// <summary>
     /// Gets or sets if tab strop dock can create new items.
     /// </summary>
     public bool CanCreateItem
     {
         get => GetValue(CanCreateItemProperty);
         set => SetValue(CanCreateItemProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets orientation used for mouse wheel scrolling in the tab strip.
+    /// </summary>
+    public Orientation MouseWheelScrollOrientation
+    {
+        get => GetValue(MouseWheelScrollOrientationProperty);
+        set => SetValue(MouseWheelScrollOrientationProperty, value);
     }
 
     /// <inheritdoc/>
@@ -73,6 +93,19 @@ public class ToolTabStrip : TabStrip
             .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
 
         UpdateBorders();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+    {
+        if (!e.Handled
+            && TabStripMouseWheelScrollHelper.TryHandle(_scrollViewer, MouseWheelScrollOrientation, e.Delta))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnPointerWheelChanged(e);
     }
 
     private void OnContainerAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)

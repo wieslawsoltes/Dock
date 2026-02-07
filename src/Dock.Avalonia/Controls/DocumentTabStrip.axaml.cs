@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Dock.Avalonia.Internal;
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Styling;
 
@@ -19,6 +20,7 @@ public class DocumentTabStrip : TabStrip
 {
     private HostWindow? _attachedWindow;
     private Control? _grip;
+    private ScrollViewer? _scrollViewer;
     private WindowDragHelper? _windowDragHelper;
     
     /// <summary>
@@ -44,6 +46,14 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<Orientation> OrientationProperty =
         AvaloniaProperty.Register<DocumentTabStrip, Orientation>(nameof(Orientation));
+
+    /// <summary>
+    /// Defines the <see cref="MouseWheelScrollOrientation"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Orientation> MouseWheelScrollOrientationProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, Orientation>(
+            nameof(MouseWheelScrollOrientation),
+            defaultValue: Orientation.Horizontal);
 
     /// <summary>
     /// Define the <see cref="CreateButtonTheme"/> property.
@@ -96,6 +106,15 @@ public class DocumentTabStrip : TabStrip
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets orientation used for mouse wheel scrolling in the tab strip.
+    /// </summary>
+    public Orientation MouseWheelScrollOrientation
+    {
+        get => GetValue(MouseWheelScrollOrientationProperty);
+        set => SetValue(MouseWheelScrollOrientationProperty, value);
+    }
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(DocumentTabStrip);
 
@@ -113,7 +132,21 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnApplyTemplate(e);
         _grip = e.NameScope.Find<Control>("PART_BorderFill");
+        _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
         AttachToWindow();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+    {
+        if (!e.Handled
+            && TabStripMouseWheelScrollHelper.TryHandle(_scrollViewer, MouseWheelScrollOrientation, e.Delta))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnPointerWheelChanged(e);
     }
 
     /// <inheritdoc/>

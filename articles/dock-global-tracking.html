@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Global Dock Tracking | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Global Dock Tracking | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-global-tracking.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="global-dock-tracking">Global Dock Tracking</h1>
+
+<p>This document defines the global tracking model introduced for multi-window focus and active document resolution.</p>
+<h2 id="problem">Problem</h2>
+<p>Per-dock events (<code>ActiveDockableChanged</code>, <code>FocusedDockableChanged</code>) previously exposed only a dockable reference. In multi-window layouts this made it hard to reliably identify:</p>
+<ul>
+<li>which root dock currently owns focus</li>
+<li>which floating dock window is currently active</li>
+<li>where global overlays (busy/dialog) should render</li>
+</ul>
+<h2 id="expected-behavior">Expected behavior</h2>
+<p>Global tracking should always resolve the current dock context across all windows:</p>
+<ul>
+<li>Current dockable (document/tool)</li>
+<li>Current root dock</li>
+<li>Current dock window (when floating)</li>
+<li>Current host window</li>
+</ul>
+<h2 id="api">API</h2>
+<p><code>IFactory</code> now exposes global state:</p>
+<ul>
+<li><code>GlobalDockTrackingState GlobalDockTrackingState</code></li>
+<li><code>IDockable? CurrentDockable</code></li>
+<li><code>IRootDock? CurrentRootDock</code></li>
+<li><code>IDockWindow? CurrentDockWindow</code></li>
+<li><code>IHostWindow? CurrentHostWindow</code></li>
+</ul>
+<p><code>IFactory</code> now exposes a global state event:</p>
+<ul>
+<li><code>GlobalDockTrackingChanged</code></li>
+</ul>
+<p><code>ActiveDockableChangedEventArgs</code> and <code>FocusedDockableChangedEventArgs</code> now include:</p>
+<ul>
+<li><code>RootDock</code></li>
+<li><code>Window</code></li>
+<li><code>HostWindow</code></li>
+</ul>
+<h2 id="tracking-rules">Tracking rules</h2>
+<p>State is updated from window/focus/activation transitions:</p>
+<ol>
+<li><code>FocusedDockableChanged</code> updates global state to the focused dockable context.</li>
+<li><code>WindowActivated</code> updates global state to that window plus its focused/active dockable.</li>
+<li><code>DockableActivated</code> updates global state only when the activation belongs to the tracked root (or no root is tracked yet).</li>
+<li><code>WindowDeactivated</code> clears state when the deactivated window is the tracked window.</li>
+<li><code>WindowClosed</code> and <code>WindowRemoved</code> clear state when they affect the tracked window.</li>
+</ol>
+<p><code>ActiveDockableChanged</code> and <code>DockableActivated</code> still raise normally, but global state only updates when the change belongs to the already tracked root (or no root is tracked yet). This avoids background roots overriding global context.</p>
+<h2 id="active-document-helpers">Active document helpers</h2>
+<p><code>FactoryExtensions</code> now uses global tracking first:</p>
+<ul>
+<li><code>GetActiveRoot()</code> -&gt; <code>CurrentRootDock</code> fallback to legacy <code>IsActive</code> scan.</li>
+<li><code>GetCurrentDocument()</code> -&gt; <code>CurrentDockable</code> fallback to focused dockable on active root.</li>
+<li><code>CloseFocusedDockable()</code> closes <code>CurrentDockable</code> first.</li>
+</ul>
+<h2 id="overlay-host-resolution-improvements">Overlay host resolution improvements</h2>
+<p><code>IHostOverlayServicesProvider</code> now supports dockable-aware resolution:</p>
+<pre><code class="lang-csharp">IHostOverlayServices GetServices(IScreen screen, IDockable dockable);
+</code></pre>
+<p>This allows busy/dialog/confirmation overlays to resolve by the dockable's current root/window, with <code>screen</code> used as fallback.</p>
+<p><code>RoutableDocumentBase</code> and <code>RoutableToolBase</code> use this dockable-aware overload by default.</p>
+<h2 id="sample-status-bar">Sample status bar</h2>
+<p><code>DockMvvmSample</code> and <code>DockReactiveUISample</code> include a status bar bound to global tracking state and updated through <code>GlobalDockTrackingChanged</code>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-global-tracking.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

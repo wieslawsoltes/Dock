@@ -85,8 +85,9 @@
 
 <p>Dock exposes a large set of runtime events through <code>FactoryBase</code> so that applications can react to changes in the layout. The other guides only briefly mention these hooks. This document lists the most commonly used events and shows how to subscribe to them.</p>
 <p>Each event uses a dedicated arguments type that exposes the affected
-dockable or window. Some events (such as <code>DockableClosing</code> and <code>WindowClosing</code>)
-support cancellation via a <code>Cancel</code> flag.</p>
+dockable or window. Focus/active dockable args also include <code>RootDock</code>,
+<code>Window</code>, and <code>HostWindow</code> for multi-window context. Some events (such as
+<code>DockableClosing</code> and <code>WindowClosing</code>) support cancellation via a <code>Cancel</code> flag.</p>
 <h2 id="common-events">Common events</h2>
 <p><code>FactoryBase</code> publishes events via the <code>IFactory</code> interface. Each event passes an arguments object containing the affected dockable or window.</p>
 <table>
@@ -104,6 +105,10 @@ support cancellation via a <code>Cancel</code> flag.</p>
 <tr>
 <td><code>FocusedDockableChanged</code></td>
 <td>Triggered when focus moves to another dockable.</td>
+</tr>
+<tr>
+<td><code>GlobalDockTrackingChanged</code></td>
+<td>Fired when global dock/root/window context changes.</td>
 </tr>
 <tr>
 <td><code>DockableAdded</code></td>
@@ -196,7 +201,9 @@ support cancellation via a <code>Cancel</code> flag.</p>
 <pre><code class="lang-csharp">var factory = new Factory();
 
 factory.ActiveDockableChanged += (_, args) =&gt;
-    Console.WriteLine($&quot;Active dockable: {args.Dockable?.Title}&quot;);
+    Console.WriteLine($&quot;Active dockable: {args.Dockable?.Title} (root={args.RootDock?.Id}, window={args.Window?.Id})&quot;);
+factory.GlobalDockTrackingChanged += (_, args) =&gt;
+    Console.WriteLine($&quot;Global context: {args.Current.Dockable?.Title} / {args.Current.RootDock?.Id} / {args.Current.Window?.Id}&quot;);
 factory.DockableAdded += (_, args) =&gt;
     Console.WriteLine($&quot;Added: {args.Dockable?.Title}&quot;);
 factory.DockableDocked += (_, args) =&gt;

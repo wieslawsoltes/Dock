@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs" class="text-break">
-Class FocusedDockableChangedEventArgs  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L10"><i class="bi bi-code-slash"></i></a>
+Class FocusedDockableChangedEventArgs  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L11"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -157,7 +157,7 @@ Class FocusedDockableChangedEventArgs  <a class="header-action link-secondary" t
 
   <h3 id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs__ctor_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.#ctor(Dock.Model.Core.IDockable)">
   FocusedDockableChangedEventArgs(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.html">FocusedDockableChangedEventArgs</a> class.</p>
@@ -186,6 +186,45 @@ Class FocusedDockableChangedEventArgs  <a class="header-action link-secondary" t
 
 
 
+  <a id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs__ctor_" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.#ctor*"></a>
+
+  <h3 id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs__ctor_Dock_Model_Core_IDockable_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.#ctor(Dock.Model.Core.IDockable,Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow)">
+  FocusedDockableChangedEventArgs(IDockable?, IRootDock?, IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.html">FocusedDockableChangedEventArgs</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FocusedDockableChangedEventArgs(IDockable? dockable, IRootDock? rootDock, IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The focused dockable.</p>
+</dd>
+    <dt><code>rootDock</code> <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The root dock that owns the focused dockable.</p>
+</dd>
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window that owns the focused dockable root.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
 
@@ -194,7 +233,7 @@ Class FocusedDockableChangedEventArgs  <a class="header-action link-secondary" t
 
   <h3 id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs_Dockable" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.Dockable">
   Dockable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets focused dockable.</p>
@@ -222,11 +261,107 @@ Class FocusedDockableChangedEventArgs  <a class="header-action link-secondary" t
 
 
 
+  <a id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs_HostWindow_" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.HostWindow*"></a>
+
+  <h3 id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs_HostWindow" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.HostWindow">
+  HostWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets focused dockable host window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IHostWindow? HostWindow { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs_RootDock_" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.RootDock*"></a>
+
+  <h3 id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs_RootDock" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.RootDock">
+  RootDock
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets focused dockable root dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRootDock? RootDock { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs_Window_" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.Window*"></a>
+
+  <h3 id="Dock_Model_Core_Events_FocusedDockableChangedEventArgs_Window" data-uid="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.Window">
+  Window
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets focused dockable window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDockWindow? Window { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L10" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/Events/FocusedDockableChangedEventArgs.cs/#L11" class="edit-link">Edit this page</a>
         </div>
 
 

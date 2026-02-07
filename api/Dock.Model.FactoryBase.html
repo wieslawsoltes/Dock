@@ -162,6 +162,21 @@ Class FactoryBase  <a class="header-action link-secondary" title="View source" h
     <dt>Extension Methods</dt>
     <dd>
   <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_CloseFocusedDockable_Dock_Model_Core_IFactory_">FactoryExtensions.CloseFocusedDockable(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetActiveRoot_Dock_Model_Core_IFactory_">FactoryExtensions.GetActiveRoot(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetCurrentDockWindow_Dock_Model_Core_IFactory_">FactoryExtensions.GetCurrentDockWindow(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetCurrentDocument_Dock_Model_Core_IFactory_">FactoryExtensions.GetCurrentDocument(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetCurrentHostWindow_Dock_Model_Core_IFactory_">FactoryExtensions.GetCurrentHostWindow(IFactory)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IDockDock__System_Action_Dock_Model_Controls_IDockDock__">FluentExtensions.DockDock(IFactory, out IDockDock, Action&lt;IDockDock&gt;?)</a>
   </div>
   <div>
@@ -283,6 +298,134 @@ Class FactoryBase  <a class="header-action link-secondary" title="View source" h
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CurrentDockWindow_" data-uid="Dock.Model.FactoryBase.CurrentDockWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CurrentDockWindow" data-uid="Dock.Model.FactoryBase.CurrentDockWindow">
+  CurrentDockWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked dock window across all roots/windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDockWindow? CurrentDockWindow { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CurrentDockable_" data-uid="Dock.Model.FactoryBase.CurrentDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CurrentDockable" data-uid="Dock.Model.FactoryBase.CurrentDockable">
+  CurrentDockable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked dockable across all roots/windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDockable? CurrentDockable { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CurrentHostWindow_" data-uid="Dock.Model.FactoryBase.CurrentHostWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CurrentHostWindow" data-uid="Dock.Model.FactoryBase.CurrentHostWindow">
+  CurrentHostWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked host window across all roots/windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IHostWindow? CurrentHostWindow { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CurrentRootDock_" data-uid="Dock.Model.FactoryBase.CurrentRootDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CurrentRootDock" data-uid="Dock.Model.FactoryBase.CurrentRootDock">
+  CurrentRootDock
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked root dock across all windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRootDock? CurrentRootDock { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
     <dd></dd>
   </dl>
 
@@ -443,6 +586,38 @@ Class FactoryBase  <a class="header-action link-secondary" title="View source" h
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_GlobalDockTrackingState_" data-uid="Dock.Model.FactoryBase.GlobalDockTrackingState*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_GlobalDockTrackingState" data-uid="Dock.Model.FactoryBase.GlobalDockTrackingState">
+  GlobalDockTrackingState
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets current global dock tracking state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GlobalDockTrackingState GlobalDockTrackingState { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.GlobalDockTrackingState.html">GlobalDockTrackingState</a></dt>
     <dd></dd>
   </dl>
 
@@ -1042,6 +1217,42 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
   <dl class="parameters">
     <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
     <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_ClearGlobalDockTrackingForWindow_" data-uid="Dock.Model.FactoryBase.ClearGlobalDockTrackingForWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_ClearGlobalDockTrackingForWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockTrackingChangeReason_" data-uid="Dock.Model.FactoryBase.ClearGlobalDockTrackingForWindow(Dock.Model.Core.IDockWindow,Dock.Model.Core.DockTrackingChangeReason)">
+  ClearGlobalDockTrackingForWindow(IDockWindow?, DockTrackingChangeReason)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears global dock tracking state when the tracked window is closed or removed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ClearGlobalDockTrackingForWindow(IDockWindow? window, DockTrackingChangeReason reason)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>Window that is closing or being removed.</p>
+</dd>
+    <dt><code>reason</code> <a class="xref" href="Dock.Model.Core.DockTrackingChangeReason.html">DockTrackingChangeReason</a></dt>
+    <dd><p>Tracking change reason.</p>
+</dd>
   </dl>
 
 
@@ -3162,7 +3373,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnActiveDockableChanged_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnActiveDockableChanged(Dock.Model.Core.IDockable)">
   OnActiveDockableChanged(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L99"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the active dockable changed.</p>
@@ -3195,7 +3406,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableActivated_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableActivated(Dock.Model.Core.IDockable)">
   OnDockableActivated(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L329"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been activated.</p>
@@ -3228,7 +3439,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableAdded_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableAdded(Dock.Model.Core.IDockable)">
   OnDockableAdded(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L151"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been added.</p>
@@ -3261,7 +3472,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableClosed_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableClosed(Dock.Model.Core.IDockable)">
   OnDockableClosed(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L178"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been closed.</p>
@@ -3294,7 +3505,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableClosing_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableClosing(Dock.Model.Core.IDockable)">
   OnDockableClosing(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L163"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable is closing.</p>
@@ -3333,7 +3544,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableDeactivated_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableDeactivated(Dock.Model.Core.IDockable)">
   OnDockableDeactivated(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L293"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L358"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been deactivated.</p>
@@ -3366,7 +3577,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableDocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.FactoryBase.OnDockableDocked(Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   OnDockableDocked(IDockable?, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L190"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been docked.</p>
@@ -3402,7 +3613,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableHidden_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableHidden(Dock.Model.Core.IDockable)">
   OnDockableHidden(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L220"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been hidden.</p>
@@ -3435,7 +3646,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableInit_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableInit(Dock.Model.Core.IDockable)">
   OnDockableInit(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L252"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been init.</p>
@@ -3468,7 +3679,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableMoved_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableMoved(Dock.Model.Core.IDockable)">
   OnDockableMoved(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L184"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been moved.</p>
@@ -3501,7 +3712,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockablePinned_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockablePinned(Dock.Model.Core.IDockable)">
   OnDockablePinned(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L208"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been pinned.</p>
@@ -3534,7 +3745,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableRemoved_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableRemoved(Dock.Model.Core.IDockable)">
   OnDockableRemoved(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L157"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been removed.</p>
@@ -3567,7 +3778,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableRestored_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableRestored(Dock.Model.Core.IDockable)">
   OnDockableRestored(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been restored.</p>
@@ -3600,7 +3811,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableSwapped_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableSwapped(Dock.Model.Core.IDockable)">
   OnDockableSwapped(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L202"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been swapped.</p>
@@ -3633,7 +3844,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableUndocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.FactoryBase.OnDockableUndocked(Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   OnDockableUndocked(IDockable?, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L196"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been undocked.</p>
@@ -3669,7 +3880,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnDockableUnpinned_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableUnpinned(Dock.Model.Core.IDockable)">
   OnDockableUnpinned(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L214"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been unpinned.</p>
@@ -3702,7 +3913,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnFocusedDockableChanged_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnFocusedDockableChanged(Dock.Model.Core.IDockable)">
   OnFocusedDockableChanged(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L125"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the focused dockable changed.</p>
@@ -3731,11 +3942,50 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
 
 
+  <a id="Dock_Model_FactoryBase_OnGlobalDockTrackingChanged_" data-uid="Dock.Model.FactoryBase.OnGlobalDockTrackingChanged*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnGlobalDockTrackingChanged_Dock_Model_Core_GlobalDockTrackingState_Dock_Model_Core_GlobalDockTrackingState_Dock_Model_Core_DockTrackingChangeReason_" data-uid="Dock.Model.FactoryBase.OnGlobalDockTrackingChanged(Dock.Model.Core.GlobalDockTrackingState,Dock.Model.Core.GlobalDockTrackingState,Dock.Model.Core.DockTrackingChangeReason)">
+  OnGlobalDockTrackingChanged(GlobalDockTrackingState, GlobalDockTrackingState, DockTrackingChangeReason)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises global dock tracking changed event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnGlobalDockTrackingChanged(GlobalDockTrackingState previous, GlobalDockTrackingState current, DockTrackingChangeReason reason)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>previous</code> <a class="xref" href="Dock.Model.Core.GlobalDockTrackingState.html">GlobalDockTrackingState</a></dt>
+    <dd><p>The previous tracking state.</p>
+</dd>
+    <dt><code>current</code> <a class="xref" href="Dock.Model.Core.GlobalDockTrackingState.html">GlobalDockTrackingState</a></dt>
+    <dd><p>The current tracking state.</p>
+</dd>
+    <dt><code>reason</code> <a class="xref" href="Dock.Model.Core.DockTrackingChangeReason.html">DockTrackingChangeReason</a></dt>
+    <dd><p>Tracking change reason.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Dock_Model_FactoryBase_OnWindowActivated_" data-uid="Dock.Model.FactoryBase.OnWindowActivated*"></a>
 
   <h3 id="Dock_Model_FactoryBase_OnWindowActivated_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowActivated(Dock.Model.Core.IDockWindow)">
   OnWindowActivated(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L320"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been activated.</p>
@@ -3768,7 +4018,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowAdded_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowAdded(Dock.Model.Core.IDockWindow)">
   OnWindowAdded(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L232"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been added.</p>
@@ -3801,7 +4051,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowClosed_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowClosed(Dock.Model.Core.IDockWindow)">
   OnWindowClosed(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L283"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been closed.</p>
@@ -3834,7 +4084,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowClosing_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowClosing(Dock.Model.Core.IDockWindow)">
   OnWindowClosing(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L224"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L268"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is closing.</p>
@@ -3873,7 +4123,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowDeactivated_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowDeactivated(Dock.Model.Core.IDockWindow)">
   OnWindowDeactivated(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L347"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been deactivated.</p>
@@ -3906,7 +4156,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowMoveDrag_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDrag(Dock.Model.Core.IDockWindow)">
   OnWindowMoveDrag(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L306"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is dragged.</p>
@@ -3939,7 +4189,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowMoveDragBegin_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDragBegin(Dock.Model.Core.IDockWindow)">
   OnWindowMoveDragBegin(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L291"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called before the window dragging starts.</p>
@@ -3978,7 +4228,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowMoveDragEnd_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDragEnd(Dock.Model.Core.IDockWindow)">
   OnWindowMoveDragEnd(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L268"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L313"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called after the window dragging ended.</p>
@@ -4011,7 +4261,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowOpened_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowOpened(Dock.Model.Core.IDockWindow)">
   OnWindowOpened(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L246"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been opened.</p>
@@ -4044,7 +4294,7 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 
   <h3 id="Dock_Model_FactoryBase_OnWindowRemoved_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowRemoved(Dock.Model.Core.IDockWindow)">
   OnWindowRemoved(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L238"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been removed.</p>
@@ -4333,6 +4583,45 @@ A splitter between two non-splitter dockables is NOT orphaned and should be kept
 </dd>
   </dl>
 
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_ResolveRootDock_" data-uid="Dock.Model.FactoryBase.ResolveRootDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_ResolveRootDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.ResolveRootDock(Dock.Model.Core.IDockable)">
+  ResolveRootDock(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resolves root dock for the given dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static IRootDock? ResolveRootDock(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The root dock or null.</p>
+</dd>
+  </dl>
 
 
 
@@ -5008,6 +5297,48 @@ will become the selected dockable.</p>
 
 
 
+  <a id="Dock_Model_FactoryBase_UpdateGlobalDockTracking_" data-uid="Dock.Model.FactoryBase.UpdateGlobalDockTracking*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_UpdateGlobalDockTracking_Dock_Model_Core_IDockable_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockTrackingChangeReason_" data-uid="Dock.Model.FactoryBase.UpdateGlobalDockTracking(Dock.Model.Core.IDockable,Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow,Dock.Model.Core.DockTrackingChangeReason)">
+  UpdateGlobalDockTracking(IDockable?, IRootDock?, IDockWindow?, DockTrackingChangeReason)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Tracking.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates global dock tracking state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void UpdateGlobalDockTracking(IDockable? dockable, IRootDock? rootDock, IDockWindow? window, DockTrackingChangeReason reason)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The current dockable.</p>
+</dd>
+    <dt><code>rootDock</code> <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The current root dock.</p>
+</dd>
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The current window.</p>
+</dd>
+    <dt><code>reason</code> <a class="xref" href="Dock.Model.Core.DockTrackingChangeReason.html">DockTrackingChangeReason</a></dt>
+    <dd><p>Tracking change reason.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="events">Events
 </h2>
 
@@ -5046,7 +5377,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableActivated" data-uid="Dock.Model.FactoryBase.DockableActivated">
   DockableActivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable activated event handler.</p>
@@ -5077,7 +5408,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableAdded" data-uid="Dock.Model.FactoryBase.DockableAdded">
   DockableAdded
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable added event handler.</p>
@@ -5108,7 +5439,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableClosed" data-uid="Dock.Model.FactoryBase.DockableClosed">
   DockableClosed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable closed event handler.</p>
@@ -5139,7 +5470,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableClosing" data-uid="Dock.Model.FactoryBase.DockableClosing">
   DockableClosing
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable closing event handler.</p>
@@ -5170,7 +5501,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableDeactivated" data-uid="Dock.Model.FactoryBase.DockableDeactivated">
   DockableDeactivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L96"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable deactivated event handler.</p>
@@ -5201,7 +5532,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableDocked" data-uid="Dock.Model.FactoryBase.DockableDocked">
   DockableDocked
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable docked event handler.</p>
@@ -5232,7 +5563,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableHidden" data-uid="Dock.Model.FactoryBase.DockableHidden">
   DockableHidden
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable hidden event handler.</p>
@@ -5263,7 +5594,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableInit" data-uid="Dock.Model.FactoryBase.DockableInit">
   DockableInit
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable init event handler.</p>
@@ -5294,7 +5625,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableMoved" data-uid="Dock.Model.FactoryBase.DockableMoved">
   DockableMoved
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable moved event handler.</p>
@@ -5325,7 +5656,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockablePinned" data-uid="Dock.Model.FactoryBase.DockablePinned">
   DockablePinned
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable pinned event handler.</p>
@@ -5356,7 +5687,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableRemoved" data-uid="Dock.Model.FactoryBase.DockableRemoved">
   DockableRemoved
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable removed event handler.</p>
@@ -5387,7 +5718,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableRestored" data-uid="Dock.Model.FactoryBase.DockableRestored">
   DockableRestored
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable restored event handler.</p>
@@ -5418,7 +5749,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableSwapped" data-uid="Dock.Model.FactoryBase.DockableSwapped">
   DockableSwapped
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable swapped event handler.</p>
@@ -5449,7 +5780,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableUndocked" data-uid="Dock.Model.FactoryBase.DockableUndocked">
   DockableUndocked
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable undocked event handler.</p>
@@ -5480,7 +5811,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_DockableUnpinned" data-uid="Dock.Model.FactoryBase.DockableUnpinned">
   DockableUnpinned
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable unpinned event handler.</p>
@@ -5540,9 +5871,40 @@ will become the selected dockable.</p>
 
 
 
+  <h3 id="Dock_Model_FactoryBase_GlobalDockTrackingChanged" data-uid="Dock.Model.FactoryBase.GlobalDockTrackingChanged">
+  GlobalDockTrackingChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Global dock tracking changed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;GlobalDockTrackingChangedEventArgs&gt;? GlobalDockTrackingChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.GlobalDockTrackingChangedEventArgs.html">GlobalDockTrackingChangedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h3 id="Dock_Model_FactoryBase_WindowActivated" data-uid="Dock.Model.FactoryBase.WindowActivated">
   WindowActivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window activated event handler.</p>
@@ -5573,7 +5935,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowAdded" data-uid="Dock.Model.FactoryBase.WindowAdded">
   WindowAdded
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window added event handler.</p>
@@ -5604,7 +5966,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowClosed" data-uid="Dock.Model.FactoryBase.WindowClosed">
   WindowClosed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window closed event handler.</p>
@@ -5635,7 +5997,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowClosing" data-uid="Dock.Model.FactoryBase.WindowClosing">
   WindowClosing
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L66"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window closing event handler.</p>
@@ -5666,7 +6028,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowDeactivated" data-uid="Dock.Model.FactoryBase.WindowDeactivated">
   WindowDeactivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window deactivated event handler.</p>
@@ -5697,7 +6059,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowMoveDrag" data-uid="Dock.Model.FactoryBase.WindowMoveDrag">
   WindowMoveDrag
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window dragging event handler.</p>
@@ -5728,7 +6090,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowMoveDragBegin" data-uid="Dock.Model.FactoryBase.WindowMoveDragBegin">
   WindowMoveDragBegin
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window dragging begin event handler.</p>
@@ -5759,7 +6121,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowMoveDragEnd" data-uid="Dock.Model.FactoryBase.WindowMoveDragEnd">
   WindowMoveDragEnd
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window dragging end event handler.</p>
@@ -5790,7 +6152,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowOpened" data-uid="Dock.Model.FactoryBase.WindowOpened">
   WindowOpened
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window opened event handler.</p>
@@ -5821,7 +6183,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_FactoryBase_WindowRemoved" data-uid="Dock.Model.FactoryBase.WindowRemoved">
   WindowRemoved
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window removed event handler.</p>

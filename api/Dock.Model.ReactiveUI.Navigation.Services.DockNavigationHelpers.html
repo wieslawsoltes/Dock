@@ -153,7 +153,7 @@ Class DockNavigationHelpers  <a class="header-action link-secondary" title="View
 
   <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_FindFactory_Dock_Model_Core_IDockable_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.FindFactory(Dock.Model.Core.IDockable)">
   FindFactory(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L188"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Finds the nearest dock factory for a dockable by walking the owner chain.</p>
@@ -190,9 +190,54 @@ Class DockNavigationHelpers  <a class="header-action link-secondary" title="View
 
   <a id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetBusyService_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetBusyService*"></a>
 
+  <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetBusyService_ReactiveUI_IScreen_Dock_Model_Core_IDockable_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostOverlayServicesProvider_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetBusyService(ReactiveUI.IScreen,Dock.Model.Core.IDockable,Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider)">
+  GetBusyService(IScreen, IDockable, IHostOverlayServicesProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the busy service for the specified dockable context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDockBusyService GetBusyService(IScreen hostScreen, IDockable dockable, IHostOverlayServicesProvider provider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>hostScreen</code> <span class="xref">IScreen</span></dt>
+    <dd><p>The host screen fallback.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable used to resolve current window context.</p>
+</dd>
+    <dt><code>provider</code> <a class="xref" href="Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider.html">IHostOverlayServicesProvider</a></dt>
+    <dd><p>The overlay services provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Services.IDockBusyService.html">IDockBusyService</a></dt>
+    <dd><p>The busy service instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetBusyService_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetBusyService*"></a>
+
   <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetBusyService_ReactiveUI_IScreen_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostOverlayServicesProvider_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetBusyService(ReactiveUI.IScreen,Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider)">
   GetBusyService(IScreen, IHostOverlayServicesProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the busy service for the specified host screen.</p>
@@ -232,9 +277,54 @@ Class DockNavigationHelpers  <a class="header-action link-secondary" title="View
 
   <a id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetConfirmationService_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetConfirmationService*"></a>
 
+  <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetConfirmationService_ReactiveUI_IScreen_Dock_Model_Core_IDockable_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostOverlayServicesProvider_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetConfirmationService(ReactiveUI.IScreen,Dock.Model.Core.IDockable,Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider)">
+  GetConfirmationService(IScreen, IDockable, IHostOverlayServicesProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the confirmation service for the specified dockable context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDockConfirmationService GetConfirmationService(IScreen hostScreen, IDockable dockable, IHostOverlayServicesProvider provider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>hostScreen</code> <span class="xref">IScreen</span></dt>
+    <dd><p>The host screen fallback.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable used to resolve current window context.</p>
+</dd>
+    <dt><code>provider</code> <a class="xref" href="Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider.html">IHostOverlayServicesProvider</a></dt>
+    <dd><p>The overlay services provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Services.IDockConfirmationService.html">IDockConfirmationService</a></dt>
+    <dd><p>The confirmation service instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetConfirmationService_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetConfirmationService*"></a>
+
   <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetConfirmationService_ReactiveUI_IScreen_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostOverlayServicesProvider_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetConfirmationService(ReactiveUI.IScreen,Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider)">
   GetConfirmationService(IScreen, IHostOverlayServicesProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L121"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the confirmation service for the specified host screen.</p>
@@ -274,9 +364,54 @@ Class DockNavigationHelpers  <a class="header-action link-secondary" title="View
 
   <a id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetDialogService_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetDialogService*"></a>
 
+  <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetDialogService_ReactiveUI_IScreen_Dock_Model_Core_IDockable_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostOverlayServicesProvider_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetDialogService(ReactiveUI.IScreen,Dock.Model.Core.IDockable,Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider)">
+  GetDialogService(IScreen, IDockable, IHostOverlayServicesProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the dialog service for the specified dockable context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDockDialogService GetDialogService(IScreen hostScreen, IDockable dockable, IHostOverlayServicesProvider provider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>hostScreen</code> <span class="xref">IScreen</span></dt>
+    <dd><p>The host screen fallback.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable used to resolve current window context.</p>
+</dd>
+    <dt><code>provider</code> <a class="xref" href="Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider.html">IHostOverlayServicesProvider</a></dt>
+    <dd><p>The overlay services provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Services.IDockDialogService.html">IDockDialogService</a></dt>
+    <dd><p>The dialog service instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetDialogService_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetDialogService*"></a>
+
   <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetDialogService_ReactiveUI_IScreen_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostOverlayServicesProvider_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetDialogService(ReactiveUI.IScreen,Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider)">
   GetDialogService(IScreen, IHostOverlayServicesProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L97"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the dialog service for the specified host screen.</p>
@@ -301,6 +436,51 @@ Class DockNavigationHelpers  <a class="header-action link-secondary" title="View
   <dl class="parameters">
     <dt><a class="xref" href="Dock.Model.Services.IDockDialogService.html">IDockDialogService</a></dt>
     <dd><p>The dialog service instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetOverlayServices_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetOverlayServices*"></a>
+
+  <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_GetOverlayServices_ReactiveUI_IScreen_Dock_Model_Core_IDockable_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostOverlayServicesProvider_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.GetOverlayServices(ReactiveUI.IScreen,Dock.Model.Core.IDockable,Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider)">
+  GetOverlayServices(IScreen, IDockable, IHostOverlayServicesProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resolves overlay services for a specific dockable with host-screen fallback.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IHostOverlayServices GetOverlayServices(IScreen hostScreen, IDockable dockable, IHostOverlayServicesProvider provider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>hostScreen</code> <span class="xref">IScreen</span></dt>
+    <dd><p>The host screen fallback.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable used to resolve current window context.</p>
+</dd>
+    <dt><code>provider</code> <a class="xref" href="Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostOverlayServicesProvider.html">IHostOverlayServicesProvider</a></dt>
+    <dd><p>The overlay services provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Services.IHostOverlayServices.html">IHostOverlayServices</a></dt>
+    <dd><p>The overlay services instance.</p>
 </dd>
   </dl>
 
@@ -360,7 +540,7 @@ Class DockNavigationHelpers  <a class="header-action link-secondary" title="View
 
   <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_TryCloseDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.TryCloseDockable(Dock.Model.Core.IDockable)">
   TryCloseDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L166"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Attempts to close the specified dockable by locating its factory.</p>
@@ -399,7 +579,7 @@ Class DockNavigationHelpers  <a class="header-action link-secondary" title="View
 
   <h3 id="Dock_Model_ReactiveUI_Navigation_Services_DockNavigationHelpers_TryNavigateBack_ReactiveUI_IScreen_" data-uid="Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers.TryNavigateBack(ReactiveUI.IScreen)">
   TryNavigateBack(IScreen)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Services/DockNavigationHelpers.cs/#L144"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Attempts to navigate back using the host screen router.</p>

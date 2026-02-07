@@ -141,6 +141,7 @@
 <ul>
 <li><code>IHostServiceResolver</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) resolves services scoped to the current <code>IScreen</code>.</li>
 <li><code>IHostOverlayServicesProvider</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) returns the <code>IHostOverlayServices</code> instance for a host screen.</li>
+<li><code>IHostOverlayServicesProvider.GetServices(IScreen, IDockable)</code> resolves overlays using dockable context first, then falls back to host screen resolution.</li>
 </ul>
 <h3 id="default-resolver">Default resolver</h3>
 <p><code>OwnerChainHostServiceResolver</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) resolves services in this order:</p>
@@ -154,6 +155,11 @@
 <p>This keeps overlays bound to the correct host window when dockables are moved or floated.</p>
 <h3 id="provider-behavior">Provider behavior</h3>
 <p><code>HostOverlayServicesProvider</code> (namespace <code>Dock.Model.ReactiveUI.Services.Overlays.Hosting</code>) uses the resolver and falls back to a cached per-screen instance when no host service is found. This keeps overlays functional in screens that are not attached to a dock layout yet.</p>
+<p>Dockable-aware resolution:</p>
+<pre><code class="lang-csharp">var overlays = provider.GetServices(hostScreen, dockable);
+var busy = overlays.Busy;
+</code></pre>
+<p>Use this overload for busy/dialog actions that should render in the dockable's current window/root, especially when documents can move between floating windows.</p>
 <h2 id="overlay-controls-integration">Overlay controls integration</h2>
 <p>Overlay controls bind directly to the service contracts:</p>
 <ul>

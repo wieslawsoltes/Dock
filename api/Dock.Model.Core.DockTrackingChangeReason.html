@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Finding the Active Document | Dock for Avalonia </title>
+      <title>Enum DockTrackingChangeReason | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Finding the Active Document | Dock for Avalonia ">
+      <meta name="title" content="Enum DockTrackingChangeReason | Dock for Avalonia ">
       
-      
+      <meta name="description" content="Indicates why global dock tracking state changed.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-active-document.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Model_Core_DockTrackingChangeReason.md&amp;value=---%0Auid%3A%20Dock.Model.Core.DockTrackingChangeReason%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -39,7 +39,7 @@
 
   </head>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
@@ -80,55 +80,85 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="">
-<h1 id="finding-the-active-document">Finding the Active Document</h1>
+        <article data-uid="Dock.Model.Core.DockTrackingChangeReason">
 
-<p>Only one dockable (document or tool) can have focus at a time, even when multiple
-<code>IDocumentDock</code> instances or floating windows are present.</p>
-<p>Use factory global tracking for cross-window scenarios:</p>
-<ul>
-<li><code>IFactory.CurrentDockable</code></li>
-<li><code>IFactory.CurrentRootDock</code></li>
-<li><code>IFactory.CurrentDockWindow</code></li>
-<li><code>IFactory.GlobalDockTrackingChanged</code></li>
-</ul>
-<p>If you already have the root layout for a window, read <code>FocusedDockable</code> directly:</p>
-<pre><code class="lang-csharp">var currentDocument = Layout?.FocusedDockable as IDocument;
-</code></pre>
-<p>To track focus across multiple windows, subscribe to global tracking:</p>
-<pre><code class="lang-csharp">IDockable? focusedDockable = null;
 
-factory.GlobalDockTrackingChanged += (_, e) =&gt;
-{
-    focusedDockable = e.Current.Dockable;
-    Console.WriteLine($&quot;Focused dockable: {e.Current.Dockable?.Title}&quot;);
-};
 
-var currentDocument = focusedDockable as IDocument;
-</code></pre>
-<p>If you need the owning root/window:</p>
-<pre><code class="lang-csharp">var focusedRoot = factory.CurrentRootDock;
-var focusedWindow = factory.CurrentDockWindow;
-</code></pre>
-<p>You can also use helper extensions:</p>
-<pre><code class="lang-csharp">var currentDocument = factory.GetCurrentDocument();
-var activeRoot = factory.GetActiveRoot();
-</code></pre>
-<pre><code class="lang-csharp">// Close whichever dockable currently has focus.
-if (focusedDockable is { } dockable)
-{
-    factory.CloseDockable(dockable);
-}
-</code></pre>
-<p>The focused dockable can be <code>null</code> when nothing is focused.</p>
+
+  <h1 id="Dock_Model_Core_DockTrackingChangeReason" data-uid="Dock.Model.Core.DockTrackingChangeReason" class="text-break">
+Enum DockTrackingChangeReason  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/DockTrackingChangeReason.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Model.html">Model</a>.<a class="xref" href="Dock.Model.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Model.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Indicates why global dock tracking state changed.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum DockTrackingChangeReason</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h2 id="fields">Fields
+</h2>
+  <dl class="parameters">
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_ActiveDockableChanged"><code>ActiveDockableChanged = 1</code></dt>
+  
+  <dd><p>The active dockable changed.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_DockableActivated"><code>DockableActivated = 5</code></dt>
+  
+  <dd><p>A dockable was activated.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_DockableDeactivated"><code>DockableDeactivated = 6</code></dt>
+  
+  <dd><p>A dockable was deactivated.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_FocusedDockableChanged"><code>FocusedDockableChanged = 2</code></dt>
+  
+  <dd><p>The focused dockable changed.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_Unknown"><code>Unknown = 0</code></dt>
+  
+  <dd><p>Unknown reason.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_WindowActivated"><code>WindowActivated = 3</code></dt>
+  
+  <dd><p>A window was activated.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_WindowClosed"><code>WindowClosed = 7</code></dt>
+  
+  <dd><p>A window was closed.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_WindowDeactivated"><code>WindowDeactivated = 4</code></dt>
+  
+  <dd><p>A window was deactivated.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockTrackingChangeReason_WindowRemoved"><code>WindowRemoved = 8</code></dt>
+  
+  <dd><p>A window was removed.</p>
+</dd>
+  </dl>
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-active-document.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/DockTrackingChangeReason.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
-        <div class="next-article d-print-none border-top" id="nextArticle"></div>
 
       </div>
 

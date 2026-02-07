@@ -3420,6 +3420,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockTrackingChangeReason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockTrackingChangeReason.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockTrackingChangeReason",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockTrackingChangeReason.yml\" sourcestartlinenumber=\"1\">Indicates why global dock tracking state changed.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.DockWindowOptions.yml",
       "output": {
         ".html": {
@@ -3756,6 +3770,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.Events.GlobalDockTrackingChangedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.Events.GlobalDockTrackingChangedEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.Events.GlobalDockTrackingChangedEventArgs",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.Events.GlobalDockTrackingChangedEventArgs.yml\" sourcestartlinenumber=\"1\">Global dock tracking changed event arguments.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.Events.WindowActivatedEventArgs.yml",
       "output": {
         ".html": {
@@ -3907,6 +3935,34 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core.Events",
       "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.FactoryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.FactoryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.FactoryExtensions",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.FactoryExtensions.yml\" sourcestartlinenumber=\"1\">Helper methods for <xref href=\"Dock.Model.Core.IFactory\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.GlobalDockTrackingState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.GlobalDockTrackingState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.GlobalDockTrackingState",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.GlobalDockTrackingState.yml\" sourcestartlinenumber=\"1\">Describes current global dock/window focus context.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7583,6 +7639,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-geometry.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-global-tracking.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-global-tracking.html"
         }
       },
       "version": ""

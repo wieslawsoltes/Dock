@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Model_ReactiveUI_Services_Overlays_Hosting_HostOverlayServicesProvider" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider" class="text-break">
-Class HostOverlayServicesProvider  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L11"><i class="bi bi-code-slash"></i></a>
+Class HostOverlayServicesProvider  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -156,7 +156,7 @@ Class HostOverlayServicesProvider  <a class="header-action link-secondary" title
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Hosting_HostOverlayServicesProvider__ctor_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostServiceResolver_Dock_Model_Services_IHostOverlayServices_" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.#ctor(Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostServiceResolver,Dock.Model.Services.IHostOverlayServices)">
   HostOverlayServicesProvider(IHostServiceResolver, IHostOverlayServices)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.html">HostOverlayServicesProvider</a> class.</p>
@@ -192,7 +192,7 @@ Class HostOverlayServicesProvider  <a class="header-action link-secondary" title
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Hosting_HostOverlayServicesProvider__ctor_Dock_Model_ReactiveUI_Services_Overlays_Hosting_IHostServiceResolver_System_Func_Dock_Model_Services_IHostOverlayServices__" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.#ctor(Dock.Model.ReactiveUI.Services.Overlays.Hosting.IHostServiceResolver,System.Func{Dock.Model.Services.IHostOverlayServices})">
   HostOverlayServicesProvider(IHostServiceResolver, Func&lt;IHostOverlayServices&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.html">HostOverlayServicesProvider</a> class.</p>
@@ -232,7 +232,7 @@ Class HostOverlayServicesProvider  <a class="header-action link-secondary" title
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Hosting_HostOverlayServicesProvider_GetServices_ReactiveUI_IScreen_" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.GetServices(ReactiveUI.IScreen)">
   GetServices(IScreen)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets overlay services for the provided host screen.</p>
@@ -267,11 +267,53 @@ Class HostOverlayServicesProvider  <a class="header-action link-secondary" title
 
 
 
+  <a id="Dock_Model_ReactiveUI_Services_Overlays_Hosting_HostOverlayServicesProvider_GetServices_" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.GetServices*"></a>
+
+  <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Hosting_HostOverlayServicesProvider_GetServices_ReactiveUI_IScreen_Dock_Model_Core_IDockable_" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Hosting.HostOverlayServicesProvider.GetServices(ReactiveUI.IScreen,Dock.Model.Core.IDockable)">
+  GetServices(IScreen, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets overlay services for a specific dockable with host-screen fallback.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IHostOverlayServices GetServices(IScreen screen, IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>screen</code> <span class="xref">IScreen</span></dt>
+    <dd><p>The host screen used for fallback resolution.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable used to resolve current window/root context.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Services.IHostOverlayServices.html">IHostOverlayServices</a></dt>
+    <dd><p>The overlay services instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L11" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Hosting/HostOverlayServicesProvider.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 

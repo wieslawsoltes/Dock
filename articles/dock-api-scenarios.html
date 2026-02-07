@@ -113,7 +113,7 @@ factory.InitLayout(layout);
 dockControl.Factory = factory;
 dockControl.Layout = layout;
 </code></pre>
-<p>These factories expose methods such as <code>AddDockable</code>, <code>MoveDockable</code> or <code>FloatDockable</code> and raise events like <code>ActiveDockableChanged</code> so you can react to changes.</p>
+<p>These factories expose methods such as <code>AddDockable</code>, <code>MoveDockable</code> or <code>FloatDockable</code> and raise events like <code>ActiveDockableChanged</code>. For cross-window state, use <code>GlobalDockTrackingChanged</code> and <code>CurrentDockable</code>/<code>CurrentRootDock</code>.</p>
 <p>Use the MVVM, ReactiveUI or XAML samples as references for complete implementations.</p>
 <h3 id="saving-and-restoring-a-layout">Saving and restoring a layout</h3>
 <p>Layouts can be persisted using any <code>IDockSerializer</code> implementation such as:

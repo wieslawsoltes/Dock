@@ -112,6 +112,21 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
     <dt>Extension Methods</dt>
     <dd>
   <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_CloseFocusedDockable_Dock_Model_Core_IFactory_">FactoryExtensions.CloseFocusedDockable(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetActiveRoot_Dock_Model_Core_IFactory_">FactoryExtensions.GetActiveRoot(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetCurrentDockWindow_Dock_Model_Core_IFactory_">FactoryExtensions.GetCurrentDockWindow(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetCurrentDocument_Dock_Model_Core_IFactory_">FactoryExtensions.GetCurrentDocument(IFactory)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.Core.FactoryExtensions.html#Dock_Model_Core_FactoryExtensions_GetCurrentHostWindow_Dock_Model_Core_IFactory_">FactoryExtensions.GetCurrentHostWindow(IFactory)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IDockDock__System_Action_Dock_Model_Controls_IDockDock__">FluentExtensions.DockDock(IFactory, out IDockDock, Action&lt;IDockDock&gt;?)</a>
   </div>
   <div>
@@ -215,7 +230,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_ContextLocator" data-uid="Dock.Model.Core.IFactory.ContextLocator">
   ContextLocator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Context">Context</a> locator registry.</p>
@@ -243,11 +258,139 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
 
 
+  <a id="Dock_Model_Core_IFactory_CurrentDockWindow_" data-uid="Dock.Model.Core.IFactory.CurrentDockWindow*"></a>
+
+  <h3 id="Dock_Model_Core_IFactory_CurrentDockWindow" data-uid="Dock.Model.Core.IFactory.CurrentDockWindow">
+  CurrentDockWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked dock window across all roots/windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDockWindow? CurrentDockWindow { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_IFactory_CurrentDockable_" data-uid="Dock.Model.Core.IFactory.CurrentDockable*"></a>
+
+  <h3 id="Dock_Model_Core_IFactory_CurrentDockable" data-uid="Dock.Model.Core.IFactory.CurrentDockable">
+  CurrentDockable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked dockable across all roots/windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDockable? CurrentDockable { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_IFactory_CurrentHostWindow_" data-uid="Dock.Model.Core.IFactory.CurrentHostWindow*"></a>
+
+  <h3 id="Dock_Model_Core_IFactory_CurrentHostWindow" data-uid="Dock.Model.Core.IFactory.CurrentHostWindow">
+  CurrentHostWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked host window across all roots/windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IHostWindow? CurrentHostWindow { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Core_IFactory_CurrentRootDock_" data-uid="Dock.Model.Core.IFactory.CurrentRootDock*"></a>
+
+  <h3 id="Dock_Model_Core_IFactory_CurrentRootDock" data-uid="Dock.Model.Core.IFactory.CurrentRootDock">
+  CurrentRootDock
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets currently tracked root dock across all windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IRootDock? CurrentRootDock { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Core_IFactory_DefaultContextLocator_" data-uid="Dock.Model.Core.IFactory.DefaultContextLocator*"></a>
 
   <h3 id="Dock_Model_Core_IFactory_DefaultContextLocator" data-uid="Dock.Model.Core.IFactory.DefaultContextLocator">
   DefaultContextLocator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L102"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Context">Context</a> default locator.</p>
@@ -279,7 +422,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_DefaultHostWindowLocator" data-uid="Dock.Model.Core.IFactory.DefaultHostWindowLocator">
   DefaultHostWindowLocator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L107"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a> default locator.</p>
@@ -343,7 +486,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_DockableLocator" data-uid="Dock.Model.Core.IFactory.DockableLocator">
   DockableLocator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L122"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a> locator registry.</p>
@@ -403,11 +546,43 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
 
 
+  <a id="Dock_Model_Core_IFactory_GlobalDockTrackingState_" data-uid="Dock.Model.Core.IFactory.GlobalDockTrackingState*"></a>
+
+  <h3 id="Dock_Model_Core_IFactory_GlobalDockTrackingState" data-uid="Dock.Model.Core.IFactory.GlobalDockTrackingState">
+  GlobalDockTrackingState
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets current global dock tracking state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">GlobalDockTrackingState GlobalDockTrackingState { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.GlobalDockTrackingState.html">GlobalDockTrackingState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Core_IFactory_HideDocumentsOnClose_" data-uid="Dock.Model.Core.IFactory.HideDocumentsOnClose*"></a>
 
   <h3 id="Dock_Model_Core_IFactory_HideDocumentsOnClose" data-uid="Dock.Model.Core.IFactory.HideDocumentsOnClose">
   HideDocumentsOnClose
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L97"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When true closing a document hides it instead of removing it.</p>
@@ -439,7 +614,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_HideToolsOnClose" data-uid="Dock.Model.Core.IFactory.HideToolsOnClose">
   HideToolsOnClose
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When true closing a tool hides it instead of removing it.</p>
@@ -471,7 +646,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_HostWindowLocator" data-uid="Dock.Model.Core.IFactory.HostWindowLocator">
   HostWindowLocator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L117"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a> locator registry.</p>
@@ -763,7 +938,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_ActivateWindow_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.ActivateWindow(Dock.Model.Core.IDockable)">
   ActivateWindow(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L264"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L289"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Activates the specified dockable window.</p>
@@ -796,7 +971,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_AddDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.AddDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
   AddDockable(IDock, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L316"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L341"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a> into dock <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
@@ -832,7 +1007,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_AddWindow_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.AddWindow(Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow)">
   AddWindow(IRootDock, IDockWindow)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L547"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L572"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds window into dock windows list.</p>
@@ -868,7 +1043,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CloseAllDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.CloseAllDockables(Dock.Model.Core.IDockable)">
   CloseAllDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L459"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L484"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> of the dockable owner.</p>
@@ -901,7 +1076,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.CloseDockable(Dock.Model.Core.IDockable)">
   CloseDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L447"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L472"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes dockable from owner <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection, and call IDockable.OnClose.</p>
@@ -934,7 +1109,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CloseLeftDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.CloseLeftDockables(Dock.Model.Core.IDockable)">
   CloseLeftDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L465"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L490"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all tabs to the left of the dockable, from the <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection of the dockable owner.</p>
@@ -967,7 +1142,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CloseOtherDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.CloseOtherDockables(Dock.Model.Core.IDockable)">
   CloseOtherDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L453"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L478"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> of the dockable owner, excluding the dockable itself.</p>
@@ -1000,7 +1175,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CloseRightDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.CloseRightDockables(Dock.Model.Core.IDockable)">
   CloseRightDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L471"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L496"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all tabs to the right of the dockable, from the <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection of the dockable owner.</p>
@@ -1033,7 +1208,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CloseWindow_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.CloseWindow(Dock.Model.Core.IDockWindow)">
   CloseWindow(IDockWindow)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L567"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L592"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Closes window layout and its dockables.</p>
@@ -1066,7 +1241,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CollapseDock_Dock_Model_Core_IDock_" data-uid="Dock.Model.Core.IFactory.CollapseDock(Dock.Model.Core.IDock)">
   CollapseDock(IDock)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L573"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L598"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Collapses dock.</p>
@@ -1099,7 +1274,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateDockDock" data-uid="Dock.Model.Core.IFactory.CreateDockDock">
   CreateDockDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L148"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a>.</p>
@@ -1132,7 +1307,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateDockWindow" data-uid="Dock.Model.Core.IFactory.CreateDockWindow">
   CreateDockWindow()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L208"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a>.</p>
@@ -1165,7 +1340,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateDocument" data-uid="Dock.Model.Core.IFactory.CreateDocument">
   CreateDocument()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L214"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a>.</p>
@@ -1198,7 +1373,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateDocumentDock" data-uid="Dock.Model.Core.IFactory.CreateDocumentDock">
   CreateDocumentDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L196"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDocumentDock.html">IDocumentDock</a>.</p>
@@ -1231,7 +1406,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateGridDock" data-uid="Dock.Model.Core.IFactory.CreateGridDock">
   CreateGridDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L160"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IGridDock.html">IGridDock</a>.</p>
@@ -1264,7 +1439,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateGridDockSplitter" data-uid="Dock.Model.Core.IFactory.CreateGridDockSplitter">
   CreateGridDockSplitter()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L184"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a>.</p>
@@ -1297,7 +1472,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateLayout" data-uid="Dock.Model.Core.IFactory.CreateLayout">
   CreateLayout()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates layout.</p>
@@ -1330,7 +1505,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateList__1___0___" data-uid="Dock.Model.Core.IFactory.CreateList``1(``0[])">
   CreateList&lt;T&gt;(params T[])
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates list of type <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
@@ -1375,7 +1550,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateProportionalDock" data-uid="Dock.Model.Core.IFactory.CreateProportionalDock">
   CreateProportionalDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L142"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IProportionalDock.html">IProportionalDock</a>.</p>
@@ -1408,7 +1583,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateProportionalDockSplitter" data-uid="Dock.Model.Core.IFactory.CreateProportionalDockSplitter">
   CreateProportionalDockSplitter()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L178"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a>.</p>
@@ -1441,7 +1616,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateRootDock" data-uid="Dock.Model.Core.IFactory.CreateRootDock">
   CreateRootDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L136"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a>.</p>
@@ -1474,7 +1649,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateSplitLayout_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.Core.IFactory.CreateSplitLayout(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   CreateSplitLayout(IDock, IDockable, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L582"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L607"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new split layout from source dockable.</p>
@@ -1519,7 +1694,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateSplitViewDock" data-uid="Dock.Model.Core.IFactory.CreateSplitViewDock">
   CreateSplitViewDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L202"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.ISplitViewDock.html">ISplitViewDock</a>.</p>
@@ -1552,7 +1727,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateStackDock" data-uid="Dock.Model.Core.IFactory.CreateStackDock">
   CreateStackDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L154"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IStackDock.html">IStackDock</a>.</p>
@@ -1585,7 +1760,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateTool" data-uid="Dock.Model.Core.IFactory.CreateTool">
   CreateTool()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L220"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a>.</p>
@@ -1618,7 +1793,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateToolDock" data-uid="Dock.Model.Core.IFactory.CreateToolDock">
   CreateToolDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L190"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a>.</p>
@@ -1651,7 +1826,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateUniformGridDock" data-uid="Dock.Model.Core.IFactory.CreateUniformGridDock">
   CreateUniformGridDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L172"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a>.</p>
@@ -1684,7 +1859,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateWindowFrom_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable)">
   CreateWindowFrom(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L597"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L622"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates dock window from source dockable.</p>
@@ -1723,7 +1898,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateWindowFrom_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_" data-uid="Dock.Model.Core.IFactory.CreateWindowFrom(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)">
   CreateWindowFrom(IDockable, DockWindowOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L605"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L630"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates dock window from source dockable with the specified options.</p>
@@ -1765,7 +1940,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_CreateWrapDock" data-uid="Dock.Model.Core.IFactory.CreateWrapDock">
   CreateWrapDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L166"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IWrapDock.html">IWrapDock</a>.</p>
@@ -1798,7 +1973,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_DockAsDocument_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.DockAsDocument(Dock.Model.Core.IDockable)">
   DockAsDocument(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L441"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L466"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Docks dockable as tabbed document in the nearest document dock.</p>
@@ -1831,7 +2006,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_Find_Dock_Model_Core_IDock_System_Func_Dock_Model_Core_IDockable_System_Boolean__" data-uid="Dock.Model.Core.IFactory.Find(Dock.Model.Core.IDock,System.Func{Dock.Model.Core.IDockable,System.Boolean})">
   Find(IDock, Func&lt;IDockable, bool&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L334"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Searches dock for dockables in all registered <a class="xref" href="Dock.Model.Core.IDockControl.html">IDockControl</a>.</p>
@@ -1872,7 +2047,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_Find_System_Func_Dock_Model_Core_IDockable_System_Boolean__" data-uid="Dock.Model.Core.IFactory.Find(System.Func{Dock.Model.Core.IDockable,System.Boolean})">
   Find(Func&lt;IDockable, bool&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L326"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Searches for dockables in all registered <a class="xref" href="Dock.Model.Core.IDockControl.html">IDockControl</a>.</p>
@@ -1911,7 +2086,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_FindDockable_Dock_Model_Core_IDock_System_Func_Dock_Model_Core_IDockable_System_Boolean__" data-uid="Dock.Model.Core.IFactory.FindDockable(Dock.Model.Core.IDock,System.Func{Dock.Model.Core.IDockable,System.Boolean})">
   FindDockable(IDock, Func&lt;IDockable, bool&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L294"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L319"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Searches dock for dockable.</p>
@@ -1953,7 +2128,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_FindRoot_Dock_Model_Core_IDockable_System_Func_Dock_Model_Controls_IRootDock_System_Boolean__" data-uid="Dock.Model.Core.IFactory.FindRoot(Dock.Model.Core.IDockable,System.Func{Dock.Model.Controls.IRootDock,System.Boolean})">
   FindRoot(IDockable, Func&lt;IRootDock, bool&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L286"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L311"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Searches for root dockable.</p>
@@ -1995,7 +2170,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_FloatAllDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable)">
   FloatAllDockables(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L428"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L453"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Floats owner dock with all dockables.</p>
@@ -2028,7 +2203,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_FloatAllDockables_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_" data-uid="Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)">
   FloatAllDockables(IDockable, DockWindowOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L435"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L460"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Floats owner dock with all dockables using the specified window options.</p>
@@ -2064,7 +2239,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_FloatDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable)">
   FloatDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L415"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L440"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Floats dockable.</p>
@@ -2097,7 +2272,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_FloatDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DockWindowOptions_" data-uid="Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable,Dock.Model.Core.DockWindowOptions)">
   FloatDockable(IDockable, DockWindowOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L422"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L447"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Floats dockable with the specified window options.</p>
@@ -2133,7 +2308,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_GetContext_System_String_" data-uid="Dock.Model.Core.IFactory.GetContext(System.String)">
   GetContext(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L233"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets registered context in <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_ContextLocator">ContextLocator</a>.</p>
@@ -2172,7 +2347,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_GetDockable__1_System_String_" data-uid="Dock.Model.Core.IFactory.GetDockable``1(System.String)">
   GetDockable&lt;T&gt;(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L248"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets registered dockable in <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_DockableLocator">DockableLocator</a>.</p>
@@ -2217,7 +2392,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_GetHostWindow_System_String_" data-uid="Dock.Model.Core.IFactory.GetHostWindow(System.String)">
   GetHostWindow(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L240"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets registered host window.</p>
@@ -2256,7 +2431,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_HideDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.HideDockable(Dock.Model.Core.IDockable)">
   HideDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L521"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L546"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Hides the dockable and stores it in <a class="xref" href="Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_HiddenDockables">HiddenDockables</a>.</p>
@@ -2289,7 +2464,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_HideDockable_System_String_" data-uid="Dock.Model.Core.IFactory.HideDockable(System.String)">
   HideDockable(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L527"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L552"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Hides the dockable with the specified id.</p>
@@ -2322,7 +2497,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_HidePreviewingDockables_Dock_Model_Controls_IRootDock_" data-uid="Dock.Model.Core.IFactory.HidePreviewingDockables(Dock.Model.Controls.IRootDock)">
   HidePreviewingDockables(IRootDock)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L395"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L420"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Hides all temporarily shown pinned dockables.</p>
@@ -2355,7 +2530,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_InitActiveDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDock_" data-uid="Dock.Model.Core.IFactory.InitActiveDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDock)">
   InitActiveDockable(IDockable?, IDock)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L258"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L283"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initialize active dockable.</p>
@@ -2391,7 +2566,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_InitDockWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.InitDockWindow(Dock.Model.Core.IDockWindow,Dock.Model.Core.IDockable)">
   InitDockWindow(IDockWindow, IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L268"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initialize dock window.</p>
@@ -2427,7 +2602,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_InitDockWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_Dock_Model_Core_IHostWindow_" data-uid="Dock.Model.Core.IFactory.InitDockWindow(Dock.Model.Core.IDockWindow,Dock.Model.Core.IDockable,Dock.Model.Core.IHostWindow)">
   InitDockWindow(IDockWindow, IDockable?, IHostWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L276"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initialize dock window.</p>
@@ -2466,7 +2641,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_InitDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.InitDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
   InitDockable(IDockable, IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L261"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initialize dockable.</p>
@@ -2502,7 +2677,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_InitLayout_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.InitLayout(Dock.Model.Core.IDockable)">
   InitLayout(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L254"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initialize layout.</p>
@@ -2535,7 +2710,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_InsertDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Int32_" data-uid="Dock.Model.Core.IFactory.InsertDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Int32)">
   InsertDockable(IDock, IDockable, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L324"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L349"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Inserts <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a> into dock <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
@@ -2574,7 +2749,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_InsertWindow_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_System_Int32_" data-uid="Dock.Model.Core.IFactory.InsertWindow(Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow,System.Int32)">
   InsertWindow(IRootDock, IDockWindow, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L555"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L580"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Inserts window into dock windows list.</p>
@@ -2613,7 +2788,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_IsDockablePinned_Dock_Model_Core_IDockable_Dock_Model_Controls_IRootDock_" data-uid="Dock.Model.Core.IFactory.IsDockablePinned(Dock.Model.Core.IDockable,Dock.Model.Controls.IRootDock)">
   IsDockablePinned(IDockable, IRootDock?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L402"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L427"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns true if dockable is pinned.</p>
@@ -2654,7 +2829,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_MoveDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.MoveDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
   MoveDockable(IDock, IDock, IDockable, IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L348"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L373"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Moves dockable into another <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
@@ -2696,7 +2871,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_MoveDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.MoveDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
   MoveDockable(IDock, IDockable, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L339"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L364"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Moves dockable inside <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
@@ -2735,7 +2910,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_MovePinnedDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.MovePinnedDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
   MovePinnedDockable(IDockable, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L409"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L434"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Moves pinned dockable within the same pinned collection (reordering).</p>
@@ -2771,7 +2946,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_NewHorizontalDocumentDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.NewHorizontalDocumentDock(Dock.Model.Core.IDockable)">
   NewHorizontalDocumentDock(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L634"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L659"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Splits document into a new horizontal document dock.</p>
@@ -2804,7 +2979,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_NewVerticalDocumentDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.NewVerticalDocumentDock(Dock.Model.Core.IDockable)">
   NewVerticalDocumentDock(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L640"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L665"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Splits document into a new vertical document dock.</p>
@@ -2837,7 +3012,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnActiveDockableChanged_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnActiveDockableChanged(Dock.Model.Core.IDockable)">
   OnActiveDockableChanged(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L157"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the active dockable changed.</p>
@@ -2870,7 +3045,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableActivated_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableActivated(Dock.Model.Core.IDockable)">
   OnDockableActivated(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L306"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been activated.</p>
@@ -2903,7 +3078,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableAdded_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableAdded(Dock.Model.Core.IDockable)">
   OnDockableAdded(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L170"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L175"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been added.</p>
@@ -2936,7 +3111,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableClosed_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableClosed(Dock.Model.Core.IDockable)">
   OnDockableClosed(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L194"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been closed.</p>
@@ -2969,7 +3144,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableClosing_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableClosing(Dock.Model.Core.IDockable)">
   OnDockableClosing(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L188"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable is closing.</p>
@@ -3008,7 +3183,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableDeactivated_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableDeactivated(Dock.Model.Core.IDockable)">
   OnDockableDeactivated(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L313"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L318"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been deactivated.</p>
@@ -3041,7 +3216,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableDocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.Core.IFactory.OnDockableDocked(Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   OnDockableDocked(IDockable?, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L207"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been docked.</p>
@@ -3077,7 +3252,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableHidden_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableHidden(Dock.Model.Core.IDockable)">
   OnDockableHidden(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L233"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L238"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been hidden.</p>
@@ -3110,7 +3285,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableInit_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableInit(Dock.Model.Core.IDockable)">
   OnDockableInit(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L169"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been init.</p>
@@ -3143,7 +3318,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableMoved_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableMoved(Dock.Model.Core.IDockable)">
   OnDockableMoved(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L200"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been moved.</p>
@@ -3176,7 +3351,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockablePinned_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockablePinned(Dock.Model.Core.IDockable)">
   OnDockablePinned(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been pinned.</p>
@@ -3209,7 +3384,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableRemoved_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableRemoved(Dock.Model.Core.IDockable)">
   OnDockableRemoved(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L181"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been removed.</p>
@@ -3242,7 +3417,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableRestored_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableRestored(Dock.Model.Core.IDockable)">
   OnDockableRestored(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L244"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been restored.</p>
@@ -3275,7 +3450,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableSwapped_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableSwapped(Dock.Model.Core.IDockable)">
   OnDockableSwapped(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L220"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been swapped.</p>
@@ -3308,7 +3483,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableUndocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.Core.IFactory.OnDockableUndocked(Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   OnDockableUndocked(IDockable?, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L209"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L214"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been undocked.</p>
@@ -3344,7 +3519,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnDockableUnpinned_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnDockableUnpinned(Dock.Model.Core.IDockable)">
   OnDockableUnpinned(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L232"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable has been unpinned.</p>
@@ -3377,7 +3552,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnFocusedDockableChanged_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.OnFocusedDockableChanged(Dock.Model.Core.IDockable)">
   OnFocusedDockableChanged(IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L163"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the focused dockable changed.</p>
@@ -3410,7 +3585,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowActivated_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowActivated(Dock.Model.Core.IDockWindow)">
   OnWindowActivated(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L300"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been activated.</p>
@@ -3443,7 +3618,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowAdded_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowAdded(Dock.Model.Core.IDockWindow)">
   OnWindowAdded(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L264"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L269"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been added.</p>
@@ -3476,7 +3651,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowClosed_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowClosed(Dock.Model.Core.IDockWindow)">
   OnWindowClosed(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L258"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L263"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been closed.</p>
@@ -3509,7 +3684,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowClosing_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowClosing(Dock.Model.Core.IDockWindow)">
   OnWindowClosing(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L257"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is closing.</p>
@@ -3548,7 +3723,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowDeactivated_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowDeactivated(Dock.Model.Core.IDockWindow)">
   OnWindowDeactivated(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L312"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been deactivated.</p>
@@ -3581,7 +3756,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowMoveDrag_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowMoveDrag(Dock.Model.Core.IDockWindow)">
   OnWindowMoveDrag(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L288"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window is dragged.</p>
@@ -3614,7 +3789,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowMoveDragBegin_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowMoveDragBegin(Dock.Model.Core.IDockWindow)">
   OnWindowMoveDragBegin(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L282"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called before the window dragging starts.</p>
@@ -3653,7 +3828,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowMoveDragEnd_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowMoveDragEnd(Dock.Model.Core.IDockWindow)">
   OnWindowMoveDragEnd(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L289"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L294"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called after the window dragging ended.</p>
@@ -3686,7 +3861,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowOpened_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowOpened(Dock.Model.Core.IDockWindow)">
   OnWindowOpened(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L250"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been opened.</p>
@@ -3719,7 +3894,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_OnWindowRemoved_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.OnWindowRemoved(Dock.Model.Core.IDockWindow)">
   OnWindowRemoved(IDockWindow?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L270"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L275"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the window has been removed.</p>
@@ -3752,7 +3927,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_PinDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.PinDockable(Dock.Model.Core.IDockable)">
   PinDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L371"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L396"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Pins or unpins a dockable.</p>
@@ -3785,7 +3960,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_PreviewPinnedDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.PreviewPinnedDockable(Dock.Model.Core.IDockable)">
   PreviewPinnedDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L383"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L408"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Temporarily shows a pinned dockable.</p>
@@ -3818,7 +3993,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_RemoveDockable_Dock_Model_Core_IDockable_System_Boolean_" data-uid="Dock.Model.Core.IFactory.RemoveDockable(Dock.Model.Core.IDockable,System.Boolean)">
   RemoveDockable(IDockable, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L331"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L356"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes dockable from owner <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
@@ -3854,7 +4029,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_RemoveWindow_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.Core.IFactory.RemoveWindow(Dock.Model.Core.IDockWindow)">
   RemoveWindow(IDockWindow)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L561"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L586"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes window from owner windows list.</p>
@@ -3887,7 +4062,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_RestoreDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.RestoreDockable(Dock.Model.Core.IDockable)">
   RestoreDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L533"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L558"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Restores a hidden dockable to its original dock.</p>
@@ -3920,7 +4095,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_RestoreDockable_System_String_" data-uid="Dock.Model.Core.IFactory.RestoreDockable(System.String)">
   RestoreDockable(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L540"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L565"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Restores a hidden dockable to its original dock.</p>
@@ -3959,7 +4134,7 @@ Interface IFactory  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Model_Core_IFactory_SetActiveDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SetActiveDockable(Dock.Model.Core.IDockable)">
   SetActiveDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L296"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets an active dockable. If the dockable is contained inside an dock it
@@ -3993,7 +4168,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetDocumentDockLayoutMode_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentLayoutMode_" data-uid="Dock.Model.Core.IFactory.SetDocumentDockLayoutMode(Dock.Model.Core.IDockable,Dock.Model.Core.DocumentLayoutMode)">
   SetDocumentDockLayoutMode(IDockable, DocumentLayoutMode)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L503"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L528"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the layout mode for the specified document dock.</p>
@@ -4029,7 +4204,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetDocumentDockLayoutModeMdi_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi(Dock.Model.Core.IDockable)">
   SetDocumentDockLayoutModeMdi(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L515"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L540"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the layout mode to MDI.</p>
@@ -4062,7 +4237,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetDocumentDockLayoutModeTabbed_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed(Dock.Model.Core.IDockable)">
   SetDocumentDockLayoutModeTabbed(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L509"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L534"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the layout mode to tabbed.</p>
@@ -4095,7 +4270,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetDocumentDockTabsLayout_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentTabLayout_" data-uid="Dock.Model.Core.IFactory.SetDocumentDockTabsLayout(Dock.Model.Core.IDockable,Dock.Model.Core.DocumentTabLayout)">
   SetDocumentDockTabsLayout(IDockable, DocumentTabLayout)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L478"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L503"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout for the specified document dock.</p>
@@ -4131,7 +4306,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutLeft_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft(Dock.Model.Core.IDockable)">
   SetDocumentDockTabsLayoutLeft(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L484"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L509"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout to left.</p>
@@ -4164,7 +4339,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutRight_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight(Dock.Model.Core.IDockable)">
   SetDocumentDockTabsLayoutRight(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L496"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L521"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout to right.</p>
@@ -4197,7 +4372,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutTop_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop(Dock.Model.Core.IDockable)">
   SetDocumentDockTabsLayoutTop(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L490"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L515"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the tabs layout to top.</p>
@@ -4230,7 +4405,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SetFocusedDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SetFocusedDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
   SetFocusedDockable(IDock, IDockable?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L278"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L303"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the currently focused dockable updating IsActive flags.</p>
@@ -4266,7 +4441,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SplitToDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.Core.IFactory.SplitToDock(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   SplitToDock(IDock, IDockable, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L590"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L615"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Splits dock and updates owner layout.</p>
@@ -4305,7 +4480,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SplitToWindow_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IFactory.SplitToWindow(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Double,System.Double,System.Double,System.Double)">
   SplitToWindow(IDock, IDockable, double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L616"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L641"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Splits dock to the <a class="xref" href="Dock.Model.Core.DockOperation.html#Dock_Model_Core_DockOperation_Window">Window</a> and updates <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Owner">Owner</a> layout.</p>
@@ -4353,7 +4528,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SplitToWindow_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Double_System_Double_System_Double_System_Double_Dock_Model_Core_DockWindowOptions_" data-uid="Dock.Model.Core.IFactory.SplitToWindow(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Double,System.Double,System.Double,System.Double,Dock.Model.Core.DockWindowOptions)">
   SplitToWindow(IDock, IDockable, double, double, double, double, DockWindowOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L628"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L653"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Splits dock to the <a class="xref" href="Dock.Model.Core.DockOperation.html#Dock_Model_Core_DockOperation_Window">Window</a> and updates <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Owner">Owner</a> layout with the specified window options.</p>
@@ -4404,7 +4579,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SwapDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SwapDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
   SwapDockable(IDock, IDock, IDockable, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L365"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L390"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Swaps dockable into between <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collections.</p>
@@ -4446,7 +4621,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_SwapDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.SwapDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
   SwapDockable(IDock, IDockable, IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L356"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L381"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Swaps dockable in inside <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collections.</p>
@@ -4485,7 +4660,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_TogglePreviewPinnedDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)">
   TogglePreviewPinnedDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L389"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L414"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Toggles preview for a pinned dockable.</p>
@@ -4518,7 +4693,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_UnpinDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IFactory.UnpinDockable(Dock.Model.Core.IDockable)">
   UnpinDockable(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L377"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.cs/#L402"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Unpins a dockable.</p>
@@ -4585,7 +4760,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableActivated" data-uid="Dock.Model.Core.IFactory.DockableActivated">
   DockableActivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L141"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable activated event handler.</p>
@@ -4616,7 +4791,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableAdded" data-uid="Dock.Model.Core.IFactory.DockableAdded">
   DockableAdded
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable added event handler.</p>
@@ -4647,7 +4822,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableClosed" data-uid="Dock.Model.Core.IFactory.DockableClosed">
   DockableClosed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable closed event handler.</p>
@@ -4678,7 +4853,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableClosing" data-uid="Dock.Model.Core.IFactory.DockableClosing">
   DockableClosing
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L46"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable closing event handler.</p>
@@ -4709,7 +4884,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableDeactivated" data-uid="Dock.Model.Core.IFactory.DockableDeactivated">
   DockableDeactivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L151"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable deactivated event handler.</p>
@@ -4740,7 +4915,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableDocked" data-uid="Dock.Model.Core.IFactory.DockableDocked">
   DockableDocked
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable docked event handler.</p>
@@ -4771,7 +4946,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableHidden" data-uid="Dock.Model.Core.IFactory.DockableHidden">
   DockableHidden
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable hidden event handler.</p>
@@ -4802,7 +4977,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableInit" data-uid="Dock.Model.Core.IFactory.DockableInit">
   DockableInit
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable init event handler.</p>
@@ -4833,7 +5008,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableMoved" data-uid="Dock.Model.Core.IFactory.DockableMoved">
   DockableMoved
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable moved event handler.</p>
@@ -4864,7 +5039,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockablePinned" data-uid="Dock.Model.Core.IFactory.DockablePinned">
   DockablePinned
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable pinned event handler.</p>
@@ -4895,7 +5070,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableRemoved" data-uid="Dock.Model.Core.IFactory.DockableRemoved">
   DockableRemoved
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable removed event handler.</p>
@@ -4926,7 +5101,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableRestored" data-uid="Dock.Model.Core.IFactory.DockableRestored">
   DockableRestored
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L91"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable restored event handler.</p>
@@ -4957,7 +5132,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableSwapped" data-uid="Dock.Model.Core.IFactory.DockableSwapped">
   DockableSwapped
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable swapped event handler.</p>
@@ -4988,7 +5163,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableUndocked" data-uid="Dock.Model.Core.IFactory.DockableUndocked">
   DockableUndocked
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L66"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable undocked event handler.</p>
@@ -5019,7 +5194,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_DockableUnpinned" data-uid="Dock.Model.Core.IFactory.DockableUnpinned">
   DockableUnpinned
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dockable unpinned event handler.</p>
@@ -5079,9 +5254,40 @@ will become the selected dockable.</p>
 
 
 
+  <h3 id="Dock_Model_Core_IFactory_GlobalDockTrackingChanged" data-uid="Dock.Model.Core.IFactory.GlobalDockTrackingChanged">
+  GlobalDockTrackingChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Global dock tracking changed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">event EventHandler&lt;GlobalDockTrackingChangedEventArgs&gt;? GlobalDockTrackingChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.GlobalDockTrackingChangedEventArgs.html">GlobalDockTrackingChangedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h3 id="Dock_Model_Core_IFactory_WindowActivated" data-uid="Dock.Model.Core.IFactory.WindowActivated">
   WindowActivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L136"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window activated event handler.</p>
@@ -5112,7 +5318,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowAdded" data-uid="Dock.Model.Core.IFactory.WindowAdded">
   WindowAdded
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L111"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window added event handler.</p>
@@ -5143,7 +5349,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowClosed" data-uid="Dock.Model.Core.IFactory.WindowClosed">
   WindowClosed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window closed event handler.</p>
@@ -5174,7 +5380,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowClosing" data-uid="Dock.Model.Core.IFactory.WindowClosing">
   WindowClosing
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window closing event handler.</p>
@@ -5205,7 +5411,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowDeactivated" data-uid="Dock.Model.Core.IFactory.WindowDeactivated">
   WindowDeactivated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L146"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window deactivated event handler.</p>
@@ -5236,7 +5442,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowMoveDrag" data-uid="Dock.Model.Core.IFactory.WindowMoveDrag">
   WindowMoveDrag
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L126"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window dragging event handler.</p>
@@ -5267,7 +5473,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowMoveDragBegin" data-uid="Dock.Model.Core.IFactory.WindowMoveDragBegin">
   WindowMoveDragBegin
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L121"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window dragging begin event handler.</p>
@@ -5298,7 +5504,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowMoveDragEnd" data-uid="Dock.Model.Core.IFactory.WindowMoveDragEnd">
   WindowMoveDragEnd
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L131"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window dragging end event handler.</p>
@@ -5329,7 +5535,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowOpened" data-uid="Dock.Model.Core.IFactory.WindowOpened">
   WindowOpened
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L96"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window opened event handler.</p>
@@ -5360,7 +5566,7 @@ will become the selected dockable.</p>
 
   <h3 id="Dock_Model_Core_IFactory_WindowRemoved" data-uid="Dock.Model.Core.IFactory.WindowRemoved">
   WindowRemoved
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IFactory.Events.cs/#L116"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Window removed event handler.</p>

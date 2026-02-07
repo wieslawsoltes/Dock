@@ -35,6 +35,36 @@ public static class DockNavigationHelpers
     }
 
     /// <summary>
+    /// Resolves overlay services for a specific dockable with host-screen fallback.
+    /// </summary>
+    /// <param name="hostScreen">The host screen fallback.</param>
+    /// <param name="dockable">The dockable used to resolve current window context.</param>
+    /// <param name="provider">The overlay services provider.</param>
+    /// <returns>The overlay services instance.</returns>
+    public static IHostOverlayServices GetOverlayServices(
+        IScreen hostScreen,
+        IDockable dockable,
+        IHostOverlayServicesProvider provider)
+    {
+        if (hostScreen is null)
+        {
+            throw new ArgumentNullException(nameof(hostScreen));
+        }
+
+        if (dockable is null)
+        {
+            throw new ArgumentNullException(nameof(dockable));
+        }
+
+        if (provider is null)
+        {
+            throw new ArgumentNullException(nameof(provider));
+        }
+
+        return provider.GetServices(hostScreen, dockable);
+    }
+
+    /// <summary>
     /// Gets the busy service for the specified host screen.
     /// </summary>
     /// <param name="hostScreen">The host screen.</param>
@@ -44,6 +74,19 @@ public static class DockNavigationHelpers
         IScreen hostScreen,
         IHostOverlayServicesProvider provider)
         => GetOverlayServices(hostScreen, provider).Busy;
+
+    /// <summary>
+    /// Gets the busy service for the specified dockable context.
+    /// </summary>
+    /// <param name="hostScreen">The host screen fallback.</param>
+    /// <param name="dockable">The dockable used to resolve current window context.</param>
+    /// <param name="provider">The overlay services provider.</param>
+    /// <returns>The busy service instance.</returns>
+    public static IDockBusyService GetBusyService(
+        IScreen hostScreen,
+        IDockable dockable,
+        IHostOverlayServicesProvider provider)
+        => GetOverlayServices(hostScreen, dockable, provider).Busy;
 
     /// <summary>
     /// Gets the dialog service for the specified host screen.
@@ -57,6 +100,19 @@ public static class DockNavigationHelpers
         => GetOverlayServices(hostScreen, provider).Dialogs;
 
     /// <summary>
+    /// Gets the dialog service for the specified dockable context.
+    /// </summary>
+    /// <param name="hostScreen">The host screen fallback.</param>
+    /// <param name="dockable">The dockable used to resolve current window context.</param>
+    /// <param name="provider">The overlay services provider.</param>
+    /// <returns>The dialog service instance.</returns>
+    public static IDockDialogService GetDialogService(
+        IScreen hostScreen,
+        IDockable dockable,
+        IHostOverlayServicesProvider provider)
+        => GetOverlayServices(hostScreen, dockable, provider).Dialogs;
+
+    /// <summary>
     /// Gets the confirmation service for the specified host screen.
     /// </summary>
     /// <param name="hostScreen">The host screen.</param>
@@ -66,6 +122,19 @@ public static class DockNavigationHelpers
         IScreen hostScreen,
         IHostOverlayServicesProvider provider)
         => GetOverlayServices(hostScreen, provider).Confirmations;
+
+    /// <summary>
+    /// Gets the confirmation service for the specified dockable context.
+    /// </summary>
+    /// <param name="hostScreen">The host screen fallback.</param>
+    /// <param name="dockable">The dockable used to resolve current window context.</param>
+    /// <param name="provider">The overlay services provider.</param>
+    /// <returns>The confirmation service instance.</returns>
+    public static IDockConfirmationService GetConfirmationService(
+        IScreen hostScreen,
+        IDockable dockable,
+        IHostOverlayServicesProvider provider)
+        => GetOverlayServices(hostScreen, dockable, provider).Confirmations;
 
     /// <summary>
     /// Attempts to navigate back using the host screen router.

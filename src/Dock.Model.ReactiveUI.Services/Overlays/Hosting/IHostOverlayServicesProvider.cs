@@ -1,3 +1,4 @@
+using Dock.Model.Core;
 using Dock.Model.Services;
 using ReactiveUI;
 
@@ -14,4 +15,12 @@ public interface IHostOverlayServicesProvider
     /// <param name="screen">The host screen.</param>
     /// <returns>The overlay services instance.</returns>
     IHostOverlayServices GetServices(IScreen screen);
+
+    /// <summary>
+    /// Gets overlay services for a specific dockable with host-screen fallback.
+    /// </summary>
+    /// <param name="screen">The host screen used for fallback resolution.</param>
+    /// <param name="dockable">The dockable used to resolve current window/root context.</param>
+    /// <returns>The overlay services instance.</returns>
+    IHostOverlayServices GetServices(IScreen screen, IDockable dockable);
 }

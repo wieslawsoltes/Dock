@@ -1959,6 +1959,25 @@ references:
   commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.IsActiveProperty
   fullName: Dock.Avalonia.Controls.DocumentTabStrip.IsActiveProperty
   nameWithType: DocumentTabStrip.IsActiveProperty
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientation
+  name: MouseWheelScrollOrientation
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_MouseWheelScrollOrientation
+  commentId: P:Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientation
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientation
+  nameWithType: DocumentTabStrip.MouseWheelScrollOrientation
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientation*
+  name: MouseWheelScrollOrientation
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_MouseWheelScrollOrientation_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientation
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientation
+  nameWithType: DocumentTabStrip.MouseWheelScrollOrientation
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientationProperty
+  name: MouseWheelScrollOrientationProperty
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_MouseWheelScrollOrientationProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientationProperty
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientationProperty
+  nameWithType: DocumentTabStrip.MouseWheelScrollOrientationProperty
 - uid: Dock.Avalonia.Controls.DocumentTabStrip.NeedsContainerOverride(System.Object,System.Int32,System.Object@)
   name: NeedsContainerOverride(object?, int, out object?)
   href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_NeedsContainerOverride_System_Object_System_Int32_System_Object__
@@ -7226,6 +7245,25 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolTabStrip.CreateContainerForItemOverride
   nameWithType: ToolTabStrip.CreateContainerForItemOverride
+- uid: Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientation
+  name: MouseWheelScrollOrientation
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_MouseWheelScrollOrientation
+  commentId: P:Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientation
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientation
+  nameWithType: ToolTabStrip.MouseWheelScrollOrientation
+- uid: Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientation*
+  name: MouseWheelScrollOrientation
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_MouseWheelScrollOrientation_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientation
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientation
+  nameWithType: ToolTabStrip.MouseWheelScrollOrientation
+- uid: Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientationProperty
+  name: MouseWheelScrollOrientationProperty
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_MouseWheelScrollOrientationProperty
+  commentId: F:Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientationProperty
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientationProperty
+  nameWithType: ToolTabStrip.MouseWheelScrollOrientationProperty
 - uid: Dock.Avalonia.Controls.ToolTabStrip.NeedsContainerOverride(System.Object,System.Int32,System.Object@)
   name: NeedsContainerOverride(object?, int, out object?)
   href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_NeedsContainerOverride_System_Object_System_Int32_System_Object__
@@ -7255,6 +7293,32 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolTabStrip.OnApplyTemplate
   nameWithType: ToolTabStrip.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.ToolTabStrip.OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  name: OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnAttachedToVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
+  commentId: M:Dock.Avalonia.Controls.ToolTabStrip.OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  nameWithType: ToolTabStrip.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)
+- uid: Dock.Avalonia.Controls.ToolTabStrip.OnAttachedToVisualTree*
+  name: OnAttachedToVisualTree
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnAttachedToVisualTree_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStrip.OnAttachedToVisualTree
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.OnAttachedToVisualTree
+  nameWithType: ToolTabStrip.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.ToolTabStrip.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
+  commentId: M:Dock.Avalonia.Controls.ToolTabStrip.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  nameWithType: ToolTabStrip.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+- uid: Dock.Avalonia.Controls.ToolTabStrip.OnDetachedFromVisualTree*
+  name: OnDetachedFromVisualTree
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnDetachedFromVisualTree_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStrip.OnDetachedFromVisualTree
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.OnDetachedFromVisualTree
+  nameWithType: ToolTabStrip.OnDetachedFromVisualTree
 - uid: Dock.Avalonia.Controls.ToolTabStrip.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
   name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
   href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_

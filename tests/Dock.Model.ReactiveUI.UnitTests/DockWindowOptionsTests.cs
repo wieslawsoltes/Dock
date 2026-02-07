@@ -14,6 +14,7 @@ public class DockWindowOptionsTests
         public IHostWindowState? HostWindowState { get; }
         public bool IsTracked { get; set; }
         public IDockWindow? Window { get; set; }
+        public DockWindowState WindowState { get; private set; } = DockWindowState.Normal;
         public bool PresentedAsDialog { get; private set; }
 
         public void Present(bool isDialog)
@@ -43,6 +44,16 @@ public class DockWindowOptionsTests
         {
             width = 0;
             height = 0;
+        }
+
+        public void SetWindowState(DockWindowState windowState)
+        {
+            WindowState = windowState;
+        }
+
+        public DockWindowState GetWindowState()
+        {
+            return WindowState;
         }
 
         public void SetTitle(string? title)

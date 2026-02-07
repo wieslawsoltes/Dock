@@ -83,6 +83,7 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `IsActive` | `bool` | Active tab strip state (drives `:active`). |
 | `EnableWindowDrag` | `bool` | Allows dragging the host window by the tab strip. |
 | `Orientation` | `Orientation` | Tab strip orientation. |
+| `MouseWheelScrollOrientation` | `Orientation` | Mouse-wheel scroll axis for tab overflow (`Horizontal` by default). |
 | `CreateButtonTheme` | `ControlTheme?` | Theme for the create document button. |
 
 ### DocumentTabStripItem
@@ -97,6 +98,7 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | Property | Type | Description |
 | --- | --- | --- |
 | `CanCreateItem` | `bool` | `true` when the new-tool button is available. |
+| `MouseWheelScrollOrientation` | `Orientation` | Mouse-wheel scroll axis for tab overflow (`Horizontal` by default). |
 
 ### ToolTabStripItem
 

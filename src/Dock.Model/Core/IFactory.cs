@@ -62,6 +62,31 @@ public partial interface IFactory
     IList<IHostWindow> HostWindows { get; }
 
     /// <summary>
+    /// Gets current global dock tracking state.
+    /// </summary>
+    GlobalDockTrackingState GlobalDockTrackingState { get; }
+
+    /// <summary>
+    /// Gets currently tracked dockable across all roots/windows.
+    /// </summary>
+    IDockable? CurrentDockable { get; }
+
+    /// <summary>
+    /// Gets currently tracked root dock across all windows.
+    /// </summary>
+    IRootDock? CurrentRootDock { get; }
+
+    /// <summary>
+    /// Gets currently tracked dock window across all roots/windows.
+    /// </summary>
+    IDockWindow? CurrentDockWindow { get; }
+
+    /// <summary>
+    /// Gets currently tracked host window across all roots/windows.
+    /// </summary>
+    IHostWindow? CurrentHostWindow { get; }
+
+    /// <summary>
     /// When true closing a tool hides it instead of removing it.
     /// </summary>
     bool HideToolsOnClose { get; set; }

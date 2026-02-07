@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveProperty.Controls;
 using Dock.Model.ReactiveProperty.Core;
@@ -217,6 +218,100 @@ public class FactoryTests
     }
 
     [Fact]
+    public void OnActiveDockableChanged_Includes_Root_And_Window_Context()
+    {
+        var factory = new TestFactory();
+        var context = CreateDockableContext(factory);
+
+        IRootDock? raisedRoot = null;
+        IDockWindow? raisedWindow = null;
+
+        factory.ActiveDockableChanged += (_, args) =>
+        {
+            raisedRoot = args.RootDock;
+            raisedWindow = args.Window;
+        };
+
+        factory.OnActiveDockableChanged(context.Dockable);
+
+        Assert.Same(context.Root, raisedRoot);
+        Assert.Same(context.Window, raisedWindow);
+    }
+
+    [Fact]
+    public void GlobalDockTrackingChanged_Tracks_Window_And_Dockable()
+    {
+        var factory = new TestFactory();
+        var context = CreateDockableContext(factory);
+        var eventRaised = false;
+        GlobalDockTrackingState? current = null;
+
+        factory.GlobalDockTrackingChanged += (_, args) =>
+        {
+            eventRaised = true;
+            current = args.Current;
+        };
+
+        factory.OnWindowActivated(context.Window);
+
+        Assert.True(eventRaised);
+        Assert.NotNull(current);
+        Assert.Same(context.Dockable, current!.Dockable);
+        Assert.Same(context.Root, current.RootDock);
+        Assert.Same(context.Window, current.Window);
+        Assert.Same(context.Dockable, factory.CurrentDockable);
+        Assert.Same(context.Root, factory.CurrentRootDock);
+        Assert.Same(context.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void OnWindowRemoved_Clears_Current_Global_Tracking()
+    {
+        var factory = new TestFactory();
+        var context = CreateDockableContext(factory);
+
+        factory.OnWindowActivated(context.Window);
+        Assert.Same(context.Window, factory.CurrentDockWindow);
+
+        factory.OnWindowRemoved(context.Window);
+
+        Assert.Null(factory.CurrentDockable);
+        Assert.Null(factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
+        Assert.Null(factory.CurrentHostWindow);
+    }
+
+    [Fact]
+    public void ActiveDockableChanged_From_Different_Root_Does_Not_Override_Current_Global_State()
+    {
+        var factory = new TestFactory();
+        var first = CreateDockableContext(factory);
+        var second = CreateDockableContext(factory);
+
+        factory.OnWindowActivated(first.Window);
+        factory.OnActiveDockableChanged(second.Dockable);
+
+        Assert.Same(first.Dockable, factory.CurrentDockable);
+        Assert.Same(first.Root, factory.CurrentRootDock);
+        Assert.Same(first.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void SetActiveDockable_From_Different_Root_Does_Not_Override_Current_Global_State()
+    {
+        var factory = new TestFactory();
+        var first = CreateDockableContext(factory);
+        var second = CreateDockableContext(factory);
+
+        factory.OnWindowActivated(first.Window);
+        factory.SetActiveDockable(second.Dockable);
+
+        Assert.Same(first.Dockable, factory.CurrentDockable);
+        Assert.Same(first.Root, factory.CurrentRootDock);
+        Assert.Same(first.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
     public void ActivateWindow_Triggers_WindowActivated_Event()
     {
         var factory = new TestFactory();
@@ -244,6 +339,27 @@ public class FactoryTests
 
         Assert.True(eventRaised);
         Assert.Same(window, raisedWindow);
+    }
+
+    private static (IRootDock Root, IDockWindow Window, IDock Dock, IDockable Dockable) CreateDockableContext(TestFactory factory)
+    {
+        var root = factory.CreateRootDock();
+        var window = factory.CreateDockWindow();
+        var dock = factory.CreateDocumentDock();
+        var dockable = factory.CreateDocument();
+
+        dock.VisibleDockables = factory.CreateList<IDockable>(dockable);
+        dock.Owner = root;
+        dock.ActiveDockable = dockable;
+        dock.FocusedDockable = dockable;
+        dockable.Owner = dock;
+        root.VisibleDockables = factory.CreateList<IDockable>(dock);
+        root.ActiveDockable = dock;
+        root.FocusedDockable = dockable;
+        window.Layout = root;
+        root.Window = window;
+
+        return (root, window, dock, dockable);
     }
 }
 

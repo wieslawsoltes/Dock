@@ -1,9 +1,14 @@
 # Finding the Active Document
 
 Only one dockable (document or tool) can have focus at a time, even when multiple
-`IDocumentDock` instances or floating windows are present. The root dock that owns
-the focused dockable stores it in `FocusedDockable`, and the factory reports focus
-changes through `IFactory.FocusedDockableChanged`.
+`IDocumentDock` instances or floating windows are present.
+
+Use factory global tracking for cross-window scenarios:
+
+- `IFactory.CurrentDockable`
+- `IFactory.CurrentRootDock`
+- `IFactory.CurrentDockWindow`
+- `IFactory.GlobalDockTrackingChanged`
 
 If you already have the root layout for a window, read `FocusedDockable` directly:
 
@@ -11,27 +16,32 @@ If you already have the root layout for a window, read `FocusedDockable` directl
 var currentDocument = Layout?.FocusedDockable as IDocument;
 ```
 
-To track focus across multiple windows, subscribe to the factory event and cache
-the latest dockable:
+To track focus across multiple windows, subscribe to global tracking:
 
 ```csharp
 IDockable? focusedDockable = null;
 
-factory.FocusedDockableChanged += (_, e) =>
+factory.GlobalDockTrackingChanged += (_, e) =>
 {
-    focusedDockable = e.Dockable;
-    Console.WriteLine($"Focused dockable: {e.Dockable?.Title}");
+    focusedDockable = e.Current.Dockable;
+    Console.WriteLine($"Focused dockable: {e.Current.Dockable?.Title}");
 };
 
 var currentDocument = focusedDockable as IDocument;
 ```
 
-If you need the root dock that owns the focused dockable:
+If you need the owning root/window:
 
 ```csharp
-var focusedRoot = focusedDockable is { } dockable
-    ? factory.FindRoot(dockable, root => root.IsFocusableRoot)
-    : null;
+var focusedRoot = factory.CurrentRootDock;
+var focusedWindow = factory.CurrentDockWindow;
+```
+
+You can also use helper extensions:
+
+```csharp
+var currentDocument = factory.GetCurrentDocument();
+var activeRoot = factory.GetActiveRoot();
 ```
 
 ```csharp
@@ -42,6 +52,4 @@ if (focusedDockable is { } dockable)
 }
 ```
 
-The focused dockable can be `null` when nothing is focused. In multi-window
-layouts, each root keeps its last focused dockable, so use the event to determine
-the current focus.
+The focused dockable can be `null` when nothing is focused.

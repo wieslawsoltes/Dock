@@ -12,11 +12,18 @@ public class MainWindowViewModel : ObservableObject
 {
     private readonly IFactory? _factory;
     private IRootDock? _layout;
+    private string _globalStatus = "Global: (none)";
 
     public IRootDock? Layout
     {
         get => _layout;
         set => SetProperty(ref _layout, value);
+    }
+
+    public string GlobalStatus
+    {
+        get => _globalStatus;
+        set => SetProperty(ref _globalStatus, value);
     }
 
     public ICommand NewLayout { get; }
@@ -33,6 +40,9 @@ public class MainWindowViewModel : ObservableObject
             _factory?.InitLayout(layout);
         }
         Layout = layout;
+        GlobalStatus = layout is null
+            ? "Global: (none)"
+            : FormatGlobalStatus(_factory?.GlobalDockTrackingState ?? GlobalDockTrackingState.Empty);
 
         if (Layout is { } root)
         {
@@ -85,12 +95,18 @@ public class MainWindowViewModel : ObservableObject
     {
         factory.ActiveDockableChanged += (_, args) =>
         {
-            Debug.WriteLine($"[ActiveDockableChanged] Title='{args.Dockable?.Title}'");
+            Debug.WriteLine($"[ActiveDockableChanged] Title='{args.Dockable?.Title}', Root='{args.RootDock?.Id}', Window='{args.Window?.Id}'");
         };
 
         factory.FocusedDockableChanged += (_, args) =>
         {
-            Debug.WriteLine($"[FocusedDockableChanged] Title='{args.Dockable?.Title}'");
+            Debug.WriteLine($"[FocusedDockableChanged] Title='{args.Dockable?.Title}', Root='{args.RootDock?.Id}', Window='{args.Window?.Id}'");
+        };
+
+        factory.GlobalDockTrackingChanged += (_, args) =>
+        {
+            GlobalStatus = FormatGlobalStatus(args.Current);
+            Debug.WriteLine($"[GlobalDockTrackingChanged] Reason='{args.Reason}', Dockable='{args.Current.Dockable?.Title}', Root='{args.Current.RootDock?.Id}', Window='{args.Current.Window?.Id}'");
         };
 
         factory.DockableAdded += (_, args) =>
@@ -205,5 +221,14 @@ public class MainWindowViewModel : ObservableObject
         {
             Debug.WriteLine($"[DockableDeactivated] Title='{args.Dockable?.Title}'");
         };
+    }
+
+    private static string FormatGlobalStatus(GlobalDockTrackingState state)
+    {
+        var dockableTitle = state.Dockable?.Title ?? "(none)";
+        var rootId = state.RootDock?.Id ?? "(none)";
+        var windowTitle = state.Window?.Title ?? "(main)";
+        var host = state.HostWindow?.GetType().Name ?? "(main)";
+        return $"Dockable: {dockableTitle} | Root: {rootId} | Window: {windowTitle} | Host: {host}";
     }
 }

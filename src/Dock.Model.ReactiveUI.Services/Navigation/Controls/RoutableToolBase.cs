@@ -80,6 +80,6 @@ public abstract class RoutableToolBase : RoutableTool
             throw new InvalidOperationException("Overlay services provider is not available.");
         }
 
-        return _overlayServicesProvider.GetServices(this);
+        return _overlayServicesProvider.GetServices(this, this);
     }
 }

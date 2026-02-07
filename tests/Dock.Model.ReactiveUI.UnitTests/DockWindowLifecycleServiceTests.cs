@@ -66,6 +66,11 @@ public class DockWindowLifecycleServiceTests
         {
             return _services;
         }
+
+        public IHostOverlayServices GetServices(IScreen hostScreen, IDockable dockable)
+        {
+            return _services;
+        }
     }
 
     [Fact]

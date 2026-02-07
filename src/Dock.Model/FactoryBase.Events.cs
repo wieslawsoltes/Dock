@@ -18,6 +18,9 @@ public abstract partial class FactoryBase
     public event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
 
     /// <inheritdoc />
+    public event EventHandler<GlobalDockTrackingChangedEventArgs>? GlobalDockTrackingChanged;
+
+    /// <inheritdoc />
     public event EventHandler<DockableInitEventArgs>? DockableInit;
 
     /// <inheritdoc />
@@ -95,13 +98,53 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual void OnActiveDockableChanged(IDockable? dockable)
     {
-        ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable));
+        var rootDock = ResolveRootDock(dockable);
+        var window = rootDock?.Window;
+
+        if (dockable is not null)
+        {
+            if (rootDock is not null
+                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
+            {
+                UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.ActiveDockableChanged);
+            }
+        }
+        else if (CurrentRootDock is { } currentRoot)
+        {
+            // Null active notifications are ambiguous without source context.
+            // Keep tracking anchored to the current root instead of clearing it.
+            var currentWindow = CurrentDockWindow ?? currentRoot.Window;
+            var currentDockable = currentRoot.FocusedDockable ?? currentRoot.ActiveDockable;
+            UpdateGlobalDockTracking(currentDockable, currentRoot, currentWindow, DockTrackingChangeReason.ActiveDockableChanged);
+        }
+
+        ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable, rootDock, window));
     }
 
     /// <inheritdoc />
     public virtual void OnFocusedDockableChanged(IDockable? dockable)
     {
-        FocusedDockableChanged?.Invoke(this, new FocusedDockableChangedEventArgs(dockable));
+        var rootDock = ResolveRootDock(dockable);
+        var window = rootDock?.Window;
+
+        if (dockable is not null)
+        {
+            if (rootDock is not null
+                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
+            {
+                UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.FocusedDockableChanged);
+            }
+        }
+        else if (CurrentRootDock is { } currentRoot)
+        {
+            // Null focus notifications are ambiguous without source context.
+            // Keep tracking anchored to the current root instead of clearing it.
+            var currentWindow = CurrentDockWindow ?? currentRoot.Window;
+            var currentDockable = currentRoot.FocusedDockable ?? currentRoot.ActiveDockable;
+            UpdateGlobalDockTracking(currentDockable, currentRoot, currentWindow, DockTrackingChangeReason.FocusedDockableChanged);
+        }
+
+        FocusedDockableChanged?.Invoke(this, new FocusedDockableChangedEventArgs(dockable, rootDock, window));
     }
 
     /// <inheritdoc />
@@ -194,6 +237,7 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual void OnWindowRemoved(IDockWindow? window)
     {
+        ClearGlobalDockTrackingForWindow(window, DockTrackingChangeReason.WindowRemoved);
         WindowRemoved?.Invoke(this, new WindowRemovedEventArgs(window));
         NotifyWindowRemoved(window);
     }
@@ -238,6 +282,7 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual void OnWindowClosed(IDockWindow? window)
     {
+        ClearGlobalDockTrackingForWindow(window, DockTrackingChangeReason.WindowClosed);
         WindowClosed?.Invoke(this, new WindowClosedEventArgs(window));
         NotifyWindowClosed(window);
     }
@@ -274,24 +319,61 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual void OnWindowActivated(IDockWindow? window)
     {
+        var rootDock = window?.Layout;
+        var dockable = rootDock?.FocusedDockable ?? rootDock?.ActiveDockable;
+        UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.WindowActivated);
         WindowActivated?.Invoke(this, new WindowActivatedEventArgs(window));
     }
 
     /// <inheritdoc />
     public virtual void OnDockableActivated(IDockable? dockable)
     {
+        var rootDock = ResolveRootDock(dockable);
+        var window = rootDock?.Window;
+
+        if (dockable is not null)
+        {
+            if (rootDock is not null
+                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
+            {
+                UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.DockableActivated);
+            }
+        }
+
         DockableActivated?.Invoke(this, new DockableActivatedEventArgs(dockable));
     }
 
     /// <inheritdoc />
     public virtual void OnWindowDeactivated(IDockWindow? window)
     {
+        if (window is not null && ReferenceEquals(CurrentDockWindow, window))
+        {
+            UpdateGlobalDockTracking(null, null, null, DockTrackingChangeReason.WindowDeactivated);
+        }
+
         WindowDeactivated?.Invoke(this, new WindowDeactivatedEventArgs(window));
     }
 
     /// <inheritdoc />
     public virtual void OnDockableDeactivated(IDockable? dockable)
     {
+        if (dockable is not null && ReferenceEquals(CurrentDockable, dockable))
+        {
+            var rootDock = CurrentRootDock ?? ResolveRootDock(dockable);
+            var nextDockable = rootDock?.FocusedDockable;
+            if (ReferenceEquals(nextDockable, dockable))
+            {
+                nextDockable = rootDock?.ActiveDockable;
+            }
+
+            if (ReferenceEquals(nextDockable, dockable))
+            {
+                nextDockable = null;
+            }
+
+            UpdateGlobalDockTracking(nextDockable, rootDock, CurrentDockWindow, DockTrackingChangeReason.DockableDeactivated);
+        }
+
         DockableDeactivated?.Invoke(this, new DockableDeactivatedEventArgs(dockable));
     }
 }

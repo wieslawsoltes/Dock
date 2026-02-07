@@ -53,7 +53,7 @@ dockControl.Factory = factory;
 dockControl.Layout = layout;
 ```
 
-These factories expose methods such as `AddDockable`, `MoveDockable` or `FloatDockable` and raise events like `ActiveDockableChanged` so you can react to changes.
+These factories expose methods such as `AddDockable`, `MoveDockable` or `FloatDockable` and raise events like `ActiveDockableChanged`. For cross-window state, use `GlobalDockTrackingChanged` and `CurrentDockable`/`CurrentRootDock`.
 
 Use the MVVM, ReactiveUI or XAML samples as references for complete implementations.
 

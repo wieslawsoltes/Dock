@@ -21,6 +21,11 @@ public partial interface IFactory
     event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
 
     /// <summary>
+    /// Global dock tracking changed event handler.
+    /// </summary>
+    event EventHandler<GlobalDockTrackingChangedEventArgs>? GlobalDockTrackingChanged;
+
+    /// <summary>
     /// Dockable init event handler.
     /// </summary>
     event EventHandler<DockableInitEventArgs>? DockableInit;

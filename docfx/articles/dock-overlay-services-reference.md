@@ -45,6 +45,7 @@ Use this interface as the backing type for view models or overlay bindings inste
 ### Contracts
 - `IHostServiceResolver` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) resolves services scoped to the current `IScreen`.
 - `IHostOverlayServicesProvider` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) returns the `IHostOverlayServices` instance for a host screen.
+- `IHostOverlayServicesProvider.GetServices(IScreen, IDockable)` resolves overlays using dockable context first, then falls back to host screen resolution.
 
 ### Default resolver
 `OwnerChainHostServiceResolver` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) resolves services in this order:
@@ -58,6 +59,15 @@ This keeps overlays bound to the correct host window when dockables are moved or
 
 ### Provider behavior
 `HostOverlayServicesProvider` (namespace `Dock.Model.ReactiveUI.Services.Overlays.Hosting`) uses the resolver and falls back to a cached per-screen instance when no host service is found. This keeps overlays functional in screens that are not attached to a dock layout yet.
+
+Dockable-aware resolution:
+
+```csharp
+var overlays = provider.GetServices(hostScreen, dockable);
+var busy = overlays.Busy;
+```
+
+Use this overload for busy/dialog actions that should render in the dockable's current window/root, especially when documents can move between floating windows.
 
 ## Overlay controls integration
 Overlay controls bind directly to the service contracts:

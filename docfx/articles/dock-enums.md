@@ -97,6 +97,17 @@ Indicates the current state of an MDI document window.
 | `Minimized` | Window is minimized. |
 | `Maximized` | Window fills the document area. |
 
+## DockWindowState
+
+Indicates the current state of a floating dock window (`IDockWindow.WindowState`).
+
+| Value | Description |
+| ----- | ----------- |
+| `Normal` | Window is in its normal size and position. |
+| `Minimized` | Window is minimized. |
+| `Maximized` | Window is maximized. |
+| `FullScreen` | Window uses full-screen presentation when supported. |
+
 ## GripMode
 
 Determines how the grip element in tool chrome behaves (used by tool docks).

@@ -4,7 +4,7 @@ Dock exposes a small set of helper classes that adapt the core interfaces to dif
 
 ## HostAdapter
 
-`HostAdapter` implements `IHostAdapter` and bridges a dock window (`IDockWindow`) with a platform-specific host window (`IHostWindow`). It resolves the host window via `IFactory.GetHostWindow` when needed, pushes layout, title, size, and position into the host when presenting, and reads the current size and position back when saving.
+`HostAdapter` implements `IHostAdapter` and bridges a dock window (`IDockWindow`) with a platform-specific host window (`IHostWindow`). It resolves the host window via `IFactory.GetHostWindow` when needed, pushes layout, title, size, position, and `WindowState` into the host when presenting, and reads the current size, position, and state back when saving.
 
 Typical usage looks like the following:
 
@@ -13,7 +13,7 @@ var hostAdapter = new HostAdapter(dockWindow);
 hostAdapter.Present(isDialog: false);
 ```
 
-The adapter fetches the host window instance from `IFactory.GetHostWindow` if it has not already been assigned. Calling `Save` stores the last known position and dimensions so they can be restored later. `Exit` closes the host and clears the reference, and `SetActive` forwards the activation request to the host window.
+The adapter fetches the host window instance from `IFactory.GetHostWindow` if it has not already been assigned. Calling `Save` stores the last known position, dimensions, and window state so they can be restored later. `Exit` closes the host and clears the reference, and `SetActive` forwards the activation request to the host window.
 
 ## NavigateAdapter
 

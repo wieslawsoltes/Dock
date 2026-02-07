@@ -104,6 +104,40 @@ public class GlobalDockTrackingTests
     }
 
     [Fact]
+    public void ActiveDockableChanged_With_Unresolved_Root_Does_Not_Change_State()
+    {
+        var factory = new TrackingTestFactory();
+        var dockable = factory.CreateDocument();
+
+        var raised = 0;
+        factory.GlobalDockTrackingChanged += (_, _) => raised++;
+
+        factory.OnActiveDockableChanged(dockable);
+
+        Assert.Equal(0, raised);
+        Assert.Null(factory.CurrentDockable);
+        Assert.Null(factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void DockableActivated_With_Unresolved_Root_Does_Not_Change_State()
+    {
+        var factory = new TrackingTestFactory();
+        var dockable = factory.CreateDocument();
+
+        var raised = 0;
+        factory.GlobalDockTrackingChanged += (_, _) => raised++;
+
+        factory.OnDockableActivated(dockable);
+
+        Assert.Equal(0, raised);
+        Assert.Null(factory.CurrentDockable);
+        Assert.Null(factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
+    }
+
+    [Fact]
     public void ActiveDockableChanged_From_Tracked_Root_Updates_State_With_Reason()
     {
         var factory = new TrackingTestFactory();

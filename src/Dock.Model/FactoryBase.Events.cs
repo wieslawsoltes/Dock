@@ -103,7 +103,8 @@ public abstract partial class FactoryBase
 
         if (dockable is not null)
         {
-            if (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock))
+            if (rootDock is not null
+                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
             {
                 UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.ActiveDockableChanged);
             }
@@ -128,7 +129,8 @@ public abstract partial class FactoryBase
 
         if (dockable is not null)
         {
-            if (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock))
+            if (rootDock is not null
+                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
             {
                 UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.FocusedDockableChanged);
             }
@@ -331,7 +333,8 @@ public abstract partial class FactoryBase
 
         if (dockable is not null)
         {
-            if (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock))
+            if (rootDock is not null
+                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
             {
                 UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.DockableActivated);
             }

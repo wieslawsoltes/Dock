@@ -68,7 +68,15 @@ public abstract partial class FactoryBase
     /// <param name="reason">Tracking change reason.</param>
     protected virtual void ClearGlobalDockTrackingForWindow(IDockWindow? window, DockTrackingChangeReason reason)
     {
-        if (window is null || !ReferenceEquals(_globalDockTrackingState.Window, window))
+        if (window is null)
+        {
+            return;
+        }
+
+        var trackedWindow = _globalDockTrackingState.Window;
+        var trackedRoot = _globalDockTrackingState.RootDock;
+
+        if (!ReferenceEquals(trackedWindow, window) && !ReferenceEquals(trackedRoot, window.Layout))
         {
             return;
         }

@@ -35,6 +35,11 @@ public interface IDockWindow
     double Height { get; set; }
 
     /// <summary>
+    /// Gets or sets the current window state.
+    /// </summary>
+    DockWindowState WindowState { get; set; }
+
+    /// <summary>
     /// Gets or sets whether this window appears on top of all other windows.
     /// </summary>
     bool Topmost { get; set; }

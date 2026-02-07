@@ -25,6 +25,8 @@ public class HostAdapter : IHostAdapter
     {
         if (_window.Host is not null)
         {
+            _window.WindowState = _window.Host.GetWindowState();
+
             _window.Host.GetPosition(out var x, out var y);
             _window.X = x;
             _window.Y = y;
@@ -56,6 +58,7 @@ public class HostAdapter : IHostAdapter
         {
             _window.Host.SetPosition(_window.X, _window.Y);
             _window.Host.SetSize(_window.Width, _window.Height);
+            _window.Host.SetWindowState(_window.WindowState);
             _window.Host.SetTitle(_window.Title);
             _window.Host.SetLayout(_window.Layout);
             _window.Host.IsTracked = true;

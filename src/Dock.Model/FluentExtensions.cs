@@ -1081,6 +1081,13 @@ public static class FluentExtensions
     /// <returns>The same window.</returns>
     public static IDockWindow WithSize(this IDockWindow window, double width, double height) { window.Width = width; window.Height = height; return window; }
     /// <summary>
+    /// Sets the window state.
+    /// </summary>
+    /// <param name="window">The dock window.</param>
+    /// <param name="windowState">Window state value.</param>
+    /// <returns>The same window.</returns>
+    public static IDockWindow WithWindowState(this IDockWindow window, DockWindowState windowState) { window.WindowState = windowState; return window; }
+    /// <summary>
     /// Sets whether the window is topmost.
     /// </summary>
     /// <param name="window">The dock window.</param>

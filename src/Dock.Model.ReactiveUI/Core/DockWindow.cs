@@ -22,6 +22,7 @@ public partial class DockWindow : ReactiveBase, IDockWindow
     {
         _id = nameof(IDockWindow);
         _title = nameof(IDockWindow);
+        _windowState = DockWindowState.Normal;
         OwnerMode = DockWindowOwnerMode.Default;
         _hostAdapter = new HostAdapter(this);
     }
@@ -50,6 +51,11 @@ public partial class DockWindow : ReactiveBase, IDockWindow
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
     [Reactive]
     public partial double Height { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial DockWindowState WindowState { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

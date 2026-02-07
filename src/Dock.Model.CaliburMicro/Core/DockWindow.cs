@@ -18,6 +18,7 @@ public class DockWindow : CaliburMicroBase, IDockWindow
     private double _y;
     private double _width;
     private double _height;
+    private DockWindowState _windowState = DockWindowState.Normal;
     private bool _topmost;
     private string _title = nameof(IDockWindow);
     private DockWindowOwnerMode _ownerMode;
@@ -76,6 +77,14 @@ public class DockWindow : CaliburMicroBase, IDockWindow
     {
         get => _height;
         set => Set(ref _height, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DockWindowState WindowState
+    {
+        get => _windowState;
+        set => Set(ref _windowState, value);
     }
 
     /// <inheritdoc/>

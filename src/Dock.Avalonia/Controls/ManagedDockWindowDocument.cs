@@ -39,6 +39,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         _window = window;
         Id = window.Id;
         Title = window.Title;
+        _mdiState = DockWindowStateHelper.ToMdiWindowState(window.WindowState);
         Context = window;
         AttachWindow(window);
         AttachLayout(window.Layout);
@@ -171,6 +172,14 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
         {
             _window.Id = Id;
         }
+        else if (propertyName == nameof(MdiState))
+        {
+            var mappedState = DockWindowStateHelper.ToDockWindowState(_mdiState);
+            if (!(_window.WindowState == DockWindowState.FullScreen && mappedState == DockWindowState.Normal))
+            {
+                _window.WindowState = mappedState;
+            }
+        }
     }
 
     private void AttachWindow(IDockWindow? window)
@@ -212,6 +221,13 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
             {
                 UpdateTitleFromLayout();
             }
+
+            return;
+        }
+
+        if (e.PropertyName == nameof(IDockWindow.WindowState) && _window is { } window)
+        {
+            MdiState = DockWindowStateHelper.ToMdiWindowState(window.WindowState);
         }
     }
 

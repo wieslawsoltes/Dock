@@ -8,16 +8,8 @@ internal sealed class GlobalDockingProportionService : IGlobalDockingProportionS
 {
     public static readonly IGlobalDockingProportionService Instance = new GlobalDockingProportionService();
 
-    public bool TryApply(IDockable sourceDockable, IDock targetDock, double proportion)
+    public bool TryApply(IDockable sourceDockable, IDockable? sourceRoot, IDockable? targetRoot, double proportion)
     {
-        var sourceFactory = sourceDockable.Factory
-            ?? (sourceDockable.Owner as IDock)?.Factory
-            ?? targetDock.Factory;
-        var targetFactory = targetDock.Factory ?? sourceFactory;
-
-        var sourceRoot = sourceFactory?.FindRoot(sourceDockable, _ => true);
-        var targetRoot = targetFactory?.FindRoot(targetDock, _ => true);
-
         if (sourceRoot is null || targetRoot is null || sourceDockable.Owner is null)
         {
             return false;

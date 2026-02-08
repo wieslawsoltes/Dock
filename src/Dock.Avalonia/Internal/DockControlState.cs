@@ -176,6 +176,9 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable
                 && ResolveGlobalTargetDock(dropCtrl) is { } targetDock)
             {
+                var sourceRoot = sourceDockable.Factory?.FindRoot(sourceDockable, _ => true);
+                var targetRoot = targetDock.Factory?.FindRoot(targetDock, _ => true);
+
                 // Validate before executing global docking; if validation fails, fall back to floating when possible.
                 if (!ValidateGlobal(point, globalOperation, dragAction, relativeTo))
                 {
@@ -202,7 +205,11 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                  Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
 
-                 _globalDockingProportionService.TryApply(sourceDockable, targetDock, DockSettings.GlobalDockingProportion);
+                 _globalDockingProportionService.TryApply(
+                     sourceDockable,
+                     sourceRoot,
+                     targetRoot,
+                     DockSettings.GlobalDockingProportion);
              }
          }
          else

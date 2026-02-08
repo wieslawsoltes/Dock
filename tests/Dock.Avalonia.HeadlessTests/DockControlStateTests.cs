@@ -20,57 +20,6 @@ public class DockControlStateTests
         return new DockControlState(manager, new DefaultDragOffsetCalculator());
     }
 
-    private static (Document sourceDocument, DocumentDock sourceDock, DocumentDock targetDock) CreateGlobalProportionScenario()
-    {
-        var sourceFactory = new Factory();
-        var sourceRoot = new RootDock
-        {
-            VisibleDockables = sourceFactory.CreateList<IDockable>(),
-            Factory = sourceFactory
-        };
-        var sourceLayout = new ProportionalDock
-        {
-            Orientation = Orientation.Horizontal,
-            VisibleDockables = sourceFactory.CreateList<IDockable>()
-        };
-        sourceFactory.AddDockable(sourceRoot, sourceLayout);
-
-        var sourceDock = new DocumentDock
-        {
-            VisibleDockables = sourceFactory.CreateList<IDockable>()
-        };
-        sourceFactory.AddDockable(sourceLayout, sourceDock);
-
-        var sourceDocument = new Document
-        {
-            Id = "SourceDocument",
-            Title = "SourceDocument"
-        };
-        sourceFactory.AddDockable(sourceDock, sourceDocument);
-        sourceDock.ActiveDockable = sourceDocument;
-
-        var targetFactory = new Factory();
-        var targetRoot = new RootDock
-        {
-            VisibleDockables = targetFactory.CreateList<IDockable>(),
-            Factory = targetFactory
-        };
-        var targetLayout = new ProportionalDock
-        {
-            Orientation = Orientation.Horizontal,
-            VisibleDockables = targetFactory.CreateList<IDockable>()
-        };
-        targetFactory.AddDockable(targetRoot, targetLayout);
-
-        var targetDock = new DocumentDock
-        {
-            VisibleDockables = targetFactory.CreateList<IDockable>()
-        };
-        targetFactory.AddDockable(targetLayout, targetDock);
-
-        return (sourceDocument, sourceDock, targetDock);
-    }
-
 
     [AvaloniaFact]
     public void Process_CaptureLost_Ends_Drag()
@@ -158,9 +107,12 @@ public class DockControlStateTests
     public void GlobalDockingProportionService_TryApply_UpdatesOwnerProportionAndCollapsedProportion()
     {
         var service = new GlobalDockingProportionService();
-        var (sourceDocument, sourceDock, targetDock) = CreateGlobalProportionScenario();
+        var sourceDock = new DocumentDock();
+        var sourceDocument = new Document { Owner = sourceDock };
+        var sourceRoot = new RootDock();
+        var targetRoot = new RootDock();
 
-        var apply = service.TryApply(sourceDocument, targetDock, proportion: 0.5);
+        var apply = service.TryApply(sourceDocument, sourceRoot, targetRoot, proportion: 0.5);
 
         Assert.True(apply);
         Assert.Equal(0.5, sourceDock.Proportion, 3);
@@ -177,9 +129,9 @@ public class DockControlStateTests
             Title = "SourceDocument",
             Owner = new DocumentDock()
         };
-        var (_, _, targetDock) = CreateGlobalProportionScenario();
+        var targetRoot = new RootDock();
 
-        var apply = service.TryApply(sourceDocument, targetDock, proportion: 0.5);
+        var apply = service.TryApply(sourceDocument, sourceRoot: null, targetRoot, proportion: 0.5);
 
         Assert.False(apply);
     }
@@ -188,10 +140,11 @@ public class DockControlStateTests
     public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenTargetRootMissing()
     {
         var service = new GlobalDockingProportionService();
-        var (sourceDocument, sourceDock, _) = CreateGlobalProportionScenario();
-        var targetDock = new DocumentDock();
+        var sourceDock = new DocumentDock();
+        var sourceDocument = new Document { Owner = sourceDock };
+        var sourceRoot = new RootDock();
 
-        var apply = service.TryApply(sourceDocument, targetDock, proportion: 0.5);
+        var apply = service.TryApply(sourceDocument, sourceRoot, targetRoot: null, proportion: 0.5);
 
         Assert.False(apply);
         Assert.True(double.IsNaN(sourceDock.Proportion));
@@ -202,15 +155,11 @@ public class DockControlStateTests
     public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenSourceOwnerMissing()
     {
         var service = new GlobalDockingProportionService();
-        var sourceFactory = new Factory();
-        var sourceRoot = new RootDock
-        {
-            VisibleDockables = sourceFactory.CreateList<IDockable>(),
-            Factory = sourceFactory
-        };
-        var (_, _, targetDock) = CreateGlobalProportionScenario();
+        var sourceDocument = new Document();
+        var sourceRoot = new RootDock();
+        var targetRoot = new RootDock();
 
-        var apply = service.TryApply(sourceRoot, targetDock, proportion: 0.5);
+        var apply = service.TryApply(sourceDocument, sourceRoot, targetRoot, proportion: 0.5);
 
         Assert.False(apply);
     }

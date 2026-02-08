@@ -6,5 +6,5 @@ namespace Dock.Avalonia.Internal;
 
 internal interface IGlobalDockingProportionService
 {
-    bool TryApply(IDockable sourceDockable, IDock targetDock, double proportion);
+    bool TryApply(IDockable sourceDockable, IDockable? sourceRoot, IDockable? targetRoot, double proportion);
 }

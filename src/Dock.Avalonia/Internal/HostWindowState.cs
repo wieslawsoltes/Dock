@@ -53,8 +53,11 @@ internal class HostWindowState : DockManagerState, IHostWindowState
     private readonly HostWindow _hostWindow;
     private readonly WindowDragContext _context = new();
 
-    public HostWindowState(IDockManager dockManager, HostWindow hostWindow) 
-        : base(dockManager)
+    public HostWindowState(
+        IDockManager dockManager,
+        HostWindow hostWindow,
+        IGlobalDockTargetResolver? globalDockTargetResolver = null)
+        : base(dockManager, globalDockTargetResolver)
     {
         _hostWindow = hostWindow;
     }

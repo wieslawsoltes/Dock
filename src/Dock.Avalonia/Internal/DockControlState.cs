@@ -51,13 +51,22 @@ internal class DockControlState : DockManagerState, IDockControlState
 {
     private readonly DockDragContext _context = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
+    private readonly IGlobalDockOperationSelector _globalDockOperationSelector;
+    private readonly IGlobalDockingProportionService _globalDockingProportionService;
 
     public IDragOffsetCalculator DragOffsetCalculator { get; set; }
 
-    public DockControlState(IDockManager dockManager, IDragOffsetCalculator dragOffsetCalculator)
-        : base(dockManager)
+    public DockControlState(
+        IDockManager dockManager,
+        IDragOffsetCalculator dragOffsetCalculator,
+        IGlobalDockTargetResolver? globalDockTargetResolver = null,
+        IGlobalDockOperationSelector? globalDockOperationSelector = null,
+        IGlobalDockingProportionService? globalDockingProportionService = null)
+        : base(dockManager, globalDockTargetResolver)
     {
         DragOffsetCalculator = dragOffsetCalculator;
+        _globalDockOperationSelector = globalDockOperationSelector ?? GlobalDockOperationSelector.Instance;
+        _globalDockingProportionService = globalDockingProportionService ?? GlobalDockingProportionService.Instance;
     }
 
     public void StartDrag(Control dragControl, Point startPoint, Point point, DockControl activeDockControl)
@@ -89,26 +98,6 @@ internal class DockControlState : DockManagerState, IDockControlState
         }
     }
 
-    internal static bool PreferGlobalOperation(bool hasLocalAdorner, DockOperation localOperation, DockOperation globalOperation)
-    {
-        if (globalOperation == DockOperation.None)
-        {
-            return false;
-        }
-
-        if (!hasLocalAdorner)
-        {
-            return true;
-        }
-
-        return localOperation == DockOperation.Window;
-    }
-
-    internal static bool ShouldApplyGlobalDockingProportion(IDockable? sourceRoot, IDockable? targetRoot)
-    {
-        return sourceRoot is not null && targetRoot is not null;
-    }
-
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
         var isLocalValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
@@ -133,7 +122,10 @@ internal class DockControlState : DockManagerState, IDockControlState
             globalOperation = globalDockTarget.GetDockOperation(point, dropControl, relativeTo, dragAction, ValidateGlobal, IsDockTargetVisible);
         }
 
-        var useGlobalOperation = PreferGlobalOperation(hasLocalAdorner, localOperation, globalOperation);
+        var useGlobalOperation = _globalDockOperationSelector.ShouldUseGlobalOperation(
+            hasLocalAdorner,
+            localOperation,
+            globalOperation);
         if (useGlobalOperation)
         {
             ValidateGlobal(point, globalOperation, dragAction, relativeTo);
@@ -162,7 +154,10 @@ internal class DockControlState : DockManagerState, IDockControlState
             globalOperation = globalDockTarget.GetDockOperation(point, dropControl, relativeTo, dragAction, ValidateGlobal, IsDockTargetVisible);
         }
 
-        var useGlobalOperation = PreferGlobalOperation(hasLocalAdorner, localOperation, globalOperation);
+        var useGlobalOperation = _globalDockOperationSelector.ShouldUseGlobalOperation(
+            hasLocalAdorner,
+            localOperation,
+            globalOperation);
 
         RemoveAdorners();
 
@@ -181,9 +176,6 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable
                 && ResolveGlobalTargetDock(dropCtrl) is { } targetDock)
             {
-                var sourceRoot = sourceDockable.Factory?.FindRoot(sourceDockable, _ => true);
-                var targetRoot = targetDock.Factory?.FindRoot(targetDock, _ => true);
-
                 // Validate before executing global docking; if validation fails, fall back to floating when possible.
                 if (!ValidateGlobal(point, globalOperation, dragAction, relativeTo))
                 {
@@ -210,12 +202,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                  Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
 
-                 if (sourceDockable.Owner != null
-                     && ShouldApplyGlobalDockingProportion(sourceRoot, targetRoot))
-                 {
-                     sourceDockable.Owner.Proportion = DockSettings.GlobalDockingProportion;
-                     sourceDockable.Owner.CollapsedProportion = DockSettings.GlobalDockingProportion;
-                 }
+                 _globalDockingProportionService.TryApply(sourceDockable, targetDock, DockSettings.GlobalDockingProportion);
              }
          }
          else
@@ -628,7 +615,10 @@ internal class DockControlState : DockManagerState, IDockControlState
                             {
                                 localOperation = DockOperation.Fill;
                             }
-                            var useGlobalOperation = PreferGlobalOperation(hasLocalAdorner, localOperation, globalOperation);
+                            var useGlobalOperation = _globalDockOperationSelector.ShouldUseGlobalOperation(
+                                hasLocalAdorner,
+                                localOperation,
+                                globalOperation);
 
                             LogDragState($"Operations resolved: global={globalOperation}, local={localOperation}.");
 

@@ -52,8 +52,11 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
     private readonly ManagedWindowDragContext _context = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
 
-    public ManagedHostWindowState(IDockManager dockManager, ManagedHostWindow hostWindow)
-        : base(dockManager)
+    public ManagedHostWindowState(
+        IDockManager dockManager,
+        ManagedHostWindow hostWindow,
+        IGlobalDockTargetResolver? globalDockTargetResolver = null)
+        : base(dockManager, globalDockTargetResolver)
     {
         _hostWindow = hostWindow;
     }

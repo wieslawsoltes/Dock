@@ -17,6 +17,7 @@ namespace Dock.Avalonia.Internal;
 internal abstract class DockManagerState : IDockManagerState
 {
     private readonly IDockManager _dockManager;
+    private readonly IGlobalDockTargetResolver _globalDockTargetResolver;
     private Control? _globalAdornerHost;
 
     protected IDockManager DockManager => _dockManager;
@@ -31,9 +32,11 @@ internal abstract class DockManagerState : IDockManagerState
     /// Initializes a new instance of the <see cref="DockManagerState"/> class.
     /// </summary>
     /// <param name="dockManager">The dock manager.</param>
-    protected DockManagerState(IDockManager dockManager)
+    /// <param name="globalDockTargetResolver">Resolves global docking targets from drop controls.</param>
+    protected DockManagerState(IDockManager dockManager, IGlobalDockTargetResolver? globalDockTargetResolver = null)
     {
         _dockManager = dockManager;
+        _globalDockTargetResolver = globalDockTargetResolver ?? GlobalDockTargetResolver.Instance;
         LocalAdornerHelper = new AdornerHelper<DockTarget>(DockSettings.UseFloatingDockAdorner);
         GlobalAdornerHelper = new AdornerHelper<GlobalDockTarget>(DockSettings.UseFloatingDockAdorner);
     }
@@ -50,20 +53,7 @@ internal abstract class DockManagerState : IDockManagerState
         DockLogger.LogDebug("DragState", message);
     }
 
-    internal static IDock? ResolveGlobalTargetDock(Control? dropControl)
-    {
-        if (dropControl?.DataContext is IDockable dockable)
-        {
-            return dockable as IDock ?? dockable.Owner as IDock;
-        }
-
-        if (dropControl?.FindAncestorOfType<DockControl>()?.Layout?.ActiveDockable is IDock activeDock)
-        {
-            return activeDock;
-        }
-
-        return null;
-    }
+    protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockTargetResolver.Resolve(dropControl);
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {

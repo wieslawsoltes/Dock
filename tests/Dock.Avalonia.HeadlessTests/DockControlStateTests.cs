@@ -20,6 +20,57 @@ public class DockControlStateTests
         return new DockControlState(manager, new DefaultDragOffsetCalculator());
     }
 
+    private static (Document sourceDocument, DocumentDock sourceDock, DocumentDock targetDock) CreateGlobalProportionScenario()
+    {
+        var sourceFactory = new Factory();
+        var sourceRoot = new RootDock
+        {
+            VisibleDockables = sourceFactory.CreateList<IDockable>(),
+            Factory = sourceFactory
+        };
+        var sourceLayout = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = sourceFactory.CreateList<IDockable>()
+        };
+        sourceFactory.AddDockable(sourceRoot, sourceLayout);
+
+        var sourceDock = new DocumentDock
+        {
+            VisibleDockables = sourceFactory.CreateList<IDockable>()
+        };
+        sourceFactory.AddDockable(sourceLayout, sourceDock);
+
+        var sourceDocument = new Document
+        {
+            Id = "SourceDocument",
+            Title = "SourceDocument"
+        };
+        sourceFactory.AddDockable(sourceDock, sourceDocument);
+        sourceDock.ActiveDockable = sourceDocument;
+
+        var targetFactory = new Factory();
+        var targetRoot = new RootDock
+        {
+            VisibleDockables = targetFactory.CreateList<IDockable>(),
+            Factory = targetFactory
+        };
+        var targetLayout = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = targetFactory.CreateList<IDockable>()
+        };
+        targetFactory.AddDockable(targetRoot, targetLayout);
+
+        var targetDock = new DocumentDock
+        {
+            VisibleDockables = targetFactory.CreateList<IDockable>()
+        };
+        targetFactory.AddDockable(targetLayout, targetDock);
+
+        return (sourceDocument, sourceDock, targetDock);
+    }
+
 
     [AvaloniaFact]
     public void Process_CaptureLost_Ends_Drag()
@@ -52,9 +103,11 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void PreferGlobalOperation_UsesGlobal_WhenNoLocalAdorner()
+    public void GlobalDockOperationSelector_UsesGlobal_WhenNoLocalAdorner()
     {
-        var useGlobal = DockControlState.PreferGlobalOperation(
+        var selector = new GlobalDockOperationSelector();
+
+        var useGlobal = selector.ShouldUseGlobalOperation(
             hasLocalAdorner: false,
             localOperation: DockOperation.Fill,
             globalOperation: DockOperation.Right);
@@ -63,9 +116,11 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void PreferGlobalOperation_UsesLocal_WhenLocalOperationIsExplicit()
+    public void GlobalDockOperationSelector_UsesLocal_WhenLocalOperationIsExplicit()
     {
-        var useGlobal = DockControlState.PreferGlobalOperation(
+        var selector = new GlobalDockOperationSelector();
+
+        var useGlobal = selector.ShouldUseGlobalOperation(
             hasLocalAdorner: true,
             localOperation: DockOperation.Top,
             globalOperation: DockOperation.Right);
@@ -74,9 +129,11 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void PreferGlobalOperation_UsesGlobal_WhenLocalOperationIsWindow()
+    public void GlobalDockOperationSelector_UsesGlobal_WhenLocalOperationIsWindow()
     {
-        var useGlobal = DockControlState.PreferGlobalOperation(
+        var selector = new GlobalDockOperationSelector();
+
+        var useGlobal = selector.ShouldUseGlobalOperation(
             hasLocalAdorner: true,
             localOperation: DockOperation.Window,
             globalOperation: DockOperation.Bottom);
@@ -85,9 +142,11 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void PreferGlobalOperation_UsesLocal_WhenGlobalOperationIsNone()
+    public void GlobalDockOperationSelector_UsesLocal_WhenGlobalOperationIsNone()
     {
-        var useGlobal = DockControlState.PreferGlobalOperation(
+        var selector = new GlobalDockOperationSelector();
+
+        var useGlobal = selector.ShouldUseGlobalOperation(
             hasLocalAdorner: true,
             localOperation: DockOperation.Window,
             globalOperation: DockOperation.None);
@@ -96,41 +155,70 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void ShouldApplyGlobalDockingProportion_ReturnsTrue_ForSameRoot()
+    public void GlobalDockingProportionService_TryApply_UpdatesOwnerProportionAndCollapsedProportion()
     {
-        var root = new RootDock();
+        var service = new GlobalDockingProportionService();
+        var (sourceDocument, sourceDock, targetDock) = CreateGlobalProportionScenario();
 
-        var apply = DockControlState.ShouldApplyGlobalDockingProportion(root, root);
+        var apply = service.TryApply(sourceDocument, targetDock, proportion: 0.5);
 
         Assert.True(apply);
+        Assert.Equal(0.5, sourceDock.Proportion, 3);
+        Assert.Equal(0.5, sourceDock.CollapsedProportion, 3);
     }
 
     [AvaloniaFact]
-    public void ShouldApplyGlobalDockingProportion_ReturnsTrue_ForDifferentRoots()
+    public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenSourceRootMissing()
     {
-        var sourceRoot = new RootDock();
-        var targetRoot = new RootDock();
+        var service = new GlobalDockingProportionService();
+        var sourceDocument = new Document
+        {
+            Id = "SourceDocument",
+            Title = "SourceDocument",
+            Owner = new DocumentDock()
+        };
+        var (_, _, targetDock) = CreateGlobalProportionScenario();
 
-        var apply = DockControlState.ShouldApplyGlobalDockingProportion(sourceRoot, targetRoot);
+        var apply = service.TryApply(sourceDocument, targetDock, proportion: 0.5);
 
-        Assert.True(apply);
+        Assert.False(apply);
     }
 
     [AvaloniaFact]
-    public void ShouldApplyGlobalDockingProportion_ReturnsFalse_WhenRootMissing()
+    public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenTargetRootMissing()
     {
-        var root = new RootDock();
+        var service = new GlobalDockingProportionService();
+        var (sourceDocument, sourceDock, _) = CreateGlobalProportionScenario();
+        var targetDock = new DocumentDock();
 
-        var applyMissingSource = DockControlState.ShouldApplyGlobalDockingProportion(null, root);
-        var applyMissingTarget = DockControlState.ShouldApplyGlobalDockingProportion(root, null);
+        var apply = service.TryApply(sourceDocument, targetDock, proportion: 0.5);
 
-        Assert.False(applyMissingSource);
-        Assert.False(applyMissingTarget);
+        Assert.False(apply);
+        Assert.True(double.IsNaN(sourceDock.Proportion));
+        Assert.True(double.IsNaN(sourceDock.CollapsedProportion));
     }
 
     [AvaloniaFact]
-    public void ResolveGlobalTargetDock_UsesOwnerDock_FromDropDataContextDockable()
+    public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenSourceOwnerMissing()
     {
+        var service = new GlobalDockingProportionService();
+        var sourceFactory = new Factory();
+        var sourceRoot = new RootDock
+        {
+            VisibleDockables = sourceFactory.CreateList<IDockable>(),
+            Factory = sourceFactory
+        };
+        var (_, _, targetDock) = CreateGlobalProportionScenario();
+
+        var apply = service.TryApply(sourceRoot, targetDock, proportion: 0.5);
+
+        Assert.False(apply);
+    }
+
+    [AvaloniaFact]
+    public void GlobalDockTargetResolver_UsesOwnerDock_FromDropDataContextDockable()
+    {
+        var resolver = new GlobalDockTargetResolver();
         var factory = new Factory();
         var root = new RootDock
         {
@@ -170,14 +258,15 @@ public class DockControlStateTests
         root.ActiveDockable = rootLayout;
 
         var dropControl = new Border { DataContext = document };
-        var targetDock = DockManagerState.ResolveGlobalTargetDock(dropControl);
+        var targetDock = resolver.Resolve(dropControl);
 
         Assert.Same(documentDock, targetDock);
     }
 
     [AvaloniaFact]
-    public void ResolveGlobalTargetDock_UsesDropDock_FromDropDataContextDock()
+    public void GlobalDockTargetResolver_UsesDropDock_FromDropDataContextDock()
     {
+        var resolver = new GlobalDockTargetResolver();
         var factory = new Factory();
         var root = new RootDock
         {
@@ -199,7 +288,7 @@ public class DockControlStateTests
         factory.AddDockable(rootLayout, documentDock);
 
         var dropControl = new Border { DataContext = documentDock };
-        var targetDock = DockManagerState.ResolveGlobalTargetDock(dropControl);
+        var targetDock = resolver.Resolve(dropControl);
 
         Assert.Same(documentDock, targetDock);
     }

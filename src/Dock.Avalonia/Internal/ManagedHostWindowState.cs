@@ -340,18 +340,9 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
                 return;
             }
 
-            var dockControl = dropCtrl.FindAncestorOfType<DockControl>();
-            if (dockControl is null)
-            {
-                return;
-            }
-
             if (layout?.ActiveDockable is { } sourceDockable
-                && dockControl.Layout is { } dockControlLayout
-                && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
+                && ResolveGlobalTargetDock(dropCtrl) is { } targetDock)
             {
-                var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
-
                 if (!ValidateGlobalTarget(sourceDockable, targetDock))
                 {
                     return;
@@ -417,13 +408,11 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
             return false;
         }
 
-        var dockControl = dropCtrl.FindAncestorOfType<DockControl>();
-        if (dockControl?.Layout is not { ActiveDockable: IDock activeDock })
+        var targetDock = ResolveGlobalTargetDock(dropCtrl);
+        if (targetDock is null)
         {
             return false;
         }
-
-        var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
 
         if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
         {

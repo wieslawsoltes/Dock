@@ -128,18 +128,9 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                 return;
             }
 
-            var dockControl = dropCtrl.FindAncestorOfType<DockControl>();
-            if (dockControl is null)
-            {
-                return;
-            }
-
             if (layout?.ActiveDockable is { } sourceDockable
-                && dockControl.Layout is { } dockControlLayout
-                && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
+                && ResolveGlobalTargetDock(dropCtrl) is { } targetDock)
             {
-                var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
-                
                 if (!ValidateGlobalTarget(sourceDockable, targetDock))
                 {
                     return;
@@ -220,15 +211,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             return false;
         }
 
-        var dockControl = dropCtrl.FindAncestorOfType<DockControl>();
-        if (dockControl?.Layout is not { ActiveDockable: IDock activeDock })
+        var targetDock = ResolveGlobalTargetDock(dropCtrl);
+        if (targetDock is null)
         {
-            LogDropRejection(nameof(ValidateGlobal), "Unable to locate an active dock for the DropControl.");
+            LogDropRejection(nameof(ValidateGlobal), "Unable to resolve global docking target for DropControl.");
             return false;
         }
-
-        // Use the same target dock as execution for consistency
-        var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
 
         // Check if the target dock (or any ancestor) has global docking enabled
         if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))

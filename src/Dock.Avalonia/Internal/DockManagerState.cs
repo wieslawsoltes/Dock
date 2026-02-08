@@ -50,6 +50,21 @@ internal abstract class DockManagerState : IDockManagerState
         DockLogger.LogDebug("DragState", message);
     }
 
+    internal static IDock? ResolveGlobalTargetDock(Control? dropControl)
+    {
+        if (dropControl?.DataContext is IDockable dockable)
+        {
+            return dockable as IDock ?? dockable.Owner as IDock;
+        }
+
+        if (dropControl?.FindAncestorOfType<DockControl>()?.Layout?.ActiveDockable is IDock activeDock)
+        {
+            return activeDock;
+        }
+
+        return null;
+    }
+
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {
         // Local dock target
@@ -117,9 +132,9 @@ internal abstract class DockManagerState : IDockManagerState
                 }
             }
             
-            if (dockControl?.Layout?.ActiveDockable is IDock activeDock)
+            var targetDock = ResolveGlobalTargetDock(dropControl);
+            if (dockControl is not null && targetDock is not null)
             {
-                var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
                 // Only show global adorners if the target dock (or any ancestor) has global docking enabled
                 if (DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
                 {

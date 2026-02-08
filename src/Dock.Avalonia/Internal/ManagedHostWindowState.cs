@@ -55,8 +55,8 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
     public ManagedHostWindowState(
         IDockManager dockManager,
         ManagedHostWindow hostWindow,
-        IGlobalDockTargetResolver? globalDockTargetResolver = null)
-        : base(dockManager, globalDockTargetResolver)
+        IGlobalDockingService? globalDockingService = null)
+        : base(dockManager, globalDockingService)
     {
         _hostWindow = hostWindow;
     }

@@ -17,7 +17,7 @@ namespace Dock.Avalonia.Internal;
 internal abstract class DockManagerState : IDockManagerState
 {
     private readonly IDockManager _dockManager;
-    private readonly IGlobalDockTargetResolver _globalDockTargetResolver;
+    private readonly IGlobalDockingService _globalDockingService;
     private Control? _globalAdornerHost;
 
     protected IDockManager DockManager => _dockManager;
@@ -27,16 +27,18 @@ internal abstract class DockManagerState : IDockManagerState
     protected AdornerHelper<DockTarget> LocalAdornerHelper { get; }
 
     protected AdornerHelper<GlobalDockTarget> GlobalAdornerHelper { get; }
+    
+    protected IGlobalDockingService GlobalDocking => _globalDockingService;
  
     /// <summary>
     /// Initializes a new instance of the <see cref="DockManagerState"/> class.
     /// </summary>
     /// <param name="dockManager">The dock manager.</param>
-    /// <param name="globalDockTargetResolver">Resolves global docking targets from drop controls.</param>
-    protected DockManagerState(IDockManager dockManager, IGlobalDockTargetResolver? globalDockTargetResolver = null)
+    /// <param name="globalDockingService">Provides global docking resolution and behavior decisions.</param>
+    protected DockManagerState(IDockManager dockManager, IGlobalDockingService? globalDockingService = null)
     {
         _dockManager = dockManager;
-        _globalDockTargetResolver = globalDockTargetResolver ?? GlobalDockTargetResolver.Instance;
+        _globalDockingService = globalDockingService ?? GlobalDockingService.Instance;
         LocalAdornerHelper = new AdornerHelper<DockTarget>(DockSettings.UseFloatingDockAdorner);
         GlobalAdornerHelper = new AdornerHelper<GlobalDockTarget>(DockSettings.UseFloatingDockAdorner);
     }
@@ -53,7 +55,7 @@ internal abstract class DockManagerState : IDockManagerState
         DockLogger.LogDebug("DragState", message);
     }
 
-    protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockTargetResolver.Resolve(dropControl);
+    protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockingService.ResolveGlobalTargetDock(dropControl);
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {

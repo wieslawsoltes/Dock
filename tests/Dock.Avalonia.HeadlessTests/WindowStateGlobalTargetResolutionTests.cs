@@ -16,7 +16,7 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class WindowStateGlobalTargetResolutionTests
 {
-    private static readonly IGlobalDockTargetResolver GlobalDockTargetResolver = new GlobalDockTargetResolver();
+    private static readonly IGlobalDockingService GlobalDockingService = new GlobalDockingService();
 
     private static (Factory factory, RootDock root, Document sourceDocument, Document targetDocument) CreateScenario()
     {
@@ -130,7 +130,7 @@ public class WindowStateGlobalTargetResolutionTests
         visualRoot.Show();
         try
         {
-            var targetDock = GlobalDockTargetResolver.Resolve(dropControl);
+            var targetDock = GlobalDockingService.ResolveGlobalTargetDock(dropControl);
             Assert.NotNull(targetDock);
             Assert.Same(targetDocument.Owner, targetDock);
             Assert.NotNull(dropControl.GetVisualRoot());
@@ -177,7 +177,7 @@ public class WindowStateGlobalTargetResolutionTests
         visualRoot.Show();
         try
         {
-            var targetDock = GlobalDockTargetResolver.Resolve(dropControl);
+            var targetDock = GlobalDockingService.ResolveGlobalTargetDock(dropControl);
             Assert.NotNull(targetDock);
             Assert.Same(targetDocument.Owner, targetDock);
             Assert.NotNull(dropControl.GetVisualRoot());

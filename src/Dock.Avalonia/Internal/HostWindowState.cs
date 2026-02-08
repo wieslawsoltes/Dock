@@ -56,8 +56,8 @@ internal class HostWindowState : DockManagerState, IHostWindowState
     public HostWindowState(
         IDockManager dockManager,
         HostWindow hostWindow,
-        IGlobalDockTargetResolver? globalDockTargetResolver = null)
-        : base(dockManager, globalDockTargetResolver)
+        IGlobalDockingService? globalDockingService = null)
+        : base(dockManager, globalDockingService)
     {
         _hostWindow = hostWindow;
     }

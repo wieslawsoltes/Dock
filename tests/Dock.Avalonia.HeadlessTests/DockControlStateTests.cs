@@ -54,9 +54,9 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockOperationSelector_UsesGlobal_WhenNoLocalAdorner()
     {
-        var selector = new GlobalDockOperationSelector();
+        var service = new GlobalDockingService();
 
-        var useGlobal = selector.ShouldUseGlobalOperation(
+        var useGlobal = service.ShouldUseGlobalOperation(
             hasLocalAdorner: false,
             localOperation: DockOperation.Fill,
             globalOperation: DockOperation.Right);
@@ -67,9 +67,9 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockOperationSelector_UsesLocal_WhenLocalOperationIsExplicit()
     {
-        var selector = new GlobalDockOperationSelector();
+        var service = new GlobalDockingService();
 
-        var useGlobal = selector.ShouldUseGlobalOperation(
+        var useGlobal = service.ShouldUseGlobalOperation(
             hasLocalAdorner: true,
             localOperation: DockOperation.Top,
             globalOperation: DockOperation.Right);
@@ -80,9 +80,9 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockOperationSelector_UsesGlobal_WhenLocalOperationIsWindow()
     {
-        var selector = new GlobalDockOperationSelector();
+        var service = new GlobalDockingService();
 
-        var useGlobal = selector.ShouldUseGlobalOperation(
+        var useGlobal = service.ShouldUseGlobalOperation(
             hasLocalAdorner: true,
             localOperation: DockOperation.Window,
             globalOperation: DockOperation.Bottom);
@@ -93,9 +93,9 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockOperationSelector_UsesLocal_WhenGlobalOperationIsNone()
     {
-        var selector = new GlobalDockOperationSelector();
+        var service = new GlobalDockingService();
 
-        var useGlobal = selector.ShouldUseGlobalOperation(
+        var useGlobal = service.ShouldUseGlobalOperation(
             hasLocalAdorner: true,
             localOperation: DockOperation.Window,
             globalOperation: DockOperation.None);
@@ -106,13 +106,13 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockingProportionService_TryApply_UpdatesOwnerProportionAndCollapsedProportion()
     {
-        var service = new GlobalDockingProportionService();
+        var service = new GlobalDockingService();
         var sourceDock = new DocumentDock();
         var sourceDocument = new Document { Owner = sourceDock };
         var sourceRoot = new RootDock();
         var targetRoot = new RootDock();
 
-        var apply = service.TryApply(sourceDocument, sourceRoot, targetRoot, proportion: 0.5);
+        var apply = service.TryApplyGlobalDockingProportion(sourceDocument, sourceRoot, targetRoot, proportion: 0.5);
 
         Assert.True(apply);
         Assert.Equal(0.5, sourceDock.Proportion, 3);
@@ -122,7 +122,7 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenSourceRootMissing()
     {
-        var service = new GlobalDockingProportionService();
+        var service = new GlobalDockingService();
         var sourceDocument = new Document
         {
             Id = "SourceDocument",
@@ -131,7 +131,7 @@ public class DockControlStateTests
         };
         var targetRoot = new RootDock();
 
-        var apply = service.TryApply(sourceDocument, sourceRoot: null, targetRoot, proportion: 0.5);
+        var apply = service.TryApplyGlobalDockingProportion(sourceDocument, sourceRoot: null, targetRoot, proportion: 0.5);
 
         Assert.False(apply);
     }
@@ -139,12 +139,12 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenTargetRootMissing()
     {
-        var service = new GlobalDockingProportionService();
+        var service = new GlobalDockingService();
         var sourceDock = new DocumentDock();
         var sourceDocument = new Document { Owner = sourceDock };
         var sourceRoot = new RootDock();
 
-        var apply = service.TryApply(sourceDocument, sourceRoot, targetRoot: null, proportion: 0.5);
+        var apply = service.TryApplyGlobalDockingProportion(sourceDocument, sourceRoot, targetRoot: null, proportion: 0.5);
 
         Assert.False(apply);
         Assert.True(double.IsNaN(sourceDock.Proportion));
@@ -154,12 +154,12 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockingProportionService_TryApply_ReturnsFalse_WhenSourceOwnerMissing()
     {
-        var service = new GlobalDockingProportionService();
+        var service = new GlobalDockingService();
         var sourceDocument = new Document();
         var sourceRoot = new RootDock();
         var targetRoot = new RootDock();
 
-        var apply = service.TryApply(sourceDocument, sourceRoot, targetRoot, proportion: 0.5);
+        var apply = service.TryApplyGlobalDockingProportion(sourceDocument, sourceRoot, targetRoot, proportion: 0.5);
 
         Assert.False(apply);
     }
@@ -167,7 +167,7 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockTargetResolver_UsesOwnerDock_FromDropDataContextDockable()
     {
-        var resolver = new GlobalDockTargetResolver();
+        var service = new GlobalDockingService();
         var factory = new Factory();
         var root = new RootDock
         {
@@ -207,7 +207,7 @@ public class DockControlStateTests
         root.ActiveDockable = rootLayout;
 
         var dropControl = new Border { DataContext = document };
-        var targetDock = resolver.Resolve(dropControl);
+        var targetDock = service.ResolveGlobalTargetDock(dropControl);
 
         Assert.Same(documentDock, targetDock);
     }
@@ -215,7 +215,7 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void GlobalDockTargetResolver_UsesDropDock_FromDropDataContextDock()
     {
-        var resolver = new GlobalDockTargetResolver();
+        var service = new GlobalDockingService();
         var factory = new Factory();
         var root = new RootDock
         {
@@ -237,7 +237,7 @@ public class DockControlStateTests
         factory.AddDockable(rootLayout, documentDock);
 
         var dropControl = new Border { DataContext = documentDock };
-        var targetDock = resolver.Resolve(dropControl);
+        var targetDock = service.ResolveGlobalTargetDock(dropControl);
 
         Assert.Same(documentDock, targetDock);
     }

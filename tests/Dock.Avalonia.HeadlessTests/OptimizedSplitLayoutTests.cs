@@ -310,7 +310,7 @@ public class OptimizedSplitLayoutTests
     }
 
     [AvaloniaFact]
-    public void OptimizedSplitLayout_WithNaNProportions_MaintainsNaN()
+    public void OptimizedSplitLayout_WithNaNTarget_UsesEffectiveShareForHalfSplit()
     {
         // Arrange
         var factory = CreateFactory();
@@ -346,9 +346,10 @@ public class OptimizedSplitLayoutTests
         // Act
         factory.SplitToDock(toolDock1, newToolDock, DockOperation.Right);
 
-        // Assert - All proportions should remain NaN
-        Assert.True(double.IsNaN(toolDock1.Proportion));
-        Assert.True(double.IsNaN(newToolDock.Proportion));
+        // Assert - target share is inferred as 0.5 (two unassigned docks), then split to 0.25/0.25.
+        Assert.Equal(0.25, toolDock1.Proportion, 3);
+        Assert.Equal(0.25, newToolDock.Proportion, 3);
+        // Unrelated sibling is untouched.
         Assert.True(double.IsNaN(toolDock2.Proportion));
     }
 

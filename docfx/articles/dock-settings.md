@@ -83,7 +83,7 @@ property instead.
 
 `DockSettings.GlobalDockingProportion` controls the split ratio used when a dockable
 is dropped as a global dock target (for example, dropping into a different window).
-The default value is `0.25`.
+The default value is `0.5`.
 
 ## Floating window owner
 

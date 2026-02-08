@@ -166,7 +166,7 @@ public class FactorySplitTests
     }
 
     [AvaloniaFact]
-    public void SplitToDock_With_NaN_Proportion_Maintains_NaN_For_Both_Docks()
+    public void SplitToDock_With_NaN_Proportion_Splits_EffectiveShare_Equally()
     {
         var factory = new Factory();
         var proportionalDock = new ProportionalDock
@@ -184,13 +184,13 @@ public class FactorySplitTests
         // Split dock1 to the right - should reuse the existing horizontal ProportionalDock
         factory.SplitToDock(dock1, newDoc, DockOperation.Right);
 
-        // Verify proportions remain NaN when original was NaN
-        Assert.True(double.IsNaN(dock1.Proportion));
+        // With a single dock in container, NaN resolves to effective share 1.0, then splits 50/50.
+        Assert.Equal(0.5, dock1.Proportion, 3);
         
         // The second item should be a splitter, and the third should be the new dock container
         Assert.Equal(3, proportionalDock.VisibleDockables!.Count);
         var newDocContainer = Assert.IsType<ProportionalDock>(proportionalDock.VisibleDockables![2]);
-        Assert.True(double.IsNaN(newDocContainer.Proportion));
+        Assert.Equal(0.5, newDocContainer.Proportion, 3);
     }
 
     [AvaloniaFact]
@@ -460,6 +460,134 @@ public class FactorySplitTests
         Assert.Same(dock1, proportionalDock.VisibleDockables[0]);
         Assert.IsType<ProportionalDockSplitter>(proportionalDock.VisibleDockables[1]);
         Assert.Same(dockToSplit, proportionalDock.VisibleDockables[2]); // Used directly, not wrapped
+
+        // Single target share (1.0) should split evenly when reusing an IDock.
+        Assert.Equal(0.5, dock1.Proportion, 3);
+        Assert.Equal(0.5, dockToSplit.Proportion, 3);
+    }
+
+    [AvaloniaFact]
+    public void SplitToDock_With_IDock_Dockable_In_FallbackLayout_DoesNotCarryOldProportion()
+    {
+        var factory = new Factory();
+        var verticalOwner = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        verticalOwner.Factory = factory;
+
+        var targetDock = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.6
+        };
+        factory.AddDockable(verticalOwner, targetDock);
+
+        var sourceDock = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.2
+        };
+
+        // Different orientation (Left into vertical owner) forces CreateSplitLayout path.
+        factory.SplitToDock(targetDock, sourceDock, DockOperation.Left);
+
+        var nestedLayout = Assert.IsType<ProportionalDock>(verticalOwner.VisibleDockables![0]);
+        Assert.Equal(Orientation.Horizontal, nestedLayout.Orientation);
+        Assert.Equal(0.6, nestedLayout.Proportion, 3);
+        Assert.Equal(3, nestedLayout.VisibleDockables!.Count);
+
+        var insertedDock = Assert.IsType<ProportionalDock>(nestedLayout.VisibleDockables[0]);
+        var splitTargetDock = Assert.IsType<ProportionalDock>(nestedLayout.VisibleDockables[2]);
+
+        Assert.Same(sourceDock, insertedDock);
+        Assert.Same(targetDock, splitTargetDock);
+
+        // Previous source proportion (0.2) must not leak into the new split.
+        Assert.True(double.IsNaN(insertedDock.Proportion));
+        Assert.True(double.IsNaN(splitTargetDock.Proportion));
+    }
+
+    [AvaloniaFact]
+    public void SplitToDock_With_IDock_Dockable_In_FallbackLayout_ResetsCollapsedProportions()
+    {
+        var factory = new Factory();
+        var verticalOwner = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        verticalOwner.Factory = factory;
+
+        var targetDock = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.6,
+            CollapsedProportion = 0.8
+        };
+        factory.AddDockable(verticalOwner, targetDock);
+
+        var sourceDock = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.2,
+            CollapsedProportion = 0.2
+        };
+
+        // Different orientation forces CreateSplitLayout fallback.
+        factory.SplitToDock(targetDock, sourceDock, DockOperation.Left);
+
+        var nestedLayout = Assert.IsType<ProportionalDock>(verticalOwner.VisibleDockables![0]);
+        var insertedDock = Assert.IsType<ProportionalDock>(nestedLayout.VisibleDockables![0]);
+        var splitTargetDock = Assert.IsType<ProportionalDock>(nestedLayout.VisibleDockables![2]);
+
+        Assert.Same(sourceDock, insertedDock);
+        Assert.Same(targetDock, splitTargetDock);
+        Assert.True(double.IsNaN(insertedDock.CollapsedProportion));
+        Assert.True(double.IsNaN(splitTargetDock.CollapsedProportion));
+    }
+
+    [AvaloniaFact]
+    public void SplitToDock_With_IDock_Dockable_In_Optimization_UpdatesCollapsedProportions()
+    {
+        var factory = new Factory();
+        var horizontalOwner = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        horizontalOwner.Factory = factory;
+
+        var targetDock = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.6,
+            CollapsedProportion = 0.6
+        };
+        var siblingDock = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.4,
+            CollapsedProportion = 0.4
+        };
+        factory.AddDockable(horizontalOwner, targetDock);
+        factory.AddDockable(horizontalOwner, siblingDock);
+
+        var sourceDock = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            CollapsedProportion = 0.2
+        };
+
+        factory.SplitToDock(targetDock, sourceDock, DockOperation.Right);
+
+        Assert.Equal(0.3, targetDock.Proportion, 3);
+        Assert.Equal(0.3, sourceDock.Proportion, 3);
+        Assert.Equal(0.3, targetDock.CollapsedProportion, 3);
+        Assert.Equal(0.3, sourceDock.CollapsedProportion, 3);
+        Assert.Equal(0.4, siblingDock.Proportion, 3);
+        Assert.Equal(0.4, siblingDock.CollapsedProportion, 3);
     }
 
     [AvaloniaFact]
@@ -662,7 +790,7 @@ public class FactorySplitTests
     }
 
     [AvaloniaFact]
-    public void SplitToDock_With_NaN_Proportion_Preserves_NaN_In_Optimization()
+    public void SplitToDock_With_NaN_Proportion_In_Optimization_UsesHalfOfEffectiveShare()
     {
         var factory = new Factory();
         var proportionalDock = new ProportionalDock
@@ -677,12 +805,12 @@ public class FactorySplitTests
         
         var newDoc = new Document();
 
-        // Split dock1 - should preserve NaN proportions
+        // Split dock1 - single non-splitter child has effective share 1.0, so result is 0.5/0.5
         factory.SplitToDock(dock1, newDoc, DockOperation.Right);
 
-        Assert.True(double.IsNaN(dock1.Proportion));
+        Assert.Equal(0.5, dock1.Proportion, 3);
         var newDocContainer = (ProportionalDock)proportionalDock.VisibleDockables![2];
-        Assert.True(double.IsNaN(newDocContainer.Proportion));
+        Assert.Equal(0.5, newDocContainer.Proportion, 3);
     }
 
     [AvaloniaFact]

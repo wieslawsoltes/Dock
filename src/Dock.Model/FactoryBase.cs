@@ -12,6 +12,60 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase : IFactory
 {
+    private static bool IsAssignedProportion(double proportion)
+    {
+        return !double.IsNaN(proportion) && proportion > 0.0;
+    }
+
+    private static double ResolveEffectiveProportion(IProportionalDock ownerDock, IDock dock)
+    {
+        if (IsAssignedProportion(dock.Proportion))
+        {
+            return dock.Proportion;
+        }
+
+        if (ownerDock.VisibleDockables is not { Count: > 0 } visibleDockables)
+        {
+            return double.NaN;
+        }
+
+        var assignedTotal = 0.0;
+        var unassignedCount = 0;
+        var nonSplitterCount = 0;
+
+        foreach (var dockable in visibleDockables)
+        {
+            if (dockable is IProportionalDockSplitter)
+            {
+                continue;
+            }
+
+            nonSplitterCount++;
+
+            if (IsAssignedProportion(dockable.Proportion))
+            {
+                assignedTotal += dockable.Proportion;
+            }
+            else
+            {
+                unassignedCount++;
+            }
+        }
+
+        if (unassignedCount <= 0)
+        {
+            return double.NaN;
+        }
+
+        var remaining = 1.0 - assignedTotal;
+        if (remaining > 0.0)
+        {
+            return remaining / unassignedCount;
+        }
+
+        return nonSplitterCount > 0 ? 1.0 / nonSplitterCount : double.NaN;
+    }
+
     private static void CopyDockGroup(IDockable source, IDockable target)
     {
         var group = DockGroupValidator.GetEffectiveDockGroup(source);
@@ -59,6 +113,7 @@ public abstract partial class FactoryBase : IFactory
                     if (singleDockable is IDock singleDock && !double.IsNaN(dock.Proportion))
                     {
                         singleDock.Proportion = dock.Proportion;
+                        singleDock.CollapsedProportion = dock.Proportion;
                     }
 
                     // Remove the current dock from owner
@@ -208,6 +263,10 @@ public abstract partial class FactoryBase : IFactory
         if (dockable is IDock dockableDock)
         {
             split = dockableDock;
+            // When reusing an existing dock for a new split layout, discard its previous
+            // proportion from the old owner so the new sibling split starts balanced.
+            split.Proportion = double.NaN;
+            split.CollapsedProportion = double.NaN;
         }
         else
         {
@@ -225,12 +284,14 @@ public abstract partial class FactoryBase : IFactory
 
         var containerProportion = dock.Proportion;
         dock.Proportion = double.NaN;
+        dock.CollapsedProportion = double.NaN;
 
         var layout = CreateProportionalDock();
         layout.Title = nameof(IProportionalDock);
         layout.VisibleDockables = CreateList<IDockable>();
         layout.Proportion = containerProportion;
-    CopyDockGroup(dock, layout);
+        layout.CollapsedProportion = containerProportion;
+        CopyDockGroup(dock, layout);
 
         var splitter = CreateProportionalDockSplitter();
         splitter.Title = nameof(IProportionalDockSplitter);
@@ -363,11 +424,14 @@ public abstract partial class FactoryBase : IFactory
                                 var splitter = CreateProportionalDockSplitter();
                                 splitter.Title = nameof(IProportionalDockSplitter);
 
-                                // Store the original dock's proportion and split it equally
-                                var originalProportion = dock.Proportion;
+                                // Split the dock's effective share equally. When the dock's proportion
+                                // is unset (NaN), infer it from sibling shares inside this owner.
+                                var originalProportion = ResolveEffectiveProportion(proportionalOwner, dock);
                                 var halfProportion = double.IsNaN(originalProportion) ? double.NaN : originalProportion / 2.0;
                                 dock.Proportion = halfProportion;
+                                dock.CollapsedProportion = halfProportion;
                                 split.Proportion = halfProportion;
+                                split.CollapsedProportion = halfProportion;
 
                                 switch (operation)
                                 {

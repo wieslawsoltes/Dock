@@ -104,6 +104,170 @@ public class GlobalDockTrackingTests
     }
 
     [Fact]
+    public void FocusedDockableChanged_From_Different_Root_Reanchors_When_Tracked_Window_Layout_Is_Stale()
+    {
+        var factory = new TrackingTestFactory();
+        var first = CreateContext(factory, "A");
+        var second = CreateContext(factory, "B");
+        factory.OnWindowActivated(first.Window);
+
+        first.Window.Layout = second.Root;
+
+        GlobalDockTrackingChangedEventArgs? raised = null;
+        factory.GlobalDockTrackingChanged += (_, args) => raised = args;
+
+        factory.OnFocusedDockableChanged(second.Dockable2);
+
+        Assert.NotNull(raised);
+        Assert.Equal(DockTrackingChangeReason.FocusedDockableChanged, raised!.Reason);
+        Assert.Same(second.Dockable2, factory.CurrentDockable);
+        Assert.Same(second.Root, factory.CurrentRootDock);
+        Assert.Same(second.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void ActiveDockableChanged_From_Different_Root_Reanchors_When_Tracked_Window_Layout_Is_Stale()
+    {
+        var factory = new TrackingTestFactory();
+        var first = CreateContext(factory, "A");
+        var second = CreateContext(factory, "B");
+        factory.OnWindowActivated(first.Window);
+
+        first.Window.Layout = second.Root;
+
+        GlobalDockTrackingChangedEventArgs? raised = null;
+        factory.GlobalDockTrackingChanged += (_, args) => raised = args;
+
+        factory.OnActiveDockableChanged(second.Dockable2);
+
+        Assert.NotNull(raised);
+        Assert.Equal(DockTrackingChangeReason.ActiveDockableChanged, raised!.Reason);
+        Assert.Same(second.Dockable2, factory.CurrentDockable);
+        Assert.Same(second.Root, factory.CurrentRootDock);
+        Assert.Same(second.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void DockableActivated_From_Different_Root_Reanchors_When_Tracked_Window_Layout_Is_Stale()
+    {
+        var factory = new TrackingTestFactory();
+        var first = CreateContext(factory, "A");
+        var second = CreateContext(factory, "B");
+        factory.OnWindowActivated(first.Window);
+
+        first.Window.Layout = second.Root;
+
+        GlobalDockTrackingChangedEventArgs? raised = null;
+        factory.GlobalDockTrackingChanged += (_, args) => raised = args;
+
+        factory.OnDockableActivated(second.Dockable2);
+
+        Assert.NotNull(raised);
+        Assert.Equal(DockTrackingChangeReason.DockableActivated, raised!.Reason);
+        Assert.Same(second.Dockable2, factory.CurrentDockable);
+        Assert.Same(second.Root, factory.CurrentRootDock);
+        Assert.Same(second.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void FocusedDockableChanged_From_Different_Root_Reanchors_When_Tracked_Root_Is_Not_Attached()
+    {
+        var factory = new TrackingTestFactory();
+        var first = CreateContext(factory, "A");
+        var second = CreateContext(factory, "B");
+        first.Root.Window = null;
+        second.Root.Window = null;
+
+        var dockControl = new TestDockControl
+        {
+            Factory = factory,
+            Layout = second.Root
+        };
+        factory.DockControls.Add(dockControl);
+
+        factory.OnFocusedDockableChanged(first.Dockable1);
+
+        GlobalDockTrackingChangedEventArgs? raised = null;
+        factory.GlobalDockTrackingChanged += (_, args) => raised = args;
+
+        factory.OnFocusedDockableChanged(second.Dockable2);
+
+        Assert.NotNull(raised);
+        Assert.Equal(DockTrackingChangeReason.FocusedDockableChanged, raised!.Reason);
+        Assert.Same(second.Dockable2, factory.CurrentDockable);
+        Assert.Same(second.Root, factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void FocusedDockableChanged_From_Different_Root_Does_Not_Reanchor_When_Tracked_Root_Is_Attached()
+    {
+        var factory = new TrackingTestFactory();
+        var first = CreateContext(factory, "A");
+        var second = CreateContext(factory, "B");
+        first.Root.Window = null;
+        second.Root.Window = null;
+
+        var dockControl = new TestDockControl
+        {
+            Factory = factory,
+            Layout = first.Root
+        };
+        factory.DockControls.Add(dockControl);
+
+        factory.OnFocusedDockableChanged(first.Dockable1);
+
+        var raised = 0;
+        factory.GlobalDockTrackingChanged += (_, _) => raised++;
+
+        factory.OnFocusedDockableChanged(second.Dockable2);
+
+        Assert.Equal(0, raised);
+        Assert.Same(first.Dockable1, factory.CurrentDockable);
+        Assert.Same(first.Root, factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void InitLayout_Replaced_Split_Root_Reanchors_Tracking_And_Allows_Document_Focus_Switches()
+    {
+        var factory = new TrackingTestFactory();
+        var first = CreateSplitContext(factory, "A");
+        var second = CreateSplitContext(factory, "B");
+
+        var dockControl = new TestDockControl
+        {
+            Factory = factory,
+            Layout = first.Root
+        };
+        factory.DockControls.Add(dockControl);
+
+        factory.InitLayout(first.Root);
+        factory.OnFocusedDockableChanged(first.LeftDocument);
+        Assert.Same(first.Root, factory.CurrentRootDock);
+
+        factory.InitLayout(second.Root);
+        dockControl.Layout = second.Root;
+
+        var raised = 0;
+        factory.GlobalDockTrackingChanged += (_, args) =>
+        {
+            if (args.Reason == DockTrackingChangeReason.FocusedDockableChanged)
+            {
+                raised++;
+            }
+        };
+
+        factory.OnFocusedDockableChanged(second.LeftDocument);
+        factory.OnFocusedDockableChanged(second.RightDocument);
+
+        Assert.Equal(2, raised);
+        Assert.Same(second.RightDocument, factory.CurrentDockable);
+        Assert.Same(second.Root, factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
+    }
+
+    [Fact]
     public void ActiveDockableChanged_With_Unresolved_Root_Does_Not_Change_State()
     {
         var factory = new TrackingTestFactory();
@@ -483,6 +647,50 @@ public class GlobalDockTrackingTests
         return new TrackingContext(root, window, dock, dockable1, dockable2);
     }
 
+    private static SplitTrackingContext CreateSplitContext(TrackingTestFactory factory, string idSuffix)
+    {
+        var root = factory.CreateRootDock();
+        root.Id = $"split-root-{idSuffix}";
+
+        var splitDock = factory.CreateProportionalDock();
+        splitDock.Id = $"split-dock-{idSuffix}";
+        splitDock.Owner = root;
+
+        var leftDock = factory.CreateDocumentDock();
+        leftDock.Id = $"left-dock-{idSuffix}";
+        leftDock.Owner = splitDock;
+
+        var rightDock = factory.CreateDocumentDock();
+        rightDock.Id = $"right-dock-{idSuffix}";
+        rightDock.Owner = splitDock;
+
+        var leftDocument = factory.CreateDocument();
+        leftDocument.Id = $"left-doc-{idSuffix}";
+        leftDocument.Owner = leftDock;
+
+        var rightDocument = factory.CreateDocument();
+        rightDocument.Id = $"right-doc-{idSuffix}";
+        rightDocument.Owner = rightDock;
+
+        leftDock.VisibleDockables = factory.CreateList<IDockable>(leftDocument);
+        leftDock.ActiveDockable = leftDocument;
+        leftDock.FocusedDockable = leftDocument;
+
+        rightDock.VisibleDockables = factory.CreateList<IDockable>(rightDocument);
+        rightDock.ActiveDockable = rightDocument;
+        rightDock.FocusedDockable = rightDocument;
+
+        splitDock.VisibleDockables = factory.CreateList<IDockable>(leftDock, rightDock);
+        splitDock.ActiveDockable = leftDock;
+        splitDock.FocusedDockable = leftDocument;
+
+        root.VisibleDockables = factory.CreateList<IDockable>(splitDock);
+        root.ActiveDockable = splitDock;
+        root.FocusedDockable = leftDocument;
+
+        return new SplitTrackingContext(root, splitDock, leftDocument, rightDocument);
+    }
+
     private sealed record TrackingContext(
         IRootDock Root,
         IDockWindow Window,
@@ -490,8 +698,31 @@ public class GlobalDockTrackingTests
         IDockable Dockable1,
         IDockable Dockable2);
 
+    private sealed record SplitTrackingContext(
+        IRootDock Root,
+        IDock SplitDock,
+        IDockable LeftDocument,
+        IDockable RightDocument);
+
     private sealed class TrackingTestFactory : Factory
     {
+    }
+
+    private sealed class TestDockControl : IDockControl
+    {
+        public IDockManager DockManager { get; } = null!;
+
+        public IDockControlState DockControlState { get; } = null!;
+
+        public IDock? Layout { get; set; }
+
+        public object? DefaultContext { get; set; }
+
+        public bool InitializeLayout { get; set; }
+
+        public bool InitializeFactory { get; set; }
+
+        public IFactory? Factory { get; set; }
     }
 
     private sealed class TestHostWindow : IHostWindow

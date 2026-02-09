@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
 
@@ -103,8 +104,7 @@ public abstract partial class FactoryBase
 
         if (dockable is not null)
         {
-            if (rootDock is not null
-                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
+            if (ShouldUpdateGlobalTrackingForRoot(rootDock))
             {
                 UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.ActiveDockableChanged);
             }
@@ -129,8 +129,7 @@ public abstract partial class FactoryBase
 
         if (dockable is not null)
         {
-            if (rootDock is not null
-                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
+            if (ShouldUpdateGlobalTrackingForRoot(rootDock))
             {
                 UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.FocusedDockableChanged);
             }
@@ -333,14 +332,71 @@ public abstract partial class FactoryBase
 
         if (dockable is not null)
         {
-            if (rootDock is not null
-                && (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock)))
+            if (ShouldUpdateGlobalTrackingForRoot(rootDock))
             {
                 UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.DockableActivated);
             }
         }
 
         DockableActivated?.Invoke(this, new DockableActivatedEventArgs(dockable));
+    }
+
+    private bool ShouldUpdateGlobalTrackingForRoot(IRootDock? rootDock)
+    {
+        if (rootDock is null)
+        {
+            return false;
+        }
+
+        if (CurrentRootDock is null || ReferenceEquals(CurrentRootDock, rootDock))
+        {
+            return true;
+        }
+
+        return IsCurrentGlobalTrackingRootStale();
+    }
+
+    private bool IsCurrentGlobalTrackingRootStale()
+    {
+        if (CurrentRootDock is not { } currentRoot)
+        {
+            return false;
+        }
+
+        if (CurrentDockWindow is { } currentWindow)
+        {
+            if (!ReferenceEquals(currentWindow.Layout, currentRoot))
+            {
+                return true;
+            }
+
+            if (currentRoot.Window is not null && !ReferenceEquals(currentRoot.Window, currentWindow))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        if (currentRoot.Window is not null)
+        {
+            return true;
+        }
+
+        if (DockControls.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (var dockControl in DockControls)
+        {
+            if (ReferenceEquals(dockControl.Layout, currentRoot))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <inheritdoc />

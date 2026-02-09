@@ -48,6 +48,12 @@ public class MdiDocumentControl : TemplatedControl
         AvaloniaProperty.Register<MdiDocumentControl, IDataTemplate>(nameof(CloseTemplate));
 
     /// <summary>
+    /// Defines the <see cref="EmptyContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> EmptyContentTemplateProperty =
+        AvaloniaProperty.Register<MdiDocumentControl, IDataTemplate?>(nameof(EmptyContentTemplate));
+
+    /// <summary>
     /// Define the <see cref="CloseButtonTheme"/> property.
     /// </summary>
     public static readonly StyledProperty<ControlTheme?> CloseButtonThemeProperty =
@@ -65,10 +71,19 @@ public class MdiDocumentControl : TemplatedControl
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<MdiDocumentControl, bool>(nameof(IsActive));
 
+    /// <summary>
+    /// Defines the <see cref="HasVisibleDocuments"/> property.
+    /// </summary>
+    public static readonly DirectProperty<MdiDocumentControl, bool> HasVisibleDocumentsProperty =
+        AvaloniaProperty.RegisterDirect<MdiDocumentControl, bool>(
+            nameof(HasVisibleDocuments),
+            o => o.HasVisibleDocuments);
+
     private INotifyPropertyChanged? _dockSubscription;
     private INotifyCollectionChanged? _dockablesSubscription;
     private IDock? _currentDock;
     private IDisposable? _dataContextSubscription;
+    private bool _hasVisibleDocuments;
 
     /// <summary>
     /// Gets or sets tab icon template.
@@ -107,6 +122,15 @@ public class MdiDocumentControl : TemplatedControl
     }
 
     /// <summary>
+    /// Gets or sets template used to render empty host content.
+    /// </summary>
+    public IDataTemplate? EmptyContentTemplate
+    {
+        get => GetValue(EmptyContentTemplateProperty);
+        set => SetValue(EmptyContentTemplateProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets the close button theme.
     /// </summary>
     public ControlTheme? CloseButtonTheme
@@ -131,6 +155,15 @@ public class MdiDocumentControl : TemplatedControl
     {
         get => GetValue(IsActiveProperty);
         set => SetValue(IsActiveProperty, value);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the current MDI host contains visible MDI documents.
+    /// </summary>
+    public bool HasVisibleDocuments
+    {
+        get => _hasVisibleDocuments;
+        private set => SetAndRaise(HasVisibleDocumentsProperty, ref _hasVisibleDocuments, value);
     }
 
     /// <summary>
@@ -183,6 +216,7 @@ public class MdiDocumentControl : TemplatedControl
         _currentDock = dataContext as IDock;
         if (_currentDock is null)
         {
+            HasVisibleDocuments = false;
             return;
         }
 
@@ -193,6 +227,7 @@ public class MdiDocumentControl : TemplatedControl
         }
 
         AttachDockablesCollection(_currentDock.VisibleDockables as INotifyCollectionChanged);
+        UpdateHasVisibleDocuments();
         UpdateZOrder();
     }
 
@@ -206,6 +241,7 @@ public class MdiDocumentControl : TemplatedControl
         if (e.PropertyName == nameof(IDock.VisibleDockables))
         {
             AttachDockablesCollection(_currentDock.VisibleDockables as INotifyCollectionChanged);
+            UpdateHasVisibleDocuments();
             UpdateZOrder();
             return;
         }
@@ -235,7 +271,19 @@ public class MdiDocumentControl : TemplatedControl
 
     private void DockablesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        UpdateHasVisibleDocuments();
         UpdateZOrder();
+    }
+
+    private void UpdateHasVisibleDocuments()
+    {
+        if (_currentDock?.VisibleDockables is null)
+        {
+            HasVisibleDocuments = false;
+            return;
+        }
+
+        HasVisibleDocuments = _currentDock.VisibleDockables.OfType<IMdiDocument>().Any();
     }
 
     private void UpdateZOrder()
@@ -265,5 +313,6 @@ public class MdiDocumentControl : TemplatedControl
         }
 
         _currentDock = null;
+        HasVisibleDocuments = false;
     }
 }

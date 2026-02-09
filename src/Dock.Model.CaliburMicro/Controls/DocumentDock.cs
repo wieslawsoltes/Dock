@@ -14,6 +14,7 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// </summary>
 public class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
+    private object? _emptyContent = "No documents open";
     private bool _canCreateDocument = true;
     private ICommand? _createDocument;
     private bool _enableWindowDrag = true;
@@ -77,6 +78,14 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
     {
         get => _closeButtonShowMode;
         set => Set(ref _closeButtonShowMode, value);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public object? EmptyContent
+    {
+        get => _emptyContent;
+        set => Set(ref _emptyContent, value);
     }
 
     /// <inheritdoc/>

@@ -50,6 +50,26 @@ The Avalonia controls expose additional properties for theming:
 - `MdiDocumentControl` forwards `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate`, and `CloseButtonTheme` to each window.
 - `MdiDocumentWindow` exposes `DocumentContextMenu`, `MdiState`, and `IsActive` for styling or interaction.
 
+`IDocumentDock.EmptyContent` defines placeholder content shown when a document host has no visible dockables. In MDI mode, `MdiDocumentControl.EmptyContentTemplate` can optionally control how that content is rendered:
+
+```csharp
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+
+var documents = new DocumentDock
+{
+    LayoutMode = DocumentLayoutMode.Mdi,
+    EmptyContent = "No documents are open"
+};
+
+var mdiDocumentControl = new MdiDocumentControl
+{
+    DataContext = documents,
+    EmptyContentTemplate = new FuncDataTemplate<string>((text, _) =>
+        new TextBlock { Text = text }, true)
+};
+```
+
 To customize the layout algorithm, provide an `IMdiLayoutManager` implementation. It can be assigned on `MdiDocumentControl.LayoutManager` (which the default template forwards to `MdiLayoutPanel`):
 
 ```csharp

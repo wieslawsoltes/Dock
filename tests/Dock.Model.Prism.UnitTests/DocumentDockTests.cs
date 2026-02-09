@@ -83,4 +83,12 @@ public class DocumentDockTests
         Assert.Single(factory.Added);
         Assert.Same(created, factory.Added[0].Dockable);
     }
+
+    [Fact]
+    public void EmptyContent_Default_Is_Set()
+    {
+        var dock = new DocumentDock();
+        Assert.Equal("No documents open", dock.EmptyContent);
+    }
+
 }

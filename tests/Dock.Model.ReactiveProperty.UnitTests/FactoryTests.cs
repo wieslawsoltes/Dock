@@ -94,6 +94,13 @@ public class FactoryTests
     }
 
     [Fact]
+    public void DocumentDock_Default_EmptyContent_Is_Set()
+    {
+        var dock = new DocumentDock();
+        Assert.Equal("No documents open", dock.EmptyContent);
+    }
+
+    [Fact]
     public void CreateDockWindow_Creates_DockWindow()
     {
         var factory = new TestFactory();

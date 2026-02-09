@@ -86,5 +86,6 @@ public class DockControlsTests
         Assert.NotNull(dock.CreateDocument);
         Assert.False(dock.EnableWindowDrag);
         Assert.Equal(DocumentTabLayout.Top, dock.TabsLayout);
+        Assert.Equal("No documents open", dock.EmptyContent);
     }
 }

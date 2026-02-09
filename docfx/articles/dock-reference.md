@@ -52,6 +52,7 @@ from a saved state.
 - `TabsLayout` chooses where the tabs appear using the `DocumentTabLayout` enum
 - `LayoutMode` switches between `Tabbed` and `Mdi` layouts
 - `CloseButtonShowMode` controls when document close buttons appear
+- `EmptyContent` defines placeholder content shown when a tabbed or MDI document host has no visible dockables
 - `CanCreateDocument` and `CreateDocument` control the new-document command
 - `CascadeDocuments`, `TileDocumentsHorizontal`, `TileDocumentsVertical`, and `RestoreDocuments` are MDI helpers
 
@@ -124,9 +125,9 @@ These properties allow you to customize the context menus, flyouts, and button t
 
 Dock exposes template properties for tab headers and MDI windows:
 
-- `DocumentControl`: `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate`, `CloseButtonTheme`, `IsActive`, `TabsLayout`.
+- `DocumentControl`: `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate`, `EmptyContentTemplate`, `CloseButtonTheme`, `IsActive`, `TabsLayout`, `HasVisibleDockables`.
 - `ToolControl`: `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`.
-- `MdiDocumentControl`: `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate`, `CloseButtonTheme`, `LayoutManager`, `IsActive`.
+- `MdiDocumentControl`: `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate`, `EmptyContentTemplate`, `CloseButtonTheme`, `LayoutManager`, `IsActive`, `HasVisibleDocuments`.
 - `MdiDocumentWindow`: `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate`, `CloseButtonTheme`, `DocumentContextMenu`, `IsActive`, `MdiState`.
 
 Use these to customize headers, icons, and modified indicators in styles or templates. See [Styling and theming](dock-styling.md) and [MDI document layout](dock-mdi.md) for details.

@@ -63,9 +63,11 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `HeaderTemplate` | `IDataTemplate` | Tab header template. |
 | `ModifiedTemplate` | `IDataTemplate` | Modified indicator template. |
 | `CloseTemplate` | `IDataTemplate` | Close button template. |
+| `EmptyContentTemplate` | `IDataTemplate?` | Template used to render model `EmptyContent` when no tabbed documents are visible. |
 | `CloseButtonTheme` | `ControlTheme?` | Theme for the close button. |
 | `IsActive` | `bool` | Active document state (drives `:active`). |
 | `TabsLayout` | `DocumentTabLayout` | Tab placement for the document dock. |
+| `HasVisibleDockables` | `bool` | `true` when one or more tabbed dockables are visible (read-only). |
 
 ### ToolControl
 
@@ -156,9 +158,11 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `HeaderTemplate` | `IDataTemplate` | Window header template. |
 | `ModifiedTemplate` | `IDataTemplate` | Modified indicator template. |
 | `CloseTemplate` | `IDataTemplate` | Close button template. |
+| `EmptyContentTemplate` | `IDataTemplate?` | Template used to render the model `EmptyContent` placeholder when no MDI documents are visible. |
 | `CloseButtonTheme` | `ControlTheme?` | Theme for the close button. |
 | `LayoutManager` | `IMdiLayoutManager?` | Layout manager forwarded to the MDI panel. |
 | `IsActive` | `bool` | Active state (drives `:active`). |
+| `HasVisibleDocuments` | `bool` | `true` when one or more MDI documents are visible (read-only). |
 
 ### MdiDocumentWindow
 

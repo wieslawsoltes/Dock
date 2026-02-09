@@ -1,5 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -7,6 +10,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Reactive;
 using Avalonia.Styling;
 using Dock.Model.Core;
 
@@ -43,6 +47,12 @@ public class DocumentControl : TemplatedControl
         AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(CloseTemplate));
 
     /// <summary>
+    /// Defines the <see cref="EmptyContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> EmptyContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentControl, IDataTemplate?>(nameof(EmptyContentTemplate));
+
+    /// <summary>
     /// Define the <see cref="CloseButtonTheme"/> property.
     /// </summary>
     public static readonly StyledProperty<ControlTheme?> CloseButtonThemeProperty =
@@ -68,6 +78,20 @@ public class DocumentControl : TemplatedControl
     /// </summary>
     public static readonly StyledProperty<DocumentTabLayout> TabsLayoutProperty =
         AvaloniaProperty.Register<DocumentControl, DocumentTabLayout>(nameof(TabsLayout));
+
+    /// <summary>
+    /// Defines the <see cref="HasVisibleDockables"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DocumentControl, bool> HasVisibleDockablesProperty =
+        AvaloniaProperty.RegisterDirect<DocumentControl, bool>(
+            nameof(HasVisibleDockables),
+            o => o.HasVisibleDockables);
+
+    private INotifyPropertyChanged? _dockSubscription;
+    private INotifyCollectionChanged? _dockablesSubscription;
+    private IDock? _currentDock;
+    private IDisposable? _dataContextSubscription;
+    private bool _hasVisibleDockables;
 
     /// <summary>
     /// Gets or sets tab icon template.
@@ -106,6 +130,15 @@ public class DocumentControl : TemplatedControl
     }
 
     /// <summary>
+    /// Gets or sets template used to render empty host content.
+    /// </summary>
+    public IDataTemplate? EmptyContentTemplate
+    {
+        get => GetValue(EmptyContentTemplateProperty);
+        set => SetValue(EmptyContentTemplateProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets if this is the currently active dockable.
     /// </summary>
     public bool IsActive
@@ -124,6 +157,15 @@ public class DocumentControl : TemplatedControl
     }
 
     /// <summary>
+    /// Gets a value indicating whether the current tabbed host contains visible dockables.
+    /// </summary>
+    public bool HasVisibleDockables
+    {
+        get => _hasVisibleDockables;
+        private set => SetAndRaise(HasVisibleDockablesProperty, ref _hasVisibleDockables, value);
+    }
+
+    /// <summary>
     /// Initializes new instance of the <see cref="DocumentControl"/> class.
     /// </summary>
     public DocumentControl()
@@ -137,6 +179,21 @@ public class DocumentControl : TemplatedControl
         base.OnAttachedToVisualTree(e);
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+
+        _dataContextSubscription = this.GetObservable(DataContextProperty)
+            .Subscribe(new AnonymousObserver<object?>(OnDockChanged));
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        RemoveHandler(PointerPressedEvent, PressedHandler);
+
+        _dataContextSubscription?.Dispose();
+        _dataContextSubscription = null;
+        DetachDockSubscriptions();
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -164,5 +221,87 @@ public class DocumentControl : TemplatedControl
     private void UpdatePseudoClasses(bool isActive)
     {
         PseudoClasses.Set(":active", isActive);
+    }
+
+    private void OnDockChanged(object? dataContext)
+    {
+        DetachDockSubscriptions();
+
+        _currentDock = dataContext as IDock;
+        if (_currentDock is null)
+        {
+            HasVisibleDockables = false;
+            return;
+        }
+
+        if (_currentDock is INotifyPropertyChanged propertyChanged)
+        {
+            _dockSubscription = propertyChanged;
+            _dockSubscription.PropertyChanged += DockPropertyChanged;
+        }
+
+        AttachDockablesCollection(_currentDock.VisibleDockables as INotifyCollectionChanged);
+        UpdateHasVisibleDockables();
+    }
+
+    private void DockPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (_currentDock is null)
+        {
+            return;
+        }
+
+        if (e.PropertyName != nameof(IDock.VisibleDockables))
+        {
+            return;
+        }
+
+        AttachDockablesCollection(_currentDock.VisibleDockables as INotifyCollectionChanged);
+        UpdateHasVisibleDockables();
+    }
+
+    private void AttachDockablesCollection(INotifyCollectionChanged? collection)
+    {
+        if (_dockablesSubscription != null)
+        {
+            _dockablesSubscription.CollectionChanged -= DockablesCollectionChanged;
+            _dockablesSubscription = null;
+        }
+
+        if (collection is null)
+        {
+            return;
+        }
+
+        _dockablesSubscription = collection;
+        _dockablesSubscription.CollectionChanged += DockablesCollectionChanged;
+    }
+
+    private void DockablesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        UpdateHasVisibleDockables();
+    }
+
+    private void UpdateHasVisibleDockables()
+    {
+        HasVisibleDockables = _currentDock?.VisibleDockables?.Count > 0;
+    }
+
+    private void DetachDockSubscriptions()
+    {
+        if (_dockSubscription != null)
+        {
+            _dockSubscription.PropertyChanged -= DockPropertyChanged;
+            _dockSubscription = null;
+        }
+
+        if (_dockablesSubscription != null)
+        {
+            _dockablesSubscription.CollectionChanged -= DockablesCollectionChanged;
+            _dockablesSubscription = null;
+        }
+
+        _currentDock = null;
+        HasVisibleDockables = false;
     }
 }

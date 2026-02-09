@@ -16,6 +16,7 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// </summary>
 public partial class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
+    private object? _emptyContent = "No documents open";
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
     private DocumentLayoutMode _layoutMode = DocumentLayoutMode.Tabbed;
     private DocumentCloseButtonShowMode _closeButtonShowMode = DocumentCloseButtonShowMode.Always;
@@ -90,6 +91,14 @@ public partial class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactor
     {
         get => _closeButtonShowMode;
         set => this.RaiseAndSetIfChanged(ref _closeButtonShowMode, value);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public object? EmptyContent
+    {
+        get => _emptyContent;
+        set => this.RaiseAndSetIfChanged(ref _emptyContent, value);
     }
 
     private void CreateNewDocument()

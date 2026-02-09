@@ -42,6 +42,11 @@ public interface IDocumentDock : IDock, ILocalTarget
     DocumentCloseButtonShowMode CloseButtonShowMode { get; set; }
 
     /// <summary>
+    /// Gets or sets placeholder content shown when the document host has no visible dockables.
+    /// </summary>
+    object? EmptyContent { get; set; }
+
+    /// <summary>
     /// Gets or sets command to cascade MDI documents.
     /// </summary>
     ICommand? CascadeDocuments { get; set; }

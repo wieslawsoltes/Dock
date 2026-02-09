@@ -969,6 +969,13 @@ public static class FluentExtensions
     /// <param name="mode">Close button display mode.</param>
     /// <returns>The same document dock.</returns>
     public static IDocumentDock WithCloseButtonShowMode(this IDocumentDock dock, DocumentCloseButtonShowMode mode) { dock.CloseButtonShowMode = mode; return dock; }
+    /// <summary>
+    /// Sets placeholder content displayed when the document host has no visible dockables.
+    /// </summary>
+    /// <param name="dock">The document dock.</param>
+    /// <param name="content">Placeholder content.</param>
+    /// <returns>The same document dock.</returns>
+    public static IDocumentDock WithEmptyContent(this IDocumentDock dock, object? content) { dock.EmptyContent = content; return dock; }
     // Avoid shadowing instance methods; provide chainable variants with distinct names
     /// <summary>
     /// Appends a document to the document dock in a chainable way.

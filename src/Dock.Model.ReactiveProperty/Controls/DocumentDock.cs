@@ -16,6 +16,7 @@ namespace Dock.Model.ReactiveProperty.Controls;
 [DataContract(IsReference = true)]
 public class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
 {
+    private object? _emptyContent = "No documents open";
     private bool _canCreateDocument;
     private bool _enableWindowDrag;
     private DocumentLayoutMode _layoutMode = DocumentLayoutMode.Tabbed;
@@ -99,6 +100,14 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockFactory
     {
         get => _closeButtonShowMode;
         set => SetProperty(ref _closeButtonShowMode, value);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public object? EmptyContent
+    {
+        get => _emptyContent;
+        set => SetProperty(ref _emptyContent, value);
     }
 
     private void CreateNewDocument()

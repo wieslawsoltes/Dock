@@ -61,6 +61,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
         AvaloniaProperty.Register<DocumentDock, DocumentCloseButtonShowMode>(nameof(CloseButtonShowMode), DocumentCloseButtonShowMode.Always);
 
     /// <summary>
+    /// Defines the <see cref="EmptyContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> EmptyContentProperty =
+        AvaloniaProperty.Register<DocumentDock, object?>(nameof(EmptyContent), "No documents open");
+
+    /// <summary>
     /// Defines the <see cref="ItemsSource"/> property.
     /// </summary>
     public static readonly StyledProperty<IEnumerable?> ItemsSourceProperty =
@@ -176,6 +182,15 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     {
         get => GetValue(CloseButtonShowModeProperty);
         set => SetValue(CloseButtonShowModeProperty, value);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public object? EmptyContent
+    {
+        get => GetValue(EmptyContentProperty);
+        set => SetValue(EmptyContentProperty, value);
     }
 
     /// <inheritdoc/>

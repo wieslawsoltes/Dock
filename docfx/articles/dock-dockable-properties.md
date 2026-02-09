@@ -26,6 +26,7 @@ Dockable items such as documents, tools and docks implement the `IDockable` inte
 | `MaxWidth` | Optional maximum width. Overrides the proportion if smaller. |
 | `MinHeight` | Optional minimum height. Overrides the current proportion if larger. |
 | `MaxHeight` | Optional maximum height. Overrides the proportion if smaller. |
+| `DockingState` | Logical docking state (`DockingWindowState` flags) such as `Docked`, `Pinned`, `Document`, optionally combined with `Floating` and `Hidden`. When a parent dock is hidden, descendants also include `Hidden`. |
 | `CanClose` | Whether the user can close the dockable via UI commands. |
 | `CanPin` | Allows pinning and unpinning of tools. |
 | `KeepPinnedDockableVisible` | Keeps pinned previews visible instead of auto-hiding. |
@@ -64,6 +65,8 @@ In XAML you set them as attributes:
       CanPin="False"
       CanFloat="True" />
 ```
+
+`DockingState` is maintained by factory operations (`PinDockable`, `UnpinDockable`, `FloatDockable`, `HideDockable`, `RestoreDockable`) and can be used by UI bindings for diagnostics or state-aware visuals.
 
 Global drag and drop behavior can be toggled using the attached properties from [`Dock.Settings`](dock-settings.md):
 

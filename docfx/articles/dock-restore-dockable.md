@@ -35,7 +35,8 @@ IDockable? RestoreDockable(string id);
 4. **Fire Restored Event**: Triggers the `DockableRestored` event
 5. **Restore to Original Owner**: If the dockable has an `OriginalOwner`, adds it back to that dock's `VisibleDockables`
 6. **Update Ownership**: Sets the dockable's `Owner` to the original owner and clears `OriginalOwner`
-7. **Fire Added Event**: Triggers the `DockableAdded` event
+7. **Update DockingState**: Recomputes `IDockable.DockingState` for the restored dockable and descendants (for example clears `Hidden` and restores `Docked`/`Pinned`/`Document` with optional `Floating`)
+8. **Fire Added Event**: Triggers the `DockableAdded` event
 
 ### String Overload Behavior
 
@@ -53,6 +54,7 @@ if (dockable.OriginalOwner is IDock owner)
     OnDockableAdded(dockable);
     dockable.Owner = owner;
     dockable.OriginalOwner = null;
+    UpdateDockingWindowStateRecursive(dockable);
 }
 ```
 

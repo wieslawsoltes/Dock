@@ -108,6 +108,20 @@ Indicates the current state of a floating dock window (`IDockWindow.WindowState`
 | `Maximized` | Window is maximized. |
 | `FullScreen` | Window uses full-screen presentation when supported. |
 
+## DockingWindowState
+
+Represents the logical docking state on `IDockable.DockingState`.  
+This is a flags enum, so values can be combined (for example `Document | Floating`).
+
+| Value | Description |
+| ----- | ----------- |
+| `None` | No state assigned. |
+| `Docked` | Dockable is hosted in a regular tool/layout dock. |
+| `Pinned` | Dockable is pinned in an auto-hide strip. |
+| `Document` | Dockable is hosted in a document dock. |
+| `Floating` | Dockable belongs to a floating window root. |
+| `Hidden` | Dockable is currently in `IRootDock.HiddenDockables`. |
+
 ## GripMode
 
 Determines how the grip element in tool chrome behaves (used by tool docks).

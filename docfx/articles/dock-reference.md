@@ -6,7 +6,7 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 
 | Type | Description |
 | --- | --- |
-| `IDockable` | Base interface for items that can be shown in a dock. Provides `Id`, `Title`, `Context`, optional size limits and lifecycle methods like `OnClose`. |
+| `IDockable` | Base interface for items that can be shown in a dock. Provides `Id`, `Title`, `Context`, `DockingState`, optional size limits and lifecycle methods like `OnClose`. |
 | `IDock` | Extends `IDockable` with visible dockables (`VisibleDockables`, `ActiveDockable`, `DefaultDockable`, `FocusedDockable`) and navigation commands (`GoBack`, `GoForward`, `Navigate`, `Close`). It also exposes `OpenedDockablesCount`, `IsActive`, `EnableGlobalDocking`, and `CanCloseLastDockable`. |
 | `IRootDock` | The top-level container. In addition to the `IDock` members it exposes pinned dock collections and commands to manage windows. |
 | `IProportionalDock` | A dock that lays out its children horizontally or vertically using a `Proportion` value. |
@@ -43,6 +43,16 @@ The adapter starts with `NaN` coordinates until a value is set.
 
 These values are consulted when calculating drop targets or restoring a layout
 from a saved state.
+
+## Docking state flags
+
+`IDockable.DockingState` tracks logical placement using `DockingWindowState` flags:
+
+- `Docked`, `Pinned`, or `Document` describe primary location.
+- `Floating` is added when the dockable is hosted in a floating window.
+- `Hidden` is added when the dockable is moved to `IRootDock.HiddenDockables`.
+
+Common combinations include `Docked | Floating`, `Pinned | Floating`, and `Document | Floating | Hidden`.
 
 ## Document dock options
 

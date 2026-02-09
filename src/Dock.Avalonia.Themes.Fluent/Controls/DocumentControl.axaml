@@ -118,17 +118,27 @@
           <Grid x:Name="PART_Grid"
                 IsVisible="{Binding #PART_TabStrip.IsVisible}" />
           <Border x:Name="PART_Border">
-            <DockableControl DataContext="{Binding ActiveDockable}"
-                             TrackingMode="Visible">
-              <ContentControl x:Name="PART_ContentPresenter"
-                              Content="{Binding}"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch">
-                <ContentControl.ContentTemplate>
-                  <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                </ContentControl.ContentTemplate>
-              </ContentControl>
-            </DockableControl>
+            <Grid>
+              <DockableControl DataContext="{Binding ActiveDockable}"
+                               TrackingMode="Visible"
+                               IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
+                <ContentControl x:Name="PART_ContentPresenter"
+                                Content="{Binding}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                  <ContentControl.ContentTemplate>
+                    <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                  </ContentControl.ContentTemplate>
+                </ContentControl>
+              </DockableControl>
+
+              <ContentControl x:Name="PART_EmptyContentHost"
+                              Content="{Binding EmptyContent}"
+                              ContentTemplate="{Binding $parent[DocumentControl].EmptyContentTemplate}"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              IsVisible="{Binding !$parent[DocumentControl].HasVisibleDockables}" />
+            </Grid>
           </Border>
         </DockPanel>
       </ControlTemplate>

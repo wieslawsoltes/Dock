@@ -68,38 +68,48 @@
                 DockProperties.IsDropArea="True"
                 DockProperties.IsDockTarget="True"
                 DockProperties.DockAdornerHost="{Binding RelativeSource={RelativeSource Self}}">
-          <ItemsControl x:Name="PART_ItemsControl"
-                        Classes="MdiLayoutItems"
-                        ItemsSource="{Binding VisibleDockables}">
-            <ItemsControl.Styles>
-              <Style Selector="ItemsControl.MdiLayoutItems > ContentPresenter"
-                     x:DataType="dmc:IMdiDocument">
-                <Setter Property="ZIndex" Value="{Binding MdiZIndex}" />
-              </Style>
-            </ItemsControl.Styles>
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <controls:MdiLayoutPanel LayoutManager="{Binding $parent[controls:MdiDocumentControl].LayoutManager}" />
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate DataType="dmc:IMdiDocument">
-                <controls:MdiDocumentWindow IconTemplate="{Binding $parent[controls:MdiDocumentControl].IconTemplate}"
-                                            HeaderTemplate="{Binding $parent[controls:MdiDocumentControl].HeaderTemplate}"
-                                            ModifiedTemplate="{Binding $parent[controls:MdiDocumentControl].ModifiedTemplate}"
-                                            CloseTemplate="{Binding $parent[controls:MdiDocumentControl].CloseTemplate}"
-                                            CloseButtonTheme="{Binding $parent[controls:MdiDocumentControl].CloseButtonTheme}"
-                                            DocumentContextMenu="{DynamicResource MdiDocumentWindowContextMenu}"
-                                            MdiState="{Binding MdiState}"
-                                            ZIndex="{Binding MdiZIndex}"
-                                            DockProperties.IsDropArea="True"
-                                            DockProperties.IsDockTarget="True"
-                                            DockProperties.ShowDockIndicatorOnly="True"
-                                            DockProperties.IndicatorDockOperation="Fill"
-                                            DockProperties.DockAdornerHost="{Binding RelativeSource={RelativeSource AncestorType=controls:MdiDocumentControl}}" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
+          <Grid>
+            <ItemsControl x:Name="PART_ItemsControl"
+                          Classes="MdiLayoutItems"
+                          IsVisible="{Binding $parent[controls:MdiDocumentControl].HasVisibleDocuments}"
+                          ItemsSource="{Binding VisibleDockables}">
+              <ItemsControl.Styles>
+                <Style Selector="ItemsControl.MdiLayoutItems > ContentPresenter"
+                       x:DataType="dmc:IMdiDocument">
+                  <Setter Property="ZIndex" Value="{Binding MdiZIndex}" />
+                </Style>
+              </ItemsControl.Styles>
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <controls:MdiLayoutPanel LayoutManager="{Binding $parent[controls:MdiDocumentControl].LayoutManager}" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="dmc:IMdiDocument">
+                  <controls:MdiDocumentWindow IconTemplate="{Binding $parent[controls:MdiDocumentControl].IconTemplate}"
+                                              HeaderTemplate="{Binding $parent[controls:MdiDocumentControl].HeaderTemplate}"
+                                              ModifiedTemplate="{Binding $parent[controls:MdiDocumentControl].ModifiedTemplate}"
+                                              CloseTemplate="{Binding $parent[controls:MdiDocumentControl].CloseTemplate}"
+                                              CloseButtonTheme="{Binding $parent[controls:MdiDocumentControl].CloseButtonTheme}"
+                                              DocumentContextMenu="{DynamicResource MdiDocumentWindowContextMenu}"
+                                              MdiState="{Binding MdiState}"
+                                              ZIndex="{Binding MdiZIndex}"
+                                              DockProperties.IsDropArea="True"
+                                              DockProperties.IsDockTarget="True"
+                                              DockProperties.ShowDockIndicatorOnly="True"
+                                              DockProperties.IndicatorDockOperation="Fill"
+                                              DockProperties.DockAdornerHost="{Binding RelativeSource={RelativeSource AncestorType=controls:MdiDocumentControl}}" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ContentControl x:Name="PART_EmptyContentHost"
+                            Content="{Binding EmptyContent}"
+                            ContentTemplate="{Binding $parent[controls:MdiDocumentControl].EmptyContentTemplate}"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            IsVisible="{Binding !$parent[controls:MdiDocumentControl].HasVisibleDocuments}" />
+          </Grid>
         </Border>
       </ControlTemplate>
     </Setter>

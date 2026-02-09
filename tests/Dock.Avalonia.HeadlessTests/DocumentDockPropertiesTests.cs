@@ -30,6 +30,13 @@ public class DocumentDockPropertiesTests
     }
 
     [AvaloniaFact]
+    public void DocumentDock_Default_EmptyContent_Value()
+    {
+        var dock = new DocumentDock();
+        Assert.Equal("No documents open", dock.EmptyContent);
+    }
+
+    [AvaloniaFact]
     public void SetDocumentDockTabsLayoutLeft_Changes_TabsLayout()
     {
         var factory = new Factory();

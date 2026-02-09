@@ -82,7 +82,7 @@ public static class DockSettings
     /// <summary>
     /// Configures the proportion used for global docking split operations.
     /// </summary>
-    public static double GlobalDockingProportion = 0.25;
+    public static double GlobalDockingProportion = 0.5;
 
     /// <summary>
     /// Enables verbose diagnostics logging for docking workflows.

@@ -17,6 +17,7 @@ namespace Dock.Avalonia.Internal;
 internal abstract class DockManagerState : IDockManagerState
 {
     private readonly IDockManager _dockManager;
+    private readonly IGlobalDockingService _globalDockingService;
     private Control? _globalAdornerHost;
 
     protected IDockManager DockManager => _dockManager;
@@ -26,14 +27,18 @@ internal abstract class DockManagerState : IDockManagerState
     protected AdornerHelper<DockTarget> LocalAdornerHelper { get; }
 
     protected AdornerHelper<GlobalDockTarget> GlobalAdornerHelper { get; }
+    
+    protected IGlobalDockingService GlobalDocking => _globalDockingService;
  
     /// <summary>
     /// Initializes a new instance of the <see cref="DockManagerState"/> class.
     /// </summary>
     /// <param name="dockManager">The dock manager.</param>
-    protected DockManagerState(IDockManager dockManager)
+    /// <param name="globalDockingService">Provides global docking resolution and behavior decisions.</param>
+    protected DockManagerState(IDockManager dockManager, IGlobalDockingService? globalDockingService = null)
     {
         _dockManager = dockManager;
+        _globalDockingService = globalDockingService ?? GlobalDockingService.Instance;
         LocalAdornerHelper = new AdornerHelper<DockTarget>(DockSettings.UseFloatingDockAdorner);
         GlobalAdornerHelper = new AdornerHelper<GlobalDockTarget>(DockSettings.UseFloatingDockAdorner);
     }
@@ -49,6 +54,8 @@ internal abstract class DockManagerState : IDockManagerState
     {
         DockLogger.LogDebug("DragState", message);
     }
+
+    protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockingService.ResolveGlobalTargetDock(dropControl);
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {
@@ -117,9 +124,9 @@ internal abstract class DockManagerState : IDockManagerState
                 }
             }
             
-            if (dockControl?.Layout?.ActiveDockable is IDock activeDock)
+            var targetDock = ResolveGlobalTargetDock(dropControl);
+            if (dockControl is not null && targetDock is not null)
             {
-                var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
                 // Only show global adorners if the target dock (or any ancestor) has global docking enabled
                 if (DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
                 {

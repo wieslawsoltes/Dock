@@ -70,6 +70,10 @@ are placed.
 `IDocumentDock.LayoutMode` switches between tabbed documents and classic MDI
 windows. When MDI mode is enabled the dock exposes commands for cascade and
 tile operations, and documents implement `IMdiDocument` to store window state.
+`IDocumentDock.EmptyContent` can provide placeholder content when either
+document host is empty (tabbed or MDI). Template rendering for that content is
+configured in the Avalonia layer via `DocumentControl.EmptyContentTemplate`
+and `MdiDocumentControl.EmptyContentTemplate`.
 
 `IDocumentDockFactory` exposes a `DocumentFactory` delegate that is used by
 the `CreateDocument` command. When assigned, this factory is invoked to

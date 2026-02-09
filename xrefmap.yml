@@ -3336,6 +3336,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ManagedDockableBase.DockGroup
   nameWithType: ManagedDockableBase.DockGroup
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockingState
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.DockingState
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.DockingState
+  nameWithType: ManagedDockableBase.DockingState
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockingState_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.DockingState
+  nameWithType: ManagedDockableBase.DockingState
 - uid: Dock.Avalonia.Controls.ManagedDockableBase.Factory
   name: Factory
   href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_Factory
@@ -13638,6 +13651,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockableBase.DockProperty
   fullName: Dock.Model.Avalonia.Core.DockableBase.DockProperty
   nameWithType: DockableBase.DockProperty
+- uid: Dock.Model.Avalonia.Core.DockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockingState
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.DockingState
+  fullName: Dock.Model.Avalonia.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.Avalonia.Core.DockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockingState_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.Avalonia.Core.DockableBase.DockingStateProperty
+  name: DockingStateProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockingStateProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.DockingStateProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.DockingStateProperty
+  nameWithType: DockableBase.DockingStateProperty
 - uid: Dock.Model.Avalonia.Core.DockableBase.Factory
   name: Factory
   href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_Factory
@@ -16582,6 +16614,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockableBase.DockGroup
   nameWithType: DockableBase.DockGroup
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_DockingState
+  commentId: P:Dock.Model.CaliburMicro.Core.DockableBase.DockingState
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_DockingState_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
 - uid: Dock.Model.CaliburMicro.Core.DockableBase.Factory
   name: Factory
   href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_Factory
@@ -19636,6 +19681,48 @@ references:
   commentId: F:Dock.Model.Core.DockWindowState.Normal
   fullName: Dock.Model.Core.DockWindowState.Normal
   nameWithType: DockWindowState.Normal
+- uid: Dock.Model.Core.DockingWindowState
+  name: DockingWindowState
+  href: api/Dock.Model.Core.DockingWindowState.html
+  commentId: T:Dock.Model.Core.DockingWindowState
+  fullName: Dock.Model.Core.DockingWindowState
+  nameWithType: DockingWindowState
+- uid: Dock.Model.Core.DockingWindowState.Docked
+  name: Docked
+  href: api/Dock.Model.Core.DockingWindowState.html#Dock_Model_Core_DockingWindowState_Docked
+  commentId: F:Dock.Model.Core.DockingWindowState.Docked
+  fullName: Dock.Model.Core.DockingWindowState.Docked
+  nameWithType: DockingWindowState.Docked
+- uid: Dock.Model.Core.DockingWindowState.Document
+  name: Document
+  href: api/Dock.Model.Core.DockingWindowState.html#Dock_Model_Core_DockingWindowState_Document
+  commentId: F:Dock.Model.Core.DockingWindowState.Document
+  fullName: Dock.Model.Core.DockingWindowState.Document
+  nameWithType: DockingWindowState.Document
+- uid: Dock.Model.Core.DockingWindowState.Floating
+  name: Floating
+  href: api/Dock.Model.Core.DockingWindowState.html#Dock_Model_Core_DockingWindowState_Floating
+  commentId: F:Dock.Model.Core.DockingWindowState.Floating
+  fullName: Dock.Model.Core.DockingWindowState.Floating
+  nameWithType: DockingWindowState.Floating
+- uid: Dock.Model.Core.DockingWindowState.Hidden
+  name: Hidden
+  href: api/Dock.Model.Core.DockingWindowState.html#Dock_Model_Core_DockingWindowState_Hidden
+  commentId: F:Dock.Model.Core.DockingWindowState.Hidden
+  fullName: Dock.Model.Core.DockingWindowState.Hidden
+  nameWithType: DockingWindowState.Hidden
+- uid: Dock.Model.Core.DockingWindowState.None
+  name: None
+  href: api/Dock.Model.Core.DockingWindowState.html#Dock_Model_Core_DockingWindowState_None
+  commentId: F:Dock.Model.Core.DockingWindowState.None
+  fullName: Dock.Model.Core.DockingWindowState.None
+  nameWithType: DockingWindowState.None
+- uid: Dock.Model.Core.DockingWindowState.Pinned
+  name: Pinned
+  href: api/Dock.Model.Core.DockingWindowState.html#Dock_Model_Core_DockingWindowState_Pinned
+  commentId: F:Dock.Model.Core.DockingWindowState.Pinned
+  fullName: Dock.Model.Core.DockingWindowState.Pinned
+  nameWithType: DockingWindowState.Pinned
 - uid: Dock.Model.Core.DocumentCloseButtonShowMode
   name: DocumentCloseButtonShowMode
   href: api/Dock.Model.Core.DocumentCloseButtonShowMode.html
@@ -22353,6 +22440,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockable.DockGroup
   nameWithType: IDockable.DockGroup
+- uid: Dock.Model.Core.IDockable.DockingState
+  name: DockingState
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_DockingState
+  commentId: P:Dock.Model.Core.IDockable.DockingState
+  fullName: Dock.Model.Core.IDockable.DockingState
+  nameWithType: IDockable.DockingState
+- uid: Dock.Model.Core.IDockable.DockingState*
+  name: DockingState
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_DockingState_
+  commentId: Overload:Dock.Model.Core.IDockable.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockable.DockingState
+  nameWithType: IDockable.DockingState
 - uid: Dock.Model.Core.IDockable.Factory
   name: Factory
   href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Factory
@@ -28082,6 +28182,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.RemoveWindow
   nameWithType: FactoryBase.RemoveWindow
+- uid: Dock.Model.FactoryBase.ResolveDockingWindowState(Dock.Model.Core.IDockable)
+  name: ResolveDockingWindowState(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ResolveDockingWindowState_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.ResolveDockingWindowState(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.ResolveDockingWindowState(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.ResolveDockingWindowState(IDockable)
+- uid: Dock.Model.FactoryBase.ResolveDockingWindowState*
+  name: ResolveDockingWindowState
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ResolveDockingWindowState_
+  commentId: Overload:Dock.Model.FactoryBase.ResolveDockingWindowState
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.ResolveDockingWindowState
+  nameWithType: FactoryBase.ResolveDockingWindowState
 - uid: Dock.Model.FactoryBase.ResolveRootDock(Dock.Model.Core.IDockable)
   name: ResolveRootDock(IDockable?)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ResolveRootDock_Dock_Model_Core_IDockable_
@@ -28362,6 +28475,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.UnpinDockable
   nameWithType: FactoryBase.UnpinDockable
+- uid: Dock.Model.FactoryBase.UpdateDockingWindowState(Dock.Model.Core.IDockable)
+  name: UpdateDockingWindowState(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UpdateDockingWindowState_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.UpdateDockingWindowState(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.UpdateDockingWindowState(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.UpdateDockingWindowState(IDockable)
+- uid: Dock.Model.FactoryBase.UpdateDockingWindowState*
+  name: UpdateDockingWindowState
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UpdateDockingWindowState_
+  commentId: Overload:Dock.Model.FactoryBase.UpdateDockingWindowState
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.UpdateDockingWindowState
+  nameWithType: FactoryBase.UpdateDockingWindowState
+- uid: Dock.Model.FactoryBase.UpdateDockingWindowStateRecursive(Dock.Model.Core.IDockable)
+  name: UpdateDockingWindowStateRecursive(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UpdateDockingWindowStateRecursive_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.UpdateDockingWindowStateRecursive(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.UpdateDockingWindowStateRecursive(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.UpdateDockingWindowStateRecursive(IDockable)
+- uid: Dock.Model.FactoryBase.UpdateDockingWindowStateRecursive*
+  name: UpdateDockingWindowStateRecursive
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UpdateDockingWindowStateRecursive_
+  commentId: Overload:Dock.Model.FactoryBase.UpdateDockingWindowStateRecursive
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.UpdateDockingWindowStateRecursive
+  nameWithType: FactoryBase.UpdateDockingWindowStateRecursive
 - uid: Dock.Model.FactoryBase.UpdateGlobalDockTracking(Dock.Model.Core.IDockable,Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow,Dock.Model.Core.DockTrackingChangeReason)
   name: UpdateGlobalDockTracking(IDockable?, IRootDock?, IDockWindow?, DockTrackingChangeReason)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UpdateGlobalDockTracking_Dock_Model_Core_IDockable_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_Dock_Model_Core_DockTrackingChangeReason_
@@ -32016,6 +32155,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockableBase.DockGroup
   nameWithType: DockableBase.DockGroup
+- uid: Dock.Model.Inpc.Core.DockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_DockingState
+  commentId: P:Dock.Model.Inpc.Core.DockableBase.DockingState
+  fullName: Dock.Model.Inpc.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.Inpc.Core.DockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_DockingState_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
 - uid: Dock.Model.Inpc.Core.DockableBase.Factory
   name: Factory
   href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_Factory
@@ -34856,6 +35008,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockableBase.DockGroup
   nameWithType: DockableBase.DockGroup
+- uid: Dock.Model.Mvvm.Core.DockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_DockingState
+  commentId: P:Dock.Model.Mvvm.Core.DockableBase.DockingState
+  fullName: Dock.Model.Mvvm.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.Mvvm.Core.DockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_DockingState_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
 - uid: Dock.Model.Mvvm.Core.DockableBase.Factory
   name: Factory
   href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_Factory
@@ -37493,6 +37658,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockableBase.DockGroup
   nameWithType: DockableBase.DockGroup
+- uid: Dock.Model.Prism.Core.DockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_DockingState
+  commentId: P:Dock.Model.Prism.Core.DockableBase.DockingState
+  fullName: Dock.Model.Prism.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.Prism.Core.DockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_DockingState_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
 - uid: Dock.Model.Prism.Core.DockableBase.Factory
   name: Factory
   href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_Factory
@@ -40130,6 +40308,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockableBase.DockGroup
   nameWithType: DockableBase.DockGroup
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_DockingState
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockableBase.DockingState
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_DockingState_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
 - uid: Dock.Model.ReactiveProperty.Core.DockableBase.Factory
   name: Factory
   href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_Factory
@@ -42881,6 +43072,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockableBase.DockGroup
   nameWithType: DockableBase.DockGroup
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.DockingState
+  name: DockingState
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockingState
+  commentId: P:Dock.Model.ReactiveUI.Core.DockableBase.DockingState
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.DockingState*
+  name: DockingState
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockingState_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.DockingState
+  nameWithType: DockableBase.DockingState
 - uid: Dock.Model.ReactiveUI.Core.DockableBase.Factory
   name: Factory
   href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_Factory

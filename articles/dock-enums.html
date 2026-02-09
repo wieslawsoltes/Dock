@@ -348,6 +348,43 @@
 </tr>
 </tbody>
 </table>
+<h2 id="dockingwindowstate">DockingWindowState</h2>
+<p>Represents the logical docking state on <code>IDockable.DockingState</code>.<br>
+This is a flags enum, so values can be combined (for example <code>Document | Floating</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>No state assigned.</td>
+</tr>
+<tr>
+<td><code>Docked</code></td>
+<td>Dockable is hosted in a regular tool/layout dock.</td>
+</tr>
+<tr>
+<td><code>Pinned</code></td>
+<td>Dockable is pinned in an auto-hide strip.</td>
+</tr>
+<tr>
+<td><code>Document</code></td>
+<td>Dockable is hosted in a document dock.</td>
+</tr>
+<tr>
+<td><code>Floating</code></td>
+<td>Dockable belongs to a floating window root.</td>
+</tr>
+<tr>
+<td><code>Hidden</code></td>
+<td>Dockable is currently in <code>IRootDock.HiddenDockables</code>.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="gripmode">GripMode</h2>
 <p>Determines how the grip element in tool chrome behaves (used by tool docks).</p>
 <table>

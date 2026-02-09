@@ -3476,6 +3476,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockingWindowState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockingWindowState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockingWindowState",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockingWindowState.yml\" sourcestartlinenumber=\"1\">Represents the logical docking state of a dockable.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.DocumentCloseButtonShowMode.yml",
       "output": {
         ".html": {

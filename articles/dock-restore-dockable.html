@@ -110,6 +110,7 @@ IDockable? RestoreDockable(string id);
 <li><strong>Fire Restored Event</strong>: Triggers the <code>DockableRestored</code> event</li>
 <li><strong>Restore to Original Owner</strong>: If the dockable has an <code>OriginalOwner</code>, adds it back to that dock's <code>VisibleDockables</code></li>
 <li><strong>Update Ownership</strong>: Sets the dockable's <code>Owner</code> to the original owner and clears <code>OriginalOwner</code></li>
+<li><strong>Update DockingState</strong>: Recomputes <code>IDockable.DockingState</code> for the restored dockable and descendants (for example clears <code>Hidden</code> and restores <code>Docked</code>/<code>Pinned</code>/<code>Document</code> with optional <code>Floating</code>)</li>
 <li><strong>Fire Added Event</strong>: Triggers the <code>DockableAdded</code> event</li>
 </ol>
 <h3 id="string-overload-behavior">String Overload Behavior</h3>
@@ -123,6 +124,7 @@ IDockable? RestoreDockable(string id);
     OnDockableAdded(dockable);
     dockable.Owner = owner;
     dockable.OriginalOwner = null;
+    UpdateDockingWindowStateRecursive(dockable);
 }
 </code></pre>
 <h3 id="design-principles">Design Principles</h3>

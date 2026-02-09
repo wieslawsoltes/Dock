@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Dock Serialization State Guide | Dock for Avalonia </title>
+      <title>Enum DockingWindowState | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Dock Serialization State Guide | Dock for Avalonia ">
+      <meta name="title" content="Enum DockingWindowState | Dock for Avalonia ">
       
-      
+      <meta name="description" content="Represents the logical docking state of a dockable.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-serialization-state.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Model_Core_DockingWindowState.md&amp;value=---%0Auid%3A%20Dock.Model.Core.DockingWindowState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -39,7 +39,7 @@
 
   </head>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
@@ -80,41 +80,74 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="">
-<h1 id="dock-serialization-state-guide">Dock Serialization State Guide</h1>
+        <article data-uid="Dock.Model.Core.DockingWindowState">
 
-<p>This guide explains how to persist and restore dock state using <code>DockState</code>. The <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlSample">DockXamlSample</a> shows these steps in a working application.</p>
-<p><code>DockState</code> stores tool and document content (and document templates for document docks) so that those values can be restored after a layout is loaded. Active/focused dockables and <code>IDockable.DockingState</code> are part of the layout model and are serialized with the layout itself.</p>
-<h2 id="saving-the-state">Saving the state</h2>
-<p>Call <code>Save</code> with the root <code>IDock</code> before serializing the layout:</p>
-<pre><code class="lang-csharp">var layout = dockControl.Layout;
-if (layout is { })
-{
-    _dockState.Save(layout);
-    await using var stream = File.Create(&quot;layout.json&quot;);
-    _serializer.Save(stream, layout);
-}
-</code></pre>
-<h2 id="restoring-the-state">Restoring the state</h2>
-<p>After loading the layout, apply the recorded state:</p>
-<pre><code class="lang-csharp">await using var stream = File.OpenRead(&quot;layout.json&quot;);
-var layout = _serializer.Load&lt;IDock?&gt;(stream);
-if (layout is { })
-{
-    dockControl.Layout = layout;
-    _dockState.Restore(layout);
-}
-</code></pre>
-<p>Reset the state with <code>DockState.Reset()</code> when starting a new layout or when you no longer need the saved information.</p>
-<p>For more details see the <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlSample">XAML sample project</a>.</p>
+
+
+
+  <h1 id="Dock_Model_Core_DockingWindowState" data-uid="Dock.Model.Core.DockingWindowState" class="text-break">
+Enum DockingWindowState  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/DockingWindowState.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Model.html">Model</a>.<a class="xref" href="Dock.Model.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Model.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents the logical docking state of a dockable.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Flags]
+public enum DockingWindowState</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h2 id="fields">Fields
+</h2>
+  <dl class="parameters">
+    <dt id="Dock_Model_Core_DockingWindowState_Docked"><code>Docked = 1</code></dt>
+  
+  <dd><p>Dockable is part of normal dock/tool layout.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockingWindowState_Document"><code>Document = 4</code></dt>
+  
+  <dd><p>Dockable is hosted inside a document dock.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockingWindowState_Floating"><code>Floating = 8</code></dt>
+  
+  <dd><p>Dockable is hosted in a floating window.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockingWindowState_Hidden"><code>Hidden = 16</code></dt>
+  
+  <dd><p>Dockable is hidden.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockingWindowState_None"><code>None = 0</code></dt>
+  
+  <dd><p>Docking state is not set.</p>
+</dd>
+    <dt id="Dock_Model_Core_DockingWindowState_Pinned"><code>Pinned = 2</code></dt>
+  
+  <dd><p>Dockable is pinned in an auto-hide strip.</p>
+</dd>
+  </dl>
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-serialization-state.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/DockingWindowState.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
-        <div class="next-article d-print-none border-top" id="nextArticle"></div>
 
       </div>
 

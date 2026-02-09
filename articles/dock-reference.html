@@ -95,7 +95,7 @@
 <tbody>
 <tr>
 <td><code>IDockable</code></td>
-<td>Base interface for items that can be shown in a dock. Provides <code>Id</code>, <code>Title</code>, <code>Context</code>, optional size limits and lifecycle methods like <code>OnClose</code>.</td>
+<td>Base interface for items that can be shown in a dock. Provides <code>Id</code>, <code>Title</code>, <code>Context</code>, <code>DockingState</code>, optional size limits and lifecycle methods like <code>OnClose</code>.</td>
 </tr>
 <tr>
 <td><code>IDock</code></td>
@@ -172,6 +172,14 @@ pointer coordinates relative to the dock control.</li>
 </ul>
 <p>These values are consulted when calculating drop targets or restoring a layout
 from a saved state.</p>
+<h2 id="docking-state-flags">Docking state flags</h2>
+<p><code>IDockable.DockingState</code> tracks logical placement using <code>DockingWindowState</code> flags:</p>
+<ul>
+<li><code>Docked</code>, <code>Pinned</code>, or <code>Document</code> describe primary location.</li>
+<li><code>Floating</code> is added when the dockable is hosted in a floating window.</li>
+<li><code>Hidden</code> is added when the dockable is moved to <code>IRootDock.HiddenDockables</code>.</li>
+</ul>
+<p>Common combinations include <code>Docked | Floating</code>, <code>Pinned | Floating</code>, and <code>Document | Floating | Hidden</code>.</p>
 <h2 id="document-dock-options">Document dock options</h2>
 <p><code>IDocumentDock</code> exposes several key properties for controlling its behavior:</p>
 <ul>

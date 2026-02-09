@@ -126,6 +126,8 @@ public abstract partial class FactoryBase
             }
         }
 
+        UpdateDockingWindowState(dockable);
+
         OnDockableInit(dockable);
     }
 

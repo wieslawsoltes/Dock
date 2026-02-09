@@ -24,6 +24,7 @@ public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorI
     private bool _isCollapsable = true;
     private double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
+    private DockingWindowState _dockingState = DockingWindowState.Docked;
     private int _column;
     private int _columnSpan = 1;
     private int _row;
@@ -135,6 +136,14 @@ public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorI
     {
         get => _dock;
         set => Set(ref _dock, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DockingWindowState DockingState
+    {
+        get => _dockingState;
+        set => Set(ref _dockingState, value);
     }
 
     /// <inheritdoc/>

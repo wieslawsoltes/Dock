@@ -86,6 +86,12 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
         AvaloniaProperty.RegisterDirect<DockableBase, DockMode>(nameof(Dock), o => o.Dock, (o, v) => o.Dock = v);
 
     /// <summary>
+    /// Defines the <see cref="DockingState"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, DockingWindowState> DockingStateProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, DockingWindowState>(nameof(DockingState), o => o.DockingState, (o, v) => o.DockingState = v, DockingWindowState.Docked);
+
+    /// <summary>
     /// Defines the <see cref="Column"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, int> ColumnProperty =
@@ -242,6 +248,7 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     private bool _isCollapsable = true;
     private double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
+    private DockingWindowState _dockingState = DockingWindowState.Docked;
     private int _column = 0;
     private int _row = 0;
     private int _columnSpan = 1;
@@ -365,6 +372,15 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     {
         get => _dock;
         set => SetAndRaise(DockProperty, ref _dock, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("DockingState")]
+    public DockingWindowState DockingState
+    {
+        get => _dockingState;
+        set => SetAndRaise(DockingStateProperty, ref _dockingState, value);
     }
 
     /// <inheritdoc/>

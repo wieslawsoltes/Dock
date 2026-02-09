@@ -729,6 +729,8 @@ public abstract partial class FactoryBase
                 }
             }
 
+            UpdateDockingWindowState(dockable);
+
             // TODO: Handle ActiveDockable state.
             // TODO: Handle IsExpanded property of IToolDock.
             // TODO: Handle AutoHide property of IToolDock.
@@ -737,6 +739,8 @@ public abstract partial class FactoryBase
         {
             // Unpin dockable.
             UnpinDockableInternal(dockable, rootDock, toolDock, isVisible);
+
+            UpdateDockingWindowState(dockable);
 
             // TODO: Handle ActiveDockable state.
             // TODO: Handle IsExpanded property of IToolDock.
@@ -790,6 +794,7 @@ public abstract partial class FactoryBase
         InitDockable(dockable, targetOwner);
         targetOwner.ActiveDockable = dockable;
         dockable.OriginalOwner = null;
+        UpdateDockingWindowState(dockable);
     }
 
     private bool IsOwnerAttached(IRootDock rootDock, IDock owner)
@@ -1400,6 +1405,7 @@ public abstract partial class FactoryBase
 
         dockable.Owner = rootDock;
         rootDock.HiddenDockables.Add(dockable);
+        UpdateDockingWindowStateRecursive(dockable);
         OnDockableHidden(dockable);
     }
 
@@ -1436,10 +1442,12 @@ public abstract partial class FactoryBase
             OnDockableAdded(dockable);
             dockable.Owner = owner;
             dockable.OriginalOwner = null;
+            UpdateDockingWindowStateRecursive(dockable);
         }
         else
         {
             dockable.Owner = null;
+            UpdateDockingWindowStateRecursive(dockable);
         }
     }
 

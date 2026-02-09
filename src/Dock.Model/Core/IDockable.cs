@@ -61,6 +61,11 @@ public interface IDockable : IControlRecyclingIdProvider
     DockMode Dock { get; set; }
 
     /// <summary>
+    /// Gets or sets the current logical docking window state.
+    /// </summary>
+    DockingWindowState DockingState { get; set; }
+
+    /// <summary>
     /// Gets or sets grid column.
     /// </summary>
     int Column { get; set; }

@@ -128,6 +128,123 @@ public class FactoryTests
         Assert.True(double.IsNaN(tool.MaxWidth));
         Assert.True(double.IsNaN(tool.MinHeight));
         Assert.True(double.IsNaN(tool.MaxHeight));
+        Assert.Equal(DockingWindowState.Docked, tool.DockingState);
+    }
+
+    [AvaloniaFact]
+    public void DockingState_Transitions_Cover_Docked_Pinned_Document_Floating_And_Hidden()
+    {
+        var factory = new TestFactory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        root.HiddenDockables = factory.CreateList<IDockable>();
+        root.Windows = factory.CreateList<IDockWindow>();
+
+        var toolDock = factory.CreateToolDock();
+        toolDock.VisibleDockables = factory.CreateList<IDockable>();
+
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+
+        factory.AddDockable(root, toolDock);
+        factory.AddDockable(root, documentDock);
+
+        var tool = factory.CreateTool();
+        factory.AddDockable(toolDock, tool);
+
+        var document = factory.CreateDocument();
+        factory.AddDockable(documentDock, document);
+
+        Assert.Equal(DockingWindowState.Docked, tool.DockingState);
+        Assert.Equal(DockingWindowState.Document, document.DockingState);
+
+        factory.DockAsDocument(tool);
+        Assert.Equal(DockingWindowState.Document, tool.DockingState);
+
+        factory.MoveDockable(documentDock, toolDock, tool, null);
+        Assert.Equal(DockingWindowState.Docked, tool.DockingState);
+
+        factory.PinDockable(tool);
+        Assert.Equal(DockingWindowState.Pinned, tool.DockingState);
+
+        factory.UnpinDockable(tool);
+        Assert.Equal(DockingWindowState.Docked, tool.DockingState);
+
+        factory.FloatDockable(tool);
+        Assert.Equal(DockingWindowState.Docked | DockingWindowState.Floating, tool.DockingState);
+
+        factory.HideDockable(tool);
+        Assert.Equal(
+            DockingWindowState.Docked | DockingWindowState.Floating | DockingWindowState.Hidden,
+            tool.DockingState);
+
+        factory.RestoreDockable(tool);
+        Assert.Equal(DockingWindowState.Docked | DockingWindowState.Floating, tool.DockingState);
+
+        factory.PinDockable(tool);
+        Assert.Equal(DockingWindowState.Pinned | DockingWindowState.Floating, tool.DockingState);
+
+        factory.UnpinDockable(tool);
+        Assert.Equal(DockingWindowState.Docked | DockingWindowState.Floating, tool.DockingState);
+
+        factory.FloatDockable(document);
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Floating, document.DockingState);
+
+        factory.HideDockable(document);
+        Assert.Equal(
+            DockingWindowState.Document | DockingWindowState.Floating | DockingWindowState.Hidden,
+            document.DockingState);
+
+        factory.RestoreDockable(document);
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Floating, document.DockingState);
+    }
+
+
+    [AvaloniaFact]
+    public void DockingState_HiddenContainer_Propagates_To_Descendants()
+    {
+        var factory = new TestFactory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        root.HiddenDockables = factory.CreateList<IDockable>();
+        root.Windows = factory.CreateList<IDockWindow>();
+
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+
+        var document = factory.CreateDocument();
+
+        factory.AddDockable(root, documentDock);
+        factory.AddDockable(documentDock, document);
+
+        factory.HideDockable(documentDock);
+
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Hidden, documentDock.DockingState);
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Hidden, document.DockingState);
+
+        factory.RestoreDockable(documentDock);
+
+        Assert.Equal(DockingWindowState.Document, documentDock.DockingState);
+        Assert.Equal(DockingWindowState.Document, document.DockingState);
+
+        factory.FloatDockable(documentDock);
+
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Floating, documentDock.DockingState);
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Floating, document.DockingState);
+
+        factory.HideDockable(documentDock);
+
+        Assert.Equal(
+            DockingWindowState.Document | DockingWindowState.Floating | DockingWindowState.Hidden,
+            documentDock.DockingState);
+        Assert.Equal(
+            DockingWindowState.Document | DockingWindowState.Floating | DockingWindowState.Hidden,
+            document.DockingState);
+
+        factory.RestoreDockable(documentDock);
+
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Floating, documentDock.DockingState);
+        Assert.Equal(DockingWindowState.Document | DockingWindowState.Floating, document.DockingState);
     }
 
     [AvaloniaFact]

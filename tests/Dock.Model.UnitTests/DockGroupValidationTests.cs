@@ -44,6 +44,7 @@ public class DockGroupValidationTests
         public bool IsEmpty { get; set; }
         public bool IsCollapsable { get; set; }
         public DockMode Dock { get; set; }
+        public DockingWindowState DockingState { get; set; } = DockingWindowState.Docked;
         public int Column { get; set; }
         public int Row { get; set; }
         public int ColumnSpan { get; set; } = 1;

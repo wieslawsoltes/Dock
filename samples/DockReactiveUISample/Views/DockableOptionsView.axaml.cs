@@ -13,6 +13,21 @@ public partial class DockableOptionsView : UserControl
         PinnedDockDisplayMode.Inline
     };
 
+    public static DockingWindowState[] DockingWindowStateOptions { get; } =
+    {
+        DockingWindowState.Docked,
+        DockingWindowState.Pinned,
+        DockingWindowState.Document,
+        DockingWindowState.Docked | DockingWindowState.Floating,
+        DockingWindowState.Pinned | DockingWindowState.Floating,
+        DockingWindowState.Document | DockingWindowState.Floating,
+        DockingWindowState.Docked | DockingWindowState.Hidden,
+        DockingWindowState.Pinned | DockingWindowState.Hidden,
+        DockingWindowState.Document | DockingWindowState.Hidden,
+        DockingWindowState.Docked | DockingWindowState.Floating | DockingWindowState.Hidden,
+        DockingWindowState.Document | DockingWindowState.Floating | DockingWindowState.Hidden
+    };
+
     public DockableOptionsView()
     {
         InitializeComponent();

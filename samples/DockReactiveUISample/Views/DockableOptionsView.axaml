@@ -4,7 +4,7 @@
              xmlns:dm="using:Dock.Model.Core"
              xmlns:views="using:DockReactiveUISample.Views"
              x:DataType="dm:IDockable" x:CompileBindings="True">
-  <Grid RowDefinitions="Auto,Auto">
+  <Grid RowDefinitions="Auto,Auto,Auto">
     <StackPanel Orientation="Horizontal" Spacing="2">
       <CheckBox IsChecked="{Binding CanClose}" ToolTip.Tip="CanClose" />
       <CheckBox IsChecked="{Binding CanFloat}" ToolTip.Tip="CanFloat" />
@@ -25,5 +25,10 @@
         </DataTemplate>
       </ComboBox.ItemTemplate>
     </ComboBox>
+    <ComboBox Grid.Row="2"
+              ItemsSource="{x:Static views:DockableOptionsView.DockingWindowStateOptions}"
+              SelectedItem="{Binding DockingState}"
+              ToolTip.Tip="DockingState"
+              MinWidth="110" />
   </Grid>
 </UserControl>

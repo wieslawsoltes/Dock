@@ -25,6 +25,7 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     private bool _isCollapsable = true;
     private double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
+    private DockingWindowState _dockingState = DockingWindowState.Docked;
     private int _column = 0;
     private int _row = 0;
     private int _columnSpan = 1;
@@ -136,6 +137,14 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     {
         get => _dock;
         set => SetProperty(ref _dock, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DockingWindowState DockingState
+    {
+        get => _dockingState;
+        set => SetProperty(ref _dockingState, value);
     }
 
     /// <inheritdoc/>

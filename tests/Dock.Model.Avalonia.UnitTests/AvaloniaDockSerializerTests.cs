@@ -49,6 +49,38 @@ public class AvaloniaDockSerializerTests
     }
 
     [AvaloniaFact]
+    public void Serialize_Tool_IncludesDockingState()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var tool = new Tool
+        {
+            DockingState = DockingWindowState.Document | DockingWindowState.Floating
+        };
+
+        var json = serializer.Serialize(tool);
+
+        using var document = JsonDocument.Parse(json);
+        Assert.True(document.RootElement.TryGetProperty("DockingState", out var state), json);
+        Assert.Equal((int)(DockingWindowState.Document | DockingWindowState.Floating), state.GetInt32());
+    }
+
+    [AvaloniaFact]
+    public void Deserialize_Tool_RestoresDockingState()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var tool = new Tool
+        {
+            DockingState = DockingWindowState.Document | DockingWindowState.Floating | DockingWindowState.Hidden
+        };
+
+        var json = serializer.Serialize(tool);
+        var restored = serializer.Deserialize<Tool>(json);
+
+        Assert.NotNull(restored);
+        Assert.Equal(tool.DockingState, restored!.DockingState);
+    }
+
+    [AvaloniaFact]
     public void Serialize_RootDock_IncludesPinnedDock()
     {
         var serializer = new AvaloniaDockSerializer();

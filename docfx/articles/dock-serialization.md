@@ -134,7 +134,7 @@ DI-based construction, use the `Dock.Serializer.DockSerializer` overload that ac
 2. Load the layout and call `_dockState.Restore` to restore content/templates if needed.
 3. Handle the case where the layout file does not exist or fails to deserialize.
 
-Following this pattern keeps the window arrangement consistent across sessions. Floating window bounds, title, and `WindowState` are serialized as part of `IDockWindow`.
+Following this pattern keeps the window arrangement consistent across sessions. Floating window bounds, title, and `WindowState` are serialized as part of `IDockWindow`. Dockables also persist `DockingState` (`DockingWindowState` flags), so state-aware UI can restore pinned/document/floating/hidden metadata consistently.
 
 ## Dockable identifiers
 

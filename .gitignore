@@ -297,3 +297,4 @@ tools/**
 docfx/api/*.yml
 docfx/api/*.manifest
 
+/plan

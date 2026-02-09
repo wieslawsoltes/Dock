@@ -362,6 +362,9 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithDockMode__1___0_Dock_Model_Core_DockMode_">FluentExtensions.WithDockMode&lt;T&gt;(T, DockMode)</a>
   </div>
   <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithEmptyContent_Dock_Model_Controls_IDocumentDock_System_Object_">FluentExtensions.WithEmptyContent(IDocumentDock, object?)</a>
+  </div>
+  <div>
       <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithEnableGlobalDocking__1___0_System_Boolean_">FluentExtensions.WithEnableGlobalDocking&lt;T&gt;(T, bool)</a>
   </div>
   <div>
@@ -482,7 +485,7 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
 
   <h3 id="Dock_Model_Controls_IDocumentDock_CascadeDocuments" data-uid="Dock.Model.Controls.IDocumentDock.CascadeDocuments">
   CascadeDocuments
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets command to cascade MDI documents.</p>
@@ -574,6 +577,38 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
 
 
 
+  <a id="Dock_Model_Controls_IDocumentDock_EmptyContent_" data-uid="Dock.Model.Controls.IDocumentDock.EmptyContent*"></a>
+
+  <h3 id="Dock_Model_Controls_IDocumentDock_EmptyContent" data-uid="Dock.Model.Controls.IDocumentDock.EmptyContent">
+  EmptyContent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets placeholder content shown when the document host has no visible dockables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object? EmptyContent { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Controls_IDocumentDock_EnableWindowDrag_" data-uid="Dock.Model.Controls.IDocumentDock.EnableWindowDrag*"></a>
 
   <h3 id="Dock_Model_Controls_IDocumentDock_EnableWindowDrag" data-uid="Dock.Model.Controls.IDocumentDock.EnableWindowDrag">
@@ -642,7 +677,7 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
 
   <h3 id="Dock_Model_Controls_IDocumentDock_RestoreDocuments" data-uid="Dock.Model.Controls.IDocumentDock.RestoreDocuments">
   RestoreDocuments
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets command to restore MDI documents to normal state.</p>
@@ -706,7 +741,7 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
 
   <h3 id="Dock_Model_Controls_IDocumentDock_TileDocumentsHorizontal" data-uid="Dock.Model.Controls.IDocumentDock.TileDocumentsHorizontal">
   TileDocumentsHorizontal
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets command to tile MDI documents horizontally.</p>
@@ -738,7 +773,7 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
 
   <h3 id="Dock_Model_Controls_IDocumentDock_TileDocumentsVertical" data-uid="Dock.Model.Controls.IDocumentDock.TileDocumentsVertical">
   TileDocumentsVertical
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets command to tile MDI documents vertically.</p>
@@ -774,7 +809,7 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
 
   <h3 id="Dock_Model_Controls_IDocumentDock_AddDocument_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Controls.IDocumentDock.AddDocument(Dock.Model.Core.IDockable)">
   AddDocument(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds the specified document to this dock and activates it.</p>
@@ -807,7 +842,7 @@ Interface IDocumentDock  <a class="header-action link-secondary" title="View sou
 
   <h3 id="Dock_Model_Controls_IDocumentDock_AddTool_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Controls.IDocumentDock.AddTool(Dock.Model.Core.IDockable)">
   AddTool(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IDocumentDock.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds the specified tool to this dock and activates it.</p>

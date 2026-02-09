@@ -117,6 +117,23 @@ documents.RestoreDocuments?.Execute(null);
 <li><code>MdiDocumentControl</code> forwards <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, and <code>CloseButtonTheme</code> to each window.</li>
 <li><code>MdiDocumentWindow</code> exposes <code>DocumentContextMenu</code>, <code>MdiState</code>, and <code>IsActive</code> for styling or interaction.</li>
 </ul>
+<p><code>IDocumentDock.EmptyContent</code> defines placeholder content shown when a document host has no visible dockables. In MDI mode, <code>MdiDocumentControl.EmptyContentTemplate</code> can optionally control how that content is rendered:</p>
+<pre><code class="lang-csharp">using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+
+var documents = new DocumentDock
+{
+    LayoutMode = DocumentLayoutMode.Mdi,
+    EmptyContent = &quot;No documents are open&quot;
+};
+
+var mdiDocumentControl = new MdiDocumentControl
+{
+    DataContext = documents,
+    EmptyContentTemplate = new FuncDataTemplate&lt;string&gt;((text, _) =&gt;
+        new TextBlock { Text = text }, true)
+};
+</code></pre>
 <p>To customize the layout algorithm, provide an <code>IMdiLayoutManager</code> implementation. It can be assigned on <code>MdiDocumentControl.LayoutManager</code> (which the default template forwards to <code>MdiLayoutPanel</code>):</p>
 <pre><code class="lang-csharp">var mdiLayoutManager = new MyMdiLayoutManager();
 mdiDocumentControl.LayoutManager = mdiLayoutManager;

@@ -292,6 +292,11 @@
 <td>Close button template.</td>
 </tr>
 <tr>
+<td><code>EmptyContentTemplate</code></td>
+<td><code>IDataTemplate?</code></td>
+<td>Template used to render model <code>EmptyContent</code> when no tabbed documents are visible.</td>
+</tr>
+<tr>
 <td><code>CloseButtonTheme</code></td>
 <td><code>ControlTheme?</code></td>
 <td>Theme for the close button.</td>
@@ -305,6 +310,11 @@
 <td><code>TabsLayout</code></td>
 <td><code>DocumentTabLayout</code></td>
 <td>Tab placement for the document dock.</td>
+</tr>
+<tr>
+<td><code>HasVisibleDockables</code></td>
+<td><code>bool</code></td>
+<td><code>true</code> when one or more tabbed dockables are visible (read-only).</td>
 </tr>
 </tbody>
 </table>
@@ -605,6 +615,11 @@
 <td>Close button template.</td>
 </tr>
 <tr>
+<td><code>EmptyContentTemplate</code></td>
+<td><code>IDataTemplate?</code></td>
+<td>Template used to render the model <code>EmptyContent</code> placeholder when no MDI documents are visible.</td>
+</tr>
+<tr>
 <td><code>CloseButtonTheme</code></td>
 <td><code>ControlTheme?</code></td>
 <td>Theme for the close button.</td>
@@ -618,6 +633,11 @@
 <td><code>IsActive</code></td>
 <td><code>bool</code></td>
 <td>Active state (drives <code>:active</code>).</td>
+</tr>
+<tr>
+<td><code>HasVisibleDocuments</code></td>
+<td><code>bool</code></td>
+<td><code>true</code> when one or more MDI documents are visible (read-only).</td>
 </tr>
 </tbody>
 </table>

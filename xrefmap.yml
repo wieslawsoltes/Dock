@@ -1715,6 +1715,44 @@ references:
   commentId: F:Dock.Avalonia.Controls.DocumentControl.CloseTemplateProperty
   fullName: Dock.Avalonia.Controls.DocumentControl.CloseTemplateProperty
   nameWithType: DocumentControl.CloseTemplateProperty
+- uid: Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplate
+  name: EmptyContentTemplate
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_EmptyContentTemplate
+  commentId: P:Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplate
+  fullName: Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplate
+  nameWithType: DocumentControl.EmptyContentTemplate
+- uid: Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplate*
+  name: EmptyContentTemplate
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_EmptyContentTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplate
+  nameWithType: DocumentControl.EmptyContentTemplate
+- uid: Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplateProperty
+  name: EmptyContentTemplateProperty
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_EmptyContentTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplateProperty
+  fullName: Dock.Avalonia.Controls.DocumentControl.EmptyContentTemplateProperty
+  nameWithType: DocumentControl.EmptyContentTemplateProperty
+- uid: Dock.Avalonia.Controls.DocumentControl.HasVisibleDockables
+  name: HasVisibleDockables
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_HasVisibleDockables
+  commentId: P:Dock.Avalonia.Controls.DocumentControl.HasVisibleDockables
+  fullName: Dock.Avalonia.Controls.DocumentControl.HasVisibleDockables
+  nameWithType: DocumentControl.HasVisibleDockables
+- uid: Dock.Avalonia.Controls.DocumentControl.HasVisibleDockables*
+  name: HasVisibleDockables
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_HasVisibleDockables_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentControl.HasVisibleDockables
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentControl.HasVisibleDockables
+  nameWithType: DocumentControl.HasVisibleDockables
+- uid: Dock.Avalonia.Controls.DocumentControl.HasVisibleDockablesProperty
+  name: HasVisibleDockablesProperty
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_HasVisibleDockablesProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentControl.HasVisibleDockablesProperty
+  fullName: Dock.Avalonia.Controls.DocumentControl.HasVisibleDockablesProperty
+  nameWithType: DocumentControl.HasVisibleDockablesProperty
 - uid: Dock.Avalonia.Controls.DocumentControl.HeaderTemplate
   name: HeaderTemplate
   href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_HeaderTemplate
@@ -1804,6 +1842,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DocumentControl.OnAttachedToVisualTree
   nameWithType: DocumentControl.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.DocumentControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
+  commentId: M:Dock.Avalonia.Controls.DocumentControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  fullName: Dock.Avalonia.Controls.DocumentControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  nameWithType: DocumentControl.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+- uid: Dock.Avalonia.Controls.DocumentControl.OnDetachedFromVisualTree*
+  name: OnDetachedFromVisualTree
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_OnDetachedFromVisualTree_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentControl.OnDetachedFromVisualTree
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentControl.OnDetachedFromVisualTree
+  nameWithType: DocumentControl.OnDetachedFromVisualTree
 - uid: Dock.Avalonia.Controls.DocumentControl.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
   name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
   href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
@@ -4555,6 +4606,44 @@ references:
   commentId: F:Dock.Avalonia.Controls.MdiDocumentControl.CloseTemplateProperty
   fullName: Dock.Avalonia.Controls.MdiDocumentControl.CloseTemplateProperty
   nameWithType: MdiDocumentControl.CloseTemplateProperty
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplate
+  name: EmptyContentTemplate
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_EmptyContentTemplate
+  commentId: P:Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplate
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplate
+  nameWithType: MdiDocumentControl.EmptyContentTemplate
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplate*
+  name: EmptyContentTemplate
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_EmptyContentTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplate
+  nameWithType: MdiDocumentControl.EmptyContentTemplate
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplateProperty
+  name: EmptyContentTemplateProperty
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_EmptyContentTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplateProperty
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.EmptyContentTemplateProperty
+  nameWithType: MdiDocumentControl.EmptyContentTemplateProperty
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocuments
+  name: HasVisibleDocuments
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_HasVisibleDocuments
+  commentId: P:Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocuments
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocuments
+  nameWithType: MdiDocumentControl.HasVisibleDocuments
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocuments*
+  name: HasVisibleDocuments
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_HasVisibleDocuments_
+  commentId: Overload:Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocuments
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocuments
+  nameWithType: MdiDocumentControl.HasVisibleDocuments
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocumentsProperty
+  name: HasVisibleDocumentsProperty
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_HasVisibleDocumentsProperty
+  commentId: F:Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocumentsProperty
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.HasVisibleDocumentsProperty
+  nameWithType: MdiDocumentControl.HasVisibleDocumentsProperty
 - uid: Dock.Avalonia.Controls.MdiDocumentControl.HeaderTemplate
   name: HeaderTemplate
   href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_HeaderTemplate
@@ -11229,6 +11318,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.DocumentDock.DocumentTemplateProperty
   fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentTemplateProperty
   nameWithType: DocumentDock.DocumentTemplateProperty
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_EmptyContent
+  commentId: P:Dock.Model.Avalonia.Controls.DocumentDock.EmptyContent
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.EmptyContentProperty
+  name: EmptyContentProperty
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_EmptyContentProperty
+  commentId: F:Dock.Model.Avalonia.Controls.DocumentDock.EmptyContentProperty
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.EmptyContentProperty
+  nameWithType: DocumentDock.EmptyContentProperty
 - uid: Dock.Model.Avalonia.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_EnableWindowDrag
@@ -14960,6 +15068,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Controls.DocumentDock.DocumentFactory
   nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.CaliburMicro.Controls.DocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.CaliburMicro.Controls.DocumentDock.html#Dock_Model_CaliburMicro_Controls_DocumentDock_EmptyContent
+  commentId: P:Dock.Model.CaliburMicro.Controls.DocumentDock.EmptyContent
+  fullName: Dock.Model.CaliburMicro.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.CaliburMicro.Controls.DocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.CaliburMicro.Controls.DocumentDock.html#Dock_Model_CaliburMicro_Controls_DocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.DocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
 - uid: Dock.Model.CaliburMicro.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.CaliburMicro.Controls.DocumentDock.html#Dock_Model_CaliburMicro_Controls_DocumentDock_EnableWindowDrag
@@ -18015,6 +18136,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Controls.IDocumentDock.CreateDocument
   nameWithType: IDocumentDock.CreateDocument
+- uid: Dock.Model.Controls.IDocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.Controls.IDocumentDock.html#Dock_Model_Controls_IDocumentDock_EmptyContent
+  commentId: P:Dock.Model.Controls.IDocumentDock.EmptyContent
+  fullName: Dock.Model.Controls.IDocumentDock.EmptyContent
+  nameWithType: IDocumentDock.EmptyContent
+- uid: Dock.Model.Controls.IDocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.Controls.IDocumentDock.html#Dock_Model_Controls_IDocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.Controls.IDocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IDocumentDock.EmptyContent
+  nameWithType: IDocumentDock.EmptyContent
 - uid: Dock.Model.Controls.IDocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.Controls.IDocumentDock.html#Dock_Model_Controls_IDocumentDock_EnableWindowDrag
@@ -29186,6 +29320,22 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FluentExtensions.WithDocumentTemplate
   nameWithType: FluentExtensions.WithDocumentTemplate
+- uid: Dock.Model.FluentExtensions.WithEmptyContent(Dock.Model.Controls.IDocumentDock,System.Object)
+  name: WithEmptyContent(IDocumentDock, object?)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithEmptyContent_Dock_Model_Controls_IDocumentDock_System_Object_
+  commentId: M:Dock.Model.FluentExtensions.WithEmptyContent(Dock.Model.Controls.IDocumentDock,System.Object)
+  name.vb: WithEmptyContent(IDocumentDock, Object)
+  fullName: Dock.Model.FluentExtensions.WithEmptyContent(Dock.Model.Controls.IDocumentDock, object?)
+  fullName.vb: Dock.Model.FluentExtensions.WithEmptyContent(Dock.Model.Controls.IDocumentDock, Object)
+  nameWithType: FluentExtensions.WithEmptyContent(IDocumentDock, object?)
+  nameWithType.vb: FluentExtensions.WithEmptyContent(IDocumentDock, Object)
+- uid: Dock.Model.FluentExtensions.WithEmptyContent*
+  name: WithEmptyContent
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithEmptyContent_
+  commentId: Overload:Dock.Model.FluentExtensions.WithEmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithEmptyContent
+  nameWithType: FluentExtensions.WithEmptyContent
 - uid: Dock.Model.FluentExtensions.WithEnableGlobalDocking*
   name: WithEnableGlobalDocking
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithEnableGlobalDocking_
@@ -30358,6 +30508,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Controls.DocumentDock.DocumentFactory
   nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.Inpc.Controls.DocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.Inpc.Controls.DocumentDock.html#Dock_Model_Inpc_Controls_DocumentDock_EmptyContent
+  commentId: P:Dock.Model.Inpc.Controls.DocumentDock.EmptyContent
+  fullName: Dock.Model.Inpc.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.Inpc.Controls.DocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.Inpc.Controls.DocumentDock.html#Dock_Model_Inpc_Controls_DocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.Inpc.Controls.DocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
 - uid: Dock.Model.Inpc.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.Inpc.Controls.DocumentDock.html#Dock_Model_Inpc_Controls_DocumentDock_EnableWindowDrag
@@ -33185,6 +33348,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Controls.DocumentDock.DocumentFactory
   nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.Mvvm.Controls.DocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.Mvvm.Controls.DocumentDock.html#Dock_Model_Mvvm_Controls_DocumentDock_EmptyContent
+  commentId: P:Dock.Model.Mvvm.Controls.DocumentDock.EmptyContent
+  fullName: Dock.Model.Mvvm.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.Mvvm.Controls.DocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.Mvvm.Controls.DocumentDock.html#Dock_Model_Mvvm_Controls_DocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.Mvvm.Controls.DocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
 - uid: Dock.Model.Mvvm.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.Mvvm.Controls.DocumentDock.html#Dock_Model_Mvvm_Controls_DocumentDock_EnableWindowDrag
@@ -35809,6 +35985,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Controls.DocumentDock.DocumentFactory
   nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.Prism.Controls.DocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.Prism.Controls.DocumentDock.html#Dock_Model_Prism_Controls_DocumentDock_EmptyContent
+  commentId: P:Dock.Model.Prism.Controls.DocumentDock.EmptyContent
+  fullName: Dock.Model.Prism.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.Prism.Controls.DocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.Prism.Controls.DocumentDock.html#Dock_Model_Prism_Controls_DocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.Prism.Controls.DocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
 - uid: Dock.Model.Prism.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.Prism.Controls.DocumentDock.html#Dock_Model_Prism_Controls_DocumentDock_EnableWindowDrag
@@ -38433,6 +38622,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Controls.DocumentDock.DocumentFactory
   nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.ReactiveProperty.Controls.DocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.ReactiveProperty.Controls.DocumentDock.html#Dock_Model_ReactiveProperty_Controls_DocumentDock_EmptyContent
+  commentId: P:Dock.Model.ReactiveProperty.Controls.DocumentDock.EmptyContent
+  fullName: Dock.Model.ReactiveProperty.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.ReactiveProperty.Controls.DocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.ReactiveProperty.Controls.DocumentDock.html#Dock_Model_ReactiveProperty_Controls_DocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.DocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
 - uid: Dock.Model.ReactiveProperty.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.ReactiveProperty.Controls.DocumentDock.html#Dock_Model_ReactiveProperty_Controls_DocumentDock_EnableWindowDrag
@@ -41114,6 +41316,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Controls.DocumentDock.DocumentFactory
   nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.ReactiveUI.Controls.DocumentDock.EmptyContent
+  name: EmptyContent
+  href: api/Dock.Model.ReactiveUI.Controls.DocumentDock.html#Dock_Model_ReactiveUI_Controls_DocumentDock_EmptyContent
+  commentId: P:Dock.Model.ReactiveUI.Controls.DocumentDock.EmptyContent
+  fullName: Dock.Model.ReactiveUI.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
+- uid: Dock.Model.ReactiveUI.Controls.DocumentDock.EmptyContent*
+  name: EmptyContent
+  href: api/Dock.Model.ReactiveUI.Controls.DocumentDock.html#Dock_Model_ReactiveUI_Controls_DocumentDock_EmptyContent_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.DocumentDock.EmptyContent
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.DocumentDock.EmptyContent
+  nameWithType: DocumentDock.EmptyContent
 - uid: Dock.Model.ReactiveUI.Controls.DocumentDock.EnableWindowDrag
   name: EnableWindowDrag
   href: api/Dock.Model.ReactiveUI.Controls.DocumentDock.html#Dock_Model_ReactiveUI_Controls_DocumentDock_EnableWindowDrag

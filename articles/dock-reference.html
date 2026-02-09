@@ -179,6 +179,7 @@ from a saved state.</p>
 <li><code>TabsLayout</code> chooses where the tabs appear using the <code>DocumentTabLayout</code> enum</li>
 <li><code>LayoutMode</code> switches between <code>Tabbed</code> and <code>Mdi</code> layouts</li>
 <li><code>CloseButtonShowMode</code> controls when document close buttons appear</li>
+<li><code>EmptyContent</code> defines placeholder content shown when a tabbed or MDI document host has no visible dockables</li>
 <li><code>CanCreateDocument</code> and <code>CreateDocument</code> control the new-document command</li>
 <li><code>CascadeDocuments</code>, <code>TileDocumentsHorizontal</code>, <code>TileDocumentsVertical</code>, and <code>RestoreDocuments</code> are MDI helpers</li>
 </ul>
@@ -334,9 +335,9 @@ the window so styles can react to different chrome configurations.</p>
 <h2 id="tab-header-and-mdi-template-properties">Tab header and MDI template properties</h2>
 <p>Dock exposes template properties for tab headers and MDI windows:</p>
 <ul>
-<li><code>DocumentControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>CloseButtonTheme</code>, <code>IsActive</code>, <code>TabsLayout</code>.</li>
+<li><code>DocumentControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>EmptyContentTemplate</code>, <code>CloseButtonTheme</code>, <code>IsActive</code>, <code>TabsLayout</code>, <code>HasVisibleDockables</code>.</li>
 <li><code>ToolControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>.</li>
-<li><code>MdiDocumentControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>CloseButtonTheme</code>, <code>LayoutManager</code>, <code>IsActive</code>.</li>
+<li><code>MdiDocumentControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>EmptyContentTemplate</code>, <code>CloseButtonTheme</code>, <code>LayoutManager</code>, <code>IsActive</code>, <code>HasVisibleDocuments</code>.</li>
 <li><code>MdiDocumentWindow</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>CloseButtonTheme</code>, <code>DocumentContextMenu</code>, <code>IsActive</code>, <code>MdiState</code>.</li>
 </ul>
 <p>Use these to customize headers, icons, and modified indicators in styles or templates. See <a href="dock-styling.html">Styling and theming</a> and <a href="dock-mdi.html">MDI document layout</a> for details.</p>

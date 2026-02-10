@@ -1,0 +1,92 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:model="using:Dock.Model.Avalonia.Controls"
+        xmlns:dockModel="using:Dock.Model.Avalonia"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:vm="using:DockReactiveUIItemsSourceSample.ViewModels"
+        xmlns:sampleModels="using:DockReactiveUIItemsSourceSample.Models"
+        x:Class="DockReactiveUIItemsSourceSample.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Dock ReactiveUI ItemsSource Sample"
+        Width="1280"
+        Height="800">
+
+  <DockPanel>
+
+    <Border DockPanel.Dock="Top" Padding="12" Background="#F3F4F6">
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <Button Content="Add Document" Command="{Binding AddDocumentCommand}" />
+        <Button Content="Remove Document" Command="{Binding RemoveDocumentCommand}" />
+        <Button Content="Add Tool" Command="{Binding AddToolCommand}" />
+        <Button Content="Remove Tool" Command="{Binding RemoveToolCommand}" />
+        <Button Content="Clear All" Command="{Binding ClearAllCommand}" />
+        <TextBlock Text="{Binding Summary}" Margin="16,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" />
+      </StackPanel>
+    </Border>
+
+    <dock:DockControl InitializeLayout="True" InitializeFactory="True">
+
+      <dock:DockControl.Factory>
+        <dockModel:Factory HideToolsOnClose="False" HideDocumentsOnClose="False" />
+      </dock:DockControl.Factory>
+
+      <model:RootDock x:Name="Root"
+                      Id="Root"
+                      IsCollapsable="False"
+                      DefaultDockable="{Binding #MainLayout}"
+                      ActiveDockable="{Binding #MainLayout}">
+
+        <model:ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
+          <model:ProportionalDock.VisibleDockables>
+
+            <model:ToolDock Id="LeftTools"
+                            Title="Tools"
+                            Alignment="Left"
+                            Proportion="0.3"
+                            ItemsSource="{Binding Tools}">
+              <model:ToolDock.ToolTemplate>
+                <model:ToolTemplate>
+                  <Border Padding="12" x:DataType="model:Tool">
+                    <StackPanel Spacing="6">
+                      <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
+                      <StackPanel DataContext="{Binding Context}" x:DataType="sampleModels:ToolItem">
+                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Status}" Opacity="0.75" />
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </model:ToolTemplate>
+              </model:ToolDock.ToolTemplate>
+            </model:ToolDock>
+
+            <model:ProportionalDockSplitter />
+
+            <model:DocumentDock Id="Documents"
+                                Title="Documents"
+                                Proportion="0.7"
+                                CanCreateDocument="False"
+                                ItemsSource="{Binding Documents}">
+              <model:DocumentDock.DocumentTemplate>
+                <model:DocumentTemplate>
+                  <Border Padding="12" x:DataType="model:Document">
+                    <StackPanel Spacing="6">
+                      <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
+                      <StackPanel DataContext="{Binding Context}" x:DataType="sampleModels:DocumentItem">
+                        <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+                        <TextBox Text="{Binding EditableContent}" AcceptsReturn="True" MinHeight="120" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Status}" Opacity="0.75" />
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </model:DocumentTemplate>
+              </model:DocumentDock.DocumentTemplate>
+            </model:DocumentDock>
+
+          </model:ProportionalDock.VisibleDockables>
+        </model:ProportionalDock>
+
+      </model:RootDock>
+
+    </dock:DockControl>
+  </DockPanel>
+</Window>

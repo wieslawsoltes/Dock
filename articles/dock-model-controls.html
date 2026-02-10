@@ -186,6 +186,18 @@ when creating your own docks and documents.</p>
 <td><code>IToolTemplate</code></td>
 <td>Template object used when creating tools on demand or from <code>ItemsSource</code>.</td>
 </tr>
+<tr>
+<td><code>IDocumentItemTemplateSelector</code></td>
+<td>Selects template content for source-generated documents.</td>
+</tr>
+<tr>
+<td><code>IToolItemTemplateSelector</code></td>
+<td>Selects template content for source-generated tools.</td>
+</tr>
+<tr>
+<td><code>IDockItemContainerMetadata</code></td>
+<td>Optional generated-container metadata for theme and selector state.</td>
+</tr>
 </tbody>
 </table>
 <p>The following sections provide guidelines on applying these contracts in your projects.</p>
@@ -273,6 +285,8 @@ uses this template to create generated tool content from source collections.</p>
 <ul>
 <li><code>ItemsSource</code> exposes the source collection used to generate dockables.</li>
 <li><code>ItemContainerGenerator</code> provides custom container creation/preparation/cleanup through <code>IDockItemContainerGenerator</code>.</li>
+<li><code>DocumentItemContainerTheme</code> / <code>ToolItemContainerTheme</code> provide per-dock theme metadata for generated container controls.</li>
+<li><code>DocumentItemTemplateSelector</code> / <code>ToolItemTemplateSelector</code> provide per-item template selection before template fallback.</li>
 <li><code>IsDocumentFromItemsSource</code> / <code>IsToolFromItemsSource</code> detect source-generated dockables.</li>
 <li><code>RemoveItemFromSource</code> synchronizes close operations back to mutable source collections.</li>
 </ul>

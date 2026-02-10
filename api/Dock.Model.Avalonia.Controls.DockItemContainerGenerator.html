@@ -195,10 +195,10 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
 
   <h3 id="Dock_Model_Avalonia_Controls_DockItemContainerGenerator_ClearDocumentContainer_Dock_Model_Core_IItemsSourceDock_Dock_Model_Core_IDockable_System_Object_" data-uid="Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object)">
   ClearDocumentContainer(IItemsSourceDock, IDockable, object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Clears a previously generated document container.</p>
+  <div class="markdown level1 summary"><p>Clears a generated document container before it is removed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -209,13 +209,13 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IItemsSourceDock.html">IItemsSourceDock</a></dt>
-    <dd><p>The document items-source dock.</p>
+    <dd><p>The source-backed document dock.</p>
 </dd>
     <dt><code>container</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
     <dd><p>The generated container.</p>
 </dd>
     <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd><p>The source item that produced the container.</p>
+    <dd><p>The source item being removed, when known.</p>
 </dd>
   </dl>
 
@@ -234,10 +234,10 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
 
   <h3 id="Dock_Model_Avalonia_Controls_DockItemContainerGenerator_ClearToolContainer_Dock_Model_Core_IToolItemsSourceDock_Dock_Model_Core_IDockable_System_Object_" data-uid="Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object)">
   ClearToolContainer(IToolItemsSourceDock, IDockable, object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L165"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Clears a previously generated tool container.</p>
+  <div class="markdown level1 summary"><p>Clears a generated tool container before it is removed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -248,13 +248,13 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IToolItemsSourceDock.html">IToolItemsSourceDock</a></dt>
-    <dd><p>The tool items-source dock.</p>
+    <dd><p>The source-backed tool dock.</p>
 </dd>
     <dt><code>container</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
     <dd><p>The generated container.</p>
 </dd>
     <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd><p>The source item that produced the container.</p>
+    <dd><p>The source item being removed, when known.</p>
 </dd>
   </dl>
 
@@ -276,7 +276,7 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Creates a document container for the specified source item.</p>
+  <div class="markdown level1 summary"><p>Creates a container for a document source item.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -287,20 +287,20 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IItemsSourceDock.html">IItemsSourceDock</a></dt>
-    <dd><p>The document items-source dock.</p>
+    <dd><p>The source-backed document dock.</p>
 </dd>
     <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
     <dd><p>The source item.</p>
 </dd>
     <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd><p>The item index when known; otherwise -1.</p>
+    <dd><p>The source index when known; otherwise -1.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
-    <dd><p>The generated container, or <code>null</code> to skip generation.</p>
+    <dd><p>The generated container, or <code>null</code> to skip generation for this item.</p>
 </dd>
   </dl>
 
@@ -318,10 +318,10 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
 
   <h3 id="Dock_Model_Avalonia_Controls_DockItemContainerGenerator_CreateToolContainer_Dock_Model_Core_IToolItemsSourceDock_System_Object_System_Int32_" data-uid="Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock,System.Object,System.Int32)">
   CreateToolContainer(IToolItemsSourceDock, object, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L100"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Creates a tool container for the specified source item.</p>
+  <div class="markdown level1 summary"><p>Creates a container for a tool source item.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -332,20 +332,20 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IToolItemsSourceDock.html">IToolItemsSourceDock</a></dt>
-    <dd><p>The tool items-source dock.</p>
+    <dd><p>The source-backed tool dock.</p>
 </dd>
     <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
     <dd><p>The source item.</p>
 </dd>
     <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd><p>The item index when known; otherwise -1.</p>
+    <dd><p>The source index when known; otherwise -1.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
-    <dd><p>The generated container, or <code>null</code> to skip generation.</p>
+    <dd><p>The generated container, or <code>null</code> to skip generation for this item.</p>
 </dd>
   </dl>
 
@@ -363,7 +363,7 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
 
   <h3 id="Dock_Model_Avalonia_Controls_DockItemContainerGenerator_GetItemCanClose_System_Object_" data-uid="Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose(System.Object)">
   GetItemCanClose(object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L211"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Resolves whether a source item can be closed.</p>
@@ -402,7 +402,7 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
 
   <h3 id="Dock_Model_Avalonia_Controls_DockItemContainerGenerator_GetItemTitle_System_Object_" data-uid="Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle(System.Object)">
   GetItemTitle(object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L181"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Resolves a source item title.</p>
@@ -441,10 +441,10 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
 
   <h3 id="Dock_Model_Avalonia_Controls_DockItemContainerGenerator_PrepareDocumentContainer_Dock_Model_Core_IItemsSourceDock_Dock_Model_Core_IDockable_System_Object_System_Int32_" data-uid="Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)">
   PrepareDocumentContainer(IItemsSourceDock, IDockable, object, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Prepares a document container after creation.</p>
+  <div class="markdown level1 summary"><p>Prepares a generated document container before it is added to layout.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -455,7 +455,7 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IItemsSourceDock.html">IItemsSourceDock</a></dt>
-    <dd><p>The document items-source dock.</p>
+    <dd><p>The source-backed document dock.</p>
 </dd>
     <dt><code>container</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
     <dd><p>The generated container.</p>
@@ -464,7 +464,7 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
     <dd><p>The source item.</p>
 </dd>
     <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd><p>The item index when known; otherwise -1.</p>
+    <dd><p>The source index when known; otherwise -1.</p>
 </dd>
   </dl>
 
@@ -483,10 +483,10 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
 
   <h3 id="Dock_Model_Avalonia_Controls_DockItemContainerGenerator_PrepareToolContainer_Dock_Model_Core_IToolItemsSourceDock_Dock_Model_Core_IDockable_System_Object_System_Int32_" data-uid="Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)">
   PrepareToolContainer(IToolItemsSourceDock, IDockable, object, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/DockItemContainerGenerator.cs/#L125"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Prepares a tool container after creation.</p>
+  <div class="markdown level1 summary"><p>Prepares a generated tool container before it is added to layout.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -497,7 +497,7 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IToolItemsSourceDock.html">IToolItemsSourceDock</a></dt>
-    <dd><p>The tool items-source dock.</p>
+    <dd><p>The source-backed tool dock.</p>
 </dd>
     <dt><code>container</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
     <dd><p>The generated container.</p>
@@ -506,7 +506,7 @@ Class DockItemContainerGenerator  <a class="header-action link-secondary" title=
     <dd><p>The source item.</p>
 </dd>
     <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd><p>The item index when known; otherwise -1.</p>
+    <dd><p>The source index when known; otherwise -1.</p>
 </dd>
   </dl>
 

@@ -199,10 +199,12 @@ from a saved state.</p>
 <li><code>DocumentDock.ItemsSource</code> + <code>DocumentTemplate</code> generate <code>Document</code> dockables.</li>
 <li><code>ToolDock.ItemsSource</code> + <code>ToolTemplate</code> generate <code>Tool</code> dockables.</li>
 <li><code>DocumentDock.ItemContainerGenerator</code> and <code>ToolDock.ItemContainerGenerator</code> accept <code>IDockItemContainerGenerator</code> for custom create/prepare/clear pipelines.</li>
+<li><code>DocumentDock.DocumentItemContainerTheme</code> and <code>ToolDock.ToolItemContainerTheme</code> provide per-dock container theme metadata.</li>
+<li><code>DocumentDock.DocumentItemTemplateSelector</code> and <code>ToolDock.ToolItemTemplateSelector</code> provide per-item template selection hooks.</li>
 <li><code>IsDocumentFromItemsSource(IDockable)</code> / <code>IsToolFromItemsSource(IDockable)</code> report whether the dockable was generated from the bound source.</li>
 <li><code>RemoveItemFromSource(object)</code> removes source items from supported list collections.</li>
 </ul>
-<p>When <code>ItemsSource</code> is set, Dock automatically creates dockables for each source item through the configured <code>IDockItemContainerGenerator</code>. With the default generator, generation requires the corresponding template (<code>DocumentTemplate</code> or <code>ToolTemplate</code>). The generated <code>Title</code> is derived from <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> on the source object and <code>Context</code> stores the source object for template bindings.</p>
+<p>When <code>ItemsSource</code> is set, Dock automatically creates dockables for each source item through the configured <code>IDockItemContainerGenerator</code>. With the default generator, generation requires the corresponding template (<code>DocumentTemplate</code> or <code>ToolTemplate</code>) unless a selector provides template content. The generated <code>Title</code> is derived from <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> on the source object and <code>Context</code> stores the source object for template bindings.</p>
 <p><code>DockItemContainerGenerator</code> is the built-in default implementation. Subclass it or implement <code>IDockItemContainerGenerator</code> directly to customize container type, source-to-container mapping, or container cleanup behavior.</p>
 <p>Changes to <code>INotifyCollectionChanged</code> collections (for example, <code>ObservableCollection&lt;T&gt;</code>) automatically add or remove corresponding dockables. When a generated document or tool is closed, the factory attempts to remove the source item from the collection if it implements <code>IList</code>.</p>
 <h2 id="host-window-options">Host window options</h2>
@@ -383,7 +385,7 @@ var docDock = factory.CreateDocumentDock();
 root.VisibleDockables = factory.CreateList&lt;IDockable&gt;(docDock);
 factory.InitLayout(root);
 </code></pre>
-<p>Refer to the factory classes under <code>samples/DockMvvmSample</code>, <code>samples/DockReactiveUISample</code>, and <code>samples/DockReactiveUIItemsSourceSample</code> for practical examples of these methods in use.</p>
+<p>Refer to the factory classes under <code>samples/DockMvvmSample</code>, <code>samples/DockReactiveUISample</code>, and <code>samples/DockXamlReactiveUISample</code> for practical examples of these methods in use.</p>
 <h2 id="using-the-mvvm-library">Using the MVVM library</h2>
 <p><code>Dock.Model.Mvvm</code> provides base classes that implement property change notification via <code>INotifyPropertyChanged</code>. Create a custom <code>Factory</code> derived from <code>Dock.Model.Mvvm.Factory</code> and override <code>CreateLayout</code> to build your docks. View models should derive from the MVVM versions of <code>Dockable</code>, <code>Tool</code> and <code>Document</code>.</p>
 <p>The MVVM sample demonstrates how to subscribe to factory events and update the UI through commands.</p>
@@ -406,7 +408,7 @@ factory.InitLayout(root);
 <ul>
 <li><code>samples/DockMvvmSample</code> – Full MVVM example with commands and data binding</li>
 <li><code>samples/DockReactiveUISample</code> – ReactiveUI variant with observables</li>
-<li><code>samples/DockReactiveUIItemsSourceSample</code> – ReactiveUI sample using both <code>DocumentDock.ItemsSource</code> and <code>ToolDock.ItemsSource</code></li>
+<li><code>samples/DockXamlReactiveUISample</code> – ReactiveUI sample using both <code>DocumentDock.ItemsSource</code> and <code>ToolDock.ItemsSource</code></li>
 <li><code>samples/DockReactiveUIWorkspaceSample</code> – ReactiveUI workspace snapshots and layout locking</li>
 <li><code>samples/DockReactiveUIRoutingSample</code> – Navigation using <code>IScreen</code> and <code>Router</code></li>
 <li><code>samples/DockReactiveUIDiSample</code> – ReactiveUI with dependency injection</li>

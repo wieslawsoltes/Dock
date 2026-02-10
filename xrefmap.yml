@@ -11823,6 +11823,44 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentFactory
   nameWithType: DocumentDock.DocumentFactory
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerTheme
+  name: DocumentItemContainerTheme
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_DocumentItemContainerTheme
+  commentId: P:Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerTheme
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerTheme
+  nameWithType: DocumentDock.DocumentItemContainerTheme
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerTheme*
+  name: DocumentItemContainerTheme
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_DocumentItemContainerTheme_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerTheme
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerTheme
+  nameWithType: DocumentDock.DocumentItemContainerTheme
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerThemeProperty
+  name: DocumentItemContainerThemeProperty
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_DocumentItemContainerThemeProperty
+  commentId: F:Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerThemeProperty
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemContainerThemeProperty
+  nameWithType: DocumentDock.DocumentItemContainerThemeProperty
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelector
+  name: DocumentItemTemplateSelector
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_DocumentItemTemplateSelector
+  commentId: P:Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelector
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelector
+  nameWithType: DocumentDock.DocumentItemTemplateSelector
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelector*
+  name: DocumentItemTemplateSelector
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_DocumentItemTemplateSelector_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelector
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelector
+  nameWithType: DocumentDock.DocumentItemTemplateSelector
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelectorProperty
+  name: DocumentItemTemplateSelectorProperty
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_DocumentItemTemplateSelectorProperty
+  commentId: F:Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelectorProperty
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.DocumentItemTemplateSelectorProperty
+  nameWithType: DocumentDock.DocumentItemTemplateSelectorProperty
 - uid: Dock.Model.Avalonia.Controls.DocumentDock.DocumentTemplate
   name: DocumentTemplate
   href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_DocumentTemplate
@@ -13208,6 +13246,44 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource
   nameWithType: ToolDock.RemoveItemFromSource
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme
+  name: ToolItemContainerTheme
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemContainerTheme
+  commentId: P:Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme
+  nameWithType: ToolDock.ToolItemContainerTheme
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme*
+  name: ToolItemContainerTheme
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemContainerTheme_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme
+  nameWithType: ToolDock.ToolItemContainerTheme
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerThemeProperty
+  name: ToolItemContainerThemeProperty
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemContainerThemeProperty
+  commentId: F:Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerThemeProperty
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerThemeProperty
+  nameWithType: ToolDock.ToolItemContainerThemeProperty
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector
+  name: ToolItemTemplateSelector
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemTemplateSelector
+  commentId: P:Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector
+  nameWithType: ToolDock.ToolItemTemplateSelector
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector*
+  name: ToolItemTemplateSelector
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemTemplateSelector_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector
+  nameWithType: ToolDock.ToolItemTemplateSelector
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelectorProperty
+  name: ToolItemTemplateSelectorProperty
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemTemplateSelectorProperty
+  commentId: F:Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelectorProperty
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelectorProperty
+  nameWithType: ToolDock.ToolItemTemplateSelectorProperty
 - uid: Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate
   name: ToolTemplate
   href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolTemplate
@@ -14620,6 +14696,44 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockableBase.IsSharedSizeScopeProperty
   fullName: Dock.Model.Avalonia.Core.DockableBase.IsSharedSizeScopeProperty
   nameWithType: DockableBase.IsSharedSizeScopeProperty
+- uid: Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme
+  name: ItemContainerTheme
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerTheme
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme
+  fullName: Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme
+  nameWithType: DockableBase.ItemContainerTheme
+- uid: Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme*
+  name: ItemContainerTheme
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerTheme_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme
+  nameWithType: DockableBase.ItemContainerTheme
+- uid: Dock.Model.Avalonia.Core.DockableBase.ItemContainerThemeProperty
+  name: ItemContainerThemeProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerThemeProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.ItemContainerThemeProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.ItemContainerThemeProperty
+  nameWithType: DockableBase.ItemContainerThemeProperty
+- uid: Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector
+  name: ItemTemplateSelector
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelector
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector
+  fullName: Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector
+  nameWithType: DockableBase.ItemTemplateSelector
+- uid: Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector*
+  name: ItemTemplateSelector
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelector_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector
+  nameWithType: DockableBase.ItemTemplateSelector
+- uid: Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelectorProperty
+  name: ItemTemplateSelectorProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelectorProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelectorProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelectorProperty
+  nameWithType: DockableBase.ItemTemplateSelectorProperty
 - uid: Dock.Model.Avalonia.Core.DockableBase.KeepPinnedDockableVisible
   name: KeepPinnedDockableVisible
   href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_KeepPinnedDockableVisible
@@ -22479,6 +22593,38 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer
   nameWithType: IDockItemContainerGenerator.PrepareToolContainer
+- uid: Dock.Model.Core.IDockItemContainerMetadata
+  name: IDockItemContainerMetadata
+  href: api/Dock.Model.Core.IDockItemContainerMetadata.html
+  commentId: T:Dock.Model.Core.IDockItemContainerMetadata
+  fullName: Dock.Model.Core.IDockItemContainerMetadata
+  nameWithType: IDockItemContainerMetadata
+- uid: Dock.Model.Core.IDockItemContainerMetadata.ItemContainerTheme
+  name: ItemContainerTheme
+  href: api/Dock.Model.Core.IDockItemContainerMetadata.html#Dock_Model_Core_IDockItemContainerMetadata_ItemContainerTheme
+  commentId: P:Dock.Model.Core.IDockItemContainerMetadata.ItemContainerTheme
+  fullName: Dock.Model.Core.IDockItemContainerMetadata.ItemContainerTheme
+  nameWithType: IDockItemContainerMetadata.ItemContainerTheme
+- uid: Dock.Model.Core.IDockItemContainerMetadata.ItemContainerTheme*
+  name: ItemContainerTheme
+  href: api/Dock.Model.Core.IDockItemContainerMetadata.html#Dock_Model_Core_IDockItemContainerMetadata_ItemContainerTheme_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerMetadata.ItemContainerTheme
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerMetadata.ItemContainerTheme
+  nameWithType: IDockItemContainerMetadata.ItemContainerTheme
+- uid: Dock.Model.Core.IDockItemContainerMetadata.ItemTemplateSelector
+  name: ItemTemplateSelector
+  href: api/Dock.Model.Core.IDockItemContainerMetadata.html#Dock_Model_Core_IDockItemContainerMetadata_ItemTemplateSelector
+  commentId: P:Dock.Model.Core.IDockItemContainerMetadata.ItemTemplateSelector
+  fullName: Dock.Model.Core.IDockItemContainerMetadata.ItemTemplateSelector
+  nameWithType: IDockItemContainerMetadata.ItemTemplateSelector
+- uid: Dock.Model.Core.IDockItemContainerMetadata.ItemTemplateSelector*
+  name: ItemTemplateSelector
+  href: api/Dock.Model.Core.IDockItemContainerMetadata.html#Dock_Model_Core_IDockItemContainerMetadata_ItemTemplateSelector_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerMetadata.ItemTemplateSelector
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerMetadata.ItemTemplateSelector
+  nameWithType: IDockItemContainerMetadata.ItemTemplateSelector
 - uid: Dock.Model.Core.IDockManager
   name: IDockManager
   href: api/Dock.Model.Core.IDockManager.html
@@ -23900,6 +24046,28 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations
   nameWithType: IDockableDockingRestrictions.AllowedDropOperations
+- uid: Dock.Model.Core.IDocumentItemTemplateSelector
+  name: IDocumentItemTemplateSelector
+  href: api/Dock.Model.Core.IDocumentItemTemplateSelector.html
+  commentId: T:Dock.Model.Core.IDocumentItemTemplateSelector
+  fullName: Dock.Model.Core.IDocumentItemTemplateSelector
+  nameWithType: IDocumentItemTemplateSelector
+- uid: Dock.Model.Core.IDocumentItemTemplateSelector.SelectTemplate(Dock.Model.Core.IItemsSourceDock,System.Object,System.Int32)
+  name: SelectTemplate(IItemsSourceDock, object, int)
+  href: api/Dock.Model.Core.IDocumentItemTemplateSelector.html#Dock_Model_Core_IDocumentItemTemplateSelector_SelectTemplate_Dock_Model_Core_IItemsSourceDock_System_Object_System_Int32_
+  commentId: M:Dock.Model.Core.IDocumentItemTemplateSelector.SelectTemplate(Dock.Model.Core.IItemsSourceDock,System.Object,System.Int32)
+  name.vb: SelectTemplate(IItemsSourceDock, Object, Integer)
+  fullName: Dock.Model.Core.IDocumentItemTemplateSelector.SelectTemplate(Dock.Model.Core.IItemsSourceDock, object, int)
+  fullName.vb: Dock.Model.Core.IDocumentItemTemplateSelector.SelectTemplate(Dock.Model.Core.IItemsSourceDock, Object, Integer)
+  nameWithType: IDocumentItemTemplateSelector.SelectTemplate(IItemsSourceDock, object, int)
+  nameWithType.vb: IDocumentItemTemplateSelector.SelectTemplate(IItemsSourceDock, Object, Integer)
+- uid: Dock.Model.Core.IDocumentItemTemplateSelector.SelectTemplate*
+  name: SelectTemplate
+  href: api/Dock.Model.Core.IDocumentItemTemplateSelector.html#Dock_Model_Core_IDocumentItemTemplateSelector_SelectTemplate_
+  commentId: Overload:Dock.Model.Core.IDocumentItemTemplateSelector.SelectTemplate
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDocumentItemTemplateSelector.SelectTemplate
+  nameWithType: IDocumentItemTemplateSelector.SelectTemplate
 - uid: Dock.Model.Core.IFactory
   name: IFactory
   href: api/Dock.Model.Core.IFactory.html
@@ -26122,6 +26290,32 @@ references:
   commentId: T:Dock.Model.Core.IItemsSourceDock
   fullName: Dock.Model.Core.IItemsSourceDock
   nameWithType: IItemsSourceDock
+- uid: Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme
+  name: DocumentItemContainerTheme
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_DocumentItemContainerTheme
+  commentId: P:Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme
+  fullName: Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme
+  nameWithType: IItemsSourceDock.DocumentItemContainerTheme
+- uid: Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme*
+  name: DocumentItemContainerTheme
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_DocumentItemContainerTheme_
+  commentId: Overload:Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme
+  isSpec: "True"
+  fullName: Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme
+  nameWithType: IItemsSourceDock.DocumentItemContainerTheme
+- uid: Dock.Model.Core.IItemsSourceDock.DocumentItemTemplateSelector
+  name: DocumentItemTemplateSelector
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_DocumentItemTemplateSelector
+  commentId: P:Dock.Model.Core.IItemsSourceDock.DocumentItemTemplateSelector
+  fullName: Dock.Model.Core.IItemsSourceDock.DocumentItemTemplateSelector
+  nameWithType: IItemsSourceDock.DocumentItemTemplateSelector
+- uid: Dock.Model.Core.IItemsSourceDock.DocumentItemTemplateSelector*
+  name: DocumentItemTemplateSelector
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_DocumentItemTemplateSelector_
+  commentId: Overload:Dock.Model.Core.IItemsSourceDock.DocumentItemTemplateSelector
+  isSpec: "True"
+  fullName: Dock.Model.Core.IItemsSourceDock.DocumentItemTemplateSelector
+  nameWithType: IItemsSourceDock.DocumentItemTemplateSelector
 - uid: Dock.Model.Core.IItemsSourceDock.IsDocumentFromItemsSource(Dock.Model.Core.IDockable)
   name: IsDocumentFromItemsSource(IDockable)
   href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_IsDocumentFromItemsSource_Dock_Model_Core_IDockable_
@@ -26296,6 +26490,28 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.INavigateAdapter.ShowWindows
   nameWithType: INavigateAdapter.ShowWindows
+- uid: Dock.Model.Core.IToolItemTemplateSelector
+  name: IToolItemTemplateSelector
+  href: api/Dock.Model.Core.IToolItemTemplateSelector.html
+  commentId: T:Dock.Model.Core.IToolItemTemplateSelector
+  fullName: Dock.Model.Core.IToolItemTemplateSelector
+  nameWithType: IToolItemTemplateSelector
+- uid: Dock.Model.Core.IToolItemTemplateSelector.SelectTemplate(Dock.Model.Core.IToolItemsSourceDock,System.Object,System.Int32)
+  name: SelectTemplate(IToolItemsSourceDock, object, int)
+  href: api/Dock.Model.Core.IToolItemTemplateSelector.html#Dock_Model_Core_IToolItemTemplateSelector_SelectTemplate_Dock_Model_Core_IToolItemsSourceDock_System_Object_System_Int32_
+  commentId: M:Dock.Model.Core.IToolItemTemplateSelector.SelectTemplate(Dock.Model.Core.IToolItemsSourceDock,System.Object,System.Int32)
+  name.vb: SelectTemplate(IToolItemsSourceDock, Object, Integer)
+  fullName: Dock.Model.Core.IToolItemTemplateSelector.SelectTemplate(Dock.Model.Core.IToolItemsSourceDock, object, int)
+  fullName.vb: Dock.Model.Core.IToolItemTemplateSelector.SelectTemplate(Dock.Model.Core.IToolItemsSourceDock, Object, Integer)
+  nameWithType: IToolItemTemplateSelector.SelectTemplate(IToolItemsSourceDock, object, int)
+  nameWithType.vb: IToolItemTemplateSelector.SelectTemplate(IToolItemsSourceDock, Object, Integer)
+- uid: Dock.Model.Core.IToolItemTemplateSelector.SelectTemplate*
+  name: SelectTemplate
+  href: api/Dock.Model.Core.IToolItemTemplateSelector.html#Dock_Model_Core_IToolItemTemplateSelector_SelectTemplate_
+  commentId: Overload:Dock.Model.Core.IToolItemTemplateSelector.SelectTemplate
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemTemplateSelector.SelectTemplate
+  nameWithType: IToolItemTemplateSelector.SelectTemplate
 - uid: Dock.Model.Core.IToolItemsSourceDock
   name: IToolItemsSourceDock
   href: api/Dock.Model.Core.IToolItemsSourceDock.html
@@ -26357,6 +26573,32 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource
   nameWithType: IToolItemsSourceDock.RemoveItemFromSource
+- uid: Dock.Model.Core.IToolItemsSourceDock.ToolItemContainerTheme
+  name: ToolItemContainerTheme
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ToolItemContainerTheme
+  commentId: P:Dock.Model.Core.IToolItemsSourceDock.ToolItemContainerTheme
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ToolItemContainerTheme
+  nameWithType: IToolItemsSourceDock.ToolItemContainerTheme
+- uid: Dock.Model.Core.IToolItemsSourceDock.ToolItemContainerTheme*
+  name: ToolItemContainerTheme
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ToolItemContainerTheme_
+  commentId: Overload:Dock.Model.Core.IToolItemsSourceDock.ToolItemContainerTheme
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ToolItemContainerTheme
+  nameWithType: IToolItemsSourceDock.ToolItemContainerTheme
+- uid: Dock.Model.Core.IToolItemsSourceDock.ToolItemTemplateSelector
+  name: ToolItemTemplateSelector
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ToolItemTemplateSelector
+  commentId: P:Dock.Model.Core.IToolItemsSourceDock.ToolItemTemplateSelector
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ToolItemTemplateSelector
+  nameWithType: IToolItemsSourceDock.ToolItemTemplateSelector
+- uid: Dock.Model.Core.IToolItemsSourceDock.ToolItemTemplateSelector*
+  name: ToolItemTemplateSelector
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ToolItemTemplateSelector_
+  commentId: Overload:Dock.Model.Core.IToolItemsSourceDock.ToolItemTemplateSelector
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ToolItemTemplateSelector
+  nameWithType: IToolItemsSourceDock.ToolItemTemplateSelector
 - uid: Dock.Model.Core.MdiLayoutDefaults
   name: MdiLayoutDefaults
   href: api/Dock.Model.Core.MdiLayoutDefaults.html

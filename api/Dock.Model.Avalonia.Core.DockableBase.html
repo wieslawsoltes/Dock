@@ -108,7 +108,7 @@ Class DockableBase  <a class="header-action link-secondary" title="View source" 
 [JsonDerivedType(typeof(Tool), &quot;Tool&quot;)]
 [JsonDerivedType(typeof(ToolDock), &quot;ToolDock&quot;)]
 [JsonDerivedType(typeof(DockBase), &quot;DockBase&quot;)]
-public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockable, IControlRecyclingIdProvider, IDockSelectorInfo, IDockableDockingRestrictions</code></pre>
+public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockable, IControlRecyclingIdProvider, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata</code></pre>
   </div>
 
 
@@ -145,6 +145,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockItemContainerMetadata.html">IDockItemContainerMetadata</a></div>
     </dd>
   </dl>
 
@@ -510,7 +511,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase__ctor" data-uid="Dock.Model.Avalonia.Core.DockableBase.#ctor">
   DockableBase()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L280"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L294"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html">DockableBase</a> class.</p>
@@ -1189,6 +1190,68 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
 
 
 
+  <h3 id="Dock_Model_Avalonia_Core_DockableBase_ItemContainerThemeProperty" data-uid="Dock.Model.Avalonia.Core.DockableBase.ItemContainerThemeProperty">
+  ItemContainerThemeProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L217"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerTheme">ItemContainerTheme</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;DockableBase, object?&gt; ItemContainerThemeProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html">DockableBase</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelectorProperty" data-uid="Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelectorProperty">
+  ItemTemplateSelectorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelector">ItemTemplateSelector</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;DockableBase, object?&gt; ItemTemplateSelectorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html">DockableBase</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_KeepPinnedDockableVisibleProperty" data-uid="Dock.Model.Avalonia.Core.DockableBase.KeepPinnedDockableVisibleProperty">
   KeepPinnedDockableVisibleProperty
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L145"><i class="bi bi-code-slash"></i></a>
@@ -1222,7 +1285,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MaxHeightProperty" data-uid="Dock.Model.Avalonia.Core.DockableBase.MaxHeightProperty">
   MaxHeightProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L247"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_MaxHeight">MaxHeight</a> property.</p>
@@ -1253,7 +1316,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MaxWidthProperty" data-uid="Dock.Model.Avalonia.Core.DockableBase.MaxWidthProperty">
   MaxWidthProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L235"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_MaxWidth">MaxWidth</a> property.</p>
@@ -1284,7 +1347,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MinHeightProperty" data-uid="Dock.Model.Avalonia.Core.DockableBase.MinHeightProperty">
   MinHeightProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L241"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_MinHeight">MinHeight</a> property.</p>
@@ -1315,7 +1378,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MinWidthProperty" data-uid="Dock.Model.Avalonia.Core.DockableBase.MinWidthProperty">
   MinWidthProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L217"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L229"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_MinWidth">MinWidth</a> property.</p>
@@ -1630,7 +1693,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_AllowedDockOperations" data-uid="Dock.Model.Avalonia.Core.DockableBase.AllowedDockOperations">
   AllowedDockOperations
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L589"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L603"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets allowed operations when this dockable is the drag source.</p>
@@ -1664,7 +1727,7 @@ public DockOperationMask AllowedDockOperations { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_AllowedDropOperations" data-uid="Dock.Model.Avalonia.Core.DockableBase.AllowedDropOperations">
   AllowedDropOperations
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L598"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L612"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets allowed operations when this dockable is the drop target.</p>
@@ -1698,7 +1761,7 @@ public DockOperationMask AllowedDropOperations { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_CanClose" data-uid="Dock.Model.Avalonia.Core.DockableBase.CanClose">
   CanClose
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L477"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L491"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be closed.</p>
@@ -1732,7 +1795,7 @@ public bool CanClose { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_CanDockAsDocument" data-uid="Dock.Model.Avalonia.Core.DockableBase.CanDockAsDocument">
   CanDockAsDocument
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L562"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L576"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be docked as a document.</p>
@@ -1766,7 +1829,7 @@ public bool CanDockAsDocument { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_CanDrag" data-uid="Dock.Model.Avalonia.Core.DockableBase.CanDrag">
   CanDrag
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L544"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L558"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be dragged.</p>
@@ -1800,7 +1863,7 @@ public bool CanDrag { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_CanDrop" data-uid="Dock.Model.Avalonia.Core.DockableBase.CanDrop">
   CanDrop
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L553"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L567"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be dropped on.</p>
@@ -1834,7 +1897,7 @@ public bool CanDrop { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_CanFloat" data-uid="Dock.Model.Avalonia.Core.DockableBase.CanFloat">
   CanFloat
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L535"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L549"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be floated.</p>
@@ -1868,7 +1931,7 @@ public bool CanFloat { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_CanPin" data-uid="Dock.Model.Avalonia.Core.DockableBase.CanPin">
   CanPin
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L486"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L500"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable can be pinned.</p>
@@ -1902,7 +1965,7 @@ public bool CanPin { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_CollapsedProportion" data-uid="Dock.Model.Avalonia.Core.DockableBase.CollapsedProportion">
   CollapsedProportion
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L432"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L446"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets last known proportion before collapse.</p>
@@ -1936,7 +1999,7 @@ public double CollapsedProportion { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Column" data-uid="Dock.Model.Avalonia.Core.DockableBase.Column">
   Column
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L387"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L401"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid column.</p>
@@ -1970,7 +2033,7 @@ public int Column { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_ColumnSpan" data-uid="Dock.Model.Avalonia.Core.DockableBase.ColumnSpan">
   ColumnSpan
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L419"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid column span.</p>
@@ -2004,7 +2067,7 @@ public int ColumnSpan { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Context" data-uid="Dock.Model.Avalonia.Core.DockableBase.Context">
   Context
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L319"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable context.</p>
@@ -2038,7 +2101,7 @@ public object? Context { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Dock" data-uid="Dock.Model.Avalonia.Core.DockableBase.Dock">
   Dock
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L369"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L383"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets docking mode.</p>
@@ -2072,7 +2135,7 @@ public DockMode Dock { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_DockGroup" data-uid="Dock.Model.Avalonia.Core.DockableBase.DockGroup">
   DockGroup
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L580"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L594"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the docking group identifier.
@@ -2109,7 +2172,7 @@ public string? DockGroup { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_DockingState" data-uid="Dock.Model.Avalonia.Core.DockableBase.DockingState">
   DockingState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L378"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L392"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the current logical docking window state.</p>
@@ -2143,7 +2206,7 @@ public DockingWindowState DockingState { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Factory" data-uid="Dock.Model.Avalonia.Core.DockableBase.Factory">
   Factory
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L333"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L347"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable factory.</p>
@@ -2177,7 +2240,7 @@ public IFactory? Factory { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Id" data-uid="Dock.Model.Avalonia.Core.DockableBase.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L301"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable id.</p>
@@ -2211,7 +2274,7 @@ public string Id { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_IsCollapsable" data-uid="Dock.Model.Avalonia.Core.DockableBase.IsCollapsable">
   IsCollapsable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L351"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L365"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the dockable collapses when all its children are removed.</p>
@@ -2245,7 +2308,7 @@ public bool IsCollapsable { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_IsEmpty" data-uid="Dock.Model.Avalonia.Core.DockableBase.IsEmpty">
   IsEmpty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L342"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L356"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets if the dockable is empty.</p>
@@ -2279,7 +2342,7 @@ public bool IsEmpty { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_IsModified" data-uid="Dock.Model.Avalonia.Core.DockableBase.IsModified">
   IsModified
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L571"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L585"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether the dockable has unsaved changes.</p>
@@ -2313,7 +2376,7 @@ public bool IsModified { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_IsSharedSizeScope" data-uid="Dock.Model.Avalonia.Core.DockableBase.IsSharedSizeScope">
   IsSharedSizeScope
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L423"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L437"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether this dock participates in shared size scope.</p>
@@ -2343,11 +2406,80 @@ public bool IsSharedSizeScope { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Avalonia_Core_DockableBase_ItemContainerTheme_" data-uid="Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Core_DockableBase_ItemContainerTheme" data-uid="Dock.Model.Avalonia.Core.DockableBase.ItemContainerTheme">
+  ItemContainerTheme
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L639"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the generated container theme metadata.
+The value can be a theme instance or a theme resource key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public object? ItemContainerTheme { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelector_" data-uid="Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelector" data-uid="Dock.Model.Avalonia.Core.DockableBase.ItemTemplateSelector">
+  ItemTemplateSelector
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L648"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets metadata describing the selector used to resolve template content.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public object? ItemTemplateSelector { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Avalonia_Core_DockableBase_KeepPinnedDockableVisible_" data-uid="Dock.Model.Avalonia.Core.DockableBase.KeepPinnedDockableVisible*"></a>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_KeepPinnedDockableVisible" data-uid="Dock.Model.Avalonia.Core.DockableBase.KeepPinnedDockableVisible">
   KeepPinnedDockableVisible
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L495"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L509"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether a pinned dockable stays visible when previewed.</p>
@@ -2381,7 +2513,7 @@ public bool KeepPinnedDockableVisible { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MaxHeight" data-uid="Dock.Model.Avalonia.Core.DockableBase.MaxHeight">
   MaxHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L468"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L482"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets maximum height.</p>
@@ -2415,7 +2547,7 @@ public double MaxHeight { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MaxWidth" data-uid="Dock.Model.Avalonia.Core.DockableBase.MaxWidth">
   MaxWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L450"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L464"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets maximum width.</p>
@@ -2449,7 +2581,7 @@ public double MaxWidth { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MinHeight" data-uid="Dock.Model.Avalonia.Core.DockableBase.MinHeight">
   MinHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L459"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L473"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets minimum height.</p>
@@ -2483,7 +2615,7 @@ public double MinHeight { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_MinWidth" data-uid="Dock.Model.Avalonia.Core.DockableBase.MinWidth">
   MinWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L441"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L455"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets minimum width.</p>
@@ -2517,7 +2649,7 @@ public double MinWidth { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OriginalOwner" data-uid="Dock.Model.Avalonia.Core.DockableBase.OriginalOwner">
   OriginalOwner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L324"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L338"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable original owner.</p>
@@ -2551,7 +2683,7 @@ public IDockable? OriginalOwner { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Owner" data-uid="Dock.Model.Avalonia.Core.DockableBase.Owner">
   Owner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L314"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L328"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable owner.</p>
@@ -2586,7 +2718,7 @@ public IDockable? Owner { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_PinnedBounds" data-uid="Dock.Model.Avalonia.Core.DockableBase.PinnedBounds">
   PinnedBounds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L513"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L527"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the stored bounds for pinned previews.</p>
@@ -2620,7 +2752,7 @@ public DockRect? PinnedBounds { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_PinnedDockDisplayModeOverride" data-uid="Dock.Model.Avalonia.Core.DockableBase.PinnedDockDisplayModeOverride">
   PinnedDockDisplayModeOverride
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L504"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L518"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets an optional pinned dock display mode override.
@@ -2655,7 +2787,7 @@ public PinnedDockDisplayMode? PinnedDockDisplayModeOverride { get; set; }</code>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Proportion" data-uid="Dock.Model.Avalonia.Core.DockableBase.Proportion">
   Proportion
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L360"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L374"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets splitter proportion.</p>
@@ -2689,7 +2821,7 @@ public double Proportion { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Row" data-uid="Dock.Model.Avalonia.Core.DockableBase.Row">
   Row
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L396"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L410"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid row.</p>
@@ -2723,7 +2855,7 @@ public int Row { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_RowSpan" data-uid="Dock.Model.Avalonia.Core.DockableBase.RowSpan">
   RowSpan
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L414"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L428"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets grid row span.</p>
@@ -2757,7 +2889,7 @@ public int RowSpan { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_SelectorTitle" data-uid="Dock.Model.Avalonia.Core.DockableBase.SelectorTitle">
   SelectorTitle
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L616"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L630"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the text displayed in the selector.</p>
@@ -2791,7 +2923,7 @@ public string? SelectorTitle { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_ShowInSelector" data-uid="Dock.Model.Avalonia.Core.DockableBase.ShowInSelector">
   ShowInSelector
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L607"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L621"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether this dockable appears in the selector.</p>
@@ -2825,7 +2957,7 @@ public bool ShowInSelector { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_Title" data-uid="Dock.Model.Avalonia.Core.DockableBase.Title">
   Title
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L296"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L310"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dockable title.</p>
@@ -2863,7 +2995,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_GetControlRecyclingId" data-uid="Dock.Model.Avalonia.Core.DockableBase.GetControlRecyclingId">
   GetControlRecyclingId()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L625"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L657"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2894,7 +3026,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_GetPinnedBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Avalonia.Core.DockableBase.GetPinnedBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetPinnedBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L657"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L689"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pinned bounds information used for tracking.</p>
@@ -2936,7 +3068,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_GetPointerPosition_System_Double__System_Double__" data-uid="Dock.Model.Avalonia.Core.DockableBase.GetPointerPosition(System.Double@,System.Double@)">
   GetPointerPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L693"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L725"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer position used for tracking.</p>
@@ -2972,7 +3104,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_GetPointerScreenPosition_System_Double__System_Double__" data-uid="Dock.Model.Avalonia.Core.DockableBase.GetPointerScreenPosition(System.Double@,System.Double@)">
   GetPointerScreenPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L711"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L743"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer screen position used for tracking.</p>
@@ -3008,7 +3140,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_GetTabBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Avalonia.Core.DockableBase.GetTabBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetTabBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L675"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L707"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable tab bounds information used for tracking.</p>
@@ -3050,7 +3182,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_GetVisibleBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Avalonia.Core.DockableBase.GetVisibleBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetVisibleBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L639"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L671"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable visible bounds information used for tracking.</p>
@@ -3092,7 +3224,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OnClose" data-uid="Dock.Model.Avalonia.Core.DockableBase.OnClose">
   OnClose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L628"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L660"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable is closed.</p>
@@ -3125,7 +3257,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OnPinnedBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.OnPinnedBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnPinnedBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L670"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L702"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pinned bounds changed.</p>
@@ -3167,7 +3299,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OnPointerPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.OnPointerPositionChanged(System.Double,System.Double)">
   OnPointerPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L738"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer position changed.</p>
@@ -3203,7 +3335,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OnPointerScreenPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.OnPointerScreenPositionChanged(System.Double,System.Double)">
   OnPointerScreenPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L724"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L756"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer screen position changed.</p>
@@ -3239,7 +3371,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OnSelected" data-uid="Dock.Model.Avalonia.Core.DockableBase.OnSelected">
   OnSelected()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L634"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L666"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable becomes the selected dockable.</p>
@@ -3266,7 +3398,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OnTabBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.OnTabBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnTabBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L688"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L720"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable tab bounds changed.</p>
@@ -3308,7 +3440,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_OnVisibleBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.OnVisibleBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnVisibleBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L652"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L684"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable visible bounds changed.</p>
@@ -3350,7 +3482,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_SetPinnedBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.SetPinnedBounds(System.Double,System.Double,System.Double,System.Double)">
   SetPinnedBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L663"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L695"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pinned bounds information used for tracking.</p>
@@ -3392,7 +3524,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_SetPointerPosition_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.SetPointerPosition(System.Double,System.Double)">
   SetPointerPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L699"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L731"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer position used for tracking.</p>
@@ -3428,7 +3560,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_SetPointerScreenPosition_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.SetPointerScreenPosition(System.Double,System.Double)">
   SetPointerScreenPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L717"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L749"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer screen position used for tracking.</p>
@@ -3464,7 +3596,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_SetTabBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.SetTabBounds(System.Double,System.Double,System.Double,System.Double)">
   SetTabBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L681"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L713"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable tab bounds information used for tracking.</p>
@@ -3506,7 +3638,7 @@ public string Title { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Core_DockableBase_SetVisibleBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Avalonia.Core.DockableBase.SetVisibleBounds(System.Double,System.Double,System.Double,System.Double)">
   SetVisibleBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L645"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Core/DockableBase.cs/#L677"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable visible bounds information used for tracking.</p>

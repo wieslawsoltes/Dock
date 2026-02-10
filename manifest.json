@@ -4116,7 +4116,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Dock.Model.Core.IDockItemContainerGenerator",
-      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockItemContainerGenerator.yml\" sourcestartlinenumber=\"1\">Provides hooks to create, prepare, and clear ItemsSource-generated\ndocument and tool containers.</p>\n"
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockItemContainerGenerator.yml\" sourcestartlinenumber=\"1\">Defines creation and lifecycle hooks for ItemsSource-generated dock item containers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IDockItemContainerMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IDockItemContainerMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IDockItemContainerMetadata",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockItemContainerMetadata.yml\" sourcestartlinenumber=\"1\">Optional presentation metadata for source-generated dockables.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4260,6 +4274,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IDocumentItemTemplateSelector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IDocumentItemTemplateSelector.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IDocumentItemTemplateSelector",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDocumentItemTemplateSelector.yml\" sourcestartlinenumber=\"1\">Selects template content for generated document containers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.IFactory.yml",
       "output": {
         ".html": {
@@ -4369,6 +4397,20 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core.INavigateAdapter",
       "Summary": "<p sourcefile=\"api/Dock.Model.Core.INavigateAdapter.yml\" sourcestartlinenumber=\"1\">Navigate adapter contract for the <xref href=\"Dock.Model.Core.IDock\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IToolItemTemplateSelector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IToolItemTemplateSelector.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IToolItemTemplateSelector",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IToolItemTemplateSelector.yml\" sourcestartlinenumber=\"1\">Selects template content for generated tool containers.</p>\n"
     },
     {
       "type": "ManagedReference",

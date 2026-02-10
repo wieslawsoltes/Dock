@@ -98,7 +98,7 @@ Class ToolDock  <a class="header-action link-secondary" title="View source" href
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ToolDock : DockBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IToolDock, ILocalTarget, IToolDockContent, IDock, IDockable, IControlRecyclingIdProvider, IToolItemsSourceDock</code></pre>
+    <pre><code class="lang-csharp hljs">public class ToolDock : DockBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, IToolDock, ILocalTarget, IToolDockContent, IDock, IDockable, IControlRecyclingIdProvider, IToolItemsSourceDock</code></pre>
   </div>
 
 
@@ -135,6 +135,7 @@ Class ToolDock  <a class="header-action link-secondary" title="View source" href
       <div><span class="xref">INamed</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockItemContainerMetadata.html">IDockItemContainerMetadata</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.ILocalTarget.html">ILocalTarget</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IToolDockContent.html">IToolDockContent</a></div>
@@ -315,6 +316,12 @@ Class ToolDock  <a class="header-action link-secondary" title="View source" href
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_SelectorTitleProperty">DockableBase.SelectorTitleProperty</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerThemeProperty">DockableBase.ItemContainerThemeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelectorProperty">DockableBase.ItemTemplateSelectorProperty</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_MinWidthProperty">DockableBase.MinWidthProperty</a>
     </div>
     <div>
@@ -433,6 +440,12 @@ Class ToolDock  <a class="header-action link-secondary" title="View source" href
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_SelectorTitle">DockableBase.SelectorTitle</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerTheme">DockableBase.ItemContainerTheme</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelector">DockableBase.ItemTemplateSelector</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_GetControlRecyclingId">DockableBase.GetControlRecyclingId()</a>
@@ -882,7 +895,7 @@ Class ToolDock  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock__ctor" data-uid="Dock.Model.Avalonia.Controls.ToolDock.#ctor">
   ToolDock()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Avalonia.Controls.ToolDock.html">ToolDock</a> class.</p>
@@ -1096,6 +1109,68 @@ Class ToolDock  <a class="header-action link-secondary" title="View source" href
 
 
 
+  <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ToolItemContainerThemeProperty" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerThemeProperty">
+  ToolItemContainerThemeProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemContainerTheme">ToolItemContainerTheme</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;object?&gt; ToolItemContainerThemeProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ToolItemTemplateSelectorProperty" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelectorProperty">
+  ToolItemTemplateSelectorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolItemTemplateSelector">ToolItemTemplateSelector</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;IToolItemTemplateSelector?&gt; ToolItemTemplateSelectorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="Dock.Model.Core.IToolItemTemplateSelector.html">IToolItemTemplateSelector</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ToolTemplateProperty" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolTemplateProperty">
   ToolTemplateProperty
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L50"><i class="bi bi-code-slash"></i></a>
@@ -1134,7 +1209,7 @@ Class ToolDock  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_Alignment" data-uid="Dock.Model.Avalonia.Controls.ToolDock.Alignment">
   Alignment
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L143"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock auto hide alignment.</p>
@@ -1168,7 +1243,7 @@ public Alignment Alignment { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_AutoHide" data-uid="Dock.Model.Avalonia.Controls.ToolDock.AutoHide">
   AutoHide
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L161"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the Dock auto hides dockable when pointer is not over.</p>
@@ -1202,7 +1277,7 @@ public bool AutoHide { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_GripMode" data-uid="Dock.Model.Avalonia.Controls.ToolDock.GripMode">
   GripMode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L170"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the tool Dock grip mode.</p>
@@ -1236,7 +1311,7 @@ public GripMode GripMode { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_IsExpanded" data-uid="Dock.Model.Avalonia.Controls.ToolDock.IsExpanded">
   IsExpanded
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L152"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the Dock is expanded.</p>
@@ -1270,7 +1345,7 @@ public bool IsExpanded { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ItemContainerGenerator" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGenerator">
   ItemContainerGenerator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L199"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the generator used to create and prepare containers for ItemsSource items.</p>
@@ -1304,7 +1379,7 @@ public IDockItemContainerGenerator? ItemContainerGenerator { get; set; }</code><
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ItemsSource" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ItemsSource">
   ItemsSource
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L188"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the ItemsSource collection.</p>
@@ -1334,11 +1409,80 @@ public IEnumerable? ItemsSource { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Avalonia_Controls_ToolDock_ToolItemContainerTheme_" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ToolItemContainerTheme" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolItemContainerTheme">
+  ToolItemContainerTheme
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets per-dock container theme metadata used for generated tools.
+The value can be a theme instance or a theme resource key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public object? ToolItemContainerTheme { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Controls_ToolDock_ToolItemTemplateSelector_" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ToolItemTemplateSelector" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolItemTemplateSelector">
+  ToolItemTemplateSelector
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L217"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the per-dock template selector for generated tools.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public IToolItemTemplateSelector? ToolItemTemplateSelector { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IToolItemTemplateSelector.html">IToolItemTemplateSelector</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Avalonia_Controls_ToolDock_ToolTemplate_" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate*"></a>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_ToolTemplate" data-uid="Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate">
   ToolTemplate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L179"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets tool template.</p>
@@ -1376,7 +1520,7 @@ public IToolTemplate? ToolTemplate { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_AddTool_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Avalonia.Controls.ToolDock.AddTool(Dock.Model.Core.IDockable)">
   AddTool(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L213"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L253"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds the specified tool to this dock and makes it active and focused.</p>
@@ -1409,7 +1553,7 @@ public IToolTemplate? ToolTemplate { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_CreateToolFromTemplate" data-uid="Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate">
   CreateToolFromTemplate()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L229"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates new tool from template.</p>
@@ -1442,7 +1586,7 @@ public IToolTemplate? ToolTemplate { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_Dispose_System_Boolean_" data-uid="Dock.Model.Avalonia.Controls.ToolDock.Dispose(System.Boolean)">
   Dispose(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L113"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Disposes resources used by this ToolDock.</p>
@@ -1475,7 +1619,7 @@ public IToolTemplate? ToolTemplate { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_IsToolFromItemsSource_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)">
   IsToolFromItemsSource(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L307"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a tool was generated from ItemsSource.</p>
@@ -1514,7 +1658,7 @@ public IToolTemplate? ToolTemplate { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_ToolDock_RemoveItemFromSource_System_Object_" data-uid="Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource(System.Object)">
   RemoveItemFromSource(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/ToolDock.cs/#L266"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes an item from the ItemsSource collection if it supports removal.

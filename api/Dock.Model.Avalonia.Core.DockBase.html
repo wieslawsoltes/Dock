@@ -106,7 +106,7 @@ Class DockBase  <a class="header-action link-secondary" title="View source" href
 [JsonDerivedType(typeof(RootDock), &quot;RootDock&quot;)]
 [JsonDerivedType(typeof(SplitViewDock), &quot;SplitViewDock&quot;)]
 [JsonDerivedType(typeof(ToolDock), &quot;ToolDock&quot;)]
-public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -142,6 +142,7 @@ public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataCont
       <div><span class="xref">INamed</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockItemContainerMetadata.html">IDockItemContainerMetadata</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
@@ -262,6 +263,12 @@ public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataCont
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_SelectorTitleProperty">DockableBase.SelectorTitleProperty</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerThemeProperty">DockableBase.ItemContainerThemeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelectorProperty">DockableBase.ItemTemplateSelectorProperty</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_MinWidthProperty">DockableBase.MinWidthProperty</a>
     </div>
     <div>
@@ -380,6 +387,12 @@ public abstract class DockBase : DockableBase, INotifyPropertyChanged, IDataCont
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_SelectorTitle">DockableBase.SelectorTitle</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemContainerTheme">DockableBase.ItemContainerTheme</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_ItemTemplateSelector">DockableBase.ItemTemplateSelector</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_GetControlRecyclingId">DockableBase.GetControlRecyclingId()</a>

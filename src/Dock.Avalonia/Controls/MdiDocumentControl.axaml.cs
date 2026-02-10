@@ -5,12 +5,14 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Reactive;
 using Avalonia.Styling;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Mdi;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -172,6 +174,12 @@ public class MdiDocumentControl : TemplatedControl
     public MdiDocumentControl()
     {
         UpdatePseudoClasses(IsActive);
+    }
+
+    /// <inheritdoc/>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new MdiDocumentControlAutomationPeer(this);
     }
 
     /// <inheritdoc/>

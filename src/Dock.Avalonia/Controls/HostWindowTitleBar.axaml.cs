@@ -2,11 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
+using Dock.Avalonia.Automation.Peers;
 
 namespace Dock.Avalonia.Controls;
 
@@ -20,6 +22,12 @@ public class HostWindowTitleBar : TitleBar
 
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindowTitleBar);
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new HostWindowTitleBarAutomationPeer(this);
+    }
 
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

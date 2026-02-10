@@ -1,6 +1,8 @@
 using System;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+using Dock.Avalonia.Automation.Peers;
 
 namespace Dock.Avalonia.Controls;
 
@@ -9,6 +11,12 @@ namespace Dock.Avalonia.Controls;
 /// </summary>
 public class PinnedDockWindow : Window
 {
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new PinnedDockWindowAutomationPeer(this);
+    }
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(PinnedDockWindow);
 }

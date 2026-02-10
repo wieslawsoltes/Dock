@@ -2,11 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 using AvaloniaOrientation = Avalonia.Layout.Orientation;
@@ -48,6 +50,12 @@ public class ToolPinItemControl : TemplatedControl
     {
         get => GetValue(PinContextMenuProperty);
         set => SetValue(PinContextMenuProperty, value);
+    }
+
+    /// <inheritdoc/>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new ToolPinItemControlAutomationPeer(this);
     }
 
 

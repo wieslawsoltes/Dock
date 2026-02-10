@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
@@ -17,6 +18,7 @@ using Dock.Avalonia.CommandBars;
 using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Selectors;
 using Dock.Avalonia.Services;
 using Dock.Model;
@@ -246,6 +248,12 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         AddHandler(PointerWheelChangedEvent, WheelChangedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(KeyDownEvent, KeyDownHandler, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, KeyUpHandler, RoutingStrategies.Tunnel);
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DockControlAutomationPeer(this);
     }
 
     /// <inheritdoc />

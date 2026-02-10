@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
@@ -11,6 +12,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Avalonia.Threading;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Model.Core;
 using Dock.Model.Controls;
 using Dock.Settings;
@@ -79,6 +81,12 @@ public class PinnedDockControl : TemplatedControl
     {
         PinnedDockAlignmentProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
         PinnedDockDisplayModeProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.OnDisplayModeChanged());
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new PinnedDockControlAutomationPeer(this);
     }
 
     private bool IsOverlayDisplayMode()

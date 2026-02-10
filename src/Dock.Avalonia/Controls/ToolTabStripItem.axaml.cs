@@ -2,11 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 using AvaloniaOrientation = Avalonia.Layout.Orientation;
@@ -71,6 +73,12 @@ public class ToolTabStripItem : TabStripItem
         set => SetValue(TabContextMenuProperty, value);
     }
 
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new ToolTabStripItemAutomationPeer(this);
+    }
+
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -122,5 +130,16 @@ public class ToolTabStripItem : TabStripItem
             }
         }
     }
-}
 
+    /// <inheritdoc />
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsSelectedProperty
+            && ControlAutomationPeer.FromElement(this) is ToolTabStripItemAutomationPeer peer)
+        {
+            peer.NotifyIsSelectedChanged(change.GetOldValue<bool>(), change.GetNewValue<bool>());
+        }
+    }
+}

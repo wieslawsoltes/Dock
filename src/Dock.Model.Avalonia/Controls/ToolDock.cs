@@ -8,8 +8,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia.Reactive;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
@@ -58,13 +56,21 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
     public static readonly StyledProperty<IEnumerable?> ItemsSourceProperty =
         AvaloniaProperty.Register<ToolDock, IEnumerable?>(nameof(ItemsSource));
 
+    /// <summary>
+    /// Defines the <see cref="ItemContainerGenerator"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDockItemContainerGenerator?> ItemContainerGeneratorProperty =
+        AvaloniaProperty.Register<ToolDock, IDockItemContainerGenerator?>(nameof(ItemContainerGenerator));
+
     private Alignment _alignment = Alignment.Unset;
     private bool _isExpanded;
     private bool _autoHide = true;
     private GripMode _gripMode = GripMode.Visible;
     private readonly HashSet<IDockable> _generatedTools = new();
+    private readonly Dictionary<IDockable, IDockItemContainerGenerator> _generatedToolGenerators = new();
     private IDisposable? _itemsSourceSubscription;
     private IDisposable? _toolTemplateSubscription;
+    private IDisposable? _itemContainerGeneratorSubscription;
     private INotifyCollectionChanged? _currentCollectionChanged;
 
     /// <summary>
@@ -77,6 +83,9 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
 
         _toolTemplateSubscription = this.GetObservable(ToolTemplateProperty)
             .Subscribe(new AnonymousObserver<IToolTemplate?>(_ => OnToolTemplateChanged()));
+
+        _itemContainerGeneratorSubscription = this.GetObservable(ItemContainerGeneratorProperty)
+            .Subscribe(new AnonymousObserver<IDockItemContainerGenerator?>(_ => OnItemContainerGeneratorChanged()));
     }
 
     /// <summary>
@@ -95,6 +104,9 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
 
         _toolTemplateSubscription?.Dispose();
         _toolTemplateSubscription = null;
+
+        _itemContainerGeneratorSubscription?.Dispose();
+        _itemContainerGeneratorSubscription = null;
 
         if (_currentCollectionChanged != null)
         {
@@ -157,6 +169,17 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
     {
         get => GetValue(ItemsSourceProperty);
         set => SetValue(ItemsSourceProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the generator used to create and prepare containers for ItemsSource items.
+    /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public IDockItemContainerGenerator? ItemContainerGenerator
+    {
+        get => GetValue(ItemContainerGeneratorProperty);
+        set => SetValue(ItemContainerGeneratorProperty, value);
     }
 
     /// <summary>
@@ -246,6 +269,33 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         return _generatedTools.Contains(tool);
     }
 
+    private IDockItemContainerGenerator ResolveItemContainerGenerator()
+    {
+        return ItemContainerGenerator ?? DockItemContainerGenerator.Default;
+    }
+
+    private void OnItemContainerGeneratorChanged()
+    {
+        if (ItemsSource is null)
+        {
+            return;
+        }
+
+        RegenerateGeneratedTools(ItemsSource);
+    }
+
+    private void RegenerateGeneratedTools(IEnumerable itemsSource)
+    {
+        ClearGeneratedTools();
+
+        var index = 0;
+        foreach (var item in itemsSource)
+        {
+            AddToolFromItem(item, index);
+            index++;
+        }
+    }
+
     private void OnItemsSourceChanged(IEnumerable? newItemsSource)
     {
         if (_currentCollectionChanged != null)
@@ -254,21 +304,19 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
             _currentCollectionChanged = null;
         }
 
-        ClearGeneratedTools();
-
         if (newItemsSource is INotifyCollectionChanged notifyCollection)
         {
             _currentCollectionChanged = notifyCollection;
             _currentCollectionChanged.CollectionChanged += OnCollectionChanged;
         }
 
-        if (newItemsSource != null)
+        if (newItemsSource is null)
         {
-            foreach (var item in newItemsSource)
-            {
-                AddToolFromItem(item);
-            }
+            ClearGeneratedTools();
+            return;
         }
+
+        RegenerateGeneratedTools(newItemsSource);
     }
 
     private void OnToolTemplateChanged()
@@ -278,12 +326,7 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
             return;
         }
 
-        ClearGeneratedTools();
-
-        foreach (var item in ItemsSource)
-        {
-            AddToolFromItem(item);
-        }
+        RegenerateGeneratedTools(ItemsSource);
     }
 
     private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -293,9 +336,12 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
             case NotifyCollectionChangedAction.Add:
                 if (e.NewItems != null)
                 {
+                    var addIndex = e.NewStartingIndex;
+                    var offset = 0;
                     foreach (var item in e.NewItems)
                     {
-                        AddToolFromItem(item);
+                        AddToolFromItem(item, addIndex >= 0 ? addIndex + offset : -1);
+                        offset++;
                     }
                 }
                 break;
@@ -321,51 +367,53 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
 
                 if (e.NewItems != null)
                 {
+                    var replaceIndex = e.NewStartingIndex;
+                    var offset = 0;
                     foreach (var item in e.NewItems)
                     {
-                        AddToolFromItem(item);
+                        AddToolFromItem(item, replaceIndex >= 0 ? replaceIndex + offset : -1);
+                        offset++;
                     }
                 }
                 break;
 
             case NotifyCollectionChangedAction.Reset:
-                ClearGeneratedTools();
                 if (ItemsSource != null)
                 {
-                    foreach (var item in ItemsSource)
-                    {
-                        AddToolFromItem(item);
-                    }
+                    RegenerateGeneratedTools(ItemsSource);
+                }
+                else
+                {
+                    ClearGeneratedTools();
                 }
                 break;
         }
     }
 
-    private void AddToolFromItem(object? item)
+    private void AddToolFromItem(object? item, int index)
     {
-        if (item == null || ToolTemplate == null)
+        if (item == null)
         {
             return;
         }
 
-        var tool = new Tool
+        var generator = ResolveItemContainerGenerator();
+        var tool = generator.CreateToolContainer(this, item, index);
+        if (tool is null)
         {
-            Id = Guid.NewGuid().ToString(),
-            Title = GetToolTitle(item),
-            Context = item,
-            CanClose = GetToolCanClose(item)
-        };
+            return;
+        }
 
-        if (ToolTemplate.Content != null)
+        if (tool is not ITool)
         {
-            tool.Content = ToolTemplate.Content;
+            generator.ClearToolContainer(this, tool, item);
+            return;
         }
-        else
-        {
-            tool.Content = new Func<IServiceProvider, object>(_ => CreateFallbackContent(tool, item));
-        }
+
+        generator.PrepareToolContainer(this, tool, item, index);
 
         _generatedTools.Add(tool);
+        _generatedToolGenerators[tool] = generator;
         TrackItemsSourceTool(tool);
 
         if (Factory != null)
@@ -387,34 +435,6 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         }
     }
 
-    private static Control CreateFallbackContent(Tool tool, object item)
-    {
-        var contentPanel = new StackPanel { Margin = new Thickness(10) };
-
-        var titleBlock = new TextBlock
-        {
-            Text = tool.Title ?? "Tool",
-            FontWeight = FontWeight.Bold,
-            FontSize = 16,
-            Background = Brushes.LightSteelBlue,
-            Padding = new Thickness(5),
-            Margin = new Thickness(0, 0, 0, 10)
-        };
-        contentPanel.Children.Add(titleBlock);
-
-        var contentBlock = new TextBlock
-        {
-            Text = item.ToString() ?? "No content",
-            Background = Brushes.LightGray,
-            Padding = new Thickness(5),
-            TextWrapping = TextWrapping.Wrap
-        };
-        contentPanel.Children.Add(contentBlock);
-
-        contentPanel.DataContext = item;
-        return contentPanel;
-    }
-
     private void RemoveToolFromItem(object? item)
     {
         if (item == null)
@@ -428,6 +448,7 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         {
             _generatedTools.Remove(toolToRemove);
             UntrackItemsSourceTool(toolToRemove);
+            ClearGeneratedToolContainer(toolToRemove, item);
             RemoveGeneratedToolFromVisibleDockables(toolToRemove);
         }
     }
@@ -438,10 +459,12 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         foreach (var tool in toolsToRemove)
         {
             UntrackItemsSourceTool(tool);
+            ClearGeneratedToolContainer(tool, tool.Context);
             RemoveGeneratedToolFromVisibleDockables(tool);
         }
 
         _generatedTools.Clear();
+        _generatedToolGenerators.Clear();
     }
 
     private void UntrackGeneratedTool(object item)
@@ -452,12 +475,13 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         {
             _generatedTools.Remove(generatedTool);
             UntrackItemsSourceTool(generatedTool);
+            ClearGeneratedToolContainer(generatedTool, item);
         }
     }
 
-    private Tool? FindGeneratedTool(object item)
+    private IDockable? FindGeneratedTool(object item)
     {
-        foreach (var generatedTool in _generatedTools.OfType<Tool>())
+        foreach (var generatedTool in _generatedTools)
         {
             if (IsMatchingContext(generatedTool.Context, item))
             {
@@ -476,6 +500,18 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         }
 
         return Equals(context, item);
+    }
+
+    private void ClearGeneratedToolContainer(IDockable tool, object? item)
+    {
+        if (_generatedToolGenerators.TryGetValue(tool, out var generator))
+        {
+            _generatedToolGenerators.Remove(tool);
+            generator.ClearToolContainer(this, tool, item);
+            return;
+        }
+
+        ResolveItemContainerGenerator().ClearToolContainer(this, tool, item);
     }
 
     private void RemoveGeneratedToolFromVisibleDockables(IDockable tool)
@@ -509,42 +545,5 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         {
             factoryBase.UntrackItemsSourceDockable(tool);
         }
-    }
-
-    private static string GetToolTitle(object item)
-    {
-        var type = item.GetType();
-
-        var titleProperty = type.GetProperty("Title");
-        if (titleProperty?.GetValue(item) is string title)
-        {
-            return title;
-        }
-
-        var nameProperty = type.GetProperty("Name");
-        if (nameProperty?.GetValue(item) is string name)
-        {
-            return name;
-        }
-
-        var displayNameProperty = type.GetProperty("DisplayName");
-        if (displayNameProperty?.GetValue(item) is string displayName)
-        {
-            return displayName;
-        }
-
-        return item.ToString() ?? type.Name;
-    }
-
-    private static bool GetToolCanClose(object item)
-    {
-        var type = item.GetType();
-        var canCloseProperty = type.GetProperty("CanClose");
-        if (canCloseProperty?.GetValue(item) is bool canClose)
-        {
-            return canClose;
-        }
-
-        return true;
     }
 }

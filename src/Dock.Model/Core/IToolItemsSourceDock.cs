@@ -15,6 +15,11 @@ public interface IToolItemsSourceDock
     IEnumerable? ItemsSource { get; }
 
     /// <summary>
+    /// Gets the item container generator used for source-backed tools.
+    /// </summary>
+    IDockItemContainerGenerator? ItemContainerGenerator { get; }
+
+    /// <summary>
     /// Checks if a tool was generated from ItemsSource.
     /// </summary>
     /// <param name="tool">The tool to check.</param>

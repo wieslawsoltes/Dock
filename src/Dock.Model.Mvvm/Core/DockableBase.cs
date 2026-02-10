@@ -144,7 +144,16 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     public DockingWindowState DockingState
     {
         get => _dockingState;
-        set => SetProperty(ref _dockingState, value);
+        set
+        {
+            if (_dockingState == value)
+            {
+                return;
+            }
+
+            SetProperty(ref _dockingState, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.DockingState);
+        }
     }
 
     /// <inheritdoc/>
@@ -367,6 +376,23 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     public virtual bool OnClose()
     {
         return true;
+    }
+
+    /// <summary>
+    /// Notifies factory that a docking-window-state property changed.
+    /// </summary>
+    /// <param name="property">The changed property.</param>
+    protected void NotifyDockingWindowStateChanged(DockingWindowStateProperty property)
+    {
+        if (this is not IDockingWindowState)
+        {
+            return;
+        }
+
+        if (Factory is IDockingWindowStateSync stateSync)
+        {
+            stateSync.OnDockingWindowStatePropertyChanged(this, property);
+        }
     }
 
     /// <inheritdoc/>

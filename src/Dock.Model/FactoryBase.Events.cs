@@ -119,6 +119,7 @@ public abstract partial class FactoryBase
         }
 
         ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable, rootDock, window));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
@@ -144,18 +145,21 @@ public abstract partial class FactoryBase
         }
 
         FocusedDockableChanged?.Invoke(this, new FocusedDockableChangedEventArgs(dockable, rootDock, window));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
     public virtual void OnDockableAdded(IDockable? dockable)
     {
         DockableAdded?.Invoke(this, new DockableAddedEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
     public virtual void OnDockableRemoved(IDockable? dockable)
     {
         DockableRemoved?.Invoke(this, new DockableRemovedEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
@@ -177,6 +181,7 @@ public abstract partial class FactoryBase
     public virtual void OnDockableClosed(IDockable? dockable)
     {
         DockableClosed?.Invoke(this, new DockableClosedEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
@@ -207,24 +212,28 @@ public abstract partial class FactoryBase
     public virtual void OnDockablePinned(IDockable? dockable)
     {
         DockablePinned?.Invoke(this, new DockablePinnedEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
     public virtual void OnDockableUnpinned(IDockable? dockable)
     {
         DockableUnpinned?.Invoke(this, new DockableUnpinnedEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
     public virtual void OnDockableHidden(IDockable? dockable)
     {
         DockableHidden?.Invoke(this, new DockableHiddenEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
     public virtual void OnDockableRestored(IDockable? dockable)
     {
         DockableRestored?.Invoke(this, new DockableRestoredEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     /// <inheritdoc />
@@ -339,6 +348,7 @@ public abstract partial class FactoryBase
         }
 
         DockableActivated?.Invoke(this, new DockableActivatedEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 
     private bool ShouldUpdateGlobalTrackingForRoot(IRootDock? rootDock)
@@ -431,5 +441,6 @@ public abstract partial class FactoryBase
         }
 
         DockableDeactivated?.Invoke(this, new DockableDeactivatedEventArgs(dockable));
+        SynchronizeDockingWindowState(dockable);
     }
 }

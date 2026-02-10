@@ -3,6 +3,7 @@
 using System.Runtime.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
+using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Core;
@@ -13,6 +14,7 @@ namespace Dock.Model.ReactiveUI.Core;
 public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo, IDockableDockingRestrictions
 {
     private TrackingAdapter? _trackingAdapter;
+    private DockingWindowState _dockingState;
 
     private TrackingAdapter TrackingAdapter => _trackingAdapter ??= new TrackingAdapter();
 
@@ -104,8 +106,20 @@ public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelec
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
-    public partial DockingWindowState DockingState { get; set; }
+    public DockingWindowState DockingState
+    {
+        get => _dockingState;
+        set
+        {
+            if (_dockingState == value)
+            {
+                return;
+            }
+
+            this.RaiseAndSetIfChanged(ref _dockingState, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.DockingState);
+        }
+    }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -255,6 +269,23 @@ public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelec
     public virtual bool OnClose()
     {
         return true;
+    }
+
+    /// <summary>
+    /// Notifies factory that a docking-window-state property changed.
+    /// </summary>
+    /// <param name="property">The changed property.</param>
+    protected void NotifyDockingWindowStateChanged(DockingWindowStateProperty property)
+    {
+        if (this is not IDockingWindowState)
+        {
+            return;
+        }
+
+        if (Factory is IDockingWindowStateSync stateSync)
+        {
+            stateSync.OnDockingWindowStatePropertyChanged(this, property);
+        }
     }
 
     /// <inheritdoc/>

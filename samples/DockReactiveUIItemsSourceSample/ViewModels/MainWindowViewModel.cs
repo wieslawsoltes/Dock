@@ -26,10 +26,10 @@ public class MainWindowViewModel : ReactiveObject
         Documents.CollectionChanged += (_, _) => UpdateSummary();
         Tools.CollectionChanged += (_, _) => UpdateSummary();
 
-        AddDocument("Welcome", "Welcome to the ReactiveUI ItemsSource sample.", "You can edit this text.");
+        AddDocument("Welcome", "Welcome to the ReactiveUI ItemsSource sample with custom container generation.", "You can edit this text.");
         AddDocument("Notes", "Closing a generated document removes it from the source collection.", "Try the close button on tabs.");
 
-        AddTool("Explorer", "Source-backed tool generated via ToolDock.ItemsSource.");
+        AddTool("Explorer", "Source-backed tool generated via ToolDock.ItemsSource and custom container hooks.");
         AddTool("Properties", "Another generated tool. Closing it updates the source collection.");
 
         UpdateSummary();

@@ -43,7 +43,7 @@
                             Title="Tools"
                             Alignment="Left"
                             Proportion="0.3"
-                            ItemsSource="{Binding Tools}">
+                            ItemsSource="{Binding DataContext.Tools, RelativeSource={RelativeSource AncestorType=Window}}">
               <model:ToolDock.ToolTemplate>
                 <model:ToolTemplate>
                   <Border Padding="12" x:DataType="model:Tool">
@@ -65,7 +65,7 @@
                                 Title="Documents"
                                 Proportion="0.7"
                                 CanCreateDocument="False"
-                                ItemsSource="{Binding Documents}">
+                                ItemsSource="{Binding DataContext.Documents, RelativeSource={RelativeSource AncestorType=Window}}">
               <model:DocumentDock.DocumentTemplate>
                 <model:DocumentTemplate>
                   <Border Padding="12" x:DataType="model:Document">

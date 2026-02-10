@@ -1089,6 +1089,11 @@ public abstract partial class FactoryBase
             targetTool.IsExpanded = sourceTool.IsExpanded;
             targetTool.AutoHide = sourceTool.AutoHide;
             targetTool.GripMode = sourceTool.GripMode;
+
+            if (sourceTool is IToolDockContent sourceToolContent && targetTool is IToolDockContent targetToolContent)
+            {
+                targetToolContent.ToolTemplate = sourceToolContent.ToolTemplate;
+            }
         }
 
         var dockables = dock.VisibleDockables.ToList();
@@ -1161,11 +1166,13 @@ public abstract partial class FactoryBase
 
         if (dockable.CanClose && OnDockableClosing(dockable))
         {
-            // Check if this document was generated from ItemsSource and remove the source item
-            HandleItemsSourceDocumentClosing(dockable);
+            // Source-generated dockables should be removed (not hidden) so UI state
+            // stays in sync with ItemsSource collections.
+            var isItemsSourceDockable = HandleItemsSourceDockableClosing(dockable);
 
-            var hide = (dockable is ITool && HideToolsOnClose)
-                       || (dockable is IDocument && HideDocumentsOnClose);
+            var hide = !isItemsSourceDockable
+                       && ((dockable is ITool && HideToolsOnClose)
+                           || (dockable is IDocument && HideDocumentsOnClose));
 
             if (hide)
             {
@@ -1181,30 +1188,101 @@ public abstract partial class FactoryBase
     }
 
     /// <summary>
-    /// Handles closing of documents that were generated from ItemsSource by removing the source item from the collection.
+    /// Handles closing of dockables that were generated from ItemsSource by removing the source item from the collection.
     /// </summary>
     /// <param name="dockable">The dockable being closed.</param>
-    protected virtual void HandleItemsSourceDocumentClosing(IDockable dockable)
+    /// <returns>True if the dockable originated from an ItemsSource collection.</returns>
+    protected virtual bool HandleItemsSourceDockableClosing(IDockable dockable)
     {
-        // Only handle documents
-        if (dockable is not IDocument document)
-            return;
-
-        // Check if the owner dock supports ItemsSource
-        if (dockable.Owner is IItemsSourceDock itemsSourceDock)
+        if (dockable is IDocument document
+            && ResolveDocumentItemsSourceDock(dockable) is { } itemsSourceDock)
         {
-            // Check if this document was generated from ItemsSource
-            if (itemsSourceDock.IsDocumentFromItemsSource(dockable))
+            var sourceItem = document.Context;
+            if (sourceItem != null)
             {
-                // Get the source item from the document's Context
-                var sourceItem = document.Context;
-                if (sourceItem != null)
-                {
-                    // Remove the source item from the ItemsSource collection
-                    itemsSourceDock.RemoveItemFromSource(sourceItem);
-                }
+                itemsSourceDock.RemoveItemFromSource(sourceItem);
+            }
+
+            return true;
+        }
+
+        if (dockable is ITool tool
+            && ResolveToolItemsSourceDock(dockable) is { } toolItemsSourceDock)
+        {
+            var sourceItem = tool.Context;
+            if (sourceItem != null)
+            {
+                toolItemsSourceDock.RemoveItemFromSource(sourceItem);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private IItemsSourceDock? ResolveDocumentItemsSourceDock(IDockable dockable)
+    {
+        if (dockable.Owner is IItemsSourceDock ownerItemsSourceDock
+            && ownerItemsSourceDock.IsDocumentFromItemsSource(dockable))
+        {
+            return ownerItemsSourceDock;
+        }
+
+        if (GetTrackedItemsSourceOwner(dockable) is IItemsSourceDock trackedItemsSourceDock
+            && trackedItemsSourceDock.IsDocumentFromItemsSource(dockable))
+        {
+            return trackedItemsSourceDock;
+        }
+
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return null;
+        }
+
+        foreach (var item in Find(rootDock, _ => true))
+        {
+            if (item is IItemsSourceDock itemsSourceDock
+                && itemsSourceDock.IsDocumentFromItemsSource(dockable))
+            {
+                return itemsSourceDock;
             }
         }
+
+        return null;
+    }
+
+    private IToolItemsSourceDock? ResolveToolItemsSourceDock(IDockable dockable)
+    {
+        if (dockable.Owner is IToolItemsSourceDock ownerItemsSourceDock
+            && ownerItemsSourceDock.IsToolFromItemsSource(dockable))
+        {
+            return ownerItemsSourceDock;
+        }
+
+        if (GetTrackedItemsSourceOwner(dockable) is IToolItemsSourceDock trackedItemsSourceDock
+            && trackedItemsSourceDock.IsToolFromItemsSource(dockable))
+        {
+            return trackedItemsSourceDock;
+        }
+
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return null;
+        }
+
+        foreach (var item in Find(rootDock, _ => true))
+        {
+            if (item is IToolItemsSourceDock itemsSourceDock
+                && itemsSourceDock.IsToolFromItemsSource(dockable))
+            {
+                return itemsSourceDock;
+            }
+        }
+
+        return null;
     }
 
     private void CloseDockablesRange(IDock dock, int start, int end, IDockable? excluding = null)

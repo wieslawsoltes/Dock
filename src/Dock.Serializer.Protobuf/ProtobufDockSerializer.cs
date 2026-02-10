@@ -305,7 +305,8 @@ public sealed class ProtobufDockSerializer : IDockSerializer
         {
             typeof(IDockable),
             typeof(IDockWindow),
-            typeof(IDocumentTemplate)
+            typeof(IDocumentTemplate),
+            typeof(IToolTemplate)
         };
 
         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -329,7 +330,8 @@ public sealed class ProtobufDockSerializer : IDockSerializer
 
                 if (typeof(IDockable).IsAssignableFrom(type)
                     || typeof(IDockWindow).IsAssignableFrom(type)
-                    || typeof(IDocumentTemplate).IsAssignableFrom(type))
+                    || typeof(IDocumentTemplate).IsAssignableFrom(type)
+                    || typeof(IToolTemplate).IsAssignableFrom(type))
                 {
                     types.Add(type);
                 }

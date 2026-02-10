@@ -22,6 +22,11 @@ public class DockService : IDockService
         target.IsExpanded = source.IsExpanded;
         target.AutoHide = source.AutoHide;
         target.GripMode = source.GripMode;
+
+        if (source is IToolDockContent sourceContent && target is IToolDockContent targetContent)
+        {
+            targetContent.ToolTemplate = sourceContent.ToolTemplate;
+        }
     }
 
     private static bool IsValidMove(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, IDockable targetDockable)

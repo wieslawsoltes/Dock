@@ -327,37 +327,26 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
 
     private void OnItemsSourceChanged(IEnumerable? newItemsSource)
     {
-        System.Diagnostics.Debug.WriteLine($"DocumentDock.OnItemsSourceChanged called with: {newItemsSource?.GetType().Name}, Count: {newItemsSource?.Cast<object>().Count() ?? 0}");
-        
-        // Unsubscribe from old collection
         if (_currentCollectionChanged != null)
         {
             _currentCollectionChanged.CollectionChanged -= OnCollectionChanged;
             _currentCollectionChanged = null;
         }
 
-        // Remove all documents that were generated from ItemsSource
         ClearGeneratedDocuments();
 
-        // Subscribe to new collection if it supports change notifications
         if (newItemsSource is INotifyCollectionChanged notifyCollection)
         {
             _currentCollectionChanged = notifyCollection;
             _currentCollectionChanged.CollectionChanged += OnCollectionChanged;
-            System.Diagnostics.Debug.WriteLine("Subscribed to collection change notifications");
         }
 
-        // Generate documents for new collection
         if (newItemsSource != null)
         {
-            int count = 0;
             foreach (var item in newItemsSource)
             {
-                System.Diagnostics.Debug.WriteLine($"Adding document for item {count}: {item}");
                 AddDocumentFromItem(item);
-                count++;
             }
-            System.Diagnostics.Debug.WriteLine($"Added {count} documents to DocumentDock. VisibleDockables count: {VisibleDockables?.Count ?? 0}");
         }
     }
 
@@ -449,6 +438,7 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
 
         // Add to our tracking collection
         _generatedDocuments.Add(document);
+        TrackItemsSourceDocument(document);
 
         // Use the proper AddDocument API if Factory is available, otherwise add manually
         if (Factory != null)
@@ -508,30 +498,26 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     private void RemoveDocumentFromItem(object? item)
     {
         if (item == null)
+        {
             return;
+        }
 
-        // Find the document that corresponds to this item
-        var documentToRemove = _generatedDocuments
-            .OfType<Document>()
-            .FirstOrDefault(d => ReferenceEquals(d.Context, item));
+        var documentToRemove = FindGeneratedDocument(item);
 
         if (documentToRemove != null)
         {
             _generatedDocuments.Remove(documentToRemove);
-            VisibleDockables?.Remove(documentToRemove);
+            UntrackItemsSourceDocument(documentToRemove);
+            RemoveGeneratedDocumentFromVisibleDockables(documentToRemove);
         }
     }
 
     private void ClearGeneratedDocuments()
     {
-        if (VisibleDockables != null)
+        foreach (var document in _generatedDocuments.ToList())
         {
-            // Remove all generated documents from VisibleDockables
-            var documentsToRemove = _generatedDocuments.ToList();
-            foreach (var document in documentsToRemove)
-            {
-                VisibleDockables.Remove(document);
-            }
+            UntrackItemsSourceDocument(document);
+            RemoveGeneratedDocumentFromVisibleDockables(document);
         }
 
         _generatedDocuments.Clear();
@@ -582,19 +568,38 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     /// <returns>True if the item was successfully removed, false otherwise.</returns>
     public virtual bool RemoveItemFromSource(object? item)
     {
-        if (item == null || ItemsSource == null)
+        if (item == null)
+        {
             return false;
+        }
 
         // Only support IList<T> or IList collections
         if (ItemsSource is System.Collections.IList list)
         {
             if (list.Contains(item))
             {
-                list.Remove(item);
-                return true;
+                try
+                {
+                    list.Remove(item);
+
+                    // Non-notify sources will not raise collection changed events.
+                    if (_currentCollectionChanged is null)
+                    {
+                        UntrackGeneratedDocument(item);
+                    }
+
+                    return true;
+                }
+                catch (NotSupportedException)
+                {
+                }
+                catch (InvalidOperationException)
+                {
+                }
             }
         }
 
+        UntrackGeneratedDocument(item);
         return false;
     }
 
@@ -606,5 +611,72 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     public virtual bool IsDocumentFromItemsSource(IDockable document)
     {
         return _generatedDocuments.Contains(document);
+    }
+
+    private void UntrackGeneratedDocument(object item)
+    {
+        var generatedDocument = FindGeneratedDocument(item);
+
+        if (generatedDocument != null)
+        {
+            _generatedDocuments.Remove(generatedDocument);
+            UntrackItemsSourceDocument(generatedDocument);
+        }
+    }
+
+    private Document? FindGeneratedDocument(object item)
+    {
+        foreach (var generatedDocument in _generatedDocuments.OfType<Document>())
+        {
+            if (IsMatchingContext(generatedDocument.Context, item))
+            {
+                return generatedDocument;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool IsMatchingContext(object? context, object? item)
+    {
+        if (ReferenceEquals(context, item))
+        {
+            return true;
+        }
+
+        return Equals(context, item);
+    }
+
+    private void RemoveGeneratedDocumentFromVisibleDockables(IDockable document)
+    {
+        if (document.Owner is IDock owner)
+        {
+            if (owner.VisibleDockables?.Remove(document) == true && ReferenceEquals(owner.ActiveDockable, document))
+            {
+                owner.ActiveDockable = owner.VisibleDockables.FirstOrDefault();
+            }
+            return;
+        }
+
+        if (VisibleDockables?.Remove(document) == true && ReferenceEquals(ActiveDockable, document))
+        {
+            ActiveDockable = VisibleDockables.FirstOrDefault();
+        }
+    }
+
+    private void TrackItemsSourceDocument(IDockable document)
+    {
+        if (Factory is global::Dock.Model.FactoryBase factoryBase)
+        {
+            factoryBase.TrackItemsSourceDockable(document, this);
+        }
+    }
+
+    private void UntrackItemsSourceDocument(IDockable document)
+    {
+        if (Factory is global::Dock.Model.FactoryBase factoryBase)
+        {
+            factoryBase.UntrackItemsSourceDockable(document);
+        }
     }
 }

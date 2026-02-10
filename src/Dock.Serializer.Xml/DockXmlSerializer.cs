@@ -120,7 +120,8 @@ public sealed class DockXmlSerializer : IDockSerializer
     {
         return typeof(IDockable).IsAssignableFrom(type)
             || typeof(IDockWindow).IsAssignableFrom(type)
-            || typeof(IDocumentTemplate).IsAssignableFrom(type);
+            || typeof(IDocumentTemplate).IsAssignableFrom(type)
+            || typeof(IToolTemplate).IsAssignableFrom(type);
     }
 
     private static bool IsDataContractCompatible(Type type)

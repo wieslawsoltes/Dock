@@ -361,7 +361,7 @@ nested content appears automatically when navigation commands execute.
 
 All the events shown in the MVVM guide are present here as well. Subscribe to them in the same way using ReactiveUI commands or observables.
 
-Use the ReactiveUI samples as templates when building your own layouts (`DockReactiveUISample` and `DockReactiveUIItemsSourceSample`).
+Use the ReactiveUI samples as templates when building your own layouts (`DockReactiveUISample` and `DockXamlReactiveUISample`).
 See the [Advanced Guide](dock-advanced.md) for details on customizing factory methods and consult the [Dock API Reference](dock-reference.md) for the available interfaces.
 
 For an overview of all guides see the [documentation index](README.md).

@@ -34,6 +34,9 @@ when creating your own docks and documents.
 | `IToolDock` | Dock that hosts tools and supports auto-hide behavior. |
 | `IToolDockContent` | Dock that creates tools from a `ToolTemplate`. |
 | `IToolTemplate` | Template object used when creating tools on demand or from `ItemsSource`. |
+| `IDocumentItemTemplateSelector` | Selects template content for source-generated documents. |
+| `IToolItemTemplateSelector` | Selects template content for source-generated tools. |
+| `IDockItemContainerMetadata` | Optional generated-container metadata for theme and selector state. |
 
 The following sections provide guidelines on applying these contracts in your projects.
 
@@ -146,6 +149,8 @@ These interfaces define source-backed dock generation contracts:
 
 - `ItemsSource` exposes the source collection used to generate dockables.
 - `ItemContainerGenerator` provides custom container creation/preparation/cleanup through `IDockItemContainerGenerator`.
+- `DocumentItemContainerTheme` / `ToolItemContainerTheme` provide per-dock theme metadata for generated container controls.
+- `DocumentItemTemplateSelector` / `ToolItemTemplateSelector` provide per-item template selection before template fallback.
 - `IsDocumentFromItemsSource` / `IsToolFromItemsSource` detect source-generated dockables.
 - `RemoveItemFromSource` synchronizes close operations back to mutable source collections.
 

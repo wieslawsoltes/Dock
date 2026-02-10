@@ -8,11 +8,18 @@ The `DocumentDock.ItemsSource` and `ToolDock.ItemsSource` properties enable auto
 
 `ItemsSource` is implemented by `Dock.Model.Avalonia.Controls.DocumentDock` and `Dock.Model.Avalonia.Controls.ToolDock` in the Avalonia model layer:
 
-- By default, `DocumentDock.ItemsSource` requires `DocumentTemplate`.
-- By default, `ToolDock.ItemsSource` requires `ToolTemplate`.
+- By default, `DocumentDock.ItemsSource` uses `DocumentTemplate` for generated content.
+- By default, `ToolDock.ItemsSource` uses `ToolTemplate` for generated content.
 - `DocumentDock.ItemContainerGenerator` and `ToolDock.ItemContainerGenerator` let you override container creation and preparation.
+- `DocumentDock.DocumentItemContainerTheme` and `ToolDock.ToolItemContainerTheme` let you apply per-dock container theme metadata for generated dockables.
+- `DocumentDock.DocumentItemTemplateSelector` and `ToolDock.ToolItemTemplateSelector` let you choose per-item template content while preserving template fallback behavior.
 
-With the default generator, if no template is supplied, no generated dockables are created. A custom `ItemContainerGenerator` can override this behavior.
+With the default generator, generated dockables are created when either:
+
+- the dock template is set (`DocumentTemplate` / `ToolTemplate`), or
+- a template selector is set and returns content for the item.
+
+A custom `ItemContainerGenerator` can fully override this behavior.
 
 ## Behavior details
 
@@ -23,6 +30,62 @@ With the default generator, if no template is supplied, no generated dockables a
 - When a generated document or tool is closed, the factory attempts to remove the source item from `ItemsSource` if it implements `IList`.
 - Source-generated document/tool closes are treated as remove operations, even when `Factory.HideDocumentsOnClose` or `Factory.HideToolsOnClose` is enabled.
 - You can replace the default generation pipeline with `IDockItemContainerGenerator` for custom container types, metadata mapping, and cleanup.
+- Theme metadata from `DocumentItemContainerTheme` / `ToolItemContainerTheme` is copied to generated containers and applied by `DocumentContentControl` / `ToolContentControl`.
+- Template selectors run before dock templates. If a selector returns `null`, Dock falls back to `DocumentTemplate` / `ToolTemplate`.
+- Changing `DocumentTemplate`, `ToolTemplate`, per-dock theme metadata, or selector regenerates source-generated containers.
+
+## Per-Dock Theme and Template Selector APIs
+
+The default generator now supports per-dock presentation customization for generated items:
+
+- `DocumentDock.DocumentItemContainerTheme`
+- `ToolDock.ToolItemContainerTheme`
+- `DocumentDock.DocumentItemTemplateSelector` (`IDocumentItemTemplateSelector`)
+- `ToolDock.ToolItemTemplateSelector` (`IToolItemTemplateSelector`)
+
+`DocumentItemContainerTheme` / `ToolItemContainerTheme` accept either:
+
+- a `ControlTheme` instance, or
+- a resource key that resolves to a `ControlTheme`.
+
+Template selectors return template content for an item. They can return:
+
+- `null` (use dock template fallback),
+- a `Func<IServiceProvider, object>`,
+- a `Control` instance,
+- a `DocumentTemplate` / `ToolTemplate`,
+- any content object supported by Dock template loading.
+
+### Example
+
+```xaml
+<Window.Resources>
+  <local:MyDocumentSelector x:Key="DocumentSelector" />
+  <ControlTheme x:Key="GeneratedDocumentTheme"
+                TargetType="dock:DocumentContentControl"
+                BasedOn="{StaticResource {x:Type dock:DocumentContentControl}}">
+    <Setter Property="Margin" Value="3" />
+  </ControlTheme>
+</Window.Resources>
+
+<DocumentDock ItemsSource="{Binding Documents}"
+              DocumentItemContainerTheme="GeneratedDocumentTheme"
+              DocumentItemTemplateSelector="{StaticResource DocumentSelector}">
+  <DocumentDock.DocumentTemplate>
+    <DocumentTemplate>
+      <!-- fallback template for items not handled by selector -->
+      <TextBlock Text="{Binding Context.Title}" />
+    </DocumentTemplate>
+  </DocumentDock.DocumentTemplate>
+</DocumentDock>
+```
+
+### Migration Path
+
+- Existing `ItemsSource + DocumentTemplate` / `ItemsSource + ToolTemplate` behavior is unchanged.
+- Add selectors only where you need per-item template switching.
+- Add per-dock container themes only where generated item hosts need distinct styling.
+- Existing custom `IDockItemContainerGenerator` implementations continue to work unchanged.
 
 ## Key Benefits
 
@@ -441,4 +504,4 @@ public class CommandDocument : INotifyPropertyChanged
 - [Document and Tool Content Guide](dock-content-guide.md) - Comprehensive content setup
 - [Dock Advanced Topics](dock-advanced.md) - Advanced docking scenarios
 - [Dock FAQ](dock-faq.md) - Common questions and troubleshooting
-- [`samples/DockReactiveUIItemsSourceSample`](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockReactiveUIItemsSourceSample) - ReactiveUI sample using both document and tool items sources
+- [`samples/DockXamlReactiveUISample`](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlReactiveUISample) - ReactiveUI sample using both document and tool items sources

@@ -7289,6 +7289,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/dock-accessibility.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-accessibility.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/dock-active-document.md",
       "output": {
         ".html": {

@@ -725,6 +725,19 @@ references:
   commentId: T:Dock.Avalonia.Controls.DockAdornerWindow
   fullName: Dock.Avalonia.Controls.DockAdornerWindow
   nameWithType: DockAdornerWindow
+- uid: Dock.Avalonia.Controls.DockAdornerWindow.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DockAdornerWindow.html#Dock_Avalonia_Controls_DockAdornerWindow_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DockAdornerWindow.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DockAdornerWindow.OnCreateAutomationPeer()
+  nameWithType: DockAdornerWindow.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DockAdornerWindow.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DockAdornerWindow.html#Dock_Avalonia_Controls_DockAdornerWindow_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DockAdornerWindow.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockAdornerWindow.OnCreateAutomationPeer
+  nameWithType: DockAdornerWindow.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DockAdornerWindow.StyleKeyOverride
   name: StyleKeyOverride
   href: api/Dock.Avalonia.Controls.DockAdornerWindow.html#Dock_Avalonia_Controls_DockAdornerWindow_StyleKeyOverride
@@ -801,6 +814,19 @@ references:
   commentId: F:Dock.Avalonia.Controls.DockCommandBarHost.MenuBarsProperty
   fullName: Dock.Avalonia.Controls.DockCommandBarHost.MenuBarsProperty
   nameWithType: DockCommandBarHost.MenuBarsProperty
+- uid: Dock.Avalonia.Controls.DockCommandBarHost.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DockCommandBarHost.html#Dock_Avalonia_Controls_DockCommandBarHost_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DockCommandBarHost.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DockCommandBarHost.OnCreateAutomationPeer()
+  nameWithType: DockCommandBarHost.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DockCommandBarHost.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DockCommandBarHost.html#Dock_Avalonia_Controls_DockCommandBarHost_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DockCommandBarHost.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockCommandBarHost.OnCreateAutomationPeer
+  nameWithType: DockCommandBarHost.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DockCommandBarHost.RibbonBars
   name: RibbonBars
   href: api/Dock.Avalonia.Controls.DockCommandBarHost.html#Dock_Avalonia_Controls_DockCommandBarHost_RibbonBars
@@ -1158,6 +1184,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DockControl.OnAttachedToVisualTree
   nameWithType: DockControl.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.DockControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DockControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DockControl.OnCreateAutomationPeer()
+  nameWithType: DockControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DockControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DockControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockControl.OnCreateAutomationPeer
+  nameWithType: DockControl.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DockControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -1285,6 +1324,32 @@ references:
   commentId: F:Dock.Avalonia.Controls.DockSelectorOverlay.ModeProperty
   fullName: Dock.Avalonia.Controls.DockSelectorOverlay.ModeProperty
   nameWithType: DockSelectorOverlay.ModeProperty
+- uid: Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
+  name: OnApplyTemplate(TemplateAppliedEventArgs)
+  href: api/Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_
+  commentId: M:Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
+  fullName: Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
+  nameWithType: DockSelectorOverlay.OnApplyTemplate(TemplateAppliedEventArgs)
+- uid: Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate*
+  name: OnApplyTemplate
+  href: api/Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_OnApplyTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate
+  nameWithType: DockSelectorOverlay.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer()
+  nameWithType: DockSelectorOverlay.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer
+  nameWithType: DockSelectorOverlay.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DockSelectorOverlay.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
   name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
   href: api/Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
@@ -1499,6 +1564,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DockTargetBase.OnApplyTemplate
   nameWithType: DockTargetBase.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.DockTargetBase.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DockTargetBase.html#Dock_Avalonia_Controls_DockTargetBase_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DockTargetBase.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DockTargetBase.OnCreateAutomationPeer()
+  nameWithType: DockTargetBase.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DockTargetBase.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DockTargetBase.html#Dock_Avalonia_Controls_DockTargetBase_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DockTargetBase.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockTargetBase.OnCreateAutomationPeer
+  nameWithType: DockTargetBase.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DockTargetBase.SelectorsOperations
   name: SelectorsOperations
   href: api/Dock.Avalonia.Controls.DockTargetBase.html#Dock_Avalonia_Controls_DockTargetBase_SelectorsOperations
@@ -1842,6 +1920,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DocumentControl.OnAttachedToVisualTree
   nameWithType: DocumentControl.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.DocumentControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DocumentControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DocumentControl.OnCreateAutomationPeer()
+  nameWithType: DocumentControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DocumentControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentControl.OnCreateAutomationPeer
+  nameWithType: DocumentControl.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DocumentControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.DocumentControl.html#Dock_Avalonia_Controls_DocumentControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -2071,6 +2162,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DocumentTabStrip.OnAttachedToVisualTree
   nameWithType: DocumentTabStrip.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DocumentTabStrip.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.OnCreateAutomationPeer()
+  nameWithType: DocumentTabStrip.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStrip.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.OnCreateAutomationPeer
+  nameWithType: DocumentTabStrip.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DocumentTabStrip.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -2205,6 +2309,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DocumentTabStripItem.OnAttachedToVisualTree
   nameWithType: DocumentTabStripItem.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DocumentTabStripItem.html#Dock_Avalonia_Controls_DocumentTabStripItem_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer()
+  nameWithType: DocumentTabStripItem.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DocumentTabStripItem.html#Dock_Avalonia_Controls_DocumentTabStripItem_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer
+  nameWithType: DocumentTabStripItem.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DocumentTabStripItem.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.DocumentTabStripItem.html#Dock_Avalonia_Controls_DocumentTabStripItem_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -2307,6 +2424,32 @@ references:
   commentId: F:Dock.Avalonia.Controls.DragPreviewControl.ControlRecyclingProperty
   fullName: Dock.Avalonia.Controls.DragPreviewControl.ControlRecyclingProperty
   nameWithType: DragPreviewControl.ControlRecyclingProperty
+- uid: Dock.Avalonia.Controls.DragPreviewControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DragPreviewControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.OnCreateAutomationPeer()
+  nameWithType: DragPreviewControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DragPreviewControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.OnCreateAutomationPeer
+  nameWithType: DragPreviewControl.OnCreateAutomationPeer
+- uid: Dock.Avalonia.Controls.DragPreviewControl.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
+  commentId: M:Dock.Avalonia.Controls.DragPreviewControl.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  nameWithType: DragPreviewControl.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+- uid: Dock.Avalonia.Controls.DragPreviewControl.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_OnPropertyChanged_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewControl.OnPropertyChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewControl.OnPropertyChanged
+  nameWithType: DragPreviewControl.OnPropertyChanged
 - uid: Dock.Avalonia.Controls.DragPreviewControl.PreviewContent
   name: PreviewContent
   href: api/Dock.Avalonia.Controls.DragPreviewControl.html#Dock_Avalonia_Controls_DragPreviewControl_PreviewContent
@@ -2408,6 +2551,19 @@ references:
   commentId: T:Dock.Avalonia.Controls.DragPreviewWindow
   fullName: Dock.Avalonia.Controls.DragPreviewWindow
   nameWithType: DragPreviewWindow
+- uid: Dock.Avalonia.Controls.DragPreviewWindow.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.DragPreviewWindow.html#Dock_Avalonia_Controls_DragPreviewWindow_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.DragPreviewWindow.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.DragPreviewWindow.OnCreateAutomationPeer()
+  nameWithType: DragPreviewWindow.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.DragPreviewWindow.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.DragPreviewWindow.html#Dock_Avalonia_Controls_DragPreviewWindow_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.DragPreviewWindow.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DragPreviewWindow.OnCreateAutomationPeer
+  nameWithType: DragPreviewWindow.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.DragPreviewWindow.StyleKeyOverride
   name: StyleKeyOverride
   href: api/Dock.Avalonia.Controls.DragPreviewWindow.html#Dock_Avalonia_Controls_DragPreviewWindow_StyleKeyOverride
@@ -2698,6 +2854,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.HostWindow.OnClosing
   nameWithType: HostWindow.OnClosing
+- uid: Dock.Avalonia.Controls.HostWindow.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.HostWindow.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.HostWindow.OnCreateAutomationPeer()
+  nameWithType: HostWindow.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.HostWindow.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.HostWindow.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.HostWindow.OnCreateAutomationPeer
+  nameWithType: HostWindow.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.HostWindow.OnOpened(System.EventArgs)
   name: OnOpened(EventArgs)
   href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnOpened_System_EventArgs_
@@ -2904,6 +3073,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.HostWindowTitleBar.OnApplyTemplate
   nameWithType: HostWindowTitleBar.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.HostWindowTitleBar.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.HostWindowTitleBar.html#Dock_Avalonia_Controls_HostWindowTitleBar_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.HostWindowTitleBar.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.HostWindowTitleBar.OnCreateAutomationPeer()
+  nameWithType: HostWindowTitleBar.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.HostWindowTitleBar.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.HostWindowTitleBar.html#Dock_Avalonia_Controls_HostWindowTitleBar_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.HostWindowTitleBar.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.HostWindowTitleBar.OnCreateAutomationPeer
+  nameWithType: HostWindowTitleBar.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.HostWindowTitleBar.StyleKeyOverride
   name: StyleKeyOverride
   href: api/Dock.Avalonia.Controls.HostWindowTitleBar.html#Dock_Avalonia_Controls_HostWindowTitleBar_StyleKeyOverride
@@ -4765,6 +4947,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.MdiDocumentControl.OnAttachedToVisualTree
   nameWithType: MdiDocumentControl.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.MdiDocumentControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.OnCreateAutomationPeer()
+  nameWithType: MdiDocumentControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.MdiDocumentControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.MdiDocumentControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.MdiDocumentControl.OnCreateAutomationPeer
+  nameWithType: MdiDocumentControl.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.MdiDocumentControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.MdiDocumentControl.html#Dock_Avalonia_Controls_MdiDocumentControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -4994,6 +5189,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.MdiDocumentWindow.OnAttachedToVisualTree
   nameWithType: MdiDocumentWindow.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.MdiDocumentWindow.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.MdiDocumentWindow.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.MdiDocumentWindow.OnCreateAutomationPeer()
+  nameWithType: MdiDocumentWindow.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.MdiDocumentWindow.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.MdiDocumentWindow.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.MdiDocumentWindow.OnCreateAutomationPeer
+  nameWithType: MdiDocumentWindow.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.MdiDocumentWindow.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.MdiDocumentWindow.html#Dock_Avalonia_Controls_MdiDocumentWindow_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -6612,6 +6820,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.PinnedDockControl.OnApplyTemplate
   nameWithType: PinnedDockControl.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.PinnedDockControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.PinnedDockControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.OnCreateAutomationPeer()
+  nameWithType: PinnedDockControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.PinnedDockControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.OnCreateAutomationPeer
+  nameWithType: PinnedDockControl.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockAlignment
   name: PinnedDockAlignment
   href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_PinnedDockAlignment
@@ -6726,6 +6947,19 @@ references:
   commentId: T:Dock.Avalonia.Controls.PinnedDockWindow
   fullName: Dock.Avalonia.Controls.PinnedDockWindow
   nameWithType: PinnedDockWindow
+- uid: Dock.Avalonia.Controls.PinnedDockWindow.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.PinnedDockWindow.html#Dock_Avalonia_Controls_PinnedDockWindow_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.PinnedDockWindow.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.PinnedDockWindow.OnCreateAutomationPeer()
+  nameWithType: PinnedDockWindow.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.PinnedDockWindow.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.PinnedDockWindow.html#Dock_Avalonia_Controls_PinnedDockWindow_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockWindow.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.PinnedDockWindow.OnCreateAutomationPeer
+  nameWithType: PinnedDockWindow.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.PinnedDockWindow.StyleKeyOverride
   name: StyleKeyOverride
   href: api/Dock.Avalonia.Controls.PinnedDockWindow.html#Dock_Avalonia_Controls_PinnedDockWindow_StyleKeyOverride
@@ -6777,6 +7011,32 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.RootDockControl.OnApplyTemplate
   nameWithType: RootDockControl.OnApplyTemplate
+- uid: Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.RootDockControl.html#Dock_Avalonia_Controls_RootDockControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer()
+  nameWithType: RootDockControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.RootDockControl.html#Dock_Avalonia_Controls_RootDockControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer
+  nameWithType: RootDockControl.OnCreateAutomationPeer
+- uid: Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+  href: api/Dock.Avalonia.Controls.RootDockControl.html#Dock_Avalonia_Controls_RootDockControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
+  commentId: M:Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  fullName: Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  nameWithType: RootDockControl.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+- uid: Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree*
+  name: OnDetachedFromVisualTree
+  href: api/Dock.Avalonia.Controls.RootDockControl.html#Dock_Avalonia_Controls_RootDockControl_OnDetachedFromVisualTree_
+  commentId: Overload:Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree
+  nameWithType: RootDockControl.OnDetachedFromVisualTree
 - uid: Dock.Avalonia.Controls.SplitViewDockControl
   name: SplitViewDockControl
   href: api/Dock.Avalonia.Controls.SplitViewDockControl.html
@@ -6986,6 +7246,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolChromeControl.OnAttachedToVisualTree
   nameWithType: ToolChromeControl.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.ToolChromeControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.ToolChromeControl.html#Dock_Avalonia_Controls_ToolChromeControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.ToolChromeControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.ToolChromeControl.OnCreateAutomationPeer()
+  nameWithType: ToolChromeControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.ToolChromeControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.ToolChromeControl.html#Dock_Avalonia_Controls_ToolChromeControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.ToolChromeControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolChromeControl.OnCreateAutomationPeer
+  nameWithType: ToolChromeControl.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.ToolChromeControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.ToolChromeControl.html#Dock_Avalonia_Controls_ToolChromeControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -7177,6 +7450,32 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolControl.OnAttachedToVisualTree
   nameWithType: ToolControl.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.ToolControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.ToolControl.html#Dock_Avalonia_Controls_ToolControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.ToolControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.ToolControl.OnCreateAutomationPeer()
+  nameWithType: ToolControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.ToolControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.ToolControl.html#Dock_Avalonia_Controls_ToolControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.ToolControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolControl.OnCreateAutomationPeer
+  nameWithType: ToolControl.OnCreateAutomationPeer
+- uid: Dock.Avalonia.Controls.ToolControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+  href: api/Dock.Avalonia.Controls.ToolControl.html#Dock_Avalonia_Controls_ToolControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
+  commentId: M:Dock.Avalonia.Controls.ToolControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  fullName: Dock.Avalonia.Controls.ToolControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
+  nameWithType: ToolControl.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+- uid: Dock.Avalonia.Controls.ToolControl.OnDetachedFromVisualTree*
+  name: OnDetachedFromVisualTree
+  href: api/Dock.Avalonia.Controls.ToolControl.html#Dock_Avalonia_Controls_ToolControl_OnDetachedFromVisualTree_
+  commentId: Overload:Dock.Avalonia.Controls.ToolControl.OnDetachedFromVisualTree
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolControl.OnDetachedFromVisualTree
+  nameWithType: ToolControl.OnDetachedFromVisualTree
 - uid: Dock.Avalonia.Controls.ToolDockControl
   name: ToolDockControl
   href: api/Dock.Avalonia.Controls.ToolDockControl.html
@@ -7202,6 +7501,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolPinItemControl.OnAttachedToVisualTree
   nameWithType: ToolPinItemControl.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.ToolPinItemControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.ToolPinItemControl.html#Dock_Avalonia_Controls_ToolPinItemControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.ToolPinItemControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.ToolPinItemControl.OnCreateAutomationPeer()
+  nameWithType: ToolPinItemControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.ToolPinItemControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.ToolPinItemControl.html#Dock_Avalonia_Controls_ToolPinItemControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.ToolPinItemControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolPinItemControl.OnCreateAutomationPeer
+  nameWithType: ToolPinItemControl.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.ToolPinItemControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.ToolPinItemControl.html#Dock_Avalonia_Controls_ToolPinItemControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -7291,6 +7603,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolPinnedControl.NeedsContainerOverride
   nameWithType: ToolPinnedControl.NeedsContainerOverride
+- uid: Dock.Avalonia.Controls.ToolPinnedControl.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.ToolPinnedControl.html#Dock_Avalonia_Controls_ToolPinnedControl_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.ToolPinnedControl.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.ToolPinnedControl.OnCreateAutomationPeer()
+  nameWithType: ToolPinnedControl.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.ToolPinnedControl.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.ToolPinnedControl.html#Dock_Avalonia_Controls_ToolPinnedControl_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.ToolPinnedControl.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolPinnedControl.OnCreateAutomationPeer
+  nameWithType: ToolPinnedControl.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.ToolPinnedControl.Orientation
   name: Orientation
   href: api/Dock.Avalonia.Controls.ToolPinnedControl.html#Dock_Avalonia_Controls_ToolPinnedControl_Orientation
@@ -7460,6 +7785,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolTabStrip.OnAttachedToVisualTree
   nameWithType: ToolTabStrip.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.ToolTabStrip.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.ToolTabStrip.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.OnCreateAutomationPeer()
+  nameWithType: ToolTabStrip.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.ToolTabStrip.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStrip.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.OnCreateAutomationPeer
+  nameWithType: ToolTabStrip.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.ToolTabStrip.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -7534,6 +7872,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolTabStripItem.OnAttachedToVisualTree
   nameWithType: ToolTabStripItem.OnAttachedToVisualTree
+- uid: Dock.Avalonia.Controls.ToolTabStripItem.OnCreateAutomationPeer
+  name: OnCreateAutomationPeer()
+  href: api/Dock.Avalonia.Controls.ToolTabStripItem.html#Dock_Avalonia_Controls_ToolTabStripItem_OnCreateAutomationPeer
+  commentId: M:Dock.Avalonia.Controls.ToolTabStripItem.OnCreateAutomationPeer
+  fullName: Dock.Avalonia.Controls.ToolTabStripItem.OnCreateAutomationPeer()
+  nameWithType: ToolTabStripItem.OnCreateAutomationPeer()
+- uid: Dock.Avalonia.Controls.ToolTabStripItem.OnCreateAutomationPeer*
+  name: OnCreateAutomationPeer
+  href: api/Dock.Avalonia.Controls.ToolTabStripItem.html#Dock_Avalonia_Controls_ToolTabStripItem_OnCreateAutomationPeer_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStripItem.OnCreateAutomationPeer
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStripItem.OnCreateAutomationPeer
+  nameWithType: ToolTabStripItem.OnCreateAutomationPeer
 - uid: Dock.Avalonia.Controls.ToolTabStripItem.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)
   name: OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
   href: api/Dock.Avalonia.Controls.ToolTabStripItem.html#Dock_Avalonia_Controls_ToolTabStripItem_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_
@@ -7547,6 +7898,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolTabStripItem.OnDetachedFromVisualTree
   nameWithType: ToolTabStripItem.OnDetachedFromVisualTree
+- uid: Dock.Avalonia.Controls.ToolTabStripItem.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  href: api/Dock.Avalonia.Controls.ToolTabStripItem.html#Dock_Avalonia_Controls_ToolTabStripItem_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
+  commentId: M:Dock.Avalonia.Controls.ToolTabStripItem.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  fullName: Dock.Avalonia.Controls.ToolTabStripItem.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  nameWithType: ToolTabStripItem.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+- uid: Dock.Avalonia.Controls.ToolTabStripItem.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Avalonia.Controls.ToolTabStripItem.html#Dock_Avalonia_Controls_ToolTabStripItem_OnPropertyChanged_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStripItem.OnPropertyChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStripItem.OnPropertyChanged
+  nameWithType: ToolTabStripItem.OnPropertyChanged
 - uid: Dock.Avalonia.Controls.ToolTabStripItem.StyleKeyOverride
   name: StyleKeyOverride
   href: api/Dock.Avalonia.Controls.ToolTabStripItem.html#Dock_Avalonia_Controls_ToolTabStripItem_StyleKeyOverride

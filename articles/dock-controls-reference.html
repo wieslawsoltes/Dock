@@ -222,6 +222,10 @@
 </tr>
 </tbody>
 </table>
+<p>Template part:</p>
+<ul>
+<li><code>PART_ItemsList</code> (<code>ListBox</code>) - selector item host used for selection and scroll automation delegation.</li>
+</ul>
 <h3 id="docktargetbase-docktarget-globaldocktarget">DockTargetBase (DockTarget, GlobalDockTarget)</h3>
 <table>
 <thead>
@@ -260,6 +264,167 @@
 </tbody>
 </table>
 <p><code>DockTarget</code> and <code>GlobalDockTarget</code> inherit these properties without adding new ones.</p>
+<h2 id="accessibility-automation-peers">Accessibility automation peers</h2>
+<p>Dock provides dedicated automation peers for key interaction controls:</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Peer</th>
+<th>Role</th>
+<th>Providers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockControl</code></td>
+<td><code>DockControlAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>RootDockControl</code></td>
+<td><code>RootDockControlAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DockCommandBarHost</code></td>
+<td><code>DockCommandBarHostAutomationPeer</code></td>
+<td><code>ToolBar</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>DockTarget</code> / <code>GlobalDockTarget</code></td>
+<td><code>DockTargetAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>DocumentControl</code></td>
+<td><code>DocumentControlAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>ToolControl</code></td>
+<td><code>ToolControlAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>MdiDocumentControl</code></td>
+<td><code>MdiDocumentControlAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>DocumentTabStrip</code></td>
+<td><code>DocumentTabStripAutomationPeer</code></td>
+<td><code>Tab</code></td>
+<td><code>ISelectionProvider</code>, <code>IScrollProvider</code></td>
+</tr>
+<tr>
+<td><code>ToolTabStrip</code></td>
+<td><code>ToolTabStripAutomationPeer</code></td>
+<td><code>Tab</code></td>
+<td><code>ISelectionProvider</code>, <code>IScrollProvider</code></td>
+</tr>
+<tr>
+<td><code>DocumentTabStripItem</code></td>
+<td><code>DocumentTabStripItemAutomationPeer</code></td>
+<td><code>TabItem</code></td>
+<td><code>IInvokeProvider</code> and selection item support</td>
+</tr>
+<tr>
+<td><code>ToolTabStripItem</code></td>
+<td><code>ToolTabStripItemAutomationPeer</code></td>
+<td><code>TabItem</code></td>
+<td><code>IInvokeProvider</code> and selection item support</td>
+</tr>
+<tr>
+<td><code>ToolChromeControl</code></td>
+<td><code>ToolChromeControlAutomationPeer</code></td>
+<td><code>TitleBar</code></td>
+<td><code>IInvokeProvider</code>, <code>IExpandCollapseProvider</code></td>
+</tr>
+<tr>
+<td><code>PinnedDockControl</code></td>
+<td><code>PinnedDockControlAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td><code>IExpandCollapseProvider</code></td>
+</tr>
+<tr>
+<td><code>ToolPinnedControl</code></td>
+<td><code>ToolPinnedControlAutomationPeer</code></td>
+<td><code>Tab</code></td>
+<td><code>ISelectionProvider</code></td>
+</tr>
+<tr>
+<td><code>ToolPinItemControl</code></td>
+<td><code>ToolPinItemControlAutomationPeer</code></td>
+<td><code>TabItem</code></td>
+<td><code>IInvokeProvider</code>, <code>ISelectionItemProvider</code></td>
+</tr>
+<tr>
+<td><code>MdiDocumentWindow</code></td>
+<td><code>MdiDocumentWindowAutomationPeer</code></td>
+<td><code>Window</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlay</code></td>
+<td><code>DockSelectorOverlayAutomationPeer</code></td>
+<td><code>List</code></td>
+<td><code>IExpandCollapseProvider</code>, <code>ISelectionProvider</code>, <code>IScrollProvider</code>, <code>IValueProvider</code></td>
+</tr>
+<tr>
+<td><code>HostWindow</code></td>
+<td><code>HostWindowAutomationPeer</code></td>
+<td><code>Window</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>HostWindowTitleBar</code></td>
+<td><code>HostWindowTitleBarAutomationPeer</code></td>
+<td><code>TitleBar</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>PinnedDockWindow</code></td>
+<td><code>PinnedDockWindowAutomationPeer</code></td>
+<td><code>Window</code></td>
+<td><code>IInvokeProvider</code></td>
+</tr>
+<tr>
+<td><code>DragPreviewControl</code></td>
+<td><code>DragPreviewControlAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td><code>IValueProvider</code></td>
+</tr>
+<tr>
+<td><code>DragPreviewWindow</code></td>
+<td><code>DragPreviewWindowAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td>decorative-only (not exposed as control/content element)</td>
+</tr>
+<tr>
+<td><code>DockAdornerWindow</code></td>
+<td><code>DockAdornerWindowAutomationPeer</code></td>
+<td><code>Pane</code></td>
+<td>decorative-only (not exposed as control/content element)</td>
+</tr>
+</tbody>
+</table>
+<p>Name and ID values prefer <code>AutomationProperties</code>, then Dock model identifiers (<code>Title</code>, <code>Id</code>) for stable fallback behavior.</p>
+<p>Automation integration notes:</p>
+<ul>
+<li>Set <code>AutomationProperties.Name</code> and <code>AutomationProperties.AutomationId</code> on controls when you need deterministic labels/ids across themes.</li>
+<li><code>ISelectionItemProvider.Select</code> for <code>DocumentTabStripItem</code> and <code>ToolTabStripItem</code> uses the same activation behavior as <code>IInvokeProvider.Invoke</code>.</li>
+<li><code>DockSelectorOverlay</code> automation selection/scroll support depends on the <code>PART_ItemsList</code> template part.</li>
+<li><code>DragPreviewWindow</code> and <code>DockAdornerWindow</code> peers are intentionally non-interactive and not exposed as control/content elements.</li>
+</ul>
+<p>For behavior details and keyboard validation guidance, see <a href="dock-accessibility.html">Accessibility and UI automation</a>.</p>
 <h2 id="tab-chrome-and-tool-controls">Tab, chrome, and tool controls</h2>
 <h3 id="documentcontrol">DocumentControl</h3>
 <table>

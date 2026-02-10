@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Avalonia_Controls_DockSelectorOverlay" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay" class="text-break">
-Class DockSelectorOverlay  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L15"><i class="bi bi-code-slash"></i></a>
+Class DockSelectorOverlay  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,6 +99,7 @@ Class DockSelectorOverlay  <a class="header-action link-secondary" title="View s
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[PseudoClasses(new string[] { &quot;:open&quot; })]
+[TemplatePart(&quot;PART_ItemsList&quot;, typeof(ListBox))]
 public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue</code></pre>
   </div>
 
@@ -214,9 +215,6 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
       <span class="xref">TemplatedControl.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
     </div>
     <div>
-      <span class="xref">TemplatedControl.OnApplyTemplate(TemplateAppliedEventArgs)</span>
-    </div>
-    <div>
       <span class="xref">TemplatedControl.OnTemplateChanged(AvaloniaPropertyChangedEventArgs)</span>
     </div>
     <div>
@@ -311,9 +309,6 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
     </div>
     <div>
       <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnCreateAutomationPeer()</span>
     </div>
     <div>
       <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
@@ -1050,7 +1045,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay__ctor" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.#ctor">
   DockSelectorOverlay()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Avalonia.Controls.DockSelectorOverlay.html">DockSelectorOverlay</a> class.</p>
@@ -1080,7 +1075,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_IsOpenProperty" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.IsOpenProperty">
   IsOpenProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L26"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_IsOpen">IsOpen</a> property.</p>
@@ -1111,7 +1106,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_ItemsProperty" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.ItemsProperty">
   ItemsProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_Items">Items</a> property.</p>
@@ -1142,7 +1137,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_ModeProperty" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.ModeProperty">
   ModeProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_Mode">Mode</a> property.</p>
@@ -1173,7 +1168,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_SelectedItemProperty" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.SelectedItemProperty">
   SelectedItemProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DockSelectorOverlay.html#Dock_Avalonia_Controls_DockSelectorOverlay_SelectedItem">SelectedItem</a> property.</p>
@@ -1209,7 +1204,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_IsOpen" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.IsOpen">
   IsOpen
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the overlay is open.</p>
@@ -1241,7 +1236,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_Items" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.Items">
   Items
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the selector items.</p>
@@ -1273,7 +1268,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_Mode" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.Mode">
   Mode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the selector mode.</p>
@@ -1305,7 +1300,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_SelectedItem" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.SelectedItem">
   SelectedItem
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the selected item.</p>
@@ -1337,11 +1332,78 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 </h2>
 
 
+  <a id="Dock_Avalonia_Controls_DockSelectorOverlay_OnApplyTemplate_" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)">
+  OnApplyTemplate(TemplateAppliedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the control's template is applied.
+In simple terms, this means the method is called just before the control is displayed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnApplyTemplate(TemplateAppliedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <span class="xref">TemplateAppliedEventArgs</span></dt>
+    <dd><p>The event args.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_DockSelectorOverlay_OnCreateAutomationPeer_" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_OnCreateAutomationPeer" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.OnCreateAutomationPeer">
+  OnCreateAutomationPeer()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a new, type-specific <span class="xref">Avalonia.Automation.Peers.AutomationPeer</span> implementation for the control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override AutomationPeer OnCreateAutomationPeer()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AutomationPeer</span></dt>
+    <dd><p>The type-specific <span class="xref">Avalonia.Automation.Peers.AutomationPeer</span> implementation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Dock_Avalonia_Controls_DockSelectorOverlay_OnPropertyChanged_" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.OnPropertyChanged*"></a>
 
   <h3 id="Dock_Avalonia_Controls_DockSelectorOverlay_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Avalonia.Controls.DockSelectorOverlay.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
   OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when a avalonia property changes on the object.</p>
@@ -1374,7 +1436,7 @@ public class DockSelectorOverlay : TemplatedControl, INotifyPropertyChanged, IDa
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L15" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DockSelectorOverlay.axaml.cs/#L17" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Avalonia_Controls_RootDockControl" data-uid="Dock.Avalonia.Controls.RootDockControl" class="text-break">
-Class RootDockControl  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class RootDockControl  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -308,9 +308,6 @@ public class RootDockControl : TemplatedControl, INotifyPropertyChanged, IDataCo
     </div>
     <div>
       <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">Control.OnCreateAutomationPeer()</span>
     </div>
     <div>
       <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
@@ -745,9 +742,6 @@ public class RootDockControl : TemplatedControl, INotifyPropertyChanged, IDataCo
       <span class="xref">Visual.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)</span>
     </div>
     <div>
-      <span class="xref">Visual.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
       <span class="xref">Visual.InvalidateMirrorTransform()</span>
     </div>
     <div>
@@ -1050,7 +1044,7 @@ public class RootDockControl : TemplatedControl, INotifyPropertyChanged, IDataCo
 
   <h3 id="Dock_Avalonia_Controls_RootDockControl_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_" data-uid="Dock.Avalonia.Controls.RootDockControl.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)">
   OnApplyTemplate(TemplateAppliedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the control's template is applied.
@@ -1080,11 +1074,77 @@ In simple terms, this means the method is called just before the control is disp
 
 
 
+  <a id="Dock_Avalonia_Controls_RootDockControl_OnCreateAutomationPeer_" data-uid="Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_RootDockControl_OnCreateAutomationPeer" data-uid="Dock.Avalonia.Controls.RootDockControl.OnCreateAutomationPeer">
+  OnCreateAutomationPeer()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a new, type-specific <span class="xref">Avalonia.Automation.Peers.AutomationPeer</span> implementation for the control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override AutomationPeer OnCreateAutomationPeer()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AutomationPeer</span></dt>
+    <dd><p>The type-specific <span class="xref">Avalonia.Automation.Peers.AutomationPeer</span> implementation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_RootDockControl_OnDetachedFromVisualTree_" data-uid="Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_RootDockControl_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.RootDockControl.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
+  OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the control is removed from a rooted visual tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <span class="xref">VisualTreeAttachmentEventArgs</span></dt>
+    <dd><p>The event args.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/RootDockControl.axaml.cs/#L18" class="edit-link">Edit this page</a>
         </div>
 
 

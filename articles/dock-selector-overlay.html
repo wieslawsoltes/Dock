@@ -137,11 +137,34 @@ public class DocumentViewModel : Document
 <li><code>Items</code> - The <code>DockSelectorItem</code> list rendered by the overlay.</li>
 <li><code>SelectedItem</code> - The currently highlighted selector item.</li>
 <li><code>Mode</code> - <code>Documents</code> or <code>Tools</code>, shown in the header.</li>
+<li><code>PART_ItemsList</code> - <code>ListBox</code> template part used for selector navigation and UI automation selection/scroll delegation. Keep this part in custom templates for full reader support.</li>
 </ul>
 <p>These properties are primarily used by the template but can be styled or replaced in a custom theme.</p>
+<h2 id="automation-behavior">Automation behavior</h2>
+<p><code>DockSelectorOverlayAutomationPeer</code> exposes:</p>
+<ul>
+<li><code>AutomationControlType.List</code></li>
+<li><code>IExpandCollapseProvider</code> for open/close</li>
+<li><code>ISelectionProvider</code> for current selector entry</li>
+<li><code>IScrollProvider</code> delegated to the internal <code>ListBox</code></li>
+<li><code>IValueProvider</code> (read-only selected title)</li>
+</ul>
+<p>Automation events raised by <code>DockSelectorOverlayAutomationPeer</code>:</p>
+<ul>
+<li><code>ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty</code> when <code>IsOpen</code> changes.</li>
+<li><code>SelectionPatternIdentifiers.SelectionProperty</code> and <code>ValuePatternIdentifiers.ValueProperty</code> when <code>SelectedItem</code> changes.</li>
+<li><code>AutomationElementIdentifiers.NameProperty</code> when <code>Mode</code> changes (for mode-specific selector name).</li>
+<li><code>ChildrenChanged</code> when <code>Items</code> is replaced.</li>
+</ul>
+<p>Reader compatibility notes:</p>
+<ul>
+<li><code>IValueProvider.SetValue</code> is intentionally unsupported (read-only contract).</li>
+<li>Selection and scroll providers are delegated to <code>PART_ItemsList</code>, so they stay compatible with default list automation behavior.</li>
+</ul>
 <h2 id="ordering-and-selection">Ordering and selection</h2>
 <p>The selector is ordered by the most recently activated dockables. Dock tracks activation order inside <code>DockControl</code>, so frequently used documents and tools appear first.</p>
 <p>For related settings see <a href="dock-settings.html">Dock settings</a>.</p>
+<p>For UI automation peer behavior and accessibility contract details, see <a href="dock-accessibility.html">Accessibility and UI automation</a>.</p>
 
 </article>
 

@@ -327,4 +327,86 @@ public class DocumentDockItemsSourceSampleTests
         Assert.NotNull(remainingDocument);
         Assert.Equal("ItemsSource Doc", remainingDocument.Title);
     }
+
+    [AvaloniaFact]
+    public void ClosingItemsSourceDocument_WhenHideDocumentsOnCloseTrue_DoesNotMoveDocumentToHiddenCollection()
+    {
+        var factory = new Factory
+        {
+            HideDocumentsOnClose = true
+        };
+
+        var dock = new DocumentDock
+        {
+            Id = "Documents",
+            Factory = factory,
+            DocumentTemplate = new DocumentTemplate()
+        };
+
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>(dock);
+        root.ActiveDockable = dock;
+        factory.InitLayout(root);
+
+        var doc1 = new MyDocumentModel { Title = "Doc1", CanClose = true };
+        var doc2 = new MyDocumentModel { Title = "Doc2", CanClose = true };
+        var documents = new ObservableCollection<MyDocumentModel> { doc1, doc2 };
+        dock.ItemsSource = documents;
+
+        var closingDocument = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        factory.CloseDockable(closingDocument);
+
+        Assert.Single(documents);
+        Assert.Single(RequireVisibleDockables(dock));
+        Assert.True(root.HiddenDockables == null || root.HiddenDockables.Count == 0);
+    }
+
+    [AvaloniaFact]
+    public void ClosingItemsSourceDocument_WithFixedSizeList_DoesNotThrowAndUntracksGeneratedDocument()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            DocumentTemplate = new DocumentTemplate()
+        };
+
+        var source = new[] { new MyDocumentModel { Title = "Doc1", CanClose = true } };
+        dock.ItemsSource = source;
+
+        var document = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+
+        var exception = Record.Exception(() => factory.CloseDockable(document));
+
+        Assert.Null(exception);
+        Assert.True(dock.VisibleDockables == null || dock.VisibleDockables.Count == 0);
+        Assert.False(dock.IsDocumentFromItemsSource(document));
+    }
+
+    [AvaloniaFact]
+    public void ClosingDuplicateSourceDocuments_RemovesBothItemsOverTwoCloses()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            DocumentTemplate = new DocumentTemplate()
+        };
+
+        var shared = new MyDocumentModel { Title = "Shared Doc", CanClose = true };
+        var source = new ObservableCollection<MyDocumentModel> { shared, shared };
+        dock.ItemsSource = source;
+
+        var first = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        factory.CloseDockable(first);
+
+        Assert.Single(source);
+        Assert.Single(RequireVisibleDockables(dock));
+
+        var second = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        factory.CloseDockable(second);
+
+        Assert.Empty(source);
+        Assert.Empty(RequireVisibleDockables(dock));
+    }
 } 

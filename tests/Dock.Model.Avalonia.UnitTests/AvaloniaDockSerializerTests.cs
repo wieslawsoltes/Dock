@@ -65,6 +65,23 @@ public class AvaloniaDockSerializerTests
     }
 
     [AvaloniaFact]
+    public void Serialize_ToolDock_DoesNotIncludeItemsSourceOrToolTemplate()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var dock = new ToolDock
+        {
+            ToolTemplate = new ToolTemplate { Content = "template" },
+            ItemsSource = new[] { "ToolA" }
+        };
+
+        var json = serializer.Serialize(dock);
+
+        using var document = JsonDocument.Parse(json);
+        Assert.False(document.RootElement.TryGetProperty("ItemsSource", out _), json);
+        Assert.False(document.RootElement.TryGetProperty("ToolTemplate", out _), json);
+    }
+
+    [AvaloniaFact]
     public void Deserialize_Tool_RestoresDockingState()
     {
         var serializer = new AvaloniaDockSerializer();

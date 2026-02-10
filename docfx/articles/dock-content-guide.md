@@ -39,19 +39,20 @@ xmlns:dockCore="using:Dock.Model.Core"
 
 The Dock framework supports four main approaches for defining content:
 
-1. **ItemsSource Collection Binding**: Bind collections directly to DocumentDock for automatic document management
+1. **ItemsSource Collection Binding**: Bind collections directly to `DocumentDock` and `ToolDock` for automatic dockable management
 2. **ViewModel + DataTemplate**: Use view models and let Avalonia's data template system resolve views
 3. **Function-Based**: Provide a function that creates the content control
 4. **Direct XAML**: Define content directly in XAML (XAML-only approach)
 
 ## Method 1: ItemsSource Collection Binding (Recommended)
 
-DocumentDock supports automatic document creation from collections using the `ItemsSource` property, similar to how `ItemsControl` works in Avalonia. This is the recommended approach for most scenarios and is available in the Avalonia model (`Dock.Model.Avalonia.Controls.DocumentDock`).
+`DocumentDock` and `ToolDock` support automatic dockable creation from collections using the `ItemsSource` property, similar to how `ItemsControl` works in Avalonia. This is the recommended approach for most scenarios and is available in the Avalonia model (`Dock.Model.Avalonia.Controls`).
 
 ### When to Use This Approach
 
 This is ideal when you:
 - Have a collection of domain objects that should each become a document
+- Have a collection of domain objects that should each become a tool pane
 - Want automatic document creation/removal based on collection changes
 - Prefer declarative XAML setup over manual document management
 - Need to bind to existing business objects without creating wrapper ViewModels
@@ -199,17 +200,36 @@ public class MainViewModel : INotifyPropertyChanged
 </UserControl>
 ```
 
+### Step 4: Bind to ToolDock in XAML
+
+```xaml
+<ToolDock Id="ToolsPane" Alignment="Left" ItemsSource="{Binding Tools}">
+  <ToolDock.ToolTemplate>
+    <ToolTemplate>
+      <StackPanel Margin="10" x:DataType="Tool">
+        <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+        <StackPanel DataContext="{Binding Context}" x:DataType="local:ToolModel">
+          <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding Status}" Opacity="0.75"/>
+        </StackPanel>
+      </StackPanel>
+    </ToolTemplate>
+  </ToolDock.ToolTemplate>
+</ToolDock>
+```
+
 ### How It Works
 
 1. **Automatic Document Creation**: Each item in the collection becomes a `Document` instance
-2. **Collection Change Monitoring**: Adding/removing items automatically adds/removes documents
-3. **DocumentTemplate**: Used to create the visual content for each document
-4. **Property Mapping**: Document properties are automatically mapped from your model:
+2. **Automatic Tool Creation**: Each item in tool collections becomes a `Tool` instance
+3. **Collection Change Monitoring**: Adding/removing items automatically adds/removes generated dockables
+4. **Templates**: `DocumentTemplate` and `ToolTemplate` create the visual content for generated dockables
+5. **Property Mapping**: Dockable properties are automatically mapped from your model:
    - `Title` → Document title
    - `Name` → Alternative for title
    - `DisplayName` → Alternative for title  
    - `CanClose` → Whether the document can be closed
-5. **Data Context**: Your model object becomes the `Context` of the created Document and is accessible via `{Binding Context.PropertyName}`
+6. **Data Context**: Your model object becomes the `Context` of the created `Document`/`Tool` and is accessible via `{Binding Context.PropertyName}`
 
 ### Advanced Examples
 

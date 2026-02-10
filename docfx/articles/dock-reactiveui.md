@@ -7,7 +7,7 @@ commands are implemented using `ReactiveCommand`. The sample project
 interface details refer to the [Dock API Reference](dock-reference.md) and see
 the [Advanced Guide](dock-advanced.md) for more customization options.
 
-> **💡 Modern Approach**: For easier document management, consider using [DocumentDock.ItemsSource](dock-itemssource.md) which automatically creates and manages documents from collections. The ItemsSource approach works seamlessly with ReactiveUI's `ObservableCollectionExtended` and `ReactiveCommand`. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
+> **💡 Modern Approach**: For easier source-backed layout management, consider using [DocumentDock/ToolDock ItemsSource](dock-itemssource.md) which automatically creates and manages documents and tools from collections. The ItemsSource approach works seamlessly with ReactiveUI's observable collections and `ReactiveCommand`. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
 
 ## Step-by-step tutorial
 
@@ -361,7 +361,7 @@ nested content appears automatically when navigation commands execute.
 
 All the events shown in the MVVM guide are present here as well. Subscribe to them in the same way using ReactiveUI commands or observables.
 
-Use the ReactiveUI sample as a template when building your own layouts.
+Use the ReactiveUI samples as templates when building your own layouts (`DockReactiveUISample` and `DockReactiveUIItemsSourceSample`).
 See the [Advanced Guide](dock-advanced.md) for details on customizing factory methods and consult the [Dock API Reference](dock-reference.md) for the available interfaces.
 
 For an overview of all guides see the [documentation index](README.md).

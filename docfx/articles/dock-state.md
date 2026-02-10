@@ -1,10 +1,10 @@
 # DockState Usage Guide
 
-This document explains why `DockState` exists and how to use it when saving and restoring layouts. It builds on the [serialization guide](dock-serialization.md) and provides additional background for restoring document/tool content and document templates after loading layouts.
+This document explains why `DockState` exists and how to use it when saving and restoring layouts. It builds on the [serialization guide](dock-serialization.md) and provides additional background for restoring document/tool content and dock templates after loading layouts.
 
 ## Why DockState is needed
 
-`DockState` captures values that are not serialized with the layout itself, such as `IToolContent.Content`, `IDocumentContent.Content`, and `IDocumentDockContent.DocumentTemplate`. These properties often reference controls or templates that are intentionally ignored by serializers. Without `DockState`, documents or tools can appear with missing content after a layout is loaded.
+`DockState` captures values that are not serialized with the layout itself, such as `IToolContent.Content`, `IDocumentContent.Content`, `IDocumentDockContent.DocumentTemplate`, and `IToolDockContent.ToolTemplate`. These properties often reference controls or templates that are intentionally ignored by serializers. Without `DockState`, documents or tools can appear with missing content after a layout is loaded.
 
 Active and focused dockables are part of the layout model and are serialized directly, so `DockState` is not required for focus restoration. Dockable logical placement (`IDockable.DockingState`) is also part of the layout model and is updated by factory operations.
 
@@ -18,7 +18,7 @@ private readonly DockState _dockState = new DockState();
 
 ## Saving the state
 
-Call `DockState.Save` with the root `IDock` before serializing the layout. This captures document/tool content and document templates so they can be reapplied later.
+Call `DockState.Save` with the root `IDock` before serializing the layout. This captures document/tool content and dock templates so they can be reapplied later.
 
 ```csharp
 var layout = dockControl.Layout;

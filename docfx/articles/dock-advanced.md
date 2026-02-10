@@ -106,7 +106,7 @@ activated automatically.
 
 ### Modern ItemsSource approach
 
-For more efficient document management in the Avalonia model, use `DocumentDock.ItemsSource` to bind directly to data collections:
+For more efficient source-backed dockable management in the Avalonia model, use `DocumentDock.ItemsSource` and `ToolDock.ItemsSource` to bind directly to data collections:
 
 ```csharp
 // In your ViewModel
@@ -128,7 +128,19 @@ With XAML binding:
 </DocumentDock>
 ```
 
-This approach automatically creates and removes documents as the collection changes, provides automatic title mapping from properties like `Title` or `Name`, and integrates seamlessly with MVVM patterns. `ItemsSource` requires a `DocumentTemplate`; without one, documents are not generated. See the [DocumentDock ItemsSource guide](dock-itemssource.md) for comprehensive details.
+Tool panes can be generated the same way:
+
+```xaml
+<ToolDock ItemsSource="{Binding OpenTools}" Alignment="Left">
+    <ToolDock.ToolTemplate>
+        <ToolTemplate>
+            <TextBlock Text="{Binding Context.Description}" x:DataType="Tool"/>
+        </ToolTemplate>
+    </ToolDock.ToolTemplate>
+</ToolDock>
+```
+
+This approach automatically creates and removes dockables as collections change, provides automatic title mapping from properties like `Title` or `Name`, and integrates with MVVM patterns. `ItemsSource` requires the corresponding template (`DocumentTemplate` or `ToolTemplate`); without one, dockables are not generated. See the [Document and Tool ItemsSource guide](dock-itemssource.md) for details.
 
 Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.
 

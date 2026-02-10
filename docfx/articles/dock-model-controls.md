@@ -32,6 +32,8 @@ when creating your own docks and documents.
 | `ITool` | Basic interface for tool panes such as explorers or output views. |
 | `IToolContent` | Tool containing arbitrary `Content`. |
 | `IToolDock` | Dock that hosts tools and supports auto-hide behavior. |
+| `IToolDockContent` | Dock that creates tools from a `ToolTemplate`. |
+| `IToolTemplate` | Template object used when creating tools on demand or from `ItemsSource`. |
 
 The following sections provide guidelines on applying these contracts in your projects.
 
@@ -132,6 +134,18 @@ auto-hide its content and exposes an `Alignment` property for
 positioning. When `AutoHide` is enabled the dock collapses once the
 pointer leaves the area. `GripMode` controls if the user can resize
 the dock by dragging its border.
+
+`IToolDockContent` (implemented by the Avalonia model layer) extends this
+concept with a `ToolTemplate` and `CreateToolFromTemplate`. This mirrors
+`IDocumentDockContent` for tool panes. In Avalonia, `ToolDock.ItemsSource`
+uses this template to create generated tool content from source collections.
+
+## IToolTemplate
+
+`IToolTemplate` represents template content used to build tool views. In
+Avalonia the built-in `ToolTemplate` stores XAML content (or a
+`Func<IServiceProvider, object>`) that becomes tool `Content` when a new tool
+is created from a template or generated from `ItemsSource`.
 
 ## Putting it all together
 

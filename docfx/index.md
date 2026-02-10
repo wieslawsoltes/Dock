@@ -70,7 +70,7 @@ Recommended path:
 - [Documentation index](articles/README.md)
 - [Quick start](articles/quick-start.md)
 - [Document and tool content guide](articles/dock-content-guide.md)
-- [ItemsSource guide](articles/dock-itemssource.md)
+- [Document and tool ItemsSource guide](articles/dock-itemssource.md)
 - [API documentation](api/index.md)
 
 ## Samples

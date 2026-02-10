@@ -2,11 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Automation.Peers;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Contract;
 using Dock.Model.Core;
 using Dock.Settings;
@@ -86,6 +88,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         PseudoClasses.Set(":vertical", this.GetObservable(ShowVerticalTargetsProperty));
         PseudoClasses.Set(":global-available", this.GetObservable(IsGlobalDockAvailableProperty));
         PseudoClasses.Set(":global-active", this.GetObservable(IsGlobalDockActiveProperty));
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DockTargetAutomationPeer(this);
     }
 
     /// <summary>

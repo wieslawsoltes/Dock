@@ -2,9 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Metadata;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Selectors;
 
 namespace Dock.Avalonia.Controls;
@@ -13,8 +15,11 @@ namespace Dock.Avalonia.Controls;
 /// Selector overlay control for documents and tools.
 /// </summary>
 [PseudoClasses(":open")]
+[TemplatePart("PART_ItemsList", typeof(ListBox))]
 public class DockSelectorOverlay : TemplatedControl
 {
+    private ListBox? _itemsList;
+
     /// <summary>
     /// Defines the <see cref="IsOpen"/> property.
     /// </summary>
@@ -75,6 +80,8 @@ public class DockSelectorOverlay : TemplatedControl
         set => SetValue(ModeProperty, value);
     }
 
+    internal ListBox? ItemsList => _itemsList;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DockSelectorOverlay"/> class.
     /// </summary>
@@ -82,6 +89,19 @@ public class DockSelectorOverlay : TemplatedControl
     {
         SetCurrentValue(IsVisibleProperty, false);
         SetCurrentValue(IsHitTestVisibleProperty, false);
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DockSelectorOverlayAutomationPeer(this);
+    }
+
+    /// <inheritdoc />
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+        _itemsList = e.NameScope.Find<ListBox>("PART_ItemsList");
     }
 
     /// <inheritdoc />
@@ -94,6 +114,32 @@ public class DockSelectorOverlay : TemplatedControl
             PseudoClasses.Set(":open", IsOpen);
             SetCurrentValue(IsVisibleProperty, IsOpen);
             SetCurrentValue(IsHitTestVisibleProperty, IsOpen);
+        }
+
+        if (ControlAutomationPeer.FromElement(this) is not DockSelectorOverlayAutomationPeer peer)
+        {
+            return;
+        }
+
+        if (change.Property == IsOpenProperty)
+        {
+            peer.NotifyIsOpenChanged(change.GetOldValue<bool>(), change.GetNewValue<bool>());
+        }
+        else if (change.Property == SelectedItemProperty)
+        {
+            peer.NotifySelectedItemChanged(
+                change.GetOldValue<DockSelectorItem?>(),
+                change.GetNewValue<DockSelectorItem?>());
+        }
+        else if (change.Property == ItemsProperty)
+        {
+            peer.NotifyItemsChanged();
+        }
+        else if (change.Property == ModeProperty)
+        {
+            peer.NotifyModeChanged(
+                change.GetOldValue<DockSelectorMode>(),
+                change.GetNewValue<DockSelectorMode>());
         }
     }
 }

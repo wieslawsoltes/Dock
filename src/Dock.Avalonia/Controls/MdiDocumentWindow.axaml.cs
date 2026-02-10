@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
@@ -13,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.Reactive;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Avalonia.Mdi;
 using Dock.Model.Controls;
@@ -174,6 +176,12 @@ public class MdiDocumentWindow : TemplatedControl
     public MdiDocumentWindow()
     {
         UpdatePseudoClasses(IsActive, MdiState);
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new MdiDocumentWindowAutomationPeer(this);
     }
 
     internal bool TryGetContentOffset(out Point offset)

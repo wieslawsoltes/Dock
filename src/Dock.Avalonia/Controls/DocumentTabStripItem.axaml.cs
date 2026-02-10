@@ -2,12 +2,14 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 using AvaloniaOrientation = Avalonia.Layout.Orientation;
@@ -95,6 +97,12 @@ public class DocumentTabStripItem : TabStripItem
         UpdatePseudoClasses(IsActive);
     }
 
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DocumentTabStripItemAutomationPeer(this);
+    }
+
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -156,6 +164,12 @@ public class DocumentTabStripItem : TabStripItem
         {
             UpdatePseudoClasses(change.GetNewValue<bool>());
         }
+
+        if (change.Property == IsSelectedProperty
+            && ControlAutomationPeer.FromElement(this) is DocumentTabStripItemAutomationPeer peer)
+        {
+            peer.NotifyIsSelectedChanged(change.GetOldValue<bool>(), change.GetNewValue<bool>());
+        }
     }
 
     private void UpdatePseudoClasses(bool isActive)
@@ -163,4 +177,3 @@ public class DocumentTabStripItem : TabStripItem
         PseudoClasses.Set(":active", isActive);
     }
 }
-

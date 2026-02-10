@@ -2,8 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Model.CommandBars;
 
 namespace Dock.Avalonia.Controls;
@@ -79,5 +81,11 @@ public class DockCommandBarHost : TemplatedControl
     public DockCommandBarHost()
     {
         SetCurrentValue(IsVisibleProperty, false);
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DockCommandBarHostAutomationPeer(this);
     }
 }

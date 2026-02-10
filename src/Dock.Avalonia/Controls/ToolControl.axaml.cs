@@ -1,10 +1,12 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -60,11 +62,25 @@ public class ToolControl : TemplatedControl
     }
 
     /// <inheritdoc/>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new ToolControlAutomationPeer(this);
+    }
+
+    /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        RemoveHandler(PointerPressedEvent, PressedHandler);
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)

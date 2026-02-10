@@ -2,8 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Layout;
+using Dock.Avalonia.Automation.Peers;
 
 namespace Dock.Avalonia.Controls;
 
@@ -25,6 +27,12 @@ public class ToolPinnedControl : ItemsControl
     {
         get => GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
+    }
+
+    /// <inheritdoc/>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new ToolPinnedControlAutomationPeer(this);
     }
 
     /// <inheritdoc/>

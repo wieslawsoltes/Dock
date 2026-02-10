@@ -1,12 +1,14 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Recycling;
 using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Dock.Avalonia.Automation.Peers;
 
 namespace Dock.Avalonia.Controls;
 
@@ -19,7 +21,7 @@ public class DragPreviewControl : TemplatedControl
     /// Define the <see cref="ContentTemplate"/> property.
     /// </summary>
     public static readonly StyledProperty<IDataTemplate> ContentTemplateProperty = 
-        AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(ContentTemplate));
+        AvaloniaProperty.Register<DragPreviewControl, IDataTemplate>(nameof(ContentTemplate));
 
     /// <summary>
     /// Defines <see cref="Status"/> property.
@@ -63,6 +65,12 @@ public class DragPreviewControl : TemplatedControl
     public DragPreviewControl()
     {
         ControlRecycling = new ControlRecycling();
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DragPreviewControlAutomationPeer(this);
     }
     
     /// <summary>
@@ -126,5 +134,17 @@ public class DragPreviewControl : TemplatedControl
     {
         get => GetValue(PreviewContentProperty);
         set => SetValue(PreviewContentProperty, value);
+    }
+
+    /// <inheritdoc />
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == StatusProperty
+            && ControlAutomationPeer.FromElement(this) is DragPreviewControlAutomationPeer peer)
+        {
+            peer.NotifyStatusChanged(change.GetOldValue<string?>(), change.GetNewValue<string?>());
+        }
     }
 }

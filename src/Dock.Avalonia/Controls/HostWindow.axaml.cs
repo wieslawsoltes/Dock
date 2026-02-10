@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -116,6 +118,12 @@ public class HostWindow : Window, IHostWindow
         Deactivated += HostWindow_Deactivated;
         _hostWindowState = new HostWindowState(new DockManager(new DockService(), options), this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new HostWindowAutomationPeer(this);
     }
 
     /// <inheritdoc/>

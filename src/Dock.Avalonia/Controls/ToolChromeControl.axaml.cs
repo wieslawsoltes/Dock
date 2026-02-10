@@ -2,12 +2,14 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Runtime.InteropServices;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Model.Core;
 using Dock.Avalonia.Internal;
 
@@ -24,6 +26,7 @@ public class ToolChromeControl : ContentControl
 {
     private HostWindow? _attachedWindow;
     private WindowDragHelper? _windowDragHelper;
+    private Button? _maximizeRestoreButton;
 
     /// <summary>
     /// Define <see cref="Title"/> property.
@@ -165,6 +168,12 @@ public class ToolChromeControl : ContentControl
         UpdatePseudoClasses();
     }
 
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new ToolChromeControlAutomationPeer(this);
+    }
+
     /// <summary>
     /// Gets or sets chrome tool title.
     /// </summary>
@@ -198,6 +207,14 @@ public class ToolChromeControl : ContentControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        RemoveHandler(PointerPressedEvent, PressedHandler);
+
+        if (_maximizeRestoreButton is not null)
+        {
+            _maximizeRestoreButton.Click -= OnMaximizeRestoreButtonClicked;
+            _maximizeRestoreButton = null;
+        }
+
         DetachFromWindow();
     }
 
@@ -217,16 +234,25 @@ public class ToolChromeControl : ContentControl
     {
         base.OnApplyTemplate(e);
 
+        DetachFromWindow();
+        RemoveHandler(PointerPressedEvent, PressedHandler);
+
+        if (_maximizeRestoreButton is not null)
+        {
+            _maximizeRestoreButton.Click -= OnMaximizeRestoreButtonClicked;
+            _maximizeRestoreButton = null;
+        }
+
         Grip = e.NameScope.Find<Control>("PART_Grip");
         CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
 
         AttachToWindow();
 
-        var maximizeRestoreButton = e.NameScope.Find<Button>("PART_MaximizeRestoreButton");
-        if (maximizeRestoreButton is not null)
+        _maximizeRestoreButton = e.NameScope.Find<Button>("PART_MaximizeRestoreButton");
+        if (_maximizeRestoreButton is not null)
         {
-            maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;
+            _maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;
         }
     }
 

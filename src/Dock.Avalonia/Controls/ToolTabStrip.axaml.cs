@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
@@ -10,6 +11,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Reactive;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
@@ -21,6 +23,7 @@ namespace Dock.Avalonia.Controls;
 public class ToolTabStrip : TabStrip
 {
     private readonly Dictionary<ToolTabStripItem, IDisposable[]> _containerObservables = new();
+    private readonly List<IDisposable> _templateObservables = new();
     private Border? _borderLeftFill;
     private Border? _borderRightFill;
     private ItemsPresenter? _itemsPresenter;
@@ -71,11 +74,18 @@ public class ToolTabStrip : TabStrip
     }
 
     /// <inheritdoc/>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new ToolTabStripAutomationPeer(this);
+    }
+
+    /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
 
         AttachScrollViewerWheel(null);
+        ClearTemplateObservables();
 
         _borderLeftFill = e.NameScope.Find<Border>("PART_BorderLeftFill");
         _borderRightFill = e.NameScope.Find<Border>("PART_BorderRightFill");
@@ -83,17 +93,23 @@ public class ToolTabStrip : TabStrip
         _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
         AttachScrollViewerWheel(_scrollViewer);
 
-        _itemsPresenter?.GetObservable(Border.BoundsProperty)
-            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
+        if (_itemsPresenter is not null)
+        {
+            _templateObservables.Add(_itemsPresenter.GetObservable(Border.BoundsProperty)
+                .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders())));
+        }
 
-        _scrollViewer?.GetObservable(ScrollViewer.OffsetProperty)
-            .Subscribe(new AnonymousObserver<Vector>(_ => UpdateBorders()));
+        if (_scrollViewer is not null)
+        {
+            _templateObservables.Add(_scrollViewer.GetObservable(ScrollViewer.OffsetProperty)
+                .Subscribe(new AnonymousObserver<Vector>(_ => UpdateBorders())));
+        }
 
-        this.GetObservable(SelectedItemProperty)
-            .Subscribe(new AnonymousObserver<object?>(_ => UpdateBorders()));
+        _templateObservables.Add(this.GetObservable(SelectedItemProperty)
+            .Subscribe(new AnonymousObserver<object?>(_ => UpdateBorders())));
 
-        this.GetObservable(BoundsProperty)
-            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
+        _templateObservables.Add(this.GetObservable(BoundsProperty)
+            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders())));
 
         UpdateBorders();
     }
@@ -103,6 +119,8 @@ public class ToolTabStrip : TabStrip
     {
         base.OnDetachedFromVisualTree(e);
         AttachScrollViewerWheel(null);
+        ClearTemplateObservables();
+        ClearContainerObservables();
     }
 
     /// <inheritdoc/>
@@ -186,6 +204,8 @@ public class ToolTabStrip : TabStrip
 
         if (container is ToolTabStripItem tabStripItem)
         {
+            tabStripItem.AttachedToVisualTree -= OnContainerAttachedToVisualTree;
+            tabStripItem.DetachedFromVisualTree -= OnContainerDetachedFromVisualTree;
             tabStripItem.AttachedToVisualTree += OnContainerAttachedToVisualTree;
             tabStripItem.DetachedFromVisualTree += OnContainerDetachedFromVisualTree;
         }
@@ -228,5 +248,37 @@ public class ToolTabStrip : TabStrip
     {
         _scrollViewerWheelSubscription?.Dispose();
         _scrollViewerWheelSubscription = ScrollViewerMouseWheelHookHelper.Attach(scrollViewer, MouseWheelScrollOrientation);
+    }
+
+    private void ClearTemplateObservables()
+    {
+        foreach (var observable in _templateObservables)
+        {
+            observable.Dispose();
+        }
+
+        _templateObservables.Clear();
+    }
+
+    private void ClearContainerObservables()
+    {
+        if (_containerObservables.Count == 0)
+        {
+            return;
+        }
+
+        var entries = new List<KeyValuePair<ToolTabStripItem, IDisposable[]>>(_containerObservables);
+        foreach (var entry in entries)
+        {
+            foreach (var disposable in entry.Value)
+            {
+                disposable.Dispose();
+            }
+
+            entry.Key.AttachedToVisualTree -= OnContainerAttachedToVisualTree;
+            entry.Key.DetachedFromVisualTree -= OnContainerDetachedFromVisualTree;
+        }
+
+        _containerObservables.Clear();
     }
 }

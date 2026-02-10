@@ -68,11 +68,36 @@ The overlay itself is a `DockSelectorOverlay` control in the `DockControl` templ
 - `Items` - The `DockSelectorItem` list rendered by the overlay.
 - `SelectedItem` - The currently highlighted selector item.
 - `Mode` - `Documents` or `Tools`, shown in the header.
+- `PART_ItemsList` - `ListBox` template part used for selector navigation and UI automation selection/scroll delegation. Keep this part in custom templates for full reader support.
 
 These properties are primarily used by the template but can be styled or replaced in a custom theme.
+
+## Automation behavior
+
+`DockSelectorOverlayAutomationPeer` exposes:
+
+- `AutomationControlType.List`
+- `IExpandCollapseProvider` for open/close
+- `ISelectionProvider` for current selector entry
+- `IScrollProvider` delegated to the internal `ListBox`
+- `IValueProvider` (read-only selected title)
+
+Automation events raised by `DockSelectorOverlayAutomationPeer`:
+
+- `ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty` when `IsOpen` changes.
+- `SelectionPatternIdentifiers.SelectionProperty` and `ValuePatternIdentifiers.ValueProperty` when `SelectedItem` changes.
+- `AutomationElementIdentifiers.NameProperty` when `Mode` changes (for mode-specific selector name).
+- `ChildrenChanged` when `Items` is replaced.
+
+Reader compatibility notes:
+
+- `IValueProvider.SetValue` is intentionally unsupported (read-only contract).
+- Selection and scroll providers are delegated to `PART_ItemsList`, so they stay compatible with default list automation behavior.
 
 ## Ordering and selection
 
 The selector is ordered by the most recently activated dockables. Dock tracks activation order inside `DockControl`, so frequently used documents and tools appear first.
 
 For related settings see [Dock settings](dock-settings.md).
+
+For UI automation peer behavior and accessibility contract details, see [Accessibility and UI automation](dock-accessibility.md).

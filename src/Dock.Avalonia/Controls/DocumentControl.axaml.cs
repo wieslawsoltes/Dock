@@ -4,6 +4,7 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
@@ -12,6 +13,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Reactive;
 using Avalonia.Styling;
+using Dock.Avalonia.Automation.Peers;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -171,6 +173,12 @@ public class DocumentControl : TemplatedControl
     public DocumentControl()
     {
         UpdatePseudoClasses(IsActive);
+    }
+
+    /// <inheritdoc/>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DocumentControlAutomationPeer(this);
     }
 
     /// <inheritdoc/>

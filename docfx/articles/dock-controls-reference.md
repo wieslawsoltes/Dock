@@ -41,6 +41,9 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `SelectedItem` | `DockSelectorItem?` | Currently highlighted item. |
 | `Mode` | `DockSelectorMode` | Documents or tools selector mode. |
 
+Template part:
+- `PART_ItemsList` (`ListBox`) - selector item host used for selection and scroll automation delegation.
+
 ### DockTargetBase (DockTarget, GlobalDockTarget)
 
 | Property | Type | Description |
@@ -52,6 +55,47 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `IsGlobalDockActive` | `bool` | Indicates global docking active state. |
 
 `DockTarget` and `GlobalDockTarget` inherit these properties without adding new ones.
+
+## Accessibility automation peers
+
+Dock provides dedicated automation peers for key interaction controls:
+
+| Control | Peer | Role | Providers |
+| --- | --- | --- | --- |
+| `DockControl` | `DockControlAutomationPeer` | `Pane` | - |
+| `RootDockControl` | `RootDockControlAutomationPeer` | `Pane` | - |
+| `DockCommandBarHost` | `DockCommandBarHostAutomationPeer` | `ToolBar` | - |
+| `DockTarget` / `GlobalDockTarget` | `DockTargetAutomationPeer` | `Pane` | `IInvokeProvider` |
+| `DocumentControl` | `DocumentControlAutomationPeer` | `Pane` | `IInvokeProvider` |
+| `ToolControl` | `ToolControlAutomationPeer` | `Pane` | `IInvokeProvider` |
+| `MdiDocumentControl` | `MdiDocumentControlAutomationPeer` | `Pane` | `IInvokeProvider` |
+| `DocumentTabStrip` | `DocumentTabStripAutomationPeer` | `Tab` | `ISelectionProvider`, `IScrollProvider` |
+| `ToolTabStrip` | `ToolTabStripAutomationPeer` | `Tab` | `ISelectionProvider`, `IScrollProvider` |
+| `DocumentTabStripItem` | `DocumentTabStripItemAutomationPeer` | `TabItem` | `IInvokeProvider` and selection item support |
+| `ToolTabStripItem` | `ToolTabStripItemAutomationPeer` | `TabItem` | `IInvokeProvider` and selection item support |
+| `ToolChromeControl` | `ToolChromeControlAutomationPeer` | `TitleBar` | `IInvokeProvider`, `IExpandCollapseProvider` |
+| `PinnedDockControl` | `PinnedDockControlAutomationPeer` | `Pane` | `IExpandCollapseProvider` |
+| `ToolPinnedControl` | `ToolPinnedControlAutomationPeer` | `Tab` | `ISelectionProvider` |
+| `ToolPinItemControl` | `ToolPinItemControlAutomationPeer` | `TabItem` | `IInvokeProvider`, `ISelectionItemProvider` |
+| `MdiDocumentWindow` | `MdiDocumentWindowAutomationPeer` | `Window` | `IInvokeProvider` |
+| `DockSelectorOverlay` | `DockSelectorOverlayAutomationPeer` | `List` | `IExpandCollapseProvider`, `ISelectionProvider`, `IScrollProvider`, `IValueProvider` |
+| `HostWindow` | `HostWindowAutomationPeer` | `Window` | `IInvokeProvider` |
+| `HostWindowTitleBar` | `HostWindowTitleBarAutomationPeer` | `TitleBar` | `IInvokeProvider` |
+| `PinnedDockWindow` | `PinnedDockWindowAutomationPeer` | `Window` | `IInvokeProvider` |
+| `DragPreviewControl` | `DragPreviewControlAutomationPeer` | `Pane` | `IValueProvider` |
+| `DragPreviewWindow` | `DragPreviewWindowAutomationPeer` | `Pane` | decorative-only (not exposed as control/content element) |
+| `DockAdornerWindow` | `DockAdornerWindowAutomationPeer` | `Pane` | decorative-only (not exposed as control/content element) |
+
+Name and ID values prefer `AutomationProperties`, then Dock model identifiers (`Title`, `Id`) for stable fallback behavior.
+
+Automation integration notes:
+
+- Set `AutomationProperties.Name` and `AutomationProperties.AutomationId` on controls when you need deterministic labels/ids across themes.
+- `ISelectionItemProvider.Select` for `DocumentTabStripItem` and `ToolTabStripItem` uses the same activation behavior as `IInvokeProvider.Invoke`.
+- `DockSelectorOverlay` automation selection/scroll support depends on the `PART_ItemsList` template part.
+- `DragPreviewWindow` and `DockAdornerWindow` peers are intentionally non-interactive and not exposed as control/content elements.
+
+For behavior details and keyboard validation guidance, see [Accessibility and UI automation](dock-accessibility.md).
 
 ## Tab, chrome, and tool controls
 

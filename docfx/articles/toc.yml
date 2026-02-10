@@ -100,6 +100,8 @@
     href: dock-targets.md
   - name: Docking constraints and layout lock
     href: dock-docking-constraints.md
+  - name: Accessibility and UI automation
+    href: dock-accessibility.md
   - name: Floating dock adorners
     href: dock-floating-adorners.md
   - name: Enable window drag

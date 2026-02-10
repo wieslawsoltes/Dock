@@ -2,12 +2,14 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
 using Avalonia.Styling;
+using Dock.Avalonia.Automation.Peers;
 
 namespace Dock.Avalonia.Controls;
 
@@ -125,6 +127,12 @@ public class DocumentTabStrip : TabStrip
     {
         UpdatePseudoClassesCreate(CanCreateItem);
         UpdatePseudoClassesActive(IsActive);
+    }
+
+    /// <inheritdoc/>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new DocumentTabStripAutomationPeer(this);
     }
 
     /// <inheritdoc/>
@@ -248,7 +256,14 @@ public class DocumentTabStrip : TabStrip
     {
         if (!EnableWindowDrag)
         {
+            DetachFromWindow();
             return;
+        }
+
+        if (_windowDragHelper is not null)
+        {
+            _windowDragHelper.Detach();
+            _windowDragHelper = null;
         }
 
         _windowDragHelper = CreateDragHelper();

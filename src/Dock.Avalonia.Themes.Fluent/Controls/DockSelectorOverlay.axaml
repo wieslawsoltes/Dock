@@ -20,7 +20,8 @@
             <StackPanel Spacing="8">
               <TextBlock Text="{TemplateBinding Mode}"
                          FontWeight="SemiBold" />
-              <ListBox ItemsSource="{TemplateBinding Items}"
+              <ListBox x:Name="PART_ItemsList"
+                       ItemsSource="{TemplateBinding Items}"
                        SelectedItem="{TemplateBinding SelectedItem}"
                        Background="Transparent"
                        BorderThickness="0"

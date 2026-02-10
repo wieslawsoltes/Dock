@@ -11358,6 +11358,153 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.DockDock.LastChildFillProperty
   fullName: Dock.Model.Avalonia.Controls.DockDock.LastChildFillProperty
   nameWithType: DockDock.LastChildFillProperty
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator
+  name: DockItemContainerGenerator
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html
+  commentId: T:Dock.Model.Avalonia.Controls.DockItemContainerGenerator
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator
+  nameWithType: DockItemContainerGenerator
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name: ClearDocumentContainer(IItemsSourceDock, IDockable, object?)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_ClearDocumentContainer_Dock_Model_Core_IItemsSourceDock_Dock_Model_Core_IDockable_System_Object_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name.vb: ClearDocumentContainer(IItemsSourceDock, IDockable, Object)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, object?)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, Object)
+  nameWithType: DockItemContainerGenerator.ClearDocumentContainer(IItemsSourceDock, IDockable, object?)
+  nameWithType.vb: DockItemContainerGenerator.ClearDocumentContainer(IItemsSourceDock, IDockable, Object)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer*
+  name: ClearDocumentContainer
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_ClearDocumentContainer_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearDocumentContainer
+  nameWithType: DockItemContainerGenerator.ClearDocumentContainer
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name: ClearToolContainer(IToolItemsSourceDock, IDockable, object?)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_ClearToolContainer_Dock_Model_Core_IToolItemsSourceDock_Dock_Model_Core_IDockable_System_Object_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name.vb: ClearToolContainer(IToolItemsSourceDock, IDockable, Object)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, object?)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, Object)
+  nameWithType: DockItemContainerGenerator.ClearToolContainer(IToolItemsSourceDock, IDockable, object?)
+  nameWithType.vb: DockItemContainerGenerator.ClearToolContainer(IToolItemsSourceDock, IDockable, Object)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer*
+  name: ClearToolContainer
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_ClearToolContainer_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.ClearToolContainer
+  nameWithType: DockItemContainerGenerator.ClearToolContainer
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock,System.Object,System.Int32)
+  name: CreateDocumentContainer(IItemsSourceDock, object, int)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_CreateDocumentContainer_Dock_Model_Core_IItemsSourceDock_System_Object_System_Int32_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock,System.Object,System.Int32)
+  name.vb: CreateDocumentContainer(IItemsSourceDock, Object, Integer)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock, object, int)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock, Object, Integer)
+  nameWithType: DockItemContainerGenerator.CreateDocumentContainer(IItemsSourceDock, object, int)
+  nameWithType.vb: DockItemContainerGenerator.CreateDocumentContainer(IItemsSourceDock, Object, Integer)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateDocumentContainer*
+  name: CreateDocumentContainer
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_CreateDocumentContainer_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateDocumentContainer
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateDocumentContainer
+  nameWithType: DockItemContainerGenerator.CreateDocumentContainer
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock,System.Object,System.Int32)
+  name: CreateToolContainer(IToolItemsSourceDock, object, int)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_CreateToolContainer_Dock_Model_Core_IToolItemsSourceDock_System_Object_System_Int32_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock,System.Object,System.Int32)
+  name.vb: CreateToolContainer(IToolItemsSourceDock, Object, Integer)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock, object, int)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock, Object, Integer)
+  nameWithType: DockItemContainerGenerator.CreateToolContainer(IToolItemsSourceDock, object, int)
+  nameWithType.vb: DockItemContainerGenerator.CreateToolContainer(IToolItemsSourceDock, Object, Integer)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer*
+  name: CreateToolContainer
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_CreateToolContainer_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.CreateToolContainer
+  nameWithType: DockItemContainerGenerator.CreateToolContainer
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.Default
+  name: Default
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_Default
+  commentId: P:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.Default
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.Default
+  nameWithType: DockItemContainerGenerator.Default
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.Default*
+  name: Default
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_Default_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.Default
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.Default
+  nameWithType: DockItemContainerGenerator.Default
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose(System.Object)
+  name: GetItemCanClose(object)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_GetItemCanClose_System_Object_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose(System.Object)
+  name.vb: GetItemCanClose(Object)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose(object)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose(Object)
+  nameWithType: DockItemContainerGenerator.GetItemCanClose(object)
+  nameWithType.vb: DockItemContainerGenerator.GetItemCanClose(Object)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose*
+  name: GetItemCanClose
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_GetItemCanClose_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemCanClose
+  nameWithType: DockItemContainerGenerator.GetItemCanClose
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle(System.Object)
+  name: GetItemTitle(object)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_GetItemTitle_System_Object_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle(System.Object)
+  name.vb: GetItemTitle(Object)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle(object)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle(Object)
+  nameWithType: DockItemContainerGenerator.GetItemTitle(object)
+  nameWithType.vb: DockItemContainerGenerator.GetItemTitle(Object)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle*
+  name: GetItemTitle
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_GetItemTitle_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.GetItemTitle
+  nameWithType: DockItemContainerGenerator.GetItemTitle
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name: PrepareDocumentContainer(IItemsSourceDock, IDockable, object, int)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_PrepareDocumentContainer_Dock_Model_Core_IItemsSourceDock_Dock_Model_Core_IDockable_System_Object_System_Int32_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name.vb: PrepareDocumentContainer(IItemsSourceDock, IDockable, Object, Integer)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, object, int)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, Object, Integer)
+  nameWithType: DockItemContainerGenerator.PrepareDocumentContainer(IItemsSourceDock, IDockable, object, int)
+  nameWithType.vb: DockItemContainerGenerator.PrepareDocumentContainer(IItemsSourceDock, IDockable, Object, Integer)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer*
+  name: PrepareDocumentContainer
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_PrepareDocumentContainer_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareDocumentContainer
+  nameWithType: DockItemContainerGenerator.PrepareDocumentContainer
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name: PrepareToolContainer(IToolItemsSourceDock, IDockable, object, int)
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_PrepareToolContainer_Dock_Model_Core_IToolItemsSourceDock_Dock_Model_Core_IDockable_System_Object_System_Int32_
+  commentId: M:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name.vb: PrepareToolContainer(IToolItemsSourceDock, IDockable, Object, Integer)
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, object, int)
+  fullName.vb: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, Object, Integer)
+  nameWithType: DockItemContainerGenerator.PrepareToolContainer(IToolItemsSourceDock, IDockable, object, int)
+  nameWithType.vb: DockItemContainerGenerator.PrepareToolContainer(IToolItemsSourceDock, IDockable, Object, Integer)
+- uid: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer*
+  name: PrepareToolContainer
+  href: api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html#Dock_Model_Avalonia_Controls_DockItemContainerGenerator_PrepareToolContainer_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DockItemContainerGenerator.PrepareToolContainer
+  nameWithType: DockItemContainerGenerator.PrepareToolContainer
 - uid: Dock.Model.Avalonia.Controls.Document
   name: Document
   href: api/Dock.Model.Avalonia.Controls.Document.html
@@ -11746,6 +11893,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.DocumentDock.IsDocumentFromItemsSource
   nameWithType: DocumentDock.IsDocumentFromItemsSource
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGenerator
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_ItemContainerGenerator
+  commentId: P:Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGenerator
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGenerator
+  nameWithType: DocumentDock.ItemContainerGenerator
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGenerator*
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_ItemContainerGenerator_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGenerator
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGenerator
+  nameWithType: DocumentDock.ItemContainerGenerator
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGeneratorProperty
+  name: ItemContainerGeneratorProperty
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_ItemContainerGeneratorProperty
+  commentId: F:Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGeneratorProperty
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.ItemContainerGeneratorProperty
+  nameWithType: DocumentDock.ItemContainerGeneratorProperty
 - uid: Dock.Model.Avalonia.Controls.DocumentDock.ItemsSource
   name: ItemsSource
   href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_ItemsSource
@@ -12988,6 +13154,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource
   nameWithType: ToolDock.IsToolFromItemsSource
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGenerator
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ItemContainerGenerator
+  commentId: P:Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGenerator
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGenerator
+  nameWithType: ToolDock.ItemContainerGenerator
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGenerator*
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ItemContainerGenerator_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGenerator
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGenerator
+  nameWithType: ToolDock.ItemContainerGenerator
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGeneratorProperty
+  name: ItemContainerGeneratorProperty
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ItemContainerGeneratorProperty
+  commentId: F:Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGeneratorProperty
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ItemContainerGeneratorProperty
+  nameWithType: ToolDock.ItemContainerGeneratorProperty
 - uid: Dock.Model.Avalonia.Controls.ToolDock.ItemsSource
   name: ItemsSource
   href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ItemsSource
@@ -22192,6 +22377,108 @@ references:
   commentId: T:Dock.Model.Core.IDockControlState
   fullName: Dock.Model.Core.IDockControlState
   nameWithType: IDockControlState
+- uid: Dock.Model.Core.IDockItemContainerGenerator
+  name: IDockItemContainerGenerator
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html
+  commentId: T:Dock.Model.Core.IDockItemContainerGenerator
+  fullName: Dock.Model.Core.IDockItemContainerGenerator
+  nameWithType: IDockItemContainerGenerator
+- uid: Dock.Model.Core.IDockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name: ClearDocumentContainer(IItemsSourceDock, IDockable, object?)
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_ClearDocumentContainer_Dock_Model_Core_IItemsSourceDock_Dock_Model_Core_IDockable_System_Object_
+  commentId: M:Dock.Model.Core.IDockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name.vb: ClearDocumentContainer(IItemsSourceDock, IDockable, Object)
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, object?)
+  fullName.vb: Dock.Model.Core.IDockItemContainerGenerator.ClearDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, Object)
+  nameWithType: IDockItemContainerGenerator.ClearDocumentContainer(IItemsSourceDock, IDockable, object?)
+  nameWithType.vb: IDockItemContainerGenerator.ClearDocumentContainer(IItemsSourceDock, IDockable, Object)
+- uid: Dock.Model.Core.IDockItemContainerGenerator.ClearDocumentContainer*
+  name: ClearDocumentContainer
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_ClearDocumentContainer_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerGenerator.ClearDocumentContainer
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.ClearDocumentContainer
+  nameWithType: IDockItemContainerGenerator.ClearDocumentContainer
+- uid: Dock.Model.Core.IDockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name: ClearToolContainer(IToolItemsSourceDock, IDockable, object?)
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_ClearToolContainer_Dock_Model_Core_IToolItemsSourceDock_Dock_Model_Core_IDockable_System_Object_
+  commentId: M:Dock.Model.Core.IDockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object)
+  name.vb: ClearToolContainer(IToolItemsSourceDock, IDockable, Object)
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, object?)
+  fullName.vb: Dock.Model.Core.IDockItemContainerGenerator.ClearToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, Object)
+  nameWithType: IDockItemContainerGenerator.ClearToolContainer(IToolItemsSourceDock, IDockable, object?)
+  nameWithType.vb: IDockItemContainerGenerator.ClearToolContainer(IToolItemsSourceDock, IDockable, Object)
+- uid: Dock.Model.Core.IDockItemContainerGenerator.ClearToolContainer*
+  name: ClearToolContainer
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_ClearToolContainer_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerGenerator.ClearToolContainer
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.ClearToolContainer
+  nameWithType: IDockItemContainerGenerator.ClearToolContainer
+- uid: Dock.Model.Core.IDockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock,System.Object,System.Int32)
+  name: CreateDocumentContainer(IItemsSourceDock, object, int)
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_CreateDocumentContainer_Dock_Model_Core_IItemsSourceDock_System_Object_System_Int32_
+  commentId: M:Dock.Model.Core.IDockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock,System.Object,System.Int32)
+  name.vb: CreateDocumentContainer(IItemsSourceDock, Object, Integer)
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock, object, int)
+  fullName.vb: Dock.Model.Core.IDockItemContainerGenerator.CreateDocumentContainer(Dock.Model.Core.IItemsSourceDock, Object, Integer)
+  nameWithType: IDockItemContainerGenerator.CreateDocumentContainer(IItemsSourceDock, object, int)
+  nameWithType.vb: IDockItemContainerGenerator.CreateDocumentContainer(IItemsSourceDock, Object, Integer)
+- uid: Dock.Model.Core.IDockItemContainerGenerator.CreateDocumentContainer*
+  name: CreateDocumentContainer
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_CreateDocumentContainer_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerGenerator.CreateDocumentContainer
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.CreateDocumentContainer
+  nameWithType: IDockItemContainerGenerator.CreateDocumentContainer
+- uid: Dock.Model.Core.IDockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock,System.Object,System.Int32)
+  name: CreateToolContainer(IToolItemsSourceDock, object, int)
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_CreateToolContainer_Dock_Model_Core_IToolItemsSourceDock_System_Object_System_Int32_
+  commentId: M:Dock.Model.Core.IDockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock,System.Object,System.Int32)
+  name.vb: CreateToolContainer(IToolItemsSourceDock, Object, Integer)
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock, object, int)
+  fullName.vb: Dock.Model.Core.IDockItemContainerGenerator.CreateToolContainer(Dock.Model.Core.IToolItemsSourceDock, Object, Integer)
+  nameWithType: IDockItemContainerGenerator.CreateToolContainer(IToolItemsSourceDock, object, int)
+  nameWithType.vb: IDockItemContainerGenerator.CreateToolContainer(IToolItemsSourceDock, Object, Integer)
+- uid: Dock.Model.Core.IDockItemContainerGenerator.CreateToolContainer*
+  name: CreateToolContainer
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_CreateToolContainer_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerGenerator.CreateToolContainer
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.CreateToolContainer
+  nameWithType: IDockItemContainerGenerator.CreateToolContainer
+- uid: Dock.Model.Core.IDockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name: PrepareDocumentContainer(IItemsSourceDock, IDockable, object, int)
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_PrepareDocumentContainer_Dock_Model_Core_IItemsSourceDock_Dock_Model_Core_IDockable_System_Object_System_Int32_
+  commentId: M:Dock.Model.Core.IDockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name.vb: PrepareDocumentContainer(IItemsSourceDock, IDockable, Object, Integer)
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, object, int)
+  fullName.vb: Dock.Model.Core.IDockItemContainerGenerator.PrepareDocumentContainer(Dock.Model.Core.IItemsSourceDock, Dock.Model.Core.IDockable, Object, Integer)
+  nameWithType: IDockItemContainerGenerator.PrepareDocumentContainer(IItemsSourceDock, IDockable, object, int)
+  nameWithType.vb: IDockItemContainerGenerator.PrepareDocumentContainer(IItemsSourceDock, IDockable, Object, Integer)
+- uid: Dock.Model.Core.IDockItemContainerGenerator.PrepareDocumentContainer*
+  name: PrepareDocumentContainer
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_PrepareDocumentContainer_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerGenerator.PrepareDocumentContainer
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.PrepareDocumentContainer
+  nameWithType: IDockItemContainerGenerator.PrepareDocumentContainer
+- uid: Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name: PrepareToolContainer(IToolItemsSourceDock, IDockable, object, int)
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_PrepareToolContainer_Dock_Model_Core_IToolItemsSourceDock_Dock_Model_Core_IDockable_System_Object_System_Int32_
+  commentId: M:Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock,Dock.Model.Core.IDockable,System.Object,System.Int32)
+  name.vb: PrepareToolContainer(IToolItemsSourceDock, IDockable, Object, Integer)
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, object, int)
+  fullName.vb: Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer(Dock.Model.Core.IToolItemsSourceDock, Dock.Model.Core.IDockable, Object, Integer)
+  nameWithType: IDockItemContainerGenerator.PrepareToolContainer(IToolItemsSourceDock, IDockable, object, int)
+  nameWithType.vb: IDockItemContainerGenerator.PrepareToolContainer(IToolItemsSourceDock, IDockable, Object, Integer)
+- uid: Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer*
+  name: PrepareToolContainer
+  href: api/Dock.Model.Core.IDockItemContainerGenerator.html#Dock_Model_Core_IDockItemContainerGenerator_PrepareToolContainer_
+  commentId: Overload:Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockItemContainerGenerator.PrepareToolContainer
+  nameWithType: IDockItemContainerGenerator.PrepareToolContainer
 - uid: Dock.Model.Core.IDockManager
   name: IDockManager
   href: api/Dock.Model.Core.IDockManager.html
@@ -25848,6 +26135,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IItemsSourceDock.IsDocumentFromItemsSource
   nameWithType: IItemsSourceDock.IsDocumentFromItemsSource
+- uid: Dock.Model.Core.IItemsSourceDock.ItemContainerGenerator
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_ItemContainerGenerator
+  commentId: P:Dock.Model.Core.IItemsSourceDock.ItemContainerGenerator
+  fullName: Dock.Model.Core.IItemsSourceDock.ItemContainerGenerator
+  nameWithType: IItemsSourceDock.ItemContainerGenerator
+- uid: Dock.Model.Core.IItemsSourceDock.ItemContainerGenerator*
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_ItemContainerGenerator_
+  commentId: Overload:Dock.Model.Core.IItemsSourceDock.ItemContainerGenerator
+  isSpec: "True"
+  fullName: Dock.Model.Core.IItemsSourceDock.ItemContainerGenerator
+  nameWithType: IItemsSourceDock.ItemContainerGenerator
 - uid: Dock.Model.Core.IItemsSourceDock.ItemsSource
   name: ItemsSource
   href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_ItemsSource
@@ -26015,6 +26315,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource
   nameWithType: IToolItemsSourceDock.IsToolFromItemsSource
+- uid: Dock.Model.Core.IToolItemsSourceDock.ItemContainerGenerator
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ItemContainerGenerator
+  commentId: P:Dock.Model.Core.IToolItemsSourceDock.ItemContainerGenerator
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ItemContainerGenerator
+  nameWithType: IToolItemsSourceDock.ItemContainerGenerator
+- uid: Dock.Model.Core.IToolItemsSourceDock.ItemContainerGenerator*
+  name: ItemContainerGenerator
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ItemContainerGenerator_
+  commentId: Overload:Dock.Model.Core.IToolItemsSourceDock.ItemContainerGenerator
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ItemContainerGenerator
+  nameWithType: IToolItemsSourceDock.ItemContainerGenerator
 - uid: Dock.Model.Core.IToolItemsSourceDock.ItemsSource
   name: ItemsSource
   href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ItemsSource

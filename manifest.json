@@ -2160,6 +2160,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Avalonia.Controls.DockItemContainerGenerator",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Avalonia.Controls.DockItemContainerGenerator.yml\" sourcestartlinenumber=\"1\">Default ItemsSource container generator for document and tool docks.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Avalonia.Controls.Document.yml",
       "output": {
         ".html": {
@@ -4089,6 +4103,20 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core.IDockControlState",
       "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockControlState.yml\" sourcestartlinenumber=\"1\">Dock control state contract.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IDockItemContainerGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IDockItemContainerGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IDockItemContainerGenerator",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockItemContainerGenerator.yml\" sourcestartlinenumber=\"1\">Provides hooks to create, prepare, and clear ItemsSource-generated\ndocument and tool containers.</p>\n"
     },
     {
       "type": "ManagedReference",

@@ -268,6 +268,15 @@ the dock by dragging its border.</p>
 concept with a <code>ToolTemplate</code> and <code>CreateToolFromTemplate</code>. This mirrors
 <code>IDocumentDockContent</code> for tool panes. In Avalonia, <code>ToolDock.ItemsSource</code>
 uses this template to create generated tool content from source collections.</p>
+<h2 id="iitemssourcedock-and-itoolitemssourcedock">IItemsSourceDock and IToolItemsSourceDock</h2>
+<p>These interfaces define source-backed dock generation contracts:</p>
+<ul>
+<li><code>ItemsSource</code> exposes the source collection used to generate dockables.</li>
+<li><code>ItemContainerGenerator</code> provides custom container creation/preparation/cleanup through <code>IDockItemContainerGenerator</code>.</li>
+<li><code>IsDocumentFromItemsSource</code> / <code>IsToolFromItemsSource</code> detect source-generated dockables.</li>
+<li><code>RemoveItemFromSource</code> synchronizes close operations back to mutable source collections.</li>
+</ul>
+<p>The Avalonia model's <code>DocumentDock</code> and <code>ToolDock</code> implementations use <code>DockItemContainerGenerator</code> by default, while still allowing per-dock generator overrides.</p>
 <h2 id="itooltemplate">IToolTemplate</h2>
 <p><code>IToolTemplate</code> represents template content used to build tool views. In
 Avalonia the built-in <code>ToolTemplate</code> stores XAML content (or a

@@ -198,10 +198,12 @@ from a saved state.</p>
 <ul>
 <li><code>DocumentDock.ItemsSource</code> + <code>DocumentTemplate</code> generate <code>Document</code> dockables.</li>
 <li><code>ToolDock.ItemsSource</code> + <code>ToolTemplate</code> generate <code>Tool</code> dockables.</li>
+<li><code>DocumentDock.ItemContainerGenerator</code> and <code>ToolDock.ItemContainerGenerator</code> accept <code>IDockItemContainerGenerator</code> for custom create/prepare/clear pipelines.</li>
 <li><code>IsDocumentFromItemsSource(IDockable)</code> / <code>IsToolFromItemsSource(IDockable)</code> report whether the dockable was generated from the bound source.</li>
 <li><code>RemoveItemFromSource(object)</code> removes source items from supported list collections.</li>
 </ul>
-<p>When <code>ItemsSource</code> is set (and the required template is provided), Dock automatically creates dockables for each source item. The generated <code>Title</code> is derived from <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> on the source object. The generated dockable <code>Context</code> stores the source object for template bindings.</p>
+<p>When <code>ItemsSource</code> is set, Dock automatically creates dockables for each source item through the configured <code>IDockItemContainerGenerator</code>. With the default generator, generation requires the corresponding template (<code>DocumentTemplate</code> or <code>ToolTemplate</code>). The generated <code>Title</code> is derived from <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> on the source object and <code>Context</code> stores the source object for template bindings.</p>
+<p><code>DockItemContainerGenerator</code> is the built-in default implementation. Subclass it or implement <code>IDockItemContainerGenerator</code> directly to customize container type, source-to-container mapping, or container cleanup behavior.</p>
 <p>Changes to <code>INotifyCollectionChanged</code> collections (for example, <code>ObservableCollection&lt;T&gt;</code>) automatically add or remove corresponding dockables. When a generated document or tool is closed, the factory attempts to remove the source item from the collection if it implements <code>IList</code>.</p>
 <h2 id="host-window-options">Host window options</h2>
 <p><code>HostWindow</code> exposes <code>IsToolWindow</code>, <code>ToolChromeControlsWholeWindow</code> and

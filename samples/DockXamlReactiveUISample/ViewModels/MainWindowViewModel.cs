@@ -1,10 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using DockReactiveUIItemsSourceSample.Models;
+using DockXamlReactiveUISample.Models;
 using ReactiveUI;
 
-namespace DockReactiveUIItemsSourceSample.ViewModels;
+namespace DockXamlReactiveUISample.ViewModels;
 
 public class MainWindowViewModel : ReactiveObject
 {
@@ -26,10 +26,10 @@ public class MainWindowViewModel : ReactiveObject
         Documents.CollectionChanged += (_, _) => UpdateSummary();
         Tools.CollectionChanged += (_, _) => UpdateSummary();
 
-        AddDocument("Welcome", "Welcome to the ReactiveUI ItemsSource sample with custom container generation.", "You can edit this text.");
-        AddDocument("Notes", "Closing a generated document removes it from the source collection.", "Try the close button on tabs.");
+        AddDocument("Welcome", "Welcome to the ReactiveUI ItemsSource sample with custom container generation, per-dock container themes, and template selectors.", "You can edit this text.");
+        AddDocument("Notes", "Closing a generated document removes it from the source collection. Only the first generated item in each dock uses the selector template override.", "Try the close button on tabs.");
 
-        AddTool("Explorer", "Source-backed tool generated via ToolDock.ItemsSource and custom container hooks.");
+        AddTool("Explorer", "Source-backed tool generated via ToolDock.ItemsSource with custom generator, selector template, and per-dock theme metadata.");
         AddTool("Properties", "Another generated tool. Closing it updates the source collection.");
 
         UpdateSummary();

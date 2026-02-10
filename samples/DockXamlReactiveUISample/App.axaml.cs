@@ -2,10 +2,10 @@ using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using DockReactiveUIItemsSourceSample.ViewModels;
-using DockReactiveUIItemsSourceSample.Views;
+using DockXamlReactiveUISample.ViewModels;
+using DockXamlReactiveUISample.Views;
 
-namespace DockReactiveUIItemsSourceSample;
+namespace DockXamlReactiveUISample;
 
 [RequiresUnreferencedCode("Requires unreferenced code for MainWindowViewModel.")]
 [RequiresDynamicCode("Requires dynamic code for MainWindowViewModel.")]

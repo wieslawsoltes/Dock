@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace DockReactiveUIItemsSourceSample.Views;
+namespace DockXamlReactiveUISample.Views;
 
 public partial class MainWindow : Window
 {

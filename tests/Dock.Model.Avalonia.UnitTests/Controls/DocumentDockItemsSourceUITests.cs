@@ -6,6 +6,7 @@ using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Core;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -72,6 +73,43 @@ public class DocumentDockItemsSourceUITests
             field = value;
             OnPropertyChanged(propertyName);
             return true;
+        }
+    }
+
+    private sealed class CustomGeneratedDocument : Document
+    {
+        public string? Marker { get; set; }
+    }
+
+    private sealed class CustomGenerator : IDockItemContainerGenerator
+    {
+        public IDockable? CreateDocumentContainer(IItemsSourceDock dock, object item, int index)
+        {
+            return new CustomGeneratedDocument { Id = $"Doc-{index}" };
+        }
+
+        public void PrepareDocumentContainer(IItemsSourceDock dock, IDockable container, object item, int index)
+        {
+            container.Title = $"Generated {index}";
+            container.Context = item;
+            if (container is CustomGeneratedDocument doc)
+            {
+                doc.Marker = "prepared";
+            }
+        }
+
+        public void ClearDocumentContainer(IItemsSourceDock dock, IDockable container, object? item)
+        {
+        }
+
+        public IDockable? CreateToolContainer(IToolItemsSourceDock dock, object item, int index) => null;
+
+        public void PrepareToolContainer(IToolItemsSourceDock dock, IDockable container, object item, int index)
+        {
+        }
+
+        public void ClearToolContainer(IToolItemsSourceDock dock, IDockable container, object? item)
+        {
         }
     }
 
@@ -187,4 +225,29 @@ public class DocumentDockItemsSourceUITests
             Assert.IsType<StackPanel>(control1);
         }
     }
-} 
+
+    [AvaloniaFact]
+    public void ItemsSource_WithCustomGenerator_UsesCustomContainer()
+    {
+        var documentDock = new DocumentDock
+        {
+            Id = "Documents",
+            ItemContainerGenerator = new CustomGenerator(),
+            DocumentTemplate = new DocumentTemplate()
+        };
+
+        var documents = new ObservableCollection<MyDocumentModel>
+        {
+            new() { Title = "One", Content = "Content" }
+        };
+
+        documentDock.ItemsSource = documents;
+
+        Assert.NotNull(documentDock.VisibleDockables);
+        Assert.Single(documentDock.VisibleDockables);
+        var generated = Assert.IsType<CustomGeneratedDocument>(documentDock.VisibleDockables[0]);
+        Assert.Equal("prepared", generated.Marker);
+        Assert.Equal("Generated 0", generated.Title);
+        Assert.Same(documents[0], generated.Context);
+    }
+}

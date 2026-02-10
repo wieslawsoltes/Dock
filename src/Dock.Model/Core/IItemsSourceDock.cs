@@ -15,6 +15,11 @@ public interface IItemsSourceDock
     IEnumerable? ItemsSource { get; }
 
     /// <summary>
+    /// Gets the item container generator used for source-backed documents.
+    /// </summary>
+    IDockItemContainerGenerator? ItemContainerGenerator { get; }
+
+    /// <summary>
     /// Checks if a document was generated from ItemsSource.
     /// </summary>
     /// <param name="document">The document to check.</param>

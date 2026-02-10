@@ -4,6 +4,7 @@
         xmlns:dockModel="using:Dock.Model.Avalonia"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:vm="using:DockReactiveUIItemsSourceSample.ViewModels"
+        xmlns:infra="using:DockReactiveUIItemsSourceSample.Infrastructure"
         xmlns:sampleModels="using:DockReactiveUIItemsSourceSample.Models"
         x:Class="DockReactiveUIItemsSourceSample.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -44,11 +45,15 @@
                             Alignment="Left"
                             Proportion="0.3"
                             ItemsSource="{Binding DataContext.Tools, RelativeSource={RelativeSource AncestorType=Window}}">
+              <model:ToolDock.ItemContainerGenerator>
+                <infra:SampleDockItemContainerGenerator />
+              </model:ToolDock.ItemContainerGenerator>
               <model:ToolDock.ToolTemplate>
                 <model:ToolTemplate>
-                  <Border Padding="12" x:DataType="model:Tool">
+                  <Border Padding="12" x:DataType="infra:SampleGeneratedTool">
                     <StackPanel Spacing="6">
                       <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding SourceIndex, StringFormat='Generated Source Index: {0}'}" Opacity="0.75" />
                       <StackPanel DataContext="{Binding Context}" x:DataType="sampleModels:ToolItem">
                         <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding Status}" Opacity="0.75" />
@@ -66,11 +71,15 @@
                                 Proportion="0.7"
                                 CanCreateDocument="False"
                                 ItemsSource="{Binding DataContext.Documents, RelativeSource={RelativeSource AncestorType=Window}}">
+              <model:DocumentDock.ItemContainerGenerator>
+                <infra:SampleDockItemContainerGenerator />
+              </model:DocumentDock.ItemContainerGenerator>
               <model:DocumentDock.DocumentTemplate>
                 <model:DocumentTemplate>
-                  <Border Padding="12" x:DataType="model:Document">
+                  <Border Padding="12" x:DataType="infra:SampleGeneratedDocument">
                     <StackPanel Spacing="6">
                       <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding SourceIndex, StringFormat='Generated Source Index: {0}'}" Opacity="0.75" />
                       <StackPanel DataContext="{Binding Context}" x:DataType="sampleModels:DocumentItem">
                         <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
                         <TextBox Text="{Binding EditableContent}" AcceptsReturn="True" MinHeight="120" TextWrapping="Wrap" />

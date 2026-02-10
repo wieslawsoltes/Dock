@@ -111,17 +111,18 @@ xmlns:dockCore=&quot;using:Dock.Model.Core&quot;
 <h2 id="understanding-content-in-dock">Understanding Content in Dock</h2>
 <p>The Dock framework supports four main approaches for defining content:</p>
 <ol>
-<li><strong>ItemsSource Collection Binding</strong>: Bind collections directly to DocumentDock for automatic document management</li>
+<li><strong>ItemsSource Collection Binding</strong>: Bind collections directly to <code>DocumentDock</code> and <code>ToolDock</code> for automatic dockable management</li>
 <li><strong>ViewModel + DataTemplate</strong>: Use view models and let Avalonia's data template system resolve views</li>
 <li><strong>Function-Based</strong>: Provide a function that creates the content control</li>
 <li><strong>Direct XAML</strong>: Define content directly in XAML (XAML-only approach)</li>
 </ol>
 <h2 id="method-1-itemssource-collection-binding-recommended">Method 1: ItemsSource Collection Binding (Recommended)</h2>
-<p>DocumentDock supports automatic document creation from collections using the <code>ItemsSource</code> property, similar to how <code>ItemsControl</code> works in Avalonia. This is the recommended approach for most scenarios and is available in the Avalonia model (<code>Dock.Model.Avalonia.Controls.DocumentDock</code>).</p>
+<p><code>DocumentDock</code> and <code>ToolDock</code> support automatic dockable creation from collections using the <code>ItemsSource</code> property, similar to how <code>ItemsControl</code> works in Avalonia. This is the recommended approach for most scenarios and is available in the Avalonia model (<code>Dock.Model.Avalonia.Controls</code>).</p>
 <h3 id="when-to-use-this-approach">When to Use This Approach</h3>
 <p>This is ideal when you:</p>
 <ul>
 <li>Have a collection of domain objects that should each become a document</li>
+<li>Have a collection of domain objects that should each become a tool pane</li>
 <li>Want automatic document creation/removal based on collection changes</li>
 <li>Prefer declarative XAML setup over manual document management</li>
 <li>Need to bind to existing business objects without creating wrapper ViewModels</li>
@@ -259,12 +260,28 @@ xmlns:dockCore=&quot;using:Dock.Model.Core&quot;
   &lt;/Grid&gt;
 &lt;/UserControl&gt;
 </code></pre>
+<h3 id="step-4-bind-to-tooldock-in-xaml">Step 4: Bind to ToolDock in XAML</h3>
+<pre><code class="lang-xaml">&lt;ToolDock Id=&quot;ToolsPane&quot; Alignment=&quot;Left&quot; ItemsSource=&quot;{Binding Tools}&quot;&gt;
+  &lt;ToolDock.ToolTemplate&gt;
+    &lt;ToolTemplate&gt;
+      &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Tool&quot;&gt;
+        &lt;TextBlock Text=&quot;{Binding Title}&quot; FontWeight=&quot;Bold&quot;/&gt;
+        &lt;StackPanel DataContext=&quot;{Binding Context}&quot; x:DataType=&quot;local:ToolModel&quot;&gt;
+          &lt;TextBlock Text=&quot;{Binding Description}&quot; TextWrapping=&quot;Wrap&quot;/&gt;
+          &lt;TextBlock Text=&quot;{Binding Status}&quot; Opacity=&quot;0.75&quot;/&gt;
+        &lt;/StackPanel&gt;
+      &lt;/StackPanel&gt;
+    &lt;/ToolTemplate&gt;
+  &lt;/ToolDock.ToolTemplate&gt;
+&lt;/ToolDock&gt;
+</code></pre>
 <h3 id="how-it-works">How It Works</h3>
 <ol>
 <li><strong>Automatic Document Creation</strong>: Each item in the collection becomes a <code>Document</code> instance</li>
-<li><strong>Collection Change Monitoring</strong>: Adding/removing items automatically adds/removes documents</li>
-<li><strong>DocumentTemplate</strong>: Used to create the visual content for each document</li>
-<li><strong>Property Mapping</strong>: Document properties are automatically mapped from your model:
+<li><strong>Automatic Tool Creation</strong>: Each item in tool collections becomes a <code>Tool</code> instance</li>
+<li><strong>Collection Change Monitoring</strong>: Adding/removing items automatically adds/removes generated dockables</li>
+<li><strong>Templates</strong>: <code>DocumentTemplate</code> and <code>ToolTemplate</code> create the visual content for generated dockables</li>
+<li><strong>Property Mapping</strong>: Dockable properties are automatically mapped from your model:
 <ul>
 <li><code>Title</code> → Document title</li>
 <li><code>Name</code> → Alternative for title</li>
@@ -272,7 +289,7 @@ xmlns:dockCore=&quot;using:Dock.Model.Core&quot;
 <li><code>CanClose</code> → Whether the document can be closed</li>
 </ul>
 </li>
-<li><strong>Data Context</strong>: Your model object becomes the <code>Context</code> of the created Document and is accessible via <code>{Binding Context.PropertyName}</code></li>
+<li><strong>Data Context</strong>: Your model object becomes the <code>Context</code> of the created <code>Document</code>/<code>Tool</code> and is accessible via <code>{Binding Context.PropertyName}</code></li>
 </ol>
 <h3 id="advanced-examples">Advanced Examples</h3>
 <h4 id="custom-title-and-canclose-mapping">Custom Title and CanClose Mapping</h4>

@@ -90,7 +90,7 @@ commands are implemented using <code>ReactiveCommand</code>. The sample project
 interface details refer to the <a href="dock-reference.html">Dock API Reference</a> and see
 the <a href="dock-advanced.html">Advanced Guide</a> for more customization options.</p>
 <blockquote>
-<p><strong>💡 Modern Approach</strong>: For easier document management, consider using <a href="dock-itemssource.html">DocumentDock.ItemsSource</a> which automatically creates and manages documents from collections. The ItemsSource approach works seamlessly with ReactiveUI's <code>ObservableCollectionExtended</code> and <code>ReactiveCommand</code>. This approach is covered in detail in the <a href="dock-content-guide.html">Document and Tool Content Guide</a>.</p>
+<p><strong>💡 Modern Approach</strong>: For easier source-backed layout management, consider using <a href="dock-itemssource.html">DocumentDock/ToolDock ItemsSource</a> which automatically creates and manages documents and tools from collections. The ItemsSource approach works seamlessly with ReactiveUI's observable collections and <code>ReactiveCommand</code>. This approach is covered in detail in the <a href="dock-content-guide.html">Document and Tool Content Guide</a>.</p>
 </blockquote>
 <h2 id="step-by-step-tutorial">Step-by-step tutorial</h2>
 <p>Follow these instructions to create a minimal ReactiveUI based application using Dock.</p>
@@ -395,7 +395,7 @@ tool2.InitNavigation(document1, document2, tool1);
 nested content appears automatically when navigation commands execute.</p>
 <h2 id="events">Events</h2>
 <p>All the events shown in the MVVM guide are present here as well. Subscribe to them in the same way using ReactiveUI commands or observables.</p>
-<p>Use the ReactiveUI sample as a template when building your own layouts.
+<p>Use the ReactiveUI samples as templates when building your own layouts (<code>DockReactiveUISample</code> and <code>DockReactiveUIItemsSourceSample</code>).
 See the <a href="dock-advanced.html">Advanced Guide</a> for details on customizing factory methods and consult the <a href="dock-reference.html">Dock API Reference</a> for the available interfaces.</p>
 <p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
 

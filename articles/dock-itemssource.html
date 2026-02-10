@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>DocumentDock ItemsSource | Dock for Avalonia </title>
+      <title>DocumentDock and ToolDock ItemsSource | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="DocumentDock ItemsSource | Dock for Avalonia ">
+      <meta name="title" content="DocumentDock and ToolDock ItemsSource | Dock for Avalonia ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -81,18 +81,25 @@
         </div>
 
         <article data-uid="">
-<h1 id="documentdock-itemssource">DocumentDock ItemsSource</h1>
+<h1 id="documentdock-and-tooldock-itemssource">DocumentDock and ToolDock ItemsSource</h1>
 
-<p>The <code>DocumentDock.ItemsSource</code> property enables automatic document management by binding to a collection of data objects. This functionality provides a clean, MVVM-friendly approach to managing documents within a dock.</p>
+<p>The <code>DocumentDock.ItemsSource</code> and <code>ToolDock.ItemsSource</code> properties enable automatic dockable management by binding collections of data objects. This provides a clean, MVVM-friendly approach for both document tabs and tool panes.</p>
 <h2 id="overview">Overview</h2>
-<p><code>DocumentDock.ItemsSource</code> works similarly to <code>ListBox.ItemsSource</code> in Avalonia, automatically creating and managing documents from a bound collection. When you add or remove items from an <code>INotifyCollectionChanged</code> collection (such as <code>ObservableCollection&lt;T&gt;</code>), the corresponding documents are created or removed in the dock.</p>
-<p><code>ItemsSource</code> is implemented by <code>Dock.Model.Avalonia.Controls.DocumentDock</code>, so it is available in XAML layouts and in the Avalonia model layer. It requires a <code>DocumentTemplate</code> to be set; if no template is supplied, no documents are generated.</p>
+<p><code>DocumentDock.ItemsSource</code> and <code>ToolDock.ItemsSource</code> work similarly to <code>ListBox.ItemsSource</code> in Avalonia. When you add or remove items from an <code>INotifyCollectionChanged</code> collection (such as <code>ObservableCollection&lt;T&gt;</code>), corresponding dockables are created or removed automatically.</p>
+<p><code>ItemsSource</code> is implemented by <code>Dock.Model.Avalonia.Controls.DocumentDock</code> and <code>Dock.Model.Avalonia.Controls.ToolDock</code> in the Avalonia model layer:</p>
+<ul>
+<li><code>DocumentDock.ItemsSource</code> requires <code>DocumentTemplate</code>.</li>
+<li><code>ToolDock.ItemsSource</code> requires <code>ToolTemplate</code>.</li>
+</ul>
+<p>If no template is supplied, no generated dockables are created.</p>
 <h2 id="behavior-details">Behavior details</h2>
 <ul>
 <li><code>DocumentDock</code> creates a <code>Document</code> for each item and stores the item in <code>Document.Context</code>.</li>
+<li><code>ToolDock</code> creates a <code>Tool</code> for each item and stores the item in <code>Tool.Context</code>.</li>
 <li>The tab title is derived from <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> properties on the item (in that order), falling back to <code>ToString()</code>.</li>
 <li><code>CanClose</code> is copied from the item if present; otherwise it defaults to <code>true</code>.</li>
-<li>When a generated document is closed, the factory attempts to remove the source item from <code>ItemsSource</code> if it implements <code>IList</code>.</li>
+<li>When a generated document or tool is closed, the factory attempts to remove the source item from <code>ItemsSource</code> if it implements <code>IList</code>.</li>
+<li>Source-generated document/tool closes are treated as remove operations, even when <code>Factory.HideDocumentsOnClose</code> or <code>Factory.HideToolsOnClose</code> is enabled.</li>
 </ul>
 <h2 id="key-benefits">Key Benefits</h2>
 <ul>
@@ -309,6 +316,55 @@
 }
 </code></pre>
 <h2 id="advanced-scenarios">Advanced Scenarios</h2>
+<h2 id="tooldock-usage">ToolDock Usage</h2>
+<p>Bind a tools collection to <code>ToolDock.ItemsSource</code> and define a <code>ToolTemplate</code>:</p>
+<pre><code class="lang-xaml">&lt;ToolDock Alignment=&quot;Left&quot; ItemsSource=&quot;{Binding Tools}&quot;&gt;
+  &lt;ToolDock.ToolTemplate&gt;
+    &lt;ToolTemplate&gt;
+      &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Tool&quot;&gt;
+        &lt;TextBlock Text=&quot;{Binding Title}&quot; FontWeight=&quot;Bold&quot;/&gt;
+        &lt;StackPanel DataContext=&quot;{Binding Context}&quot; x:DataType=&quot;models:ToolItem&quot;&gt;
+          &lt;TextBlock Text=&quot;{Binding Description}&quot; TextWrapping=&quot;Wrap&quot;/&gt;
+          &lt;TextBlock Text=&quot;{Binding Status}&quot; Opacity=&quot;0.75&quot;/&gt;
+        &lt;/StackPanel&gt;
+      &lt;/StackPanel&gt;
+    &lt;/ToolTemplate&gt;
+  &lt;/ToolDock.ToolTemplate&gt;
+&lt;/ToolDock&gt;
+</code></pre>
+<h3 id="tool-property-mapping">Tool Property Mapping</h3>
+<p>Generated <code>Tool</code> instances use the same property mapping strategy:</p>
+<table>
+<thead>
+<tr>
+<th>Model Property</th>
+<th>Tool Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Title</code></td>
+<td><code>Title</code></td>
+<td>Tool tab title</td>
+</tr>
+<tr>
+<td><code>Name</code></td>
+<td><code>Title</code></td>
+<td>Alternative title source</td>
+</tr>
+<tr>
+<td><code>DisplayName</code></td>
+<td><code>Title</code></td>
+<td>Alternative title source</td>
+</tr>
+<tr>
+<td><code>CanClose</code></td>
+<td><code>CanClose</code></td>
+<td>Controls whether the tool can be closed</td>
+</tr>
+</tbody>
+</table>
 <h3 id="dynamic-content-types">Dynamic Content Types</h3>
 <pre><code class="lang-csharp">public class DynamicDocument : INotifyPropertyChanged
 {
@@ -383,7 +439,7 @@ public enum DocumentType
 <li><strong>Large Collections</strong>: Consider virtualization for collections with many items</li>
 <li><strong>Frequent Updates</strong>: Batch collection changes when possible</li>
 <li><strong>Memory Management</strong>: Ensure proper cleanup of resources in document models</li>
-<li><strong>Template Complexity</strong>: Keep <code>DocumentTemplate</code> lightweight for better performance</li>
+<li><strong>Template Complexity</strong>: Keep <code>DocumentTemplate</code> and <code>ToolTemplate</code> lightweight for better performance</li>
 </ul>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
@@ -413,6 +469,7 @@ public enum DocumentType
 <li><a href="dock-content-guide.html">Document and Tool Content Guide</a> - Comprehensive content setup</li>
 <li><a href="dock-advanced.html">Dock Advanced Topics</a> - Advanced docking scenarios</li>
 <li><a href="dock-faq.html">Dock FAQ</a> - Common questions and troubleshooting</li>
+<li><a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockReactiveUIItemsSourceSample"><code>samples/DockReactiveUIItemsSourceSample</code></a> - ReactiveUI sample using both document and tool items sources</li>
 </ul>
 
 </article>

@@ -85,8 +85,8 @@
 
 <p>This page answers common questions that come up when using Dock.</p>
 <h2 id="content-setup">Content setup</h2>
-<p><strong>What's the best way to create documents dynamically?</strong></p>
-<p>Use the new <code>ItemsSource</code> property on <code>DocumentDock</code> for automatic document management:</p>
+<p><strong>What's the best way to create documents and tools dynamically?</strong></p>
+<p>Use <code>ItemsSource</code> on <code>DocumentDock</code> and <code>ToolDock</code> for automatic source-backed dockable management:</p>
 <pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
@@ -98,15 +98,15 @@
   &lt;/DocumentDock.DocumentTemplate&gt;
 &lt;/DocumentDock&gt;
 </code></pre>
-<p>This approach automatically creates/removes documents when you add/remove items from your collection, similar to how <code>ListBox.ItemsSource</code> works.</p>
+<p>This approach automatically creates/removes dockables when you add/remove items from your collections, similar to how <code>ListBox.ItemsSource</code> works.</p>
 <p><strong>My document tabs are blank/empty (ItemsSource approach)</strong></p>
-<p>For <code>ItemsSource</code> documents, check:</p>
+<p>For <code>ItemsSource</code> documents and tools, check:</p>
 <ol>
-<li><code>DocumentTemplate</code> is set (no template means no documents are created)</li>
+<li><code>DocumentTemplate</code>/<code>ToolTemplate</code> is set (no template means no generated dockables are created)</li>
 <li>Collection items expose <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> (or override <code>ToString</code>) for tab headers</li>
-<li>Access your model via <code>{Binding Context.PropertyName}</code> not <code>{Binding PropertyName}</code></li>
+<li>Access your model via <code>{Binding Context.PropertyName}</code> not <code>{Binding PropertyName}</code> (same for <code>ToolTemplate</code>)</li>
 <li>Your model implements <code>INotifyPropertyChanged</code> if you expect updates</li>
-<li>If you use compiled bindings, set <code>x:DataType=&quot;Document&quot;</code> on the template root</li>
+<li>If you use compiled bindings, set <code>x:DataType=&quot;Document&quot;</code> or <code>x:DataType=&quot;Tool&quot;</code> on the template root</li>
 </ol>
 <p><strong>My document tabs are blank/empty (ViewModel approach)</strong></p>
 <p>For the ViewModel + DataTemplate approach, check:</p>
@@ -158,7 +158,7 @@ public ObservableCollection&lt;FileModel&gt; OpenFiles { get; } = new();
 <li>Assign the layout to <code>DockControl.Layout</code> before calling <code>InitLayout</code>.</li>
 <li>Do not overwrite <code>ActiveDockable</code> or <code>DefaultDockable</code> after loading.</li>
 </ol>
-<p><code>DockState</code> is used for restoring document/tool content and document templates, not focus.</p>
+<p><code>DockState</code> is used for restoring document/tool content and dock templates (<code>DocumentTemplate</code>/<code>ToolTemplate</code>), not focus.</p>
 <h2 id="serialization-pitfalls">Serialization pitfalls</h2>
 <p><strong>Deserialization fails with unknown types</strong></p>
 <p><code>IDockSerializer</code> implementations (for example <code>Dock.Serializer.SystemTextJson.DockSerializer</code>) use type information embedded in the layout. If a type cannot be resolved, ensure the assembly that defines it is loaded and referenced by the application. For dependency injection scenarios, construct the serializer with an <code>IServiceProvider</code> so it can resolve types from the container.</p>

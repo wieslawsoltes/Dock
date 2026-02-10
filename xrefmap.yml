@@ -12908,6 +12908,35 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.ToolDock.AutoHideProperty
   fullName: Dock.Model.Avalonia.Controls.ToolDock.AutoHideProperty
   nameWithType: ToolDock.AutoHideProperty
+- uid: Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate
+  name: CreateToolFromTemplate()
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_CreateToolFromTemplate
+  commentId: M:Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate()
+  nameWithType: ToolDock.CreateToolFromTemplate()
+- uid: Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate*
+  name: CreateToolFromTemplate
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_CreateToolFromTemplate_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate
+  nameWithType: ToolDock.CreateToolFromTemplate
+- uid: Dock.Model.Avalonia.Controls.ToolDock.Dispose(System.Boolean)
+  name: Dispose(bool)
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_Dispose_System_Boolean_
+  commentId: M:Dock.Model.Avalonia.Controls.ToolDock.Dispose(System.Boolean)
+  name.vb: Dispose(Boolean)
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.Dispose(bool)
+  fullName.vb: Dock.Model.Avalonia.Controls.ToolDock.Dispose(Boolean)
+  nameWithType: ToolDock.Dispose(bool)
+  nameWithType.vb: ToolDock.Dispose(Boolean)
+- uid: Dock.Model.Avalonia.Controls.ToolDock.Dispose*
+  name: Dispose
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_Dispose_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.Dispose
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.Dispose
+  nameWithType: ToolDock.Dispose
 - uid: Dock.Model.Avalonia.Controls.ToolDock.GripMode
   name: GripMode
   href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_GripMode
@@ -12946,6 +12975,171 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.ToolDock.IsExpandedProperty
   fullName: Dock.Model.Avalonia.Controls.ToolDock.IsExpandedProperty
   nameWithType: ToolDock.IsExpandedProperty
+- uid: Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)
+  name: IsToolFromItemsSource(IDockable)
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_IsToolFromItemsSource_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)
+  nameWithType: ToolDock.IsToolFromItemsSource(IDockable)
+- uid: Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource*
+  name: IsToolFromItemsSource
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_IsToolFromItemsSource_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.IsToolFromItemsSource
+  nameWithType: ToolDock.IsToolFromItemsSource
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ItemsSource
+  name: ItemsSource
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ItemsSource
+  commentId: P:Dock.Model.Avalonia.Controls.ToolDock.ItemsSource
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ItemsSource
+  nameWithType: ToolDock.ItemsSource
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ItemsSource*
+  name: ItemsSource
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ItemsSource_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.ItemsSource
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ItemsSource
+  nameWithType: ToolDock.ItemsSource
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ItemsSourceProperty
+  name: ItemsSourceProperty
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ItemsSourceProperty
+  commentId: F:Dock.Model.Avalonia.Controls.ToolDock.ItemsSourceProperty
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ItemsSourceProperty
+  nameWithType: ToolDock.ItemsSourceProperty
+- uid: Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource(System.Object)
+  name: RemoveItemFromSource(object?)
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_RemoveItemFromSource_System_Object_
+  commentId: M:Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource(System.Object)
+  name.vb: RemoveItemFromSource(Object)
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource(object?)
+  fullName.vb: Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource(Object)
+  nameWithType: ToolDock.RemoveItemFromSource(object?)
+  nameWithType.vb: ToolDock.RemoveItemFromSource(Object)
+- uid: Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource*
+  name: RemoveItemFromSource
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_RemoveItemFromSource_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.RemoveItemFromSource
+  nameWithType: ToolDock.RemoveItemFromSource
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate
+  name: ToolTemplate
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolTemplate
+  commentId: P:Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate
+  nameWithType: ToolDock.ToolTemplate
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate*
+  name: ToolTemplate
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolTemplate_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolTemplate
+  nameWithType: ToolDock.ToolTemplate
+- uid: Dock.Model.Avalonia.Controls.ToolDock.ToolTemplateProperty
+  name: ToolTemplateProperty
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_ToolTemplateProperty
+  commentId: F:Dock.Model.Avalonia.Controls.ToolDock.ToolTemplateProperty
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.ToolTemplateProperty
+  nameWithType: ToolDock.ToolTemplateProperty
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate
+  name: ToolTemplate
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html
+  commentId: T:Dock.Model.Avalonia.Controls.ToolTemplate
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate
+  nameWithType: ToolTemplate
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.#ctor
+  name: ToolTemplate()
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate__ctor
+  commentId: M:Dock.Model.Avalonia.Controls.ToolTemplate.#ctor
+  name.vb: New()
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.ToolTemplate()
+  fullName.vb: Dock.Model.Avalonia.Controls.ToolTemplate.New()
+  nameWithType: ToolTemplate.ToolTemplate()
+  nameWithType.vb: ToolTemplate.New()
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.#ctor*
+  name: ToolTemplate
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate__ctor_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolTemplate.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.ToolTemplate
+  fullName.vb: Dock.Model.Avalonia.Controls.ToolTemplate.New
+  nameWithType: ToolTemplate.ToolTemplate
+  nameWithType.vb: ToolTemplate.New
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Build
+  name: Build()
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Build
+  commentId: M:Dock.Model.Avalonia.Controls.ToolTemplate.Build
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Build()
+  nameWithType: ToolTemplate.Build()
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Build(System.Object)
+  name: Build(object?)
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Build_System_Object_
+  commentId: M:Dock.Model.Avalonia.Controls.ToolTemplate.Build(System.Object)
+  name.vb: Build(Object)
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Build(object?)
+  fullName.vb: Dock.Model.Avalonia.Controls.ToolTemplate.Build(Object)
+  nameWithType: ToolTemplate.Build(object?)
+  nameWithType.vb: ToolTemplate.Build(Object)
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Build(System.Object,Avalonia.Controls.Control)
+  name: Build(object?, Control?)
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Build_System_Object_Avalonia_Controls_Control_
+  commentId: M:Dock.Model.Avalonia.Controls.ToolTemplate.Build(System.Object,Avalonia.Controls.Control)
+  name.vb: Build(Object, Control)
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Build(object?, Avalonia.Controls.Control?)
+  fullName.vb: Dock.Model.Avalonia.Controls.ToolTemplate.Build(Object, Avalonia.Controls.Control)
+  nameWithType: ToolTemplate.Build(object?, Control?)
+  nameWithType.vb: ToolTemplate.Build(Object, Control)
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Build*
+  name: Build
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Build_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolTemplate.Build
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Build
+  nameWithType: ToolTemplate.Build
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Content
+  name: Content
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Content
+  commentId: P:Dock.Model.Avalonia.Controls.ToolTemplate.Content
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Content
+  nameWithType: ToolTemplate.Content
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Content*
+  name: Content
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Content_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolTemplate.Content
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Content
+  nameWithType: ToolTemplate.Content
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.DataType
+  name: DataType
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_DataType
+  commentId: P:Dock.Model.Avalonia.Controls.ToolTemplate.DataType
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.DataType
+  nameWithType: ToolTemplate.DataType
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.DataType*
+  name: DataType
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_DataType_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolTemplate.DataType
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.DataType
+  nameWithType: ToolTemplate.DataType
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Match(System.Object)
+  name: Match(object?)
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Match_System_Object_
+  commentId: M:Dock.Model.Avalonia.Controls.ToolTemplate.Match(System.Object)
+  name.vb: Match(Object)
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Match(object?)
+  fullName.vb: Dock.Model.Avalonia.Controls.ToolTemplate.Match(Object)
+  nameWithType: ToolTemplate.Match(object?)
+  nameWithType.vb: ToolTemplate.Match(Object)
+- uid: Dock.Model.Avalonia.Controls.ToolTemplate.Match*
+  name: Match
+  href: api/Dock.Model.Avalonia.Controls.ToolTemplate.html#Dock_Model_Avalonia_Controls_ToolTemplate_Match_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolTemplate.Match
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolTemplate.Match
+  nameWithType: ToolTemplate.Match
 - uid: Dock.Model.Avalonia.Controls.UniformGridDock
   name: UniformGridDock
   href: api/Dock.Model.Avalonia.Controls.UniformGridDock.html
@@ -19324,6 +19518,57 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Controls.IToolDock.IsExpanded
   nameWithType: IToolDock.IsExpanded
+- uid: Dock.Model.Controls.IToolDockContent
+  name: IToolDockContent
+  href: api/Dock.Model.Controls.IToolDockContent.html
+  commentId: T:Dock.Model.Controls.IToolDockContent
+  fullName: Dock.Model.Controls.IToolDockContent
+  nameWithType: IToolDockContent
+- uid: Dock.Model.Controls.IToolDockContent.CreateToolFromTemplate
+  name: CreateToolFromTemplate()
+  href: api/Dock.Model.Controls.IToolDockContent.html#Dock_Model_Controls_IToolDockContent_CreateToolFromTemplate
+  commentId: M:Dock.Model.Controls.IToolDockContent.CreateToolFromTemplate
+  fullName: Dock.Model.Controls.IToolDockContent.CreateToolFromTemplate()
+  nameWithType: IToolDockContent.CreateToolFromTemplate()
+- uid: Dock.Model.Controls.IToolDockContent.CreateToolFromTemplate*
+  name: CreateToolFromTemplate
+  href: api/Dock.Model.Controls.IToolDockContent.html#Dock_Model_Controls_IToolDockContent_CreateToolFromTemplate_
+  commentId: Overload:Dock.Model.Controls.IToolDockContent.CreateToolFromTemplate
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IToolDockContent.CreateToolFromTemplate
+  nameWithType: IToolDockContent.CreateToolFromTemplate
+- uid: Dock.Model.Controls.IToolDockContent.ToolTemplate
+  name: ToolTemplate
+  href: api/Dock.Model.Controls.IToolDockContent.html#Dock_Model_Controls_IToolDockContent_ToolTemplate
+  commentId: P:Dock.Model.Controls.IToolDockContent.ToolTemplate
+  fullName: Dock.Model.Controls.IToolDockContent.ToolTemplate
+  nameWithType: IToolDockContent.ToolTemplate
+- uid: Dock.Model.Controls.IToolDockContent.ToolTemplate*
+  name: ToolTemplate
+  href: api/Dock.Model.Controls.IToolDockContent.html#Dock_Model_Controls_IToolDockContent_ToolTemplate_
+  commentId: Overload:Dock.Model.Controls.IToolDockContent.ToolTemplate
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IToolDockContent.ToolTemplate
+  nameWithType: IToolDockContent.ToolTemplate
+- uid: Dock.Model.Controls.IToolTemplate
+  name: IToolTemplate
+  href: api/Dock.Model.Controls.IToolTemplate.html
+  commentId: T:Dock.Model.Controls.IToolTemplate
+  fullName: Dock.Model.Controls.IToolTemplate
+  nameWithType: IToolTemplate
+- uid: Dock.Model.Controls.IToolTemplate.Content
+  name: Content
+  href: api/Dock.Model.Controls.IToolTemplate.html#Dock_Model_Controls_IToolTemplate_Content
+  commentId: P:Dock.Model.Controls.IToolTemplate.Content
+  fullName: Dock.Model.Controls.IToolTemplate.Content
+  nameWithType: IToolTemplate.Content
+- uid: Dock.Model.Controls.IToolTemplate.Content*
+  name: Content
+  href: api/Dock.Model.Controls.IToolTemplate.html#Dock_Model_Controls_IToolTemplate_Content_
+  commentId: Overload:Dock.Model.Controls.IToolTemplate.Content
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IToolTemplate.Content
+  nameWithType: IToolTemplate.Content
 - uid: Dock.Model.Controls.IUniformGridDock
   name: IUniformGridDock
   href: api/Dock.Model.Controls.IUniformGridDock.html
@@ -25751,6 +25996,54 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.INavigateAdapter.ShowWindows
   nameWithType: INavigateAdapter.ShowWindows
+- uid: Dock.Model.Core.IToolItemsSourceDock
+  name: IToolItemsSourceDock
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html
+  commentId: T:Dock.Model.Core.IToolItemsSourceDock
+  fullName: Dock.Model.Core.IToolItemsSourceDock
+  nameWithType: IToolItemsSourceDock
+- uid: Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)
+  name: IsToolFromItemsSource(IDockable)
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_IsToolFromItemsSource_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)
+  nameWithType: IToolItemsSourceDock.IsToolFromItemsSource(IDockable)
+- uid: Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource*
+  name: IsToolFromItemsSource
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_IsToolFromItemsSource_
+  commentId: Overload:Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource
+  nameWithType: IToolItemsSourceDock.IsToolFromItemsSource
+- uid: Dock.Model.Core.IToolItemsSourceDock.ItemsSource
+  name: ItemsSource
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ItemsSource
+  commentId: P:Dock.Model.Core.IToolItemsSourceDock.ItemsSource
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ItemsSource
+  nameWithType: IToolItemsSourceDock.ItemsSource
+- uid: Dock.Model.Core.IToolItemsSourceDock.ItemsSource*
+  name: ItemsSource
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_ItemsSource_
+  commentId: Overload:Dock.Model.Core.IToolItemsSourceDock.ItemsSource
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemsSourceDock.ItemsSource
+  nameWithType: IToolItemsSourceDock.ItemsSource
+- uid: Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource(System.Object)
+  name: RemoveItemFromSource(object?)
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_RemoveItemFromSource_System_Object_
+  commentId: M:Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource(System.Object)
+  name.vb: RemoveItemFromSource(Object)
+  fullName: Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource(object?)
+  fullName.vb: Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource(Object)
+  nameWithType: IToolItemsSourceDock.RemoveItemFromSource(object?)
+  nameWithType.vb: IToolItemsSourceDock.RemoveItemFromSource(Object)
+- uid: Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource*
+  name: RemoveItemFromSource
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_RemoveItemFromSource_
+  commentId: Overload:Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemsSourceDock.RemoveItemFromSource
+  nameWithType: IToolItemsSourceDock.RemoveItemFromSource
 - uid: Dock.Model.Core.MdiLayoutDefaults
   name: MdiLayoutDefaults
   href: api/Dock.Model.Core.MdiLayoutDefaults.html
@@ -27616,6 +27909,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.GetHostWindow
   nameWithType: FactoryBase.GetHostWindow
+- uid: Dock.Model.FactoryBase.GetTrackedItemsSourceOwner(Dock.Model.Core.IDockable)
+  name: GetTrackedItemsSourceOwner(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetTrackedItemsSourceOwner_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.GetTrackedItemsSourceOwner(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.GetTrackedItemsSourceOwner(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.GetTrackedItemsSourceOwner(IDockable)
+- uid: Dock.Model.FactoryBase.GetTrackedItemsSourceOwner*
+  name: GetTrackedItemsSourceOwner
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetTrackedItemsSourceOwner_
+  commentId: Overload:Dock.Model.FactoryBase.GetTrackedItemsSourceOwner
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.GetTrackedItemsSourceOwner
+  nameWithType: FactoryBase.GetTrackedItemsSourceOwner
 - uid: Dock.Model.FactoryBase.GlobalDockTrackingChanged
   name: GlobalDockTrackingChanged
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GlobalDockTrackingChanged
@@ -27635,19 +27941,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.GlobalDockTrackingState
   nameWithType: FactoryBase.GlobalDockTrackingState
-- uid: Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing(Dock.Model.Core.IDockable)
-  name: HandleItemsSourceDocumentClosing(IDockable)
-  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HandleItemsSourceDocumentClosing_Dock_Model_Core_IDockable_
-  commentId: M:Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing(Dock.Model.Core.IDockable)
-  fullName: Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing(Dock.Model.Core.IDockable)
-  nameWithType: FactoryBase.HandleItemsSourceDocumentClosing(IDockable)
-- uid: Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing*
-  name: HandleItemsSourceDocumentClosing
-  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HandleItemsSourceDocumentClosing_
-  commentId: Overload:Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing
+- uid: Dock.Model.FactoryBase.HandleItemsSourceDockableClosing(Dock.Model.Core.IDockable)
+  name: HandleItemsSourceDockableClosing(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HandleItemsSourceDockableClosing_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.HandleItemsSourceDockableClosing(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.HandleItemsSourceDockableClosing(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.HandleItemsSourceDockableClosing(IDockable)
+- uid: Dock.Model.FactoryBase.HandleItemsSourceDockableClosing*
+  name: HandleItemsSourceDockableClosing
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HandleItemsSourceDockableClosing_
+  commentId: Overload:Dock.Model.FactoryBase.HandleItemsSourceDockableClosing
   isSpec: "True"
-  fullName: Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing
-  nameWithType: FactoryBase.HandleItemsSourceDocumentClosing
+  fullName: Dock.Model.FactoryBase.HandleItemsSourceDockableClosing
+  nameWithType: FactoryBase.HandleItemsSourceDockableClosing
 - uid: Dock.Model.FactoryBase.HideDockable(Dock.Model.Core.IDockable)
   name: HideDockable(IDockable)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HideDockable_Dock_Model_Core_IDockable_
@@ -28826,6 +29132,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.ToolControls
   nameWithType: FactoryBase.ToolControls
+- uid: Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)
+  name: TrackItemsSourceDockable(IDockable, IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_TrackItemsSourceDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable, Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.TrackItemsSourceDockable(IDockable, IDockable)
+- uid: Dock.Model.FactoryBase.TrackItemsSourceDockable*
+  name: TrackItemsSourceDockable
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_TrackItemsSourceDockable_
+  commentId: Overload:Dock.Model.FactoryBase.TrackItemsSourceDockable
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.TrackItemsSourceDockable
+  nameWithType: FactoryBase.TrackItemsSourceDockable
 - uid: Dock.Model.FactoryBase.UnpinDockable(Dock.Model.Core.IDockable)
   name: UnpinDockable(IDockable)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UnpinDockable_Dock_Model_Core_IDockable_
@@ -28839,6 +29158,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.UnpinDockable
   nameWithType: FactoryBase.UnpinDockable
+- uid: Dock.Model.FactoryBase.UntrackItemsSourceDockable(Dock.Model.Core.IDockable)
+  name: UntrackItemsSourceDockable(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UntrackItemsSourceDockable_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.UntrackItemsSourceDockable(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.UntrackItemsSourceDockable(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.UntrackItemsSourceDockable(IDockable)
+- uid: Dock.Model.FactoryBase.UntrackItemsSourceDockable*
+  name: UntrackItemsSourceDockable
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UntrackItemsSourceDockable_
+  commentId: Overload:Dock.Model.FactoryBase.UntrackItemsSourceDockable
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.UntrackItemsSourceDockable
+  nameWithType: FactoryBase.UntrackItemsSourceDockable
 - uid: Dock.Model.FactoryBase.UpdateDockingWindowState(Dock.Model.Core.IDockable)
   name: UpdateDockingWindowState(IDockable)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UpdateDockingWindowState_Dock_Model_Core_IDockable_
@@ -30676,6 +31008,22 @@ references:
   fullName.vb: Dock.Model.FluentExtensions.WithTitle(Of T)(T, String)
   nameWithType: FluentExtensions.WithTitle<T>(T, string)
   nameWithType.vb: FluentExtensions.WithTitle(Of T)(T, String)
+- uid: Dock.Model.FluentExtensions.WithToolTemplate(Dock.Model.Controls.IToolDockContent,Dock.Model.Controls.IToolTemplate)
+  name: WithToolTemplate(IToolDockContent, IToolTemplate?)
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithToolTemplate_Dock_Model_Controls_IToolDockContent_Dock_Model_Controls_IToolTemplate_
+  commentId: M:Dock.Model.FluentExtensions.WithToolTemplate(Dock.Model.Controls.IToolDockContent,Dock.Model.Controls.IToolTemplate)
+  name.vb: WithToolTemplate(IToolDockContent, IToolTemplate)
+  fullName: Dock.Model.FluentExtensions.WithToolTemplate(Dock.Model.Controls.IToolDockContent, Dock.Model.Controls.IToolTemplate?)
+  fullName.vb: Dock.Model.FluentExtensions.WithToolTemplate(Dock.Model.Controls.IToolDockContent, Dock.Model.Controls.IToolTemplate)
+  nameWithType: FluentExtensions.WithToolTemplate(IToolDockContent, IToolTemplate?)
+  nameWithType.vb: FluentExtensions.WithToolTemplate(IToolDockContent, IToolTemplate)
+- uid: Dock.Model.FluentExtensions.WithToolTemplate*
+  name: WithToolTemplate
+  href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithToolTemplate_
+  commentId: Overload:Dock.Model.FluentExtensions.WithToolTemplate
+  isSpec: "True"
+  fullName: Dock.Model.FluentExtensions.WithToolTemplate
+  nameWithType: FluentExtensions.WithToolTemplate
 - uid: Dock.Model.FluentExtensions.WithTopPinned(Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockable[])
   name: WithTopPinned(IRootDock, params IDockable[])
   href: api/Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithTopPinned_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockable___

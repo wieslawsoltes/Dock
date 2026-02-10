@@ -2328,6 +2328,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Avalonia.Controls.ToolTemplate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Avalonia.Controls.ToolTemplate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Avalonia.Controls.ToolTemplate",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Avalonia.Controls.ToolTemplate.yml\" sourcestartlinenumber=\"1\">Tool template.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Avalonia.Controls.UniformGridDock.yml",
       "output": {
         ".html": {
@@ -3221,6 +3235,34 @@
       "IsMRef": true,
       "Title": "Dock.Model.Controls.IToolDock",
       "Summary": "<p sourcefile=\"api/Dock.Model.Controls.IToolDock.yml\" sourcestartlinenumber=\"1\">Tool dock contract.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Controls.IToolDockContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Controls.IToolDockContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Controls.IToolDockContent",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Controls.IToolDockContent.yml\" sourcestartlinenumber=\"1\">Tool dock content contract.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Controls.IToolTemplate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Controls.IToolTemplate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Controls.IToolTemplate",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Controls.IToolTemplate.yml\" sourcestartlinenumber=\"1\">Tool template contract.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4299,6 +4341,20 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core.INavigateAdapter",
       "Summary": "<p sourcefile=\"api/Dock.Model.Core.INavigateAdapter.yml\" sourcestartlinenumber=\"1\">Navigate adapter contract for the <xref href=\"Dock.Model.Core.IDock\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IToolItemsSourceDock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IToolItemsSourceDock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IToolItemsSourceDock",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IToolItemsSourceDock.yml\" sourcestartlinenumber=\"1\">Interface for docks that support ItemsSource-based tool generation.</p>\n"
     },
     {
       "type": "ManagedReference",

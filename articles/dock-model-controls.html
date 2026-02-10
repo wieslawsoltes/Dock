@@ -178,6 +178,14 @@ when creating your own docks and documents.</p>
 <td><code>IToolDock</code></td>
 <td>Dock that hosts tools and supports auto-hide behavior.</td>
 </tr>
+<tr>
+<td><code>IToolDockContent</code></td>
+<td>Dock that creates tools from a <code>ToolTemplate</code>.</td>
+</tr>
+<tr>
+<td><code>IToolTemplate</code></td>
+<td>Template object used when creating tools on demand or from <code>ItemsSource</code>.</td>
+</tr>
 </tbody>
 </table>
 <p>The following sections provide guidelines on applying these contracts in your projects.</p>
@@ -256,6 +264,15 @@ auto-hide its content and exposes an <code>Alignment</code> property for
 positioning. When <code>AutoHide</code> is enabled the dock collapses once the
 pointer leaves the area. <code>GripMode</code> controls if the user can resize
 the dock by dragging its border.</p>
+<p><code>IToolDockContent</code> (implemented by the Avalonia model layer) extends this
+concept with a <code>ToolTemplate</code> and <code>CreateToolFromTemplate</code>. This mirrors
+<code>IDocumentDockContent</code> for tool panes. In Avalonia, <code>ToolDock.ItemsSource</code>
+uses this template to create generated tool content from source collections.</p>
+<h2 id="itooltemplate">IToolTemplate</h2>
+<p><code>IToolTemplate</code> represents template content used to build tool views. In
+Avalonia the built-in <code>ToolTemplate</code> stores XAML content (or a
+<code>Func&lt;IServiceProvider, object&gt;</code>) that becomes tool <code>Content</code> when a new tool
+is created from a template or generated from <code>ItemsSource</code>.</p>
 <h2 id="putting-it-all-together">Putting it all together</h2>
 <p>When building a layout you normally start with an <code>IRootDock</code> and add
 <code>IToolDock</code>, <code>IDocumentDock</code> and <code>IProportionalDock</code> instances inside

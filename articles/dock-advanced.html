@@ -162,7 +162,7 @@ if (layout is { })
 new document on demand which is then passed to <code>AddDocument</code> and
 activated automatically.</p>
 <h3 id="modern-itemssource-approach">Modern ItemsSource approach</h3>
-<p>For more efficient document management in the Avalonia model, use <code>DocumentDock.ItemsSource</code> to bind directly to data collections:</p>
+<p>For more efficient source-backed dockable management in the Avalonia model, use <code>DocumentDock.ItemsSource</code> and <code>ToolDock.ItemsSource</code> to bind directly to data collections:</p>
 <pre><code class="lang-csharp">// In your ViewModel
 public ObservableCollection&lt;FileModel&gt; OpenFiles { get; } = new();
 
@@ -179,7 +179,16 @@ OpenFiles.Remove(fileToClose);
     &lt;/DocumentDock.DocumentTemplate&gt;
 &lt;/DocumentDock&gt;
 </code></pre>
-<p>This approach automatically creates and removes documents as the collection changes, provides automatic title mapping from properties like <code>Title</code> or <code>Name</code>, and integrates seamlessly with MVVM patterns. <code>ItemsSource</code> requires a <code>DocumentTemplate</code>; without one, documents are not generated. See the <a href="dock-itemssource.html">DocumentDock ItemsSource guide</a> for comprehensive details.</p>
+<p>Tool panes can be generated the same way:</p>
+<pre><code class="lang-xaml">&lt;ToolDock ItemsSource=&quot;{Binding OpenTools}&quot; Alignment=&quot;Left&quot;&gt;
+    &lt;ToolDock.ToolTemplate&gt;
+        &lt;ToolTemplate&gt;
+            &lt;TextBlock Text=&quot;{Binding Context.Description}&quot; x:DataType=&quot;Tool&quot;/&gt;
+        &lt;/ToolTemplate&gt;
+    &lt;/ToolDock.ToolTemplate&gt;
+&lt;/ToolDock&gt;
+</code></pre>
+<p>This approach automatically creates and removes dockables as collections change, provides automatic title mapping from properties like <code>Title</code> or <code>Name</code>, and integrates with MVVM patterns. <code>ItemsSource</code> requires the corresponding template (<code>DocumentTemplate</code> or <code>ToolTemplate</code>); without one, dockables are not generated. See the <a href="dock-itemssource.html">Document and Tool ItemsSource guide</a> for details.</p>
 <p>Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.</p>
 <h2 id="floating-windows">Floating windows</h2>
 <p>Calling <code>FloatDockable</code> opens a dockable in a separate window. You can override <code>CreateWindowFrom</code> to tweak the new dock window:</p>

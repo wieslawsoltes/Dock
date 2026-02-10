@@ -68,6 +68,22 @@ In XAML you set them as attributes:
 
 `DockingState` is maintained by factory operations (`PinDockable`, `UnpinDockable`, `FloatDockable`, `HideDockable`, `RestoreDockable`) and can be used by UI bindings for diagnostics or state-aware visuals.
 
+## Window State Mixin
+
+`Document` and `Tool` models implement `IDockingWindowState`, which adds bindable runtime properties:
+
+- `IsOpen`: `true` when the item is currently present in a visible, pinned, or previewable layout area.
+- `IsSelected`: `true` when the item is the `ActiveDockable` of its owner dock.
+- `IsActive`: `true` when the item is focused in the active root.
+- `DockingState`: the logical location flags (`Docked`, `Pinned`, `Document`, `Floating`, `Hidden`).
+
+Changes are synchronized both ways:
+
+- Layout -> VM: factory operations update these properties.
+- VM -> layout: setting `IsOpen`, `IsSelected`, `IsActive`, or `DockingState` requests the corresponding layout operation.
+
+`IsOpen`, `IsSelected`, and `IsActive` are runtime state and are not serialized. `DockingState` remains part of persisted layout state.
+
 Global drag and drop behavior can be toggled using the attached properties from [`Dock.Settings`](dock-settings.md):
 
 ```xaml

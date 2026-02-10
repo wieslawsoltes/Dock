@@ -62,6 +62,18 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
     public static readonly StyledProperty<IDockItemContainerGenerator?> ItemContainerGeneratorProperty =
         AvaloniaProperty.Register<ToolDock, IDockItemContainerGenerator?>(nameof(ItemContainerGenerator));
 
+    /// <summary>
+    /// Defines the <see cref="ToolItemContainerTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> ToolItemContainerThemeProperty =
+        AvaloniaProperty.Register<ToolDock, object?>(nameof(ToolItemContainerTheme));
+
+    /// <summary>
+    /// Defines the <see cref="ToolItemTemplateSelector"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IToolItemTemplateSelector?> ToolItemTemplateSelectorProperty =
+        AvaloniaProperty.Register<ToolDock, IToolItemTemplateSelector?>(nameof(ToolItemTemplateSelector));
+
     private Alignment _alignment = Alignment.Unset;
     private bool _isExpanded;
     private bool _autoHide = true;
@@ -71,6 +83,8 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
     private IDisposable? _itemsSourceSubscription;
     private IDisposable? _toolTemplateSubscription;
     private IDisposable? _itemContainerGeneratorSubscription;
+    private IDisposable? _toolItemContainerThemeSubscription;
+    private IDisposable? _toolItemTemplateSelectorSubscription;
     private INotifyCollectionChanged? _currentCollectionChanged;
 
     /// <summary>
@@ -86,6 +100,10 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
 
         _itemContainerGeneratorSubscription = this.GetObservable(ItemContainerGeneratorProperty)
             .Subscribe(new AnonymousObserver<IDockItemContainerGenerator?>(_ => OnItemContainerGeneratorChanged()));
+        _toolItemContainerThemeSubscription = this.GetObservable(ToolItemContainerThemeProperty)
+            .Subscribe(new AnonymousObserver<object?>(_ => OnGeneratedItemPresentationChanged()));
+        _toolItemTemplateSelectorSubscription = this.GetObservable(ToolItemTemplateSelectorProperty)
+            .Subscribe(new AnonymousObserver<IToolItemTemplateSelector?>(_ => OnGeneratedItemPresentationChanged()));
     }
 
     /// <summary>
@@ -107,6 +125,10 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
 
         _itemContainerGeneratorSubscription?.Dispose();
         _itemContainerGeneratorSubscription = null;
+        _toolItemContainerThemeSubscription?.Dispose();
+        _toolItemContainerThemeSubscription = null;
+        _toolItemTemplateSelectorSubscription?.Dispose();
+        _toolItemTemplateSelectorSubscription = null;
 
         if (_currentCollectionChanged != null)
         {
@@ -180,6 +202,24 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
     {
         get => GetValue(ItemContainerGeneratorProperty);
         set => SetValue(ItemContainerGeneratorProperty, value);
+    }
+
+    /// <inheritdoc />
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public object? ToolItemContainerTheme
+    {
+        get => GetValue(ToolItemContainerThemeProperty);
+        set => SetValue(ToolItemContainerThemeProperty, value);
+    }
+
+    /// <inheritdoc />
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public IToolItemTemplateSelector? ToolItemTemplateSelector
+    {
+        get => GetValue(ToolItemTemplateSelectorProperty);
+        set => SetValue(ToolItemTemplateSelectorProperty, value);
     }
 
     /// <summary>
@@ -275,6 +315,16 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
     }
 
     private void OnItemContainerGeneratorChanged()
+    {
+        if (ItemsSource is null)
+        {
+            return;
+        }
+
+        RegenerateGeneratedTools(ItemsSource);
+    }
+
+    private void OnGeneratedItemPresentationChanged()
     {
         if (ItemsSource is null)
         {

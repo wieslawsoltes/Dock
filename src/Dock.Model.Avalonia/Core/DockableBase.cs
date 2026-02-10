@@ -23,7 +23,7 @@ namespace Dock.Model.Avalonia.Core;
 [JsonDerivedType(typeof(Tool), typeDiscriminator: "Tool")]
 [JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
 [JsonDerivedType(typeof(DockBase), typeDiscriminator: "DockBase")]
-public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo, IDockableDockingRestrictions
+public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata
 {
     /// <summary>
     /// Defines the <see cref="Id"/> property.
@@ -212,6 +212,18 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
         AvaloniaProperty.RegisterDirect<DockableBase, string?>(nameof(SelectorTitle), o => o.SelectorTitle, (o, v) => o.SelectorTitle = v);
 
     /// <summary>
+    /// Defines the <see cref="ItemContainerTheme"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, object?> ItemContainerThemeProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, object?>(nameof(ItemContainerTheme), o => o.ItemContainerTheme, (o, v) => o.ItemContainerTheme = v);
+
+    /// <summary>
+    /// Defines the <see cref="ItemTemplateSelector"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, object?> ItemTemplateSelectorProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, object?>(nameof(ItemTemplateSelector), o => o.ItemTemplateSelector, (o, v) => o.ItemTemplateSelector = v);
+
+    /// <summary>
     /// Defines the <see cref="MinWidth"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, double> MinWidthProperty =
@@ -273,6 +285,8 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     private DockOperationMask _allowedDropOperations = DockOperationMask.All;
     private bool _showInSelector = true;
     private string? _selectorTitle;
+    private object? _itemContainerTheme;
+    private object? _itemTemplateSelector;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -619,6 +633,24 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     {
         get => _selectorTitle;
         set => SetAndRaise(SelectorTitleProperty, ref _selectorTitle, value);
+    }
+
+    /// <inheritdoc />
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public object? ItemContainerTheme
+    {
+        get => _itemContainerTheme;
+        set => SetAndRaise(ItemContainerThemeProperty, ref _itemContainerTheme, value);
+    }
+
+    /// <inheritdoc />
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public object? ItemTemplateSelector
+    {
+        get => _itemTemplateSelector;
+        set => SetAndRaise(ItemTemplateSelectorProperty, ref _itemTemplateSelector, value);
     }
 
     /// <inheritdoc/>

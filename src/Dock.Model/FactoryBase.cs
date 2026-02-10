@@ -553,6 +553,13 @@ public abstract partial class FactoryBase : IFactory
                         {
                             targetToolContent.ToolTemplate = sourceToolContent.ToolTemplate;
                         }
+
+                        if (sourceToolDock is IToolItemsSourceDock sourceToolItemsDock
+                            && targetToolDock is IToolItemsSourceDock targetToolItemsDock)
+                        {
+                            targetToolItemsDock.ToolItemContainerTheme = sourceToolItemsDock.ToolItemContainerTheme;
+                            targetToolItemsDock.ToolItemTemplateSelector = sourceToolItemsDock.ToolItemTemplateSelector;
+                        }
                     }
 
                     if (dock.VisibleDockables is not null)
@@ -583,8 +590,14 @@ public abstract partial class FactoryBase : IFactory
                             if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
                                 && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
                             {
-                                
                                 targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+                            }
+
+                            if (sourceDocumentDock is IItemsSourceDock sourceDocumentItemsDock
+                                && targetDocumentDock is IItemsSourceDock targetDocumentItemsDock)
+                            {
+                                targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
+                                targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
                             }
 
                             if (sourceDocumentDock is IDocumentDockFactory sourceDocumentDockFactory

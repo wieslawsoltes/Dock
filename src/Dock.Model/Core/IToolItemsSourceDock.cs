@@ -20,6 +20,17 @@ public interface IToolItemsSourceDock
     IDockItemContainerGenerator? ItemContainerGenerator { get; }
 
     /// <summary>
+    /// Gets or sets per-dock container theme metadata used for generated tools.
+    /// The value can be a theme instance or a theme resource key.
+    /// </summary>
+    object? ToolItemContainerTheme { get; set; }
+
+    /// <summary>
+    /// Gets or sets the per-dock template selector for generated tools.
+    /// </summary>
+    IToolItemTemplateSelector? ToolItemTemplateSelector { get; set; }
+
+    /// <summary>
     /// Checks if a tool was generated from ItemsSource.
     /// </summary>
     /// <param name="tool">The tool to check.</param>

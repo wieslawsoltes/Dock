@@ -146,4 +146,30 @@ public class DockControlsTests
         Assert.True(template.Match(new TextBlock()));
         Assert.False(template.Match("text"));
     }
+
+    [AvaloniaFact]
+    public void DocumentTemplate_Build_Supports_Func_Returning_Control()
+    {
+        var template = new DocumentTemplate
+        {
+            Content = new Func<IServiceProvider, object>(_ => new StackPanel())
+        };
+
+        var control = template.Build(null, null);
+
+        Assert.IsType<StackPanel>(control);
+    }
+
+    [AvaloniaFact]
+    public void ToolTemplate_Build_Supports_Func_Returning_Control()
+    {
+        var template = new ToolTemplate
+        {
+            Content = new Func<IServiceProvider, object>(_ => new StackPanel())
+        };
+
+        var control = template.Build(null, null);
+
+        Assert.IsType<StackPanel>(control);
+    }
 }

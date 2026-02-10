@@ -61,7 +61,7 @@ internal static class TemplateHelper
                 return control as Control;
             }
 
-            control = TemplateContent.Load(content)?.Result;
+            control = BuildFromTemplateContent(content);
             if (control is not null)
             {
                 if (control is Control builtControl && !ReferenceEquals(existing, builtControl))
@@ -84,7 +84,7 @@ internal static class TemplateHelper
             return control as Control;
         }
 
-        return TemplateContent.Load(content)?.Result;
+        return BuildFromTemplateContent(content);
     }
 
     private static object GetCacheKey(IControlRecycling controlRecycling, AvaloniaObject parent, object content)
@@ -142,7 +142,7 @@ internal static class TemplateHelper
 
     private static Control? BuildFallback(object? content, Control? existing)
     {
-        var built = TemplateContent.Load(content)?.Result;
+        var built = BuildFromTemplateContent(content);
         if (built is null)
         {
             return existing;
@@ -158,7 +158,7 @@ internal static class TemplateHelper
             return built;
         }
 
-        var rebuilt = TemplateContent.Load(content)?.Result;
+        var rebuilt = BuildFromTemplateContent(content);
         if (rebuilt is null)
         {
             return existing;
@@ -172,11 +172,21 @@ internal static class TemplateHelper
         return TryDetachFromParent(rebuilt) ? rebuilt : existing;
     }
 
+    private static Control? BuildFromTemplateContent(object? content)
+    {
+        return Load(content)?.Result;
+    }
+
     internal static TemplateResult<Control>? Load(object? templateContent)
     {
         if (templateContent is null)
         {
             return null;
+        }
+
+        if (templateContent is TemplateResult<Control> templateResult)
+        {
+            return templateResult;
         }
 
         if (templateContent is Control control)
@@ -186,7 +196,13 @@ internal static class TemplateHelper
 
         if (templateContent is Func<IServiceProvider, object> direct)
         {
-            return (TemplateResult<Control>)direct(null!);
+            var evaluated = direct(null!);
+            if (ReferenceEquals(evaluated, templateContent))
+            {
+                return null;
+            }
+
+            return Load(evaluated);
         }
 
         return TemplateContent.Load(templateContent);

@@ -76,11 +76,26 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     public static readonly StyledProperty<IDockItemContainerGenerator?> ItemContainerGeneratorProperty =
         AvaloniaProperty.Register<DocumentDock, IDockItemContainerGenerator?>(nameof(ItemContainerGenerator));
 
+    /// <summary>
+    /// Defines the <see cref="DocumentItemContainerTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> DocumentItemContainerThemeProperty =
+        AvaloniaProperty.Register<DocumentDock, object?>(nameof(DocumentItemContainerTheme));
+
+    /// <summary>
+    /// Defines the <see cref="DocumentItemTemplateSelector"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDocumentItemTemplateSelector?> DocumentItemTemplateSelectorProperty =
+        AvaloniaProperty.Register<DocumentDock, IDocumentItemTemplateSelector?>(nameof(DocumentItemTemplateSelector));
+
     private bool _canCreateDocument;
     private readonly HashSet<IDockable> _generatedDocuments = new();
     private readonly Dictionary<IDockable, IDockItemContainerGenerator> _generatedDocumentGenerators = new();
     private IDisposable? _itemsSourceSubscription;
+    private IDisposable? _documentTemplateSubscription;
     private IDisposable? _itemContainerGeneratorSubscription;
+    private IDisposable? _documentItemContainerThemeSubscription;
+    private IDisposable? _documentItemTemplateSelectorSubscription;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentDock"/> class.
@@ -95,8 +110,14 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
         
         // Subscribe to ItemsSource property changes
         _itemsSourceSubscription = this.GetObservable(ItemsSourceProperty).Subscribe(new AnonymousObserver<IEnumerable?>(OnItemsSourceChanged));
+        _documentTemplateSubscription = this.GetObservable(DocumentTemplateProperty)
+            .Subscribe(new AnonymousObserver<IDocumentTemplate?>(_ => OnDocumentTemplateChanged()));
         _itemContainerGeneratorSubscription = this.GetObservable(ItemContainerGeneratorProperty)
             .Subscribe(new AnonymousObserver<IDockItemContainerGenerator?>(_ => OnItemContainerGeneratorChanged()));
+        _documentItemContainerThemeSubscription = this.GetObservable(DocumentItemContainerThemeProperty)
+            .Subscribe(new AnonymousObserver<object?>(_ => OnGeneratedItemPresentationChanged()));
+        _documentItemTemplateSelectorSubscription = this.GetObservable(DocumentItemTemplateSelectorProperty)
+            .Subscribe(new AnonymousObserver<IDocumentItemTemplateSelector?>(_ => OnGeneratedItemPresentationChanged()));
     }
 
     /// <summary>
@@ -109,8 +130,14 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
             // Unsubscribe from ItemsSource changes
             _itemsSourceSubscription?.Dispose();
             _itemsSourceSubscription = null;
+            _documentTemplateSubscription?.Dispose();
+            _documentTemplateSubscription = null;
             _itemContainerGeneratorSubscription?.Dispose();
             _itemContainerGeneratorSubscription = null;
+            _documentItemContainerThemeSubscription?.Dispose();
+            _documentItemContainerThemeSubscription = null;
+            _documentItemTemplateSelectorSubscription?.Dispose();
+            _documentItemTemplateSelectorSubscription = null;
 
             // Unsubscribe from collection changes
             if (_currentCollectionChanged != null)
@@ -246,6 +273,24 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
         set => SetValue(ItemContainerGeneratorProperty, value);
     }
 
+    /// <inheritdoc />
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public object? DocumentItemContainerTheme
+    {
+        get => GetValue(DocumentItemContainerThemeProperty);
+        set => SetValue(DocumentItemContainerThemeProperty, value);
+    }
+
+    /// <inheritdoc />
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public IDocumentItemTemplateSelector? DocumentItemTemplateSelector
+    {
+        get => GetValue(DocumentItemTemplateSelectorProperty);
+        set => SetValue(DocumentItemTemplateSelectorProperty, value);
+    }
+
     /// <summary>
     /// Creates new document from template.
     /// </summary>
@@ -352,6 +397,26 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     }
 
     private void OnItemContainerGeneratorChanged()
+    {
+        if (ItemsSource is null)
+        {
+            return;
+        }
+
+        RegenerateGeneratedDocuments(ItemsSource);
+    }
+
+    private void OnGeneratedItemPresentationChanged()
+    {
+        if (ItemsSource is null)
+        {
+            return;
+        }
+
+        RegenerateGeneratedDocuments(ItemsSource);
+    }
+
+    private void OnDocumentTemplateChanged()
     {
         if (ItemsSource is null)
         {

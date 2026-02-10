@@ -361,12 +361,7 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
             return DetachOrFallback(directControl, existing, null);
         }
 
-        if (content is Func<IServiceProvider, object> direct)
-        {
-            return DetachOrFallback(direct(null!) as Control, existing, () => direct(null!) as Control);
-        }
-
-        return DetachOrFallback(TemplateContent.Load(content)?.Result, existing, () => TemplateContent.Load(content)?.Result);
+        return DetachOrFallback(LoadTemplateContent(content), existing, () => LoadTemplateContent(content));
     }
 
     private static Control? DetachOrFallback(Control? control, Control? existing, Func<Control?>? fallbackFactory)
@@ -455,5 +450,36 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
             },
             ClipToBounds = true
         };
+    }
+
+    private static Control? LoadTemplateContent(object? templateContent)
+    {
+        if (templateContent is null)
+        {
+            return null;
+        }
+
+        if (templateContent is TemplateResult<Control> templateResult)
+        {
+            return templateResult.Result;
+        }
+
+        if (templateContent is Control control)
+        {
+            return control;
+        }
+
+        if (templateContent is Func<IServiceProvider, object> direct)
+        {
+            var evaluated = direct(null!);
+            if (ReferenceEquals(evaluated, templateContent))
+            {
+                return null;
+            }
+
+            return LoadTemplateContent(evaluated);
+        }
+
+        return TemplateContent.Load(templateContent)?.Result;
     }
 }

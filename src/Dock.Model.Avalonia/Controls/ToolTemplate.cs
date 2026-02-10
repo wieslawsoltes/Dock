@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
 using Dock.Model.Controls;
@@ -48,7 +47,7 @@ public sealed class ToolTemplate : IToolTemplate, ITemplate<Control?>, IRecyclin
     /// <returns>The built control.</returns>
     public Control? Build()
     {
-        return Load(Content)?.Result;
+        return TemplateHelper.Load(Content)?.Result;
     }
 
     /// <summary>
@@ -87,16 +86,6 @@ public sealed class ToolTemplate : IToolTemplate, ITemplate<Control?>, IRecyclin
     /// <returns>The built control.</returns>
     public Control? Build(object? data, Control? existing)
     {
-        return existing ?? TemplateContent.Load(Content)?.Result;
-    }
-
-    private static TemplateResult<Control>? Load(object? templateContent)
-    {
-        if (templateContent is Func<IServiceProvider, object> direct)
-        {
-            return (TemplateResult<Control>)direct(null!);
-        }
-
-        throw new ArgumentException(nameof(templateContent));
+        return existing ?? TemplateHelper.Load(Content)?.Result;
     }
 }

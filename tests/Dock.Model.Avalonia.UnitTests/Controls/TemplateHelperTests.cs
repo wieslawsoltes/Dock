@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Headless.XUnit;
@@ -103,5 +104,31 @@ public class TemplateHelperTests
         {
             host.Close();
         }
+    }
+
+    [AvaloniaFact]
+    public void Document_Build_Supports_Func_Returning_Control()
+    {
+        var document = new Document
+        {
+            Content = new Func<IServiceProvider, object>(_ => new StackPanel())
+        };
+
+        var result = document.Build(null, null);
+
+        Assert.IsType<StackPanel>(result);
+    }
+
+    [AvaloniaFact]
+    public void Tool_Build_Supports_Func_Returning_Control()
+    {
+        var tool = new Tool
+        {
+            Content = new Func<IServiceProvider, object>(_ => new StackPanel())
+        };
+
+        var result = tool.Build(null, null);
+
+        Assert.IsType<StackPanel>(result);
     }
 }

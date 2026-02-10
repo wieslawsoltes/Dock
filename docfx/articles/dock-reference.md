@@ -76,10 +76,13 @@ The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumen
 
 - `DocumentDock.ItemsSource` + `DocumentTemplate` generate `Document` dockables.
 - `ToolDock.ItemsSource` + `ToolTemplate` generate `Tool` dockables.
+- `DocumentDock.ItemContainerGenerator` and `ToolDock.ItemContainerGenerator` accept `IDockItemContainerGenerator` for custom create/prepare/clear pipelines.
 - `IsDocumentFromItemsSource(IDockable)` / `IsToolFromItemsSource(IDockable)` report whether the dockable was generated from the bound source.
 - `RemoveItemFromSource(object)` removes source items from supported list collections.
 
-When `ItemsSource` is set (and the required template is provided), Dock automatically creates dockables for each source item. The generated `Title` is derived from `Title`, `Name`, or `DisplayName` on the source object. The generated dockable `Context` stores the source object for template bindings.
+When `ItemsSource` is set, Dock automatically creates dockables for each source item through the configured `IDockItemContainerGenerator`. With the default generator, generation requires the corresponding template (`DocumentTemplate` or `ToolTemplate`). The generated `Title` is derived from `Title`, `Name`, or `DisplayName` on the source object and `Context` stores the source object for template bindings.
+
+`DockItemContainerGenerator` is the built-in default implementation. Subclass it or implement `IDockItemContainerGenerator` directly to customize container type, source-to-container mapping, or container cleanup behavior.
 
 Changes to `INotifyCollectionChanged` collections (for example, `ObservableCollection<T>`) automatically add or remove corresponding dockables. When a generated document or tool is closed, the factory attempts to remove the source item from the collection if it implements `IList`.
 

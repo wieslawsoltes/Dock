@@ -140,6 +140,17 @@ concept with a `ToolTemplate` and `CreateToolFromTemplate`. This mirrors
 `IDocumentDockContent` for tool panes. In Avalonia, `ToolDock.ItemsSource`
 uses this template to create generated tool content from source collections.
 
+## IItemsSourceDock and IToolItemsSourceDock
+
+These interfaces define source-backed dock generation contracts:
+
+- `ItemsSource` exposes the source collection used to generate dockables.
+- `ItemContainerGenerator` provides custom container creation/preparation/cleanup through `IDockItemContainerGenerator`.
+- `IsDocumentFromItemsSource` / `IsToolFromItemsSource` detect source-generated dockables.
+- `RemoveItemFromSource` synchronizes close operations back to mutable source collections.
+
+The Avalonia model's `DocumentDock` and `ToolDock` implementations use `DockItemContainerGenerator` by default, while still allowing per-dock generator overrides.
+
 ## IToolTemplate
 
 `IToolTemplate` represents template content used to build tool views. In

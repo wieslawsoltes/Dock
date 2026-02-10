@@ -8,19 +8,21 @@ The `DocumentDock.ItemsSource` and `ToolDock.ItemsSource` properties enable auto
 
 `ItemsSource` is implemented by `Dock.Model.Avalonia.Controls.DocumentDock` and `Dock.Model.Avalonia.Controls.ToolDock` in the Avalonia model layer:
 
-- `DocumentDock.ItemsSource` requires `DocumentTemplate`.
-- `ToolDock.ItemsSource` requires `ToolTemplate`.
+- By default, `DocumentDock.ItemsSource` requires `DocumentTemplate`.
+- By default, `ToolDock.ItemsSource` requires `ToolTemplate`.
+- `DocumentDock.ItemContainerGenerator` and `ToolDock.ItemContainerGenerator` let you override container creation and preparation.
 
-If no template is supplied, no generated dockables are created.
+With the default generator, if no template is supplied, no generated dockables are created. A custom `ItemContainerGenerator` can override this behavior.
 
 ## Behavior details
 
-- `DocumentDock` creates a `Document` for each item and stores the item in `Document.Context`.
-- `ToolDock` creates a `Tool` for each item and stores the item in `Tool.Context`.
+- By default, `DocumentDock` creates a `Document` for each item and stores the item in `Document.Context`.
+- By default, `ToolDock` creates a `Tool` for each item and stores the item in `Tool.Context`.
 - The tab title is derived from `Title`, `Name`, or `DisplayName` properties on the item (in that order), falling back to `ToString()`.
 - `CanClose` is copied from the item if present; otherwise it defaults to `true`.
 - When a generated document or tool is closed, the factory attempts to remove the source item from `ItemsSource` if it implements `IList`.
 - Source-generated document/tool closes are treated as remove operations, even when `Factory.HideDocumentsOnClose` or `Factory.HideToolsOnClose` is enabled.
+- You can replace the default generation pipeline with `IDockItemContainerGenerator` for custom container types, metadata mapping, and cleanup.
 
 ## Key Benefits
 
@@ -316,6 +318,56 @@ public enum DocumentType
   </DocumentDock.DocumentTemplate>
 </DocumentDock>
 ```
+
+### Custom Container Generator
+
+Use `IDockItemContainerGenerator` when you need custom container types or custom preparation/cleanup logic for source-generated dockables.
+
+```csharp
+public sealed class MyGenerator : DockItemContainerGenerator
+{
+    public override IDockable? CreateDocumentContainer(IItemsSourceDock dock, object item, int index)
+    {
+        return new MyDocumentContainer { Id = $"Doc-{index}" };
+    }
+
+    public override void PrepareDocumentContainer(IItemsSourceDock dock, IDockable container, object item, int index)
+    {
+        base.PrepareDocumentContainer(dock, container, item, index);
+        container.Title = $"Document {container.Title}";
+    }
+
+    public override IDockable? CreateToolContainer(IToolItemsSourceDock dock, object item, int index)
+    {
+        return new MyToolContainer { Id = $"Tool-{index}" };
+    }
+}
+```
+
+Assign the generator per dock:
+
+```xaml
+<Window.Resources>
+  <local:MyGenerator x:Key="MyGenerator" />
+</Window.Resources>
+
+<ToolDock ItemsSource="{Binding Tools}"
+          ToolTemplate="{StaticResource ToolTemplate}"
+          ItemContainerGenerator="{StaticResource MyGenerator}" />
+
+<DocumentDock ItemsSource="{Binding Documents}"
+              DocumentTemplate="{StaticResource DocumentTemplate}"
+              ItemContainerGenerator="{StaticResource MyGenerator}" />
+```
+
+`Dock.Model.Avalonia.Controls.DockItemContainerGenerator` provides the default behavior and can be subclassed, or you can implement `IDockItemContainerGenerator` from scratch.
+
+Container compatibility contract:
+
+- `CreateDocumentContainer` should return an `IDocument` implementation (for example `Document` or a derived type).
+- `CreateToolContainer` should return an `ITool` implementation (for example `Tool` or a derived type).
+
+Incompatible container types are skipped by the pipeline and immediately cleared.
 
 ### Custom Commands Integration
 

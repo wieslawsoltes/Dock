@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -12,6 +13,38 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase : IFactory
 {
+    private readonly ConditionalWeakTable<IDockable, IDockable> _itemsSourceOwners = new();
+
+    /// <summary>
+    /// Tracks dockables that were generated from an ItemsSource dock.
+    /// </summary>
+    /// <param name="dockable">The generated dockable.</param>
+    /// <param name="owner">The owning ItemsSource dock.</param>
+    public virtual void TrackItemsSourceDockable(IDockable dockable, IDockable owner)
+    {
+        _itemsSourceOwners.Remove(dockable);
+        _itemsSourceOwners.Add(dockable, owner);
+    }
+
+    /// <summary>
+    /// Removes an ItemsSource-generated dockable mapping.
+    /// </summary>
+    /// <param name="dockable">The generated dockable.</param>
+    public virtual void UntrackItemsSourceDockable(IDockable dockable)
+    {
+        _itemsSourceOwners.Remove(dockable);
+    }
+
+    /// <summary>
+    /// Gets the tracked ItemsSource owner for a generated dockable.
+    /// </summary>
+    /// <param name="dockable">The generated dockable.</param>
+    /// <returns>The tracked owner if available; otherwise null.</returns>
+    protected virtual IDockable? GetTrackedItemsSourceOwner(IDockable dockable)
+    {
+        return _itemsSourceOwners.TryGetValue(dockable, out var owner) ? owner : null;
+    }
+
     private static bool IsAssignedProportion(double proportion)
     {
         return !double.IsNaN(proportion) && proportion > 0.0;
@@ -507,6 +540,21 @@ public abstract partial class FactoryBase : IFactory
                 if (target is IDock dock)
                 {
                     dock.VisibleDockables = CreateList<IDockable>();
+                    if (dockable.Owner is IToolDock sourceToolDock && target is IToolDock targetToolDock)
+                    {
+                        targetToolDock.Id = sourceToolDock.Id;
+                        targetToolDock.Alignment = sourceToolDock.Alignment;
+                        targetToolDock.IsExpanded = sourceToolDock.IsExpanded;
+                        targetToolDock.AutoHide = sourceToolDock.AutoHide;
+                        targetToolDock.GripMode = sourceToolDock.GripMode;
+
+                        if (sourceToolDock is IToolDockContent sourceToolContent
+                            && targetToolDock is IToolDockContent targetToolContent)
+                        {
+                            targetToolContent.ToolTemplate = sourceToolContent.ToolTemplate;
+                        }
+                    }
+
                     if (dock.VisibleDockables is not null)
                     {
                         AddVisibleDockable(dock, dockable);

@@ -139,6 +139,14 @@ public class DockControlsTests
     }
 
     [AvaloniaFact]
+    public void ToolTemplate_Match_Uses_DataType()
+    {
+        var template = new ToolTemplate { DataType = typeof(TextBlock) };
+        Assert.True(template.Match(new TextBlock()));
+        Assert.False(template.Match("text"));
+    }
+
+    [AvaloniaFact]
     public void SplitViewDock_Defaults()
     {
         var dock = new SplitViewDock();

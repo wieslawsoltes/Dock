@@ -37,4 +37,40 @@ public class FactoryWindowTests
         Assert.Single(root.VisibleDockables!);
         Assert.Same(toolDock, root.VisibleDockables?[0]);
     }
+
+    [AvaloniaFact]
+    public void CreateWindowFrom_Tool_CopiesOwnerToolDockTemplateAndSettings()
+    {
+        var factory = new Factory();
+        var toolTemplate = new ToolTemplate { Content = "tool-template" };
+        var tool = new Tool { Id = "ToolA" };
+        var sourceDock = new ToolDock
+        {
+            Id = "SourceToolDock",
+            Alignment = Alignment.Right,
+            IsExpanded = true,
+            AutoHide = false,
+            GripMode = GripMode.Hidden,
+            ToolTemplate = toolTemplate,
+            VisibleDockables = factory.CreateList<IDockable>(tool),
+            ActiveDockable = tool
+        };
+
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>(sourceDock);
+        root.ActiveDockable = sourceDock;
+        factory.InitLayout(root);
+
+        var window = factory.CreateWindowFrom(tool);
+        Assert.NotNull(window);
+
+        var windowRoot = Assert.IsAssignableFrom<IRootDock>(window!.Layout);
+        var createdToolDock = Assert.IsType<ToolDock>(windowRoot.VisibleDockables?[0]);
+        Assert.Equal(sourceDock.Id, createdToolDock.Id);
+        Assert.Equal(sourceDock.Alignment, createdToolDock.Alignment);
+        Assert.Equal(sourceDock.IsExpanded, createdToolDock.IsExpanded);
+        Assert.Equal(sourceDock.AutoHide, createdToolDock.AutoHide);
+        Assert.Equal(sourceDock.GripMode, createdToolDock.GripMode);
+        Assert.Same(toolTemplate, createdToolDock.ToolTemplate);
+    }
 }

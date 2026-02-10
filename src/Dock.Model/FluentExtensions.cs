@@ -1001,6 +1001,15 @@ public static class FluentExtensions
     /// <returns>The same instance.</returns>
     public static IDocumentDockContent WithDocumentTemplate(this IDocumentDockContent dock, IDocumentTemplate? template) { dock.DocumentTemplate = template; return dock; }
 
+    // IToolDockContent fluent setter
+    /// <summary>
+    /// Sets the tool template.
+    /// </summary>
+    /// <param name="dock">The tool dock content.</param>
+    /// <param name="template">Template instance.</param>
+    /// <returns>The same instance.</returns>
+    public static IToolDockContent WithToolTemplate(this IToolDockContent dock, IToolTemplate? template) { dock.ToolTemplate = template; return dock; }
+
     // IToolDock fluent setters and helpers
     /// <summary>
     /// Sets tool dock alignment.

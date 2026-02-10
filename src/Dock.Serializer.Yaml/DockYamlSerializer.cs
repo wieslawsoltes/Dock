@@ -175,7 +175,8 @@ public sealed class DockYamlSerializer : IDockSerializer
     {
         return typeof(IDockable).IsAssignableFrom(type)
             || typeof(IDockWindow).IsAssignableFrom(type)
-            || typeof(IDocumentTemplate).IsAssignableFrom(type);
+            || typeof(IDocumentTemplate).IsAssignableFrom(type)
+            || typeof(IToolTemplate).IsAssignableFrom(type);
     }
 
     private sealed class IgnoreDataMemberTypeInspector : TypeInspectorSkeleton

@@ -1,19 +1,26 @@
-# DocumentDock ItemsSource
+# DocumentDock and ToolDock ItemsSource
 
-The `DocumentDock.ItemsSource` property enables automatic document management by binding to a collection of data objects. This functionality provides a clean, MVVM-friendly approach to managing documents within a dock.
+The `DocumentDock.ItemsSource` and `ToolDock.ItemsSource` properties enable automatic dockable management by binding collections of data objects. This provides a clean, MVVM-friendly approach for both document tabs and tool panes.
 
 ## Overview
 
-`DocumentDock.ItemsSource` works similarly to `ListBox.ItemsSource` in Avalonia, automatically creating and managing documents from a bound collection. When you add or remove items from an `INotifyCollectionChanged` collection (such as `ObservableCollection<T>`), the corresponding documents are created or removed in the dock.
+`DocumentDock.ItemsSource` and `ToolDock.ItemsSource` work similarly to `ListBox.ItemsSource` in Avalonia. When you add or remove items from an `INotifyCollectionChanged` collection (such as `ObservableCollection<T>`), corresponding dockables are created or removed automatically.
 
-`ItemsSource` is implemented by `Dock.Model.Avalonia.Controls.DocumentDock`, so it is available in XAML layouts and in the Avalonia model layer. It requires a `DocumentTemplate` to be set; if no template is supplied, no documents are generated.
+`ItemsSource` is implemented by `Dock.Model.Avalonia.Controls.DocumentDock` and `Dock.Model.Avalonia.Controls.ToolDock` in the Avalonia model layer:
+
+- `DocumentDock.ItemsSource` requires `DocumentTemplate`.
+- `ToolDock.ItemsSource` requires `ToolTemplate`.
+
+If no template is supplied, no generated dockables are created.
 
 ## Behavior details
 
 - `DocumentDock` creates a `Document` for each item and stores the item in `Document.Context`.
+- `ToolDock` creates a `Tool` for each item and stores the item in `Tool.Context`.
 - The tab title is derived from `Title`, `Name`, or `DisplayName` properties on the item (in that order), falling back to `ToString()`.
 - `CanClose` is copied from the item if present; otherwise it defaults to `true`.
-- When a generated document is closed, the factory attempts to remove the source item from `ItemsSource` if it implements `IList`.
+- When a generated document or tool is closed, the factory attempts to remove the source item from `ItemsSource` if it implements `IList`.
+- Source-generated document/tool closes are treated as remove operations, even when `Factory.HideDocumentsOnClose` or `Factory.HideToolsOnClose` is enabled.
 
 ## Key Benefits
 
@@ -241,6 +248,37 @@ public class DataView : INotifyPropertyChanged
 
 ## Advanced Scenarios
 
+## ToolDock Usage
+
+Bind a tools collection to `ToolDock.ItemsSource` and define a `ToolTemplate`:
+
+```xaml
+<ToolDock Alignment="Left" ItemsSource="{Binding Tools}">
+  <ToolDock.ToolTemplate>
+    <ToolTemplate>
+      <StackPanel Margin="10" x:DataType="Tool">
+        <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+        <StackPanel DataContext="{Binding Context}" x:DataType="models:ToolItem">
+          <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding Status}" Opacity="0.75"/>
+        </StackPanel>
+      </StackPanel>
+    </ToolTemplate>
+  </ToolDock.ToolTemplate>
+</ToolDock>
+```
+
+### Tool Property Mapping
+
+Generated `Tool` instances use the same property mapping strategy:
+
+| Model Property | Tool Property | Description |
+|----------------|---------------|-------------|
+| `Title` | `Title` | Tool tab title |
+| `Name` | `Title` | Alternative title source |
+| `DisplayName` | `Title` | Alternative title source |
+| `CanClose` | `CanClose` | Controls whether the tool can be closed |
+
 ### Dynamic Content Types
 
 ```csharp
@@ -323,7 +361,7 @@ public class CommandDocument : INotifyPropertyChanged
 - **Large Collections**: Consider virtualization for collections with many items
 - **Frequent Updates**: Batch collection changes when possible
 - **Memory Management**: Ensure proper cleanup of resources in document models
-- **Template Complexity**: Keep `DocumentTemplate` lightweight for better performance
+- **Template Complexity**: Keep `DocumentTemplate` and `ToolTemplate` lightweight for better performance
 
 ## Troubleshooting
 
@@ -351,3 +389,4 @@ public class CommandDocument : INotifyPropertyChanged
 - [Document and Tool Content Guide](dock-content-guide.md) - Comprehensive content setup
 - [Dock Advanced Topics](dock-advanced.md) - Advanced docking scenarios
 - [Dock FAQ](dock-faq.md) - Common questions and troubleshooting
+- [`samples/DockReactiveUIItemsSourceSample`](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockReactiveUIItemsSourceSample) - ReactiveUI sample using both document and tool items sources

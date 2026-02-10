@@ -129,6 +129,22 @@ public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 };
         }
 
+        if (jsonTypeInfo.Type == typeof(IToolTemplate)
+            || jsonTypeInfo.Type == typeof(ToolTemplate))
+        {
+            jsonTypeInfo.PolymorphismOptions =
+                new JsonPolymorphismOptions
+                {
+                    TypeDiscriminatorPropertyName = "$type",
+                    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor,
+                    IgnoreUnrecognizedTypeDiscriminators = true,
+                    DerivedTypes =
+                    {
+                        new JsonDerivedType(typeof(ToolTemplate), "ToolTemplate"),
+                    }
+                };
+        }
+
         return jsonTypeInfo;
     }
 }

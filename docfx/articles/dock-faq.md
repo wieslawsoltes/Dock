@@ -4,9 +4,9 @@ This page answers common questions that come up when using Dock.
 
 ## Content setup
 
-**What's the best way to create documents dynamically?**
+**What's the best way to create documents and tools dynamically?**
 
-Use the new `ItemsSource` property on `DocumentDock` for automatic document management:
+Use `ItemsSource` on `DocumentDock` and `ToolDock` for automatic source-backed dockable management:
 
 ```xaml
 <DocumentDock ItemsSource="{Binding Documents}">
@@ -21,16 +21,16 @@ Use the new `ItemsSource` property on `DocumentDock` for automatic document mana
 </DocumentDock>
 ```
 
-This approach automatically creates/removes documents when you add/remove items from your collection, similar to how `ListBox.ItemsSource` works.
+This approach automatically creates/removes dockables when you add/remove items from your collections, similar to how `ListBox.ItemsSource` works.
 
 **My document tabs are blank/empty (ItemsSource approach)**
 
-For `ItemsSource` documents, check:
-1. `DocumentTemplate` is set (no template means no documents are created)
+For `ItemsSource` documents and tools, check:
+1. `DocumentTemplate`/`ToolTemplate` is set (no template means no generated dockables are created)
 2. Collection items expose `Title`, `Name`, or `DisplayName` (or override `ToString`) for tab headers
-3. Access your model via `{Binding Context.PropertyName}` not `{Binding PropertyName}`
+3. Access your model via `{Binding Context.PropertyName}` not `{Binding PropertyName}` (same for `ToolTemplate`)
 4. Your model implements `INotifyPropertyChanged` if you expect updates
-5. If you use compiled bindings, set `x:DataType="Document"` on the template root
+5. If you use compiled bindings, set `x:DataType="Document"` or `x:DataType="Tool"` on the template root
 
 **My document tabs are blank/empty (ViewModel approach)**
 
@@ -95,7 +95,7 @@ Active and focused dockables are serialized with the layout itself, so you do no
 1. Assign the layout to `DockControl.Layout` before calling `InitLayout`.
 2. Do not overwrite `ActiveDockable` or `DefaultDockable` after loading.
 
-`DockState` is used for restoring document/tool content and document templates, not focus.
+`DockState` is used for restoring document/tool content and dock templates (`DocumentTemplate`/`ToolTemplate`), not focus.
 
 ## Serialization pitfalls
 

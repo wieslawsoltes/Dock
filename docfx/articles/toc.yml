@@ -10,7 +10,7 @@
     href: dock-code-only.md
 - name: Tutorials & how-to
   items:
-  - name: DocumentDock ItemsSource
+  - name: Document and Tool ItemsSource
     href: dock-itemssource.md
   - name: Document and Tool Content Guide
     href: dock-content-guide.md

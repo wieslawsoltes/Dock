@@ -4,7 +4,7 @@ This guide explains how to get started with Dock using ReactiveUI and dependency
 
 The sample project `DockReactiveUIDiSample` in the repository demonstrates this approach. For interface details refer to the [Dock API Reference](dock-reference.md).
 
-> **💡 Modern Approach**: For easier document management, consider using [DocumentDock.ItemsSource](dock-itemssource.md) which automatically creates and manages documents from collections. The ItemsSource approach works seamlessly with dependency injection and ReactiveUI. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
+> **💡 Modern Approach**: For easier source-backed layout management, consider using [DocumentDock/ToolDock ItemsSource](dock-itemssource.md) which automatically creates and manages documents and tools from collections. The ItemsSource approach works seamlessly with dependency injection and ReactiveUI. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
 
 ## Step-by-step tutorial
 

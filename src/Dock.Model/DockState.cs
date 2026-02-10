@@ -14,6 +14,7 @@ public class DockState : IDockState
     private readonly Dictionary<string, object?> _toolContents;
     private readonly Dictionary<string, object?> _documentContents;
     private readonly Dictionary<string, IDocumentTemplate?> _documentTemplates;
+    private readonly Dictionary<string, IToolTemplate?> _toolTemplates;
 
     /// <summary>
     /// 
@@ -23,6 +24,7 @@ public class DockState : IDockState
         _toolContents = new Dictionary<string, object?>();
         _documentContents = new Dictionary<string, object?>();
         _documentTemplates = new Dictionary<string, IDocumentTemplate?>();
+        _toolTemplates = new Dictionary<string, IToolTemplate?>();
     }
 
     /// <inheritdoc/>
@@ -251,6 +253,16 @@ public class DockState : IDockState
 
                 break;
             }
+            case IToolDockContent toolDock:
+            {
+                var id = toolDock.Id;
+                if (!string.IsNullOrEmpty(id))
+                {
+                    _toolTemplates[id] = toolDock.ToolTemplate;
+                }
+
+                break;
+            }
             case IDocumentContent document:
             {
                 var id = document.Id;
@@ -280,12 +292,38 @@ public class DockState : IDockState
         {
             case IToolContent tool:
             {
+                var haveContent = false;
                 var id = tool.Id;
                 if (!string.IsNullOrEmpty(id))
                 {
                     if (_toolContents.TryGetValue(id, out var content))
                     {
                         tool.Content = content;
+                        haveContent = true;
+                    }
+                }
+
+                if (haveContent == false)
+                {
+                    if (tool.Owner is IToolDockContent toolDock)
+                    {
+                        if (toolDock.ToolTemplate is { })
+                        {
+                            tool.Content = toolDock.ToolTemplate.Content;
+                        }
+                    }
+                }
+
+                break;
+            }
+            case IToolDockContent toolDock:
+            {
+                var id = toolDock.Id;
+                if (!string.IsNullOrEmpty(id))
+                {
+                    if (_toolTemplates.TryGetValue(id, out var content))
+                    {
+                        toolDock.ToolTemplate = content;
                     }
                 }
 
@@ -339,5 +377,6 @@ public class DockState : IDockState
         _toolContents.Clear();
         _documentContents.Clear();
         _documentTemplates.Clear();
+        _toolTemplates.Clear();
     }
 }

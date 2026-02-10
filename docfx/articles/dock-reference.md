@@ -70,17 +70,18 @@ The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumen
 
 `IDocumentDockContent` (implemented by the Avalonia model layer) adds `DocumentTemplate` and `CreateDocumentFromTemplate`. `IDocumentDockFactory` exposes a `DocumentFactory` delegate; the built-in document docks in `Dock.Model.Avalonia`, `Dock.Model.Mvvm`, `Dock.Model.ReactiveUI`, `Dock.Model.Prism`, `Dock.Model.Inpc`, `Dock.Model.CaliburMicro`, and `Dock.Model.ReactiveProperty` implement it. `CreateDocument` invokes the delegate when set and adds the resulting document via `AddDocument`. In the Avalonia model, if `DocumentFactory` is not set, `CreateDocument` falls back to `CreateDocumentFromTemplate`.
 
-## ItemsSource document generation
+## ItemsSource dockable generation
 
-`IItemsSourceDock` is implemented by `Dock.Model.Avalonia.Controls.DocumentDock` to provide automatic document management:
+`IItemsSourceDock` and `IToolItemsSourceDock` are implemented in `Dock.Model.Avalonia.Controls` to provide automatic source-backed dockables:
 
-- `ItemsSource` - Collection of data objects that become documents
-- `IsDocumentFromItemsSource(IDockable)` - Checks if a document was auto-generated
-- `RemoveItemFromSource(object)` - Removes an item from the source collection
+- `DocumentDock.ItemsSource` + `DocumentTemplate` generate `Document` dockables.
+- `ToolDock.ItemsSource` + `ToolTemplate` generate `Tool` dockables.
+- `IsDocumentFromItemsSource(IDockable)` / `IsToolFromItemsSource(IDockable)` report whether the dockable was generated from the bound source.
+- `RemoveItemFromSource(object)` removes source items from supported list collections.
 
-When `ItemsSource` is set (and a `DocumentTemplate` is provided), `DocumentDock` automatically creates `Document` instances for each item in the collection. The document's `Title` is derived from common properties like `Title`, `Name`, or `DisplayName` on the source object. The `Context` property is set to the source item, making it accessible in `DocumentTemplate` bindings.
+When `ItemsSource` is set (and the required template is provided), Dock automatically creates dockables for each source item. The generated `Title` is derived from `Title`, `Name`, or `DisplayName` on the source object. The generated dockable `Context` stores the source object for template bindings.
 
-Changes to `INotifyCollectionChanged` collections (for example, `ObservableCollection<T>`) automatically add or remove corresponding documents. When a document generated from `ItemsSource` is closed, the factory attempts to remove the source item from the collection if it implements `IList`.
+Changes to `INotifyCollectionChanged` collections (for example, `ObservableCollection<T>`) automatically add or remove corresponding dockables. When a generated document or tool is closed, the factory attempts to remove the source item from the collection if it implements `IList`.
 
 ## Host window options
 
@@ -180,7 +181,7 @@ root.VisibleDockables = factory.CreateList<IDockable>(docDock);
 factory.InitLayout(root);
 ```
 
-Refer to the factory classes under `samples/DockMvvmSample` and `samples/DockReactiveUISample` for practical examples of these methods in use.
+Refer to the factory classes under `samples/DockMvvmSample`, `samples/DockReactiveUISample`, and `samples/DockReactiveUIItemsSourceSample` for practical examples of these methods in use.
 
 ## Using the MVVM library
 
@@ -213,6 +214,7 @@ In XAML you place `RootDock`, `ProportionalDock`, `ToolDock` or `DocumentDock` e
 **Sample applications:**
 - `samples/DockMvvmSample` – Full MVVM example with commands and data binding
 - `samples/DockReactiveUISample` – ReactiveUI variant with observables
+- `samples/DockReactiveUIItemsSourceSample` – ReactiveUI sample using both `DocumentDock.ItemsSource` and `ToolDock.ItemsSource`
 - `samples/DockReactiveUIWorkspaceSample` – ReactiveUI workspace snapshots and layout locking
 - `samples/DockReactiveUIRoutingSample` – Navigation using `IScreen` and `Router`
 - `samples/DockReactiveUIDiSample` – ReactiveUI with dependency injection

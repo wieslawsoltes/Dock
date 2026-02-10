@@ -22,7 +22,8 @@ internal sealed class DockModelPolymorphicTypeResolver : DefaultJsonTypeInfoReso
         typeof(IDock),
         typeof(IRootDock),
         typeof(IDockWindow),
-        typeof(IDocumentTemplate)
+        typeof(IDocumentTemplate),
+        typeof(IToolTemplate)
     ];
 
     private static readonly Lazy<IReadOnlyDictionary<Type, HashSet<string>>> s_interfaceIgnoredMembers =
@@ -42,6 +43,9 @@ internal sealed class DockModelPolymorphicTypeResolver : DefaultJsonTypeInfoReso
 
     private static readonly JsonPolymorphismOptions s_documentTemplateOptions =
         CreateOptions(typeof(IDocumentTemplate), JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor);
+
+    private static readonly JsonPolymorphismOptions s_toolTemplateOptions =
+        CreateOptions(typeof(IToolTemplate), JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor);
 
     public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)
     {
@@ -67,6 +71,10 @@ internal sealed class DockModelPolymorphicTypeResolver : DefaultJsonTypeInfoReso
         else if (type == typeof(IDocumentTemplate))
         {
             jsonTypeInfo.PolymorphismOptions = s_documentTemplateOptions;
+        }
+        else if (type == typeof(IToolTemplate))
+        {
+            jsonTypeInfo.PolymorphismOptions = s_toolTemplateOptions;
         }
 
         return jsonTypeInfo;

@@ -1077,6 +1077,13 @@ public abstract partial class FactoryBase
                 targetContent.DocumentTemplate = sourceContent.DocumentTemplate;
             }
 
+            if (sourceDoc is IItemsSourceDock sourceDocumentItemsDock
+                && targetDoc is IItemsSourceDock targetDocumentItemsDock)
+            {
+                targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
+                targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
+            }
+
             if (sourceDoc is IDocumentDockFactory sourceDocFactory && targetDoc is IDocumentDockFactory targetDocFactory)
             {
                 targetDocFactory.DocumentFactory = sourceDocFactory.DocumentFactory;
@@ -1093,6 +1100,13 @@ public abstract partial class FactoryBase
             if (sourceTool is IToolDockContent sourceToolContent && targetTool is IToolDockContent targetToolContent)
             {
                 targetToolContent.ToolTemplate = sourceToolContent.ToolTemplate;
+            }
+
+            if (sourceTool is IToolItemsSourceDock sourceToolItemsDock
+                && targetTool is IToolItemsSourceDock targetToolItemsDock)
+            {
+                targetToolItemsDock.ToolItemContainerTheme = sourceToolItemsDock.ToolItemContainerTheme;
+                targetToolItemsDock.ToolItemTemplateSelector = sourceToolItemsDock.ToolItemTemplateSelector;
             }
         }
 
@@ -1381,6 +1395,13 @@ public abstract partial class FactoryBase
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
             }
 
+            if (sourceDock is IItemsSourceDock sourceDocumentItemsDock
+                && targetDock is IItemsSourceDock targetDocumentItemsDock)
+            {
+                targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
+                targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
+            }
+
             if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)
             {
                 tfd.DocumentFactory = sfd.DocumentFactory;
@@ -1446,6 +1467,13 @@ public abstract partial class FactoryBase
             if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
             {
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
+            }
+
+            if (sourceDock is IItemsSourceDock sourceDocumentItemsDock
+                && targetDock is IItemsSourceDock targetDocumentItemsDock)
+            {
+                targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
+                targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
             }
 
             if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)

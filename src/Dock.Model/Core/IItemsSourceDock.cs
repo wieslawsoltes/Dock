@@ -20,6 +20,17 @@ public interface IItemsSourceDock
     IDockItemContainerGenerator? ItemContainerGenerator { get; }
 
     /// <summary>
+    /// Gets or sets per-dock container theme metadata used for generated documents.
+    /// The value can be a theme instance or a theme resource key.
+    /// </summary>
+    object? DocumentItemContainerTheme { get; set; }
+
+    /// <summary>
+    /// Gets or sets the per-dock template selector for generated documents.
+    /// </summary>
+    IDocumentItemTemplateSelector? DocumentItemTemplateSelector { get; set; }
+
+    /// <summary>
     /// Checks if a document was generated from ItemsSource.
     /// </summary>
     /// <param name="document">The document to check.</param>

@@ -27,6 +27,12 @@ public class DockService : IDockService
         {
             targetContent.ToolTemplate = sourceContent.ToolTemplate;
         }
+
+        if (source is IToolItemsSourceDock sourceItemsDock && target is IToolItemsSourceDock targetItemsDock)
+        {
+            targetItemsDock.ToolItemContainerTheme = sourceItemsDock.ToolItemContainerTheme;
+            targetItemsDock.ToolItemTemplateSelector = sourceItemsDock.ToolItemTemplateSelector;
+        }
     }
 
     private static bool IsValidMove(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, IDockable targetDockable)
@@ -211,6 +217,13 @@ public class DockService : IDockService
                 && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
             {
                 targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+            }
+
+            if (sourceDocumentDock is IItemsSourceDock sourceDocumentItemsDock
+                && targetDocumentDock is IItemsSourceDock targetDocumentItemsDock)
+            {
+                targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
+                targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
             }
 
             if (sourceDocumentDock is IDocumentDockFactory sourceDocumentDockFactory

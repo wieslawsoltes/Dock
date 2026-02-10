@@ -3,14 +3,31 @@
         xmlns:model="using:Dock.Model.Avalonia.Controls"
         xmlns:dockModel="using:Dock.Model.Avalonia"
         xmlns:dock="using:Dock.Avalonia.Controls"
-        xmlns:vm="using:DockReactiveUIItemsSourceSample.ViewModels"
-        xmlns:infra="using:DockReactiveUIItemsSourceSample.Infrastructure"
-        xmlns:sampleModels="using:DockReactiveUIItemsSourceSample.Models"
-        x:Class="DockReactiveUIItemsSourceSample.Views.MainWindow"
+        xmlns:vm="using:DockXamlReactiveUISample.ViewModels"
+        xmlns:infra="using:DockXamlReactiveUISample.Infrastructure"
+        xmlns:sampleModels="using:DockXamlReactiveUISample.Models"
+        x:Class="DockXamlReactiveUISample.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Dock ReactiveUI ItemsSource Sample"
         Width="1280"
         Height="800">
+
+  <Window.Resources>
+    <infra:SampleDocumentItemTemplateSelector x:Key="SampleDocumentItemTemplateSelector" />
+    <infra:SampleToolItemTemplateSelector x:Key="SampleToolItemTemplateSelector" />
+
+    <ControlTheme x:Key="SampleGeneratedDocumentContainerTheme"
+                  TargetType="dock:DocumentContentControl"
+                  BasedOn="{StaticResource {x:Type dock:DocumentContentControl}}">
+      <Setter Property="Margin" Value="3" />
+    </ControlTheme>
+
+    <ControlTheme x:Key="SampleGeneratedToolContainerTheme"
+                  TargetType="dock:ToolContentControl"
+                  BasedOn="{StaticResource {x:Type dock:ToolContentControl}}">
+      <Setter Property="Margin" Value="3" />
+    </ControlTheme>
+  </Window.Resources>
 
   <DockPanel>
 
@@ -44,6 +61,8 @@
                             Title="Tools"
                             Alignment="Left"
                             Proportion="0.3"
+                            ToolItemContainerTheme="SampleGeneratedToolContainerTheme"
+                            ToolItemTemplateSelector="{StaticResource SampleToolItemTemplateSelector}"
                             ItemsSource="{Binding DataContext.Tools, RelativeSource={RelativeSource AncestorType=Window}}">
               <model:ToolDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />
@@ -70,6 +89,8 @@
                                 Title="Documents"
                                 Proportion="0.7"
                                 CanCreateDocument="False"
+                                DocumentItemContainerTheme="SampleGeneratedDocumentContainerTheme"
+                                DocumentItemTemplateSelector="{StaticResource SampleDocumentItemTemplateSelector}"
                                 ItemsSource="{Binding DataContext.Documents, RelativeSource={RelativeSource AncestorType=Window}}">
               <model:DocumentDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />

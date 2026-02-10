@@ -1,6 +1,6 @@
 using ReactiveUI;
 
-namespace DockReactiveUIItemsSourceSample.Models;
+namespace DockXamlReactiveUISample.Models;
 
 public class ToolItem : ReactiveObject
 {

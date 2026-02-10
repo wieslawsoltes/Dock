@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -1238,6 +1239,23 @@ public class ManagedWindowParityTests
 
         var border = Assert.IsType<Border>(result);
         Assert.Equal("FactoryContent", border.Name);
+    }
+
+    [AvaloniaFact]
+    public void ManagedDockWindowDocument_Build_Uses_Func_Content_TemplateResult()
+    {
+        var window = new DockWindow { Title = "Content" };
+        var managedDocument = new ManagedDockWindowDocument(window);
+        managedDocument.Content = new Func<IServiceProvider, object>(_ =>
+        {
+            var control = new Border { Name = "TemplateResultContent" };
+            return new TemplateResult<Control>(control, null!);
+        });
+
+        var result = managedDocument.Build(null);
+
+        var border = Assert.IsType<Border>(result);
+        Assert.Equal("TemplateResultContent", border.Name);
     }
 
     [AvaloniaFact]

@@ -30,8 +30,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Install workloads
-      run: dotnet workload install wasm-tools wasm-experimental
     - name: Build
       run: dotnet build -c Release
 
@@ -48,8 +46,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Install workloads
-      run: dotnet workload install wasm-tools wasm-experimental
     - name: Test
       run: dotnet test -c Release
 
@@ -62,8 +58,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Install workloads
-      run: dotnet workload install wasm-tools wasm-experimental
     - name: Pack
       run: dotnet pack -c Release -o artifacts/nuget
     - name: Upload NuGet artifacts

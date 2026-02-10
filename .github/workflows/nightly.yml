@@ -30,9 +30,6 @@ jobs:
         with:
           global-json-file: global.json
 
-      - name: Install workloads
-        run: dotnet workload install wasm-tools wasm-experimental
-
       - name: Determine version suffix
         id: version
         run: |

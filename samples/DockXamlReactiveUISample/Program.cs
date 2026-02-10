@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using ReactiveUI.Avalonia;
 
-namespace DockReactiveUIItemsSourceSample;
+namespace DockXamlReactiveUISample;
 
 [RequiresUnreferencedCode("Requires unreferenced code for App.")]
 [RequiresDynamicCode("Requires dynamic code for App.")]

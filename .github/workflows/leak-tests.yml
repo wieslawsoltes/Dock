@@ -26,8 +26,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Install workloads
-      run: dotnet workload install wasm-tools wasm-experimental
     - name: Run Dock.Avalonia leak tests
       run: dotnet test -c Release tests/Dock.Avalonia.LeakTests/Dock.Avalonia.LeakTests.csproj
     - name: Run Dock.Model.Mvvm leak tests

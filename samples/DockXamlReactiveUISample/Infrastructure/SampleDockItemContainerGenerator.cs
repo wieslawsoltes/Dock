@@ -1,7 +1,7 @@
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 
-namespace DockReactiveUIItemsSourceSample.Infrastructure;
+namespace DockXamlReactiveUISample.Infrastructure;
 
 public sealed class SampleDockItemContainerGenerator : DockItemContainerGenerator
 {

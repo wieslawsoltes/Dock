@@ -30,6 +30,60 @@ public class DockItemContainerGeneratorTests
         public bool IsPrepared { get; set; }
     }
 
+    private sealed class RecordingDocumentTemplateSelector : IDocumentItemTemplateSelector
+    {
+        public int Calls { get; private set; }
+        public object? Template { get; set; }
+
+        public object? SelectTemplate(IItemsSourceDock dock, object item, int index)
+        {
+            Calls++;
+            return Template;
+        }
+    }
+
+    private sealed class RecordingToolTemplateSelector : IToolItemTemplateSelector
+    {
+        public int Calls { get; private set; }
+        public object? Template { get; set; }
+
+        public object? SelectTemplate(IToolItemsSourceDock dock, object item, int index)
+        {
+            Calls++;
+            return Template;
+        }
+    }
+
+    private sealed class PrecedenceGenerator : DockItemContainerGenerator
+    {
+        private readonly object _themeToSetBeforeBase;
+
+        public PrecedenceGenerator(object themeToSetBeforeBase)
+        {
+            _themeToSetBeforeBase = themeToSetBeforeBase;
+        }
+
+        public override void PrepareDocumentContainer(IItemsSourceDock dock, IDockable container, object item, int index)
+        {
+            if (container is IDockItemContainerMetadata metadata)
+            {
+                metadata.ItemContainerTheme = _themeToSetBeforeBase;
+            }
+
+            base.PrepareDocumentContainer(dock, container, item, index);
+        }
+
+        public override void PrepareToolContainer(IToolItemsSourceDock dock, IDockable container, object item, int index)
+        {
+            if (container is IDockItemContainerMetadata metadata)
+            {
+                metadata.ItemContainerTheme = _themeToSetBeforeBase;
+            }
+
+            base.PrepareToolContainer(dock, container, item, index);
+        }
+    }
+
     private sealed class TrackingContainerGenerator : IDockItemContainerGenerator
     {
         public int PreparedDocuments { get; private set; }
@@ -305,6 +359,39 @@ public class DockItemContainerGeneratorTests
     }
 
     [AvaloniaFact]
+    public void ChangingDocumentTemplate_RegeneratesDocumentContainers()
+    {
+        var items = new ObservableCollection<TestItem> { new() { Title = "Doc A" } };
+        var firstTemplate = new DocumentTemplate
+        {
+            Content = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Template A" })
+        };
+        var secondTemplate = new DocumentTemplate
+        {
+            Content = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Template B" })
+        };
+
+        var dock = new DocumentDock
+        {
+            DocumentTemplate = firstTemplate,
+            ItemsSource = items
+        };
+
+        var firstDocument = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        var firstFactory = Assert.IsType<Func<IServiceProvider, object>>(firstDocument.Content);
+        var firstContent = Assert.IsType<TextBlock>(firstFactory(null!));
+        Assert.Equal("Template A", firstContent.Text);
+
+        dock.DocumentTemplate = secondTemplate;
+
+        var secondDocument = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        Assert.NotSame(firstDocument, secondDocument);
+        var secondFactory = Assert.IsType<Func<IServiceProvider, object>>(secondDocument.Content);
+        var secondContent = Assert.IsType<TextBlock>(secondFactory(null!));
+        Assert.Equal("Template B", secondContent.Text);
+    }
+
+    [AvaloniaFact]
     public void DocumentDock_CustomGenerator_TracksAddRemoveReplaceReset()
     {
         var generator = new TrackingContainerGenerator();
@@ -463,5 +550,319 @@ public class DockItemContainerGeneratorTests
 
         Assert.Empty(RequireVisibleDockables(dock));
         Assert.Equal(1, generator.ClearedTools);
+    }
+
+    [AvaloniaFact]
+    public void DocumentDock_DefaultGenerator_UsesTemplateSelector_WhenProvided()
+    {
+        var selector = new RecordingDocumentTemplateSelector
+        {
+            Template = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Selector Doc" })
+        };
+
+        var dock = new DocumentDock
+        {
+            DocumentTemplate = new DocumentTemplate
+            {
+                Content = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Dock Doc" })
+            },
+            DocumentItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Doc A" }
+            }
+        };
+
+        var generated = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        var contentFactory = Assert.IsType<Func<IServiceProvider, object>>(generated.Content);
+        var content = Assert.IsType<TextBlock>(contentFactory(null!));
+        Assert.Equal("Selector Doc", content.Text);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void ToolDock_DefaultGenerator_UsesTemplateSelector_WhenProvided()
+    {
+        var selector = new RecordingToolTemplateSelector
+        {
+            Template = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Selector Tool" })
+        };
+
+        var dock = new ToolDock
+        {
+            ToolTemplate = new ToolTemplate
+            {
+                Content = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Dock Tool" })
+            },
+            ToolItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Tool A" }
+            }
+        };
+
+        var generated = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        var contentFactory = Assert.IsType<Func<IServiceProvider, object>>(generated.Content);
+        var content = Assert.IsType<TextBlock>(contentFactory(null!));
+        Assert.Equal("Selector Tool", content.Text);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void DocumentDock_DefaultGenerator_SelectorNull_FallsBackToDocumentTemplate()
+    {
+        var selector = new RecordingDocumentTemplateSelector { Template = null };
+        var dock = new DocumentDock
+        {
+            DocumentTemplate = new DocumentTemplate
+            {
+                Content = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Dock Doc" })
+            },
+            DocumentItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Doc A" }
+            }
+        };
+
+        var generated = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        var contentFactory = Assert.IsType<Func<IServiceProvider, object>>(generated.Content);
+        var content = Assert.IsType<TextBlock>(contentFactory(null!));
+        Assert.Equal("Dock Doc", content.Text);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void ToolDock_DefaultGenerator_SelectorNull_FallsBackToToolTemplate()
+    {
+        var selector = new RecordingToolTemplateSelector { Template = null };
+        var dock = new ToolDock
+        {
+            ToolTemplate = new ToolTemplate
+            {
+                Content = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Dock Tool" })
+            },
+            ToolItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Tool A" }
+            }
+        };
+
+        var generated = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        var contentFactory = Assert.IsType<Func<IServiceProvider, object>>(generated.Content);
+        var content = Assert.IsType<TextBlock>(contentFactory(null!));
+        Assert.Equal("Dock Tool", content.Text);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void DocumentDock_DefaultGenerator_AllowsSelectorWithoutDocumentTemplate()
+    {
+        var selector = new RecordingDocumentTemplateSelector
+        {
+            Template = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Selector Only" })
+        };
+
+        var dock = new DocumentDock
+        {
+            DocumentItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Doc A" }
+            }
+        };
+
+        var generated = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        var contentFactory = Assert.IsType<Func<IServiceProvider, object>>(generated.Content);
+        var content = Assert.IsType<TextBlock>(contentFactory(null!));
+        Assert.Equal("Selector Only", content.Text);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void DocumentDock_DefaultGenerator_SelectorFactoryReturningControl_BuildsControl()
+    {
+        var selector = new RecordingDocumentTemplateSelector
+        {
+            Template = new Func<IServiceProvider, object>(_ => new StackPanel())
+        };
+
+        var dock = new DocumentDock
+        {
+            DocumentItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Doc A" }
+            }
+        };
+
+        var generated = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        var builtControl = generated.Build(null, null);
+
+        Assert.IsType<StackPanel>(builtControl);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void DocumentDock_DefaultGenerator_SelectorNullWithoutDocumentTemplate_SkipsGeneration()
+    {
+        var selector = new RecordingDocumentTemplateSelector { Template = null };
+        var dock = new DocumentDock
+        {
+            DocumentItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Doc A" }
+            }
+        };
+
+        Assert.Empty(RequireVisibleDockables(dock));
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void ToolDock_DefaultGenerator_AllowsSelectorWithoutToolTemplate()
+    {
+        var selector = new RecordingToolTemplateSelector
+        {
+            Template = new Func<IServiceProvider, object>(_ => new TextBlock { Text = "Selector Only" })
+        };
+
+        var dock = new ToolDock
+        {
+            ToolItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Tool A" }
+            }
+        };
+
+        var generated = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        var contentFactory = Assert.IsType<Func<IServiceProvider, object>>(generated.Content);
+        var content = Assert.IsType<TextBlock>(contentFactory(null!));
+        Assert.Equal("Selector Only", content.Text);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void ToolDock_DefaultGenerator_SelectorFactoryReturningControl_BuildsControl()
+    {
+        var selector = new RecordingToolTemplateSelector
+        {
+            Template = new Func<IServiceProvider, object>(_ => new StackPanel())
+        };
+
+        var dock = new ToolDock
+        {
+            ToolItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Tool A" }
+            }
+        };
+
+        var generated = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        var builtControl = generated.Build(null, null);
+
+        Assert.IsType<StackPanel>(builtControl);
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void ToolDock_DefaultGenerator_SelectorNullWithoutToolTemplate_SkipsGeneration()
+    {
+        var selector = new RecordingToolTemplateSelector { Template = null };
+        var dock = new ToolDock
+        {
+            ToolItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Tool A" }
+            }
+        };
+
+        Assert.Empty(RequireVisibleDockables(dock));
+        Assert.Equal(1, selector.Calls);
+    }
+
+    [AvaloniaFact]
+    public void DocumentDock_DefaultGenerator_SetsContainerMetadata_FromDock()
+    {
+        var selector = new RecordingDocumentTemplateSelector();
+        var dock = new DocumentDock
+        {
+            DocumentTemplate = new DocumentTemplate(),
+            DocumentItemContainerTheme = "GeneratedDocumentTheme",
+            DocumentItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Doc A" }
+            }
+        };
+
+        var generated = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        var metadata = Assert.IsAssignableFrom<IDockItemContainerMetadata>(generated);
+        Assert.Equal("GeneratedDocumentTheme", metadata.ItemContainerTheme);
+        Assert.Same(selector, metadata.ItemTemplateSelector);
+    }
+
+    [AvaloniaFact]
+    public void ToolDock_DefaultGenerator_SetsContainerMetadata_FromDock()
+    {
+        var selector = new RecordingToolTemplateSelector();
+        var dock = new ToolDock
+        {
+            ToolTemplate = new ToolTemplate(),
+            ToolItemContainerTheme = "GeneratedToolTheme",
+            ToolItemTemplateSelector = selector,
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Tool A" }
+            }
+        };
+
+        var generated = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        var metadata = Assert.IsAssignableFrom<IDockItemContainerMetadata>(generated);
+        Assert.Equal("GeneratedToolTheme", metadata.ItemContainerTheme);
+        Assert.Same(selector, metadata.ItemTemplateSelector);
+    }
+
+    [AvaloniaFact]
+    public void DocumentDock_DockThemeMetadata_TakesPrecedence_OverGeneratorMetadata()
+    {
+        var dock = new DocumentDock
+        {
+            DocumentTemplate = new DocumentTemplate(),
+            DocumentItemContainerTheme = "DockTheme",
+            ItemContainerGenerator = new PrecedenceGenerator("GeneratorTheme"),
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Doc A" }
+            }
+        };
+
+        var generated = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        var metadata = Assert.IsAssignableFrom<IDockItemContainerMetadata>(generated);
+        Assert.Equal("DockTheme", metadata.ItemContainerTheme);
+    }
+
+    [AvaloniaFact]
+    public void ToolDock_DockThemeMetadata_TakesPrecedence_OverGeneratorMetadata()
+    {
+        var dock = new ToolDock
+        {
+            ToolTemplate = new ToolTemplate(),
+            ToolItemContainerTheme = "DockTheme",
+            ItemContainerGenerator = new PrecedenceGenerator("GeneratorTheme"),
+            ItemsSource = new ObservableCollection<TestItem>
+            {
+                new() { Title = "Tool A" }
+            }
+        };
+
+        var generated = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        var metadata = Assert.IsAssignableFrom<IDockItemContainerMetadata>(generated);
+        Assert.Equal("DockTheme", metadata.ItemContainerTheme);
     }
 }

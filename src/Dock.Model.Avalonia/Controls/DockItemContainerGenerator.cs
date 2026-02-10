@@ -22,9 +22,20 @@ public class DockItemContainerGenerator : IDockItemContainerGenerator
     /// <inheritdoc />
     public virtual IDockable? CreateDocumentContainer(IItemsSourceDock dock, object item, int index)
     {
-        if (dock is not IDocumentDockContent { DocumentTemplate: not null })
+        var hasDocumentTemplate = dock is IDocumentDockContent { DocumentTemplate: not null };
+        if (!hasDocumentTemplate)
         {
-            return null;
+            var selectorContent = SelectDocumentTemplateContent(dock, item, index);
+            if (selectorContent is null)
+            {
+                return null;
+            }
+
+            return new Document
+            {
+                Id = Guid.NewGuid().ToString(),
+                Content = selectorContent
+            };
         }
 
         return new Document
@@ -39,9 +50,22 @@ public class DockItemContainerGenerator : IDockItemContainerGenerator
         container.Title = GetItemTitle(item);
         container.Context = item;
         container.CanClose = GetItemCanClose(item);
+        ApplyGeneratedContainerMetadata(container, dock.DocumentItemContainerTheme, dock.DocumentItemTemplateSelector);
 
         if (container is not IDocumentContent content)
         {
+            return;
+        }
+
+        if (dock is not IDocumentDockContent { DocumentTemplate: not null } && content.Content != null)
+        {
+            return;
+        }
+
+        var selectorContent = SelectDocumentTemplateContent(dock, item, index);
+        if (selectorContent != null)
+        {
+            content.Content = selectorContent;
             return;
         }
 
@@ -64,6 +88,7 @@ public class DockItemContainerGenerator : IDockItemContainerGenerator
     public virtual void ClearDocumentContainer(IItemsSourceDock dock, IDockable container, object? item)
     {
         container.Context = null;
+        ClearGeneratedContainerMetadata(container);
 
         if (container is IDocumentContent content)
         {
@@ -74,9 +99,20 @@ public class DockItemContainerGenerator : IDockItemContainerGenerator
     /// <inheritdoc />
     public virtual IDockable? CreateToolContainer(IToolItemsSourceDock dock, object item, int index)
     {
-        if (dock is not IToolDockContent { ToolTemplate: not null })
+        var hasToolTemplate = dock is IToolDockContent { ToolTemplate: not null };
+        if (!hasToolTemplate)
         {
-            return null;
+            var selectorContent = SelectToolTemplateContent(dock, item, index);
+            if (selectorContent is null)
+            {
+                return null;
+            }
+
+            return new Tool
+            {
+                Id = Guid.NewGuid().ToString(),
+                Content = selectorContent
+            };
         }
 
         return new Tool
@@ -91,9 +127,22 @@ public class DockItemContainerGenerator : IDockItemContainerGenerator
         container.Title = GetItemTitle(item);
         container.Context = item;
         container.CanClose = GetItemCanClose(item);
+        ApplyGeneratedContainerMetadata(container, dock.ToolItemContainerTheme, dock.ToolItemTemplateSelector);
 
         if (container is not IToolContent content)
         {
+            return;
+        }
+
+        if (dock is not IToolDockContent { ToolTemplate: not null } && content.Content != null)
+        {
+            return;
+        }
+
+        var selectorContent = SelectToolTemplateContent(dock, item, index);
+        if (selectorContent != null)
+        {
+            content.Content = selectorContent;
             return;
         }
 
@@ -116,6 +165,7 @@ public class DockItemContainerGenerator : IDockItemContainerGenerator
     public virtual void ClearToolContainer(IToolItemsSourceDock dock, IDockable container, object? item)
     {
         container.Context = null;
+        ClearGeneratedContainerMetadata(container);
 
         if (container is IToolContent content)
         {
@@ -167,6 +217,63 @@ public class DockItemContainerGenerator : IDockItemContainerGenerator
         }
 
         return true;
+    }
+
+    private static void ApplyGeneratedContainerMetadata(
+        IDockable container,
+        object? containerTheme,
+        object? templateSelector)
+    {
+        if (container is not IDockItemContainerMetadata metadata)
+        {
+            return;
+        }
+
+        metadata.ItemContainerTheme = containerTheme;
+        metadata.ItemTemplateSelector = templateSelector;
+    }
+
+    private static void ClearGeneratedContainerMetadata(IDockable container)
+    {
+        if (container is not IDockItemContainerMetadata metadata)
+        {
+            return;
+        }
+
+        metadata.ItemContainerTheme = null;
+        metadata.ItemTemplateSelector = null;
+    }
+
+    private static object? SelectDocumentTemplateContent(IItemsSourceDock dock, object item, int index)
+    {
+        if (dock.DocumentItemTemplateSelector is null)
+        {
+            return null;
+        }
+
+        var selected = dock.DocumentItemTemplateSelector.SelectTemplate(dock, item, index);
+        if (selected is IDocumentTemplate documentTemplate)
+        {
+            return documentTemplate.Content;
+        }
+
+        return selected;
+    }
+
+    private static object? SelectToolTemplateContent(IToolItemsSourceDock dock, object item, int index)
+    {
+        if (dock.ToolItemTemplateSelector is null)
+        {
+            return null;
+        }
+
+        var selected = dock.ToolItemTemplateSelector.SelectTemplate(dock, item, index);
+        if (selected is IToolTemplate toolTemplate)
+        {
+            return toolTemplate.Content;
+        }
+
+        return selected;
     }
 
     private static Control CreateDocumentFallbackContent(IDockable document, object item)

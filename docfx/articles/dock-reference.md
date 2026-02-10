@@ -77,10 +77,12 @@ The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumen
 - `DocumentDock.ItemsSource` + `DocumentTemplate` generate `Document` dockables.
 - `ToolDock.ItemsSource` + `ToolTemplate` generate `Tool` dockables.
 - `DocumentDock.ItemContainerGenerator` and `ToolDock.ItemContainerGenerator` accept `IDockItemContainerGenerator` for custom create/prepare/clear pipelines.
+- `DocumentDock.DocumentItemContainerTheme` and `ToolDock.ToolItemContainerTheme` provide per-dock container theme metadata.
+- `DocumentDock.DocumentItemTemplateSelector` and `ToolDock.ToolItemTemplateSelector` provide per-item template selection hooks.
 - `IsDocumentFromItemsSource(IDockable)` / `IsToolFromItemsSource(IDockable)` report whether the dockable was generated from the bound source.
 - `RemoveItemFromSource(object)` removes source items from supported list collections.
 
-When `ItemsSource` is set, Dock automatically creates dockables for each source item through the configured `IDockItemContainerGenerator`. With the default generator, generation requires the corresponding template (`DocumentTemplate` or `ToolTemplate`). The generated `Title` is derived from `Title`, `Name`, or `DisplayName` on the source object and `Context` stores the source object for template bindings.
+When `ItemsSource` is set, Dock automatically creates dockables for each source item through the configured `IDockItemContainerGenerator`. With the default generator, generation requires the corresponding template (`DocumentTemplate` or `ToolTemplate`) unless a selector provides template content. The generated `Title` is derived from `Title`, `Name`, or `DisplayName` on the source object and `Context` stores the source object for template bindings.
 
 `DockItemContainerGenerator` is the built-in default implementation. Subclass it or implement `IDockItemContainerGenerator` directly to customize container type, source-to-container mapping, or container cleanup behavior.
 
@@ -184,7 +186,7 @@ root.VisibleDockables = factory.CreateList<IDockable>(docDock);
 factory.InitLayout(root);
 ```
 
-Refer to the factory classes under `samples/DockMvvmSample`, `samples/DockReactiveUISample`, and `samples/DockReactiveUIItemsSourceSample` for practical examples of these methods in use.
+Refer to the factory classes under `samples/DockMvvmSample`, `samples/DockReactiveUISample`, and `samples/DockXamlReactiveUISample` for practical examples of these methods in use.
 
 ## Using the MVVM library
 
@@ -217,7 +219,7 @@ In XAML you place `RootDock`, `ProportionalDock`, `ToolDock` or `DocumentDock` e
 **Sample applications:**
 - `samples/DockMvvmSample` – Full MVVM example with commands and data binding
 - `samples/DockReactiveUISample` – ReactiveUI variant with observables
-- `samples/DockReactiveUIItemsSourceSample` – ReactiveUI sample using both `DocumentDock.ItemsSource` and `ToolDock.ItemsSource`
+- `samples/DockXamlReactiveUISample` – ReactiveUI sample using both `DocumentDock.ItemsSource` and `ToolDock.ItemsSource`
 - `samples/DockReactiveUIWorkspaceSample` – ReactiveUI workspace snapshots and layout locking
 - `samples/DockReactiveUIRoutingSample` – Navigation using `IScreen` and `Router`
 - `samples/DockReactiveUIDiSample` – ReactiveUI with dependency injection

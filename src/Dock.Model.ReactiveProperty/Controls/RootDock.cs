@@ -27,6 +27,7 @@ public class RootDock : DockBase, IRootDock
     private IToolDock? _pinnedDock;
     private PinnedDockDisplayMode _pinnedDockDisplayMode = PinnedDockDisplayMode.Overlay;
     private DockFloatingWindowHostMode _floatingWindowHostMode = DockFloatingWindowHostMode.Default;
+    private DockCapabilityPolicy? _rootDockCapabilityPolicy;
     private bool _enableAdaptiveGlobalDockTargets;
 
     /// <summary>
@@ -124,6 +125,14 @@ public class RootDock : DockBase, IRootDock
     {
         get => _floatingWindowHostMode;
         set => SetProperty(ref _floatingWindowHostMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    public DockCapabilityPolicy? RootDockCapabilityPolicy
+    {
+        get => _rootDockCapabilityPolicy;
+        set => SetProperty(ref _rootDockCapabilityPolicy, value);
     }
 
     /// <inheritdoc/>

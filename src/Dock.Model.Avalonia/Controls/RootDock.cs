@@ -114,6 +114,15 @@ public class RootDock : DockBase, IRootDock
             (o, v) => o.FloatingWindowHostMode = v);
 
     /// <summary>
+    /// Defines the <see cref="RootDockCapabilityPolicy"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, DockCapabilityPolicy?> RootDockCapabilityPolicyProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, DockCapabilityPolicy?>(
+            nameof(RootDockCapabilityPolicy),
+            o => o.RootDockCapabilityPolicy,
+            (o, v) => o.RootDockCapabilityPolicy = v);
+
+    /// <summary>
     /// Defines the <see cref="EnableAdaptiveGlobalDockTargets"/> property.
     /// </summary>
     public static readonly DirectProperty<RootDock, bool> EnableAdaptiveGlobalDockTargetsProperty =
@@ -132,6 +141,7 @@ public class RootDock : DockBase, IRootDock
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
     private DockFloatingWindowHostMode _floatingWindowHostMode;
+    private DockCapabilityPolicy? _rootDockCapabilityPolicy;
     private bool _enableAdaptiveGlobalDockTargets;
 
     /// <summary>
@@ -249,6 +259,15 @@ public class RootDock : DockBase, IRootDock
     {
         get => _floatingWindowHostMode;
         set => SetAndRaise(FloatingWindowHostModeProperty, ref _floatingWindowHostMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    [JsonPropertyName("RootDockCapabilityPolicy")]
+    public DockCapabilityPolicy? RootDockCapabilityPolicy
+    {
+        get => _rootDockCapabilityPolicy;
+        set => SetAndRaise(RootDockCapabilityPolicyProperty, ref _rootDockCapabilityPolicy, value);
     }
 
     /// <inheritdoc/>

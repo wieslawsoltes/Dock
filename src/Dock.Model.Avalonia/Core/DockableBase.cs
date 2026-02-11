@@ -176,6 +176,15 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDockAsDocument), o => o.CanDockAsDocument, (o, v) => o.CanDockAsDocument = v);
 
     /// <summary>
+    /// Defines the <see cref="DockCapabilityOverrides"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, DockCapabilityOverrides?> DockCapabilityOverridesProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, DockCapabilityOverrides?>(
+            nameof(DockCapabilityOverrides),
+            o => o.DockCapabilityOverrides,
+            (o, v) => o.DockCapabilityOverrides = v);
+
+    /// <summary>
     /// Defines the <see cref="IsModified"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, bool> IsModifiedProperty =
@@ -275,6 +284,7 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     private bool _canDrag = true;
     private bool _canDrop = true;
     private bool _canDockAsDocument = true;
+    private DockCapabilityOverrides? _dockCapabilityOverrides;
     private double _minWidth = double.NaN;
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
@@ -588,6 +598,15 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     {
         get => _canDockAsDocument;
         set => SetAndRaise(CanDockAsDocumentProperty, ref _canDockAsDocument, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    [JsonPropertyName("DockCapabilityOverrides")]
+    public DockCapabilityOverrides? DockCapabilityOverrides
+    {
+        get => _dockCapabilityOverrides;
+        set => SetAndRaise(DockCapabilityOverridesProperty, ref _dockCapabilityOverrides, value);
     }
 
     /// <inheritdoc/>

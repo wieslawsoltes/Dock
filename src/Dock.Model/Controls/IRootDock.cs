@@ -68,6 +68,12 @@ public interface IRootDock : IDock
     DockFloatingWindowHostMode FloatingWindowHostMode { get; set; }
 
     /// <summary>
+    /// Gets or sets optional root-wide capability policy values.
+    /// Null values inherit dockable base flag values.
+    /// </summary>
+    DockCapabilityPolicy? RootDockCapabilityPolicy { get; set; }
+
+    /// <summary>
     /// Show windows.
     /// </summary>
     ICommand ShowWindows { get; }

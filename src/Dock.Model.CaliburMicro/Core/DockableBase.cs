@@ -43,6 +43,7 @@ public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorI
     private bool _canDrag = true;
     private bool _canDrop = true;
     private bool _canDockAsDocument = true;
+    private DockCapabilityOverrides? _dockCapabilityOverrides;
     private bool _isModified;
     private string? _dockGroup;
     private DockOperationMask _allowedDockOperations = DockOperationMask.All;
@@ -318,6 +319,14 @@ public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorI
     {
         get => _canDockAsDocument;
         set => Set(ref _canDockAsDocument, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    public DockCapabilityOverrides? DockCapabilityOverrides
+    {
+        get => _dockCapabilityOverrides;
+        set => Set(ref _dockCapabilityOverrides, value);
     }
 
     /// <inheritdoc/>

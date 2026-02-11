@@ -101,6 +101,70 @@ public class AvaloniaDockSerializerTests
     }
 
     [AvaloniaFact]
+    public void Serialize_DocumentDock_IncludesCanUpdateItemsSourceOnUnregister()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var dock = new DocumentDock
+        {
+            CanUpdateItemsSourceOnUnregister = false
+        };
+
+        var json = serializer.Serialize(dock);
+
+        using var document = JsonDocument.Parse(json);
+        Assert.True(document.RootElement.TryGetProperty("CanUpdateItemsSourceOnUnregister", out var value), json);
+        Assert.False(value.GetBoolean());
+    }
+
+    [AvaloniaFact]
+    public void Deserialize_DocumentDock_RestoresCanUpdateItemsSourceOnUnregister()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var dock = new DocumentDock
+        {
+            CanUpdateItemsSourceOnUnregister = false
+        };
+
+        var json = serializer.Serialize(dock);
+        var restored = serializer.Deserialize<DocumentDock>(json);
+
+        Assert.NotNull(restored);
+        Assert.False(restored!.CanUpdateItemsSourceOnUnregister);
+    }
+
+    [AvaloniaFact]
+    public void Serialize_ToolDock_IncludesCanUpdateItemsSourceOnUnregister()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var dock = new ToolDock
+        {
+            CanUpdateItemsSourceOnUnregister = false
+        };
+
+        var json = serializer.Serialize(dock);
+
+        using var document = JsonDocument.Parse(json);
+        Assert.True(document.RootElement.TryGetProperty("CanUpdateItemsSourceOnUnregister", out var value), json);
+        Assert.False(value.GetBoolean());
+    }
+
+    [AvaloniaFact]
+    public void Deserialize_ToolDock_RestoresCanUpdateItemsSourceOnUnregister()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var dock = new ToolDock
+        {
+            CanUpdateItemsSourceOnUnregister = false
+        };
+
+        var json = serializer.Serialize(dock);
+        var restored = serializer.Deserialize<ToolDock>(json);
+
+        Assert.NotNull(restored);
+        Assert.False(restored!.CanUpdateItemsSourceOnUnregister);
+    }
+
+    [AvaloniaFact]
     public void Deserialize_Tool_RestoresDockingState()
     {
         var serializer = new AvaloniaDockSerializer();

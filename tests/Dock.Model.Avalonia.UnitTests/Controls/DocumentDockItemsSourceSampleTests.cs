@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 using Xunit;
 
 namespace Dock.Model.Avalonia.UnitTests.Controls;
@@ -408,5 +409,170 @@ public class DocumentDockItemsSourceSampleTests
 
         Assert.Empty(source);
         Assert.Empty(RequireVisibleDockables(dock));
+    }
+
+    [AvaloniaFact]
+    public void GetContainerFromItem_TracksAndUntracksGeneratedDocuments()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            DocumentTemplate = new DocumentTemplate()
+        };
+
+        var doc1 = new MyDocumentModel { Title = "Doc1", CanClose = true };
+        var doc2 = new MyDocumentModel { Title = "Doc2", CanClose = true };
+        var source = new ObservableCollection<MyDocumentModel> { doc1, doc2 };
+        dock.ItemsSource = source;
+
+        var visibleDockables = RequireVisibleDockables(dock);
+        var generated1 = Assert.IsType<Document>(visibleDockables[0]);
+        var generated2 = Assert.IsType<Document>(visibleDockables[1]);
+
+        Assert.Same(generated1, factory.GetContainerFromItem(doc1));
+        Assert.Same(generated2, factory.GetContainerFromItem(doc2));
+
+        factory.CloseDockable(generated1);
+
+        Assert.Null(factory.GetContainerFromItem(doc1));
+        Assert.Same(generated2, factory.GetContainerFromItem(doc2));
+    }
+
+    [AvaloniaFact]
+    public void GetContainerFromItem_WhenItemsSourceReloaded_TracksLatestContainersOnly()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            DocumentTemplate = new DocumentTemplate()
+        };
+
+        var firstItem = new MyDocumentModel { Title = "First", CanClose = true };
+        var firstSource = new ObservableCollection<MyDocumentModel> { firstItem };
+        dock.ItemsSource = firstSource;
+
+        var firstContainer = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        Assert.Same(firstContainer, factory.GetContainerFromItem(firstItem));
+
+        var secondItem = new MyDocumentModel { Title = "Second", CanClose = true };
+        var secondSource = new ObservableCollection<MyDocumentModel> { secondItem };
+        dock.ItemsSource = secondSource;
+
+        var secondContainer = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        Assert.Null(factory.GetContainerFromItem(firstItem));
+        Assert.Same(secondContainer, factory.GetContainerFromItem(secondItem));
+
+        dock.ItemsSource = null;
+        Assert.Null(factory.GetContainerFromItem(secondItem));
+    }
+
+    [AvaloniaFact]
+    public void ClosingItemsSourceDocument_WhenGlobalUpdateDisabled_DoesNotRemoveSourceItem()
+    {
+        var previous = DockSettings.UpdateItemsSourceOnUnregister;
+        try
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = false;
+
+            var factory = new Factory();
+            var dock = new DocumentDock
+            {
+                Factory = factory,
+                DocumentTemplate = new DocumentTemplate()
+            };
+
+            var sourceItem = new MyDocumentModel { Title = "Doc1", CanClose = true };
+            var source = new ObservableCollection<MyDocumentModel> { sourceItem };
+            dock.ItemsSource = source;
+
+            var generated = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+            factory.CloseDockable(generated);
+
+            Assert.Single(source);
+            Assert.Same(sourceItem, source[0]);
+            Assert.True(dock.VisibleDockables == null || dock.VisibleDockables.Count == 0);
+            Assert.Null(factory.GetContainerFromItem(sourceItem));
+        }
+        finally
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = previous;
+        }
+    }
+
+    [AvaloniaFact]
+    public void ClosingItemsSourceDocument_PerDockOverrideControlsUnregisterBehavior()
+    {
+        var previous = DockSettings.UpdateItemsSourceOnUnregister;
+        try
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = true;
+
+            var disabledDock = new DocumentDock
+            {
+                Factory = new Factory(),
+                DocumentTemplate = new DocumentTemplate(),
+                CanUpdateItemsSourceOnUnregister = false
+            };
+
+            var disabledItem = new MyDocumentModel { Title = "Disabled", CanClose = true };
+            var disabledSource = new ObservableCollection<MyDocumentModel> { disabledItem };
+            disabledDock.ItemsSource = disabledSource;
+            var disabledFactory = (Factory)disabledDock.Factory!;
+            var disabledGenerated = Assert.IsType<Document>(RequireVisibleDockables(disabledDock)[0]);
+            disabledFactory.CloseDockable(disabledGenerated);
+
+            Assert.Single(disabledSource);
+            Assert.Same(disabledItem, disabledSource[0]);
+
+            DockSettings.UpdateItemsSourceOnUnregister = false;
+
+            var enabledDock = new DocumentDock
+            {
+                Factory = new Factory(),
+                DocumentTemplate = new DocumentTemplate(),
+                CanUpdateItemsSourceOnUnregister = true
+            };
+
+            var enabledItem = new MyDocumentModel { Title = "Enabled", CanClose = true };
+            var enabledSource = new ObservableCollection<MyDocumentModel> { enabledItem };
+            enabledDock.ItemsSource = enabledSource;
+            var enabledFactory = (Factory)enabledDock.Factory!;
+            var enabledGenerated = Assert.IsType<Document>(RequireVisibleDockables(enabledDock)[0]);
+            enabledFactory.CloseDockable(enabledGenerated);
+
+            Assert.Empty(enabledSource);
+        }
+        finally
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = previous;
+        }
+    }
+
+    [AvaloniaFact]
+    public void GetContainerFromItem_WithDuplicateSourceItem_TracksRemainingContainer()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            DocumentTemplate = new DocumentTemplate()
+        };
+
+        var shared = new MyDocumentModel { Title = "Shared", CanClose = true };
+        var source = new ObservableCollection<MyDocumentModel> { shared, shared };
+        dock.ItemsSource = source;
+
+        var first = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        Assert.Same(first, factory.GetContainerFromItem(shared));
+
+        factory.CloseDockable(first);
+
+        var second = Assert.IsType<Document>(RequireVisibleDockables(dock)[0]);
+        Assert.Same(second, factory.GetContainerFromItem(shared));
+
+        factory.CloseDockable(second);
+        Assert.Null(factory.GetContainerFromItem(shared));
     }
 } 

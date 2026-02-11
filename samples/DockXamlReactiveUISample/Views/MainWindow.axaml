@@ -52,6 +52,73 @@
                     IsChecked="{Binding ToolCanUpdateItemsSourceOnUnregister}" />
         </StackPanel>
 
+        <Expander Header="Capability Policies" IsExpanded="False">
+          <StackPanel Spacing="8">
+            <Border Padding="8" Background="#FFFFFF" BorderBrush="#D1D5DB" BorderThickness="1" CornerRadius="4">
+              <StackPanel DataContext="{Binding RootCapabilities}" x:DataType="vm:CapabilityPolicyEditor" Spacing="4">
+                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                <WrapPanel Orientation="Horizontal" ItemHeight="24" ItemWidth="220">
+                  <CheckBox Content="CanClose" IsThreeState="True" IsChecked="{Binding CanClose}" />
+                  <CheckBox Content="CanPin" IsThreeState="True" IsChecked="{Binding CanPin}" />
+                  <CheckBox Content="CanFloat" IsThreeState="True" IsChecked="{Binding CanFloat}" />
+                  <CheckBox Content="CanDrag" IsThreeState="True" IsChecked="{Binding CanDrag}" />
+                  <CheckBox Content="CanDrop" IsThreeState="True" IsChecked="{Binding CanDrop}" />
+                  <CheckBox Content="CanDockAsDocument" IsThreeState="True" IsChecked="{Binding CanDockAsDocument}" />
+                </WrapPanel>
+              </StackPanel>
+            </Border>
+
+            <Border Padding="8" Background="#FFFFFF" BorderBrush="#D1D5DB" BorderThickness="1" CornerRadius="4">
+              <StackPanel DataContext="{Binding ToolDockCapabilities}" x:DataType="vm:CapabilityPolicyEditor" Spacing="4">
+                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                <WrapPanel Orientation="Horizontal" ItemHeight="24" ItemWidth="220">
+                  <CheckBox Content="CanClose" IsThreeState="True" IsChecked="{Binding CanClose}" />
+                  <CheckBox Content="CanPin" IsThreeState="True" IsChecked="{Binding CanPin}" />
+                  <CheckBox Content="CanFloat" IsThreeState="True" IsChecked="{Binding CanFloat}" />
+                  <CheckBox Content="CanDrag" IsThreeState="True" IsChecked="{Binding CanDrag}" />
+                  <CheckBox Content="CanDrop" IsThreeState="True" IsChecked="{Binding CanDrop}" />
+                  <CheckBox Content="CanDockAsDocument" IsThreeState="True" IsChecked="{Binding CanDockAsDocument}" />
+                </WrapPanel>
+              </StackPanel>
+            </Border>
+
+            <Border Padding="8" Background="#FFFFFF" BorderBrush="#D1D5DB" BorderThickness="1" CornerRadius="4">
+              <StackPanel DataContext="{Binding DocumentDockCapabilities}" x:DataType="vm:CapabilityPolicyEditor" Spacing="4">
+                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                <WrapPanel Orientation="Horizontal" ItemHeight="24" ItemWidth="220">
+                  <CheckBox Content="CanClose" IsThreeState="True" IsChecked="{Binding CanClose}" />
+                  <CheckBox Content="CanPin" IsThreeState="True" IsChecked="{Binding CanPin}" />
+                  <CheckBox Content="CanFloat" IsThreeState="True" IsChecked="{Binding CanFloat}" />
+                  <CheckBox Content="CanDrag" IsThreeState="True" IsChecked="{Binding CanDrag}" />
+                  <CheckBox Content="CanDrop" IsThreeState="True" IsChecked="{Binding CanDrop}" />
+                  <CheckBox Content="CanDockAsDocument" IsThreeState="True" IsChecked="{Binding CanDockAsDocument}" />
+                </WrapPanel>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Expander>
+
+        <Expander Header="First Generated Item Overrides" IsExpanded="False">
+          <StackPanel Spacing="8">
+            <WrapPanel Orientation="Horizontal" ItemHeight="24" ItemWidth="260">
+              <CheckBox Content="First Document CanClose Override"
+                        IsThreeState="True"
+                        IsChecked="{Binding FirstDocumentCloseOverride}" />
+              <CheckBox Content="First Document CanFloat Override"
+                        IsThreeState="True"
+                        IsChecked="{Binding FirstDocumentFloatOverride}" />
+              <CheckBox Content="First Tool CanClose Override"
+                        IsThreeState="True"
+                        IsChecked="{Binding FirstToolCloseOverride}" />
+              <CheckBox Content="First Tool CanFloat Override"
+                        IsThreeState="True"
+                        IsChecked="{Binding FirstToolFloatOverride}" />
+            </WrapPanel>
+            <TextBlock Text="Override precedence: root policy -> dock policy -> generated container override."
+                       Opacity="0.75" />
+          </StackPanel>
+        </Expander>
+
         <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
           <Button Content="Lookup First Document Container"
                   Command="{Binding LookupDocumentContainerCommand}" />
@@ -75,6 +142,7 @@
       <model:RootDock x:Name="Root"
                       Id="Root"
                       IsCollapsable="False"
+                      RootDockCapabilityPolicy="{Binding DataContext.RootDockCapabilityPolicy, RelativeSource={RelativeSource AncestorType=Window}}"
                       DefaultDockable="{Binding #MainLayout}"
                       ActiveDockable="{Binding #MainLayout}">
 
@@ -85,6 +153,7 @@
                             Title="Tools"
                             Alignment="Left"
                             Proportion="0.3"
+                            DockCapabilityPolicy="{Binding DataContext.ToolDockCapabilityPolicy, RelativeSource={RelativeSource AncestorType=Window}}"
                             ToolItemContainerTheme="SampleGeneratedToolContainerTheme"
                             ToolItemTemplateSelector="{StaticResource SampleToolItemTemplateSelector}"
                             CanUpdateItemsSourceOnUnregister="{Binding DataContext.ToolCanUpdateItemsSourceOnUnregister, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -114,6 +183,7 @@
                                 Title="Documents"
                                 Proportion="0.7"
                                 CanCreateDocument="False"
+                                DockCapabilityPolicy="{Binding DataContext.DocumentDockCapabilityPolicy, RelativeSource={RelativeSource AncestorType=Window}}"
                                 DocumentItemContainerTheme="SampleGeneratedDocumentContainerTheme"
                                 DocumentItemTemplateSelector="{StaticResource SampleDocumentItemTemplateSelector}"
                                 CanUpdateItemsSourceOnUnregister="{Binding DataContext.DocumentCanUpdateItemsSourceOnUnregister, RelativeSource={RelativeSource AncestorType=Window}}"

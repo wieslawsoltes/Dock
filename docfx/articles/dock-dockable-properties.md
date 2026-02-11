@@ -36,6 +36,7 @@ Dockable items such as documents, tools and docks implement the `IDockable` inte
 | `CanDrag` | Enables dragging the dockable to another position. |
 | `CanDrop` | Determines if other dockables can be dropped onto this one. |
 | `CanDockAsDocument` | Controls whether the dockable can be docked as a tabbed document. |
+| `DockCapabilityOverrides` | Optional per-dockable capability overrides (`bool?` values). Highest-precedence layer in capability resolution. |
 | `IsModified` | Marks a dockable as having unsaved changes. |
 | `DockGroup` | Group identifier that restricts which dockables can dock together. See [Docking Groups](dock-docking-groups.md). |
 | `AllowedDockOperations` | Allowed docking operations when the dockable is dragged (`DockOperationMask`). |
@@ -67,6 +68,8 @@ In XAML you set them as attributes:
 ```
 
 `DockingState` is maintained by factory operations (`PinDockable`, `UnpinDockable`, `FloatDockable`, `HideDockable`, `RestoreDockable`) and can be used by UI bindings for diagnostics or state-aware visuals.
+
+Capability values can also be governed by policy layers at root and dock level. See [Capability policies and overrides](dock-capability-policies.md).
 
 ## Window State Mixin
 

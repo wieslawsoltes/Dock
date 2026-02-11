@@ -27,6 +27,7 @@ A custom `ItemContainerGenerator` can fully override this behavior.
 - By default, `ToolDock` creates a `Tool` for each item and stores the item in `Tool.Context`.
 - The tab title is derived from `Title`, `Name`, or `DisplayName` properties on the item (in that order), falling back to `ToString()`.
 - `CanClose` is copied from the item if present; otherwise it defaults to `true`.
+- A custom container generator can map per-item capability metadata into `IDockable.DockCapabilityOverrides` for generated windows.
 - `IFactory.GetContainerFromItem(object item)` returns the currently tracked generated container for a source item.
 - When a generated document or tool is closed, Dock can remove the source item from `ItemsSource` (when it implements `IList`), controlled by `DockSettings.UpdateItemsSourceOnUnregister` and per-dock overrides.
 - Source-generated document/tool closes are treated as remove operations, even when `Factory.HideDocumentsOnClose` or `Factory.HideToolsOnClose` is enabled.

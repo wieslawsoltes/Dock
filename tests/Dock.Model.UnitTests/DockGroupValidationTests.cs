@@ -38,6 +38,7 @@ public class DockGroupValidationTests
         public bool CanDrag { get; set; } = true;
         public bool CanDrop { get; set; } = true;
         public bool CanDockAsDocument { get; set; } = true;
+        public DockCapabilityOverrides? DockCapabilityOverrides { get; set; }
         public bool IsModified { get; set; }
         public string? DockGroup { get; set; }
         public IFactory? Factory { get; set; }
@@ -91,6 +92,7 @@ public class DockGroupValidationTests
     private class SimpleDock : SimpleDockable, IDock
     {
         public bool CanCloseLastDockable { get; set; } = true;
+        public DockCapabilityPolicy? DockCapabilityPolicy { get; set; }
         public bool CanGoBack { get; } = false;
         public bool CanGoForward { get; } = false;
         public int OpenedDockablesCount { get; set; }

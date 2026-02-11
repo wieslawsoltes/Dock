@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Dock.Model.Avalonia;
 using DockXamlReactiveUISample.ViewModels;
 using DockXamlReactiveUISample.Views;
 
@@ -22,7 +23,11 @@ public class App : Application
         {
             desktopLifetime.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel()
+                DataContext = new MainWindowViewModel(new Factory
+                {
+                    HideToolsOnClose = false,
+                    HideDocumentsOnClose = false
+                })
             };
         }
 

@@ -2,6 +2,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using DockXamlReactiveUISample.Models;
+using Dock.Model.Core;
+using Dock.Settings;
 using ReactiveUI;
 
 namespace DockXamlReactiveUISample.ViewModels;
@@ -11,9 +13,18 @@ public class MainWindowViewModel : ReactiveObject
     private int _documentCounter = 1;
     private int _toolCounter = 1;
     private string _summary = string.Empty;
+    private bool _updateItemsSourceOnUnregister;
+    private bool? _documentCanUpdateItemsSourceOnUnregister;
+    private bool? _toolCanUpdateItemsSourceOnUnregister;
+    private string _documentContainerLookup = "Not checked";
+    private string _toolContainerLookup = "Not checked";
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(IFactory factory)
     {
+        Factory = factory ?? throw new ArgumentNullException(nameof(factory));
+
+        _updateItemsSourceOnUnregister = DockSettings.UpdateItemsSourceOnUnregister;
+
         Documents = new ObservableCollection<DocumentItem>();
         Tools = new ObservableCollection<ToolItem>();
 
@@ -22,6 +33,8 @@ public class MainWindowViewModel : ReactiveObject
         AddToolCommand = ReactiveCommand.Create(AddTool);
         RemoveToolCommand = ReactiveCommand.Create(RemoveTool, this.WhenAnyValue(x => x.Tools.Count, count => count > 0));
         ClearAllCommand = ReactiveCommand.Create(ClearAll, this.WhenAnyValue(x => x.Documents.Count, x => x.Tools.Count, (docCount, toolCount) => docCount + toolCount > 0));
+        LookupDocumentContainerCommand = ReactiveCommand.Create(LookupFirstDocumentContainer, this.WhenAnyValue(x => x.Documents.Count, count => count > 0));
+        LookupToolContainerCommand = ReactiveCommand.Create(LookupFirstToolContainer, this.WhenAnyValue(x => x.Tools.Count, count => count > 0));
 
         Documents.CollectionChanged += (_, _) => UpdateSummary();
         Tools.CollectionChanged += (_, _) => UpdateSummary();
@@ -34,6 +47,8 @@ public class MainWindowViewModel : ReactiveObject
 
         UpdateSummary();
     }
+
+    public IFactory Factory { get; }
 
     public ObservableCollection<DocumentItem> Documents { get; }
 
@@ -49,10 +64,53 @@ public class MainWindowViewModel : ReactiveObject
 
     public ReactiveCommand<Unit, Unit> ClearAllCommand { get; }
 
+    public ReactiveCommand<Unit, Unit> LookupDocumentContainerCommand { get; }
+
+    public ReactiveCommand<Unit, Unit> LookupToolContainerCommand { get; }
+
     public string Summary
     {
         get => _summary;
         private set => this.RaiseAndSetIfChanged(ref _summary, value);
+    }
+
+    public bool UpdateItemsSourceOnUnregister
+    {
+        get => _updateItemsSourceOnUnregister;
+        set
+        {
+            if (_updateItemsSourceOnUnregister == value)
+            {
+                return;
+            }
+
+            this.RaiseAndSetIfChanged(ref _updateItemsSourceOnUnregister, value);
+            DockSettings.UpdateItemsSourceOnUnregister = value;
+        }
+    }
+
+    public bool? DocumentCanUpdateItemsSourceOnUnregister
+    {
+        get => _documentCanUpdateItemsSourceOnUnregister;
+        set => this.RaiseAndSetIfChanged(ref _documentCanUpdateItemsSourceOnUnregister, value);
+    }
+
+    public bool? ToolCanUpdateItemsSourceOnUnregister
+    {
+        get => _toolCanUpdateItemsSourceOnUnregister;
+        set => this.RaiseAndSetIfChanged(ref _toolCanUpdateItemsSourceOnUnregister, value);
+    }
+
+    public string DocumentContainerLookup
+    {
+        get => _documentContainerLookup;
+        private set => this.RaiseAndSetIfChanged(ref _documentContainerLookup, value);
+    }
+
+    public string ToolContainerLookup
+    {
+        get => _toolContainerLookup;
+        private set => this.RaiseAndSetIfChanged(ref _toolContainerLookup, value);
     }
 
     private void AddDocument()
@@ -92,6 +150,36 @@ public class MainWindowViewModel : ReactiveObject
     {
         Documents.Clear();
         Tools.Clear();
+    }
+
+    private void LookupFirstDocumentContainer()
+    {
+        if (Documents.Count == 0)
+        {
+            DocumentContainerLookup = "No source items.";
+            return;
+        }
+
+        var sourceItem = Documents[0];
+        var container = Factory.GetContainerFromItem(sourceItem);
+        DocumentContainerLookup = container is null
+            ? "No tracked container."
+            : $"{container.GetType().Name}: {container.Title}";
+    }
+
+    private void LookupFirstToolContainer()
+    {
+        if (Tools.Count == 0)
+        {
+            ToolContainerLookup = "No source items.";
+            return;
+        }
+
+        var sourceItem = Tools[0];
+        var container = Factory.GetContainerFromItem(sourceItem);
+        ToolContainerLookup = container is null
+            ? "No tracked container."
+            : $"{container.GetType().Name}: {container.Title}";
     }
 
     private void AddDocument(string title, string content, string editableContent)

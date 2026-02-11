@@ -7,15 +7,15 @@
              mc:Ignorable="d"
              d:DesignWidth="260" d:DesignHeight="400"
              x:DataType="vm:PropertiesToolViewModel" x:CompileBindings="True">
-  <Border Background="{StaticResource RiderPanelBrush}" Padding="12">
+  <Border Background="{DynamicResource RiderPanelBrush}" Padding="12">
     <StackPanel Spacing="8">
       <TextBlock Text="{Binding ItemName}" FontWeight="SemiBold" />
       <StackPanel>
-        <TextBlock Text="Kind" Foreground="{StaticResource RiderMutedTextBrush}" />
+        <TextBlock Text="Kind" Foreground="{DynamicResource RiderMutedTextBrush}" />
         <TextBlock Text="{Binding ItemKind}" />
       </StackPanel>
       <StackPanel>
-        <TextBlock Text="Path" Foreground="{StaticResource RiderMutedTextBrush}" />
+        <TextBlock Text="Path" Foreground="{DynamicResource RiderMutedTextBrush}" />
         <TextBlock Text="{Binding ItemPath}" TextWrapping="Wrap" />
       </StackPanel>
     </StackPanel>

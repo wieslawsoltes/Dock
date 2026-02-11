@@ -12,7 +12,7 @@
   <UserControl.Resources>
     <tools:SolutionItemKindToIconConverter x:Key="SolutionItemIconConverter" />
   </UserControl.Resources>
-  <Border Background="{StaticResource RiderPanelBrush}">
+  <Border Background="{DynamicResource RiderPanelBrush}">
     <TreeView ItemsSource="{Binding Items}"
               SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
               DoubleTapped="OnTreeViewDoubleTapped">
@@ -22,7 +22,7 @@
             <PathIcon Data="{Binding Kind, Converter={StaticResource SolutionItemIconConverter}}"
                       Width="14"
                       Height="14"
-                      Foreground="{StaticResource RiderMutedTextBrush}" />
+                      Foreground="{DynamicResource RiderMutedTextBrush}" />
             <TextBlock Text="{Binding Name}" />
           </StackPanel>
         </TreeDataTemplate>

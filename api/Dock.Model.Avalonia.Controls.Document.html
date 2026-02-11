@@ -98,7 +98,7 @@ Class Document  <a class="header-action link-secondary" title="View source" href
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Document : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, IMdiDocument, IDocument, ILocalTarget, IDocumentContent, IDockable, IControlRecyclingIdProvider, ITemplate&lt;Control?&gt;, ITemplate, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class Document : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, IMdiDocument, IDocument, ILocalTarget, IDocumentContent, IDockable, IControlRecyclingIdProvider, ITemplate&lt;Control?&gt;, ITemplate, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;, IDockingWindowState</code></pre>
   </div>
 
 
@@ -146,6 +146,7 @@ Class Document  <a class="header-action link-secondary" title="View source" href
       <div><span class="xref">IRecyclingDataTemplate</span></div>
       <div><span class="xref">IDataTemplate</span></div>
       <div><span class="xref">ITemplate</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, <span class="xref">Control</span>&gt;</div>
+      <div><a class="xref" href="Dock.Model.Core.IDockingWindowState.html">IDockingWindowState</a></div>
     </dd>
   </dl>
 
@@ -383,6 +384,9 @@ Class Document  <a class="header-action link-secondary" title="View source" href
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_OnClose">DockableBase.OnClose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_">DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_OnSelected">DockableBase.OnSelected()</a>
@@ -781,7 +785,7 @@ Class Document  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="Dock_Model_Avalonia_Controls_Document__ctor" data-uid="Dock.Model.Avalonia.Controls.Document.#ctor">
   Document()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L74"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Avalonia.Controls.Document.html">Document</a> class.</p>
@@ -828,6 +832,99 @@ Class Document  <a class="header-action link-secondary" title="View source" href
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
     <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_Document_IsActiveProperty" data-uid="Dock.Model.Avalonia.Controls.Document.IsActiveProperty">
+  IsActiveProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsActive">IsActive</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;Document, bool&gt; IsActiveProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.Document.html">Document</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_Document_IsOpenProperty" data-uid="Dock.Model.Avalonia.Controls.Document.IsOpenProperty">
+  IsOpenProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsOpen">IsOpen</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;Document, bool&gt; IsOpenProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.Document.html">Document</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_Document_IsSelectedProperty" data-uid="Dock.Model.Avalonia.Controls.Document.IsSelectedProperty">
+  IsSelectedProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsSelected">IsSelected</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;Document, bool&gt; IsSelectedProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.Document.html">Document</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -940,7 +1037,7 @@ Class Document  <a class="header-action link-secondary" title="View source" href
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_Content" data-uid="Dock.Model.Avalonia.Controls.Document.Content">
   Content
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the content to display.</p>
@@ -977,7 +1074,7 @@ public object? Content { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_DataType" data-uid="Dock.Model.Avalonia.Controls.Document.DataType">
   DataType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L176"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1007,11 +1104,113 @@ public Type? DataType { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Avalonia_Controls_Document_IsActive_" data-uid="Dock.Model.Avalonia.Controls.Document.IsActive*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_Document_IsActive" data-uid="Dock.Model.Avalonia.Controls.Document.IsActive">
+  IsActive
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is the active (focused) item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public bool IsActive { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Controls_Document_IsOpen_" data-uid="Dock.Model.Avalonia.Controls.Document.IsOpen*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_Document_IsOpen" data-uid="Dock.Model.Avalonia.Controls.Document.IsOpen">
+  IsOpen
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is open in the layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public bool IsOpen { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Controls_Document_IsSelected_" data-uid="Dock.Model.Avalonia.Controls.Document.IsSelected*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_Document_IsSelected" data-uid="Dock.Model.Avalonia.Controls.Document.IsSelected">
+  IsSelected
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is selected in its owner dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public bool IsSelected { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Avalonia_Controls_Document_MdiBounds_" data-uid="Dock.Model.Avalonia.Controls.Document.MdiBounds*"></a>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_MdiBounds" data-uid="Dock.Model.Avalonia.Controls.Document.MdiBounds">
   MdiBounds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window bounds in dock coordinates.</p>
@@ -1045,7 +1244,7 @@ public DockRect MdiBounds { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_MdiState" data-uid="Dock.Model.Avalonia.Controls.Document.MdiState">
   MdiState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L102"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window state.</p>
@@ -1079,7 +1278,7 @@ public MdiWindowState MdiState { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_MdiZIndex" data-uid="Dock.Model.Avalonia.Controls.Document.MdiZIndex">
   MdiZIndex
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L111"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window Z index.</p>
@@ -1117,7 +1316,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_Build" data-uid="Dock.Model.Avalonia.Controls.Document.Build">
   Build()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L185"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1148,7 +1347,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_Build_System_Object_" data-uid="Dock.Model.Avalonia.Controls.Document.Build(System.Object)">
   Build(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L216"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1184,7 +1383,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_Build_System_Object_Avalonia_Controls_Control_" data-uid="Dock.Model.Avalonia.Controls.Document.Build(System.Object,Avalonia.Controls.Control)">
   Build(object?, Control?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L224"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1222,7 +1421,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Document_Match_System_Object_" data-uid="Dock.Model.Avalonia.Controls.Document.Match(System.Object)">
   Match(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Document.cs/#L201"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>

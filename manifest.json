@@ -3546,6 +3546,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockingWindowStateProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockingWindowStateProperty.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockingWindowStateProperty",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockingWindowStateProperty.yml\" sourcestartlinenumber=\"1\">Identifies the <xref href=\"Dock.Model.Core.IDockingWindowState\" data-throw-if-not-resolved=\"false\"></xref> property that changed.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.DocumentCloseButtonShowMode.yml",
       "output": {
         ".html": {
@@ -4271,6 +4285,34 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core.IDockableDockingRestrictions",
       "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockableDockingRestrictions.yml\" sourcestartlinenumber=\"1\">Optional docking restrictions for dockables.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IDockingWindowState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IDockingWindowState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IDockingWindowState",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockingWindowState.yml\" sourcestartlinenumber=\"1\">Optional docking window state mixin that allows a view model to bind to\nlayout-backed window lifecycle and activation state.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IDockingWindowStateSync.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IDockingWindowStateSync.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IDockingWindowStateSync",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockingWindowStateSync.yml\" sourcestartlinenumber=\"1\">Synchronizes state requests from <xref href=\"Dock.Model.Core.IDockingWindowState\" data-throw-if-not-resolved=\"false\"></xref> instances\nback to the docking layout.</p>\n"
     },
     {
       "type": "ManagedReference",

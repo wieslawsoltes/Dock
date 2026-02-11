@@ -98,7 +98,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Tool : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, ITool, IMdiDocument, IDocument, ILocalTarget, IToolContent, IDockable, IControlRecyclingIdProvider, ITemplate&lt;Control?&gt;, ITemplate, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class Tool : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, ITool, IMdiDocument, IDocument, ILocalTarget, IToolContent, IDockable, IControlRecyclingIdProvider, ITemplate&lt;Control?&gt;, ITemplate, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;, IDockingWindowState</code></pre>
   </div>
 
 
@@ -147,6 +147,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
       <div><span class="xref">IRecyclingDataTemplate</span></div>
       <div><span class="xref">IDataTemplate</span></div>
       <div><span class="xref">ITemplate</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, <span class="xref">Control</span>&gt;</div>
+      <div><a class="xref" href="Dock.Model.Core.IDockingWindowState.html">IDockingWindowState</a></div>
     </dd>
   </dl>
 
@@ -384,6 +385,9 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_OnClose">DockableBase.OnClose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_">DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_OnSelected">DockableBase.OnSelected()</a>
@@ -782,7 +786,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool__ctor" data-uid="Dock.Model.Avalonia.Controls.Tool.#ctor">
   Tool()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Avalonia.Controls.Tool.html">Tool</a> class.</p>
@@ -829,6 +833,99 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
     <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_Tool_IsActiveProperty" data-uid="Dock.Model.Avalonia.Controls.Tool.IsActiveProperty">
+  IsActiveProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsActive">IsActive</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;Tool, bool&gt; IsActiveProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.Tool.html">Tool</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_Tool_IsOpenProperty" data-uid="Dock.Model.Avalonia.Controls.Tool.IsOpenProperty">
+  IsOpenProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsOpen">IsOpen</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;Tool, bool&gt; IsOpenProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.Tool.html">Tool</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_Avalonia_Controls_Tool_IsSelectedProperty" data-uid="Dock.Model.Avalonia.Controls.Tool.IsSelectedProperty">
+  IsSelectedProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsSelected">IsSelected</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DirectProperty&lt;Tool, bool&gt; IsSelectedProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DirectProperty</span>&lt;<a class="xref" href="Dock.Model.Avalonia.Controls.Tool.html">Tool</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -941,7 +1038,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_Content" data-uid="Dock.Model.Avalonia.Controls.Tool.Content">
   Content
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L83"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the content to display.</p>
@@ -978,7 +1075,7 @@ public object? Content { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_DataType" data-uid="Dock.Model.Avalonia.Controls.Tool.DataType">
   DataType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L178"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1008,11 +1105,113 @@ public Type? DataType { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_Avalonia_Controls_Tool_IsActive_" data-uid="Dock.Model.Avalonia.Controls.Tool.IsActive*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_Tool_IsActive" data-uid="Dock.Model.Avalonia.Controls.Tool.IsActive">
+  IsActive
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is the active (focused) item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public bool IsActive { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Controls_Tool_IsOpen_" data-uid="Dock.Model.Avalonia.Controls.Tool.IsOpen*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_Tool_IsOpen" data-uid="Dock.Model.Avalonia.Controls.Tool.IsOpen">
+  IsOpen
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is open in the layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public bool IsOpen { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Controls_Tool_IsSelected_" data-uid="Dock.Model.Avalonia.Controls.Tool.IsSelected*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_Tool_IsSelected" data-uid="Dock.Model.Avalonia.Controls.Tool.IsSelected">
+  IsSelected
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is selected in its owner dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+[JsonIgnore]
+public bool IsSelected { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Avalonia_Controls_Tool_MdiBounds_" data-uid="Dock.Model.Avalonia.Controls.Tool.MdiBounds*"></a>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_MdiBounds" data-uid="Dock.Model.Avalonia.Controls.Tool.MdiBounds">
   MdiBounds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window bounds in dock coordinates.</p>
@@ -1046,7 +1245,7 @@ public DockRect MdiBounds { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_MdiState" data-uid="Dock.Model.Avalonia.Controls.Tool.MdiState">
   MdiState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L104"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window state.</p>
@@ -1080,7 +1279,7 @@ public MdiWindowState MdiState { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_MdiZIndex" data-uid="Dock.Model.Avalonia.Controls.Tool.MdiZIndex">
   MdiZIndex
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L113"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window Z index.</p>
@@ -1118,7 +1317,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_Build" data-uid="Dock.Model.Avalonia.Controls.Tool.Build">
   Build()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L187"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1149,7 +1348,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_Build_System_Object_" data-uid="Dock.Model.Avalonia.Controls.Tool.Build(System.Object)">
   Build(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L218"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1185,7 +1384,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_Build_System_Object_Avalonia_Controls_Control_" data-uid="Dock.Model.Avalonia.Controls.Tool.Build(System.Object,Avalonia.Controls.Control)">
   Build(object?, Control?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1223,7 +1422,7 @@ public int MdiZIndex { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Avalonia_Controls_Tool_Match_System_Object_" data-uid="Dock.Model.Avalonia.Controls.Tool.Match(System.Object)">
   Match(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs/#L203"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>

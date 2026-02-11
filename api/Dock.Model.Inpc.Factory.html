@@ -98,7 +98,7 @@ Class Factory  <a class="header-action link-secondary" title="View source" href=
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Factory : FactoryBase, IFactory</code></pre>
+    <pre><code class="lang-csharp hljs">public class Factory : FactoryBase, IFactory, IDockingWindowStateSync</code></pre>
   </div>
 
 
@@ -117,6 +117,7 @@ Class Factory  <a class="header-action link-secondary" title="View source" href=
     <dt>Implements</dt>
     <dd>
       <div><a class="xref" href="Dock.Model.Core.IFactory.html">IFactory</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockingWindowStateSync.html">IDockingWindowStateSync</a></div>
     </dd>
   </dl>
 
@@ -294,6 +295,9 @@ Class Factory  <a class="header-action link-secondary" title="View source" href=
     </div>
     <div>
       <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ResolveDockingWindowState_Dock_Model_Core_IDockable_">FactoryBase.ResolveDockingWindowState(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockingWindowStatePropertyChanged_Dock_Model_Core_IDockable_Dock_Model_Core_DockingWindowStateProperty_">FactoryBase.OnDockingWindowStatePropertyChanged(IDockable, DockingWindowStateProperty)</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ActiveDockableChanged">FactoryBase.ActiveDockableChanged</a>

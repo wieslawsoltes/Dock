@@ -98,7 +98,7 @@ Class RoutableToolBase  <a class="header-action link-secondary" title="View sour
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class RoutableToolBase : RoutableTool, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IDockSelectorInfo, IDockableDockingRestrictions, ITool, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class RoutableToolBase : RoutableTool, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IDockSelectorInfo, IDockableDockingRestrictions, ITool, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget, IDockingWindowState, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen</code></pre>
   </div>
 
 
@@ -130,6 +130,7 @@ Class RoutableToolBase  <a class="header-action link-secondary" title="View sour
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
       <div><a class="xref" href="Dock.Model.Core.ILocalTarget.html">ILocalTarget</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockingWindowState.html">IDockingWindowState</a></div>
       <div><span class="xref">IRoutableViewModel</span></div>
       <div><span class="xref">IReactiveObject</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
@@ -160,6 +161,15 @@ Class RoutableToolBase  <a class="header-action link-secondary" title="View sour
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_MdiZIndex">Tool.MdiZIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsOpen">Tool.IsOpen</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsActive">Tool.IsActive</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsSelected">Tool.IsSelected</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_Id">DockableBase.Id</a>
@@ -274,6 +284,9 @@ Class RoutableToolBase  <a class="header-action link-secondary" title="View sour
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_OnClose">DockableBase.OnClose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_">DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_OnSelected">DockableBase.OnSelected()</a>

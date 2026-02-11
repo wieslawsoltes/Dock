@@ -11593,6 +11593,63 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.Document.DataType
   nameWithType: Document.DataType
+- uid: Dock.Model.Avalonia.Controls.Document.IsActive
+  name: IsActive
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsActive
+  commentId: P:Dock.Model.Avalonia.Controls.Document.IsActive
+  fullName: Dock.Model.Avalonia.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Avalonia.Controls.Document.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsActive_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Document.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Avalonia.Controls.Document.IsActiveProperty
+  name: IsActiveProperty
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsActiveProperty
+  commentId: F:Dock.Model.Avalonia.Controls.Document.IsActiveProperty
+  fullName: Dock.Model.Avalonia.Controls.Document.IsActiveProperty
+  nameWithType: Document.IsActiveProperty
+- uid: Dock.Model.Avalonia.Controls.Document.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsOpen
+  commentId: P:Dock.Model.Avalonia.Controls.Document.IsOpen
+  fullName: Dock.Model.Avalonia.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Avalonia.Controls.Document.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsOpen_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Document.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Avalonia.Controls.Document.IsOpenProperty
+  name: IsOpenProperty
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsOpenProperty
+  commentId: F:Dock.Model.Avalonia.Controls.Document.IsOpenProperty
+  fullName: Dock.Model.Avalonia.Controls.Document.IsOpenProperty
+  nameWithType: Document.IsOpenProperty
+- uid: Dock.Model.Avalonia.Controls.Document.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsSelected
+  commentId: P:Dock.Model.Avalonia.Controls.Document.IsSelected
+  fullName: Dock.Model.Avalonia.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.Avalonia.Controls.Document.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsSelected_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Document.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.Avalonia.Controls.Document.IsSelectedProperty
+  name: IsSelectedProperty
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_IsSelectedProperty
+  commentId: F:Dock.Model.Avalonia.Controls.Document.IsSelectedProperty
+  fullName: Dock.Model.Avalonia.Controls.Document.IsSelectedProperty
+  nameWithType: Document.IsSelectedProperty
 - uid: Dock.Model.Avalonia.Controls.Document.Match(System.Object)
   name: Match(object?)
   href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_Match_System_Object_
@@ -12963,6 +13020,63 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Controls.Tool.DataType
   nameWithType: Tool.DataType
+- uid: Dock.Model.Avalonia.Controls.Tool.IsActive
+  name: IsActive
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsActive
+  commentId: P:Dock.Model.Avalonia.Controls.Tool.IsActive
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Avalonia.Controls.Tool.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsActive_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Tool.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Avalonia.Controls.Tool.IsActiveProperty
+  name: IsActiveProperty
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsActiveProperty
+  commentId: F:Dock.Model.Avalonia.Controls.Tool.IsActiveProperty
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsActiveProperty
+  nameWithType: Tool.IsActiveProperty
+- uid: Dock.Model.Avalonia.Controls.Tool.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsOpen
+  commentId: P:Dock.Model.Avalonia.Controls.Tool.IsOpen
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Avalonia.Controls.Tool.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsOpen_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Tool.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Avalonia.Controls.Tool.IsOpenProperty
+  name: IsOpenProperty
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsOpenProperty
+  commentId: F:Dock.Model.Avalonia.Controls.Tool.IsOpenProperty
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsOpenProperty
+  nameWithType: Tool.IsOpenProperty
+- uid: Dock.Model.Avalonia.Controls.Tool.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsSelected
+  commentId: P:Dock.Model.Avalonia.Controls.Tool.IsSelected
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.Avalonia.Controls.Tool.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsSelected_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Tool.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.Avalonia.Controls.Tool.IsSelectedProperty
+  name: IsSelectedProperty
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_IsSelectedProperty
+  commentId: F:Dock.Model.Avalonia.Controls.Tool.IsSelectedProperty
+  fullName: Dock.Model.Avalonia.Controls.Tool.IsSelectedProperty
+  nameWithType: Tool.IsSelectedProperty
 - uid: Dock.Model.Avalonia.Controls.Tool.Match(System.Object)
   name: Match(object?)
   href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_Match_System_Object_
@@ -14829,6 +14943,19 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockableBase.MinWidthProperty
   fullName: Dock.Model.Avalonia.Core.DockableBase.MinWidthProperty
   nameWithType: DockableBase.MinWidthProperty
+- uid: Dock.Model.Avalonia.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  name: NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.Avalonia.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.Avalonia.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+- uid: Dock.Model.Avalonia.Core.DockableBase.NotifyDockingWindowStateChanged*
+  name: NotifyDockingWindowStateChanged
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_NotifyDockingWindowStateChanged_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.NotifyDockingWindowStateChanged
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.NotifyDockingWindowStateChanged
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged
 - uid: Dock.Model.Avalonia.Core.DockableBase.OnClose
   name: OnClose()
   href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_OnClose
@@ -15821,6 +15948,45 @@ references:
   commentId: T:Dock.Model.CaliburMicro.Controls.Document
   fullName: Dock.Model.CaliburMicro.Controls.Document
   nameWithType: Document
+- uid: Dock.Model.CaliburMicro.Controls.Document.IsActive
+  name: IsActive
+  href: api/Dock.Model.CaliburMicro.Controls.Document.html#Dock_Model_CaliburMicro_Controls_Document_IsActive
+  commentId: P:Dock.Model.CaliburMicro.Controls.Document.IsActive
+  fullName: Dock.Model.CaliburMicro.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.CaliburMicro.Controls.Document.IsActive*
+  name: IsActive
+  href: api/Dock.Model.CaliburMicro.Controls.Document.html#Dock_Model_CaliburMicro_Controls_Document_IsActive_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.Document.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.CaliburMicro.Controls.Document.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.CaliburMicro.Controls.Document.html#Dock_Model_CaliburMicro_Controls_Document_IsOpen
+  commentId: P:Dock.Model.CaliburMicro.Controls.Document.IsOpen
+  fullName: Dock.Model.CaliburMicro.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.CaliburMicro.Controls.Document.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.CaliburMicro.Controls.Document.html#Dock_Model_CaliburMicro_Controls_Document_IsOpen_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.Document.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.CaliburMicro.Controls.Document.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.CaliburMicro.Controls.Document.html#Dock_Model_CaliburMicro_Controls_Document_IsSelected
+  commentId: P:Dock.Model.CaliburMicro.Controls.Document.IsSelected
+  fullName: Dock.Model.CaliburMicro.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.CaliburMicro.Controls.Document.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.CaliburMicro.Controls.Document.html#Dock_Model_CaliburMicro_Controls_Document_IsSelected_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.Document.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
 - uid: Dock.Model.CaliburMicro.Controls.Document.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.CaliburMicro.Controls.Document.html#Dock_Model_CaliburMicro_Controls_Document_MdiBounds
@@ -16544,6 +16710,45 @@ references:
   commentId: T:Dock.Model.CaliburMicro.Controls.Tool
   fullName: Dock.Model.CaliburMicro.Controls.Tool
   nameWithType: Tool
+- uid: Dock.Model.CaliburMicro.Controls.Tool.IsActive
+  name: IsActive
+  href: api/Dock.Model.CaliburMicro.Controls.Tool.html#Dock_Model_CaliburMicro_Controls_Tool_IsActive
+  commentId: P:Dock.Model.CaliburMicro.Controls.Tool.IsActive
+  fullName: Dock.Model.CaliburMicro.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.CaliburMicro.Controls.Tool.IsActive*
+  name: IsActive
+  href: api/Dock.Model.CaliburMicro.Controls.Tool.html#Dock_Model_CaliburMicro_Controls_Tool_IsActive_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.Tool.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.CaliburMicro.Controls.Tool.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.CaliburMicro.Controls.Tool.html#Dock_Model_CaliburMicro_Controls_Tool_IsOpen
+  commentId: P:Dock.Model.CaliburMicro.Controls.Tool.IsOpen
+  fullName: Dock.Model.CaliburMicro.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.CaliburMicro.Controls.Tool.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.CaliburMicro.Controls.Tool.html#Dock_Model_CaliburMicro_Controls_Tool_IsOpen_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.Tool.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.CaliburMicro.Controls.Tool.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.CaliburMicro.Controls.Tool.html#Dock_Model_CaliburMicro_Controls_Tool_IsSelected
+  commentId: P:Dock.Model.CaliburMicro.Controls.Tool.IsSelected
+  fullName: Dock.Model.CaliburMicro.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.CaliburMicro.Controls.Tool.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.CaliburMicro.Controls.Tool.html#Dock_Model_CaliburMicro_Controls_Tool_IsSelected_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.Tool.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
 - uid: Dock.Model.CaliburMicro.Controls.Tool.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.CaliburMicro.Controls.Tool.html#Dock_Model_CaliburMicro_Controls_Tool_MdiBounds
@@ -17720,6 +17925,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockableBase.MinWidth
   nameWithType: DockableBase.MinWidth
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  name: NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.CaliburMicro.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.NotifyDockingWindowStateChanged*
+  name: NotifyDockingWindowStateChanged
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_NotifyDockingWindowStateChanged_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.NotifyDockingWindowStateChanged
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.NotifyDockingWindowStateChanged
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged
 - uid: Dock.Model.CaliburMicro.Core.DockableBase.OnClose
   name: OnClose()
   href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_OnClose
@@ -20631,6 +20849,36 @@ references:
   commentId: F:Dock.Model.Core.DockingWindowState.Pinned
   fullName: Dock.Model.Core.DockingWindowState.Pinned
   nameWithType: DockingWindowState.Pinned
+- uid: Dock.Model.Core.DockingWindowStateProperty
+  name: DockingWindowStateProperty
+  href: api/Dock.Model.Core.DockingWindowStateProperty.html
+  commentId: T:Dock.Model.Core.DockingWindowStateProperty
+  fullName: Dock.Model.Core.DockingWindowStateProperty
+  nameWithType: DockingWindowStateProperty
+- uid: Dock.Model.Core.DockingWindowStateProperty.DockingState
+  name: DockingState
+  href: api/Dock.Model.Core.DockingWindowStateProperty.html#Dock_Model_Core_DockingWindowStateProperty_DockingState
+  commentId: F:Dock.Model.Core.DockingWindowStateProperty.DockingState
+  fullName: Dock.Model.Core.DockingWindowStateProperty.DockingState
+  nameWithType: DockingWindowStateProperty.DockingState
+- uid: Dock.Model.Core.DockingWindowStateProperty.IsActive
+  name: IsActive
+  href: api/Dock.Model.Core.DockingWindowStateProperty.html#Dock_Model_Core_DockingWindowStateProperty_IsActive
+  commentId: F:Dock.Model.Core.DockingWindowStateProperty.IsActive
+  fullName: Dock.Model.Core.DockingWindowStateProperty.IsActive
+  nameWithType: DockingWindowStateProperty.IsActive
+- uid: Dock.Model.Core.DockingWindowStateProperty.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Core.DockingWindowStateProperty.html#Dock_Model_Core_DockingWindowStateProperty_IsOpen
+  commentId: F:Dock.Model.Core.DockingWindowStateProperty.IsOpen
+  fullName: Dock.Model.Core.DockingWindowStateProperty.IsOpen
+  nameWithType: DockingWindowStateProperty.IsOpen
+- uid: Dock.Model.Core.DockingWindowStateProperty.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Core.DockingWindowStateProperty.html#Dock_Model_Core_DockingWindowStateProperty_IsSelected
+  commentId: F:Dock.Model.Core.DockingWindowStateProperty.IsSelected
+  fullName: Dock.Model.Core.DockingWindowStateProperty.IsSelected
+  nameWithType: DockingWindowStateProperty.IsSelected
 - uid: Dock.Model.Core.DocumentCloseButtonShowMode
   name: DocumentCloseButtonShowMode
   href: api/Dock.Model.Core.DocumentCloseButtonShowMode.html
@@ -24046,6 +24294,83 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockableDockingRestrictions.AllowedDropOperations
   nameWithType: IDockableDockingRestrictions.AllowedDropOperations
+- uid: Dock.Model.Core.IDockingWindowState
+  name: IDockingWindowState
+  href: api/Dock.Model.Core.IDockingWindowState.html
+  commentId: T:Dock.Model.Core.IDockingWindowState
+  fullName: Dock.Model.Core.IDockingWindowState
+  nameWithType: IDockingWindowState
+- uid: Dock.Model.Core.IDockingWindowState.DockingState
+  name: DockingState
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_DockingState
+  commentId: P:Dock.Model.Core.IDockingWindowState.DockingState
+  fullName: Dock.Model.Core.IDockingWindowState.DockingState
+  nameWithType: IDockingWindowState.DockingState
+- uid: Dock.Model.Core.IDockingWindowState.DockingState*
+  name: DockingState
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_DockingState_
+  commentId: Overload:Dock.Model.Core.IDockingWindowState.DockingState
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockingWindowState.DockingState
+  nameWithType: IDockingWindowState.DockingState
+- uid: Dock.Model.Core.IDockingWindowState.IsActive
+  name: IsActive
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_IsActive
+  commentId: P:Dock.Model.Core.IDockingWindowState.IsActive
+  fullName: Dock.Model.Core.IDockingWindowState.IsActive
+  nameWithType: IDockingWindowState.IsActive
+- uid: Dock.Model.Core.IDockingWindowState.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_IsActive_
+  commentId: Overload:Dock.Model.Core.IDockingWindowState.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockingWindowState.IsActive
+  nameWithType: IDockingWindowState.IsActive
+- uid: Dock.Model.Core.IDockingWindowState.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_IsOpen
+  commentId: P:Dock.Model.Core.IDockingWindowState.IsOpen
+  fullName: Dock.Model.Core.IDockingWindowState.IsOpen
+  nameWithType: IDockingWindowState.IsOpen
+- uid: Dock.Model.Core.IDockingWindowState.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_IsOpen_
+  commentId: Overload:Dock.Model.Core.IDockingWindowState.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockingWindowState.IsOpen
+  nameWithType: IDockingWindowState.IsOpen
+- uid: Dock.Model.Core.IDockingWindowState.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_IsSelected
+  commentId: P:Dock.Model.Core.IDockingWindowState.IsSelected
+  fullName: Dock.Model.Core.IDockingWindowState.IsSelected
+  nameWithType: IDockingWindowState.IsSelected
+- uid: Dock.Model.Core.IDockingWindowState.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Core.IDockingWindowState.html#Dock_Model_Core_IDockingWindowState_IsSelected_
+  commentId: Overload:Dock.Model.Core.IDockingWindowState.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockingWindowState.IsSelected
+  nameWithType: IDockingWindowState.IsSelected
+- uid: Dock.Model.Core.IDockingWindowStateSync
+  name: IDockingWindowStateSync
+  href: api/Dock.Model.Core.IDockingWindowStateSync.html
+  commentId: T:Dock.Model.Core.IDockingWindowStateSync
+  fullName: Dock.Model.Core.IDockingWindowStateSync
+  nameWithType: IDockingWindowStateSync
+- uid: Dock.Model.Core.IDockingWindowStateSync.OnDockingWindowStatePropertyChanged(Dock.Model.Core.IDockable,Dock.Model.Core.DockingWindowStateProperty)
+  name: OnDockingWindowStatePropertyChanged(IDockable, DockingWindowStateProperty)
+  href: api/Dock.Model.Core.IDockingWindowStateSync.html#Dock_Model_Core_IDockingWindowStateSync_OnDockingWindowStatePropertyChanged_Dock_Model_Core_IDockable_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.Core.IDockingWindowStateSync.OnDockingWindowStatePropertyChanged(Dock.Model.Core.IDockable,Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.Core.IDockingWindowStateSync.OnDockingWindowStatePropertyChanged(Dock.Model.Core.IDockable, Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: IDockingWindowStateSync.OnDockingWindowStatePropertyChanged(IDockable, DockingWindowStateProperty)
+- uid: Dock.Model.Core.IDockingWindowStateSync.OnDockingWindowStatePropertyChanged*
+  name: OnDockingWindowStatePropertyChanged
+  href: api/Dock.Model.Core.IDockingWindowStateSync.html#Dock_Model_Core_IDockingWindowStateSync_OnDockingWindowStatePropertyChanged_
+  commentId: Overload:Dock.Model.Core.IDockingWindowStateSync.OnDockingWindowStatePropertyChanged
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockingWindowStateSync.OnDockingWindowStatePropertyChanged
+  nameWithType: IDockingWindowStateSync.OnDockingWindowStatePropertyChanged
 - uid: Dock.Model.Core.IDocumentItemTemplateSelector
   name: IDocumentItemTemplateSelector
   href: api/Dock.Model.Core.IDocumentItemTemplateSelector.html
@@ -29079,6 +29404,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.OnDockableUnpinned
   nameWithType: FactoryBase.OnDockableUnpinned
+- uid: Dock.Model.FactoryBase.OnDockingWindowStatePropertyChanged(Dock.Model.Core.IDockable,Dock.Model.Core.DockingWindowStateProperty)
+  name: OnDockingWindowStatePropertyChanged(IDockable, DockingWindowStateProperty)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockingWindowStatePropertyChanged_Dock_Model_Core_IDockable_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.FactoryBase.OnDockingWindowStatePropertyChanged(Dock.Model.Core.IDockable,Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.FactoryBase.OnDockingWindowStatePropertyChanged(Dock.Model.Core.IDockable, Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: FactoryBase.OnDockingWindowStatePropertyChanged(IDockable, DockingWindowStateProperty)
+- uid: Dock.Model.FactoryBase.OnDockingWindowStatePropertyChanged*
+  name: OnDockingWindowStatePropertyChanged
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockingWindowStatePropertyChanged_
+  commentId: Overload:Dock.Model.FactoryBase.OnDockingWindowStatePropertyChanged
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.OnDockingWindowStatePropertyChanged
+  nameWithType: FactoryBase.OnDockingWindowStatePropertyChanged
 - uid: Dock.Model.FactoryBase.OnFocusedDockableChanged(Dock.Model.Core.IDockable)
   name: OnFocusedDockableChanged(IDockable?)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnFocusedDockableChanged_Dock_Model_Core_IDockable_
@@ -31759,6 +32097,45 @@ references:
   commentId: T:Dock.Model.Inpc.Controls.Document
   fullName: Dock.Model.Inpc.Controls.Document
   nameWithType: Document
+- uid: Dock.Model.Inpc.Controls.Document.IsActive
+  name: IsActive
+  href: api/Dock.Model.Inpc.Controls.Document.html#Dock_Model_Inpc_Controls_Document_IsActive
+  commentId: P:Dock.Model.Inpc.Controls.Document.IsActive
+  fullName: Dock.Model.Inpc.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Inpc.Controls.Document.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Inpc.Controls.Document.html#Dock_Model_Inpc_Controls_Document_IsActive_
+  commentId: Overload:Dock.Model.Inpc.Controls.Document.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Inpc.Controls.Document.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Inpc.Controls.Document.html#Dock_Model_Inpc_Controls_Document_IsOpen
+  commentId: P:Dock.Model.Inpc.Controls.Document.IsOpen
+  fullName: Dock.Model.Inpc.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Inpc.Controls.Document.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Inpc.Controls.Document.html#Dock_Model_Inpc_Controls_Document_IsOpen_
+  commentId: Overload:Dock.Model.Inpc.Controls.Document.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Inpc.Controls.Document.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Inpc.Controls.Document.html#Dock_Model_Inpc_Controls_Document_IsSelected
+  commentId: P:Dock.Model.Inpc.Controls.Document.IsSelected
+  fullName: Dock.Model.Inpc.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.Inpc.Controls.Document.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Inpc.Controls.Document.html#Dock_Model_Inpc_Controls_Document_IsSelected_
+  commentId: Overload:Dock.Model.Inpc.Controls.Document.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
 - uid: Dock.Model.Inpc.Controls.Document.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.Inpc.Controls.Document.html#Dock_Model_Inpc_Controls_Document_MdiBounds
@@ -32501,6 +32878,45 @@ references:
   commentId: T:Dock.Model.Inpc.Controls.Tool
   fullName: Dock.Model.Inpc.Controls.Tool
   nameWithType: Tool
+- uid: Dock.Model.Inpc.Controls.Tool.IsActive
+  name: IsActive
+  href: api/Dock.Model.Inpc.Controls.Tool.html#Dock_Model_Inpc_Controls_Tool_IsActive
+  commentId: P:Dock.Model.Inpc.Controls.Tool.IsActive
+  fullName: Dock.Model.Inpc.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Inpc.Controls.Tool.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Inpc.Controls.Tool.html#Dock_Model_Inpc_Controls_Tool_IsActive_
+  commentId: Overload:Dock.Model.Inpc.Controls.Tool.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Inpc.Controls.Tool.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Inpc.Controls.Tool.html#Dock_Model_Inpc_Controls_Tool_IsOpen
+  commentId: P:Dock.Model.Inpc.Controls.Tool.IsOpen
+  fullName: Dock.Model.Inpc.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Inpc.Controls.Tool.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Inpc.Controls.Tool.html#Dock_Model_Inpc_Controls_Tool_IsOpen_
+  commentId: Overload:Dock.Model.Inpc.Controls.Tool.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Inpc.Controls.Tool.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Inpc.Controls.Tool.html#Dock_Model_Inpc_Controls_Tool_IsSelected
+  commentId: P:Dock.Model.Inpc.Controls.Tool.IsSelected
+  fullName: Dock.Model.Inpc.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.Inpc.Controls.Tool.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Inpc.Controls.Tool.html#Dock_Model_Inpc_Controls_Tool_IsSelected_
+  commentId: Overload:Dock.Model.Inpc.Controls.Tool.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
 - uid: Dock.Model.Inpc.Controls.Tool.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.Inpc.Controls.Tool.html#Dock_Model_Inpc_Controls_Tool_MdiBounds
@@ -33671,6 +34087,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockableBase.MinWidth
   nameWithType: DockableBase.MinWidth
+- uid: Dock.Model.Inpc.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  name: NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.Inpc.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.Inpc.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+- uid: Dock.Model.Inpc.Core.DockableBase.NotifyDockingWindowStateChanged*
+  name: NotifyDockingWindowStateChanged
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_NotifyDockingWindowStateChanged_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.NotifyDockingWindowStateChanged
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.NotifyDockingWindowStateChanged
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged
 - uid: Dock.Model.Inpc.Core.DockableBase.OnClose
   name: OnClose()
   href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_OnClose
@@ -34612,6 +35041,45 @@ references:
   commentId: T:Dock.Model.Mvvm.Controls.Document
   fullName: Dock.Model.Mvvm.Controls.Document
   nameWithType: Document
+- uid: Dock.Model.Mvvm.Controls.Document.IsActive
+  name: IsActive
+  href: api/Dock.Model.Mvvm.Controls.Document.html#Dock_Model_Mvvm_Controls_Document_IsActive
+  commentId: P:Dock.Model.Mvvm.Controls.Document.IsActive
+  fullName: Dock.Model.Mvvm.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Mvvm.Controls.Document.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Mvvm.Controls.Document.html#Dock_Model_Mvvm_Controls_Document_IsActive_
+  commentId: Overload:Dock.Model.Mvvm.Controls.Document.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Mvvm.Controls.Document.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Mvvm.Controls.Document.html#Dock_Model_Mvvm_Controls_Document_IsOpen
+  commentId: P:Dock.Model.Mvvm.Controls.Document.IsOpen
+  fullName: Dock.Model.Mvvm.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Mvvm.Controls.Document.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Mvvm.Controls.Document.html#Dock_Model_Mvvm_Controls_Document_IsOpen_
+  commentId: Overload:Dock.Model.Mvvm.Controls.Document.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Mvvm.Controls.Document.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Mvvm.Controls.Document.html#Dock_Model_Mvvm_Controls_Document_IsSelected
+  commentId: P:Dock.Model.Mvvm.Controls.Document.IsSelected
+  fullName: Dock.Model.Mvvm.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.Mvvm.Controls.Document.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Mvvm.Controls.Document.html#Dock_Model_Mvvm_Controls_Document_IsSelected_
+  commentId: Overload:Dock.Model.Mvvm.Controls.Document.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
 - uid: Dock.Model.Mvvm.Controls.Document.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.Mvvm.Controls.Document.html#Dock_Model_Mvvm_Controls_Document_MdiBounds
@@ -35354,6 +35822,45 @@ references:
   commentId: T:Dock.Model.Mvvm.Controls.Tool
   fullName: Dock.Model.Mvvm.Controls.Tool
   nameWithType: Tool
+- uid: Dock.Model.Mvvm.Controls.Tool.IsActive
+  name: IsActive
+  href: api/Dock.Model.Mvvm.Controls.Tool.html#Dock_Model_Mvvm_Controls_Tool_IsActive
+  commentId: P:Dock.Model.Mvvm.Controls.Tool.IsActive
+  fullName: Dock.Model.Mvvm.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Mvvm.Controls.Tool.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Mvvm.Controls.Tool.html#Dock_Model_Mvvm_Controls_Tool_IsActive_
+  commentId: Overload:Dock.Model.Mvvm.Controls.Tool.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Mvvm.Controls.Tool.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Mvvm.Controls.Tool.html#Dock_Model_Mvvm_Controls_Tool_IsOpen
+  commentId: P:Dock.Model.Mvvm.Controls.Tool.IsOpen
+  fullName: Dock.Model.Mvvm.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Mvvm.Controls.Tool.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Mvvm.Controls.Tool.html#Dock_Model_Mvvm_Controls_Tool_IsOpen_
+  commentId: Overload:Dock.Model.Mvvm.Controls.Tool.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Mvvm.Controls.Tool.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Mvvm.Controls.Tool.html#Dock_Model_Mvvm_Controls_Tool_IsSelected
+  commentId: P:Dock.Model.Mvvm.Controls.Tool.IsSelected
+  fullName: Dock.Model.Mvvm.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.Mvvm.Controls.Tool.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Mvvm.Controls.Tool.html#Dock_Model_Mvvm_Controls_Tool_IsSelected_
+  commentId: Overload:Dock.Model.Mvvm.Controls.Tool.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
 - uid: Dock.Model.Mvvm.Controls.Tool.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.Mvvm.Controls.Tool.html#Dock_Model_Mvvm_Controls_Tool_MdiBounds
@@ -36524,6 +37031,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockableBase.MinWidth
   nameWithType: DockableBase.MinWidth
+- uid: Dock.Model.Mvvm.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  name: NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.Mvvm.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.Mvvm.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+- uid: Dock.Model.Mvvm.Core.DockableBase.NotifyDockingWindowStateChanged*
+  name: NotifyDockingWindowStateChanged
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_NotifyDockingWindowStateChanged_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.NotifyDockingWindowStateChanged
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.NotifyDockingWindowStateChanged
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged
 - uid: Dock.Model.Mvvm.Core.DockableBase.OnClose
   name: OnClose()
   href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_OnClose
@@ -37262,6 +37782,45 @@ references:
   commentId: T:Dock.Model.Prism.Controls.Document
   fullName: Dock.Model.Prism.Controls.Document
   nameWithType: Document
+- uid: Dock.Model.Prism.Controls.Document.IsActive
+  name: IsActive
+  href: api/Dock.Model.Prism.Controls.Document.html#Dock_Model_Prism_Controls_Document_IsActive
+  commentId: P:Dock.Model.Prism.Controls.Document.IsActive
+  fullName: Dock.Model.Prism.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Prism.Controls.Document.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Prism.Controls.Document.html#Dock_Model_Prism_Controls_Document_IsActive_
+  commentId: Overload:Dock.Model.Prism.Controls.Document.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.Prism.Controls.Document.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Prism.Controls.Document.html#Dock_Model_Prism_Controls_Document_IsOpen
+  commentId: P:Dock.Model.Prism.Controls.Document.IsOpen
+  fullName: Dock.Model.Prism.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Prism.Controls.Document.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Prism.Controls.Document.html#Dock_Model_Prism_Controls_Document_IsOpen_
+  commentId: Overload:Dock.Model.Prism.Controls.Document.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.Prism.Controls.Document.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Prism.Controls.Document.html#Dock_Model_Prism_Controls_Document_IsSelected
+  commentId: P:Dock.Model.Prism.Controls.Document.IsSelected
+  fullName: Dock.Model.Prism.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.Prism.Controls.Document.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Prism.Controls.Document.html#Dock_Model_Prism_Controls_Document_IsSelected_
+  commentId: Overload:Dock.Model.Prism.Controls.Document.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
 - uid: Dock.Model.Prism.Controls.Document.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.Prism.Controls.Document.html#Dock_Model_Prism_Controls_Document_MdiBounds
@@ -38004,6 +38563,45 @@ references:
   commentId: T:Dock.Model.Prism.Controls.Tool
   fullName: Dock.Model.Prism.Controls.Tool
   nameWithType: Tool
+- uid: Dock.Model.Prism.Controls.Tool.IsActive
+  name: IsActive
+  href: api/Dock.Model.Prism.Controls.Tool.html#Dock_Model_Prism_Controls_Tool_IsActive
+  commentId: P:Dock.Model.Prism.Controls.Tool.IsActive
+  fullName: Dock.Model.Prism.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Prism.Controls.Tool.IsActive*
+  name: IsActive
+  href: api/Dock.Model.Prism.Controls.Tool.html#Dock_Model_Prism_Controls_Tool_IsActive_
+  commentId: Overload:Dock.Model.Prism.Controls.Tool.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.Prism.Controls.Tool.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.Prism.Controls.Tool.html#Dock_Model_Prism_Controls_Tool_IsOpen
+  commentId: P:Dock.Model.Prism.Controls.Tool.IsOpen
+  fullName: Dock.Model.Prism.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Prism.Controls.Tool.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.Prism.Controls.Tool.html#Dock_Model_Prism_Controls_Tool_IsOpen_
+  commentId: Overload:Dock.Model.Prism.Controls.Tool.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.Prism.Controls.Tool.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.Prism.Controls.Tool.html#Dock_Model_Prism_Controls_Tool_IsSelected
+  commentId: P:Dock.Model.Prism.Controls.Tool.IsSelected
+  fullName: Dock.Model.Prism.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.Prism.Controls.Tool.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.Prism.Controls.Tool.html#Dock_Model_Prism_Controls_Tool_IsSelected_
+  commentId: Overload:Dock.Model.Prism.Controls.Tool.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
 - uid: Dock.Model.Prism.Controls.Tool.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.Prism.Controls.Tool.html#Dock_Model_Prism_Controls_Tool_MdiBounds
@@ -39174,6 +39772,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockableBase.MinWidth
   nameWithType: DockableBase.MinWidth
+- uid: Dock.Model.Prism.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  name: NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.Prism.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.Prism.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+- uid: Dock.Model.Prism.Core.DockableBase.NotifyDockingWindowStateChanged*
+  name: NotifyDockingWindowStateChanged
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_NotifyDockingWindowStateChanged_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.NotifyDockingWindowStateChanged
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.NotifyDockingWindowStateChanged
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged
 - uid: Dock.Model.Prism.Core.DockableBase.OnClose
   name: OnClose()
   href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_OnClose
@@ -39912,6 +40523,45 @@ references:
   commentId: T:Dock.Model.ReactiveProperty.Controls.Document
   fullName: Dock.Model.ReactiveProperty.Controls.Document
   nameWithType: Document
+- uid: Dock.Model.ReactiveProperty.Controls.Document.IsActive
+  name: IsActive
+  href: api/Dock.Model.ReactiveProperty.Controls.Document.html#Dock_Model_ReactiveProperty_Controls_Document_IsActive
+  commentId: P:Dock.Model.ReactiveProperty.Controls.Document.IsActive
+  fullName: Dock.Model.ReactiveProperty.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.ReactiveProperty.Controls.Document.IsActive*
+  name: IsActive
+  href: api/Dock.Model.ReactiveProperty.Controls.Document.html#Dock_Model_ReactiveProperty_Controls_Document_IsActive_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.Document.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.ReactiveProperty.Controls.Document.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.ReactiveProperty.Controls.Document.html#Dock_Model_ReactiveProperty_Controls_Document_IsOpen
+  commentId: P:Dock.Model.ReactiveProperty.Controls.Document.IsOpen
+  fullName: Dock.Model.ReactiveProperty.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.ReactiveProperty.Controls.Document.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.ReactiveProperty.Controls.Document.html#Dock_Model_ReactiveProperty_Controls_Document_IsOpen_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.Document.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.ReactiveProperty.Controls.Document.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.ReactiveProperty.Controls.Document.html#Dock_Model_ReactiveProperty_Controls_Document_IsSelected
+  commentId: P:Dock.Model.ReactiveProperty.Controls.Document.IsSelected
+  fullName: Dock.Model.ReactiveProperty.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.ReactiveProperty.Controls.Document.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.ReactiveProperty.Controls.Document.html#Dock_Model_ReactiveProperty_Controls_Document_IsSelected_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.Document.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
 - uid: Dock.Model.ReactiveProperty.Controls.Document.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.ReactiveProperty.Controls.Document.html#Dock_Model_ReactiveProperty_Controls_Document_MdiBounds
@@ -40654,6 +41304,45 @@ references:
   commentId: T:Dock.Model.ReactiveProperty.Controls.Tool
   fullName: Dock.Model.ReactiveProperty.Controls.Tool
   nameWithType: Tool
+- uid: Dock.Model.ReactiveProperty.Controls.Tool.IsActive
+  name: IsActive
+  href: api/Dock.Model.ReactiveProperty.Controls.Tool.html#Dock_Model_ReactiveProperty_Controls_Tool_IsActive
+  commentId: P:Dock.Model.ReactiveProperty.Controls.Tool.IsActive
+  fullName: Dock.Model.ReactiveProperty.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.ReactiveProperty.Controls.Tool.IsActive*
+  name: IsActive
+  href: api/Dock.Model.ReactiveProperty.Controls.Tool.html#Dock_Model_ReactiveProperty_Controls_Tool_IsActive_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.Tool.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.ReactiveProperty.Controls.Tool.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.ReactiveProperty.Controls.Tool.html#Dock_Model_ReactiveProperty_Controls_Tool_IsOpen
+  commentId: P:Dock.Model.ReactiveProperty.Controls.Tool.IsOpen
+  fullName: Dock.Model.ReactiveProperty.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.ReactiveProperty.Controls.Tool.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.ReactiveProperty.Controls.Tool.html#Dock_Model_ReactiveProperty_Controls_Tool_IsOpen_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.Tool.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.ReactiveProperty.Controls.Tool.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.ReactiveProperty.Controls.Tool.html#Dock_Model_ReactiveProperty_Controls_Tool_IsSelected
+  commentId: P:Dock.Model.ReactiveProperty.Controls.Tool.IsSelected
+  fullName: Dock.Model.ReactiveProperty.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.ReactiveProperty.Controls.Tool.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.ReactiveProperty.Controls.Tool.html#Dock_Model_ReactiveProperty_Controls_Tool_IsSelected_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.Tool.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
 - uid: Dock.Model.ReactiveProperty.Controls.Tool.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.ReactiveProperty.Controls.Tool.html#Dock_Model_ReactiveProperty_Controls_Tool_MdiBounds
@@ -41824,6 +42513,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockableBase.MinWidth
   nameWithType: DockableBase.MinWidth
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  name: NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.ReactiveProperty.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.NotifyDockingWindowStateChanged*
+  name: NotifyDockingWindowStateChanged
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_NotifyDockingWindowStateChanged_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.NotifyDockingWindowStateChanged
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.NotifyDockingWindowStateChanged
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged
 - uid: Dock.Model.ReactiveProperty.Core.DockableBase.OnClose
   name: OnClose()
   href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_OnClose
@@ -42619,6 +43321,45 @@ references:
   commentId: T:Dock.Model.ReactiveUI.Controls.Document
   fullName: Dock.Model.ReactiveUI.Controls.Document
   nameWithType: Document
+- uid: Dock.Model.ReactiveUI.Controls.Document.IsActive
+  name: IsActive
+  href: api/Dock.Model.ReactiveUI.Controls.Document.html#Dock_Model_ReactiveUI_Controls_Document_IsActive
+  commentId: P:Dock.Model.ReactiveUI.Controls.Document.IsActive
+  fullName: Dock.Model.ReactiveUI.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.ReactiveUI.Controls.Document.IsActive*
+  name: IsActive
+  href: api/Dock.Model.ReactiveUI.Controls.Document.html#Dock_Model_ReactiveUI_Controls_Document_IsActive_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.Document.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.Document.IsActive
+  nameWithType: Document.IsActive
+- uid: Dock.Model.ReactiveUI.Controls.Document.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.ReactiveUI.Controls.Document.html#Dock_Model_ReactiveUI_Controls_Document_IsOpen
+  commentId: P:Dock.Model.ReactiveUI.Controls.Document.IsOpen
+  fullName: Dock.Model.ReactiveUI.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.ReactiveUI.Controls.Document.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.ReactiveUI.Controls.Document.html#Dock_Model_ReactiveUI_Controls_Document_IsOpen_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.Document.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.Document.IsOpen
+  nameWithType: Document.IsOpen
+- uid: Dock.Model.ReactiveUI.Controls.Document.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.ReactiveUI.Controls.Document.html#Dock_Model_ReactiveUI_Controls_Document_IsSelected
+  commentId: P:Dock.Model.ReactiveUI.Controls.Document.IsSelected
+  fullName: Dock.Model.ReactiveUI.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
+- uid: Dock.Model.ReactiveUI.Controls.Document.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.ReactiveUI.Controls.Document.html#Dock_Model_ReactiveUI_Controls_Document_IsSelected_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.Document.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.Document.IsSelected
+  nameWithType: Document.IsSelected
 - uid: Dock.Model.ReactiveUI.Controls.Document.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.ReactiveUI.Controls.Document.html#Dock_Model_ReactiveUI_Controls_Document_MdiBounds
@@ -43399,6 +44140,45 @@ references:
   commentId: T:Dock.Model.ReactiveUI.Controls.Tool
   fullName: Dock.Model.ReactiveUI.Controls.Tool
   nameWithType: Tool
+- uid: Dock.Model.ReactiveUI.Controls.Tool.IsActive
+  name: IsActive
+  href: api/Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsActive
+  commentId: P:Dock.Model.ReactiveUI.Controls.Tool.IsActive
+  fullName: Dock.Model.ReactiveUI.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.ReactiveUI.Controls.Tool.IsActive*
+  name: IsActive
+  href: api/Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsActive_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.Tool.IsActive
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.Tool.IsActive
+  nameWithType: Tool.IsActive
+- uid: Dock.Model.ReactiveUI.Controls.Tool.IsOpen
+  name: IsOpen
+  href: api/Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsOpen
+  commentId: P:Dock.Model.ReactiveUI.Controls.Tool.IsOpen
+  fullName: Dock.Model.ReactiveUI.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.ReactiveUI.Controls.Tool.IsOpen*
+  name: IsOpen
+  href: api/Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsOpen_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.Tool.IsOpen
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.Tool.IsOpen
+  nameWithType: Tool.IsOpen
+- uid: Dock.Model.ReactiveUI.Controls.Tool.IsSelected
+  name: IsSelected
+  href: api/Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsSelected
+  commentId: P:Dock.Model.ReactiveUI.Controls.Tool.IsSelected
+  fullName: Dock.Model.ReactiveUI.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
+- uid: Dock.Model.ReactiveUI.Controls.Tool.IsSelected*
+  name: IsSelected
+  href: api/Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_IsSelected_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.Tool.IsSelected
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.Tool.IsSelected
+  nameWithType: Tool.IsSelected
 - uid: Dock.Model.ReactiveUI.Controls.Tool.MdiBounds
   name: MdiBounds
   href: api/Dock.Model.ReactiveUI.Controls.Tool.html#Dock_Model_ReactiveUI_Controls_Tool_MdiBounds
@@ -44588,6 +45368,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockableBase.MinWidth
   nameWithType: DockableBase.MinWidth
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  name: NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_
+  commentId: M:Dock.Model.ReactiveUI.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.NotifyDockingWindowStateChanged(Dock.Model.Core.DockingWindowStateProperty)
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.NotifyDockingWindowStateChanged*
+  name: NotifyDockingWindowStateChanged
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_NotifyDockingWindowStateChanged_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.NotifyDockingWindowStateChanged
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.NotifyDockingWindowStateChanged
+  nameWithType: DockableBase.NotifyDockingWindowStateChanged
 - uid: Dock.Model.ReactiveUI.Core.DockableBase.OnClose
   name: OnClose()
   href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_OnClose

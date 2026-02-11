@@ -99,7 +99,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DataContract(IsReference = true)]
-public class Tool : DockableBase, INotifyPropertyChanged, IDockSelectorInfo, IDockableDockingRestrictions, ITool, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget</code></pre>
+public class Tool : DockableBase, INotifyPropertyChanged, IDockSelectorInfo, IDockableDockingRestrictions, ITool, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget, IDockingWindowState</code></pre>
   </div>
 
 
@@ -127,6 +127,7 @@ public class Tool : DockableBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
       <div><a class="xref" href="Dock.Model.Core.ILocalTarget.html">ILocalTarget</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockingWindowState.html">IDockingWindowState</a></div>
     </dd>
   </dl>
 
@@ -247,6 +248,9 @@ public class Tool : DockableBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_OnClose">DockableBase.OnClose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_">DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_OnSelected">DockableBase.OnSelected()</a>
@@ -428,11 +432,110 @@ public class Tool : DockableBase, INotifyPropertyChanged, IDockSelectorInfo, IDo
 </h2>
 
 
+  <a id="Dock_Model_ReactiveProperty_Controls_Tool_IsActive_" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.IsActive*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Controls_Tool_IsActive" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.IsActive">
+  IsActive
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is the active (focused) item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public bool IsActive { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Controls_Tool_IsOpen_" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.IsOpen*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Controls_Tool_IsOpen" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.IsOpen">
+  IsOpen
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is open in the layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public bool IsOpen { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Controls_Tool_IsSelected_" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.IsSelected*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Controls_Tool_IsSelected" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.IsSelected">
+  IsSelected
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is selected in its owner dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public bool IsSelected { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_ReactiveProperty_Controls_Tool_MdiBounds_" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.MdiBounds*"></a>
 
   <h3 id="Dock_Model_ReactiveProperty_Controls_Tool_MdiBounds" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.MdiBounds">
   MdiBounds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window bounds in dock coordinates.</p>
@@ -465,7 +568,7 @@ public DockRect MdiBounds { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Controls_Tool_MdiState" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.MdiState">
   MdiState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window state.</p>
@@ -498,7 +601,7 @@ public MdiWindowState MdiState { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveProperty_Controls_Tool_MdiZIndex" data-uid="Dock.Model.ReactiveProperty.Controls.Tool.MdiZIndex">
   MdiZIndex
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Controls/Tool.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window Z index.</p>

@@ -250,6 +250,20 @@
       CanFloat=&quot;True&quot; /&gt;
 </code></pre>
 <p><code>DockingState</code> is maintained by factory operations (<code>PinDockable</code>, <code>UnpinDockable</code>, <code>FloatDockable</code>, <code>HideDockable</code>, <code>RestoreDockable</code>) and can be used by UI bindings for diagnostics or state-aware visuals.</p>
+<h2 id="window-state-mixin">Window State Mixin</h2>
+<p><code>Document</code> and <code>Tool</code> models implement <code>IDockingWindowState</code>, which adds bindable runtime properties:</p>
+<ul>
+<li><code>IsOpen</code>: <code>true</code> when the item is currently present in a visible, pinned, or previewable layout area.</li>
+<li><code>IsSelected</code>: <code>true</code> when the item is the <code>ActiveDockable</code> of its owner dock.</li>
+<li><code>IsActive</code>: <code>true</code> when the item is focused in the active root.</li>
+<li><code>DockingState</code>: the logical location flags (<code>Docked</code>, <code>Pinned</code>, <code>Document</code>, <code>Floating</code>, <code>Hidden</code>).</li>
+</ul>
+<p>Changes are synchronized both ways:</p>
+<ul>
+<li>Layout -&gt; VM: factory operations update these properties.</li>
+<li>VM -&gt; layout: setting <code>IsOpen</code>, <code>IsSelected</code>, <code>IsActive</code>, or <code>DockingState</code> requests the corresponding layout operation.</li>
+</ul>
+<p><code>IsOpen</code>, <code>IsSelected</code>, and <code>IsActive</code> are runtime state and are not serialized. <code>DockingState</code> remains part of persisted layout state.</p>
 <p>Global drag and drop behavior can be toggled using the attached properties from <a href="dock-settings.html"><code>Dock.Settings</code></a>:</p>
 <pre><code class="lang-xaml">&lt;Window xmlns:dockSettings=&quot;clr-namespace:Dock.Settings;assembly=Dock.Settings&quot;
         dockSettings:DockProperties.IsDragEnabled=&quot;False&quot;

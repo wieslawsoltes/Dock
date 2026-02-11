@@ -99,7 +99,7 @@ Class Document  <a class="header-action link-secondary" title="View source" href
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DataContract(IsReference = true)]
-public class Document : DockableBase, INotifyPropertyChanged, IDockSelectorInfo, IDockableDockingRestrictions, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget</code></pre>
+public class Document : DockableBase, INotifyPropertyChanged, IDockSelectorInfo, IDockableDockingRestrictions, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget, IDockingWindowState</code></pre>
   </div>
 
 
@@ -126,6 +126,7 @@ public class Document : DockableBase, INotifyPropertyChanged, IDockSelectorInfo,
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
       <div><a class="xref" href="Dock.Model.Core.ILocalTarget.html">ILocalTarget</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockingWindowState.html">IDockingWindowState</a></div>
     </dd>
   </dl>
 
@@ -246,6 +247,9 @@ public class Document : DockableBase, INotifyPropertyChanged, IDockSelectorInfo,
     </div>
     <div>
       <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_OnClose">DockableBase.OnClose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_NotifyDockingWindowStateChanged_Dock_Model_Core_DockingWindowStateProperty_">DockableBase.NotifyDockingWindowStateChanged(DockingWindowStateProperty)</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_OnSelected">DockableBase.OnSelected()</a>
@@ -427,11 +431,110 @@ public class Document : DockableBase, INotifyPropertyChanged, IDockSelectorInfo,
 </h2>
 
 
+  <a id="Dock_Model_Inpc_Controls_Document_IsActive_" data-uid="Dock.Model.Inpc.Controls.Document.IsActive*"></a>
+
+  <h3 id="Dock_Model_Inpc_Controls_Document_IsActive" data-uid="Dock.Model.Inpc.Controls.Document.IsActive">
+  IsActive
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is the active (focused) item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public bool IsActive { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Controls_Document_IsOpen_" data-uid="Dock.Model.Inpc.Controls.Document.IsOpen*"></a>
+
+  <h3 id="Dock_Model_Inpc_Controls_Document_IsOpen" data-uid="Dock.Model.Inpc.Controls.Document.IsOpen">
+  IsOpen
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is open in the layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public bool IsOpen { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Controls_Document_IsSelected_" data-uid="Dock.Model.Inpc.Controls.Document.IsSelected*"></a>
+
+  <h3 id="Dock_Model_Inpc_Controls_Document_IsSelected" data-uid="Dock.Model.Inpc.Controls.Document.IsSelected">
+  IsSelected
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the dockable is selected in its owner dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public bool IsSelected { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Inpc_Controls_Document_MdiBounds_" data-uid="Dock.Model.Inpc.Controls.Document.MdiBounds*"></a>
 
   <h3 id="Dock_Model_Inpc_Controls_Document_MdiBounds" data-uid="Dock.Model.Inpc.Controls.Document.MdiBounds">
   MdiBounds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window bounds in dock coordinates.</p>
@@ -464,7 +567,7 @@ public DockRect MdiBounds { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_Document_MdiState" data-uid="Dock.Model.Inpc.Controls.Document.MdiState">
   MdiState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window state.</p>
@@ -497,7 +600,7 @@ public MdiWindowState MdiState { get; set; }</code></pre>
 
   <h3 id="Dock_Model_Inpc_Controls_Document_MdiZIndex" data-uid="Dock.Model.Inpc.Controls.Document.MdiZIndex">
   MdiZIndex
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Controls/Document.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets MDI window Z index.</p>

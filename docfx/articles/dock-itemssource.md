@@ -27,12 +27,40 @@ A custom `ItemContainerGenerator` can fully override this behavior.
 - By default, `ToolDock` creates a `Tool` for each item and stores the item in `Tool.Context`.
 - The tab title is derived from `Title`, `Name`, or `DisplayName` properties on the item (in that order), falling back to `ToString()`.
 - `CanClose` is copied from the item if present; otherwise it defaults to `true`.
-- When a generated document or tool is closed, the factory attempts to remove the source item from `ItemsSource` if it implements `IList`.
+- `IFactory.GetContainerFromItem(object item)` returns the currently tracked generated container for a source item.
+- When a generated document or tool is closed, Dock can remove the source item from `ItemsSource` (when it implements `IList`), controlled by `DockSettings.UpdateItemsSourceOnUnregister` and per-dock overrides.
 - Source-generated document/tool closes are treated as remove operations, even when `Factory.HideDocumentsOnClose` or `Factory.HideToolsOnClose` is enabled.
 - You can replace the default generation pipeline with `IDockItemContainerGenerator` for custom container types, metadata mapping, and cleanup.
 - Theme metadata from `DocumentItemContainerTheme` / `ToolItemContainerTheme` is copied to generated containers and applied by `DocumentContentControl` / `ToolContentControl`.
 - Template selectors run before dock templates. If a selector returns `null`, Dock falls back to `DocumentTemplate` / `ToolTemplate`.
 - Changing `DocumentTemplate`, `ToolTemplate`, per-dock theme metadata, or selector regenerates source-generated containers.
+
+## Container Lookup and Unregister Policy
+
+Use `IFactory.GetContainerFromItem` to resolve the generated dock container from a source item:
+
+```csharp
+var sourceItem = viewModel.Documents[0];
+var container = factory.GetContainerFromItem(sourceItem);
+if (container is IDocument document)
+{
+    factory.SetActiveDockable(document);
+}
+```
+
+Control whether closing a generated container removes the source item:
+
+- Global default: `DockSettings.UpdateItemsSourceOnUnregister` (default `true`)
+- Per-document dock override: `DocumentDock.CanUpdateItemsSourceOnUnregister` (`bool?`, `null` = global)
+- Per-tool dock override: `ToolDock.CanUpdateItemsSourceOnUnregister` (`bool?`, `null` = global)
+
+```xaml
+<DocumentDock ItemsSource="{Binding Documents}"
+              CanUpdateItemsSourceOnUnregister="False" />
+
+<ToolDock ItemsSource="{Binding Tools}"
+          CanUpdateItemsSourceOnUnregister="{Binding ToolUnregisterPolicy}" />
+```
 
 ## Per-Dock Theme and Template Selector APIs
 

@@ -79,14 +79,16 @@ The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumen
 - `DocumentDock.ItemContainerGenerator` and `ToolDock.ItemContainerGenerator` accept `IDockItemContainerGenerator` for custom create/prepare/clear pipelines.
 - `DocumentDock.DocumentItemContainerTheme` and `ToolDock.ToolItemContainerTheme` provide per-dock container theme metadata.
 - `DocumentDock.DocumentItemTemplateSelector` and `ToolDock.ToolItemTemplateSelector` provide per-item template selection hooks.
+- `DocumentDock.CanUpdateItemsSourceOnUnregister` and `ToolDock.CanUpdateItemsSourceOnUnregister` override unregister source-update behavior per dock (`null` uses global settings).
 - `IsDocumentFromItemsSource(IDockable)` / `IsToolFromItemsSource(IDockable)` report whether the dockable was generated from the bound source.
 - `RemoveItemFromSource(object)` removes source items from supported list collections.
+- `IFactory.GetContainerFromItem(object)` resolves the currently tracked generated container for a source item.
 
 When `ItemsSource` is set, Dock automatically creates dockables for each source item through the configured `IDockItemContainerGenerator`. With the default generator, generation requires the corresponding template (`DocumentTemplate` or `ToolTemplate`) unless a selector provides template content. The generated `Title` is derived from `Title`, `Name`, or `DisplayName` on the source object and `Context` stores the source object for template bindings.
 
 `DockItemContainerGenerator` is the built-in default implementation. Subclass it or implement `IDockItemContainerGenerator` directly to customize container type, source-to-container mapping, or container cleanup behavior.
 
-Changes to `INotifyCollectionChanged` collections (for example, `ObservableCollection<T>`) automatically add or remove corresponding dockables. When a generated document or tool is closed, the factory attempts to remove the source item from the collection if it implements `IList`.
+Changes to `INotifyCollectionChanged` collections (for example, `ObservableCollection<T>`) automatically add or remove corresponding dockables. When a generated document or tool is closed, source removal is controlled by `DockSettings.UpdateItemsSourceOnUnregister` and per-dock overrides, and applies when the backing source implements `IList`.
 
 ## Host window options
 

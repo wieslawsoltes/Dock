@@ -91,6 +91,11 @@ public static class AppBuilderExtensions
             DockSettings.DragPreviewOpacity = options.DragPreviewOpacity.Value;
         }
 
+        if (options.UpdateItemsSourceOnUnregister != null)
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = options.UpdateItemsSourceOnUnregister.Value;
+        }
+
         if (options.SelectorEnabled != null)
         {
             DockSettings.SelectorEnabled = options.SelectorEnabled.Value;
@@ -261,6 +266,20 @@ public static class AppBuilderExtensions
         double opacity)
     {
         DockSettings.DragPreviewOpacity = opacity;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.UpdateItemsSourceOnUnregister"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="update">Whether source collections should be updated when generated items unregister.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UpdateItemsSourceOnUnregister(
+        this AppBuilder builder,
+        bool update = true)
+    {
+        DockSettings.UpdateItemsSourceOnUnregister = update;
         return builder;
     }
 

@@ -32,6 +32,7 @@ public class DockService : IDockService
         {
             targetItemsDock.ToolItemContainerTheme = sourceItemsDock.ToolItemContainerTheme;
             targetItemsDock.ToolItemTemplateSelector = sourceItemsDock.ToolItemTemplateSelector;
+            targetItemsDock.CanUpdateItemsSourceOnUnregister = sourceItemsDock.CanUpdateItemsSourceOnUnregister;
         }
     }
 
@@ -224,6 +225,7 @@ public class DockService : IDockService
             {
                 targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
                 targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
+                targetDocumentItemsDock.CanUpdateItemsSourceOnUnregister = sourceDocumentItemsDock.CanUpdateItemsSourceOnUnregister;
             }
 
             if (sourceDocumentDock is IDocumentDockFactory sourceDocumentDockFactory

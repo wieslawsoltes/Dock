@@ -250,6 +250,119 @@ public class FactoryTests
     }
 
     [AvaloniaFact]
+    public void DockingWindowStateMixin_Synchronizes_Layout_To_ViewModel()
+    {
+        var factory = new TestFactory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        root.HiddenDockables = factory.CreateList<IDockable>();
+        root.Windows = factory.CreateList<IDockWindow>();
+
+        var toolDock = factory.CreateToolDock();
+        toolDock.VisibleDockables = factory.CreateList<IDockable>();
+        factory.AddDockable(root, toolDock);
+
+        var tool = (Tool)factory.CreateTool();
+        factory.AddDockable(toolDock, tool);
+
+        Assert.True(tool.IsOpen);
+        Assert.False(tool.IsSelected);
+        Assert.False(tool.IsActive);
+
+        toolDock.ActiveDockable = tool;
+        factory.SetFocusedDockable(toolDock, tool);
+
+        Assert.True(tool.IsSelected);
+        Assert.True(tool.IsActive);
+
+        factory.HideDockable(tool);
+
+        Assert.False(tool.IsOpen);
+        Assert.True(tool.DockingState.HasFlag(DockingWindowState.Hidden));
+        Assert.False(tool.IsSelected);
+        Assert.False(tool.IsActive);
+
+        factory.RestoreDockable(tool);
+
+        Assert.True(tool.IsOpen);
+        Assert.False(tool.DockingState.HasFlag(DockingWindowState.Hidden));
+    }
+
+    [AvaloniaFact]
+    public void DockingWindowStateMixin_HiddenAncestor_Resets_ChildOpenSelectionAndActiveFlags()
+    {
+        var factory = new TestFactory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        root.HiddenDockables = factory.CreateList<IDockable>();
+        root.Windows = factory.CreateList<IDockWindow>();
+
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+        factory.AddDockable(root, documentDock);
+
+        var document = (Document)factory.CreateDocument();
+        factory.AddDockable(documentDock, document);
+        documentDock.ActiveDockable = document;
+        factory.SetFocusedDockable(documentDock, document);
+
+        Assert.True(document.IsOpen);
+        Assert.True(document.IsSelected);
+        Assert.True(document.IsActive);
+
+        factory.HideDockable(documentDock);
+
+        Assert.True(document.DockingState.HasFlag(DockingWindowState.Hidden));
+        Assert.False(document.IsOpen);
+        Assert.False(document.IsSelected);
+        Assert.False(document.IsActive);
+    }
+
+    [AvaloniaFact]
+    public void DockingWindowStateMixin_Synchronizes_ViewModel_To_Layout()
+    {
+        var factory = new TestFactory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        root.HiddenDockables = factory.CreateList<IDockable>();
+        root.Windows = factory.CreateList<IDockWindow>();
+
+        var toolDock = factory.CreateToolDock();
+        toolDock.VisibleDockables = factory.CreateList<IDockable>();
+
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+
+        factory.AddDockable(root, toolDock);
+        factory.AddDockable(root, documentDock);
+
+        var tool = (Tool)factory.CreateTool();
+        factory.AddDockable(toolDock, tool);
+
+        tool.DockingState = DockingWindowState.Document;
+
+        Assert.Same(documentDock, tool.Owner);
+        Assert.True(tool.DockingState.HasFlag(DockingWindowState.Document));
+
+        tool.IsOpen = false;
+
+        Assert.Contains(tool, root.HiddenDockables);
+        Assert.False(tool.IsOpen);
+
+        tool.IsOpen = true;
+
+        Assert.DoesNotContain(tool, root.HiddenDockables);
+        Assert.True(tool.IsOpen);
+
+        tool.IsSelected = true;
+        Assert.Same(tool, documentDock.ActiveDockable);
+
+        tool.IsActive = true;
+        Assert.Same(tool, root.FocusedDockable);
+        Assert.True(tool.IsActive);
+    }
+
+    [AvaloniaFact]
     public void CreateDocumentDock_Creates_DocumentDock()
     {
         var factory = new TestFactory();

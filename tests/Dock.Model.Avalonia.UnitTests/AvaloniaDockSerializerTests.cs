@@ -65,6 +65,25 @@ public class AvaloniaDockSerializerTests
     }
 
     [AvaloniaFact]
+    public void Serialize_Tool_DoesNotInclude_DockingWindowStateMixinProperties()
+    {
+        var serializer = new AvaloniaDockSerializer();
+        var tool = new Tool
+        {
+            IsOpen = true,
+            IsActive = true,
+            IsSelected = true
+        };
+
+        var json = serializer.Serialize(tool);
+
+        using var document = JsonDocument.Parse(json);
+        Assert.False(document.RootElement.TryGetProperty("IsOpen", out _), json);
+        Assert.False(document.RootElement.TryGetProperty("IsActive", out _), json);
+        Assert.False(document.RootElement.TryGetProperty("IsSelected", out _), json);
+    }
+
+    [AvaloniaFact]
     public void Serialize_ToolDock_DoesNotIncludeItemsSourceOrToolTemplate()
     {
         var serializer = new AvaloniaDockSerializer();

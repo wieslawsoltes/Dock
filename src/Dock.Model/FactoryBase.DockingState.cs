@@ -16,7 +16,13 @@ public abstract partial class FactoryBase
     /// <param name="dockable">The dockable to update.</param>
     protected virtual void UpdateDockingWindowState(IDockable dockable)
     {
-        dockable.DockingState = ResolveDockingWindowState(dockable);
+        var resolvedState = ResolveDockingWindowState(dockable);
+        using (EnterDockingWindowStateSyncScope())
+        {
+            dockable.DockingState = resolvedState;
+        }
+
+        SetDockingWindowStateFlags(dockable, resolvedState);
     }
 
     /// <summary>

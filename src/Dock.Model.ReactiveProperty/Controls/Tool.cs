@@ -11,11 +11,14 @@ namespace Dock.Model.ReactiveProperty.Controls;
 /// Tool.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Tool : DockableBase, ITool, IDocument, IMdiDocument
+public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IDockingWindowState
 {
     private DockRect _mdiBounds;
     private MdiWindowState _mdiState = MdiWindowState.Normal;
     private int _mdiZIndex;
+    private bool _isOpen;
+    private bool _isActive;
+    private bool _isSelected;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -39,5 +42,56 @@ public class Tool : DockableBase, ITool, IDocument, IMdiDocument
     {
         get => _mdiZIndex;
         set => SetProperty(ref _mdiZIndex, value);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public bool IsOpen
+    {
+        get => _isOpen;
+        set
+        {
+            if (_isOpen == value)
+            {
+                return;
+            }
+
+            SetProperty(ref _isOpen, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsOpen);
+        }
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public bool IsActive
+    {
+        get => _isActive;
+        set
+        {
+            if (_isActive == value)
+            {
+                return;
+            }
+
+            SetProperty(ref _isActive, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsActive);
+        }
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            if (_isSelected == value)
+            {
+                return;
+            }
+
+            SetProperty(ref _isSelected, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsSelected);
+        }
     }
 }

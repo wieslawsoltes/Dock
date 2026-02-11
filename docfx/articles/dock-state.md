@@ -6,7 +6,7 @@ This document explains why `DockState` exists and how to use it when saving and 
 
 `DockState` captures values that are not serialized with the layout itself, such as `IToolContent.Content`, `IDocumentContent.Content`, `IDocumentDockContent.DocumentTemplate`, and `IToolDockContent.ToolTemplate`. These properties often reference controls or templates that are intentionally ignored by serializers. Without `DockState`, documents or tools can appear with missing content after a layout is loaded.
 
-Active and focused dockables are part of the layout model and are serialized directly, so `DockState` is not required for focus restoration. Dockable logical placement (`IDockable.DockingState`) is also part of the layout model and is updated by factory operations.
+Active and focused dockables are part of the layout model and are serialized directly, so `DockState` is not required for focus restoration. Dockable logical placement (`IDockable.DockingState`) is also part of the layout model and is updated by factory operations. Runtime mixin flags from `IDockingWindowState` (`IsOpen`, `IsActive`, `IsSelected`) are synchronized at runtime and intentionally not serialized.
 
 ## When to create a DockState
 

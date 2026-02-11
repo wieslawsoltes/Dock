@@ -17,7 +17,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Tool.
 /// </summary>
-public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, ITemplate<Control?>, IRecyclingDataTemplate
+public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, ITemplate<Control?>, IRecyclingDataTemplate, IDockingWindowState
 {
     /// <summary>
     /// Defines the <see cref="Content"/> property.
@@ -43,9 +43,30 @@ public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, 
     public static readonly DirectProperty<Tool, int> MdiZIndexProperty =
         AvaloniaProperty.RegisterDirect<Tool, int>(nameof(MdiZIndex), o => o.MdiZIndex, (o, v) => o.MdiZIndex = v);
 
+    /// <summary>
+    /// Defines the <see cref="IsOpen"/> property.
+    /// </summary>
+    public static readonly DirectProperty<Tool, bool> IsOpenProperty =
+        AvaloniaProperty.RegisterDirect<Tool, bool>(nameof(IsOpen), o => o.IsOpen, (o, v) => o.IsOpen = v);
+
+    /// <summary>
+    /// Defines the <see cref="IsActive"/> property.
+    /// </summary>
+    public static readonly DirectProperty<Tool, bool> IsActiveProperty =
+        AvaloniaProperty.RegisterDirect<Tool, bool>(nameof(IsActive), o => o.IsActive, (o, v) => o.IsActive = v);
+
+    /// <summary>
+    /// Defines the <see cref="IsSelected"/> property.
+    /// </summary>
+    public static readonly DirectProperty<Tool, bool> IsSelectedProperty =
+        AvaloniaProperty.RegisterDirect<Tool, bool>(nameof(IsSelected), o => o.IsSelected, (o, v) => o.IsSelected = v);
+
     private DockRect _mdiBounds;
     private MdiWindowState _mdiState = MdiWindowState.Normal;
     private int _mdiZIndex;
+    private bool _isOpen;
+    private bool _isActive;
+    private bool _isSelected;
 
 
 
@@ -95,6 +116,60 @@ public class Tool : DockableBase, ITool, IDocument, IMdiDocument, IToolContent, 
     {
         get => _mdiZIndex;
         set => SetAndRaise(MdiZIndexProperty, ref _mdiZIndex, value);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public bool IsOpen
+    {
+        get => _isOpen;
+        set
+        {
+            if (_isOpen == value)
+            {
+                return;
+            }
+
+            SetAndRaise(IsOpenProperty, ref _isOpen, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsOpen);
+        }
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public bool IsActive
+    {
+        get => _isActive;
+        set
+        {
+            if (_isActive == value)
+            {
+                return;
+            }
+
+            SetAndRaise(IsActiveProperty, ref _isActive, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsActive);
+        }
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            if (_isSelected == value)
+            {
+                return;
+            }
+
+            SetAndRaise(IsSelectedProperty, ref _isSelected, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsSelected);
+        }
     }
 
     /// <summary>

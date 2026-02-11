@@ -67,11 +67,10 @@ public abstract partial class FactoryBase
         }
  
         dockable.Owner = owner;
+        dockable.Factory = this;
 
         if (dockable is IDock dock)
         {
-            dock.Factory = this;
-
             if (dock.VisibleDockables is not null)
             {
                 InitDockables(dockable, dock.VisibleDockables);
@@ -245,7 +244,9 @@ public abstract partial class FactoryBase
         if (dockable is { })
         {
             SetFocusedDockable(owner, dockable);
-        } 
+        }
+
+        SynchronizeDockingWindowSelection(owner);
     }
 
     /// <inheritdoc/>
@@ -287,6 +288,8 @@ public abstract partial class FactoryBase
             return;
         }
 
+        var previousFocused = root.FocusedDockable;
+
         if (dockable is not null)
         {
             var results = Find(x => x is IRootDock);
@@ -302,6 +305,11 @@ public abstract partial class FactoryBase
                         SetIsActive(rootDock.FocusedDockable.Owner, false);
                         // Trigger deactivation event for the dockable that lost focus
                         OnDockableDeactivated(rootDock.FocusedDockable);
+                        SynchronizeDockingWindowState(rootDock.FocusedDockable);
+                        if (rootDock.FocusedDockable.Owner is IDock oldRootOwner)
+                        {
+                            SynchronizeDockingWindowSelection(oldRootOwner);
+                        }
                     }
                 }
             }
@@ -330,5 +338,25 @@ public abstract partial class FactoryBase
         {
             SetIsActive(root.FocusedDockable.Owner, true);
         }
+
+        if (previousFocused is not null && !ReferenceEquals(previousFocused, root.FocusedDockable))
+        {
+            SynchronizeDockingWindowState(previousFocused);
+            if (previousFocused.Owner is IDock previousOwnerDock)
+            {
+                SynchronizeDockingWindowSelection(previousOwnerDock);
+            }
+        }
+
+        if (root.FocusedDockable is not null)
+        {
+            SynchronizeDockingWindowState(root.FocusedDockable);
+            if (root.FocusedDockable.Owner is IDock focusedOwnerDock)
+            {
+                SynchronizeDockingWindowSelection(focusedOwnerDock);
+            }
+        }
+
+        SynchronizeDockingWindowSelection(dock);
     }
 }

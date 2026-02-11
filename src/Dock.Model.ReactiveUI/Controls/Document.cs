@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
+using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Controls;
@@ -11,8 +12,12 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// <summary>
 /// Document.
 /// </summary>
-public partial class Document : DockableBase, IMdiDocument
+public partial class Document : DockableBase, IMdiDocument, IDockingWindowState
 {
+    private bool _isOpen;
+    private bool _isActive;
+    private bool _isSelected;
+
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
@@ -27,4 +32,55 @@ public partial class Document : DockableBase, IMdiDocument
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
     public partial int MdiZIndex { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public bool IsOpen
+    {
+        get => _isOpen;
+        set
+        {
+            if (_isOpen == value)
+            {
+                return;
+            }
+
+            this.RaiseAndSetIfChanged(ref _isOpen, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsOpen);
+        }
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public bool IsActive
+    {
+        get => _isActive;
+        set
+        {
+            if (_isActive == value)
+            {
+                return;
+            }
+
+            this.RaiseAndSetIfChanged(ref _isActive, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsActive);
+        }
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            if (_isSelected == value)
+            {
+                return;
+            }
+
+            this.RaiseAndSetIfChanged(ref _isSelected, value);
+            NotifyDockingWindowStateChanged(DockingWindowStateProperty.IsSelected);
+        }
+    }
 }

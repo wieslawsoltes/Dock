@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Model;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -252,7 +253,12 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
                 var sourceDockable = _hostWindow.Window?.Layout?.FocusedDockable
                     ?? _hostWindow.Window?.Layout?.ActiveDockable;
-                if (preview == "None" && sourceDockable?.CanFloat == true)
+                if (preview == "None"
+                    && sourceDockable is { }
+                    && DockCapabilityResolver.IsEnabled(
+                        sourceDockable,
+                        DockCapability.Float,
+                        DockCapabilityResolver.ResolveOperationDock(sourceDockable)))
                 {
                     preview = "Float";
                 }

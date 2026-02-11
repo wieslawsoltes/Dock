@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Model;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -255,7 +256,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         {
             LogDropRejection(
                 nameof(ValidateGlobal),
-                $"DockManager rejected global operation {operation} for '{sourceDockable.Title}' -> '{targetDock.Title}'.");
+                WithCapabilityDiagnostics($"DockManager rejected global operation {operation} for '{sourceDockable.Title}' -> '{targetDock.Title}'."));
         }
 
         return isValid;
@@ -306,7 +307,11 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     break;
                 }
 
-                if (_hostWindow.DataContext is IDockable { CanDrag: false })
+                if (_hostWindow.DataContext is IDockable dockable
+                    && !DockCapabilityResolver.IsEnabled(
+                        dockable,
+                        DockCapability.Drag,
+                        DockCapabilityResolver.ResolveOperationDock(dockable)))
                 {
                     break;
                 }

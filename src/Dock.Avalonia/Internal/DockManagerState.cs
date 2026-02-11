@@ -55,6 +55,17 @@ internal abstract class DockManagerState : IDockManagerState
         DockLogger.LogDebug("DragState", message);
     }
 
+    protected string WithCapabilityDiagnostics(string message)
+    {
+        var evaluation = DockManager.LastCapabilityEvaluation;
+        if (evaluation is null)
+        {
+            return message;
+        }
+
+        return $"{message} {evaluation.DiagnosticMessage}";
+    }
+
     protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockingService.ResolveGlobalTargetDock(dropControl);
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
@@ -281,7 +292,7 @@ internal abstract class DockManagerState : IDockManagerState
         {
             LogDropRejection(
                 nameof(ValidateDockable),
-                $"DockManager rejected operation {operation} from '{sourceDockable.Title}' to '{targetDockable.Title}'.");
+                WithCapabilityDiagnostics($"DockManager rejected operation {operation} from '{sourceDockable.Title}' to '{targetDockable.Title}'."));
         }
 
         return isValid;

@@ -4,6 +4,7 @@ using Avalonia.Automation;
 using Avalonia.Automation.Peers;
 using Avalonia.Automation.Provider;
 using Dock.Avalonia.Controls;
+using Dock.Model;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Automation.Peers;
@@ -61,7 +62,7 @@ internal sealed class ToolChromeControlAutomationPeer : ContentControlAutomation
             ("Floating", _owner.IsFloating),
             ("Maximized", _owner.IsMaximized),
             ("HasMenu", _owner.ToolFlyout is not null),
-            ("CanClose", dockable?.CanClose ?? false));
+            ("CanClose", IsCapabilityEnabled(dockable, DockCapability.Close)));
     }
 
     public void Invoke()
@@ -96,5 +97,18 @@ internal sealed class ToolChromeControlAutomationPeer : ContentControlAutomation
     private IDockable? GetActiveDockable()
     {
         return _owner.DataContext is IDock dock ? dock.ActiveDockable : null;
+    }
+
+    private static bool IsCapabilityEnabled(IDockable? dockable, DockCapability capability)
+    {
+        if (dockable is null)
+        {
+            return false;
+        }
+
+        return DockCapabilityResolver.IsEnabled(
+            dockable,
+            capability,
+            DockCapabilityResolver.ResolveOperationDock(dockable));
     }
 }

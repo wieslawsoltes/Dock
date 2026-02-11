@@ -21,6 +21,7 @@ public sealed class ManagedWindowDock : ManagedDockableBase, IDock
     private bool _isActive;
     private int _openedDockablesCount;
     private bool _canCloseLastDockable = true;
+    private DockCapabilityPolicy? _dockCapabilityPolicy;
     private bool _enableGlobalDocking = true;
 
     /// <summary>
@@ -100,6 +101,13 @@ public sealed class ManagedWindowDock : ManagedDockableBase, IDock
     {
         get => _canCloseLastDockable;
         set => SetProperty(ref _canCloseLastDockable, value);
+    }
+
+    /// <inheritdoc />
+    public DockCapabilityPolicy? DockCapabilityPolicy
+    {
+        get => _dockCapabilityPolicy;
+        set => SetProperty(ref _dockCapabilityPolicy, value);
     }
 
     /// <inheritdoc />

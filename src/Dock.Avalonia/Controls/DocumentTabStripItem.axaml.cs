@@ -11,6 +11,7 @@ using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
+using Dock.Model;
 using Dock.Model.Core;
 using AvaloniaOrientation = Avalonia.Layout.Orientation;
 
@@ -136,7 +137,11 @@ public class DocumentTabStripItem : TabStripItem
     {
         if (e.GetCurrentPoint(this).Properties.IsMiddleButtonPressed)
         {
-            if (DataContext is IDockable { Owner: IDock { Factory: { } factory }, CanClose: true } dockable)
+            if (DataContext is IDockable { Owner: IDock { Factory: { } factory } } dockable
+                && DockCapabilityResolver.IsEnabled(
+                    dockable,
+                    DockCapability.Close,
+                    DockCapabilityResolver.ResolveOperationDock(dockable)))
             {
                 factory.CloseDockable(dockable);
             }
@@ -145,7 +150,11 @@ public class DocumentTabStripItem : TabStripItem
 
     private void DoubleTappedHandler(object? sender, TappedEventArgs e)
     {
-        if (DataContext is IDockable { Owner: IDock { Factory: { } factory } owner, CanFloat: true } dockable)
+        if (DataContext is IDockable { Owner: IDock { Factory: { } factory } owner } dockable
+            && DockCapabilityResolver.IsEnabled(
+                dockable,
+                DockCapability.Float,
+                DockCapabilityResolver.ResolveOperationDock(dockable)))
         {
             if (owner.CanCloseLastDockable || (owner.VisibleDockables?.Count ?? 0) > 1)
             {

@@ -12,6 +12,7 @@ using Avalonia.Reactive;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -73,6 +74,12 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
     /// </summary>
     public static readonly StyledProperty<IToolItemTemplateSelector?> ToolItemTemplateSelectorProperty =
         AvaloniaProperty.Register<ToolDock, IToolItemTemplateSelector?>(nameof(ToolItemTemplateSelector));
+
+    /// <summary>
+    /// Defines the <see cref="CanUpdateItemsSourceOnUnregister"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool?> CanUpdateItemsSourceOnUnregisterProperty =
+        AvaloniaProperty.Register<ToolDock, bool?>(nameof(CanUpdateItemsSourceOnUnregister));
 
     private Alignment _alignment = Alignment.Unset;
     private bool _isExpanded;
@@ -222,6 +229,15 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         set => SetValue(ToolItemTemplateSelectorProperty, value);
     }
 
+    /// <inheritdoc />
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanUpdateItemsSourceOnUnregister")]
+    public bool? CanUpdateItemsSourceOnUnregister
+    {
+        get => GetValue(CanUpdateItemsSourceOnUnregisterProperty);
+        set => SetValue(CanUpdateItemsSourceOnUnregisterProperty, value);
+    }
+
     /// <summary>
     /// Creates new tool from template.
     /// </summary>
@@ -270,6 +286,12 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
             return false;
         }
 
+        if (!ShouldUpdateItemsSourceOnUnregister())
+        {
+            UntrackGeneratedTool(item);
+            return false;
+        }
+
         if (ItemsSource is IList list)
         {
             if (list.Contains(item))
@@ -297,6 +319,11 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
 
         UntrackGeneratedTool(item);
         return false;
+    }
+
+    private bool ShouldUpdateItemsSourceOnUnregister()
+    {
+        return CanUpdateItemsSourceOnUnregister ?? DockSettings.UpdateItemsSourceOnUnregister;
     }
 
     /// <summary>
@@ -464,7 +491,7 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
 
         _generatedTools.Add(tool);
         _generatedToolGenerators[tool] = generator;
-        TrackItemsSourceTool(tool);
+        TrackItemsSourceTool(tool, item);
 
         if (Factory != null)
         {
@@ -581,11 +608,11 @@ public class ToolDock : DockBase, IToolDock, IToolDockContent, IToolItemsSourceD
         }
     }
 
-    private void TrackItemsSourceTool(IDockable tool)
+    private void TrackItemsSourceTool(IDockable tool, object item)
     {
         if (Factory is global::Dock.Model.FactoryBase factoryBase)
         {
-            factoryBase.TrackItemsSourceDockable(tool, this);
+            factoryBase.TrackItemsSourceDockable(tool, this, item);
         }
     }
 

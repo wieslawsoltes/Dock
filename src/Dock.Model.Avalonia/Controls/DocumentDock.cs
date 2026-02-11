@@ -14,6 +14,7 @@ using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Internal;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -87,6 +88,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     /// </summary>
     public static readonly StyledProperty<IDocumentItemTemplateSelector?> DocumentItemTemplateSelectorProperty =
         AvaloniaProperty.Register<DocumentDock, IDocumentItemTemplateSelector?>(nameof(DocumentItemTemplateSelector));
+
+    /// <summary>
+    /// Defines the <see cref="CanUpdateItemsSourceOnUnregister"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool?> CanUpdateItemsSourceOnUnregisterProperty =
+        AvaloniaProperty.Register<DocumentDock, bool?>(nameof(CanUpdateItemsSourceOnUnregister));
 
     private bool _canCreateDocument;
     private readonly HashSet<IDockable> _generatedDocuments = new();
@@ -289,6 +296,15 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     {
         get => GetValue(DocumentItemTemplateSelectorProperty);
         set => SetValue(DocumentItemTemplateSelectorProperty, value);
+    }
+
+    /// <inheritdoc />
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanUpdateItemsSourceOnUnregister")]
+    public bool? CanUpdateItemsSourceOnUnregister
+    {
+        get => GetValue(CanUpdateItemsSourceOnUnregisterProperty);
+        set => SetValue(CanUpdateItemsSourceOnUnregisterProperty, value);
     }
 
     /// <summary>
@@ -545,7 +561,7 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
 
         _generatedDocuments.Add(document);
         _generatedDocumentGenerators[document] = generator;
-        TrackItemsSourceDocument(document);
+        TrackItemsSourceDocument(document, item);
 
         if (Factory != null)
         {
@@ -610,6 +626,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
             return false;
         }
 
+        if (!ShouldUpdateItemsSourceOnUnregister())
+        {
+            UntrackGeneratedDocument(item);
+            return false;
+        }
+
         // Only support IList<T> or IList collections
         if (ItemsSource is System.Collections.IList list)
         {
@@ -638,6 +660,11 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
 
         UntrackGeneratedDocument(item);
         return false;
+    }
+
+    private bool ShouldUpdateItemsSourceOnUnregister()
+    {
+        return CanUpdateItemsSourceOnUnregister ?? DockSettings.UpdateItemsSourceOnUnregister;
     }
 
     /// <summary>
@@ -714,11 +741,11 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
         }
     }
 
-    private void TrackItemsSourceDocument(IDockable document)
+    private void TrackItemsSourceDocument(IDockable document, object item)
     {
         if (Factory is global::Dock.Model.FactoryBase factoryBase)
         {
-            factoryBase.TrackItemsSourceDockable(document, this);
+            factoryBase.TrackItemsSourceDockable(document, this, item);
         }
     }
 

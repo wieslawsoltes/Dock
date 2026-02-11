@@ -77,6 +77,11 @@ public class DockSettingsOptions
     public double? DragPreviewOpacity { get; set; }
 
     /// <summary>
+    /// Optional ItemsSource unregister update flag.
+    /// </summary>
+    public bool? UpdateItemsSourceOnUnregister { get; set; }
+
+    /// <summary>
     /// Optional selector enabled flag.
     /// </summary>
     public bool? SelectorEnabled { get; set; }

@@ -31,6 +31,12 @@ public interface IToolItemsSourceDock
     IToolItemTemplateSelector? ToolItemTemplateSelector { get; set; }
 
     /// <summary>
+    /// Gets or sets whether unregistering a generated tool should remove its source item from
+    /// <see cref="ItemsSource"/> when possible. A null value uses global settings.
+    /// </summary>
+    bool? CanUpdateItemsSourceOnUnregister { get; set; }
+
+    /// <summary>
     /// Checks if a tool was generated from ItemsSource.
     /// </summary>
     /// <param name="tool">The tool to check.</param>

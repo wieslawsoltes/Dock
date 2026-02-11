@@ -151,8 +151,11 @@ These interfaces define source-backed dock generation contracts:
 - `ItemContainerGenerator` provides custom container creation/preparation/cleanup through `IDockItemContainerGenerator`.
 - `DocumentItemContainerTheme` / `ToolItemContainerTheme` provide per-dock theme metadata for generated container controls.
 - `DocumentItemTemplateSelector` / `ToolItemTemplateSelector` provide per-item template selection before template fallback.
+- `CanUpdateItemsSourceOnUnregister` allows per-dock override of source list updates during generated-container unregister (`null` uses global settings).
 - `IsDocumentFromItemsSource` / `IsToolFromItemsSource` detect source-generated dockables.
 - `RemoveItemFromSource` synchronizes close operations back to mutable source collections.
+
+`IFactory.GetContainerFromItem(object item)` returns the currently tracked generated container for a source item and works for both document and tool ItemsSource pipelines.
 
 The Avalonia model's `DocumentDock` and `ToolDock` implementations use `DockItemContainerGenerator` by default, while still allowing per-dock generator overrides.
 

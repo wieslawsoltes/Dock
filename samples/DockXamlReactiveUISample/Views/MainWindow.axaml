@@ -1,7 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:model="using:Dock.Model.Avalonia.Controls"
-        xmlns:dockModel="using:Dock.Model.Avalonia"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:vm="using:DockXamlReactiveUISample.ViewModels"
         xmlns:infra="using:DockXamlReactiveUISample.Infrastructure"
@@ -32,21 +31,46 @@
   <DockPanel>
 
     <Border DockPanel.Dock="Top" Padding="12" Background="#F3F4F6">
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <Button Content="Add Document" Command="{Binding AddDocumentCommand}" />
-        <Button Content="Remove Document" Command="{Binding RemoveDocumentCommand}" />
-        <Button Content="Add Tool" Command="{Binding AddToolCommand}" />
-        <Button Content="Remove Tool" Command="{Binding RemoveToolCommand}" />
-        <Button Content="Clear All" Command="{Binding ClearAllCommand}" />
-        <TextBlock Text="{Binding Summary}" Margin="16,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" />
+      <StackPanel Spacing="8">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button Content="Add Document" Command="{Binding AddDocumentCommand}" />
+          <Button Content="Remove Document" Command="{Binding RemoveDocumentCommand}" />
+          <Button Content="Add Tool" Command="{Binding AddToolCommand}" />
+          <Button Content="Remove Tool" Command="{Binding RemoveToolCommand}" />
+          <Button Content="Clear All" Command="{Binding ClearAllCommand}" />
+          <TextBlock Text="{Binding Summary}" Margin="16,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <CheckBox Content="Global UpdateItemsSourceOnUnregister"
+                    IsChecked="{Binding UpdateItemsSourceOnUnregister}" />
+          <CheckBox Content="Document Override (null = global)"
+                    IsThreeState="True"
+                    IsChecked="{Binding DocumentCanUpdateItemsSourceOnUnregister}" />
+          <CheckBox Content="Tool Override (null = global)"
+                    IsThreeState="True"
+                    IsChecked="{Binding ToolCanUpdateItemsSourceOnUnregister}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+          <Button Content="Lookup First Document Container"
+                  Command="{Binding LookupDocumentContainerCommand}" />
+          <TextBlock Text="{Binding DocumentContainerLookup}"
+                     VerticalAlignment="Center" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+          <Button Content="Lookup First Tool Container"
+                  Command="{Binding LookupToolContainerCommand}" />
+          <TextBlock Text="{Binding ToolContainerLookup}"
+                     VerticalAlignment="Center" />
+        </StackPanel>
       </StackPanel>
     </Border>
 
-    <dock:DockControl InitializeLayout="True" InitializeFactory="True">
-
-      <dock:DockControl.Factory>
-        <dockModel:Factory HideToolsOnClose="False" HideDocumentsOnClose="False" />
-      </dock:DockControl.Factory>
+    <dock:DockControl InitializeLayout="True"
+                      InitializeFactory="True"
+                      Factory="{Binding DataContext.Factory, RelativeSource={RelativeSource AncestorType=Window}}">
 
       <model:RootDock x:Name="Root"
                       Id="Root"
@@ -63,6 +87,7 @@
                             Proportion="0.3"
                             ToolItemContainerTheme="SampleGeneratedToolContainerTheme"
                             ToolItemTemplateSelector="{StaticResource SampleToolItemTemplateSelector}"
+                            CanUpdateItemsSourceOnUnregister="{Binding DataContext.ToolCanUpdateItemsSourceOnUnregister, RelativeSource={RelativeSource AncestorType=Window}}"
                             ItemsSource="{Binding DataContext.Tools, RelativeSource={RelativeSource AncestorType=Window}}">
               <model:ToolDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />
@@ -91,6 +116,7 @@
                                 CanCreateDocument="False"
                                 DocumentItemContainerTheme="SampleGeneratedDocumentContainerTheme"
                                 DocumentItemTemplateSelector="{StaticResource SampleDocumentItemTemplateSelector}"
+                                CanUpdateItemsSourceOnUnregister="{Binding DataContext.DocumentCanUpdateItemsSourceOnUnregister, RelativeSource={RelativeSource AncestorType=Window}}"
                                 ItemsSource="{Binding DataContext.Documents, RelativeSource={RelativeSource AncestorType=Window}}">
               <model:DocumentDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />

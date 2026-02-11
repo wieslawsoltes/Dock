@@ -564,6 +564,8 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "CanCloseLastDockable",
                 // IDocumentDock
                 "CanCreateDocument",
+                // IItemsSourceDock
+                "CanUpdateItemsSourceOnUnregister",
             },
             [typeof(ProportionalDock)] = new List<string>
             {
@@ -702,6 +704,8 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsExpanded",
                 "AutoHide",
                 "GripMode",
+                // IToolItemsSourceDock
+                "CanUpdateItemsSourceOnUnregister",
             },
             [typeof(IDockWindow)] = new List<string>
             {

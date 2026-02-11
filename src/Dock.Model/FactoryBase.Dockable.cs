@@ -1082,6 +1082,7 @@ public abstract partial class FactoryBase
             {
                 targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
                 targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
+                targetDocumentItemsDock.CanUpdateItemsSourceOnUnregister = sourceDocumentItemsDock.CanUpdateItemsSourceOnUnregister;
             }
 
             if (sourceDoc is IDocumentDockFactory sourceDocFactory && targetDoc is IDocumentDockFactory targetDocFactory)
@@ -1107,6 +1108,7 @@ public abstract partial class FactoryBase
             {
                 targetToolItemsDock.ToolItemContainerTheme = sourceToolItemsDock.ToolItemContainerTheme;
                 targetToolItemsDock.ToolItemTemplateSelector = sourceToolItemsDock.ToolItemTemplateSelector;
+                targetToolItemsDock.CanUpdateItemsSourceOnUnregister = sourceToolItemsDock.CanUpdateItemsSourceOnUnregister;
             }
         }
 
@@ -1400,6 +1402,7 @@ public abstract partial class FactoryBase
             {
                 targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
                 targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
+                targetDocumentItemsDock.CanUpdateItemsSourceOnUnregister = sourceDocumentItemsDock.CanUpdateItemsSourceOnUnregister;
             }
 
             if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)
@@ -1474,6 +1477,7 @@ public abstract partial class FactoryBase
             {
                 targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
                 targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
+                targetDocumentItemsDock.CanUpdateItemsSourceOnUnregister = sourceDocumentItemsDock.CanUpdateItemsSourceOnUnregister;
             }
 
             if (sourceDock is IDocumentDockFactory sfd && targetDock is IDocumentDockFactory tfd)

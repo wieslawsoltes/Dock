@@ -23,6 +23,7 @@ public class AppBuilderExtensionsTests
         var originalOwnerForFloating = DockSettings.UseOwnerForFloatingWindows;
         var originalHostMode = DockSettings.FloatingWindowHostMode;
         var originalOwnerPolicy = DockSettings.FloatingWindowOwnerPolicy;
+        var originalUpdateItemsSourceOnUnregister = DockSettings.UpdateItemsSourceOnUnregister;
         var options = new DockSettingsOptions
         {
             MinimumHorizontalDragDistance = 10,
@@ -31,7 +32,8 @@ public class AppBuilderExtensionsTests
             UsePinnedDockWindow = true,
             UseOwnerForFloatingWindows = false,
             FloatingWindowHostMode = DockFloatingWindowHostMode.Managed,
-            FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.NeverOwned
+            FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.NeverOwned,
+            UpdateItemsSourceOnUnregister = false
         };
 
         try
@@ -46,6 +48,7 @@ public class AppBuilderExtensionsTests
             Assert.False(DockSettings.UseOwnerForFloatingWindows);
             Assert.Equal(DockFloatingWindowHostMode.Managed, DockSettings.FloatingWindowHostMode);
             Assert.Equal(DockFloatingWindowOwnerPolicy.NeverOwned, DockSettings.FloatingWindowOwnerPolicy);
+            Assert.False(DockSettings.UpdateItemsSourceOnUnregister);
         }
         finally
         {
@@ -56,6 +59,7 @@ public class AppBuilderExtensionsTests
             DockSettings.UseOwnerForFloatingWindows = originalOwnerForFloating;
             DockSettings.FloatingWindowHostMode = originalHostMode;
             DockSettings.FloatingWindowOwnerPolicy = originalOwnerPolicy;
+            DockSettings.UpdateItemsSourceOnUnregister = originalUpdateItemsSourceOnUnregister;
         }
     }
 
@@ -88,6 +92,7 @@ public class AppBuilderExtensionsTests
         var originalOwnerForFloating = DockSettings.UseOwnerForFloatingWindows;
         var originalHostMode = DockSettings.FloatingWindowHostMode;
         var originalOwnerPolicy = DockSettings.FloatingWindowOwnerPolicy;
+        var originalUpdateItemsSourceOnUnregister = DockSettings.UpdateItemsSourceOnUnregister;
 
         try
         {
@@ -95,13 +100,15 @@ public class AppBuilderExtensionsTests
                    .UsePinnedDockWindow(true)
                    .UseOwnerForFloatingWindows(false)
                    .UseFloatingWindowHostMode(DockFloatingWindowHostMode.Native)
-                   .UseFloatingWindowOwnerPolicy(DockFloatingWindowOwnerPolicy.AlwaysOwned);
+                   .UseFloatingWindowOwnerPolicy(DockFloatingWindowOwnerPolicy.AlwaysOwned)
+                   .UpdateItemsSourceOnUnregister(false);
 
             Assert.True(DockSettings.UseFloatingDockAdorner);
             Assert.True(DockSettings.UsePinnedDockWindow);
             Assert.False(DockSettings.UseOwnerForFloatingWindows);
             Assert.Equal(DockFloatingWindowHostMode.Native, DockSettings.FloatingWindowHostMode);
             Assert.Equal(DockFloatingWindowOwnerPolicy.AlwaysOwned, DockSettings.FloatingWindowOwnerPolicy);
+            Assert.False(DockSettings.UpdateItemsSourceOnUnregister);
         }
         finally
         {
@@ -110,6 +117,7 @@ public class AppBuilderExtensionsTests
             DockSettings.UseOwnerForFloatingWindows = originalOwnerForFloating;
             DockSettings.FloatingWindowHostMode = originalHostMode;
             DockSettings.FloatingWindowOwnerPolicy = originalOwnerPolicy;
+            DockSettings.UpdateItemsSourceOnUnregister = originalUpdateItemsSourceOnUnregister;
         }
     }
 }

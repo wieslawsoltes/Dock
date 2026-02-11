@@ -14,6 +14,18 @@ namespace Dock.Model;
 public abstract partial class FactoryBase : IFactory
 {
     private readonly ConditionalWeakTable<IDockable, IDockable> _itemsSourceOwners = new();
+    private readonly ConditionalWeakTable<IDockable, ItemsSourceItemReference> _itemsSourceItems = new();
+    private readonly Dictionary<object, List<IDockable>> _itemsSourceDockablesByItem = new();
+
+    private sealed class ItemsSourceItemReference
+    {
+        public ItemsSourceItemReference(object item)
+        {
+            Item = item;
+        }
+
+        public object Item { get; }
+    }
 
     /// <summary>
     /// Tracks dockables that were generated from an ItemsSource dock.
@@ -22,8 +34,25 @@ public abstract partial class FactoryBase : IFactory
     /// <param name="owner">The owning ItemsSource dock.</param>
     public virtual void TrackItemsSourceDockable(IDockable dockable, IDockable owner)
     {
+        TrackItemsSourceDockable(dockable, owner, dockable.Context);
+    }
+
+    /// <summary>
+    /// Tracks dockables that were generated from an ItemsSource dock.
+    /// </summary>
+    /// <param name="dockable">The generated dockable.</param>
+    /// <param name="owner">The owning ItemsSource dock.</param>
+    /// <param name="item">The source item associated with the generated dockable.</param>
+    public virtual void TrackItemsSourceDockable(IDockable dockable, IDockable owner, object? item)
+    {
         _itemsSourceOwners.Remove(dockable);
         _itemsSourceOwners.Add(dockable, owner);
+
+        RemoveTrackedItemsSourceItem(dockable);
+        if (item is not null)
+        {
+            TrackItemsSourceItem(dockable, item);
+        }
     }
 
     /// <summary>
@@ -33,6 +62,7 @@ public abstract partial class FactoryBase : IFactory
     public virtual void UntrackItemsSourceDockable(IDockable dockable)
     {
         _itemsSourceOwners.Remove(dockable);
+        RemoveTrackedItemsSourceItem(dockable);
     }
 
     /// <summary>
@@ -43,6 +73,75 @@ public abstract partial class FactoryBase : IFactory
     protected virtual IDockable? GetTrackedItemsSourceOwner(IDockable dockable)
     {
         return _itemsSourceOwners.TryGetValue(dockable, out var owner) ? owner : null;
+    }
+
+    /// <inheritdoc />
+    public virtual IDockable? GetContainerFromItem(object item)
+    {
+        if (item is null)
+        {
+            return null;
+        }
+
+        if (_itemsSourceDockablesByItem.TryGetValue(item, out var dockables))
+        {
+            for (var index = 0; index < dockables.Count;)
+            {
+                var dockable = dockables[index];
+                if (_itemsSourceOwners.TryGetValue(dockable, out _))
+                {
+                    return dockable;
+                }
+
+                dockables.RemoveAt(index);
+            }
+
+            if (dockables.Count == 0)
+            {
+                _itemsSourceDockablesByItem.Remove(item);
+            }
+        }
+
+        return null;
+    }
+
+    private void TrackItemsSourceItem(IDockable dockable, object item)
+    {
+        _itemsSourceItems.Add(dockable, new ItemsSourceItemReference(item));
+
+        if (!_itemsSourceDockablesByItem.TryGetValue(item, out var dockables))
+        {
+            dockables = new List<IDockable>();
+            _itemsSourceDockablesByItem.Add(item, dockables);
+        }
+
+        dockables.Add(dockable);
+    }
+
+    private void RemoveTrackedItemsSourceItem(IDockable dockable)
+    {
+        if (!_itemsSourceItems.TryGetValue(dockable, out var itemReference))
+        {
+            return;
+        }
+
+        _itemsSourceItems.Remove(dockable);
+
+        if (_itemsSourceDockablesByItem.TryGetValue(itemReference.Item, out var dockables))
+        {
+            for (var index = dockables.Count - 1; index >= 0; index--)
+            {
+                if (ReferenceEquals(dockables[index], dockable))
+                {
+                    dockables.RemoveAt(index);
+                }
+            }
+
+            if (dockables.Count == 0)
+            {
+                _itemsSourceDockablesByItem.Remove(itemReference.Item);
+            }
+        }
     }
 
     private static bool IsAssignedProportion(double proportion)
@@ -559,6 +658,7 @@ public abstract partial class FactoryBase : IFactory
                         {
                             targetToolItemsDock.ToolItemContainerTheme = sourceToolItemsDock.ToolItemContainerTheme;
                             targetToolItemsDock.ToolItemTemplateSelector = sourceToolItemsDock.ToolItemTemplateSelector;
+                            targetToolItemsDock.CanUpdateItemsSourceOnUnregister = sourceToolItemsDock.CanUpdateItemsSourceOnUnregister;
                         }
                     }
 
@@ -598,6 +698,7 @@ public abstract partial class FactoryBase : IFactory
                             {
                                 targetDocumentItemsDock.DocumentItemContainerTheme = sourceDocumentItemsDock.DocumentItemContainerTheme;
                                 targetDocumentItemsDock.DocumentItemTemplateSelector = sourceDocumentItemsDock.DocumentItemTemplateSelector;
+                                targetDocumentItemsDock.CanUpdateItemsSourceOnUnregister = sourceDocumentItemsDock.CanUpdateItemsSourceOnUnregister;
                             }
 
                             if (sourceDocumentDock is IDocumentDockFactory sourceDocumentDockFactory

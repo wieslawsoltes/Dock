@@ -127,6 +127,19 @@ renders the full dockable layout instead of only the title/status badge.
 
 `DockSettings.DragPreviewOpacity` controls the preview window opacity (0.0 to 1.0).
 
+## ItemsSource unregister synchronization
+
+`DockSettings.UpdateItemsSourceOnUnregister` controls whether closing an ItemsSource-generated
+document/tool attempts to remove the source item from the backing collection (when it implements `IList`).
+The default is `true`.
+
+Per-dock overrides are available through:
+
+- `DocumentDock.CanUpdateItemsSourceOnUnregister`
+- `ToolDock.CanUpdateItemsSourceOnUnregister`
+
+When a per-dock value is `null`, Dock uses the global `DockSettings` value.
+
 ## Selector hotkeys
 
 Dock exposes a document and panel selector that can be toggled with keyboard gestures:
@@ -191,6 +204,7 @@ AppBuilder.Configure<App>()
     .BringWindowsToFrontOnDrag()
     .ShowDockablePreviewOnDrag()
     .SetDragPreviewOpacity(0.6)
+    .UpdateItemsSourceOnUnregister(true)
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6
@@ -214,6 +228,7 @@ AppBuilder.Configure<App>()
 | `BringWindowsToFrontOnDrag` | `DockSettings.BringWindowsToFrontOnDrag` | Activate windows when dragging. |
 | `ShowDockablePreviewOnDrag` | `DockSettings.ShowDockablePreviewOnDrag` | Render dockable content in drag preview. |
 | `DragPreviewOpacity` | `DockSettings.DragPreviewOpacity` | Opacity for the drag preview window. |
+| `UpdateItemsSourceOnUnregister` | `DockSettings.UpdateItemsSourceOnUnregister` | Sync close/unregister of generated items back to source collections. |
 | `SelectorEnabled` | `DockSettings.SelectorEnabled` | Toggle selector overlay. |
 | `DocumentSelectorKeyGesture` | `DockSettings.DocumentSelectorKeyGesture` | Document selector shortcut. |
 | `ToolSelectorKeyGesture` | `DockSettings.ToolSelectorKeyGesture` | Tool selector shortcut. |

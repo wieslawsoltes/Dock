@@ -248,6 +248,13 @@ public partial interface IFactory
     T? GetDockable<T>(string id) where T: class, IDockable;
 
     /// <summary>
+    /// Gets the generated dock item container that is currently tracked for the specified source item.
+    /// </summary>
+    /// <param name="item">The source item from a document or tool <c>ItemsSource</c> collection.</param>
+    /// <returns>The tracked generated container, or <c>null</c> when no container is currently tracked for the item.</returns>
+    IDockable? GetContainerFromItem(object item);
+
+    /// <summary>
     /// Initialize layout.
     /// </summary>
     /// <param name="layout">The layout to initialize.</param>

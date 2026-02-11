@@ -8,6 +8,7 @@ using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 using Xunit;
 
 namespace Dock.Model.Avalonia.UnitTests.Controls;
@@ -660,6 +661,169 @@ public class ToolDockItemsSourceTests
         Assert.Single(visibleDockables);
         var tool = Assert.IsType<Tool>(visibleDockables[0]);
         Assert.Equal("DeferredTemplateTool", tool.Title);
+    }
+
+    [AvaloniaFact]
+    public void GetContainerFromItem_TracksAndUntracksGeneratedTools()
+    {
+        var factory = new Factory();
+        var dock = new ToolDock
+        {
+            Factory = factory,
+            ToolTemplate = new ToolTemplate()
+        };
+
+        var item1 = new TestToolModel { Title = "Tool1", CanClose = true };
+        var item2 = new TestToolModel { Title = "Tool2", CanClose = true };
+        var source = new ObservableCollection<TestToolModel> { item1, item2 };
+        dock.ItemsSource = source;
+
+        var visibleDockables = RequireVisibleDockables(dock);
+        var generated1 = Assert.IsType<Tool>(visibleDockables[0]);
+        var generated2 = Assert.IsType<Tool>(visibleDockables[1]);
+
+        Assert.Same(generated1, factory.GetContainerFromItem(item1));
+        Assert.Same(generated2, factory.GetContainerFromItem(item2));
+
+        factory.CloseDockable(generated1);
+
+        Assert.Null(factory.GetContainerFromItem(item1));
+        Assert.Same(generated2, factory.GetContainerFromItem(item2));
+    }
+
+    [AvaloniaFact]
+    public void GetContainerFromItem_WhenItemsSourceReloaded_TracksLatestContainersOnly()
+    {
+        var factory = new Factory();
+        var dock = new ToolDock
+        {
+            Factory = factory,
+            ToolTemplate = new ToolTemplate()
+        };
+
+        var firstItem = new TestToolModel { Title = "First", CanClose = true };
+        dock.ItemsSource = new ObservableCollection<TestToolModel> { firstItem };
+
+        var firstContainer = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        Assert.Same(firstContainer, factory.GetContainerFromItem(firstItem));
+
+        var secondItem = new TestToolModel { Title = "Second", CanClose = true };
+        dock.ItemsSource = new ObservableCollection<TestToolModel> { secondItem };
+
+        var secondContainer = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        Assert.Null(factory.GetContainerFromItem(firstItem));
+        Assert.Same(secondContainer, factory.GetContainerFromItem(secondItem));
+
+        dock.ItemsSource = null;
+        Assert.Null(factory.GetContainerFromItem(secondItem));
+    }
+
+    [AvaloniaFact]
+    public void ClosingItemsSourceTool_WhenGlobalUpdateDisabled_DoesNotRemoveSourceItem()
+    {
+        var previous = DockSettings.UpdateItemsSourceOnUnregister;
+        try
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = false;
+
+            var factory = new Factory();
+            var dock = new ToolDock
+            {
+                Factory = factory,
+                ToolTemplate = new ToolTemplate()
+            };
+
+            var sourceItem = new TestToolModel { Title = "Tool1", CanClose = true };
+            var source = new ObservableCollection<TestToolModel> { sourceItem };
+            dock.ItemsSource = source;
+
+            var generated = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+            factory.CloseDockable(generated);
+
+            Assert.Single(source);
+            Assert.Same(sourceItem, source[0]);
+            Assert.True(dock.VisibleDockables == null || dock.VisibleDockables.Count == 0);
+            Assert.Null(factory.GetContainerFromItem(sourceItem));
+        }
+        finally
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = previous;
+        }
+    }
+
+    [AvaloniaFact]
+    public void ClosingItemsSourceTool_PerDockOverrideControlsUnregisterBehavior()
+    {
+        var previous = DockSettings.UpdateItemsSourceOnUnregister;
+        try
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = true;
+
+            var disabledDock = new ToolDock
+            {
+                Factory = new Factory(),
+                ToolTemplate = new ToolTemplate(),
+                CanUpdateItemsSourceOnUnregister = false
+            };
+
+            var disabledItem = new TestToolModel { Title = "Disabled", CanClose = true };
+            var disabledSource = new ObservableCollection<TestToolModel> { disabledItem };
+            disabledDock.ItemsSource = disabledSource;
+            var disabledFactory = (Factory)disabledDock.Factory!;
+            var disabledGenerated = Assert.IsType<Tool>(RequireVisibleDockables(disabledDock)[0]);
+            disabledFactory.CloseDockable(disabledGenerated);
+
+            Assert.Single(disabledSource);
+            Assert.Same(disabledItem, disabledSource[0]);
+
+            DockSettings.UpdateItemsSourceOnUnregister = false;
+
+            var enabledDock = new ToolDock
+            {
+                Factory = new Factory(),
+                ToolTemplate = new ToolTemplate(),
+                CanUpdateItemsSourceOnUnregister = true
+            };
+
+            var enabledItem = new TestToolModel { Title = "Enabled", CanClose = true };
+            var enabledSource = new ObservableCollection<TestToolModel> { enabledItem };
+            enabledDock.ItemsSource = enabledSource;
+            var enabledFactory = (Factory)enabledDock.Factory!;
+            var enabledGenerated = Assert.IsType<Tool>(RequireVisibleDockables(enabledDock)[0]);
+            enabledFactory.CloseDockable(enabledGenerated);
+
+            Assert.Empty(enabledSource);
+        }
+        finally
+        {
+            DockSettings.UpdateItemsSourceOnUnregister = previous;
+        }
+    }
+
+    [AvaloniaFact]
+    public void GetContainerFromItem_WithDuplicateSourceItem_TracksRemainingContainer()
+    {
+        var factory = new Factory();
+        var dock = new ToolDock
+        {
+            Factory = factory,
+            ToolTemplate = new ToolTemplate()
+        };
+
+        var shared = new TestToolModel { Title = "Shared", CanClose = true };
+        var source = new ObservableCollection<TestToolModel> { shared, shared };
+        dock.ItemsSource = source;
+
+        var first = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        Assert.Same(first, factory.GetContainerFromItem(shared));
+
+        factory.CloseDockable(first);
+
+        var second = Assert.IsType<Tool>(RequireVisibleDockables(dock)[0]);
+        Assert.Same(second, factory.GetContainerFromItem(shared));
+
+        factory.CloseDockable(second);
+        Assert.Null(factory.GetContainerFromItem(shared));
     }
 
     private sealed class FallbackToolModel

@@ -78,6 +78,12 @@ public static class DockSettings
     /// Opacity for the drag preview window.
     /// </summary>
     public static double DragPreviewOpacity = 1.0;
+
+    /// <summary>
+    /// When true, closing an ItemsSource-generated document or tool attempts to remove its item from
+    /// the backing <see cref="System.Collections.IList"/> source collection.
+    /// </summary>
+    public static bool UpdateItemsSourceOnUnregister = true;
     
     /// <summary>
     /// Configures the proportion used for global docking split operations.

@@ -31,6 +31,12 @@ public interface IItemsSourceDock
     IDocumentItemTemplateSelector? DocumentItemTemplateSelector { get; set; }
 
     /// <summary>
+    /// Gets or sets whether unregistering a generated document should remove its source item from
+    /// <see cref="ItemsSource"/> when possible. A null value uses global settings.
+    /// </summary>
+    bool? CanUpdateItemsSourceOnUnregister { get; set; }
+
+    /// <summary>
     /// Checks if a document was generated from ItemsSource.
     /// </summary>
     /// <param name="document">The document to check.</param>

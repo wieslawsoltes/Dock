@@ -20,7 +20,7 @@
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
-  <Import Project="..\..\build\ReactiveUI.Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.ReactiveUI.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Avalonia\Dock.Avalonia.csproj" />

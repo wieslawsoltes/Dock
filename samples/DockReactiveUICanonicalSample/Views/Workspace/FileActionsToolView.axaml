@@ -2,7 +2,7 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:DockReactiveUICanonicalSample"
-             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
+             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
              x:CompileBindings="True"
              x:DataType="FileActionsToolViewModel">
   <rxui:RoutedViewHost Router="{Binding Router}"

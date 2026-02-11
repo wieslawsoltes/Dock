@@ -1,6 +1,6 @@
 using System;
 using Avalonia;
-using ReactiveUI.Avalonia;
+using Avalonia.ReactiveUI;
 using Dock.Serializer;
 using DockReactiveUIDiSample.Models;
 using DockReactiveUIDiSample.ViewModels;

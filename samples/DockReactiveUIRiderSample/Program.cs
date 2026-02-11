@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Dock.Settings;
-using ReactiveUI.Avalonia;
+using Avalonia.ReactiveUI;
 using System;
 using System.Diagnostics.CodeAnalysis;
 

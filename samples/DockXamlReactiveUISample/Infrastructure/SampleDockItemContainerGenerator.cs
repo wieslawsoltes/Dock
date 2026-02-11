@@ -1,5 +1,6 @@
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using DockXamlReactiveUISample.Models;
 
 namespace DockXamlReactiveUISample.Infrastructure;
 
@@ -22,6 +23,8 @@ public sealed class SampleDockItemContainerGenerator : DockItemContainerGenerato
         {
             generatedDocument.SourceIndex = index;
         }
+
+        ApplyCapabilityOverrides(container, item);
     }
 
     public override IDockable? CreateToolContainer(IToolItemsSourceDock dock, object item, int index)
@@ -41,6 +44,31 @@ public sealed class SampleDockItemContainerGenerator : DockItemContainerGenerato
         {
             generatedTool.SourceIndex = index;
         }
+
+        ApplyCapabilityOverrides(container, item);
+    }
+
+    private static void ApplyCapabilityOverrides(IDockable container, object item)
+    {
+        var overrides = item switch
+        {
+            DocumentItem documentItem => CreateOverrides(documentItem.CloseOverride, documentItem.FloatOverride),
+            ToolItem toolItem => CreateOverrides(toolItem.CloseOverride, toolItem.FloatOverride),
+            _ => null
+        };
+
+        container.DockCapabilityOverrides = overrides;
+    }
+
+    private static DockCapabilityOverrides? CreateOverrides(bool? canClose, bool? canFloat)
+    {
+        var overrides = new DockCapabilityOverrides
+        {
+            CanClose = canClose,
+            CanFloat = canFloat
+        };
+
+        return overrides.HasAnyOverride ? overrides : null;
     }
 }
 

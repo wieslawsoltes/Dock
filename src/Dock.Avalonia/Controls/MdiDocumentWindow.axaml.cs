@@ -17,6 +17,7 @@ using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Avalonia.Mdi;
+using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
@@ -429,7 +430,11 @@ public class MdiDocumentWindow : TemplatedControl
             return;
         }
 
-        if (_currentDocument is IDockable { CanDrag: false })
+        if (_currentDocument is IDockable dockable
+            && !DockCapabilityResolver.IsEnabled(
+                dockable,
+                DockCapability.Drag,
+                DockCapabilityResolver.ResolveOperationDock(dockable)))
         {
             return;
         }

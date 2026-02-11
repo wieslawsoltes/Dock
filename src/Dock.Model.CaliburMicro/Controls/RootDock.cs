@@ -25,6 +25,7 @@ public class RootDock : DockBase, IRootDock
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
     private DockFloatingWindowHostMode _floatingWindowHostMode = DockFloatingWindowHostMode.Default;
+    private DockCapabilityPolicy? _rootDockCapabilityPolicy;
     private bool _enableAdaptiveGlobalDockTargets;
 
     /// <summary>
@@ -122,6 +123,14 @@ public class RootDock : DockBase, IRootDock
     {
         get => _floatingWindowHostMode;
         set => Set(ref _floatingWindowHostMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    public DockCapabilityPolicy? RootDockCapabilityPolicy
+    {
+        get => _rootDockCapabilityPolicy;
+        set => Set(ref _rootDockCapabilityPolicy, value);
     }
 
     /// <inheritdoc/>

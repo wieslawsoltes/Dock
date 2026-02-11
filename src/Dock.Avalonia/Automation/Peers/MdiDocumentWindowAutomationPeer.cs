@@ -3,6 +3,7 @@
 using Avalonia.Automation.Peers;
 using Avalonia.Automation.Provider;
 using Dock.Avalonia.Controls;
+using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -54,8 +55,8 @@ internal sealed class MdiDocumentWindowAutomationPeer : ControlAutomationPeer, I
         return DockAutomationPeerHelper.FormatState(
             ("Active", _owner.IsActive),
             ("MdiState", mdiState),
-            ("CanClose", dockable?.CanClose ?? false),
-            ("CanDrag", dockable?.CanDrag ?? false));
+            ("CanClose", IsCapabilityEnabled(dockable, DockCapability.Close)),
+            ("CanDrag", IsCapabilityEnabled(dockable, DockCapability.Drag)));
     }
 
     public void Invoke()
@@ -64,5 +65,18 @@ internal sealed class MdiDocumentWindowAutomationPeer : ControlAutomationPeer, I
         {
             _owner.Focus();
         }
+    }
+
+    private static bool IsCapabilityEnabled(IDockable? dockable, DockCapability capability)
+    {
+        if (dockable is null)
+        {
+            return false;
+        }
+
+        return DockCapabilityResolver.IsEnabled(
+            dockable,
+            capability,
+            DockCapabilityResolver.ResolveOperationDock(dockable));
     }
 }

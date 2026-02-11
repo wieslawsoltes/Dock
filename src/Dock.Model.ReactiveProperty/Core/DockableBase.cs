@@ -40,6 +40,7 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     private bool _canDrag = true;
     private bool _canDrop = true;
     private bool _canDockAsDocument = true;
+    private DockCapabilityOverrides? _dockCapabilityOverrides;
     private double _minWidth = double.NaN;
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
@@ -319,6 +320,14 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     {
         get => _canDockAsDocument;
         set => SetProperty(ref _canDockAsDocument, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    public DockCapabilityOverrides? DockCapabilityOverrides
+    {
+        get => _dockCapabilityOverrides;
+        set => SetProperty(ref _dockCapabilityOverrides, value);
     }
 
     /// <inheritdoc/>

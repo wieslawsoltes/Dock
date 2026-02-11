@@ -45,6 +45,7 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
     private bool _canDrag = true;
     private bool _canDrop = true;
     private bool _canDockAsDocument = true;
+    private DockCapabilityOverrides? _dockCapabilityOverrides;
     private bool _isModified;
     private string? _dockGroup;
     private DockOperationMask _allowedDockOperations = DockOperationMask.All;
@@ -276,6 +277,13 @@ public abstract class ManagedDockableBase : IDockable, IDockSelectorInfo, IDocka
     {
         get => _canDockAsDocument;
         set => SetProperty(ref _canDockAsDocument, value);
+    }
+
+    /// <inheritdoc />
+    public DockCapabilityOverrides? DockCapabilityOverrides
+    {
+        get => _dockCapabilityOverrides;
+        set => SetProperty(ref _dockCapabilityOverrides, value);
     }
 
     /// <inheritdoc />

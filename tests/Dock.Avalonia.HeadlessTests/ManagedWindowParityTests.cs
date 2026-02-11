@@ -1822,6 +1822,8 @@ public class ManagedWindowParityTests
 
         public bool IsDockingEnabled { get; set; } = true;
 
+        public DockCapabilityEvaluation? LastCapabilityEvaluation => null;
+
         public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             return true;

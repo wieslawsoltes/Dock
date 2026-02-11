@@ -6,6 +6,7 @@
 
 - The manager centralises all drag-and-drop logic, keeping `DockControl` free from layout code.
 - It exposes the `PreventSizeConflicts` property which blocks two fixed-size tools from being docked together.
+- It exposes `LastCapabilityEvaluation` so you can inspect policy-based rejections.
 - The manager calls back into the factory so your view models are updated consistently.
 
 ## Basic usage
@@ -41,6 +42,8 @@ public sealed class CustomDockManager : IDockManager
     public DockPoint Position { get => _inner.Position; set => _inner.Position = value; }
     public DockPoint ScreenPosition { get => _inner.ScreenPosition; set => _inner.ScreenPosition = value; }
     public bool PreventSizeConflicts { get => _inner.PreventSizeConflicts; set => _inner.PreventSizeConflicts = value; }
+    public bool IsDockingEnabled { get => _inner.IsDockingEnabled; set => _inner.IsDockingEnabled = value; }
+    public DockCapabilityEvaluation? LastCapabilityEvaluation => _inner.LastCapabilityEvaluation;
 
     public bool ValidateTool(ITool sourceTool, IDockable target, DragAction action, DockOperation operation, bool execute)
     {
@@ -62,6 +65,8 @@ public sealed class CustomDockManager : IDockManager
         _inner.IsDockTargetVisible(sourceDockable, targetDockable, operation);
 }
 ```
+
+When validation returns `false`, inspect `LastCapabilityEvaluation` to understand policy-driven blocks (root policy, dock policy, or per-dockable override).
 
 Use your `IDockManager` implementation in a custom host control. `DockControl` always constructs its own `DockManager`.
 

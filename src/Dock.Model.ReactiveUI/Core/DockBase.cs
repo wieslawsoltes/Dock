@@ -84,6 +84,11 @@ public abstract partial class DockBase : DockableBase, IDock
     public partial bool CanCloseLastDockable { get; set; }
 
     /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    [Reactive]
+    public partial DockCapabilityPolicy? DockCapabilityPolicy { get; set; }
+
+    /// <inheritdoc/>
     [IgnoreDataMember]
     public bool CanGoBack => _navigateAdapter.CanGoBack;
 

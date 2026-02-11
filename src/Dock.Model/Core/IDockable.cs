@@ -162,6 +162,12 @@ public interface IDockable : IControlRecyclingIdProvider
     bool CanDockAsDocument { get; set; }
 
     /// <summary>
+    /// Gets or sets optional per-dockable capability overrides.
+    /// Null values inherit root and dock policy values.
+    /// </summary>
+    DockCapabilityOverrides? DockCapabilityOverrides { get; set; }
+
+    /// <summary>
     /// Gets or sets whether the dockable has unsaved changes.
     /// </summary>
     bool IsModified { get; set; }

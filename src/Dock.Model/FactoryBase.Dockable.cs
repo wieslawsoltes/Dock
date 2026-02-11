@@ -627,6 +627,11 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void PinDockable(IDockable dockable)
     {
+        if (!DockCapabilityResolver.IsEnabled(dockable, DockCapability.Pin, DockCapabilityResolver.ResolveOperationDock(dockable)))
+        {
+            return;
+        }
+
         var rootDock = FindRoot(dockable, _ => true);
         if (rootDock is null)
         {
@@ -976,6 +981,11 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void FloatDockable(IDockable dockable, DockWindowOptions? options)
     {
+        if (!DockCapabilityResolver.IsEnabled(dockable, DockCapability.Float, DockCapabilityResolver.ResolveOperationDock(dockable)))
+        {
+            return;
+        }
+
         if (dockable.Owner is not IDock dock)
         {
             return;
@@ -1028,6 +1038,11 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void FloatAllDockables(IDockable dockable, DockWindowOptions? options)
     {
+        if (!DockCapabilityResolver.IsEnabled(dockable, DockCapability.Float, DockCapabilityResolver.ResolveOperationDock(dockable)))
+        {
+            return;
+        }
+
         if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
         {
             return;
@@ -1143,7 +1158,7 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void DockAsDocument(IDockable dockable)
     {
-        if (!dockable.CanDockAsDocument)
+        if (!DockCapabilityResolver.IsEnabled(dockable, DockCapability.DockAsDocument, DockCapabilityResolver.ResolveOperationDock(dockable)))
         {
             return;
         }
@@ -1180,7 +1195,12 @@ public abstract partial class FactoryBase
             return;
         }
 
-        if (dockable.CanClose && OnDockableClosing(dockable))
+        if (!DockCapabilityResolver.IsEnabled(dockable, DockCapability.Close, DockCapabilityResolver.ResolveOperationDock(dockable)))
+        {
+            return;
+        }
+
+        if (OnDockableClosing(dockable))
         {
             // Source-generated dockables should be removed (not hidden) so UI state
             // stays in sync with ItemsSource collections.

@@ -86,6 +86,11 @@ public partial class RootDock : DockBase, IRootDock
     public partial DockFloatingWindowHostMode FloatingWindowHostMode { get; set; }
 
     /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    [Reactive]
+    public partial DockCapabilityPolicy? RootDockCapabilityPolicy { get; set; }
+
+    /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ShowWindows { get; }
 

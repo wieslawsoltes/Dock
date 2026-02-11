@@ -65,6 +65,11 @@ public class DockManager : IDockManager
     /// </summary>
     public DockManagerOptions Options => _options;
 
+    /// <summary>
+    /// Gets the last capability evaluation that blocked an operation.
+    /// </summary>
+    public DockCapabilityEvaluation? LastCapabilityEvaluation { get; private set; }
+
     private static bool IsFixed(double min, double max)
     {
         // ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -80,14 +85,17 @@ public class DockManager : IDockManager
         return widthConflict || heightConflict;
     }
 
-    private static bool AllowsDocumentDocking(IDockable sourceDockable, IDockable targetDockable)
+    private bool AllowsDocumentDocking(IDockable sourceDockable, IDockable targetDockable)
     {
-        if (sourceDockable.CanDockAsDocument)
+        if (targetDockable is not IDocumentDock && targetDockable is not IDocument)
         {
             return true;
         }
 
-        return targetDockable is not IDocumentDock && targetDockable is not IDocument;
+        return IsCapabilityAllowed(
+            sourceDockable,
+            DockCapability.DockAsDocument,
+            DockCapabilityResolver.ResolveOperationDock(sourceDockable));
     }
 
     private bool IsDockingAllowed(IDockable sourceDockable, IDockable targetDockable, DockOperation operation)
@@ -121,6 +129,17 @@ public class DockManager : IDockManager
         return mask.Allows(operation);
     }
 
+    private bool IsCapabilityAllowed(IDockable dockable, DockCapability capability, IDock? dockContext)
+    {
+        var evaluation = DockCapabilityResolver.Evaluate(dockable, capability, dockContext);
+        if (evaluation.EffectiveValue)
+        {
+            return true;
+        }
+
+        LastCapabilityEvaluation = evaluation;
+        return false;
+    }
 
 
     private bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
@@ -264,7 +283,7 @@ public class DockManager : IDockManager
             return false;
         }
 
-    CopyDockGroup(sourceDockable, wrapperDock);
+        CopyDockGroup(sourceDockable, wrapperDock);
 
         // Add wrapper to root dock first so MoveDockable can attach the dockable into it
         factory.AddDockable(targetRootDock, wrapperDock);
@@ -285,12 +304,19 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        LastCapabilityEvaluation = null;
+
         if (!IsDockingAllowed(sourceTool, targetDockable, operation))
         {
             return false;
         }
 
-        if (!sourceTool.CanDrag || !targetDockable.CanDrop)
+        if (!IsCapabilityAllowed(sourceTool, DockCapability.Drag, DockCapabilityResolver.ResolveOperationDock(sourceTool)))
+        {
+            return false;
+        }
+
+        if (!IsCapabilityAllowed(targetDockable, DockCapability.Drop, DockCapabilityResolver.ResolveDropTargetDock(targetDockable)))
         {
             return false;
         }
@@ -469,12 +495,19 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDocument(IDocument sourceDocument, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        LastCapabilityEvaluation = null;
+
         if (!IsDockingAllowed(sourceDocument, targetDockable, operation))
         {
             return false;
         }
 
-        if (!sourceDocument.CanDrag || !targetDockable.CanDrop)
+        if (!IsCapabilityAllowed(sourceDocument, DockCapability.Drag, DockCapabilityResolver.ResolveOperationDock(sourceDocument)))
+        {
+            return false;
+        }
+
+        if (!IsCapabilityAllowed(targetDockable, DockCapability.Drop, DockCapabilityResolver.ResolveDropTargetDock(targetDockable)))
         {
             return false;
         }
@@ -502,12 +535,19 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        LastCapabilityEvaluation = null;
+
         if (!IsDockingAllowed(sourceDock, targetDockable, operation))
         {
             return false;
         }
 
-        if (!sourceDock.CanDrag || !targetDockable.CanDrop)
+        if (!IsCapabilityAllowed(sourceDock, DockCapability.Drag, DockCapabilityResolver.ResolveOperationDock(sourceDock)))
+        {
+            return false;
+        }
+
+        if (!IsCapabilityAllowed(targetDockable, DockCapability.Drop, DockCapabilityResolver.ResolveDropTargetDock(targetDockable)))
         {
             return false;
         }
@@ -536,104 +576,58 @@ public class DockManager : IDockManager
 
     private bool ValidateProportionalDock(IProportionalDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (sourceDock.VisibleDockables == null ||
-            sourceDock.VisibleDockables.Count == 0)
-        {
-            return false;
-        }
-
-        var all = true;
-        for (var i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
-        {
-            var dockable = sourceDock.VisibleDockables[i];
-            if (dockable is not IDock dock)
-                continue;
-
-            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
-        }
-
-        return all;
+        return ValidateChildDocks(sourceDock, targetDockable, action, operation, bExecute);
     }
 
     private bool ValidateStackDock(IStackDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (sourceDock.VisibleDockables == null ||
-            sourceDock.VisibleDockables.Count == 0)
-        {
-            return false;
-        }
-
-        var all = true;
-        for (var i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
-        {
-            var dockable = sourceDock.VisibleDockables[i];
-            if (dockable is not IDock dock)
-                continue;
-
-            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
-        }
-
-        return all;
+        return ValidateChildDocks(sourceDock, targetDockable, action, operation, bExecute);
     }
 
     private bool ValidateGridDock(IGridDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (sourceDock.VisibleDockables == null ||
-            sourceDock.VisibleDockables.Count == 0)
-        {
-            return false;
-        }
-
-        var all = true;
-        for (var i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
-        {
-            var dockable = sourceDock.VisibleDockables[i];
-            if (dockable is not IDock dock)
-                continue;
-
-            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
-        }
-
-        return all;
+        return ValidateChildDocks(sourceDock, targetDockable, action, operation, bExecute);
     }
 
     private bool ValidateWrapDock(IWrapDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (sourceDock.VisibleDockables == null ||
-            sourceDock.VisibleDockables.Count == 0)
-        {
-            return false;
-        }
-
-        var all = true;
-        for (var i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
-        {
-            var dockable = sourceDock.VisibleDockables[i];
-            if (dockable is not IDock dock)
-                continue;
-
-            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
-        }
-
-        return all;
+        return ValidateChildDocks(sourceDock, targetDockable, action, operation, bExecute);
     }
 
     private bool ValidateUniformGridDock(IUniformGridDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (sourceDock.VisibleDockables == null ||
-            sourceDock.VisibleDockables.Count == 0)
+        return ValidateChildDocks(sourceDock, targetDockable, action, operation, bExecute);
+    }
+
+    private bool ValidateChildDocks(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (sourceDock.VisibleDockables == null || sourceDock.VisibleDockables.Count == 0)
         {
             return false;
         }
 
+        DockCapabilityEvaluation? firstCapabilityFailure = null;
         var all = true;
         for (var i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
         {
             var dockable = sourceDock.VisibleDockables[i];
             if (dockable is not IDock dock)
+            {
                 continue;
+            }
 
-            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
+            var isValid = ValidateDockable(dock, targetDockable, action, operation, bExecute);
+            if (!isValid && firstCapabilityFailure is null && LastCapabilityEvaluation is { } evaluation)
+            {
+                firstCapabilityFailure = evaluation;
+            }
+
+            all &= isValid;
+        }
+
+        if (!all && firstCapabilityFailure is not null)
+        {
+            LastCapabilityEvaluation = firstCapabilityFailure;
         }
 
         return all;
@@ -642,6 +636,8 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        LastCapabilityEvaluation = null;
+
         if (!IsDockingAllowed(sourceDockable, targetDockable, operation))
         {
             return false;

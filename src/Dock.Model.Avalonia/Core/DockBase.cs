@@ -71,6 +71,15 @@ public abstract class DockBase : DockableBase, IDock
         AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanCloseLastDockable), o => o.CanCloseLastDockable, (o, v) => o.CanCloseLastDockable = v, true);
 
     /// <summary>
+    /// Defines the <see cref="DockCapabilityPolicy"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockBase, DockCapabilityPolicy?> DockCapabilityPolicyProperty =
+        AvaloniaProperty.RegisterDirect<DockBase, DockCapabilityPolicy?>(
+            nameof(DockCapabilityPolicy),
+            o => o.DockCapabilityPolicy,
+            (o, v) => o.DockCapabilityPolicy = v);
+
+    /// <summary>
     /// Defines the <see cref="CanGoBack"/> property.
     /// </summary>
     public static readonly DirectProperty<DockBase, bool> CanGoBackProperty =
@@ -92,6 +101,7 @@ public abstract class DockBase : DockableBase, IDock
     private bool _canGoForward;
     private int _openedDockablesCount = 0;
     private bool _canCloseLastDockable = true;
+    private DockCapabilityPolicy? _dockCapabilityPolicy;
     private bool _enableGlobalDocking = true;
 
     /// <summary>
@@ -182,6 +192,15 @@ public abstract class DockBase : DockableBase, IDock
     {
         get => _canCloseLastDockable;
         set => SetAndRaise(CanCloseLastDockableProperty, ref _canCloseLastDockable, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    [JsonPropertyName("DockCapabilityPolicy")]
+    public DockCapabilityPolicy? DockCapabilityPolicy
+    {
+        get => _dockCapabilityPolicy;
+        set => SetAndRaise(DockCapabilityPolicyProperty, ref _dockCapabilityPolicy, value);
     }
 
     /// <inheritdoc/>

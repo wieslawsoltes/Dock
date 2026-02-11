@@ -298,7 +298,7 @@ public class DockService : IDockService
             return false;
         }
 
-        if (!sourceDockable.CanFloat)
+        if (!DockCapabilityResolver.IsEnabled(sourceDockable, DockCapability.Float, DockCapabilityResolver.ResolveOperationDock(sourceDockable)))
         {
             return false;
         }

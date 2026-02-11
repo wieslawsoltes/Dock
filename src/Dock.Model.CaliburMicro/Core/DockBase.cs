@@ -22,6 +22,7 @@ public abstract class DockBase : DockableBase, IDock
     private bool _isActive;
     private int _openedDockablesCount;
     private bool _canCloseLastDockable = true;
+    private DockCapabilityPolicy? _dockCapabilityPolicy;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -104,6 +105,14 @@ public abstract class DockBase : DockableBase, IDock
     {
         get => _canCloseLastDockable;
         set => Set(ref _canCloseLastDockable, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    public DockCapabilityPolicy? DockCapabilityPolicy
+    {
+        get => _dockCapabilityPolicy;
+        set => Set(ref _dockCapabilityPolicy, value);
     }
 
     /// <inheritdoc/>

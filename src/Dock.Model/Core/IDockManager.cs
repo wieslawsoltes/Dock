@@ -30,6 +30,12 @@ public interface IDockManager
     bool IsDockingEnabled { get; set; }
 
     /// <summary>
+    /// Gets the last capability evaluation that blocked a docking-related action.
+    /// Returns null when the last validation did not fail due to capability policy.
+    /// </summary>
+    DockCapabilityEvaluation? LastCapabilityEvaluation { get; }
+
+    /// <summary>
     /// Validates tool docking operation.
     /// </summary>
     /// <param name="sourceTool">The source tool.</param>

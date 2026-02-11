@@ -9,6 +9,8 @@ public class DocumentItem : ReactiveObject
     private string _editableContent = string.Empty;
     private string _status = string.Empty;
     private bool _canClose = true;
+    private bool? _closeOverride;
+    private bool? _floatOverride;
 
     public string Title
     {
@@ -38,5 +40,17 @@ public class DocumentItem : ReactiveObject
     {
         get => _canClose;
         set => this.RaiseAndSetIfChanged(ref _canClose, value);
+    }
+
+    public bool? CloseOverride
+    {
+        get => _closeOverride;
+        set => this.RaiseAndSetIfChanged(ref _closeOverride, value);
+    }
+
+    public bool? FloatOverride
+    {
+        get => _floatOverride;
+        set => this.RaiseAndSetIfChanged(ref _floatOverride, value);
     }
 }

@@ -233,6 +233,11 @@ public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelec
     public partial bool CanDockAsDocument { get; set; }
 
     /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = false)]
+    [Reactive]
+    public partial DockCapabilityOverrides? DockCapabilityOverrides { get; set; }
+
+    /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [Reactive]
     public partial bool IsModified { get; set; }

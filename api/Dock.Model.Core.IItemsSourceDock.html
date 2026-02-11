@@ -117,6 +117,39 @@ Interface IItemsSourceDock  <a class="header-action link-secondary" title="View 
 </h2>
 
 
+  <a id="Dock_Model_Core_IItemsSourceDock_CanUpdateItemsSourceOnUnregister_" data-uid="Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister*"></a>
+
+  <h3 id="Dock_Model_Core_IItemsSourceDock_CanUpdateItemsSourceOnUnregister" data-uid="Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister">
+  CanUpdateItemsSourceOnUnregister
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IItemsSourceDock.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether unregistering a generated document should remove its source item from
+<a class="xref" href="Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_ItemsSource">ItemsSource</a> when possible. A null value uses global settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool? CanUpdateItemsSourceOnUnregister { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Core_IItemsSourceDock_DocumentItemContainerTheme_" data-uid="Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme*"></a>
 
   <h3 id="Dock_Model_Core_IItemsSourceDock_DocumentItemContainerTheme" data-uid="Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme">
@@ -254,7 +287,7 @@ The value can be a theme instance or a theme resource key.</p>
 
   <h3 id="Dock_Model_Core_IItemsSourceDock_IsDocumentFromItemsSource_Dock_Model_Core_IDockable_" data-uid="Dock.Model.Core.IItemsSourceDock.IsDocumentFromItemsSource(Dock.Model.Core.IDockable)">
   IsDocumentFromItemsSource(IDockable)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IItemsSourceDock.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IItemsSourceDock.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a document was generated from ItemsSource.</p>
@@ -293,7 +326,7 @@ The value can be a theme instance or a theme resource key.</p>
 
   <h3 id="Dock_Model_Core_IItemsSourceDock_RemoveItemFromSource_System_Object_" data-uid="Dock.Model.Core.IItemsSourceDock.RemoveItemFromSource(System.Object)">
   RemoveItemFromSource(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IItemsSourceDock.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IItemsSourceDock.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes an item from the ItemsSource collection.</p>

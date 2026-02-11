@@ -214,6 +214,16 @@ Enabled by default.</p>
 <p><code>DockSettings.ShowDockablePreviewOnDrag</code> toggles whether the drag preview window
 renders the full dockable layout instead of only the title/status badge.</p>
 <p><code>DockSettings.DragPreviewOpacity</code> controls the preview window opacity (0.0 to 1.0).</p>
+<h2 id="itemssource-unregister-synchronization">ItemsSource unregister synchronization</h2>
+<p><code>DockSettings.UpdateItemsSourceOnUnregister</code> controls whether closing an ItemsSource-generated
+document/tool attempts to remove the source item from the backing collection (when it implements <code>IList</code>).
+The default is <code>true</code>.</p>
+<p>Per-dock overrides are available through:</p>
+<ul>
+<li><code>DocumentDock.CanUpdateItemsSourceOnUnregister</code></li>
+<li><code>ToolDock.CanUpdateItemsSourceOnUnregister</code></li>
+</ul>
+<p>When a per-dock value is <code>null</code>, Dock uses the global <code>DockSettings</code> value.</p>
 <h2 id="selector-hotkeys">Selector hotkeys</h2>
 <p>Dock exposes a document and panel selector that can be toggled with keyboard gestures:</p>
 <pre><code class="lang-csharp">DockSettings.SelectorEnabled = true;
@@ -255,6 +265,7 @@ AppBuilder.Configure&lt;App&gt;()
     .BringWindowsToFrontOnDrag()
     .ShowDockablePreviewOnDrag()
     .SetDragPreviewOpacity(0.6)
+    .UpdateItemsSourceOnUnregister(true)
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6
@@ -325,6 +336,11 @@ AppBuilder.Configure&lt;App&gt;()
 <td><code>DragPreviewOpacity</code></td>
 <td><code>DockSettings.DragPreviewOpacity</code></td>
 <td>Opacity for the drag preview window.</td>
+</tr>
+<tr>
+<td><code>UpdateItemsSourceOnUnregister</code></td>
+<td><code>DockSettings.UpdateItemsSourceOnUnregister</code></td>
+<td>Sync close/unregister of generated items back to source collections.</td>
 </tr>
 <tr>
 <td><code>SelectorEnabled</code></td>

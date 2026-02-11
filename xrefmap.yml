@@ -11793,6 +11793,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.DocumentDock.CanCreateDocumentProperty
   fullName: Dock.Model.Avalonia.Controls.DocumentDock.CanCreateDocumentProperty
   nameWithType: DocumentDock.CanCreateDocumentProperty
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregister
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_CanUpdateItemsSourceOnUnregister
+  commentId: P:Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregister
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: DocumentDock.CanUpdateItemsSourceOnUnregister
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregister*
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_CanUpdateItemsSourceOnUnregister_
+  commentId: Overload:Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregister
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: DocumentDock.CanUpdateItemsSourceOnUnregister
+- uid: Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregisterProperty
+  name: CanUpdateItemsSourceOnUnregisterProperty
+  href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_CanUpdateItemsSourceOnUnregisterProperty
+  commentId: F:Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregisterProperty
+  fullName: Dock.Model.Avalonia.Controls.DocumentDock.CanUpdateItemsSourceOnUnregisterProperty
+  nameWithType: DocumentDock.CanUpdateItemsSourceOnUnregisterProperty
 - uid: Dock.Model.Avalonia.Controls.DocumentDock.CascadeDocuments
   name: CascadeDocuments
   href: api/Dock.Model.Avalonia.Controls.DocumentDock.html#Dock_Model_Avalonia_Controls_DocumentDock_CascadeDocuments
@@ -13226,6 +13245,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.ToolDock.AutoHideProperty
   fullName: Dock.Model.Avalonia.Controls.ToolDock.AutoHideProperty
   nameWithType: ToolDock.AutoHideProperty
+- uid: Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregister
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_CanUpdateItemsSourceOnUnregister
+  commentId: P:Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregister
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: ToolDock.CanUpdateItemsSourceOnUnregister
+- uid: Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregister*
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_CanUpdateItemsSourceOnUnregister_
+  commentId: Overload:Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregister
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: ToolDock.CanUpdateItemsSourceOnUnregister
+- uid: Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregisterProperty
+  name: CanUpdateItemsSourceOnUnregisterProperty
+  href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_CanUpdateItemsSourceOnUnregisterProperty
+  commentId: F:Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregisterProperty
+  fullName: Dock.Model.Avalonia.Controls.ToolDock.CanUpdateItemsSourceOnUnregisterProperty
+  nameWithType: ToolDock.CanUpdateItemsSourceOnUnregisterProperty
 - uid: Dock.Model.Avalonia.Controls.ToolDock.CreateToolFromTemplate
   name: CreateToolFromTemplate()
   href: api/Dock.Model.Avalonia.Controls.ToolDock.html#Dock_Model_Avalonia_Controls_ToolDock_CreateToolFromTemplate
@@ -25134,6 +25172,22 @@ references:
   commentId: E:Dock.Model.Core.IFactory.FocusedDockableChanged
   fullName: Dock.Model.Core.IFactory.FocusedDockableChanged
   nameWithType: IFactory.FocusedDockableChanged
+- uid: Dock.Model.Core.IFactory.GetContainerFromItem(System.Object)
+  name: GetContainerFromItem(object)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_GetContainerFromItem_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.GetContainerFromItem(System.Object)
+  name.vb: GetContainerFromItem(Object)
+  fullName: Dock.Model.Core.IFactory.GetContainerFromItem(object)
+  fullName.vb: Dock.Model.Core.IFactory.GetContainerFromItem(Object)
+  nameWithType: IFactory.GetContainerFromItem(object)
+  nameWithType.vb: IFactory.GetContainerFromItem(Object)
+- uid: Dock.Model.Core.IFactory.GetContainerFromItem*
+  name: GetContainerFromItem
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_GetContainerFromItem_
+  commentId: Overload:Dock.Model.Core.IFactory.GetContainerFromItem
+  isSpec: "True"
+  fullName: Dock.Model.Core.IFactory.GetContainerFromItem
+  nameWithType: IFactory.GetContainerFromItem
 - uid: Dock.Model.Core.IFactory.GetContext(System.String)
   name: GetContext(string)
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_GetContext_System_String_
@@ -26615,6 +26669,19 @@ references:
   commentId: T:Dock.Model.Core.IItemsSourceDock
   fullName: Dock.Model.Core.IItemsSourceDock
   nameWithType: IItemsSourceDock
+- uid: Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_CanUpdateItemsSourceOnUnregister
+  commentId: P:Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  fullName: Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: IItemsSourceDock.CanUpdateItemsSourceOnUnregister
+- uid: Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister*
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_CanUpdateItemsSourceOnUnregister_
+  commentId: Overload:Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  isSpec: "True"
+  fullName: Dock.Model.Core.IItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: IItemsSourceDock.CanUpdateItemsSourceOnUnregister
 - uid: Dock.Model.Core.IItemsSourceDock.DocumentItemContainerTheme
   name: DocumentItemContainerTheme
   href: api/Dock.Model.Core.IItemsSourceDock.html#Dock_Model_Core_IItemsSourceDock_DocumentItemContainerTheme
@@ -26843,6 +26910,19 @@ references:
   commentId: T:Dock.Model.Core.IToolItemsSourceDock
   fullName: Dock.Model.Core.IToolItemsSourceDock
   nameWithType: IToolItemsSourceDock
+- uid: Dock.Model.Core.IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_CanUpdateItemsSourceOnUnregister
+  commentId: P:Dock.Model.Core.IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  fullName: Dock.Model.Core.IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister
+- uid: Dock.Model.Core.IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister*
+  name: CanUpdateItemsSourceOnUnregister
+  href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_CanUpdateItemsSourceOnUnregister_
+  commentId: Overload:Dock.Model.Core.IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  isSpec: "True"
+  fullName: Dock.Model.Core.IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister
+  nameWithType: IToolItemsSourceDock.CanUpdateItemsSourceOnUnregister
 - uid: Dock.Model.Core.IToolItemsSourceDock.IsToolFromItemsSource(Dock.Model.Core.IDockable)
   name: IsToolFromItemsSource(IDockable)
   href: api/Dock.Model.Core.IToolItemsSourceDock.html#Dock_Model_Core_IToolItemsSourceDock_IsToolFromItemsSource_Dock_Model_Core_IDockable_
@@ -28741,6 +28821,22 @@ references:
   commentId: E:Dock.Model.FactoryBase.FocusedDockableChanged
   fullName: Dock.Model.FactoryBase.FocusedDockableChanged
   nameWithType: FactoryBase.FocusedDockableChanged
+- uid: Dock.Model.FactoryBase.GetContainerFromItem(System.Object)
+  name: GetContainerFromItem(object)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetContainerFromItem_System_Object_
+  commentId: M:Dock.Model.FactoryBase.GetContainerFromItem(System.Object)
+  name.vb: GetContainerFromItem(Object)
+  fullName: Dock.Model.FactoryBase.GetContainerFromItem(object)
+  fullName.vb: Dock.Model.FactoryBase.GetContainerFromItem(Object)
+  nameWithType: FactoryBase.GetContainerFromItem(object)
+  nameWithType.vb: FactoryBase.GetContainerFromItem(Object)
+- uid: Dock.Model.FactoryBase.GetContainerFromItem*
+  name: GetContainerFromItem
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetContainerFromItem_
+  commentId: Overload:Dock.Model.FactoryBase.GetContainerFromItem
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.GetContainerFromItem
+  nameWithType: FactoryBase.GetContainerFromItem
 - uid: Dock.Model.FactoryBase.GetContext(System.String)
   name: GetContext(string)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetContext_System_String_
@@ -30031,6 +30127,15 @@ references:
   commentId: M:Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)
   fullName: Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable, Dock.Model.Core.IDockable)
   nameWithType: FactoryBase.TrackItemsSourceDockable(IDockable, IDockable)
+- uid: Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable,System.Object)
+  name: TrackItemsSourceDockable(IDockable, IDockable, object?)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_TrackItemsSourceDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_System_Object_
+  commentId: M:Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable,System.Object)
+  name.vb: TrackItemsSourceDockable(IDockable, IDockable, Object)
+  fullName: Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable, Dock.Model.Core.IDockable, object?)
+  fullName.vb: Dock.Model.FactoryBase.TrackItemsSourceDockable(Dock.Model.Core.IDockable, Dock.Model.Core.IDockable, Object)
+  nameWithType: FactoryBase.TrackItemsSourceDockable(IDockable, IDockable, object?)
+  nameWithType.vb: FactoryBase.TrackItemsSourceDockable(IDockable, IDockable, Object)
 - uid: Dock.Model.FactoryBase.TrackItemsSourceDockable*
   name: TrackItemsSourceDockable
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_TrackItemsSourceDockable_
@@ -49739,6 +49844,22 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.AppBuilderExtensions.ShowDockablePreviewOnDrag
   nameWithType: AppBuilderExtensions.ShowDockablePreviewOnDrag
+- uid: Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister(Avalonia.AppBuilder,System.Boolean)
+  name: UpdateItemsSourceOnUnregister(AppBuilder, bool)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UpdateItemsSourceOnUnregister_Avalonia_AppBuilder_System_Boolean_
+  commentId: M:Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister(Avalonia.AppBuilder,System.Boolean)
+  name.vb: UpdateItemsSourceOnUnregister(AppBuilder, Boolean)
+  fullName: Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister(Avalonia.AppBuilder, bool)
+  fullName.vb: Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister(Avalonia.AppBuilder, Boolean)
+  nameWithType: AppBuilderExtensions.UpdateItemsSourceOnUnregister(AppBuilder, bool)
+  nameWithType.vb: AppBuilderExtensions.UpdateItemsSourceOnUnregister(AppBuilder, Boolean)
+- uid: Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister*
+  name: UpdateItemsSourceOnUnregister
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UpdateItemsSourceOnUnregister_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister
+  nameWithType: AppBuilderExtensions.UpdateItemsSourceOnUnregister
 - uid: Dock.Settings.AppBuilderExtensions.UseFloatingDockAdorner(Avalonia.AppBuilder,System.Boolean)
   name: UseFloatingDockAdorner(AppBuilder, bool)
   href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseFloatingDockAdorner_Avalonia_AppBuilder_System_Boolean_
@@ -50444,6 +50565,12 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettings.ToolSelectorKeyGesture
   nameWithType: DockSettings.ToolSelectorKeyGesture
+- uid: Dock.Settings.DockSettings.UpdateItemsSourceOnUnregister
+  name: UpdateItemsSourceOnUnregister
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_UpdateItemsSourceOnUnregister
+  commentId: F:Dock.Settings.DockSettings.UpdateItemsSourceOnUnregister
+  fullName: Dock.Settings.DockSettings.UpdateItemsSourceOnUnregister
+  nameWithType: DockSettings.UpdateItemsSourceOnUnregister
 - uid: Dock.Settings.DockSettings.UseFloatingDockAdorner
   name: UseFloatingDockAdorner
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_UseFloatingDockAdorner
@@ -50649,6 +50776,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.ToolSelectorKeyGesture
   nameWithType: DockSettingsOptions.ToolSelectorKeyGesture
+- uid: Dock.Settings.DockSettingsOptions.UpdateItemsSourceOnUnregister
+  name: UpdateItemsSourceOnUnregister
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_UpdateItemsSourceOnUnregister
+  commentId: P:Dock.Settings.DockSettingsOptions.UpdateItemsSourceOnUnregister
+  fullName: Dock.Settings.DockSettingsOptions.UpdateItemsSourceOnUnregister
+  nameWithType: DockSettingsOptions.UpdateItemsSourceOnUnregister
+- uid: Dock.Settings.DockSettingsOptions.UpdateItemsSourceOnUnregister*
+  name: UpdateItemsSourceOnUnregister
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_UpdateItemsSourceOnUnregister_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.UpdateItemsSourceOnUnregister
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.UpdateItemsSourceOnUnregister
+  nameWithType: DockSettingsOptions.UpdateItemsSourceOnUnregister
 - uid: Dock.Settings.DockSettingsOptions.UseFloatingDockAdorner
   name: UseFloatingDockAdorner
   href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_UseFloatingDockAdorner

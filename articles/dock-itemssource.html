@@ -106,13 +106,35 @@
 <li>By default, <code>ToolDock</code> creates a <code>Tool</code> for each item and stores the item in <code>Tool.Context</code>.</li>
 <li>The tab title is derived from <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> properties on the item (in that order), falling back to <code>ToString()</code>.</li>
 <li><code>CanClose</code> is copied from the item if present; otherwise it defaults to <code>true</code>.</li>
-<li>When a generated document or tool is closed, the factory attempts to remove the source item from <code>ItemsSource</code> if it implements <code>IList</code>.</li>
+<li><code>IFactory.GetContainerFromItem(object item)</code> returns the currently tracked generated container for a source item.</li>
+<li>When a generated document or tool is closed, Dock can remove the source item from <code>ItemsSource</code> (when it implements <code>IList</code>), controlled by <code>DockSettings.UpdateItemsSourceOnUnregister</code> and per-dock overrides.</li>
 <li>Source-generated document/tool closes are treated as remove operations, even when <code>Factory.HideDocumentsOnClose</code> or <code>Factory.HideToolsOnClose</code> is enabled.</li>
 <li>You can replace the default generation pipeline with <code>IDockItemContainerGenerator</code> for custom container types, metadata mapping, and cleanup.</li>
 <li>Theme metadata from <code>DocumentItemContainerTheme</code> / <code>ToolItemContainerTheme</code> is copied to generated containers and applied by <code>DocumentContentControl</code> / <code>ToolContentControl</code>.</li>
 <li>Template selectors run before dock templates. If a selector returns <code>null</code>, Dock falls back to <code>DocumentTemplate</code> / <code>ToolTemplate</code>.</li>
 <li>Changing <code>DocumentTemplate</code>, <code>ToolTemplate</code>, per-dock theme metadata, or selector regenerates source-generated containers.</li>
 </ul>
+<h2 id="container-lookup-and-unregister-policy">Container Lookup and Unregister Policy</h2>
+<p>Use <code>IFactory.GetContainerFromItem</code> to resolve the generated dock container from a source item:</p>
+<pre><code class="lang-csharp">var sourceItem = viewModel.Documents[0];
+var container = factory.GetContainerFromItem(sourceItem);
+if (container is IDocument document)
+{
+    factory.SetActiveDockable(document);
+}
+</code></pre>
+<p>Control whether closing a generated container removes the source item:</p>
+<ul>
+<li>Global default: <code>DockSettings.UpdateItemsSourceOnUnregister</code> (default <code>true</code>)</li>
+<li>Per-document dock override: <code>DocumentDock.CanUpdateItemsSourceOnUnregister</code> (<code>bool?</code>, <code>null</code> = global)</li>
+<li>Per-tool dock override: <code>ToolDock.CanUpdateItemsSourceOnUnregister</code> (<code>bool?</code>, <code>null</code> = global)</li>
+</ul>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;
+              CanUpdateItemsSourceOnUnregister=&quot;False&quot; /&gt;
+
+&lt;ToolDock ItemsSource=&quot;{Binding Tools}&quot;
+          CanUpdateItemsSourceOnUnregister=&quot;{Binding ToolUnregisterPolicy}&quot; /&gt;
+</code></pre>
 <h2 id="per-dock-theme-and-template-selector-apis">Per-Dock Theme and Template Selector APIs</h2>
 <p>The default generator now supports per-dock presentation customization for generated items:</p>
 <ul>

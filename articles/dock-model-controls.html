@@ -287,9 +287,11 @@ uses this template to create generated tool content from source collections.</p>
 <li><code>ItemContainerGenerator</code> provides custom container creation/preparation/cleanup through <code>IDockItemContainerGenerator</code>.</li>
 <li><code>DocumentItemContainerTheme</code> / <code>ToolItemContainerTheme</code> provide per-dock theme metadata for generated container controls.</li>
 <li><code>DocumentItemTemplateSelector</code> / <code>ToolItemTemplateSelector</code> provide per-item template selection before template fallback.</li>
+<li><code>CanUpdateItemsSourceOnUnregister</code> allows per-dock override of source list updates during generated-container unregister (<code>null</code> uses global settings).</li>
 <li><code>IsDocumentFromItemsSource</code> / <code>IsToolFromItemsSource</code> detect source-generated dockables.</li>
 <li><code>RemoveItemFromSource</code> synchronizes close operations back to mutable source collections.</li>
 </ul>
+<p><code>IFactory.GetContainerFromItem(object item)</code> returns the currently tracked generated container for a source item and works for both document and tool ItemsSource pipelines.</p>
 <p>The Avalonia model's <code>DocumentDock</code> and <code>ToolDock</code> implementations use <code>DockItemContainerGenerator</code> by default, while still allowing per-dock generator overrides.</p>
 <h2 id="itooltemplate">IToolTemplate</h2>
 <p><code>IToolTemplate</code> represents template content used to build tool views. In

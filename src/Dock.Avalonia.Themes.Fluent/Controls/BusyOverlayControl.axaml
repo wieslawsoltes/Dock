@@ -14,30 +14,30 @@
                   IsVisible="{TemplateBinding IsReloadVisible}"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Bottom"
-                  Margin="16"
+                  Margin="{DynamicResource DockOverlayReloadButtonMargin}"
                   ZIndex="31" />
-          <Border Background="{DynamicResource DockThemeBackgroundBrush}"
+          <Border Background="{DynamicResource DockSurfaceWorkbenchBrush}"
                   Opacity="0.65"
                   IsVisible="{TemplateBinding IsBusy}"
                   IsHitTestVisible="{TemplateBinding BlocksInput}"
                   ZIndex="30">
-            <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
-                    BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+            <Border Background="{DynamicResource DockSurfaceEditorBrush}"
+                    BorderBrush="{DynamicResource DockBorderSubtleBrush}"
                     BorderThickness="1"
-                    CornerRadius="8"
-                    Padding="24"
+                    CornerRadius="{DynamicResource DockOverlayCardCornerRadius}"
+                    Padding="{DynamicResource DockOverlayCardPadding}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     BoxShadow="0 6 18 #33000000">
-              <StackPanel Spacing="8" HorizontalAlignment="Center">
+              <StackPanel Spacing="{DynamicResource DockOverlayCardSpacing}" HorizontalAlignment="Center">
                 <TextBlock Text="{Binding BusyMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Loading...}"
-                           FontSize="14"
+                           FontSize="{DynamicResource DockOverlayMessageFontSize}"
                            FontWeight="SemiBold"
-                           Foreground="{DynamicResource DockThemeForegroundBrush}"
+                           Foreground="{DynamicResource DockTabForegroundBrush}"
                            HorizontalAlignment="Center" />
                 <ProgressBar IsIndeterminate="True"
-                             Width="200"
-                             Height="6"
+                             Width="{DynamicResource DockOverlayProgressWidth}"
+                             Height="{DynamicResource DockOverlayProgressHeight}"
                              IsVisible="{Binding ShowProgress, RelativeSource={RelativeSource TemplatedParent}}" />
               </StackPanel>
             </Border>

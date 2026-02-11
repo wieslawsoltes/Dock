@@ -8,17 +8,17 @@
   <ControlTheme x:Key="{x:Type DragPreviewControl}" TargetType="DragPreviewControl">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="{DynamicResource DockApplicationAccentBrushLow}"
-                CornerRadius="4">
+        <Border Background="{DynamicResource DockTabActiveBackgroundBrush}"
+                CornerRadius="{DynamicResource DockDragPreviewCornerRadius}">
           <DockPanel>
             <Border DockPanel.Dock="Top"
-                    Padding="4">
-              <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                    Padding="{DynamicResource DockDragPreviewHeaderPadding}">
+              <StackPanel Orientation="Horizontal" Spacing="{DynamicResource DockDragPreviewHeaderSpacing}" VerticalAlignment="Center">
                 <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
                                   Content="{TemplateBinding DataContext}"
                                   VerticalAlignment="Center"
                                   VerticalContentAlignment="Center" />
-                <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="{DynamicResource DockDragPreviewStatusSpacing}" VerticalAlignment="Center">
                   <Path x:Name="PART_StatusIcon" />
                   <TextBlock x:Name="PART_StatusText"
                              Text="{TemplateBinding Status}"
@@ -28,7 +28,7 @@
               </StackPanel>
             </Border>
             <Border x:Name="PART_ContentHost"
-                    Background="{DynamicResource DockThemeBackgroundBrush}"
+                    Background="{DynamicResource DockSurfaceWorkbenchBrush}"
                     IsVisible="{TemplateBinding ShowContent}">
               <Grid>
                 <ContentControl x:Name="PART_PreviewContentPresenter"
@@ -60,15 +60,15 @@
     <Setter Property="ContentTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" 
-                   Padding="2"  />
+                   Padding="{DynamicResource DockHeaderContentPadding}"  />
       </DataTemplate>
     </Setter>
 
     <Style Selector="^/template/ Path#PART_StatusIcon">
-      <Setter Property="Width" Value="10" />
-      <Setter Property="Height" Value="10" />
+      <Setter Property="Width" Value="{DynamicResource DockDragPreviewStatusIconSize}" />
+      <Setter Property="Height" Value="{DynamicResource DockDragPreviewStatusIconSize}" />
       <Setter Property="Stretch" Value="Uniform" />
-      <Setter Property="Fill" Value="{DynamicResource DockThemeForegroundBrush}" />
+      <Setter Property="Fill" Value="{DynamicResource DockTabForegroundBrush}" />
     </Style>
 
     <Style Selector="^[Status=Dock]/template/ Path#PART_StatusIcon">

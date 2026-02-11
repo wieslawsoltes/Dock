@@ -1,0 +1,61 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <sys:Double x:Key="DockHeaderHeight">22</sys:Double>
+  <sys:Double x:Key="DockTabHeight">22</sys:Double>
+  <sys:Double x:Key="DockTabHorizontalPadding">8</sys:Double>
+  <sys:Double x:Key="DockIconSizeSmall">10</sys:Double>
+  <sys:Double x:Key="DockIconSizeNormal">12</sys:Double>
+
+  <sys:Double x:Key="DockTabItemMinHeight">22</sys:Double>
+  <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
+  <Thickness x:Key="DockDocumentTabItemPadding">3,0,3,0</Thickness>
+  <Thickness x:Key="DockToolTabItemPadding">3,0,3,0</Thickness>
+  <Thickness x:Key="DockToolTabItemSelectedPadding">3,1,3,0</Thickness>
+
+  <sys:Double x:Key="DockCreateButtonWidth">24</sys:Double>
+  <sys:Double x:Key="DockCreateButtonHeight">22</sys:Double>
+  <sys:Double x:Key="DockCloseButtonSize">12</sys:Double>
+
+  <sys:Double x:Key="DockChromeButtonWidth">16</sys:Double>
+  <sys:Double x:Key="DockChromeButtonHeight">14</sys:Double>
+  <Thickness x:Key="DockChromeButtonPadding">2</Thickness>
+  <Thickness x:Key="DockChromeButtonMargin">1,0,0,0</Thickness>
+
+  <sys:Double x:Key="DockMdiTitleIconSize">10</sys:Double>
+  <Thickness x:Key="DockMdiHeaderDragPadding">4,2</Thickness>
+  <Thickness x:Key="DockHeaderContentPadding">1</Thickness>
+  <Thickness x:Key="DockModifiedIndicatorMargin">0,0,1,0</Thickness>
+  <sys:Double x:Key="DockTabContentSpacing">1</sys:Double>
+  <Thickness x:Key="DockTabContentMargin">1</Thickness>
+  <Thickness x:Key="DockCreateButtonIconMargin">4</Thickness>
+  <Thickness x:Key="DockToolChromeHeaderMargin">6,0</Thickness>
+  <Thickness x:Key="DockToolChromeTitleMargin">0,3,6,3</Thickness>
+  <Thickness x:Key="DockToolChromeMenuIconMargin">1</Thickness>
+  <sys:Double x:Key="DockChromeGripHeight">4</sys:Double>
+  <Thickness x:Key="DockChromeGripMargin">0,0,1,0</Thickness>
+  <sys:Double x:Key="DockMdiHeaderColumnSpacing">3</sys:Double>
+  <sys:Double x:Key="DockMdiButtonStripSpacing">1</sys:Double>
+  <Thickness x:Key="DockMdiButtonStripMargin">1,0</Thickness>
+  <CornerRadius x:Key="DockDragPreviewCornerRadius">3</CornerRadius>
+  <Thickness x:Key="DockDragPreviewHeaderPadding">3</Thickness>
+  <sys:Double x:Key="DockDragPreviewHeaderSpacing">3</sys:Double>
+  <sys:Double x:Key="DockDragPreviewStatusSpacing">1</sys:Double>
+  <sys:Double x:Key="DockDragPreviewStatusIconSize">9</sys:Double>
+  <Thickness x:Key="DockOverlayReloadButtonMargin">12</Thickness>
+  <Thickness x:Key="DockOverlayCardPadding">20</Thickness>
+  <sys:Double x:Key="DockOverlayCardSpacing">6</sys:Double>
+  <sys:Double x:Key="DockOverlayMessageFontSize">13</sys:Double>
+  <sys:Double x:Key="DockOverlayProgressWidth">180</sys:Double>
+  <sys:Double x:Key="DockOverlayProgressHeight">5</sys:Double>
+  <Thickness x:Key="DockDialogPadding">16</Thickness>
+  <sys:Double x:Key="DockDialogMinWidth">320</sys:Double>
+  <sys:Double x:Key="DockDialogMaxWidth">560</sys:Double>
+  <sys:Double x:Key="DockDialogSpacing">10</sys:Double>
+  <sys:Double x:Key="DockDialogTitleFontSize">14</sys:Double>
+  <sys:Double x:Key="DockDialogCloseButtonSize">24</sys:Double>
+  <Thickness x:Key="DockConfirmationDialogPadding">20</Thickness>
+  <sys:Double x:Key="DockConfirmationDialogMaxWidth">440</sys:Double>
+  <sys:Double x:Key="DockConfirmationDialogStackSpacing">10</sys:Double>
+  <sys:Double x:Key="DockConfirmationDialogActionsSpacing">6</sys:Double>
+</ResourceDictionary>

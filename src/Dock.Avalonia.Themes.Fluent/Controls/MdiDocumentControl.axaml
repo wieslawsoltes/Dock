@@ -26,7 +26,7 @@
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}"
                    VerticalAlignment="Center"
-                   Padding="2"
+                   Padding="{DynamicResource DockHeaderContentPadding}"
                    TextTrimming="CharacterEllipsis"
                    TextWrapping="NoWrap" />
       </DataTemplate>
@@ -36,13 +36,13 @@
       <DataTemplate DataType="core:IDockable">
         <TextBlock VerticalAlignment="Center"
                    Text="*"
-                   Margin="0,0,2,0" />
+                   Margin="{DynamicResource DockModifiedIndicatorMargin}" />
       </DataTemplate>
     </Setter>
 
     <Setter Property="CloseTemplate">
       <DataTemplate DataType="core:IDockable">
-        <Viewbox Width="12" Height="12">
+        <Viewbox Width="{DynamicResource DockMdiTitleIconSize}" Height="{DynamicResource DockMdiTitleIconSize}">
           <Path x:Name="PART_ClosePath"
                 Data="{DynamicResource DockToolIconCloseGeometry}"
                 UseLayoutRounding="False"
@@ -50,10 +50,10 @@
             <Path.Styles>
               <Style Selector="Path">
                 <Setter Property="Stretch" Value="UniformToFill" />
-                <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+                <Setter Property="Fill" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
               </Style>
               <Style Selector="Path.active">
-                <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+                <Setter Property="Fill" Value="{DynamicResource DockTabActiveForegroundBrush}" />
               </Style>
             </Path.Styles>
           </Path>

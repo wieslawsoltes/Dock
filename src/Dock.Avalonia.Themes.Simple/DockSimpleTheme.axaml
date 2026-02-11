@@ -47,6 +47,9 @@
         <ResourceInclude Source="/Controls/PinnedDockWindow.axaml" />
         <ResourceInclude Source="/Controls/DockAdornerWindow.axaml" />
       </ResourceDictionary.MergedDictionaries>
+
+      <!-- Keep compact density styles outside merged dictionaries so they can be activated by theme API. -->
+      <ResourceInclude x:Key="CompactStyles" Source="/DensityStyles/Compact.axaml" />
     </ResourceDictionary>
   </Styles.Resources>
 

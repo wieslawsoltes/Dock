@@ -3,26 +3,26 @@
   <ControlTheme x:Key="{x:Type DialogShellControl}" TargetType="DialogShellControl">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
-                BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        <Border Background="{DynamicResource DockSurfaceEditorBrush}"
+                BorderBrush="{DynamicResource DockBorderSubtleBrush}"
                 BorderThickness="1"
-                CornerRadius="10"
-                Padding="20"
-                MinWidth="360"
-                MaxWidth="640"
+                CornerRadius="{DynamicResource DockDialogCornerRadius}"
+                Padding="{DynamicResource DockDialogPadding}"
+                MinWidth="{DynamicResource DockDialogMinWidth}"
+                MaxWidth="{DynamicResource DockDialogMaxWidth}"
                 BoxShadow="0 6 18 #33000000">
-          <Grid RowDefinitions="Auto,*" RowSpacing="12">
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+          <Grid RowDefinitions="Auto,*" RowSpacing="{DynamicResource DockDialogSpacing}">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{DynamicResource DockDialogSpacing}">
               <TextBlock Text="{TemplateBinding Title}"
-                         FontSize="16"
+                         FontSize="{DynamicResource DockDialogTitleFontSize}"
                          FontWeight="SemiBold"
-                         Foreground="{DynamicResource DockThemeForegroundBrush}"
+                         Foreground="{DynamicResource DockTabForegroundBrush}"
                          VerticalAlignment="Center" />
               <Button Content="&#x2715;"
                       Command="{TemplateBinding CloseCommand}"
                       IsVisible="{TemplateBinding IsCloseVisible}"
-                      Width="28"
-                      Height="28"
+                      Width="{DynamicResource DockDialogCloseButtonSize}"
+                      Height="{DynamicResource DockDialogCloseButtonSize}"
                       HorizontalAlignment="Right"
                       VerticalAlignment="Center" />
             </Grid>

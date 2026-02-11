@@ -9,7 +9,7 @@
 
   <ControlTheme x:Key="{x:Type HostWindowTitleBar}" TargetType="HostWindowTitleBar">
 
-    <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>    
+    <Setter Property="Foreground" Value="{DynamicResource DockWindowChromeForegroundBrush}"/>
     <Setter Property="VerticalAlignment" Value="Top" />
     <Setter Property="HorizontalAlignment" Value="Stretch" />
     <Setter Property="Background" Value="Transparent" />
@@ -17,7 +17,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Panel HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="Stretch">
-          <Panel x:Name="PART_MouseTracker" Height="1" VerticalAlignment="Top" />
+          <Panel x:Name="PART_MouseTracker" Height="{DynamicResource DockHostTitleBarMouseTrackerHeight}" VerticalAlignment="Top" />
           <Panel x:Name="PART_Container">
             <Border x:Name="PART_Background" Background="{TemplateBinding Background}" />
             <CaptionButtons x:Name="PART_CaptionButtons" VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="{TemplateBinding Foreground}" />

@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <StaticResource x:Key="DockWindowChromeBackgroundBrush" ResourceKey="DockThemeBackgroundBrush" />
-  <StaticResource x:Key="DockWindowChromeBorderBrush" ResourceKey="DockThemeBorderLowBrush" />
-  <StaticResource x:Key="DockWindowChromeTitleBarBackgroundBrush" ResourceKey="DockThemeBorderLowBrush" />
-  <StaticResource x:Key="DockWindowChromeForegroundBrush" ResourceKey="DockThemeForegroundBrush" />
+  <StaticResource x:Key="DockWindowChromeBackgroundBrush" ResourceKey="DockSurfaceEditorBrush" />
+  <StaticResource x:Key="DockWindowChromeBorderBrush" ResourceKey="DockBorderSubtleBrush" />
+  <StaticResource x:Key="DockWindowChromeTitleBarBackgroundBrush" ResourceKey="DockSurfaceHeaderBrush" />
+  <StaticResource x:Key="DockWindowChromeForegroundBrush" ResourceKey="DockTabForegroundBrush" />
 </ResourceDictionary>

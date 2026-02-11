@@ -221,7 +221,7 @@
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}"
                    VerticalAlignment="Center"
-                   Padding="2"
+                   Padding="{DynamicResource DockHeaderContentPadding}"
                    TextTrimming="CharacterEllipsis"
                    TextWrapping="NoWrap" />
       </DataTemplate>
@@ -231,13 +231,13 @@
       <DataTemplate DataType="core:IDockable">
         <TextBlock VerticalAlignment="Center"
                    Text="*"
-                   Margin="0,0,2,0" />
+                   Margin="{DynamicResource DockModifiedIndicatorMargin}" />
       </DataTemplate>
     </Setter>
 
     <Setter Property="CloseTemplate">
       <DataTemplate DataType="core:IDockable">
-        <Viewbox Width="12" Height="12">
+        <Viewbox Width="{DynamicResource DockMdiTitleIconSize}" Height="{DynamicResource DockMdiTitleIconSize}">
           <Path x:Name="PART_ClosePath"
                 Data="{DynamicResource DockToolIconCloseGeometry}"
                 UseLayoutRounding="False"
@@ -245,10 +245,10 @@
             <Path.Styles>
               <Style Selector="Path">
                 <Setter Property="Stretch" Value="UniformToFill" />
-                <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+                <Setter Property="Fill" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
               </Style>
               <Style Selector="Path.active">
-                <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+                <Setter Property="Fill" Value="{DynamicResource DockTabActiveForegroundBrush}" />
               </Style>
             </Path.Styles>
           </Path>
@@ -274,12 +274,12 @@
                       <Border x:Name="PART_DragHandle"
                               DockPanel.Dock="Left"
                               DockProperties.IsDragArea="True"
-                              Padding="6,4"
+                              Padding="{DynamicResource DockMdiHeaderDragPadding}"
                               Background="Transparent">
                         <Grid>
                           <Grid x:Name="PART_DocumentHeader"
                                 ColumnDefinitions="Auto,*,Auto"
-                                ColumnSpacing="4"
+                                ColumnSpacing="{DynamicResource DockMdiHeaderColumnSpacing}"
                                 IsVisible="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableIsToolWindowConverter.Instance}, ConverterParameter=Not, FallbackValue=True}">
                             <ContentPresenter Grid.Column="0"
                                               ContentTemplate="{TemplateBinding IconTemplate}"
@@ -301,7 +301,7 @@
                                      LastChildFill="True">
                             <TextBlock Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}"
                                        VerticalAlignment="Center"
-                                       Padding="2"
+                                       Padding="{DynamicResource DockHeaderContentPadding}"
                                        TextTrimming="CharacterEllipsis"
                                        TextWrapping="NoWrap" />
                           </DockPanel>
@@ -311,18 +311,18 @@
                     </DockPanel>
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal"
-                                Spacing="2"
-                                Margin="2,0"
+                                Spacing="{DynamicResource DockMdiButtonStripSpacing}"
+                                Margin="{DynamicResource DockMdiButtonStripMargin}"
                                 IsVisible="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableIsToolWindowConverter.Instance}, ConverterParameter=Not, FallbackValue=True}">
                       <Button x:Name="PART_MinimizeButton"
                               Theme="{TemplateBinding CloseButtonTheme}">
-                        <Viewbox Width="12" Height="12">
+                        <Viewbox Width="{DynamicResource DockMdiTitleIconSize}" Height="{DynamicResource DockMdiTitleIconSize}">
                           <Path x:Name="PART_MinimizePath" />
                         </Viewbox>
                       </Button>
                       <Button x:Name="PART_MaximizeRestoreButton"
                               Theme="{TemplateBinding CloseButtonTheme}">
-                        <Viewbox Width="12" Height="12">
+                        <Viewbox Width="{DynamicResource DockMdiTitleIconSize}" Height="{DynamicResource DockMdiTitleIconSize}">
                           <Path x:Name="PART_MaximizeRestorePath" />
                         </Viewbox>
                       </Button>
@@ -355,15 +355,15 @@
                     <StackPanel x:Name="PART_ToolButtons"
                                 Grid.Column="1"
                                 Orientation="Horizontal"
-                                Spacing="2"
-                                Margin="2,0"
+                                Spacing="{DynamicResource DockMdiButtonStripSpacing}"
+                                Margin="{DynamicResource DockMdiButtonStripMargin}"
                                 x:DataType="dmc:IToolDock"
                                 DataContext="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableToolDockConverter.Instance}}"
                                 IsVisible="{Binding $parent[controls:MdiDocumentWindow].DataContext, Converter={x:Static converters:ManagedDockableIsToolWindowConverter.Instance}, FallbackValue=False}">
                       <Button x:Name="PART_ToolMenuButton"
                               Theme="{TemplateBinding CloseButtonTheme}"
                               Flyout="{DynamicResource ToolChromeControlContextMenu}">
-                        <Viewbox Width="12" Height="12">
+                        <Viewbox Width="{DynamicResource DockMdiTitleIconSize}" Height="{DynamicResource DockMdiTitleIconSize}">
                           <Path x:Name="PART_ToolMenuPath"
                                 Data="{DynamicResource DockIconMenuGeometry}" />
                         </Viewbox>
@@ -382,7 +382,7 @@
                             </MultiBinding>
                           </MultiBinding>
                         </Button.IsVisible>
-                        <Viewbox Width="12" Height="12">
+                        <Viewbox Width="{DynamicResource DockMdiTitleIconSize}" Height="{DynamicResource DockMdiTitleIconSize}">
                           <Path x:Name="PART_ToolPinPath"
                                 Data="{DynamicResource DockIconPinGeometry}"
                                 Classes.pinned="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}}" />
@@ -406,7 +406,7 @@
                             </MultiBinding>
                           </MultiBinding>
                         </Button.IsVisible>
-                        <Viewbox Width="12" Height="12">
+                        <Viewbox Width="{DynamicResource DockMdiTitleIconSize}" Height="{DynamicResource DockMdiTitleIconSize}">
                           <Path x:Name="PART_ToolClosePath"
                                 Data="{DynamicResource DockToolIconCloseGeometry}" />
                         </Viewbox>
@@ -428,49 +428,49 @@
               </DockPanel>
               <Panel>
                 <Border x:Name="PART_ResizeTop"
-                        Height="4"
+                        Height="{DynamicResource DockMdiResizeEdgeThickness}"
                         VerticalAlignment="Top"
                         Background="Transparent"
                         Cursor="SizeNorthSouth" />
                 <Border x:Name="PART_ResizeBottom"
-                        Height="4"
+                        Height="{DynamicResource DockMdiResizeEdgeThickness}"
                         VerticalAlignment="Bottom"
                         Background="Transparent"
                         Cursor="SizeNorthSouth" />
                 <Border x:Name="PART_ResizeLeft"
-                        Width="4"
+                        Width="{DynamicResource DockMdiResizeEdgeThickness}"
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         Cursor="SizeWestEast" />
                 <Border x:Name="PART_ResizeRight"
-                        Width="4"
+                        Width="{DynamicResource DockMdiResizeEdgeThickness}"
                         HorizontalAlignment="Right"
                         Background="Transparent"
                         Cursor="SizeWestEast" />
                 <Border x:Name="PART_ResizeTopLeft"
-                        Width="6"
-                        Height="6"
+                        Width="{DynamicResource DockMdiResizeCornerSize}"
+                        Height="{DynamicResource DockMdiResizeCornerSize}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Background="Transparent"
                         Cursor="TopLeftCorner" />
                 <Border x:Name="PART_ResizeTopRight"
-                        Width="6"
-                        Height="6"
+                        Width="{DynamicResource DockMdiResizeCornerSize}"
+                        Height="{DynamicResource DockMdiResizeCornerSize}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Background="Transparent"
                         Cursor="TopRightCorner" />
                 <Border x:Name="PART_ResizeBottomLeft"
-                        Width="6"
-                        Height="6"
+                        Width="{DynamicResource DockMdiResizeCornerSize}"
+                        Height="{DynamicResource DockMdiResizeCornerSize}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
                         Background="Transparent"
                         Cursor="BottomLeftCorner" />
                 <Border x:Name="PART_ResizeBottomRight"
-                        Width="6"
-                        Height="6"
+                        Width="{DynamicResource DockMdiResizeCornerSize}"
+                        Height="{DynamicResource DockMdiResizeCornerSize}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Background="Transparent"
@@ -483,37 +483,24 @@
     </Setter>
 
     <Style Selector="^/template/ Border#PART_Header">
-      <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
       <Setter Property="BorderThickness" Value="0,0,0,1" />
     </Style>
 
     <Style Selector="^/template/ Grid#PART_Grid">
-      <Setter Property="Height" Value="5" />
+      <Setter Property="Height" Value="{DynamicResource DockChromeGripHeight}" />
       <Setter Property="VerticalAlignment" Value="Center" />
-      <Setter Property="Margin" Value="0 0 2 0" />
-      <Setter Property="Background">
-        <VisualBrush SourceRect="0,0,4,5"
-                     DestinationRect="0,0,4,5"
-                     TileMode="Tile"
-                     Stretch="UniformToFill">
-          <VisualBrush.Visual>
-            <Canvas Width="4" Height="5" Background="Transparent">
-              <Rectangle Height="1" Width="1" Fill="#474747" />
-              <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="2" Canvas.Left="2" />
-              <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="4" />
-            </Canvas>
-          </VisualBrush.Visual>
-        </VisualBrush>
-      </Setter>
+      <Setter Property="Margin" Value="{DynamicResource DockChromeGripMargin}" />
+      <Setter Property="Background" Value="{DynamicResource DockChromeGripBrush}" />
     </Style>
 
     <Style Selector="^:active /template/ Border#PART_Header">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
+      <Setter Property="Background" Value="{DynamicResource DockSurfaceHeaderActiveBrush}" />
     </Style>
 
     <Style Selector="^/template/ Path">
       <Setter Property="Stretch" Value="UniformToFill" />
-      <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+      <Setter Property="Fill" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
     </Style>
 
     <Style Selector="^/template/ Path#PART_MinimizePath">
@@ -533,7 +520,7 @@
     </Style>
 
     <Style Selector="^:active /template/ Path">
-      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+      <Setter Property="Fill" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
     <Style Selector="^:minimized /template/ Border#PART_ContentBorder">

@@ -313,14 +313,14 @@
 
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="FontWeight" Value="Normal" />
-    <Setter Property="MinHeight" Value="24" />
+    <Setter Property="MinHeight" Value="{DynamicResource DockTabItemMinHeight}" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Background" Value="Transparent" />
-    <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Margin" Value="0" />
-    <Setter Property="Padding" Value="4,0,4,0" />
+    <Setter Property="Padding" Value="{DynamicResource DockDocumentTabItemPadding}" />
     <Setter Property="DocumentContextMenu" Value="{DynamicResource DocumentTabStripItemContextMenu}" />
 
     <Setter Property="Template">
@@ -343,8 +343,8 @@
               <DockPanel Background="Transparent">
                 <StackPanel Background="Transparent"
                             Orientation="Horizontal"
-                            Spacing="2">
-                  <StackPanel Margin="2" Orientation="Horizontal">
+                            Spacing="{DynamicResource DockTabContentSpacing}">
+                  <StackPanel Margin="{DynamicResource DockTabContentMargin}" Orientation="Horizontal">
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
                                       Content="{Binding}" />
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
@@ -364,23 +364,23 @@
     </Setter>
 
     <Style Selector="^:not(:active):selected">
-      <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockSurfaceHeaderBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
     </Style>
 
     <Style Selector="^:active:selected">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockTabActiveBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
     <Style Selector="^:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockTabHoverBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
     <Style Selector="^:selected:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockTabActiveBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
   </ControlTheme>

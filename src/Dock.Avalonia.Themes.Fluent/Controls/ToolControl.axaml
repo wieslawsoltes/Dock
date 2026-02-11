@@ -26,7 +26,7 @@
 
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
-        <TextBlock Text="{Binding Title}" Padding="2" />
+        <TextBlock Text="{Binding Title}" Padding="{DynamicResource DockHeaderContentPadding}" />
       </DataTemplate>
     </Setter>
 
@@ -34,7 +34,7 @@
       <DataTemplate DataType="core:IDockable">
         <TextBlock VerticalAlignment="Center"
                    Text="*"
-                   Margin="0,0,2,0" />
+                   Margin="{DynamicResource DockModifiedIndicatorMargin}" />
       </DataTemplate>
     </Setter>
 
@@ -73,9 +73,9 @@
 
     <Style Selector="^/template/ Border#PART_Border">
       <Setter Property="ZIndex" Value="-1" />
-      <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockSurfacePanelBrush}" />
       <Setter Property="Margin" Value="0" />
-      <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
       <Setter Property="BorderThickness" Value="1 0 1 0" />
     </Style>
 

@@ -93,12 +93,18 @@
   </MenuFlyout>
 
   <ControlTheme x:Key="ChromeButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
-    <Setter Property="Margin" Value="2 0 0 0" />
-    <Setter Property="Padding" Value="3" />
+    <Setter Property="Margin" Value="{DynamicResource DockChromeButtonMargin}" />
+    <Setter Property="Padding" Value="{DynamicResource DockChromeButtonPadding}" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="Width" Value="18" />
-    <Setter Property="Height" Value="16" />
+    <Setter Property="Width" Value="{DynamicResource DockChromeButtonWidth}" />
+    <Setter Property="Height" Value="{DynamicResource DockChromeButtonHeight}" />
+    <Style Selector="^:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonHoverBackgroundBrush}" />
+    </Style>
+    <Style Selector="^:pressed">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonPressedBackgroundBrush}" />
+    </Style>
   </ControlTheme>
 
   <ControlTheme x:Key="{x:Type ToolChromeControl}" TargetType="ToolChromeControl">
@@ -129,8 +135,8 @@
     <Setter Property="MinHeight" Value="{Binding MinHeight}" />
     <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
 
-    <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+    <Setter Property="Background" Value="{DynamicResource DockSurfacePanelBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
     <Setter Property="IsPinned" Value="{Binding ActiveDockable.OriginalOwner, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" />
@@ -157,7 +163,7 @@
                   ContextFlyout="{TemplateBinding ToolFlyout}"
                   Grid.Row="{Binding GripMode, Converter={x:Static GripModeConverters.GridRowAutoHideConverter}}">
             <Grid x:Name="PART_Grip">
-              <DockPanel LastChildFill="True" Margin="8 0">
+              <DockPanel LastChildFill="True" Margin="{DynamicResource DockToolChromeHeaderMargin}">
                 <Panel DockPanel.Dock="Left">
                   <TextBlock x:Name="PART_Title"
                              Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}" />
@@ -166,7 +172,7 @@
                   <Button x:Name="PART_MenuButton"
                           Theme="{TemplateBinding MenuButtonTheme}"
                           Flyout="{TemplateBinding ToolFlyout}">
-                    <Viewbox Margin="2">
+                    <Viewbox Margin="{DynamicResource DockToolChromeMenuIconMargin}">
                       <Path x:Name="PART_MenuPath" />
                     </Viewbox>
                   </Button>
@@ -225,7 +231,7 @@
           </Border>
           <Panel x:Name="PART_Panel"
                  Background="{TemplateBinding BorderBrush}"
-                 Height="1"
+                 Height="{DynamicResource DockToolChromeDividerThickness}"
                  VerticalAlignment="Top"
                  Grid.Row="{Binding GripMode, Converter={x:Static GripModeConverters.GridRowAutoHideConverter}}" />
         </Grid>
@@ -267,17 +273,17 @@
       <Setter Property="HorizontalAlignment" Value="Left" />
       <Setter Property="TextAlignment" Value="Left" />
       <Setter Property="VerticalAlignment" Value="Stretch" />
-      <Setter Property="Margin" Value="0 4 8 4" />
+      <Setter Property="Margin" Value="{DynamicResource DockToolChromeTitleMargin}" />
       <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     </Style>
 
     <Style Selector="^:active /template/ TextBlock#PART_Title">
       <Setter Property="Background" Value="Transparent" />
-      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
     <Style Selector="^/template/ Grid#PART_Grip">
-      <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockSurfacePanelBrush}" />
     </Style>
 
     <Style Selector="^/template/ Grid#PART_Grip">
@@ -289,32 +295,23 @@
     </Style>
 
     <Style Selector="^:active /template/ Grid#PART_Grip">
-      <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockSurfaceHeaderActiveBrush}" />
     </Style>
 
     <Style Selector="^/template/ Grid#PART_Grid">
-      <Setter Property="Height" Value="5" />
+      <Setter Property="Height" Value="{DynamicResource DockChromeGripHeight}" />
       <Setter Property="VerticalAlignment" Value="Center" />
-      <Setter Property="Margin" Value="0 0 2 0" />
-      <Setter Property="Background">
-        <VisualBrush SourceRect="0,0,4,5"
-                     DestinationRect="0,0,4,5"
-                     TileMode="Tile"
-                     Stretch="UniformToFill">
-          <VisualBrush.Visual>
-            <Canvas Width="4" Height="5" Background="Transparent">
-              <Rectangle Height="1" Width="1" Fill="#474747" />
-              <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="2" Canvas.Left="2" />
-              <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="4" />
-            </Canvas>
-          </VisualBrush.Visual>
-        </VisualBrush>
-      </Setter>
+      <Setter Property="Margin" Value="{DynamicResource DockChromeGripMargin}" />
+      <Setter Property="Background" Value="{DynamicResource DockChromeGripBrush}" />
     </Style>
 
     <Style Selector="^/template/ Path">
       <Setter Property="Stretch" Value="UniformToFill" />
-      <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+      <Setter Property="Fill" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Button#PART_CloseButton:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
     </Style>
 
     <Style Selector="^/template/ Path#PART_ClosePath">
@@ -342,7 +339,7 @@
     </Style>
 
     <Style Selector="^:active /template/ Path">
-      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+      <Setter Property="Fill" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
   </ControlTheme>
 

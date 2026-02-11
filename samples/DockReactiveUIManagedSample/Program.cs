@@ -1,7 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
-using ReactiveUI.Avalonia;
+using Avalonia.ReactiveUI;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Dock.Settings;

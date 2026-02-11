@@ -1,6 +1,6 @@
 using System;
 using Avalonia;
-using ReactiveUI.Avalonia;
+using Avalonia.ReactiveUI;
 
 namespace DockFigmaSample;
 

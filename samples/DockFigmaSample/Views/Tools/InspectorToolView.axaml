@@ -1,7 +1,7 @@
 <UserControl x:Class="DockFigmaSample.Views.Tools.InspectorToolView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
+             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
              xmlns:vm="using:DockFigmaSample.ViewModels.Tools"
              x:DataType="vm:InspectorToolViewModel" x:CompileBindings="True">
   <Border Background="{DynamicResource PanelBackgroundBrush}" Padding="12">

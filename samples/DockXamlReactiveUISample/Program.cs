@@ -3,7 +3,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
-using ReactiveUI.Avalonia;
+using Avalonia.ReactiveUI;
 
 namespace DockXamlReactiveUISample;
 

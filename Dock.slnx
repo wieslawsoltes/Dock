@@ -37,7 +37,7 @@
     <File Path="build/Newtonsoft.Json.props" />
     <File Path="build/Prism.props" />
     <File Path="build/ReactiveMarbles.PropertyChanged.props" />
-    <File Path="build/ReactiveUI.Avalonia.props" />
+    <File Path="build/Avalonia.ReactiveUI.props" />
     <File Path="build/ReactiveUI.props" />
     <File Path="build/ReferenceAssemblies.props" />
     <File Path="build/SignAssembly.props" />

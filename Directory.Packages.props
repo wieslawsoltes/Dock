@@ -14,10 +14,10 @@
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageVersion Include="AvaloniaEdit.TextMate" Version="11.3.0" />
-    <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.8" />
     <PackageVersion Include="ReactiveUI.SourceGenerators" Version="2.6.1" />
     <PackageVersion Include="StaticViewLocator" Version="0.1.0" />
-    <PackageVersion Include="reactiveui" Version="22.3.1" />
+    <PackageVersion Include="reactiveui" Version="20.4.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="YamlDotNet" Version="16.3.0" />

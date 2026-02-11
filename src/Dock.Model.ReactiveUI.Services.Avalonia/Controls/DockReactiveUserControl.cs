@@ -3,7 +3,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Services.Lifecycle;
 using ReactiveUI;
-using ReactiveUI.Avalonia;
+using Avalonia.ReactiveUI;
 using Splat;
 
 namespace Dock.Model.ReactiveUI.Services.Avalonia.Controls;

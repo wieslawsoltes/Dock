@@ -46,7 +46,7 @@ public class App : Application
                     return null;
                 }
 
-                if (existing is ReactiveUI.Avalonia.ViewModelViewHost existingHost)
+                if (existing is Avalonia.ReactiveUI.ViewModelViewHost existingHost)
                 {
                     existingHost.ViewLocator = viewLocator;
                     if (!ReferenceEquals(existingHost.ViewModel, item))
@@ -56,7 +56,7 @@ public class App : Application
                     return existingHost;
                 }
 
-                return new ReactiveUI.Avalonia.ViewModelViewHost
+                return new Avalonia.ReactiveUI.ViewModelViewHost
                 {
                     ViewLocator = viewLocator,
                     ViewModel = item

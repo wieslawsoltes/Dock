@@ -132,6 +132,9 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
       <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_CanCloseLastDockable">IDock.CanCloseLastDockable</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_DockCapabilityPolicy">IDock.DockCapabilityPolicy</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_CanGoBack">IDock.CanGoBack</a>
     </div>
     <div>
@@ -241,6 +244,9 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
     </div>
     <div>
       <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_CanDockAsDocument">IDockable.CanDockAsDocument</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_DockCapabilityOverrides">IDockable.DockCapabilityOverrides</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_IsModified">IDockable.IsModified</a>
@@ -494,7 +500,7 @@ Interface IRootDock  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Dock_Model_Controls_IRootDock_EnableAdaptiveGlobalDockTargets" data-uid="Dock.Model.Controls.IRootDock.EnableAdaptiveGlobalDockTargets">
   EnableAdaptiveGlobalDockTargets
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L91"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether adaptive global dock targets are enabled.
@@ -528,7 +534,7 @@ This is typically used for dashboards and widget areas.</p>
 
   <h3 id="Dock_Model_Controls_IRootDock_ExitWindows" data-uid="Dock.Model.Controls.IRootDock.ExitWindows">
   ExitWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exit windows.</p>
@@ -780,11 +786,44 @@ This is typically used for dashboards and widget areas.</p>
 
 
 
+  <a id="Dock_Model_Controls_IRootDock_RootDockCapabilityPolicy_" data-uid="Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy*"></a>
+
+  <h3 id="Dock_Model_Controls_IRootDock_RootDockCapabilityPolicy" data-uid="Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy">
+  RootDockCapabilityPolicy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets optional root-wide capability policy values.
+Null values inherit dockable base flag values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">DockCapabilityPolicy? RootDockCapabilityPolicy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockCapabilityPolicy.html">DockCapabilityPolicy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Controls_IRootDock_ShowWindows_" data-uid="Dock.Model.Controls.IRootDock.ShowWindows*"></a>
 
   <h3 id="Dock_Model_Controls_IRootDock_ShowWindows" data-uid="Dock.Model.Controls.IRootDock.ShowWindows">
   ShowWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Controls/IRootDock.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Show windows.</p>

@@ -91,6 +91,23 @@
 Classes
 </h3>
     <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockCapabilityEvaluation.html">DockCapabilityEvaluation</a></dt>
+      <dd><p>Represents a resolved effective capability value and diagnostics.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockCapabilityOverrides.html">DockCapabilityOverrides</a></dt>
+      <dd><p>Per-dockable capability overrides with highest precedence.
+Null values inherit from dock/root policy resolution.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockCapabilityPolicy.html">DockCapabilityPolicy</a></dt>
+      <dd><p>Default capability policy implementation used by root and dock policies.
+Null values inherit lower-precedence values.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Dock.Model.Core.DockGroupValidator.html">DockGroupValidator</a></dt>
       <dd><p>Helper class for validating docking groups compatibility.
 Provides shared validation logic used by DockService and DockManager.</p>
@@ -163,6 +180,11 @@ Interfaces
     <dl class="jumplist">
       <dt><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
       <dd><p>Dock contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockCapabilityPolicy.html">IDockCapabilityPolicy</a></dt>
+      <dd><p>Defines optional capability values used by root and dock capability policies.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -308,6 +330,16 @@ Enums
     <dl class="jumplist">
       <dt><a class="xref" href="Dock.Model.Core.Alignment.html">Alignment</a></dt>
       <dd><p>Defines dock alignment.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockCapability.html">DockCapability</a></dt>
+      <dd><p>Represents a logical dock capability that can be controlled by policy.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockCapabilityValueSource.html">DockCapabilityValueSource</a></dt>
+      <dd><p>Describes which layer resolved an effective capability value.</p>
 </dd>
     </dl>
     <dl class="jumplist">

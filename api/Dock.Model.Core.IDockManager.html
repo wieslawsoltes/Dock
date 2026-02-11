@@ -149,6 +149,39 @@ Interface IDockManager  <a class="header-action link-secondary" title="View sour
 
 
 
+  <a id="Dock_Model_Core_IDockManager_LastCapabilityEvaluation_" data-uid="Dock.Model.Core.IDockManager.LastCapabilityEvaluation*"></a>
+
+  <h3 id="Dock_Model_Core_IDockManager_LastCapabilityEvaluation" data-uid="Dock.Model.Core.IDockManager.LastCapabilityEvaluation">
+  LastCapabilityEvaluation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the last capability evaluation that blocked a docking-related action.
+Returns null when the last validation did not fail due to capability policy.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">DockCapabilityEvaluation? LastCapabilityEvaluation { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockCapabilityEvaluation.html">DockCapabilityEvaluation</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Core_IDockManager_Position_" data-uid="Dock.Model.Core.IDockManager.Position*"></a>
 
   <h3 id="Dock_Model_Core_IDockManager_Position" data-uid="Dock.Model.Core.IDockManager.Position">
@@ -253,7 +286,7 @@ Interface IDockManager  <a class="header-action link-secondary" title="View sour
 
   <h3 id="Dock_Model_Core_IDockManager_IsDockTargetVisible_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.Core.IDockManager.IsDockTargetVisible(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
   IsDockTargetVisible(IDockable, IDockable, DockOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L89"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines if a dock target indicator should be visible.</p>
@@ -298,7 +331,7 @@ Interface IDockManager  <a class="header-action link-secondary" title="View sour
 
   <h3 id="Dock_Model_Core_IDockManager_ValidateDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.Core.IDockManager.ValidateDock(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateDock(IDock, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates dock docking operation.</p>
@@ -349,7 +382,7 @@ Interface IDockManager  <a class="header-action link-secondary" title="View sour
 
   <h3 id="Dock_Model_Core_IDockManager_ValidateDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.Core.IDockManager.ValidateDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateDockable(IDockable, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L80"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates dockable docking operation.</p>
@@ -400,7 +433,7 @@ Interface IDockManager  <a class="header-action link-secondary" title="View sour
 
   <h3 id="Dock_Model_Core_IDockManager_ValidateDocument_Dock_Model_Controls_IDocument_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.Core.IDockManager.ValidateDocument(Dock.Model.Controls.IDocument,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateDocument(IDocument, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates document docking operation.</p>
@@ -451,7 +484,7 @@ Interface IDockManager  <a class="header-action link-secondary" title="View sour
 
   <h3 id="Dock_Model_Core_IDockManager_ValidateTool_Dock_Model_Controls_ITool_Dock_Model_Core_IDockable_Dock_Model_Core_DragAction_Dock_Model_Core_DockOperation_System_Boolean_" data-uid="Dock.Model.Core.IDockManager.ValidateTool(Dock.Model.Controls.ITool,Dock.Model.Core.IDockable,Dock.Model.Core.DragAction,Dock.Model.Core.DockOperation,System.Boolean)">
   ValidateTool(ITool, IDockable, DragAction, DockOperation, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockManager.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Validates tool docking operation.</p>

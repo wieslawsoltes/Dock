@@ -166,6 +166,9 @@ Class RootDock  <a class="header-action link-secondary" title="View source" href
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockBase.html#Dock_Model_ReactiveUI_Core_DockBase_CanCloseLastDockable">DockBase.CanCloseLastDockable</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Core.DockBase.html#Dock_Model_ReactiveUI_Core_DockBase_DockCapabilityPolicy">DockBase.DockCapabilityPolicy</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockBase.html#Dock_Model_ReactiveUI_Core_DockBase_CanGoBack">DockBase.CanGoBack</a>
     </div>
     <div>
@@ -275,6 +278,9 @@ Class RootDock  <a class="header-action link-secondary" title="View source" href
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_CanDockAsDocument">DockableBase.CanDockAsDocument</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockCapabilityOverrides">DockableBase.DockCapabilityOverrides</a>
     </div>
     <div>
       <a class="xref" href="Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_IsModified">DockableBase.IsModified</a>
@@ -475,7 +481,7 @@ public IList&lt;IDockable&gt;? BottomPinnedDockables { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Controls_RootDock_EnableAdaptiveGlobalDockTargets" data-uid="Dock.Model.ReactiveUI.Controls.RootDock.EnableAdaptiveGlobalDockTargets">
   EnableAdaptiveGlobalDockTargets
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/RootDock.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/RootDock.cs/#L102"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether adaptive global dock targets are enabled.
@@ -510,7 +516,7 @@ public bool EnableAdaptiveGlobalDockTargets { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Controls_RootDock_ExitWindows" data-uid="Dock.Model.ReactiveUI.Controls.RootDock.ExitWindows">
   ExitWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/RootDock.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/RootDock.cs/#L98"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exit windows.</p>
@@ -770,11 +776,44 @@ public IList&lt;IDockable&gt;? RightPinnedDockables { get; set; }</code></pre>
 
 
 
+  <a id="Dock_Model_ReactiveUI_Controls_RootDock_RootDockCapabilityPolicy_" data-uid="Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy*"></a>
+
+  <h3 id="Dock_Model_ReactiveUI_Controls_RootDock_RootDockCapabilityPolicy" data-uid="Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy">
+  RootDockCapabilityPolicy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/RootDock.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = false)]
+[ExcludeFromCodeCoverage]
+public DockCapabilityPolicy? RootDockCapabilityPolicy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockCapabilityPolicy.html">DockCapabilityPolicy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_ReactiveUI_Controls_RootDock_ShowWindows_" data-uid="Dock.Model.ReactiveUI.Controls.RootDock.ShowWindows*"></a>
 
   <h3 id="Dock_Model_ReactiveUI_Controls_RootDock_ShowWindows" data-uid="Dock.Model.ReactiveUI.Controls.RootDock.ShowWindows">
   ShowWindows
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/RootDock.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/RootDock.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Show windows.</p>

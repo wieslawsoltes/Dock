@@ -3505,6 +3505,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ManagedDockableBase.Dock
   nameWithType: ManagedDockableBase.Dock
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Avalonia.Controls.ManagedDockableBase.DockCapabilityOverrides
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.DockCapabilityOverrides
+  nameWithType: ManagedDockableBase.DockCapabilityOverrides
+- uid: Dock.Avalonia.Controls.ManagedDockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedDockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedDockableBase.DockCapabilityOverrides
+  nameWithType: ManagedDockableBase.DockCapabilityOverrides
 - uid: Dock.Avalonia.Controls.ManagedDockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Avalonia.Controls.ManagedDockableBase.html#Dock_Avalonia_Controls_ManagedDockableBase_DockGroup
@@ -4484,6 +4497,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ManagedWindowDock.DefaultDockable
   nameWithType: ManagedWindowDock.DefaultDockable
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_DockCapabilityPolicy
+  commentId: P:Dock.Avalonia.Controls.ManagedWindowDock.DockCapabilityPolicy
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.DockCapabilityPolicy
+  nameWithType: ManagedWindowDock.DockCapabilityPolicy
+- uid: Dock.Avalonia.Controls.ManagedWindowDock.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_DockCapabilityPolicy_
+  commentId: Overload:Dock.Avalonia.Controls.ManagedWindowDock.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ManagedWindowDock.DockCapabilityPolicy
+  nameWithType: ManagedWindowDock.DockCapabilityPolicy
 - uid: Dock.Avalonia.Controls.ManagedWindowDock.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Avalonia.Controls.ManagedWindowDock.html#Dock_Avalonia_Controls_ManagedWindowDock_EnableGlobalDocking
@@ -8061,6 +8087,84 @@ references:
   commentId: F:Dock.Avalonia.Converters.CanRemoveDockableConverter.Instance
   fullName: Dock.Avalonia.Converters.CanRemoveDockableConverter.Instance
   nameWithType: CanRemoveDockableConverter.Instance
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters
+  name: DockCapabilityConverters
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html
+  commentId: T:Dock.Avalonia.Converters.DockCapabilityConverters
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters
+  nameWithType: DockCapabilityConverters
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanCloseConverter
+  name: CanCloseConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanCloseConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanCloseConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanCloseConverter
+  nameWithType: DockCapabilityConverters.CanCloseConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanCloseMultiConverter
+  name: CanCloseMultiConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanCloseMultiConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanCloseMultiConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanCloseMultiConverter
+  nameWithType: DockCapabilityConverters.CanCloseMultiConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanDockAsDocumentConverter
+  name: CanDockAsDocumentConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanDockAsDocumentConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanDockAsDocumentConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanDockAsDocumentConverter
+  nameWithType: DockCapabilityConverters.CanDockAsDocumentConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanDockAsDocumentMultiConverter
+  name: CanDockAsDocumentMultiConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanDockAsDocumentMultiConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanDockAsDocumentMultiConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanDockAsDocumentMultiConverter
+  nameWithType: DockCapabilityConverters.CanDockAsDocumentMultiConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanDragConverter
+  name: CanDragConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanDragConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanDragConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanDragConverter
+  nameWithType: DockCapabilityConverters.CanDragConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanDragMultiConverter
+  name: CanDragMultiConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanDragMultiConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanDragMultiConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanDragMultiConverter
+  nameWithType: DockCapabilityConverters.CanDragMultiConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanDropConverter
+  name: CanDropConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanDropConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanDropConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanDropConverter
+  nameWithType: DockCapabilityConverters.CanDropConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanDropMultiConverter
+  name: CanDropMultiConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanDropMultiConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanDropMultiConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanDropMultiConverter
+  nameWithType: DockCapabilityConverters.CanDropMultiConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanFloatConverter
+  name: CanFloatConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanFloatConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanFloatConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanFloatConverter
+  nameWithType: DockCapabilityConverters.CanFloatConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanFloatMultiConverter
+  name: CanFloatMultiConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanFloatMultiConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanFloatMultiConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanFloatMultiConverter
+  nameWithType: DockCapabilityConverters.CanFloatMultiConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanPinConverter
+  name: CanPinConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanPinConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanPinConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanPinConverter
+  nameWithType: DockCapabilityConverters.CanPinConverter
+- uid: Dock.Avalonia.Converters.DockCapabilityConverters.CanPinMultiConverter
+  name: CanPinMultiConverter
+  href: api/Dock.Avalonia.Converters.DockCapabilityConverters.html#Dock_Avalonia_Converters_DockCapabilityConverters_CanPinMultiConverter
+  commentId: F:Dock.Avalonia.Converters.DockCapabilityConverters.CanPinMultiConverter
+  fullName: Dock.Avalonia.Converters.DockCapabilityConverters.CanPinMultiConverter
+  nameWithType: DockCapabilityConverters.CanPinMultiConverter
 - uid: Dock.Avalonia.Converters.DockModeConverter
   name: DockModeConverter
   href: api/Dock.Avalonia.Converters.DockModeConverter.html
@@ -12621,6 +12725,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.RootDock.RightPinnedDockablesProperty
   fullName: Dock.Model.Avalonia.Controls.RootDock.RightPinnedDockablesProperty
   nameWithType: RootDock.RightPinnedDockablesProperty
+- uid: Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicyProperty
+  name: RootDockCapabilityPolicyProperty
+  href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_RootDockCapabilityPolicyProperty
+  commentId: F:Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicyProperty
+  fullName: Dock.Model.Avalonia.Controls.RootDock.RootDockCapabilityPolicyProperty
+  nameWithType: RootDock.RootDockCapabilityPolicyProperty
 - uid: Dock.Model.Avalonia.Controls.RootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.Avalonia.Controls.RootDock.html#Dock_Model_Avalonia_Controls_RootDock_ShowWindows
@@ -13761,6 +13884,25 @@ references:
   commentId: F:Dock.Model.Avalonia.Core.DockBase.DefaultDockableProperty
   fullName: Dock.Model.Avalonia.Core.DockBase.DefaultDockableProperty
   nameWithType: DockBase.DefaultDockableProperty
+- uid: Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Avalonia.Core.DockBase.html#Dock_Model_Avalonia_Core_DockBase_DockCapabilityPolicy
+  commentId: P:Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicy
+  fullName: Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Avalonia.Core.DockBase.html#Dock_Model_Avalonia_Core_DockBase_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicyProperty
+  name: DockCapabilityPolicyProperty
+  href: api/Dock.Model.Avalonia.Core.DockBase.html#Dock_Model_Avalonia_Core_DockBase_DockCapabilityPolicyProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicyProperty
+  fullName: Dock.Model.Avalonia.Core.DockBase.DockCapabilityPolicyProperty
+  nameWithType: DockBase.DockCapabilityPolicyProperty
 - uid: Dock.Model.Avalonia.Core.DockBase.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.Avalonia.Core.DockBase.html#Dock_Model_Avalonia_Core_DockBase_EnableGlobalDocking
@@ -14597,6 +14739,25 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Avalonia.Core.DockableBase.Dock
   nameWithType: DockableBase.Dock
+- uid: Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverrides
+  fullName: Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverridesProperty
+  name: DockCapabilityOverridesProperty
+  href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockCapabilityOverridesProperty
+  commentId: F:Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverridesProperty
+  fullName: Dock.Model.Avalonia.Core.DockableBase.DockCapabilityOverridesProperty
+  nameWithType: DockableBase.DockCapabilityOverridesProperty
 - uid: Dock.Model.Avalonia.Core.DockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Model.Avalonia.Core.DockableBase.html#Dock_Model_Avalonia_Core_DockableBase_DockGroup
@@ -16509,6 +16670,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Controls.RootDock.RightPinnedDockables
   nameWithType: RootDock.RightPinnedDockables
+- uid: Dock.Model.CaliburMicro.Controls.RootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.CaliburMicro.Controls.RootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.CaliburMicro.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.CaliburMicro.Controls.RootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.CaliburMicro.Controls.RootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
 - uid: Dock.Model.CaliburMicro.Controls.RootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.CaliburMicro.Controls.RootDock.html#Dock_Model_CaliburMicro_Controls_RootDock_ShowWindows
@@ -17063,6 +17237,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockBase.DefaultDockable
   nameWithType: DockBase.DefaultDockable
+- uid: Dock.Model.CaliburMicro.Core.DockBase.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.CaliburMicro.Core.DockBase.html#Dock_Model_CaliburMicro_Core_DockBase_DockCapabilityPolicy
+  commentId: P:Dock.Model.CaliburMicro.Core.DockBase.DockCapabilityPolicy
+  fullName: Dock.Model.CaliburMicro.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.CaliburMicro.Core.DockBase.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.CaliburMicro.Core.DockBase.html#Dock_Model_CaliburMicro_Core_DockBase_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockBase.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
 - uid: Dock.Model.CaliburMicro.Core.DockBase.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.CaliburMicro.Core.DockBase.html#Dock_Model_CaliburMicro_Core_DockBase_EnableGlobalDocking
@@ -17701,6 +17888,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.CaliburMicro.Core.DockableBase.Dock
   nameWithType: DockableBase.Dock
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Model.CaliburMicro.Core.DockableBase.DockCapabilityOverrides
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.CaliburMicro.Core.DockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.CaliburMicro.Core.DockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.CaliburMicro.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
 - uid: Dock.Model.CaliburMicro.Core.DockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Model.CaliburMicro.Core.DockableBase.html#Dock_Model_CaliburMicro_Core_DockableBase_DockGroup
@@ -19738,6 +19938,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Controls.IRootDock.RightPinnedDockables
   nameWithType: IRootDock.RightPinnedDockables
+- uid: Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy
+  nameWithType: IRootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Controls.IRootDock.RootDockCapabilityPolicy
+  nameWithType: IRootDock.RootDockCapabilityPolicy
 - uid: Dock.Model.Controls.IRootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_ShowWindows
@@ -20217,6 +20430,323 @@ references:
   commentId: F:Dock.Model.Core.Alignment.Unset
   fullName: Dock.Model.Core.Alignment.Unset
   nameWithType: Alignment.Unset
+- uid: Dock.Model.Core.DockCapability
+  name: DockCapability
+  href: api/Dock.Model.Core.DockCapability.html
+  commentId: T:Dock.Model.Core.DockCapability
+  fullName: Dock.Model.Core.DockCapability
+  nameWithType: DockCapability
+- uid: Dock.Model.Core.DockCapability.Close
+  name: Close
+  href: api/Dock.Model.Core.DockCapability.html#Dock_Model_Core_DockCapability_Close
+  commentId: F:Dock.Model.Core.DockCapability.Close
+  fullName: Dock.Model.Core.DockCapability.Close
+  nameWithType: DockCapability.Close
+- uid: Dock.Model.Core.DockCapability.DockAsDocument
+  name: DockAsDocument
+  href: api/Dock.Model.Core.DockCapability.html#Dock_Model_Core_DockCapability_DockAsDocument
+  commentId: F:Dock.Model.Core.DockCapability.DockAsDocument
+  fullName: Dock.Model.Core.DockCapability.DockAsDocument
+  nameWithType: DockCapability.DockAsDocument
+- uid: Dock.Model.Core.DockCapability.Drag
+  name: Drag
+  href: api/Dock.Model.Core.DockCapability.html#Dock_Model_Core_DockCapability_Drag
+  commentId: F:Dock.Model.Core.DockCapability.Drag
+  fullName: Dock.Model.Core.DockCapability.Drag
+  nameWithType: DockCapability.Drag
+- uid: Dock.Model.Core.DockCapability.Drop
+  name: Drop
+  href: api/Dock.Model.Core.DockCapability.html#Dock_Model_Core_DockCapability_Drop
+  commentId: F:Dock.Model.Core.DockCapability.Drop
+  fullName: Dock.Model.Core.DockCapability.Drop
+  nameWithType: DockCapability.Drop
+- uid: Dock.Model.Core.DockCapability.Float
+  name: Float
+  href: api/Dock.Model.Core.DockCapability.html#Dock_Model_Core_DockCapability_Float
+  commentId: F:Dock.Model.Core.DockCapability.Float
+  fullName: Dock.Model.Core.DockCapability.Float
+  nameWithType: DockCapability.Float
+- uid: Dock.Model.Core.DockCapability.Pin
+  name: Pin
+  href: api/Dock.Model.Core.DockCapability.html#Dock_Model_Core_DockCapability_Pin
+  commentId: F:Dock.Model.Core.DockCapability.Pin
+  fullName: Dock.Model.Core.DockCapability.Pin
+  nameWithType: DockCapability.Pin
+- uid: Dock.Model.Core.DockCapabilityEvaluation
+  name: DockCapabilityEvaluation
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html
+  commentId: T:Dock.Model.Core.DockCapabilityEvaluation
+  fullName: Dock.Model.Core.DockCapabilityEvaluation
+  nameWithType: DockCapabilityEvaluation
+- uid: Dock.Model.Core.DockCapabilityEvaluation.#ctor(Dock.Model.Core.DockCapability,System.Boolean,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Boolean,Dock.Model.Core.DockCapabilityValueSource,System.String)
+  name: DockCapabilityEvaluation(DockCapability, bool, bool?, bool?, bool?, bool, DockCapabilityValueSource, string)
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation__ctor_Dock_Model_Core_DockCapability_System_Boolean_System_Nullable_System_Boolean__System_Nullable_System_Boolean__System_Nullable_System_Boolean__System_Boolean_Dock_Model_Core_DockCapabilityValueSource_System_String_
+  commentId: M:Dock.Model.Core.DockCapabilityEvaluation.#ctor(Dock.Model.Core.DockCapability,System.Boolean,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Boolean,Dock.Model.Core.DockCapabilityValueSource,System.String)
+  name.vb: New(DockCapability, Boolean, Boolean?, Boolean?, Boolean?, Boolean, DockCapabilityValueSource, String)
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DockCapabilityEvaluation(Dock.Model.Core.DockCapability, bool, bool?, bool?, bool?, bool, Dock.Model.Core.DockCapabilityValueSource, string)
+  fullName.vb: Dock.Model.Core.DockCapabilityEvaluation.New(Dock.Model.Core.DockCapability, Boolean, Boolean?, Boolean?, Boolean?, Boolean, Dock.Model.Core.DockCapabilityValueSource, String)
+  nameWithType: DockCapabilityEvaluation.DockCapabilityEvaluation(DockCapability, bool, bool?, bool?, bool?, bool, DockCapabilityValueSource, string)
+  nameWithType.vb: DockCapabilityEvaluation.New(DockCapability, Boolean, Boolean?, Boolean?, Boolean?, Boolean, DockCapabilityValueSource, String)
+- uid: Dock.Model.Core.DockCapabilityEvaluation.#ctor*
+  name: DockCapabilityEvaluation
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation__ctor_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DockCapabilityEvaluation
+  fullName.vb: Dock.Model.Core.DockCapabilityEvaluation.New
+  nameWithType: DockCapabilityEvaluation.DockCapabilityEvaluation
+  nameWithType.vb: DockCapabilityEvaluation.New
+- uid: Dock.Model.Core.DockCapabilityEvaluation.BaseValue
+  name: BaseValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_BaseValue
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.BaseValue
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.BaseValue
+  nameWithType: DockCapabilityEvaluation.BaseValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.BaseValue*
+  name: BaseValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_BaseValue_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.BaseValue
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.BaseValue
+  nameWithType: DockCapabilityEvaluation.BaseValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.Capability
+  name: Capability
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_Capability
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.Capability
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.Capability
+  nameWithType: DockCapabilityEvaluation.Capability
+- uid: Dock.Model.Core.DockCapabilityEvaluation.Capability*
+  name: Capability
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_Capability_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.Capability
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.Capability
+  nameWithType: DockCapabilityEvaluation.Capability
+- uid: Dock.Model.Core.DockCapabilityEvaluation.DiagnosticMessage
+  name: DiagnosticMessage
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_DiagnosticMessage
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.DiagnosticMessage
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DiagnosticMessage
+  nameWithType: DockCapabilityEvaluation.DiagnosticMessage
+- uid: Dock.Model.Core.DockCapabilityEvaluation.DiagnosticMessage*
+  name: DiagnosticMessage
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_DiagnosticMessage_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.DiagnosticMessage
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DiagnosticMessage
+  nameWithType: DockCapabilityEvaluation.DiagnosticMessage
+- uid: Dock.Model.Core.DockCapabilityEvaluation.DockPolicyValue
+  name: DockPolicyValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_DockPolicyValue
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.DockPolicyValue
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DockPolicyValue
+  nameWithType: DockCapabilityEvaluation.DockPolicyValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.DockPolicyValue*
+  name: DockPolicyValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_DockPolicyValue_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.DockPolicyValue
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DockPolicyValue
+  nameWithType: DockCapabilityEvaluation.DockPolicyValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.DockableOverrideValue
+  name: DockableOverrideValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_DockableOverrideValue
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.DockableOverrideValue
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DockableOverrideValue
+  nameWithType: DockCapabilityEvaluation.DockableOverrideValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.DockableOverrideValue*
+  name: DockableOverrideValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_DockableOverrideValue_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.DockableOverrideValue
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.DockableOverrideValue
+  nameWithType: DockCapabilityEvaluation.DockableOverrideValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.EffectiveSource
+  name: EffectiveSource
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_EffectiveSource
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.EffectiveSource
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.EffectiveSource
+  nameWithType: DockCapabilityEvaluation.EffectiveSource
+- uid: Dock.Model.Core.DockCapabilityEvaluation.EffectiveSource*
+  name: EffectiveSource
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_EffectiveSource_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.EffectiveSource
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.EffectiveSource
+  nameWithType: DockCapabilityEvaluation.EffectiveSource
+- uid: Dock.Model.Core.DockCapabilityEvaluation.EffectiveValue
+  name: EffectiveValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_EffectiveValue
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.EffectiveValue
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.EffectiveValue
+  nameWithType: DockCapabilityEvaluation.EffectiveValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.EffectiveValue*
+  name: EffectiveValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_EffectiveValue_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.EffectiveValue
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.EffectiveValue
+  nameWithType: DockCapabilityEvaluation.EffectiveValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.RootPolicyValue
+  name: RootPolicyValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_RootPolicyValue
+  commentId: P:Dock.Model.Core.DockCapabilityEvaluation.RootPolicyValue
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.RootPolicyValue
+  nameWithType: DockCapabilityEvaluation.RootPolicyValue
+- uid: Dock.Model.Core.DockCapabilityEvaluation.RootPolicyValue*
+  name: RootPolicyValue
+  href: api/Dock.Model.Core.DockCapabilityEvaluation.html#Dock_Model_Core_DockCapabilityEvaluation_RootPolicyValue_
+  commentId: Overload:Dock.Model.Core.DockCapabilityEvaluation.RootPolicyValue
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityEvaluation.RootPolicyValue
+  nameWithType: DockCapabilityEvaluation.RootPolicyValue
+- uid: Dock.Model.Core.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Core.DockCapabilityOverrides.html
+  commentId: T:Dock.Model.Core.DockCapabilityOverrides
+  fullName: Dock.Model.Core.DockCapabilityOverrides
+  nameWithType: DockCapabilityOverrides
+- uid: Dock.Model.Core.DockCapabilityOverrides.HasAnyOverride
+  name: HasAnyOverride
+  href: api/Dock.Model.Core.DockCapabilityOverrides.html#Dock_Model_Core_DockCapabilityOverrides_HasAnyOverride
+  commentId: P:Dock.Model.Core.DockCapabilityOverrides.HasAnyOverride
+  fullName: Dock.Model.Core.DockCapabilityOverrides.HasAnyOverride
+  nameWithType: DockCapabilityOverrides.HasAnyOverride
+- uid: Dock.Model.Core.DockCapabilityOverrides.HasAnyOverride*
+  name: HasAnyOverride
+  href: api/Dock.Model.Core.DockCapabilityOverrides.html#Dock_Model_Core_DockCapabilityOverrides_HasAnyOverride_
+  commentId: Overload:Dock.Model.Core.DockCapabilityOverrides.HasAnyOverride
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityOverrides.HasAnyOverride
+  nameWithType: DockCapabilityOverrides.HasAnyOverride
+- uid: Dock.Model.Core.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html
+  commentId: T:Dock.Model.Core.DockCapabilityPolicy
+  fullName: Dock.Model.Core.DockCapabilityPolicy
+  nameWithType: DockCapabilityPolicy
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanClose
+  name: CanClose
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanClose
+  commentId: P:Dock.Model.Core.DockCapabilityPolicy.CanClose
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanClose
+  nameWithType: DockCapabilityPolicy.CanClose
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanClose*
+  name: CanClose
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanClose_
+  commentId: Overload:Dock.Model.Core.DockCapabilityPolicy.CanClose
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanClose
+  nameWithType: DockCapabilityPolicy.CanClose
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanDockAsDocument
+  commentId: P:Dock.Model.Core.DockCapabilityPolicy.CanDockAsDocument
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanDockAsDocument
+  nameWithType: DockCapabilityPolicy.CanDockAsDocument
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanDockAsDocument_
+  commentId: Overload:Dock.Model.Core.DockCapabilityPolicy.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanDockAsDocument
+  nameWithType: DockCapabilityPolicy.CanDockAsDocument
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanDrag
+  name: CanDrag
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanDrag
+  commentId: P:Dock.Model.Core.DockCapabilityPolicy.CanDrag
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanDrag
+  nameWithType: DockCapabilityPolicy.CanDrag
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanDrag*
+  name: CanDrag
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanDrag_
+  commentId: Overload:Dock.Model.Core.DockCapabilityPolicy.CanDrag
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanDrag
+  nameWithType: DockCapabilityPolicy.CanDrag
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanDrop
+  name: CanDrop
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanDrop
+  commentId: P:Dock.Model.Core.DockCapabilityPolicy.CanDrop
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanDrop
+  nameWithType: DockCapabilityPolicy.CanDrop
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanDrop*
+  name: CanDrop
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanDrop_
+  commentId: Overload:Dock.Model.Core.DockCapabilityPolicy.CanDrop
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanDrop
+  nameWithType: DockCapabilityPolicy.CanDrop
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanFloat
+  name: CanFloat
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanFloat
+  commentId: P:Dock.Model.Core.DockCapabilityPolicy.CanFloat
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanFloat
+  nameWithType: DockCapabilityPolicy.CanFloat
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanFloat*
+  name: CanFloat
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanFloat_
+  commentId: Overload:Dock.Model.Core.DockCapabilityPolicy.CanFloat
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanFloat
+  nameWithType: DockCapabilityPolicy.CanFloat
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanPin
+  name: CanPin
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanPin
+  commentId: P:Dock.Model.Core.DockCapabilityPolicy.CanPin
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanPin
+  nameWithType: DockCapabilityPolicy.CanPin
+- uid: Dock.Model.Core.DockCapabilityPolicy.CanPin*
+  name: CanPin
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_CanPin_
+  commentId: Overload:Dock.Model.Core.DockCapabilityPolicy.CanPin
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityPolicy.CanPin
+  nameWithType: DockCapabilityPolicy.CanPin
+- uid: Dock.Model.Core.DockCapabilityPolicy.Get(Dock.Model.Core.DockCapability)
+  name: Get(DockCapability)
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_Get_Dock_Model_Core_DockCapability_
+  commentId: M:Dock.Model.Core.DockCapabilityPolicy.Get(Dock.Model.Core.DockCapability)
+  fullName: Dock.Model.Core.DockCapabilityPolicy.Get(Dock.Model.Core.DockCapability)
+  nameWithType: DockCapabilityPolicy.Get(DockCapability)
+- uid: Dock.Model.Core.DockCapabilityPolicy.Get*
+  name: Get
+  href: api/Dock.Model.Core.DockCapabilityPolicy.html#Dock_Model_Core_DockCapabilityPolicy_Get_
+  commentId: Overload:Dock.Model.Core.DockCapabilityPolicy.Get
+  isSpec: "True"
+  fullName: Dock.Model.Core.DockCapabilityPolicy.Get
+  nameWithType: DockCapabilityPolicy.Get
+- uid: Dock.Model.Core.DockCapabilityValueSource
+  name: DockCapabilityValueSource
+  href: api/Dock.Model.Core.DockCapabilityValueSource.html
+  commentId: T:Dock.Model.Core.DockCapabilityValueSource
+  fullName: Dock.Model.Core.DockCapabilityValueSource
+  nameWithType: DockCapabilityValueSource
+- uid: Dock.Model.Core.DockCapabilityValueSource.DockPolicy
+  name: DockPolicy
+  href: api/Dock.Model.Core.DockCapabilityValueSource.html#Dock_Model_Core_DockCapabilityValueSource_DockPolicy
+  commentId: F:Dock.Model.Core.DockCapabilityValueSource.DockPolicy
+  fullName: Dock.Model.Core.DockCapabilityValueSource.DockPolicy
+  nameWithType: DockCapabilityValueSource.DockPolicy
+- uid: Dock.Model.Core.DockCapabilityValueSource.Dockable
+  name: Dockable
+  href: api/Dock.Model.Core.DockCapabilityValueSource.html#Dock_Model_Core_DockCapabilityValueSource_Dockable
+  commentId: F:Dock.Model.Core.DockCapabilityValueSource.Dockable
+  fullName: Dock.Model.Core.DockCapabilityValueSource.Dockable
+  nameWithType: DockCapabilityValueSource.Dockable
+- uid: Dock.Model.Core.DockCapabilityValueSource.DockableOverride
+  name: DockableOverride
+  href: api/Dock.Model.Core.DockCapabilityValueSource.html#Dock_Model_Core_DockCapabilityValueSource_DockableOverride
+  commentId: F:Dock.Model.Core.DockCapabilityValueSource.DockableOverride
+  fullName: Dock.Model.Core.DockCapabilityValueSource.DockableOverride
+  nameWithType: DockCapabilityValueSource.DockableOverride
+- uid: Dock.Model.Core.DockCapabilityValueSource.RootPolicy
+  name: RootPolicy
+  href: api/Dock.Model.Core.DockCapabilityValueSource.html#Dock_Model_Core_DockCapabilityValueSource_RootPolicy
+  commentId: F:Dock.Model.Core.DockCapabilityValueSource.RootPolicy
+  fullName: Dock.Model.Core.DockCapabilityValueSource.RootPolicy
+  nameWithType: DockCapabilityValueSource.RootPolicy
 - uid: Dock.Model.Core.DockFloatingWindowHostMode
   name: DockFloatingWindowHostMode
   href: api/Dock.Model.Core.DockFloatingWindowHostMode.html
@@ -22570,6 +23100,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDock.DefaultDockable
   nameWithType: IDock.DefaultDockable
+- uid: Dock.Model.Core.IDock.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_DockCapabilityPolicy
+  commentId: P:Dock.Model.Core.IDock.DockCapabilityPolicy
+  fullName: Dock.Model.Core.IDock.DockCapabilityPolicy
+  nameWithType: IDock.DockCapabilityPolicy
+- uid: Dock.Model.Core.IDock.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Core.IDock.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDock.DockCapabilityPolicy
+  nameWithType: IDock.DockCapabilityPolicy
 - uid: Dock.Model.Core.IDock.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_EnableGlobalDocking
@@ -22674,6 +23217,90 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDock.VisibleDockables
   nameWithType: IDock.VisibleDockables
+- uid: Dock.Model.Core.IDockCapabilityPolicy
+  name: IDockCapabilityPolicy
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html
+  commentId: T:Dock.Model.Core.IDockCapabilityPolicy
+  fullName: Dock.Model.Core.IDockCapabilityPolicy
+  nameWithType: IDockCapabilityPolicy
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanClose
+  name: CanClose
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanClose
+  commentId: P:Dock.Model.Core.IDockCapabilityPolicy.CanClose
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanClose
+  nameWithType: IDockCapabilityPolicy.CanClose
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanClose*
+  name: CanClose
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanClose_
+  commentId: Overload:Dock.Model.Core.IDockCapabilityPolicy.CanClose
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanClose
+  nameWithType: IDockCapabilityPolicy.CanClose
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanDockAsDocument
+  name: CanDockAsDocument
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanDockAsDocument
+  commentId: P:Dock.Model.Core.IDockCapabilityPolicy.CanDockAsDocument
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanDockAsDocument
+  nameWithType: IDockCapabilityPolicy.CanDockAsDocument
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanDockAsDocument*
+  name: CanDockAsDocument
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanDockAsDocument_
+  commentId: Overload:Dock.Model.Core.IDockCapabilityPolicy.CanDockAsDocument
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanDockAsDocument
+  nameWithType: IDockCapabilityPolicy.CanDockAsDocument
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanDrag
+  name: CanDrag
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanDrag
+  commentId: P:Dock.Model.Core.IDockCapabilityPolicy.CanDrag
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanDrag
+  nameWithType: IDockCapabilityPolicy.CanDrag
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanDrag*
+  name: CanDrag
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanDrag_
+  commentId: Overload:Dock.Model.Core.IDockCapabilityPolicy.CanDrag
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanDrag
+  nameWithType: IDockCapabilityPolicy.CanDrag
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanDrop
+  name: CanDrop
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanDrop
+  commentId: P:Dock.Model.Core.IDockCapabilityPolicy.CanDrop
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanDrop
+  nameWithType: IDockCapabilityPolicy.CanDrop
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanDrop*
+  name: CanDrop
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanDrop_
+  commentId: Overload:Dock.Model.Core.IDockCapabilityPolicy.CanDrop
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanDrop
+  nameWithType: IDockCapabilityPolicy.CanDrop
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanFloat
+  name: CanFloat
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanFloat
+  commentId: P:Dock.Model.Core.IDockCapabilityPolicy.CanFloat
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanFloat
+  nameWithType: IDockCapabilityPolicy.CanFloat
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanFloat*
+  name: CanFloat
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanFloat_
+  commentId: Overload:Dock.Model.Core.IDockCapabilityPolicy.CanFloat
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanFloat
+  nameWithType: IDockCapabilityPolicy.CanFloat
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanPin
+  name: CanPin
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanPin
+  commentId: P:Dock.Model.Core.IDockCapabilityPolicy.CanPin
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanPin
+  nameWithType: IDockCapabilityPolicy.CanPin
+- uid: Dock.Model.Core.IDockCapabilityPolicy.CanPin*
+  name: CanPin
+  href: api/Dock.Model.Core.IDockCapabilityPolicy.html#Dock_Model_Core_IDockCapabilityPolicy_CanPin_
+  commentId: Overload:Dock.Model.Core.IDockCapabilityPolicy.CanPin
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockCapabilityPolicy.CanPin
+  nameWithType: IDockCapabilityPolicy.CanPin
 - uid: Dock.Model.Core.IDockControl
   name: IDockControl
   href: api/Dock.Model.Core.IDockControl.html
@@ -22943,6 +23570,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockManager.IsDockingEnabled
   nameWithType: IDockManager.IsDockingEnabled
+- uid: Dock.Model.Core.IDockManager.LastCapabilityEvaluation
+  name: LastCapabilityEvaluation
+  href: api/Dock.Model.Core.IDockManager.html#Dock_Model_Core_IDockManager_LastCapabilityEvaluation
+  commentId: P:Dock.Model.Core.IDockManager.LastCapabilityEvaluation
+  fullName: Dock.Model.Core.IDockManager.LastCapabilityEvaluation
+  nameWithType: IDockManager.LastCapabilityEvaluation
+- uid: Dock.Model.Core.IDockManager.LastCapabilityEvaluation*
+  name: LastCapabilityEvaluation
+  href: api/Dock.Model.Core.IDockManager.html#Dock_Model_Core_IDockManager_LastCapabilityEvaluation_
+  commentId: Overload:Dock.Model.Core.IDockManager.LastCapabilityEvaluation
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockManager.LastCapabilityEvaluation
+  nameWithType: IDockManager.LastCapabilityEvaluation
 - uid: Dock.Model.Core.IDockManager.Position
   name: Position
   href: api/Dock.Model.Core.IDockManager.html#Dock_Model_Core_IDockManager_Position
@@ -23755,6 +24395,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Core.IDockable.Dock
   nameWithType: IDockable.Dock
+- uid: Dock.Model.Core.IDockable.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_DockCapabilityOverrides
+  commentId: P:Dock.Model.Core.IDockable.DockCapabilityOverrides
+  fullName: Dock.Model.Core.IDockable.DockCapabilityOverrides
+  nameWithType: IDockable.DockCapabilityOverrides
+- uid: Dock.Model.Core.IDockable.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.Core.IDockable.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.Core.IDockable.DockCapabilityOverrides
+  nameWithType: IDockable.DockCapabilityOverrides
 - uid: Dock.Model.Core.IDockable.DockGroup
   name: DockGroup
   href: api/Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_DockGroup
@@ -27266,6 +27919,76 @@ references:
   commentId: F:Dock.Model.Core.TrackingMode.Visible
   fullName: Dock.Model.Core.TrackingMode.Visible
   nameWithType: TrackingMode.Visible
+- uid: Dock.Model.DockCapabilityResolver
+  name: DockCapabilityResolver
+  href: api/Dock.Model.DockCapabilityResolver.html
+  commentId: T:Dock.Model.DockCapabilityResolver
+  fullName: Dock.Model.DockCapabilityResolver
+  nameWithType: DockCapabilityResolver
+- uid: Dock.Model.DockCapabilityResolver.Evaluate(Dock.Model.Core.IDockable,Dock.Model.Core.DockCapability)
+  name: Evaluate(IDockable, DockCapability)
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_Evaluate_Dock_Model_Core_IDockable_Dock_Model_Core_DockCapability_
+  commentId: M:Dock.Model.DockCapabilityResolver.Evaluate(Dock.Model.Core.IDockable,Dock.Model.Core.DockCapability)
+  fullName: Dock.Model.DockCapabilityResolver.Evaluate(Dock.Model.Core.IDockable, Dock.Model.Core.DockCapability)
+  nameWithType: DockCapabilityResolver.Evaluate(IDockable, DockCapability)
+- uid: Dock.Model.DockCapabilityResolver.Evaluate(Dock.Model.Core.IDockable,Dock.Model.Core.DockCapability,Dock.Model.Core.IDock)
+  name: Evaluate(IDockable, DockCapability, IDock?)
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_Evaluate_Dock_Model_Core_IDockable_Dock_Model_Core_DockCapability_Dock_Model_Core_IDock_
+  commentId: M:Dock.Model.DockCapabilityResolver.Evaluate(Dock.Model.Core.IDockable,Dock.Model.Core.DockCapability,Dock.Model.Core.IDock)
+  name.vb: Evaluate(IDockable, DockCapability, IDock)
+  fullName: Dock.Model.DockCapabilityResolver.Evaluate(Dock.Model.Core.IDockable, Dock.Model.Core.DockCapability, Dock.Model.Core.IDock?)
+  fullName.vb: Dock.Model.DockCapabilityResolver.Evaluate(Dock.Model.Core.IDockable, Dock.Model.Core.DockCapability, Dock.Model.Core.IDock)
+  nameWithType: DockCapabilityResolver.Evaluate(IDockable, DockCapability, IDock?)
+  nameWithType.vb: DockCapabilityResolver.Evaluate(IDockable, DockCapability, IDock)
+- uid: Dock.Model.DockCapabilityResolver.Evaluate*
+  name: Evaluate
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_Evaluate_
+  commentId: Overload:Dock.Model.DockCapabilityResolver.Evaluate
+  isSpec: "True"
+  fullName: Dock.Model.DockCapabilityResolver.Evaluate
+  nameWithType: DockCapabilityResolver.Evaluate
+- uid: Dock.Model.DockCapabilityResolver.IsEnabled(Dock.Model.Core.IDockable,Dock.Model.Core.DockCapability,Dock.Model.Core.IDock)
+  name: IsEnabled(IDockable, DockCapability, IDock?)
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_IsEnabled_Dock_Model_Core_IDockable_Dock_Model_Core_DockCapability_Dock_Model_Core_IDock_
+  commentId: M:Dock.Model.DockCapabilityResolver.IsEnabled(Dock.Model.Core.IDockable,Dock.Model.Core.DockCapability,Dock.Model.Core.IDock)
+  name.vb: IsEnabled(IDockable, DockCapability, IDock)
+  fullName: Dock.Model.DockCapabilityResolver.IsEnabled(Dock.Model.Core.IDockable, Dock.Model.Core.DockCapability, Dock.Model.Core.IDock?)
+  fullName.vb: Dock.Model.DockCapabilityResolver.IsEnabled(Dock.Model.Core.IDockable, Dock.Model.Core.DockCapability, Dock.Model.Core.IDock)
+  nameWithType: DockCapabilityResolver.IsEnabled(IDockable, DockCapability, IDock?)
+  nameWithType.vb: DockCapabilityResolver.IsEnabled(IDockable, DockCapability, IDock)
+- uid: Dock.Model.DockCapabilityResolver.IsEnabled*
+  name: IsEnabled
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_IsEnabled_
+  commentId: Overload:Dock.Model.DockCapabilityResolver.IsEnabled
+  isSpec: "True"
+  fullName: Dock.Model.DockCapabilityResolver.IsEnabled
+  nameWithType: DockCapabilityResolver.IsEnabled
+- uid: Dock.Model.DockCapabilityResolver.ResolveDropTargetDock(Dock.Model.Core.IDockable)
+  name: ResolveDropTargetDock(IDockable)
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_ResolveDropTargetDock_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.DockCapabilityResolver.ResolveDropTargetDock(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.DockCapabilityResolver.ResolveDropTargetDock(Dock.Model.Core.IDockable)
+  nameWithType: DockCapabilityResolver.ResolveDropTargetDock(IDockable)
+- uid: Dock.Model.DockCapabilityResolver.ResolveDropTargetDock*
+  name: ResolveDropTargetDock
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_ResolveDropTargetDock_
+  commentId: Overload:Dock.Model.DockCapabilityResolver.ResolveDropTargetDock
+  isSpec: "True"
+  fullName: Dock.Model.DockCapabilityResolver.ResolveDropTargetDock
+  nameWithType: DockCapabilityResolver.ResolveDropTargetDock
+- uid: Dock.Model.DockCapabilityResolver.ResolveOperationDock(Dock.Model.Core.IDockable)
+  name: ResolveOperationDock(IDockable)
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_ResolveOperationDock_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.DockCapabilityResolver.ResolveOperationDock(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.DockCapabilityResolver.ResolveOperationDock(Dock.Model.Core.IDockable)
+  nameWithType: DockCapabilityResolver.ResolveOperationDock(IDockable)
+- uid: Dock.Model.DockCapabilityResolver.ResolveOperationDock*
+  name: ResolveOperationDock
+  href: api/Dock.Model.DockCapabilityResolver.html#Dock_Model_DockCapabilityResolver_ResolveOperationDock_
+  commentId: Overload:Dock.Model.DockCapabilityResolver.ResolveOperationDock
+  isSpec: "True"
+  fullName: Dock.Model.DockCapabilityResolver.ResolveOperationDock
+  nameWithType: DockCapabilityResolver.ResolveOperationDock
 - uid: Dock.Model.DockManager
   name: DockManager
   href: api/Dock.Model.DockManager.html
@@ -27326,6 +28049,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.DockManager.IsDockingEnabled
   nameWithType: DockManager.IsDockingEnabled
+- uid: Dock.Model.DockManager.LastCapabilityEvaluation
+  name: LastCapabilityEvaluation
+  href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_LastCapabilityEvaluation
+  commentId: P:Dock.Model.DockManager.LastCapabilityEvaluation
+  fullName: Dock.Model.DockManager.LastCapabilityEvaluation
+  nameWithType: DockManager.LastCapabilityEvaluation
+- uid: Dock.Model.DockManager.LastCapabilityEvaluation*
+  name: LastCapabilityEvaluation
+  href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_LastCapabilityEvaluation_
+  commentId: Overload:Dock.Model.DockManager.LastCapabilityEvaluation
+  isSpec: "True"
+  fullName: Dock.Model.DockManager.LastCapabilityEvaluation
+  nameWithType: DockManager.LastCapabilityEvaluation
 - uid: Dock.Model.DockManager.Options
   name: Options
   href: api/Dock.Model.DockManager.html#Dock_Model_DockManager_Options
@@ -32744,6 +33480,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Controls.RootDock.RightPinnedDockables
   nameWithType: RootDock.RightPinnedDockables
+- uid: Dock.Model.Inpc.Controls.RootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.Inpc.Controls.RootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.Inpc.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.Inpc.Controls.RootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Inpc.Controls.RootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
 - uid: Dock.Model.Inpc.Controls.RootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.Inpc.Controls.RootDock.html#Dock_Model_Inpc_Controls_RootDock_ShowWindows
@@ -33292,6 +34041,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockBase.DefaultDockable
   nameWithType: DockBase.DefaultDockable
+- uid: Dock.Model.Inpc.Core.DockBase.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Inpc.Core.DockBase.html#Dock_Model_Inpc_Core_DockBase_DockCapabilityPolicy
+  commentId: P:Dock.Model.Inpc.Core.DockBase.DockCapabilityPolicy
+  fullName: Dock.Model.Inpc.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.Inpc.Core.DockBase.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Inpc.Core.DockBase.html#Dock_Model_Inpc_Core_DockBase_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Inpc.Core.DockBase.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
 - uid: Dock.Model.Inpc.Core.DockBase.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.Inpc.Core.DockBase.html#Dock_Model_Inpc_Core_DockBase_EnableGlobalDocking
@@ -33930,6 +34692,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Inpc.Core.DockableBase.Dock
   nameWithType: DockableBase.Dock
+- uid: Dock.Model.Inpc.Core.DockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Model.Inpc.Core.DockableBase.DockCapabilityOverrides
+  fullName: Dock.Model.Inpc.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.Inpc.Core.DockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.Inpc.Core.DockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.Inpc.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
 - uid: Dock.Model.Inpc.Core.DockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Model.Inpc.Core.DockableBase.html#Dock_Model_Inpc_Core_DockableBase_DockGroup
@@ -35688,6 +36463,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Controls.RootDock.RightPinnedDockables
   nameWithType: RootDock.RightPinnedDockables
+- uid: Dock.Model.Mvvm.Controls.RootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.Mvvm.Controls.RootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.Mvvm.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.Mvvm.Controls.RootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Mvvm.Controls.RootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
 - uid: Dock.Model.Mvvm.Controls.RootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.Mvvm.Controls.RootDock.html#Dock_Model_Mvvm_Controls_RootDock_ShowWindows
@@ -36236,6 +37024,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockBase.DefaultDockable
   nameWithType: DockBase.DefaultDockable
+- uid: Dock.Model.Mvvm.Core.DockBase.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Mvvm.Core.DockBase.html#Dock_Model_Mvvm_Core_DockBase_DockCapabilityPolicy
+  commentId: P:Dock.Model.Mvvm.Core.DockBase.DockCapabilityPolicy
+  fullName: Dock.Model.Mvvm.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.Mvvm.Core.DockBase.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Mvvm.Core.DockBase.html#Dock_Model_Mvvm_Core_DockBase_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockBase.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
 - uid: Dock.Model.Mvvm.Core.DockBase.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.Mvvm.Core.DockBase.html#Dock_Model_Mvvm_Core_DockBase_EnableGlobalDocking
@@ -36874,6 +37675,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Mvvm.Core.DockableBase.Dock
   nameWithType: DockableBase.Dock
+- uid: Dock.Model.Mvvm.Core.DockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Model.Mvvm.Core.DockableBase.DockCapabilityOverrides
+  fullName: Dock.Model.Mvvm.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.Mvvm.Core.DockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.Mvvm.Core.DockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.Mvvm.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
 - uid: Dock.Model.Mvvm.Core.DockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Model.Mvvm.Core.DockableBase.html#Dock_Model_Mvvm_Core_DockableBase_DockGroup
@@ -38429,6 +39243,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Controls.RootDock.RightPinnedDockables
   nameWithType: RootDock.RightPinnedDockables
+- uid: Dock.Model.Prism.Controls.RootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.Prism.Controls.RootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.Prism.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.Prism.Controls.RootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Prism.Controls.RootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
 - uid: Dock.Model.Prism.Controls.RootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.Prism.Controls.RootDock.html#Dock_Model_Prism_Controls_RootDock_ShowWindows
@@ -38977,6 +39804,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockBase.DefaultDockable
   nameWithType: DockBase.DefaultDockable
+- uid: Dock.Model.Prism.Core.DockBase.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Prism.Core.DockBase.html#Dock_Model_Prism_Core_DockBase_DockCapabilityPolicy
+  commentId: P:Dock.Model.Prism.Core.DockBase.DockCapabilityPolicy
+  fullName: Dock.Model.Prism.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.Prism.Core.DockBase.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.Prism.Core.DockBase.html#Dock_Model_Prism_Core_DockBase_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.Prism.Core.DockBase.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
 - uid: Dock.Model.Prism.Core.DockBase.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.Prism.Core.DockBase.html#Dock_Model_Prism_Core_DockBase_EnableGlobalDocking
@@ -39615,6 +40455,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.Prism.Core.DockableBase.Dock
   nameWithType: DockableBase.Dock
+- uid: Dock.Model.Prism.Core.DockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Model.Prism.Core.DockableBase.DockCapabilityOverrides
+  fullName: Dock.Model.Prism.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.Prism.Core.DockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.Prism.Core.DockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.Prism.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
 - uid: Dock.Model.Prism.Core.DockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Model.Prism.Core.DockableBase.html#Dock_Model_Prism_Core_DockableBase_DockGroup
@@ -41170,6 +42023,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Controls.RootDock.RightPinnedDockables
   nameWithType: RootDock.RightPinnedDockables
+- uid: Dock.Model.ReactiveProperty.Controls.RootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.ReactiveProperty.Controls.RootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.ReactiveProperty.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.ReactiveProperty.Controls.RootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.ReactiveProperty.Controls.RootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
 - uid: Dock.Model.ReactiveProperty.Controls.RootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.ReactiveProperty.Controls.RootDock.html#Dock_Model_ReactiveProperty_Controls_RootDock_ShowWindows
@@ -41718,6 +42584,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockBase.DefaultDockable
   nameWithType: DockBase.DefaultDockable
+- uid: Dock.Model.ReactiveProperty.Core.DockBase.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.ReactiveProperty.Core.DockBase.html#Dock_Model_ReactiveProperty_Core_DockBase_DockCapabilityPolicy
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockBase.DockCapabilityPolicy
+  fullName: Dock.Model.ReactiveProperty.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.ReactiveProperty.Core.DockBase.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.ReactiveProperty.Core.DockBase.html#Dock_Model_ReactiveProperty_Core_DockBase_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockBase.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
 - uid: Dock.Model.ReactiveProperty.Core.DockBase.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.ReactiveProperty.Core.DockBase.html#Dock_Model_ReactiveProperty_Core_DockBase_EnableGlobalDocking
@@ -42356,6 +43235,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveProperty.Core.DockableBase.Dock
   nameWithType: DockableBase.Dock
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Model.ReactiveProperty.Core.DockableBase.DockCapabilityOverrides
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.ReactiveProperty.Core.DockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.ReactiveProperty.Core.DockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveProperty.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
 - uid: Dock.Model.ReactiveProperty.Core.DockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Model.ReactiveProperty.Core.DockableBase.html#Dock_Model_ReactiveProperty_Core_DockableBase_DockGroup
@@ -43987,6 +44879,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Controls.RootDock.RightPinnedDockables
   nameWithType: RootDock.RightPinnedDockables
+- uid: Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_RootDockCapabilityPolicy
+  commentId: P:Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy
+  fullName: Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
+- uid: Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy*
+  name: RootDockCapabilityPolicy
+  href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_RootDockCapabilityPolicy_
+  commentId: Overload:Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Controls.RootDock.RootDockCapabilityPolicy
+  nameWithType: RootDock.RootDockCapabilityPolicy
 - uid: Dock.Model.ReactiveUI.Controls.RootDock.ShowWindows
   name: ShowWindows
   href: api/Dock.Model.ReactiveUI.Controls.RootDock.html#Dock_Model_ReactiveUI_Controls_RootDock_ShowWindows
@@ -44573,6 +45478,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockBase.DefaultDockable
   nameWithType: DockBase.DefaultDockable
+- uid: Dock.Model.ReactiveUI.Core.DockBase.DockCapabilityPolicy
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.ReactiveUI.Core.DockBase.html#Dock_Model_ReactiveUI_Core_DockBase_DockCapabilityPolicy
+  commentId: P:Dock.Model.ReactiveUI.Core.DockBase.DockCapabilityPolicy
+  fullName: Dock.Model.ReactiveUI.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
+- uid: Dock.Model.ReactiveUI.Core.DockBase.DockCapabilityPolicy*
+  name: DockCapabilityPolicy
+  href: api/Dock.Model.ReactiveUI.Core.DockBase.html#Dock_Model_ReactiveUI_Core_DockBase_DockCapabilityPolicy_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockBase.DockCapabilityPolicy
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockBase.DockCapabilityPolicy
+  nameWithType: DockBase.DockCapabilityPolicy
 - uid: Dock.Model.ReactiveUI.Core.DockBase.EnableGlobalDocking
   name: EnableGlobalDocking
   href: api/Dock.Model.ReactiveUI.Core.DockBase.html#Dock_Model_ReactiveUI_Core_DockBase_EnableGlobalDocking
@@ -45211,6 +46129,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.ReactiveUI.Core.DockableBase.Dock
   nameWithType: DockableBase.Dock
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.DockCapabilityOverrides
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockCapabilityOverrides
+  commentId: P:Dock.Model.ReactiveUI.Core.DockableBase.DockCapabilityOverrides
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
+- uid: Dock.Model.ReactiveUI.Core.DockableBase.DockCapabilityOverrides*
+  name: DockCapabilityOverrides
+  href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockCapabilityOverrides_
+  commentId: Overload:Dock.Model.ReactiveUI.Core.DockableBase.DockCapabilityOverrides
+  isSpec: "True"
+  fullName: Dock.Model.ReactiveUI.Core.DockableBase.DockCapabilityOverrides
+  nameWithType: DockableBase.DockCapabilityOverrides
 - uid: Dock.Model.ReactiveUI.Core.DockableBase.DockGroup
   name: DockGroup
   href: api/Dock.Model.ReactiveUI.Core.DockableBase.html#Dock_Model_ReactiveUI_Core_DockableBase_DockGroup

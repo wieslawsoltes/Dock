@@ -214,6 +214,10 @@
 <td>Controls whether the dockable can be docked as a tabbed document.</td>
 </tr>
 <tr>
+<td><code>DockCapabilityOverrides</code></td>
+<td>Optional per-dockable capability overrides (<code>bool?</code> values). Highest-precedence layer in capability resolution.</td>
+</tr>
+<tr>
 <td><code>IsModified</code></td>
 <td>Marks a dockable as having unsaved changes.</td>
 </tr>
@@ -250,6 +254,7 @@
       CanFloat=&quot;True&quot; /&gt;
 </code></pre>
 <p><code>DockingState</code> is maintained by factory operations (<code>PinDockable</code>, <code>UnpinDockable</code>, <code>FloatDockable</code>, <code>HideDockable</code>, <code>RestoreDockable</code>) and can be used by UI bindings for diagnostics or state-aware visuals.</p>
+<p>Capability values can also be governed by policy layers at root and dock level. See <a href="dock-capability-policies.html">Capability policies and overrides</a>.</p>
 <h2 id="window-state-mixin">Window State Mixin</h2>
 <p><code>Document</code> and <code>Tool</code> models implement <code>IDockingWindowState</code>, which adds bindable runtime properties:</p>
 <ul>

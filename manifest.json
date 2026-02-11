@@ -1180,6 +1180,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Converters.DockCapabilityConverters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Converters.DockCapabilityConverters.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Converters.DockCapabilityConverters",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Converters.DockCapabilityConverters.yml\" sourcestartlinenumber=\"1\">Provides singleton converters for effective dock capability evaluation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Converters.DockModeConverter.yml",
       "output": {
         ".html": {
@@ -3336,6 +3350,76 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockCapability.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockCapability.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockCapability",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockCapability.yml\" sourcestartlinenumber=\"1\">Represents a logical dock capability that can be controlled by policy.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockCapabilityEvaluation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockCapabilityEvaluation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockCapabilityEvaluation",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockCapabilityEvaluation.yml\" sourcestartlinenumber=\"1\">Represents a resolved effective capability value and diagnostics.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockCapabilityOverrides.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockCapabilityOverrides.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockCapabilityOverrides",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockCapabilityOverrides.yml\" sourcestartlinenumber=\"1\">Per-dockable capability overrides with highest precedence.\nNull values inherit from dock/root policy resolution.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockCapabilityPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockCapabilityPolicy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockCapabilityPolicy",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockCapabilityPolicy.yml\" sourcestartlinenumber=\"1\">Default capability policy implementation used by root and dock policies.\nNull values inherit lower-precedence values.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.DockCapabilityValueSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.DockCapabilityValueSource.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.DockCapabilityValueSource",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.DockCapabilityValueSource.yml\" sourcestartlinenumber=\"1\">Describes which layer resolved an effective capability value.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.DockFloatingWindowHostMode.yml",
       "output": {
         ".html": {
@@ -4092,6 +4176,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.Core.IDockCapabilityPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.Core.IDockCapabilityPolicy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.Core.IDockCapabilityPolicy",
+      "Summary": "<p sourcefile=\"api/Dock.Model.Core.IDockCapabilityPolicy.yml\" sourcestartlinenumber=\"1\">Defines optional capability values used by root and dock capability policies.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Model.Core.IDockControl.yml",
       "output": {
         ".html": {
@@ -4607,6 +4705,20 @@
       "IsMRef": true,
       "Title": "Dock.Model.Core",
       "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Model.DockCapabilityResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Model.DockCapabilityResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Model.DockCapabilityResolver",
+      "Summary": "<p sourcefile=\"api/Dock.Model.DockCapabilityResolver.yml\" sourcestartlinenumber=\"1\">Resolves effective dock capability values using policy precedence.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7521,6 +7633,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-caliburn-micro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-capability-policies.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-capability-policies.html"
         }
       },
       "version": ""

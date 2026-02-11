@@ -113,6 +113,38 @@ documentDock.AllowedDropOperations = DockOperationMask.Fill;
 tool.AllowedDockOperations = DockOperationMask.Left | DockOperationMask.Fill | DockOperationMask.Window;
 </code></pre>
 <p>These constraints affect validation and the docking indicators, so disallowed operations are hidden and rejected.</p>
+<h2 id="capability-policies-and-per-window-overrides">Capability policies and per-window overrides</h2>
+<p>For larger layouts, use capability policies to set defaults at root and dock scope, then apply focused overrides per window:</p>
+<ul>
+<li><code>IRootDock.RootDockCapabilityPolicy</code></li>
+<li><code>IDock.DockCapabilityPolicy</code></li>
+<li><code>IDockable.DockCapabilityOverrides</code></li>
+</ul>
+<p>Policy precedence is:</p>
+<ol>
+<li>dockable <code>Can*</code> flags</li>
+<li>root policy</li>
+<li>dock policy</li>
+<li>dockable override</li>
+</ol>
+<p><code>null</code> in policy/override means inherit.</p>
+<pre><code class="lang-csharp">root.RootDockCapabilityPolicy = new DockCapabilityPolicy
+{
+    CanFloat = false
+};
+
+toolDock.DockCapabilityPolicy = new DockCapabilityPolicy
+{
+    CanFloat = true
+};
+
+tool.DockCapabilityOverrides = new DockCapabilityOverrides
+{
+    CanFloat = false
+};
+</code></pre>
+<p>Use <code>IDockManager.LastCapabilityEvaluation</code> to inspect why validation was blocked by policy.</p>
+<p>See <a href="dock-capability-policies.html">Capability policies and overrides</a> for full details.</p>
 
 </article>
 

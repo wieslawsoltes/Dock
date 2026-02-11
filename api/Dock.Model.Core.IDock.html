@@ -201,6 +201,9 @@ Interface IDock  <a class="header-action link-secondary" title="View source" hre
       <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_CanDockAsDocument">IDockable.CanDockAsDocument</a>
     </div>
     <div>
+      <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_DockCapabilityOverrides">IDockable.DockCapabilityOverrides</a>
+    </div>
+    <div>
       <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_IsModified">IDockable.IsModified</a>
     </div>
     <div>
@@ -451,7 +454,7 @@ Interface IDock  <a class="header-action link-secondary" title="View source" hre
 
   <h3 id="Dock_Model_Core_IDock_CanGoBack" data-uid="Dock.Model.Core.IDock.CanGoBack">
   CanGoBack
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value that indicates whether there is at least one entry in back navigation history.</p>
@@ -483,7 +486,7 @@ Interface IDock  <a class="header-action link-secondary" title="View source" hre
 
   <h3 id="Dock_Model_Core_IDock_CanGoForward" data-uid="Dock.Model.Core.IDock.CanGoForward">
   CanGoForward
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value that indicates whether there is at least one entry in forward navigation history.</p>
@@ -515,7 +518,7 @@ Interface IDock  <a class="header-action link-secondary" title="View source" hre
 
   <h3 id="Dock_Model_Core_IDock_Close" data-uid="Dock.Model.Core.IDock.Close">
   Close
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L82"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Close layout.</p>
@@ -575,11 +578,44 @@ Interface IDock  <a class="header-action link-secondary" title="View source" hre
 
 
 
+  <a id="Dock_Model_Core_IDock_DockCapabilityPolicy_" data-uid="Dock.Model.Core.IDock.DockCapabilityPolicy*"></a>
+
+  <h3 id="Dock_Model_Core_IDock_DockCapabilityPolicy" data-uid="Dock.Model.Core.IDock.DockCapabilityPolicy">
+  DockCapabilityPolicy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets optional per-dock capability policy values.
+Null values inherit root policy and dockable base flag values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">DockCapabilityPolicy? DockCapabilityPolicy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockCapabilityPolicy.html">DockCapabilityPolicy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Core_IDock_EnableGlobalDocking_" data-uid="Dock.Model.Core.IDock.EnableGlobalDocking*"></a>
 
   <h3 id="Dock_Model_Core_IDock_EnableGlobalDocking" data-uid="Dock.Model.Core.IDock.EnableGlobalDocking">
   EnableGlobalDocking
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L89"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether global docking is enabled for this dock.
@@ -645,7 +681,7 @@ Enabled by default.</p>
 
   <h3 id="Dock_Model_Core_IDock_GoBack" data-uid="Dock.Model.Core.IDock.GoBack">
   GoBack
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Navigates to the most recent entry in back navigation history, if there is one.</p>
@@ -677,7 +713,7 @@ Enabled by default.</p>
 
   <h3 id="Dock_Model_Core_IDock_GoForward" data-uid="Dock.Model.Core.IDock.GoForward">
   GoForward
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Navigate to the most recent entry in forward navigation history, if there is one.</p>
@@ -741,7 +777,7 @@ Enabled by default.</p>
 
   <h3 id="Dock_Model_Core_IDock_Navigate" data-uid="Dock.Model.Core.IDock.Navigate">
   Navigate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDock.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Navigate to content that is contained by an object.</p>

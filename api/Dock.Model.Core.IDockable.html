@@ -561,11 +561,44 @@ Interface IDockable  <a class="header-action link-secondary" title="View source"
 
 
 
+  <a id="Dock_Model_Core_IDockable_DockCapabilityOverrides_" data-uid="Dock.Model.Core.IDockable.DockCapabilityOverrides*"></a>
+
+  <h3 id="Dock_Model_Core_IDockable_DockCapabilityOverrides" data-uid="Dock.Model.Core.IDockable.DockCapabilityOverrides">
+  DockCapabilityOverrides
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets optional per-dockable capability overrides.
+Null values inherit root and dock policy values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">DockCapabilityOverrides? DockCapabilityOverrides { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockCapabilityOverrides.html">DockCapabilityOverrides</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Dock_Model_Core_IDockable_DockGroup_" data-uid="Dock.Model.Core.IDockable.DockGroup*"></a>
 
   <h3 id="Dock_Model_Core_IDockable_DockGroup" data-uid="Dock.Model.Core.IDockable.DockGroup">
   DockGroup
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L181"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the docking group identifier.
@@ -760,7 +793,7 @@ This enables creating isolated docking areas where only specific types of conten
 
   <h3 id="Dock_Model_Core_IDockable_IsModified" data-uid="Dock.Model.Core.IDockable.IsModified">
   IsModified
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L173"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether the dockable has unsaved changes.</p>
@@ -1245,7 +1278,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_GetPinnedBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetPinnedBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetPinnedBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L228"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pinned bounds information used for tracking.</p>
@@ -1287,7 +1320,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_GetPointerPosition_System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetPointerPosition(System.Double@,System.Double@)">
   GetPointerPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L274"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L280"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer position used for tracking.</p>
@@ -1323,7 +1356,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_GetPointerScreenPosition_System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetPointerScreenPosition(System.Double@,System.Double@)">
   GetPointerScreenPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L301"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable pointer screen position used for tracking.</p>
@@ -1359,7 +1392,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_GetTabBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetTabBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetTabBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L255"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable tab bounds information used for tracking.</p>
@@ -1401,7 +1434,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_GetVisibleBounds_System_Double__System_Double__System_Double__System_Double__" data-uid="Dock.Model.Core.IDockable.GetVisibleBounds(System.Double@,System.Double@,System.Double@,System.Double@)">
   GetVisibleBounds(out double, out double, out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L201"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets dockable visible bounds information used for tracking.</p>
@@ -1443,7 +1476,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_OnClose" data-uid="Dock.Model.Core.IDockable.OnClose">
   OnClose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L181"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L187"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable is closed.</p>
@@ -1476,7 +1509,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_OnPinnedBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnPinnedBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnPinnedBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L246"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pinned bounds changed.</p>
@@ -1518,7 +1551,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_OnPointerPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnPointerPositionChanged(System.Double,System.Double)">
   OnPointerPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L288"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L294"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer position changed.</p>
@@ -1554,7 +1587,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_OnPointerScreenPositionChanged_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnPointerScreenPositionChanged(System.Double,System.Double)">
   OnPointerScreenPositionChanged(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L315"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable pointer screen position changed.</p>
@@ -1590,7 +1623,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_OnSelected" data-uid="Dock.Model.Core.IDockable.OnSelected">
   OnSelected()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L192"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the dockable becomes the selected dockable.</p>
@@ -1617,7 +1650,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_OnTabBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnTabBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnTabBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L273"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable tab bounds changed.</p>
@@ -1659,7 +1692,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_OnVisibleBoundsChanged_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.OnVisibleBoundsChanged(System.Double,System.Double,System.Double,System.Double)">
   OnVisibleBoundsChanged(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L213"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L219"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when dockable visible bounds changed.</p>
@@ -1701,7 +1734,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_SetPinnedBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetPinnedBounds(System.Double,System.Double,System.Double,System.Double)">
   SetPinnedBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L237"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pinned bounds information used for tracking.</p>
@@ -1743,7 +1776,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_SetPointerPosition_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetPointerPosition(System.Double,System.Double)">
   SetPointerPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L287"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer position used for tracking.</p>
@@ -1779,7 +1812,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_SetPointerScreenPosition_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetPointerScreenPosition(System.Double,System.Double)">
   SetPointerScreenPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L302"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L308"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable pointer screen position used for tracking.</p>
@@ -1815,7 +1848,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_SetTabBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetTabBounds(System.Double,System.Double,System.Double,System.Double)">
   SetTabBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L258"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L264"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable tab bounds information used for tracking.</p>
@@ -1857,7 +1890,7 @@ When null, the root display mode is used.</p>
 
   <h3 id="Dock_Model_Core_IDockable_SetVisibleBounds_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.Core.IDockable.SetVisibleBounds(System.Double,System.Double,System.Double,System.Double)">
   SetVisibleBounds(double, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/Core/IDockable.cs/#L210"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets dockable visible bounds information used for tracking.</p>

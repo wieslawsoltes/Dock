@@ -88,6 +88,7 @@
 <ul>
 <li>The manager centralises all drag-and-drop logic, keeping <code>DockControl</code> free from layout code.</li>
 <li>It exposes the <code>PreventSizeConflicts</code> property which blocks two fixed-size tools from being docked together.</li>
+<li>It exposes <code>LastCapabilityEvaluation</code> so you can inspect policy-based rejections.</li>
 <li>The manager calls back into the factory so your view models are updated consistently.</li>
 </ul>
 <h2 id="basic-usage">Basic usage</h2>
@@ -114,6 +115,8 @@
     public DockPoint Position { get =&gt; _inner.Position; set =&gt; _inner.Position = value; }
     public DockPoint ScreenPosition { get =&gt; _inner.ScreenPosition; set =&gt; _inner.ScreenPosition = value; }
     public bool PreventSizeConflicts { get =&gt; _inner.PreventSizeConflicts; set =&gt; _inner.PreventSizeConflicts = value; }
+    public bool IsDockingEnabled { get =&gt; _inner.IsDockingEnabled; set =&gt; _inner.IsDockingEnabled = value; }
+    public DockCapabilityEvaluation? LastCapabilityEvaluation =&gt; _inner.LastCapabilityEvaluation;
 
     public bool ValidateTool(ITool sourceTool, IDockable target, DragAction action, DockOperation operation, bool execute)
     {
@@ -135,6 +138,7 @@
         _inner.IsDockTargetVisible(sourceDockable, targetDockable, operation);
 }
 </code></pre>
+<p>When validation returns <code>false</code>, inspect <code>LastCapabilityEvaluation</code> to understand policy-driven blocks (root policy, dock policy, or per-dockable override).</p>
 <p>Use your <code>IDockManager</code> implementation in a custom host control. <code>DockControl</code> always constructs its own <code>DockManager</code>.</p>
 <h2 id="guidelines-for-custom-managers">Guidelines for custom managers</h2>
 <ol>

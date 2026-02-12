@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    x:DataType="dmc:IRootDock"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <ToolPinnedControl Width="30" Height="400" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type ToolPinnedControl}" TargetType="ToolPinnedControl">
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+
+    <Setter Property="Orientation" Value="Vertical" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />
+      </ControlTemplate>
+    </Setter>
+
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="{Binding $parent[ToolPinnedControl].Orientation}"
+                    DockProperties.IsDropArea="True" />
+      </ItemsPanelTemplate>
+    </Setter>
+
+  </ControlTheme>
+
+</ResourceDictionary>

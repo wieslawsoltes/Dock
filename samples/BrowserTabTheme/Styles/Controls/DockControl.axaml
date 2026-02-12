@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    x:DataType="core:IDock"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <DockControl Width="600" Height="400" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type DockControl}" TargetType="DockControl">
+
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding $self.Layout.Id, FallbackValue={x:Null}}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding $self.Layout.Title, FallbackValue={x:Null}}" />
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding $self.Layout.CanDrag, FallbackValue={x:True}}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding $self.Layout.CanDrop, FallbackValue={x:True}}"  />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding $self.Layout.DockGroup, FallbackValue={x:Null}}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid RowDefinitions="Auto,*">
+          <controls:DockCommandBarHost x:Name="PART_CommandBarHost"
+                                       Grid.Row="0" />
+          <ContentControl x:Name="PART_ContentControl"
+                          Grid.Row="1"
+                          Content="{TemplateBinding Layout}" />
+          <controls:ManagedWindowLayer x:Name="PART_ManagedWindowLayer"
+                                       Grid.Row="1"
+                                       IsVisible="False" />
+          <controls:DockSelectorOverlay x:Name="PART_SelectorOverlay"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+
+  </ControlTheme>
+
+</ResourceDictionary>

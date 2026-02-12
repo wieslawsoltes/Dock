@@ -65,6 +65,7 @@
     <Project Path="samples/DockXamlReactiveUISample/DockXamlReactiveUISample.csproj" />
     <Project Path="samples/DockReactiveUIWorkspaceSample/DockReactiveUIWorkspaceSample.csproj" />
     <Project Path="samples/DockReactiveUIWindowRelationsSample/DockReactiveUIWindowRelationsSample.csproj" />
+    <Project Path="samples/BrowserTabTheme/BrowserTabTheme.csproj" />
     <Project Path="samples/DockSimplifiedFluentSample/DockSimplifiedFluentSample.csproj" />
     <Project Path="samples/DockSimplifiedSample/DockSimplifiedSample.csproj" />
     <Project Path="samples/DockSplitViewSample/DockSplitViewSample.csproj" />

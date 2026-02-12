@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Core;
 using Dock.Model.Mvvm;
@@ -62,19 +61,11 @@ public partial class App : Application
 
             factory.InitLayout(rootDock);
 
-            var mainWindow = new MainWindow
-            {
-                Width = 1300,
-                Height = 820,
-                Title = "BrowserTabTheme Sample",
-                Content = new DockControl
-                {
-                    Factory = factory,
-                    Layout = rootDock,
-                    InitializeFactory = true,
-                    InitializeLayout = false
-                }
-            };
+            var mainWindow = new MainWindow();
+            mainWindow.DockControl.Factory = factory;
+            mainWindow.DockControl.Layout = rootDock;
+            mainWindow.DockControl.InitializeFactory = true;
+            mainWindow.DockControl.InitializeLayout = false;
 
             desktop.MainWindow = mainWindow;
         }

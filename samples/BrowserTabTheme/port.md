@@ -122,8 +122,8 @@ Useful diffs:
 Run:
 
 ```bash
-dotnet build /Volumes/SSD/repos/StackWich/Dock/samples/BrowserTabTheme/BrowserTabTheme.csproj
-dotnet run --project /Volumes/SSD/repos/StackWich/Dock/samples/BrowserTabTheme/BrowserTabTheme.csproj
+dotnet build samples/BrowserTabTheme/BrowserTabTheme.csproj
+dotnet run --project samples/BrowserTabTheme/BrowserTabTheme.csproj
 ```
 
 Verify manually:

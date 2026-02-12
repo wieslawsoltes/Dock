@@ -482,6 +482,7 @@ public class HostWindow : Window, IHostWindow
     {
         copyOwnerChrome = false;
         var parentWindow = windowModel.ParentWindow;
+        var usesGlobalDefaultMode = windowModel.OwnerMode == DockWindowOwnerMode.Default;
         var ownerMode = windowModel.OwnerMode == DockWindowOwnerMode.Default
             ? DockSettings.DefaultFloatingWindowOwnerMode
             : windowModel.OwnerMode;
@@ -496,14 +497,20 @@ public class HostWindow : Window, IHostWindow
             return null;
         }
 
-        if (ownerMode == DockWindowOwnerMode.ParentWindow)
+        if (ownerMode == DockWindowOwnerMode.ParentWindow
+            || ownerMode == DockWindowOwnerMode.DockableWindow)
         {
-            return parentWindow?.Host as Window;
-        }
+            if (parentWindow?.Host is Window parentOwnerWindow)
+            {
+                return parentOwnerWindow;
+            }
 
-        if (ownerMode == DockWindowOwnerMode.DockableWindow)
-        {
-            return parentWindow?.Host as Window;
+            if (usesGlobalDefaultMode)
+            {
+                return ResolveFallbackOwnerWindow(windowModel);
+            }
+
+            return null;
         }
 
         if (ownerMode == DockWindowOwnerMode.RootWindow)

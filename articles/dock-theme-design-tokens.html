@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Theme Design Tokens | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Theme Design Tokens | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-design-tokens.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-theme-design-tokens">Dock Theme Design Tokens</h1>
+
+<p>Dock themes expose semantic design tokens that decouple control templates from raw color/size keys.</p>
+<p>All token keys below are available in both:</p>
+<ul>
+<li><code>DockFluentTheme</code></li>
+<li><code>DockSimpleTheme</code></li>
+</ul>
+<h2 id="surface-tokens">Surface tokens</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockSurfaceWorkbenchBrush</code></td>
+<td>Main background surface behind docks.</td>
+</tr>
+<tr>
+<td><code>DockSurfaceSidebarBrush</code></td>
+<td>Sidebar/tool-area surface.</td>
+</tr>
+<tr>
+<td><code>DockSurfaceEditorBrush</code></td>
+<td>Document/editor surface.</td>
+</tr>
+<tr>
+<td><code>DockSurfacePanelBrush</code></td>
+<td>Secondary panel surface.</td>
+</tr>
+<tr>
+<td><code>DockSurfaceHeaderBrush</code></td>
+<td>Header/chrome background.</td>
+</tr>
+<tr>
+<td><code>DockSurfaceHeaderActiveBrush</code></td>
+<td>Active header/chrome background.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="border-and-structure-tokens">Border and structure tokens</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockBorderSubtleBrush</code></td>
+<td>Standard low-emphasis border color.</td>
+</tr>
+<tr>
+<td><code>DockBorderStrongBrush</code></td>
+<td>Stronger border color (optional use).</td>
+</tr>
+<tr>
+<td><code>DockSeparatorBrush</code></td>
+<td>Thin separators and strip dividers.</td>
+</tr>
+<tr>
+<td><code>DockSplitterIdleBrush</code></td>
+<td>Splitter idle color.</td>
+</tr>
+<tr>
+<td><code>DockSplitterHoverBrush</code></td>
+<td>Splitter hover color.</td>
+</tr>
+<tr>
+<td><code>DockSplitterDragBrush</code></td>
+<td>Splitter drag color.</td>
+</tr>
+<tr>
+<td><code>DockTargetIndicatorBrush</code></td>
+<td>Dock target overlay indicator color.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tab-tokens">Tab tokens</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockTabBackgroundBrush</code></td>
+<td>Base tab strip background.</td>
+</tr>
+<tr>
+<td><code>DockTabHoverBackgroundBrush</code></td>
+<td>Tab hover background.</td>
+</tr>
+<tr>
+<td><code>DockTabActiveBackgroundBrush</code></td>
+<td>Active/selected tab background.</td>
+</tr>
+<tr>
+<td><code>DockTabActiveIndicatorBrush</code></td>
+<td>Active tab indicator line/accent.</td>
+</tr>
+<tr>
+<td><code>DockTabForegroundBrush</code></td>
+<td>Default tab text/icon color.</td>
+</tr>
+<tr>
+<td><code>DockTabSelectedForegroundBrush</code></td>
+<td>Selected tab text color (non-active accent).</td>
+</tr>
+<tr>
+<td><code>DockTabActiveForegroundBrush</code></td>
+<td>Active tab text/icon color.</td>
+</tr>
+<tr>
+<td><code>DockTabCloseHoverBackgroundBrush</code></td>
+<td>Document close button hover background.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="chrome-button-tokens">Chrome button tokens</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockChromeButtonForegroundBrush</code></td>
+<td>Tool/MDI chrome icon color.</td>
+</tr>
+<tr>
+<td><code>DockChromeButtonHoverBackgroundBrush</code></td>
+<td>Chrome button hover background.</td>
+</tr>
+<tr>
+<td><code>DockChromeButtonPressedBackgroundBrush</code></td>
+<td>Chrome button pressed background.</td>
+</tr>
+<tr>
+<td><code>DockChromeButtonDangerHoverBrush</code></td>
+<td>Close/danger button hover background.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="global-shapedensity-tokens">Global shape/density tokens</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockCornerRadiusSmall</code></td>
+<td>Shared small corner radius.</td>
+</tr>
+<tr>
+<td><code>DockHeaderHeight</code></td>
+<td>Header/chrome nominal height token.</td>
+</tr>
+<tr>
+<td><code>DockTabHeight</code></td>
+<td>Tab height token.</td>
+</tr>
+<tr>
+<td><code>DockTabHorizontalPadding</code></td>
+<td>Horizontal tab spacing token.</td>
+</tr>
+<tr>
+<td><code>DockIconSizeSmall</code></td>
+<td>Small icon size token.</td>
+</tr>
+<tr>
+<td><code>DockIconSizeNormal</code></td>
+<td>Normal icon size token.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="control-density-tokens">Control density tokens</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockTabItemMinHeight</code></td>
+<td>Min height for document/tool tab items.</td>
+</tr>
+<tr>
+<td><code>DockToolTabItemMinHeight</code></td>
+<td>Min height for tool tab items.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabItemPadding</code></td>
+<td>Document tab item padding.</td>
+</tr>
+<tr>
+<td><code>DockToolTabItemPadding</code></td>
+<td>Tool tab item padding.</td>
+</tr>
+<tr>
+<td><code>DockToolTabItemSelectedPadding</code></td>
+<td>Tool tab selected-state padding.</td>
+</tr>
+<tr>
+<td><code>DockCreateButtonWidth</code></td>
+<td>Document create button width.</td>
+</tr>
+<tr>
+<td><code>DockCreateButtonHeight</code></td>
+<td>Document create button height.</td>
+</tr>
+<tr>
+<td><code>DockCloseButtonSize</code></td>
+<td>Document close button size.</td>
+</tr>
+<tr>
+<td><code>DockChromeButtonWidth</code></td>
+<td>Tool/MDI chrome button width.</td>
+</tr>
+<tr>
+<td><code>DockChromeButtonHeight</code></td>
+<td>Tool/MDI chrome button height.</td>
+</tr>
+<tr>
+<td><code>DockChromeButtonPadding</code></td>
+<td>Tool/MDI chrome button padding.</td>
+</tr>
+<tr>
+<td><code>DockChromeButtonMargin</code></td>
+<td>Tool/MDI chrome button margin.</td>
+</tr>
+<tr>
+<td><code>DockMdiTitleIconSize</code></td>
+<td>MDI title bar icon viewbox size.</td>
+</tr>
+<tr>
+<td><code>DockMdiHeaderDragPadding</code></td>
+<td>MDI drag header padding.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tab-and-header-content-metrics">Tab and header content metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockHeaderContentPadding</code></td>
+<td>Shared title/header text padding in document/tool/MDI headers.</td>
+</tr>
+<tr>
+<td><code>DockModifiedIndicatorMargin</code></td>
+<td>Shared margin for modified marker (<code>*</code>).</td>
+</tr>
+<tr>
+<td><code>DockTabContentSpacing</code></td>
+<td>Spacing between tab content blocks (icon, title, modified, close).</td>
+</tr>
+<tr>
+<td><code>DockTabContentMargin</code></td>
+<td>Inner margin around tab content stack.</td>
+</tr>
+<tr>
+<td><code>DockCreateButtonIconMargin</code></td>
+<td>Plus/create icon margin in document tab strip.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tool-chrome-and-mdi-metrics">Tool chrome and MDI metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockToolChromeHeaderMargin</code></td>
+<td>Header dock panel outer margin in tool chrome.</td>
+</tr>
+<tr>
+<td><code>DockToolChromeTitleMargin</code></td>
+<td>Tool title text margin.</td>
+</tr>
+<tr>
+<td><code>DockToolChromeMenuIconMargin</code></td>
+<td>Menu icon margin in tool chrome button.</td>
+</tr>
+<tr>
+<td><code>DockToolChromeDividerThickness</code></td>
+<td>Divider line thickness below tool chrome header.</td>
+</tr>
+<tr>
+<td><code>DockChromeGripHeight</code></td>
+<td>Drag grip strip height in tool/MDI chrome.</td>
+</tr>
+<tr>
+<td><code>DockChromeGripMargin</code></td>
+<td>Drag grip strip margin in tool/MDI chrome.</td>
+</tr>
+<tr>
+<td><code>DockChromeGripBrush</code></td>
+<td>Shared tiled grip brush used by tool/MDI chrome.</td>
+</tr>
+<tr>
+<td><code>DockMdiHeaderColumnSpacing</code></td>
+<td>Column spacing in MDI document header layout.</td>
+</tr>
+<tr>
+<td><code>DockMdiButtonStripSpacing</code></td>
+<td>Spacing between MDI title bar buttons.</td>
+</tr>
+<tr>
+<td><code>DockMdiButtonStripMargin</code></td>
+<td>MDI button strip margin.</td>
+</tr>
+<tr>
+<td><code>DockMdiResizeEdgeThickness</code></td>
+<td>Hit target thickness for MDI edge resize handles.</td>
+</tr>
+<tr>
+<td><code>DockMdiResizeCornerSize</code></td>
+<td>Hit target size for MDI corner resize handles.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="selector-and-target-metrics">Selector and target metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockTargetSelectorSize</code></td>
+<td>Dock target selector image size.</td>
+</tr>
+<tr>
+<td><code>DockTargetSelectorGridMaxSize</code></td>
+<td>Max size of local dock target selector grid.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayBackdropBrush</code></td>
+<td>Backdrop brush for selector overlay modal layer.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayCornerRadius</code></td>
+<td>Corner radius for selector overlay container.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayPadding</code></td>
+<td>Selector overlay container padding.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayMinWidth</code></td>
+<td>Selector overlay minimum width.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayMaxWidth</code></td>
+<td>Selector overlay maximum width.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlaySpacing</code></td>
+<td>Vertical spacing in selector overlay content.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayListMinHeight</code></td>
+<td>Minimum list height in selector overlay.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayListMaxHeight</code></td>
+<td>Maximum list height in selector overlay.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayItemPadding</code></td>
+<td>List item padding in selector overlay.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayItemCornerRadius</code></td>
+<td>List item corner radius in selector overlay.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayBadgeSpacing</code></td>
+<td>Spacing between state badges.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayBadgeMargin</code></td>
+<td>Badge strip margin.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayBadgeCornerRadius</code></td>
+<td>Badge corner radius.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayBadgePadding</code></td>
+<td>Badge padding.</td>
+</tr>
+<tr>
+<td><code>DockSelectorOverlayBadgeFontSize</code></td>
+<td>Badge text size.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="command-bar-and-drag-preview-metrics">Command bar and drag preview metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockCommandBarPadding</code></td>
+<td>Command bar container padding.</td>
+</tr>
+<tr>
+<td><code>DockCommandBarSpacing</code></td>
+<td>Vertical spacing between menu/tool/ribbon bands.</td>
+</tr>
+<tr>
+<td><code>DockDragPreviewCornerRadius</code></td>
+<td>Drag preview card corner radius.</td>
+</tr>
+<tr>
+<td><code>DockDragPreviewHeaderPadding</code></td>
+<td>Drag preview header padding.</td>
+</tr>
+<tr>
+<td><code>DockDragPreviewHeaderSpacing</code></td>
+<td>Header spacing between title and status block.</td>
+</tr>
+<tr>
+<td><code>DockDragPreviewStatusSpacing</code></td>
+<td>Spacing between drag status icon and text.</td>
+</tr>
+<tr>
+<td><code>DockDragPreviewStatusIconSize</code></td>
+<td>Drag status icon size.</td>
+</tr>
+<tr>
+<td><code>DockHostTitleBarMouseTrackerHeight</code></td>
+<td>Host title bar top tracker panel height.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="overlay-and-dialog-metrics">Overlay and dialog metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockOverlayReloadButtonMargin</code></td>
+<td>Margin for the reload command button in busy overlay.</td>
+</tr>
+<tr>
+<td><code>DockOverlayCardCornerRadius</code></td>
+<td>Busy overlay card corner radius.</td>
+</tr>
+<tr>
+<td><code>DockOverlayCardPadding</code></td>
+<td>Busy overlay card padding.</td>
+</tr>
+<tr>
+<td><code>DockOverlayCardSpacing</code></td>
+<td>Busy overlay card content spacing.</td>
+</tr>
+<tr>
+<td><code>DockOverlayMessageFontSize</code></td>
+<td>Shared overlay message/title font size.</td>
+</tr>
+<tr>
+<td><code>DockOverlayProgressWidth</code></td>
+<td>Busy overlay progress width.</td>
+</tr>
+<tr>
+<td><code>DockOverlayProgressHeight</code></td>
+<td>Busy overlay progress height.</td>
+</tr>
+<tr>
+<td><code>DockDialogCornerRadius</code></td>
+<td>Dialog shell corner radius.</td>
+</tr>
+<tr>
+<td><code>DockDialogPadding</code></td>
+<td>Dialog shell padding.</td>
+</tr>
+<tr>
+<td><code>DockDialogMinWidth</code></td>
+<td>Dialog shell minimum width.</td>
+</tr>
+<tr>
+<td><code>DockDialogMaxWidth</code></td>
+<td>Dialog shell maximum width.</td>
+</tr>
+<tr>
+<td><code>DockDialogSpacing</code></td>
+<td>Dialog shell grid row/column spacing.</td>
+</tr>
+<tr>
+<td><code>DockDialogTitleFontSize</code></td>
+<td>Dialog and confirmation title font size.</td>
+</tr>
+<tr>
+<td><code>DockDialogCloseButtonSize</code></td>
+<td>Dialog shell close button size.</td>
+</tr>
+<tr>
+<td><code>DockConfirmationDialogPadding</code></td>
+<td>Confirmation dialog padding.</td>
+</tr>
+<tr>
+<td><code>DockConfirmationDialogMaxWidth</code></td>
+<td>Confirmation dialog maximum width.</td>
+</tr>
+<tr>
+<td><code>DockConfirmationDialogStackSpacing</code></td>
+<td>Confirmation dialog content spacing.</td>
+</tr>
+<tr>
+<td><code>DockConfirmationDialogActionsSpacing</code></td>
+<td>Confirmation dialog actions row spacing.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="where-defaults-are-defined">Where defaults are defined</h2>
+<ul>
+<li>Fluent defaults: <code>src/Dock.Avalonia.Themes.Fluent/Accents/Fluent.axaml</code></li>
+<li>Simple defaults: <code>src/Dock.Avalonia.Themes.Simple/Accents/Simple.axaml</code></li>
+<li>Compact density overrides:
+<ul>
+<li><code>src/Dock.Avalonia.Themes.Fluent/DensityStyles/Compact.axaml</code></li>
+<li><code>src/Dock.Avalonia.Themes.Simple/DensityStyles/Compact.axaml</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="token-override-pattern">Token override pattern</h2>
+<pre><code class="lang-xaml">&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceDictionary&gt;
+        &lt;SolidColorBrush x:Key=&quot;DockSurfaceHeaderBrush&quot; Color=&quot;#FF2D2D30&quot; /&gt;
+        &lt;SolidColorBrush x:Key=&quot;DockTabActiveIndicatorBrush&quot; Color=&quot;#FF3794FF&quot; /&gt;
+        &lt;x:Double x:Key=&quot;DockTabItemMinHeight&quot;&gt;22&lt;/x:Double&gt;
+      &lt;/ResourceDictionary&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h2 id="related-docs">Related docs</h2>
+<ul>
+<li><a href="dock-theme-fluent.html">Dock Fluent Theme</a></li>
+<li><a href="dock-theme-simple.html">Dock Simple Theme</a></li>
+<li><a href="dock-theme-token-migration.html">Dock Theme Token Migration</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-design-tokens.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

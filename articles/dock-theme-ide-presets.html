@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock IDE Presets | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock IDE Presets | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-ide-presets.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-ide-presets">Dock IDE Presets</h1>
+
+<p>Dock ships token-only IDE presets for Fluent and Simple themes.<br>
+They override semantic tokens only and do not replace Dock control templates.</p>
+<h2 id="preset-files">Preset files</h2>
+<p>Fluent:</p>
+<ul>
+<li><code>avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/Default.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/VsCodeDark.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/VsCodeLight.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/RiderLight.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/RiderDark.axaml</code></li>
+</ul>
+<p>Simple:</p>
+<ul>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/Default.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/VsCodeDark.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/VsCodeLight.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/RiderLight.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/RiderDark.axaml</code></li>
+</ul>
+<h2 id="usage">Usage</h2>
+<h3 id="fluent--default">Fluent + Default</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;FluentTheme /&gt;
+  &lt;dockFluent:DockFluentTheme DensityStyle=&quot;Normal&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/Default.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h3 id="fluent--vs-code-dark">Fluent + VS Code Dark</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;FluentTheme /&gt;
+  &lt;dockFluent:DockFluentTheme DensityStyle=&quot;Compact&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/VsCodeDark.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h3 id="fluent--rider-light">Fluent + Rider Light</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;FluentTheme /&gt;
+  &lt;dockFluent:DockFluentTheme DensityStyle=&quot;Normal&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/RiderLight.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h3 id="fluent--vs-code-light">Fluent + VS Code Light</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;FluentTheme /&gt;
+  &lt;dockFluent:DockFluentTheme DensityStyle=&quot;Normal&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/VsCodeLight.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h3 id="fluent--rider-dark">Fluent + Rider Dark</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;FluentTheme /&gt;
+  &lt;dockFluent:DockFluentTheme DensityStyle=&quot;Compact&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Presets/Ide/RiderDark.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h3 id="simple--default">Simple + Default</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;SimpleTheme /&gt;
+  &lt;dockSimple:DockSimpleTheme DensityStyle=&quot;Normal&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Simple/Presets/Ide/Default.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h3 id="simple--vs-code-dark">Simple + VS Code Dark</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;SimpleTheme /&gt;
+  &lt;dockSimple:DockSimpleTheme DensityStyle=&quot;Compact&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Simple/Presets/Ide/VsCodeDark.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h3 id="simple--rider-dark">Simple + Rider Dark</h3>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;SimpleTheme /&gt;
+  &lt;dockSimple:DockSimpleTheme DensityStyle=&quot;Compact&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Simple/Presets/Ide/RiderDark.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h2 id="customization-workflow">Customization workflow</h2>
+<ol>
+<li>Start from one preset.</li>
+<li>Copy it into your app.</li>
+<li>Adjust only token values you need.</li>
+<li>Keep your dictionary after the Dock theme include so overrides win.</li>
+</ol>
+<p>For the full token list, see <a href="dock-theme-semantic-tokens.html">Dock Theme Semantic Tokens</a>.</p>
+<p>IDE presets intentionally override color/surface tokens only.<br>
+Density continues to come from <code>DockFluentTheme.DensityStyle</code> and <code>DockSimpleTheme.DensityStyle</code>.</p>
+<p>Use <code>Default.axaml</code> when you want preset-driven runtime switching but need to return to the base Dock theme token mapping.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-ide-presets.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

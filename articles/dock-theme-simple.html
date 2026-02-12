@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Simple Theme | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Simple Theme | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-simple.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-simple-theme">Dock Simple Theme</h1>
+
+<p>This guide documents the Dock Simple theme in detail, including architecture, density support, and token/preset customization.</p>
+<h2 id="overview">Overview</h2>
+<p><code>DockSimpleTheme</code> is the Dock theme for applications using Avalonia <code>SimpleTheme</code>.</p>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;SimpleTheme /&gt;
+  &lt;dockSimple:DockSimpleTheme /&gt;
+&lt;/Application.Styles&gt;
+</code></pre>
+<p>Theme implementation:</p>
+<ul>
+<li><code>src/Dock.Avalonia.Themes.Simple/DockSimpleTheme.axaml</code></li>
+<li><code>src/Dock.Avalonia.Themes.Simple/DockSimpleTheme.axaml.cs</code></li>
+<li><code>src/Dock.Avalonia.Themes.Simple/Accents/Simple.axaml</code></li>
+</ul>
+<h2 id="architecture-notes">Architecture notes</h2>
+<p>Dock Simple uses its own accent resources but shares Dock control template XAML with Fluent.</p>
+<p>This is implemented by linking Fluent control <code>.axaml</code> files into the Simple theme assembly:</p>
+<ul>
+<li><code>src/Dock.Avalonia.Themes.Simple/Dock.Avalonia.Themes.Simple.csproj</code></li>
+</ul>
+<p>Practical result:</p>
+<ul>
+<li>same control template behavior,</li>
+<li>same semantic token contract,</li>
+<li>different default accent mappings.</li>
+</ul>
+<h2 id="density-support">Density support</h2>
+<p><code>DockSimpleTheme</code> supports:</p>
+<ul>
+<li><code>DensityStyle=&quot;Normal&quot;</code> (default),</li>
+<li><code>DensityStyle=&quot;Compact&quot;</code>.</li>
+</ul>
+<pre><code class="lang-xaml">&lt;dockSimple:DockSimpleTheme DensityStyle=&quot;Compact&quot; /&gt;
+</code></pre>
+<p>Compact density resource dictionary:</p>
+<ul>
+<li><code>avares://Dock.Avalonia.Themes.Simple/DensityStyles/Compact.axaml</code></li>
+</ul>
+<h2 id="simple-token-customization">Simple token customization</h2>
+<p>Override semantic tokens after <code>DockSimpleTheme</code>:</p>
+<pre><code class="lang-xaml">&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceDictionary&gt;
+        &lt;SolidColorBrush x:Key=&quot;DockSurfacePanelBrush&quot; Color=&quot;#FFF0F0F0&quot; /&gt;
+        &lt;SolidColorBrush x:Key=&quot;DockTabActiveIndicatorBrush&quot; Color=&quot;#FF4A8BFF&quot; /&gt;
+        &lt;SolidColorBrush x:Key=&quot;DockBorderSubtleBrush&quot; Color=&quot;#FFD3D3D3&quot; /&gt;
+      &lt;/ResourceDictionary&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<p>For the complete token list, see <a href="dock-theme-design-tokens.html">Dock Theme Design Tokens</a>.</p>
+<h2 id="ide-preset-usage-with-simple">IDE preset usage with Simple</h2>
+<p>Simple-specific preset dictionaries:</p>
+<ul>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/Default.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/VsCodeDark.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/VsCodeLight.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/RiderLight.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/Presets/Ide/RiderDark.axaml</code></li>
+</ul>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;SimpleTheme /&gt;
+  &lt;dockSimple:DockSimpleTheme DensityStyle=&quot;Compact&quot; /&gt;
+&lt;/Application.Styles&gt;
+&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Simple/Presets/Ide/RiderLight.axaml&quot; /&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<h2 id="recommended-customization-order">Recommended customization order</h2>
+<ol>
+<li>Apply <code>DockSimpleTheme</code>.</li>
+<li>Choose density.</li>
+<li>Optionally merge an IDE preset.</li>
+<li>Add app-specific token overrides at highest priority.</li>
+</ol>
+<h2 id="related-docs">Related docs</h2>
+<ul>
+<li><a href="dock-theme-design-tokens.html">Dock Theme Design Tokens</a></li>
+<li><a href="dock-theme-ide-presets.html">Dock IDE Presets</a></li>
+<li><a href="dock-theme-token-migration.html">Dock Theme Token Migration</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-simple.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Theme Semantic Tokens | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Theme Semantic Tokens | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-semantic-tokens.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-theme-semantic-tokens">Dock Theme Semantic Tokens</h1>
+
+<p>Dock now exposes a semantic token contract on top of existing Fluent/Simple resources.</p>
+<p>Use these tokens to style Dock surfaces/chrome without copying control templates.</p>
+<p>For the full detailed reference, see <a href="dock-theme-design-tokens.html">Dock Theme Design Tokens</a>.<br>
+For migration from legacy keys, see <a href="dock-theme-token-migration.html">Dock Theme Token Migration</a>.</p>
+<h2 id="token-contract">Token contract</h2>
+<p>Both built-in themes expose the same keys:</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Surfaces</td>
+<td><code>DockSurfaceWorkbenchBrush</code>, <code>DockSurfaceSidebarBrush</code>, <code>DockSurfaceEditorBrush</code>, <code>DockSurfacePanelBrush</code>, <code>DockSurfaceHeaderBrush</code>, <code>DockSurfaceHeaderActiveBrush</code></td>
+</tr>
+<tr>
+<td>Borders/structure</td>
+<td><code>DockBorderSubtleBrush</code>, <code>DockBorderStrongBrush</code>, <code>DockSeparatorBrush</code>, <code>DockSplitterIdleBrush</code>, <code>DockSplitterHoverBrush</code>, <code>DockSplitterDragBrush</code>, <code>DockTargetIndicatorBrush</code></td>
+</tr>
+<tr>
+<td>Tabs</td>
+<td><code>DockTabBackgroundBrush</code>, <code>DockTabHoverBackgroundBrush</code>, <code>DockTabActiveBackgroundBrush</code>, <code>DockTabActiveIndicatorBrush</code>, <code>DockTabForegroundBrush</code>, <code>DockTabSelectedForegroundBrush</code>, <code>DockTabActiveForegroundBrush</code>, <code>DockTabCloseHoverBackgroundBrush</code></td>
+</tr>
+<tr>
+<td>Chrome buttons</td>
+<td><code>DockChromeButtonForegroundBrush</code>, <code>DockChromeButtonHoverBackgroundBrush</code>, <code>DockChromeButtonPressedBackgroundBrush</code>, <code>DockChromeButtonDangerHoverBrush</code></td>
+</tr>
+<tr>
+<td>Density/shape</td>
+<td><code>DockCornerRadiusSmall</code>, <code>DockHeaderHeight</code>, <code>DockTabHeight</code>, <code>DockTabHorizontalPadding</code>, <code>DockIconSizeSmall</code>, <code>DockIconSizeNormal</code></td>
+</tr>
+<tr>
+<td>Density controls</td>
+<td><code>DockTabItemMinHeight</code>, <code>DockToolTabItemMinHeight</code>, <code>DockDocumentTabItemPadding</code>, <code>DockToolTabItemPadding</code>, <code>DockToolTabItemSelectedPadding</code>, <code>DockCreateButtonWidth</code>, <code>DockCreateButtonHeight</code>, <code>DockCloseButtonSize</code>, <code>DockChromeButtonWidth</code>, <code>DockChromeButtonHeight</code>, <code>DockChromeButtonPadding</code>, <code>DockChromeButtonMargin</code>, <code>DockMdiTitleIconSize</code>, <code>DockMdiHeaderDragPadding</code></td>
+</tr>
+<tr>
+<td>Tab/header metrics</td>
+<td><code>DockHeaderContentPadding</code>, <code>DockModifiedIndicatorMargin</code>, <code>DockTabContentSpacing</code>, <code>DockTabContentMargin</code>, <code>DockCreateButtonIconMargin</code></td>
+</tr>
+<tr>
+<td>Chrome/MDI metrics</td>
+<td><code>DockToolChromeHeaderMargin</code>, <code>DockToolChromeTitleMargin</code>, <code>DockToolChromeMenuIconMargin</code>, <code>DockToolChromeDividerThickness</code>, <code>DockChromeGripHeight</code>, <code>DockChromeGripMargin</code>, <code>DockChromeGripBrush</code>, <code>DockMdiHeaderColumnSpacing</code>, <code>DockMdiButtonStripSpacing</code>, <code>DockMdiButtonStripMargin</code>, <code>DockMdiResizeEdgeThickness</code>, <code>DockMdiResizeCornerSize</code></td>
+</tr>
+<tr>
+<td>Selector/target metrics</td>
+<td><code>DockTargetSelectorSize</code>, <code>DockTargetSelectorGridMaxSize</code>, <code>DockSelectorOverlayBackdropBrush</code>, <code>DockSelectorOverlayCornerRadius</code>, <code>DockSelectorOverlayPadding</code>, <code>DockSelectorOverlayMinWidth</code>, <code>DockSelectorOverlayMaxWidth</code>, <code>DockSelectorOverlaySpacing</code>, <code>DockSelectorOverlayListMinHeight</code>, <code>DockSelectorOverlayListMaxHeight</code>, <code>DockSelectorOverlayItemPadding</code>, <code>DockSelectorOverlayItemCornerRadius</code>, <code>DockSelectorOverlayBadgeSpacing</code>, <code>DockSelectorOverlayBadgeMargin</code>, <code>DockSelectorOverlayBadgeCornerRadius</code>, <code>DockSelectorOverlayBadgePadding</code>, <code>DockSelectorOverlayBadgeFontSize</code></td>
+</tr>
+<tr>
+<td>Command/preview metrics</td>
+<td><code>DockCommandBarPadding</code>, <code>DockCommandBarSpacing</code>, <code>DockDragPreviewCornerRadius</code>, <code>DockDragPreviewHeaderPadding</code>, <code>DockDragPreviewHeaderSpacing</code>, <code>DockDragPreviewStatusSpacing</code>, <code>DockDragPreviewStatusIconSize</code>, <code>DockHostTitleBarMouseTrackerHeight</code></td>
+</tr>
+<tr>
+<td>Overlay/dialog metrics</td>
+<td><code>DockOverlayReloadButtonMargin</code>, <code>DockOverlayCardCornerRadius</code>, <code>DockOverlayCardPadding</code>, <code>DockOverlayCardSpacing</code>, <code>DockOverlayMessageFontSize</code>, <code>DockOverlayProgressWidth</code>, <code>DockOverlayProgressHeight</code>, <code>DockDialogCornerRadius</code>, <code>DockDialogPadding</code>, <code>DockDialogMinWidth</code>, <code>DockDialogMaxWidth</code>, <code>DockDialogSpacing</code>, <code>DockDialogTitleFontSize</code>, <code>DockDialogCloseButtonSize</code>, <code>DockConfirmationDialogPadding</code>, <code>DockConfirmationDialogMaxWidth</code>, <code>DockConfirmationDialogStackSpacing</code>, <code>DockConfirmationDialogActionsSpacing</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="default-mapping">Default mapping</h2>
+<p>Defaults are defined in:</p>
+<ul>
+<li><code>src/Dock.Avalonia.Themes.Fluent/Accents/Fluent.axaml</code></li>
+<li><code>src/Dock.Avalonia.Themes.Simple/Accents/Simple.axaml</code></li>
+</ul>
+<p>These defaults map to existing Dock theme resources so current apps keep their prior look unless you override tokens.</p>
+<h2 id="override-example">Override example</h2>
+<pre><code class="lang-xaml">&lt;ResourceDictionary xmlns=&quot;https://github.com/avaloniaui&quot;
+                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;&gt;
+  &lt;SolidColorBrush x:Key=&quot;DockSurfaceHeaderBrush&quot; Color=&quot;#FF2D2D30&quot; /&gt;
+  &lt;SolidColorBrush x:Key=&quot;DockTabActiveIndicatorBrush&quot; Color=&quot;#FF3794FF&quot; /&gt;
+  &lt;SolidColorBrush x:Key=&quot;DockChromeButtonDangerHoverBrush&quot; Color=&quot;#FFC94F4F&quot; /&gt;
+  &lt;x:Double x:Key=&quot;DockHeaderHeight&quot;&gt;24&lt;/x:Double&gt;
+&lt;/ResourceDictionary&gt;
+</code></pre>
+<p>Merge this dictionary after <code>DockFluentTheme</code> or <code>DockSimpleTheme</code>.</p>
+<h2 id="compact-density-mode">Compact density mode</h2>
+<p>Both Dock theme classes expose a <code>DensityStyle</code> property:</p>
+<pre><code class="lang-xaml">&lt;dockFluent:DockFluentTheme DensityStyle=&quot;Compact&quot; /&gt;
+&lt;dockSimple:DockSimpleTheme DensityStyle=&quot;Compact&quot; /&gt;
+</code></pre>
+<p>Compact mode loads:</p>
+<ul>
+<li><code>avares://Dock.Avalonia.Themes.Fluent/DensityStyles/Compact.axaml</code></li>
+<li><code>avares://Dock.Avalonia.Themes.Simple/DensityStyles/Compact.axaml</code></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-theme-semantic-tokens.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

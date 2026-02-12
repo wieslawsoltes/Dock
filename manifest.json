@@ -2006,6 +2006,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.DockDensityStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.DockDensityStyle.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes.DockDensityStyle",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.DockDensityStyle.yml\" sourcestartlinenumber=\"1\">Defines density presets for Dock control themes.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.yml",
       "output": {
         ".html": {
@@ -2058,6 +2072,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Dock.Avalonia.Themes.Simple",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes",
       "Summary": null
     },
     {
@@ -8333,6 +8361,66 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-targets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-design-tokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-design-tokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-fluent.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-fluent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-ide-presets.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-ide-presets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-semantic-tokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-semantic-tokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-simple.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-simple.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-token-migration.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-token-migration.html"
         }
       },
       "version": ""

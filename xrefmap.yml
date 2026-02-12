@@ -10609,6 +10609,30 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Selectors.IDockSelectorService.ShowSelector
   nameWithType: IDockSelectorService.ShowSelector
+- uid: Dock.Avalonia.Themes
+  name: Dock.Avalonia.Themes
+  href: api/Dock.Avalonia.Themes.html
+  commentId: N:Dock.Avalonia.Themes
+  fullName: Dock.Avalonia.Themes
+  nameWithType: Dock.Avalonia.Themes
+- uid: Dock.Avalonia.Themes.DockDensityStyle
+  name: DockDensityStyle
+  href: api/Dock.Avalonia.Themes.DockDensityStyle.html
+  commentId: T:Dock.Avalonia.Themes.DockDensityStyle
+  fullName: Dock.Avalonia.Themes.DockDensityStyle
+  nameWithType: DockDensityStyle
+- uid: Dock.Avalonia.Themes.DockDensityStyle.Compact
+  name: Compact
+  href: api/Dock.Avalonia.Themes.DockDensityStyle.html#Dock_Avalonia_Themes_DockDensityStyle_Compact
+  commentId: F:Dock.Avalonia.Themes.DockDensityStyle.Compact
+  fullName: Dock.Avalonia.Themes.DockDensityStyle.Compact
+  nameWithType: DockDensityStyle.Compact
+- uid: Dock.Avalonia.Themes.DockDensityStyle.Normal
+  name: Normal
+  href: api/Dock.Avalonia.Themes.DockDensityStyle.html#Dock_Avalonia_Themes_DockDensityStyle_Normal
+  commentId: F:Dock.Avalonia.Themes.DockDensityStyle.Normal
+  fullName: Dock.Avalonia.Themes.DockDensityStyle.Normal
+  nameWithType: DockDensityStyle.Normal
 - uid: Dock.Avalonia.Themes.Fluent
   name: Dock.Avalonia.Themes.Fluent
   href: api/Dock.Avalonia.Themes.Fluent.html
@@ -10621,6 +10645,57 @@ references:
   commentId: T:Dock.Avalonia.Themes.Fluent.DockFluentTheme
   fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme
   nameWithType: DockFluentTheme
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.#ctor(System.IServiceProvider)
+  name: DockFluentTheme(IServiceProvider?)
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme__ctor_System_IServiceProvider_
+  commentId: M:Dock.Avalonia.Themes.Fluent.DockFluentTheme.#ctor(System.IServiceProvider)
+  name.vb: New(IServiceProvider)
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DockFluentTheme(System.IServiceProvider?)
+  fullName.vb: Dock.Avalonia.Themes.Fluent.DockFluentTheme.New(System.IServiceProvider)
+  nameWithType: DockFluentTheme.DockFluentTheme(IServiceProvider?)
+  nameWithType.vb: DockFluentTheme.New(IServiceProvider)
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.#ctor*
+  name: DockFluentTheme
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme__ctor_
+  commentId: Overload:Dock.Avalonia.Themes.Fluent.DockFluentTheme.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DockFluentTheme
+  fullName.vb: Dock.Avalonia.Themes.Fluent.DockFluentTheme.New
+  nameWithType: DockFluentTheme.DockFluentTheme
+  nameWithType.vb: DockFluentTheme.New
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyle
+  name: DensityStyle
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_DensityStyle
+  commentId: P:Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyle
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyle
+  nameWithType: DockFluentTheme.DensityStyle
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyle*
+  name: DensityStyle
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_DensityStyle_
+  commentId: Overload:Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyle
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyle
+  nameWithType: DockFluentTheme.DensityStyle
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyleProperty
+  name: DensityStyleProperty
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_DensityStyleProperty
+  commentId: F:Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyleProperty
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyleProperty
+  nameWithType: DockFluentTheme.DensityStyleProperty
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
+  commentId: M:Dock.Avalonia.Themes.Fluent.DockFluentTheme.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  nameWithType: DockFluentTheme.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_OnPropertyChanged_
+  commentId: Overload:Dock.Avalonia.Themes.Fluent.DockFluentTheme.OnPropertyChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.OnPropertyChanged
+  nameWithType: DockFluentTheme.OnPropertyChanged
 - uid: Dock.Avalonia.Themes.Simple
   name: Dock.Avalonia.Themes.Simple
   href: api/Dock.Avalonia.Themes.Simple.html
@@ -10633,6 +10708,57 @@ references:
   commentId: T:Dock.Avalonia.Themes.Simple.DockSimpleTheme
   fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme
   nameWithType: DockSimpleTheme
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.#ctor(System.IServiceProvider)
+  name: DockSimpleTheme(IServiceProvider?)
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme__ctor_System_IServiceProvider_
+  commentId: M:Dock.Avalonia.Themes.Simple.DockSimpleTheme.#ctor(System.IServiceProvider)
+  name.vb: New(IServiceProvider)
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DockSimpleTheme(System.IServiceProvider?)
+  fullName.vb: Dock.Avalonia.Themes.Simple.DockSimpleTheme.New(System.IServiceProvider)
+  nameWithType: DockSimpleTheme.DockSimpleTheme(IServiceProvider?)
+  nameWithType.vb: DockSimpleTheme.New(IServiceProvider)
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.#ctor*
+  name: DockSimpleTheme
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme__ctor_
+  commentId: Overload:Dock.Avalonia.Themes.Simple.DockSimpleTheme.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DockSimpleTheme
+  fullName.vb: Dock.Avalonia.Themes.Simple.DockSimpleTheme.New
+  nameWithType: DockSimpleTheme.DockSimpleTheme
+  nameWithType.vb: DockSimpleTheme.New
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyle
+  name: DensityStyle
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_DensityStyle
+  commentId: P:Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyle
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyle
+  nameWithType: DockSimpleTheme.DensityStyle
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyle*
+  name: DensityStyle
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_DensityStyle_
+  commentId: Overload:Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyle
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyle
+  nameWithType: DockSimpleTheme.DensityStyle
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyleProperty
+  name: DensityStyleProperty
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_DensityStyleProperty
+  commentId: F:Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyleProperty
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyleProperty
+  nameWithType: DockSimpleTheme.DensityStyleProperty
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
+  commentId: M:Dock.Avalonia.Themes.Simple.DockSimpleTheme.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  nameWithType: DockSimpleTheme.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_OnPropertyChanged_
+  commentId: Overload:Dock.Avalonia.Themes.Simple.DockSimpleTheme.OnPropertyChanged
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.OnPropertyChanged
+  nameWithType: DockSimpleTheme.OnPropertyChanged
 - uid: Dock.Controls.ProportionalStackPanel
   name: Dock.Controls.ProportionalStackPanel
   href: api/Dock.Controls.ProportionalStackPanel.html

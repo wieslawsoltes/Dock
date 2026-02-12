@@ -399,6 +399,94 @@ public class HostWindowOwnerModeTests
     }
 
     [AvaloniaFact]
+    public void Present_DefaultParentWindowOwnerMode_NeverOwnedPolicy_DoesNotAssignOwner()
+    {
+        var previousDefaultOwnerMode = DockSettings.DefaultFloatingWindowOwnerMode;
+        var previousUseOwner = DockSettings.UseOwnerForFloatingWindows;
+        var previousOwnerPolicy = DockSettings.FloatingWindowOwnerPolicy;
+        DockSettings.DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.ParentWindow;
+        DockSettings.UseOwnerForFloatingWindows = true;
+        DockSettings.FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.NeverOwned;
+
+        try
+        {
+            var parentHost = new HostWindow();
+            var parentWindow = new DockWindow { Layout = new RootDock() };
+            parentHost.Window = parentWindow;
+            parentWindow.Host = parentHost;
+            parentHost.Present(false);
+
+            var childHost = new HostWindow();
+            var childWindow = new DockWindow
+            {
+                Layout = new RootDock(),
+                OwnerMode = DockWindowOwnerMode.Default,
+                ParentWindow = parentWindow
+            };
+            childHost.Window = childWindow;
+            childWindow.Host = childHost;
+
+            childHost.Present(false);
+
+            Assert.Null(childHost.Owner);
+
+            childHost.Close();
+            parentHost.Close();
+        }
+        finally
+        {
+            DockSettings.DefaultFloatingWindowOwnerMode = previousDefaultOwnerMode;
+            DockSettings.UseOwnerForFloatingWindows = previousUseOwner;
+            DockSettings.FloatingWindowOwnerPolicy = previousOwnerPolicy;
+        }
+    }
+
+    [AvaloniaFact]
+    public void Present_DefaultRootWindowOwnerMode_NeverOwnedPolicy_DoesNotAssignOwner()
+    {
+        var previousDefaultOwnerMode = DockSettings.DefaultFloatingWindowOwnerMode;
+        var previousUseOwner = DockSettings.UseOwnerForFloatingWindows;
+        var previousOwnerPolicy = DockSettings.FloatingWindowOwnerPolicy;
+        DockSettings.DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.RootWindow;
+        DockSettings.UseOwnerForFloatingWindows = true;
+        DockSettings.FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.NeverOwned;
+
+        try
+        {
+            var root = new RootDock();
+
+            var rootHost = new HostWindow();
+            var rootWindow = new DockWindow { Layout = root };
+            root.Window = rootWindow;
+            rootHost.Window = rootWindow;
+            rootWindow.Host = rootHost;
+            rootHost.Present(false);
+
+            var childHost = new HostWindow();
+            var childWindow = new DockWindow
+            {
+                Layout = new RootDock(),
+                Owner = root,
+                OwnerMode = DockWindowOwnerMode.Default
+            };
+            childHost.Window = childWindow;
+            childWindow.Host = childHost;
+            childHost.Present(false);
+
+            Assert.Null(childHost.Owner);
+
+            childHost.Close();
+            rootHost.Close();
+        }
+        finally
+        {
+            DockSettings.DefaultFloatingWindowOwnerMode = previousDefaultOwnerMode;
+            DockSettings.UseOwnerForFloatingWindows = previousUseOwner;
+            DockSettings.FloatingWindowOwnerPolicy = previousOwnerPolicy;
+        }
+    }
+
+    [AvaloniaFact]
     public void Present_ParentWindow_Hierarchy_Uses_Nearest_Parent()
     {
         var rootHost = new HostWindow();

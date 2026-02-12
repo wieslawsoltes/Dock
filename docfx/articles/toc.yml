@@ -122,6 +122,10 @@
     href: dock-theme-fluent.md
   - name: Simple theme guide
     href: dock-theme-simple.md
+  - name: Browser theme guide
+    href: dock-theme-browser.md
+  - name: Browser theme sample
+    href: dock-theme-browser-sample.md
   - name: Design tokens
     href: dock-theme-design-tokens.md
   - name: Token migration

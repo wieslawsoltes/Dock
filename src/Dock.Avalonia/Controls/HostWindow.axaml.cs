@@ -497,6 +497,11 @@ public class HostWindow : Window, IHostWindow
             return null;
         }
 
+        if (usesGlobalDefaultMode && DockSettings.FloatingWindowOwnerPolicy == DockFloatingWindowOwnerPolicy.NeverOwned)
+        {
+            return null;
+        }
+
         if (ownerMode == DockWindowOwnerMode.ParentWindow
             || ownerMode == DockWindowOwnerMode.DockableWindow)
         {

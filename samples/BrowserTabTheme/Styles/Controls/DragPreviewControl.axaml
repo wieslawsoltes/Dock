@@ -58,7 +58,7 @@
     </Setter>
     
     <Setter Property="ContentTemplate">
-      <DataTemplate DataType="core:IDockable">
+      <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" 
                    Padding="2"  />
       </DataTemplate>

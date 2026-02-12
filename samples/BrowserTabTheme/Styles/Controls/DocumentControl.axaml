@@ -49,13 +49,13 @@
     <Setter Property="CloseButtonTheme" Value="{DynamicResource DocumentCloseButtonTheme}" />
 
     <Setter Property="IconTemplate">
-      <DataTemplate DataType="core:IDockable">
+      <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
         <Panel />
       </DataTemplate>
     </Setter>
 
     <Setter Property="HeaderTemplate">
-      <DataTemplate DataType="core:IDockable">
+      <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" 
                    VerticalAlignment="Center"
                    Padding="2"  />
@@ -63,7 +63,7 @@
     </Setter>
 
     <Setter Property="ModifiedTemplate">
-      <DataTemplate DataType="core:IDockable">
+      <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
         <TextBlock VerticalAlignment="Center"
                    Text="*"
                    Margin="0,0,2,0" />
@@ -71,7 +71,7 @@
     </Setter>
 
     <Setter Property="CloseTemplate">
-      <DataTemplate DataType="core:IDockable">
+      <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
         <Button Command="{Binding Owner.Factory.CloseDockable}"
                 CommandParameter="{Binding}"
                 Theme="{Binding $parent[DocumentControl].CloseButtonTheme}">
@@ -152,7 +152,7 @@
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                  <DataTemplate DataType="core:IDockable">
+                  <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
                     <DockableControl TrackingMode="Visible">
                       <DockableControl.IsVisible>
                         <MultiBinding Converter="{x:Static sampleConverters:ReferenceEqualsMultiConverter.Instance}">

@@ -315,11 +315,11 @@
     <Setter Property="FontWeight" Value="Normal" />
     <Setter Property="MinHeight" Value="28" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
-    <Setter Property="Background" Value="{DynamicResource swWidgetTabBackground}" />
-    <Setter Property="Foreground" Value="{DynamicResource swForegroundTitle}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
     <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="Margin" Value="0" />
+    <Setter Property="Margin" Value="0,4,0,4" />
     <Setter Property="Padding" Value="4 0 4 0" />
     <Setter Property="CornerRadius" Value="8" />
     <Setter Property="DocumentContextMenu" Value="{DynamicResource DocumentTabStripItemContextMenu}" />
@@ -402,30 +402,31 @@
     </Setter>
 
     <Style Selector="^:not(:active):selected">
-      <Setter Property="Background" Value="{DynamicResource swButtonBackgroundColor}" />
-      <Setter Property="Foreground" Value="{DynamicResource swForegroundTitle}" />
+      <Setter Property="Background" Value="{DynamicResource DockSurfaceHeaderBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabSelectedForegroundBrush}" />
     </Style>
 
     <Style Selector="^:active:selected">
-      <Setter Property="Background" Value="{DynamicResource swButtonBackgroundColor}" />
-      <Setter Property="Foreground" Value="{DynamicResource swForegroundTitle}" />
+      <Setter Property="Background" Value="{DynamicResource DockTabActiveBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
     <Style Selector="^:pointerover">
-      <Setter Property="Background" Value="{DynamicResource swButtonBackgroundColor}" />
-      <Setter Property="Foreground" Value="{DynamicResource swColorTextDefaultPointerOverBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockTabHoverBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
     </Style>
 
     <Style Selector="^:selected:pointerover">
-      <Setter Property="Foreground" Value="{DynamicResource swColorTextDefaultPointerOverBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockTabActiveBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
     <Style Selector="^:selected /template/ Path#PART_ClosePath">
-      <Setter Property="Fill" Value="{DynamicResource swForegroundTitle}" />
+      <Setter Property="Fill" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
     <Style Selector="^:pointerover /template/ Path#PART_ClosePath">
-      <Setter Property="Fill" Value="{DynamicResource swColorTextDefaultPointerOverBrush}" />
+      <Setter Property="Fill" Value="{DynamicResource DockTabForegroundBrush}" />
     </Style>
 
   </ControlTheme>

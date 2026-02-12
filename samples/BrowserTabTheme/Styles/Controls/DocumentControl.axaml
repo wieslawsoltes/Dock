@@ -3,6 +3,7 @@
                     xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
+                    xmlns:sampleConverters="using:BrowserTabTheme.Converters"
                     x:CompileBindings="True"
                     x:DataType="dmc:IDocumentDock">
   <Design.PreviewWith>
@@ -140,22 +141,32 @@
               </Style>
             </DocumentTabStrip.Styles>
           </DocumentTabStrip>
-          <Grid x:Name="PART_Grid"
-                IsVisible="{Binding #PART_TabStrip.IsVisible}" />
           <Border x:Name="PART_Border">
             <Grid>
-              <DockableControl DataContext="{Binding ActiveDockable}"
-                               TrackingMode="Visible"
-                               IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
-                <ContentControl x:Name="PART_ContentPresenter"
-                                Content="{Binding}"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch">
-                  <ContentControl.ContentTemplate>
-                    <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                  </ContentControl.ContentTemplate>
-                </ContentControl>
-              </DockableControl>
+              <ItemsControl x:Name="PART_ItemsHost"
+                            ItemsSource="{Binding VisibleDockables}"
+                            IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <Grid />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate DataType="core:IDockable">
+                    <DockableControl TrackingMode="Visible">
+                      <DockableControl.IsVisible>
+                        <MultiBinding Converter="{x:Static sampleConverters:ReferenceEqualsMultiConverter.Instance}">
+                          <Binding />
+                          <Binding Path="((core:IDock)Owner).ActiveDockable" />
+                        </MultiBinding>
+                      </DockableControl.IsVisible>
+                      <ContentControl HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      Content="{Binding}" />
+                    </DockableControl>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
 
               <ContentControl x:Name="PART_EmptyContentHost"
                               Content="{Binding EmptyContent}"
@@ -169,32 +180,6 @@
       </ControlTemplate>
     </Setter>
  
-    <Style Selector="^[TabsLayout=Top]/template/ Grid#PART_Grid">
-      <Setter Property="DockPanel.Dock" Value="Top" />
-      <Setter Property="Width" Value="NaN" />
-      <Setter Property="Height" Value="2" />
-    </Style>
-    
-    <Style Selector="^[TabsLayout=Left]/template/ Grid#PART_Grid">
-      <Setter Property="DockPanel.Dock" Value="Left" />
-      <Setter Property="Width" Value="2" />
-      <Setter Property="Height" Value="NaN" />
-    </Style>
-    
-    <Style Selector="^[TabsLayout=Right]/template/ Grid#PART_Grid">
-      <Setter Property="DockPanel.Dock" Value="Right" />
-      <Setter Property="Width" Value="2" />
-      <Setter Property="Height" Value="NaN" />
-    </Style>
-
-    <Style Selector="^/template/ Grid#PART_Grid">
-      <Setter Property="Background" Value="{DynamicResource DockBorderSubtleBrush}" />
-    </Style>
-
-    <Style Selector="^:active /template/ Grid#PART_Grid">
-      <Setter Property="Background" Value="{DynamicResource DockTabActiveIndicatorBrush}" />
-    </Style>
-
     <Style Selector="^/template/ Border#PART_Border">
       <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
       <Setter Property="BorderThickness" Value="1,1,1,1" />

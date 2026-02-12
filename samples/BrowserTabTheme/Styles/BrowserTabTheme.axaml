@@ -8,6 +8,7 @@
         <ResourceInclude Source="avares://BrowserTabTheme/Styles/BrowserTabAccents.axaml" />
         <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/AllResources.axaml" />
       </ResourceDictionary.MergedDictionaries>
+      <ResourceInclude x:Key="CompactStyles" Source="avares://BrowserTabTheme/Styles/DensityStyles/Compact.axaml" />
     </ResourceDictionary>
   </Styles.Resources>
 

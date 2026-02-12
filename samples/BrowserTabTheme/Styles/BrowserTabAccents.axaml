@@ -31,7 +31,6 @@
       <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush">#E8EEF9</SolidColorBrush>
       <StaticResource x:Key="DockChromeButtonPressedBackgroundBrush" ResourceKey="DockSurfaceHeaderBrush" />
       <StaticResource x:Key="DockChromeButtonDangerHoverBrush" ResourceKey="DockTabCloseHoverBackgroundBrush" />
-      <SolidColorBrush x:Key="DockChromeButtonForegroundBrush">#5D6E8B</SolidColorBrush>
 
       <!-- Legacy key aliases -->
       <StaticResource x:Key="DockApplicationAccentBrushLow" ResourceKey="DockTabActiveBackgroundBrush" />
@@ -44,7 +43,8 @@
       <StaticResource x:Key="DockThemeBorderLowBrush" ResourceKey="DockBorderSubtleBrush" />
       <StaticResource x:Key="DockThemeForegroundBrush" ResourceKey="DockTabForegroundBrush" />
       <StaticResource x:Key="DockThemeAccentBrush" ResourceKey="DockSurfaceHeaderActiveBrush" />
-      <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockChromeButtonForegroundBrush" />
+      <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockThemeForegroundBrush" />
+      <StaticResource x:Key="DockChromeButtonForegroundBrush" ResourceKey="DockToolChromeIconBrush" />
 
       <SolidColorBrush x:Key="CaptionButtonBackground">#E8EEF9</SolidColorBrush>
       <SolidColorBrush x:Key="CaptionButtonBorderBrush">#CBD9F2</SolidColorBrush>
@@ -94,7 +94,6 @@
       <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush">#2C374E</SolidColorBrush>
       <StaticResource x:Key="DockChromeButtonPressedBackgroundBrush" ResourceKey="DockSurfaceHeaderBrush" />
       <StaticResource x:Key="DockChromeButtonDangerHoverBrush" ResourceKey="DockTabCloseHoverBackgroundBrush" />
-      <SolidColorBrush x:Key="DockChromeButtonForegroundBrush">#C1D3F2</SolidColorBrush>
 
       <!-- Legacy key aliases -->
       <StaticResource x:Key="DockApplicationAccentBrushLow" ResourceKey="DockTabActiveBackgroundBrush" />
@@ -107,7 +106,8 @@
       <StaticResource x:Key="DockThemeBorderLowBrush" ResourceKey="DockBorderSubtleBrush" />
       <StaticResource x:Key="DockThemeForegroundBrush" ResourceKey="DockTabForegroundBrush" />
       <StaticResource x:Key="DockThemeAccentBrush" ResourceKey="DockSurfaceHeaderActiveBrush" />
-      <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockChromeButtonForegroundBrush" />
+      <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockThemeForegroundBrush" />
+      <StaticResource x:Key="DockChromeButtonForegroundBrush" ResourceKey="DockToolChromeIconBrush" />
 
       <SolidColorBrush x:Key="CaptionButtonBackground">#334055</SolidColorBrush>
       <SolidColorBrush x:Key="CaptionButtonBorderBrush">#415271</SolidColorBrush>
@@ -145,6 +145,9 @@
   <sys:Double x:Key="DockChromeButtonHeight">16</sys:Double>
   <Thickness x:Key="DockChromeButtonPadding">3</Thickness>
   <Thickness x:Key="DockChromeButtonMargin">2,0,0,0</Thickness>
+  <sys:Double x:Key="DockChromeGripHeight">5</sys:Double>
+  <Thickness x:Key="DockChromeGripMargin">0,0,2,0</Thickness>
+  <SolidColorBrush x:Key="DockChromeGripBrush" Color="#00000000" />
   <Thickness x:Key="DockHeaderContentPadding">2</Thickness>
   <Thickness x:Key="DockModifiedIndicatorMargin">0,0,2,0</Thickness>
   <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>

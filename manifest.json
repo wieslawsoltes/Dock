@@ -2020,6 +2020,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes.DockPresetThemeManagerBase",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.yml\" sourcestartlinenumber=\"1\">Provides shared logic for switching Dock theme presets stored as merged resource includes.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.yml",
       "output": {
         ".html": {
@@ -2031,6 +2045,20 @@
       "IsMRef": true,
       "Title": "Dock.Avalonia.Themes.Fluent.DockFluentTheme",
       "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.yml\" sourcestartlinenumber=\"1\">The Dock fluent theme.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes.Fluent.DockFluentThemeManager",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.yml\" sourcestartlinenumber=\"1\">Provides light/dark and preset switching for Dock Fluent theme resources.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2048,6 +2076,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.IDockThemeManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.IDockThemeManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes.IDockThemeManager",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.IDockThemeManager.yml\" sourcestartlinenumber=\"1\">Defines theme and preset switching operations for Dock samples and applications.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.yml",
       "output": {
         ".html": {
@@ -2059,6 +2101,20 @@
       "IsMRef": true,
       "Title": "Dock.Avalonia.Themes.Simple.DockSimpleTheme",
       "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.yml\" sourcestartlinenumber=\"1\">The Dock simple theme.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes.Simple.DockSimpleThemeManager",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.yml\" sourcestartlinenumber=\"1\">Provides light/dark and preset switching for Dock Simple theme resources.</p>\n"
     },
     {
       "type": "ManagedReference",

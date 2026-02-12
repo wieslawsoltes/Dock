@@ -10633,6 +10633,105 @@ references:
   commentId: F:Dock.Avalonia.Themes.DockDensityStyle.Normal
   fullName: Dock.Avalonia.Themes.DockDensityStyle.Normal
   nameWithType: DockDensityStyle.Normal
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase
+  name: DockPresetThemeManagerBase
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html
+  commentId: T:Dock.Avalonia.Themes.DockPresetThemeManagerBase
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase
+  nameWithType: DockPresetThemeManagerBase
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.#ctor(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.Uri},System.String)
+  name: DockPresetThemeManagerBase(IReadOnlyList<string>, IReadOnlyList<Uri>, string)
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase__ctor_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyList_System_Uri__System_String_
+  commentId: M:Dock.Avalonia.Themes.DockPresetThemeManagerBase.#ctor(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.Uri},System.String)
+  name.vb: New(IReadOnlyList(Of String), IReadOnlyList(Of Uri), String)
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.DockPresetThemeManagerBase(System.Collections.Generic.IReadOnlyList<string>, System.Collections.Generic.IReadOnlyList<System.Uri>, string)
+  fullName.vb: Dock.Avalonia.Themes.DockPresetThemeManagerBase.New(System.Collections.Generic.IReadOnlyList(Of String), System.Collections.Generic.IReadOnlyList(Of System.Uri), String)
+  nameWithType: DockPresetThemeManagerBase.DockPresetThemeManagerBase(IReadOnlyList<string>, IReadOnlyList<Uri>, string)
+  nameWithType.vb: DockPresetThemeManagerBase.New(IReadOnlyList(Of String), IReadOnlyList(Of Uri), String)
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.#ctor*
+  name: DockPresetThemeManagerBase
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase__ctor_
+  commentId: Overload:Dock.Avalonia.Themes.DockPresetThemeManagerBase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.DockPresetThemeManagerBase
+  fullName.vb: Dock.Avalonia.Themes.DockPresetThemeManagerBase.New
+  nameWithType: DockPresetThemeManagerBase.DockPresetThemeManagerBase
+  nameWithType.vb: DockPresetThemeManagerBase.New
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.CurrentPresetIndex
+  name: CurrentPresetIndex
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_CurrentPresetIndex
+  commentId: P:Dock.Avalonia.Themes.DockPresetThemeManagerBase.CurrentPresetIndex
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.CurrentPresetIndex
+  nameWithType: DockPresetThemeManagerBase.CurrentPresetIndex
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.CurrentPresetIndex*
+  name: CurrentPresetIndex
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_CurrentPresetIndex_
+  commentId: Overload:Dock.Avalonia.Themes.DockPresetThemeManagerBase.CurrentPresetIndex
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.CurrentPresetIndex
+  nameWithType: DockPresetThemeManagerBase.CurrentPresetIndex
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.PresetNames
+  name: PresetNames
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_PresetNames
+  commentId: P:Dock.Avalonia.Themes.DockPresetThemeManagerBase.PresetNames
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.PresetNames
+  nameWithType: DockPresetThemeManagerBase.PresetNames
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.PresetNames*
+  name: PresetNames
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_PresetNames_
+  commentId: Overload:Dock.Avalonia.Themes.DockPresetThemeManagerBase.PresetNames
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.PresetNames
+  nameWithType: DockPresetThemeManagerBase.PresetNames
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.Switch(System.Int32)
+  name: Switch(int)
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_Switch_System_Int32_
+  commentId: M:Dock.Avalonia.Themes.DockPresetThemeManagerBase.Switch(System.Int32)
+  name.vb: Switch(Integer)
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.Switch(int)
+  fullName.vb: Dock.Avalonia.Themes.DockPresetThemeManagerBase.Switch(Integer)
+  nameWithType: DockPresetThemeManagerBase.Switch(int)
+  nameWithType.vb: DockPresetThemeManagerBase.Switch(Integer)
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.Switch*
+  name: Switch
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_Switch_
+  commentId: Overload:Dock.Avalonia.Themes.DockPresetThemeManagerBase.Switch
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.Switch
+  nameWithType: DockPresetThemeManagerBase.Switch
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.SwitchPreset(System.Int32)
+  name: SwitchPreset(int)
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_SwitchPreset_System_Int32_
+  commentId: M:Dock.Avalonia.Themes.DockPresetThemeManagerBase.SwitchPreset(System.Int32)
+  name.vb: SwitchPreset(Integer)
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.SwitchPreset(int)
+  fullName.vb: Dock.Avalonia.Themes.DockPresetThemeManagerBase.SwitchPreset(Integer)
+  nameWithType: DockPresetThemeManagerBase.SwitchPreset(int)
+  nameWithType.vb: DockPresetThemeManagerBase.SwitchPreset(Integer)
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.SwitchPreset*
+  name: SwitchPreset
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_SwitchPreset_
+  commentId: Overload:Dock.Avalonia.Themes.DockPresetThemeManagerBase.SwitchPreset
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.SwitchPreset
+  nameWithType: DockPresetThemeManagerBase.SwitchPreset
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.TryGetDefaultPresetOwner(Avalonia.Application,Avalonia.Controls.IResourceDictionary@)
+  name: TryGetDefaultPresetOwner(Application, out IResourceDictionary?)
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_TryGetDefaultPresetOwner_Avalonia_Application_Avalonia_Controls_IResourceDictionary__
+  commentId: M:Dock.Avalonia.Themes.DockPresetThemeManagerBase.TryGetDefaultPresetOwner(Avalonia.Application,Avalonia.Controls.IResourceDictionary@)
+  name.vb: TryGetDefaultPresetOwner(Application, IResourceDictionary)
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.TryGetDefaultPresetOwner(Avalonia.Application, out Avalonia.Controls.IResourceDictionary?)
+  fullName.vb: Dock.Avalonia.Themes.DockPresetThemeManagerBase.TryGetDefaultPresetOwner(Avalonia.Application, Avalonia.Controls.IResourceDictionary)
+  nameWithType: DockPresetThemeManagerBase.TryGetDefaultPresetOwner(Application, out IResourceDictionary?)
+  nameWithType.vb: DockPresetThemeManagerBase.TryGetDefaultPresetOwner(Application, IResourceDictionary)
+- uid: Dock.Avalonia.Themes.DockPresetThemeManagerBase.TryGetDefaultPresetOwner*
+  name: TryGetDefaultPresetOwner
+  href: api/Dock.Avalonia.Themes.DockPresetThemeManagerBase.html#Dock_Avalonia_Themes_DockPresetThemeManagerBase_TryGetDefaultPresetOwner_
+  commentId: Overload:Dock.Avalonia.Themes.DockPresetThemeManagerBase.TryGetDefaultPresetOwner
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.DockPresetThemeManagerBase.TryGetDefaultPresetOwner
+  nameWithType: DockPresetThemeManagerBase.TryGetDefaultPresetOwner
 - uid: Dock.Avalonia.Themes.Fluent
   name: Dock.Avalonia.Themes.Fluent
   href: api/Dock.Avalonia.Themes.Fluent.html
@@ -10696,6 +10795,111 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.OnPropertyChanged
   nameWithType: DockFluentTheme.OnPropertyChanged
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager
+  name: DockFluentThemeManager
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.html
+  commentId: T:Dock.Avalonia.Themes.Fluent.DockFluentThemeManager
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager
+  nameWithType: DockFluentThemeManager
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.#ctor
+  name: DockFluentThemeManager()
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.html#Dock_Avalonia_Themes_Fluent_DockFluentThemeManager__ctor
+  commentId: M:Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.#ctor
+  name.vb: New()
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.DockFluentThemeManager()
+  fullName.vb: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.New()
+  nameWithType: DockFluentThemeManager.DockFluentThemeManager()
+  nameWithType.vb: DockFluentThemeManager.New()
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.#ctor*
+  name: DockFluentThemeManager
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.html#Dock_Avalonia_Themes_Fluent_DockFluentThemeManager__ctor_
+  commentId: Overload:Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.DockFluentThemeManager
+  fullName.vb: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.New
+  nameWithType: DockFluentThemeManager.DockFluentThemeManager
+  nameWithType.vb: DockFluentThemeManager.New
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.TryGetDefaultPresetOwner(Avalonia.Application,Avalonia.Controls.IResourceDictionary@)
+  name: TryGetDefaultPresetOwner(Application, out IResourceDictionary?)
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.html#Dock_Avalonia_Themes_Fluent_DockFluentThemeManager_TryGetDefaultPresetOwner_Avalonia_Application_Avalonia_Controls_IResourceDictionary__
+  commentId: M:Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.TryGetDefaultPresetOwner(Avalonia.Application,Avalonia.Controls.IResourceDictionary@)
+  name.vb: TryGetDefaultPresetOwner(Application, IResourceDictionary)
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.TryGetDefaultPresetOwner(Avalonia.Application, out Avalonia.Controls.IResourceDictionary?)
+  fullName.vb: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.TryGetDefaultPresetOwner(Avalonia.Application, Avalonia.Controls.IResourceDictionary)
+  nameWithType: DockFluentThemeManager.TryGetDefaultPresetOwner(Application, out IResourceDictionary?)
+  nameWithType.vb: DockFluentThemeManager.TryGetDefaultPresetOwner(Application, IResourceDictionary)
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.TryGetDefaultPresetOwner*
+  name: TryGetDefaultPresetOwner
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.html#Dock_Avalonia_Themes_Fluent_DockFluentThemeManager_TryGetDefaultPresetOwner_
+  commentId: Overload:Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.TryGetDefaultPresetOwner
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentThemeManager.TryGetDefaultPresetOwner
+  nameWithType: DockFluentThemeManager.TryGetDefaultPresetOwner
+- uid: Dock.Avalonia.Themes.IDockThemeManager
+  name: IDockThemeManager
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html
+  commentId: T:Dock.Avalonia.Themes.IDockThemeManager
+  fullName: Dock.Avalonia.Themes.IDockThemeManager
+  nameWithType: IDockThemeManager
+- uid: Dock.Avalonia.Themes.IDockThemeManager.CurrentPresetIndex
+  name: CurrentPresetIndex
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_CurrentPresetIndex
+  commentId: P:Dock.Avalonia.Themes.IDockThemeManager.CurrentPresetIndex
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.CurrentPresetIndex
+  nameWithType: IDockThemeManager.CurrentPresetIndex
+- uid: Dock.Avalonia.Themes.IDockThemeManager.CurrentPresetIndex*
+  name: CurrentPresetIndex
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_CurrentPresetIndex_
+  commentId: Overload:Dock.Avalonia.Themes.IDockThemeManager.CurrentPresetIndex
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.CurrentPresetIndex
+  nameWithType: IDockThemeManager.CurrentPresetIndex
+- uid: Dock.Avalonia.Themes.IDockThemeManager.PresetNames
+  name: PresetNames
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_PresetNames
+  commentId: P:Dock.Avalonia.Themes.IDockThemeManager.PresetNames
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.PresetNames
+  nameWithType: IDockThemeManager.PresetNames
+- uid: Dock.Avalonia.Themes.IDockThemeManager.PresetNames*
+  name: PresetNames
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_PresetNames_
+  commentId: Overload:Dock.Avalonia.Themes.IDockThemeManager.PresetNames
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.PresetNames
+  nameWithType: IDockThemeManager.PresetNames
+- uid: Dock.Avalonia.Themes.IDockThemeManager.Switch(System.Int32)
+  name: Switch(int)
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_Switch_System_Int32_
+  commentId: M:Dock.Avalonia.Themes.IDockThemeManager.Switch(System.Int32)
+  name.vb: Switch(Integer)
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.Switch(int)
+  fullName.vb: Dock.Avalonia.Themes.IDockThemeManager.Switch(Integer)
+  nameWithType: IDockThemeManager.Switch(int)
+  nameWithType.vb: IDockThemeManager.Switch(Integer)
+- uid: Dock.Avalonia.Themes.IDockThemeManager.Switch*
+  name: Switch
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_Switch_
+  commentId: Overload:Dock.Avalonia.Themes.IDockThemeManager.Switch
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.Switch
+  nameWithType: IDockThemeManager.Switch
+- uid: Dock.Avalonia.Themes.IDockThemeManager.SwitchPreset(System.Int32)
+  name: SwitchPreset(int)
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_SwitchPreset_System_Int32_
+  commentId: M:Dock.Avalonia.Themes.IDockThemeManager.SwitchPreset(System.Int32)
+  name.vb: SwitchPreset(Integer)
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.SwitchPreset(int)
+  fullName.vb: Dock.Avalonia.Themes.IDockThemeManager.SwitchPreset(Integer)
+  nameWithType: IDockThemeManager.SwitchPreset(int)
+  nameWithType.vb: IDockThemeManager.SwitchPreset(Integer)
+- uid: Dock.Avalonia.Themes.IDockThemeManager.SwitchPreset*
+  name: SwitchPreset
+  href: api/Dock.Avalonia.Themes.IDockThemeManager.html#Dock_Avalonia_Themes_IDockThemeManager_SwitchPreset_
+  commentId: Overload:Dock.Avalonia.Themes.IDockThemeManager.SwitchPreset
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.IDockThemeManager.SwitchPreset
+  nameWithType: IDockThemeManager.SwitchPreset
 - uid: Dock.Avalonia.Themes.Simple
   name: Dock.Avalonia.Themes.Simple
   href: api/Dock.Avalonia.Themes.Simple.html
@@ -10759,6 +10963,47 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.OnPropertyChanged
   nameWithType: DockSimpleTheme.OnPropertyChanged
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager
+  name: DockSimpleThemeManager
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.html
+  commentId: T:Dock.Avalonia.Themes.Simple.DockSimpleThemeManager
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager
+  nameWithType: DockSimpleThemeManager
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.#ctor
+  name: DockSimpleThemeManager()
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.html#Dock_Avalonia_Themes_Simple_DockSimpleThemeManager__ctor
+  commentId: M:Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.#ctor
+  name.vb: New()
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.DockSimpleThemeManager()
+  fullName.vb: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.New()
+  nameWithType: DockSimpleThemeManager.DockSimpleThemeManager()
+  nameWithType.vb: DockSimpleThemeManager.New()
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.#ctor*
+  name: DockSimpleThemeManager
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.html#Dock_Avalonia_Themes_Simple_DockSimpleThemeManager__ctor_
+  commentId: Overload:Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.DockSimpleThemeManager
+  fullName.vb: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.New
+  nameWithType: DockSimpleThemeManager.DockSimpleThemeManager
+  nameWithType.vb: DockSimpleThemeManager.New
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.TryGetDefaultPresetOwner(Avalonia.Application,Avalonia.Controls.IResourceDictionary@)
+  name: TryGetDefaultPresetOwner(Application, out IResourceDictionary?)
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.html#Dock_Avalonia_Themes_Simple_DockSimpleThemeManager_TryGetDefaultPresetOwner_Avalonia_Application_Avalonia_Controls_IResourceDictionary__
+  commentId: M:Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.TryGetDefaultPresetOwner(Avalonia.Application,Avalonia.Controls.IResourceDictionary@)
+  name.vb: TryGetDefaultPresetOwner(Application, IResourceDictionary)
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.TryGetDefaultPresetOwner(Avalonia.Application, out Avalonia.Controls.IResourceDictionary?)
+  fullName.vb: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.TryGetDefaultPresetOwner(Avalonia.Application, Avalonia.Controls.IResourceDictionary)
+  nameWithType: DockSimpleThemeManager.TryGetDefaultPresetOwner(Application, out IResourceDictionary?)
+  nameWithType.vb: DockSimpleThemeManager.TryGetDefaultPresetOwner(Application, IResourceDictionary)
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.TryGetDefaultPresetOwner*
+  name: TryGetDefaultPresetOwner
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.html#Dock_Avalonia_Themes_Simple_DockSimpleThemeManager_TryGetDefaultPresetOwner_
+  commentId: Overload:Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.TryGetDefaultPresetOwner
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleThemeManager.TryGetDefaultPresetOwner
+  nameWithType: DockSimpleThemeManager.TryGetDefaultPresetOwner
 - uid: Dock.Controls.ProportionalStackPanel
   name: Dock.Controls.ProportionalStackPanel
   href: api/Dock.Controls.ProportionalStackPanel.html

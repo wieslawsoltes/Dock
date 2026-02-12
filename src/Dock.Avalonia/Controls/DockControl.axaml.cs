@@ -13,6 +13,7 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.CommandBars;
 using Dock.Avalonia.Contract;
@@ -1063,15 +1064,29 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
     private void OnMainWindowClosing(object? sender, global::Avalonia.Controls.WindowClosingEventArgs e)
     {
+        if (sender is not Window window)
+        {
+            return;
+        }
+
         if (Layout?.Factory?.FindRoot(Layout, _ => true) is not IRootDock root)
         {
             return;
         }
 
-        if (root.ExitWindows.CanExecute(null))
+        Dispatcher.UIThread.Post(() =>
         {
-            root.ExitWindows.Execute(null);
-        }
+            // If the main window is still visible, closure was canceled by another handler.
+            if (window.IsVisible)
+            {
+                return;
+            }
+
+            if (root.ExitWindows.CanExecute(null))
+            {
+                root.ExitWindows.Execute(null);
+            }
+        }, DispatcherPriority.Background);
     }
 
     private static DragAction ToDragAction(PointerEventArgs e)

@@ -1,6 +1,6 @@
 # BrowserTabTheme Sample
 
-This sample backports a browser-tab visual style from StackWich into the original Dock library as a sample-local theme overlay.
+This sample backports a browser-tab visual style from StackWich into the original Dock library, using the reusable `Dock.Avalonia.Themes.Browser` theme package.
 
 ## What this sample demonstrates
 
@@ -13,6 +13,11 @@ This sample backports a browser-tab visual style from StackWich into the origina
 
 - SW app-shell integrations (sidebar, banner, premium, feedback, custom host behaviors).
 - Any modifications to `DockFluentTheme` in `src/`.
+
+## Theme package source
+
+- `src/Dock.Avalonia.Themes.Browser/Dock.Avalonia.Themes.Browser.csproj`
+- `src/Dock.Avalonia.Themes.Browser/Styles/`
 
 ## Run
 

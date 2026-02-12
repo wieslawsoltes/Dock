@@ -240,6 +240,61 @@ public class HostWindowOwnerModeTests
     }
 
     [AvaloniaFact]
+    public void Present_Uses_DefaultFloatingWindowOwnerMode_When_WindowOwnerModeDefault()
+    {
+        var previousDefaultOwnerMode = DockSettings.DefaultFloatingWindowOwnerMode;
+        var previousUseOwner = DockSettings.UseOwnerForFloatingWindows;
+        DockSettings.DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.RootWindow;
+        DockSettings.UseOwnerForFloatingWindows = false;
+
+        try
+        {
+            var root = new RootDock();
+
+            var rootHost = new HostWindow();
+            var rootWindow = new DockWindow { Layout = root };
+            root.Window = rootWindow;
+            rootHost.Window = rootWindow;
+            rootWindow.Host = rootHost;
+            rootHost.Present(false);
+
+            var parentHost = new HostWindow();
+            var parentWindow = new DockWindow
+            {
+                Layout = new RootDock(),
+                OwnerMode = DockWindowOwnerMode.ParentWindow,
+                ParentWindow = rootWindow
+            };
+            parentHost.Window = parentWindow;
+            parentWindow.Host = parentHost;
+            parentHost.Present(false);
+
+            var childHost = new HostWindow();
+            var childWindow = new DockWindow
+            {
+                Layout = new RootDock(),
+                Owner = root,
+                OwnerMode = DockWindowOwnerMode.Default,
+                ParentWindow = parentWindow
+            };
+            childHost.Window = childWindow;
+            childWindow.Host = childHost;
+            childHost.Present(false);
+
+            Assert.Same(rootHost, childHost.Owner);
+
+            childHost.Close();
+            parentHost.Close();
+            rootHost.Close();
+        }
+        finally
+        {
+            DockSettings.DefaultFloatingWindowOwnerMode = previousDefaultOwnerMode;
+            DockSettings.UseOwnerForFloatingWindows = previousUseOwner;
+        }
+    }
+
+    [AvaloniaFact]
     public void Present_ParentWindow_Hierarchy_Uses_Nearest_Parent()
     {
         var rootHost = new HostWindow();

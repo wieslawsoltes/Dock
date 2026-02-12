@@ -1,5 +1,7 @@
 using Avalonia;
 using System;
+using Dock.Model.Core;
+using Dock.Settings;
 
 namespace BrowserTabTheme;
 
@@ -12,7 +14,8 @@ class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseDefaultFloatingWindowOwnerMode(DockWindowOwnerMode.RootWindow)
+            .UseFloatingWindowOwnerPolicy(DockFloatingWindowOwnerPolicy.NeverOwned)
+            .CloseFloatingWindowsOnMainWindowClose(true)
             .LogToTrace();
 }
-
-

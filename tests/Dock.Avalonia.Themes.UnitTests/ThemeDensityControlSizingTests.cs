@@ -176,8 +176,10 @@ public class ThemeDensityControlSizingTests
             var topSelector = FindNamedControl<Image>(dockTarget, "PART_TopSelector");
             var dialogCloseButton = dialogShell.GetVisualDescendants().OfType<Button>().FirstOrDefault();
             var dialogTitle = dialogShell.GetVisualDescendants().OfType<TextBlock>().FirstOrDefault(x => x.Text == "Dialog");
+            Assert.NotNull(gripGrid.Background);
 
             Assert.Equal(expectedGripHeight, gripGrid.Height);
+            Assert.True(gripGrid.Bounds.Width >= 12d);
             Assert.Equal(expectedStatusIconSize, statusIcon.Width);
             Assert.Equal(expectedStatusIconSize, statusIcon.Height);
             Assert.Equal(expectedTargetSelectorSize, topSelector.Width);

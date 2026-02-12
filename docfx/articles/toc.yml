@@ -118,8 +118,20 @@
     href: dock-datatemplates.md
   - name: Styling and theming
     href: dock-styling.md
+  - name: Fluent theme guide
+    href: dock-theme-fluent.md
+  - name: Simple theme guide
+    href: dock-theme-simple.md
+  - name: Design tokens
+    href: dock-theme-design-tokens.md
+  - name: Token migration
+    href: dock-theme-token-migration.md
   - name: Custom themes
     href: dock-custom-theme.md
+  - name: Semantic theme tokens
+    href: dock-theme-semantic-tokens.md
+  - name: IDE theme presets
+    href: dock-theme-ide-presets.md
   - name: Context menus
     href: dock-context-menus.md
   - name: Command bars

@@ -19,15 +19,15 @@
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
     <Setter Property="Margin" Value="0" />
-    <Setter Property="Width" Value="26" />
-    <Setter Property="Height" Value="24" />
+    <Setter Property="Width" Value="{DynamicResource DockCreateButtonWidth}" />
+    <Setter Property="Height" Value="{DynamicResource DockCreateButtonHeight}" />
     <Setter Property="HorizontalAlignment" Value="Right" />
     <Setter Property="HorizontalContentAlignment" Value="Center" />
     <Setter Property="VerticalAlignment" Value="Top" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Background" Value="Transparent" />
     <Style Selector="^:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+      <Setter Property="Background" Value="{DynamicResource DockTabHoverBackgroundBrush}" />
     </Style>
   </ControlTheme>
 
@@ -42,7 +42,7 @@
     <Setter Property="EnableWindowDrag" Value="{Binding EnableWindowDrag}" />
     <Setter Property="CreateButtonTheme" Value="{DynamicResource ButtonCreateDocument}" />
     
-    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Background" Value="{DynamicResource DockTabBackgroundBrush}" />
     <Setter Property="Focusable" Value="False" />
     <Setter Property="ClipToBounds" Value="False" />
     <Setter Property="ZIndex" Value="1" />
@@ -58,10 +58,10 @@
             <Path x:Name="PART_PathCreate">
               <Path.Styles>
                 <Style Selector="Path">
-                  <Setter Property="Margin" Value="5" />
+                  <Setter Property="Margin" Value="{DynamicResource DockCreateButtonIconMargin}" />
                   <Setter Property="Stretch" Value="Uniform" />
                   <Setter Property="UseLayoutRounding" Value="False" />
-                  <Setter Property="Fill" Value="{DynamicResource DockThemeForegroundBrush}" />
+                  <Setter Property="Fill" Value="{DynamicResource DockTabForegroundBrush}" />
                   <Setter Property="Data" Value="{DynamicResource DockIconAddDocumentGeometry}" />
                 </Style>
               </Path.Styles>
@@ -113,15 +113,15 @@
     <Style Selector="^[Orientation=Vertical]/template/ Button#PART_ButtonCreate">
       <Setter Property="(DockPanel.Dock)" Value="Bottom" />
       <Setter Property="Width" Value="NaN" />
-      <Setter Property="Height" Value="24" />
+      <Setter Property="Height" Value="{DynamicResource DockCreateButtonHeight}" />
       <Setter Property="HorizontalAlignment" Value="Stretch" />
       <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
 
     <Style Selector="^[Orientation=Horizontal]/template/ Button#PART_ButtonCreate">
       <Setter Property="(DockPanel.Dock)" Value="Right" />
-      <Setter Property="Width" Value="26" />
-      <Setter Property="Height" Value="24" />
+      <Setter Property="Width" Value="{DynamicResource DockCreateButtonWidth}" />
+      <Setter Property="Height" Value="{DynamicResource DockCreateButtonHeight}" />
       <Setter Property="HorizontalAlignment" Value="Right" />
       <Setter Property="HorizontalContentAlignment" Value="Center" />
       <Setter Property="VerticalAlignment" Value="Center" />

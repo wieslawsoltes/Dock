@@ -21,6 +21,131 @@
     <!-- Brushes used by ToolChromeControl icons and grip -->
     <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
 
+    <!-- Semantic token aliases shared across theme variants/presets -->
+    <StaticResource x:Key="DockSurfaceWorkbenchBrush" ResourceKey="DockThemeBackgroundBrush" />
+    <StaticResource x:Key="DockSurfaceSidebarBrush" ResourceKey="DockThemeBackgroundBrush" />
+    <StaticResource x:Key="DockSurfaceEditorBrush" ResourceKey="DockThemeControlBackgroundBrush" />
+    <StaticResource x:Key="DockSurfacePanelBrush" ResourceKey="DockThemeBackgroundBrush" />
+    <StaticResource x:Key="DockSurfaceHeaderBrush" ResourceKey="DockThemeBorderLowBrush" />
+    <StaticResource x:Key="DockSurfaceHeaderActiveBrush" ResourceKey="DockThemeAccentBrush" />
+
+    <StaticResource x:Key="DockBorderSubtleBrush" ResourceKey="DockThemeBorderLowBrush" />
+    <StaticResource x:Key="DockBorderStrongBrush" ResourceKey="DockThemeBorderLowBrush" />
+    <StaticResource x:Key="DockSeparatorBrush" ResourceKey="DockThemeBorderLowBrush" />
+    <StaticResource x:Key="DockSplitterIdleBrush" ResourceKey="DockThemeBorderLowBrush" />
+    <StaticResource x:Key="DockSplitterHoverBrush" ResourceKey="DockApplicationAccentBrushLow" />
+    <StaticResource x:Key="DockSplitterDragBrush" ResourceKey="DockApplicationAccentBrushMed" />
+
+    <SolidColorBrush x:Key="DockTabBackgroundBrush" Color="#00000000" />
+    <StaticResource x:Key="DockTabHoverBackgroundBrush" ResourceKey="DockApplicationAccentBrushMed" />
+    <StaticResource x:Key="DockTabActiveBackgroundBrush" ResourceKey="DockApplicationAccentBrushLow" />
+    <StaticResource x:Key="DockTabActiveIndicatorBrush" ResourceKey="DockApplicationAccentBrushLow" />
+    <StaticResource x:Key="DockTabForegroundBrush" ResourceKey="DockThemeForegroundBrush" />
+    <StaticResource x:Key="DockTabSelectedForegroundBrush" ResourceKey="DockApplicationAccentBrushMed" />
+    <StaticResource x:Key="DockTabActiveForegroundBrush" ResourceKey="DockApplicationAccentForegroundBrush" />
+    <StaticResource x:Key="DockTabCloseHoverBackgroundBrush" ResourceKey="DockApplicationAccentBrushHigh" />
+
+    <StaticResource x:Key="DockTargetIndicatorBrush" ResourceKey="DockApplicationAccentBrushIndicator" />
+
+    <StaticResource x:Key="DockChromeButtonForegroundBrush" ResourceKey="DockToolChromeIconBrush" />
+    <StaticResource x:Key="DockChromeButtonHoverBackgroundBrush" ResourceKey="DockThemeControlBackgroundBrush" />
+    <StaticResource x:Key="DockChromeButtonPressedBackgroundBrush" ResourceKey="DockThemeBorderLowBrush" />
+    <StaticResource x:Key="DockChromeButtonDangerHoverBrush" ResourceKey="DockApplicationAccentBrushHigh" />
+
+    <sys:Double x:Key="DockCornerRadiusSmall">0</sys:Double>
+    <sys:Double x:Key="DockHeaderHeight">26</sys:Double>
+    <sys:Double x:Key="DockTabHeight">30</sys:Double>
+    <sys:Double x:Key="DockTabHorizontalPadding">10</sys:Double>
+    <sys:Double x:Key="DockIconSizeSmall">12</sys:Double>
+    <sys:Double x:Key="DockIconSizeNormal">14</sys:Double>
+
+    <sys:Double x:Key="DockTabItemMinHeight">24</sys:Double>
+    <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
+    <Thickness x:Key="DockDocumentTabItemPadding">4,0,4,0</Thickness>
+    <Thickness x:Key="DockToolTabItemPadding">4,1,4,0</Thickness>
+    <Thickness x:Key="DockToolTabItemSelectedPadding">4,2,4,0</Thickness>
+    <sys:Double x:Key="DockCreateButtonWidth">26</sys:Double>
+    <sys:Double x:Key="DockCreateButtonHeight">24</sys:Double>
+    <sys:Double x:Key="DockCloseButtonSize">14</sys:Double>
+    <sys:Double x:Key="DockChromeButtonWidth">18</sys:Double>
+    <sys:Double x:Key="DockChromeButtonHeight">16</sys:Double>
+    <Thickness x:Key="DockChromeButtonPadding">3</Thickness>
+    <Thickness x:Key="DockChromeButtonMargin">2,0,0,0</Thickness>
+    <sys:Double x:Key="DockMdiTitleIconSize">12</sys:Double>
+    <Thickness x:Key="DockMdiHeaderDragPadding">6,4</Thickness>
+    <Thickness x:Key="DockHeaderContentPadding">2</Thickness>
+    <Thickness x:Key="DockModifiedIndicatorMargin">0,0,2,0</Thickness>
+    <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>
+    <Thickness x:Key="DockTabContentMargin">2</Thickness>
+    <Thickness x:Key="DockCreateButtonIconMargin">5</Thickness>
+    <Thickness x:Key="DockToolChromeHeaderMargin">8,0</Thickness>
+    <Thickness x:Key="DockToolChromeTitleMargin">0,4,8,4</Thickness>
+    <Thickness x:Key="DockToolChromeMenuIconMargin">2</Thickness>
+    <sys:Double x:Key="DockToolChromeDividerThickness">1</sys:Double>
+    <sys:Double x:Key="DockChromeGripHeight">5</sys:Double>
+    <Thickness x:Key="DockChromeGripMargin">0,0,2,0</Thickness>
+    <VisualBrush x:Key="DockChromeGripBrush"
+                 SourceRect="0,0,4,5"
+                 DestinationRect="0,0,4,5"
+                 TileMode="Tile"
+                 Stretch="UniformToFill">
+        <VisualBrush.Visual>
+            <Canvas Width="4" Height="5" Background="Transparent">
+                <Rectangle Height="1" Width="1" Fill="{DynamicResource DockChromeButtonForegroundBrush}" />
+                <Rectangle Height="1" Width="1" Fill="{DynamicResource DockChromeButtonForegroundBrush}" Canvas.Top="2" Canvas.Left="2" />
+                <Rectangle Height="1" Width="1" Fill="{DynamicResource DockChromeButtonForegroundBrush}" Canvas.Top="4" />
+            </Canvas>
+        </VisualBrush.Visual>
+    </VisualBrush>
+    <sys:Double x:Key="DockMdiHeaderColumnSpacing">4</sys:Double>
+    <sys:Double x:Key="DockMdiButtonStripSpacing">2</sys:Double>
+    <Thickness x:Key="DockMdiButtonStripMargin">2,0</Thickness>
+    <sys:Double x:Key="DockMdiResizeEdgeThickness">4</sys:Double>
+    <sys:Double x:Key="DockMdiResizeCornerSize">6</sys:Double>
+    <sys:Double x:Key="DockTargetSelectorSize">40</sys:Double>
+    <sys:Double x:Key="DockTargetSelectorGridMaxSize">125</sys:Double>
+    <SolidColorBrush x:Key="DockSelectorOverlayBackdropBrush" Color="#40000000" />
+    <CornerRadius x:Key="DockSelectorOverlayCornerRadius">6</CornerRadius>
+    <Thickness x:Key="DockSelectorOverlayPadding">12</Thickness>
+    <sys:Double x:Key="DockSelectorOverlayMinWidth">280</sys:Double>
+    <sys:Double x:Key="DockSelectorOverlayMaxWidth">520</sys:Double>
+    <sys:Double x:Key="DockSelectorOverlaySpacing">8</sys:Double>
+    <sys:Double x:Key="DockSelectorOverlayListMinHeight">120</sys:Double>
+    <sys:Double x:Key="DockSelectorOverlayListMaxHeight">320</sys:Double>
+    <Thickness x:Key="DockSelectorOverlayItemPadding">6</Thickness>
+    <CornerRadius x:Key="DockSelectorOverlayItemCornerRadius">4</CornerRadius>
+    <sys:Double x:Key="DockSelectorOverlayBadgeSpacing">4</sys:Double>
+    <Thickness x:Key="DockSelectorOverlayBadgeMargin">8,0,0,0</Thickness>
+    <CornerRadius x:Key="DockSelectorOverlayBadgeCornerRadius">3</CornerRadius>
+    <Thickness x:Key="DockSelectorOverlayBadgePadding">4,1</Thickness>
+    <sys:Double x:Key="DockSelectorOverlayBadgeFontSize">10</sys:Double>
+    <Thickness x:Key="DockCommandBarPadding">4,2</Thickness>
+    <sys:Double x:Key="DockCommandBarSpacing">4</sys:Double>
+    <CornerRadius x:Key="DockDragPreviewCornerRadius">4</CornerRadius>
+    <Thickness x:Key="DockDragPreviewHeaderPadding">4</Thickness>
+    <sys:Double x:Key="DockDragPreviewHeaderSpacing">4</sys:Double>
+    <sys:Double x:Key="DockDragPreviewStatusSpacing">2</sys:Double>
+    <sys:Double x:Key="DockDragPreviewStatusIconSize">10</sys:Double>
+    <sys:Double x:Key="DockHostTitleBarMouseTrackerHeight">1</sys:Double>
+    <Thickness x:Key="DockOverlayReloadButtonMargin">16</Thickness>
+    <CornerRadius x:Key="DockOverlayCardCornerRadius">8</CornerRadius>
+    <Thickness x:Key="DockOverlayCardPadding">24</Thickness>
+    <sys:Double x:Key="DockOverlayCardSpacing">8</sys:Double>
+    <sys:Double x:Key="DockOverlayMessageFontSize">14</sys:Double>
+    <sys:Double x:Key="DockOverlayProgressWidth">200</sys:Double>
+    <sys:Double x:Key="DockOverlayProgressHeight">6</sys:Double>
+    <CornerRadius x:Key="DockDialogCornerRadius">10</CornerRadius>
+    <Thickness x:Key="DockDialogPadding">20</Thickness>
+    <sys:Double x:Key="DockDialogMinWidth">360</sys:Double>
+    <sys:Double x:Key="DockDialogMaxWidth">640</sys:Double>
+    <sys:Double x:Key="DockDialogSpacing">12</sys:Double>
+    <sys:Double x:Key="DockDialogTitleFontSize">16</sys:Double>
+    <sys:Double x:Key="DockDialogCloseButtonSize">28</sys:Double>
+    <Thickness x:Key="DockConfirmationDialogPadding">24</Thickness>
+    <sys:Double x:Key="DockConfirmationDialogMaxWidth">480</sys:Double>
+    <sys:Double x:Key="DockConfirmationDialogStackSpacing">12</sys:Double>
+    <sys:Double x:Key="DockConfirmationDialogActionsSpacing">8</sys:Double>
+
     <!-- Geometry resources for tool icons -->
     <StreamGeometry x:Key="DockIconAddDocumentGeometry">M8.41687 7.57953V2.41851C8.41687 2.18743 8.22932 1.99988 7.99823 1.99988C7.76715 1.99988 7.5796 2.18743 7.5796 2.41851V7.57953H2.41863C2.18755 7.57953 2 7.76708 2 7.99816C2 8.22925 2.18755 8.41679 2.41863 8.41679H7.5796V13.5812C7.5796 13.8123 7.76715 13.9999 7.99823 13.9999C8.22932 13.9999 8.41687 13.8123 8.41687 13.5812V8.41679L13.5799 8.41851C13.811 8.41851 13.9985 8.23096 13.9985 7.99988C13.9985 7.76879 13.811 7.58125 13.5799 7.58125L8.41687 7.57953Z</StreamGeometry>
     <StreamGeometry x:Key="DockIconCloseGeometry">M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z</StreamGeometry>

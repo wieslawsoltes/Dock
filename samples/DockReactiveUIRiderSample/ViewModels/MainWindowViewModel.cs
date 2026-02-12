@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Styling;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using DockReactiveUIRiderSample.Services;
@@ -28,6 +29,7 @@ public class MainWindowViewModel : ReactiveObject
     private string _activeDocumentStatus;
     private EditorDocumentViewModel? _activeDocument;
     private IDisposable? _caretSubscription;
+    private bool _isDarkTheme;
 
     public MainWindowViewModel()
     {
@@ -61,6 +63,10 @@ public class MainWindowViewModel : ReactiveObject
         SaveAllCommand = ReactiveCommand.Create(SaveAllFiles);
         CloseSolutionCommand = ReactiveCommand.Create(CloseSolution);
         ExitCommand = ReactiveCommand.Create(Exit);
+        SwitchToLightThemeCommand = ReactiveCommand.Create(SwitchToLightTheme);
+        SwitchToDarkThemeCommand = ReactiveCommand.Create(SwitchToDarkTheme);
+
+        InitializeTheme();
     }
 
     public IRootDock? Layout
@@ -93,6 +99,20 @@ public class MainWindowViewModel : ReactiveObject
         private set => this.RaiseAndSetIfChanged(ref _activeDocument, value);
     }
 
+    public bool IsDarkTheme
+    {
+        get => _isDarkTheme;
+        private set
+        {
+            if (this.RaiseAndSetIfChanged(ref _isDarkTheme, value))
+            {
+                this.RaisePropertyChanged(nameof(IsLightTheme));
+            }
+        }
+    }
+
+    public bool IsLightTheme => !IsDarkTheme;
+
     public ReactiveCommand<Unit, Unit> SaveFileCommand { get; }
 
     public ReactiveCommand<Unit, Unit> SaveAllCommand { get; }
@@ -100,6 +120,10 @@ public class MainWindowViewModel : ReactiveObject
     public ReactiveCommand<Unit, Unit> CloseSolutionCommand { get; }
 
     public ReactiveCommand<Unit, Unit> ExitCommand { get; }
+
+    public ReactiveCommand<Unit, Unit> SwitchToLightThemeCommand { get; }
+
+    public ReactiveCommand<Unit, Unit> SwitchToDarkThemeCommand { get; }
 
     public async Task LoadSolutionAsync(string solutionPath)
     {
@@ -183,6 +207,33 @@ public class MainWindowViewModel : ReactiveObject
         {
             desktopLifetime.Shutdown();
         }
+    }
+
+    private void InitializeTheme()
+    {
+        var requestedThemeVariant = Application.Current?.RequestedThemeVariant;
+        IsDarkTheme = requestedThemeVariant != ThemeVariant.Light;
+    }
+
+    private void SwitchToLightTheme()
+    {
+        SetTheme(ThemeVariant.Light);
+    }
+
+    private void SwitchToDarkTheme()
+    {
+        SetTheme(ThemeVariant.Dark);
+    }
+
+    private void SetTheme(ThemeVariant themeVariant)
+    {
+        if (Application.Current is null)
+        {
+            return;
+        }
+
+        Application.Current.RequestedThemeVariant = themeVariant;
+        IsDarkTheme = themeVariant == ThemeVariant.Dark;
     }
 
     private void SetActiveDocument(EditorDocumentViewModel? document)

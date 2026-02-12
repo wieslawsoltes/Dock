@@ -155,7 +155,7 @@
             </ScrollContentPresenter.GestureRecognizers>
           </ScrollContentPresenter>
           <RepeatButton BorderThickness="0"
-                        Background="{DynamicResource DockThemeBackgroundBrush}"
+                        Background="{DynamicResource DockSurfaceWorkbenchBrush}"
                         VerticalAlignment="Stretch"
                         VerticalContentAlignment="Center"
                         HorizontalAlignment="Left"
@@ -182,7 +182,7 @@
             </Viewbox>
           </RepeatButton>
           <RepeatButton BorderThickness="0"
-                        Background="{DynamicResource DockThemeBackgroundBrush}"
+                        Background="{DynamicResource DockSurfaceWorkbenchBrush}"
                         VerticalAlignment="Stretch"
                         VerticalContentAlignment="Center"
                         HorizontalAlignment="Right"
@@ -209,7 +209,7 @@
             </Viewbox>
           </RepeatButton>
           <RepeatButton BorderThickness="0"
-                        Background="{DynamicResource DockThemeBackgroundBrush}"
+                        Background="{DynamicResource DockSurfaceWorkbenchBrush}"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         VerticalAlignment="Top"
@@ -236,7 +236,7 @@
             </Viewbox>
           </RepeatButton>
           <RepeatButton BorderThickness="0"
-                        Background="{DynamicResource DockThemeBackgroundBrush}"
+                        Background="{DynamicResource DockSurfaceWorkbenchBrush}"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         VerticalAlignment="Bottom"

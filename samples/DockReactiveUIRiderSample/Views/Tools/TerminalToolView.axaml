@@ -7,12 +7,12 @@
              mc:Ignorable="d"
              d:DesignWidth="600" d:DesignHeight="200"
              x:DataType="vm:TerminalToolViewModel" x:CompileBindings="True">
-  <Border Background="{StaticResource RiderPanelBrush}">
+  <Border Background="{DynamicResource RiderPanelBrush}">
     <TextBox Text="{Binding Output}"
              IsReadOnly="True"
              AcceptsReturn="True"
              BorderThickness="0"
-             Background="{StaticResource RiderPanelBrush}"
+             Background="{DynamicResource RiderPanelBrush}"
              FontFamily="JetBrains Mono, Cascadia Mono, Consolas"
              FontSize="12" />
   </Border>

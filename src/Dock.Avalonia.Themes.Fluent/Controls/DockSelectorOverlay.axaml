@@ -5,19 +5,19 @@
   <ControlTheme x:Key="{x:Type controls:DockSelectorOverlay}" TargetType="controls:DockSelectorOverlay">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="#40000000"
+        <Border Background="{DynamicResource DockSelectorOverlayBackdropBrush}"
                 IsVisible="{TemplateBinding IsOpen}"
                 IsHitTestVisible="{TemplateBinding IsOpen}">
           <Border HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  Background="{DynamicResource DockThemeBackgroundBrush}"
-                  BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                  Background="{DynamicResource DockSurfacePanelBrush}"
+                  BorderBrush="{DynamicResource DockBorderSubtleBrush}"
                   BorderThickness="1"
-                  CornerRadius="6"
-                  Padding="12"
-                  MinWidth="280"
-                  MaxWidth="520">
-            <StackPanel Spacing="8">
+                  CornerRadius="{DynamicResource DockSelectorOverlayCornerRadius}"
+                  Padding="{DynamicResource DockSelectorOverlayPadding}"
+                  MinWidth="{DynamicResource DockSelectorOverlayMinWidth}"
+                  MaxWidth="{DynamicResource DockSelectorOverlayMaxWidth}">
+            <StackPanel Spacing="{DynamicResource DockSelectorOverlaySpacing}">
               <TextBlock Text="{TemplateBinding Mode}"
                          FontWeight="SemiBold" />
               <ListBox x:Name="PART_ItemsList"
@@ -25,52 +25,52 @@
                        SelectedItem="{TemplateBinding SelectedItem}"
                        Background="Transparent"
                        BorderThickness="0"
-                       MinHeight="120"
-                       MaxHeight="320">
+                       MinHeight="{DynamicResource DockSelectorOverlayListMinHeight}"
+                       MaxHeight="{DynamicResource DockSelectorOverlayListMaxHeight}">
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="selectors:DockSelectorItem">
                     <Border Background="Transparent"
-                            Padding="6"
-                            CornerRadius="4">
+                            Padding="{DynamicResource DockSelectorOverlayItemPadding}"
+                            CornerRadius="{DynamicResource DockSelectorOverlayItemCornerRadius}">
                       <DockPanel LastChildFill="True">
                         <StackPanel DockPanel.Dock="Right"
                                     Orientation="Horizontal"
-                                    Spacing="4"
-                                    Margin="8,0,0,0">
-                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
-                                  CornerRadius="3"
-                                  Padding="4,1"
+                                    Spacing="{DynamicResource DockSelectorOverlayBadgeSpacing}"
+                                    Margin="{DynamicResource DockSelectorOverlayBadgeMargin}">
+                          <Border Background="{DynamicResource DockSurfaceHeaderBrush}"
+                                  CornerRadius="{DynamicResource DockSelectorOverlayBadgeCornerRadius}"
+                                  Padding="{DynamicResource DockSelectorOverlayBadgePadding}"
                                   IsVisible="{Binding IsDocument}">
                             <TextBlock Text="DOC"
-                                       FontSize="10" />
+                                       FontSize="{DynamicResource DockSelectorOverlayBadgeFontSize}" />
                           </Border>
-                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
-                                  CornerRadius="3"
-                                  Padding="4,1"
+                          <Border Background="{DynamicResource DockSurfaceHeaderBrush}"
+                                  CornerRadius="{DynamicResource DockSelectorOverlayBadgeCornerRadius}"
+                                  Padding="{DynamicResource DockSelectorOverlayBadgePadding}"
                                   IsVisible="{Binding IsTool}">
                             <TextBlock Text="TOOL"
-                                       FontSize="10" />
+                                       FontSize="{DynamicResource DockSelectorOverlayBadgeFontSize}" />
                           </Border>
-                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
-                                  CornerRadius="3"
-                                  Padding="4,1"
+                          <Border Background="{DynamicResource DockSurfaceHeaderBrush}"
+                                  CornerRadius="{DynamicResource DockSelectorOverlayBadgeCornerRadius}"
+                                  Padding="{DynamicResource DockSelectorOverlayBadgePadding}"
                                   IsVisible="{Binding IsPinned}">
                             <TextBlock Text="PIN"
-                                       FontSize="10" />
+                                       FontSize="{DynamicResource DockSelectorOverlayBadgeFontSize}" />
                           </Border>
-                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
-                                  CornerRadius="3"
-                                  Padding="4,1"
+                          <Border Background="{DynamicResource DockSurfaceHeaderBrush}"
+                                  CornerRadius="{DynamicResource DockSelectorOverlayBadgeCornerRadius}"
+                                  Padding="{DynamicResource DockSelectorOverlayBadgePadding}"
                                   IsVisible="{Binding IsFloating}">
                             <TextBlock Text="FLOAT"
-                                       FontSize="10" />
+                                       FontSize="{DynamicResource DockSelectorOverlayBadgeFontSize}" />
                           </Border>
-                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
-                                  CornerRadius="3"
-                                  Padding="4,1"
+                          <Border Background="{DynamicResource DockSurfaceHeaderBrush}"
+                                  CornerRadius="{DynamicResource DockSelectorOverlayBadgeCornerRadius}"
+                                  Padding="{DynamicResource DockSelectorOverlayBadgePadding}"
                                   IsVisible="{Binding IsHidden}">
                             <TextBlock Text="HIDDEN"
-                                       FontSize="10" />
+                                       FontSize="{DynamicResource DockSelectorOverlayBadgeFontSize}" />
                           </Border>
                         </StackPanel>
                         <TextBlock Text="{Binding Title}"

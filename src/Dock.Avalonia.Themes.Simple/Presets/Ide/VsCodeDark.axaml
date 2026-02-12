@@ -1,0 +1,34 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <SolidColorBrush x:Key="DockSurfaceWorkbenchBrush" Color="#FF1E1E1E" />
+  <SolidColorBrush x:Key="DockSurfaceSidebarBrush" Color="#FF252526" />
+  <SolidColorBrush x:Key="DockSurfaceEditorBrush" Color="#FF1E1E1E" />
+  <SolidColorBrush x:Key="DockSurfacePanelBrush" Color="#FF252526" />
+  <SolidColorBrush x:Key="DockSurfaceHeaderBrush" Color="#FF2D2D30" />
+  <SolidColorBrush x:Key="DockSurfaceHeaderActiveBrush" Color="#FF094771" />
+
+  <SolidColorBrush x:Key="DockBorderSubtleBrush" Color="#FF3E3E42" />
+  <SolidColorBrush x:Key="DockBorderStrongBrush" Color="#FF4B4B4B" />
+  <SolidColorBrush x:Key="DockSeparatorBrush" Color="#FF2A2D2E" />
+  <SolidColorBrush x:Key="DockSplitterIdleBrush" Color="#FF2F2F2F" />
+  <SolidColorBrush x:Key="DockSplitterHoverBrush" Color="#FF0078D4" />
+  <SolidColorBrush x:Key="DockSplitterDragBrush" Color="#FF2899F5" />
+
+  <SolidColorBrush x:Key="DockTabBackgroundBrush" Color="#00000000" />
+  <SolidColorBrush x:Key="DockTabHoverBackgroundBrush" Color="#FF2A2D2E" />
+  <SolidColorBrush x:Key="DockTabActiveBackgroundBrush" Color="#FF1F1F1F" />
+  <SolidColorBrush x:Key="DockTabActiveIndicatorBrush" Color="#FF3794FF" />
+  <SolidColorBrush x:Key="DockTabForegroundBrush" Color="#FFCCCCCC" />
+  <SolidColorBrush x:Key="DockTabSelectedForegroundBrush" Color="#FF4FC1FF" />
+  <SolidColorBrush x:Key="DockTabActiveForegroundBrush" Color="#FFFFFFFF" />
+  <SolidColorBrush x:Key="DockTabCloseHoverBackgroundBrush" Color="#FFC94F4F" />
+  <SolidColorBrush x:Key="DockTargetIndicatorBrush" Color="#663794FF" />
+
+  <SolidColorBrush x:Key="DockChromeButtonForegroundBrush" Color="#FFC5C5C5" />
+  <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush" Color="#FF2A2D2E" />
+  <SolidColorBrush x:Key="DockChromeButtonPressedBackgroundBrush" Color="#FF3A3D41" />
+  <SolidColorBrush x:Key="DockChromeButtonDangerHoverBrush" Color="#FFC94F4F" />
+
+  <sys:Double x:Key="DockCornerRadiusSmall">0</sys:Double>
+</ResourceDictionary>

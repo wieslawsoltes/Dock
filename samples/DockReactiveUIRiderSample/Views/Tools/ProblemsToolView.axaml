@@ -8,13 +8,13 @@
              mc:Ignorable="d"
              d:DesignWidth="600" d:DesignHeight="200"
              x:DataType="vm:ProblemsToolViewModel" x:CompileBindings="True">
-  <Border Background="{StaticResource RiderPanelBrush}">
+  <Border Background="{DynamicResource RiderPanelBrush}">
     <ListBox ItemsSource="{Binding Diagnostics}">
       <ListBox.ItemTemplate>
         <DataTemplate DataType="models:ProblemItemViewModel">
           <Grid ColumnDefinitions="Auto,*" Margin="8,4">
             <TextBlock Text="{Binding Severity}"
-                       Foreground="{StaticResource RiderAccentBrush}"
+                       Foreground="{DynamicResource RiderAccentBrush}"
                        Width="70" />
             <TextBlock Text="{Binding Message}"
                        Grid.Column="1"

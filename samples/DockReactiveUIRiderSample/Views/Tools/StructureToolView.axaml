@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignWidth="260" d:DesignHeight="400"
              x:DataType="vm:StructureToolViewModel" x:CompileBindings="True">
-  <Border Background="{StaticResource RiderPanelBrush}" Padding="12">
+  <Border Background="{DynamicResource RiderPanelBrush}" Padding="12">
     <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" />
   </Border>
 </UserControl>

@@ -4,11 +4,11 @@
   <ControlTheme x:Key="{x:Type controls:DockCommandBarHost}" TargetType="controls:DockCommandBarHost">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="{DynamicResource DockThemeBackgroundBrush}"
-                BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        <Border Background="{DynamicResource DockSurfaceWorkbenchBrush}"
+                BorderBrush="{DynamicResource DockBorderSubtleBrush}"
                 BorderThickness="0,0,0,1"
-                Padding="4,2">
-          <StackPanel Spacing="4">
+                Padding="{DynamicResource DockCommandBarPadding}">
+          <StackPanel Spacing="{DynamicResource DockCommandBarSpacing}">
             <ItemsControl ItemsSource="{TemplateBinding MenuBars}" />
             <ItemsControl ItemsSource="{TemplateBinding ToolBars}" />
             <ItemsControl ItemsSource="{TemplateBinding RibbonBars}" />

@@ -11,7 +11,7 @@
           <Grid IsVisible="{TemplateBinding IsOverlayVisible}"
                 IsHitTestVisible="True"
                 ZIndex="20">
-            <Border Background="{DynamicResource DockThemeForegroundBrush}"
+            <Border Background="{DynamicResource DockTabForegroundBrush}"
                     Opacity="0.35"
                     IsHitTestVisible="{TemplateBinding BlocksInput}"
                     ZIndex="0" />
@@ -19,9 +19,9 @@
               <TextBlock Text="{Binding OverlayMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Confirmation open}"
                          IsVisible="{TemplateBinding ShowGlobalMessage}"
                          IsHitTestVisible="False"
-                         FontSize="14"
+                         FontSize="{DynamicResource DockOverlayMessageFontSize}"
                          FontWeight="SemiBold"
-                         Foreground="{DynamicResource DockThemeForegroundBrush}"
+                         Foreground="{DynamicResource DockTabForegroundBrush}"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Center" />
               <ItemsControl ItemsSource="{Binding Confirmations, RelativeSource={RelativeSource TemplatedParent}}"

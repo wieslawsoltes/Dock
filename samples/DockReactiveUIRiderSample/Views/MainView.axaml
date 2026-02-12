@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignWidth="1200" d:DesignHeight="720"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
-             Background="{StaticResource RiderBackgroundBrush}"
+             Background="{DynamicResource RiderBackgroundBrush}"
              FontFamily="JetBrains Sans, Segoe UI, Noto Sans, sans-serif">
   <Design.DataContext>
     <vm:MainWindowViewModel />
@@ -20,7 +20,7 @@
   <Grid RowDefinitions="Auto,Auto,*,Auto">
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
       <Border Grid.ColumnSpan="2"
-              Background="{StaticResource RiderPanelBrush}"
+              Background="{DynamicResource RiderPanelBrush}"
               IsHitTestVisible="False" />
       <Menu x:Name="MainMenu"
             Grid.Column="0"
@@ -36,7 +36,16 @@
           <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
         </MenuItem>
         <MenuItem Header="_Edit" IsEnabled="False" />
-        <MenuItem Header="_View" IsEnabled="False" />
+        <MenuItem Header="_View">
+          <MenuItem Header="_Theme">
+            <MenuItem Header="_Rider Light"
+                      IsChecked="{Binding IsLightTheme, Mode=OneWay}"
+                      Command="{Binding SwitchToLightThemeCommand}" />
+            <MenuItem Header="_Rider Dark"
+                      IsChecked="{Binding IsDarkTheme, Mode=OneWay}"
+                      Command="{Binding SwitchToDarkThemeCommand}" />
+          </MenuItem>
+        </MenuItem>
         <MenuItem Header="_Navigate" IsEnabled="False" />
         <MenuItem Header="_Code" IsEnabled="False" />
         <MenuItem Header="_Build" IsEnabled="False" />
@@ -49,8 +58,8 @@
     </Grid>
 
     <Border Grid.Row="1"
-            Background="{StaticResource RiderPanelBrush}"
-            BorderBrush="{StaticResource RiderBorderBrush}"
+            Background="{DynamicResource RiderPanelBrush}"
+            BorderBrush="{DynamicResource RiderBorderBrush}"
             BorderThickness="0,0,0,1">
       <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" Margin="8,6">
         <StackPanel Orientation="Horizontal" Spacing="8">
@@ -83,8 +92,8 @@
     <DockControl Grid.Row="2" Layout="{Binding Layout}" Margin="6" />
 
     <Border Grid.Row="3"
-            Background="{StaticResource RiderPanelBrush}"
-            BorderBrush="{StaticResource RiderBorderBrush}"
+            Background="{DynamicResource RiderPanelBrush}"
+            BorderBrush="{DynamicResource RiderBorderBrush}"
             BorderThickness="1,1,1,0">
       <Grid ColumnDefinitions="*,Auto,Auto" Margin="10,4">
         <TextBlock Text="{Binding StatusText}" VerticalAlignment="Center" />

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:win32="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
              xmlns:vm="using:DockReactiveUIRiderSample.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1200" d:DesignHeight="720"
@@ -18,14 +19,24 @@
     <StreamGeometry x:Key="IconRun">M5 4L12 8L5 12V4Z</StreamGeometry>
   </UserControl.Resources>
   <Grid RowDefinitions="Auto,Auto,*,Auto">
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
+    <Grid Grid.Row="0"
+          ColumnDefinitions="Auto,*"
+          Background="Transparent"
+          PointerPressed="OnTitleBarPointerPressed"
+          win32:Win32Properties.NonClientHitTestResult="Caption">
       <Border Grid.ColumnSpan="2"
               Background="{DynamicResource RiderPanelBrush}"
               IsHitTestVisible="False" />
       <Menu x:Name="MainMenu"
             Grid.Column="0"
             Background="{x:Null}"
+            win32:Win32Properties.NonClientHitTestResult="Caption"
             HorizontalAlignment="Left">
+        <Menu.Styles>
+          <Style Selector="MenuItem">
+            <Setter Property="(win32:Win32Properties.NonClientHitTestResult)" Value="Client" />
+          </Style>
+        </Menu.Styles>
         <MenuItem Header="_File">
           <MenuItem Header="_Open Solution..." Click="OnOpenSolutionClicked" />
           <MenuItem Header="_Close Solution" Command="{Binding CloseSolutionCommand}" />

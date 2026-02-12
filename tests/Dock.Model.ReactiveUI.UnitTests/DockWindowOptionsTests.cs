@@ -91,6 +91,14 @@ public class DockWindowOptionsTests
         }
     }
 
+    private sealed class RootResolvingFactory : Factory
+    {
+        public IRootDock ResolveWindowCollectionRootForTest(IRootDock rootDock)
+        {
+            return ResolveWindowCollectionRoot(rootDock);
+        }
+    }
+
     [Fact]
     public void CreateWindowFrom_Applies_Options()
     {
@@ -268,6 +276,26 @@ public class DockWindowOptionsTests
 
         Assert.NotEmpty(factory.Hosts);
         Assert.True(factory.Hosts[^1].PresentedAsDialog);
+    }
+
+    [Fact]
+    public void ResolveWindowCollectionRoot_Cycle_DoesNotLoop()
+    {
+        var factory = new RootResolvingFactory();
+        var rootA = factory.CreateRootDock();
+        var rootB = factory.CreateRootDock();
+
+        var windowA = factory.CreateDockWindow();
+        var windowB = factory.CreateDockWindow();
+
+        rootA.Window = windowA;
+        rootB.Window = windowB;
+        windowA.Owner = rootB;
+        windowB.Owner = rootA;
+
+        var resolvedRoot = factory.ResolveWindowCollectionRootForTest(rootA);
+
+        Assert.Same(rootB, resolvedRoot);
     }
 
     [Fact]

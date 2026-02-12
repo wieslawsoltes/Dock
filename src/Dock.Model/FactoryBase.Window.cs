@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Dock.Model;
@@ -19,8 +20,15 @@ public abstract partial class FactoryBase
     protected virtual IRootDock ResolveWindowCollectionRoot(IRootDock rootDock)
     {
         var current = rootDock;
+        var visited = new HashSet<IRootDock> { current };
+
         while (current.Window?.Owner is IRootDock parentRoot)
         {
+            if (!visited.Add(parentRoot))
+            {
+                break;
+            }
+
             current = parentRoot;
         }
 

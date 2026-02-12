@@ -3,7 +3,6 @@
                     xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
-                    xmlns:sampleConverters="using:Dock.Avalonia.Themes.Browser.Converters"
                     x:CompileBindings="True"
                     x:DataType="dmc:IDocumentDock">
   <Design.PreviewWith>
@@ -122,8 +121,6 @@
         <DockPanel x:Name="PART_DockPanel"
                    DockProperties.IsDropArea="True"
                    DockProperties.IsDockTarget="True"
-                   DockProperties.ShowDockIndicatorOnly="True"
-                   DockProperties.IndicatorDockOperation="Fill"
                    Background="Transparent"
                    ZIndex="1">
           <DocumentTabStrip x:Name="PART_TabStrip"
@@ -143,30 +140,18 @@
           </DocumentTabStrip>
           <Border x:Name="PART_Border">
             <Grid>
-              <ItemsControl x:Name="PART_ItemsHost"
-                            ItemsSource="{Binding VisibleDockables}"
-                            IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
-                <ItemsControl.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <Grid />
-                  </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
-                    <DockableControl TrackingMode="Visible">
-                      <DockableControl.IsVisible>
-                        <MultiBinding Converter="{x:Static sampleConverters:ReferenceEqualsMultiConverter.Instance}">
-                          <Binding />
-                          <Binding Path="((core:IDock)Owner).ActiveDockable" />
-                        </MultiBinding>
-                      </DockableControl.IsVisible>
-                      <ContentControl HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
-                                      Content="{Binding}" />
-                    </DockableControl>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
+              <DockableControl DataContext="{Binding ActiveDockable}"
+                               TrackingMode="Visible"
+                               IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
+                <ContentControl x:Name="PART_ContentPresenter"
+                                Content="{Binding}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                  <ContentControl.ContentTemplate>
+                    <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                  </ContentControl.ContentTemplate>
+                </ContentControl>
+              </DockableControl>
 
               <ContentControl x:Name="PART_EmptyContentHost"
                               Content="{Binding EmptyContent}"

@@ -11,6 +11,22 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
+    /// <summary>
+    /// Resolves the root dock that should own floating window registrations.
+    /// </summary>
+    /// <param name="rootDock">The root where the floating operation originated.</param>
+    /// <returns>The top-level workspace root dock.</returns>
+    protected virtual IRootDock ResolveWindowCollectionRoot(IRootDock rootDock)
+    {
+        var current = rootDock;
+        while (current.Window?.Owner is IRootDock parentRoot)
+        {
+            current = parentRoot;
+        }
+
+        return current;
+    }
+
     /// <inheritdoc/>
     public virtual void AddWindow(IRootDock rootDock, IDockWindow window)
     {

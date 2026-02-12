@@ -1,0 +1,84 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    x:DataType="dmc:IToolDock"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <ToolControl Width="300" Height="400" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type ToolControl}" TargetType="ToolControl">
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="MinWidth" Value="{Binding MinWidth}" />
+    <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
+    <Setter Property="MinHeight" Value="{Binding MinHeight}" />
+    <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
+
+    <Setter Property="IconTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Panel />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="HeaderTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock Text="{Binding Title}" Padding="2" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="ModifiedTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock VerticalAlignment="Center"
+                   Text="*"
+                   Margin="0,0,2,0" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockPanel x:Name="PART_DockPanel"
+                   DockProperties.IsDropArea="True"
+                   DockProperties.IsDockTarget="True">
+          <ToolTabStrip x:Name="PART_TabStrip"
+                        ItemsSource="{Binding VisibleDockables}"
+                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        DockPanel.Dock="Bottom"
+                        DockProperties.IsDropArea="True"
+                        DockProperties.DockAdornerHost="{Binding #PART_DockPanel}" />
+          <Border x:Name="PART_Border">
+            <DockableControl DataContext="{Binding ActiveDockable}"
+                             TrackingMode="Visible">
+              <ContentControl x:Name="PART_ContentPresenter"
+                              Content="{Binding}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch">
+                <ContentControl.ContentTemplate>
+                  <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                </ContentControl.ContentTemplate>
+              </ContentControl>
+            </DockableControl>
+          </Border>
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^/template/ DockPanel#PART_DockPanel">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="ZIndex" Value="1" />
+    </Style>
+
+    <Style Selector="^/template/ Border#PART_Border">
+      <Setter Property="ZIndex" Value="-1" />
+      <Setter Property="Background" Value="{DynamicResource swWidgetBackground}" />
+      <Setter Property="Margin" Value="0" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
+      <Setter Property="BorderThickness" Value="1 0 1 0" />
+    </Style>
+
+  </ControlTheme>
+
+</ResourceDictionary>

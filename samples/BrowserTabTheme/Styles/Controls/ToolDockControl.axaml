@@ -1,0 +1,49 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    x:DataType="dmc:IToolDock"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <ToolDockControl Width="300" Height="300" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type ToolDockControl}" TargetType="ToolDockControl">
+
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding Title}" />
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="MinWidth" Value="{Binding MinWidth}" />
+    <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
+    <Setter Property="MinHeight" Value="{Binding MinHeight}" />
+    <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockableControl Name="PART_DockableControl"
+                         TrackingMode="Visible"
+                         Background="{TemplateBinding Background}"
+                         DockProperties.IsDropArea="True"
+                         DockProperties.IsDockTarget="True">
+          <ToolChromeControl IsActive="{Binding IsActive}"
+                             IsVisible="{Binding !!VisibleDockables.Count}">
+            <ToolControl />
+          </ToolChromeControl>
+        </DockableControl>
+      </ControlTemplate>
+    </Setter>
+    <!--
+    <Style Selector="^[(ProportionalStackPanelSplitter.IsEmpty)=False] /template/ DockableControl#PART_DockableControl">
+      <Setter Property="Background" Value="Blue" />
+    </Style>
+
+    <Style Selector="^[(ProportionalStackPanelSplitter.IsEmpty)=True] /template/ DockableControl#PART_DockableControl">
+      <Setter Property="Background" Value="Red" />
+    </Style>
+    -->
+  </ControlTheme>
+
+</ResourceDictionary>

@@ -3,7 +3,7 @@
                     xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
-                    xmlns:sampleConverters="using:BrowserTabTheme.Converters"
+                    xmlns:sampleConverters="using:Dock.Avalonia.Themes.Browser.Converters"
                     x:CompileBindings="True"
                     x:DataType="dmc:IDocumentDock">
   <Design.PreviewWith>

@@ -19,8 +19,9 @@
         FontFamily="JetBrains Sans, Segoe UI, Noto Sans, sans-serif"
         Title="Dock Rider Sample"
         Height="780" Width="1280"
+        ExtendClientAreaTitleBarHeightHint="32"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="PreferSystemChrome">
+        ExtendClientAreaChromeHints="Default, PreferSystemChrome, OSXThickTitleBar">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

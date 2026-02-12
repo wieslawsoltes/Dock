@@ -5,7 +5,8 @@ using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Avalonia.Diagnostics;
-using DockMvvmSample.Themes;
+using Dock.Avalonia.Themes;
+using Dock.Avalonia.Themes.Fluent;
 using DockMvvmSample.ViewModels;
 using DockMvvmSample.Views;
 
@@ -13,11 +14,11 @@ namespace DockMvvmSample;
 
 public class App : Application
 {
-    public static IThemeManager? ThemeManager;
+    public static IDockThemeManager? ThemeManager;
 
     public override void Initialize()
     {
-        ThemeManager = new FluentThemeManager();
+        ThemeManager = new DockFluentThemeManager();
 
         AvaloniaXamlLoader.Load(this);
     }

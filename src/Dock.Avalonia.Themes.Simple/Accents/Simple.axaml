@@ -19,7 +19,7 @@
     <sys:Double x:Key="DockFontSizeNormal">12</sys:Double>
 
     <!-- Brushes used by ToolChromeControl icons and grip -->
-    <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
+    <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockThemeForegroundBrush" />
 
     <!-- Semantic token aliases shared across theme variants/presets -->
     <StaticResource x:Key="DockSurfaceWorkbenchBrush" ResourceKey="DockThemeBackgroundBrush" />
@@ -84,19 +84,7 @@
     <sys:Double x:Key="DockToolChromeDividerThickness">1</sys:Double>
     <sys:Double x:Key="DockChromeGripHeight">5</sys:Double>
     <Thickness x:Key="DockChromeGripMargin">0,0,2,0</Thickness>
-    <VisualBrush x:Key="DockChromeGripBrush"
-                 SourceRect="0,0,4,5"
-                 DestinationRect="0,0,4,5"
-                 TileMode="Tile"
-                 Stretch="UniformToFill">
-        <VisualBrush.Visual>
-            <Canvas Width="4" Height="5" Background="Transparent">
-                <Rectangle Height="1" Width="1" Fill="{DynamicResource DockChromeButtonForegroundBrush}" />
-                <Rectangle Height="1" Width="1" Fill="{DynamicResource DockChromeButtonForegroundBrush}" Canvas.Top="2" Canvas.Left="2" />
-                <Rectangle Height="1" Width="1" Fill="{DynamicResource DockChromeButtonForegroundBrush}" Canvas.Top="4" />
-            </Canvas>
-        </VisualBrush.Visual>
-    </VisualBrush>
+    <SolidColorBrush x:Key="DockChromeGripBrush" Color="#00000000" />
     <sys:Double x:Key="DockMdiHeaderColumnSpacing">4</sys:Double>
     <sys:Double x:Key="DockMdiButtonStripSpacing">2</sys:Double>
     <Thickness x:Key="DockMdiButtonStripMargin">2,0</Thickness>

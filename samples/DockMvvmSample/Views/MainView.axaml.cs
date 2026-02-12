@@ -3,10 +3,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -35,14 +37,28 @@ public partial class MainView : UserControl
 
     private void InitializeThemes()
     {
-        var dark = false;
+        var themeManager = App.ThemeManager;
+        var dark = Application.Current?.RequestedThemeVariant == ThemeVariant.Dark;
 
-        if (ThemeButton is not null)
+        if (ThemeButton is not null && themeManager is not null)
         {
             ThemeButton.Click += (_, _) =>
             {
                 dark = !dark;
-                App.ThemeManager?.Switch(dark ? 1 : 0);
+                themeManager.Switch(dark ? 1 : 0);
+            };
+        }
+
+        if (PresetComboBox is not null && themeManager is not null)
+        {
+            PresetComboBox.ItemsSource = themeManager.PresetNames;
+            PresetComboBox.SelectedIndex = themeManager.CurrentPresetIndex;
+            PresetComboBox.SelectionChanged += (_, _) =>
+            {
+                if (PresetComboBox.SelectedIndex >= 0)
+                {
+                    themeManager.SwitchPreset(PresetComboBox.SelectedIndex);
+                }
             };
         }
     }

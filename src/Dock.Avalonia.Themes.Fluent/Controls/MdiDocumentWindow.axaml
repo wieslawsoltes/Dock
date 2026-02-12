@@ -207,8 +207,8 @@
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
     <Setter Property="CloseButtonTheme" Value="{DynamicResource ChromeButton}" />
     <Setter Property="DocumentContextMenu" Value="{DynamicResource MdiDocumentWindowContextMenu}" />
-    <Setter Property="Background" Value="{DynamicResource DockWindowChromeBackgroundBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource DockWindowChromeBorderBrush}" />
+    <Setter Property="Background" Value="{DynamicResource DockSurfaceEditorBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
     <Setter Property="BorderThickness" Value="1" />
 
     <Setter Property="IconTemplate">
@@ -267,7 +267,7 @@
               <DockPanel>
                 <Border x:Name="PART_Header"
                         DockPanel.Dock="Top"
-                        Background="{DynamicResource DockWindowChromeTitleBarBackgroundBrush}"
+                        Background="{DynamicResource DockSurfaceHeaderBrush}"
                         ContextMenu="{TemplateBinding DocumentContextMenu}">
                   <Grid ColumnDefinitions="*,Auto">
                     <DockPanel Grid.Column="0" LastChildFill="True">

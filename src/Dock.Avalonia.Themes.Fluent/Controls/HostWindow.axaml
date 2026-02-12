@@ -18,9 +18,9 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
 
-    <Setter Property="Background" Value="{DynamicResource DockWindowChromeBackgroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource DockSurfaceEditorBrush}" />
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
-    <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockWindowChromeForegroundBrush}" />
+    <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
     <Setter Property="WindowState" Value="Normal" />
     <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Title" Value="{Binding FocusedDockable.Title}"  />
@@ -119,7 +119,7 @@
     </Style>
 
     <Style Selector="^:toolwindow">
-      <Setter Property="Background" Value="{DynamicResource DockWindowChromeBackgroundBrush}" />
+      <Setter Property="Background" Value="{DynamicResource DockSurfaceEditorBrush}" />
       <Setter Property="TransparencyLevelHint" Value="None"/>
       <Setter Property="Opacity" Value="1.0" />
     </Style>

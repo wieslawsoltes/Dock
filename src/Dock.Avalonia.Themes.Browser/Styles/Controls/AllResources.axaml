@@ -1,0 +1,29 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ControlStrings.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/CaptionButtons.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentTabStripItem.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentTabStrip.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ToolTabStripItem.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ToolTabStrip.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DockTarget.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/GlobalDockTarget.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ToolChromeControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ToolControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DragPreviewControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DragPreviewWindow.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DockDockControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentContentControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentDockControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ProportionalDockControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/RootDockControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ToolContentControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/ToolDockControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DockControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/HostWindowTitleBar.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/HostWindow.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/WrapDockControl.axaml" />
+  </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

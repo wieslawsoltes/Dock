@@ -269,4 +269,42 @@ public class DockWindowOptionsTests
         Assert.NotEmpty(factory.Hosts);
         Assert.True(factory.Hosts[^1].PresentedAsDialog);
     }
+
+    [Fact]
+    public void FloatDockable_FromFloatingWindow_RegistersOnWorkspaceRoot()
+    {
+        var factory = new TrackingFactory();
+        var root = factory.CreateRootDock();
+        var toolDock = factory.CreateToolDock();
+        var tool1 = factory.CreateTool();
+        var tool2 = factory.CreateTool();
+
+        toolDock.VisibleDockables = factory.CreateList<IDockable>(tool1);
+        toolDock.ActiveDockable = tool1;
+
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        factory.AddDockable(root, toolDock);
+        root.ActiveDockable = toolDock;
+
+        factory.InitLayout(root);
+
+        factory.FloatDockable(tool1, null);
+
+        Assert.NotNull(root.Windows);
+        Assert.Single(root.Windows!);
+        var firstFloatingWindow = root.Windows![0];
+        Assert.NotNull(firstFloatingWindow.Layout);
+        var firstFloatingRoot = firstFloatingWindow.Layout!;
+
+        Assert.IsAssignableFrom<IDock>(firstFloatingRoot.ActiveDockable);
+        var floatingToolDock = (IDock)firstFloatingRoot.ActiveDockable!;
+        floatingToolDock.VisibleDockables ??= factory.CreateList<IDockable>();
+        factory.AddDockable(floatingToolDock, tool2);
+        floatingToolDock.ActiveDockable = tool2;
+
+        factory.FloatDockable(tool2, null);
+
+        Assert.Equal(2, root.Windows!.Count);
+        Assert.True(firstFloatingRoot.Windows is null || firstFloatingRoot.Windows.Count == 0);
+    }
 }

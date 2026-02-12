@@ -15,7 +15,7 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .UseDefaultFloatingWindowOwnerMode(DockWindowOwnerMode.RootWindow)
-            .UseFloatingWindowOwnerPolicy(DockFloatingWindowOwnerPolicy.NeverOwned)
+            .UseFloatingWindowOwnerPolicy(DockFloatingWindowOwnerPolicy.AlwaysOwned)
             .CloseFloatingWindowsOnMainWindowClose(true)
             .LogToTrace();
 }

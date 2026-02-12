@@ -17,14 +17,14 @@ This sample backports a browser-tab visual style from StackWich into the origina
 ## Run
 
 ```bash
-dotnet run --project /Volumes/SSD/repos/StackWich/Dock/samples/BrowserTabTheme/BrowserTabTheme.csproj
+dotnet run --project samples/BrowserTabTheme/BrowserTabTheme.csproj
 ```
 
 ## Build checks
 
 ```bash
-dotnet build /Volumes/SSD/repos/StackWich/Dock/samples/BrowserTabTheme/BrowserTabTheme.csproj
-dotnet build /Volumes/SSD/repos/StackWich/Dock/Dock.slnx
+dotnet build samples/BrowserTabTheme/BrowserTabTheme.csproj
+dotnet build Dock.slnx
 ```
 
 ## Screenshot

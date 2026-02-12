@@ -352,47 +352,11 @@
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                       Content="{Binding}" VerticalContentAlignment="Center" Padding="0,1,0,0" />
                   </StackPanel>
-                  <Button x:Name="PART_CloseButton"
-                          Command="{Binding Owner.Factory.CloseDockable}"
-                          CommandParameter="{Binding}">
-                    <Button.IsVisible>
-                      <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
-            <Binding />
-            <Binding Path="CanClose" />
-            <Binding Path="DockCapabilityOverrides.CanClose" />
-            <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanClose" />
-          </MultiBinding>
-                        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-                          <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
-                          <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
-                        </MultiBinding>
-                      </MultiBinding>
-                    </Button.IsVisible>
-                    <Button.Styles>
-                      <Style Selector="Button">
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Padding" Value="0" />
-                        <Setter Property="Margin" Value="0" />
-                        <Setter Property="Width" Value="{DynamicResource DockCloseButtonSize}" />
-                        <Setter Property="Height" Value="{DynamicResource DockCloseButtonSize}" />
-                        <Setter Property="Background" Value="Transparent" />
-                        <Style Selector="^:pointerover">
-                          <Setter Property="Background" Value="{DynamicResource DockTabCloseHoverBackgroundBrush}" />
-                        </Style>
-                      </Style>
-                    </Button.Styles>
-                    <Path x:Name="PART_ClosePath">
-                      <Path.Styles>
-                        <Style Selector="Path">
-                          <Setter Property="Margin" Value="{DynamicResource DockTabContentMargin}" />
-                          <Setter Property="Stretch" Value="Uniform" />
-                          <Setter Property="UseLayoutRounding" Value="False" />
-                          <Setter Property="Data" Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                        </Style>
-                      </Path.Styles>
-                    </Path>
-                  </Button>
+                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
+                                    IsVisible="{Binding IsModified}"
+                                    Content="{Binding}" />
+                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
+                                    Content="{Binding}" />
                 </StackPanel>
               </DockPanel>
             </DockableControl>

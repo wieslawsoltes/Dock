@@ -9,7 +9,7 @@
 
   <ControlTheme x:Key="{x:Type HostWindowTitleBar}" TargetType="HostWindowTitleBar">
 
-    <Setter Property="Foreground" Value="{DynamicResource DockWindowChromeForegroundBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}"/>
     <Setter Property="VerticalAlignment" Value="Top" />
     <Setter Property="HorizontalAlignment" Value="Stretch" />
     <Setter Property="Background" Value="Transparent" />

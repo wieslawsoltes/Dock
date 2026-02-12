@@ -300,6 +300,7 @@
 
     <Style Selector="^/template/ Grid#PART_Grid">
       <Setter Property="Height" Value="{DynamicResource DockChromeGripHeight}" />
+      <Setter Property="MinWidth" Value="12" />
       <Setter Property="VerticalAlignment" Value="Center" />
       <Setter Property="Margin" Value="{DynamicResource DockChromeGripMargin}" />
       <Setter Property="Background" Value="{DynamicResource DockChromeGripBrush}" />

@@ -29,6 +29,7 @@
   <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush" Color="#FF2A2D2E" />
   <SolidColorBrush x:Key="DockChromeButtonPressedBackgroundBrush" Color="#FF3A3D41" />
   <SolidColorBrush x:Key="DockChromeButtonDangerHoverBrush" Color="#FFC94F4F" />
+  <SolidColorBrush x:Key="DockChromeGripBrush" Color="#00000000" />
 
   <sys:Double x:Key="DockCornerRadiusSmall">0</sys:Double>
 </ResourceDictionary>

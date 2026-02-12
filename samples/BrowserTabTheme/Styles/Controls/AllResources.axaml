@@ -12,14 +12,11 @@
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/GlobalDockTarget.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/ToolChromeControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/ToolControl.axaml" />
-    <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/ToolPinItemControl.axaml" />
-    <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/ToolPinnedControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/DragPreviewControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/DragPreviewWindow.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/DockDockControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/DocumentContentControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/DocumentDockControl.axaml" />
-    <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/PinnedDockControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/ProportionalDockControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/RootDockControl.axaml" />
     <ResourceInclude Source="avares://BrowserTabTheme/Styles/Controls/ToolContentControl.axaml" />

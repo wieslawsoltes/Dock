@@ -48,9 +48,10 @@ public partial class App : Application
 
             if (documentDock is DocumentDock documentDockImpl)
             {
+                var nextDocumentIndex = (documentDock.VisibleDockables?.Count ?? 0) + 1;
                 documentDockImpl.DocumentFactory = () =>
                 {
-                    var index = (documentDock.VisibleDockables?.Count ?? 0) + 1;
+                    var index = nextDocumentIndex++;
                     return new Document
                     {
                         Id = $"Document{index}",
@@ -79,5 +80,9 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+
+#if DEBUG
+        this.AttachDevTools();
+#endif
     }
 }

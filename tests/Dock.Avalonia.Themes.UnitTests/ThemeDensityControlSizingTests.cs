@@ -19,7 +19,7 @@ namespace Dock.Avalonia.Themes.UnitTests;
 public class ThemeDensityControlSizingTests
 {
     [AvaloniaFact]
-    public void CompactDensity_Should_Update_TabItem_MinHeights_For_All_Themes()
+    public void CompactDensity_Should_Keep_DocumentTab_MinHeight_And_Update_ToolTab_Metrics_For_All_Themes()
     {
         foreach (var useFluentTheme in new[] { true, false })
         {
@@ -31,7 +31,7 @@ public class ThemeDensityControlSizingTests
                     : new DockSimpleTheme { DensityStyle = DockDensityStyle.Compact });
             try
             {
-                Assert.Equal(22d, documentTab.MinHeight);
+                Assert.Equal(24d, documentTab.MinHeight);
             }
             finally
             {

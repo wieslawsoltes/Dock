@@ -8,7 +8,6 @@
   <sys:Double x:Key="DockIconSizeNormal">12</sys:Double>
 
   <sys:Double x:Key="DockTabItemMinHeight">22</sys:Double>
-  <sys:Double x:Key="DockDocumentTabItemMinHeight">22</sys:Double>
   <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
   <Thickness x:Key="DockDocumentTabItemPadding">3,0,3,0</Thickness>
   <Thickness x:Key="DockToolTabItemPadding">3,0,3,0</Thickness>

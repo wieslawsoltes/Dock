@@ -1969,6 +1969,11 @@ internal static class LeakTestHelpers
 
     internal static void ResetDispatcherForUnitTests()
     {
+        LeakTestSession.RequestDispatcherReset();
+    }
+
+    internal static void ResetDispatcherForUnitTestsCore()
+    {
         var reset = typeof(Dispatcher).GetMethod("ResetForUnitTests", BindingFlags.Static | BindingFlags.NonPublic);
         reset?.Invoke(null, null);
 

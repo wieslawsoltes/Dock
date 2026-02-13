@@ -93,22 +93,14 @@
             </MultiBinding>
           </Button.IsVisible>
 
-          <Path x:Name="PART_ClosePath"
-                Classes.selected="{Binding $parent[DocumentTabStripItem].IsSelected}"
-                Classes.pointerover="{Binding $parent[DocumentTabStripItem].IsPointerOver}">
+          <Path x:Name="PART_ClosePath">
             <Path.Styles>
               <Style Selector="Path">
                 <Setter Property="Margin" Value="{DynamicResource DockTabContentMargin}" />
                 <Setter Property="Stretch" Value="Uniform" />
                 <Setter Property="UseLayoutRounding" Value="False" />
                 <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
-              </Style>
-              <Style Selector="Path.selected">
-                <Setter Property="Fill" Value="{DynamicResource DockDocumentTabCloseSelectedForegroundBrush}" />
-              </Style>
-
-              <Style Selector="Path.pointerover">
-                <Setter Property="Fill" Value="{DynamicResource DockDocumentTabClosePointerOverForegroundBrush}" />
+                <Setter Property="Fill" Value="{Binding $parent[DocumentTabStripItem].Foreground}" />
               </Style>
             </Path.Styles>
           </Path>

@@ -346,7 +346,9 @@
                 <StackPanel Background="Transparent"
                             Orientation="Horizontal"
                             Spacing="{DynamicResource DockTabContentSpacing}">
-                  <StackPanel Margin="{DynamicResource DockTabContentMargin}" Orientation="Horizontal">
+                  <StackPanel Margin="{DynamicResource DockTabContentMargin}"
+                              Orientation="Horizontal"
+                              Spacing="{DynamicResource DockDocumentTabHeaderContentSpacing}">
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
                                       Content="{Binding}" />
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
@@ -375,14 +377,28 @@
       <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
     </Style>
 
-    <Style Selector="^:pointerover">
+    <Style Selector="^:dragging:not(:selected)">
       <Setter Property="Background" Value="{DynamicResource DockTabHoverBackgroundBrush}" />
       <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
     </Style>
 
-    <Style Selector="^:selected:pointerover">
+    <Style Selector="^:dragging:selected:not(:active)">
+      <Setter Property="Background" Value="{DynamicResource DockSurfaceHeaderBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabSelectedForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:dragging:active:selected">
       <Setter Property="Background" Value="{DynamicResource DockTabActiveBackgroundBrush}" />
       <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:pointerover:not(:selected):not(:dragging)">
+      <Setter Property="Background" Value="{DynamicResource DockTabHoverBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:selected:pointerover:not(:dragging)">
+      <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
     </Style>
 
   </ControlTheme>

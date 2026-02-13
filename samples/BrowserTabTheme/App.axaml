@@ -41,6 +41,21 @@
       </Setter>
     </Style>
 
+    <Style Selector="DocumentTabStrip">
+      <Setter Property="CreateButtonTemplate">
+        <DataTemplate>
+          <Button Command="{Binding CreateDocument}"
+                  Theme="{DynamicResource ButtonCreateDocument}">
+            <Path Stretch="Uniform"
+                  UseLayoutRounding="False"
+                  Data="{DynamicResource DockIconAddDocumentGeometry}"
+                  Fill="{DynamicResource DockTabForegroundBrush}"
+                  Margin="{DynamicResource DockCreateButtonIconMargin}" />
+          </Button>
+        </DataTemplate>
+      </Setter>
+    </Style>
+
     <Style Selector="ToolControl">
       <Setter Property="HeaderTemplate">
         <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">

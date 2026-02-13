@@ -64,6 +64,7 @@ public class ThemeSemanticTokenContractTests
         "DockHeaderContentPadding",
         "DockModifiedIndicatorMargin",
         "DockTabContentSpacing",
+        "DockDocumentTabHeaderContentSpacing",
         "DockTabContentMargin",
         "DockCreateButtonIconMargin",
         "DockToolChromeHeaderMargin",

@@ -81,6 +81,7 @@
     <Thickness x:Key="DockHeaderContentPadding">2</Thickness>
     <Thickness x:Key="DockModifiedIndicatorMargin">0,0,2,0</Thickness>
     <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>
+    <sys:Double x:Key="DockDocumentTabHeaderContentSpacing">0</sys:Double>
     <Thickness x:Key="DockTabContentMargin">2</Thickness>
     <Thickness x:Key="DockCreateButtonIconMargin">5</Thickness>
     <Thickness x:Key="DockDocumentTabStripHorizontalCreateButtonMargin">0</Thickness>

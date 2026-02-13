@@ -23,10 +23,12 @@
       <SolidColorBrush x:Key="DockTabHoverBackgroundBrush">#4D87E7</SolidColorBrush>
       <SolidColorBrush x:Key="DockTabActiveBackgroundBrush">#2F6FDC</SolidColorBrush>
       <StaticResource x:Key="DockTabActiveIndicatorBrush" ResourceKey="DockTabActiveBackgroundBrush" />
-      <SolidColorBrush x:Key="DockTabForegroundBrush">#0E1D36</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabForegroundBrush">#13363B</SolidColorBrush>
       <StaticResource x:Key="DockTabSelectedForegroundBrush" ResourceKey="DockTabForegroundBrush" />
-      <SolidColorBrush x:Key="DockTabActiveForegroundBrush">#0E1D36</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabActiveForegroundBrush">#13363B</SolidColorBrush>
       <SolidColorBrush x:Key="DockTabCloseHoverBackgroundBrush">#D8E6FF</SolidColorBrush>
+      <SolidColorBrush x:Key="DockDocumentTabPointerOverForegroundBrush">#0B181A</SolidColorBrush>
+      <StaticResource x:Key="DockDocumentTabClosePointerOverForegroundBrush" ResourceKey="DockDocumentTabPointerOverForegroundBrush" />
 
       <StaticResource x:Key="DockTargetIndicatorBrush" ResourceKey="DockTabActiveBackgroundBrush" />
       <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush">#E8EEF9</SolidColorBrush>
@@ -69,10 +71,12 @@
       <SolidColorBrush x:Key="DockTabHoverBackgroundBrush">#4C89E8</SolidColorBrush>
       <SolidColorBrush x:Key="DockTabActiveBackgroundBrush">#2C72E3</SolidColorBrush>
       <StaticResource x:Key="DockTabActiveIndicatorBrush" ResourceKey="DockTabActiveBackgroundBrush" />
-      <SolidColorBrush x:Key="DockTabForegroundBrush">#E8F1FF</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabForegroundBrush">#DCDCDC</SolidColorBrush>
       <StaticResource x:Key="DockTabSelectedForegroundBrush" ResourceKey="DockTabForegroundBrush" />
-      <SolidColorBrush x:Key="DockTabActiveForegroundBrush">#E8F1FF</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabActiveForegroundBrush">#DCDCDC</SolidColorBrush>
       <SolidColorBrush x:Key="DockTabCloseHoverBackgroundBrush">#24354D</SolidColorBrush>
+      <SolidColorBrush x:Key="DockDocumentTabPointerOverForegroundBrush">#FFFFFF</SolidColorBrush>
+      <StaticResource x:Key="DockDocumentTabClosePointerOverForegroundBrush" ResourceKey="DockDocumentTabPointerOverForegroundBrush" />
 
       <SolidColorBrush x:Key="DockTargetIndicatorBrush">#5C9BFF</SolidColorBrush>
       <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush">#2C374E</SolidColorBrush>
@@ -101,9 +105,7 @@
 
   <!-- Browser document tab token overrides -->
   <StaticResource x:Key="DockDocumentTabSelectedForegroundBrush" ResourceKey="DockTabSelectedForegroundBrush" />
-  <StaticResource x:Key="DockDocumentTabPointerOverForegroundBrush" ResourceKey="DockTabForegroundBrush" />
   <StaticResource x:Key="DockDocumentTabCloseSelectedForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
-  <StaticResource x:Key="DockDocumentTabClosePointerOverForegroundBrush" ResourceKey="DockTabForegroundBrush" />
   <SolidColorBrush x:Key="DockDocumentTabStripBackgroundBrush">Transparent</SolidColorBrush>
 
   <!-- Size/density tokens -->
@@ -135,9 +137,10 @@
   <Thickness x:Key="DockHeaderContentPadding">2</Thickness>
   <Thickness x:Key="DockModifiedIndicatorMargin">0,0,2,0</Thickness>
   <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>
+  <sys:Double x:Key="DockDocumentTabHeaderContentSpacing">5</sys:Double>
   <Thickness x:Key="DockTabContentMargin">2</Thickness>
   <Thickness x:Key="DockCreateButtonIconMargin">5</Thickness>
-  <Thickness x:Key="DockDocumentTabStripHorizontalCreateButtonMargin">0</Thickness>
+  <Thickness x:Key="DockDocumentTabStripHorizontalCreateButtonMargin">6,0</Thickness>
   <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerMargin">0</Thickness>
   <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerPadding">0</Thickness>
   <Thickness x:Key="DockToolChromeTitleMargin">0,4,8,4</Thickness>

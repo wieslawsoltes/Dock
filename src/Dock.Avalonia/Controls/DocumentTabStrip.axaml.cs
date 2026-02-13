@@ -6,6 +6,7 @@ using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
 using Avalonia.Styling;
@@ -64,12 +65,27 @@ public class DocumentTabStrip : TabStrip
         AvaloniaProperty.Register<DocumentTabStrip, ControlTheme?>(nameof(CreateButtonTheme));
 
     /// <summary>
+    /// Defines the <see cref="CreateButtonTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> CreateButtonTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(CreateButtonTemplate));
+
+    /// <summary>
     /// Gets or sets the create button theme.
     /// </summary>
     public ControlTheme? CreateButtonTheme
     {
         get => GetValue(CreateButtonThemeProperty);
         set => SetValue(CreateButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the create button content template.
+    /// </summary>
+    public IDataTemplate? CreateButtonTemplate
+    {
+        get => GetValue(CreateButtonTemplateProperty);
+        set => SetValue(CreateButtonTemplateProperty, value);
     }
 
     /// <summary>
@@ -209,6 +225,7 @@ public class DocumentTabStrip : TabStrip
         {
             AttachScrollViewerWheel();
         }
+
     }
 
     private void UpdatePseudoClassesCreate(bool canCreate)

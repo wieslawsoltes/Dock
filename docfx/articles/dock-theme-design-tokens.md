@@ -101,6 +101,7 @@ All token keys below are available in both:
 | `DockHeaderContentPadding` | Shared title/header text padding in document/tool/MDI headers. |
 | `DockModifiedIndicatorMargin` | Shared margin for modified marker (`*`). |
 | `DockTabContentSpacing` | Spacing between tab content blocks (icon, title, modified, close). |
+| `DockDocumentTabHeaderContentSpacing` | Spacing between document tab icon and header presenters. |
 | `DockTabContentMargin` | Inner margin around tab content stack. |
 | `DockCreateButtonIconMargin` | Plus/create icon margin in document tab strip. |
 | `DockDocumentTabStripHorizontalCreateButtonMargin` | Horizontal create button margin in document tab strip. |

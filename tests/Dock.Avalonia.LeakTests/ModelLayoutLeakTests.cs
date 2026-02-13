@@ -225,9 +225,9 @@ public class ModelLayoutLeakTests
         documentDock.Factory = factory;
         documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
         documentDock.ActiveDockable = document;
-        documentDock.CanCreateDocument = true;
+        documentDock.CanCreateDocument = false;
         documentDock.CloseButtonShowMode = DocumentCloseButtonShowMode.Always;
-        documentDock.CreateDocument = NoOpCommandInstance;
+        documentDock.CreateDocument = null;
         document.Owner = documentDock;
 
         root.VisibleDockables.Add(toolDock);

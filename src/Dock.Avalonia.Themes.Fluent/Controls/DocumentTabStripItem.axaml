@@ -313,14 +313,15 @@
 
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="FontWeight" Value="Normal" />
-    <Setter Property="MinHeight" Value="{DynamicResource DockTabItemMinHeight}" />
+    <Setter Property="MinHeight" Value="{DynamicResource DockDocumentTabItemMinHeight}" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
     <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="Margin" Value="0" />
+    <Setter Property="Margin" Value="{DynamicResource DockDocumentTabItemMargin}" />
     <Setter Property="Padding" Value="{DynamicResource DockDocumentTabItemPadding}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource DockDocumentTabItemCornerRadius}" />
     <Setter Property="DocumentContextMenu" Value="{DynamicResource DocumentTabStripItemContextMenu}" />
 
     <Setter Property="Template">
@@ -334,6 +335,7 @@
                   BorderThickness="{TemplateBinding BorderThickness}"
                   ContextMenu="{TemplateBinding DocumentContextMenu}"
                   Padding="{TemplateBinding Padding}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
                   DockProperties.IsDragArea="True"
                   DockProperties.IsDropArea="True"
                   DockProperties.IsDockTarget="True"
@@ -365,7 +367,7 @@
 
     <Style Selector="^:not(:active):selected">
       <Setter Property="Background" Value="{DynamicResource DockSurfaceHeaderBrush}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabSelectedForegroundBrush}" />
     </Style>
 
     <Style Selector="^:active:selected">
@@ -375,7 +377,7 @@
 
     <Style Selector="^:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockTabHoverBackgroundBrush}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
     </Style>
 
     <Style Selector="^:selected:pointerover">

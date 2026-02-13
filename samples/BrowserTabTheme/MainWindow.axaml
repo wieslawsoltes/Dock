@@ -8,6 +8,6 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1"
         ExtendClientAreaChromeHints="PreferSystemChrome">
-  <DockControl Name="DockControl" />
+  <DockControl Name="DockControl" Margin="6" />
   
 </Window>

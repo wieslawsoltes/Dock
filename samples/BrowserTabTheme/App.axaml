@@ -6,7 +6,7 @@
              RequestedThemeVariant="Dark">
   <Application.DataTemplates>
     <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
-      <Border Background="{DynamicResource swWidgetBackground}" Padding="20">
+      <Border Background="{DynamicResource DockSurfaceEditorBrush}" Padding="20">
         <StackPanel Spacing="8">
           <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="SemiBold" />
           <TextBlock Text="BrowserTabTheme sample document content." Opacity="0.8" />
@@ -28,7 +28,7 @@
                     Height="16"
                     Margin="0"
                     Padding="0,0,2,0"
-                    Foreground="{DynamicResource swForegroundTitle}" />
+                    Foreground="{DynamicResource DockTabForegroundBrush}" />
         </DataTemplate>
       </Setter>
     </Style>

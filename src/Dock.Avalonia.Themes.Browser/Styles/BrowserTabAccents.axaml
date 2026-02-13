@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=netstandard">
+                    xmlns:sys="clr-namespace:System;assembly=netstandard"
+                    xmlns:core="using:Dock.Model.Core">
   <ResourceDictionary.ThemeDictionaries>
     <ResourceDictionary x:Key="Default">
       <!-- Token-first brushes -->
@@ -46,23 +47,6 @@
       <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockThemeForegroundBrush" />
       <StaticResource x:Key="DockChromeButtonForegroundBrush" ResourceKey="DockToolChromeIconBrush" />
 
-      <SolidColorBrush x:Key="CaptionButtonBackground">#E8EEF9</SolidColorBrush>
-      <SolidColorBrush x:Key="CaptionButtonBorderBrush">#CBD9F2</SolidColorBrush>
-      <SolidColorBrush x:Key="CaptionButtonForeground">#0E1D36</SolidColorBrush>
-
-      <StaticResource x:Key="swWidgetBackground" ResourceKey="DockSurfaceEditorBrush" />
-      <SolidColorBrush x:Key="swWidgetTabBackground">#E5ECF8</SolidColorBrush>
-      <StaticResource x:Key="swWidgetTabForeground" ResourceKey="DockTabForegroundBrush" />
-      <SolidColorBrush x:Key="swWidgetTabHoverBackground">#CEDBF2</SolidColorBrush>
-      <SolidColorBrush x:Key="swWidgetTabSelectedBackground">#FFFFFF</SolidColorBrush>
-      <StaticResource x:Key="swWidgetTabSelectedForeground" ResourceKey="DockTabForegroundBrush" />
-      <StaticResource x:Key="swWidgetTabActiveBackground" ResourceKey="DockTargetIndicatorBrush" />
-      <StaticResource x:Key="swForegroundTitle" ResourceKey="DockTabForegroundBrush" />
-      <SolidColorBrush x:Key="swColorTextDefaultPointerOverBrush">#0A1A32</SolidColorBrush>
-      <SolidColorBrush x:Key="swButtonBackgroundColor">#FFFFFF</SolidColorBrush>
-      <SolidColorBrush x:Key="swButtonFillPointerOverBrush">#D8E6FF</SolidColorBrush>
-      <SolidColorBrush x:Key="swFeedbackLogsBackground">#E8EEF9</SolidColorBrush>
-      <SolidColorBrush x:Key="swButtonDisabledBrush">#8B96AC</SolidColorBrush>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -109,33 +93,33 @@
       <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockThemeForegroundBrush" />
       <StaticResource x:Key="DockChromeButtonForegroundBrush" ResourceKey="DockToolChromeIconBrush" />
 
-      <SolidColorBrush x:Key="CaptionButtonBackground">#334055</SolidColorBrush>
-      <SolidColorBrush x:Key="CaptionButtonBorderBrush">#415271</SolidColorBrush>
-      <SolidColorBrush x:Key="CaptionButtonForeground">#E8F1FF</SolidColorBrush>
-
-      <StaticResource x:Key="swWidgetBackground" ResourceKey="DockSurfaceEditorBrush" />
-      <SolidColorBrush x:Key="swWidgetTabBackground">#2A3347</SolidColorBrush>
-      <StaticResource x:Key="swWidgetTabForeground" ResourceKey="DockTabForegroundBrush" />
-      <SolidColorBrush x:Key="swWidgetTabHoverBackground">#35425D</SolidColorBrush>
-      <SolidColorBrush x:Key="swWidgetTabSelectedBackground">#20283A</SolidColorBrush>
-      <StaticResource x:Key="swWidgetTabSelectedForeground" ResourceKey="DockTabForegroundBrush" />
-      <StaticResource x:Key="swWidgetTabActiveBackground" ResourceKey="DockTargetIndicatorBrush" />
-      <StaticResource x:Key="swForegroundTitle" ResourceKey="DockTabForegroundBrush" />
-      <SolidColorBrush x:Key="swColorTextDefaultPointerOverBrush">#F3F8FF</SolidColorBrush>
-      <SolidColorBrush x:Key="swButtonBackgroundColor">#2C374E</SolidColorBrush>
-      <SolidColorBrush x:Key="swButtonFillPointerOverBrush">#314464</SolidColorBrush>
-      <SolidColorBrush x:Key="swFeedbackLogsBackground">#2C374E</SolidColorBrush>
-      <SolidColorBrush x:Key="swButtonDisabledBrush">#7A89A5</SolidColorBrush>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
   <sys:Double x:Key="DockFontSizeNormal">12</sys:Double>
   <sys:Double x:Key="DockDragPreviewFontSize">10</sys:Double>
 
+  <!-- Browser document tab token overrides -->
+  <StaticResource x:Key="DockDocumentTabSelectedForegroundBrush" ResourceKey="DockTabSelectedForegroundBrush" />
+  <StaticResource x:Key="DockDocumentTabPointerOverForegroundBrush" ResourceKey="DockTabForegroundBrush" />
+  <StaticResource x:Key="DockDocumentTabCloseSelectedForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
+  <StaticResource x:Key="DockDocumentTabClosePointerOverForegroundBrush" ResourceKey="DockTabForegroundBrush" />
+  <SolidColorBrush x:Key="DockDocumentTabStripBackgroundBrush">Transparent</SolidColorBrush>
+
   <!-- Size/density tokens -->
   <sys:Double x:Key="DockTabItemMinHeight">24</sys:Double>
+  <sys:Double x:Key="DockDocumentTabItemMinHeight">28</sys:Double>
   <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
-  <Thickness x:Key="DockDocumentTabItemPadding">4,0,4,0</Thickness>
+  <sys:Double x:Key="DockDocumentTabStripMinHeight">28</sys:Double>
+  <OnPlatform x:Key="DockDocumentTabStripLeadingSpacerWidth"
+              x:TypeArguments="x:Double"
+              Default="12"
+              macOS="70"
+              Windows="12" />
+  <Thickness x:Key="DockDocumentTabItemMargin">0</Thickness>
+  <Thickness x:Key="DockDocumentTabItemPadding">4,0</Thickness>
+  <CornerRadius x:Key="DockDocumentTabItemCornerRadius">8</CornerRadius>
+  <CornerRadius x:Key="DockDocumentTabCreateButtonCornerRadius">8</CornerRadius>
   <Thickness x:Key="DockToolTabItemPadding">4,1,4,0</Thickness>
   <Thickness x:Key="DockToolTabItemSelectedPadding">4,2,4,0</Thickness>
   <sys:Double x:Key="DockCreateButtonWidth">26</sys:Double>
@@ -153,7 +137,22 @@
   <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>
   <Thickness x:Key="DockTabContentMargin">2</Thickness>
   <Thickness x:Key="DockCreateButtonIconMargin">5</Thickness>
+  <Thickness x:Key="DockDocumentTabStripHorizontalCreateButtonMargin">0</Thickness>
+  <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerMargin">0</Thickness>
+  <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerPadding">0</Thickness>
   <Thickness x:Key="DockToolChromeTitleMargin">0,4,8,4</Thickness>
   <sys:Double x:Key="DockTargetSelectorSize">40</sys:Double>
   <sys:Double x:Key="DockTargetSelectorGridMaxSize">125</sys:Double>
+  <Dock x:Key="DockDocumentTabStripHorizontalCreateButtonDock">Left</Dock>
+  <HorizontalAlignment x:Key="DockDocumentTabStripHorizontalCreateButtonAlignment">Left</HorizontalAlignment>
+  <core:DockOperation x:Key="DockDocumentControlIndicatorDockOperation">Fill</core:DockOperation>
+  <x:Boolean x:Key="DockDocumentTabStripHideWhenEmpty">False</x:Boolean>
+  <x:Boolean x:Key="DockDocumentControlShowDockIndicatorOnly">True</x:Boolean>
+  <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">False</x:Boolean>
+  <sys:Double x:Key="DockDocumentControlVerticalSpacing">6</sys:Double>
+  <StaticResource x:Key="DockDocumentContentBorderBrush" ResourceKey="DockBorderSubtleBrush" />
+  <Thickness x:Key="DockDocumentContentBorderThickness">0</Thickness>
+  <ItemsPanelTemplate x:Key="DockDocumentTabStripHorizontalItemsPanel">
+    <WrapPanel Orientation="Horizontal" ClipToBounds="False" ItemSpacing="4" LineSpacing="4" />
+  </ItemsPanelTemplate>
 </ResourceDictionary>

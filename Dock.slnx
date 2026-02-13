@@ -65,6 +65,7 @@
     <Project Path="samples/DockXamlReactiveUISample/DockXamlReactiveUISample.csproj" />
     <Project Path="samples/DockReactiveUIWorkspaceSample/DockReactiveUIWorkspaceSample.csproj" />
     <Project Path="samples/DockReactiveUIWindowRelationsSample/DockReactiveUIWindowRelationsSample.csproj" />
+    <Project Path="samples/BrowserTabTheme/BrowserTabTheme.csproj" />
     <Project Path="samples/DockSimplifiedFluentSample/DockSimplifiedFluentSample.csproj" />
     <Project Path="samples/DockSimplifiedSample/DockSimplifiedSample.csproj" />
     <Project Path="samples/DockSplitViewSample/DockSplitViewSample.csproj" />
@@ -74,6 +75,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Dock.Avalonia.Diagnostics/Dock.Avalonia.Diagnostics.csproj" />
+    <Project Path="src/Dock.Avalonia.Themes.Browser/Dock.Avalonia.Themes.Browser.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Fluent/Dock.Avalonia.Themes.Fluent.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Simple/Dock.Avalonia.Themes.Simple.csproj" />
     <Project Path="src/Dock.Avalonia/Dock.Avalonia.csproj" />

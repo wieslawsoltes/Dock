@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Dock.Model;
@@ -11,6 +12,29 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
+    /// <summary>
+    /// Resolves the root dock that should own floating window registrations.
+    /// </summary>
+    /// <param name="rootDock">The root where the floating operation originated.</param>
+    /// <returns>The top-level workspace root dock.</returns>
+    protected virtual IRootDock ResolveWindowCollectionRoot(IRootDock rootDock)
+    {
+        var current = rootDock;
+        var visited = new HashSet<IRootDock> { current };
+
+        while (current.Window?.Owner is IRootDock parentRoot)
+        {
+            if (!visited.Add(parentRoot))
+            {
+                break;
+            }
+
+            current = parentRoot;
+        }
+
+        return current;
+    }
+
     /// <inheritdoc/>
     public virtual void AddWindow(IRootDock rootDock, IDockWindow window)
     {

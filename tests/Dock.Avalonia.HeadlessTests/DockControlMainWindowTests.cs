@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Internal;
 using Dock.Model;
@@ -8,6 +9,7 @@ using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 using System;
 using Xunit;
 
@@ -373,6 +375,128 @@ public class DockControlMainWindowTests
         Assert.Same(hostWindow, windowModel1.Host);
         Assert.Same(hostWindow, windowModel2.Host);
         Assert.NotSame(windowModel1, windowModel2);
+    }
+
+    [AvaloniaFact]
+    public void MainWindow_Close_Canceled_DoesNotExitFloatingWindows()
+    {
+        var originalSetting = DockSettings.CloseFloatingWindowsOnMainWindowClose;
+        DockSettings.CloseFloatingWindowsOnMainWindowClose = true;
+
+        Window? mainWindow = null;
+        var cancelClose = true;
+        try
+        {
+            var factory = new Factory();
+            var layout = factory.CreateLayout();
+            layout.Factory = factory;
+            var root = factory.FindRoot(layout) as IRootDock;
+            Assert.NotNull(root);
+
+            var floatingHost = new TestHostWindow();
+            var floatingWindow = factory.CreateDockWindow();
+            floatingWindow.Layout = factory.CreateRootDock();
+            factory.InitDockWindow(floatingWindow, root, floatingHost);
+            root!.Windows ??= factory.CreateList<IDockWindow>();
+            root.Windows!.Add(floatingWindow);
+
+            var dockControl = new DockControl
+            {
+                Factory = factory,
+                Layout = layout
+            };
+
+            mainWindow = new Window
+            {
+                Width = 800,
+                Height = 600,
+                Content = dockControl
+            };
+            mainWindow.Show();
+
+            mainWindow.Closing += (_, e) =>
+            {
+                if (cancelClose)
+                {
+                    e.Cancel = true;
+                }
+            };
+
+            mainWindow.Close();
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.True(mainWindow.IsVisible);
+            Assert.False(floatingHost.Exited);
+
+            cancelClose = false;
+            mainWindow.Close();
+            Dispatcher.UIThread.RunJobs();
+        }
+        finally
+        {
+            cancelClose = false;
+            if (mainWindow?.IsVisible == true)
+            {
+                mainWindow.Close();
+                Dispatcher.UIThread.RunJobs();
+            }
+
+            DockSettings.CloseFloatingWindowsOnMainWindowClose = originalSetting;
+        }
+    }
+
+    [AvaloniaFact]
+    public void MainWindow_Close_ExitsFloatingWindows()
+    {
+        var originalSetting = DockSettings.CloseFloatingWindowsOnMainWindowClose;
+        DockSettings.CloseFloatingWindowsOnMainWindowClose = true;
+
+        Window? mainWindow = null;
+        try
+        {
+            var factory = new Factory();
+            var layout = factory.CreateLayout();
+            layout.Factory = factory;
+            var root = factory.FindRoot(layout) as IRootDock;
+            Assert.NotNull(root);
+
+            var floatingHost = new TestHostWindow();
+            var floatingWindow = factory.CreateDockWindow();
+            floatingWindow.Layout = factory.CreateRootDock();
+            factory.InitDockWindow(floatingWindow, root, floatingHost);
+            root!.Windows ??= factory.CreateList<IDockWindow>();
+            root.Windows!.Add(floatingWindow);
+
+            var dockControl = new DockControl
+            {
+                Factory = factory,
+                Layout = layout
+            };
+
+            mainWindow = new Window
+            {
+                Width = 800,
+                Height = 600,
+                Content = dockControl
+            };
+            mainWindow.Show();
+
+            mainWindow.Close();
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.False(mainWindow.IsVisible);
+            Assert.True(floatingHost.Exited);
+        }
+        finally
+        {
+            if (mainWindow?.IsVisible == true)
+            {
+                mainWindow.Close();
+                Dispatcher.UIThread.RunJobs();
+            }
+
+            DockSettings.CloseFloatingWindowsOnMainWindowClose = originalSetting;
+        }
     }
 
     [AvaloniaFact]

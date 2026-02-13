@@ -802,11 +802,13 @@ public abstract partial class FactoryBase : IFactory
     /// <inheritdoc/>
     public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height, DockWindowOptions? options)
     {
-        var rootDock = FindRoot(dock, _ => true);
-        if (rootDock is null)
+        var sourceRootDock = FindRoot(dock, _ => true);
+        if (sourceRootDock is null)
         {
             return;
         }
+
+        var rootDock = ResolveWindowCollectionRoot(sourceRootDock);
 
         PrepareWindowOptionsForDockable(dockable, options);
         RemoveDockable(dockable, true);

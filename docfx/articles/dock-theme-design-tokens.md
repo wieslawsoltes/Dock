@@ -42,6 +42,11 @@ All token keys below are available in both:
 | `DockTabSelectedForegroundBrush` | Selected tab text color (non-active accent). |
 | `DockTabActiveForegroundBrush` | Active tab text/icon color. |
 | `DockTabCloseHoverBackgroundBrush` | Document close button hover background. |
+| `DockDocumentTabStripBackgroundBrush` | Document tab strip background brush. |
+| `DockDocumentTabSelectedForegroundBrush` | Selected document-tab foreground override used by `DocumentTabStripItem`. |
+| `DockDocumentTabPointerOverForegroundBrush` | Pointer-over document-tab foreground override. |
+| `DockDocumentTabCloseSelectedForegroundBrush` | Selected document-tab close icon foreground override. |
+| `DockDocumentTabClosePointerOverForegroundBrush` | Pointer-over document-tab close icon foreground override. |
 
 ## Chrome button tokens
 
@@ -68,8 +73,15 @@ All token keys below are available in both:
 | Token | Purpose |
 |---|---|
 | `DockTabItemMinHeight` | Min height for document/tool tab items. |
+| `DockDocumentTabItemMinHeight` | Min height specifically for document tab items. |
 | `DockToolTabItemMinHeight` | Min height for tool tab items. |
+| `DockDocumentTabStripMinHeight` | Min height for the document tab strip container. |
+| `DockDocumentTabStripSeparatorSize` | Thickness of the document tab-strip separator line (`PART_DocumentSeperator`). |
+| `DockDocumentTabStripLeadingSpacerWidth` | Width of optional leading spacer in document tab strip. |
+| `DockDocumentTabItemMargin` | Outer margin for document tab items. |
 | `DockDocumentTabItemPadding` | Document tab item padding. |
+| `DockDocumentTabItemCornerRadius` | Corner radius for document tab items. |
+| `DockDocumentTabCreateButtonCornerRadius` | Corner radius for the document create button. |
 | `DockToolTabItemPadding` | Tool tab item padding. |
 | `DockToolTabItemSelectedPadding` | Tool tab selected-state padding. |
 | `DockCreateButtonWidth` | Document create button width. |
@@ -89,8 +101,12 @@ All token keys below are available in both:
 | `DockHeaderContentPadding` | Shared title/header text padding in document/tool/MDI headers. |
 | `DockModifiedIndicatorMargin` | Shared margin for modified marker (`*`). |
 | `DockTabContentSpacing` | Spacing between tab content blocks (icon, title, modified, close). |
+| `DockDocumentTabHeaderContentSpacing` | Spacing between document tab icon and header presenters. |
 | `DockTabContentMargin` | Inner margin around tab content stack. |
 | `DockCreateButtonIconMargin` | Plus/create icon margin in document tab strip. |
+| `DockDocumentTabStripHorizontalCreateButtonMargin` | Horizontal create button margin in document tab strip. |
+| `DockDocumentTabStripHorizontalScrollViewerMargin` | Horizontal scroll viewer margin in document tab strip. |
+| `DockDocumentTabStripHorizontalScrollViewerPadding` | Horizontal scroll viewer padding in document tab strip. |
 
 ## Tool chrome and MDI metrics
 
@@ -143,6 +159,16 @@ All token keys below are available in both:
 | `DockDragPreviewStatusSpacing` | Spacing between drag status icon and text. |
 | `DockDragPreviewStatusIconSize` | Drag status icon size. |
 | `DockHostTitleBarMouseTrackerHeight` | Host title bar top tracker panel height. |
+| `DockDocumentTabStripHorizontalCreateButtonDock` | Horizontal document-tab create button dock side (`Left`/`Right`). |
+| `DockDocumentTabStripHorizontalCreateButtonAlignment` | Horizontal alignment for document-tab create button (`Left`/`Right`). |
+| `DockDocumentControlIndicatorDockOperation` | Dock indicator operation for document control drop target (`Fill` etc.). |
+| `DockDocumentTabStripHideWhenEmpty` | Whether empty non-create document tab strips are hidden. |
+| `DockDocumentControlShowDockIndicatorOnly` | Whether document control dock target shows indicator-only rendering. |
+| `DockDocumentTabStripSeparatorVisible` | Whether the document tab-strip separator (`PART_DocumentSeperator`) is visible. |
+| `DockDocumentControlVerticalSpacing` | Vertical spacing for the `PART_DockPanel` in `DocumentControl`. |
+| `DockDocumentContentBorderBrush` | Brush used by the document content border (`PART_Border`). |
+| `DockDocumentContentBorderThickness` | Border thickness used by the document content border (`PART_Border`). |
+| `DockDocumentTabStripHorizontalItemsPanel` | Horizontal items panel template for document tabs. |
 
 ## Overlay and dialog metrics
 

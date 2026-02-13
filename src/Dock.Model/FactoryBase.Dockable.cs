@@ -1048,11 +1048,13 @@ public abstract partial class FactoryBase
             return;
         }
 
-        var rootDock = FindRoot(dock, _ => true);
-        if (rootDock is null)
+        var sourceRootDock = FindRoot(dock, _ => true);
+        if (sourceRootDock is null)
         {
             return;
         }
+
+        var rootDock = ResolveWindowCollectionRoot(sourceRootDock);
 
         PrepareWindowOptionsForDockable(dockable, options);
 

@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fluent="clr-namespace:Dock.Avalonia.Themes.Fluent;assembly=Dock.Avalonia.Themes.Fluent"
+        x:Class="Dock.Avalonia.Themes.Browser.BrowserTabTheme">
+  <fluent:DockFluentTheme />
+
+  <Styles.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/BrowserTabAccents.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/AllResources.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <ResourceInclude x:Key="CompactStyles" Source="avares://Dock.Avalonia.Themes.Browser/Styles/DensityStyles/Compact.axaml" />
+    </ResourceDictionary>
+  </Styles.Resources>
+
+</Styles>

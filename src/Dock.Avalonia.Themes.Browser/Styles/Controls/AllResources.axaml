@@ -2,9 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
     <!-- Browser theme now layers on DockFluentTheme and only overrides browser-specific control templates. -->
-    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentTabStripItem.axaml" />
-    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentTabStrip.axaml" />
-    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/DocumentControl.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.Themes.Browser/Styles/Controls/HostWindow.axaml" />
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

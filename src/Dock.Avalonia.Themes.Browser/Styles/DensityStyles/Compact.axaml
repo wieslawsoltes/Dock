@@ -1,15 +1,2 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=netstandard">
-  <sys:Double x:Key="DockTabItemMinHeight">22</sys:Double>
-  <sys:Double x:Key="DockCreateButtonWidth">22</sys:Double>
-  <sys:Double x:Key="DockCreateButtonHeight">22</sys:Double>
-  <sys:Double x:Key="DockCloseButtonSize">12</sys:Double>
-  <sys:Double x:Key="DockChromeButtonWidth">16</sys:Double>
-  <sys:Double x:Key="DockChromeButtonHeight">14</sys:Double>
-  <Thickness x:Key="DockDocumentTabItemPadding">3,0,3,0</Thickness>
-  <Thickness x:Key="DockToolTabItemPadding">3,1,3,0</Thickness>
-  <Thickness x:Key="DockToolTabItemSelectedPadding">3,1,3,0</Thickness>
-  <Thickness x:Key="DockCreateButtonIconMargin">4</Thickness>
-  <Thickness x:Key="DockChromeButtonPadding">2</Thickness>
-</ResourceDictionary>
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />

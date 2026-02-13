@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=netstandard">
+                    xmlns:sys="clr-namespace:System;assembly=netstandard"
+                    xmlns:core="using:Dock.Model.Core">
 
     <SolidColorBrush x:Key="DockApplicationAccentBrushLow">#007ACC</SolidColorBrush>
     <SolidColorBrush x:Key="DockApplicationAccentBrushMed">#1C97EA</SolidColorBrush>
@@ -38,6 +39,11 @@
     <StaticResource x:Key="DockTabSelectedForegroundBrush" ResourceKey="DockApplicationAccentBrushMed" />
     <StaticResource x:Key="DockTabActiveForegroundBrush" ResourceKey="DockApplicationAccentForegroundBrush" />
     <StaticResource x:Key="DockTabCloseHoverBackgroundBrush" ResourceKey="DockApplicationAccentBrushHigh" />
+    <StaticResource x:Key="DockDocumentTabStripBackgroundBrush" ResourceKey="DockTabBackgroundBrush" />
+    <StaticResource x:Key="DockDocumentTabSelectedForegroundBrush" ResourceKey="DockTabForegroundBrush" />
+    <StaticResource x:Key="DockDocumentTabPointerOverForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
+    <StaticResource x:Key="DockDocumentTabCloseSelectedForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
+    <StaticResource x:Key="DockDocumentTabClosePointerOverForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
 
     <StaticResource x:Key="DockTargetIndicatorBrush" ResourceKey="DockApplicationAccentBrushIndicator" />
 
@@ -53,8 +59,14 @@
     <sys:Double x:Key="DockIconSizeNormal">14</sys:Double>
 
     <sys:Double x:Key="DockTabItemMinHeight">24</sys:Double>
+    <sys:Double x:Key="DockDocumentTabItemMinHeight">24</sys:Double>
     <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
+    <sys:Double x:Key="DockDocumentTabStripMinHeight">0</sys:Double>
+    <sys:Double x:Key="DockDocumentTabStripLeadingSpacerWidth">0</sys:Double>
+    <Thickness x:Key="DockDocumentTabItemMargin">0</Thickness>
     <Thickness x:Key="DockDocumentTabItemPadding">4,0,4,0</Thickness>
+    <CornerRadius x:Key="DockDocumentTabItemCornerRadius">0</CornerRadius>
+    <CornerRadius x:Key="DockDocumentTabCreateButtonCornerRadius">0</CornerRadius>
     <Thickness x:Key="DockToolTabItemPadding">4,1,4,0</Thickness>
     <Thickness x:Key="DockToolTabItemSelectedPadding">4,2,4,0</Thickness>
     <sys:Double x:Key="DockCreateButtonWidth">26</sys:Double>
@@ -71,6 +83,9 @@
     <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>
     <Thickness x:Key="DockTabContentMargin">2</Thickness>
     <Thickness x:Key="DockCreateButtonIconMargin">5</Thickness>
+    <Thickness x:Key="DockDocumentTabStripHorizontalCreateButtonMargin">0</Thickness>
+    <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerMargin">0</Thickness>
+    <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerPadding">0</Thickness>
     <Thickness x:Key="DockToolChromeHeaderMargin">8,0</Thickness>
     <Thickness x:Key="DockToolChromeTitleMargin">0,4,8,4</Thickness>
     <Thickness x:Key="DockToolChromeMenuIconMargin">2</Thickness>
@@ -144,5 +159,18 @@
     <StreamGeometry x:Key="DockIconStatusDockGeometry">M8.41687 7.57953V2.41851C8.41687 2.18743 8.22932 1.99988 7.99823 1.99988C7.76715 1.99988 7.5796 2.18743 7.5796 2.41851V7.57953H2.41863C2.18755 7.57953 2 7.76708 2 7.99816C2 8.22925 2.18755 8.41679 2.41863 8.41679H7.5796V13.5812C7.5796 13.8123 7.76715 13.9999 7.99823 13.9999C8.22932 13.9999 8.41687 13.8123 8.41687 13.5812V8.41679L13.5799 8.41851C13.811 8.41851 13.9985 8.23096 13.9985 7.99988C13.9985 7.76879 13.811 7.58125 13.5799 7.58125L8.41687 7.57953Z</StreamGeometry>
     <StreamGeometry x:Key="DockIconStatusFloatGeometry">M0,0L0,9 9,9 9,0 0,0 0,3 8,3 8,8 1,8 1,3 0,3z</StreamGeometry>
     <sys:Double x:Key="DockDragPreviewFontSize">10</sys:Double>
+    <Dock x:Key="DockDocumentTabStripHorizontalCreateButtonDock">Right</Dock>
+    <HorizontalAlignment x:Key="DockDocumentTabStripHorizontalCreateButtonAlignment">Right</HorizontalAlignment>
+    <core:DockOperation x:Key="DockDocumentControlIndicatorDockOperation">Fill</core:DockOperation>
+    <x:Boolean x:Key="DockDocumentTabStripHideWhenEmpty">True</x:Boolean>
+    <x:Boolean x:Key="DockDocumentControlShowDockIndicatorOnly">False</x:Boolean>
+    <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">True</x:Boolean>
+    <sys:Double x:Key="DockDocumentControlVerticalSpacing">0</sys:Double>
+    <sys:Double x:Key="DockDocumentTabStripSeparatorSize">2</sys:Double>
+    <StaticResource x:Key="DockDocumentContentBorderBrush" ResourceKey="DockBorderSubtleBrush" />
+    <Thickness x:Key="DockDocumentContentBorderThickness">1,1,1,1</Thickness>
+    <ItemsPanelTemplate x:Key="DockDocumentTabStripHorizontalItemsPanel">
+      <StackPanel Orientation="Horizontal" ClipToBounds="False" />
+    </ItemsPanelTemplate>
 
 </ResourceDictionary>

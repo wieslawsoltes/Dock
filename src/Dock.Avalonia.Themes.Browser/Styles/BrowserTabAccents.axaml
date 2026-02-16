@@ -143,6 +143,7 @@
   <Thickness x:Key="DockDocumentTabStripHorizontalCreateButtonMargin">6,0</Thickness>
   <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerMargin">0</Thickness>
   <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerPadding">0</Thickness>
+  <Thickness x:Key="DockHostWindowContentPadding">6</Thickness>
   <Thickness x:Key="DockToolChromeTitleMargin">0,4,8,4</Thickness>
   <sys:Double x:Key="DockTargetSelectorSize">40</sys:Double>
   <sys:Double x:Key="DockTargetSelectorGridMaxSize">125</sys:Double>

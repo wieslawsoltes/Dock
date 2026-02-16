@@ -68,36 +68,61 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <DockPanel Background="{TemplateBinding Background}"
-                   ClipToBounds="False">
-          <Panel DockPanel.Dock="Left"
-                 Width="{DynamicResource DockDocumentTabStripLeadingSpacerWidth}"
-                 Height="1" />
-          <Panel Name="PART_Panel">
-            <ScrollViewer x:Name="PART_ScrollViewer">
-              <ItemsPresenter x:Name="PART_ItemsPresenter"
-                              ItemsPanel="{TemplateBinding ItemsPanel}" />
-            </ScrollViewer>
-            <Border Name="PART_BorderFill"
-                    DockProperties.IsDropArea="True"
-                    DockProperties.IsDockTarget="True"
-                    DockProperties.ShowDockIndicatorOnly="True"
-                    DockProperties.IndicatorDockOperation="Fill">
-              <Border.Margin>
-                <MultiBinding Converter="{x:Static BorderFillMarginConverter.Instance}">
-                  <Binding Path="#PART_ItemsPresenter.Bounds.Width" />
-                  <Binding Path="#PART_ItemsPresenter.Bounds.Height" />
-                  <Binding Path="#PART_ItemsPresenter.IsVisible" />
-                  <Binding Path="#PART_ItemsPresenter.VerticalAlignment" />
-                  <Binding Path="#PART_ItemsPresenter.HorizontalAlignment" />
-                </MultiBinding>
-              </Border.Margin>
-            </Border>
-          </Panel>
-          <ContentControl x:Name="PART_CreateButtonHost"
-                          Content="{Binding}"
-                          IsVisible="{Binding CanCreateDocument}" />
-        </DockPanel>
+        <Grid Background="{TemplateBinding Background}"
+              ClipToBounds="False"
+              RowDefinitions="Auto,*,Auto"
+              ColumnDefinitions="Auto,*,Auto">
+          <ContentPresenter Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            Content="{TemplateBinding TopContent}"
+                            ContentTemplate="{TemplateBinding TopContentTemplate}" />
+          <ContentPresenter Grid.Row="1"
+                            Grid.Column="0"
+                            Content="{TemplateBinding LeftContent}"
+                            ContentTemplate="{TemplateBinding LeftContentTemplate}" />
+          <ContentPresenter Grid.Row="1"
+                            Grid.Column="2"
+                            Content="{TemplateBinding RightContent}"
+                            ContentTemplate="{TemplateBinding RightContentTemplate}" />
+          <ContentPresenter Grid.Row="2"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            Content="{TemplateBinding BottomContent}"
+                            ContentTemplate="{TemplateBinding BottomContentTemplate}" />
+
+          <DockPanel Grid.Row="1"
+                     Grid.Column="1"
+                     ClipToBounds="False">
+            <Panel DockPanel.Dock="Left"
+                   Width="{DynamicResource DockDocumentTabStripLeadingSpacerWidth}"
+                   Height="1" />
+            <Panel Name="PART_Panel">
+              <ScrollViewer x:Name="PART_ScrollViewer">
+                <ItemsPresenter x:Name="PART_ItemsPresenter"
+                                ItemsPanel="{TemplateBinding ItemsPanel}" />
+              </ScrollViewer>
+              <Border Name="PART_BorderFill"
+                      DockProperties.IsDropArea="True"
+                      DockProperties.IsDockTarget="True"
+                      DockProperties.ShowDockIndicatorOnly="True"
+                      DockProperties.IndicatorDockOperation="Fill">
+                <Border.Margin>
+                  <MultiBinding Converter="{x:Static BorderFillMarginConverter.Instance}">
+                    <Binding Path="#PART_ItemsPresenter.Bounds.Width" />
+                    <Binding Path="#PART_ItemsPresenter.Bounds.Height" />
+                    <Binding Path="#PART_ItemsPresenter.IsVisible" />
+                    <Binding Path="#PART_ItemsPresenter.VerticalAlignment" />
+                    <Binding Path="#PART_ItemsPresenter.HorizontalAlignment" />
+                  </MultiBinding>
+                </Border.Margin>
+              </Border>
+            </Panel>
+            <ContentControl x:Name="PART_CreateButtonHost"
+                            Content="{Binding}"
+                            IsVisible="{Binding CanCreateDocument}" />
+          </DockPanel>
+        </Grid>
       </ControlTemplate>
     </Setter>
 

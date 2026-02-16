@@ -71,6 +71,54 @@ public class DocumentTabStrip : TabStrip
         AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(CreateButtonTemplate));
 
     /// <summary>
+    /// Defines the <see cref="LeftContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> LeftContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(LeftContent));
+
+    /// <summary>
+    /// Defines the <see cref="TopContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> TopContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(TopContent));
+
+    /// <summary>
+    /// Defines the <see cref="RightContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> RightContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(RightContent));
+
+    /// <summary>
+    /// Defines the <see cref="BottomContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> BottomContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(BottomContent));
+
+    /// <summary>
+    /// Defines the <see cref="LeftContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> LeftContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(LeftContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="TopContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> TopContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(TopContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="RightContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> RightContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(RightContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="BottomContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> BottomContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(BottomContentTemplate));
+
+    /// <summary>
     /// Gets or sets the create button theme.
     /// </summary>
     public ControlTheme? CreateButtonTheme
@@ -86,6 +134,78 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(CreateButtonTemplateProperty);
         set => SetValue(CreateButtonTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed to the left side of the tab strip.
+    /// </summary>
+    public object? LeftContent
+    {
+        get => GetValue(LeftContentProperty);
+        set => SetValue(LeftContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed above the tab strip.
+    /// </summary>
+    public object? TopContent
+    {
+        get => GetValue(TopContentProperty);
+        set => SetValue(TopContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed to the right side of the tab strip.
+    /// </summary>
+    public object? RightContent
+    {
+        get => GetValue(RightContentProperty);
+        set => SetValue(RightContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed below the tab strip.
+    /// </summary>
+    public object? BottomContent
+    {
+        get => GetValue(BottomContentProperty);
+        set => SetValue(BottomContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="LeftContent"/>.
+    /// </summary>
+    public IDataTemplate? LeftContentTemplate
+    {
+        get => GetValue(LeftContentTemplateProperty);
+        set => SetValue(LeftContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="TopContent"/>.
+    /// </summary>
+    public IDataTemplate? TopContentTemplate
+    {
+        get => GetValue(TopContentTemplateProperty);
+        set => SetValue(TopContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="RightContent"/>.
+    /// </summary>
+    public IDataTemplate? RightContentTemplate
+    {
+        get => GetValue(RightContentTemplateProperty);
+        set => SetValue(RightContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="BottomContent"/>.
+    /// </summary>
+    public IDataTemplate? BottomContentTemplate
+    {
+        get => GetValue(BottomContentTemplateProperty);
+        set => SetValue(BottomContentTemplateProperty, value);
     }
 
     /// <summary>

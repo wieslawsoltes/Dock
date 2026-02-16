@@ -19,6 +19,7 @@
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
 
     <Setter Property="Background" Value="{DynamicResource DockSurfaceEditorBrush}" />
+    <Setter Property="Padding" Value="{DynamicResource DockHostWindowContentPadding}" />
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
     <Setter Property="WindowState" Value="Normal" />

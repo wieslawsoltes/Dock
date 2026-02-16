@@ -104,7 +104,7 @@
   <sys:Double x:Key="DockDragPreviewFontSize">10</sys:Double>
 
   <!-- Browser document tab token overrides -->
-  <StaticResource x:Key="DockDocumentTabSelectedForegroundBrush" ResourceKey="DockTabSelectedForegroundBrush" />
+  <StaticResource x:Key="DockDocumentTabSelectedForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
   <StaticResource x:Key="DockDocumentTabCloseSelectedForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
   <SolidColorBrush x:Key="DockDocumentTabStripBackgroundBrush">Transparent</SolidColorBrush>
 

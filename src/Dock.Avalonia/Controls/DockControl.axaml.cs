@@ -13,6 +13,7 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.CommandBars;
 using Dock.Avalonia.Contract;
@@ -54,6 +55,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private long _activationCounter;
     private IFactory? _subscribedFactory;
     private IFactory? _managedLayerFactory;
+    private Window? _attachedWindow;
 
     /// <summary>
     /// Defines the <see cref="Layout"/> property.
@@ -986,12 +988,16 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
                 root.Window = windowModel;
             }
         }
+
+        AttachMainWindowClosingHandler();
     }
 
     /// <inheritdoc/>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+
+        DetachMainWindowClosingHandler();
 
         var layout = Layout;
 
@@ -1021,6 +1027,66 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         }
 
         root.Factory?.OnWindowClosed(root.Window);
+    }
+
+    private void AttachMainWindowClosingHandler()
+    {
+        if (!DockSettings.CloseFloatingWindowsOnMainWindowClose)
+        {
+            return;
+        }
+
+        if (TopLevel.GetTopLevel(this) is not Window window || window is IHostWindow)
+        {
+            return;
+        }
+
+        if (ReferenceEquals(_attachedWindow, window))
+        {
+            return;
+        }
+
+        DetachMainWindowClosingHandler();
+        _attachedWindow = window;
+        _attachedWindow.Closing += OnMainWindowClosing;
+    }
+
+    private void DetachMainWindowClosingHandler()
+    {
+        if (_attachedWindow is null)
+        {
+            return;
+        }
+
+        _attachedWindow.Closing -= OnMainWindowClosing;
+        _attachedWindow = null;
+    }
+
+    private void OnMainWindowClosing(object? sender, global::Avalonia.Controls.WindowClosingEventArgs e)
+    {
+        if (sender is not Window window)
+        {
+            return;
+        }
+
+        if (Layout?.Factory?.FindRoot(Layout, _ => true) is not IRootDock root)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            // If the main window is still visible, closure was canceled by another handler.
+            if (window.IsVisible)
+            {
+                return;
+            }
+
+            if (root.ExitWindows.CanExecute(null))
+            {
+                root.ExitWindows.Execute(null);
+            }
+        }, DispatcherPriority.Background);
     }
 
     private static DragAction ToDragAction(PointerEventArgs e)

@@ -66,6 +66,11 @@ public static class AppBuilderExtensions
             DockSettings.FloatingWindowOwnerPolicy = options.FloatingWindowOwnerPolicy.Value;
         }
 
+        if (options.DefaultFloatingWindowOwnerMode != null)
+        {
+            DockSettings.DefaultFloatingWindowOwnerMode = options.DefaultFloatingWindowOwnerMode.Value;
+        }
+
         if (options.EnableWindowMagnetism != null)
         {
             DockSettings.EnableWindowMagnetism = options.EnableWindowMagnetism.Value;
@@ -79,6 +84,11 @@ public static class AppBuilderExtensions
         if (options.BringWindowsToFrontOnDrag != null)
         {
             DockSettings.BringWindowsToFrontOnDrag = options.BringWindowsToFrontOnDrag.Value;
+        }
+
+        if (options.CloseFloatingWindowsOnMainWindowClose != null)
+        {
+            DockSettings.CloseFloatingWindowsOnMainWindowClose = options.CloseFloatingWindowsOnMainWindowClose.Value;
         }
 
         if (options.ShowDockablePreviewOnDrag != null)
@@ -209,6 +219,20 @@ public static class AppBuilderExtensions
     }
 
     /// <summary>
+    /// Sets <see cref="DockSettings.DefaultFloatingWindowOwnerMode"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="ownerMode">The default floating window owner mode.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseDefaultFloatingWindowOwnerMode(
+        this AppBuilder builder,
+        DockWindowOwnerMode ownerMode)
+    {
+        DockSettings.DefaultFloatingWindowOwnerMode = ownerMode;
+        return builder;
+    }
+
+    /// <summary>
     /// Sets <see cref="DockSettings.EnableWindowMagnetism"/> to the given value.
     /// </summary>
     public static AppBuilder EnableWindowMagnetism(
@@ -238,6 +262,20 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.BringWindowsToFrontOnDrag = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.CloseFloatingWindowsOnMainWindowClose"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether floating windows should close with the main window.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder CloseFloatingWindowsOnMainWindowClose(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.CloseFloatingWindowsOnMainWindowClose = enable;
         return builder;
     }
 

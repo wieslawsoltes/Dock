@@ -110,6 +110,41 @@ Set these before docking interactions start (typically during app startup).
 
 `DockSettings.FloatingWindowOwnerPolicy` provides an explicit global owner policy (`Default`, `AlwaysOwned`, `NeverOwned`). When set to `Default`, Dock falls back to `UseOwnerForFloatingWindows` to preserve compatibility.
 
+`DockSettings.DefaultFloatingWindowOwnerMode` defines which owner strategy to use when a floating window has `IDockWindow.OwnerMode = DockWindowOwnerMode.Default`.
+
+Example:
+
+```csharp
+// Use the root dock window as the owner when OwnerMode is Default.
+DockSettings.DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.RootWindow;
+```
+
+You can set the same behavior through the app builder:
+
+```csharp
+AppBuilder.Configure<App>()
+    .UsePlatformDetect()
+    .UseDefaultFloatingWindowOwnerMode(DockWindowOwnerMode.RootWindow);
+```
+
+## Close floating windows with the main window
+
+`DockSettings.CloseFloatingWindowsOnMainWindowClose` controls whether Dock closes floating windows when the main (non-host) window is closing.
+
+Example:
+
+```csharp
+DockSettings.CloseFloatingWindowsOnMainWindowClose = true;
+```
+
+App builder example:
+
+```csharp
+AppBuilder.Configure<App>()
+    .UsePlatformDetect()
+    .CloseFloatingWindowsOnMainWindowClose(true);
+```
+
 ## Floating window host mode
 
 `DockSettings.FloatingWindowHostMode` controls whether floating windows are hosted as native OS windows or managed in-app windows. `Default` defers to `DockSettings.UseManagedWindows`.
@@ -217,7 +252,9 @@ AppBuilder.Configure<App>()
     .UsePlatformDetect()
     .UseFloatingDockAdorner()
     .UseOwnerForFloatingWindows()
+    .UseDefaultFloatingWindowOwnerMode(DockWindowOwnerMode.RootWindow)
     .UseManagedWindows()
+    .CloseFloatingWindowsOnMainWindowClose()
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
     .BringWindowsToFrontOnDrag()
@@ -226,7 +263,9 @@ AppBuilder.Configure<App>()
     .UpdateItemsSourceOnUnregister(true)
     .WithDockSettings(new DockSettingsOptions
     {
-        MinimumHorizontalDragDistance = 6
+        MinimumHorizontalDragDistance = 6,
+        DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.RootWindow,
+        CloseFloatingWindowsOnMainWindowClose = true
     });
 ```
 
@@ -241,10 +280,14 @@ AppBuilder.Configure<App>()
 | `UseFloatingDockAdorner` | `DockSettings.UseFloatingDockAdorner` | Floating adorner window. |
 | `UsePinnedDockWindow` | `DockSettings.UsePinnedDockWindow` | Floating pinned dock window. |
 | `UseManagedWindows` | `DockSettings.UseManagedWindows` | Managed floating windows. |
+| `FloatingWindowHostMode` | `DockSettings.FloatingWindowHostMode` | Native vs managed floating host mode selection. |
 | `UseOwnerForFloatingWindows` | `DockSettings.UseOwnerForFloatingWindows` | Assign owners to floating windows. |
+| `FloatingWindowOwnerPolicy` | `DockSettings.FloatingWindowOwnerPolicy` | Global owner policy for floating windows. |
+| `DefaultFloatingWindowOwnerMode` | `DockSettings.DefaultFloatingWindowOwnerMode` | Owner strategy used when a window OwnerMode is `Default`. |
 | `EnableWindowMagnetism` | `DockSettings.EnableWindowMagnetism` | Snap floating windows. |
 | `WindowMagnetDistance` | `DockSettings.WindowMagnetDistance` | Snap distance in pixels. |
 | `BringWindowsToFrontOnDrag` | `DockSettings.BringWindowsToFrontOnDrag` | Activate windows when dragging. |
+| `CloseFloatingWindowsOnMainWindowClose` | `DockSettings.CloseFloatingWindowsOnMainWindowClose` | Close floating windows when the main window closes. |
 | `ShowDockablePreviewOnDrag` | `DockSettings.ShowDockablePreviewOnDrag` | Render dockable content in drag preview. |
 | `DragPreviewOpacity` | `DockSettings.DragPreviewOpacity` | Opacity for the drag preview window. |
 | `UpdateItemsSourceOnUnregister` | `DockSettings.UpdateItemsSourceOnUnregister` | Sync close/unregister of generated items back to source collections. |

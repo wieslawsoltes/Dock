@@ -482,28 +482,43 @@ public class HostWindow : Window, IHostWindow
     {
         copyOwnerChrome = false;
         var parentWindow = windowModel.ParentWindow;
+        var usesGlobalDefaultMode = windowModel.OwnerMode == DockWindowOwnerMode.Default;
+        var ownerMode = windowModel.OwnerMode == DockWindowOwnerMode.Default
+            ? DockSettings.DefaultFloatingWindowOwnerMode
+            : windowModel.OwnerMode;
 
         if (ReferenceEquals(parentWindow, windowModel))
         {
             parentWindow = null;
         }
 
-        if (windowModel.OwnerMode == DockWindowOwnerMode.None)
+        if (ownerMode == DockWindowOwnerMode.None)
         {
             return null;
         }
 
-        if (windowModel.OwnerMode == DockWindowOwnerMode.ParentWindow)
+        if (usesGlobalDefaultMode && DockSettings.FloatingWindowOwnerPolicy == DockFloatingWindowOwnerPolicy.NeverOwned)
         {
-            return parentWindow?.Host as Window;
+            return null;
         }
 
-        if (windowModel.OwnerMode == DockWindowOwnerMode.DockableWindow)
+        if (ownerMode == DockWindowOwnerMode.ParentWindow
+            || ownerMode == DockWindowOwnerMode.DockableWindow)
         {
-            return parentWindow?.Host as Window;
+            if (parentWindow?.Host is Window parentOwnerWindow)
+            {
+                return parentOwnerWindow;
+            }
+
+            if (usesGlobalDefaultMode)
+            {
+                return ResolveFallbackOwnerWindow(windowModel);
+            }
+
+            return null;
         }
 
-        if (windowModel.OwnerMode == DockWindowOwnerMode.RootWindow)
+        if (ownerMode == DockWindowOwnerMode.RootWindow)
         {
             if (windowModel.Owner is IRootDock root && root.Window is { } rootWindow)
             {
@@ -525,12 +540,12 @@ public class HostWindow : Window, IHostWindow
             return null;
         }
 
-        if (parentWindow?.Host is Window explicitOwner)
+        if (ownerMode == DockWindowOwnerMode.Default && parentWindow?.Host is Window explicitOwner)
         {
             return explicitOwner;
         }
 
-        if (DockSettings.ShouldUseOwnerForFloatingWindows())
+        if (ownerMode == DockWindowOwnerMode.Default && DockSettings.ShouldUseOwnerForFloatingWindows())
         {
             var ownerDockControl = windowModel.Layout?.Factory?.DockControls.FirstOrDefault();
             if (ownerDockControl is Control control && control.GetVisualRoot() is Window visualOwnerWindow)
@@ -603,7 +618,10 @@ public class HostWindow : Window, IHostWindow
 
                 if (ownerWindow is null && Window is { } fallbackWindowModel)
                 {
-                    var policyDisallowsOwner = fallbackWindowModel.OwnerMode == DockWindowOwnerMode.None
+                    var fallbackOwnerMode = fallbackWindowModel.OwnerMode == DockWindowOwnerMode.Default
+                        ? DockSettings.DefaultFloatingWindowOwnerMode
+                        : fallbackWindowModel.OwnerMode;
+                    var policyDisallowsOwner = fallbackOwnerMode == DockWindowOwnerMode.None
                                                || DockSettings.FloatingWindowOwnerPolicy == DockFloatingWindowOwnerPolicy.NeverOwned;
                     if (!policyDisallowsOwner)
                     {

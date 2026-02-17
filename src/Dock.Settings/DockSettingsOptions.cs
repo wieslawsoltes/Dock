@@ -52,6 +52,11 @@ public class DockSettingsOptions
     public DockFloatingWindowOwnerPolicy? FloatingWindowOwnerPolicy { get; set; }
 
     /// <summary>
+    /// Optional default floating window owner mode.
+    /// </summary>
+    public DockWindowOwnerMode? DefaultFloatingWindowOwnerMode { get; set; }
+
+    /// <summary>
     /// Optional window magnetism flag.
     /// </summary>
     public bool? EnableWindowMagnetism { get; set; }
@@ -65,6 +70,11 @@ public class DockSettingsOptions
     /// Optional bring windows to front on drag flag.
     /// </summary>
     public bool? BringWindowsToFrontOnDrag { get; set; }
+
+    /// <summary>
+    /// Optional close floating windows when main window closes flag.
+    /// </summary>
+    public bool? CloseFloatingWindowsOnMainWindowClose { get; set; }
 
     /// <summary>
     /// Optional dockable drag preview flag.

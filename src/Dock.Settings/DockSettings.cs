@@ -55,6 +55,11 @@ public static class DockSettings
     public static DockFloatingWindowOwnerPolicy FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.Default;
 
     /// <summary>
+    /// Sets the default owner mode for floating windows when <see cref="IDockWindow.OwnerMode"/> is <see cref="DockWindowOwnerMode.Default"/>.
+    /// </summary>
+    public static DockWindowOwnerMode DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.Default;
+
+    /// <summary>
     /// Snap floating windows to nearby windows when dragging.
     /// </summary>
     public static bool EnableWindowMagnetism = false;
@@ -68,6 +73,11 @@ public static class DockSettings
     /// Bring all windows to the front when a window starts being dragged.
     /// </summary>
     public static bool BringWindowsToFrontOnDrag = true;
+
+    /// <summary>
+    /// Close all floating windows when the main (non-host) window closes.
+    /// </summary>
+    public static bool CloseFloatingWindowsOnMainWindowClose = false;
 
     /// <summary>
     /// Show dockable content inside the drag preview window while dragging.

@@ -30977,6 +30977,19 @@ references:
   isSpec: "True"
   fullName: Dock.Model.FactoryBase.ResolveRootDock
   nameWithType: FactoryBase.ResolveRootDock
+- uid: Dock.Model.FactoryBase.ResolveWindowCollectionRoot(Dock.Model.Controls.IRootDock)
+  name: ResolveWindowCollectionRoot(IRootDock)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ResolveWindowCollectionRoot_Dock_Model_Controls_IRootDock_
+  commentId: M:Dock.Model.FactoryBase.ResolveWindowCollectionRoot(Dock.Model.Controls.IRootDock)
+  fullName: Dock.Model.FactoryBase.ResolveWindowCollectionRoot(Dock.Model.Controls.IRootDock)
+  nameWithType: FactoryBase.ResolveWindowCollectionRoot(IRootDock)
+- uid: Dock.Model.FactoryBase.ResolveWindowCollectionRoot*
+  name: ResolveWindowCollectionRoot
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ResolveWindowCollectionRoot_
+  commentId: Overload:Dock.Model.FactoryBase.ResolveWindowCollectionRoot
+  isSpec: "True"
+  fullName: Dock.Model.FactoryBase.ResolveWindowCollectionRoot
+  nameWithType: FactoryBase.ResolveWindowCollectionRoot
 - uid: Dock.Model.FactoryBase.RestoreDockable(Dock.Model.Core.IDockable)
   name: RestoreDockable(IDockable)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RestoreDockable_Dock_Model_Core_IDockable_
@@ -51082,6 +51095,22 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.AppBuilderExtensions.BringWindowsToFrontOnDrag
   nameWithType: AppBuilderExtensions.BringWindowsToFrontOnDrag
+- uid: Dock.Settings.AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose(Avalonia.AppBuilder,System.Boolean)
+  name: CloseFloatingWindowsOnMainWindowClose(AppBuilder, bool)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_CloseFloatingWindowsOnMainWindowClose_Avalonia_AppBuilder_System_Boolean_
+  commentId: M:Dock.Settings.AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose(Avalonia.AppBuilder,System.Boolean)
+  name.vb: CloseFloatingWindowsOnMainWindowClose(AppBuilder, Boolean)
+  fullName: Dock.Settings.AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose(Avalonia.AppBuilder, bool)
+  fullName.vb: Dock.Settings.AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose(Avalonia.AppBuilder, Boolean)
+  nameWithType: AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose(AppBuilder, bool)
+  nameWithType.vb: AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose(AppBuilder, Boolean)
+- uid: Dock.Settings.AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose*
+  name: CloseFloatingWindowsOnMainWindowClose
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_CloseFloatingWindowsOnMainWindowClose_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose
+  nameWithType: AppBuilderExtensions.CloseFloatingWindowsOnMainWindowClose
 - uid: Dock.Settings.AppBuilderExtensions.EnableWindowMagnetism(Avalonia.AppBuilder,System.Boolean)
   name: EnableWindowMagnetism(AppBuilder, bool)
   href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_EnableWindowMagnetism_Avalonia_AppBuilder_System_Boolean_
@@ -51162,6 +51191,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.AppBuilderExtensions.UpdateItemsSourceOnUnregister
   nameWithType: AppBuilderExtensions.UpdateItemsSourceOnUnregister
+- uid: Dock.Settings.AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode(Avalonia.AppBuilder,Dock.Model.Core.DockWindowOwnerMode)
+  name: UseDefaultFloatingWindowOwnerMode(AppBuilder, DockWindowOwnerMode)
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseDefaultFloatingWindowOwnerMode_Avalonia_AppBuilder_Dock_Model_Core_DockWindowOwnerMode_
+  commentId: M:Dock.Settings.AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode(Avalonia.AppBuilder,Dock.Model.Core.DockWindowOwnerMode)
+  fullName: Dock.Settings.AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode(Avalonia.AppBuilder, Dock.Model.Core.DockWindowOwnerMode)
+  nameWithType: AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode(AppBuilder, DockWindowOwnerMode)
+- uid: Dock.Settings.AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode*
+  name: UseDefaultFloatingWindowOwnerMode
+  href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseDefaultFloatingWindowOwnerMode_
+  commentId: Overload:Dock.Settings.AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode
+  isSpec: "True"
+  fullName: Dock.Settings.AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode
+  nameWithType: AppBuilderExtensions.UseDefaultFloatingWindowOwnerMode
 - uid: Dock.Settings.AppBuilderExtensions.UseFloatingDockAdorner(Avalonia.AppBuilder,System.Boolean)
   name: UseFloatingDockAdorner(AppBuilder, bool)
   href: api/Dock.Settings.AppBuilderExtensions.html#Dock_Settings_AppBuilderExtensions_UseFloatingDockAdorner_Avalonia_AppBuilder_System_Boolean_
@@ -51696,6 +51738,12 @@ references:
   commentId: F:Dock.Settings.DockSettings.BringWindowsToFrontOnDrag
   fullName: Dock.Settings.DockSettings.BringWindowsToFrontOnDrag
   nameWithType: DockSettings.BringWindowsToFrontOnDrag
+- uid: Dock.Settings.DockSettings.CloseFloatingWindowsOnMainWindowClose
+  name: CloseFloatingWindowsOnMainWindowClose
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_CloseFloatingWindowsOnMainWindowClose
+  commentId: F:Dock.Settings.DockSettings.CloseFloatingWindowsOnMainWindowClose
+  fullName: Dock.Settings.DockSettings.CloseFloatingWindowsOnMainWindowClose
+  nameWithType: DockSettings.CloseFloatingWindowsOnMainWindowClose
 - uid: Dock.Settings.DockSettings.CommandBarMergingEnabled
   name: CommandBarMergingEnabled
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_CommandBarMergingEnabled
@@ -51722,6 +51770,12 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettings.CommandBarMergingScope
   nameWithType: DockSettings.CommandBarMergingScope
+- uid: Dock.Settings.DockSettings.DefaultFloatingWindowOwnerMode
+  name: DefaultFloatingWindowOwnerMode
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_DefaultFloatingWindowOwnerMode
+  commentId: F:Dock.Settings.DockSettings.DefaultFloatingWindowOwnerMode
+  fullName: Dock.Settings.DockSettings.DefaultFloatingWindowOwnerMode
+  nameWithType: DockSettings.DefaultFloatingWindowOwnerMode
 - uid: Dock.Settings.DockSettings.DiagnosticsLogHandler
   name: DiagnosticsLogHandler
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_DiagnosticsLogHandler
@@ -51946,6 +52000,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.BringWindowsToFrontOnDrag
   nameWithType: DockSettingsOptions.BringWindowsToFrontOnDrag
+- uid: Dock.Settings.DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose
+  name: CloseFloatingWindowsOnMainWindowClose
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_CloseFloatingWindowsOnMainWindowClose
+  commentId: P:Dock.Settings.DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose
+  fullName: Dock.Settings.DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose
+  nameWithType: DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose
+- uid: Dock.Settings.DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose*
+  name: CloseFloatingWindowsOnMainWindowClose
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_CloseFloatingWindowsOnMainWindowClose_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose
+  nameWithType: DockSettingsOptions.CloseFloatingWindowsOnMainWindowClose
 - uid: Dock.Settings.DockSettingsOptions.CommandBarMergingEnabled
   name: CommandBarMergingEnabled
   href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_CommandBarMergingEnabled
@@ -51972,6 +52039,19 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.CommandBarMergingScope
   nameWithType: DockSettingsOptions.CommandBarMergingScope
+- uid: Dock.Settings.DockSettingsOptions.DefaultFloatingWindowOwnerMode
+  name: DefaultFloatingWindowOwnerMode
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_DefaultFloatingWindowOwnerMode
+  commentId: P:Dock.Settings.DockSettingsOptions.DefaultFloatingWindowOwnerMode
+  fullName: Dock.Settings.DockSettingsOptions.DefaultFloatingWindowOwnerMode
+  nameWithType: DockSettingsOptions.DefaultFloatingWindowOwnerMode
+- uid: Dock.Settings.DockSettingsOptions.DefaultFloatingWindowOwnerMode*
+  name: DefaultFloatingWindowOwnerMode
+  href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_DefaultFloatingWindowOwnerMode_
+  commentId: Overload:Dock.Settings.DockSettingsOptions.DefaultFloatingWindowOwnerMode
+  isSpec: "True"
+  fullName: Dock.Settings.DockSettingsOptions.DefaultFloatingWindowOwnerMode
+  nameWithType: DockSettingsOptions.DefaultFloatingWindowOwnerMode
 - uid: Dock.Settings.DockSettingsOptions.DocumentSelectorKeyGesture
   name: DocumentSelectorKeyGesture
   href: api/Dock.Settings.DockSettingsOptions.html#Dock_Settings_DockSettingsOptions_DocumentSelectorKeyGesture

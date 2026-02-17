@@ -215,6 +215,26 @@ DockSettings.GlobalDockingProportion = 0.33;
 <h2 id="floating-window-owner">Floating window owner</h2>
 <p><code>DockSettings.UseOwnerForFloatingWindows</code> keeps floating windows above the main window by setting it as their owner. This is applied when <code>IDockWindow.OwnerMode</code> is <code>DockWindowOwnerMode.Default</code> and can be overridden per window.</p>
 <p><code>DockSettings.FloatingWindowOwnerPolicy</code> provides an explicit global owner policy (<code>Default</code>, <code>AlwaysOwned</code>, <code>NeverOwned</code>). When set to <code>Default</code>, Dock falls back to <code>UseOwnerForFloatingWindows</code> to preserve compatibility.</p>
+<p><code>DockSettings.DefaultFloatingWindowOwnerMode</code> defines which owner strategy to use when a floating window has <code>IDockWindow.OwnerMode = DockWindowOwnerMode.Default</code>.</p>
+<p>Example:</p>
+<pre><code class="lang-csharp">// Use the root dock window as the owner when OwnerMode is Default.
+DockSettings.DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.RootWindow;
+</code></pre>
+<p>You can set the same behavior through the app builder:</p>
+<pre><code class="lang-csharp">AppBuilder.Configure&lt;App&gt;()
+    .UsePlatformDetect()
+    .UseDefaultFloatingWindowOwnerMode(DockWindowOwnerMode.RootWindow);
+</code></pre>
+<h2 id="close-floating-windows-with-the-main-window">Close floating windows with the main window</h2>
+<p><code>DockSettings.CloseFloatingWindowsOnMainWindowClose</code> controls whether Dock closes floating windows when the main (non-host) window is closing.</p>
+<p>Example:</p>
+<pre><code class="lang-csharp">DockSettings.CloseFloatingWindowsOnMainWindowClose = true;
+</code></pre>
+<p>App builder example:</p>
+<pre><code class="lang-csharp">AppBuilder.Configure&lt;App&gt;()
+    .UsePlatformDetect()
+    .CloseFloatingWindowsOnMainWindowClose(true);
+</code></pre>
 <h2 id="floating-window-host-mode">Floating window host mode</h2>
 <p><code>DockSettings.FloatingWindowHostMode</code> controls whether floating windows are hosted as native OS windows or managed in-app windows. <code>Default</code> defers to <code>DockSettings.UseManagedWindows</code>.</p>
 <h2 id="floating-dock-adorners">Floating dock adorners</h2>
@@ -280,7 +300,9 @@ AppBuilder.Configure&lt;App&gt;()
     .UsePlatformDetect()
     .UseFloatingDockAdorner()
     .UseOwnerForFloatingWindows()
+    .UseDefaultFloatingWindowOwnerMode(DockWindowOwnerMode.RootWindow)
     .UseManagedWindows()
+    .CloseFloatingWindowsOnMainWindowClose()
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
     .BringWindowsToFrontOnDrag()
@@ -289,7 +311,9 @@ AppBuilder.Configure&lt;App&gt;()
     .UpdateItemsSourceOnUnregister(true)
     .WithDockSettings(new DockSettingsOptions
     {
-        MinimumHorizontalDragDistance = 6
+        MinimumHorizontalDragDistance = 6,
+        DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.RootWindow,
+        CloseFloatingWindowsOnMainWindowClose = true
     });
 </code></pre>
 <h2 id="docksettingsoptions-reference">DockSettingsOptions reference</h2>
@@ -329,9 +353,24 @@ AppBuilder.Configure&lt;App&gt;()
 <td>Managed floating windows.</td>
 </tr>
 <tr>
+<td><code>FloatingWindowHostMode</code></td>
+<td><code>DockSettings.FloatingWindowHostMode</code></td>
+<td>Native vs managed floating host mode selection.</td>
+</tr>
+<tr>
 <td><code>UseOwnerForFloatingWindows</code></td>
 <td><code>DockSettings.UseOwnerForFloatingWindows</code></td>
 <td>Assign owners to floating windows.</td>
+</tr>
+<tr>
+<td><code>FloatingWindowOwnerPolicy</code></td>
+<td><code>DockSettings.FloatingWindowOwnerPolicy</code></td>
+<td>Global owner policy for floating windows.</td>
+</tr>
+<tr>
+<td><code>DefaultFloatingWindowOwnerMode</code></td>
+<td><code>DockSettings.DefaultFloatingWindowOwnerMode</code></td>
+<td>Owner strategy used when a window OwnerMode is <code>Default</code>.</td>
 </tr>
 <tr>
 <td><code>EnableWindowMagnetism</code></td>
@@ -347,6 +386,11 @@ AppBuilder.Configure&lt;App&gt;()
 <td><code>BringWindowsToFrontOnDrag</code></td>
 <td><code>DockSettings.BringWindowsToFrontOnDrag</code></td>
 <td>Activate windows when dragging.</td>
+</tr>
+<tr>
+<td><code>CloseFloatingWindowsOnMainWindowClose</code></td>
+<td><code>DockSettings.CloseFloatingWindowsOnMainWindowClose</code></td>
+<td>Close floating windows when the main window closes.</td>
 </tr>
 <tr>
 <td><code>ShowDockablePreviewOnDrag</code></td>

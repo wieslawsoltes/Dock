@@ -152,7 +152,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_BringWindowsToFrontOnDrag" data-uid="Dock.Settings.DockSettings.BringWindowsToFrontOnDrag">
   BringWindowsToFrontOnDrag
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Bring all windows to the front when a window starts being dragged.</p>
@@ -181,9 +181,71 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
 
 
+  <h3 id="Dock_Settings_DockSettings_CloseFloatingWindowsOnMainWindowClose" data-uid="Dock.Settings.DockSettings.CloseFloatingWindowsOnMainWindowClose">
+  CloseFloatingWindowsOnMainWindowClose
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Close all floating windows when the main (non-host) window closes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool CloseFloatingWindowsOnMainWindowClose</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Settings_DockSettings_DefaultFloatingWindowOwnerMode" data-uid="Dock.Settings.DockSettings.DefaultFloatingWindowOwnerMode">
+  DefaultFloatingWindowOwnerMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the default owner mode for floating windows when <a class="xref" href="Dock.Model.Core.IDockWindow.html#Dock_Model_Core_IDockWindow_OwnerMode">OwnerMode</a> is <a class="xref" href="Dock.Model.Core.DockWindowOwnerMode.html#Dock_Model_Core_DockWindowOwnerMode_Default">Default</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DockWindowOwnerMode DefaultFloatingWindowOwnerMode</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.DockWindowOwnerMode.html">DockWindowOwnerMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Settings_DockSettings_DiagnosticsLogHandler" data-uid="Dock.Settings.DockSettings.DiagnosticsLogHandler">
   DiagnosticsLogHandler
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L116"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Optional handler that is invoked when diagnostics logging emits a message.</p>
@@ -214,7 +276,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_DragPreviewOpacity" data-uid="Dock.Settings.DockSettings.DragPreviewOpacity">
   DragPreviewOpacity
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Opacity for the drag preview window.</p>
@@ -245,7 +307,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_EnableDiagnosticsLogging" data-uid="Dock.Settings.DockSettings.EnableDiagnosticsLogging">
   EnableDiagnosticsLogging
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L111"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Enables verbose diagnostics logging for docking workflows.</p>
@@ -276,7 +338,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_EnableWindowMagnetism" data-uid="Dock.Settings.DockSettings.EnableWindowMagnetism">
   EnableWindowMagnetism
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Snap floating windows to nearby windows when dragging.</p>
@@ -369,7 +431,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_GlobalDockingPreset" data-uid="Dock.Settings.DockSettings.GlobalDockingPreset">
   GlobalDockingPreset
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Configures global docking behavior as a combined preset.</p>
@@ -400,7 +462,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_GlobalDockingProportion" data-uid="Dock.Settings.DockSettings.GlobalDockingProportion">
   GlobalDockingProportion
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Configures the proportion used for global docking split operations.</p>
@@ -493,7 +555,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_ShowDockablePreviewOnDrag" data-uid="Dock.Settings.DockSettings.ShowDockablePreviewOnDrag">
   ShowDockablePreviewOnDrag
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L85"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Show dockable content inside the drag preview window while dragging.</p>
@@ -524,7 +586,7 @@ Class DockSettings  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Dock_Settings_DockSettings_UpdateItemsSourceOnUnregister" data-uid="Dock.Settings.DockSettings.UpdateItemsSourceOnUnregister">
   UpdateItemsSourceOnUnregister
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L96"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When true, closing an ItemsSource-generated document or tool attempts to remove its item from
@@ -680,7 +742,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_WindowMagnetDistance" data-uid="Dock.Settings.DockSettings.WindowMagnetDistance">
   WindowMagnetDistance
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L70"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Distance in pixels within which windows snap together.</p>
@@ -716,7 +778,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_CommandBarMergingEnabled" data-uid="Dock.Settings.DockSettings.CommandBarMergingEnabled">
   CommandBarMergingEnabled
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L154"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether command bar merging is enabled.</p>
@@ -748,7 +810,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_CommandBarMergingScope" data-uid="Dock.Settings.DockSettings.CommandBarMergingScope">
   CommandBarMergingScope
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L163"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the command bar merging scope.</p>
@@ -780,7 +842,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_DocumentSelectorKeyGesture" data-uid="Dock.Settings.DockSettings.DocumentSelectorKeyGesture">
   DocumentSelectorKeyGesture
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L136"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the key gesture for the document selector.</p>
@@ -812,7 +874,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_SelectorEnabled" data-uid="Dock.Settings.DockSettings.SelectorEnabled">
   SelectorEnabled
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L127"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether the document/panel selector is enabled.</p>
@@ -844,7 +906,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_ToolSelectorKeyGesture" data-uid="Dock.Settings.DockSettings.ToolSelectorKeyGesture">
   ToolSelectorKeyGesture
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L145"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the key gesture for the tool selector.</p>
@@ -880,7 +942,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_IsManagedWindowHostingEnabled_Dock_Model_Controls_IRootDock_" data-uid="Dock.Settings.DockSettings.IsManagedWindowHostingEnabled(Dock.Model.Controls.IRootDock)">
   IsManagedWindowHostingEnabled(IRootDock?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L215"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns true when managed window hosting is enabled.</p>
@@ -918,7 +980,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_IsMinimumDragDistance_Avalonia_PixelPoint_" data-uid="Dock.Settings.DockSettings.IsMinimumDragDistance(Avalonia.PixelPoint)">
   IsMinimumDragDistance(PixelPoint)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L186"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.</p>
@@ -957,7 +1019,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_IsMinimumDragDistance_Avalonia_Vector_" data-uid="Dock.Settings.DockSettings.IsMinimumDragDistance(Avalonia.Vector)">
   IsMinimumDragDistance(Vector)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L175"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.</p>
@@ -996,7 +1058,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_ResolveFloatingWindowHostMode_Dock_Model_Controls_IRootDock_" data-uid="Dock.Settings.DockSettings.ResolveFloatingWindowHostMode(Dock.Model.Controls.IRootDock)">
   ResolveFloatingWindowHostMode(IRootDock?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L196"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Resolves the effective floating window host mode.</p>
@@ -1034,7 +1096,7 @@ the backing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.
 
   <h3 id="Dock_Settings_DockSettings_ShouldUseOwnerForFloatingWindows" data-uid="Dock.Settings.DockSettings.ShouldUseOwnerForFloatingWindows">
   ShouldUseOwnerForFloatingWindows()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L213"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L223"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns true when floating windows should use an owner by default.</p>

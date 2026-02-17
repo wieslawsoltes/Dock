@@ -51310,6 +51310,24 @@ references:
   commentId: F:Dock.Settings.DockFloatingWindowOwnerPolicy.NeverOwned
   fullName: Dock.Settings.DockFloatingWindowOwnerPolicy.NeverOwned
   nameWithType: DockFloatingWindowOwnerPolicy.NeverOwned
+- uid: Dock.Settings.DockGlobalDockingPreset
+  name: DockGlobalDockingPreset
+  href: api/Dock.Settings.DockGlobalDockingPreset.html
+  commentId: T:Dock.Settings.DockGlobalDockingPreset
+  fullName: Dock.Settings.DockGlobalDockingPreset
+  nameWithType: DockGlobalDockingPreset
+- uid: Dock.Settings.DockGlobalDockingPreset.GlobalFirst
+  name: GlobalFirst
+  href: api/Dock.Settings.DockGlobalDockingPreset.html#Dock_Settings_DockGlobalDockingPreset_GlobalFirst
+  commentId: F:Dock.Settings.DockGlobalDockingPreset.GlobalFirst
+  fullName: Dock.Settings.DockGlobalDockingPreset.GlobalFirst
+  nameWithType: DockGlobalDockingPreset.GlobalFirst
+- uid: Dock.Settings.DockGlobalDockingPreset.LocalFirst
+  name: LocalFirst
+  href: api/Dock.Settings.DockGlobalDockingPreset.html#Dock_Settings_DockGlobalDockingPreset_LocalFirst
+  commentId: F:Dock.Settings.DockGlobalDockingPreset.LocalFirst
+  fullName: Dock.Settings.DockGlobalDockingPreset.LocalFirst
+  nameWithType: DockGlobalDockingPreset.LocalFirst
 - uid: Dock.Settings.DockLogger
   name: DockLogger
   href: api/Dock.Settings.DockLogger.html
@@ -51753,6 +51771,12 @@ references:
   commentId: F:Dock.Settings.DockSettings.FloatingWindowOwnerPolicy
   fullName: Dock.Settings.DockSettings.FloatingWindowOwnerPolicy
   nameWithType: DockSettings.FloatingWindowOwnerPolicy
+- uid: Dock.Settings.DockSettings.GlobalDockingPreset
+  name: GlobalDockingPreset
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_GlobalDockingPreset
+  commentId: F:Dock.Settings.DockSettings.GlobalDockingPreset
+  fullName: Dock.Settings.DockSettings.GlobalDockingPreset
+  nameWithType: DockSettings.GlobalDockingPreset
 - uid: Dock.Settings.DockSettings.GlobalDockingProportion
   name: GlobalDockingProportion
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_GlobalDockingProportion

@@ -7550,6 +7550,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Settings.DockGlobalDockingPreset.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Settings.DockGlobalDockingPreset.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Settings.DockGlobalDockingPreset",
+      "Summary": "<p sourcefile=\"api/Dock.Settings.DockGlobalDockingPreset.yml\" sourcestartlinenumber=\"1\">Defines combined global docking behavior presets.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Settings.DockLogger.yml",
       "output": {
         ".html": {

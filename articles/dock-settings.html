@@ -191,6 +191,27 @@ property instead.</p>
 <p><code>DockSettings.GlobalDockingProportion</code> controls the split ratio used when a dockable
 is dropped as a global dock target (for example, dropping into a different window).
 The default value is <code>0.5</code>.</p>
+<p><code>DockSettings.GlobalDockingPreset</code> controls how global docking decisions are made.
+The default value is <code>DockGlobalDockingPreset.GlobalFirst</code>.</p>
+<ul>
+<li><code>DockGlobalDockingPreset.LocalFirst</code>:
+<ul>
+<li>Uses legacy local-first operation selection.</li>
+<li>Resolves global target from the immediate drop context.</li>
+</ul>
+</li>
+<li><code>DockGlobalDockingPreset.GlobalFirst</code>:
+<ul>
+<li>Uses global-first operation selection when a global target is active.</li>
+<li>Resolves global target to the outermost global target in the owner chain.</li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<pre><code class="lang-csharp">DockSettings.GlobalDockingPreset = DockGlobalDockingPreset.GlobalFirst;
+DockSettings.GlobalDockingProportion = 0.33;
+</code></pre>
+<p>Set these before docking interactions start (typically during app startup).</p>
 <h2 id="floating-window-owner">Floating window owner</h2>
 <p><code>DockSettings.UseOwnerForFloatingWindows</code> keeps floating windows above the main window by setting it as their owner. This is applied when <code>IDockWindow.OwnerMode</code> is <code>DockWindowOwnerMode.Default</code> and can be overridden per window.</p>
 <p><code>DockSettings.FloatingWindowOwnerPolicy</code> provides an explicit global owner policy (<code>Default</code>, <code>AlwaysOwned</code>, <code>NeverOwned</code>). When set to <code>Default</code>, Dock falls back to <code>UseOwnerForFloatingWindows</code> to preserve compatibility.</p>
@@ -369,6 +390,8 @@ AppBuilder.Configure&lt;App&gt;()
 </tr>
 </tbody>
 </table>
+<p><code>GlobalDockingPreset</code> is currently configured directly on <code>DockSettings</code>
+rather than through <code>DockSettingsOptions</code>.</p>
 <h2 id="hide-on-close">Hide on close</h2>
 <p><code>FactoryBase</code> exposes two properties that control whether closing a tool or
 document hides it instead of removing it. Hidden items can be restored through

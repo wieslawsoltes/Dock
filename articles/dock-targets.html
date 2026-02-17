@@ -145,6 +145,7 @@
 &lt;/Style&gt;
 </code></pre>
 <p>To customize global targets, edit the <code>GlobalDockTarget</code> template. Its indicator panels use <code>DockSettings.GlobalDockingProportion</code> to size the split areas.</p>
+<p>Global docking behavior can be switched between legacy local-first and modern global-first modes using <code>DockSettings.GlobalDockingPreset</code>.</p>
 <h2 id="adaptive-global-targets">Adaptive global targets</h2>
 <p><code>IRootDock.EnableAdaptiveGlobalDockTargets</code> reduces global docking indicators to only show options that change the layout. Enable it when you want to minimize drop choices in large dashboards:</p>
 <pre><code class="lang-csharp">rootDock.EnableAdaptiveGlobalDockTargets = true;

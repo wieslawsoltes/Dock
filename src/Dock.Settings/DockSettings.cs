@@ -91,6 +91,11 @@ public static class DockSettings
     public static double GlobalDockingProportion = 0.5;
 
     /// <summary>
+    /// Configures global docking behavior as a combined preset.
+    /// </summary>
+    public static DockGlobalDockingPreset GlobalDockingPreset = DockGlobalDockingPreset.GlobalFirst;
+
+    /// <summary>
     /// Enables verbose diagnostics logging for docking workflows.
     /// </summary>
     public static bool EnableDiagnosticsLogging = false;
@@ -214,6 +219,22 @@ public static class DockSettings
             _ => UseOwnerForFloatingWindows
         };
     }
+}
+
+/// <summary>
+/// Defines combined global docking behavior presets.
+/// </summary>
+public enum DockGlobalDockingPreset
+{
+    /// <summary>
+    /// Local-first behavior with drop-context global target resolution.
+    /// </summary>
+    LocalFirst,
+
+    /// <summary>
+    /// Global-first behavior with outermost global target resolution.
+    /// </summary>
+    GlobalFirst
 }
 
 /// <summary>

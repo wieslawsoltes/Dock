@@ -23,6 +23,8 @@ public class AppBuilderExtensionsTests
         var originalOwnerForFloating = DockSettings.UseOwnerForFloatingWindows;
         var originalHostMode = DockSettings.FloatingWindowHostMode;
         var originalOwnerPolicy = DockSettings.FloatingWindowOwnerPolicy;
+        var originalDefaultOwnerMode = DockSettings.DefaultFloatingWindowOwnerMode;
+        var originalCloseFloatingOnMainWindowClose = DockSettings.CloseFloatingWindowsOnMainWindowClose;
         var originalUpdateItemsSourceOnUnregister = DockSettings.UpdateItemsSourceOnUnregister;
         var options = new DockSettingsOptions
         {
@@ -33,6 +35,8 @@ public class AppBuilderExtensionsTests
             UseOwnerForFloatingWindows = false,
             FloatingWindowHostMode = DockFloatingWindowHostMode.Managed,
             FloatingWindowOwnerPolicy = DockFloatingWindowOwnerPolicy.NeverOwned,
+            DefaultFloatingWindowOwnerMode = DockWindowOwnerMode.RootWindow,
+            CloseFloatingWindowsOnMainWindowClose = true,
             UpdateItemsSourceOnUnregister = false
         };
 
@@ -48,6 +52,8 @@ public class AppBuilderExtensionsTests
             Assert.False(DockSettings.UseOwnerForFloatingWindows);
             Assert.Equal(DockFloatingWindowHostMode.Managed, DockSettings.FloatingWindowHostMode);
             Assert.Equal(DockFloatingWindowOwnerPolicy.NeverOwned, DockSettings.FloatingWindowOwnerPolicy);
+            Assert.Equal(DockWindowOwnerMode.RootWindow, DockSettings.DefaultFloatingWindowOwnerMode);
+            Assert.True(DockSettings.CloseFloatingWindowsOnMainWindowClose);
             Assert.False(DockSettings.UpdateItemsSourceOnUnregister);
         }
         finally
@@ -59,6 +65,8 @@ public class AppBuilderExtensionsTests
             DockSettings.UseOwnerForFloatingWindows = originalOwnerForFloating;
             DockSettings.FloatingWindowHostMode = originalHostMode;
             DockSettings.FloatingWindowOwnerPolicy = originalOwnerPolicy;
+            DockSettings.DefaultFloatingWindowOwnerMode = originalDefaultOwnerMode;
+            DockSettings.CloseFloatingWindowsOnMainWindowClose = originalCloseFloatingOnMainWindowClose;
             DockSettings.UpdateItemsSourceOnUnregister = originalUpdateItemsSourceOnUnregister;
         }
     }
@@ -92,6 +100,8 @@ public class AppBuilderExtensionsTests
         var originalOwnerForFloating = DockSettings.UseOwnerForFloatingWindows;
         var originalHostMode = DockSettings.FloatingWindowHostMode;
         var originalOwnerPolicy = DockSettings.FloatingWindowOwnerPolicy;
+        var originalDefaultOwnerMode = DockSettings.DefaultFloatingWindowOwnerMode;
+        var originalCloseFloatingOnMainWindowClose = DockSettings.CloseFloatingWindowsOnMainWindowClose;
         var originalUpdateItemsSourceOnUnregister = DockSettings.UpdateItemsSourceOnUnregister;
 
         try
@@ -101,6 +111,8 @@ public class AppBuilderExtensionsTests
                    .UseOwnerForFloatingWindows(false)
                    .UseFloatingWindowHostMode(DockFloatingWindowHostMode.Native)
                    .UseFloatingWindowOwnerPolicy(DockFloatingWindowOwnerPolicy.AlwaysOwned)
+                   .UseDefaultFloatingWindowOwnerMode(DockWindowOwnerMode.ParentWindow)
+                   .CloseFloatingWindowsOnMainWindowClose(true)
                    .UpdateItemsSourceOnUnregister(false);
 
             Assert.True(DockSettings.UseFloatingDockAdorner);
@@ -108,6 +120,8 @@ public class AppBuilderExtensionsTests
             Assert.False(DockSettings.UseOwnerForFloatingWindows);
             Assert.Equal(DockFloatingWindowHostMode.Native, DockSettings.FloatingWindowHostMode);
             Assert.Equal(DockFloatingWindowOwnerPolicy.AlwaysOwned, DockSettings.FloatingWindowOwnerPolicy);
+            Assert.Equal(DockWindowOwnerMode.ParentWindow, DockSettings.DefaultFloatingWindowOwnerMode);
+            Assert.True(DockSettings.CloseFloatingWindowsOnMainWindowClose);
             Assert.False(DockSettings.UpdateItemsSourceOnUnregister);
         }
         finally
@@ -117,6 +131,8 @@ public class AppBuilderExtensionsTests
             DockSettings.UseOwnerForFloatingWindows = originalOwnerForFloating;
             DockSettings.FloatingWindowHostMode = originalHostMode;
             DockSettings.FloatingWindowOwnerPolicy = originalOwnerPolicy;
+            DockSettings.DefaultFloatingWindowOwnerMode = originalDefaultOwnerMode;
+            DockSettings.CloseFloatingWindowsOnMainWindowClose = originalCloseFloatingOnMainWindowClose;
             DockSettings.UpdateItemsSourceOnUnregister = originalUpdateItemsSourceOnUnregister;
         }
     }

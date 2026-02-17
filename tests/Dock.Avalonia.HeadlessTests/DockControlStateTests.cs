@@ -65,7 +65,7 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void GlobalDockOperationSelector_UsesLocal_WhenLocalOperationIsExplicit()
+    public void GlobalDockOperationSelector_UsesGlobal_WhenLocalOperationIsExplicit()
     {
         var service = new GlobalDockingService();
 
@@ -74,7 +74,7 @@ public class DockControlStateTests
             localOperation: DockOperation.Top,
             globalOperation: DockOperation.Right);
 
-        Assert.False(useGlobal);
+        Assert.True(useGlobal);
     }
 
     [AvaloniaFact]
@@ -165,7 +165,7 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void GlobalDockTargetResolver_UsesOwnerDock_FromDropDataContextDockable()
+    public void GlobalDockTargetResolver_UsesOutermostGlobalTarget_FromDropDataContextDockable()
     {
         var service = new GlobalDockingService();
         var factory = new Factory();
@@ -209,11 +209,11 @@ public class DockControlStateTests
         var dropControl = new Border { DataContext = document };
         var targetDock = service.ResolveGlobalTargetDock(dropControl);
 
-        Assert.Same(documentDock, targetDock);
+        Assert.Same(rootLayout, targetDock);
     }
 
     [AvaloniaFact]
-    public void GlobalDockTargetResolver_UsesDropDock_FromDropDataContextDock()
+    public void GlobalDockTargetResolver_UsesOutermostGlobalTarget_FromDropDataContextDock()
     {
         var service = new GlobalDockingService();
         var factory = new Factory();
@@ -239,6 +239,46 @@ public class DockControlStateTests
         var dropControl = new Border { DataContext = documentDock };
         var targetDock = service.ResolveGlobalTargetDock(dropControl);
 
-        Assert.Same(documentDock, targetDock);
+        Assert.Same(rootLayout, targetDock);
+    }
+
+    [AvaloniaFact]
+    public void GlobalDockTargetResolver_UsesOutermostGlobalTarget_WhenNested()
+    {
+        var service = new GlobalDockingService();
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Factory = factory
+        };
+
+        var rootLayout = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        factory.AddDockable(root, rootLayout);
+
+        var middleColumnLayout = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        factory.AddDockable(rootLayout, middleColumnLayout);
+
+        var documentDock = new DocumentDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        factory.AddDockable(middleColumnLayout, documentDock);
+
+        var document = new Document { Id = "Document1", Title = "Document 1" };
+        factory.AddDockable(documentDock, document);
+
+        var dropControl = new Border { DataContext = document };
+        var targetDock = service.ResolveGlobalTargetDock(dropControl);
+
+        Assert.Same(rootLayout, targetDock);
     }
 }

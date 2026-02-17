@@ -21,6 +21,9 @@ internal class DockDragContext
     public bool DoDragDrop { get; set; }
     public Point TargetPoint { get; set; }
     public Visual? TargetDockControl { get; set; }
+    public DockOperation ResolvedOperation { get; set; }
+    public bool UseGlobalOperation { get; set; }
+    public bool HasResolvedOperation { get; set; }
     
     public PixelPoint DragOffset { get; set; }
 
@@ -32,6 +35,7 @@ internal class DockDragContext
         DoDragDrop = false;
         TargetPoint = default;
         TargetDockControl = null;
+        ClearResolvedOperation();
     }
 
     public void End()
@@ -42,6 +46,14 @@ internal class DockDragContext
         DoDragDrop = false;
         TargetPoint = default;
         TargetDockControl = null;
+        ClearResolvedOperation();
+    }
+
+    public void ClearResolvedOperation()
+    {
+        ResolvedOperation = DockOperation.None;
+        UseGlobalOperation = false;
+        HasResolvedOperation = false;
     }
 }
 
@@ -50,6 +62,13 @@ internal class DockDragContext
 /// </summary>
 internal class DockControlState : DockManagerState, IDockControlState
 {
+    private readonly record struct DockOperationResolution(
+        DockOperation LocalOperation,
+        DockOperation GlobalOperation,
+        bool UseGlobalOperation,
+        DockOperation SelectedOperation,
+        bool IsValid);
+
     private readonly DockDragContext _context = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
 
@@ -117,46 +136,29 @@ internal class DockControlState : DockManagerState, IDockControlState
         AddAdorners(isLocalValid, isGlobalValid);
     }
 
-    private void Over(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
+    private DockOperationResolution Over(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
-        var localOperation = DockOperation.Fill;
-        var globalOperation = DockOperation.None;
-        var hasLocalAdorner = LocalAdornerHelper.Adorner is DockTarget;
-
-        if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
-        {
-            localOperation = dockTarget.GetDockOperation(point, dropControl, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
-        }
-
-        if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
-        {
-            globalOperation = globalDockTarget.GetDockOperation(point, dropControl, relativeTo, dragAction, ValidateGlobal, IsDockTargetVisible);
-        }
-
-        var useGlobalOperation = GlobalDocking.ShouldUseGlobalOperation(
-            hasLocalAdorner,
-            localOperation,
-            globalOperation);
-        if (useGlobalOperation)
-        {
-            ValidateGlobal(point, globalOperation, dragAction, relativeTo);
-        }
-        else
-        {
-            ValidateLocal(point, localOperation, dragAction, relativeTo);
-        }
-
-        LocalAdornerHelper.SetGlobalDockActive(useGlobalOperation);
+        var resolution = ResolveDockOperation(point, dragAction, dropControl, relativeTo, updateAdornerState: true);
+        _context.ResolvedOperation = resolution.SelectedOperation;
+        _context.UseGlobalOperation = resolution.UseGlobalOperation;
+        _context.HasResolvedOperation = resolution.SelectedOperation != DockOperation.None;
+        return resolution;
     }
 
-    private void Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
+    private DockOperationResolution ResolveDockOperation(
+        Point point,
+        DragAction dragAction,
+        Control dropControl,
+        Visual relativeTo,
+        bool updateAdornerState)
     {
         var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
-        var hasLocalAdorner = LocalAdornerHelper.Adorner is DockTarget;
+        var hasLocalAdorner = false;
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
+            hasLocalAdorner = true;
             localOperation = dockTarget.GetDockOperation(point, dropControl, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
         }
 
@@ -169,6 +171,36 @@ internal class DockControlState : DockManagerState, IDockControlState
             hasLocalAdorner,
             localOperation,
             globalOperation);
+        var selectedOperation = useGlobalOperation ? globalOperation : localOperation;
+        var isValid = useGlobalOperation
+            ? ValidateGlobal(point, globalOperation, dragAction, relativeTo)
+            : ValidateLocal(point, localOperation, dragAction, relativeTo);
+
+        if (updateAdornerState)
+        {
+            LocalAdornerHelper.SetGlobalDockActive(useGlobalOperation);
+        }
+
+        return new DockOperationResolution(
+            localOperation,
+            globalOperation,
+            useGlobalOperation,
+            selectedOperation,
+            isValid);
+    }
+
+    private void Drop(
+        Point point,
+        DragAction dragAction,
+        Control dropControl,
+        Visual relativeTo,
+        bool useGlobalOperation,
+        DockOperation selectedOperation)
+    {
+        if (selectedOperation == DockOperation.None)
+        {
+            return;
+        }
 
         RemoveAdorners();
 
@@ -191,7 +223,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 var targetRoot = targetDock.Factory?.FindRoot(targetDock, _ => true);
 
                 // Validate before executing global docking; if validation fails, fall back to floating when possible.
-                if (!ValidateGlobal(point, globalOperation, dragAction, relativeTo))
+                if (!ValidateGlobal(point, selectedOperation, dragAction, relativeTo))
                 {
                     if (CanFloatDockable(sourceDockable))
                     {
@@ -214,7 +246,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                  //     return;
                  // }
 
-                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
+                 Execute(point, selectedOperation, dragAction, relativeTo, sourceDockable, targetDock);
 
                  GlobalDocking.TryApplyGlobalDockingProportion(
                      sourceDockable,
@@ -251,13 +283,14 @@ internal class DockControlState : DockManagerState, IDockControlState
                      return;
                  }
 
-                 Execute(point, localOperation, dragAction, relativeTo, sourceDockable, target);
+                 Execute(point, selectedOperation, dragAction, relativeTo, sourceDockable, target);
               }
           }
       }
 
      private void Leave()
      {
+         _context.ClearResolvedOperation();
          RemoveAdorners();
      }
 
@@ -468,7 +501,21 @@ internal class DockControlState : DockManagerState, IDockControlState
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (isDropEnabled)
                         {
-                            Drop(_context.TargetPoint, dragAction, dropControl, _context.TargetDockControl);
+                            var useGlobalOperation = _context.UseGlobalOperation;
+                            var selectedOperation = _context.ResolvedOperation;
+                            if (!_context.HasResolvedOperation)
+                            {
+                                var resolution = ResolveDockOperation(
+                                    _context.TargetPoint,
+                                    dragAction,
+                                    dropControl,
+                                    _context.TargetDockControl,
+                                    updateAdornerState: false);
+                                useGlobalOperation = resolution.UseGlobalOperation;
+                                selectedOperation = resolution.SelectedOperation;
+                            }
+
+                            Drop(_context.TargetPoint, dragAction, dropControl, _context.TargetDockControl, useGlobalOperation, selectedOperation);
                             executed = true;
                             LogDragState($"Drop executed on '{dropControl.GetType().Name}' with action '{dragAction}'.");
                         }
@@ -594,11 +641,12 @@ internal class DockControlState : DockManagerState, IDockControlState
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (isDropEnabled)
                         {
+                            DockOperationResolution resolution;
                             if (DropControl == dropControl)
                             {
                                 _context.TargetPoint = targetPoint;
                                 _context.TargetDockControl = targetDockControl;
-                                Over(targetPoint, dragAction, dropControl, targetDockControl);
+                                resolution = Over(targetPoint, dragAction, dropControl, targetDockControl);
                                 LogDragState($"Dragging over '{dropControl.GetType().Name}' at {targetPoint}.");
                             }
                             else
@@ -614,46 +662,22 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 _context.TargetPoint = targetPoint;
                                 _context.TargetDockControl = targetDockControl;
                                 Enter(targetPoint, dragAction, targetDockControl);
+                                resolution = Over(targetPoint, dragAction, dropControl, targetDockControl);
                                 LogDragState($"New drop control '{dropControl.GetType().Name}' at {targetPoint}.");
                             }
 
-                            var globalOperation = GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget
-                                ? globalDockTarget.GetDockOperation(targetPoint, dropControl, targetDockControl, dragAction, ValidateGlobal, IsDockTargetVisible)
-                                : DockOperation.None;
+                            LogDragState($"Operations resolved: global={resolution.GlobalOperation}, local={resolution.LocalOperation}, selected={resolution.SelectedOperation}, useGlobal={resolution.UseGlobalOperation}.");
 
-                            var hasLocalAdorner = false;
-                            DockOperation localOperation;
-                            if (LocalAdornerHelper.Adorner is DockTarget localDockTarget)
-                            {
-                                hasLocalAdorner = true;
-                                localOperation = localDockTarget.GetDockOperation(
-                                    targetPoint, dropControl, targetDockControl, dragAction, ValidateLocal, IsDockTargetVisible);
-                            }
-                            else
-                            {
-                                localOperation = DockOperation.Fill;
-                            }
-                            var useGlobalOperation = GlobalDocking.ShouldUseGlobalOperation(
-                                hasLocalAdorner,
-                                localOperation,
-                                globalOperation);
-
-                            LogDragState($"Operations resolved: global={globalOperation}, local={localOperation}.");
-
-                            if (useGlobalOperation)
-                            {
-                                var valid = ValidateGlobal(targetPoint, globalOperation, dragAction, targetDockControl);
-                                preview = valid ? "Dock" : "None";
-                                LogDragState($"Global validation {(valid ? "succeeded" : "failed")} for operation {globalOperation}.");
-                            }
-                            else
-                            {
-                                var valid = ValidateLocal(targetPoint, localOperation, dragAction, targetDockControl);
-                                preview = valid
-                                    ? localOperation == DockOperation.Window ? "Float" : "Dock"
-                                    : "None";
-                                LogDragState($"Local validation {(valid ? "succeeded" : "failed")} for operation {localOperation}.");
-                            }
+                            preview = resolution.IsValid
+                                ? (resolution.UseGlobalOperation
+                                    ? "Dock"
+                                    : resolution.SelectedOperation == DockOperation.Window
+                                        ? "Float"
+                                        : "Dock")
+                                : "None";
+                            LogDragState(
+                                $"{(resolution.UseGlobalOperation ? "Global" : "Local")} validation " +
+                                $"{(resolution.IsValid ? "succeeded" : "failed")} for operation {resolution.SelectedOperation}.");
                         }
                         else
                         {
@@ -664,6 +688,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 DropControl = null;
                                 _context.TargetPoint = default;
                                 _context.TargetDockControl = null;
+                                _context.ClearResolvedOperation();
                                 LogDragState("Cleared drop control due to disabled target.");
                             }
                         }
@@ -674,6 +699,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         DropControl = null;
                         _context.TargetPoint = default;
                         _context.TargetDockControl = null;
+                        _context.ClearResolvedOperation();
                         LogDragState($"No valid drop target at current position (local={point}, screen={screenPoint}); cleared drop context.");
                         var canFloat = _context.DragControl?.DataContext is IDockable sourceDockable && CanFloatDockable(sourceDockable);
                         preview = canFloat ? "Float" : "None";

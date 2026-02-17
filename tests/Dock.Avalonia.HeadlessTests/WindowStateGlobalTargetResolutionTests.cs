@@ -132,7 +132,7 @@ public class WindowStateGlobalTargetResolutionTests
         {
             var targetDock = GlobalDockingService.ResolveGlobalTargetDock(dropControl);
             Assert.NotNull(targetDock);
-            Assert.Same(targetDocument.Owner, targetDock);
+            Assert.Same(targetDocument.Owner?.Owner, targetDock);
             Assert.NotNull(dropControl.GetVisualRoot());
             Assert.NotNull(root.FocusedDockable);
             Assert.Same(sourceDocument, root.FocusedDockable);
@@ -179,7 +179,7 @@ public class WindowStateGlobalTargetResolutionTests
         {
             var targetDock = GlobalDockingService.ResolveGlobalTargetDock(dropControl);
             Assert.NotNull(targetDock);
-            Assert.Same(targetDocument.Owner, targetDock);
+            Assert.Same(targetDocument.Owner?.Owner, targetDock);
             Assert.NotNull(dropControl.GetVisualRoot());
             Assert.NotNull(root.FocusedDockable);
             Assert.Same(sourceDocument, root.FocusedDockable);

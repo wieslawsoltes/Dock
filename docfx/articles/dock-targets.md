@@ -57,6 +57,8 @@ The default themes define template parts like `PART_TopIndicator` and `PART_TopS
 
 To customize global targets, edit the `GlobalDockTarget` template. Its indicator panels use `DockSettings.GlobalDockingProportion` to size the split areas.
 
+Global docking behavior can be switched between legacy local-first and modern global-first modes using `DockSettings.GlobalDockingPreset`.
+
 ## Adaptive global targets
 
 `IRootDock.EnableAdaptiveGlobalDockTargets` reduces global docking indicators to only show options that change the layout. Enable it when you want to minimize drop choices in large dashboards:

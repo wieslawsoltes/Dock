@@ -85,6 +85,25 @@ property instead.
 is dropped as a global dock target (for example, dropping into a different window).
 The default value is `0.5`.
 
+`DockSettings.GlobalDockingPreset` controls how global docking decisions are made.
+The default value is `DockGlobalDockingPreset.GlobalFirst`.
+
+- `DockGlobalDockingPreset.LocalFirst`:
+  - Uses legacy local-first operation selection.
+  - Resolves global target from the immediate drop context.
+- `DockGlobalDockingPreset.GlobalFirst`:
+  - Uses global-first operation selection when a global target is active.
+  - Resolves global target to the outermost global target in the owner chain.
+
+Example:
+
+```csharp
+DockSettings.GlobalDockingPreset = DockGlobalDockingPreset.GlobalFirst;
+DockSettings.GlobalDockingProportion = 0.33;
+```
+
+Set these before docking interactions start (typically during app startup).
+
 ## Floating window owner
 
 `DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner. This is applied when `IDockWindow.OwnerMode` is `DockWindowOwnerMode.Default` and can be overridden per window.
@@ -234,6 +253,9 @@ AppBuilder.Configure<App>()
 | `ToolSelectorKeyGesture` | `DockSettings.ToolSelectorKeyGesture` | Tool selector shortcut. |
 | `CommandBarMergingEnabled` | `DockSettings.CommandBarMergingEnabled` | Enable command bar merging. |
 | `CommandBarMergingScope` | `DockSettings.CommandBarMergingScope` | Merge scope for command bars. |
+
+`GlobalDockingPreset` is currently configured directly on `DockSettings`
+rather than through `DockSettingsOptions`.
 
 ## Hide on close
 

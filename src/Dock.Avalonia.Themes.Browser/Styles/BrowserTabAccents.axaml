@@ -151,6 +151,7 @@
   <HorizontalAlignment x:Key="DockDocumentTabStripHorizontalCreateButtonAlignment">Left</HorizontalAlignment>
   <core:DockOperation x:Key="DockDocumentControlIndicatorDockOperation">Fill</core:DockOperation>
   <x:Boolean x:Key="DockDocumentTabStripHideWhenEmpty">False</x:Boolean>
+  <x:Boolean x:Key="DockDocumentTabStripToggleWindowStateOnDoubleTap">True</x:Boolean>
   <x:Boolean x:Key="DockDocumentControlShowDockIndicatorOnly">True</x:Boolean>
   <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">False</x:Boolean>
   <sys:Double x:Key="DockDocumentControlVerticalSpacing">6</sys:Double>

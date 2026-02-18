@@ -58,6 +58,8 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
 
     <Setter Property="EnableWindowDrag" Value="{Binding EnableWindowDrag}" />
+    <Setter Property="EnableWindowStateToggleOnDoubleTap"
+            Value="{DynamicResource DockDocumentTabStripToggleWindowStateOnDoubleTap}" />
     <Setter Property="CreateButtonTheme" Value="{DynamicResource ButtonCreateDocument}" />
     
     <Setter Property="Background" Value="{DynamicResource DockDocumentTabStripBackgroundBrush}" />

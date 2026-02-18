@@ -8,6 +8,8 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Dock.Avalonia.Internal;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Styling;
 using Dock.Avalonia.Automation.Peers;
@@ -24,6 +26,7 @@ public class DocumentTabStrip : TabStrip
     private Control? _grip;
     private ScrollViewer? _scrollViewer;
     private IDisposable? _scrollViewerWheelSubscription;
+    private IDisposable? _doubleTappedSubscription;
     private WindowDragHelper? _windowDragHelper;
     
     /// <summary>
@@ -43,6 +46,12 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<bool> EnableWindowDragProperty = 
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag));
+
+    /// <summary>
+    /// Define the <see cref="EnableWindowStateToggleOnDoubleTap"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> EnableWindowStateToggleOnDoubleTapProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowStateToggleOnDoubleTap));
 
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
@@ -236,6 +245,15 @@ public class DocumentTabStrip : TabStrip
     }
 
     /// <summary>
+    /// Gets or sets if the hosting window state can be toggled by double tapping the tab strip fill area.
+    /// </summary>
+    public bool EnableWindowStateToggleOnDoubleTap
+    {
+        get => GetValue(EnableWindowStateToggleOnDoubleTapProperty);
+        set => SetValue(EnableWindowStateToggleOnDoubleTapProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets orientation of the tab strip.
     /// </summary>
     public Orientation Orientation
@@ -280,6 +298,7 @@ public class DocumentTabStrip : TabStrip
 
         _grip = e.NameScope.Find<Control>("PART_BorderFill");
         _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
+        AttachDoubleTapped();
         AttachScrollViewerWheel();
 
         AttachToWindow();
@@ -298,6 +317,7 @@ public class DocumentTabStrip : TabStrip
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        DetachDoubleTapped();
         DetachScrollViewerWheel();
         DetachFromWindow();
     }
@@ -341,11 +361,56 @@ public class DocumentTabStrip : TabStrip
             }
         }
 
+        if (change.Property == EnableWindowStateToggleOnDoubleTapProperty)
+        {
+            AttachDoubleTapped();
+        }
+
         if (change.Property == MouseWheelScrollOrientationProperty)
         {
             AttachScrollViewerWheel();
         }
 
+    }
+
+    private void OnDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (!EnableWindowStateToggleOnDoubleTap)
+        {
+            return;
+        }
+
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        window.WindowState = window.WindowState switch
+        {
+            WindowState.Normal => WindowState.Maximized,
+            WindowState.Maximized => WindowState.Normal,
+            _ => window.WindowState
+        };
+
+        e.Handled = true;
+    }
+
+    private void AttachDoubleTapped()
+    {
+        DetachDoubleTapped();
+
+        if (!EnableWindowStateToggleOnDoubleTap)
+        {
+            return;
+        }
+
+        _doubleTappedSubscription = this.AddDisposableHandler(Gestures.DoubleTappedEvent, OnDoubleTapped);
+    }
+
+    private void DetachDoubleTapped()
+    {
+        _doubleTappedSubscription?.Dispose();
+        _doubleTappedSubscription = null;
     }
 
     private void UpdatePseudoClassesCreate(bool canCreate)

@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=netstandard"
+                    xmlns:platform="clr-namespace:Avalonia.Platform;assembly=Avalonia.Controls"
                     xmlns:core="using:Dock.Model.Core">
   <ResourceDictionary.ThemeDictionaries>
     <ResourceDictionary x:Key="Default">
@@ -113,6 +114,11 @@
   <sys:Double x:Key="DockDocumentTabItemMinHeight">28</sys:Double>
   <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
   <sys:Double x:Key="DockDocumentTabStripMinHeight">28</sys:Double>
+  <OnPlatform x:Key="DockHostWindowChromeHints"
+              x:TypeArguments="platform:ExtendClientAreaChromeHints"
+              Default="PreferSystemChrome"
+              macOS="Default, PreferSystemChrome, OSXThickTitleBar"
+              Windows="PreferSystemChrome" />
   <OnPlatform x:Key="DockDocumentTabStripLeadingSpacerWidth"
               x:TypeArguments="x:Double"
               Default="12"
@@ -134,7 +140,11 @@
   <sys:Double x:Key="DockChromeGripHeight">5</sys:Double>
   <Thickness x:Key="DockChromeGripMargin">0,0,2,0</Thickness>
   <SolidColorBrush x:Key="DockChromeGripBrush" Color="#00000000" />
-  <Thickness x:Key="DockHeaderContentPadding">2</Thickness>
+  <OnPlatform x:Key="DockHeaderContentPadding"
+              x:TypeArguments="Thickness"
+              Default="2"
+              macOS="2,1,2,0"
+              Windows="2" />
   <Thickness x:Key="DockModifiedIndicatorMargin">0,0,2,0</Thickness>
   <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>
   <sys:Double x:Key="DockDocumentTabHeaderContentSpacing">5</sys:Double>

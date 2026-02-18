@@ -30,7 +30,7 @@
     <Setter Property="ToolChromeControlsWholeWindow" Value="{Binding OpenedDockablesCount, Converter={StaticResource LessThan2}}" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
     <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
-    <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+    <Setter Property="ExtendClientAreaChromeHints" Value="{DynamicResource DockHostWindowChromeHints}" />
 
     <Setter Property="Template">
       <ControlTemplate>

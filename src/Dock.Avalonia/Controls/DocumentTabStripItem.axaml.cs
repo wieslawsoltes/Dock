@@ -20,11 +20,10 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Document TabStripItem custom control.
 /// </summary>
-[PseudoClasses(":active", ":compact", ":ultracompact")]
+[PseudoClasses(":active", ":ultracompact")]
 public class DocumentTabStripItem : TabStripItem
 {
-    private const double CompactWidthThreshold = 104d;
-    private const double UltraCompactWidthThreshold = 64d;
+    private const double UltraCompactWidthThreshold = 32d;
     private ItemDragHelper? _dragHelper;
     private static DragAction ToDragAction(PointerEventArgs e)
     {
@@ -98,7 +97,7 @@ public class DocumentTabStripItem : TabStripItem
     public DocumentTabStripItem()
     {
         UpdatePseudoClasses(IsActive);
-        UpdateCompactPseudoClasses(Bounds.Width);
+        UpdateUltraCompactPseudoClasses(Bounds.Width);
     }
 
     /// <inheritdoc />
@@ -179,7 +178,7 @@ public class DocumentTabStripItem : TabStripItem
 
         if (change.Property == BoundsProperty)
         {
-            UpdateCompactPseudoClasses(change.GetNewValue<Rect>().Width);
+            UpdateUltraCompactPseudoClasses(change.GetNewValue<Rect>().Width);
         }
 
         if (change.Property == IsSelectedProperty
@@ -194,11 +193,9 @@ public class DocumentTabStripItem : TabStripItem
         PseudoClasses.Set(":active", isActive);
     }
 
-    private void UpdateCompactPseudoClasses(double width)
+    private void UpdateUltraCompactPseudoClasses(double width)
     {
         var ultraCompact = width > 0d && width <= UltraCompactWidthThreshold;
-        var compact = ultraCompact || (width > 0d && width <= CompactWidthThreshold);
-        PseudoClasses.Set(":compact", compact);
         PseudoClasses.Set(":ultracompact", ultraCompact);
     }
 }

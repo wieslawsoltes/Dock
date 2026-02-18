@@ -41,11 +41,25 @@ public class DelayedUniformTabPanelTests
         Layout(panel, 500, 32);
         AssertTabWidth(panel, 164d);
 
-        Layout(panel, 1000, 32);
+        panel.Children.RemoveAt(panel.Children.Count - 1);
+        Layout(panel, 500, 32);
         AssertTabWidth(panel, 164d);
 
         await Task.Delay(90);
         Dispatcher.UIThread.RunJobs();
+
+        Layout(panel, 500, 32);
+        AssertTabWidth(panel, 220d);
+    }
+
+    [AvaloniaFact]
+    public void ResizesImmediatelyWhenOnlyViewportChanges()
+    {
+        var panel = CreatePanel();
+        panel.ExpansionDelay = TimeSpan.FromSeconds(10);
+
+        Layout(panel, 500, 32);
+        AssertTabWidth(panel, 164d);
 
         Layout(panel, 1000, 32);
         AssertTabWidth(panel, 220d);

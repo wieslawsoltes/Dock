@@ -421,14 +421,6 @@
       <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
     </Style>
 
-    <Style Selector="^:compact /template/ ContentPresenter#PART_HeaderPresenter">
-      <Setter Property="IsVisible" Value="False" />
-    </Style>
-
-    <Style Selector="^:compact /template/ ContentPresenter#PART_ModifiedPresenter">
-      <Setter Property="IsVisible" Value="False" />
-    </Style>
-
     <Style Selector="^:ultracompact /template/ ContentPresenter#PART_ClosePresenter">
       <Setter Property="IsVisible" Value="False" />
     </Style>

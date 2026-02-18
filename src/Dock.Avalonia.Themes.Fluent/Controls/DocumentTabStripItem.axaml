@@ -341,7 +341,8 @@
                   DockProperties.IsDockTarget="True"
                   DockProperties.ShowDockIndicatorOnly="True"
                   DockProperties.IndicatorDockOperation="Fill">
-            <DockableControl TrackingMode="Tab">
+            <DockableControl TrackingMode="Tab"
+                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
               <DockPanel Background="Transparent">
                 <StackPanel Background="Transparent"
                             Orientation="Horizontal"

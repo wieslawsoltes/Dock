@@ -36,7 +36,9 @@
     <Style Selector="DocumentControl">
       <Setter Property="HeaderTemplate">
         <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
-          <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Padding="2" />
+          <TextBlock Text="{Binding Title}"
+                     VerticalAlignment="Center"
+                     Padding="{DynamicResource DockHeaderContentPadding}" />
         </DataTemplate>
       </Setter>
     </Style>

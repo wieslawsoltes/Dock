@@ -61,6 +61,7 @@ Install-Package Dock.Avalonia
 Install-Package Dock.Model.Mvvm
 Install-Package Dock.Serializer.Newtonsoft
 Install-Package Dock.Avalonia.Themes.Fluent
+Install-Package Dock.Avalonia.Themes.Browser
 ```
 
 **Available NuGet packages:**
@@ -70,6 +71,7 @@ Install-Package Dock.Avalonia.Themes.Fluent
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.svg)](https://www.nuget.org/packages/Dock.Avalonia) | [`Dock.Avalonia`](https://www.nuget.org/packages/Dock.Avalonia) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.svg)](https://www.nuget.org/packages/Dock.Avalonia) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Diagnostics.svg)](https://www.nuget.org/packages/Dock.Avalonia.Diagnostics) | [`Dock.Avalonia.Diagnostics`](https://www.nuget.org/packages/Dock.Avalonia.Diagnostics) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Diagnostics.svg)](https://www.nuget.org/packages/Dock.Avalonia.Diagnostics) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [`Dock.Avalonia.Themes.Fluent`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) |
+| [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [`Dock.Avalonia.Themes.Browser`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Simple.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) | [`Dock.Avalonia.Themes.Simple`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Simple.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.ProportionalStackPanel.svg)](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) | [`Dock.Controls.ProportionalStackPanel`](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.ProportionalStackPanel.svg)](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.Recycling.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling) | [`Dock.Controls.Recycling`](https://www.nuget.org/packages/Dock.Controls.Recycling) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.Recycling.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling) |
@@ -112,6 +114,7 @@ Install-Package Dock.Avalonia -Pre
 Install-Package Dock.Model.Mvvm -Pre
 Install-Package Dock.Serializer.Newtonsoft -Pre
 Install-Package Dock.Avalonia.Themes.Fluent -Pre
+Install-Package Dock.Avalonia.Themes.Browser -Pre
 ```
 
 

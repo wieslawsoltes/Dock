@@ -66,6 +66,8 @@ Dock is published on NuGet. Common packages include:
 
 - `Dock.Avalonia`
 - `Dock.Model`
+- `Dock.Avalonia.Themes.Fluent`
+- `Dock.Avalonia.Themes.Browser`
 - Framework integrations such as `Dock.Model.ReactiveUI`
 
 See the repository README for the full list and build instructions:

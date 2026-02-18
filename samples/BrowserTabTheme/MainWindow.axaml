@@ -6,7 +6,7 @@
         Height="820"
         Background="{DynamicResource DockSurfaceHeaderBrush}"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaTitleBarHeightHint="32"
+        ExtendClientAreaTitleBarHeightHint="-1"
         ExtendClientAreaChromeHints="Default, PreferSystemChrome, OSXThickTitleBar">
   <DockControl Name="DockControl" Margin="6" />
   

@@ -1,0 +1,163 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=netstandard"
+                    xmlns:core="using:Dock.Model.Core">
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Default">
+      <!-- Token-first brushes -->
+      <SolidColorBrush x:Key="DockSurfaceWorkbenchBrush">#F3F6FB</SolidColorBrush>
+      <StaticResource x:Key="DockSurfaceSidebarBrush" ResourceKey="DockSurfaceWorkbenchBrush" />
+      <SolidColorBrush x:Key="DockSurfaceEditorBrush">#FFFFFF</SolidColorBrush>
+      <StaticResource x:Key="DockSurfacePanelBrush" ResourceKey="DockSurfaceWorkbenchBrush" />
+      <SolidColorBrush x:Key="DockSurfaceHeaderBrush">#D7DFEC</SolidColorBrush>
+      <SolidColorBrush x:Key="DockSurfaceHeaderActiveBrush">#2F6FDC</SolidColorBrush>
+
+      <StaticResource x:Key="DockBorderSubtleBrush" ResourceKey="DockSurfaceHeaderBrush" />
+      <SolidColorBrush x:Key="DockBorderStrongBrush">#CBD9F2</SolidColorBrush>
+      <StaticResource x:Key="DockSeparatorBrush" ResourceKey="DockBorderSubtleBrush" />
+      <StaticResource x:Key="DockSplitterIdleBrush" ResourceKey="DockBorderSubtleBrush" />
+      <SolidColorBrush x:Key="DockSplitterHoverBrush">#4D87E7</SolidColorBrush>
+      <SolidColorBrush x:Key="DockSplitterDragBrush">#2F6FDC</SolidColorBrush>
+
+      <SolidColorBrush x:Key="DockTabBackgroundBrush">#00000000</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabHoverBackgroundBrush">#4D87E7</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabActiveBackgroundBrush">#2F6FDC</SolidColorBrush>
+      <StaticResource x:Key="DockTabActiveIndicatorBrush" ResourceKey="DockTabActiveBackgroundBrush" />
+      <SolidColorBrush x:Key="DockTabForegroundBrush">#13363B</SolidColorBrush>
+      <StaticResource x:Key="DockTabSelectedForegroundBrush" ResourceKey="DockTabForegroundBrush" />
+      <SolidColorBrush x:Key="DockTabActiveForegroundBrush">#13363B</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabCloseHoverBackgroundBrush">#D8E6FF</SolidColorBrush>
+      <SolidColorBrush x:Key="DockDocumentTabPointerOverForegroundBrush">#0B181A</SolidColorBrush>
+      <StaticResource x:Key="DockDocumentTabClosePointerOverForegroundBrush" ResourceKey="DockDocumentTabPointerOverForegroundBrush" />
+
+      <StaticResource x:Key="DockTargetIndicatorBrush" ResourceKey="DockTabActiveBackgroundBrush" />
+      <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush">#E8EEF9</SolidColorBrush>
+      <StaticResource x:Key="DockChromeButtonPressedBackgroundBrush" ResourceKey="DockSurfaceHeaderBrush" />
+      <StaticResource x:Key="DockChromeButtonDangerHoverBrush" ResourceKey="DockTabCloseHoverBackgroundBrush" />
+
+      <!-- Legacy key aliases -->
+      <StaticResource x:Key="DockApplicationAccentBrushLow" ResourceKey="DockTabActiveBackgroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentBrushMed" ResourceKey="DockTabHoverBackgroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentBrushHigh" ResourceKey="DockTabCloseHoverBackgroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentBrushIndicator" ResourceKey="DockTargetIndicatorBrush" />
+      <StaticResource x:Key="DockThemeBackgroundBrush" ResourceKey="DockSurfacePanelBrush" />
+      <StaticResource x:Key="DockThemeControlBackgroundBrush" ResourceKey="DockSurfaceEditorBrush" />
+      <StaticResource x:Key="DockThemeBorderLowBrush" ResourceKey="DockBorderSubtleBrush" />
+      <StaticResource x:Key="DockThemeForegroundBrush" ResourceKey="DockTabForegroundBrush" />
+      <StaticResource x:Key="DockThemeAccentBrush" ResourceKey="DockSurfaceHeaderActiveBrush" />
+      <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockThemeForegroundBrush" />
+      <StaticResource x:Key="DockChromeButtonForegroundBrush" ResourceKey="DockToolChromeIconBrush" />
+
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="Dark">
+      <!-- Token-first brushes -->
+      <SolidColorBrush x:Key="DockSurfaceWorkbenchBrush">#1C2230</SolidColorBrush>
+      <StaticResource x:Key="DockSurfaceSidebarBrush" ResourceKey="DockSurfaceWorkbenchBrush" />
+      <SolidColorBrush x:Key="DockSurfaceEditorBrush">#20283A</SolidColorBrush>
+      <StaticResource x:Key="DockSurfacePanelBrush" ResourceKey="DockSurfaceWorkbenchBrush" />
+      <SolidColorBrush x:Key="DockSurfaceHeaderBrush">#334055</SolidColorBrush>
+      <SolidColorBrush x:Key="DockSurfaceHeaderActiveBrush">#5C9BFF</SolidColorBrush>
+
+      <StaticResource x:Key="DockBorderSubtleBrush" ResourceKey="DockSurfaceHeaderBrush" />
+      <SolidColorBrush x:Key="DockBorderStrongBrush">#415271</SolidColorBrush>
+      <StaticResource x:Key="DockSeparatorBrush" ResourceKey="DockBorderSubtleBrush" />
+      <StaticResource x:Key="DockSplitterIdleBrush" ResourceKey="DockBorderSubtleBrush" />
+      <SolidColorBrush x:Key="DockSplitterHoverBrush">#4C89E8</SolidColorBrush>
+      <SolidColorBrush x:Key="DockSplitterDragBrush">#5C9BFF</SolidColorBrush>
+
+      <SolidColorBrush x:Key="DockTabBackgroundBrush">#00000000</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabHoverBackgroundBrush">#4C89E8</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabActiveBackgroundBrush">#2C72E3</SolidColorBrush>
+      <StaticResource x:Key="DockTabActiveIndicatorBrush" ResourceKey="DockTabActiveBackgroundBrush" />
+      <SolidColorBrush x:Key="DockTabForegroundBrush">#DCDCDC</SolidColorBrush>
+      <StaticResource x:Key="DockTabSelectedForegroundBrush" ResourceKey="DockTabForegroundBrush" />
+      <SolidColorBrush x:Key="DockTabActiveForegroundBrush">#DCDCDC</SolidColorBrush>
+      <SolidColorBrush x:Key="DockTabCloseHoverBackgroundBrush">#24354D</SolidColorBrush>
+      <SolidColorBrush x:Key="DockDocumentTabPointerOverForegroundBrush">#FFFFFF</SolidColorBrush>
+      <StaticResource x:Key="DockDocumentTabClosePointerOverForegroundBrush" ResourceKey="DockDocumentTabPointerOverForegroundBrush" />
+
+      <SolidColorBrush x:Key="DockTargetIndicatorBrush">#5C9BFF</SolidColorBrush>
+      <SolidColorBrush x:Key="DockChromeButtonHoverBackgroundBrush">#2C374E</SolidColorBrush>
+      <StaticResource x:Key="DockChromeButtonPressedBackgroundBrush" ResourceKey="DockSurfaceHeaderBrush" />
+      <StaticResource x:Key="DockChromeButtonDangerHoverBrush" ResourceKey="DockTabCloseHoverBackgroundBrush" />
+
+      <!-- Legacy key aliases -->
+      <StaticResource x:Key="DockApplicationAccentBrushLow" ResourceKey="DockTabActiveBackgroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentBrushMed" ResourceKey="DockTabHoverBackgroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentBrushHigh" ResourceKey="DockTabCloseHoverBackgroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
+      <StaticResource x:Key="DockApplicationAccentBrushIndicator" ResourceKey="DockTargetIndicatorBrush" />
+      <StaticResource x:Key="DockThemeBackgroundBrush" ResourceKey="DockSurfacePanelBrush" />
+      <StaticResource x:Key="DockThemeControlBackgroundBrush" ResourceKey="DockSurfaceEditorBrush" />
+      <StaticResource x:Key="DockThemeBorderLowBrush" ResourceKey="DockBorderSubtleBrush" />
+      <StaticResource x:Key="DockThemeForegroundBrush" ResourceKey="DockTabForegroundBrush" />
+      <StaticResource x:Key="DockThemeAccentBrush" ResourceKey="DockSurfaceHeaderActiveBrush" />
+      <StaticResource x:Key="DockToolChromeIconBrush" ResourceKey="DockThemeForegroundBrush" />
+      <StaticResource x:Key="DockChromeButtonForegroundBrush" ResourceKey="DockToolChromeIconBrush" />
+
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+
+  <sys:Double x:Key="DockFontSizeNormal">12</sys:Double>
+  <sys:Double x:Key="DockDragPreviewFontSize">10</sys:Double>
+
+  <!-- Browser document tab token overrides -->
+  <StaticResource x:Key="DockDocumentTabSelectedForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
+  <StaticResource x:Key="DockDocumentTabCloseSelectedForegroundBrush" ResourceKey="DockTabActiveForegroundBrush" />
+  <SolidColorBrush x:Key="DockDocumentTabStripBackgroundBrush">Transparent</SolidColorBrush>
+
+  <!-- Size/density tokens -->
+  <sys:Double x:Key="DockTabItemMinHeight">24</sys:Double>
+  <sys:Double x:Key="DockDocumentTabItemMinHeight">28</sys:Double>
+  <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
+  <sys:Double x:Key="DockDocumentTabStripMinHeight">28</sys:Double>
+  <OnPlatform x:Key="DockDocumentTabStripLeadingSpacerWidth"
+              x:TypeArguments="x:Double"
+              Default="12"
+              macOS="70"
+              Windows="12" />
+  <Thickness x:Key="DockDocumentTabItemMargin">0</Thickness>
+  <Thickness x:Key="DockDocumentTabItemPadding">4,0</Thickness>
+  <CornerRadius x:Key="DockDocumentTabItemCornerRadius">8</CornerRadius>
+  <CornerRadius x:Key="DockDocumentTabCreateButtonCornerRadius">8</CornerRadius>
+  <Thickness x:Key="DockToolTabItemPadding">4,1,4,0</Thickness>
+  <Thickness x:Key="DockToolTabItemSelectedPadding">4,2,4,0</Thickness>
+  <sys:Double x:Key="DockCreateButtonWidth">26</sys:Double>
+  <sys:Double x:Key="DockCreateButtonHeight">24</sys:Double>
+  <sys:Double x:Key="DockCloseButtonSize">14</sys:Double>
+  <sys:Double x:Key="DockChromeButtonWidth">18</sys:Double>
+  <sys:Double x:Key="DockChromeButtonHeight">16</sys:Double>
+  <Thickness x:Key="DockChromeButtonPadding">3</Thickness>
+  <Thickness x:Key="DockChromeButtonMargin">2,0,0,0</Thickness>
+  <sys:Double x:Key="DockChromeGripHeight">5</sys:Double>
+  <Thickness x:Key="DockChromeGripMargin">0,0,2,0</Thickness>
+  <SolidColorBrush x:Key="DockChromeGripBrush" Color="#00000000" />
+  <Thickness x:Key="DockHeaderContentPadding">2</Thickness>
+  <Thickness x:Key="DockModifiedIndicatorMargin">0,0,2,0</Thickness>
+  <sys:Double x:Key="DockTabContentSpacing">2</sys:Double>
+  <sys:Double x:Key="DockDocumentTabHeaderContentSpacing">5</sys:Double>
+  <Thickness x:Key="DockTabContentMargin">2</Thickness>
+  <Thickness x:Key="DockCreateButtonIconMargin">5</Thickness>
+  <Thickness x:Key="DockDocumentTabStripHorizontalCreateButtonMargin">6,0</Thickness>
+  <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerMargin">0</Thickness>
+  <Thickness x:Key="DockDocumentTabStripHorizontalScrollViewerPadding">0</Thickness>
+  <Thickness x:Key="DockHostWindowContentPadding">6</Thickness>
+  <Thickness x:Key="DockToolChromeTitleMargin">0,4,8,4</Thickness>
+  <sys:Double x:Key="DockTargetSelectorSize">40</sys:Double>
+  <sys:Double x:Key="DockTargetSelectorGridMaxSize">125</sys:Double>
+  <Dock x:Key="DockDocumentTabStripHorizontalCreateButtonDock">Left</Dock>
+  <HorizontalAlignment x:Key="DockDocumentTabStripHorizontalCreateButtonAlignment">Left</HorizontalAlignment>
+  <core:DockOperation x:Key="DockDocumentControlIndicatorDockOperation">Fill</core:DockOperation>
+  <x:Boolean x:Key="DockDocumentTabStripHideWhenEmpty">False</x:Boolean>
+  <x:Boolean x:Key="DockDocumentTabStripToggleWindowStateOnDoubleTap">True</x:Boolean>
+  <x:Boolean x:Key="DockDocumentControlShowDockIndicatorOnly">True</x:Boolean>
+  <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">False</x:Boolean>
+  <sys:Double x:Key="DockDocumentControlVerticalSpacing">6</sys:Double>
+  <StaticResource x:Key="DockDocumentContentBorderBrush" ResourceKey="DockBorderSubtleBrush" />
+  <Thickness x:Key="DockDocumentContentBorderThickness">0</Thickness>
+  <ItemsPanelTemplate x:Key="DockDocumentTabStripHorizontalItemsPanel">
+    <WrapPanel Orientation="Horizontal" ClipToBounds="False" ItemSpacing="4" LineSpacing="4" />
+  </ItemsPanelTemplate>
+</ResourceDictionary>

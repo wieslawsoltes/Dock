@@ -6,7 +6,10 @@ using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Dock.Avalonia.Internal;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Styling;
 using Dock.Avalonia.Automation.Peers;
@@ -23,6 +26,7 @@ public class DocumentTabStrip : TabStrip
     private Control? _grip;
     private ScrollViewer? _scrollViewer;
     private IDisposable? _scrollViewerWheelSubscription;
+    private IDisposable? _doubleTappedSubscription;
     private WindowDragHelper? _windowDragHelper;
     
     /// <summary>
@@ -42,6 +46,12 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<bool> EnableWindowDragProperty = 
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag));
+
+    /// <summary>
+    /// Define the <see cref="EnableWindowStateToggleOnDoubleTap"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> EnableWindowStateToggleOnDoubleTapProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowStateToggleOnDoubleTap));
 
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
@@ -64,12 +74,147 @@ public class DocumentTabStrip : TabStrip
         AvaloniaProperty.Register<DocumentTabStrip, ControlTheme?>(nameof(CreateButtonTheme));
 
     /// <summary>
+    /// Defines the <see cref="CreateButtonTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> CreateButtonTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(CreateButtonTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="LeftContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> LeftContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(LeftContent));
+
+    /// <summary>
+    /// Defines the <see cref="TopContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> TopContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(TopContent));
+
+    /// <summary>
+    /// Defines the <see cref="RightContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> RightContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(RightContent));
+
+    /// <summary>
+    /// Defines the <see cref="BottomContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> BottomContentProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, object?>(nameof(BottomContent));
+
+    /// <summary>
+    /// Defines the <see cref="LeftContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> LeftContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(LeftContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="TopContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> TopContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(TopContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="RightContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> RightContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(RightContentTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="BottomContentTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> BottomContentTemplateProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, IDataTemplate?>(nameof(BottomContentTemplate));
+
+    /// <summary>
     /// Gets or sets the create button theme.
     /// </summary>
     public ControlTheme? CreateButtonTheme
     {
         get => GetValue(CreateButtonThemeProperty);
         set => SetValue(CreateButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the create button content template.
+    /// </summary>
+    public IDataTemplate? CreateButtonTemplate
+    {
+        get => GetValue(CreateButtonTemplateProperty);
+        set => SetValue(CreateButtonTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed to the left side of the tab strip.
+    /// </summary>
+    public object? LeftContent
+    {
+        get => GetValue(LeftContentProperty);
+        set => SetValue(LeftContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed above the tab strip.
+    /// </summary>
+    public object? TopContent
+    {
+        get => GetValue(TopContentProperty);
+        set => SetValue(TopContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed to the right side of the tab strip.
+    /// </summary>
+    public object? RightContent
+    {
+        get => GetValue(RightContentProperty);
+        set => SetValue(RightContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets content displayed below the tab strip.
+    /// </summary>
+    public object? BottomContent
+    {
+        get => GetValue(BottomContentProperty);
+        set => SetValue(BottomContentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="LeftContent"/>.
+    /// </summary>
+    public IDataTemplate? LeftContentTemplate
+    {
+        get => GetValue(LeftContentTemplateProperty);
+        set => SetValue(LeftContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="TopContent"/>.
+    /// </summary>
+    public IDataTemplate? TopContentTemplate
+    {
+        get => GetValue(TopContentTemplateProperty);
+        set => SetValue(TopContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="RightContent"/>.
+    /// </summary>
+    public IDataTemplate? RightContentTemplate
+    {
+        get => GetValue(RightContentTemplateProperty);
+        set => SetValue(RightContentTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets template for <see cref="BottomContent"/>.
+    /// </summary>
+    public IDataTemplate? BottomContentTemplate
+    {
+        get => GetValue(BottomContentTemplateProperty);
+        set => SetValue(BottomContentTemplateProperty, value);
     }
 
     /// <summary>
@@ -97,6 +242,15 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(EnableWindowDragProperty);
         set => SetValue(EnableWindowDragProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets if the hosting window state can be toggled by double tapping the tab strip fill area.
+    /// </summary>
+    public bool EnableWindowStateToggleOnDoubleTap
+    {
+        get => GetValue(EnableWindowStateToggleOnDoubleTapProperty);
+        set => SetValue(EnableWindowStateToggleOnDoubleTapProperty, value);
     }
 
     /// <summary>
@@ -144,6 +298,7 @@ public class DocumentTabStrip : TabStrip
 
         _grip = e.NameScope.Find<Control>("PART_BorderFill");
         _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
+        AttachDoubleTapped();
         AttachScrollViewerWheel();
 
         AttachToWindow();
@@ -162,6 +317,7 @@ public class DocumentTabStrip : TabStrip
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        DetachDoubleTapped();
         DetachScrollViewerWheel();
         DetachFromWindow();
     }
@@ -205,10 +361,56 @@ public class DocumentTabStrip : TabStrip
             }
         }
 
+        if (change.Property == EnableWindowStateToggleOnDoubleTapProperty)
+        {
+            AttachDoubleTapped();
+        }
+
         if (change.Property == MouseWheelScrollOrientationProperty)
         {
             AttachScrollViewerWheel();
         }
+
+    }
+
+    private void OnDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (!EnableWindowStateToggleOnDoubleTap)
+        {
+            return;
+        }
+
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        window.WindowState = window.WindowState switch
+        {
+            WindowState.Normal => WindowState.Maximized,
+            WindowState.Maximized => WindowState.Normal,
+            _ => window.WindowState
+        };
+
+        e.Handled = true;
+    }
+
+    private void AttachDoubleTapped()
+    {
+        DetachDoubleTapped();
+
+        if (!EnableWindowStateToggleOnDoubleTap)
+        {
+            return;
+        }
+
+        _doubleTappedSubscription = this.AddDisposableHandler(Gestures.DoubleTappedEvent, OnDoubleTapped);
+    }
+
+    private void DetachDoubleTapped()
+    {
+        _doubleTappedSubscription?.Dispose();
+        _doubleTappedSubscription = null;
     }
 
     private void UpdatePseudoClassesCreate(bool canCreate)

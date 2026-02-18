@@ -93,22 +93,14 @@
             </MultiBinding>
           </Button.IsVisible>
 
-          <Path x:Name="PART_ClosePath"
-                Classes.selected="{Binding $parent[DocumentTabStripItem].IsSelected}"
-                Classes.pointerover="{Binding $parent[DocumentTabStripItem].IsPointerOver}">
+          <Path x:Name="PART_ClosePath">
             <Path.Styles>
               <Style Selector="Path">
                 <Setter Property="Margin" Value="{DynamicResource DockTabContentMargin}" />
                 <Setter Property="Stretch" Value="Uniform" />
                 <Setter Property="UseLayoutRounding" Value="False" />
                 <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
-              </Style>
-              <Style Selector="Path.selected">
-                <Setter Property="Fill" Value="{DynamicResource DockTabActiveForegroundBrush}" />
-              </Style>
-
-              <Style Selector="Path.pointerover">
-                <Setter Property="Fill" Value="{DynamicResource DockTabActiveForegroundBrush}" />
+                <Setter Property="Fill" Value="{Binding $parent[DocumentTabStripItem].Foreground}" />
               </Style>
             </Path.Styles>
           </Path>
@@ -121,6 +113,9 @@
         <DockPanel x:Name="PART_DockPanel"
                    DockProperties.IsDropArea="True"
                    DockProperties.IsDockTarget="True"
+                   DockProperties.ShowDockIndicatorOnly="{DynamicResource DockDocumentControlShowDockIndicatorOnly}"
+                   DockProperties.IndicatorDockOperation="{DynamicResource DockDocumentControlIndicatorDockOperation}"
+                   VerticalSpacing="{DynamicResource DockDocumentControlVerticalSpacing}"
                    Background="Transparent"
                    ZIndex="1">
           <DocumentTabStrip x:Name="PART_TabStrip"
@@ -138,8 +133,10 @@
               </Style>
             </DocumentTabStrip.Styles>
           </DocumentTabStrip>
-          <Grid x:Name="PART_Grid"
-                IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+          <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}">
+            <Panel x:Name="PART_DocumentSeperator"
+                   IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+          </Panel>
           <Border x:Name="PART_Border">
             <Grid>
               <DockableControl DataContext="{Binding ActiveDockable}"
@@ -167,35 +164,35 @@
       </ControlTemplate>
     </Setter>
  
-    <Style Selector="^[TabsLayout=Top]/template/ Grid#PART_Grid">
+    <Style Selector="^[TabsLayout=Top]/template/ Panel#PART_DocumentSeperatorHost">
       <Setter Property="DockPanel.Dock" Value="Top" />
       <Setter Property="Width" Value="NaN" />
-      <Setter Property="Height" Value="2" />
+      <Setter Property="Height" Value="{DynamicResource DockDocumentTabStripSeparatorSize}" />
     </Style>
     
-    <Style Selector="^[TabsLayout=Left]/template/ Grid#PART_Grid">
+    <Style Selector="^[TabsLayout=Left]/template/ Panel#PART_DocumentSeperatorHost">
       <Setter Property="DockPanel.Dock" Value="Left" />
-      <Setter Property="Width" Value="2" />
+      <Setter Property="Width" Value="{DynamicResource DockDocumentTabStripSeparatorSize}" />
       <Setter Property="Height" Value="NaN" />
     </Style>
     
-    <Style Selector="^[TabsLayout=Right]/template/ Grid#PART_Grid">
+    <Style Selector="^[TabsLayout=Right]/template/ Panel#PART_DocumentSeperatorHost">
       <Setter Property="DockPanel.Dock" Value="Right" />
-      <Setter Property="Width" Value="2" />
+      <Setter Property="Width" Value="{DynamicResource DockDocumentTabStripSeparatorSize}" />
       <Setter Property="Height" Value="NaN" />
     </Style>
 
-    <Style Selector="^/template/ Grid#PART_Grid">
+    <Style Selector="^/template/ Panel#PART_DocumentSeperator">
       <Setter Property="Background" Value="{DynamicResource DockSeparatorBrush}" />
     </Style>
 
-    <Style Selector="^:active /template/ Grid#PART_Grid">
+    <Style Selector="^:active /template/ Panel#PART_DocumentSeperator">
       <Setter Property="Background" Value="{DynamicResource DockTabActiveIndicatorBrush}" />
     </Style>
 
     <Style Selector="^/template/ Border#PART_Border">
-      <Setter Property="BorderBrush" Value="{DynamicResource DockBorderSubtleBrush}" />
-      <Setter Property="BorderThickness" Value="1,1,1,1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DockDocumentContentBorderBrush}" />
+      <Setter Property="BorderThickness" Value="{DynamicResource DockDocumentContentBorderThickness}" />
     </Style>
 
   </ControlTheme>

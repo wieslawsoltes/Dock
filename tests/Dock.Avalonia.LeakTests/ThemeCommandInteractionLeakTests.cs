@@ -172,12 +172,22 @@ public class ThemeCommandInteractionLeakTests
             tabStrip.UpdateLayout();
             DrainDispatcher();
 
-            var createButton = FindVisualDescendant<Button>(
+            var createButtonHost = FindVisualDescendant<ContentControl>(
                 tabStrip,
-                button => string.Equals(button.Name, "PART_ButtonCreate", StringComparison.Ordinal));
-            Assert.NotNull(createButton);
-            ApplyNoOpCommand(createButton);
-            InvokeButtonClick(createButton);
+                contentControl => string.Equals(contentControl.Name, "PART_CreateButtonHost", StringComparison.Ordinal));
+            Assert.NotNull(createButtonHost);
+
+            var createButton = FindVisualDescendant<Button>(createButtonHost!);
+            if (createButton is not null)
+            {
+                ApplyNoOpCommand(createButton);
+                InvokeButtonClick(createButton);
+            }
+            else
+            {
+                context.DocumentDock.CreateDocument?.Execute(null);
+                DrainDispatcher();
+            }
 
             var tabItem = tabStrip.ContainerFromIndex(0) as DocumentTabStripItem
                           ?? FindVisualDescendant<DocumentTabStripItem>(documentControl);
@@ -201,7 +211,7 @@ public class ThemeCommandInteractionLeakTests
             var result = new DocumentControlLeakResult(
                 new WeakReference(documentControl),
                 new WeakReference(tabItem),
-                new WeakReference(createButton),
+                new WeakReference((object?)createButton ?? createButtonHost),
                 new WeakReference(closeButton),
                 new WeakReference(menuItem),
                 context.Factory,

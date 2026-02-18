@@ -1,11 +1,13 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Layout;
+using Avalonia.Reactive;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
@@ -19,9 +21,12 @@ public class DelayedUniformTabPanel : Panel
 {
     private const double WidthEpsilon = 0.1;
     private readonly DispatcherTimer _expansionTimer;
+    private readonly List<IDisposable> _layoutSubscriptions = new();
     private double _currentTabWidth = double.NaN;
     private double _pendingExpansionWidth = double.NaN;
     private int _lastVisibleCount = -1;
+    private bool _resolvedInMeasurePass;
+    private bool _isRemovalDebounceActive;
 
     /// <summary>
     /// Defines the <see cref="MaxTabWidth"/> property.
@@ -143,11 +148,15 @@ public class DelayedUniformTabPanel : Panel
             _currentTabWidth = double.NaN;
             _lastVisibleCount = -1;
             AnimatedTabWidth = double.NaN;
+            _resolvedInMeasurePass = false;
+            _isRemovalDebounceActive = false;
             StopExpansionTimer();
             return new Size(0d, 0d);
         }
 
+        var targetTabWidth = ComputeTargetTabWidth(visibleCount, availableSize);
         var tabWidth = ResolveTabWidth(visibleCount, availableSize);
+        _resolvedInMeasurePass = true;
         var spacing = Math.Max(0d, ItemSpacing);
         var maxHeight = 0d;
 
@@ -164,7 +173,9 @@ public class DelayedUniformTabPanel : Panel
             maxHeight = Math.Max(maxHeight, child.DesiredSize.Height);
         }
 
-        var desiredWidth = (tabWidth * visibleCount) + (spacing * Math.Max(0, visibleCount - 1));
+        // Keep scrolling extent based on steady-state target width to avoid transient overflow while animating.
+        var extentTabWidth = IsFinite(targetTabWidth) ? targetTabWidth : tabWidth;
+        var desiredWidth = (extentTabWidth * visibleCount) + (spacing * Math.Max(0, visibleCount - 1));
         return new Size(desiredWidth, maxHeight);
     }
 
@@ -182,10 +193,14 @@ public class DelayedUniformTabPanel : Panel
 
         if (visibleCount == 0)
         {
+            _resolvedInMeasurePass = false;
             return finalSize;
         }
 
-        var tabWidth = ResolveTabWidth(visibleCount, finalSize);
+        var tabWidth = _resolvedInMeasurePass
+            ? (IsFinite(_currentTabWidth) ? _currentTabWidth : ResolveTabWidth(visibleCount, finalSize))
+            : ResolveTabWidth(visibleCount, finalSize);
+        _resolvedInMeasurePass = false;
         var spacing = Math.Max(0d, ItemSpacing);
         var x = 0d;
 
@@ -234,6 +249,15 @@ public class DelayedUniformTabPanel : Panel
     {
         base.OnDetachedFromVisualTree(e);
         StopExpansionTimer();
+        ClearLayoutObservers();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        AttachLayoutObservers();
+        InvalidateMeasure();
     }
 
     private static bool IsFinite(double value)
@@ -249,7 +273,9 @@ public class DelayedUniformTabPanel : Panel
     private double ResolveTabWidth(int visibleCount, Size referenceSize)
     {
         var targetWidth = ComputeTargetTabWidth(visibleCount, referenceSize);
-        var countChanged = visibleCount != _lastVisibleCount;
+        var previousVisibleCount = _lastVisibleCount;
+        var countChanged = visibleCount != previousVisibleCount;
+        var countDecreased = previousVisibleCount >= 0 && visibleCount < previousVisibleCount;
         _lastVisibleCount = visibleCount;
 
         if (!IsFinite(_currentTabWidth))
@@ -257,6 +283,14 @@ public class DelayedUniformTabPanel : Panel
             _currentTabWidth = targetWidth;
             _pendingExpansionWidth = double.NaN;
             AnimatedTabWidth = targetWidth;
+            _isRemovalDebounceActive = false;
+            return _currentTabWidth;
+        }
+
+        if (countDecreased)
+        {
+            _isRemovalDebounceActive = true;
+            QueueExpansion(targetWidth);
             return _currentTabWidth;
         }
 
@@ -264,27 +298,22 @@ public class DelayedUniformTabPanel : Panel
         {
             StopExpansionTimer();
             _pendingExpansionWidth = double.NaN;
+            _isRemovalDebounceActive = false;
             AnimateToTabWidth(targetWidth);
             return _currentTabWidth;
         }
 
         if (targetWidth > _currentTabWidth + WidthEpsilon)
         {
-            if (countChanged)
+            if (countChanged || _isRemovalDebounceActive)
             {
                 QueueExpansion(targetWidth);
             }
             else
             {
-                if (_expansionTimer.IsEnabled &&
-                    IsFinite(_pendingExpansionWidth) &&
-                    NearlyEqual(_pendingExpansionWidth, targetWidth))
-                {
-                    return _currentTabWidth;
-                }
-
                 StopExpansionTimer();
                 _pendingExpansionWidth = double.NaN;
+                _isRemovalDebounceActive = false;
                 AnimateToTabWidth(targetWidth);
             }
 
@@ -374,12 +403,48 @@ public class DelayedUniformTabPanel : Panel
                 continue;
             }
 
-            fixedSiblingsWidth += child.Bounds.Width;
+            var boundsWidth = IsFinite(child.Bounds.Width) ? child.Bounds.Width : 0d;
+            var desiredWidth = IsFinite(child.DesiredSize.Width) ? child.DesiredSize.Width : 0d;
+            var reservedWidth = Math.Max(boundsWidth, desiredWidth);
+            fixedSiblingsWidth += reservedWidth;
             fixedSiblingsWidth += child.Margin.Left + child.Margin.Right;
         }
 
         width = Math.Max(0d, dockPanel.Bounds.Width - fixedSiblingsWidth);
         return width > 0d;
+    }
+
+    private void AttachLayoutObservers()
+    {
+        ClearLayoutObservers();
+
+        var dockPanel = FindAncestorOfType<DockPanel>();
+        if (dockPanel is not null)
+        {
+            _layoutSubscriptions.Add(
+                dockPanel.GetObservable(BoundsProperty)
+                    .Subscribe(new AnonymousObserver<Rect>(_ => InvalidateMeasure())));
+
+            foreach (var child in dockPanel.Children)
+            {
+                _layoutSubscriptions.Add(
+                    child.GetObservable(BoundsProperty)
+                        .Subscribe(new AnonymousObserver<Rect>(_ => InvalidateMeasure())));
+                _layoutSubscriptions.Add(
+                    child.GetObservable(IsVisibleProperty)
+                        .Subscribe(new AnonymousObserver<bool>(_ => InvalidateMeasure())));
+            }
+        }
+    }
+
+    private void ClearLayoutObservers()
+    {
+        foreach (var disposable in _layoutSubscriptions)
+        {
+            disposable.Dispose();
+        }
+
+        _layoutSubscriptions.Clear();
     }
 
     private T? FindAncestorNamed<T>(string name)
@@ -388,6 +453,20 @@ public class DelayedUniformTabPanel : Panel
         for (var current = this.GetVisualParent(); current is not null; current = current.GetVisualParent())
         {
             if (current is T typed && string.Equals(typed.Name, name, StringComparison.Ordinal))
+            {
+                return typed;
+            }
+        }
+
+        return null;
+    }
+
+    private T? FindAncestorOfType<T>()
+        where T : StyledElement
+    {
+        for (var current = this.GetVisualParent(); current is not null; current = current.GetVisualParent())
+        {
+            if (current is T typed)
             {
                 return typed;
             }
@@ -415,16 +494,12 @@ public class DelayedUniformTabPanel : Panel
 
     private void QueueExpansion(double targetWidth)
     {
-        if (_expansionTimer.IsEnabled && IsFinite(_pendingExpansionWidth) && NearlyEqual(_pendingExpansionWidth, targetWidth))
-        {
-            return;
-        }
-
         var delay = ExpansionDelay;
         if (delay <= TimeSpan.Zero)
         {
             StopExpansionTimer();
             _pendingExpansionWidth = double.NaN;
+            _isRemovalDebounceActive = false;
             AnimateToTabWidth(targetWidth);
             return;
         }
@@ -451,11 +526,13 @@ public class DelayedUniformTabPanel : Panel
 
         if (!IsFinite(_pendingExpansionWidth))
         {
+            _isRemovalDebounceActive = false;
             return;
         }
 
         AnimateToTabWidth(_pendingExpansionWidth);
         _pendingExpansionWidth = double.NaN;
+        _isRemovalDebounceActive = false;
     }
 
     private void AnimateToTabWidth(double targetWidth)

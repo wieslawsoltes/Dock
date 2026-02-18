@@ -35,21 +35,78 @@ public class DelayedUniformTabPanelTests
     [AvaloniaFact]
     public async Task ExpandsAfterConfiguredDelayWhenSpaceReturns()
     {
-        var panel = CreatePanel();
+        var panel = CreatePanel(4);
         panel.ExpansionDelay = TimeSpan.FromMilliseconds(40);
 
         Layout(panel, 500, 32);
-        AssertTabWidth(panel, 164d);
+        AssertTabWidth(panel, 122d);
 
         panel.Children.RemoveAt(panel.Children.Count - 1);
         Layout(panel, 500, 32);
-        AssertTabWidth(panel, 164d);
+        AssertTabWidth(panel, 122d);
 
         await Task.Delay(90);
         Dispatcher.UIThread.RunJobs();
 
         Layout(panel, 500, 32);
+        AssertTabWidth(panel, 164d);
+    }
+
+    [AvaloniaFact]
+    public async Task ClosingMultipleTabsRestartsDelay_EvenWhenTargetWidthIsUnchanged()
+    {
+        var panel = CreatePanel(6);
+        panel.ExpansionDelay = TimeSpan.FromMilliseconds(50);
+
+        Layout(panel, 1000, 32);
+        var compactWidth = panel.Children[0].Bounds.Width;
+        AssertTabWidth(panel, compactWidth);
+
+        panel.Children.RemoveAt(panel.Children.Count - 1);
+        Layout(panel, 1000, 32);
+        AssertTabWidth(panel, compactWidth);
+
+        await Task.Delay(30);
+        Dispatcher.UIThread.RunJobs();
+
+        panel.Children.RemoveAt(panel.Children.Count - 1);
+        Layout(panel, 1000, 32);
+        AssertTabWidth(panel, compactWidth);
+
+        await Task.Delay(30);
+        Dispatcher.UIThread.RunJobs();
+        Layout(panel, 1000, 32);
+        AssertTabWidth(panel, compactWidth);
+
+        await Task.Delay(45);
+        Dispatcher.UIThread.RunJobs();
+        Layout(panel, 1000, 32);
         AssertTabWidth(panel, 220d);
+    }
+
+    [AvaloniaFact]
+    public async Task CloseBurstDefersExpansionFromRelayoutUntilDelay()
+    {
+        var panel = CreatePanel(4);
+        panel.ExpansionDelay = TimeSpan.FromMilliseconds(60);
+
+        Layout(panel, 500, 32);
+        AssertTabWidth(panel, 122d);
+
+        panel.Children.RemoveAt(panel.Children.Count - 1);
+        Layout(panel, 500, 32);
+        AssertTabWidth(panel, 122d);
+
+        // Simulate immediate relayout width increase while close-burst debounce is active.
+        Layout(panel, 600, 32);
+        AssertTabWidth(panel, 122d);
+
+        await Task.Delay(80);
+        Dispatcher.UIThread.RunJobs();
+        Layout(panel, 600, 32);
+        var expandedWidth = panel.Children[0].Bounds.Width;
+        AssertTabWidth(panel, expandedWidth);
+        Assert.InRange(expandedWidth, 197d, 199d);
     }
 
     [AvaloniaFact]
@@ -65,7 +122,29 @@ public class DelayedUniformTabPanelTests
         AssertTabWidth(panel, 220d);
     }
 
-    private static DelayedUniformTabPanel CreatePanel()
+    [AvaloniaFact]
+    public async Task DefersViewportExpansionWhileCloseDebounceIsPending()
+    {
+        var panel = CreatePanel(4);
+        panel.ExpansionDelay = TimeSpan.FromMilliseconds(60);
+
+        Layout(panel, 500, 32);
+        AssertTabWidth(panel, 122d);
+
+        panel.Children.RemoveAt(panel.Children.Count - 1);
+        Layout(panel, 500, 32);
+        AssertTabWidth(panel, 122d);
+
+        Layout(panel, 1000, 32);
+        AssertTabWidth(panel, 122d);
+
+        await Task.Delay(80);
+        Dispatcher.UIThread.RunJobs();
+        Layout(panel, 1000, 32);
+        AssertTabWidth(panel, 220d);
+    }
+
+    private static DelayedUniformTabPanel CreatePanel(int count = 3)
     {
         var panel = new DelayedUniformTabPanel
         {
@@ -75,9 +154,10 @@ public class DelayedUniformTabPanelTests
             ExpansionDelay = TimeSpan.FromSeconds(1)
         };
 
-        panel.Children.Add(new Border());
-        panel.Children.Add(new Border());
-        panel.Children.Add(new Border());
+        for (var i = 0; i < count; i++)
+        {
+            panel.Children.Add(new Border());
+        }
         return panel;
     }
 

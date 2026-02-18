@@ -28,6 +28,7 @@ public partial class App : Application
                    .DocumentDock(out var documentDock, d => d
                        .WithId("Documents")
                        .WithTitle("Documents")
+                       .WithIsCollapsable(false)
                        .WithCanCreateDocument(true)
                        .WithEnableWindowDrag(true)
                        .WithTabsLayout(DocumentTabLayout.Top)

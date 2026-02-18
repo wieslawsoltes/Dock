@@ -173,8 +173,11 @@ public class DelayedUniformTabPanel : Panel
             maxHeight = Math.Max(maxHeight, child.DesiredSize.Height);
         }
 
-        // Keep scrolling extent based on steady-state target width to avoid transient overflow while animating.
-        var extentTabWidth = IsFinite(targetTabWidth) ? targetTabWidth : tabWidth;
+        // During close-burst debounce, keep extent aligned with current compact width so
+        // the create button stays visually attached to the last tab.
+        var extentTabWidth = _isRemovalDebounceActive
+            ? tabWidth
+            : (IsFinite(targetTabWidth) ? targetTabWidth : tabWidth);
         var desiredWidth = (extentTabWidth * visibleCount) + (spacing * Math.Max(0, visibleCount - 1));
         return new Size(desiredWidth, maxHeight);
     }

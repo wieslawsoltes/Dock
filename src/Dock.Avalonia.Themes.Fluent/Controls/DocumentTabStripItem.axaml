@@ -345,26 +345,20 @@
                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
               <DockPanel Background="Transparent">
                 <StackPanel Background="Transparent"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Orientation="Horizontal"
                             Spacing="{DynamicResource DockTabContentSpacing}">
                   <StackPanel Margin="{DynamicResource DockTabContentMargin}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                               Orientation="Horizontal"
                               Spacing="{DynamicResource DockDocumentTabHeaderContentSpacing}">
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
-                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Content="{Binding}" />
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
-                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Content="{Binding}" />
                   </StackPanel>
                   <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     IsVisible="{Binding IsModified}"
                                     Content="{Binding}" />
                   <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Content="{Binding}" />
                 </StackPanel>
               </DockPanel>

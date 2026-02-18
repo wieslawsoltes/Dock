@@ -204,6 +204,26 @@
 <td><code>DockTabCloseHoverBackgroundBrush</code></td>
 <td>Document close button hover background.</td>
 </tr>
+<tr>
+<td><code>DockDocumentTabStripBackgroundBrush</code></td>
+<td>Document tab strip background brush.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabSelectedForegroundBrush</code></td>
+<td>Selected document-tab foreground override used by <code>DocumentTabStripItem</code>.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabPointerOverForegroundBrush</code></td>
+<td>Pointer-over document-tab foreground override.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabCloseSelectedForegroundBrush</code></td>
+<td>Selected document-tab close icon foreground override.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabClosePointerOverForegroundBrush</code></td>
+<td>Pointer-over document-tab close icon foreground override.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="chrome-button-tokens">Chrome button tokens</h2>
@@ -282,12 +302,40 @@
 <td>Min height for document/tool tab items.</td>
 </tr>
 <tr>
+<td><code>DockDocumentTabItemMinHeight</code></td>
+<td>Min height specifically for document tab items.</td>
+</tr>
+<tr>
 <td><code>DockToolTabItemMinHeight</code></td>
 <td>Min height for tool tab items.</td>
 </tr>
 <tr>
+<td><code>DockDocumentTabStripMinHeight</code></td>
+<td>Min height for the document tab strip container.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripSeparatorSize</code></td>
+<td>Thickness of the document tab-strip separator line (<code>PART_DocumentSeperator</code>).</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripLeadingSpacerWidth</code></td>
+<td>Width of optional leading spacer in document tab strip.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabItemMargin</code></td>
+<td>Outer margin for document tab items.</td>
+</tr>
+<tr>
 <td><code>DockDocumentTabItemPadding</code></td>
 <td>Document tab item padding.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabItemCornerRadius</code></td>
+<td>Corner radius for document tab items.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabCreateButtonCornerRadius</code></td>
+<td>Corner radius for the document create button.</td>
 </tr>
 <tr>
 <td><code>DockToolTabItemPadding</code></td>
@@ -357,12 +405,28 @@
 <td>Spacing between tab content blocks (icon, title, modified, close).</td>
 </tr>
 <tr>
+<td><code>DockDocumentTabHeaderContentSpacing</code></td>
+<td>Spacing between document tab icon and header presenters.</td>
+</tr>
+<tr>
 <td><code>DockTabContentMargin</code></td>
 <td>Inner margin around tab content stack.</td>
 </tr>
 <tr>
 <td><code>DockCreateButtonIconMargin</code></td>
 <td>Plus/create icon margin in document tab strip.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripHorizontalCreateButtonMargin</code></td>
+<td>Horizontal create button margin in document tab strip.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripHorizontalScrollViewerMargin</code></td>
+<td>Horizontal scroll viewer margin in document tab strip.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripHorizontalScrollViewerPadding</code></td>
+<td>Horizontal scroll viewer padding in document tab strip.</td>
 </tr>
 </tbody>
 </table>
@@ -544,6 +608,46 @@
 <tr>
 <td><code>DockHostTitleBarMouseTrackerHeight</code></td>
 <td>Host title bar top tracker panel height.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripHorizontalCreateButtonDock</code></td>
+<td>Horizontal document-tab create button dock side (<code>Left</code>/<code>Right</code>).</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripHorizontalCreateButtonAlignment</code></td>
+<td>Horizontal alignment for document-tab create button (<code>Left</code>/<code>Right</code>).</td>
+</tr>
+<tr>
+<td><code>DockDocumentControlIndicatorDockOperation</code></td>
+<td>Dock indicator operation for document control drop target (<code>Fill</code> etc.).</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripHideWhenEmpty</code></td>
+<td>Whether empty non-create document tab strips are hidden.</td>
+</tr>
+<tr>
+<td><code>DockDocumentControlShowDockIndicatorOnly</code></td>
+<td>Whether document control dock target shows indicator-only rendering.</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripSeparatorVisible</code></td>
+<td>Whether the document tab-strip separator (<code>PART_DocumentSeperator</code>) is visible.</td>
+</tr>
+<tr>
+<td><code>DockDocumentControlVerticalSpacing</code></td>
+<td>Vertical spacing for the <code>PART_DockPanel</code> in <code>DocumentControl</code>.</td>
+</tr>
+<tr>
+<td><code>DockDocumentContentBorderBrush</code></td>
+<td>Brush used by the document content border (<code>PART_Border</code>).</td>
+</tr>
+<tr>
+<td><code>DockDocumentContentBorderThickness</code></td>
+<td>Border thickness used by the document content border (<code>PART_Border</code>).</td>
+</tr>
+<tr>
+<td><code>DockDocumentTabStripHorizontalItemsPanel</code></td>
+<td>Horizontal items panel template for document tabs.</td>
 </tr>
 </tbody>
 </table>

@@ -2006,6 +2006,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.Browser.BrowserTabTheme.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.Browser.BrowserTabTheme.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes.Browser.BrowserTabTheme",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Themes.Browser.BrowserTabTheme.yml\" sourcestartlinenumber=\"1\">Browser-style Dock theme overlay that can be applied on top of <code>DockFluentTheme</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Themes.Browser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Themes.Browser.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Themes.Browser",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Themes.DockDensityStyle.yml",
       "output": {
         ".html": {
@@ -8431,6 +8459,26 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-targets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-browser-sample.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-browser-sample.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-theme-browser.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-theme-browser.html"
         }
       },
       "version": ""

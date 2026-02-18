@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
@@ -11,6 +12,7 @@ using Dock.Avalonia.Internal;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Reactive;
 using Avalonia.Styling;
 using Dock.Avalonia.Automation.Peers;
 
@@ -24,7 +26,11 @@ public class DocumentTabStrip : TabStrip
 {
     private HostWindow? _attachedWindow;
     private Control? _grip;
+    private Control? _panel;
+    private Control? _leadingSpacer;
+    private Control? _createButtonHost;
     private ScrollViewer? _scrollViewer;
+    private readonly List<IDisposable> _templateObservables = new();
     private IDisposable? _scrollViewerWheelSubscription;
     private IDisposable? _doubleTappedSubscription;
     private WindowDragHelper? _windowDragHelper;
@@ -295,11 +301,16 @@ public class DocumentTabStrip : TabStrip
         base.OnApplyTemplate(e);
 
         DetachScrollViewerWheel();
+        ClearTemplateObservables();
 
         _grip = e.NameScope.Find<Control>("PART_BorderFill");
+        _panel = e.NameScope.Find<Control>("PART_Panel");
+        _leadingSpacer = e.NameScope.Find<Control>("PART_LeadingSpacer");
+        _createButtonHost = e.NameScope.Find<Control>("PART_CreateButtonHost");
         _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
         AttachDoubleTapped();
         AttachScrollViewerWheel();
+        AttachTemplateObservables();
 
         AttachToWindow();
     }
@@ -319,6 +330,7 @@ public class DocumentTabStrip : TabStrip
         base.OnDetachedFromVisualTree(e);
         DetachDoubleTapped();
         DetachScrollViewerWheel();
+        ClearTemplateObservables();
         DetachFromWindow();
     }
 
@@ -380,6 +392,11 @@ public class DocumentTabStrip : TabStrip
             return;
         }
 
+        if (ShouldIgnoreWindowStateToggleSource(e.Source))
+        {
+            return;
+        }
+
         if (TopLevel.GetTopLevel(this) is not Window window)
         {
             return;
@@ -393,6 +410,87 @@ public class DocumentTabStrip : TabStrip
         };
 
         e.Handled = true;
+    }
+
+    internal bool ShouldIgnoreWindowStateToggleSource(object? source)
+    {
+        if (source is not Control control)
+        {
+            return false;
+        }
+
+        return control is Button || WindowDragHelper.IsChildOfType<Button>(this, control);
+    }
+
+    private void AttachTemplateObservables()
+    {
+        if (_panel?.Parent is not DockPanel dockPanel)
+        {
+            return;
+        }
+
+        _templateObservables.Add(dockPanel.GetObservable(BoundsProperty)
+            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateTabHostMaxWidth())));
+
+        _templateObservables.Add(this.GetObservable(BoundsProperty)
+            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateTabHostMaxWidth())));
+
+        if (_leadingSpacer is not null)
+        {
+            _templateObservables.Add(_leadingSpacer.GetObservable(BoundsProperty)
+                .Subscribe(new AnonymousObserver<Rect>(_ => UpdateTabHostMaxWidth())));
+        }
+
+        if (_createButtonHost is not null)
+        {
+            _templateObservables.Add(_createButtonHost.GetObservable(BoundsProperty)
+                .Subscribe(new AnonymousObserver<Rect>(_ => UpdateTabHostMaxWidth())));
+
+            _templateObservables.Add(_createButtonHost.GetObservable(IsVisibleProperty)
+                .Subscribe(new AnonymousObserver<bool>(_ => UpdateTabHostMaxWidth())));
+        }
+
+        UpdateTabHostMaxWidth();
+    }
+
+    private void ClearTemplateObservables()
+    {
+        foreach (var disposable in _templateObservables)
+        {
+            disposable.Dispose();
+        }
+
+        _templateObservables.Clear();
+    }
+
+    private void UpdateTabHostMaxWidth()
+    {
+        if (_panel is null || _panel.Parent is not DockPanel dockPanel)
+        {
+            return;
+        }
+
+        var hostWidth = dockPanel.Bounds.Width;
+        if (double.IsNaN(hostWidth) || double.IsInfinity(hostWidth) || hostWidth <= 0d)
+        {
+            _panel.SetCurrentValue(Layoutable.MaxWidthProperty, double.PositiveInfinity);
+            return;
+        }
+
+        var reservedWidth = 0d;
+
+        if (_leadingSpacer is { IsVisible: true } leadingSpacer)
+        {
+            reservedWidth += leadingSpacer.Bounds.Width + leadingSpacer.Margin.Left + leadingSpacer.Margin.Right;
+        }
+
+        if (_createButtonHost is { IsVisible: true } createButtonHost)
+        {
+            reservedWidth += createButtonHost.Bounds.Width + createButtonHost.Margin.Left + createButtonHost.Margin.Right;
+        }
+
+        var maxWidth = Math.Max(0d, hostWidth - reservedWidth);
+        _panel.SetCurrentValue(Layoutable.MaxWidthProperty, maxWidth);
     }
 
     private void AttachDoubleTapped()

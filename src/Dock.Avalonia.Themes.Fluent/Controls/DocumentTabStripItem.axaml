@@ -314,6 +314,7 @@
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="FontWeight" Value="Normal" />
     <Setter Property="MinHeight" Value="{DynamicResource DockDocumentTabItemMinHeight}" />
+    <Setter Property="MinWidth" Value="{DynamicResource DockDocumentTabItemMinWidth}" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
@@ -344,23 +345,41 @@
             <DockableControl TrackingMode="Tab"
                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
               <DockPanel Background="Transparent">
-                <StackPanel Background="Transparent"
-                            Orientation="Horizontal"
-                            Spacing="{DynamicResource DockTabContentSpacing}">
-                  <StackPanel Margin="{DynamicResource DockTabContentMargin}"
+                <Grid Background="Transparent"
+                      ColumnDefinitions="*,Auto"
+                      ColumnSpacing="{DynamicResource DockTabContentSpacing}">
+                  <StackPanel Grid.Column="0"
+                              x:Name="PART_HeaderHost"
+                              Margin="{DynamicResource DockTabContentMargin}"
                               Orientation="Horizontal"
-                              Spacing="{DynamicResource DockDocumentTabHeaderContentSpacing}">
-                    <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
+                              Spacing="{DynamicResource DockDocumentTabHeaderContentSpacing}"
+                              ClipToBounds="True">
+                    <Grid x:Name="PART_IconCloseHost"
+                          ClipToBounds="False">
+                      <ContentPresenter x:Name="PART_IconPresenter"
+                                        ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
+                                        Content="{Binding}" />
+                      <ContentPresenter x:Name="PART_CompactClosePresenter"
+                                        IsVisible="False"
+                                        ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
+                                        Content="{Binding}" />
+                    </Grid>
+                    <ContentPresenter x:Name="PART_HeaderPresenter"
+                                      ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                       Content="{Binding}" />
-                    <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
+                    <ContentPresenter x:Name="PART_ModifiedPresenter"
+                                      ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
+                                      IsVisible="{Binding IsModified}"
                                       Content="{Binding}" />
                   </StackPanel>
-                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
-                                    IsVisible="{Binding IsModified}"
+                  <ContentPresenter x:Name="PART_ClosePresenter"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="{DynamicResource DockTabContentMargin}"
+                                    ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
                                     Content="{Binding}" />
-                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
-                                    Content="{Binding}" />
-                </StackPanel>
+                </Grid>
               </DockPanel>
             </DockableControl>
           </Border>
@@ -400,6 +419,30 @@
 
     <Style Selector="^:selected:pointerover:not(:dragging)">
       <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:compact /template/ ContentPresenter#PART_HeaderPresenter">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="^:compact /template/ ContentPresenter#PART_ModifiedPresenter">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="^:ultracompact /template/ ContentPresenter#PART_ClosePresenter">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="^:ultracompact /template/ ContentPresenter#PART_CompactClosePresenter">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="^:ultracompact:pointerover /template/ ContentPresenter#PART_CompactClosePresenter">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="^:ultracompact:pointerover /template/ ContentPresenter#PART_IconPresenter">
+      <Setter Property="IsVisible" Value="False" />
     </Style>
 
   </ControlTheme>

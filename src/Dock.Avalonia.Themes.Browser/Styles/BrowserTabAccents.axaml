@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=netstandard"
                     xmlns:platform="clr-namespace:Avalonia.Platform;assembly=Avalonia.Controls"
-                    xmlns:core="using:Dock.Model.Core">
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:controls="using:Dock.Avalonia.Controls">
   <ResourceDictionary.ThemeDictionaries>
     <ResourceDictionary x:Key="Default">
       <!-- Token-first brushes -->
@@ -112,6 +113,7 @@
   <!-- Size/density tokens -->
   <sys:Double x:Key="DockTabItemMinHeight">24</sys:Double>
   <sys:Double x:Key="DockDocumentTabItemMinHeight">28</sys:Double>
+  <sys:Double x:Key="DockDocumentTabItemMinWidth">40</sys:Double>
   <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
   <sys:Double x:Key="DockDocumentTabStripMinHeight">28</sys:Double>
   <OnPlatform x:Key="DockHostWindowChromeHints"
@@ -168,6 +170,10 @@
   <StaticResource x:Key="DockDocumentContentBorderBrush" ResourceKey="DockBorderSubtleBrush" />
   <Thickness x:Key="DockDocumentContentBorderThickness">0</Thickness>
   <ItemsPanelTemplate x:Key="DockDocumentTabStripHorizontalItemsPanel">
-    <WrapPanel Orientation="Horizontal" ClipToBounds="False" ItemSpacing="4" LineSpacing="4" />
+    <controls:DelayedUniformTabPanel ClipToBounds="False"
+                                     MaxTabWidth="220"
+                                     MinTabWidth="40"
+                                     ItemSpacing="4"
+                                     ExpansionDelay="0:0:1" />
   </ItemsPanelTemplate>
 </ResourceDictionary>

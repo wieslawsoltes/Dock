@@ -97,7 +97,8 @@
           <DockPanel Grid.Row="1"
                      Grid.Column="1"
                      ClipToBounds="False">
-            <Panel DockPanel.Dock="Left"
+            <Panel x:Name="PART_LeadingSpacer"
+                   DockPanel.Dock="Left"
                    Width="{DynamicResource DockDocumentTabStripLeadingSpacerWidth}"
                    Height="1" />
             <Panel Name="PART_Panel">
@@ -124,6 +125,7 @@
             <ContentControl x:Name="PART_CreateButtonHost"
                             Content="{Binding}"
                             IsVisible="{Binding CanCreateDocument}" />
+            <Panel Name="PART_TrailingFill" />
           </DockPanel>
         </Grid>
       </ControlTemplate>

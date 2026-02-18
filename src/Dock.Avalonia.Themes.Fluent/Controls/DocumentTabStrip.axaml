@@ -61,6 +61,7 @@
     <Setter Property="EnableWindowStateToggleOnDoubleTap"
             Value="{DynamicResource DockDocumentTabStripToggleWindowStateOnDoubleTap}" />
     <Setter Property="CreateButtonTheme" Value="{DynamicResource ButtonCreateDocument}" />
+    <Setter Property="CreateButtonTemplate" Value="{DynamicResource DockDefaultDocumentCreateButtonTemplate}" />
     
     <Setter Property="Background" Value="{DynamicResource DockDocumentTabStripBackgroundBrush}" />
     <Setter Property="Focusable" Value="False" />
@@ -131,8 +132,7 @@
     <Style Selector="^/template/ ContentControl#PART_CreateButtonHost">
       <Setter Property="ContentTemplate">
         <Binding Path="CreateButtonTemplate"
-                 RelativeSource="{RelativeSource TemplatedParent}"
-                 TargetNullValue="{DynamicResource DockDefaultDocumentCreateButtonTemplate}" />
+                 RelativeSource="{RelativeSource TemplatedParent}" />
       </Setter>
     </Style>
 

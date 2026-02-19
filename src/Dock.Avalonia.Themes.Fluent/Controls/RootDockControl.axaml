@@ -26,21 +26,21 @@
             <ToolPinnedControl DockPanel.Dock="Left" 
                                Orientation="Vertical"
                                ItemsSource="{Binding LeftPinnedDockables}"
-                               IsVisible="{Binding !!LeftPinnedDockables.Count, FallbackValue={x:False}}" />
+                               IsVisible="{Binding !!LeftPinnedDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}" />
             <ToolPinnedControl DockPanel.Dock="Right" 
                                Orientation="Vertical"
                                ItemsSource="{Binding RightPinnedDockables}"
-                               IsVisible="{Binding !!RightPinnedDockables.Count, FallbackValue={x:False}}" />
+                               IsVisible="{Binding !!RightPinnedDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}" />
             <ToolPinnedControl DockPanel.Dock="Top" 
                                Orientation="Horizontal"
                                ItemsSource="{Binding TopPinnedDockables}"
-                               IsVisible="{Binding !!TopPinnedDockables.Count, FallbackValue={x:False}}" />
+                               IsVisible="{Binding !!TopPinnedDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}" />
             <ToolPinnedControl DockPanel.Dock="Bottom" 
                                Orientation="Horizontal"
                                ItemsSource="{Binding BottomPinnedDockables}"
-                               IsVisible="{Binding !!BottomPinnedDockables.Count, FallbackValue={x:False}}" />
+                               IsVisible="{Binding !!BottomPinnedDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}" />
             <controls:PinnedDockHostPanel PinnedDockDisplayMode="{Binding PinnedDockDisplayMode}"
-                                          PinnedDockAlignment="{Binding PinnedDock.Alignment, FallbackValue={x:Static core:Alignment.Unset}}">
+                                          PinnedDockAlignment="{Binding PinnedDock?.Alignment, TargetNullValue={x:Static core:Alignment.Unset}, FallbackValue={x:Static core:Alignment.Unset}}">
               <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />
               <PinnedDockControl />
             </controls:PinnedDockHostPanel>

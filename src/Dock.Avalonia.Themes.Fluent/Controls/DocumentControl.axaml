@@ -21,6 +21,127 @@
     </Style>
   </ControlTheme>
 
+  <ControlTemplate x:Key="DockDocumentControlSingleContentTemplate" TargetType="DocumentControl">
+    <DockPanel x:Name="PART_DockPanel"
+               DockProperties.IsDropArea="True"
+               DockProperties.IsDockTarget="True"
+               DockProperties.ShowDockIndicatorOnly="{DynamicResource DockDocumentControlShowDockIndicatorOnly}"
+               DockProperties.IndicatorDockOperation="{DynamicResource DockDocumentControlIndicatorDockOperation}"
+               VerticalSpacing="{DynamicResource DockDocumentControlVerticalSpacing}"
+               Background="Transparent"
+               ZIndex="1">
+      <DocumentTabStrip x:Name="PART_TabStrip"
+                        ItemsSource="{Binding VisibleDockables}"
+                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        CanCreateItem="{Binding CanCreateDocument}"
+                        IsActive="{TemplateBinding IsActive}"
+                        Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
+                        DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
+                        DockProperties.IsDropArea="True"
+                        DockProperties.DockAdornerHost="{Binding #PART_DockPanel}">
+        <DocumentTabStrip.Styles>
+          <Style Selector="DocumentTabStripItem">
+            <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
+          </Style>
+        </DocumentTabStrip.Styles>
+      </DocumentTabStrip>
+      <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}">
+        <Panel x:Name="PART_DocumentSeperator"
+               IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+      </Panel>
+      <Border x:Name="PART_Border">
+        <Grid>
+          <DockableControl DataContext="{Binding ActiveDockable}"
+                           TrackingMode="Visible"
+                           IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
+            <ContentControl x:Name="PART_ContentPresenter"
+                            Content="{Binding}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+              <ContentControl.ContentTemplate>
+                <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+              </ContentControl.ContentTemplate>
+            </ContentControl>
+          </DockableControl>
+
+          <ContentControl x:Name="PART_EmptyContentHost"
+                          Content="{Binding EmptyContent}"
+                          ContentTemplate="{Binding $parent[DocumentControl].EmptyContentTemplate}"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          IsVisible="{Binding !$parent[DocumentControl].HasVisibleDockables}" />
+        </Grid>
+      </Border>
+    </DockPanel>
+  </ControlTemplate>
+
+  <ControlTemplate x:Key="DockDocumentControlCachedContentTemplate" TargetType="DocumentControl">
+    <DockPanel x:Name="PART_DockPanel"
+               DockProperties.IsDropArea="True"
+               DockProperties.IsDockTarget="True"
+               DockProperties.ShowDockIndicatorOnly="{DynamicResource DockDocumentControlShowDockIndicatorOnly}"
+               DockProperties.IndicatorDockOperation="{DynamicResource DockDocumentControlIndicatorDockOperation}"
+               VerticalSpacing="{DynamicResource DockDocumentControlVerticalSpacing}"
+               Background="Transparent"
+               ZIndex="1">
+      <DocumentTabStrip x:Name="PART_TabStrip"
+                        ItemsSource="{Binding VisibleDockables}"
+                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        CanCreateItem="{Binding CanCreateDocument}"
+                        IsActive="{TemplateBinding IsActive}"
+                        Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
+                        DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
+                        DockProperties.IsDropArea="True"
+                        DockProperties.DockAdornerHost="{Binding #PART_DockPanel}">
+        <DocumentTabStrip.Styles>
+          <Style Selector="DocumentTabStripItem">
+            <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
+          </Style>
+        </DocumentTabStrip.Styles>
+      </DocumentTabStrip>
+      <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}">
+        <Panel x:Name="PART_DocumentSeperator"
+               IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+      </Panel>
+      <Border x:Name="PART_Border">
+        <Grid>
+          <ItemsControl x:Name="PART_CachedContentHost"
+                        ItemsSource="{Binding VisibleDockables}"
+                        IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <Grid />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="core:IDockable">
+                <DockableControl TrackingMode="Visible">
+                  <DockableControl.IsVisible>
+                    <MultiBinding Converter="{x:Static converters:ReferenceEqualsMultiConverter.Instance}">
+                      <Binding />
+                      <Binding Path="((core:IDock)Owner).ActiveDockable" />
+                    </MultiBinding>
+                  </DockableControl.IsVisible>
+                  <ContentControl x:Name="PART_CachedContentPresenter"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Content="{Binding}" />
+                </DockableControl>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <ContentControl x:Name="PART_EmptyContentHost"
+                          Content="{Binding EmptyContent}"
+                          ContentTemplate="{Binding $parent[DocumentControl].EmptyContentTemplate}"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          IsVisible="{Binding !$parent[DocumentControl].HasVisibleDockables}" />
+        </Grid>
+      </Border>
+    </DockPanel>
+  </ControlTemplate>
+
   <ControlTheme x:Key="{x:Type DocumentControl}" TargetType="DocumentControl">
 
     <Setter Property="(DockProperties.IsDragEnabled)">
@@ -108,61 +229,7 @@
       </DataTemplate>
     </Setter>
 
-    <Setter Property="Template">
-      <ControlTemplate>
-        <DockPanel x:Name="PART_DockPanel"
-                   DockProperties.IsDropArea="True"
-                   DockProperties.IsDockTarget="True"
-                   DockProperties.ShowDockIndicatorOnly="{DynamicResource DockDocumentControlShowDockIndicatorOnly}"
-                   DockProperties.IndicatorDockOperation="{DynamicResource DockDocumentControlIndicatorDockOperation}"
-                   VerticalSpacing="{DynamicResource DockDocumentControlVerticalSpacing}"
-                   Background="Transparent"
-                   ZIndex="1">
-          <DocumentTabStrip x:Name="PART_TabStrip"
-                            ItemsSource="{Binding VisibleDockables}"
-                            SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
-                            CanCreateItem="{Binding CanCreateDocument}"
-                            IsActive="{TemplateBinding IsActive}"
-                            Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
-                            DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
-                            DockProperties.IsDropArea="True"
-                            DockProperties.DockAdornerHost="{Binding #PART_DockPanel}">
-            <DocumentTabStrip.Styles>
-              <Style Selector="DocumentTabStripItem">
-                <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
-              </Style>
-            </DocumentTabStrip.Styles>
-          </DocumentTabStrip>
-          <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}">
-            <Panel x:Name="PART_DocumentSeperator"
-                   IsVisible="{Binding #PART_TabStrip.IsVisible}" />
-          </Panel>
-          <Border x:Name="PART_Border">
-            <Grid>
-              <DockableControl DataContext="{Binding ActiveDockable}"
-                               TrackingMode="Visible"
-                               IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
-                <ContentControl x:Name="PART_ContentPresenter"
-                                Content="{Binding}"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch">
-                  <ContentControl.ContentTemplate>
-                    <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                  </ContentControl.ContentTemplate>
-                </ContentControl>
-              </DockableControl>
-
-              <ContentControl x:Name="PART_EmptyContentHost"
-                              Content="{Binding EmptyContent}"
-                              ContentTemplate="{Binding $parent[DocumentControl].EmptyContentTemplate}"
-                              HorizontalContentAlignment="Center"
-                              VerticalContentAlignment="Center"
-                              IsVisible="{Binding !$parent[DocumentControl].HasVisibleDockables}" />
-            </Grid>
-          </Border>
-        </DockPanel>
-      </ControlTemplate>
-    </Setter>
+    <Setter Property="Template" Value="{StaticResource DockDocumentControlSingleContentTemplate}" />
  
     <Style Selector="^[TabsLayout=Top]/template/ Panel#PART_DocumentSeperatorHost">
       <Setter Property="DockPanel.Dock" Value="Top" />

@@ -54,6 +54,16 @@ Compact density resource dictionary:
 
 Compact mode reduces tab/button/icon metrics by overriding density tokens (for example `DockTabItemMinHeight`, `DockCloseButtonSize`, `DockChromeButtonWidth`).
 
+## Document tab content caching
+
+`DockFluentTheme` can keep document tab content alive instead of recreating it on each tab switch:
+
+```xaml
+<dockFluent:DockFluentTheme CacheDocumentTabContent="True" />
+```
+
+When enabled, document views remain instantiated while hidden tabs are inactive, which can improve tab-switch latency for heavy views.
+
 ## Fluent token customization
 
 Customize Dock Fluent visuals by overriding semantic tokens after `DockFluentTheme`.

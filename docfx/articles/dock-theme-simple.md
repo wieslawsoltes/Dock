@@ -48,6 +48,16 @@ Compact density resource dictionary:
 
 - `avares://Dock.Avalonia.Themes.Simple/DensityStyles/Compact.axaml`
 
+## Document tab content caching
+
+`DockSimpleTheme` can keep document tab content alive instead of recreating it on each tab switch:
+
+```xaml
+<dockSimple:DockSimpleTheme CacheDocumentTabContent="True" />
+```
+
+This uses the shared document control templates and keeps hidden tab views instantiated.
+
 ## Simple token customization
 
 Override semantic tokens after `DockSimpleTheme`:

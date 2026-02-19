@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=netstandard"
                     xmlns:platform="clr-namespace:Avalonia.Platform;assembly=Avalonia.Controls"
-                    xmlns:core="using:Dock.Model.Core">
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:controls="using:Dock.Avalonia.Controls">
   <ResourceDictionary.ThemeDictionaries>
     <ResourceDictionary x:Key="Default">
       <!-- Token-first brushes -->
@@ -12,10 +13,12 @@
       <StaticResource x:Key="DockSurfacePanelBrush" ResourceKey="DockSurfaceWorkbenchBrush" />
       <SolidColorBrush x:Key="DockSurfaceHeaderBrush">#D7DFEC</SolidColorBrush>
       <SolidColorBrush x:Key="DockSurfaceHeaderActiveBrush">#2F6FDC</SolidColorBrush>
+      <StaticResource x:Key="DockDocumentTabStripMaskBrush" ResourceKey="DockSurfaceHeaderBrush" />
 
       <StaticResource x:Key="DockBorderSubtleBrush" ResourceKey="DockSurfaceHeaderBrush" />
       <SolidColorBrush x:Key="DockBorderStrongBrush">#CBD9F2</SolidColorBrush>
       <StaticResource x:Key="DockSeparatorBrush" ResourceKey="DockBorderSubtleBrush" />
+      <SolidColorBrush x:Key="DockDocumentTabItemSeparatorBrush">#CC000000</SolidColorBrush>
       <StaticResource x:Key="DockSplitterIdleBrush" ResourceKey="DockBorderSubtleBrush" />
       <SolidColorBrush x:Key="DockSplitterHoverBrush">#4D87E7</SolidColorBrush>
       <SolidColorBrush x:Key="DockSplitterDragBrush">#2F6FDC</SolidColorBrush>
@@ -60,10 +63,12 @@
       <StaticResource x:Key="DockSurfacePanelBrush" ResourceKey="DockSurfaceWorkbenchBrush" />
       <SolidColorBrush x:Key="DockSurfaceHeaderBrush">#334055</SolidColorBrush>
       <SolidColorBrush x:Key="DockSurfaceHeaderActiveBrush">#5C9BFF</SolidColorBrush>
+      <StaticResource x:Key="DockDocumentTabStripMaskBrush" ResourceKey="DockSurfaceHeaderBrush" />
 
       <StaticResource x:Key="DockBorderSubtleBrush" ResourceKey="DockSurfaceHeaderBrush" />
       <SolidColorBrush x:Key="DockBorderStrongBrush">#415271</SolidColorBrush>
       <StaticResource x:Key="DockSeparatorBrush" ResourceKey="DockBorderSubtleBrush" />
+      <SolidColorBrush x:Key="DockDocumentTabItemSeparatorBrush">#CCFFFFFF</SolidColorBrush>
       <StaticResource x:Key="DockSplitterIdleBrush" ResourceKey="DockBorderSubtleBrush" />
       <SolidColorBrush x:Key="DockSplitterHoverBrush">#4C89E8</SolidColorBrush>
       <SolidColorBrush x:Key="DockSplitterDragBrush">#5C9BFF</SolidColorBrush>
@@ -112,6 +117,8 @@
   <!-- Size/density tokens -->
   <sys:Double x:Key="DockTabItemMinHeight">24</sys:Double>
   <sys:Double x:Key="DockDocumentTabItemMinHeight">28</sys:Double>
+  <sys:Double x:Key="DockDocumentTabItemMinWidth">28</sys:Double>
+  <sys:Double x:Key="DockDocumentTabItemSeparatorOpacity">0.55</sys:Double>
   <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
   <sys:Double x:Key="DockDocumentTabStripMinHeight">28</sys:Double>
   <OnPlatform x:Key="DockHostWindowChromeHints"
@@ -168,6 +175,12 @@
   <StaticResource x:Key="DockDocumentContentBorderBrush" ResourceKey="DockBorderSubtleBrush" />
   <Thickness x:Key="DockDocumentContentBorderThickness">0</Thickness>
   <ItemsPanelTemplate x:Key="DockDocumentTabStripHorizontalItemsPanel">
-    <WrapPanel Orientation="Horizontal" ClipToBounds="False" ItemSpacing="4" LineSpacing="4" />
+    <controls:DelayedUniformTabPanel ClipToBounds="False"
+                                     MaxTabWidth="220"
+                                     MinTabWidth="28"
+                                     ItemSpacing="-6"
+                                     ExpansionDelay="0:0:1"
+                                     ResizeAnimationDuration="0:0:0.18" />
   </ItemsPanelTemplate>
+
 </ResourceDictionary>

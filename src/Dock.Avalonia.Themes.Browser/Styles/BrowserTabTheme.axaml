@@ -14,4 +14,78 @@
     </ResourceDictionary>
   </Styles.Resources>
 
+  <Style Selector="DocumentTabStripItem">
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem /template/ Border#PART_TabSeparatorRight">
+    <Setter Property="IsVisible" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource DockDocumentTabItemSeparatorBrush}" />
+    <Setter Property="Opacity" Value="{DynamicResource DockDocumentTabItemSeparatorOpacity}" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem /template/ Border#PART_TabGutter">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem /template/ Border#PART_TabBody">
+    <Setter Property="Margin" Value="3,0,3,0" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:selected">
+    <Setter Property="(Panel.ZIndex)" Value="3" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:pointerover">
+    <Setter Property="(Panel.ZIndex)" Value="2" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:selected /template/ Border#PART_TabGutter">
+    <Setter Property="Margin" Value="-3,0,-2,0" />
+    <Setter Property="Background" Value="{DynamicResource DockDocumentTabStripMaskBrush}" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:pointerover /template/ Border#PART_TabGutter">
+    <Setter Property="Margin" Value="-4,0,-2,0" />
+    <Setter Property="Background" Value="{DynamicResource DockDocumentTabStripMaskBrush}" />
+  </Style>
+
+  <!-- Compensate for active gutter expansion so tab content/body does not shift on hover/selection. -->
+  <Style Selector="DocumentTabStripItem:selected /template/ Border#PART_TabBody">
+    <Setter Property="Margin" Value="6,0,5,0" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:pointerover /template/ Border#PART_TabBody">
+    <Setter Property="Margin" Value="7,0,5,0" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:selected /template/ Border#PART_TabSeparatorRight">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:pointerover /template/ Border#PART_TabSeparatorRight">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem /template/ ContentPresenter#PART_ClosePresenter">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:selected /template/ ContentPresenter#PART_ClosePresenter">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:pointerover /template/ ContentPresenter#PART_ClosePresenter">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:ultracompact:selected /template/ ContentPresenter#PART_CompactClosePresenter">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="DocumentTabStripItem:ultracompact:selected /template/ ContentPresenter#PART_IconPresenter">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
 </Styles>

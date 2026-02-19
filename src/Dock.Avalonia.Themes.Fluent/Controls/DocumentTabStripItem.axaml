@@ -327,62 +327,72 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <Panel>
-          <Border Background="{TemplateBinding Background}"
-                  TextElement.FontFamily="{TemplateBinding FontFamily}"
-                  TextElement.FontSize="{TemplateBinding FontSize}"
-                  TextElement.FontWeight="{TemplateBinding FontWeight}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  ContextMenu="{TemplateBinding DocumentContextMenu}"
-                  Padding="{TemplateBinding Padding}"
-                  CornerRadius="{TemplateBinding CornerRadius}"
-                  DockProperties.IsDragArea="True"
-                  DockProperties.IsDropArea="True"
-                  DockProperties.IsDockTarget="True"
-                  DockProperties.ShowDockIndicatorOnly="True"
-                  DockProperties.IndicatorDockOperation="Fill">
-            <DockableControl TrackingMode="Tab"
-                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-              <DockPanel Background="Transparent">
-                <Grid Background="Transparent"
-                      ColumnDefinitions="*,Auto"
-                      ColumnSpacing="{DynamicResource DockTabContentSpacing}">
-                  <StackPanel Grid.Column="0"
-                              x:Name="PART_HeaderHost"
-                              Margin="{DynamicResource DockTabContentMargin}"
-                              Orientation="Horizontal"
-                              Spacing="{DynamicResource DockDocumentTabHeaderContentSpacing}"
-                              ClipToBounds="True">
-                    <Grid x:Name="PART_IconCloseHost"
-                          ClipToBounds="False">
-                      <ContentPresenter x:Name="PART_IconPresenter"
-                                        ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
+        <Panel Background="{DynamicResource DockDocumentTabStripMaskBrush}">
+          <Border x:Name="PART_TabGutter"
+                  Background="Transparent">
+            <Border x:Name="PART_TabBody"
+                    Background="{TemplateBinding Background}"
+                    TextElement.FontFamily="{TemplateBinding FontFamily}"
+                    TextElement.FontSize="{TemplateBinding FontSize}"
+                    TextElement.FontWeight="{TemplateBinding FontWeight}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    ContextMenu="{TemplateBinding DocumentContextMenu}"
+                    Padding="{TemplateBinding Padding}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    DockProperties.IsDragArea="True"
+                    DockProperties.IsDropArea="True"
+                    DockProperties.IsDockTarget="True"
+                    DockProperties.ShowDockIndicatorOnly="True"
+                    DockProperties.IndicatorDockOperation="Fill">
+              <DockableControl TrackingMode="Tab"
+                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                <DockPanel Background="Transparent">
+                  <Grid Background="Transparent"
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="{DynamicResource DockTabContentSpacing}">
+                    <StackPanel Grid.Column="0"
+                                x:Name="PART_HeaderHost"
+                                Margin="{DynamicResource DockTabContentMargin}"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource DockDocumentTabHeaderContentSpacing}"
+                                ClipToBounds="True">
+                      <Grid x:Name="PART_IconCloseHost"
+                            ClipToBounds="False">
+                        <ContentPresenter x:Name="PART_IconPresenter"
+                                          ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
+                                          Content="{Binding}" />
+                        <ContentPresenter x:Name="PART_CompactClosePresenter"
+                                          IsVisible="False"
+                                          ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
+                                          Content="{Binding}" />
+                      </Grid>
+                      <ContentPresenter x:Name="PART_HeaderPresenter"
+                                        ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                         Content="{Binding}" />
-                      <ContentPresenter x:Name="PART_CompactClosePresenter"
-                                        IsVisible="False"
-                                        ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
+                      <ContentPresenter x:Name="PART_ModifiedPresenter"
+                                        ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
+                                        IsVisible="{Binding IsModified}"
                                         Content="{Binding}" />
-                    </Grid>
-                    <ContentPresenter x:Name="PART_HeaderPresenter"
-                                      ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
+                    </StackPanel>
+                    <ContentPresenter x:Name="PART_ClosePresenter"
+                                      Grid.Column="1"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      Margin="{DynamicResource DockTabContentMargin}"
+                                      ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
                                       Content="{Binding}" />
-                    <ContentPresenter x:Name="PART_ModifiedPresenter"
-                                      ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
-                                      IsVisible="{Binding IsModified}"
-                                      Content="{Binding}" />
-                  </StackPanel>
-                  <ContentPresenter x:Name="PART_ClosePresenter"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="{DynamicResource DockTabContentMargin}"
-                                    ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
-                                    Content="{Binding}" />
-                </Grid>
-              </DockPanel>
-            </DockableControl>
+                  </Grid>
+                </DockPanel>
+              </DockableControl>
+            </Border>
           </Border>
+          <Border x:Name="PART_TabSeparatorRight"
+                  IsHitTestVisible="False"
+                  Width="1"
+                  Margin="0,7,0,7"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Stretch" />
         </Panel>
       </ControlTemplate>
     </Setter>
@@ -419,6 +429,11 @@
 
     <Style Selector="^:selected:pointerover:not(:dragging)">
       <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Border#PART_TabSeparatorRight">
+      <Setter Property="Background" Value="{DynamicResource DockSeparatorBrush}" />
+      <Setter Property="Opacity" Value="{DynamicResource DockDocumentTabItemSeparatorOpacity}" />
     </Style>
 
     <Style Selector="^:ultracompact /template/ ContentPresenter#PART_ClosePresenter">

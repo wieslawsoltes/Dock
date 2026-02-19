@@ -64,6 +64,7 @@
     <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
     <sys:Double x:Key="DockDocumentTabStripMinHeight">0</sys:Double>
     <sys:Double x:Key="DockDocumentTabStripLeadingSpacerWidth">0</sys:Double>
+    <sys:Double x:Key="DockDocumentTabItemSeparatorOpacity">0</sys:Double>
     <Thickness x:Key="DockDocumentTabItemMargin">0</Thickness>
     <Thickness x:Key="DockDocumentTabItemPadding">4,0,4,0</Thickness>
     <CornerRadius x:Key="DockDocumentTabItemCornerRadius">0</CornerRadius>

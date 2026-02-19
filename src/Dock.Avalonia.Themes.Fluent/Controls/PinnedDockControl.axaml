@@ -19,13 +19,13 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
 
-    <Setter Property="PinnedDockAlignment" Value="{Binding PinnedDock.Alignment, FallbackValue={x:Static core:Alignment.Unset}}" />
+    <Setter Property="PinnedDockAlignment" Value="{Binding PinnedDock?.Alignment, TargetNullValue={x:Static core:Alignment.Unset}, FallbackValue={x:Static core:Alignment.Unset}}" />
     <Setter Property="PinnedDockDisplayMode" Value="{Binding PinnedDockDisplayMode, FallbackValue={x:Static core:PinnedDockDisplayMode.Overlay}}" />
 
     <Setter Property="Template">
       <ControlTemplate>
         <Grid Name="PART_PinnedDockGrid"
-              IsVisible="{Binding !PinnedDock.IsEmpty, FallbackValue={x:False}}">
+              IsVisible="{Binding !!PinnedDock?.VisibleDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}">
           <ContentControl Content="{Binding PinnedDock}" Name="PART_PinnedDock">
             <ContentControl.Styles>
               <Style Selector="ToolDockControl">

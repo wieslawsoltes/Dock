@@ -98,7 +98,7 @@
   &lt;Application.Styles&gt;
     &lt;FluentTheme /&gt;
     &lt;DockFluentTheme /&gt;
-    &lt;browserTheme:BrowserTabTheme /&gt;
+    &lt;browserTheme:BrowserTabTheme CacheDocumentTabContent=&quot;True&quot; /&gt;
   &lt;/Application.Styles&gt;
 &lt;/Application&gt;
 </code></pre>
@@ -110,6 +110,10 @@
 <ul>
 <li><code>avares://Dock.Avalonia.Themes.Browser/Styles/DensityStyles/Compact.axaml</code></li>
 </ul>
+<h2 id="document-tab-content-caching">Document tab content caching</h2>
+<p><code>BrowserTabTheme</code> exposes <code>CacheDocumentTabContent</code> to keep document views alive while switching tabs:</p>
+<pre><code class="lang-xaml">&lt;browserTheme:BrowserTabTheme CacheDocumentTabContent=&quot;True&quot; /&gt;
+</code></pre>
 <h2 id="theme-resources">Theme resources</h2>
 <p>Primary dictionaries:</p>
 <ul>

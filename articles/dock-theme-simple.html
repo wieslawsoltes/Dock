@@ -121,6 +121,11 @@
 <ul>
 <li><code>avares://Dock.Avalonia.Themes.Simple/DensityStyles/Compact.axaml</code></li>
 </ul>
+<h2 id="document-tab-content-caching">Document tab content caching</h2>
+<p><code>DockSimpleTheme</code> can keep document tab content alive instead of recreating it on each tab switch:</p>
+<pre><code class="lang-xaml">&lt;dockSimple:DockSimpleTheme CacheDocumentTabContent=&quot;True&quot; /&gt;
+</code></pre>
+<p>This uses the shared document control templates and keeps hidden tab views instantiated.</p>
 <h2 id="simple-token-customization">Simple token customization</h2>
 <p>Override semantic tokens after <code>DockSimpleTheme</code>:</p>
 <pre><code class="lang-xaml">&lt;Application.Resources&gt;

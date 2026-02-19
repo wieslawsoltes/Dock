@@ -127,6 +127,11 @@
 <li><code>avares://Dock.Avalonia.Themes.Fluent/DensityStyles/Compact.axaml</code></li>
 </ul>
 <p>Compact mode reduces tab/button/icon metrics by overriding density tokens (for example <code>DockTabItemMinHeight</code>, <code>DockCloseButtonSize</code>, <code>DockChromeButtonWidth</code>).</p>
+<h2 id="document-tab-content-caching">Document tab content caching</h2>
+<p><code>DockFluentTheme</code> can keep document tab content alive instead of recreating it on each tab switch:</p>
+<pre><code class="lang-xaml">&lt;dockFluent:DockFluentTheme CacheDocumentTabContent=&quot;True&quot; /&gt;
+</code></pre>
+<p>When enabled, document views remain instantiated while hidden tabs are inactive, which can improve tab-switch latency for heavy views.</p>
 <h2 id="fluent-token-customization">Fluent token customization</h2>
 <p>Customize Dock Fluent visuals by overriding semantic tokens after <code>DockFluentTheme</code>.</p>
 <pre><code class="lang-xaml">&lt;Application.Resources&gt;

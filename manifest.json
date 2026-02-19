@@ -1488,6 +1488,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Converters.ReferenceEqualsMultiConverter",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.yml\" sourcestartlinenumber=\"1\">Returns true when all supplied values are the same object instance.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Converters.ScrollViewerScrollButtonVisibilityConverter.yml",
       "output": {
         ".html": {

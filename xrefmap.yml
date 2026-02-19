@@ -115,6 +115,25 @@ references:
   commentId: T:Avalonia.Controls.Recycling.ControlRecyclingDataTemplate
   fullName: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate
   nameWithType: ControlRecyclingDataTemplate
+- uid: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.#ctor
+  name: ControlRecyclingDataTemplate()
+  href: api/Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.html#Avalonia_Controls_Recycling_ControlRecyclingDataTemplate__ctor
+  commentId: M:Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.#ctor
+  name.vb: New()
+  fullName: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.ControlRecyclingDataTemplate()
+  fullName.vb: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.New()
+  nameWithType: ControlRecyclingDataTemplate.ControlRecyclingDataTemplate()
+  nameWithType.vb: ControlRecyclingDataTemplate.New()
+- uid: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.#ctor*
+  name: ControlRecyclingDataTemplate
+  href: api/Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.html#Avalonia_Controls_Recycling_ControlRecyclingDataTemplate__ctor_
+  commentId: Overload:Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.ControlRecyclingDataTemplate
+  fullName.vb: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.New
+  nameWithType: ControlRecyclingDataTemplate.ControlRecyclingDataTemplate
+  nameWithType.vb: ControlRecyclingDataTemplate.New
 - uid: Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.Build(System.Object)
   name: Build(object?)
   href: api/Avalonia.Controls.Recycling.ControlRecyclingDataTemplate.html#Avalonia_Controls_Recycling_ControlRecyclingDataTemplate_Build_System_Object_
@@ -9435,6 +9454,41 @@ references:
   commentId: F:Dock.Avalonia.Converters.OwnerIsToolDockConverter.Instance
   fullName: Dock.Avalonia.Converters.OwnerIsToolDockConverter.Instance
   nameWithType: OwnerIsToolDockConverter.Instance
+- uid: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter
+  name: ReferenceEqualsMultiConverter
+  href: api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.html
+  commentId: T:Dock.Avalonia.Converters.ReferenceEqualsMultiConverter
+  fullName: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter
+  nameWithType: ReferenceEqualsMultiConverter
+- uid: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Convert(System.Collections.Generic.IList{System.Object},System.Type,System.Object,System.Globalization.CultureInfo)
+  name: Convert(IList<object?>, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.html#Dock_Avalonia_Converters_ReferenceEqualsMultiConverter_Convert_System_Collections_Generic_IList_System_Object__System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Convert(System.Collections.Generic.IList{System.Object},System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: Convert(IList(Of Object), Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Convert(System.Collections.Generic.IList<object?>, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Convert(System.Collections.Generic.IList(Of Object), System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: ReferenceEqualsMultiConverter.Convert(IList<object?>, Type, object?, CultureInfo)
+  nameWithType.vb: ReferenceEqualsMultiConverter.Convert(IList(Of Object), Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Convert*
+  name: Convert
+  href: api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.html#Dock_Avalonia_Converters_ReferenceEqualsMultiConverter_Convert_
+  commentId: Overload:Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Convert
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Convert
+  nameWithType: ReferenceEqualsMultiConverter.Convert
+- uid: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Instance
+  name: Instance
+  href: api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.html#Dock_Avalonia_Converters_ReferenceEqualsMultiConverter_Instance
+  commentId: P:Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Instance
+  fullName: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Instance
+  nameWithType: ReferenceEqualsMultiConverter.Instance
+- uid: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Instance*
+  name: Instance
+  href: api/Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.html#Dock_Avalonia_Converters_ReferenceEqualsMultiConverter_Instance_
+  commentId: Overload:Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Instance
+  isSpec: "True"
+  fullName: Dock.Avalonia.Converters.ReferenceEqualsMultiConverter.Instance
+  nameWithType: ReferenceEqualsMultiConverter.Instance
 - uid: Dock.Avalonia.Converters.ScrollViewerScrollButtonVisibilityConverter
   name: ScrollViewerScrollButtonVisibilityConverter
   href: api/Dock.Avalonia.Converters.ScrollViewerScrollButtonVisibilityConverter.html
@@ -11027,6 +11081,25 @@ references:
   fullName.vb: Dock.Avalonia.Themes.Browser.BrowserTabTheme.New
   nameWithType: BrowserTabTheme.BrowserTabTheme
   nameWithType.vb: BrowserTabTheme.New
+- uid: Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContent
+  name: CacheDocumentTabContent
+  href: api/Dock.Avalonia.Themes.Browser.BrowserTabTheme.html#Dock_Avalonia_Themes_Browser_BrowserTabTheme_CacheDocumentTabContent
+  commentId: P:Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContent
+  fullName: Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContent
+  nameWithType: BrowserTabTheme.CacheDocumentTabContent
+- uid: Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContent*
+  name: CacheDocumentTabContent
+  href: api/Dock.Avalonia.Themes.Browser.BrowserTabTheme.html#Dock_Avalonia_Themes_Browser_BrowserTabTheme_CacheDocumentTabContent_
+  commentId: Overload:Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContent
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContent
+  nameWithType: BrowserTabTheme.CacheDocumentTabContent
+- uid: Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContentProperty
+  name: CacheDocumentTabContentProperty
+  href: api/Dock.Avalonia.Themes.Browser.BrowserTabTheme.html#Dock_Avalonia_Themes_Browser_BrowserTabTheme_CacheDocumentTabContentProperty
+  commentId: F:Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContentProperty
+  fullName: Dock.Avalonia.Themes.Browser.BrowserTabTheme.CacheDocumentTabContentProperty
+  nameWithType: BrowserTabTheme.CacheDocumentTabContentProperty
 - uid: Dock.Avalonia.Themes.Browser.BrowserTabTheme.DensityStyle
   name: DensityStyle
   href: api/Dock.Avalonia.Themes.Browser.BrowserTabTheme.html#Dock_Avalonia_Themes_Browser_BrowserTabTheme_DensityStyle
@@ -11207,6 +11280,25 @@ references:
   fullName.vb: Dock.Avalonia.Themes.Fluent.DockFluentTheme.New
   nameWithType: DockFluentTheme.DockFluentTheme
   nameWithType.vb: DockFluentTheme.New
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContent
+  name: CacheDocumentTabContent
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_CacheDocumentTabContent
+  commentId: P:Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContent
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContent
+  nameWithType: DockFluentTheme.CacheDocumentTabContent
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContent*
+  name: CacheDocumentTabContent
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_CacheDocumentTabContent_
+  commentId: Overload:Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContent
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContent
+  nameWithType: DockFluentTheme.CacheDocumentTabContent
+- uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContentProperty
+  name: CacheDocumentTabContentProperty
+  href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_CacheDocumentTabContentProperty
+  commentId: F:Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContentProperty
+  fullName: Dock.Avalonia.Themes.Fluent.DockFluentTheme.CacheDocumentTabContentProperty
+  nameWithType: DockFluentTheme.CacheDocumentTabContentProperty
 - uid: Dock.Avalonia.Themes.Fluent.DockFluentTheme.DensityStyle
   name: DensityStyle
   href: api/Dock.Avalonia.Themes.Fluent.DockFluentTheme.html#Dock_Avalonia_Themes_Fluent_DockFluentTheme_DensityStyle
@@ -11375,6 +11467,25 @@ references:
   fullName.vb: Dock.Avalonia.Themes.Simple.DockSimpleTheme.New
   nameWithType: DockSimpleTheme.DockSimpleTheme
   nameWithType.vb: DockSimpleTheme.New
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContent
+  name: CacheDocumentTabContent
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_CacheDocumentTabContent
+  commentId: P:Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContent
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContent
+  nameWithType: DockSimpleTheme.CacheDocumentTabContent
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContent*
+  name: CacheDocumentTabContent
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_CacheDocumentTabContent_
+  commentId: Overload:Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContent
+  isSpec: "True"
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContent
+  nameWithType: DockSimpleTheme.CacheDocumentTabContent
+- uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContentProperty
+  name: CacheDocumentTabContentProperty
+  href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_CacheDocumentTabContentProperty
+  commentId: F:Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContentProperty
+  fullName: Dock.Avalonia.Themes.Simple.DockSimpleTheme.CacheDocumentTabContentProperty
+  nameWithType: DockSimpleTheme.CacheDocumentTabContentProperty
 - uid: Dock.Avalonia.Themes.Simple.DockSimpleTheme.DensityStyle
   name: DensityStyle
   href: api/Dock.Avalonia.Themes.Simple.DockSimpleTheme.html#Dock_Avalonia_Themes_Simple_DockSimpleTheme_DensityStyle

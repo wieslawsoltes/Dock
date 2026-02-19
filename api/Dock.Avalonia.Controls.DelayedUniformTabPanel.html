@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class DocumentTabStripItem | Dock for Avalonia </title>
+      <title>Class DelayedUniformTabPanel | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class DocumentTabStripItem | Dock for Avalonia ">
+      <meta name="title" content="Class DelayedUniformTabPanel | Dock for Avalonia ">
       
-      <meta name="description" content="Document TabStripItem custom control.">
+      <meta name="description" content="Arranges visible children in a single horizontal row with a uniform width. Shrinks immediately when constrained and expands after a delay.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_DocumentTabStripItem.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.DocumentTabStripItem%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Avalonia_Controls_DelayedUniformTabPanel.md&amp;value=---%0Auid%3A%20Dock.Avalonia.Controls.DelayedUniformTabPanel%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -80,12 +80,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Dock.Avalonia.Controls.DocumentTabStripItem">
+        <article data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel">
 
 
 
-  <h1 id="Dock_Avalonia_Controls_DocumentTabStripItem" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem" class="text-break">
-Class DocumentTabStripItem  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <h1 id="Dock_Avalonia_Controls_DelayedUniformTabPanel" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel" class="text-break">
+Class DelayedUniformTabPanel  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -93,13 +93,13 @@ Class DocumentTabStripItem  <a class="header-action link-secondary" title="View 
   <dl><dt>Assembly</dt><dd>Dock.Avalonia.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Document TabStripItem custom control.</p>
+  <div class="markdown summary"><p>Arranges visible children in a single horizontal row with a uniform width.
+Shrinks immediately when constrained and expands after a delay.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[PseudoClasses(new string[] { &quot;:active&quot;, &quot;:ultracompact&quot; })]
-public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, ISelectable</code></pre>
+    <pre><code class="lang-csharp hljs">public class DelayedUniformTabPanel : Panel, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, IChildIndexProvider</code></pre>
   </div>
 
 
@@ -117,11 +117,8 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
       <div><span class="xref">Interactive</span></div>
       <div><span class="xref">InputElement</span></div>
       <div><span class="xref">Control</span></div>
-      <div><span class="xref">TemplatedControl</span></div>
-      <div><span class="xref">ContentControl</span></div>
-      <div><span class="xref">ListBoxItem</span></div>
-      <div><span class="xref">TabStripItem</span></div>
-      <div><span class="xref">DocumentTabStripItem</span></div>
+      <div><span class="xref">Panel</span></div>
+      <div><span class="xref">DelayedUniformTabPanel</span></div>
     </dd>
   </dl>
 
@@ -143,7 +140,7 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
       <div><span class="xref">IInputElement</span></div>
       <div><span class="xref">IDataTemplateHost</span></div>
       <div><span class="xref">ISetterValue</span></div>
-      <div><span class="xref">ISelectable</span></div>
+      <div><span class="xref">IChildIndexProvider</span></div>
     </dd>
   </dl>
 
@@ -152,163 +149,28 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <span class="xref">ListBoxItem.IsSelectedProperty</span>
+      <span class="xref">Panel.BackgroundProperty</span>
     </div>
     <div>
-      <span class="xref">ListBoxItem.OnPointerPressed(PointerPressedEventArgs)</span>
+      <span class="xref">Panel.Render(DrawingContext)</span>
     </div>
     <div>
-      <span class="xref">ListBoxItem.OnPointerReleased(PointerReleasedEventArgs)</span>
+      <span class="xref">Panel.AffectsParentArrange&lt;TPanel&gt;(params AvaloniaProperty[])</span>
     </div>
     <div>
-      <span class="xref">ListBoxItem.IsSelected</span>
+      <span class="xref">Panel.AffectsParentMeasure&lt;TPanel&gt;(params AvaloniaProperty[])</span>
     </div>
     <div>
-      <span class="xref">ContentControl.ContentProperty</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Panel.ChildrenChanged(object, NotifyCollectionChangedEventArgs)</a>
     </div>
     <div>
-      <span class="xref">ContentControl.ContentTemplateProperty</span>
+      <span class="xref">Panel.Children</span>
     </div>
     <div>
-      <span class="xref">ContentControl.HorizontalContentAlignmentProperty</span>
+      <span class="xref">Panel.Background</span>
     </div>
     <div>
-      <span class="xref">ContentControl.VerticalContentAlignmentProperty</span>
-    </div>
-    <div>
-      <span class="xref">ContentControl.RegisterContentPresenter(ContentPresenter)</span>
-    </div>
-    <div>
-      <span class="xref">ContentControl.Content</span>
-    </div>
-    <div>
-      <span class="xref">ContentControl.ContentTemplate</span>
-    </div>
-    <div>
-      <span class="xref">ContentControl.Presenter</span>
-    </div>
-    <div>
-      <span class="xref">ContentControl.HorizontalContentAlignment</span>
-    </div>
-    <div>
-      <span class="xref">ContentControl.VerticalContentAlignment</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BackgroundProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BackgroundSizingProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BorderBrushProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BorderThicknessProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.CornerRadiusProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontFamilyProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontFeaturesProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontSizeProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStyleProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontWeightProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStretchProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.ForegroundProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.PaddingProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.TemplateProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.IsTemplateFocusTargetProperty</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.TemplateAppliedEvent</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.GetIsTemplateFocusTarget(Control)</span>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">TemplatedControl.SetIsTemplateFocusTarget(Control, bool)</a>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.ApplyTemplate()</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.GetTemplateFocusTarget()</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnApplyTemplate(TemplateAppliedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.OnTemplateChanged(AvaloniaPropertyChangedEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Background</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BackgroundSizing</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BorderBrush</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.BorderThickness</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.CornerRadius</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontFamily</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontFeatures</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontSize</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStyle</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontWeight</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.FontStretch</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Foreground</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Padding</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.Template</span>
-    </div>
-    <div>
-      <span class="xref">TemplatedControl.TemplateApplied</span>
+      <span class="xref">Panel.IsItemsHost</span>
     </div>
     <div>
       <span class="xref">Control.FocusAdornerProperty</span>
@@ -338,6 +200,9 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
       <span class="xref">Control.SizeChangedEvent</span>
     </div>
     <div>
+      <span class="xref">Control.GetTemplateFocusTarget()</span>
+    </div>
+    <div>
       <span class="xref">Control.OnLoaded(RoutedEventArgs)</span>
     </div>
     <div>
@@ -357,6 +222,12 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
     </div>
     <div>
       <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnCreateAutomationPeer()</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
     </div>
     <div>
       <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
@@ -489,6 +360,9 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
     </div>
     <div>
       <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
     </div>
     <div>
       <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
@@ -641,6 +515,9 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
       <span class="xref">Layoutable.UpdateLayout()</span>
     </div>
     <div>
+      <span class="xref">Layoutable.ApplyTemplate()</span>
+    </div>
+    <div>
       <span class="xref">Layoutable.Measure(Size)</span>
     </div>
     <div>
@@ -662,13 +539,7 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
       <span class="xref">Layoutable.MeasureCore(Size)</span>
     </div>
     <div>
-      <span class="xref">Layoutable.MeasureOverride(Size)</span>
-    </div>
-    <div>
       <span class="xref">Layoutable.ArrangeCore(Rect)</span>
-    </div>
-    <div>
-      <span class="xref">Layoutable.ArrangeOverride(Size)</span>
     </div>
     <div>
       <span class="xref">Layoutable.OnMeasureInvalidated()</span>
@@ -770,9 +641,6 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
       <span class="xref">Visual.InvalidateVisual()</span>
     </div>
     <div>
-      <span class="xref">Visual.Render(DrawingContext)</span>
-    </div>
-    <div>
       <span class="xref">Visual.AffectsRender&lt;T&gt;(params AvaloniaProperty[])</span>
     </div>
     <div>
@@ -866,6 +734,12 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">StyledElement.TryGetResource(object, ThemeVariant, out object)</a>
     </div>
     <div>
+      <span class="xref">StyledElement.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">StyledElement.OnDataContextChanged(EventArgs)</a>
     </div>
     <div>
@@ -909,6 +783,9 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
     </div>
     <div>
       <span class="xref">StyledElement.PseudoClasses</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKeyOverride</span>
     </div>
     <div>
       <span class="xref">StyledElement.Parent</span>
@@ -1074,19 +951,19 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 </h2>
 
 
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem__ctor_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.#ctor*"></a>
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel__ctor_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.#ctor*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem__ctor" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.#ctor">
-  DocumentTabStripItem()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel__ctor" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.#ctor">
+  DelayedUniformTabPanel()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Avalonia.Controls.DocumentTabStripItem.html">DocumentTabStripItem</a> class.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Avalonia.Controls.DelayedUniformTabPanel.html">DelayedUniformTabPanel</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DocumentTabStripItem()</code></pre>
+    <pre><code class="lang-csharp hljs">public DelayedUniformTabPanel()</code></pre>
   </div>
 
 
@@ -1106,17 +983,17 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
 
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_DocumentContextMenuProperty" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.DocumentContextMenuProperty">
-  DocumentContextMenuProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_AnimatedTabWidthProperty" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.AnimatedTabWidthProperty">
+  AnimatedTabWidthProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.DocumentTabStripItem.html#Dock_Avalonia_Controls_DocumentTabStripItem_DocumentContextMenu">DocumentContextMenu</a> property.</p>
+  <div class="markdown level1 summary"><p>Defines the animated tab width property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;ContextMenu?&gt; DocumentContextMenuProperty</code></pre>
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;double&gt; AnimatedTabWidthProperty</code></pre>
   </div>
 
 
@@ -1124,7 +1001,7 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<span class="xref">ContextMenu</span>&gt;</dt>
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -1137,17 +1014,17 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
 
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_IsActiveProperty" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.IsActiveProperty">
-  IsActiveProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ExpansionDelayProperty" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ExpansionDelayProperty">
+  ExpansionDelayProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Define the <a class="xref" href="Dock.Avalonia.Controls.DocumentTabStripItem.html#Dock_Avalonia_Controls_DocumentTabStripItem_IsActive">IsActive</a> property.</p>
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DelayedUniformTabPanel.html#Dock_Avalonia_Controls_DelayedUniformTabPanel_ExpansionDelay">ExpansionDelay</a> property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;bool&gt; IsActiveProperty</code></pre>
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;TimeSpan&gt; ExpansionDelayProperty</code></pre>
   </div>
 
 
@@ -1155,7 +1032,131 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
   <h4 class="section">Field Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ItemSpacingProperty" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ItemSpacingProperty">
+  ItemSpacingProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DelayedUniformTabPanel.html#Dock_Avalonia_Controls_DelayedUniformTabPanel_ItemSpacing">ItemSpacing</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;double&gt; ItemSpacingProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MaxTabWidthProperty" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MaxTabWidthProperty">
+  MaxTabWidthProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DelayedUniformTabPanel.html#Dock_Avalonia_Controls_DelayedUniformTabPanel_MaxTabWidth">MaxTabWidth</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;double&gt; MaxTabWidthProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MinTabWidthProperty" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MinTabWidthProperty">
+  MinTabWidthProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DelayedUniformTabPanel.html#Dock_Avalonia_Controls_DelayedUniformTabPanel_MinTabWidth">MinTabWidth</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;double&gt; MinTabWidthProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ResizeAnimationDurationProperty" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ResizeAnimationDurationProperty">
+  ResizeAnimationDurationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the <a class="xref" href="Dock.Avalonia.Controls.DelayedUniformTabPanel.html#Dock_Avalonia_Controls_DelayedUniformTabPanel_ResizeAnimationDuration">ResizeAnimationDuration</a> property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;TimeSpan&gt; ResizeAnimationDurationProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -1171,19 +1172,19 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 </h2>
 
 
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem_DocumentContextMenu_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.DocumentContextMenu*"></a>
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ExpansionDelay_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ExpansionDelay*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_DocumentContextMenu" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.DocumentContextMenu">
-  DocumentContextMenu
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ExpansionDelay" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ExpansionDelay">
+  ExpansionDelay
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L113"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets the document context menu.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the delay applied before expanding tab widths.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ContextMenu? DocumentContextMenu { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public TimeSpan ExpansionDelay { get; set; }</code></pre>
   </div>
 
 
@@ -1192,7 +1193,7 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">ContextMenu</span></dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
     <dd></dd>
   </dl>
 
@@ -1203,19 +1204,19 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
 
 
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem_IsActive_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.IsActive*"></a>
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ItemSpacing_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ItemSpacing*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_IsActive" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.IsActive">
-  IsActive
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ItemSpacing" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ItemSpacing">
+  ItemSpacing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L104"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets if this is the currently active dockable.</p>
+  <div class="markdown level1 summary"><p>Gets or sets spacing between tabs.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsActive { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double ItemSpacing { get; set; }</code></pre>
   </div>
 
 
@@ -1224,7 +1225,7 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
     <dd></dd>
   </dl>
 
@@ -1235,19 +1236,19 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
 
 
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem_StyleKeyOverride_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.StyleKeyOverride*"></a>
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MaxTabWidth_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MaxTabWidth*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_StyleKeyOverride" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.StyleKeyOverride">
-  StyleKeyOverride
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MaxTabWidth" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MaxTabWidth">
+  MaxTabWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the type by which the element is styled.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the maximum width used for each tab when enough space is available.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Type StyleKeyOverride { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double MaxTabWidth { get; set; }</code></pre>
   </div>
 
 
@@ -1256,20 +1257,77 @@ public class DocumentTabStripItem : TabStripItem, INotifyPropertyChanged, IDataC
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
     <dd></dd>
   </dl>
 
 
 
 
-  <h4 class="section" id="Dock_Avalonia_Controls_DocumentTabStripItem_StyleKeyOverride_remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Usually controls are styled by their own type, but there are instances where you want
-an element to be styled by its base type, e.g. creating SpecialButton that
-derives from Button and adds extra functionality but is still styled as a regular
-Button. Override this property to change the style for a control class, returning the
-type that you wish the elements to be styled as.</p>
+
+
+
+
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MinTabWidth_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MinTabWidth*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MinTabWidth" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MinTabWidth">
+  MinTabWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the minimum width used for each tab before overflow occurs.</p>
 </div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinTabWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ResizeAnimationDuration_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ResizeAnimationDuration*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ResizeAnimationDuration" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ResizeAnimationDuration">
+  ResizeAnimationDuration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets animation duration for tab width changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan ResizeAnimationDuration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
 
 
 
@@ -1278,11 +1336,89 @@ type that you wish the elements to be styled as.</p>
 </h2>
 
 
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem_OnAttachedToVisualTree_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnAttachedToVisualTree*"></a>
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ArrangeOverride_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ArrangeOverride*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_OnAttachedToVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_ArrangeOverride_Avalonia_Size_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.ArrangeOverride(Avalonia.Size)">
+  ArrangeOverride(Size)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Positions child elements as part of a layout pass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Size ArrangeOverride(Size finalSize)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>finalSize</code> <span class="xref">Size</span></dt>
+    <dd><p>The size available to the control.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Size</span></dt>
+    <dd><p>The actual size used.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MeasureOverride_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MeasureOverride*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_MeasureOverride_Avalonia_Size_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.MeasureOverride(Avalonia.Size)">
+  MeasureOverride(Size)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Measures the control and its child elements as part of a layout pass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Size MeasureOverride(Size availableSize)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>availableSize</code> <span class="xref">Size</span></dt>
+    <dd><p>The size available to the control.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Size</span></dt>
+    <dd><p>The desired size for the control.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_OnAttachedToVisualTree_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.OnAttachedToVisualTree*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_OnAttachedToVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
   OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L259"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the control is added to a rooted visual tree.</p>
@@ -1311,44 +1447,11 @@ type that you wish the elements to be styled as.</p>
 
 
 
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem_OnCreateAutomationPeer_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer*"></a>
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_OnDetachedFromVisualTree_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.OnDetachedFromVisualTree*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_OnCreateAutomationPeer" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnCreateAutomationPeer">
-  OnCreateAutomationPeer()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L104"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Returns a new, type-specific <span class="xref">Avalonia.Automation.Peers.AutomationPeer</span> implementation for the control.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override AutomationPeer OnCreateAutomationPeer()</code></pre>
-  </div>
-
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><span class="xref">AutomationPeer</span></dt>
-    <dd><p>The type-specific <span class="xref">Avalonia.Automation.Peers.AutomationPeer</span> implementation.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem_OnDetachedFromVisualTree_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnDetachedFromVisualTree*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_OnDetachedFromVisualTree_Avalonia_VisualTreeAttachmentEventArgs_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.OnDetachedFromVisualTree(Avalonia.VisualTreeAttachmentEventArgs)">
   OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L251"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when the control is removed from a rooted visual tree.</p>
@@ -1377,11 +1480,11 @@ type that you wish the elements to be styled as.</p>
 
 
 
-  <a id="Dock_Avalonia_Controls_DocumentTabStripItem_OnPropertyChanged_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnPropertyChanged*"></a>
+  <a id="Dock_Avalonia_Controls_DelayedUniformTabPanel_OnPropertyChanged_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.OnPropertyChanged*"></a>
 
-  <h3 id="Dock_Avalonia_Controls_DocumentTabStripItem_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Avalonia.Controls.DocumentTabStripItem.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
+  <h3 id="Dock_Avalonia_Controls_DelayedUniformTabPanel_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Avalonia.Controls.DelayedUniformTabPanel.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
   OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L170"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when a avalonia property changes on the object.</p>
@@ -1414,7 +1517,7 @@ type that you wish the elements to be styled as.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DocumentTabStripItem.axaml.cs/#L23" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/DelayedUniformTabPanel.cs/#L20" class="edit-link">Edit this page</a>
         </div>
 
 

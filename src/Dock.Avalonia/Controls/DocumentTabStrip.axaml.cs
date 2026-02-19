@@ -481,12 +481,14 @@ public class DocumentTabStrip : TabStrip
 
         if (_leadingSpacer is { IsVisible: true } leadingSpacer)
         {
-            reservedWidth += leadingSpacer.Bounds.Width + leadingSpacer.Margin.Left + leadingSpacer.Margin.Right;
+            var spacerWidth = Math.Max(leadingSpacer.Bounds.Width, leadingSpacer.DesiredSize.Width);
+            reservedWidth += spacerWidth + leadingSpacer.Margin.Left + leadingSpacer.Margin.Right;
         }
 
         if (_createButtonHost is { IsVisible: true } createButtonHost)
         {
-            reservedWidth += createButtonHost.Bounds.Width + createButtonHost.Margin.Left + createButtonHost.Margin.Right;
+            var createHostWidth = Math.Max(createButtonHost.Bounds.Width, createButtonHost.DesiredSize.Width);
+            reservedWidth += createHostWidth + createButtonHost.Margin.Left + createButtonHost.Margin.Right;
         }
 
         var maxWidth = Math.Max(0d, hostWidth - reservedWidth);

@@ -88,4 +88,8 @@
     <Setter Property="IsVisible" Value="False" />
   </Style>
 
+  <Style Selector="DocumentTabStrip[Orientation=Horizontal] /template/ ScrollViewer#PART_ScrollViewer">
+    <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+  </Style>
+
 </Styles>

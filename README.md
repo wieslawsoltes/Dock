@@ -18,6 +18,7 @@ A docking layout system.
 **Key Features:**
 - **ItemsSource Support**: Bind document collections directly to DocumentDock for automatic document management
 - **Flexible Content Templates**: Use DocumentTemplate for customizable document content rendering
+- **Optional Document Content Caching**: Keep document views alive across tab switches via theme option (`CacheDocumentTabContent`)
 - **Multiple MVVM Frameworks**: Support for ReactiveUI, Prism, ReactiveProperty, and standard MVVM patterns
 - **Comprehensive Serialization**: Save and restore layouts with multiple format options (JSON, XML, YAML, Protobuf)
 - **Rich Theming**: Fluent and Simple themes with full customization support

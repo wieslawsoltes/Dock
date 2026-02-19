@@ -21,7 +21,7 @@ Reference the browser theme project/package and use it in `App.axaml`:
   <Application.Styles>
     <FluentTheme />
     <DockFluentTheme />
-    <browserTheme:BrowserTabTheme />
+    <browserTheme:BrowserTabTheme CacheDocumentTabContent="True" />
   </Application.Styles>
 </Application>
 ```
@@ -37,6 +37,14 @@ Reference the browser theme project/package and use it in `App.axaml`:
 Compact density dictionary:
 
 - `avares://Dock.Avalonia.Themes.Browser/Styles/DensityStyles/Compact.axaml`
+
+## Document tab content caching
+
+`BrowserTabTheme` exposes `CacheDocumentTabContent` to keep document views alive while switching tabs:
+
+```xaml
+<browserTheme:BrowserTabTheme CacheDocumentTabContent="True" />
+```
 
 ## Theme resources
 

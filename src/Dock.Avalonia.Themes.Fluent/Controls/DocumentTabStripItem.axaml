@@ -360,18 +360,18 @@
                       <Grid x:Name="PART_IconCloseHost"
                             ClipToBounds="False">
                         <ContentPresenter x:Name="PART_IconPresenter"
-                                          ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
+                                          ContentTemplate="{Binding $parent[DocumentTabStrip].IconTemplate}"
                                           Content="{Binding}" />
                         <ContentPresenter x:Name="PART_CompactClosePresenter"
                                           IsVisible="False"
-                                          ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
+                                          ContentTemplate="{Binding $parent[DocumentTabStrip].CloseTemplate}"
                                           Content="{Binding}" />
                       </Grid>
                       <ContentPresenter x:Name="PART_HeaderPresenter"
-                                        ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
+                                        ContentTemplate="{Binding $parent[DocumentTabStrip].HeaderTemplate}"
                                         Content="{Binding}" />
                       <ContentPresenter x:Name="PART_ModifiedPresenter"
-                                        ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
+                                        ContentTemplate="{Binding $parent[DocumentTabStrip].ModifiedTemplate}"
                                         IsVisible="{Binding IsModified}"
                                         Content="{Binding}" />
                     </StackPanel>
@@ -380,7 +380,7 @@
                                       HorizontalAlignment="Right"
                                       VerticalAlignment="Center"
                                       Margin="{DynamicResource DockTabContentMargin}"
-                                      ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
+                                      ContentTemplate="{Binding $parent[DocumentTabStrip].CloseTemplate}"
                                       Content="{Binding}" />
                   </Grid>
                 </DockPanel>

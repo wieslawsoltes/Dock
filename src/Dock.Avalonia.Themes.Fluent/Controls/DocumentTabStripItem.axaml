@@ -380,7 +380,7 @@
                                       HorizontalAlignment="Right"
                                       VerticalAlignment="Center"
                                       Margin="{DynamicResource DockTabContentMargin}"
-                                      ContentTemplate="{Binding $parent[DocumentControl].CloseTemplate}"
+                                      ContentTemplate="{Binding $parent[DocumentTabStrip].CloseTemplate}"
                                       Content="{Binding}" />
                   </Grid>
                 </DockPanel>

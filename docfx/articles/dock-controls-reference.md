@@ -131,6 +131,10 @@ For behavior details and keyboard validation guidance, see [Accessibility and UI
 | `Orientation` | `Orientation` | Tab strip orientation. |
 | `MouseWheelScrollOrientation` | `Orientation` | Mouse-wheel scroll axis for tab overflow (`Horizontal` by default). |
 | `CreateButtonTheme` | `ControlTheme?` | Theme for the create document button. |
+| `IconTemplate` | `object?` | Tab icon template used by `DocumentTabStripItem`. |
+| `HeaderTemplate` | `IDataTemplate?` | Tab header template used by `DocumentTabStripItem`. |
+| `ModifiedTemplate` | `IDataTemplate?` | Modified indicator template used by `DocumentTabStripItem`. |
+| `CloseTemplate` | `IDataTemplate?` | Close template used by `DocumentTabStripItem`. |
 
 ### DocumentTabStripItem
 
@@ -145,6 +149,9 @@ For behavior details and keyboard validation guidance, see [Accessibility and UI
 | --- | --- | --- |
 | `CanCreateItem` | `bool` | `true` when the new-tool button is available. |
 | `MouseWheelScrollOrientation` | `Orientation` | Mouse-wheel scroll axis for tab overflow (`Horizontal` by default). |
+| `IconTemplate` | `object?` | Tab icon template used by `ToolTabStripItem`. |
+| `HeaderTemplate` | `IDataTemplate?` | Tab header template used by `ToolTabStripItem`. |
+| `ModifiedTemplate` | `IDataTemplate?` | Modified indicator template used by `ToolTabStripItem`. |
 
 ### ToolTabStripItem
 

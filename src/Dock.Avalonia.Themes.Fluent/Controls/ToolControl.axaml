@@ -46,6 +46,9 @@
           <ToolTabStrip x:Name="PART_TabStrip"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        IconTemplate="{TemplateBinding IconTemplate}"
+                        HeaderTemplate="{TemplateBinding HeaderTemplate}"
+                        ModifiedTemplate="{TemplateBinding ModifiedTemplate}"
                         DockPanel.Dock="Bottom"
                         DockProperties.IsDropArea="True"
                         DockProperties.DockAdornerHost="{Binding #PART_DockPanel}" />

@@ -180,12 +180,15 @@
                             Orientation="Horizontal"
                             Spacing="{DynamicResource DockTabContentSpacing}">
                   <StackPanel Margin="{DynamicResource DockTabContentMargin}" Orientation="Horizontal">
-                    <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].IconTemplate}"
+                    <ContentPresenter x:Name="PART_IconPresenter"
+                                      ContentTemplate="{Binding $parent[ToolTabStrip].IconTemplate}"
                                       Content="{Binding}" />
-                    <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].HeaderTemplate}"
+                    <ContentPresenter x:Name="PART_HeaderPresenter"
+                                      ContentTemplate="{Binding $parent[ToolTabStrip].HeaderTemplate}"
                                       Content="{Binding}" />
                   </StackPanel>
-                  <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].ModifiedTemplate}"
+                  <ContentPresenter x:Name="PART_ModifiedPresenter"
+                                    ContentTemplate="{Binding $parent[ToolTabStrip].ModifiedTemplate}"
                                     IsVisible="{Binding IsModified}"
                                     Content="{Binding}" />
                 </StackPanel>

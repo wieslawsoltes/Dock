@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Reactive;
@@ -45,6 +46,24 @@ public class ToolTabStrip : TabStrip
             defaultValue: Orientation.Horizontal);
 
     /// <summary>
+    /// Defines the <see cref="IconTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> IconTemplateProperty =
+        AvaloniaProperty.Register<ToolTabStrip, object?>(nameof(IconTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="HeaderTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> HeaderTemplateProperty =
+        AvaloniaProperty.Register<ToolTabStrip, IDataTemplate?>(nameof(HeaderTemplate));
+
+    /// <summary>
+    /// Defines the <see cref="ModifiedTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate?> ModifiedTemplateProperty =
+        AvaloniaProperty.Register<ToolTabStrip, IDataTemplate?>(nameof(ModifiedTemplate));
+
+    /// <summary>
     /// Gets or sets if tab strop dock can create new items.
     /// </summary>
     public bool CanCreateItem
@@ -60,6 +79,33 @@ public class ToolTabStrip : TabStrip
     {
         get => GetValue(MouseWheelScrollOrientationProperty);
         set => SetValue(MouseWheelScrollOrientationProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets tab icon template.
+    /// </summary>
+    public object? IconTemplate
+    {
+        get => GetValue(IconTemplateProperty);
+        set => SetValue(IconTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets tab header template.
+    /// </summary>
+    public IDataTemplate? HeaderTemplate
+    {
+        get => GetValue(HeaderTemplateProperty);
+        set => SetValue(HeaderTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets tab modified template.
+    /// </summary>
+    public IDataTemplate? ModifiedTemplate
+    {
+        get => GetValue(ModifiedTemplateProperty);
+        set => SetValue(ModifiedTemplateProperty, value);
     }
 
     /// <inheritdoc/>

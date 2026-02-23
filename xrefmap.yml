@@ -2276,6 +2276,25 @@ references:
   commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.CanCreateItemProperty
   fullName: Dock.Avalonia.Controls.DocumentTabStrip.CanCreateItemProperty
   nameWithType: DocumentTabStrip.CanCreateItemProperty
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplate
+  name: CloseTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CloseTemplate
+  commentId: P:Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplate
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplate
+  nameWithType: DocumentTabStrip.CloseTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplate*
+  name: CloseTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CloseTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplate
+  nameWithType: DocumentTabStrip.CloseTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplateProperty
+  name: CloseTemplateProperty
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CloseTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplateProperty
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplateProperty
+  nameWithType: DocumentTabStrip.CloseTemplateProperty
 - uid: Dock.Avalonia.Controls.DocumentTabStrip.CreateButtonTemplate
   name: CreateButtonTemplate
   href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CreateButtonTemplate
@@ -2368,6 +2387,44 @@ references:
   commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.EnableWindowStateToggleOnDoubleTapProperty
   fullName: Dock.Avalonia.Controls.DocumentTabStrip.EnableWindowStateToggleOnDoubleTapProperty
   nameWithType: DocumentTabStrip.EnableWindowStateToggleOnDoubleTapProperty
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplate
+  name: HeaderTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_HeaderTemplate
+  commentId: P:Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplate
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplate
+  nameWithType: DocumentTabStrip.HeaderTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplate*
+  name: HeaderTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_HeaderTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplate
+  nameWithType: DocumentTabStrip.HeaderTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplateProperty
+  name: HeaderTemplateProperty
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_HeaderTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplateProperty
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.HeaderTemplateProperty
+  nameWithType: DocumentTabStrip.HeaderTemplateProperty
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.IconTemplate
+  name: IconTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_IconTemplate
+  commentId: P:Dock.Avalonia.Controls.DocumentTabStrip.IconTemplate
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.IconTemplate
+  nameWithType: DocumentTabStrip.IconTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.IconTemplate*
+  name: IconTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_IconTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStrip.IconTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.IconTemplate
+  nameWithType: DocumentTabStrip.IconTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.IconTemplateProperty
+  name: IconTemplateProperty
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_IconTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.IconTemplateProperty
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.IconTemplateProperty
+  nameWithType: DocumentTabStrip.IconTemplateProperty
 - uid: Dock.Avalonia.Controls.DocumentTabStrip.IsActive
   name: IsActive
   href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_IsActive
@@ -2425,6 +2482,25 @@ references:
   commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.LeftContentTemplateProperty
   fullName: Dock.Avalonia.Controls.DocumentTabStrip.LeftContentTemplateProperty
   nameWithType: DocumentTabStrip.LeftContentTemplateProperty
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplate
+  name: ModifiedTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_ModifiedTemplate
+  commentId: P:Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplate
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplate
+  nameWithType: DocumentTabStrip.ModifiedTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplate*
+  name: ModifiedTemplate
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_ModifiedTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplate
+  nameWithType: DocumentTabStrip.ModifiedTemplate
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplateProperty
+  name: ModifiedTemplateProperty
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_ModifiedTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplateProperty
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.ModifiedTemplateProperty
+  nameWithType: DocumentTabStrip.ModifiedTemplateProperty
 - uid: Dock.Avalonia.Controls.DocumentTabStrip.MouseWheelScrollOrientation
   name: MouseWheelScrollOrientation
   href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_MouseWheelScrollOrientation
@@ -8150,6 +8226,63 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.ToolTabStrip.CreateContainerForItemOverride
   nameWithType: ToolTabStrip.CreateContainerForItemOverride
+- uid: Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplate
+  name: HeaderTemplate
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_HeaderTemplate
+  commentId: P:Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplate
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplate
+  nameWithType: ToolTabStrip.HeaderTemplate
+- uid: Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplate*
+  name: HeaderTemplate
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_HeaderTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplate
+  nameWithType: ToolTabStrip.HeaderTemplate
+- uid: Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplateProperty
+  name: HeaderTemplateProperty
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_HeaderTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplateProperty
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.HeaderTemplateProperty
+  nameWithType: ToolTabStrip.HeaderTemplateProperty
+- uid: Dock.Avalonia.Controls.ToolTabStrip.IconTemplate
+  name: IconTemplate
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_IconTemplate
+  commentId: P:Dock.Avalonia.Controls.ToolTabStrip.IconTemplate
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.IconTemplate
+  nameWithType: ToolTabStrip.IconTemplate
+- uid: Dock.Avalonia.Controls.ToolTabStrip.IconTemplate*
+  name: IconTemplate
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_IconTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStrip.IconTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.IconTemplate
+  nameWithType: ToolTabStrip.IconTemplate
+- uid: Dock.Avalonia.Controls.ToolTabStrip.IconTemplateProperty
+  name: IconTemplateProperty
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_IconTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.ToolTabStrip.IconTemplateProperty
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.IconTemplateProperty
+  nameWithType: ToolTabStrip.IconTemplateProperty
+- uid: Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplate
+  name: ModifiedTemplate
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_ModifiedTemplate
+  commentId: P:Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplate
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplate
+  nameWithType: ToolTabStrip.ModifiedTemplate
+- uid: Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplate*
+  name: ModifiedTemplate
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_ModifiedTemplate_
+  commentId: Overload:Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplate
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplate
+  nameWithType: ToolTabStrip.ModifiedTemplate
+- uid: Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplateProperty
+  name: ModifiedTemplateProperty
+  href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_ModifiedTemplateProperty
+  commentId: F:Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplateProperty
+  fullName: Dock.Avalonia.Controls.ToolTabStrip.ModifiedTemplateProperty
+  nameWithType: ToolTabStrip.ModifiedTemplateProperty
 - uid: Dock.Avalonia.Controls.ToolTabStrip.MouseWheelScrollOrientation
   name: MouseWheelScrollOrientation
   href: api/Dock.Avalonia.Controls.ToolTabStrip.html#Dock_Avalonia_Controls_ToolTabStrip_MouseWheelScrollOrientation

@@ -163,6 +163,7 @@ All token keys below are available in both:
 | `DockDocumentTabStripHorizontalCreateButtonAlignment` | Horizontal alignment for document-tab create button (`Left`/`Right`). |
 | `DockDocumentControlIndicatorDockOperation` | Dock indicator operation for document control drop target (`Fill` etc.). |
 | `DockDocumentTabStripHideWhenEmpty` | Whether empty non-create document tab strips are hidden. |
+| `DockDocumentControlTabStripVisible` | Whether `DocumentControl` renders its built-in `DocumentTabStrip`. |
 | `DockDocumentControlShowDockIndicatorOnly` | Whether document control dock target shows indicator-only rendering. |
 | `DockDocumentTabStripSeparatorVisible` | Whether the document tab-strip separator (`PART_DocumentSeperator`) is visible. |
 | `DockDocumentControlVerticalSpacing` | Vertical spacing for the `PART_DockPanel` in `DocumentControl`. |

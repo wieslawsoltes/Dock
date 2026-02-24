@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
@@ -95,6 +96,78 @@ public class DocumentTabStripTemplateBindingTests
 
             var tabItem = GetTabItem(tabStrip, 0);
             Assert.Same(templates.CloseTemplate, GetPresenter(tabItem, "PART_ClosePresenter").ContentTemplate);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void Standalone_DocumentTabStrip_Uses_Default_Close_Theme_And_Template()
+    {
+        var document = new Document { Id = "doc-1", Title = "Doc 1" };
+        var tabStrip = new DocumentTabStrip
+        {
+            Width = 320,
+            Height = 48,
+            ItemsSource = new AvaloniaList<IDockable> { document }
+        };
+
+        var window = ShowInWindow(tabStrip);
+        try
+        {
+            Assert.True(tabStrip.TryFindResource("DocumentCloseButtonTheme", out var closeThemeResource));
+            var closeButtonTheme = Assert.IsType<ControlTheme>(closeThemeResource);
+            Assert.Same(closeButtonTheme, tabStrip.CloseButtonTheme);
+
+            Assert.True(tabStrip.TryFindResource("DockDefaultDocumentCloseTemplate", out var closeTemplateResource));
+            var closeTemplate = Assert.IsAssignableFrom<IDataTemplate>(closeTemplateResource);
+            Assert.Same(closeTemplate, tabStrip.CloseTemplate);
+
+            var tabItem = GetTabItem(tabStrip, 0);
+            Assert.Same(tabStrip.CloseTemplate, GetPresenter(tabItem, "PART_ClosePresenter").ContentTemplate);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DocumentControl_Hides_TabStrip_When_DockDocumentControlTabStripVisible_Is_False()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            LayoutMode = DocumentLayoutMode.Tabbed,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var document = new Document { Id = "doc-1", Title = "Doc 1", IsModified = false };
+        dock.VisibleDockables!.Add(document);
+        dock.ActiveDockable = document;
+
+        var control = new DocumentControl
+        {
+            DataContext = dock
+        };
+
+        control.Resources["DockDocumentControlTabStripVisible"] = false;
+
+        var window = ShowInWindow(control);
+        try
+        {
+            var tabStrip = control.GetVisualDescendants().OfType<DocumentTabStrip>().FirstOrDefault();
+            Assert.NotNull(tabStrip);
+            Assert.False(tabStrip!.IsVisible);
+
+            var separatorHost = control.GetVisualDescendants()
+                .OfType<Panel>()
+                .FirstOrDefault(candidate => candidate.Name == "PART_DocumentSeperatorHost");
+            Assert.NotNull(separatorHost);
+            Assert.False(separatorHost!.IsVisible);
         }
         finally
         {

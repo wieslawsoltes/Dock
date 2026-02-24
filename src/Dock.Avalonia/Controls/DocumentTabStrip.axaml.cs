@@ -80,6 +80,12 @@ public class DocumentTabStrip : TabStrip
         AvaloniaProperty.Register<DocumentTabStrip, ControlTheme?>(nameof(CreateButtonTheme));
 
     /// <summary>
+    /// Define the <see cref="CloseButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> CloseButtonThemeProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, ControlTheme?>(nameof(CloseButtonTheme));
+
+    /// <summary>
     /// Defines the <see cref="IconTemplate"/> property.
     /// </summary>
     public static readonly StyledProperty<object?> IconTemplateProperty =
@@ -164,6 +170,15 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(CreateButtonThemeProperty);
         set => SetValue(CreateButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the close button theme.
+    /// </summary>
+    public ControlTheme? CloseButtonTheme
+    {
+        get => GetValue(CloseButtonThemeProperty);
+        set => SetValue(CloseButtonThemeProperty, value);
     }
 
     /// <summary>

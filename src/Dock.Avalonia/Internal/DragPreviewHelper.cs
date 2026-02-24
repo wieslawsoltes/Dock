@@ -98,7 +98,7 @@ internal class DragPreviewHelper
         return value > 1.0 ? 1.0 : value;
     }
 
-    public void Show(IDockable dockable, PixelPoint position, PixelPoint offset, Visual? context = null)
+    public void Show(IDockable dockable, PixelPoint position, PixelPoint offset, Visual? context = null, Size? preferredSize = null)
     {
         lock (s_sync)
         {
@@ -113,7 +113,7 @@ internal class DragPreviewHelper
             DragPreviewContext.Dockable = dockable;
             if (DockHelpers.IsManagedWindowHostingEnabled(dockable) && TryGetManagedLayer(dockable, context, out var layer))
             {
-                ShowManaged(layer, dockable, position, offset, showDockablePreview);
+                ShowManaged(layer, dockable, position, offset, showDockablePreview, preferredSize);
                 return;
             }
 
@@ -134,7 +134,9 @@ internal class DragPreviewHelper
             s_control.ShowContent = showDockablePreview;
             if (showDockablePreview)
             {
-                var size = GetPreviewSize(dockable);
+                var size = preferredSize is { } ps && ps.Width > 0 && ps.Height > 0
+                    ? ps
+                    : GetPreviewSize(dockable);
                 s_control.PreviewContentWidth = size.Width;
                 s_control.PreviewContentHeight = size.Height;
             }
@@ -148,6 +150,8 @@ internal class DragPreviewHelper
             s_window.DataContext = dockable;
             s_control.Status = string.Empty;
             s_window.Opacity = ClampOpacity(DockSettings.DragPreviewOpacity);
+            s_window.Width = preferredSize is { } ps1 && ps1.Width > 0 ? ps1.Width : double.NaN;
+            s_window.Height = preferredSize is { } ps2 && ps2.Height > 0 ? ps2.Height : double.NaN;
             s_window.Position = GetPositionWithinWindow(s_window, position, offset);
 
             if (!s_window.IsVisible)
@@ -285,7 +289,7 @@ internal class DragPreviewHelper
         return ReferenceEquals(layer.GetVisualRoot(), contextRoot);
     }
 
-    private static void ShowManaged(ManagedWindowLayer layer, IDockable dockable, PixelPoint position, PixelPoint offset, bool showDockablePreview)
+    private static void ShowManaged(ManagedWindowLayer layer, IDockable dockable, PixelPoint position, PixelPoint offset, bool showDockablePreview, Size? preferredSize)
     {
         if (s_managedControl is null)
         {
@@ -298,7 +302,8 @@ internal class DragPreviewHelper
 
         s_managedLayer = layer;
 
-        var targetSize = showDockablePreview ? GetPreviewSize(dockable) : new Size(double.NaN, double.NaN);
+        var forcedSize = preferredSize is { } ps && ps.Width > 0 && ps.Height > 0 ? ps : (Size?)null;
+        var targetSize = forcedSize ?? (showDockablePreview ? GetPreviewSize(dockable) : new Size(double.NaN, double.NaN));
 
         s_managedControl.DataContext = dockable;
         s_managedControl.Status = string.Empty;
@@ -319,7 +324,7 @@ internal class DragPreviewHelper
         s_managedControl.PreviewContent = BuildManagedPreviewContent(dockable, showDockablePreview);
 
         var localPosition = GetManagedPosition(layer, position, offset);
-        layer.ShowOverlay("DragPreview", s_managedControl, localPosition, null, false);
+        layer.ShowOverlay("DragPreview", s_managedControl, localPosition, forcedSize, false);
         s_managedControl.ApplyTemplate();
         s_managedControl.Measure(Size.Infinity);
         var sizeMeasured = s_managedControl.DesiredSize;
@@ -344,7 +349,7 @@ internal class DragPreviewHelper
             }
         }
 
-        layer.ShowOverlay("DragPreview", s_managedControl, localPosition, sizeMeasured, false);
+        layer.ShowOverlay("DragPreview", s_managedControl, localPosition, forcedSize ?? sizeMeasured, false);
     }
 
     private static void MoveManaged(ManagedWindowLayer layer, PixelPoint position, PixelPoint offset, string status)

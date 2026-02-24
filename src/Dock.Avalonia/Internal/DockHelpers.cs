@@ -182,6 +182,79 @@ internal static class DockHelpers
         return null;
     }
 
+    public static Control? GetControlIncludingExternal(DockControl dockControl, Point point, StyledProperty<bool> property)
+    {
+        var localHit = GetControl(dockControl, point, property);
+        if (localHit is not null)
+        {
+            return localHit;
+        }
+
+        if (dockControl.GetVisualRoot() is not Visual visualRoot)
+        {
+            return null;
+        }
+
+        var screenPoint = dockControl.PointToScreen(point);
+
+        foreach (var externalRoot in visualRoot.GetVisualDescendants().OfType<Control>())
+        {
+            if (!externalRoot.IsSet(DockProperties.ExternalDockControlProperty))
+            {
+                continue;
+            }
+
+            if (!ReferenceEquals(DockProperties.GetExternalDockControl(externalRoot), dockControl))
+            {
+                continue;
+            }
+
+            var externalPoint = externalRoot.PointToClient(screenPoint);
+            var externalHit = GetControl(externalRoot, externalPoint, property);
+            if (externalHit is null)
+            {
+                var bounds = new Rect(externalRoot.Bounds.Size);
+                if (bounds.Contains(externalPoint)
+                    && externalRoot.GetValue(property))
+                {
+                    externalHit = externalRoot;
+                }
+            }
+            if (externalHit is null)
+            {
+                continue;
+            }
+
+            // When searching drop areas, prefer a dock-target hit at the same point so
+            // adorner rendering can activate on external tab strips (tab items/fill target).
+            if (property == DockProperties.IsDropAreaProperty
+                && !externalHit.GetValue(DockProperties.IsDockTargetProperty))
+            {
+                var dockTargetHit = GetControl(externalRoot, externalPoint, DockProperties.IsDockTargetProperty);
+                if (dockTargetHit is null)
+                {
+                    var bounds = new Rect(externalRoot.Bounds.Size);
+                    if (bounds.Contains(externalPoint)
+                        && externalRoot.GetValue(DockProperties.IsDockTargetProperty))
+                    {
+                        dockTargetHit = externalRoot;
+                    }
+                }
+                if (dockTargetHit is { } && dockTargetHit.GetValue(DockProperties.IsDropAreaProperty))
+                {
+                    externalHit = dockTargetHit;
+                }
+            }
+
+            if (ReferenceEquals(DockProperties.GetExternalDockControl(externalHit), dockControl))
+            {
+                return externalHit;
+            }
+        }
+
+        return null;
+    }
+
     private static void Print(Exception ex)
     {
         // Exception logging should always emit to help diagnose hit-test/runtime failures

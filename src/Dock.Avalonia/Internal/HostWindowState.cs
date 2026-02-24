@@ -396,7 +396,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     }
 
                     var dockControlPoint = dockControl.PointToClient(screenPoint);
-                    var dropControl = DockHelpers.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
+                    var dropControl = DockHelpers.GetControlIncludingExternal(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                     if (dropControl is { })
                     {
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);

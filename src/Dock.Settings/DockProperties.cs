@@ -67,6 +67,14 @@ public class DockProperties : AvaloniaObject
         AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, true, BindingMode.TwoWay);
 
     /// <summary>
+    /// Defines the ExternalDockControl attached property.
+    /// When set on controls outside the DockControl visual tree (for example an external DocumentTabStrip),
+    /// it associates them with the owning DockControl for drag/drop hit testing and tab drag initiation.
+    /// </summary>
+    public static readonly AttachedProperty<Control?> ExternalDockControlProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("ExternalDockControl", null, true, BindingMode.TwoWay);
+
+    /// <summary>
     /// Defines the DockGroup attached property.
     /// Specifies the docking group for restriction-based docking operations.
     /// Elements can only dock with other elements of the same or compatible group.
@@ -234,6 +242,26 @@ public class DockProperties : AvaloniaObject
     public static void SetDockAdornerHost(AvaloniaObject control, Control? value)
     {
         control.SetValue(DockAdornerHostProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the ExternalDockControl attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The associated DockControl host reference.</returns>
+    public static Control? GetExternalDockControl(AvaloniaObject control)
+    {
+        return control.GetValue(ExternalDockControlProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the ExternalDockControl attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The owning DockControl.</param>
+    public static void SetExternalDockControl(AvaloniaObject control, Control? value)
+    {
+        control.SetValue(ExternalDockControlProperty, value);
     }
 
     /// <summary>

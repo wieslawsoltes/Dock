@@ -2276,6 +2276,25 @@ references:
   commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.CanCreateItemProperty
   fullName: Dock.Avalonia.Controls.DocumentTabStrip.CanCreateItemProperty
   nameWithType: DocumentTabStrip.CanCreateItemProperty
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonTheme
+  name: CloseButtonTheme
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CloseButtonTheme
+  commentId: P:Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonTheme
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonTheme
+  nameWithType: DocumentTabStrip.CloseButtonTheme
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonTheme*
+  name: CloseButtonTheme
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CloseButtonTheme_
+  commentId: Overload:Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonTheme
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonTheme
+  nameWithType: DocumentTabStrip.CloseButtonTheme
+- uid: Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonThemeProperty
+  name: CloseButtonThemeProperty
+  href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CloseButtonThemeProperty
+  commentId: F:Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonThemeProperty
+  fullName: Dock.Avalonia.Controls.DocumentTabStrip.CloseButtonThemeProperty
+  nameWithType: DocumentTabStrip.CloseButtonThemeProperty
 - uid: Dock.Avalonia.Controls.DocumentTabStrip.CloseTemplate
   name: CloseTemplate
   href: api/Dock.Avalonia.Controls.DocumentTabStrip.html#Dock_Avalonia_Controls_DocumentTabStrip_CloseTemplate

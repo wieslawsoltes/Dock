@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dmc="using:Dock.Model.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
                     x:DataType="dmc:IDocumentDock"
                     x:CompileBindings="True">
   <Design.PreviewWith>
@@ -49,6 +51,57 @@
     </Button>
   </DataTemplate>
 
+  <ControlTheme x:Key="DocumentCloseButtonTheme"
+                TargetType="Button"
+                BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Width" Value="{DynamicResource DockCloseButtonSize}" />
+    <Setter Property="Height" Value="{DynamicResource DockCloseButtonSize}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Style Selector="^:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockTabCloseHoverBackgroundBrush}" />
+    </Style>
+  </ControlTheme>
+
+  <DataTemplate x:Key="DockDefaultDocumentCloseTemplate" x:DataType="core:IDockable">
+    <Button Command="{Binding Owner.Factory.CloseDockable}"
+            CommandParameter="{Binding}"
+            Theme="{Binding $parent[DocumentTabStrip].CloseButtonTheme}">
+      <Button.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
+            <Binding />
+            <Binding Path="CanClose" />
+            <Binding Path="DockCapabilityOverrides.CanClose" />
+            <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanClose" />
+          </MultiBinding>
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+          <MultiBinding Converter="{x:Static converters:DocumentCloseButtonVisibilityConverter.Instance}">
+            <Binding Path="((dmc:IDocumentDock)Owner).CloseButtonShowMode" FallbackValue="Always" />
+            <Binding Path="$parent[DocumentTabStripItem].IsSelected" />
+          </MultiBinding>
+        </MultiBinding>
+      </Button.IsVisible>
+
+      <Path x:Name="PART_ClosePath">
+        <Path.Styles>
+          <Style Selector="Path">
+            <Setter Property="Margin" Value="{DynamicResource DockTabContentMargin}" />
+            <Setter Property="Stretch" Value="Uniform" />
+            <Setter Property="UseLayoutRounding" Value="False" />
+            <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
+            <Setter Property="Fill" Value="{Binding $parent[DocumentTabStripItem].Foreground}" />
+          </Style>
+        </Path.Styles>
+      </Path>
+    </Button>
+  </DataTemplate>
+
   <ControlTheme x:Key="{x:Type DocumentTabStrip}" TargetType="DocumentTabStrip">
 
     <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
@@ -62,6 +115,8 @@
             Value="{DynamicResource DockDocumentTabStripToggleWindowStateOnDoubleTap}" />
     <Setter Property="CreateButtonTheme" Value="{DynamicResource ButtonCreateDocument}" />
     <Setter Property="CreateButtonTemplate" Value="{DynamicResource DockDefaultDocumentCreateButtonTemplate}" />
+    <Setter Property="CloseButtonTheme" Value="{DynamicResource DocumentCloseButtonTheme}" />
+    <Setter Property="CloseTemplate" Value="{DynamicResource DockDefaultDocumentCloseTemplate}" />
     
     <Setter Property="Background" Value="{DynamicResource DockDocumentTabStripBackgroundBrush}" />
     <Setter Property="Focusable" Value="False" />

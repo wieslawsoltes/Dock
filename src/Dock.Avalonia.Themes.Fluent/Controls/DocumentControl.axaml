@@ -9,18 +9,6 @@
     <DocumentControl Width="300" Height="400" />
   </Design.PreviewWith>
 
-  <ControlTheme x:Key="DocumentCloseButtonTheme" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-    <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="Padding" Value="0" />
-    <Setter Property="Margin" Value="0" />
-    <Setter Property="Width" Value="{DynamicResource DockCloseButtonSize}" />
-    <Setter Property="Height" Value="{DynamicResource DockCloseButtonSize}" />
-    <Setter Property="Background" Value="Transparent" />
-    <Style Selector="^:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockTabCloseHoverBackgroundBrush}" />
-    </Style>
-  </ControlTheme>
-
   <ControlTemplate x:Key="DockDocumentControlSingleContentTemplate" TargetType="DocumentControl">
     <DockPanel x:Name="PART_DockPanel"
                DockProperties.IsDropArea="True"
@@ -38,6 +26,7 @@
                         HeaderTemplate="{TemplateBinding HeaderTemplate}"
                         ModifiedTemplate="{TemplateBinding ModifiedTemplate}"
                         CloseTemplate="{TemplateBinding CloseTemplate}"
+                        CloseButtonTheme="{TemplateBinding CloseButtonTheme}"
                         IsActive="{TemplateBinding IsActive}"
                         Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
                         DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
@@ -96,6 +85,7 @@
                         HeaderTemplate="{TemplateBinding HeaderTemplate}"
                         ModifiedTemplate="{TemplateBinding ModifiedTemplate}"
                         CloseTemplate="{TemplateBinding CloseTemplate}"
+                        CloseButtonTheme="{TemplateBinding CloseButtonTheme}"
                         IsActive="{TemplateBinding IsActive}"
                         Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
                         DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
@@ -198,44 +188,7 @@
       </DataTemplate>
     </Setter>
 
-    <Setter Property="CloseTemplate">
-      <DataTemplate DataType="core:IDockable">
-        <Button Command="{Binding Owner.Factory.CloseDockable}"
-                CommandParameter="{Binding}"
-                Theme="{Binding $parent[DocumentControl].CloseButtonTheme}">
-          <Button.IsVisible>
-            <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
-                <Binding />
-                <Binding Path="CanClose" />
-                <Binding Path="DockCapabilityOverrides.CanClose" />
-                <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanClose" />
-              </MultiBinding>
-              <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-                <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
-                <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
-              </MultiBinding>
-              <MultiBinding Converter="{x:Static converters:DocumentCloseButtonVisibilityConverter.Instance}">
-                <Binding Path="((dmc:IDocumentDock)Owner).CloseButtonShowMode" FallbackValue="Always" />
-                <Binding Path="$parent[DocumentTabStripItem].IsSelected" />
-              </MultiBinding>
-            </MultiBinding>
-          </Button.IsVisible>
-
-          <Path x:Name="PART_ClosePath">
-            <Path.Styles>
-              <Style Selector="Path">
-                <Setter Property="Margin" Value="{DynamicResource DockTabContentMargin}" />
-                <Setter Property="Stretch" Value="Uniform" />
-                <Setter Property="UseLayoutRounding" Value="False" />
-                <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
-                <Setter Property="Fill" Value="{Binding $parent[DocumentTabStripItem].Foreground}" />
-              </Style>
-            </Path.Styles>
-          </Path>
-        </Button>
-      </DataTemplate>
-    </Setter>
+    <Setter Property="CloseTemplate" Value="{DynamicResource DockDefaultDocumentCloseTemplate}" />
 
     <Setter Property="Template" Value="{StaticResource DockDocumentControlSingleContentTemplate}" />
  

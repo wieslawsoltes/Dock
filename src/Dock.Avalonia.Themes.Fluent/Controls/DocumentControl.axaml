@@ -19,6 +19,7 @@
                Background="Transparent"
                ZIndex="1">
       <DocumentTabStrip x:Name="PART_TabStrip"
+                        IsVisible="{DynamicResource DockDocumentControlTabStripVisible}"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         CanCreateItem="{Binding CanCreateDocument}"
@@ -38,9 +39,9 @@
           </Style>
         </DocumentTabStrip.Styles>
       </DocumentTabStrip>
-      <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}">
+      <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{Binding #PART_TabStrip.IsVisible}">
         <Panel x:Name="PART_DocumentSeperator"
-               IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+               IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}" />
       </Panel>
       <Border x:Name="PART_Border">
         <Grid>
@@ -78,6 +79,7 @@
                Background="Transparent"
                ZIndex="1">
       <DocumentTabStrip x:Name="PART_TabStrip"
+                        IsVisible="{DynamicResource DockDocumentControlTabStripVisible}"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         CanCreateItem="{Binding CanCreateDocument}"
@@ -97,9 +99,9 @@
           </Style>
         </DocumentTabStrip.Styles>
       </DocumentTabStrip>
-      <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}">
+      <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{Binding #PART_TabStrip.IsVisible}">
         <Panel x:Name="PART_DocumentSeperator"
-               IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+               IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}" />
       </Panel>
       <Border x:Name="PART_Border">
         <Grid>

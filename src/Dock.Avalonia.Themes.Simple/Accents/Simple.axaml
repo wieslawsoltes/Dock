@@ -168,6 +168,7 @@
     <core:DockOperation x:Key="DockDocumentControlIndicatorDockOperation">Fill</core:DockOperation>
     <x:Boolean x:Key="DockDocumentTabStripHideWhenEmpty">True</x:Boolean>
     <x:Boolean x:Key="DockDocumentTabStripToggleWindowStateOnDoubleTap">False</x:Boolean>
+    <x:Boolean x:Key="DockDocumentControlTabStripVisible">True</x:Boolean>
     <x:Boolean x:Key="DockDocumentControlShowDockIndicatorOnly">False</x:Boolean>
     <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">True</x:Boolean>
     <sys:Double x:Key="DockDocumentControlVerticalSpacing">0</sys:Double>

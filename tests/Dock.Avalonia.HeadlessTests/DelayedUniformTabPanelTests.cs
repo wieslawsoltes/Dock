@@ -156,10 +156,10 @@ public class DelayedUniformTabPanelTests
         Layout(panel, 1000, 32);
         AssertTabWidth(panel, 122d);
 
-        await Task.Delay(80);
-        Dispatcher.UIThread.RunJobs();
-        Layout(panel, 1000, 32);
-        AssertTabWidth(panel, 220d);
+        var elapsedSinceClose = await WaitForTabWidthAsync(panel, 220d, TimeSpan.FromMilliseconds(800));
+        Assert.True(
+            elapsedSinceClose >= panel.ExpansionDelay - TimeSpan.FromMilliseconds(20),
+            $"Expansion happened too early. Elapsed={elapsedSinceClose.TotalMilliseconds:F0}ms Delay={panel.ExpansionDelay.TotalMilliseconds:F0}ms");
     }
 
     private static DelayedUniformTabPanel CreatePanel(int count = 3)

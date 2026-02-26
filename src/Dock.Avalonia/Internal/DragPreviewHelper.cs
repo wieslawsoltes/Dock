@@ -177,7 +177,6 @@ internal class DragPreviewHelper
 
     private static void ApplyWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
     {
-        var hadStatus = !string.IsNullOrEmpty(control.Status);
         if (!string.Equals(control.Status, status, StringComparison.Ordinal))
         {
             control.Status = status;
@@ -197,7 +196,7 @@ internal class DragPreviewHelper
             MaintainFrozenWindowSize(window, control);
         }
 
-        if (!s_windowSizeFrozen && !s_windowSizeFreezeScheduled && !hadStatus && !string.IsNullOrEmpty(status))
+        if (!s_windowSizeFrozen && !s_windowSizeFreezeScheduled && !string.IsNullOrEmpty(status))
         {
             s_windowSizeFreezeScheduled = true;
             Dispatcher.UIThread.Post(FreezeWindowSizeIfNeeded, DispatcherPriority.Render);
@@ -265,6 +264,10 @@ internal class DragPreviewHelper
             var bounds = s_window.Bounds;
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
+                // Retry on the next render pass; on some platforms the preview window
+                // may not have a stable measured size on the first callback.
+                s_windowSizeFreezeScheduled = true;
+                Dispatcher.UIThread.Post(FreezeWindowSizeIfNeeded, DispatcherPriority.Render);
                 return;
             }
 

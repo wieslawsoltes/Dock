@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Avalonia;
@@ -130,6 +131,7 @@ internal class DragPreviewHelper
             s_windowMoveFlushScheduled = true;
             var sessionId = s_windowMoveSessionId;
             var postSequence = ++s_windowMovePostSequence;
+            TraceWindowMove($"queue post seq={postSequence} curY={window.Position.Y} targetY={targetPosition.Y} status={status}");
             Dispatcher.UIThread.Post(() => FlushPendingWindowMove(sessionId, postSequence), DispatcherPriority.Render);
         }
     }
@@ -140,6 +142,7 @@ internal class DragPreviewHelper
         {
             if (sessionId != s_windowMoveSessionId || postSequence != s_windowMovePostSequence)
             {
+                TraceWindowMove($"drop stale seq={postSequence} activeSeq={s_windowMovePostSequence} session={sessionId}/{s_windowMoveSessionId}");
                 return;
             }
 
@@ -158,6 +161,7 @@ internal class DragPreviewHelper
                 s_windowMoveFlushScheduled = true;
                 var nextSessionId = s_windowMoveSessionId;
                 var nextPostSequence = ++s_windowMovePostSequence;
+                TraceWindowMove($"repost seq={nextPostSequence} pendingY={s_pendingWindowPosition.Y}");
                 Dispatcher.UIThread.Post(() => FlushPendingWindowMove(nextSessionId, nextPostSequence), DispatcherPriority.Render);
             }
         }
@@ -171,10 +175,19 @@ internal class DragPreviewHelper
             control.Status = status;
         }
 
-        if (window.Position != targetPosition && !IsWithinPositionDeadband(window.Position, targetPosition))
+        var currentPosition = window.Position;
+        var inDeadband = IsWithinPositionDeadband(currentPosition, targetPosition);
+        var willMove = currentPosition != targetPosition && !inDeadband;
+        if (willMove)
         {
             window.Position = targetPosition;
         }
+
+        var appliedPosition = willMove ? targetPosition : currentPosition;
+        TraceWindowMove(
+            $"apply seq={s_windowMovePostSequence} curY={currentPosition.Y} targetY={targetPosition.Y} " +
+            $"appliedY={appliedPosition.Y} dy={targetPosition.Y - currentPosition.Y} " +
+            $"deadband={inDeadband} moved={willMove} scale={window.RenderScaling:F2} status={status}");
 
         if (s_windowSizeFrozen)
         {
@@ -192,6 +205,11 @@ internal class DragPreviewHelper
     {
         var scaling = window.RenderScaling;
         return scaling > 0 ? scaling : 1.0;
+    }
+
+    private static void TraceWindowMove(string message)
+    {
+        Debug.WriteLine($"[Dock DragPreviewY] {message}");
     }
 
     private static void MaintainFrozenWindowSize(DragPreviewWindow window, DragPreviewControl control)

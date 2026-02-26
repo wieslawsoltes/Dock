@@ -1,0 +1,29 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="using:Dock.Model.Core"
+             x:Class="DockExternalTabStripsSample.App"
+             Name="Dock External Tab Strips Sample"
+             RequestedThemeVariant="Light">
+
+  <Application.Resources>
+    <x:Boolean x:Key="DockDocumentControlTabStripVisible">False</x:Boolean>
+    <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">False</x:Boolean>
+  </Application.Resources>
+
+  <Application.DataTemplates>
+    <DataTemplate DataType="core:IDockable" x:DataType="core:IDockable">
+      <Border Background="{DynamicResource DockSurfaceEditorBrush}" Padding="14">
+        <StackPanel Spacing="6">
+          <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="SemiBold" />
+          <TextBlock Text="External tab strips are bound to this dock." Opacity="0.75" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme />
+    <DockFluentTheme />
+  </Application.Styles>
+
+</Application>

@@ -99,6 +99,20 @@ internal class DockControlState : DockManagerState, IDockControlState
             DockCapabilityResolver.ResolveOperationDock(dockable));
     }
 
+    private static Size? GetPreferredPreviewSize(Control dragControl)
+    {
+        if (dragControl is not DocumentTabStripItem)
+        {
+            return null;
+        }
+
+        var bounds = dragControl.Bounds.Size;
+        var margin = dragControl.Margin;
+        var width = Math.Max(0, bounds.Width + margin.Left + margin.Right);
+        var height = Math.Max(0, bounds.Height + margin.Top + margin.Bottom);
+        return new Size(width, height);
+    }
+
     public void StartDrag(Control dragControl, Point startPoint, Point point, DockControl activeDockControl)
     {
         if (!dragControl.GetValue(DockProperties.IsDragEnabledProperty))
@@ -119,7 +133,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         {
             DockHelpers.ShowWindows(targetDockable);
             var sp = activeDockControl.PointToScreen(point);
-            Size? preferredPreviewSize = dragControl is DocumentTabStripItem ? dragControl.Bounds.Size : null;
+            Size? preferredPreviewSize = GetPreferredPreviewSize(dragControl);
             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                 dragControl,
                 activeDockControl,
@@ -566,9 +580,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         {
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
-                            Size? preferredPreviewSize = _context.DragControl is DocumentTabStripItem
-                                ? _context.DragControl.Bounds.Size
-                                : null;
+                            Size? preferredPreviewSize = GetPreferredPreviewSize(_context.DragControl);
 
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);

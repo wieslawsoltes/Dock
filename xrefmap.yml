@@ -732,6 +732,38 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Contract.IDragOffsetCalculator.CalculateOffset
   nameWithType: IDragOffsetCalculator.CalculateOffset
+- uid: Dock.Avalonia.Contract.IExternalDockSurface
+  name: IExternalDockSurface
+  href: api/Dock.Avalonia.Contract.IExternalDockSurface.html
+  commentId: T:Dock.Avalonia.Contract.IExternalDockSurface
+  fullName: Dock.Avalonia.Contract.IExternalDockSurface
+  nameWithType: IExternalDockSurface
+- uid: Dock.Avalonia.Contract.IExternalDockSurface.DockControl
+  name: DockControl
+  href: api/Dock.Avalonia.Contract.IExternalDockSurface.html#Dock_Avalonia_Contract_IExternalDockSurface_DockControl
+  commentId: P:Dock.Avalonia.Contract.IExternalDockSurface.DockControl
+  fullName: Dock.Avalonia.Contract.IExternalDockSurface.DockControl
+  nameWithType: IExternalDockSurface.DockControl
+- uid: Dock.Avalonia.Contract.IExternalDockSurface.DockControl*
+  name: DockControl
+  href: api/Dock.Avalonia.Contract.IExternalDockSurface.html#Dock_Avalonia_Contract_IExternalDockSurface_DockControl_
+  commentId: Overload:Dock.Avalonia.Contract.IExternalDockSurface.DockControl
+  isSpec: "True"
+  fullName: Dock.Avalonia.Contract.IExternalDockSurface.DockControl
+  nameWithType: IExternalDockSurface.DockControl
+- uid: Dock.Avalonia.Contract.IExternalDockSurface.SurfaceControl
+  name: SurfaceControl
+  href: api/Dock.Avalonia.Contract.IExternalDockSurface.html#Dock_Avalonia_Contract_IExternalDockSurface_SurfaceControl
+  commentId: P:Dock.Avalonia.Contract.IExternalDockSurface.SurfaceControl
+  fullName: Dock.Avalonia.Contract.IExternalDockSurface.SurfaceControl
+  nameWithType: IExternalDockSurface.SurfaceControl
+- uid: Dock.Avalonia.Contract.IExternalDockSurface.SurfaceControl*
+  name: SurfaceControl
+  href: api/Dock.Avalonia.Contract.IExternalDockSurface.html#Dock_Avalonia_Contract_IExternalDockSurface_SurfaceControl_
+  commentId: Overload:Dock.Avalonia.Contract.IExternalDockSurface.SurfaceControl
+  isSpec: "True"
+  fullName: Dock.Avalonia.Contract.IExternalDockSurface.SurfaceControl
+  nameWithType: IExternalDockSurface.SurfaceControl
 - uid: Dock.Avalonia.Controls
   name: Dock.Avalonia.Controls
   href: api/Dock.Avalonia.Controls.html
@@ -1433,6 +1465,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DockControl.OnPropertyChanged
   nameWithType: DockControl.OnPropertyChanged
+- uid: Dock.Avalonia.Controls.DockControl.RegisterExternalDockSurface(Dock.Avalonia.Contract.IExternalDockSurface)
+  name: RegisterExternalDockSurface(IExternalDockSurface)
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_RegisterExternalDockSurface_Dock_Avalonia_Contract_IExternalDockSurface_
+  commentId: M:Dock.Avalonia.Controls.DockControl.RegisterExternalDockSurface(Dock.Avalonia.Contract.IExternalDockSurface)
+  fullName: Dock.Avalonia.Controls.DockControl.RegisterExternalDockSurface(Dock.Avalonia.Contract.IExternalDockSurface)
+  nameWithType: DockControl.RegisterExternalDockSurface(IExternalDockSurface)
+- uid: Dock.Avalonia.Controls.DockControl.RegisterExternalDockSurface*
+  name: RegisterExternalDockSurface
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_RegisterExternalDockSurface_
+  commentId: Overload:Dock.Avalonia.Controls.DockControl.RegisterExternalDockSurface
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockControl.RegisterExternalDockSurface
+  nameWithType: DockControl.RegisterExternalDockSurface
 - uid: Dock.Avalonia.Controls.DockControl.ShowSelector(Dock.Avalonia.Selectors.DockSelectorMode)
   name: ShowSelector(DockSelectorMode)
   href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_ShowSelector_Dock_Avalonia_Selectors_DockSelectorMode_
@@ -1446,6 +1491,19 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.DockControl.ShowSelector
   nameWithType: DockControl.ShowSelector
+- uid: Dock.Avalonia.Controls.DockControl.UnregisterExternalDockSurface(Dock.Avalonia.Contract.IExternalDockSurface)
+  name: UnregisterExternalDockSurface(IExternalDockSurface)
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_UnregisterExternalDockSurface_Dock_Avalonia_Contract_IExternalDockSurface_
+  commentId: M:Dock.Avalonia.Controls.DockControl.UnregisterExternalDockSurface(Dock.Avalonia.Contract.IExternalDockSurface)
+  fullName: Dock.Avalonia.Controls.DockControl.UnregisterExternalDockSurface(Dock.Avalonia.Contract.IExternalDockSurface)
+  nameWithType: DockControl.UnregisterExternalDockSurface(IExternalDockSurface)
+- uid: Dock.Avalonia.Controls.DockControl.UnregisterExternalDockSurface*
+  name: UnregisterExternalDockSurface
+  href: api/Dock.Avalonia.Controls.DockControl.html#Dock_Avalonia_Controls_DockControl_UnregisterExternalDockSurface_
+  commentId: Overload:Dock.Avalonia.Controls.DockControl.UnregisterExternalDockSurface
+  isSpec: "True"
+  fullName: Dock.Avalonia.Controls.DockControl.UnregisterExternalDockSurface
+  nameWithType: DockControl.UnregisterExternalDockSurface
 - uid: Dock.Avalonia.Controls.DockDockControl
   name: DockDockControl
   href: api/Dock.Avalonia.Controls.DockDockControl.html

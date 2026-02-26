@@ -284,6 +284,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Contract.IExternalDockSurface.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Contract.IExternalDockSurface.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Contract.IExternalDockSurface",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Contract.IExternalDockSurface.yml\" sourcestartlinenumber=\"1\">Represents an external surface that participates in DockControl drag and drop.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Contract.yml",
       "output": {
         ".html": {

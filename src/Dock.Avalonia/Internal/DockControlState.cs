@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -713,6 +714,12 @@ internal class DockControlState : DockManagerState, IDockControlState
                     }
 
                     LogDragState($"Preview state set to '{preview}'.");
+                    var previewTarget = screenPoint + _context.DragOffset;
+                    Debug.WriteLine(
+                        $"[Dock DragSource] local=({point.X:F2},{point.Y:F2}) " +
+                        $"screen=({screenPoint.X},{screenPoint.Y}) " +
+                        $"offset=({_context.DragOffset.X},{_context.DragOffset.Y}) " +
+                        $"target=({previewTarget.X},{previewTarget.Y}) preview={preview}");
                     _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
                 }
                 break;

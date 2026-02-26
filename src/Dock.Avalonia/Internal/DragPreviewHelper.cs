@@ -110,6 +110,28 @@ internal class DragPreviewHelper
 
     private static void QueueWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
     {
+        var currentPosition = window.Position;
+        var currentStatus = control.Status;
+
+        if (s_windowMoveFlushScheduled && s_hasPendingWindowMove)
+        {
+            if (s_pendingWindowPosition == targetPosition
+                && string.Equals(s_pendingStatus, status, StringComparison.Ordinal))
+            {
+                TraceWindowMove(
+                    $"skip queue (same pending) curY={currentPosition.Y} pendingY={s_pendingWindowPosition.Y} targetY={targetPosition.Y} status={status}");
+                return;
+            }
+        }
+
+        if (!s_windowMoveFlushScheduled
+            && currentPosition == targetPosition
+            && string.Equals(currentStatus, status, StringComparison.Ordinal))
+        {
+            TraceWindowMove($"skip queue (same current) curY={currentPosition.Y} targetY={targetPosition.Y} status={status}");
+            return;
+        }
+
         if (!s_useWindowMoveCoalescing)
         {
             ApplyWindowMove(window, control, targetPosition, status);

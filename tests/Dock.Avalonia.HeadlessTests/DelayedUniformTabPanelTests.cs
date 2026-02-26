@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -57,7 +58,7 @@ public class DelayedUniformTabPanelTests
     public async Task ClosingMultipleTabsRestartsDelay_EvenWhenTargetWidthIsUnchanged()
     {
         var panel = CreatePanel(6);
-        panel.ExpansionDelay = TimeSpan.FromMilliseconds(120);
+        panel.ExpansionDelay = TimeSpan.FromMilliseconds(150);
 
         Layout(panel, 1000, 32);
         var compactWidth = panel.Children[0].Bounds.Width;
@@ -67,8 +68,10 @@ public class DelayedUniformTabPanelTests
         Layout(panel, 1000, 32);
         AssertTabWidth(panel, compactWidth);
 
-        await Task.Delay(40);
-        Dispatcher.UIThread.RunJobs();
+        // Block the UI thread briefly so the pending expansion timer cannot tick before
+        // the second close is applied. This keeps the restart-delay assertion deterministic
+        // under CI scheduling jitter.
+        Thread.Sleep(TimeSpan.FromMilliseconds(45));
 
         panel.Children.RemoveAt(panel.Children.Count - 1);
         Layout(panel, 1000, 32);

@@ -1,7 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Linq;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -266,11 +265,6 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
                 if (ShouldShowManagedDragPreview(_context.DragDockable))
                 {
-                    var previewTarget = screenPoint + _context.DragOffset;
-                    Debug.WriteLine(
-                        $"[Dock DragSource Managed] screen=({screenPoint.X},{screenPoint.Y}) " +
-                        $"offset=({_context.DragOffset.X},{_context.DragOffset.Y}) " +
-                        $"target=({previewTarget.X},{previewTarget.Y}) preview={preview}");
                     _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
                 }
 

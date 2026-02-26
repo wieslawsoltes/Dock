@@ -108,13 +108,6 @@ internal class DragPreviewHelper
         return value > 1.0 ? 1.0 : value;
     }
 
-    private static bool IsWithinPositionDeadband(PixelPoint current, PixelPoint target)
-    {
-        const int deadbandPixels = 1;
-        return Math.Abs(current.X - target.X) <= deadbandPixels
-            && Math.Abs(current.Y - target.Y) <= deadbandPixels;
-    }
-
     private static void QueueWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
     {
         if (!s_useWindowMoveCoalescing)
@@ -176,8 +169,8 @@ internal class DragPreviewHelper
         }
 
         var currentPosition = window.Position;
-        var inDeadband = IsWithinPositionDeadband(currentPosition, targetPosition);
-        var willMove = currentPosition != targetPosition && !inDeadband;
+        var inDeadband = false;
+        var willMove = currentPosition != targetPosition;
         if (willMove)
         {
             window.Position = targetPosition;

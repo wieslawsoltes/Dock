@@ -21,10 +21,10 @@ internal class DragPreviewHelper
     private static DragPreviewControl? s_managedControl;
     private static ManagedWindowLayer? s_managedLayer;
     private static readonly bool s_useWindowMoveCoalescing = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-    private static DispatcherTimer? s_windowMoveTimer;
     private static PixelPoint s_pendingWindowPosition;
     private static string s_pendingStatus = string.Empty;
     private static bool s_hasPendingWindowMove;
+    private static bool s_windowMoveFlushScheduled;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -106,39 +106,6 @@ internal class DragPreviewHelper
         return value > 1.0 ? 1.0 : value;
     }
 
-    private static void EnsureWindowMoveTimer()
-    {
-        if (s_windowMoveTimer is not null)
-        {
-            return;
-        }
-
-        s_windowMoveTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(16)
-        };
-        s_windowMoveTimer.Tick += (_, _) =>
-        {
-            lock (s_sync)
-            {
-                if (!s_hasPendingWindowMove || s_window is null || s_control is null)
-                {
-                    s_windowMoveTimer?.Stop();
-                    s_hasPendingWindowMove = false;
-                    return;
-                }
-
-                ApplyWindowMove(s_window, s_control, s_pendingWindowPosition, s_pendingStatus);
-                s_hasPendingWindowMove = false;
-
-                if (!s_hasPendingWindowMove)
-                {
-                    s_windowMoveTimer?.Stop();
-                }
-            }
-        };
-    }
-
     private static void QueueWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
     {
         if (!s_useWindowMoveCoalescing)
@@ -147,14 +114,35 @@ internal class DragPreviewHelper
             return;
         }
 
-        EnsureWindowMoveTimer();
         s_pendingWindowPosition = targetPosition;
         s_pendingStatus = status;
         s_hasPendingWindowMove = true;
-
-        if (s_windowMoveTimer is { IsEnabled: false })
+        if (!s_windowMoveFlushScheduled)
         {
-            s_windowMoveTimer.Start();
+            s_windowMoveFlushScheduled = true;
+            Dispatcher.UIThread.Post(FlushPendingWindowMove, DispatcherPriority.Render);
+        }
+    }
+
+    private static void FlushPendingWindowMove()
+    {
+        lock (s_sync)
+        {
+            s_windowMoveFlushScheduled = false;
+            if (!s_hasPendingWindowMove || s_window is null || s_control is null)
+            {
+                s_hasPendingWindowMove = false;
+                return;
+            }
+
+            ApplyWindowMove(s_window, s_control, s_pendingWindowPosition, s_pendingStatus);
+            s_hasPendingWindowMove = false;
+
+            if (s_hasPendingWindowMove && !s_windowMoveFlushScheduled)
+            {
+                s_windowMoveFlushScheduled = true;
+                Dispatcher.UIThread.Post(FlushPendingWindowMove, DispatcherPriority.Render);
+            }
         }
     }
 
@@ -225,6 +213,7 @@ internal class DragPreviewHelper
             s_pendingWindowPosition = s_window.Position;
             s_pendingStatus = s_control.Status;
             s_hasPendingWindowMove = false;
+            s_windowMoveFlushScheduled = false;
 
             if (!s_window.IsVisible)
             {
@@ -278,8 +267,8 @@ internal class DragPreviewHelper
                 return;
             }
 
-            s_windowMoveTimer?.Stop();
             s_hasPendingWindowMove = false;
+            s_windowMoveFlushScheduled = false;
             s_window.Close();
             s_window = null;
             s_control = null;

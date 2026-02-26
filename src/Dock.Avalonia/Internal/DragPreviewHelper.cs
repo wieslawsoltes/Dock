@@ -25,19 +25,13 @@ internal class DragPreviewHelper
     private static string s_pendingStatus = string.Empty;
     private static bool s_hasPendingWindowMove;
     private static bool s_windowMoveFlushScheduled;
+    private static bool s_windowSizeFrozen;
+    private static bool s_windowSizeFreezeScheduled;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
-        var screen = window.Screens.ScreenFromPoint(position);
-        if (screen is { })
-        {
-            var target = position + offset;
-            if (screen.WorkingArea.Contains(target))
-            {
-                return target;
-            }
-        }
-        return position;
+        _ = window;
+        return position + offset;
     }
 
     private static Size GetPreviewSize(IDockable dockable)
@@ -148,6 +142,7 @@ internal class DragPreviewHelper
 
     private static void ApplyWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
     {
+        var hadStatus = !string.IsNullOrEmpty(control.Status);
         if (!string.Equals(control.Status, status, StringComparison.Ordinal))
         {
             control.Status = status;
@@ -156,6 +151,35 @@ internal class DragPreviewHelper
         if (window.Position != targetPosition)
         {
             window.Position = targetPosition;
+        }
+
+        if (!s_windowSizeFrozen && !s_windowSizeFreezeScheduled && !hadStatus && !string.IsNullOrEmpty(status))
+        {
+            s_windowSizeFreezeScheduled = true;
+            Dispatcher.UIThread.Post(FreezeWindowSizeIfNeeded, DispatcherPriority.Render);
+        }
+    }
+
+    private static void FreezeWindowSizeIfNeeded()
+    {
+        lock (s_sync)
+        {
+            s_windowSizeFreezeScheduled = false;
+            if (s_windowSizeFrozen || s_window is null || !s_window.IsVisible)
+            {
+                return;
+            }
+
+            var bounds = s_window.Bounds;
+            if (bounds.Width <= 0 || bounds.Height <= 0)
+            {
+                return;
+            }
+
+            s_window.SizeToContent = SizeToContent.Manual;
+            s_window.Width = bounds.Width;
+            s_window.Height = bounds.Height;
+            s_windowSizeFrozen = true;
         }
     }
 
@@ -214,6 +238,8 @@ internal class DragPreviewHelper
             s_pendingStatus = s_control.Status;
             s_hasPendingWindowMove = false;
             s_windowMoveFlushScheduled = false;
+            s_windowSizeFrozen = false;
+            s_windowSizeFreezeScheduled = false;
 
             if (!s_window.IsVisible)
             {
@@ -269,6 +295,8 @@ internal class DragPreviewHelper
 
             s_hasPendingWindowMove = false;
             s_windowMoveFlushScheduled = false;
+            s_windowSizeFrozen = false;
+            s_windowSizeFreezeScheduled = false;
             s_window.Close();
             s_window = null;
             s_control = null;

@@ -341,6 +341,7 @@ internal class DragPreviewHelper
             s_window.DataContext = dockable;
             s_control.Status = string.Empty;
             s_window.Opacity = ClampOpacity(DockSettings.DragPreviewOpacity);
+            s_window.SizeToContent = SizeToContent.WidthAndHeight;
             s_window.Width = preferredSize is { } ps1 && ps1.Width > 0 ? ps1.Width : double.NaN;
             s_window.Height = preferredSize is { } ps2 && ps2.Height > 0 ? ps2.Height : double.NaN;
             s_window.Position = GetPositionWithinWindow(s_window, position, offset);
@@ -357,6 +358,18 @@ internal class DragPreviewHelper
             s_frozenContentWidthPixels = double.NaN;
             s_frozenContentHeightPixels = double.NaN;
             s_lastFrozenWindowScaling = 1.0;
+
+            // Pre-measure and lock the initial window size before Show() so platforms
+            // like Win32 don't briefly auto-size and then resize again on first updates.
+            s_control.ApplyTemplate();
+            s_control.Measure(Size.Infinity);
+            var initialSize = s_control.DesiredSize;
+            if (initialSize.Width > 0 && initialSize.Height > 0)
+            {
+                s_window.SizeToContent = SizeToContent.Manual;
+                s_window.Width = initialSize.Width;
+                s_window.Height = initialSize.Height;
+            }
 
             if (!s_window.IsVisible)
             {

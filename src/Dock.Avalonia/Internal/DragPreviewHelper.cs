@@ -1,6 +1,9 @@
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -17,6 +20,11 @@ internal class DragPreviewHelper
     private static bool s_managedTemplatesInitialized;
     private static DragPreviewControl? s_managedControl;
     private static ManagedWindowLayer? s_managedLayer;
+    private static readonly bool s_useWindowMoveCoalescing = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+    private static DispatcherTimer? s_windowMoveTimer;
+    private static PixelPoint s_pendingWindowPosition;
+    private static string s_pendingStatus = string.Empty;
+    private static bool s_hasPendingWindowMove;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -98,7 +106,72 @@ internal class DragPreviewHelper
         return value > 1.0 ? 1.0 : value;
     }
 
-    public void Show(IDockable dockable, PixelPoint position, PixelPoint offset, Visual? context = null)
+    private static void EnsureWindowMoveTimer()
+    {
+        if (s_windowMoveTimer is not null)
+        {
+            return;
+        }
+
+        s_windowMoveTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(16)
+        };
+        s_windowMoveTimer.Tick += (_, _) =>
+        {
+            lock (s_sync)
+            {
+                if (!s_hasPendingWindowMove || s_window is null || s_control is null)
+                {
+                    s_windowMoveTimer?.Stop();
+                    s_hasPendingWindowMove = false;
+                    return;
+                }
+
+                ApplyWindowMove(s_window, s_control, s_pendingWindowPosition, s_pendingStatus);
+                s_hasPendingWindowMove = false;
+
+                if (!s_hasPendingWindowMove)
+                {
+                    s_windowMoveTimer?.Stop();
+                }
+            }
+        };
+    }
+
+    private static void QueueWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
+    {
+        if (!s_useWindowMoveCoalescing)
+        {
+            ApplyWindowMove(window, control, targetPosition, status);
+            return;
+        }
+
+        EnsureWindowMoveTimer();
+        s_pendingWindowPosition = targetPosition;
+        s_pendingStatus = status;
+        s_hasPendingWindowMove = true;
+
+        if (s_windowMoveTimer is { IsEnabled: false })
+        {
+            s_windowMoveTimer.Start();
+        }
+    }
+
+    private static void ApplyWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
+    {
+        if (!string.Equals(control.Status, status, StringComparison.Ordinal))
+        {
+            control.Status = status;
+        }
+
+        if (window.Position != targetPosition)
+        {
+            window.Position = targetPosition;
+        }
+    }
+
+    public void Show(IDockable dockable, PixelPoint position, PixelPoint offset, Visual? context = null, Size? preferredSize = null)
     {
         lock (s_sync)
         {
@@ -149,6 +222,9 @@ internal class DragPreviewHelper
             s_control.Status = string.Empty;
             s_window.Opacity = ClampOpacity(DockSettings.DragPreviewOpacity);
             s_window.Position = GetPositionWithinWindow(s_window, position, offset);
+            s_pendingWindowPosition = s_window.Position;
+            s_pendingStatus = s_control.Status;
+            s_hasPendingWindowMove = false;
 
             if (!s_window.IsVisible)
             {
@@ -172,8 +248,8 @@ internal class DragPreviewHelper
                 return;
             }
 
-            s_control.Status = status;
-            s_window.Position = GetPositionWithinWindow(s_window, position, offset);
+            var targetPosition = GetPositionWithinWindow(s_window, position, offset);
+            QueueWindowMove(s_window, s_control, targetPosition, status);
         }
     }
 
@@ -202,6 +278,8 @@ internal class DragPreviewHelper
                 return;
             }
 
+            s_windowMoveTimer?.Stop();
+            s_hasPendingWindowMove = false;
             s_window.Close();
             s_window = null;
             s_control = null;
@@ -354,9 +432,15 @@ internal class DragPreviewHelper
             return;
         }
 
-        s_managedControl.Status = status;
-        s_managedControl.Measure(Size.Infinity);
         var localPosition = GetManagedPosition(layer, position, offset);
+        if (!string.Equals(s_managedControl.Status, status, StringComparison.Ordinal))
+        {
+            s_managedControl.Status = status;
+            s_managedControl.Measure(Size.Infinity);
+            layer.ShowOverlay("DragPreview", s_managedControl, localPosition, s_managedControl.DesiredSize, false);
+            return;
+        }
+
         layer.ShowOverlay("DragPreview", s_managedControl, localPosition, s_managedControl.DesiredSize, false);
     }
 

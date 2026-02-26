@@ -27,6 +27,11 @@ internal class DragPreviewHelper
     private static bool s_windowMoveFlushScheduled;
     private static bool s_windowSizeFrozen;
     private static bool s_windowSizeFreezeScheduled;
+    private static double s_frozenWindowWidthPixels;
+    private static double s_frozenWindowHeightPixels;
+    private static double s_frozenContentWidthPixels = double.NaN;
+    private static double s_frozenContentHeightPixels = double.NaN;
+    private static double s_lastFrozenWindowScaling = 1.0;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -153,10 +158,63 @@ internal class DragPreviewHelper
             window.Position = targetPosition;
         }
 
+        if (s_windowSizeFrozen)
+        {
+            MaintainFrozenWindowSize(window, control);
+        }
+
         if (!s_windowSizeFrozen && !s_windowSizeFreezeScheduled && !hadStatus && !string.IsNullOrEmpty(status))
         {
             s_windowSizeFreezeScheduled = true;
             Dispatcher.UIThread.Post(FreezeWindowSizeIfNeeded, DispatcherPriority.Render);
+        }
+    }
+
+    private static double GetWindowScaling(Window window)
+    {
+        var scaling = window.RenderScaling;
+        return scaling > 0 ? scaling : 1.0;
+    }
+
+    private static void MaintainFrozenWindowSize(DragPreviewWindow window, DragPreviewControl control)
+    {
+        var scaling = GetWindowScaling(window);
+        if (Math.Abs(scaling - s_lastFrozenWindowScaling) < 0.0001)
+        {
+            return;
+        }
+
+        s_lastFrozenWindowScaling = scaling;
+
+        var width = s_frozenWindowWidthPixels / scaling;
+        var height = s_frozenWindowHeightPixels / scaling;
+
+        if (Math.Abs(window.Width - width) > 0.01)
+        {
+            window.Width = width;
+        }
+
+        if (Math.Abs(window.Height - height) > 0.01)
+        {
+            window.Height = height;
+        }
+
+        if (!double.IsNaN(s_frozenContentWidthPixels))
+        {
+            var contentWidth = s_frozenContentWidthPixels / scaling;
+            if (Math.Abs(control.PreviewContentWidth - contentWidth) > 0.01)
+            {
+                control.PreviewContentWidth = contentWidth;
+            }
+        }
+
+        if (!double.IsNaN(s_frozenContentHeightPixels))
+        {
+            var contentHeight = s_frozenContentHeightPixels / scaling;
+            if (Math.Abs(control.PreviewContentHeight - contentHeight) > 0.01)
+            {
+                control.PreviewContentHeight = contentHeight;
+            }
         }
     }
 
@@ -175,6 +233,17 @@ internal class DragPreviewHelper
             {
                 return;
             }
+
+            var scaling = GetWindowScaling(s_window);
+            s_lastFrozenWindowScaling = scaling;
+            s_frozenWindowWidthPixels = bounds.Width * scaling;
+            s_frozenWindowHeightPixels = bounds.Height * scaling;
+            s_frozenContentWidthPixels = !double.IsNaN(s_control?.PreviewContentWidth ?? double.NaN)
+                ? (s_control!.PreviewContentWidth * scaling)
+                : double.NaN;
+            s_frozenContentHeightPixels = !double.IsNaN(s_control?.PreviewContentHeight ?? double.NaN)
+                ? (s_control!.PreviewContentHeight * scaling)
+                : double.NaN;
 
             s_window.SizeToContent = SizeToContent.Manual;
             s_window.Width = bounds.Width;
@@ -240,6 +309,11 @@ internal class DragPreviewHelper
             s_windowMoveFlushScheduled = false;
             s_windowSizeFrozen = false;
             s_windowSizeFreezeScheduled = false;
+            s_frozenWindowWidthPixels = 0;
+            s_frozenWindowHeightPixels = 0;
+            s_frozenContentWidthPixels = double.NaN;
+            s_frozenContentHeightPixels = double.NaN;
+            s_lastFrozenWindowScaling = 1.0;
 
             if (!s_window.IsVisible)
             {
@@ -297,6 +371,11 @@ internal class DragPreviewHelper
             s_windowMoveFlushScheduled = false;
             s_windowSizeFrozen = false;
             s_windowSizeFreezeScheduled = false;
+            s_frozenWindowWidthPixels = 0;
+            s_frozenWindowHeightPixels = 0;
+            s_frozenContentWidthPixels = double.NaN;
+            s_frozenContentHeightPixels = double.NaN;
+            s_lastFrozenWindowScaling = 1.0;
             s_window.Close();
             s_window = null;
             s_control = null;

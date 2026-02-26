@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Contract;
 using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -119,6 +120,25 @@ internal static class DockHelpers
         }
     }
 
+    public static DockControl? ResolveDockControl(Control control)
+    {
+        if (control.FindAncestorOfType<DockControl>() is { } dockControl)
+        {
+            return dockControl;
+        }
+
+        for (var current = (Visual?)control; current is not null; current = current.GetVisualParent())
+        {
+            if (current is IExternalDockSurface externalDockSurface
+                && externalDockSurface.DockControl is { } ownerDockControl)
+            {
+                return ownerDockControl;
+            }
+        }
+
+        return null;
+    }
+
     public static Control? GetControl(Visual? input, Point point, StyledProperty<bool> property)
     {
         List<Visual>? rawElements = null;
@@ -197,14 +217,15 @@ internal static class DockHelpers
 
         var screenPoint = dockControl.PointToScreen(point);
 
-        foreach (var externalRoot in visualRoot.GetVisualDescendants().OfType<Control>())
+        foreach (var externalRoot in dockControl.EnumerateExternalDockSurfaceControls())
         {
-            if (!externalRoot.IsSet(DockProperties.ExternalDockControlProperty))
+            if (externalRoot.GetVisualRoot() is not { } externalRootVisual
+                || !ReferenceEquals(externalRootVisual, visualRoot))
             {
                 continue;
             }
 
-            if (!ReferenceEquals(DockProperties.GetExternalDockControl(externalRoot), dockControl))
+            if (!ReferenceEquals(ResolveDockControl(externalRoot), dockControl))
             {
                 continue;
             }
@@ -246,7 +267,7 @@ internal static class DockHelpers
                 }
             }
 
-            if (ReferenceEquals(DockProperties.GetExternalDockControl(externalHit), dockControl))
+            if (ReferenceEquals(ResolveDockControl(externalHit), dockControl))
             {
                 return externalHit;
             }

@@ -56,6 +56,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private IFactory? _subscribedFactory;
     private IFactory? _managedLayerFactory;
     private Window? _attachedWindow;
+    private readonly List<WeakReference<IExternalDockSurface>> _externalDockSurfaces = new();
 
     /// <summary>
     /// Defines the <see cref="Layout"/> property.
@@ -250,6 +251,175 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         AddHandler(PointerWheelChangedEvent, WheelChangedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(KeyDownEvent, KeyDownHandler, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, KeyUpHandler, RoutingStrategies.Tunnel);
+    }
+
+    /// <summary>
+    /// Registers an external dock surface with this <see cref="DockControl"/>.
+    /// Registered surfaces participate in drag start resolution and drop hit testing.
+    /// </summary>
+    /// <param name="externalDockSurface">The external surface to register.</param>
+    public void RegisterExternalDockSurface(IExternalDockSurface externalDockSurface)
+    {
+        if (externalDockSurface is null)
+        {
+            throw new ArgumentNullException(nameof(externalDockSurface));
+        }
+
+        if (externalDockSurface.DockControl is { } previousOwner
+            && !ReferenceEquals(previousOwner, this))
+        {
+            previousOwner.UnregisterExternalDockSurface(externalDockSurface);
+        }
+
+        PruneExternalDockSurfaceReferences();
+
+        if (!ContainsExternalDockSurface(externalDockSurface))
+        {
+            _externalDockSurfaces.Add(new WeakReference<IExternalDockSurface>(externalDockSurface));
+        }
+
+        externalDockSurface.DockControl = this;
+    }
+
+    /// <summary>
+    /// Unregisters an external dock surface from this <see cref="DockControl"/>.
+    /// </summary>
+    /// <param name="externalDockSurface">The external surface to unregister.</param>
+    /// <returns><c>true</c> if a registration was removed; otherwise <c>false</c>.</returns>
+    public bool UnregisterExternalDockSurface(IExternalDockSurface externalDockSurface)
+    {
+        if (externalDockSurface is null)
+        {
+            throw new ArgumentNullException(nameof(externalDockSurface));
+        }
+
+        var removed = RemoveExternalDockSurfaceReferences(externalDockSurface);
+
+        if (ReferenceEquals(externalDockSurface.DockControl, this))
+        {
+            externalDockSurface.DockControl = null;
+        }
+
+        return removed;
+    }
+
+    internal IEnumerable<Control> EnumerateExternalDockSurfaceControls()
+    {
+        PruneExternalDockSurfaceReferences();
+
+        foreach (var reference in _externalDockSurfaces)
+        {
+            if (!reference.TryGetTarget(out var externalDockSurface))
+            {
+                continue;
+            }
+
+            if (!ReferenceEquals(externalDockSurface.DockControl, this))
+            {
+                continue;
+            }
+
+            yield return externalDockSurface.SurfaceControl;
+        }
+    }
+
+    private bool ContainsExternalDockSurface(IExternalDockSurface externalDockSurface)
+    {
+        foreach (var reference in _externalDockSurfaces)
+        {
+            if (reference.TryGetTarget(out var candidate)
+                && ReferenceEquals(candidate, externalDockSurface))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool RemoveExternalDockSurfaceReferences(IExternalDockSurface externalDockSurface)
+    {
+        var removed = false;
+
+        for (var i = _externalDockSurfaces.Count - 1; i >= 0; i--)
+        {
+            var reference = _externalDockSurfaces[i];
+            if (!reference.TryGetTarget(out var candidate))
+            {
+                _externalDockSurfaces.RemoveAt(i);
+                continue;
+            }
+
+            if (!ReferenceEquals(candidate, externalDockSurface))
+            {
+                continue;
+            }
+
+            _externalDockSurfaces.RemoveAt(i);
+            removed = true;
+        }
+
+        return removed;
+    }
+
+    private void PruneExternalDockSurfaceReferences()
+    {
+        for (var i = _externalDockSurfaces.Count - 1; i >= 0; i--)
+        {
+            var reference = _externalDockSurfaces[i];
+            if (!reference.TryGetTarget(out var externalDockSurface))
+            {
+                _externalDockSurfaces.RemoveAt(i);
+                continue;
+            }
+
+            if (!ReferenceEquals(externalDockSurface.DockControl, this))
+            {
+                _externalDockSurfaces.RemoveAt(i);
+            }
+        }
+    }
+
+    private void DetachExternalDockSurfaceOwners()
+    {
+        foreach (var reference in _externalDockSurfaces)
+        {
+            if (!reference.TryGetTarget(out var externalDockSurface))
+            {
+                continue;
+            }
+
+            if (ReferenceEquals(externalDockSurface.DockControl, this))
+            {
+                externalDockSurface.DockControl = null;
+            }
+        }
+    }
+
+    private void RestoreExternalDockSurfaceOwners()
+    {
+        for (var i = _externalDockSurfaces.Count - 1; i >= 0; i--)
+        {
+            var reference = _externalDockSurfaces[i];
+            if (!reference.TryGetTarget(out var externalDockSurface))
+            {
+                _externalDockSurfaces.RemoveAt(i);
+                continue;
+            }
+
+            if (ReferenceEquals(externalDockSurface.DockControl, this))
+            {
+                continue;
+            }
+
+            if (externalDockSurface.DockControl is null)
+            {
+                externalDockSurface.DockControl = this;
+                continue;
+            }
+
+            _externalDockSurfaces.RemoveAt(i);
+        }
     }
 
     /// <inheritdoc />
@@ -989,6 +1159,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             }
         }
 
+        RestoreExternalDockSurfaceOwners();
+
         AttachMainWindowClosingHandler();
     }
 
@@ -1005,6 +1177,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         {
             DeInitialize(layout);
         }
+
+        DetachExternalDockSurfaceOwners();
 
         NotifyRootWindowClosed(layout);
     }

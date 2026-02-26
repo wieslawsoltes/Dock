@@ -13,7 +13,6 @@ using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Core;
-using Dock.Settings;
 using AvaloniaOrientation = Avalonia.Layout.Orientation;
 
 namespace Dock.Avalonia.Controls;
@@ -48,9 +47,7 @@ public class DocumentTabStripItem : TabStripItem
 
     private void StartDockDrag(PointerEventArgs startArgs, PointerEventArgs e)
     {
-        var dockControl =
-            this.FindAncestorOfType<DockControl>()
-            ?? DockProperties.GetExternalDockControl(this) as DockControl;
+        var dockControl = DockHelpers.ResolveDockControl(this);
         if (dockControl?.Layout?.Factory?.DockControls is { } dockControls
             && dockControl.DockControlState is DockControlState state)
         {

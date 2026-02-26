@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Avalonia;
@@ -381,10 +382,35 @@ internal class DragPreviewHelper
                 }
             }
 
+            Debug.WriteLine(
+                $"[Dock PreviewSize Window] " +
+                $"preferredDip={(preferredSize is { } p ? $"({p.Width:F2},{p.Height:F2})" : "null")} " +
+                $"appliedWindowDip=({s_window.Width:F2},{s_window.Height:F2}) " +
+                $"sizeToContent={s_window.SizeToContent} " +
+                $"previewContentDip=({s_control.PreviewContentWidth:F2},{s_control.PreviewContentHeight:F2})");
+
             if (!s_window.IsVisible)
             {
                 s_window.Show();
             }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (s_window is null || s_control is null)
+                {
+                    return;
+                }
+
+                var content = s_window.Content as Control;
+                var wb = s_window.Bounds;
+                var cb = content?.Bounds ?? default;
+                Debug.WriteLine(
+                    $"[Dock PreviewSize AfterShow] " +
+                    $"windowBoundsDip=({wb.Width:F2},{wb.Height:F2}) " +
+                    $"contentBoundsDip=({cb.Width:F2},{cb.Height:F2}) " +
+                    $"previewContentDip=({s_control.PreviewContentWidth:F2},{s_control.PreviewContentHeight:F2}) " +
+                    $"scale={s_window.RenderScaling:F2}");
+            }, DispatcherPriority.Render);
         }
     }
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -110,6 +111,14 @@ internal class DockControlState : DockManagerState, IDockControlState
         var margin = dragControl.Margin;
         var width = Math.Max(0, bounds.Width + margin.Left + margin.Right);
         var height = Math.Max(0, bounds.Height + margin.Top + margin.Bottom);
+        var scaling = (dragControl.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1.0;
+        Debug.WriteLine(
+            $"[Dock PreviewSize Capture] " +
+            $"tabBoundsDip=({bounds.Width:F2},{bounds.Height:F2}) " +
+            $"marginDip=({margin.Left:F2},{margin.Top:F2},{margin.Right:F2},{margin.Bottom:F2}) " +
+            $"preferredDip=({width:F2},{height:F2}) " +
+            $"preferredPx~=({width * scaling:F2},{height * scaling:F2}) " +
+            $"scale={scaling:F2}");
         return new Size(width, height);
     }
 

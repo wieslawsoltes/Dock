@@ -32,6 +32,8 @@ internal class DragPreviewHelper
     private static double s_frozenContentWidthPixels = double.NaN;
     private static double s_frozenContentHeightPixels = double.NaN;
     private static double s_lastFrozenWindowScaling = 1.0;
+    private static int s_windowMoveSessionId;
+    private static long s_windowMovePostSequence;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -105,6 +107,13 @@ internal class DragPreviewHelper
         return value > 1.0 ? 1.0 : value;
     }
 
+    private static bool IsWithinPositionDeadband(PixelPoint current, PixelPoint target)
+    {
+        const int deadbandPixels = 1;
+        return Math.Abs(current.X - target.X) <= deadbandPixels
+            && Math.Abs(current.Y - target.Y) <= deadbandPixels;
+    }
+
     private static void QueueWindowMove(DragPreviewWindow window, DragPreviewControl control, PixelPoint targetPosition, string status)
     {
         if (!s_useWindowMoveCoalescing)
@@ -119,14 +128,21 @@ internal class DragPreviewHelper
         if (!s_windowMoveFlushScheduled)
         {
             s_windowMoveFlushScheduled = true;
-            Dispatcher.UIThread.Post(FlushPendingWindowMove, DispatcherPriority.Render);
+            var sessionId = s_windowMoveSessionId;
+            var postSequence = ++s_windowMovePostSequence;
+            Dispatcher.UIThread.Post(() => FlushPendingWindowMove(sessionId, postSequence), DispatcherPriority.Render);
         }
     }
 
-    private static void FlushPendingWindowMove()
+    private static void FlushPendingWindowMove(int sessionId, long postSequence)
     {
         lock (s_sync)
         {
+            if (sessionId != s_windowMoveSessionId || postSequence != s_windowMovePostSequence)
+            {
+                return;
+            }
+
             s_windowMoveFlushScheduled = false;
             if (!s_hasPendingWindowMove || s_window is null || s_control is null)
             {
@@ -140,7 +156,9 @@ internal class DragPreviewHelper
             if (s_hasPendingWindowMove && !s_windowMoveFlushScheduled)
             {
                 s_windowMoveFlushScheduled = true;
-                Dispatcher.UIThread.Post(FlushPendingWindowMove, DispatcherPriority.Render);
+                var nextSessionId = s_windowMoveSessionId;
+                var nextPostSequence = ++s_windowMovePostSequence;
+                Dispatcher.UIThread.Post(() => FlushPendingWindowMove(nextSessionId, nextPostSequence), DispatcherPriority.Render);
             }
         }
     }
@@ -153,7 +171,7 @@ internal class DragPreviewHelper
             control.Status = status;
         }
 
-        if (window.Position != targetPosition)
+        if (window.Position != targetPosition && !IsWithinPositionDeadband(window.Position, targetPosition))
         {
             window.Position = targetPosition;
         }
@@ -307,6 +325,8 @@ internal class DragPreviewHelper
             s_pendingStatus = s_control.Status;
             s_hasPendingWindowMove = false;
             s_windowMoveFlushScheduled = false;
+            s_windowMoveSessionId++;
+            s_windowMovePostSequence = 0;
             s_windowSizeFrozen = false;
             s_windowSizeFreezeScheduled = false;
             s_frozenWindowWidthPixels = 0;
@@ -369,6 +389,8 @@ internal class DragPreviewHelper
 
             s_hasPendingWindowMove = false;
             s_windowMoveFlushScheduled = false;
+            s_windowMoveSessionId++;
+            s_windowMovePostSequence = 0;
             s_windowSizeFrozen = false;
             s_windowSizeFreezeScheduled = false;
             s_frozenWindowWidthPixels = 0;

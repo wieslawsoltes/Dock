@@ -119,11 +119,12 @@ internal class DockControlState : DockManagerState, IDockControlState
         {
             DockHelpers.ShowWindows(targetDockable);
             var sp = activeDockControl.PointToScreen(point);
+            Size? preferredPreviewSize = dragControl is DocumentTabStripItem ? dragControl.Bounds.Size : null;
             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                 dragControl,
                 activeDockControl,
                 _context.DragStartPoint);
-            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, activeDockControl);
+            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, activeDockControl, preferredPreviewSize);
             _context.DoDragDrop = true;
         }
     }
@@ -565,11 +566,14 @@ internal class DockControlState : DockManagerState, IDockControlState
                         {
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
+                            Size? preferredPreviewSize = _context.DragControl is DocumentTabStripItem
+                                ? _context.DragControl.Bounds.Size
+                                : null;
 
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, inputActiveDockControl);
+                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, inputActiveDockControl, preferredPreviewSize);
                             LogDragState($"Drag threshold reached for dockable '{targetDockable.Title}'. Showing preview.");
                         }
                         _context.DoDragDrop = true;
@@ -607,7 +611,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         var dockControlPoint = inputDockControl.PointToClient(screenPoint);
                         LogDragState($"Testing dock control '{inputDockControl.GetType().Name}' (Bounds={inputDockControl.Bounds}) at client point {dockControlPoint} (screen {screenPoint}).");
 
-                        dropControl = DockHelpers.GetControl(inputDockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
+                        dropControl = DockHelpers.GetControlIncludingExternal(inputDockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                         if (dropControl is { })
                         {
                             targetPoint = dockControlPoint;
@@ -623,7 +627,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                     if (dropControl is null)
                     {
-                        dropControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDropAreaProperty);
+                        dropControl = DockHelpers.GetControlIncludingExternal(inputActiveDockControl, point, DockProperties.IsDropAreaProperty);
                         if (dropControl is { })
                         {
                             targetPoint = point;

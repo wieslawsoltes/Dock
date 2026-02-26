@@ -14,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Reactive;
 using Avalonia.Styling;
+using Dock.Avalonia.Contract;
 using Dock.Avalonia.Automation.Peers;
 
 namespace Dock.Avalonia.Controls;
@@ -22,7 +23,7 @@ namespace Dock.Avalonia.Controls;
 /// Document TabStrip custom control.
 /// </summary>
 [PseudoClasses(":create", ":active")]
-public class DocumentTabStrip : TabStrip
+public class DocumentTabStrip : TabStrip, IExternalDockSurface
 {
     private HostWindow? _attachedWindow;
     private Control? _grip;
@@ -34,6 +35,10 @@ public class DocumentTabStrip : TabStrip
     private IDisposable? _scrollViewerWheelSubscription;
     private IDisposable? _doubleTappedSubscription;
     private WindowDragHelper? _windowDragHelper;
+
+    DockControl? IExternalDockSurface.DockControl { get; set; }
+
+    Control IExternalDockSurface.SurfaceControl => this;
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.

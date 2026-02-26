@@ -389,6 +389,7 @@
           </Border>
           <Border x:Name="PART_TabSeparatorRight"
                   IsHitTestVisible="False"
+                  UseLayoutRounding="True"
                   Width="1"
                   Margin="0,7,0,7"
                   HorizontalAlignment="Right"

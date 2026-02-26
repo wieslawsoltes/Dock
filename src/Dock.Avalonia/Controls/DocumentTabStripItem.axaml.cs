@@ -47,10 +47,11 @@ public class DocumentTabStripItem : TabStripItem
 
     private void StartDockDrag(PointerEventArgs startArgs, PointerEventArgs e)
     {
-        var dockControl = this.FindAncestorOfType<DockControl>();
+        var dockControl = DockHelpers.ResolveDockControl(this);
         if (dockControl?.Layout?.Factory?.DockControls is { } dockControls
             && dockControl.DockControlState is DockControlState state)
         {
+            e.Pointer.Capture(dockControl);
             var startPosition = startArgs.GetPosition(dockControl);
             var position = e.GetPosition(dockControl);
             var action = ToDragAction(e);

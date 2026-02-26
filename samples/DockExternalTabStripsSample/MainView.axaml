@@ -1,0 +1,146 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dock="using:Dock.Avalonia.Controls"
+             xmlns:core="using:Dock.Model.Core"
+             xmlns:dmc="using:Dock.Model.Controls"
+             xmlns:local="using:DockExternalTabStripsSample"
+             mc:Ignorable="d"
+             x:Class="DockExternalTabStripsSample.MainView"
+             x:DataType="local:MainViewModel"
+             d:DesignWidth="1500"
+             d:DesignHeight="920">
+
+  <UserControl.Resources>
+    <DataTemplate x:Key="StockDocumentIconTemplate"
+                  DataType="core:IDockable"
+                  x:DataType="core:IDockable">
+      <Panel />
+    </DataTemplate>
+
+    <DataTemplate x:Key="StockDocumentHeaderTemplate"
+                  DataType="core:IDockable"
+                  x:DataType="core:IDockable">
+      <TextBlock Text="{Binding Title}"
+                 VerticalAlignment="Center"
+                 Padding="{DynamicResource DockHeaderContentPadding}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="StockDocumentModifiedTemplate"
+                  DataType="core:IDockable"
+                  x:DataType="core:IDockable">
+      <TextBlock VerticalAlignment="Center"
+                 Text="*"
+                 Margin="{DynamicResource DockModifiedIndicatorMargin}" />
+    </DataTemplate>
+  </UserControl.Resources>
+
+  <UserControl.DataContext>
+    <local:MainViewModel />
+  </UserControl.DataContext>
+
+  <Grid RowDefinitions="Auto,*"
+        ColumnDefinitions="*,*"
+        ColumnSpacing="10"
+        Margin="8">
+
+    <StackPanel Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Spacing="2"
+                Margin="2,0,2,6">
+      <TextBlock Text="External Document Tab Surfaces"
+                 FontWeight="SemiBold"
+                 FontSize="16" />
+      <TextBlock Text="Two DockControls, each with one registered external DocumentTabStrip surface."
+                 Opacity="0.75" />
+    </StackPanel>
+
+    <Border Grid.Row="1"
+            Grid.Column="0"
+            CornerRadius="6"
+            BorderBrush="{DynamicResource DockSeparatorBrush}"
+            BorderThickness="1"
+            Padding="8">
+      <Grid RowDefinitions="Auto,*"
+            RowSpacing="4">
+
+        <Border x:Name="LeftSurfaceHost"
+                CornerRadius="4"
+                Padding="2"
+                Background="{DynamicResource DockSurfaceHeaderBrush}"
+                BorderBrush="{DynamicResource DockSeparatorBrush}"
+                BorderThickness="1">
+          <dock:DocumentTabStrip x:Name="LeftTabStrip"
+                                 x:DataType="dmc:IDocumentDock"
+                                 DataContext="{Binding LeftWorkspace.Documents}"
+                                 ItemsSource="{Binding VisibleDockables}"
+                                 SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                                 CanCreateItem="{Binding CanCreateDocument}"
+                                 HeaderTemplate="{StaticResource StockDocumentHeaderTemplate}"
+                                 IconTemplate="{StaticResource StockDocumentIconTemplate}"
+                                 ModifiedTemplate="{StaticResource StockDocumentModifiedTemplate}"
+                                 DockProperties.IsDropArea="True"
+                                 DockProperties.IsDockTarget="True"
+                                 DockProperties.DockAdornerHost="{Binding #LeftSurfaceHost}" />
+        </Border>
+
+        <Border Grid.Row="1"
+                CornerRadius="4"
+                BorderBrush="{DynamicResource DockSeparatorBrush}"
+                BorderThickness="1"
+                ClipToBounds="True">
+          <dock:DockControl x:Name="LeftDockControl"
+                            Factory="{Binding LeftWorkspace.Factory}"
+                            Layout="{Binding LeftWorkspace.Layout}"
+                            InitializeFactory="True"
+                            InitializeLayout="False" />
+        </Border>
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1"
+            Grid.Column="1"
+            CornerRadius="6"
+            BorderBrush="{DynamicResource DockSeparatorBrush}"
+            BorderThickness="1"
+            Padding="8">
+      <Grid RowDefinitions="Auto,*"
+            RowSpacing="4">
+
+        <Border x:Name="RightSurfaceHost"
+                CornerRadius="4"
+                Padding="2"
+                Background="{DynamicResource DockSurfaceHeaderBrush}"
+                BorderBrush="{DynamicResource DockSeparatorBrush}"
+                BorderThickness="1">
+          <dock:DocumentTabStrip x:Name="RightTabStrip"
+                                 x:DataType="dmc:IDocumentDock"
+                                 DataContext="{Binding RightWorkspace.Documents}"
+                                 ItemsSource="{Binding VisibleDockables}"
+                                 SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                                 CanCreateItem="{Binding CanCreateDocument}"
+                                 HeaderTemplate="{StaticResource StockDocumentHeaderTemplate}"
+                                 IconTemplate="{StaticResource StockDocumentIconTemplate}"
+                                 ModifiedTemplate="{StaticResource StockDocumentModifiedTemplate}"
+                                 DockProperties.IsDropArea="True"
+                                 DockProperties.IsDockTarget="True"
+                                 DockProperties.DockAdornerHost="{Binding #RightSurfaceHost}" />
+        </Border>
+
+        <Border Grid.Row="1"
+                CornerRadius="4"
+                BorderBrush="{DynamicResource DockSeparatorBrush}"
+                BorderThickness="1"
+                ClipToBounds="True">
+          <dock:DockControl x:Name="RightDockControl"
+                            Factory="{Binding RightWorkspace.Factory}"
+                            Layout="{Binding RightWorkspace.Layout}"
+                            InitializeFactory="True"
+                            InitializeLayout="False" />
+        </Border>
+      </Grid>
+    </Border>
+
+  </Grid>
+</UserControl>

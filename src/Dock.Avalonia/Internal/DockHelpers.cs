@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Contract;
 using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -119,6 +120,25 @@ internal static class DockHelpers
         }
     }
 
+    public static DockControl? ResolveDockControl(Control control)
+    {
+        if (control.FindAncestorOfType<DockControl>() is { } dockControl)
+        {
+            return dockControl;
+        }
+
+        for (var current = (Visual?)control; current is not null; current = current.GetVisualParent())
+        {
+            if (current is IExternalDockSurface externalDockSurface
+                && externalDockSurface.DockControl is { } ownerDockControl)
+            {
+                return ownerDockControl;
+            }
+        }
+
+        return null;
+    }
+
     public static Control? GetControl(Visual? input, Point point, StyledProperty<bool> property)
     {
         List<Visual>? rawElements = null;
@@ -179,6 +199,80 @@ internal static class DockHelpers
         }
 
         LogDropSearch("No control satisfied drop area requirement.");
+        return null;
+    }
+
+    public static Control? GetControlIncludingExternal(DockControl dockControl, Point point, StyledProperty<bool> property)
+    {
+        var localHit = GetControl(dockControl, point, property);
+        if (localHit is not null)
+        {
+            return localHit;
+        }
+
+        if (dockControl.GetVisualRoot() is not Visual visualRoot)
+        {
+            return null;
+        }
+
+        var screenPoint = dockControl.PointToScreen(point);
+
+        foreach (var externalRoot in dockControl.EnumerateExternalDockSurfaceControls())
+        {
+            if (externalRoot.GetVisualRoot() is not { } externalRootVisual
+                || !ReferenceEquals(externalRootVisual, visualRoot))
+            {
+                continue;
+            }
+
+            if (!ReferenceEquals(ResolveDockControl(externalRoot), dockControl))
+            {
+                continue;
+            }
+
+            var externalPoint = externalRoot.PointToClient(screenPoint);
+            var externalHit = GetControl(externalRoot, externalPoint, property);
+            if (externalHit is null)
+            {
+                var bounds = new Rect(externalRoot.Bounds.Size);
+                if (bounds.Contains(externalPoint)
+                    && externalRoot.GetValue(property))
+                {
+                    externalHit = externalRoot;
+                }
+            }
+            if (externalHit is null)
+            {
+                continue;
+            }
+
+            // When searching drop areas, prefer a dock-target hit at the same point so
+            // adorner rendering can activate on external tab strips (tab items/fill target).
+            if (property == DockProperties.IsDropAreaProperty
+                && !externalHit.GetValue(DockProperties.IsDockTargetProperty))
+            {
+                var dockTargetHit = GetControl(externalRoot, externalPoint, DockProperties.IsDockTargetProperty);
+                if (dockTargetHit is null)
+                {
+                    var bounds = new Rect(externalRoot.Bounds.Size);
+                    if (bounds.Contains(externalPoint)
+                        && externalRoot.GetValue(DockProperties.IsDockTargetProperty))
+                    {
+                        dockTargetHit = externalRoot;
+                    }
+                }
+                if (dockTargetHit is { } && dockTargetHit.GetValue(DockProperties.IsDropAreaProperty))
+                {
+                    externalHit = dockTargetHit;
+                }
+            }
+
+            if (ReferenceEquals(ResolveDockControl(externalHit), dockControl))
+            {
+                return externalHit;
+            }
+        }
+
         return null;
     }
 

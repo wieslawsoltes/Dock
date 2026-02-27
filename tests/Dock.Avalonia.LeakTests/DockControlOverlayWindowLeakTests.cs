@@ -4,9 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Headless;
 using Avalonia.Input;
-using Avalonia.Input.Raw;
 using Avalonia.Themes.Fluent;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
@@ -54,7 +52,7 @@ public class DockControlOverlayWindowLeakTests
                 var startPoint = new Point(tabItem!.Bounds.Width / 2, tabItem.Bounds.Height / 2);
                 var outsideInItems = new Point(tabStrip!.Bounds.Width + 100, tabStrip.Bounds.Height + 100);
 
-                BeginDockDrag(window, tabItem, tabStrip, startPoint, outsideInItems);
+                BeginDockDrag(tabItem, tabStrip, startPoint, outsideInItems);
                 DrainDispatcher();
 
                 var dragStarted = dockControl.IsDraggingDock || dockControl.IsOpen;
@@ -64,7 +62,7 @@ public class DockControlOverlayWindowLeakTests
                 var previewRefs = previewWindows.Select(window => new WeakReference(window)).ToArray();
 
                 var dockPoint = new Point(dockControl.Bounds.Width / 2, dockControl.Bounds.Height / 2);
-                EndDockDrag(window, dockControl, dockPoint);
+                EndDockDrag(dockControl, dockPoint);
                 DrainDispatcher();
 
                 var remainingPreviewWindows = FindOpenWindows<DragPreviewWindow>();
@@ -145,21 +143,20 @@ public class DockControlOverlayWindowLeakTests
                 var startPoint = new Point(tabItem!.Bounds.Width / 2, tabItem.Bounds.Height / 2);
                 var outsideInItems = new Point(tabStrip!.Bounds.Width + 100, tabStrip.Bounds.Height + 100);
 
-                BeginDockDrag(window, tabItem, tabStrip, startPoint, outsideInItems);
+                BeginDockDrag(tabItem, tabStrip, startPoint, outsideInItems);
                 DrainDispatcher();
 
                 var dragStarted = dockControl.IsDraggingDock || dockControl.IsOpen;
                 Assert.True(dragStarted, "Dock drag did not start.");
 
                 var dockPoint = new Point(dockControl.Bounds.Width / 2, dockControl.Bounds.Height / 2);
-                var dockPointInTop = dockControl.TranslatePoint(dockPoint, window) ?? dockPoint;
-                window.MouseMove(dockPointInTop, RawInputModifiers.LeftMouseButton);
+                RaisePointerMoved(dockControl, dockPoint, leftPressed: true);
                 DrainDispatcher();
 
                 var adornerWindows = FindOpenWindows<DockAdornerWindow>();
                 var adornerRefs = adornerWindows.Select(window => new WeakReference(window)).ToArray();
 
-                window.MouseUp(dockPointInTop, MouseButton.Left, RawInputModifiers.None);
+                RaisePointerReleased(dockControl, dockPoint, MouseButton.Left);
                 DrainDispatcher();
 
                 var remainingAdornerWindows = FindOpenWindows<DockAdornerWindow>();
@@ -242,7 +239,7 @@ public class DockControlOverlayWindowLeakTests
                 var startPoint = new Point(tabItem!.Bounds.Width / 2, tabItem.Bounds.Height / 2);
                 var outsideInItems = new Point(tabStrip!.Bounds.Width + 100, tabStrip.Bounds.Height + 100);
 
-                BeginDockDrag(window, tabItem, tabStrip, startPoint, outsideInItems);
+                BeginDockDrag(tabItem, tabStrip, startPoint, outsideInItems);
                 DrainDispatcher();
 
                 var dragStarted = dockControl.IsDraggingDock || dockControl.IsOpen;
@@ -255,7 +252,7 @@ public class DockControlOverlayWindowLeakTests
                 Assert.NotNull(previewControl);
 
                 var dockPoint = new Point(dockControl.Bounds.Width / 2, dockControl.Bounds.Height / 2);
-                EndDockDrag(window, dockControl, dockPoint);
+                EndDockDrag(dockControl, dockPoint);
                 DrainDispatcher();
 
                 var previewCleared = managedLayer is null
@@ -347,19 +344,21 @@ public class DockControlOverlayWindowLeakTests
                ?? throw new InvalidOperationException("DocumentTabStripItem was not generated.");
     }
 
-    private static void BeginDockDrag(TopLevel topLevel, Control source, Control boundsHost, Point startPoint, Point outsidePointInHost)
+    private static void BeginDockDrag(Control source, Control boundsHost, Point startPoint, Point outsidePointInHost)
     {
-        var startInTop = source.TranslatePoint(startPoint, topLevel) ?? startPoint;
-        var outsideInTop = boundsHost.TranslatePoint(outsidePointInHost, topLevel) ?? outsidePointInHost;
-        topLevel.MouseDown(startInTop, MouseButton.Left, RawInputModifiers.None);
-        topLevel.MouseMove(outsideInTop, RawInputModifiers.LeftMouseButton);
+        var outsideInSource = boundsHost.TranslatePoint(outsidePointInHost, source)
+                             ?? new Point(
+                                 startPoint.X + boundsHost.Bounds.Width + 100,
+                                 startPoint.Y + boundsHost.Bounds.Height + 100);
+
+        RaisePointerPressed(source, startPoint, MouseButton.Left);
+        RaisePointerMoved(source, outsideInSource, leftPressed: true);
     }
 
-    private static void EndDockDrag(TopLevel topLevel, Control dockControl, Point dockPoint)
+    private static void EndDockDrag(Control dockControl, Point dockPoint)
     {
-        var dockPointInTop = dockControl.TranslatePoint(dockPoint, topLevel) ?? dockPoint;
-        topLevel.MouseMove(dockPointInTop, RawInputModifiers.LeftMouseButton);
-        topLevel.MouseUp(dockPointInTop, MouseButton.Left, RawInputModifiers.None);
+        RaisePointerMoved(dockControl, dockPoint, leftPressed: true);
+        RaisePointerReleased(dockControl, dockPoint, MouseButton.Left);
     }
 
     private sealed record DragPreviewWindowLeakResult(

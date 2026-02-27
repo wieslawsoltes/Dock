@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -99,6 +100,36 @@ internal class DockControlState : DockManagerState, IDockControlState
             DockCapabilityResolver.ResolveOperationDock(dockable));
     }
 
+    private static Size? GetPreferredPreviewSize(Control dragControl)
+    {
+        if (dragControl is not DocumentTabStripItem)
+        {
+            return null;
+        }
+
+        var bounds = dragControl.Bounds.Size;
+        var margin = dragControl.Margin;
+        var width = Math.Max(0, bounds.Width + margin.Left + margin.Right);
+        var height = Math.Max(0, bounds.Height + margin.Top + margin.Bottom);
+        var scaling = (dragControl.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1.0;
+        var desired = dragControl.DesiredSize;
+        var boundsPxW = bounds.Width * scaling;
+        var boundsPxH = bounds.Height * scaling;
+        Debug.WriteLine(
+            $"[Dock PreviewSize Capture] " +
+            $"tabBoundsRectDip=({dragControl.Bounds.X:F2},{dragControl.Bounds.Y:F2},{dragControl.Bounds.Width:F2},{dragControl.Bounds.Height:F2}) " +
+            $"tabBoundsDip=({bounds.Width:F2},{bounds.Height:F2}) " +
+            $"tabDesiredDip=({desired.Width:F2},{desired.Height:F2}) " +
+            $"marginDip=({margin.Left:F2},{margin.Top:F2},{margin.Right:F2},{margin.Bottom:F2}) " +
+            $"preferredDip=({width:F2},{height:F2}) " +
+            $"tabBoundsPxExact=({boundsPxW:F2},{boundsPxH:F2}) " +
+            $"tabBoundsPxRound=({Math.Round(boundsPxW):F0},{Math.Round(boundsPxH):F0}) " +
+            $"tabBoundsPxCeil=({Math.Ceiling(boundsPxW):F0},{Math.Ceiling(boundsPxH):F0}) " +
+            $"preferredPx~=({width * scaling:F2},{height * scaling:F2}) " +
+            $"scale={scaling:F2}");
+        return new Size(width, height);
+    }
+
     public void StartDrag(Control dragControl, Point startPoint, Point point, DockControl activeDockControl)
     {
         if (!dragControl.GetValue(DockProperties.IsDragEnabledProperty))
@@ -119,7 +150,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         {
             DockHelpers.ShowWindows(targetDockable);
             var sp = activeDockControl.PointToScreen(point);
-            Size? preferredPreviewSize = dragControl is DocumentTabStripItem ? dragControl.Bounds.Size : null;
+            Size? preferredPreviewSize = GetPreferredPreviewSize(dragControl);
             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                 dragControl,
                 activeDockControl,
@@ -566,9 +597,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         {
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
-                            Size? preferredPreviewSize = _context.DragControl is DocumentTabStripItem
-                                ? _context.DragControl.Bounds.Size
-                                : null;
+                            Size? preferredPreviewSize = GetPreferredPreviewSize(_context.DragControl);
 
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);

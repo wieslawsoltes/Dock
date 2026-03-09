@@ -19,7 +19,6 @@
                Background="Transparent"
                ZIndex="1">
       <DocumentTabStrip x:Name="PART_TabStrip"
-                        IsVisible="{DynamicResource DockDocumentControlTabStripVisible}"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         CanCreateItem="{Binding CanCreateDocument}"
@@ -79,7 +78,6 @@
                Background="Transparent"
                ZIndex="1">
       <DocumentTabStrip x:Name="PART_TabStrip"
-                        IsVisible="{DynamicResource DockDocumentControlTabStripVisible}"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         CanCreateItem="{Binding CanCreateDocument}"
@@ -210,6 +208,10 @@
       <Setter Property="DockPanel.Dock" Value="Right" />
       <Setter Property="Width" Value="{DynamicResource DockDocumentTabStripSeparatorSize}" />
       <Setter Property="Height" Value="NaN" />
+    </Style>
+
+    <Style Selector="^/template/ DocumentTabStrip#PART_TabStrip">
+      <Setter Property="IsVisible" Value="{DynamicResource DockDocumentControlTabStripVisible}" />
     </Style>
 
     <Style Selector="^/template/ Panel#PART_DocumentSeperator">

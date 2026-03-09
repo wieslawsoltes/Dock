@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Enum DockCommandBarMergingScope | Dock for Avalonia </title>
+      <title>Enum WindowDragDockScope | Dock for Avalonia </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Enum DockCommandBarMergingScope | Dock for Avalonia ">
+      <meta name="title" content="Enum WindowDragDockScope | Dock for Avalonia ">
       
-      <meta name="description" content="Defines which dockable contributes command bars to a host window.">
+      <meta name="description" content="Controls which docking targets are considered during window move-drag operations.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Settings_DockCommandBarMergingScope.md&amp;value=---%0Auid%3A%20Dock.Settings.DockCommandBarMergingScope%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Settings_WindowDragDockScope.md&amp;value=---%0Auid%3A%20Dock.Settings.WindowDragDockScope%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -80,13 +80,13 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Dock.Settings.DockCommandBarMergingScope">
+        <article data-uid="Dock.Settings.WindowDragDockScope">
 
 
 
 
-  <h1 id="Dock_Settings_DockCommandBarMergingScope" data-uid="Dock.Settings.DockCommandBarMergingScope" class="text-break">
-Enum DockCommandBarMergingScope  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  <h1 id="Dock_Settings_WindowDragDockScope" data-uid="Dock.Settings.WindowDragDockScope" class="text-break">
+Enum WindowDragDockScope  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L275"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -94,12 +94,12 @@ Enum DockCommandBarMergingScope  <a class="header-action link-secondary" title="
   <dl><dt>Assembly</dt><dd>Dock.Settings.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Defines which dockable contributes command bars to a host window.</p>
+  <div class="markdown summary"><p>Controls which docking targets are considered during window move-drag operations.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum DockCommandBarMergingScope</code></pre>
+    <pre><code class="lang-csharp hljs">public enum WindowDragDockScope</code></pre>
   </div>
 
 
@@ -113,13 +113,13 @@ Enum DockCommandBarMergingScope  <a class="header-action link-secondary" title="
   <h2 id="fields">Fields
 </h2>
   <dl class="parameters">
-    <dt id="Dock_Settings_DockCommandBarMergingScope_ActiveDockable"><code>ActiveDockable = 1</code></dt>
+    <dt id="Dock_Settings_WindowDragDockScope_FullWindow"><code>FullWindow = 0</code></dt>
   
-  <dd><p>Merge command bars from the active dockable (documents and tools).</p>
+  <dd><p>Consider all window docking targets, including the main dock area.</p>
 </dd>
-    <dt id="Dock_Settings_DockCommandBarMergingScope_ActiveDocument"><code>ActiveDocument = 0</code></dt>
+    <dt id="Dock_Settings_WindowDragDockScope_WindowChrome"><code>WindowChrome = 1</code></dt>
   
-  <dd><p>Merge command bars from the active document only.</p>
+  <dd><p>Consider only chrome-like targets such as external tab strips and titlebars.</p>
 </dd>
   </dl>
 
@@ -128,7 +128,7 @@ Enum DockCommandBarMergingScope  <a class="header-action link-secondary" title="
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L259" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Settings/DockSettings.cs/#L275" class="edit-link">Edit this page</a>
         </div>
 
 

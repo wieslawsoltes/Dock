@@ -7690,6 +7690,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Settings.WindowDragDockScope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Settings.WindowDragDockScope.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Settings.WindowDragDockScope",
+      "Summary": "<p sourcefile=\"api/Dock.Settings.WindowDragDockScope.yml\" sourcestartlinenumber=\"1\">Controls which docking targets are considered during window move-drag operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Settings.yml",
       "output": {
         ".html": {

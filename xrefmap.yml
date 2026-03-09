@@ -52560,6 +52560,12 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettings.DocumentSelectorKeyGesture
   nameWithType: DockSettings.DocumentSelectorKeyGesture
+- uid: Dock.Settings.DockSettings.DocumentWindowDragScope
+  name: DocumentWindowDragScope
+  href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_DocumentWindowDragScope
+  commentId: F:Dock.Settings.DockSettings.DocumentWindowDragScope
+  fullName: Dock.Settings.DockSettings.DocumentWindowDragScope
+  nameWithType: DockSettings.DocumentWindowDragScope
 - uid: Dock.Settings.DockSettings.DragPreviewOpacity
   name: DragPreviewOpacity
   href: api/Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_DragPreviewOpacity
@@ -53025,3 +53031,21 @@ references:
   isSpec: "True"
   fullName: Dock.Settings.DockSettingsOptions.WindowMagnetDistance
   nameWithType: DockSettingsOptions.WindowMagnetDistance
+- uid: Dock.Settings.WindowDragDockScope
+  name: WindowDragDockScope
+  href: api/Dock.Settings.WindowDragDockScope.html
+  commentId: T:Dock.Settings.WindowDragDockScope
+  fullName: Dock.Settings.WindowDragDockScope
+  nameWithType: WindowDragDockScope
+- uid: Dock.Settings.WindowDragDockScope.FullWindow
+  name: FullWindow
+  href: api/Dock.Settings.WindowDragDockScope.html#Dock_Settings_WindowDragDockScope_FullWindow
+  commentId: F:Dock.Settings.WindowDragDockScope.FullWindow
+  fullName: Dock.Settings.WindowDragDockScope.FullWindow
+  nameWithType: WindowDragDockScope.FullWindow
+- uid: Dock.Settings.WindowDragDockScope.WindowChrome
+  name: WindowChrome
+  href: api/Dock.Settings.WindowDragDockScope.html#Dock_Settings_WindowDragDockScope_WindowChrome
+  commentId: F:Dock.Settings.WindowDragDockScope.WindowChrome
+  fullName: Dock.Settings.WindowDragDockScope.WindowChrome
+  nameWithType: WindowDragDockScope.WindowChrome

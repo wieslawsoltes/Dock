@@ -20,23 +20,31 @@ internal class WindowDragHelper
     private readonly Control _owner;
     private readonly Func<bool> _isEnabled;
     private readonly Func<Control?, bool> _canStartDrag;
+    private readonly Func<Control?, WindowDragDockScope> _getDockScope;
     private readonly bool _handlePointerPressed;
     private bool _handledPointerPressed;
     private Point _dragStartPoint;
     private bool _pointerPressed;
     private bool _isDragging;
+    private WindowDragDockScope _dockScope = WindowDragDockScope.FullWindow;
     private PointerPressedEventArgs? _lastPointerPressedArgs;
     private Window? _dragWindow;
     private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
     private IDisposable[]? _disposables;
     private IDisposable? _releasedEventDisposable;
 
-    public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag, bool handlePointerPressed = true)
+    public WindowDragHelper(
+        Control owner,
+        Func<bool> isEnabled,
+        Func<Control?, bool> canStartDrag,
+        bool handlePointerPressed = true,
+        Func<Control?, WindowDragDockScope>? getDockScope = null)
     {
         _owner = owner;
         _isEnabled = isEnabled;
         _canStartDrag = canStartDrag;
         _handlePointerPressed = handlePointerPressed;
+        _getDockScope = getDockScope ?? (_ => WindowDragDockScope.FullWindow);
     }
 
     public void Attach()
@@ -74,6 +82,7 @@ internal class WindowDragHelper
         _pointerPressed = false;
         _isDragging = false;
         _handledPointerPressed = false;
+        _dockScope = WindowDragDockScope.FullWindow;
         _lastPointerPressedArgs = null;
     }
 
@@ -97,6 +106,7 @@ internal class WindowDragHelper
         {
             _dragStartPoint = e.GetPosition(_owner);
             _pointerPressed = true;
+            _dockScope = _getDockScope(source);
             if (_handlePointerPressed)
             {
                 e.Handled = true;
@@ -135,6 +145,8 @@ internal class WindowDragHelper
 
             if (_dragWindow is HostWindow hostWindow)
             {
+                hostWindow.WindowDragDockScope = WindowDragDockScope.FullWindow;
+
                 if (hostWindow.HostWindowState is HostWindowState state)
                 {
                     var point = hostWindow.PointToScreen(e.GetPosition(hostWindow)) -
@@ -147,6 +159,7 @@ internal class WindowDragHelper
         }
 
         _dragWindow = null;
+        _dockScope = WindowDragDockScope.FullWindow;
 
         if (shouldHandleRelease)
         {
@@ -221,6 +234,7 @@ internal class WindowDragHelper
         }
 
         _dragWindow = hostWindow;
+        hostWindow.WindowDragDockScope = _dockScope;
 
         _positionChangedHandler = (_, _) =>
         {

@@ -16,6 +16,7 @@ using Avalonia.Reactive;
 using Avalonia.Styling;
 using Dock.Avalonia.Contract;
 using Dock.Avalonia.Automation.Peers;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -631,7 +632,8 @@ public class DocumentTabStrip : TabStrip, IExternalDockSurface
                     DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false };
 
                 return baseAllow || overrideAllow;
-            });
+            },
+            getDockScope: _ => DockSettings.DocumentWindowDragScope);
     }
 
     private void AttachToWindow()

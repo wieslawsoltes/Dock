@@ -87,6 +87,8 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     public IHostWindowState HostWindowState => _hostWindowState;
 
+    internal WindowDragDockScope WindowDragDockScope { get; set; } = WindowDragDockScope.FullWindow;
+
     /// <inheritdoc/>
     public bool IsTracked { get; set; }
 

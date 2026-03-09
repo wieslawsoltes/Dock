@@ -396,7 +396,9 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     }
 
                     var dockControlPoint = dockControl.PointToClient(screenPoint);
-                    var dropControl = DockHelpers.GetControlIncludingExternal(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
+                    var dropControl = _hostWindow.WindowDragDockScope == WindowDragDockScope.WindowChrome
+                        ? DockHelpers.GetExternalControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty)
+                        : DockHelpers.GetControlIncludingExternal(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                     if (dropControl is { })
                     {
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);

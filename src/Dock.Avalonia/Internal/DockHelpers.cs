@@ -210,6 +210,11 @@ internal static class DockHelpers
             return localHit;
         }
 
+        return GetExternalControl(dockControl, point, property);
+    }
+
+    public static Control? GetExternalControl(DockControl dockControl, Point point, StyledProperty<bool> property)
+    {
         if (dockControl.GetVisualRoot() is not Visual visualRoot)
         {
             return null;

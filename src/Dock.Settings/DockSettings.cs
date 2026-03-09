@@ -75,6 +75,12 @@ public static class DockSettings
     public static bool BringWindowsToFrontOnDrag = true;
 
     /// <summary>
+    /// Controls which background-window docking targets are considered when a floating document
+    /// window is dragged by its document tab strip.
+    /// </summary>
+    public static WindowDragDockScope DocumentWindowDragScope = WindowDragDockScope.WindowChrome;
+
+    /// <summary>
     /// Close all floating windows when the main (non-host) window closes.
     /// </summary>
     public static bool CloseFloatingWindowsOnMainWindowClose = false;
@@ -261,4 +267,20 @@ public enum DockCommandBarMergingScope
     /// Merge command bars from the active dockable (documents and tools).
     /// </summary>
     ActiveDockable
+}
+
+/// <summary>
+/// Controls which docking targets are considered during window move-drag operations.
+/// </summary>
+public enum WindowDragDockScope
+{
+    /// <summary>
+    /// Consider all window docking targets, including the main dock area.
+    /// </summary>
+    FullWindow,
+
+    /// <summary>
+    /// Consider only chrome-like targets such as external tab strips and titlebars.
+    /// </summary>
+    WindowChrome
 }

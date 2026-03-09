@@ -1922,6 +1922,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Internal.WindowDragHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Internal.WindowDragHelper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Internal.WindowDragHelper",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Internal.WindowDragHelper.yml\" sourcestartlinenumber=\"1\">Helper that enables starting window drag operations from custom controls.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Internal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Internal.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Internal",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Mdi.ClassicMdiLayoutManager.yml",
       "output": {
         ".html": {

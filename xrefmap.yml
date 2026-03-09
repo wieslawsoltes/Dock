@@ -10811,6 +10811,79 @@ references:
   commentId: E:Dock.Avalonia.Diagnostics.DockDiagnosticEvents.SelectDockableRequested
   fullName: Dock.Avalonia.Diagnostics.DockDiagnosticEvents.SelectDockableRequested
   nameWithType: DockDiagnosticEvents.SelectDockableRequested
+- uid: Dock.Avalonia.Internal
+  name: Dock.Avalonia.Internal
+  href: api/Dock.Avalonia.Internal.html
+  commentId: N:Dock.Avalonia.Internal
+  fullName: Dock.Avalonia.Internal
+  nameWithType: Dock.Avalonia.Internal
+- uid: Dock.Avalonia.Internal.WindowDragHelper
+  name: WindowDragHelper
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html
+  commentId: T:Dock.Avalonia.Internal.WindowDragHelper
+  fullName: Dock.Avalonia.Internal.WindowDragHelper
+  nameWithType: WindowDragHelper
+- uid: Dock.Avalonia.Internal.WindowDragHelper.#ctor(Avalonia.Controls.Control,System.Func{System.Boolean},System.Func{Avalonia.Controls.Control,System.Boolean},System.Boolean,System.Func{Avalonia.Controls.Control,Dock.Settings.WindowDragDockScope})
+  name: WindowDragHelper(Control, Func<bool>, Func<Control?, bool>, bool, Func<Control?, WindowDragDockScope>?)
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper__ctor_Avalonia_Controls_Control_System_Func_System_Boolean__System_Func_Avalonia_Controls_Control_System_Boolean__System_Boolean_System_Func_Avalonia_Controls_Control_Dock_Settings_WindowDragDockScope__
+  commentId: M:Dock.Avalonia.Internal.WindowDragHelper.#ctor(Avalonia.Controls.Control,System.Func{System.Boolean},System.Func{Avalonia.Controls.Control,System.Boolean},System.Boolean,System.Func{Avalonia.Controls.Control,Dock.Settings.WindowDragDockScope})
+  name.vb: New(Control, Func(Of Boolean), Func(Of Control, Boolean), Boolean, Func(Of Control, WindowDragDockScope))
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.WindowDragHelper(Avalonia.Controls.Control, System.Func<bool>, System.Func<Avalonia.Controls.Control?, bool>, bool, System.Func<Avalonia.Controls.Control?, Dock.Settings.WindowDragDockScope>?)
+  fullName.vb: Dock.Avalonia.Internal.WindowDragHelper.New(Avalonia.Controls.Control, System.Func(Of Boolean), System.Func(Of Avalonia.Controls.Control, Boolean), Boolean, System.Func(Of Avalonia.Controls.Control, Dock.Settings.WindowDragDockScope))
+  nameWithType: WindowDragHelper.WindowDragHelper(Control, Func<bool>, Func<Control?, bool>, bool, Func<Control?, WindowDragDockScope>?)
+  nameWithType.vb: WindowDragHelper.New(Control, Func(Of Boolean), Func(Of Control, Boolean), Boolean, Func(Of Control, WindowDragDockScope))
+- uid: Dock.Avalonia.Internal.WindowDragHelper.#ctor*
+  name: WindowDragHelper
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper__ctor_
+  commentId: Overload:Dock.Avalonia.Internal.WindowDragHelper.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.WindowDragHelper
+  fullName.vb: Dock.Avalonia.Internal.WindowDragHelper.New
+  nameWithType: WindowDragHelper.WindowDragHelper
+  nameWithType.vb: WindowDragHelper.New
+- uid: Dock.Avalonia.Internal.WindowDragHelper.Attach
+  name: Attach()
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper_Attach
+  commentId: M:Dock.Avalonia.Internal.WindowDragHelper.Attach
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.Attach()
+  nameWithType: WindowDragHelper.Attach()
+- uid: Dock.Avalonia.Internal.WindowDragHelper.Attach*
+  name: Attach
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper_Attach_
+  commentId: Overload:Dock.Avalonia.Internal.WindowDragHelper.Attach
+  isSpec: "True"
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.Attach
+  nameWithType: WindowDragHelper.Attach
+- uid: Dock.Avalonia.Internal.WindowDragHelper.Detach
+  name: Detach()
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper_Detach
+  commentId: M:Dock.Avalonia.Internal.WindowDragHelper.Detach
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.Detach()
+  nameWithType: WindowDragHelper.Detach()
+- uid: Dock.Avalonia.Internal.WindowDragHelper.Detach*
+  name: Detach
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper_Detach_
+  commentId: Overload:Dock.Avalonia.Internal.WindowDragHelper.Detach
+  isSpec: "True"
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.Detach
+  nameWithType: WindowDragHelper.Detach
+- uid: Dock.Avalonia.Internal.WindowDragHelper.IsChildOfType*
+  name: IsChildOfType
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper_IsChildOfType_
+  commentId: Overload:Dock.Avalonia.Internal.WindowDragHelper.IsChildOfType
+  isSpec: "True"
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.IsChildOfType
+  nameWithType: WindowDragHelper.IsChildOfType
+- uid: Dock.Avalonia.Internal.WindowDragHelper.IsChildOfType``1(Avalonia.Controls.Control,Avalonia.Controls.Control)
+  name: IsChildOfType<T>(Control, Control)
+  href: api/Dock.Avalonia.Internal.WindowDragHelper.html#Dock_Avalonia_Internal_WindowDragHelper_IsChildOfType__1_Avalonia_Controls_Control_Avalonia_Controls_Control_
+  commentId: M:Dock.Avalonia.Internal.WindowDragHelper.IsChildOfType``1(Avalonia.Controls.Control,Avalonia.Controls.Control)
+  name.vb: IsChildOfType(Of T)(Control, Control)
+  fullName: Dock.Avalonia.Internal.WindowDragHelper.IsChildOfType<T>(Avalonia.Controls.Control, Avalonia.Controls.Control)
+  fullName.vb: Dock.Avalonia.Internal.WindowDragHelper.IsChildOfType(Of T)(Avalonia.Controls.Control, Avalonia.Controls.Control)
+  nameWithType: WindowDragHelper.IsChildOfType<T>(Control, Control)
+  nameWithType.vb: WindowDragHelper.IsChildOfType(Of T)(Control, Control)
 - uid: Dock.Avalonia.Mdi
   name: Dock.Avalonia.Mdi
   href: api/Dock.Avalonia.Mdi.html

@@ -15,7 +15,7 @@ namespace Dock.Avalonia.Internal;
 /// <summary>
 /// Helper that enables starting window drag operations from custom controls.
 /// </summary>
-internal class WindowDragHelper
+public class WindowDragHelper
 {
     private readonly Control _owner;
     private readonly Func<bool> _isEnabled;
@@ -33,6 +33,9 @@ internal class WindowDragHelper
     private IDisposable[]? _disposables;
     private IDisposable? _releasedEventDisposable;
 
+    /// <summary>
+    /// Initializes a helper that starts tracked window move drags from a custom control.
+    /// </summary>
     public WindowDragHelper(
         Control owner,
         Func<bool> isEnabled,
@@ -47,6 +50,9 @@ internal class WindowDragHelper
         _getDockScope = getDockScope ?? (_ => WindowDragDockScope.FullWindow);
     }
 
+    /// <summary>
+    /// Attaches pointer handlers to the owner control.
+    /// </summary>
     public void Attach()
     {
         Detach();
@@ -58,6 +64,9 @@ internal class WindowDragHelper
         ];
     }
 
+    /// <summary>
+    /// Detaches pointer handlers and clears any in-progress drag state.
+    /// </summary>
     public void Detach()
     {
         if (_disposables != null)
@@ -262,7 +271,11 @@ internal class WindowDragHelper
         return window.AddDisposableHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
     }
 
-    internal static bool IsChildOfType<T>(Control owner, Control control) where T : Control
+    /// <summary>
+    /// Determines whether <paramref name="control"/> has an ancestor of type <typeparamref name="T"/>
+    /// before reaching <paramref name="owner"/>.
+    /// </summary>
+    public static bool IsChildOfType<T>(Control owner, Control control) where T : Control
     {
         var parent = control;
         while (parent != null && parent != owner)

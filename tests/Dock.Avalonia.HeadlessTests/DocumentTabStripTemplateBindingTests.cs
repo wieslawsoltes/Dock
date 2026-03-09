@@ -7,6 +7,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes.Fluent;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
@@ -175,6 +176,92 @@ public class DocumentTabStripTemplateBindingTests
         }
     }
 
+    [AvaloniaFact]
+    public void DocumentControl_Allows_Style_To_Override_TabStrip_Visibility_Without_ReTemplating()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            LayoutMode = DocumentLayoutMode.Tabbed,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var document = new Document { Id = "doc-1", Title = "Doc 1", IsModified = false };
+        dock.VisibleDockables!.Add(document);
+        dock.ActiveDockable = document;
+
+        var control = new DocumentControl
+        {
+            DataContext = dock
+        };
+
+        var style = new Style(x => x.OfType<DocumentTabStrip>());
+        style.Setters.Add(new Setter(Control.IsVisibleProperty, false));
+        control.Styles.Add(style);
+
+        var window = ShowInWindow(control);
+        try
+        {
+            var tabStrip = control.GetVisualDescendants().OfType<DocumentTabStrip>().FirstOrDefault();
+            Assert.NotNull(tabStrip);
+            Assert.False(tabStrip!.IsVisible);
+
+            var separatorHost = control.GetVisualDescendants()
+                .OfType<Panel>()
+                .FirstOrDefault(candidate => candidate.Name == "PART_DocumentSeperatorHost");
+            Assert.NotNull(separatorHost);
+            Assert.False(separatorHost!.IsVisible);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DocumentControl_Allows_Style_To_Override_TabStrip_Visibility_With_Cached_Content_Template()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            LayoutMode = DocumentLayoutMode.Tabbed,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var document = new Document { Id = "doc-1", Title = "Doc 1", IsModified = false };
+        dock.VisibleDockables!.Add(document);
+        dock.ActiveDockable = document;
+
+        var control = new DocumentControl
+        {
+            DataContext = dock
+        };
+
+        var style = new Style(x => x.OfType<DocumentTabStrip>());
+        style.Setters.Add(new Setter(Control.IsVisibleProperty, false));
+        control.Styles.Add(style);
+
+        var window = ShowInWindow(control, new DockFluentTheme { CacheDocumentTabContent = true });
+        try
+        {
+            var tabStrip = control.GetVisualDescendants().OfType<DocumentTabStrip>().FirstOrDefault();
+            Assert.NotNull(tabStrip);
+            Assert.False(tabStrip!.IsVisible);
+
+            var separatorHost = control.GetVisualDescendants()
+                .OfType<Panel>()
+                .FirstOrDefault(candidate => candidate.Name == "PART_DocumentSeperatorHost");
+            Assert.NotNull(separatorHost);
+            Assert.False(separatorHost!.IsVisible);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
     private static (IDataTemplate IconTemplate, IDataTemplate HeaderTemplate, IDataTemplate ModifiedTemplate, IDataTemplate CloseTemplate) CreateTemplates()
     {
         var iconTemplate = new FuncDataTemplate<IDockable>((dockable, _) => new TextBlock { Text = $"icon:{dockable.Title}" }, true);
@@ -186,12 +273,22 @@ public class DocumentTabStripTemplateBindingTests
 
     private static Window ShowInWindow(Control control)
     {
+        return ShowInWindow(control, null);
+    }
+
+    private static Window ShowInWindow(Control control, IStyle? style)
+    {
         var window = new Window
         {
             Width = 600,
             Height = 400,
             Content = control
         };
+
+        if (style is not null)
+        {
+            window.Styles.Add(style);
+        }
 
         window.Show();
         control.ApplyTemplate();

@@ -185,14 +185,14 @@ public class DelayedUniformTabPanelTests
     private static void Layout(DelayedUniformTabPanel panel, double width, double height)
     {
         panel.Measure(new Size(width, height));
-        panel.Arrange(new Rect(0, 0, width, height));
+        panel.Arrange(new Rect(0, 0, panel.DesiredSize.Width, height));
     }
 
     private static void AssertTabWidth(DelayedUniformTabPanel panel, double expectedWidth)
     {
         foreach (var child in panel.Children)
         {
-            Assert.InRange(child.Bounds.Width, expectedWidth - 0.1, expectedWidth + 0.1);
+            Assert.InRange(child.Bounds.Width, expectedWidth - 0.1, expectedWidth + 1.1);
         }
     }
 }

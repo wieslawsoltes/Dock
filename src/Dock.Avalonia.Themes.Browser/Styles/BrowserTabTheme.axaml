@@ -18,9 +18,9 @@
     <Setter Property="ClipToBounds" Value="False" />
   </Style>
 
-  <Style Selector="DocumentTabStripItem /template/ Rectangle#PART_TabSeparatorRight">
+  <Style Selector="DocumentTabStripItem /template/ Border#PART_TabSeparatorRight">
     <Setter Property="IsVisible" Value="True" />
-    <Setter Property="Fill" Value="{DynamicResource DockDocumentTabItemSeparatorBrush}" />
+    <Setter Property="Background" Value="{DynamicResource DockDocumentTabItemSeparatorBrush}" />
     <Setter Property="Opacity" Value="{DynamicResource DockDocumentTabItemSeparatorOpacity}" />
   </Style>
 
@@ -60,11 +60,11 @@
     <Setter Property="Margin" Value="7,0,5,0" />
   </Style>
 
-  <Style Selector="DocumentTabStripItem:selected /template/ Rectangle#PART_TabSeparatorRight">
+  <Style Selector="DocumentTabStripItem:selected /template/ Border#PART_TabSeparatorRight">
     <Setter Property="IsVisible" Value="False" />
   </Style>
 
-  <Style Selector="DocumentTabStripItem:pointerover /template/ Rectangle#PART_TabSeparatorRight">
+  <Style Selector="DocumentTabStripItem:pointerover /template/ Border#PART_TabSeparatorRight">
     <Setter Property="IsVisible" Value="False" />
   </Style>
 

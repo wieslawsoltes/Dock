@@ -387,13 +387,13 @@
               </DockableControl>
             </Border>
           </Border>
-          <Rectangle x:Name="PART_TabSeparatorRight"
-                     IsHitTestVisible="False"
-                     UseLayoutRounding="True"
-                     Width="1"
-                     Margin="0,7,0,7"
-                     HorizontalAlignment="Right"
-                     VerticalAlignment="Stretch" />
+          <Border x:Name="PART_TabSeparatorRight"
+                  IsHitTestVisible="False"
+                  UseLayoutRounding="True"
+                  Width="1"
+                  Margin="0,7,0,7"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Stretch" />
         </Panel>
       </ControlTemplate>
     </Setter>
@@ -432,8 +432,8 @@
       <Setter Property="Foreground" Value="{DynamicResource DockDocumentTabPointerOverForegroundBrush}" />
     </Style>
 
-    <Style Selector="^/template/ Rectangle#PART_TabSeparatorRight">
-      <Setter Property="Fill" Value="{DynamicResource DockSeparatorBrush}" />
+    <Style Selector="^/template/ Border#PART_TabSeparatorRight">
+      <Setter Property="Background" Value="{DynamicResource DockSeparatorBrush}" />
       <Setter Property="Opacity" Value="{DynamicResource DockDocumentTabItemSeparatorOpacity}" />
     </Style>
 

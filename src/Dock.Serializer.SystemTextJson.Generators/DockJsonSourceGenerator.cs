@@ -219,6 +219,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 return GenerationModel.Empty(diagnostics.ToImmutable());
             }
 
+            registeredTypes = FilterRegisteredTypes(registeredTypes, dockSymbols!, diagnostics);
+
             ImmutableArray<SerializableTypeModel> serializableTypes =
                 GetSerializableTypes(compilation, dockSymbols!, registeredTypes, cancellationToken);
 
@@ -309,6 +311,32 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                    && typeSymbol.TypeKind != TypeKind.Interface
                    && typeSymbol.TypeKind != TypeKind.Delegate
                    && IsAccessibleFromGeneratedCode(typeSymbol, generatedAssembly);
+        }
+
+        private static ImmutableArray<RegistrationCandidate> FilterRegisteredTypes(
+            ImmutableArray<RegistrationCandidate> registeredTypes,
+            DockSymbols symbols,
+            ImmutableArray<Diagnostic>.Builder diagnostics)
+        {
+            var valid = ImmutableArray.CreateBuilder<RegistrationCandidate>(registeredTypes.Length);
+
+            foreach (RegistrationCandidate registration in registeredTypes)
+            {
+                if (!IsAssignableToAnyDockContract(registration.Type, symbols)
+                    && !IsSupportedObjectPayloadType(registration.Type))
+                {
+                    diagnostics.Add(
+                        Diagnostic.Create(
+                            DiagnosticDescriptors.InvalidRegisteredType,
+                            registration.Location ?? Location.None,
+                            registration.Type.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)));
+                    continue;
+                }
+
+                valid.Add(registration);
+            }
+
+            return valid.ToImmutable();
         }
 
         private static bool TryGetDockSymbols(
@@ -786,6 +814,12 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             }
 
             return typeSymbol.ContainingType is not null && HasOpenTypeParameters(typeSymbol.ContainingType);
+        }
+
+        private static bool IsSupportedObjectPayloadType(INamedTypeSymbol typeSymbol)
+        {
+            return typeSymbol.TypeKind == TypeKind.Class
+                   && typeSymbol.SpecialType == SpecialType.None;
         }
 
         private static bool IsAssignableToAnyDockContract(INamedTypeSymbol typeSymbol, DockSymbols symbols)

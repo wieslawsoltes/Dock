@@ -9,6 +9,7 @@
 
   <PropertyGroup>
     <PackageId>Dock.Serializer.SystemTextJson</PackageId>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddDockSourceGeneratorAnalyzerToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
   <Import Project="..\..\build\SignAssembly.props" />
@@ -18,6 +19,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\Dock.Serializer.SystemTextJson.Generators\Dock.Serializer.SystemTextJson.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"
+                      PrivateAssets="all"
+                      SetTargetFramework="TargetFramework=netstandard2.0" />
   </ItemGroup>
+
+  <Target Name="AddDockSourceGeneratorAnalyzerToPackage"
+          Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(MSBuildProjectDirectory)\..\Dock.Serializer.SystemTextJson.Generators\bin\$(Configuration)\netstandard2.0\Dock.Serializer.SystemTextJson.Generators.dll"
+                              Condition="Exists('$(MSBuildProjectDirectory)\..\Dock.Serializer.SystemTextJson.Generators\bin\$(Configuration)\netstandard2.0\Dock.Serializer.SystemTextJson.Generators.dll')">
+        <PackagePath>analyzers/dotnet/cs/</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
+  </Target>
 
 </Project>

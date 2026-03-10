@@ -23,6 +23,7 @@
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false"
                       PrivateAssets="all"
+                      GlobalPropertiesToRemove="RuntimeIdentifier;SelfContained;PublishAot;PublishTrimmed;TrimMode;InvariantGlobalization;StripSymbols"
                       SetTargetFramework="TargetFramework=netstandard2.0" />
   </ItemGroup>
 

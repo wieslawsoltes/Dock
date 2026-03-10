@@ -206,6 +206,9 @@ public class DelayedUniformTabPanel : Panel
             : ResolveTabWidth(visibleCount, finalSize);
         _resolvedInMeasurePass = false;
         var spacing = Math.Max(0d, ItemSpacing);
+        var arrangedExtentWidth = Math.Min(
+            finalSize.Width,
+            RoundToDevicePixels((tabWidth * visibleCount) + (spacing * Math.Max(0, visibleCount - 1))));
         var x = 0d;
         var arrangedIndex = 0;
 
@@ -219,7 +222,7 @@ public class DelayedUniformTabPanel : Panel
 
             var startX = RoundToDevicePixels(x);
             var endX = arrangedIndex == visibleCount - 1
-                ? finalSize.Width
+                ? arrangedExtentWidth
                 : RoundToDevicePixels(x + tabWidth);
             var arrangedWidth = Math.Max(0d, endX - startX);
 

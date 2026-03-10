@@ -185,7 +185,7 @@ public class DelayedUniformTabPanelTests
     private static void Layout(DelayedUniformTabPanel panel, double width, double height)
     {
         panel.Measure(new Size(width, height));
-        panel.Arrange(new Rect(0, 0, panel.DesiredSize.Width, height));
+        panel.Arrange(new Rect(0, 0, width, height));
     }
 
     private static void AssertTabWidth(DelayedUniformTabPanel panel, double expectedWidth)

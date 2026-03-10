@@ -162,6 +162,17 @@ public ObservableCollection&lt;FileModel&gt; OpenFiles { get; } = new();
 <h2 id="serialization-pitfalls">Serialization pitfalls</h2>
 <p><strong>Deserialization fails with unknown types</strong></p>
 <p><code>IDockSerializer</code> implementations (for example <code>Dock.Serializer.SystemTextJson.DockSerializer</code>) use type information embedded in the layout. If a type cannot be resolved, ensure the assembly that defines it is loaded and referenced by the application. For dependency injection scenarios, construct the serializer with an <code>IServiceProvider</code> so it can resolve types from the container.</p>
+<p><strong>How do I enable source-generated System.Text.Json serialization?</strong></p>
+<p>Add <code>[assembly: DockJsonSourceGeneration]</code> to the application assembly and then
+construct the emitted <code>DockSystemTextJsonGenerated</code> helper instead of using the
+default reflection-based <code>new DockSerializer()</code> path. Custom Dock types in that
+same assembly are discovered automatically.</p>
+<p><strong>Why does the source-generated serializer say an object payload is not registered?</strong></p>
+<p>The generated serializer only supports object-valued payloads that were
+registered at compile time. Add
+<code>[assembly: DockJsonSerializable(typeof(MyPayload))]</code> for custom template
+content, custom object-valued model payloads, and Dock types that live in
+referenced class libraries.</p>
 <p><strong>What is <code>DockableLocator</code> and <code>ContextLocator</code>?</strong></p>
 <p><code>DockableLocator</code> is a dictionary of functions that create dockables when you
 need to resolve them by id at runtime (for example via <code>GetDockable</code>).

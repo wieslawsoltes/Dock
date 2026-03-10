@@ -51484,6 +51484,50 @@ references:
   commentId: N:Dock.Serializer.SystemTextJson
   fullName: Dock.Serializer.SystemTextJson
   nameWithType: Dock.Serializer.SystemTextJson
+- uid: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute
+  name: DockJsonSerializableAttribute
+  href: api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.html
+  commentId: T:Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute
+  fullName: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute
+  nameWithType: DockJsonSerializableAttribute
+- uid: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.#ctor(System.Type)
+  name: DockJsonSerializableAttribute(Type)
+  href: api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.html#Dock_Serializer_SystemTextJson_DockJsonSerializableAttribute__ctor_System_Type_
+  commentId: M:Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.#ctor(System.Type)
+  name.vb: New(Type)
+  fullName: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.DockJsonSerializableAttribute(System.Type)
+  fullName.vb: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.New(System.Type)
+  nameWithType: DockJsonSerializableAttribute.DockJsonSerializableAttribute(Type)
+  nameWithType.vb: DockJsonSerializableAttribute.New(Type)
+- uid: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.#ctor*
+  name: DockJsonSerializableAttribute
+  href: api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.html#Dock_Serializer_SystemTextJson_DockJsonSerializableAttribute__ctor_
+  commentId: Overload:Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.DockJsonSerializableAttribute
+  fullName.vb: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.New
+  nameWithType: DockJsonSerializableAttribute.DockJsonSerializableAttribute
+  nameWithType.vb: DockJsonSerializableAttribute.New
+- uid: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.Type
+  name: Type
+  href: api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.html#Dock_Serializer_SystemTextJson_DockJsonSerializableAttribute_Type
+  commentId: P:Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.Type
+  fullName: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.Type
+  nameWithType: DockJsonSerializableAttribute.Type
+- uid: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.Type*
+  name: Type
+  href: api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.html#Dock_Serializer_SystemTextJson_DockJsonSerializableAttribute_Type_
+  commentId: Overload:Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.Type
+  isSpec: "True"
+  fullName: Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.Type
+  nameWithType: DockJsonSerializableAttribute.Type
+- uid: Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute
+  name: DockJsonSourceGenerationAttribute
+  href: api/Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute.html
+  commentId: T:Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute
+  fullName: Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute
+  nameWithType: DockJsonSourceGenerationAttribute
 - uid: Dock.Serializer.SystemTextJson.DockSerializer
   name: DockSerializer
   href: api/Dock.Serializer.SystemTextJson.DockSerializer.html
@@ -51499,6 +51543,15 @@ references:
   fullName.vb: Dock.Serializer.SystemTextJson.DockSerializer.New()
   nameWithType: DockSerializer.DockSerializer()
   nameWithType.vb: DockSerializer.New()
+- uid: Dock.Serializer.SystemTextJson.DockSerializer.#ctor(System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  name: DockSerializer(IJsonTypeInfoResolver)
+  href: api/Dock.Serializer.SystemTextJson.DockSerializer.html#Dock_Serializer_SystemTextJson_DockSerializer__ctor_System_Text_Json_Serialization_Metadata_IJsonTypeInfoResolver_
+  commentId: M:Dock.Serializer.SystemTextJson.DockSerializer.#ctor(System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  name.vb: New(IJsonTypeInfoResolver)
+  fullName: Dock.Serializer.SystemTextJson.DockSerializer.DockSerializer(System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  fullName.vb: Dock.Serializer.SystemTextJson.DockSerializer.New(System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  nameWithType: DockSerializer.DockSerializer(IJsonTypeInfoResolver)
+  nameWithType.vb: DockSerializer.New(IJsonTypeInfoResolver)
 - uid: Dock.Serializer.SystemTextJson.DockSerializer.#ctor(System.Type)
   name: DockSerializer(Type)
   href: api/Dock.Serializer.SystemTextJson.DockSerializer.html#Dock_Serializer_SystemTextJson_DockSerializer__ctor_System_Type_
@@ -51508,6 +51561,15 @@ references:
   fullName.vb: Dock.Serializer.SystemTextJson.DockSerializer.New(System.Type)
   nameWithType: DockSerializer.DockSerializer(Type)
   nameWithType.vb: DockSerializer.New(Type)
+- uid: Dock.Serializer.SystemTextJson.DockSerializer.#ctor(System.Type,System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  name: DockSerializer(Type, IJsonTypeInfoResolver)
+  href: api/Dock.Serializer.SystemTextJson.DockSerializer.html#Dock_Serializer_SystemTextJson_DockSerializer__ctor_System_Type_System_Text_Json_Serialization_Metadata_IJsonTypeInfoResolver_
+  commentId: M:Dock.Serializer.SystemTextJson.DockSerializer.#ctor(System.Type,System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  name.vb: New(Type, IJsonTypeInfoResolver)
+  fullName: Dock.Serializer.SystemTextJson.DockSerializer.DockSerializer(System.Type, System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  fullName.vb: Dock.Serializer.SystemTextJson.DockSerializer.New(System.Type, System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver)
+  nameWithType: DockSerializer.DockSerializer(Type, IJsonTypeInfoResolver)
+  nameWithType.vb: DockSerializer.New(Type, IJsonTypeInfoResolver)
 - uid: Dock.Serializer.SystemTextJson.DockSerializer.#ctor*
   name: DockSerializer
   href: api/Dock.Serializer.SystemTextJson.DockSerializer.html#Dock_Serializer_SystemTextJson_DockSerializer__ctor_
@@ -51582,6 +51644,31 @@ references:
   fullName.vb: Dock.Serializer.SystemTextJson.DockSerializer.Serialize(Of T)(T)
   nameWithType: DockSerializer.Serialize<T>(T)
   nameWithType.vb: DockSerializer.Serialize(Of T)(T)
+- uid: Dock.Serializer.SystemTextJson.Generators
+  name: Dock.Serializer.SystemTextJson.Generators
+  href: api/Dock.Serializer.SystemTextJson.Generators.html
+  commentId: N:Dock.Serializer.SystemTextJson.Generators
+  fullName: Dock.Serializer.SystemTextJson.Generators
+  nameWithType: Dock.Serializer.SystemTextJson.Generators
+- uid: Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator
+  name: DockJsonSourceGenerator
+  href: api/Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.html
+  commentId: T:Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator
+  fullName: Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator
+  nameWithType: DockJsonSourceGenerator
+- uid: Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.Initialize(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)
+  name: Initialize(IncrementalGeneratorInitializationContext)
+  href: api/Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.html#Dock_Serializer_SystemTextJson_Generators_DockJsonSourceGenerator_Initialize_Microsoft_CodeAnalysis_IncrementalGeneratorInitializationContext_
+  commentId: M:Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.Initialize(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)
+  fullName: Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.Initialize(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)
+  nameWithType: DockJsonSourceGenerator.Initialize(IncrementalGeneratorInitializationContext)
+- uid: Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.Initialize*
+  name: Initialize
+  href: api/Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.html#Dock_Serializer_SystemTextJson_Generators_DockJsonSourceGenerator_Initialize_
+  commentId: Overload:Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.Initialize
+  isSpec: "True"
+  fullName: Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.Initialize
+  nameWithType: DockJsonSourceGenerator.Initialize
 - uid: Dock.Serializer.SystemTextJson.JsonConverterFactoryList
   name: JsonConverterFactoryList
   href: api/Dock.Serializer.SystemTextJson.JsonConverterFactoryList.html

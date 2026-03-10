@@ -188,6 +188,26 @@ underlying framework.</p>
 <code>Dock.Model.ReactiveUI</code> and replace the command and property change types with
 those from your own framework.  Only a handful of classes need to be adjusted,
 mainly the <code>Dockable</code> bases and the <code>Factory</code> implementation.</p>
+<h2 id="source-generated-systemtextjson-registration">Source-generated System.Text.Json registration</h2>
+<p>If you use <code>Dock.Serializer.SystemTextJson</code> with source generation, custom Dock
+types defined in the application assembly are discovered automatically after you
+add:</p>
+<pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;
+
+[assembly: DockJsonSourceGeneration]
+</code></pre>
+<p>When custom Dock types live in a referenced class library, register them
+explicitly from the consuming application:</p>
+<pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;
+
+[assembly: DockJsonSourceGeneration]
+[assembly: DockJsonSerializable(typeof(MyCustomRootDock))]
+[assembly: DockJsonSerializable(typeof(MyCustomDocument))]
+</code></pre>
+<p>Register any object-valued payload types the same way. This applies to custom
+template content and to custom model members that intentionally serialize
+runtime payload objects. Unregistered object payloads throw at runtime in the
+source-generated path instead of silently falling back to reflection.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Custom implementations let you integrate Dock with any MVVM pattern while
 keeping the docking logic intact.  Follow the structure of the provided models

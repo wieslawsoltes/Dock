@@ -112,10 +112,44 @@ var serializerWithDi = new DockSerializer(serviceProvider);
 
 var serializer = new DockSerializer();
 </code></pre>
-<p>To customize list types, use the list type overload.</p>
+<p>The default constructor keeps the existing reflection-based compatibility path.
+To customize list types, use the list type overload.</p>
 <pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;
 
 var serializer = new DockSerializer(typeof(List&lt;&gt;));
+</code></pre>
+<h2 id="using-source-generated-json-serialization-systemtextjson">Using source-generated JSON serialization (System.Text.Json)</h2>
+<p>To opt into source generation, add the assembly attributes in the application
+assembly that owns your Dock layout types:</p>
+<pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;
+
+[assembly: DockJsonSourceGeneration]
+[assembly: DockJsonSerializable(typeof(MyTemplatePayload))]
+</code></pre>
+<p>Then construct the generated serializer from the helper emitted into that same
+assembly:</p>
+<pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;
+
+var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+var serializerWithList = DockSystemTextJsonGenerated.CreateSerializer(typeof(List&lt;&gt;));
+</code></pre>
+<p>The source-generated path:</p>
+<ul>
+<li>Auto-discovers concrete Dock-derived types declared in the current compilation.</li>
+<li>Requires <code>[assembly: DockJsonSerializable(typeof(...))]</code> for Dock types that come from referenced class libraries.</li>
+<li>Requires <code>[assembly: DockJsonSerializable(typeof(...))]</code> for object-valued payloads you expect to serialize, such as custom template content.</li>
+<li>Uses the same JSON shape as the reflection serializer, including the <code>$type</code> discriminator and ignored command members.</li>
+<li>Fails fast for unregistered object payloads instead of falling back to reflection.</li>
+</ul>
+<p>For advanced composition scenarios, the serializer also exposes resolver-based
+constructors:</p>
+<pre><code class="lang-csharp">using System.Text.Json.Serialization.Metadata;
+using Dock.Serializer.SystemTextJson;
+
+IJsonTypeInfoResolver resolver = new DockSystemTextJsonResolver();
+
+var serializer = new DockSerializer(resolver);
+var serializerWithList = new DockSerializer(typeof(List&lt;&gt;), resolver);
 </code></pre>
 <h2 id="using-binary-serialization-protobuf">Using binary serialization (Protobuf)</h2>
 <pre><code class="lang-csharp">using Dock.Serializer.Protobuf;

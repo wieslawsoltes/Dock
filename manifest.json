@@ -7480,6 +7480,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute",
+      "Summary": "<p sourcefile=\"api/Dock.Serializer.SystemTextJson.DockJsonSerializableAttribute.yml\" sourcestartlinenumber=\"1\">Registers an additional type for Dock source-generated <xref href=\"System.Text.Json\" data-throw-if-not-resolved=\"false\"></xref> serialization.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute",
+      "Summary": "<p sourcefile=\"api/Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute.yml\" sourcestartlinenumber=\"1\">Activates Dock source-generated <xref href=\"System.Text.Json\" data-throw-if-not-resolved=\"false\"></xref> serialization support for the current assembly.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Serializer.SystemTextJson.DockSerializer.yml",
       "output": {
         ".html": {
@@ -7491,6 +7519,34 @@
       "IsMRef": true,
       "Title": "Dock.Serializer.SystemTextJson.DockSerializer",
       "Summary": "<p sourcefile=\"api/Dock.Serializer.SystemTextJson.DockSerializer.yml\" sourcestartlinenumber=\"1\">A class that implements the <xref href=\"Dock.Model.Core.IDockSerializer\" data-throw-if-not-resolved=\"false\"></xref> interface using JSON serialization.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Serializer.SystemTextJson.Generators.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Serializer.SystemTextJson.Generators.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Serializer.SystemTextJson.Generators",
+      "Summary": null
     },
     {
       "type": "ManagedReference",

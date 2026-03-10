@@ -246,6 +246,25 @@ public class DockJsonSourceGeneratorTests
         Assert.Contains(result.Diagnostics, x => x.Id == "DSTJ001");
     }
 
+    [Fact]
+    public void ScalarPayloadRegistration_ReportsDiagnostic()
+    {
+        const string source = """
+            using Dock.Serializer.SystemTextJson;
+
+            [assembly: DockJsonSourceGeneration]
+            [assembly: DockJsonSerializable(typeof(int))]
+
+            namespace Example;
+            """;
+
+        CompilationRun run = Run(source);
+        GeneratorRunResult result = Assert.Single(run.RunResult.Results);
+
+        Diagnostic diagnostic = Assert.Single(result.Diagnostics.Where(x => x.Id == "DSTJ001"));
+        Assert.Contains("int", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
     private static string GetGeneratedSource(CompilationRun run, string hintName)
     {
         GeneratorRunResult result = Assert.Single(run.RunResult.Results);

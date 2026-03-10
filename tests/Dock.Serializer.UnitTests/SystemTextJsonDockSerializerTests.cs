@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization.Metadata;
 using Dock.Serializer.SystemTextJson;
 using Xunit;
 
@@ -101,5 +103,12 @@ public class SystemTextJsonDockSerializerTests
         var text = reader.ReadToEnd();
 
         Assert.Equal("null", text.Trim());
+    }
+
+    [Fact]
+    public void ResolverConstructors_NullResolver_Throws()
+    {
+        Assert.Throws<ArgumentNullException>(() => new global::Dock.Serializer.SystemTextJson.DockSerializer((IJsonTypeInfoResolver)null!));
+        Assert.Throws<ArgumentNullException>(() => new global::Dock.Serializer.SystemTextJson.DockSerializer(typeof(List<>), (IJsonTypeInfoResolver)null!));
     }
 }

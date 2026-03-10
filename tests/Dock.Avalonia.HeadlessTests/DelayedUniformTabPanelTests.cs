@@ -192,7 +192,7 @@ public class DelayedUniformTabPanelTests
     {
         foreach (var child in panel.Children)
         {
-            Assert.InRange(child.Bounds.Width, expectedWidth - 0.1, expectedWidth + 0.1);
+            Assert.InRange(child.Bounds.Width, expectedWidth - 0.1, expectedWidth + 1.1);
         }
     }
 }

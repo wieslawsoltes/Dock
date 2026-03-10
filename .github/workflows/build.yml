@@ -49,8 +49,27 @@ jobs:
     - name: Test
       run: dotnet test -c Release
 
-  pack:
+  aot_sourcegen_sample:
     needs: test
+    name: AOT source-gen sample
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+    - name: Install NativeAOT toolchain
+      run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+    - name: Publish AOT sample
+      run: dotnet publish samples/DockSystemTextJsonSourceGenAotSample/DockSystemTextJsonSourceGenAotSample.csproj -c Release -r linux-x64 -o artifacts/aot-sourcegen-sample
+    - name: Run AOT sample
+      run: ./artifacts/aot-sourcegen-sample/DockSystemTextJsonSourceGenAotSample
+
+  pack:
+    needs:
+    - test
+    - aot_sourcegen_sample
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

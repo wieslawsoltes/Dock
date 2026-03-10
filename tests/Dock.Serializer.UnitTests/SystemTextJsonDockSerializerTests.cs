@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization.Metadata;
+using Dock.Model.Controls;
 using Dock.Serializer.SystemTextJson;
 using Xunit;
 
@@ -15,6 +18,13 @@ public class SystemTextJsonDockSerializerTests
         public string? Name { get; set; }
         public IList<int>? Numbers { get; set; }
         public string ReadOnly => "skip";
+    }
+
+    private sealed class TemplateSample : IDocumentTemplate
+    {
+        public object? Content { get; set; }
+
+        public string? TemplateTag { get; set; }
     }
 
     private sealed class NonClosingMemoryStream : MemoryStream
@@ -101,5 +111,29 @@ public class SystemTextJsonDockSerializerTests
         var text = reader.ReadToEnd();
 
         Assert.Equal("null", text.Trim());
+    }
+
+    [Fact]
+    public void ResolverConstructors_NullResolver_Throws()
+    {
+        Assert.Throws<ArgumentNullException>(() => new global::Dock.Serializer.SystemTextJson.DockSerializer((IJsonTypeInfoResolver)null!));
+        Assert.Throws<ArgumentNullException>(() => new global::Dock.Serializer.SystemTextJson.DockSerializer(typeof(List<>), (IJsonTypeInfoResolver)null!));
+    }
+
+    [Fact]
+    public void ReflectionSerializerInstances_DoNotReusePolymorphismState()
+    {
+        var writerSerializer = new DockSerializer();
+        var readerSerializer = new DockSerializer();
+        IDocumentTemplate source = new TemplateSample
+        {
+            TemplateTag = "Template"
+        };
+
+        var json = writerSerializer.Serialize(source);
+        var restored = readerSerializer.Deserialize<IDocumentTemplate>(json);
+
+        var template = Assert.IsType<TemplateSample>(restored);
+        Assert.Equal("Template", template.TemplateTag);
     }
 }

@@ -120,6 +120,34 @@ The easiest way to start is to copy the sources of `Dock.Model.Mvvm` or
 those from your own framework.  Only a handful of classes need to be adjusted,
 mainly the `Dockable` bases and the `Factory` implementation.
 
+## Source-generated System.Text.Json registration
+
+If you use `Dock.Serializer.SystemTextJson` with source generation, custom Dock
+types defined in the application assembly are discovered automatically after you
+add:
+
+```csharp
+using Dock.Serializer.SystemTextJson;
+
+[assembly: DockJsonSourceGeneration]
+```
+
+When custom Dock types live in a referenced class library, register them
+explicitly from the consuming application:
+
+```csharp
+using Dock.Serializer.SystemTextJson;
+
+[assembly: DockJsonSourceGeneration]
+[assembly: DockJsonSerializable(typeof(MyCustomRootDock))]
+[assembly: DockJsonSerializable(typeof(MyCustomDocument))]
+```
+
+Register any object-valued payload types the same way. This applies to custom
+template content and to custom model members that intentionally serialize
+runtime payload objects. Unregistered object payloads throw at runtime in the
+source-generated path instead of silently falling back to reflection.
+
 ## Conclusion
 
 Custom implementations let you integrate Dock with any MVVM pattern while

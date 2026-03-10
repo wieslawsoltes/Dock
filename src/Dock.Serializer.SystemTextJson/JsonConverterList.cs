@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -33,7 +34,7 @@ public class JsonConverterList<T> : JsonConverter<IList<T>>
         }
         reader.Read();
 
-        var list = (IList<T>)Activator.CreateInstance(_listType.MakeGenericType(typeof(T)))!;
+        IList<T> list = CreateList();
 
         while (reader.TokenType != JsonTokenType.EndArray)
         {
@@ -54,5 +55,20 @@ public class JsonConverterList<T> : JsonConverter<IList<T>>
             JsonSerializer.Serialize(writer, item, options);
         }
         writer.WriteEndArray();
+    }
+
+    private IList<T> CreateList()
+    {
+        if (_listType == typeof(List<>))
+        {
+            return new List<T>();
+        }
+
+        if (_listType == typeof(ObservableCollection<>))
+        {
+            return new ObservableCollection<T>();
+        }
+
+        return (IList<T>)Activator.CreateInstance(_listType.MakeGenericType(typeof(T)))!;
     }
 }

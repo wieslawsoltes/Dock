@@ -40,12 +40,56 @@ using Dock.Serializer.SystemTextJson;
 var serializer = new DockSerializer();
 ```
 
+The default constructor keeps the existing reflection-based compatibility path.
 To customize list types, use the list type overload.
 
 ```csharp
 using Dock.Serializer.SystemTextJson;
 
 var serializer = new DockSerializer(typeof(List<>));
+```
+
+## Using source-generated JSON serialization (System.Text.Json)
+
+To opt into source generation, add the assembly attributes in the application
+assembly that owns your Dock layout types:
+
+```csharp
+using Dock.Serializer.SystemTextJson;
+
+[assembly: DockJsonSourceGeneration]
+[assembly: DockJsonSerializable(typeof(MyTemplatePayload))]
+```
+
+Then construct the generated serializer from the helper emitted into that same
+assembly:
+
+```csharp
+using Dock.Serializer.SystemTextJson;
+
+var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+var serializerWithList = DockSystemTextJsonGenerated.CreateSerializer(typeof(List<>));
+```
+
+The source-generated path:
+
+- Auto-discovers concrete Dock-derived types declared in the current compilation.
+- Requires `[assembly: DockJsonSerializable(typeof(...))]` for Dock types that come from referenced class libraries.
+- Requires `[assembly: DockJsonSerializable(typeof(...))]` for object-valued payloads you expect to serialize, such as custom template content.
+- Uses the same JSON shape as the reflection serializer, including the `$type` discriminator and ignored command members.
+- Fails fast for unregistered object payloads instead of falling back to reflection.
+
+For advanced composition scenarios, the serializer also exposes resolver-based
+constructors:
+
+```csharp
+using System.Text.Json.Serialization.Metadata;
+using Dock.Serializer.SystemTextJson;
+
+IJsonTypeInfoResolver resolver = new DockSystemTextJsonResolver();
+
+var serializer = new DockSerializer(resolver);
+var serializerWithList = new DockSerializer(typeof(List<>), resolver);
 ```
 
 ## Using binary serialization (Protobuf)

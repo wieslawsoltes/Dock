@@ -103,6 +103,21 @@ Active and focused dockables are serialized with the layout itself, so you do no
 
 `IDockSerializer` implementations (for example `Dock.Serializer.SystemTextJson.DockSerializer`) use type information embedded in the layout. If a type cannot be resolved, ensure the assembly that defines it is loaded and referenced by the application. For dependency injection scenarios, construct the serializer with an `IServiceProvider` so it can resolve types from the container.
 
+**How do I enable source-generated System.Text.Json serialization?**
+
+Add `[assembly: DockJsonSourceGeneration]` to the application assembly and then
+construct the emitted `DockSystemTextJsonGenerated` helper instead of using the
+default reflection-based `new DockSerializer()` path. Custom Dock types in that
+same assembly are discovered automatically.
+
+**Why does the source-generated serializer say an object payload is not registered?**
+
+The generated serializer only supports object-valued payloads that were
+registered at compile time. Add
+`[assembly: DockJsonSerializable(typeof(MyPayload))]` for custom template
+content, custom object-valued model payloads, and Dock types that live in
+referenced class libraries.
+
 **What is `DockableLocator` and `ContextLocator`?**
 
 `DockableLocator` is a dictionary of functions that create dockables when you

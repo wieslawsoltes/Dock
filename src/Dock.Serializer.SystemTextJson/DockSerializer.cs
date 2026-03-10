@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using Dock.Model.Core;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Dock.Serializer.SystemTextJson;
 
@@ -17,24 +17,37 @@ public sealed class DockSerializer : IDockSerializer
 {
     private readonly JsonSerializerOptions _options;
 
+    private DockSerializer(JsonSerializerOptions options)
+    {
+        _options = options;
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DockSerializer"/> class with the specified list type.
     /// </summary>
     /// <param name="listType">The type of list to use in the serialization process.</param>
     public DockSerializer(Type listType)
+        : this(DockSerializerOptionsFactory.Create(listType))
     {
-        _options = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            ReferenceHandler = ReferenceHandler.Preserve,
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-            TypeInfoResolver = new DockModelPolymorphicTypeResolver(),
-            Converters =
-            {
-                new JsonConverterFactoryList(listType)
-            }
-        };
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockSerializer"/> class with the specified list type and type info resolver.
+    /// </summary>
+    /// <param name="listType">The type of list to use in the serialization process.</param>
+    /// <param name="typeInfoResolver">The resolver to use for generated metadata.</param>
+    public DockSerializer(Type listType, IJsonTypeInfoResolver typeInfoResolver)
+        : this(DockSerializerOptionsFactory.Create(listType, typeInfoResolver))
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockSerializer"/> class using <see cref="ObservableCollection{T}"/> as the list type and the specified type info resolver.
+    /// </summary>
+    /// <param name="typeInfoResolver">The resolver to use for generated metadata.</param>
+    public DockSerializer(IJsonTypeInfoResolver typeInfoResolver)
+        : this(typeof(ObservableCollection<>), typeInfoResolver)
+    {
     }
 
     /// <summary>

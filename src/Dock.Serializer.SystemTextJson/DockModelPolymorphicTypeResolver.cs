@@ -29,22 +29,22 @@ internal sealed class DockModelPolymorphicTypeResolver : DefaultJsonTypeInfoReso
     private static readonly Lazy<IReadOnlyDictionary<Type, HashSet<string>>> s_interfaceIgnoredMembers =
         new(BuildInterfaceIgnoredMembers);
 
-    private static readonly JsonPolymorphismOptions s_dockableOptions =
+    private static readonly JsonPolymorphismOptions s_dockableOptionsTemplate =
         CreateOptions(typeof(IDockable), JsonUnknownDerivedTypeHandling.FallBackToBaseType);
 
-    private static readonly JsonPolymorphismOptions s_dockOptions =
+    private static readonly JsonPolymorphismOptions s_dockOptionsTemplate =
         CreateOptions(typeof(IDock), JsonUnknownDerivedTypeHandling.FallBackToBaseType);
 
-    private static readonly JsonPolymorphismOptions s_rootDockOptions =
+    private static readonly JsonPolymorphismOptions s_rootDockOptionsTemplate =
         CreateOptions(typeof(IRootDock), JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor);
 
-    private static readonly JsonPolymorphismOptions s_windowOptions =
+    private static readonly JsonPolymorphismOptions s_windowOptionsTemplate =
         CreateOptions(typeof(IDockWindow), JsonUnknownDerivedTypeHandling.FallBackToBaseType);
 
-    private static readonly JsonPolymorphismOptions s_documentTemplateOptions =
+    private static readonly JsonPolymorphismOptions s_documentTemplateOptionsTemplate =
         CreateOptions(typeof(IDocumentTemplate), JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor);
 
-    private static readonly JsonPolymorphismOptions s_toolTemplateOptions =
+    private static readonly JsonPolymorphismOptions s_toolTemplateOptionsTemplate =
         CreateOptions(typeof(IToolTemplate), JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor);
 
     public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)
@@ -54,27 +54,27 @@ internal sealed class DockModelPolymorphicTypeResolver : DefaultJsonTypeInfoReso
 
         if (type == typeof(IDockable))
         {
-            jsonTypeInfo.PolymorphismOptions = s_dockableOptions;
+            jsonTypeInfo.PolymorphismOptions = CloneOptions(s_dockableOptionsTemplate);
         }
         else if (type == typeof(IDock))
         {
-            jsonTypeInfo.PolymorphismOptions = s_dockOptions;
+            jsonTypeInfo.PolymorphismOptions = CloneOptions(s_dockOptionsTemplate);
         }
         else if (type == typeof(IRootDock))
         {
-            jsonTypeInfo.PolymorphismOptions = s_rootDockOptions;
+            jsonTypeInfo.PolymorphismOptions = CloneOptions(s_rootDockOptionsTemplate);
         }
         else if (type == typeof(IDockWindow))
         {
-            jsonTypeInfo.PolymorphismOptions = s_windowOptions;
+            jsonTypeInfo.PolymorphismOptions = CloneOptions(s_windowOptionsTemplate);
         }
         else if (type == typeof(IDocumentTemplate))
         {
-            jsonTypeInfo.PolymorphismOptions = s_documentTemplateOptions;
+            jsonTypeInfo.PolymorphismOptions = CloneOptions(s_documentTemplateOptionsTemplate);
         }
         else if (type == typeof(IToolTemplate))
         {
-            jsonTypeInfo.PolymorphismOptions = s_toolTemplateOptions;
+            jsonTypeInfo.PolymorphismOptions = CloneOptions(s_toolTemplateOptionsTemplate);
         }
 
         return jsonTypeInfo;
@@ -124,6 +124,34 @@ internal sealed class DockModelPolymorphicTypeResolver : DefaultJsonTypeInfoReso
         }
 
         return options;
+    }
+
+    private static JsonPolymorphismOptions CloneOptions(JsonPolymorphismOptions template)
+    {
+        var clone = new JsonPolymorphismOptions
+        {
+            TypeDiscriminatorPropertyName = template.TypeDiscriminatorPropertyName,
+            UnknownDerivedTypeHandling = template.UnknownDerivedTypeHandling,
+            IgnoreUnrecognizedTypeDiscriminators = template.IgnoreUnrecognizedTypeDiscriminators,
+        };
+
+        foreach (var derivedType in template.DerivedTypes)
+        {
+            if (derivedType.TypeDiscriminator is int intDiscriminator)
+            {
+                clone.DerivedTypes.Add(new JsonDerivedType(derivedType.DerivedType, intDiscriminator));
+            }
+            else if (derivedType.TypeDiscriminator is string stringDiscriminator)
+            {
+                clone.DerivedTypes.Add(new JsonDerivedType(derivedType.DerivedType, stringDiscriminator));
+            }
+            else
+            {
+                clone.DerivedTypes.Add(new JsonDerivedType(derivedType.DerivedType));
+            }
+        }
+
+        return clone;
     }
 
     private static IReadOnlyList<Type> GetDerivedTypes(Type baseType)

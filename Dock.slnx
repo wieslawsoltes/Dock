@@ -67,6 +67,7 @@
     <Project Path="samples/DockReactiveUIWorkspaceSample/DockReactiveUIWorkspaceSample.csproj" />
     <Project Path="samples/DockReactiveUIWindowRelationsSample/DockReactiveUIWindowRelationsSample.csproj" />
     <Project Path="samples/BrowserTabTheme/BrowserTabTheme.csproj" />
+    <Project Path="samples/DockSystemTextJsonSourceGenAotSample/DockSystemTextJsonSourceGenAotSample.csproj" />
     <Project Path="samples/DockSimplifiedFluentSample/DockSimplifiedFluentSample.csproj" />
     <Project Path="samples/DockSimplifiedSample/DockSimplifiedSample.csproj" />
     <Project Path="samples/DockSplitViewSample/DockSplitViewSample.csproj" />
@@ -96,6 +97,7 @@
     <Project Path="src/Dock.Model/Dock.Model.csproj" />
     <Project Path="src/Dock.Serializer.Newtonsoft/Dock.Serializer.Newtonsoft.csproj" />
     <Project Path="src/Dock.Serializer.Protobuf/Dock.Serializer.Protobuf.csproj" />
+    <Project Path="src/Dock.Serializer.SystemTextJson.Generators/Dock.Serializer.SystemTextJson.Generators.csproj" />
     <Project Path="src/Dock.Serializer.SystemTextJson/Dock.Serializer.SystemTextJson.csproj" />
     <Project Path="src/Dock.Serializer.Xml/Dock.Serializer.Xml.csproj" />
     <Project Path="src/Dock.Serializer.Yaml/Dock.Serializer.Yaml.csproj" />
@@ -119,6 +121,9 @@
     <Project Path="tests/Dock.Model.ReactiveUI.LeakTests/Dock.Model.ReactiveUI.LeakTests.csproj" />
     <Project Path="tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj" />
+    <Project Path="tests/Dock.Serializer.SystemTextJson.SourceGenSharedTypes/Dock.Serializer.SystemTextJson.SourceGenSharedTypes.csproj" />
+    <Project Path="tests/Dock.Serializer.SystemTextJson.Generators.UnitTests/Dock.Serializer.SystemTextJson.Generators.UnitTests.csproj" />
+    <Project Path="tests/Dock.Serializer.SystemTextJson.SourceGenTests/Dock.Serializer.SystemTextJson.SourceGenTests.csproj" />
     <Project Path="tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj" />
     <Project Path="tests/Dock.Settings.UnitTests/Dock.Settings.UnitTests.csproj" />
   </Folder>

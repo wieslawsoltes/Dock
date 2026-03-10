@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Inpc.Controls;
@@ -13,6 +15,7 @@ using Xunit;
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.RegisteredPayload))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.GenericRegisteredPayload<int>))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.GenericRegisteredPayload<string>))]
+[assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.TypeNamedPayload))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenSharedTypes.LibraryRootDock))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenSharedTypes.LibraryDocumentDock))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenSharedTypes.LibraryToolDock))]
@@ -132,6 +135,62 @@ public class SourceGeneratedSerializerTests
         Assert.NotNull(replayRestored);
         var replayContent = Assert.IsType<JsonElement>(replayRestored!.Content);
         Assert.Equal("LegacyPayload", replayContent.GetProperty("Name").GetString());
+    }
+
+    [Fact]
+    public void GeneratedSerializer_PreservesCustomObjectPropertyConverter()
+    {
+        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        var source = new CustomConvertedTemplate
+        {
+            TemplateTag = "ConvertedTemplate",
+            Content = "ConvertedValue"
+        };
+
+        string json = serializer.Serialize(source);
+        CustomConvertedTemplate? restored = serializer.Deserialize<CustomConvertedTemplate>(json);
+
+        using JsonDocument document = JsonDocument.Parse(json);
+        Assert.NotNull(restored);
+        Assert.Equal("ConvertedValue", document.RootElement.GetProperty("Content").GetString());
+        Assert.Equal("ConvertedTemplate", restored!.TemplateTag);
+        Assert.Equal("ConvertedValue", Assert.IsType<string>(restored.Content));
+    }
+
+    [Fact]
+    public void GeneratedSerializer_PreservesPayloadWithTypeNamedMember()
+    {
+        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        var source = new CustomDocumentTemplate
+        {
+            TemplateTag = "TypeNamedTemplate",
+            Content = new TypeNamedPayload
+            {
+                Kind = "payload-type",
+                Name = "PayloadName"
+            }
+        };
+
+        string json = serializer.Serialize(source);
+        using JsonDocument document = JsonDocument.Parse(json);
+        JsonElement payload = document.RootElement.GetProperty("Content");
+        int typePropertyCount = payload.EnumerateObject().Count(static x => x.NameEquals("$type"));
+
+        CustomDocumentTemplate? restored = serializer.Deserialize<CustomDocumentTemplate>(json);
+
+        Assert.Equal(2, typePropertyCount);
+        Assert.NotNull(restored);
+        JsonElement restoredPayload = Assert.IsType<JsonElement>(restored!.Content);
+        Assert.Equal("payload-type", restoredPayload.EnumerateObject().Last(static x => x.NameEquals("$type")).Value.GetString());
+        Assert.Equal("PayloadName", restoredPayload.GetProperty("Name").GetString());
+
+        string replayJson = serializer.Serialize(restored);
+        using JsonDocument replayDocument = JsonDocument.Parse(replayJson);
+        int replayTypePropertyCount = replayDocument.RootElement.GetProperty("Content")
+            .EnumerateObject()
+            .Count(static x => x.NameEquals("$type"));
+
+        Assert.Equal(2, replayTypePropertyCount);
     }
 
     [Fact]
@@ -393,6 +452,14 @@ public sealed class GenericRegisteredPayload<T>
     public T Value { get; set; } = default!;
 }
 
+public sealed class TypeNamedPayload
+{
+    [JsonPropertyName("$type")]
+    public string? Kind { get; set; }
+
+    public string? Name { get; set; }
+}
+
 public sealed class UnregisteredPayload
 {
     public string? Name { get; set; }
@@ -433,4 +500,27 @@ public sealed class CustomDocumentTemplate : IDocumentTemplate
     public object? Content { get; set; }
 
     public string? TemplateTag { get; set; }
+}
+
+public sealed class CustomConvertedTemplate : IDocumentTemplate
+{
+    [JsonConverter(typeof(LiteralObjectConverter))]
+    public object? Content { get; set; }
+
+    public string? TemplateTag { get; set; }
+}
+
+public sealed class LiteralObjectConverter : JsonConverter<object?>
+{
+    public override object? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return reader.TokenType == JsonTokenType.String
+            ? reader.GetString()
+            : throw new JsonException("Expected string content.");
+    }
+
+    public override void Write(Utf8JsonWriter writer, object? value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value?.ToString());
+    }
 }

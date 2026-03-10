@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Inpc.Controls;
@@ -103,6 +104,34 @@ public class SourceGeneratedSerializerTests
         var stringPayload = Assert.IsType<GenericRegisteredPayload<string>>(stringTemplate.Content);
         Assert.Equal("StringTemplate", stringTemplate.TemplateTag);
         Assert.Equal("Payload", stringPayload.Value);
+    }
+
+    [Fact]
+    public void GeneratedSerializer_ReadsLegacyTemplateContentWithoutTypeDiscriminator()
+    {
+        var reflectionSerializer = new DockSerializer();
+        var generatedSerializer = DockSystemTextJsonGenerated.CreateSerializer();
+        var source = new CustomDocumentTemplate
+        {
+            TemplateTag = "LegacyTemplate",
+            Content = new RegisteredPayload { Name = "LegacyPayload" }
+        };
+
+        string legacyJson = reflectionSerializer.Serialize(source);
+        CustomDocumentTemplate? restored = generatedSerializer.Deserialize<CustomDocumentTemplate>(legacyJson);
+
+        Assert.NotNull(restored);
+        var content = Assert.IsType<JsonElement>(restored!.Content);
+        Assert.Equal("LegacyTemplate", restored.TemplateTag);
+        Assert.Equal(JsonValueKind.Object, content.ValueKind);
+        Assert.Equal("LegacyPayload", content.GetProperty("Name").GetString());
+
+        string replayJson = generatedSerializer.Serialize(restored);
+        CustomDocumentTemplate? replayRestored = generatedSerializer.Deserialize<CustomDocumentTemplate>(replayJson);
+
+        Assert.NotNull(replayRestored);
+        var replayContent = Assert.IsType<JsonElement>(replayRestored!.Content);
+        Assert.Equal("LegacyPayload", replayContent.GetProperty("Name").GetString());
     }
 
     [Fact]
@@ -351,6 +380,7 @@ public class SourceGeneratedSerializerTests
             }
         };
     }
+
 }
 
 public sealed class RegisteredPayload

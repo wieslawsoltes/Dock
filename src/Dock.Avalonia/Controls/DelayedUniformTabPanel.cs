@@ -179,6 +179,7 @@ public class DelayedUniformTabPanel : Panel
             ? tabWidth
             : (IsFinite(targetTabWidth) ? targetTabWidth : tabWidth);
         var desiredWidth = (extentTabWidth * visibleCount) + (spacing * Math.Max(0, visibleCount - 1));
+        desiredWidth = RoundToDevicePixels(desiredWidth);
         return new Size(desiredWidth, maxHeight);
     }
 
@@ -206,6 +207,7 @@ public class DelayedUniformTabPanel : Panel
         _resolvedInMeasurePass = false;
         var spacing = Math.Max(0d, ItemSpacing);
         var x = 0d;
+        var arrangedIndex = 0;
 
         foreach (var child in Children)
         {
@@ -215,8 +217,15 @@ public class DelayedUniformTabPanel : Panel
                 continue;
             }
 
-            child.Arrange(new Rect(x, 0d, tabWidth, finalSize.Height));
+            var startX = RoundToDevicePixels(x);
+            var endX = arrangedIndex == visibleCount - 1
+                ? finalSize.Width
+                : RoundToDevicePixels(x + tabWidth);
+            var arrangedWidth = Math.Max(0d, endX - startX);
+
+            child.Arrange(new Rect(startX, 0d, arrangedWidth, finalSize.Height));
             x += tabWidth + spacing;
+            arrangedIndex++;
         }
 
         return finalSize;
@@ -271,6 +280,19 @@ public class DelayedUniformTabPanel : Panel
     private static bool NearlyEqual(double left, double right)
     {
         return Math.Abs(left - right) <= WidthEpsilon;
+    }
+
+    private double RoundToDevicePixels(double value)
+    {
+        if (!IsFinite(value))
+        {
+            return value;
+        }
+
+        var scaling = (this.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1d;
+        return scaling <= 0d
+            ? value
+            : Math.Round(value * scaling) / scaling;
     }
 
     private double ResolveTabWidth(int visibleCount, Size referenceSize)

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -908,26 +909,154 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
         private static string GetDiscriminatorKey(INamedTypeSymbol typeSymbol)
         {
-            if (typeSymbol.ContainingType is null)
+            return GetTypeFullName(typeSymbol);
+        }
+
+        private static string GetTypeFullName(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol switch
             {
-                string namespacePrefix = typeSymbol.ContainingNamespace.IsGlobalNamespace
+                IArrayTypeSymbol arrayTypeSymbol => GetArrayTypeFullName(arrayTypeSymbol),
+                INamedTypeSymbol namedTypeSymbol => GetNamedTypeFullName(namedTypeSymbol),
+                IPointerTypeSymbol pointerTypeSymbol => GetTypeFullName(pointerTypeSymbol.PointedAtType) + "*",
+                _ => typeSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)
+            };
+        }
+
+        private static string GetArrayTypeFullName(IArrayTypeSymbol arrayTypeSymbol)
+        {
+            string rankSpecifier = arrayTypeSymbol.Rank == 1
+                ? "[]"
+                : "[" + new string(',', arrayTypeSymbol.Rank - 1) + "]";
+
+            return GetTypeFullName(arrayTypeSymbol.ElementType) + rankSpecifier;
+        }
+
+        private static string GetNamedTypeFullName(INamedTypeSymbol typeSymbol)
+        {
+            INamedTypeSymbol effectiveType = typeSymbol.TupleUnderlyingType ?? typeSymbol;
+
+            if (effectiveType.ContainingType is null)
+            {
+                string namespacePrefix = effectiveType.ContainingNamespace.IsGlobalNamespace
                     ? string.Empty
-                    : typeSymbol.ContainingNamespace.ToDisplayString() + ".";
-                return namespacePrefix + typeSymbol.MetadataName;
+                    : effectiveType.ContainingNamespace.ToDisplayString() + ".";
+                return AppendGenericArguments(namespacePrefix + effectiveType.MetadataName, effectiveType);
             }
 
             var containingTypes = new Stack<string>();
-            INamedTypeSymbol? current = typeSymbol;
+            INamedTypeSymbol? current = effectiveType;
             while (current is not null)
             {
                 containingTypes.Push(current.MetadataName);
                 current = current.ContainingType;
             }
 
-            string namespacePrefixNested = typeSymbol.ContainingNamespace.IsGlobalNamespace
+            string namespacePrefixNested = effectiveType.ContainingNamespace.IsGlobalNamespace
                 ? string.Empty
-                : typeSymbol.ContainingNamespace.ToDisplayString() + ".";
-            return namespacePrefixNested + string.Join("+", containingTypes);
+                : effectiveType.ContainingNamespace.ToDisplayString() + ".";
+            return AppendGenericArguments(namespacePrefixNested + string.Join("+", containingTypes), effectiveType);
+        }
+
+        private static string AppendGenericArguments(string typeName, INamedTypeSymbol typeSymbol)
+        {
+            List<ITypeSymbol> typeArguments = GetFlattenedTypeArguments(typeSymbol);
+            if (typeArguments.Count == 0)
+            {
+                return typeName;
+            }
+
+            return typeName + "[" + string.Join(",", typeArguments.Select(GetBracketedAssemblyQualifiedTypeName)) + "]";
+        }
+
+        private static List<ITypeSymbol> GetFlattenedTypeArguments(INamedTypeSymbol typeSymbol)
+        {
+            var containingTypes = new Stack<INamedTypeSymbol>();
+            INamedTypeSymbol? current = typeSymbol;
+            while (current is not null)
+            {
+                containingTypes.Push(current);
+                current = current.ContainingType;
+            }
+
+            var flattened = new List<ITypeSymbol>();
+            while (containingTypes.Count > 0)
+            {
+                INamedTypeSymbol segment = containingTypes.Pop();
+                ImmutableArray<ITypeSymbol> segmentArguments = segment.TypeArguments;
+                if (segmentArguments.Length == 0)
+                {
+                    continue;
+                }
+
+                int ownArgumentCount = segment.Arity;
+                int startIndex = Math.Max(0, segmentArguments.Length - ownArgumentCount);
+                for (int i = startIndex; i < segmentArguments.Length; i++)
+                {
+                    flattened.Add(segmentArguments[i]);
+                }
+            }
+
+            return flattened;
+        }
+
+        private static string GetBracketedAssemblyQualifiedTypeName(ITypeSymbol typeSymbol)
+        {
+            return "[" + GetAssemblyQualifiedTypeName(typeSymbol) + "]";
+        }
+
+        private static string GetAssemblyQualifiedTypeName(ITypeSymbol typeSymbol)
+        {
+            string typeName = GetTypeFullName(typeSymbol);
+            IAssemblySymbol? assemblySymbol = GetContainingAssembly(typeSymbol);
+            if (assemblySymbol is null)
+            {
+                return typeName;
+            }
+
+            return typeName + ", " + GetAssemblyDisplayName(assemblySymbol);
+        }
+
+        private static IAssemblySymbol? GetContainingAssembly(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol switch
+            {
+                IArrayTypeSymbol arrayTypeSymbol => GetContainingAssembly(arrayTypeSymbol.ElementType),
+                IPointerTypeSymbol pointerTypeSymbol => GetContainingAssembly(pointerTypeSymbol.PointedAtType),
+                _ => typeSymbol.ContainingAssembly
+            };
+        }
+
+        private static string GetAssemblyDisplayName(IAssemblySymbol assemblySymbol)
+        {
+            AssemblyIdentity identity = assemblySymbol.Identity;
+            string cultureName = string.IsNullOrEmpty(identity.CultureName)
+                ? "neutral"
+                : identity.CultureName;
+
+            return identity.Name
+                   + ", Version="
+                   + identity.Version.ToString()
+                   + ", Culture="
+                   + cultureName
+                   + ", PublicKeyToken="
+                   + FormatPublicKeyToken(identity.PublicKeyToken);
+        }
+
+        private static string FormatPublicKeyToken(ImmutableArray<byte> publicKeyToken)
+        {
+            if (publicKeyToken.IsDefaultOrEmpty)
+            {
+                return "null";
+            }
+
+            var builder = new StringBuilder(publicKeyToken.Length * 2);
+            foreach (byte value in publicKeyToken)
+            {
+                builder.Append(value.ToString("x2", CultureInfo.InvariantCulture));
+            }
+
+            return builder.ToString();
         }
     }
 

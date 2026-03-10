@@ -10,6 +10,8 @@ using Xunit;
 
 [assembly: DockJsonSourceGeneration]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.RegisteredPayload))]
+[assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.GenericRegisteredPayload<int>))]
+[assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.GenericRegisteredPayload<string>))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenSharedTypes.LibraryRootDock))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenSharedTypes.LibraryDocumentDock))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenSharedTypes.LibraryToolDock))]
@@ -67,6 +69,40 @@ public class SourceGeneratedSerializerTests
         var payload = Assert.IsType<RegisteredPayload>(template.Content);
         Assert.Equal("TemplateTag", template.TemplateTag);
         Assert.Equal("TemplatePayload", payload.Name);
+    }
+
+    [Fact]
+    public void GeneratedSerializer_Roundtrip_ClosedGenericPayloadRegistrations_Work()
+    {
+        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+
+        IDocumentTemplate intSource = new CustomDocumentTemplate
+        {
+            TemplateTag = "IntTemplate",
+            Content = new GenericRegisteredPayload<int> { Value = 42 }
+        };
+
+        string intJson = serializer.Serialize(intSource);
+        IDocumentTemplate? intRestored = serializer.Deserialize<IDocumentTemplate>(intJson);
+
+        var intTemplate = Assert.IsType<CustomDocumentTemplate>(intRestored);
+        var intPayload = Assert.IsType<GenericRegisteredPayload<int>>(intTemplate.Content);
+        Assert.Equal("IntTemplate", intTemplate.TemplateTag);
+        Assert.Equal(42, intPayload.Value);
+
+        IDocumentTemplate stringSource = new CustomDocumentTemplate
+        {
+            TemplateTag = "StringTemplate",
+            Content = new GenericRegisteredPayload<string> { Value = "Payload" }
+        };
+
+        string stringJson = serializer.Serialize(stringSource);
+        IDocumentTemplate? stringRestored = serializer.Deserialize<IDocumentTemplate>(stringJson);
+
+        var stringTemplate = Assert.IsType<CustomDocumentTemplate>(stringRestored);
+        var stringPayload = Assert.IsType<GenericRegisteredPayload<string>>(stringTemplate.Content);
+        Assert.Equal("StringTemplate", stringTemplate.TemplateTag);
+        Assert.Equal("Payload", stringPayload.Value);
     }
 
     [Fact]
@@ -320,6 +356,11 @@ public class SourceGeneratedSerializerTests
 public sealed class RegisteredPayload
 {
     public string? Name { get; set; }
+}
+
+public sealed class GenericRegisteredPayload<T>
+{
+    public T Value { get; set; } = default!;
 }
 
 public sealed class UnregisteredPayload

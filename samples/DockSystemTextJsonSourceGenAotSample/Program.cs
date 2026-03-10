@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using Dock.Model.Inpc.Controls;
-using Dock.Model.Inpc.Core;
+using Dock.Model.Mvvm.Controls;
+using Dock.Model.Mvvm.Core;
 using Dock.Serializer.SystemTextJson;
 
 [assembly: DockJsonSourceGeneration]

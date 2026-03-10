@@ -7,6 +7,7 @@
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RuntimeIdentifiers>linux-x64;osx-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(RuntimeIdentifier)' != ''">
@@ -22,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.Inpc\Dock.Model.Inpc.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
     <ProjectReference Include="..\..\src\Dock.Serializer.SystemTextJson.Generators\Dock.Serializer.SystemTextJson.Generators.csproj"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false"

@@ -30,6 +30,17 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class ManagedWindowParityTests
 {
+    private sealed class RecordingManagedFactory : Factory
+    {
+        public int FloatCount { get; private set; }
+
+        public override void FloatDockable(IDockable dockable)
+        {
+            FloatCount++;
+            base.FloatDockable(dockable);
+        }
+    }
+
     private static (ManagedHostWindow Host, DockWindow Window, IRootDock Root) CreateManagedWindow(Factory factory)
     {
         return CreateManagedWindow(factory, new DockWindow());
@@ -399,6 +410,37 @@ public class ManagedWindowParityTests
             DockSettings.ShowDockablePreviewOnDrag = originalPreview;
             DockSettings.UseManagedWindows = originalManaged;
         }
+    }
+
+    [AvaloniaFact]
+    public void ManagedHostWindowDrag_InvalidDrop_DoesNotFloatManagedDocument()
+    {
+        var factory = new RecordingManagedFactory();
+        var (host, window, _) = CreateManagedWindow(factory);
+        var dock = ManagedWindowRegistry.GetOrCreateDock(factory);
+        var managedDocument = dock.VisibleDockables!.OfType<ManagedDockWindowDocument>()
+            .Single(document => ReferenceEquals(document.Window, window));
+
+        var state = new ManagedHostWindowState(new DockManager(new DockService()), host);
+        var contextField = typeof(ManagedHostWindowState)
+            .GetField("_context", BindingFlags.Instance | BindingFlags.NonPublic)!;
+        var context = contextField.GetValue(state)!;
+        context.GetType().GetProperty("DoDragDrop")!.SetValue(context, true);
+        context.GetType().GetProperty("DragDockable")!.SetValue(context, managedDocument);
+        context.GetType().GetProperty("TargetDockControl")!.SetValue(context, new DockControl());
+        context.GetType().GetProperty("TargetPoint")!.SetValue(context, new Point(5, 5));
+
+        var dropControl = new Border();
+        dropControl.SetValue(DockProperties.IsDropEnabledProperty, true);
+
+        var dropControlProperty = typeof(DockManagerState)
+            .GetProperty("DropControl", BindingFlags.Instance | BindingFlags.NonPublic)!;
+        dropControlProperty.SetValue(state, dropControl);
+
+        state.Process(new PixelPoint(5, 5), EventType.Released);
+
+        Assert.Equal(0, factory.FloatCount);
+        Assert.Contains(managedDocument, dock.VisibleDockables!);
     }
 
     [AvaloniaFact]

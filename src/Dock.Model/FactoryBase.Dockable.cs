@@ -14,7 +14,7 @@ public abstract partial class FactoryBase
 {
     private const double DefaultFloatingWidth = 300;
     private const double DefaultFloatingHeight = 400;
-    private const double MinimumTrackedFloatingSize = 32;
+    private const double MinimumTrackedFloatingSize = 16;
 
     /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)

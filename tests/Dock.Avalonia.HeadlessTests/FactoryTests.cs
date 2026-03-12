@@ -235,6 +235,30 @@ public class FactoryTests
         Assert.Equal(700, factory.SplitHeight);
     }
 
+    [AvaloniaFact]
+    public void FloatDockable_PreservesSmallTrackedDocumentBoundsAboveTinyThreshold()
+    {
+        var factory = new RecordingFloatFactory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        root.HiddenDockables = factory.CreateList<IDockable>();
+        root.Windows = factory.CreateList<IDockWindow>();
+
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+        documentDock.SetVisibleBounds(0, 0, 900, 700);
+        factory.AddDockable(root, documentDock);
+
+        var document = factory.CreateDocument();
+        document.SetVisibleBounds(0, 0, 24, 24);
+        factory.AddDockable(documentDock, document);
+
+        factory.FloatDockable(document);
+
+        Assert.Equal(24, factory.SplitWidth);
+        Assert.Equal(24, factory.SplitHeight);
+    }
+
 
     [AvaloniaFact]
     public void DockingState_HiddenContainer_Propagates_To_Descendants()

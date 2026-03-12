@@ -11,6 +11,18 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class FactoryTests
 {
+    private sealed class RecordingFloatFactory : TestFactory
+    {
+        public double? SplitWidth { get; private set; }
+        public double? SplitHeight { get; private set; }
+
+        public override void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height, DockWindowOptions? options)
+        {
+            SplitWidth = width;
+            SplitHeight = height;
+        }
+    }
+
     [AvaloniaFact]
     public void TestFactory_Ctor()
     {
@@ -197,6 +209,30 @@ public class FactoryTests
 
         factory.RestoreDockable(document);
         Assert.Equal(DockingWindowState.Document | DockingWindowState.Floating, document.DockingState);
+    }
+
+    [AvaloniaFact]
+    public void FloatDockable_UsesOwnerSize_WhenTrackedDocumentBoundsAreTiny()
+    {
+        var factory = new RecordingFloatFactory();
+        var root = factory.CreateRootDock();
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        root.HiddenDockables = factory.CreateList<IDockable>();
+        root.Windows = factory.CreateList<IDockWindow>();
+
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+        documentDock.SetVisibleBounds(0, 0, 900, 700);
+        factory.AddDockable(root, documentDock);
+
+        var document = factory.CreateDocument();
+        document.SetVisibleBounds(0, 0, 10, 10);
+        factory.AddDockable(documentDock, document);
+
+        factory.FloatDockable(document);
+
+        Assert.Equal(900, factory.SplitWidth);
+        Assert.Equal(700, factory.SplitHeight);
     }
 
 

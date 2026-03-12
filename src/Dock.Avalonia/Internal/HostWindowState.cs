@@ -101,7 +101,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         LocalAdornerHelper.SetGlobalDockActive(globalOperation != DockOperation.None);
     }
 
-    private void Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
+    private bool Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
         var localOperation = DockOperation.Window;
         var globalOperation = DockOperation.None;
@@ -120,7 +120,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (DropControl is null)
         {
-            return;
+            return false;
         }
 
         var layout = _hostWindow.Window?.Layout;
@@ -129,7 +129,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         {
             if (DropControl is not { } dropCtrl)
             {
-                return;
+                return false;
             }
 
             if (layout?.ActiveDockable is { } sourceDockable
@@ -137,10 +137,11 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             {
                 if (!ValidateGlobalTarget(sourceDockable, targetDock))
                 {
-                    return;
+                    return false;
                 }
 
                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
+                return true;
             }
         }
         else
@@ -151,9 +152,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                 if (localOperation != DockOperation.Window)
                 {
                     Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     private void Leave()
@@ -327,6 +331,8 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             {
                 if (_context.DoDragDrop)
                 {
+                    var executed = false;
+
                     if (_context.TargetDockControl is { } && DropControl is { })
                     {
                         var isDropEnabled = true;
@@ -338,9 +344,21 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
                         if (isDropEnabled)
                         {
-                            Drop(_context.TargetPoint, _context.DragAction, DropControl, _context.TargetDockControl);
+                            executed = Drop(_context.TargetPoint, _context.DragAction, DropControl, _context.TargetDockControl);
                         }
-                    } 
+                    }
+
+                    if (!executed
+                        && _hostWindow.DataContext is IDockable dockable
+                        && DockCapabilityResolver.IsEnabled(
+                            dockable,
+                            DockCapability.Float,
+                            DockCapabilityResolver.ResolveOperationDock(dockable))
+                        && _hostWindow.Window?.Factory is { } factory)
+                    {
+                        dockable.SetPointerScreenPosition(point.X, point.Y);
+                        factory.FloatDockable(dockable);
+                    }
                 }
 
                 Leave();

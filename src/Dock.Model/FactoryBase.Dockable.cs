@@ -12,6 +12,10 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
+    private const double DefaultFloatingWidth = 300;
+    private const double DefaultFloatingHeight = 400;
+    private const double MinimumTrackedFloatingSize = 16;
+
     /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)
     {
@@ -624,6 +628,21 @@ public abstract partial class FactoryBase
         return !double.IsNaN(value) && !double.IsInfinity(value) && value > 0;
     }
 
+    private static double ResolveFloatingSize(double dockableSize, double ownerSize, double fallbackSize)
+    {
+        if (IsValidSize(dockableSize) && dockableSize > MinimumTrackedFloatingSize)
+        {
+            return dockableSize;
+        }
+
+        if (IsValidSize(ownerSize) && ownerSize > MinimumTrackedFloatingSize)
+        {
+            return ownerSize;
+        }
+
+        return fallbackSize;
+    }
+
     /// <inheritdoc/>
     public virtual void PinDockable(IDockable dockable)
     {
@@ -1016,14 +1035,8 @@ public abstract partial class FactoryBase
         {
             dockablePointerScreenY = !double.IsNaN(dockableY) ? dockableY : !double.IsNaN(ownerY) ? ownerY : 0;
         }
-        if (double.IsNaN(dockableWidth))
-        {
-            dockableWidth = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
-        }
-        if (double.IsNaN(dockableHeight))
-        {
-            dockableHeight = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
-        }
+        dockableWidth = ResolveFloatingSize(dockableWidth, ownerWidth, DefaultFloatingWidth);
+        dockableHeight = ResolveFloatingSize(dockableHeight, ownerHeight, DefaultFloatingHeight);
 
         PrepareWindowOptionsForDockable(dockable, options);
         SplitToWindow(dock, dockable, dockablePointerScreenX, dockablePointerScreenY, dockableWidth, dockableHeight, options);
@@ -1070,8 +1083,8 @@ public abstract partial class FactoryBase
             pointerY = !double.IsNaN(ownerY) ? ownerY : 0;
         }
 
-        var width = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
-        var height = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
+        var width = ResolveFloatingSize(double.NaN, ownerWidth, DefaultFloatingWidth);
+        var height = ResolveFloatingSize(double.NaN, ownerHeight, DefaultFloatingHeight);
 
         IDock targetDock = dock switch
         {

@@ -9,12 +9,26 @@ using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
+using System.Reflection;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
 
 public class DockControlStateTests
 {
+    private sealed class RecordingFactory : Factory
+    {
+        public int FloatCount { get; private set; }
+        public IDockable? LastFloatedDockable { get; private set; }
+
+        public override void FloatDockable(IDockable dockable)
+        {
+            FloatCount++;
+            LastFloatedDockable = dockable;
+        }
+    }
+
     private static DockControlState CreateState(DockManager manager)
     {
         return new DockControlState(manager, new DefaultDragOffsetCalculator());
@@ -49,6 +63,84 @@ public class DockControlStateTests
         state.Process(new Point(), new Vector(), EventType.Released, DragAction.None, dock, docks);
 
         Assert.False(dock.IsDraggingDock);
+    }
+
+    [AvaloniaFact]
+    public void Process_Released_Floats_WhenResolvedDropTargetHasDifferentDockGroup()
+    {
+        var factory = new RecordingFactory();
+        var root = factory.CreateRootDock();
+        root.Factory = factory;
+        root.VisibleDockables = factory.CreateList<IDockable>();
+
+        var sourceDock = factory.CreateDocumentDock();
+        sourceDock.VisibleDockables = factory.CreateList<IDockable>();
+        factory.AddDockable(root, sourceDock);
+
+        var targetDock = factory.CreateDocumentDock();
+        targetDock.VisibleDockables = factory.CreateList<IDockable>();
+        factory.AddDockable(root, targetDock);
+
+        var sourceDocument = factory.CreateDocument();
+        sourceDocument.DockGroup = "Documents";
+        factory.AddDockable(sourceDock, sourceDocument);
+
+        var targetDocument = factory.CreateDocument();
+        targetDocument.DockGroup = "Widgets";
+        factory.AddDockable(targetDock, targetDocument);
+
+        var dockControl = new DockControl
+        {
+            Layout = root
+        };
+        var window = new Window
+        {
+            Width = 300,
+            Height = 200,
+            Content = dockControl
+        };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+            dockControl.ApplyTemplate();
+
+            var state = CreateState(new DockManager(new DockService()));
+            var dragControl = new Control
+            {
+                DataContext = sourceDocument
+            };
+            var dropControl = new Border
+            {
+                DataContext = targetDocument
+            };
+            dropControl.SetValue(DockProperties.IsDropEnabledProperty, true);
+
+            var contextField = typeof(DockControlState)
+                .GetField("_context", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            var context = contextField.GetValue(state)!;
+            context.GetType().GetProperty("DragControl")!.SetValue(context, dragControl);
+            context.GetType().GetProperty("DoDragDrop")!.SetValue(context, true);
+            context.GetType().GetProperty("TargetPoint")!.SetValue(context, new Point(5, 5));
+            context.GetType().GetProperty("TargetDockControl")!.SetValue(context, dockControl);
+            context.GetType().GetProperty("ResolvedOperation")!.SetValue(context, DockOperation.Fill);
+            context.GetType().GetProperty("UseGlobalOperation")!.SetValue(context, false);
+            context.GetType().GetProperty("HasResolvedOperation")!.SetValue(context, true);
+
+            var dropControlProperty = typeof(DockManagerState)
+                .GetProperty("DropControl", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            dropControlProperty.SetValue(state, dropControl);
+
+            state.Process(new Point(5, 5), default, EventType.Released, DragAction.Move, dockControl, new List<IDockControl> { dockControl });
+
+            Assert.Equal(1, factory.FloatCount);
+            Assert.Same(sourceDocument, factory.LastFloatedDockable);
+        }
+        finally
+        {
+            window.Close();
+        }
     }
 
     [AvaloniaFact]

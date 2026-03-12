@@ -91,6 +91,8 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
             {
                 if (_context.DoDragDrop)
                 {
+                    var executed = false;
+
                     if (_context.TargetDockControl is { } && DropControl is { })
                     {
                         var isDropEnabled = true;
@@ -101,8 +103,20 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
                         if (isDropEnabled)
                         {
-                            Drop(_context.TargetPoint, _context.DragAction, DropControl, _context.TargetDockControl);
+                            executed = Drop(_context.TargetPoint, _context.DragAction, DropControl, _context.TargetDockControl);
                         }
+                    }
+
+                    if (!executed
+                        && _context.DragDockable is { } dockable
+                        && DockCapabilityResolver.IsEnabled(
+                            dockable,
+                            DockCapability.Float,
+                            DockCapabilityResolver.ResolveOperationDock(dockable))
+                        && _hostWindow.Window?.Factory is { } factory)
+                    {
+                        dockable.SetPointerScreenPosition(screenPoint.X, screenPoint.Y);
+                        factory.FloatDockable(dockable);
                     }
                 }
 
@@ -318,7 +332,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
         LocalAdornerHelper.SetGlobalDockActive(globalOperation != DockOperation.None);
     }
 
-    private void Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
+    private bool Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
         var localOperation = DockOperation.Window;
         var globalOperation = DockOperation.None;
@@ -337,7 +351,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
         if (DropControl is null)
         {
-            return;
+            return false;
         }
 
         var layout = _hostWindow.Window?.Layout;
@@ -346,7 +360,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
         {
             if (DropControl is not { } dropCtrl)
             {
-                return;
+                return false;
             }
 
             if (layout?.ActiveDockable is { } sourceDockable
@@ -354,10 +368,11 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
             {
                 if (!ValidateGlobalTarget(sourceDockable, targetDock))
                 {
-                    return;
+                    return false;
                 }
 
                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
+                return true;
             }
         }
         else
@@ -368,9 +383,12 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
                 if (localOperation != DockOperation.Window)
                 {
                     Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     private void Leave()

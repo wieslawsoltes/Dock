@@ -221,7 +221,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             isValid);
     }
 
-    private void Drop(
+    private bool Drop(
         Point point,
         DragAction dragAction,
         Control dropControl,
@@ -231,21 +231,21 @@ internal class DockControlState : DockManagerState, IDockControlState
     {
         if (selectedOperation == DockOperation.None)
         {
-            return;
+            return false;
         }
 
         RemoveAdorners();
 
         if (_context.DragControl is null || DropControl is null)
         {
-            return;
+            return false;
         }
 
         if (useGlobalOperation)
         {
             if (DropControl is not { } dropCtrl)
             {
-                return;
+                return false;
             }
 
             if (_context.DragControl.DataContext is IDockable sourceDockable
@@ -267,10 +267,11 @@ internal class DockControlState : DockManagerState, IDockControlState
                             var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
                             var activePoint = active.PointToClient(screenPixel);
                             Float(activePoint, active, sourceDockable, factory, _context.DragOffset);
+                            return true;
                         }
-                     }
-                     return;
-                 }
+                    }
+                    return false;
+                }
 
                  // TODO: The validation fails in floating window as ActiveDockable is a tool dock.
                  // if (!ValidateGlobalTarget(sourceDockable, targetDock))
@@ -285,17 +286,18 @@ internal class DockControlState : DockManagerState, IDockControlState
                      sourceRoot,
                      targetRoot,
                      DockSettings.GlobalDockingProportion);
-             }
-         }
-         else
-         {
-             if (_context.DragControl.DataContext is IDockable sourceDockable)
-             {
-                 var target = DropControl.DataContext as IDockable;
-                 if (target is null)
-                 {
-                     return;
-                 }
+                return true;
+            }
+        }
+        else
+        {
+            if (_context.DragControl.DataContext is IDockable sourceDockable)
+            {
+                var target = DropControl.DataContext as IDockable;
+                if (target is null)
+                {
+                    return false;
+                }
 
                 if (!ValidateLocalTarget(sourceDockable, target))
                 {
@@ -304,21 +306,30 @@ internal class DockControlState : DockManagerState, IDockControlState
                     {
                         var activeDockControl = _context.DragControl.FindAncestorOfType<DockControl>();
                         var factory = activeDockControl?.Layout?.Factory ?? DropControl.FindAncestorOfType<DockControl>()?.Layout?.Factory;
-                         if (activeDockControl is { } active && factory is { })
+                        if (activeDockControl is { } active && factory is { })
                         {
                             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
                             var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
                             var activePoint = active.PointToClient(screenPixel);
                             Float(activePoint, active, sourceDockable, factory, _context.DragOffset);
+                            return true;
                         }
-                     }
-                     return;
-                 }
+                    }
+                    return false;
+                }
 
-                 Execute(point, selectedOperation, dragAction, relativeTo, sourceDockable, target);
-              }
-          }
-      }
+                if (selectedOperation == DockOperation.Window)
+                {
+                    return false;
+                }
+
+                Execute(point, selectedOperation, dragAction, relativeTo, sourceDockable, target);
+                return true;
+            }
+        }
+
+        return false;
+    }
 
      private void Leave()
      {
@@ -547,8 +558,13 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 selectedOperation = resolution.SelectedOperation;
                             }
 
-                            Drop(_context.TargetPoint, dragAction, dropControl, _context.TargetDockControl, useGlobalOperation, selectedOperation);
-                            executed = true;
+                            executed = Drop(
+                                _context.TargetPoint,
+                                dragAction,
+                                dropControl,
+                                _context.TargetDockControl,
+                                useGlobalOperation,
+                                selectedOperation);
                             LogDragState($"Drop executed on '{dropControl.GetType().Name}' with action '{dragAction}'.");
                         }
                         else

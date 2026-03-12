@@ -109,6 +109,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
                     if (!executed
                         && _context.DragDockable is { } dockable
+                        && dockable is not ManagedDockWindowDocument
                         && DockCapabilityResolver.IsEnabled(
                             dockable,
                             DockCapability.Float,

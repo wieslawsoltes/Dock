@@ -8,6 +8,6 @@ public partial class PrototypeCanvasView : ReactiveUserControl<PrototypeCanvasVi
 {
     public PrototypeCanvasView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

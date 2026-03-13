@@ -11,13 +11,7 @@ public partial class SolutionExplorerView : UserControl
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    private void OnTreeViewDoubleTapped(object? sender, TappedEventArgs e)
+private void OnTreeViewDoubleTapped(object? sender, TappedEventArgs e)
     {
         if (DataContext is SolutionExplorerViewModel viewModel)
         {

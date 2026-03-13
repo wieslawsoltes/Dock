@@ -8,6 +8,6 @@ public partial class ToolComparisonView : ReactiveUserControl<ToolComparisonView
 {
     public ToolComparisonView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

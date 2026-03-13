@@ -29,12 +29,7 @@ public partial class MainView : UserControl
         InitializeThemes();
         InitializeDockState();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
+    
     private void InitializeThemes()
     {
         var themeManager = App.ThemeManager;

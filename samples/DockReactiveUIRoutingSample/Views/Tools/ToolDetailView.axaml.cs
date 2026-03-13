@@ -8,6 +8,6 @@ public partial class ToolDetailView : ReactiveUserControl<ToolDetailViewModel>
 {
     public ToolDetailView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

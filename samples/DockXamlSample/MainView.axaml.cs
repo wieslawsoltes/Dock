@@ -25,6 +25,7 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
+        InitializeView();
         InitializeDockState();
     }
 
@@ -42,9 +43,8 @@ public partial class MainView : UserControl
         }
     }
 
-    private void InitializeComponent()
+    private void InitializeView()
     {
-        AvaloniaXamlLoader.Load(this);
         _viewsMenu = ViewsMenu;
         _rootDock = DockControl?.Layout as IRootDock;
 

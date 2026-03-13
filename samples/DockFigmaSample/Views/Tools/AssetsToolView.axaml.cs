@@ -8,6 +8,6 @@ public partial class AssetsToolView : ReactiveUserControl<AssetsToolViewModel>
 {
     public AssetsToolView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

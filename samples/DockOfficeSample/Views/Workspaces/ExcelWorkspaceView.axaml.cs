@@ -8,6 +8,6 @@ public partial class ExcelWorkspaceView : ReactiveUserControl<ExcelWorkspaceView
 {
     public ExcelWorkspaceView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

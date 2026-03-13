@@ -10,9 +10,4 @@ public partial class MessageDialogView : DockReactiveUserControl<MessageDialogVi
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

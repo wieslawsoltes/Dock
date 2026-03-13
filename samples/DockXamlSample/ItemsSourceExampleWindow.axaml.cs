@@ -9,9 +9,4 @@ public partial class ItemsSourceExampleWindow : Window
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 } 

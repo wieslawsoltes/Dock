@@ -8,6 +8,6 @@ public partial class DocumentHomeView : ReactiveUserControl<DocumentHomeViewMode
 {
     public DocumentHomeView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

@@ -41,13 +41,7 @@ public partial class MainView : UserControl
         UnregisterExternalSurfaces();
         base.OnDetachedFromVisualTree(e);
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    private void RegisterExternalSurfaces()
+private void RegisterExternalSurfaces()
     {
         if (_surfacesRegistered)
         {

@@ -10,9 +10,4 @@ public partial class TextPromptDialogView : DockReactiveUserControl<TextPromptDi
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

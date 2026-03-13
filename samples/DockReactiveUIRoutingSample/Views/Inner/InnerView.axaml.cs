@@ -8,6 +8,6 @@ public partial class InnerView : ReactiveUserControl<InnerViewModel>
 {
     public InnerView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

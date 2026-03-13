@@ -7,6 +7,6 @@ public partial class OfficeDocumentView : ReactiveUserControl<object>
 {
     public OfficeDocumentView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

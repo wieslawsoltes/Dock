@@ -8,6 +8,6 @@ public partial class InspectorDesignView : ReactiveUserControl<InspectorDesignVi
 {
     public InspectorDesignView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

@@ -10,9 +10,4 @@ public partial class ProjectListPageView : DockReactiveUserControl<ProjectListPa
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

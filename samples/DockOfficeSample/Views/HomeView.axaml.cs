@@ -8,6 +8,6 @@ public partial class HomeView : ReactiveUserControl<HomeViewModel>
 {
     public HomeView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

@@ -10,10 +10,5 @@ public partial class ToolView : ReactiveUserControl<ToolViewModel>
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }
 

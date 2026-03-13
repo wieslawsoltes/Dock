@@ -8,6 +8,6 @@ public partial class CanvasDocumentView : ReactiveUserControl<CanvasDocumentView
 {
     public CanvasDocumentView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

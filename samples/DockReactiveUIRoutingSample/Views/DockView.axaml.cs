@@ -8,6 +8,6 @@ public partial class DockView : ReactiveUserControl<DockViewModel>
 {
     public DockView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

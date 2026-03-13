@@ -457,7 +457,6 @@ internal class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton&lt;App&gt;();
         services.AddSingleton&lt;IViewLocator, ViewLocator&gt;();
 
         // Register data services
@@ -483,11 +482,17 @@ internal class Program
     }
 
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
-        =&gt; AppBuilder.Configure(() =&gt; provider.GetRequiredService&lt;App&gt;())
+        =&gt; AppBuilder.Configure(() =&gt; CreateApp(provider))
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()
             .LogToTrace();
+
+    private static App CreateApp(IServiceProvider provider) =&gt; new()
+    {
+        ServiceProvider = provider,
+        ViewLocator = provider.GetRequiredService&lt;IViewLocator&gt;()
+    };
 }
 </code></pre>
 </li>
@@ -506,40 +511,34 @@ namespace MyDockApp;
 
 public partial class App : Application
 {
-    public IServiceProvider? ServiceProvider { get; }
-    private readonly IViewLocator _viewLocator;
+    public IServiceProvider? ServiceProvider { get; init; }
+    public IViewLocator? ViewLocator { get; init; }
 
-    public App()
+    public override void Initialize()
     {
-    }
+        AvaloniaXamlLoader.Load(this);
 
-    public App(IServiceProvider? serviceProvider, IViewLocator viewLocator)
-    {
-        ServiceProvider = serviceProvider;
-        _viewLocator = viewLocator;
-    }
-
-public override void Initialize()
-{
-    AvaloniaXamlLoader.Load(this);
-    DataTemplates.Insert(0, (IDataTemplate)_viewLocator);
-}
-
-public override void OnFrameworkInitializationCompleted()
-{
-    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop &amp;&amp; ServiceProvider != null)
-    {
-        var viewModel = ServiceProvider.GetRequiredService&lt;MainWindowViewModel&gt;();
-        var view = ServiceProvider.GetRequiredService&lt;IViewFor&lt;MainWindowViewModel&gt;&gt;();
-        view.ViewModel = viewModel;
-        if (view is Window window)
+        if (ViewLocator is not null)
         {
-            desktop.MainWindow = window;
+            DataTemplates.Insert(0, (IDataTemplate)ViewLocator);
         }
     }
 
-    base.OnFrameworkInitializationCompleted();
-}
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop &amp;&amp; ServiceProvider != null)
+        {
+            var viewModel = ServiceProvider.GetRequiredService&lt;MainWindowViewModel&gt;();
+            var view = ServiceProvider.GetRequiredService&lt;IViewFor&lt;MainWindowViewModel&gt;&gt;();
+            view.ViewModel = viewModel;
+            if (view is Window window)
+            {
+                desktop.MainWindow = window;
+            }
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
 }
 </code></pre>
 </li>

@@ -19,6 +19,12 @@
   <PropertyGroup>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
+  <PropertyGroup>
+    <DockEnableGeneratedAppInitializeComponent>false</DockEnableGeneratedAppInitializeComponent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(DockEnableGeneratedAppInitializeComponent)' == 'true'">
+    <DefineConstants>$(DefineConstants);DOCK_USE_GENERATED_APP_INITIALIZE_COMPONENT</DefineConstants>
+  </PropertyGroup>
   <ItemGroup Label="PackageIcon">
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="" Visible="false" />
     <None Include="$(MSBuildThisFileDirectory)build/Assets/Icon.png" Pack="true" PackagePath="" Visible="false" />

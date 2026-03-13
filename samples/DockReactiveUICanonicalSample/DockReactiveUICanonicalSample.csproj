@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
     <AvaloniaNameGeneratorBehavior>InitializeComponent</AvaloniaNameGeneratorBehavior>
+    <DockEnableGeneratedAppInitializeComponent>true</DockEnableGeneratedAppInitializeComponent>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\GeneratedFiles</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>

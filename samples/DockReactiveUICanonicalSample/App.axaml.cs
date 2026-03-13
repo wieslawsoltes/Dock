@@ -22,13 +22,17 @@ using Splat;
 
 namespace DockReactiveUICanonicalSample;
 
-public class App : Application
+public partial class App : Application
 {
     public static IViewLocator ViewLocator { get; } = new ReactiveViewLocator();
 
     public override void Initialize()
     {
+#if DOCK_USE_GENERATED_APP_INITIALIZE_COMPONENT
+        InitializeComponent();
+#else
         AvaloniaXamlLoader.Load(this);
+#endif
         RegisterDockableTemplate();
         RegisterAppServices();
         RegisterViews();

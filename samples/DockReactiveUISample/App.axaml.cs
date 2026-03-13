@@ -14,14 +14,18 @@ namespace DockReactiveUISample;
 
 [RequiresUnreferencedCode("Requires unreferenced code for MainWindowViewModel.")]
 [RequiresDynamicCode("Requires unreferenced code for MainWindowViewModel.")]
-public class App : Application
+public partial class App : Application
 {
     public static IDockThemeManager? ThemeManager;
 
     public override void Initialize()
     {
         ThemeManager = new DockFluentThemeManager();
+#if DOCK_USE_GENERATED_APP_INITIALIZE_COMPONENT
+        InitializeComponent();
+#else
         AvaloniaXamlLoader.Load(this);
+#endif
     }
 
     public override void OnFrameworkInitializationCompleted()

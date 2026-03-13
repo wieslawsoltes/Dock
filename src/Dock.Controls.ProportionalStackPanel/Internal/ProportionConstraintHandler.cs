@@ -27,10 +27,6 @@ internal class ProportionConstraintHandler
         var minProp = !double.IsNaN(min) && min > 0 ? min / _availableDimension : 0.0;
         var maxProp = !double.IsNaN(max) && !double.IsPositiveInfinity(max) ? max / _availableDimension : double.PositiveInfinity;
 
-#if NETSTANDARD2_0
-        return ProportionUtils.Clamp(proportion, minProp, maxProp);
-#else
         return Math.Clamp(proportion, minProp, maxProp);
-#endif
     }
 }

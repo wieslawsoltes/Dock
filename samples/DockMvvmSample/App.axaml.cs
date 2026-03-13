@@ -20,7 +20,6 @@ public class App : Application
     {
         ThemeManager = new DockFluentThemeManager();
 
-        AvaloniaXamlLoader.Load(this);
     }
 
     public override void OnFrameworkInitializationCompleted()

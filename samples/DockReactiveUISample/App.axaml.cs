@@ -21,6 +21,7 @@ public class App : Application
     public override void Initialize()
     {
         ThemeManager = new DockFluentThemeManager();
+        AvaloniaXamlLoader.Load(this);
     }
 
     public override void OnFrameworkInitializationCompleted()

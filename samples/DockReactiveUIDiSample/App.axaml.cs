@@ -20,6 +20,7 @@ public partial class App : Application
 
     public override void Initialize()
     {
+        AvaloniaXamlLoader.Load(this);
         if (ViewLocator is not null)
         {
             DataTemplates.Insert(0, (IDataTemplate)ViewLocator);

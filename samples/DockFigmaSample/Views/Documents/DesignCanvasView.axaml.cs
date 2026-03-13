@@ -8,6 +8,6 @@ public partial class DesignCanvasView : ReactiveUserControl<DesignCanvasViewMode
 {
     public DesignCanvasView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

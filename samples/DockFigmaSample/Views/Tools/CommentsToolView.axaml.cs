@@ -8,6 +8,6 @@ public partial class CommentsToolView : ReactiveUserControl<CommentsToolViewMode
 {
     public CommentsToolView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

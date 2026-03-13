@@ -8,6 +8,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
     public MainWindow()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

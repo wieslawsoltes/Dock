@@ -10,9 +10,4 @@ public partial class RibbonPageView : DockReactiveUserControl<RibbonPageViewMode
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

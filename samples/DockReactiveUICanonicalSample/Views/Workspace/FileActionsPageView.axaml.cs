@@ -10,9 +10,4 @@ public partial class FileActionsPageView : DockReactiveUserControl<FileActionsPa
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

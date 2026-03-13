@@ -15,26 +15,20 @@ namespace DockReactiveUIDiSample;
 
 public partial class App : Application
 {
-    public IServiceProvider? ServiceProvider { get; }
-    private readonly IViewLocator _viewLocator;
-
-    // ReSharper disable once UnusedMember.Global
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    public App()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    {
-    }
-
-    public App(IServiceProvider? serviceProvider, IViewLocator viewLocator)
-    {
-        ServiceProvider = serviceProvider;
-        _viewLocator = viewLocator;
-    }
+    public IServiceProvider? ServiceProvider { get; init; }
+    public IViewLocator? ViewLocator { get; init; }
 
     public override void Initialize()
     {
+#if DOCK_USE_GENERATED_APP_INITIALIZE_COMPONENT
+        InitializeComponent();
+#else
         AvaloniaXamlLoader.Load(this);
-        DataTemplates.Insert(0, (IDataTemplate)_viewLocator);
+#endif
+        if (ViewLocator is not null)
+        {
+            DataTemplates.Insert(0, (IDataTemplate)ViewLocator);
+        }
     }
 
     public override void OnFrameworkInitializationCompleted()

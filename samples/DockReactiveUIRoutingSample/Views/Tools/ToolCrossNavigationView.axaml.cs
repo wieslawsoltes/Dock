@@ -8,6 +8,6 @@ public partial class ToolCrossNavigationView : ReactiveUserControl<ToolCrossNavi
 {
     public ToolCrossNavigationView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

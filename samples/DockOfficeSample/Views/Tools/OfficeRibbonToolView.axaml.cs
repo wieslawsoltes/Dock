@@ -8,6 +8,6 @@ public partial class OfficeRibbonToolView : ReactiveUserControl<OfficeRibbonTool
 {
     public OfficeRibbonToolView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

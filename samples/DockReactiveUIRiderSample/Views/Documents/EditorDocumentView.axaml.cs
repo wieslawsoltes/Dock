@@ -28,13 +28,7 @@ public partial class EditorDocumentView : UserControl
 
         DataContextChanged += (_, _) => UpdateGrammar();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    private void OnCaretPositionChanged(object? sender, EventArgs e)
+private void OnCaretPositionChanged(object? sender, EventArgs e)
     {
         if (DataContext is EditorDocumentViewModel viewModel && Editor is not null)
         {

@@ -9,9 +9,4 @@ public partial class FindView : UserControl
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

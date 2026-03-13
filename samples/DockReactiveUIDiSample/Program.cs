@@ -33,7 +33,6 @@ internal class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<App>();
         services.AddSingleton<IViewLocator, ViewLocator>();
         services.AddSingleton<DemoData>();
         services.AddTransient<DocumentViewModel>();
@@ -47,16 +46,26 @@ internal class Program
    }
 
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
-        => AppBuilder.Configure(provider.GetRequiredService<App>)
+        => AppBuilder.Configure(() => CreateApp(provider))
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()
             .LogToTrace();
 
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure(() => Initialize().GetRequiredService<App>())
+        => AppBuilder.Configure(() =>
+        {
+            var provider = Initialize();
+            return CreateApp(provider);
+        })
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()
             .LogToTrace();
+
+    private static App CreateApp(IServiceProvider provider) => new()
+    {
+        ServiceProvider = provider,
+        ViewLocator = provider.GetRequiredService<IViewLocator>()
+    };
 }

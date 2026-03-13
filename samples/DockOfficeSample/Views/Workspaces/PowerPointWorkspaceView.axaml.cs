@@ -8,6 +8,6 @@ public partial class PowerPointWorkspaceView : ReactiveUserControl<PowerPointWor
 {
     public PowerPointWorkspaceView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

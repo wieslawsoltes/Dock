@@ -8,6 +8,6 @@ public partial class WordWorkspaceView : ReactiveUserControl<WordWorkspaceViewMo
 {
     public WordWorkspaceView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

@@ -6,7 +6,7 @@ public partial class MainWindow : Avalonia.Controls.Window
 {
     public MainWindow()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
         Title = "Dock Simplified Fluent Sample";
         Width = 800;
         Height = 600;

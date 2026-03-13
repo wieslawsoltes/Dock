@@ -8,6 +8,6 @@ public partial class LayersToolView : ReactiveUserControl<LayersToolViewModel>
 {
     public LayersToolView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

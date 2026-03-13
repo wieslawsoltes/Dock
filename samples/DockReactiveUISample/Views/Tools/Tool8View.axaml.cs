@@ -9,9 +9,4 @@ public partial class Tool8View : UserControl
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

@@ -8,6 +8,6 @@ public partial class OfficeDocumentPageView : ReactiveUserControl<OfficeDocument
 {
     public OfficeDocumentPageView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

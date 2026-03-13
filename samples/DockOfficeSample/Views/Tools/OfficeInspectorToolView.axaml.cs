@@ -8,6 +8,6 @@ public partial class OfficeInspectorToolView : ReactiveUserControl<OfficeInspect
 {
     public OfficeInspectorToolView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

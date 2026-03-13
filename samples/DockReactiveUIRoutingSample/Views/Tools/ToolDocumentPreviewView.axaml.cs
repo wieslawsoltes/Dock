@@ -8,6 +8,6 @@ public partial class ToolDocumentPreviewView : ReactiveUserControl<ToolDocumentP
 {
     public ToolDocumentPreviewView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

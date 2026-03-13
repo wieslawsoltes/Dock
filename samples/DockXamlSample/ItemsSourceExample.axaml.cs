@@ -14,9 +14,4 @@ public partial class ItemsSourceExample : UserControl
         // Add debug logging to see if this is even called
         System.Diagnostics.Debug.WriteLine("ItemsSourceExample constructor called");
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 } 

@@ -10,10 +10,5 @@ public partial class DocumentView : ReactiveUserControl<DocumentViewModel>
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }
 

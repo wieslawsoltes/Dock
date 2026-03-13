@@ -10,9 +10,4 @@ public partial class DockView : DockReactiveUserControl<DockViewModel>
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

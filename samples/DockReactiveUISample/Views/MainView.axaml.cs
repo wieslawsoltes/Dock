@@ -15,13 +15,7 @@ public partial class MainView : UserControl
         InitializeComponent();
         InitializeThemes();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    private void InitializeThemes()
+private void InitializeThemes()
     {
         var themeManager = App.ThemeManager;
 

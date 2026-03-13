@@ -10,9 +10,4 @@ public partial class ToolPanelPageView : DockReactiveUserControl<ToolPanelPageVi
     {
         InitializeComponent();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

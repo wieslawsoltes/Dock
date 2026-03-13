@@ -8,6 +8,6 @@ public partial class DocumentView : ReactiveUserControl<DocumentViewModel>
 {
     public DocumentView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

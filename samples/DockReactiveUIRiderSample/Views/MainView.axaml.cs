@@ -20,13 +20,7 @@ public partial class MainView : UserControl
         InitializeComponent();
         ApplyPlatformInsets();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    private void OnTitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
+private void OnTitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {

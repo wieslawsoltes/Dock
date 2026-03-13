@@ -6,7 +6,7 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
-    <AvaloniaNameGeneratorBehavior>OnlyProperties</AvaloniaNameGeneratorBehavior>
+    <AvaloniaNameGeneratorBehavior>InitializeComponent</AvaloniaNameGeneratorBehavior>
   </PropertyGroup>
 
   <Import Project="..\..\build\AOT.props" />

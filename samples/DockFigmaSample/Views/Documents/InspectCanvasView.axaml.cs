@@ -8,6 +8,6 @@ public partial class InspectCanvasView : ReactiveUserControl<InspectCanvasViewMo
 {
     public InspectCanvasView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

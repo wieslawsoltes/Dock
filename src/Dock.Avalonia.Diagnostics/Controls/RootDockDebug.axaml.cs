@@ -101,13 +101,7 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
 
         DockDiagnosticEvents.SelectDockableRequested -= OnSelectDockableRequested;
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    private void OnDataContextChanged(object? sender, EventArgs e)
+private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (_subscriptions is not null)
         {

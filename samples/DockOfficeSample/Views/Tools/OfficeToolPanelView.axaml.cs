@@ -8,6 +8,6 @@ public partial class OfficeToolPanelView : ReactiveUserControl<OfficeToolPanelVi
 {
     public OfficeToolPanelView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

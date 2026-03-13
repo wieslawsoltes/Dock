@@ -5,7 +5,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
-    <AvaloniaNameGeneratorBehavior>OnlyProperties</AvaloniaNameGeneratorBehavior>
+    <AvaloniaNameGeneratorBehavior>InitializeComponent</AvaloniaNameGeneratorBehavior>
+    <DockEnableGeneratedAppInitializeComponent>true</DockEnableGeneratedAppInitializeComponent>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\GeneratedFiles</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>

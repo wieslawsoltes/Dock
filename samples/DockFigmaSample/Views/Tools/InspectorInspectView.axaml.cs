@@ -8,6 +8,6 @@ public partial class InspectorInspectView : ReactiveUserControl<InspectorInspect
 {
     public InspectorInspectView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

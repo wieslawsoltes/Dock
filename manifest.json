@@ -4928,7 +4928,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Dock.Model.DockService",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/Dock.Model.DockService.yml\" sourcestartlinenumber=\"1\">Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.</p>\n"
     },
     {
       "type": "ManagedReference",

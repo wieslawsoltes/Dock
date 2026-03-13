@@ -403,7 +403,6 @@ Follow these instructions to create a ReactiveUI application with dependency inj
 
        private static void ConfigureServices(IServiceCollection services)
        {
-           services.AddSingleton<App>();
            services.AddSingleton<IViewLocator, ViewLocator>();
            
            // Register data services
@@ -429,11 +428,17 @@ Follow these instructions to create a ReactiveUI application with dependency inj
        }
 
        public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
-           => AppBuilder.Configure(() => provider.GetRequiredService<App>())
+           => AppBuilder.Configure(() => CreateApp(provider))
                .UsePlatformDetect()
                .WithInterFont()
                .UseReactiveUI()
                .LogToTrace();
+
+       private static App CreateApp(IServiceProvider provider) => new()
+       {
+           ServiceProvider = provider,
+           ViewLocator = provider.GetRequiredService<IViewLocator>()
+       };
    }
    ```
 
@@ -459,6 +464,8 @@ Follow these instructions to create a ReactiveUI application with dependency inj
 
        public override void Initialize()
        {
+           AvaloniaXamlLoader.Load(this);
+
            if (ViewLocator is not null)
            {
                DataTemplates.Insert(0, (IDataTemplate)ViewLocator);

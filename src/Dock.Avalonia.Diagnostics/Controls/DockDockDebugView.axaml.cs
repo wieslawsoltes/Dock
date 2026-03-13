@@ -19,12 +19,4 @@ public partial class DockDockDebugView : UserControl
     {
         InitializeComponent();
     }
-
-    /// <summary>
-    /// Loads the control's XAML.
-    /// </summary>
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

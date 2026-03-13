@@ -454,40 +454,32 @@ Follow these instructions to create a ReactiveUI application with dependency inj
 
    public partial class App : Application
    {
-       public IServiceProvider? ServiceProvider { get; }
-       private readonly IViewLocator _viewLocator;
+       public IServiceProvider? ServiceProvider { get; init; }
+       public IViewLocator? ViewLocator { get; init; }
 
-       public App()
+       public override void Initialize()
        {
-       }
-
-       public App(IServiceProvider? serviceProvider, IViewLocator viewLocator)
-       {
-           ServiceProvider = serviceProvider;
-           _viewLocator = viewLocator;
-       }
-
-   public override void Initialize()
-   {
-       AvaloniaXamlLoader.Load(this);
-       DataTemplates.Insert(0, (IDataTemplate)_viewLocator);
-   }
-
-   public override void OnFrameworkInitializationCompleted()
-   {
-       if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && ServiceProvider != null)
-       {
-           var viewModel = ServiceProvider.GetRequiredService<MainWindowViewModel>();
-           var view = ServiceProvider.GetRequiredService<IViewFor<MainWindowViewModel>>();
-           view.ViewModel = viewModel;
-           if (view is Window window)
+           if (ViewLocator is not null)
            {
-               desktop.MainWindow = window;
+               DataTemplates.Insert(0, (IDataTemplate)ViewLocator);
            }
        }
 
-       base.OnFrameworkInitializationCompleted();
-   }
+       public override void OnFrameworkInitializationCompleted()
+       {
+           if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && ServiceProvider != null)
+           {
+               var viewModel = ServiceProvider.GetRequiredService<MainWindowViewModel>();
+               var view = ServiceProvider.GetRequiredService<IViewFor<MainWindowViewModel>>();
+               view.ViewModel = viewModel;
+               if (view is Window window)
+               {
+                   desktop.MainWindow = window;
+               }
+           }
+
+           base.OnFrameworkInitializationCompleted();
+       }
    }
    ```
 

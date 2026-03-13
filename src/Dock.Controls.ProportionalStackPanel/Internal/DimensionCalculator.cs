@@ -32,11 +32,7 @@ internal class DimensionCalculator
         // if the sum of fractions made up a whole pixel/pixels, add it to the dimension
         var round = Math.Round(sumOfFractions, 1);
         
-#if NETSTANDARD2_0
-        var clamp = Clamp(Math.Floor(sumOfFractions), 1, double.MaxValue);
-#else
         var clamp = Math.Clamp(Math.Floor(sumOfFractions), 1, double.MaxValue);
-#endif
         if (round - clamp >= 0)
         {
             sumOfFractions -= Math.Round(sumOfFractions);
@@ -44,17 +40,6 @@ internal class DimensionCalculator
         }
 
         return Math.Max(0, flooredChildDimension);
-
-#if NETSTANDARD2_0
-        static T Clamp<T>(T value, T min, T max) where T : IComparable<T>
-        {
-            if (value.CompareTo(min) < 0)
-                return min;
-            if (value.CompareTo(max) > 0)
-                return max;
-            return value;
-        }
-#endif
     }
 
     /// <summary>

@@ -19,7 +19,11 @@ internal sealed class NoOpDisposable : IDisposable
 
 internal sealed class NoOpCommand : ICommand
 {
-    public event EventHandler? CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged
+    {
+        add { }
+        remove { }
+    }
 
     public bool CanExecute(object? parameter) => true;
 
@@ -190,7 +194,11 @@ internal sealed class StubDialogService : IDockDialogService
 
     public bool HasDialogs => false;
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged
+    {
+        add { }
+        remove { }
+    }
 
     public Task<T?> ShowAsync<T>(object content, string? title = null) => Task.FromResult<T?>(default);
 
@@ -237,7 +245,11 @@ internal sealed class StubConfirmationService : IDockConfirmationService
 
     public bool HasConfirmations => false;
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged
+    {
+        add { }
+        remove { }
+    }
 
     public Task<bool> ConfirmAsync(string title, string message, string confirmText = "Confirm", string cancelText = "Cancel")
         => Task.FromResult(false);

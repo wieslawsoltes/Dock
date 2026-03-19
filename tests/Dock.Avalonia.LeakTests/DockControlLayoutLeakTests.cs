@@ -246,7 +246,11 @@ public class DockControlLayoutLeakTests
 
     private sealed class TestCommandBarProvider : IDockCommandBarProvider
     {
-        public event EventHandler? CommandBarsChanged;
+        public event EventHandler? CommandBarsChanged
+        {
+            add { }
+            remove { }
+        }
 
         public IReadOnlyList<DockCommandBarDefinition> GetCommandBars() => Array.Empty<DockCommandBarDefinition>();
     }

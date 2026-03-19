@@ -13,6 +13,9 @@ namespace Avalonia.Controls.Recycling;
 /// </summary>
 public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTemplate
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ControlRecyclingDataTemplate"/> class.
+    /// </summary>
     public ControlRecyclingDataTemplate()
     {
         

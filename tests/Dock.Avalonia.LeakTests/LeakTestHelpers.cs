@@ -350,7 +350,6 @@ internal static class LeakTestHelpers
 
     internal static void CleanupWindow(Window window)
     {
-        window.FocusManager?.ClearFocus();
         window.Content = null;
         window.DataContext = null;
         window.Close();
@@ -850,7 +849,7 @@ internal static class LeakTestHelpers
         {
             ClearPointerOverPreProcessor(topLevel);
             ClearTopLevelHandlers(topLevel);
-            topLevel.ClearValue(TopLevel.PointerOverElementProperty);
+            ClearPointerOverElement(topLevel);
             ClearInputManagerPointerState(topLevel);
             ClearInputManagerObservers(topLevel);
             ScrubInputManagerInstance(topLevel);
@@ -1049,18 +1048,49 @@ internal static class LeakTestHelpers
             return;
         }
 
+        if (GetInputRoot(topLevel) is not { } inputRoot)
+        {
+            return;
+        }
+
         var position = new Point(0, 0);
-        var leaveArgs = CreateRawPointerEventArgs(device, topLevel, RawPointerEventType.LeaveWindow, position);
+        var leaveArgs = CreateRawPointerEventArgs(device, inputRoot, RawPointerEventType.LeaveWindow, position);
         if (leaveArgs is not null)
         {
             InvokeInputManager(inputManager, leaveArgs);
         }
 
-        var cancelArgs = CreateRawPointerEventArgs(device, topLevel, RawPointerEventType.CancelCapture, position);
+        var cancelArgs = CreateRawPointerEventArgs(device, inputRoot, RawPointerEventType.CancelCapture, position);
         if (cancelArgs is not null)
         {
             InvokeInputManager(inputManager, cancelArgs);
         }
+    }
+
+    private static IInputRoot? GetInputRoot(TopLevel topLevel)
+    {
+        if (topLevel is IInputRoot inputRoot)
+        {
+            return inputRoot;
+        }
+
+        var property = topLevel.GetType().GetProperty("InputRoot", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        return property?.GetValue(topLevel) as IInputRoot;
+    }
+
+    private static void ClearPointerOverElement(TopLevel topLevel)
+    {
+        if (GetInputRoot(topLevel) is not { } inputRoot)
+        {
+            return;
+        }
+
+        var property = inputRoot.GetType().GetProperty(
+            "Avalonia.Input.IInputRoot.PointerOverElement",
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            ?? inputRoot.GetType().GetProperty("PointerOverElement", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+        property?.SetValue(inputRoot, null);
     }
 
     private static void ClearInputManagerObservers(TopLevel topLevel)

@@ -1,7 +1,10 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:vm="using:DockReactiveUIWorkspaceSample.ViewModels"
         x:Class="DockReactiveUIWorkspaceSample.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        x:CompileBindings="True"
         Title="Dock ReactiveUI Workspaces"
         Width="1200"
         Height="720">

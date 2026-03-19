@@ -9,7 +9,7 @@
         <TextBlock Text="Layers" Classes="section-title" />
         <Button Grid.Column="1" Content="+" Classes="ghost" Width="28" Height="28" />
       </Grid>
-      <TextBox Watermark="Search layers" Classes="panel-search" />
+      <TextBox PlaceholderText="Search layers" Classes="panel-search" />
       <ScrollViewer VerticalScrollBarVisibility="Auto">
         <ItemsControl ItemsSource="{Binding Layers}">
           <ItemsControl.ItemTemplate>

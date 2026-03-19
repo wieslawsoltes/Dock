@@ -55,7 +55,7 @@
         <Button Content="Dashboard" Command="{Binding Navigate}" CommandParameter="Dashboard" Grid.Column="2" />
         <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}"
                 Grid.Column="3" />
-        <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4" />
+        <TextBox x:Name="Id" Text="" PlaceholderText="Dashboard" UseFloatingPlaceholder="True" Grid.Column="4" />
         <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
         <ComboBox x:Name="PresetComboBox"
                   Grid.Column="6"

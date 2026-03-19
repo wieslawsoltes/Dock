@@ -6,7 +6,7 @@ using ReactiveUI;
 
 namespace DockOfficeSample.ViewModels.Documents;
 
-public class ExcelDocumentViewModel : RoutableDocument
+public class ExcelDocumentViewModel : RoutableDocument, IOfficeDocumentViewModel
 {
     private readonly OfficeDocumentPageViewModel _normalMode;
     private readonly OfficeDocumentPageViewModel _pageLayoutMode;

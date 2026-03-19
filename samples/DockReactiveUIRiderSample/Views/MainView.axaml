@@ -95,8 +95,8 @@
         </StackPanel>
         <TextBox Grid.Column="4"
                  Width="240"
-                 Watermark="Search Everywhere"
-                 UseFloatingWatermark="True" />
+                 PlaceholderText="Search Everywhere"
+                 UseFloatingPlaceholder="True" />
       </Grid>
     </Border>
 

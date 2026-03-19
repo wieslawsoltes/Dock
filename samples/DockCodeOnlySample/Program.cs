@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Dock.Avalonia.Themes.Fluent;
@@ -26,6 +27,7 @@ internal class Program
     static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseAvaloniaSourceGeneratedXaml()
             .LogToTrace()
             .UseManagedWindows();
 }
@@ -155,8 +157,13 @@ public class App : Application
             loadWorkspaceB.Click += (_, _) => RestoreWorkspace(workspaceB);
 
             var lockLayout = new CheckBox { Content = "Lock layout" };
-            lockLayout.Checked += (_, _) => dockControl.IsDockingEnabled = false;
-            lockLayout.Unchecked += (_, _) => dockControl.IsDockingEnabled = true;
+            lockLayout.PropertyChanged += (_, e) =>
+            {
+                if (e.Property == ToggleButton.IsCheckedProperty)
+                {
+                    dockControl.IsDockingEnabled = lockLayout.IsChecked != true;
+                }
+            };
 
             var toolbar = new StackPanel
             {

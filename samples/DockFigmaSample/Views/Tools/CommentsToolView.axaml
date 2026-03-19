@@ -32,7 +32,7 @@
       <Border Background="{DynamicResource SoftPanelBrush}" CornerRadius="12" Padding="10">
         <StackPanel Spacing="6">
           <TextBlock Text="Add a comment" Classes="subtle-title" />
-          <TextBox Watermark="Type your note" Classes="panel-search" />
+          <TextBox PlaceholderText="Type your note" Classes="panel-search" />
         </StackPanel>
       </Border>
     </StackPanel>

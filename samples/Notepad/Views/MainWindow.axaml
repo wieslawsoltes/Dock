@@ -15,8 +15,7 @@
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Notepad" Height="600" Width="900"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="PreferSystemChrome">
+        ExtendClientAreaToDecorationsHint="True">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

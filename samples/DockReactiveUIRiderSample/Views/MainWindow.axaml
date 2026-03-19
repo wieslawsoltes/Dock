@@ -20,8 +20,7 @@
         Title="Dock Rider Sample"
         Height="780" Width="1280"
         ExtendClientAreaTitleBarHeightHint="32"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="Default, PreferSystemChrome, OSXThickTitleBar">
+        ExtendClientAreaToDecorationsHint="True">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

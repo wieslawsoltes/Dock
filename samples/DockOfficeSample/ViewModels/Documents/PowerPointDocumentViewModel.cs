@@ -6,7 +6,7 @@ using ReactiveUI;
 
 namespace DockOfficeSample.ViewModels.Documents;
 
-public class PowerPointDocumentViewModel : RoutableDocument
+public class PowerPointDocumentViewModel : RoutableDocument, IOfficeDocumentViewModel
 {
     private readonly OfficeDocumentPageViewModel _normalMode;
     private readonly OfficeDocumentPageViewModel _slideSorterMode;

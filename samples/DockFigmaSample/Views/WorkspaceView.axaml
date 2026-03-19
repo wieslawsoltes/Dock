@@ -1,7 +1,7 @@
 <UserControl x:Class="DockFigmaSample.Views.WorkspaceView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
+             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=ReactiveUI.Avalonia"
              xmlns:vm="using:DockFigmaSample.ViewModels"
              x:DataType="vm:WorkspaceViewModel" x:CompileBindings="True">
   <Grid RowDefinitions="Auto,*,Auto">
@@ -41,7 +41,7 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center" HorizontalAlignment="Right">
-          <TextBox Width="180" Watermark="Search" Classes="search" />
+          <TextBox Width="180" PlaceholderText="Search" Classes="search" />
           <Button Content="Share" Classes="primary-inverse" />
           <Border Width="28" Height="28" CornerRadius="14" Background="{DynamicResource AccentWarmBrush}">
             <TextBlock Text="AF" HorizontalAlignment="Center" VerticalAlignment="Center" Classes="avatar" />

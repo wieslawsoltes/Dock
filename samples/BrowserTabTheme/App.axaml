@@ -1,5 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dmc="using:Dock.Model.Controls"
              xmlns:core="using:Dock.Model.Core"
              xmlns:themes="using:Dock.Avalonia.Themes.Browser"
              x:Class="BrowserTabTheme.App"
@@ -45,7 +46,7 @@
 
     <Style Selector="DocumentTabStrip">
       <Setter Property="CreateButtonTemplate">
-        <DataTemplate>
+        <DataTemplate x:DataType="dmc:IDocumentDock">
           <Button Command="{Binding CreateDocument}"
                   Theme="{DynamicResource ButtonCreateDocument}">
             <Path Stretch="Uniform"

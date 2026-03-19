@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Headless.XUnit;
@@ -12,7 +14,12 @@ public class AdornerHelperTests
     [AvaloniaFact]
     public void AddRemove_Reuses_Same_Instance()
     {
-        var root = new AdornerLayer();
+        var root = (OverlayLayer)Activator.CreateInstance(typeof(OverlayLayer), nonPublic: true)!;
+        var adornerLayer = (AdornerLayer)Activator.CreateInstance(typeof(AdornerLayer), nonPublic: true)!;
+        typeof(OverlayLayer)
+            .GetProperty("AdornerLayer", BindingFlags.Instance | BindingFlags.NonPublic)?
+            .SetValue(root, adornerLayer);
+
         var control = new Border();
         root.Children.Add(control);
 

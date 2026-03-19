@@ -585,7 +585,7 @@ public class DocumentTabStrip : TabStrip, IExternalDockSurface
             return;
         }
 
-        _doubleTappedSubscription = this.AddDisposableHandler(Gestures.DoubleTappedEvent, OnDoubleTapped);
+        _doubleTappedSubscription = this.AddDisposableHandler(InputElement.DoubleTappedEvent, OnDoubleTapped);
     }
 
     private void DetachDoubleTapped()

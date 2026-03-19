@@ -27,6 +27,7 @@ internal static class Program
         
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseAvaloniaSourceGeneratedXaml()
             .WithInterFont()
             .LogToTrace();
     }

@@ -17,6 +17,7 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseAvaloniaSourceGeneratedXaml()
             .WithInterFont()
             .WithDockSettings(new DockSettingsOptions
             {

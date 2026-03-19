@@ -48,6 +48,7 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
         => AppBuilder.Configure(() => CreateApp(provider))
             .UsePlatformDetect()
+            .UseAvaloniaSourceGeneratedXaml()
             .WithInterFont()
             .UseReactiveUI()
             .LogToTrace();
@@ -59,6 +60,7 @@ internal class Program
             return CreateApp(provider);
         })
             .UsePlatformDetect()
+            .UseAvaloniaSourceGeneratedXaml()
             .WithInterFont()
             .UseReactiveUI()
             .LogToTrace();

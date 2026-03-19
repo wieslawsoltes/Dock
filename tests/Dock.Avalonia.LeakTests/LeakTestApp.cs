@@ -13,6 +13,7 @@ internal sealed class LeakTestsApp : Application
             {
                 UseHeadlessDrawing = true
             })
+            .UseAvaloniaSourceGeneratedXaml()
             .With(new FontManagerOptions
             {
                 DefaultFamilyName = "Default"

@@ -12,5 +12,6 @@ class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseAvaloniaSourceGeneratedXaml()
             .LogToTrace();
 }

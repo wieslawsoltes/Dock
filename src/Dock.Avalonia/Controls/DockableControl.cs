@@ -202,7 +202,7 @@ public class DockableControl : Panel, IDockableControl
 
         var position = e.GetPosition(this);
 
-        if (this.VisualRoot is null)
+        if (this.GetVisualRoot() is null)
         {
             return;
         }

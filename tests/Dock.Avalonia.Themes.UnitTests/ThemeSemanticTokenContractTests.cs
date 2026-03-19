@@ -103,6 +103,7 @@ public class ThemeSemanticTokenContractTests
         "DockDragPreviewHeaderSpacing",
         "DockDragPreviewStatusSpacing",
         "DockDragPreviewStatusIconSize",
+        "DockWindowChromeTitleBarHeight",
         "DockHostTitleBarMouseTrackerHeight",
         "DockOverlayReloadButtonMargin",
         "DockOverlayCardCornerRadius",

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:chrome="clr-namespace:Avalonia.Controls.Chrome;assembly=Avalonia.Controls"
                     x:CompileBindings="True">
   <Design.PreviewWith>
     <Border>
@@ -9,19 +10,55 @@
 
   <ControlTheme x:Key="{x:Type HostWindowTitleBar}" TargetType="HostWindowTitleBar">
 
-    <Setter Property="Foreground" Value="{DynamicResource DockTabForegroundBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource DockWindowChromeForegroundBrush}"/>
     <Setter Property="VerticalAlignment" Value="Top" />
     <Setter Property="HorizontalAlignment" Value="Stretch" />
-    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Background" Value="{DynamicResource DockWindowChromeTitleBarBackgroundBrush}" />
+    <Setter Property="Height" Value="{DynamicResource DockWindowChromeTitleBarHeight}" />
 
     <Setter Property="Template">
       <ControlTemplate>
-        <Panel HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="Stretch">
-          <Panel x:Name="PART_MouseTracker" Height="{DynamicResource DockHostTitleBarMouseTrackerHeight}" VerticalAlignment="Top" />
-          <Panel x:Name="PART_Container">
+        <Panel HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+               VerticalAlignment="Stretch"
+               Height="{TemplateBinding Height}">
+          <Panel x:Name="PART_MouseTracker"
+                 chrome:WindowDecorationProperties.ElementRole="TitleBar"
+                 Height="{DynamicResource DockHostTitleBarMouseTrackerHeight}"
+                 VerticalAlignment="Top" />
+          <Grid x:Name="PART_Container"
+                Height="{TemplateBinding Height}"
+                chrome:WindowDecorationProperties.ElementRole="TitleBar">
             <Border x:Name="PART_Background" Background="{TemplateBinding Background}" />
-            <CaptionButtons x:Name="PART_CaptionButtons" VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="{TemplateBinding Foreground}" />
-          </Panel>
+            <StackPanel x:Name="PART_CaptionButtons"
+                        chrome:WindowDecorationProperties.ElementRole="DecorationsElement"
+                        Height="{TemplateBinding Height}"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Margin="{DynamicResource DockHeaderContentPadding}">
+              <Button x:Name="PART_MinimizeButton"
+                      Theme="{StaticResource ChromeButton}"
+                      chrome:WindowDecorationProperties.ElementRole="MinimizeButton">
+                <Viewbox Width="10" Height="10">
+                  <Path x:Name="PART_MinimizePath" />
+                </Viewbox>
+              </Button>
+              <Button x:Name="PART_MaximizeRestoreButton"
+                      Theme="{StaticResource ChromeButton}"
+                      chrome:WindowDecorationProperties.ElementRole="MaximizeButton">
+                <Viewbox Width="10" Height="10">
+                  <Path x:Name="PART_MaximizeRestorePath" />
+                </Viewbox>
+              </Button>
+              <Button x:Name="PART_CloseButton"
+                      Theme="{StaticResource ChromeButton}"
+                      chrome:WindowDecorationProperties.ElementRole="CloseButton">
+                <Viewbox Width="10" Height="10">
+                  <Path x:Name="PART_ClosePath" />
+                </Viewbox>
+              </Button>
+            </StackPanel>
+          </Grid>
         </Panel>
       </ControlTemplate>
     </Setter>
@@ -34,15 +71,11 @@
       <Setter Property="IsHitTestVisible" Value="False" />
     </Style>
 
-    <Style Selector="^:fullscreen /template/ Border#PART_Background">
-      <Setter Property="IsHitTestVisible" Value="True" />
-    </Style>
-
     <Style Selector="^:fullscreen /template/ Panel#PART_MouseTracker">
       <Setter Property="Background" Value="Transparent" />
     </Style>
 
-    <Style Selector="^:fullscreen /template/ Panel#PART_Container">
+    <Style Selector="^:fullscreen /template/ Grid#PART_Container">
       <Setter Property="RenderTransform" Value="translateY(-30px)" />
       <Setter Property="Transitions">
         <Transitions>
@@ -51,8 +84,37 @@
       </Setter>
     </Style>
 
-    <Style Selector="^:fullscreen:pointerover /template/ Panel#PART_Container">
+    <Style Selector="^:fullscreen:pointerover /template/ Grid#PART_Container">
       <Setter Property="RenderTransform" Value="none" />
+    </Style>
+
+    <Style Selector="^/template/ Path">
+      <Setter Property="Stretch" Value="Uniform" />
+      <Setter Property="Fill" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Path#PART_MinimizePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconMinimizeGeometry}" />
+    </Style>
+
+    <Style Selector="^/template/ Path#PART_MaximizeRestorePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconMaximizeGeometry}" />
+    </Style>
+
+    <Style Selector="^:maximized /template/ Path#PART_MaximizeRestorePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconRestoreGeometry}" />
+    </Style>
+
+    <Style Selector="^/template/ Path#PART_ClosePath">
+      <Setter Property="Data" Value="{DynamicResource DockToolIconCloseGeometry}" />
+    </Style>
+
+    <Style Selector="^/template/ Button#PART_CloseButton:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Button#PART_CloseButton:pressed">
+      <Setter Property="BorderBrush" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
     </Style>
 
   </ControlTheme>

@@ -515,6 +515,22 @@
       <Setter Property="Data" Value="{DynamicResource DockIconPinnedGeometry}" />
     </Style>
 
+    <Style Selector="^/template/ Button#PART_CloseButton:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Button#PART_CloseButton:pressed">
+      <Setter Property="BorderBrush" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Button#PART_ToolCloseButton:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Button#PART_ToolCloseButton:pressed">
+      <Setter Property="BorderBrush" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
+    </Style>
+
     <Style Selector="^:maximized /template/ Path#PART_MaximizeRestorePath">
       <Setter Property="Data" Value="{DynamicResource DockIconRestoreGeometry}" />
     </Style>

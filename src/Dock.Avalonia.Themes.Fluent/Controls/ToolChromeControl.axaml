@@ -92,18 +92,28 @@
     </MenuItem>
   </MenuFlyout>
 
-  <ControlTheme x:Key="ChromeButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
+  <ControlTheme x:Key="ChromeButton" TargetType="Button">
     <Setter Property="Margin" Value="{DynamicResource DockChromeButtonMargin}" />
     <Setter Property="Padding" Value="{DynamicResource DockChromeButtonPadding}" />
-    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Background" Value="{DynamicResource DockChromeButtonHoverBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockChromeButtonPressedBackgroundBrush}" />
     <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Foreground" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
     <Setter Property="Width" Value="{DynamicResource DockChromeButtonWidth}" />
     <Setter Property="Height" Value="{DynamicResource DockChromeButtonHeight}" />
-    <Style Selector="^:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockChromeButtonHoverBackgroundBrush}" />
+    <Setter Property="VerticalAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Name="PART_ContentPresenter"
+                          Background="Transparent"
+                          Content="{TemplateBinding Content}" />
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{TemplateBinding Background}" />
     </Style>
-    <Style Selector="^:pressed">
-      <Setter Property="Background" Value="{DynamicResource DockChromeButtonPressedBackgroundBrush}" />
+    <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{TemplateBinding BorderBrush}" />
     </Style>
   </ControlTheme>
 
@@ -313,6 +323,10 @@
 
     <Style Selector="^/template/ Button#PART_CloseButton:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Button#PART_CloseButton:pressed">
+      <Setter Property="BorderBrush" Value="{DynamicResource DockChromeButtonDangerHoverBrush}" />
     </Style>
 
     <Style Selector="^/template/ Path#PART_ClosePath">

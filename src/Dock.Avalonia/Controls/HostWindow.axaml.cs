@@ -23,7 +23,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
-[PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow")]
+[PseudoClasses(":toolwindow", ":documentwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow")]
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
@@ -133,19 +133,12 @@ public class HostWindow : Window, IHostWindow
     {
         base.OnApplyTemplate(e);
 
-        _hostWindowTitleBar = e.NameScope.Find<HostWindowTitleBar>("PART_TitleBar");
-        if (_hostWindowTitleBar is { })
-        {
-            _hostWindowTitleBar.ApplyTemplate();
+        DetachTitleBarHandlers();
 
-            if (_hostWindowTitleBar.BackgroundControl is { })
-            {
-                _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
-                {
-                    MoveDrag(args);
-                };
-            }
-        }
+        _hostWindowTitleBar = e.NameScope.Find<HostWindowTitleBar>("PART_TitleBar");
+        _hostWindowTitleBar?.ApplyTemplate();
+
+        AttachTitleBarHandlers();
     }
 
     private PixelPoint ClientPointToScreenRelativeToWindow(Point clientPoint)
@@ -160,6 +153,21 @@ public class HostWindow : Window, IHostWindow
     {
         if (!ToolChromeControlsWholeWindow)
             return;
+
+        BeginWindowDragTracking(e, beginMoveDrag: true);
+    }
+
+    private void BeginTitleBarDrag(PointerPressedEventArgs e)
+    {
+        BeginWindowDragTracking(e, beginMoveDrag: false);
+    }
+
+    private void BeginWindowDragTracking(PointerPressedEventArgs e, bool beginMoveDrag)
+    {
+        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            return;
+        }
 
         if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)
         {
@@ -176,7 +184,11 @@ public class HostWindow : Window, IHostWindow
 
         PseudoClasses.Set(":dragging", true);
         _draggingWindow = true;
-        BeginMoveDrag(e);
+
+        if (beginMoveDrag)
+        {
+            BeginMoveDrag(e);
+        }
     }
 
     private void EndDrag(PointerEventArgs e)
@@ -400,6 +412,7 @@ public class HostWindow : Window, IHostWindow
     private void UpdatePseudoClasses(bool isToolWindow, bool toolChromeControlsWholeWindow, bool documentChromeControlsWholeWindow)
     {
         PseudoClasses.Set(":toolwindow", isToolWindow);
+        PseudoClasses.Set(":documentwindow", !isToolWindow);
         PseudoClasses.Set(":toolchromecontrolswindow", toolChromeControlsWholeWindow);
         PseudoClasses.Set(":documentchromecontrolswindow", documentChromeControlsWholeWindow);
     }
@@ -436,6 +449,8 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
+        DetachTitleBarHandlers();
+
         base.OnClosed(e);
 
         Window?.Factory?.HostWindows.Remove(this);
@@ -450,6 +465,39 @@ public class HostWindow : Window, IHostWindow
                 Window?.Factory?.RemoveWindow(Window);
             }
         }
+    }
+
+    private void AttachTitleBarHandlers()
+    {
+        if (_hostWindowTitleBar?.DragSurface is { } dragSurface)
+        {
+            dragSurface.PointerPressed += TitleBarPointerPressed;
+        }
+
+        if (_hostWindowTitleBar?.MouseTracker is { } mouseTracker)
+        {
+            mouseTracker.PointerPressed += TitleBarPointerPressed;
+        }
+    }
+
+    private void DetachTitleBarHandlers()
+    {
+        if (_hostWindowTitleBar?.DragSurface is { } dragSurface)
+        {
+            dragSurface.PointerPressed -= TitleBarPointerPressed;
+        }
+
+        if (_hostWindowTitleBar?.MouseTracker is { } mouseTracker)
+        {
+            mouseTracker.PointerPressed -= TitleBarPointerPressed;
+        }
+
+        _hostWindowTitleBar = null;
+    }
+
+    private void TitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        BeginTitleBarDrag(e);
     }
 
     /// <inheritdoc/>

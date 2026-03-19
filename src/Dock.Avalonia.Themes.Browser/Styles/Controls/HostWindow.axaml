@@ -18,7 +18,7 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
 
-    <Setter Property="Background" Value="{DynamicResource DockSurfaceEditorBrush}" />
+    <Setter Property="Background" Value="{DynamicResource DockWindowChromeBackgroundBrush}" />
     <Setter Property="Padding" Value="{DynamicResource DockHostWindowContentPadding}" />
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockTabForegroundBrush}" />
@@ -26,29 +26,24 @@
     <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Title" Value="{Binding FocusedDockable.Title}"  />
     <Setter Property="Topmost" Value="{Binding Window.Topmost}" />
-    <Setter Property="SystemDecorations" Value="Full" />
+    <Setter Property="WindowDecorations" Value="Full" />
     <Setter Property="ToolChromeControlsWholeWindow" Value="{Binding OpenedDockablesCount, Converter={StaticResource LessThan2}}" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-    <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
-    <Setter Property="ExtendClientAreaChromeHints" Value="{DynamicResource DockHostWindowChromeHints}" />
-
+    <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="{DynamicResource DockWindowChromeTitleBarHeight}" />
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
           <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
           <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
           <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
-          <VisualLayerManager>
-            <VisualLayerManager.ChromeOverlayLayer>
-              <HostWindowTitleBar Name="PART_TitleBar" />
-            </VisualLayerManager.ChromeOverlayLayer>
-            <ContentPresenter Name="PART_ContentPresenter"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                              Content="{TemplateBinding Content}"
-                              Margin="{TemplateBinding Padding}"
-                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-          </VisualLayerManager>
+          <HostWindowTitleBar Name="PART_TitleBar"
+                              IsVisible="{TemplateBinding IsExtendedIntoWindowDecorations}" />
+          <ContentPresenter Name="PART_ContentPresenter"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Content="{TemplateBinding Content}"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
         </Panel>
       </ControlTemplate>
     </Setter>
@@ -71,19 +66,19 @@
 
       <Style Selector="^:documentchromecontrolswindow">
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+        <Setter Property="WindowDecorations" Value="None" />
       </Style>
 
     </Style>
 
     <Style Selector="^:toolwindow">
 
-      <Setter Property="SystemDecorations" Value="Full" />
+      <Setter Property="WindowDecorations" Value="Full" />
       <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
 
       <Style Selector="^:toolchromecontrolswindow">
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+        <Setter Property="WindowDecorations" Value="None" />
       </Style>
 
       <Setter Property="Template">
@@ -92,17 +87,12 @@
             <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
             <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
             <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
-            <VisualLayerManager>
-              <VisualLayerManager.ChromeOverlayLayer>
-                <!-- <TitleBar/> -->
-              </VisualLayerManager.ChromeOverlayLayer>
-              <ContentPresenter Name="PART_ContentPresenter"
-                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                Content="{TemplateBinding Content}"
-                                Margin="{TemplateBinding Padding}"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-            </VisualLayerManager>
+            <ContentPresenter Name="PART_ContentPresenter"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Content="{TemplateBinding Content}"
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
           </Panel>
         </ControlTemplate>
       </Setter>
@@ -131,11 +121,6 @@
       <Setter Property="TransparencyLevelHint" Value="Transparent"/>
       <Setter Property="Opacity" Value="0.5" />
     </Style>
-
-    <Style Selector="^TitleBar /template/ Border#PART_Background">
-      <Setter Property="IsHitTestVisible" Value="True" />
-    </Style>
-
   </ControlTheme>
 
 </ResourceDictionary>

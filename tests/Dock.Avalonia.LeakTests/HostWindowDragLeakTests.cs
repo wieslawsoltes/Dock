@@ -55,14 +55,14 @@ public class HostWindowDragLeakTests
                            ?? FindVisualDescendant<HostWindowTitleBar>(window);
             Assert.NotNull(titleBar);
 
-            var background = titleBar is null
+            var dragSurface = titleBar is null
                 ? null
-                : FindTemplateChild<Control>(titleBar, "PART_Background");
-            Assert.NotNull(background);
+                : FindTemplateChild<Control>(titleBar, "PART_Container");
+            Assert.NotNull(dragSurface);
 
-            if (background is not null)
+            if (dragSurface is not null)
             {
-                RaisePointerPressed(background, MouseButton.Left);
+                RaisePointerPressed(dragSurface, MouseButton.Left);
             }
             DrainDispatcher();
 

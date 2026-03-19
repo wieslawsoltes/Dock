@@ -130,6 +130,7 @@
     <sys:Double x:Key="DockDragPreviewHeaderSpacing">4</sys:Double>
     <sys:Double x:Key="DockDragPreviewStatusSpacing">2</sys:Double>
     <sys:Double x:Key="DockDragPreviewStatusIconSize">10</sys:Double>
+    <sys:Double x:Key="DockWindowChromeTitleBarHeight">30</sys:Double>
     <sys:Double x:Key="DockHostTitleBarMouseTrackerHeight">1</sys:Double>
     <Thickness x:Key="DockOverlayReloadButtonMargin">16</Thickness>
     <CornerRadius x:Key="DockOverlayCardCornerRadius">8</CornerRadius>

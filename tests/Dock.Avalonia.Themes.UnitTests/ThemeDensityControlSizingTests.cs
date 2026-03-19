@@ -90,6 +90,16 @@ public class ThemeDensityControlSizingTests
     }
 
     [AvaloniaFact]
+    public void Density_Should_Update_HostWindow_TitleBar_Height_For_All_Themes()
+    {
+        AssertThemeTitleBarHeight(new DockFluentTheme { DensityStyle = DockDensityStyle.Normal }, 30d);
+        AssertThemeTitleBarHeight(new DockSimpleTheme { DensityStyle = DockDensityStyle.Normal }, 30d);
+
+        AssertThemeTitleBarHeight(new DockFluentTheme { DensityStyle = DockDensityStyle.Compact }, 26d);
+        AssertThemeTitleBarHeight(new DockSimpleTheme { DensityStyle = DockDensityStyle.Compact }, 26d);
+    }
+
+    [AvaloniaFact]
     public void Theme_Tokens_Should_Bind_To_Key_Control_Template_Parts()
     {
         AssertTemplatePartSizing(new DockFluentTheme { DensityStyle = DockDensityStyle.Normal }, expectedGripHeight: 5d, expectedStatusIconSize: 10d, expectedTargetSelectorSize: 40d, expectedDialogTitleFontSize: 16d, expectedDialogCloseButtonSize: 28d);
@@ -125,6 +135,24 @@ public class ThemeDensityControlSizingTests
             Assert.Equal(expectedCloseSize, closeButton.Height);
             Assert.Equal(expectedChromeWidth, chromeButton.Width);
             Assert.Equal(expectedChromeHeight, chromeButton.Height);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    private static void AssertThemeTitleBarHeight(Styles theme, double expectedHeight)
+    {
+        var titleBar = new HostWindowTitleBar();
+        var window = ShowWithTheme(titleBar, theme);
+        try
+        {
+            titleBar.ApplyTemplate();
+            titleBar.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.Equal(expectedHeight, titleBar.Height);
         }
         finally
         {

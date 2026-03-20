@@ -94,7 +94,7 @@ public sealed class AvaloniaHostServiceResolver : IHostServiceResolver
 
         foreach (var dockControl in factory.DockControls.OfType<DockControl>())
         {
-            if (dockControl.GetVisualRoot() is null || dockControl.Layout is null)
+            if (dockControl.GetPresentationSource()?.RootVisual is null || dockControl.Layout is null)
             {
                 continue;
             }
@@ -153,7 +153,7 @@ public sealed class AvaloniaHostServiceResolver : IHostServiceResolver
             return resolved;
         }
 
-        if (control.GetVisualRoot() is not TopLevel topLevel)
+        if (control.GetPresentationSource()?.RootVisual is not TopLevel topLevel)
         {
             return null;
         }

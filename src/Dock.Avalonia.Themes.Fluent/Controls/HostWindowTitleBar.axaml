@@ -20,7 +20,6 @@
           <Panel x:Name="PART_MouseTracker" Height="{DynamicResource DockHostTitleBarMouseTrackerHeight}" VerticalAlignment="Top" />
           <Panel x:Name="PART_Container">
             <Border x:Name="PART_Background" Background="{TemplateBinding Background}" />
-            <CaptionButtons x:Name="PART_CaptionButtons" VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="{TemplateBinding Foreground}" />
           </Panel>
         </Panel>
       </ControlTemplate>

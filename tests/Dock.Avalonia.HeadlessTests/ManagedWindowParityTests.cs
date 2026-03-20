@@ -761,7 +761,7 @@ public class ManagedWindowParityTests
 
             var translated = dockControlB.TranslatePoint(point, layerB);
             Assert.True(translated.HasValue);
-            var scaling = (dockControlB.GetVisualRoot() as TopLevel)
+            var scaling = TopLevel.GetTopLevel(dockControlB)
                 ?.Screens
                 ?.ScreenFromVisual(dockControlB)
                 ?.Scaling ?? 1.0;
@@ -866,7 +866,7 @@ public class ManagedWindowParityTests
 
             var translated = innerDockControl!.TranslatePoint(point, layer);
             Assert.True(translated.HasValue);
-            var scaling = (innerDockControl.GetVisualRoot() as TopLevel)
+            var scaling = TopLevel.GetTopLevel(innerDockControl)
                 ?.Screens
                 ?.ScreenFromVisual(innerDockControl)
                 ?.Scaling ?? 1.0;

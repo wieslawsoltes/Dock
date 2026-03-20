@@ -109,8 +109,9 @@ Example overriding the modified indicator:
 Dock controls mark important elements in their templates with `PART_` names. When
 copying these templates keep the parts intact so features such as window dragging
 continue to work. For example `ToolChromeControl` defines `PART_Grip`,
-`PART_CloseButton` and `PART_MaximizeRestoreButton`, while `HostWindow` exposes
-`PART_TitleBar`.
+`PART_CloseButton` and `PART_MaximizeRestoreButton`. `HostWindow` now relies on
+Avalonia `WindowDrawnDecorations` for standard caption chrome rather than a Dock
+title-bar template part.
 
 Controls also toggle pseudo classes to reflect their current state. These can be
 targeted in selectors to customize the appearance:

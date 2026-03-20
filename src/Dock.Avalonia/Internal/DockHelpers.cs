@@ -66,8 +66,10 @@ internal static class DockHelpers
 
     public static Point GetScreenPoint(Visual visual, Point point)
     {
-        // var scaling = (visual.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1.0;
-        var scaling = (visual.GetVisualRoot() as TopLevel)?.Screens?.ScreenFromVisual(visual)?.Scaling ?? 1.0;
+        var topLevel = TopLevel.GetTopLevel(visual);
+        var scaling = topLevel?.Screens?.ScreenFromVisual(visual)?.Scaling
+                      ?? topLevel?.RenderScaling
+                      ?? 1.0;
         var screenPoint = visual.PointToScreen(point).ToPoint(scaling);
         return screenPoint;
     }
@@ -353,7 +355,7 @@ internal static class DockHelpers
     {
         var windows = dockControls
             .OfType<DockControl>()
-            .Select(dock => dock.GetVisualRoot() as Window)
+            .Select(dock => TopLevel.GetTopLevel(dock) as Window)
             .OfType<Window>()
             .Distinct()
             .ToArray();
@@ -362,7 +364,7 @@ internal static class DockHelpers
 
         return dockControls
             .OfType<DockControl>()
-            .Select(dock => (dock, windowOrder: IndexOf(windows, dock.GetVisualRoot() as Window), managedOrder: GetManagedWindowZOrder(dock)))
+            .Select(dock => (dock, windowOrder: IndexOf(windows, TopLevel.GetTopLevel(dock) as Window), managedOrder: GetManagedWindowZOrder(dock)))
             .OrderByDescending(x => x.windowOrder)
             .ThenByDescending(x => x.managedOrder)
             .Select(pair => pair.dock);

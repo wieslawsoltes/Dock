@@ -417,24 +417,65 @@ public class HostWindow : Window, IHostWindow
         PseudoClasses.Set(":documentchromecontrolswindow", documentChromeControlsWholeWindow);
     }
 
-    private int CountVisibleToolsAndDocuments(IDockable? dockable)
+    private void InitializeChromeMode(IDock? layout)
+    {
+        if (layout is null)
+        {
+            return;
+        }
+
+        var (toolCount, documentCount) = CountVisibleDockables(layout);
+        var isToolWindow = toolCount > 0 && documentCount == 0;
+
+        // Seed the window kind before the platform window is shown. Avalonia 12 window
+        // decoration changes are more sensitive to late mode switches than Avalonia 11.
+        IsToolWindow = isToolWindow;
+
+        if (!ToolChromeControlsWholeWindow && isToolWindow && toolCount <= 1)
+        {
+            PseudoClasses.Set(":toolchromecontrolswindow", true);
+        }
+
+        if (!DocumentChromeControlsWholeWindow && !isToolWindow && toolCount == 0 && documentCount == 1)
+        {
+            PseudoClasses.Set(":documentchromecontrolswindow", true);
+        }
+    }
+
+    private (int ToolCount, int DocumentCount) CountVisibleDockables(IDockable? dockable)
+    {
+        var toolCount = 0;
+        var documentCount = 0;
+        CountVisibleDockables(dockable, ref toolCount, ref documentCount);
+        return (toolCount, documentCount);
+    }
+
+    private void CountVisibleDockables(IDockable? dockable, ref int toolCount, ref int documentCount)
     {
         switch (dockable)
         {
             case ITool:
-                return 1;
+                toolCount++;
+                break;
             case IDocument:
-                return 1;
+                documentCount++;
+                break;
             case IDock dock:
-                return dock.VisibleDockables?.Sum(CountVisibleToolsAndDocuments) ?? 0;
-            default:
-                return 0;
+                if (dock.VisibleDockables is { } visibleDockables)
+                {
+                    foreach (var child in visibleDockables)
+                    {
+                        CountVisibleDockables(child, ref toolCount, ref documentCount);
+                    }
+                }
+                break;
         }
     }
 
     private void ChromeCloseClick(object? sender, RoutedEventArgs e)
     {
-        if (CountVisibleToolsAndDocuments(DataContext as IRootDock) <= 1)
+        var (toolCount, documentCount) = CountVisibleDockables(DataContext as IRootDock);
+        if (toolCount + documentCount <= 1)
             Exit();
     }
 
@@ -821,6 +862,7 @@ public class HostWindow : Window, IHostWindow
     public void SetLayout(IDock layout)
     {
         DataContext = layout;
+        InitializeChromeMode(layout);
     }
 
     private void CaptureNormalBounds()

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Chrome;
 using Avalonia.Headless.XUnit;
@@ -8,6 +9,8 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
+using Dock.Model.Avalonia.Controls;
+using Dock.Model.Core;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
@@ -133,6 +136,65 @@ public class HostWindowTitleBarChromeTests
 
             Assert.NotNull(titleBar);
             Assert.Equal(30d, titleBar!.Height);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void HostWindow_ToolChromeMode_Is_Applied_Before_Show()
+    {
+        var tool = new Tool
+        {
+            Id = "Tool1",
+            Title = "Tool1"
+        };
+
+        var toolDock = new ToolDock
+        {
+            Id = "ToolDock",
+            ActiveDockable = tool,
+            VisibleDockables = new AvaloniaList<IDockable> { tool }
+        };
+
+        var layout = new RootDock
+        {
+            Id = "Root",
+            ActiveDockable = toolDock,
+            OpenedDockablesCount = 1,
+            VisibleDockables = new AvaloniaList<IDockable> { toolDock }
+        };
+
+        var window = new HostWindow
+        {
+            Width = 900,
+            Height = 600
+        };
+
+        window.Styles.Add(new DockFluentTheme());
+        window.SetLayout(layout);
+
+        Assert.True(window.IsToolWindow);
+        Assert.Contains(":toolwindow", window.Classes);
+        Assert.Contains(":toolchromecontrolswindow", window.Classes);
+
+        window.Show();
+        window.ApplyTemplate();
+        window.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+
+        try
+        {
+            Assert.True(window.ExtendClientAreaToDecorationsHint);
+            Assert.Equal(WindowDecorations.None, window.WindowDecorations);
+
+            var titleBar = window.GetVisualDescendants()
+                .OfType<HostWindowTitleBar>()
+                .FirstOrDefault();
+
+            Assert.Null(titleBar);
         }
         finally
         {

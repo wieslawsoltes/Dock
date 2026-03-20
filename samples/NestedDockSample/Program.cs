@@ -17,7 +17,6 @@ internal class Program
         GC.KeepAlive(typeof(Factory).Assembly);
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .UseAvaloniaSourceGeneratedXaml()
             .LogToTrace();
     }
 }

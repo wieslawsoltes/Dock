@@ -24,7 +24,6 @@ internal class Program
     static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .UseAvaloniaSourceGeneratedXaml()
             .LogToTrace();
 }
 

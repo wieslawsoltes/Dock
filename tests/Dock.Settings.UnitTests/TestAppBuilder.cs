@@ -9,8 +9,7 @@ public class TestAppBuilder
 {
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<App>()
-            .UseHeadless(new AvaloniaHeadlessPlatformOptions())
-            .UseAvaloniaSourceGeneratedXaml();
+            .UseHeadless(new AvaloniaHeadlessPlatformOptions());
 }
 
 public class App : Application

@@ -10,8 +10,7 @@ public class AppBuilderExtensionsTests
 {
     private static AppBuilder CreateBuilder() =>
         AppBuilder.Configure<App>()
-            .UseHeadless(new AvaloniaHeadlessPlatformOptions())
-            .UseAvaloniaSourceGeneratedXaml();
+            .UseHeadless(new AvaloniaHeadlessPlatformOptions());
 
     [Fact]
     public void WithDockSettings_Applies_Options()

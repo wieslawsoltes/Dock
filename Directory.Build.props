@@ -1,6 +1,5 @@
 ﻿<Project>
   <PropertyGroup>
-    <DockUseXamlSourceGenerator Condition="'$(DockUseXamlSourceGenerator)' == ''">true</DockUseXamlSourceGenerator>
     <VersionPrefix>12.0.0</VersionPrefix>
     <VersionSuffix>rc1</VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>

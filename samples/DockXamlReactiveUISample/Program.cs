@@ -21,7 +21,6 @@ internal class Program
     {
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .UseAvaloniaSourceGeneratedXaml()
             .WithInterFont()
             .UseReactiveUI()
             .LogToTrace();

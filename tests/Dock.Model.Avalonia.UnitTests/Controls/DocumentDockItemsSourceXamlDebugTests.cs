@@ -7,7 +7,6 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Dock.Model.Avalonia.UnitTests.Controls;
 

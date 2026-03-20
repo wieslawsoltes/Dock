@@ -5,7 +5,7 @@ This sample backports a browser-tab visual style from StackWich into the origina
 ## What this sample demonstrates
 
 - Browser-like document and tool tab visuals.
-- Custom window chrome styling via `HostWindowTitleBar` and custom `CaptionButtons`.
+- Browser-style window chrome driven by Avalonia drawn decorations and Dock theme resources.
 - Dock drag/drop, float, pin, and document creation behavior preserved.
 - Theme dictionaries for both Light (`Default`) and Dark variants.
 
@@ -37,5 +37,5 @@ dotnet build Dock.slnx
 Capture a screenshot after launch to validate:
 
 - Browser-style tab states: default, hover, selected, selected+hover.
-- Custom title bar and caption buttons.
+- Custom drawn caption buttons aligned with the browser-style chrome.
 - Dock target indicators and drag preview visuals.

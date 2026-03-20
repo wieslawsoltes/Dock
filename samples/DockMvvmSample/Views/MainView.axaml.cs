@@ -80,7 +80,7 @@ public partial class MainView : UserControl
             return;
         }
 
-        var storageProvider = (this.GetVisualRoot() as TopLevel)?.StorageProvider;
+        var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
         if (storageProvider is null)
         {
             return;
@@ -127,7 +127,7 @@ public partial class MainView : UserControl
             return;
         }
 
-        var storageProvider = (this.GetVisualRoot() as TopLevel)?.StorageProvider;
+        var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
         if (storageProvider is null)
         {
             return;

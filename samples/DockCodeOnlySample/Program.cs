@@ -155,8 +155,7 @@ public class App : Application
             loadWorkspaceB.Click += (_, _) => RestoreWorkspace(workspaceB);
 
             var lockLayout = new CheckBox { Content = "Lock layout" };
-            lockLayout.Checked += (_, _) => dockControl.IsDockingEnabled = false;
-            lockLayout.Unchecked += (_, _) => dockControl.IsDockingEnabled = true;
+            lockLayout.IsCheckedChanged += (_, _) => dockControl.IsDockingEnabled = lockLayout.IsChecked != true;
 
             var toolbar = new StackPanel
             {

@@ -92,28 +92,18 @@
     </MenuItem>
   </MenuFlyout>
 
-  <ControlTheme x:Key="ChromeButton" TargetType="Button">
+  <ControlTheme x:Key="ChromeButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
     <Setter Property="Margin" Value="{DynamicResource DockChromeButtonMargin}" />
     <Setter Property="Padding" Value="{DynamicResource DockChromeButtonPadding}" />
-    <Setter Property="Background" Value="{DynamicResource DockChromeButtonHoverBackgroundBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource DockChromeButtonPressedBackgroundBrush}" />
+    <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="Foreground" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
     <Setter Property="Width" Value="{DynamicResource DockChromeButtonWidth}" />
     <Setter Property="Height" Value="{DynamicResource DockChromeButtonHeight}" />
-    <Setter Property="VerticalAlignment" Value="Stretch" />
-    <Setter Property="Template">
-      <ControlTemplate>
-        <ContentPresenter Name="PART_ContentPresenter"
-                          Background="Transparent"
-                          Content="{TemplateBinding Content}" />
-      </ControlTemplate>
-    </Setter>
-    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Background" Value="{TemplateBinding Background}" />
+    <Style Selector="^:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonHoverBackgroundBrush}" />
     </Style>
-    <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Background" Value="{TemplateBinding BorderBrush}" />
+    <Style Selector="^:pressed">
+      <Setter Property="Background" Value="{DynamicResource DockChromeButtonPressedBackgroundBrush}" />
     </Style>
   </ControlTheme>
 

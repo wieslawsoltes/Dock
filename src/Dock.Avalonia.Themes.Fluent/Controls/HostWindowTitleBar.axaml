@@ -8,6 +8,31 @@
     </Border>
   </Design.PreviewWith>
 
+  <ControlTheme x:Key="WindowChromeButton" TargetType="Button">
+    <Setter Property="Margin" Value="{DynamicResource DockChromeButtonMargin}" />
+    <Setter Property="Padding" Value="{DynamicResource DockChromeButtonPadding}" />
+    <Setter Property="Background" Value="{DynamicResource DockChromeButtonHoverBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockChromeButtonPressedBackgroundBrush}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Foreground" Value="{DynamicResource DockChromeButtonForegroundBrush}" />
+    <Setter Property="Width" Value="{DynamicResource DockChromeButtonWidth}" />
+    <Setter Property="Height" Value="{DynamicResource DockChromeButtonHeight}" />
+    <Setter Property="VerticalAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Name="PART_ContentPresenter"
+                          Background="Transparent"
+                          Content="{TemplateBinding Content}" />
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{TemplateBinding Background}" />
+    </Style>
+    <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{TemplateBinding BorderBrush}" />
+    </Style>
+  </ControlTheme>
+
   <ControlTheme x:Key="{x:Type HostWindowTitleBar}" TargetType="HostWindowTitleBar">
 
     <Setter Property="Foreground" Value="{DynamicResource DockWindowChromeForegroundBrush}"/>
@@ -37,21 +62,21 @@
                         HorizontalAlignment="Right"
                         Margin="{DynamicResource DockHeaderContentPadding}">
               <Button x:Name="PART_MinimizeButton"
-                      Theme="{StaticResource ChromeButton}"
+                      Theme="{StaticResource WindowChromeButton}"
                       chrome:WindowDecorationProperties.ElementRole="MinimizeButton">
                 <Viewbox Width="10" Height="10">
                   <Path x:Name="PART_MinimizePath" />
                 </Viewbox>
               </Button>
               <Button x:Name="PART_MaximizeRestoreButton"
-                      Theme="{StaticResource ChromeButton}"
+                      Theme="{StaticResource WindowChromeButton}"
                       chrome:WindowDecorationProperties.ElementRole="MaximizeButton">
                 <Viewbox Width="10" Height="10">
                   <Path x:Name="PART_MaximizeRestorePath" />
                 </Viewbox>
               </Button>
               <Button x:Name="PART_CloseButton"
-                      Theme="{StaticResource ChromeButton}"
+                      Theme="{StaticResource WindowChromeButton}"
                       chrome:WindowDecorationProperties.ElementRole="CloseButton">
                 <Viewbox Width="10" Height="10">
                   <Path x:Name="PART_ClosePath" />

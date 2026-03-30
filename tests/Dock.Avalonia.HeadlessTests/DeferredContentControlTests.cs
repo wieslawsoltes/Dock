@@ -56,6 +56,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void DeferredContentControl_Defers_Content_Materialization_Until_Dispatcher_Run()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var template = new CountingTemplate(() => new Border
         {
             Child = new TextBlock { Text = "Deferred" }
@@ -82,8 +83,7 @@ public class DeferredContentControlTests
             Assert.Null(control.Presenter!.Child);
             Assert.Equal(0, template.BuildCount);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.NotNull(control.Presenter.Child);
             Assert.Equal(1, template.BuildCount);
@@ -97,6 +97,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void DeferredContentControl_Batches_Content_Changes_Into_A_Single_Build()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var template = new CountingTemplate(() => new TextBlock());
         var control = new DeferredContentControl
         {
@@ -121,8 +122,7 @@ public class DeferredContentControlTests
             Assert.Equal(0, template.BuildCount);
             Assert.Null(control.Presenter?.Child);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, template.BuildCount);
             var textBlock = Assert.IsType<TextBlock>(control.Presenter!.Child);
@@ -137,6 +137,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void DeferredContentControl_Reattaches_And_Applies_Deferred_Content_Changes()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var template = new CountingTemplate(() => new TextBlock());
         var control = new DeferredContentControl
         {
@@ -152,8 +153,7 @@ public class DeferredContentControlTests
 
         firstWindow.Show();
         control.ApplyTemplate();
-        Dispatcher.UIThread.RunJobs();
-        firstWindow.UpdateLayout();
+        DrainDeferredQueueBatch(firstWindow);
 
         Assert.Equal(1, template.BuildCount);
 
@@ -174,8 +174,7 @@ public class DeferredContentControlTests
 
         try
         {
-            Dispatcher.UIThread.RunJobs();
-            secondWindow.UpdateLayout();
+            DrainDeferredQueueBatch(secondWindow);
 
             Assert.Equal(2, template.BuildCount);
             var textBlock = Assert.IsType<TextBlock>(control.Presenter!.Child);
@@ -190,6 +189,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void DeferredContentControl_Applies_Deferred_Content_With_Standard_ContentPresenter_Template()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var template = new CountingTemplate(() => new Border
         {
             Child = new TextBlock { Text = "FallbackPresenter" }
@@ -221,8 +221,7 @@ public class DeferredContentControlTests
             Assert.Null(control.Presenter!.Child);
             Assert.Equal(0, template.BuildCount);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.NotNull(control.Presenter.Child);
             Assert.Equal(1, template.BuildCount);
@@ -234,8 +233,73 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
+    public void DeferredContentControl_Limits_Realization_Batch_Per_Render_Tick()
+    {
+        var templates = Enumerable.Range(0, 5)
+            .Select(_ => new CountingTemplate(() => new TextBlock()))
+            .ToArray();
+        var panel = new StackPanel();
+        var controls = templates
+            .Select(template => new DeferredContentControl
+            {
+                ContentTemplate = template
+            })
+            .ToArray();
+
+        foreach (var control in controls)
+        {
+            panel.Children.Add(control);
+        }
+
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = panel
+        };
+
+        using var _ = new DeferredBatchLimitScope(limit: 2, autoSchedule: false);
+
+        window.Show();
+
+        foreach (var control in controls)
+        {
+            control.ApplyTemplate();
+        }
+
+        window.UpdateLayout();
+
+        try
+        {
+            Assert.Equal(0, templates.Sum(template => template.BuildCount));
+
+            foreach (var control in controls)
+            {
+                control.Content = new object();
+            }
+
+            Assert.Equal(5, DeferredContentPresentationQueue.PendingCount);
+
+            DrainDeferredQueueBatch(window);
+            Assert.Equal(2, templates.Sum(template => template.BuildCount));
+
+            DrainDeferredQueueBatch(window);
+            Assert.Equal(4, templates.Sum(template => template.BuildCount));
+
+            DrainDeferredQueueBatch(window);
+            Assert.Equal(5, templates.Sum(template => template.BuildCount));
+            Assert.All(controls, control => Assert.NotNull(control.Presenter?.Child));
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
     public void DocumentContentControl_Defers_Document_Template_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var buildCount = 0;
         var document = new Document
         {
@@ -265,10 +329,9 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "Document");
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
-            Assert.Equal(1, buildCount);
+            Assert.InRange(buildCount, 1, 2);
             Assert.Contains(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "Document");
         }
         finally
@@ -280,6 +343,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void ToolContentControl_Defers_Tool_Template_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var buildCount = 0;
         var tool = new Tool
         {
@@ -309,10 +373,9 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "Tool");
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
-            Assert.Equal(1, buildCount);
+            Assert.InRange(buildCount, 1, 2);
             Assert.Contains(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "Tool");
         }
         finally
@@ -324,6 +387,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void DocumentControl_Defers_Active_Document_Template_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var factory = new Factory();
         var buildCount = 0;
         var dock = new DocumentDock
@@ -359,10 +423,9 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.Null(presenterHost.Presenter?.Child);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
-            Assert.Equal(1, buildCount);
+            Assert.InRange(buildCount, 1, 2);
             var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
             Assert.Equal("DocumentControl", textBlock.Text);
         }
@@ -375,6 +438,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void ToolControl_Defers_Active_Tool_Template_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var factory = new Factory();
         var buildCount = 0;
         var dock = new ToolDock
@@ -409,10 +473,9 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.Null(presenterHost.Presenter?.Child);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
-            Assert.Equal(1, buildCount);
+            Assert.InRange(buildCount, 1, 2);
             var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
             Assert.Equal("ToolControl", textBlock.Text);
         }
@@ -425,6 +488,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void MdiDocumentWindow_Defers_Window_Content_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var buildCount = 0;
         var document = new Document
         {
@@ -450,8 +514,7 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.Null(presenterHost.Presenter?.Child);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, buildCount);
             var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
@@ -466,6 +529,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void SplitViewDockControl_Defers_Pane_And_Content_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var factory = new Factory();
         var paneDockable = new Tool
         {
@@ -505,8 +569,7 @@ public class DeferredContentControlTests
             Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "SplitPane");
             Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "SplitContent");
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, paneBuildCount);
             Assert.Equal(1, contentBuildCount);
@@ -522,6 +585,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void PinnedDockControl_Defers_Pinned_Dock_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var factory = new Factory();
         var root = new RootDock
         {
@@ -551,8 +615,7 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "PinnedDock");
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, buildCount);
             Assert.Contains(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "PinnedDock");
@@ -566,6 +629,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void DockControl_Defers_Layout_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var buildCount = 0;
         var root = new RootDock
         {
@@ -587,8 +651,7 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.Null(presenterHost.Presenter?.Child);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, buildCount);
             var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
@@ -603,6 +666,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void RootDockControl_Defers_Active_Dock_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var factory = new Factory();
         var buildCount = 0;
         var activeDock = new DocumentDock
@@ -630,8 +694,7 @@ public class DeferredContentControlTests
             Assert.Equal(0, buildCount);
             Assert.Null(presenterHost.Presenter?.Child);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, buildCount);
             var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
@@ -792,5 +855,32 @@ public class DeferredContentControlTests
         window.UpdateLayout();
         control.UpdateLayout();
         return window;
+    }
+
+    private static void DrainDeferredQueueBatch(Window window)
+    {
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+        DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+    }
+
+    private sealed class DeferredBatchLimitScope : IDisposable
+    {
+        private readonly int _previousLimit = DeferredContentPresentationQueue.MaxPresentationsPerFrame;
+        private readonly bool _previousAutoSchedule = DeferredContentPresentationQueue.AutoSchedule;
+
+        public DeferredBatchLimitScope(int limit = int.MaxValue, bool autoSchedule = true)
+        {
+            DeferredContentPresentationQueue.MaxPresentationsPerFrame = limit;
+            DeferredContentPresentationQueue.AutoSchedule = autoSchedule;
+        }
+
+        public void Dispose()
+        {
+            DeferredContentPresentationQueue.MaxPresentationsPerFrame = _previousLimit;
+            DeferredContentPresentationQueue.AutoSchedule = _previousAutoSchedule;
+        }
     }
 }

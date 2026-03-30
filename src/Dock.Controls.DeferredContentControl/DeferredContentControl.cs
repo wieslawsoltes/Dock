@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
@@ -72,6 +73,10 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
     {
         base.OnApplyTemplate(e);
         _presenter = e.NameScope.Find<ContentPresenter>("PART_ContentPresenter");
+        if (_presenter is IDeferredContentPresentationTarget deferredPresenter)
+        {
+            DeferredContentPresentationQueue.Remove(deferredPresenter);
+        }
         _appliedVersion = -1;
         QueueDeferredPresentation();
     }
@@ -88,11 +93,11 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
         }
     }
 
-    internal void ApplyDeferredPresentation()
+    internal bool ApplyDeferredPresentation()
     {
         if (!IsReadyForPresentation())
         {
-            return;
+            return false;
         }
 
         object? content = Content;
@@ -102,18 +107,19 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
             && ReferenceEquals(_appliedContent, content)
             && ReferenceEquals(_appliedContentTemplate, contentTemplate))
         {
-            return;
+            return true;
         }
 
         ApplyDeferredState(_presenter!, content, contentTemplate);
         _appliedContent = content;
         _appliedContentTemplate = contentTemplate;
         _appliedVersion = _requestedVersion;
+        return true;
     }
 
-    void IDeferredContentPresentationTarget.ApplyDeferredPresentation()
+    bool IDeferredContentPresentationTarget.ApplyDeferredPresentation()
     {
-        ApplyDeferredPresentation();
+        return ApplyDeferredPresentation();
     }
 
     private void QueueDeferredPresentation()
@@ -155,7 +161,7 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
 
 internal interface IDeferredContentPresentationTarget
 {
-    void ApplyDeferredPresentation();
+    bool ApplyDeferredPresentation();
 }
 
 /// <summary>
@@ -218,16 +224,16 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
         UpdatePresentedChild();
     }
 
-    void IDeferredContentPresentationTarget.ApplyDeferredPresentation()
+    bool IDeferredContentPresentationTarget.ApplyDeferredPresentation()
     {
-        ApplyDeferredPresentation();
+        return ApplyDeferredPresentation();
     }
 
-    internal void ApplyDeferredPresentation()
+    internal bool ApplyDeferredPresentation()
     {
         if (!IsReadyForPresentation())
         {
-            return;
+            return false;
         }
 
         object? content = Content;
@@ -237,17 +243,24 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
             && ReferenceEquals(_appliedContent, content)
             && ReferenceEquals(_appliedContentTemplate, contentTemplate))
         {
-            return;
+            return true;
         }
 
         ApplyDeferredState(content, contentTemplate);
         _appliedContent = content;
         _appliedContentTemplate = contentTemplate;
         _appliedVersion = _requestedVersion;
+        return true;
     }
 
     private void QueueDeferredPresentation()
     {
+        if (TemplatedParent is DeferredContentControl)
+        {
+            DeferredContentPresentationQueue.Remove(this);
+            return;
+        }
+
         if (!IsReadyForPresentation())
         {
             return;
@@ -279,7 +292,12 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
 
 internal static class DeferredContentPresentationQueue
 {
+    internal static bool AutoSchedule { get; set; } = true;
+    internal static int MaxPresentationsPerFrame { get; set; } = 8;
+    internal static int PendingCount => s_pending.Count;
+
     private static readonly HashSet<IDeferredContentPresentationTarget> s_pending = new();
+    private static readonly TimeSpan s_followUpFlushDelay = TimeSpan.FromMilliseconds(1);
     private static bool s_isScheduled;
 
     internal static void Enqueue(IDeferredContentPresentationTarget control)
@@ -295,7 +313,10 @@ internal static class DeferredContentPresentationQueue
             return;
         }
 
-        ScheduleFlush();
+        if (AutoSchedule)
+        {
+            ScheduleFlush(delayed: false);
+        }
     }
 
     internal static void Remove(IDeferredContentPresentationTarget control)
@@ -307,9 +328,14 @@ internal static class DeferredContentPresentationQueue
         }
 
         s_pending.Remove(control);
+
+        if (s_pending.Count == 0)
+        {
+            CancelScheduling();
+        }
     }
 
-    private static void ScheduleFlush()
+    private static void ScheduleFlush(bool delayed)
     {
         if (s_isScheduled)
         {
@@ -317,30 +343,92 @@ internal static class DeferredContentPresentationQueue
         }
 
         s_isScheduled = true;
-        Dispatcher.UIThread.Post(Flush, DispatcherPriority.Render);
+
+        if (delayed)
+        {
+            DispatcherTimer.RunOnce(FlushScheduledBatch, s_followUpFlushDelay, DispatcherPriority.Render);
+            return;
+        }
+
+        Dispatcher.UIThread.Post(FlushScheduledBatch, DispatcherPriority.Render);
     }
 
-    private static void Flush()
+    internal static void FlushPendingBatchForTesting()
     {
-        s_isScheduled = false;
+        if (!Dispatcher.UIThread.CheckAccess())
+        {
+            Dispatcher.UIThread.Post(FlushPendingBatchForTesting, DispatcherPriority.Render);
+            return;
+        }
+
+        FlushScheduledBatch();
+    }
+
+    private static void FlushScheduledBatch()
+    {
+        if (!Dispatcher.UIThread.CheckAccess())
+        {
+            Dispatcher.UIThread.Post(FlushScheduledBatch, DispatcherPriority.Render);
+            return;
+        }
 
         if (s_pending.Count == 0)
+        {
+            CancelScheduling();
+            return;
+        }
+
+        s_isScheduled = false;
+
+        var batchSize = Math.Min(Math.Max(1, MaxPresentationsPerFrame), s_pending.Count);
+        var batch = new IDeferredContentPresentationTarget[batchSize];
+        var index = 0;
+
+        foreach (var control in s_pending)
+        {
+            batch[index++] = control;
+
+            if (index == batchSize)
+            {
+                break;
+            }
+        }
+
+        var completed = new IDeferredContentPresentationTarget[index];
+        var completedCount = 0;
+
+        for (var i = 0; i < index; i++)
+        {
+            if (batch[i].ApplyDeferredPresentation())
+            {
+                completed[completedCount++] = batch[i];
+            }
+        }
+
+        for (var i = 0; i < completedCount; i++)
+        {
+            s_pending.Remove(completed[i]);
+        }
+
+        if (s_pending.Count == 0)
+        {
+            CancelScheduling();
+            return;
+        }
+
+        if (AutoSchedule)
+        {
+            ScheduleFlush(delayed: true);
+        }
+    }
+
+    private static void CancelScheduling()
+    {
+        if (!s_isScheduled)
         {
             return;
         }
 
-        var batch = new IDeferredContentPresentationTarget[s_pending.Count];
-        s_pending.CopyTo(batch);
-        s_pending.Clear();
-
-        foreach (IDeferredContentPresentationTarget control in batch)
-        {
-            control.ApplyDeferredPresentation();
-        }
-
-        if (s_pending.Count > 0)
-        {
-            ScheduleFlush();
-        }
+        s_isScheduled = false;
     }
 }

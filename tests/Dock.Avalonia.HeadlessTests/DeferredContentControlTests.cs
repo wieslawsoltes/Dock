@@ -1,11 +1,18 @@
 using System;
+using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes.Fluent;
+using Dock.Controls.DeferredContentControl;
+using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Core;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
@@ -265,5 +272,478 @@ public class DeferredContentControlTests
         {
             window.Close();
         }
+    }
+
+    [AvaloniaFact]
+    public void DocumentControl_Defers_Active_Document_Template_Materialization()
+    {
+        var factory = new Factory();
+        var buildCount = 0;
+        var dock = new DocumentDock
+        {
+            Factory = factory,
+            LayoutMode = DocumentLayoutMode.Tabbed,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var document = new Document
+        {
+            Id = "doc-1",
+            Title = "Doc 1",
+            Content = (Func<IServiceProvider, object>)(_ =>
+            {
+                buildCount++;
+                return new TextBlock { Text = "DocumentControl" };
+            })
+        };
+        dock.VisibleDockables!.Add(document);
+        dock.ActiveDockable = document;
+
+        var control = new DocumentControl
+        {
+            DataContext = dock
+        };
+
+        var window = ShowInWindow(control, new DockFluentTheme());
+        var presenterHost = GetDeferredPresenter(control);
+
+        try
+        {
+            Assert.Equal(0, buildCount);
+            Assert.Null(presenterHost.Presenter?.Child);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, buildCount);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            Assert.Equal("DocumentControl", textBlock.Text);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void ToolControl_Defers_Active_Tool_Template_Materialization()
+    {
+        var factory = new Factory();
+        var buildCount = 0;
+        var dock = new ToolDock
+        {
+            Factory = factory,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var tool = new Tool
+        {
+            Id = "tool-1",
+            Title = "Tool 1",
+            Content = (Func<IServiceProvider, object>)(_ =>
+            {
+                buildCount++;
+                return new TextBlock { Text = "ToolControl" };
+            })
+        };
+        dock.VisibleDockables!.Add(tool);
+        dock.ActiveDockable = tool;
+
+        var control = new ToolControl
+        {
+            DataContext = dock
+        };
+
+        var window = ShowInWindow(control, new DockFluentTheme());
+        var presenterHost = GetDeferredPresenter(control);
+
+        try
+        {
+            Assert.Equal(0, buildCount);
+            Assert.Null(presenterHost.Presenter?.Child);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, buildCount);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            Assert.Equal("ToolControl", textBlock.Text);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void MdiDocumentWindow_Defers_Window_Content_Materialization()
+    {
+        var buildCount = 0;
+        var document = new Document
+        {
+            Id = "doc-1",
+            Title = "Doc 1",
+            Content = (Func<IServiceProvider, object>)(_ =>
+            {
+                buildCount++;
+                return new TextBlock { Text = "MdiDocumentWindow" };
+            })
+        };
+
+        var control = new MdiDocumentWindow
+        {
+            DataContext = document
+        };
+
+        var window = ShowInWindow(control, new DockFluentTheme());
+        var presenterHost = GetDeferredPresenter(control);
+
+        try
+        {
+            Assert.Equal(0, buildCount);
+            Assert.Null(presenterHost.Presenter?.Child);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, buildCount);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            Assert.Equal("MdiDocumentWindow", textBlock.Text);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void SplitViewDockControl_Defers_Pane_And_Content_Materialization()
+    {
+        var factory = new Factory();
+        var paneDockable = new Tool
+        {
+            Id = "tool-1",
+            Title = "Pane"
+        };
+        var contentDockable = new DocumentDock
+        {
+            Factory = factory,
+            Id = "doc-dock-1",
+            Title = "Content",
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        var splitViewDock = new SplitViewDock
+        {
+            Factory = factory,
+            PaneDockable = paneDockable,
+            ContentDockable = contentDockable,
+            IsPaneOpen = true
+        };
+
+        var paneBuildCount = 0;
+        var contentBuildCount = 0;
+        var control = new SplitViewDockControl
+        {
+            DataContext = splitViewDock
+        };
+        control.DataTemplates.Add(CreateCountingTemplate<Tool>("SplitPane", () => paneBuildCount++));
+        control.DataTemplates.Add(CreateCountingTemplate<DocumentDock>("SplitContent", () => contentBuildCount++));
+
+        var window = ShowInWindow(control);
+
+        try
+        {
+            Assert.Equal(0, paneBuildCount);
+            Assert.Equal(0, contentBuildCount);
+            Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "SplitPane");
+            Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "SplitContent");
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, paneBuildCount);
+            Assert.Equal(1, contentBuildCount);
+            Assert.Contains(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "SplitPane");
+            Assert.Contains(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "SplitContent");
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void PinnedDockControl_Defers_Pinned_Dock_Materialization()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            Factory = factory,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        var pinnedDock = new ToolDock
+        {
+            Alignment = Alignment.Left,
+            Factory = factory,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        pinnedDock.VisibleDockables!.Add(new Tool { Id = "tool-1", Title = "Tool" });
+        root.PinnedDock = pinnedDock;
+
+        var buildCount = 0;
+        var control = new PinnedDockControl
+        {
+            DataContext = root
+        };
+        control.DataTemplates.Add(CreateCountingTemplate<ToolDock>("PinnedDock", () => buildCount++));
+
+        var window = ShowInWindow(control);
+
+        try
+        {
+            Assert.Equal(0, buildCount);
+            Assert.DoesNotContain(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "PinnedDock");
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, buildCount);
+            Assert.Contains(control.GetVisualDescendants(), visual => visual is TextBlock textBlock && textBlock.Text == "PinnedDock");
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DockControl_Defers_Layout_Materialization()
+    {
+        var buildCount = 0;
+        var root = new RootDock
+        {
+            Id = "root-1"
+        };
+
+        var control = new DockControl
+        {
+            AutoCreateDataTemplates = false,
+            Layout = root
+        };
+
+        var window = ShowInWindow(control, new DockFluentTheme());
+        var presenterHost = GetDeferredHost(control, "PART_ContentControl");
+        presenterHost.DataTemplates.Add(CreateCountingTemplate<RootDock>("DockControl", () => buildCount++));
+
+        try
+        {
+            Assert.Equal(0, buildCount);
+            Assert.Null(presenterHost.Presenter?.Child);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, buildCount);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            Assert.Equal("DockControl", textBlock.Text);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void RootDockControl_Defers_Active_Dock_Materialization()
+    {
+        var factory = new Factory();
+        var buildCount = 0;
+        var activeDock = new DocumentDock
+        {
+            Factory = factory,
+            Id = "doc-dock-1"
+        };
+        var root = new RootDock
+        {
+            Factory = factory,
+            ActiveDockable = activeDock
+        };
+
+        var control = new RootDockControl
+        {
+            DataContext = root
+        };
+
+        var window = ShowInWindow(control, new DockFluentTheme());
+        var presenterHost = GetDeferredHost(control, "PART_MainContent");
+        presenterHost.DataTemplates.Add(CreateCountingTemplate<DocumentDock>("RootDockControl", () => buildCount++));
+
+        try
+        {
+            Assert.Equal(0, buildCount);
+            Assert.Null(presenterHost.Presenter?.Child);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, buildCount);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            Assert.Equal("RootDockControl", textBlock.Text);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void ToolChromeControl_Defers_Content_Materialization()
+    {
+        var factory = new Factory();
+        var toolDock = new ToolDock
+        {
+            Factory = factory,
+            ActiveDockable = new Tool { Id = "tool-1", Title = "Tool 1" }
+        };
+        var template = new CountingTemplate(() => new TextBlock { Text = "ToolChromeControl" });
+        var control = new ToolChromeControl
+        {
+            DataContext = toolDock,
+            Content = "First",
+            ContentTemplate = template
+        };
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = control
+        };
+        window.Styles.Add(new DockFluentTheme());
+        window.Show();
+        control.ApplyTemplate();
+
+        var presenterHost = GetDeferredPresenterHost(control, "PART_ContentPresenter");
+
+        try
+        {
+            window.UpdateLayout();
+            Assert.Equal(1, template.BuildCount);
+            var initialTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
+            Assert.Equal("First", initialTextBlock.DataContext);
+
+            control.Content = "Second";
+
+            var staleTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
+            Assert.Equal("First", staleTextBlock.DataContext);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, template.BuildCount);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Child);
+            Assert.Equal("Second", textBlock.DataContext);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void HostWindow_Defers_Content_Materialization()
+    {
+        var template = new CountingTemplate(() => new TextBlock { Text = "HostWindow" });
+        var window = new HostWindow
+        {
+            Width = 800,
+            Height = 600,
+            Content = "First",
+            ContentTemplate = template
+        };
+        window.Styles.Add(new DockFluentTheme());
+
+        window.Show();
+        window.ApplyTemplate();
+
+        var presenterHost = GetDeferredPresenterHost(window, "PART_ContentPresenter");
+
+        try
+        {
+            window.UpdateLayout();
+            Assert.Equal(1, template.BuildCount);
+            var initialTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
+            Assert.Equal("First", initialTextBlock.DataContext);
+
+            window.Content = "Second";
+
+            var staleTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
+            Assert.Equal("First", staleTextBlock.DataContext);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, template.BuildCount);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Child);
+            Assert.Equal("Second", textBlock.DataContext);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    private static FuncDataTemplate<T> CreateCountingTemplate<T>(string text, Action onBuild)
+    {
+        return new FuncDataTemplate<T>(
+            (_, _) =>
+            {
+                onBuild();
+                return new TextBlock { Text = text };
+            },
+            true);
+    }
+
+    private static DeferredContentControl GetDeferredPresenter(Control control)
+    {
+        return GetDeferredHost(control, "PART_ContentPresenter");
+    }
+
+    private static DeferredContentControl GetDeferredHost(Visual visual, string name)
+    {
+        var presenter = visual.GetVisualDescendants()
+            .OfType<DeferredContentControl>()
+            .FirstOrDefault(candidate => candidate.Name == name);
+        Assert.NotNull(presenter);
+        return presenter!;
+    }
+
+    private static DeferredContentPresenter GetDeferredPresenterHost(Visual visual, string name)
+    {
+        var presenter = visual.GetVisualDescendants()
+            .OfType<DeferredContentPresenter>()
+            .FirstOrDefault(candidate => candidate.Name == name);
+        Assert.NotNull(presenter);
+        return presenter!;
+    }
+
+    private static Window ShowInWindow(Control control, params IStyle[] styles)
+    {
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = control
+        };
+
+        foreach (var style in styles)
+        {
+            window.Styles.Add(style);
+        }
+
+        window.Show();
+        control.ApplyTemplate();
+        window.UpdateLayout();
+        control.UpdateLayout();
+        return window;
     }
 }

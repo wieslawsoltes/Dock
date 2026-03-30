@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dock.Controls.DeferredContentControl\Dock.Controls.DeferredContentControl.csproj" />
     <ProjectReference Include="..\Dock.Controls.ProportionalStackPanel\Dock.Controls.ProportionalStackPanel.csproj" />
     <ProjectReference Include="..\Dock.Controls.Recycling\Dock.Controls.Recycling.csproj" />
     <ProjectReference Include="..\Dock.MarkupExtension\Dock.MarkupExtension.csproj" />

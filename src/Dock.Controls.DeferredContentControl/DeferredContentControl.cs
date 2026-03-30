@@ -11,13 +11,24 @@ using Avalonia.Data;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
 
-namespace Dock.Avalonia.Controls;
+namespace Dock.Controls.DeferredContentControl;
+
+/// <summary>
+/// Defines whether a content instance should bypass deferred presentation.
+/// </summary>
+public interface IDeferredContentPresentation
+{
+    /// <summary>
+    /// Gets a value indicating whether content presentation should be deferred.
+    /// </summary>
+    bool DeferContentPresentation { get; }
+}
 
 /// <summary>
 /// A <see cref="ContentControl"/> that batches content materialization onto the next dispatcher pass.
 /// </summary>
 [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
-public class DeferredContentControl : ContentControl
+public class DeferredContentControl : ContentControl, IDeferredContentPresentationTarget
 {
     private DeferredContentPresenter? _presenter;
     private object? _appliedContent;
@@ -84,8 +95,8 @@ public class DeferredContentControl : ContentControl
             return;
         }
 
-        var content = Content;
-        var contentTemplate = ContentTemplate;
+        object? content = Content;
+        IDataTemplate? contentTemplate = ContentTemplate;
 
         if (_appliedVersion == _requestedVersion
             && ReferenceEquals(_appliedContent, content)
@@ -100,10 +111,22 @@ public class DeferredContentControl : ContentControl
         _appliedVersion = _requestedVersion;
     }
 
+    void IDeferredContentPresentationTarget.ApplyDeferredPresentation()
+    {
+        ApplyDeferredPresentation();
+    }
+
     private void QueueDeferredPresentation()
     {
         if (!IsReadyForPresentation())
         {
+            return;
+        }
+
+        if (Content is IDeferredContentPresentation { DeferContentPresentation: false })
+        {
+            DeferredContentPresentationQueue.Remove(this);
+            ApplyDeferredPresentation();
             return;
         }
 
@@ -118,15 +141,48 @@ public class DeferredContentControl : ContentControl
     }
 }
 
-internal sealed class DeferredContentPresenter : ContentPresenter
+internal interface IDeferredContentPresentationTarget
+{
+    void ApplyDeferredPresentation();
+}
+
+/// <summary>
+/// A <see cref="ContentPresenter"/> that batches content materialization onto the next dispatcher pass.
+/// </summary>
+public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresentationTarget
 {
     private bool _suppressDeferredUpdates;
+    private object? _appliedContent;
+    private IDataTemplate? _appliedContentTemplate;
+    private long _requestedVersion;
+    private long _appliedVersion = -1;
 
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        QueueDeferredPresentation();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        DeferredContentPresentationQueue.Remove(this);
+    }
+
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
-        if (_suppressDeferredUpdates
-            && (change.Property == ContentProperty || change.Property == ContentTemplateProperty))
+        if (change.Property == ContentProperty || change.Property == ContentTemplateProperty)
         {
+            if (_suppressDeferredUpdates)
+            {
+                return;
+            }
+
+            _requestedVersion++;
+            QueueDeferredPresentation();
             return;
         }
 
@@ -147,18 +203,74 @@ internal sealed class DeferredContentPresenter : ContentPresenter
             _suppressDeferredUpdates = false;
         }
 
+        UpdatePresentedChild();
+    }
+
+    void IDeferredContentPresentationTarget.ApplyDeferredPresentation()
+    {
+        ApplyDeferredPresentation();
+    }
+
+    internal void ApplyDeferredPresentation()
+    {
+        if (!IsReadyForPresentation())
+        {
+            return;
+        }
+
+        object? content = Content;
+        IDataTemplate? contentTemplate = ContentTemplate;
+
+        if (_appliedVersion == _requestedVersion
+            && ReferenceEquals(_appliedContent, content)
+            && ReferenceEquals(_appliedContentTemplate, contentTemplate))
+        {
+            return;
+        }
+
+        ApplyDeferredState(content, contentTemplate);
+        _appliedContent = content;
+        _appliedContentTemplate = contentTemplate;
+        _appliedVersion = _requestedVersion;
+    }
+
+    private void QueueDeferredPresentation()
+    {
+        if (!IsReadyForPresentation())
+        {
+            return;
+        }
+
+        if (Content is IDeferredContentPresentation { DeferContentPresentation: false })
+        {
+            DeferredContentPresentationQueue.Remove(this);
+            ApplyDeferredPresentation();
+            return;
+        }
+
+        DeferredContentPresentationQueue.Enqueue(this);
+    }
+
+    private bool IsReadyForPresentation()
+    {
+        return VisualRoot is not null
+            && ((ILogical)this).IsAttachedToLogicalTree;
+    }
+
+    private void UpdatePresentedChild()
+    {
         UpdateChild();
-        PseudoClasses.Set(":empty", content is null);
+        PseudoClasses.Set(":empty", Content is null);
         InvalidateMeasure();
     }
 }
 
 internal static class DeferredContentPresentationQueue
 {
-    private static readonly HashSet<DeferredContentControl> s_pending = new();
+    private static readonly HashSet<IDeferredContentPresentationTarget> s_pending = new();
     private static bool s_isScheduled;
 
-    internal static void Enqueue(DeferredContentControl control)
+    internal static void Enqueue(IDeferredContentPresentationTarget control)
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {
@@ -174,7 +286,7 @@ internal static class DeferredContentPresentationQueue
         ScheduleFlush();
     }
 
-    internal static void Remove(DeferredContentControl control)
+    internal static void Remove(IDeferredContentPresentationTarget control)
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {
@@ -205,11 +317,11 @@ internal static class DeferredContentPresentationQueue
             return;
         }
 
-        var batch = new DeferredContentControl[s_pending.Count];
+        var batch = new IDeferredContentPresentationTarget[s_pending.Count];
         s_pending.CopyTo(batch);
         s_pending.Clear();
 
-        foreach (var control in batch)
+        foreach (IDeferredContentPresentationTarget control in batch)
         {
             control.ApplyDeferredPresentation();
         }

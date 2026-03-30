@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0;net10.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Dock.Controls.DeferredContentControl</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Dock.Controls.DeferredContentControl</PackageId>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\SignAssembly.props" />
+  <Import Project="..\..\build\SourceLink.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+
+</Project>

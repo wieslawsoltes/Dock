@@ -30,7 +30,7 @@ public interface IDeferredContentPresentation
 [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
 public class DeferredContentControl : ContentControl, IDeferredContentPresentationTarget
 {
-    private DeferredContentPresenter? _presenter;
+    private ContentPresenter? _presenter;
     private object? _appliedContent;
     private IDataTemplate? _appliedContentTemplate;
     private long _requestedVersion;
@@ -71,7 +71,7 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        _presenter = e.NameScope.Find<DeferredContentPresenter>("PART_ContentPresenter");
+        _presenter = e.NameScope.Find<ContentPresenter>("PART_ContentPresenter");
         _appliedVersion = -1;
         QueueDeferredPresentation();
     }
@@ -105,7 +105,7 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
             return;
         }
 
-        _presenter!.ApplyDeferredState(content, contentTemplate);
+        ApplyDeferredState(_presenter!, content, contentTemplate);
         _appliedContent = content;
         _appliedContentTemplate = contentTemplate;
         _appliedVersion = _requestedVersion;
@@ -138,6 +138,18 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
         return _presenter is not null
             && VisualRoot is not null
             && ((ILogical)this).IsAttachedToLogicalTree;
+    }
+
+    private static void ApplyDeferredState(ContentPresenter presenter, object? content, IDataTemplate? contentTemplate)
+    {
+        if (presenter is DeferredContentPresenter deferredPresenter)
+        {
+            deferredPresenter.ApplyDeferredState(content, contentTemplate);
+            return;
+        }
+
+        presenter.SetCurrentValue(ContentPresenter.ContentTemplateProperty, contentTemplate);
+        presenter.SetCurrentValue(ContentPresenter.ContentProperty, content);
     }
 }
 

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Styling;
@@ -183,6 +184,52 @@ public class DeferredContentControlTests
         finally
         {
             secondWindow.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Applies_Deferred_Content_With_Standard_ContentPresenter_Template()
+    {
+        var template = new CountingTemplate(() => new Border
+        {
+            Child = new TextBlock { Text = "FallbackPresenter" }
+        });
+        var control = new DeferredContentControl
+        {
+            Template = new FuncControlTemplate<DeferredContentControl>((_, nameScope) =>
+                new ContentPresenter
+                {
+                    Name = "PART_ContentPresenter"
+                }.RegisterInNameScope(nameScope)),
+            Content = new object(),
+            ContentTemplate = template
+        };
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = control
+        };
+
+        window.Show();
+        control.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            Assert.NotNull(control.Presenter);
+            Assert.Null(control.Presenter!.Child);
+            Assert.Equal(0, template.BuildCount);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.NotNull(control.Presenter.Child);
+            Assert.Equal(1, template.BuildCount);
+        }
+        finally
+        {
+            window.Close();
         }
     }
 

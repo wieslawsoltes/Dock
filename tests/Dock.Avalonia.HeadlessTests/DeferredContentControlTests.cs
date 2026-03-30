@@ -60,6 +60,8 @@ public class DeferredContentControlTests
 
         public bool CanApply { get; set; }
 
+        public int MaxApplyCountBeforeThrow { get; set; } = int.MaxValue;
+
         public int ApplyCount { get; private set; }
 
         public int SuccessfulApplyCount { get; private set; }
@@ -72,6 +74,11 @@ public class DeferredContentControlTests
             }
 
             ApplyCount++;
+            if (ApplyCount > MaxApplyCountBeforeThrow)
+            {
+                throw new InvalidOperationException("Target was revisited within the same deferred flush.");
+            }
+
             if (CanApply)
             {
                 SuccessfulApplyCount++;
@@ -375,6 +382,44 @@ public class DeferredContentControlTests
 
             Assert.Equal(5, targets.Sum(target => target.SuccessfulApplyCount));
             Assert.Equal(0, DeferredContentPresentationQueue.PendingCount);
+        }
+        finally
+        {
+            foreach (var target in targets)
+            {
+                DeferredContentPresentationQueue.Remove(target);
+            }
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentQueue_Does_Not_Revisit_NotReady_Targets_Within_Single_ItemCount_Pass()
+    {
+        using var _ = new DeferredBatchLimitScope(limit: 2, autoSchedule: false);
+
+        var firstBlocked = new TestDeferredTarget { MaxApplyCountBeforeThrow = 1 };
+        var secondBlocked = new TestDeferredTarget { MaxApplyCountBeforeThrow = 1 };
+        var thirdBlocked = new TestDeferredTarget { MaxApplyCountBeforeThrow = 1 };
+        var targets = new[]
+        {
+            firstBlocked,
+            secondBlocked,
+            thirdBlocked
+        };
+
+        try
+        {
+            foreach (var target in targets)
+            {
+                DeferredContentPresentationQueue.Enqueue(target);
+            }
+
+            Assert.Equal(3, DeferredContentPresentationQueue.PendingCount);
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.All(targets, target => Assert.Equal(1, target.ApplyCount));
+            Assert.Equal(3, DeferredContentPresentationQueue.PendingCount);
         }
         finally
         {

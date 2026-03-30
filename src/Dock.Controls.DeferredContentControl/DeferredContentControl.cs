@@ -436,17 +436,20 @@ internal static class DeferredContentPresentationQueue
 
         s_isScheduled = false;
 
+        var pendingCountAtStart = s_pendingLookup.Count;
         var batchSize = Math.Min(Math.Max(1, MaxPresentationsPerFrame), s_pendingLookup.Count);
         var stopwatch = BudgetMode == DeferredContentPresentationBudgetMode.RealizationTime
             ? Stopwatch.StartNew()
             : null;
         var node = s_pending.First;
         var completedCount = 0;
+        var processedCount = 0;
 
-        while (node is not null)
+        while (node is not null && processedCount < pendingCountAtStart)
         {
             var current = node;
             node = node.Next;
+            processedCount++;
 
             if (current.Value.ApplyDeferredPresentation())
             {

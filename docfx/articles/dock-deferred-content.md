@@ -38,6 +38,26 @@ Use `DeferredContentControl` in places where a Dock theme would otherwise materi
 
 This keeps the requested content and template, then applies them on the next dispatcher frame. Multiple content changes before the flush are batched into one materialization pass.
 
+## Configuring the queue budget
+
+The deferred queue is shared by all deferred hosts. You can configure it globally through `DeferredContentPresentationSettings`.
+
+Count-based budget:
+
+```csharp
+DeferredContentPresentationSettings.BudgetMode = DeferredContentPresentationBudgetMode.ItemCount;
+DeferredContentPresentationSettings.MaxPresentationsPerPass = 3;
+```
+
+Time-based budget:
+
+```csharp
+DeferredContentPresentationSettings.BudgetMode = DeferredContentPresentationBudgetMode.RealizationTime;
+DeferredContentPresentationSettings.MaxRealizationTimePerPass = TimeSpan.FromMilliseconds(10);
+```
+
+Use item-count budgeting when you want predictable batching by host count. Use time-based budgeting when you want to cap the total realization time spent in one dispatcher pass.
+
 ## Using DeferredContentPresenter
 
 Some Dock templates require the named part to remain a `ContentPresenter`. In those cases use `DeferredContentPresenter` instead of `DeferredContentControl`.

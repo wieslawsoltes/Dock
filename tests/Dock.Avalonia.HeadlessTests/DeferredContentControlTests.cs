@@ -53,6 +53,19 @@ public class DeferredContentControlTests
         }
     }
 
+    private sealed class TestDeferredTarget : IDeferredContentPresentationTarget
+    {
+        public bool CanApply { get; set; }
+
+        public int ApplyCount { get; private set; }
+
+        public bool ApplyDeferredPresentation()
+        {
+            ApplyCount++;
+            return CanApply;
+        }
+    }
+
     [AvaloniaFact]
     public void DeferredContentControl_Defers_Content_Materialization_Until_Dispatcher_Run()
     {
@@ -293,6 +306,67 @@ public class DeferredContentControlTests
         finally
         {
             window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentQueue_Does_Not_Starve_Ready_Targets_Behind_NotReady_Ones()
+    {
+        using var _ = new DeferredBatchLimitScope(limit: 2, autoSchedule: false);
+
+        var firstBlocked = new TestDeferredTarget();
+        var secondBlocked = new TestDeferredTarget();
+        var firstReady = new TestDeferredTarget { CanApply = true };
+        var secondReady = new TestDeferredTarget { CanApply = true };
+        var thirdReady = new TestDeferredTarget { CanApply = true };
+        var targets = new[]
+        {
+            firstBlocked,
+            secondBlocked,
+            firstReady,
+            secondReady,
+            thirdReady
+        };
+
+        try
+        {
+            foreach (var target in targets)
+            {
+                DeferredContentPresentationQueue.Enqueue(target);
+            }
+
+            Assert.Equal(5, DeferredContentPresentationQueue.PendingCount);
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.Equal(1, firstBlocked.ApplyCount);
+            Assert.Equal(1, secondBlocked.ApplyCount);
+            Assert.Equal(1, firstReady.ApplyCount);
+            Assert.Equal(1, secondReady.ApplyCount);
+            Assert.Equal(0, thirdReady.ApplyCount);
+            Assert.Equal(3, DeferredContentPresentationQueue.PendingCount);
+
+            firstBlocked.CanApply = true;
+            secondBlocked.CanApply = true;
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.Equal(2, firstBlocked.ApplyCount);
+            Assert.Equal(2, secondBlocked.ApplyCount);
+            Assert.Equal(0, thirdReady.ApplyCount);
+            Assert.Equal(1, DeferredContentPresentationQueue.PendingCount);
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.Equal(1, thirdReady.ApplyCount);
+            Assert.Equal(0, DeferredContentPresentationQueue.PendingCount);
+        }
+        finally
+        {
+            foreach (var target in targets)
+            {
+                DeferredContentPresentationQueue.Remove(target);
+            }
         }
     }
 

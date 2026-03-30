@@ -294,9 +294,10 @@ internal static class DeferredContentPresentationQueue
 {
     internal static bool AutoSchedule { get; set; } = true;
     internal static int MaxPresentationsPerFrame { get; set; } = 8;
-    internal static int PendingCount => s_pending.Count;
+    internal static int PendingCount => s_pendingLookup.Count;
 
-    private static readonly HashSet<IDeferredContentPresentationTarget> s_pending = new();
+    private static readonly LinkedList<IDeferredContentPresentationTarget> s_pending = new();
+    private static readonly Dictionary<IDeferredContentPresentationTarget, LinkedListNode<IDeferredContentPresentationTarget>> s_pendingLookup = new();
     private static readonly TimeSpan s_followUpFlushDelay = TimeSpan.FromMilliseconds(1);
     private static bool s_isScheduled;
 
@@ -308,10 +309,13 @@ internal static class DeferredContentPresentationQueue
             return;
         }
 
-        if (!s_pending.Add(control))
+        if (s_pendingLookup.ContainsKey(control))
         {
             return;
         }
+
+        var node = s_pending.AddLast(control);
+        s_pendingLookup.Add(control, node);
 
         if (AutoSchedule)
         {
@@ -327,9 +331,9 @@ internal static class DeferredContentPresentationQueue
             return;
         }
 
-        s_pending.Remove(control);
+        RemovePending(control);
 
-        if (s_pending.Count == 0)
+        if (s_pendingLookup.Count == 0)
         {
             CancelScheduling();
         }
@@ -372,7 +376,7 @@ internal static class DeferredContentPresentationQueue
             return;
         }
 
-        if (s_pending.Count == 0)
+        if (s_pendingLookup.Count == 0)
         {
             CancelScheduling();
             return;
@@ -380,37 +384,23 @@ internal static class DeferredContentPresentationQueue
 
         s_isScheduled = false;
 
-        var batchSize = Math.Min(Math.Max(1, MaxPresentationsPerFrame), s_pending.Count);
-        var batch = new IDeferredContentPresentationTarget[batchSize];
-        var index = 0;
-
-        foreach (var control in s_pending)
-        {
-            batch[index++] = control;
-
-            if (index == batchSize)
-            {
-                break;
-            }
-        }
-
-        var completed = new IDeferredContentPresentationTarget[index];
+        var batchSize = Math.Min(Math.Max(1, MaxPresentationsPerFrame), s_pendingLookup.Count);
+        var node = s_pending.First;
         var completedCount = 0;
 
-        for (var i = 0; i < index; i++)
+        while (node is not null && completedCount < batchSize)
         {
-            if (batch[i].ApplyDeferredPresentation())
+            var current = node;
+            node = node.Next;
+
+            if (current.Value.ApplyDeferredPresentation())
             {
-                completed[completedCount++] = batch[i];
+                RemovePending(current.Value);
+                completedCount++;
             }
         }
 
-        for (var i = 0; i < completedCount; i++)
-        {
-            s_pending.Remove(completed[i]);
-        }
-
-        if (s_pending.Count == 0)
+        if (s_pendingLookup.Count == 0)
         {
             CancelScheduling();
             return;
@@ -430,5 +420,15 @@ internal static class DeferredContentPresentationQueue
         }
 
         s_isScheduled = false;
+    }
+
+    private static void RemovePending(IDeferredContentPresentationTarget control)
+    {
+        if (!s_pendingLookup.Remove(control, out var node))
+        {
+            return;
+        }
+
+        s_pending.Remove(node);
     }
 }

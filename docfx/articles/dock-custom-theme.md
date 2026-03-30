@@ -48,6 +48,12 @@ or copy them into your own assembly and include `/Controls/...` resources.
 </Styles>
 ```
 
+If your copied templates host expensive document or tool content, add the
+`Dock.Controls.DeferredContentControl` package and replace eager content hosts
+with `DeferredContentControl` or `DeferredContentPresenter`. See the
+[Deferred content presentation](dock-deferred-content.md) guide for the theme
+patterns used by the built-in Dock themes.
+
 ## 3. Apply the theme
 
 Reference the theme from `App.axaml`:

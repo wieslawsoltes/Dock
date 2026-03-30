@@ -24,6 +24,7 @@ This design keeps the layout engine reusable and lets you swap view models or fr
 
 ```bash
 dotnet add package Dock.Avalonia
+dotnet add package Dock.Controls.DeferredContentControl
 dotnet add package Dock.Model.Mvvm
 dotnet add package Dock.Avalonia.Themes.Fluent
 dotnet add package Dock.Avalonia.Themes.Browser
@@ -46,6 +47,7 @@ Recommended path:
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [`Dock.Avalonia.Themes.Fluent`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [`Dock.Avalonia.Themes.Browser`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Simple.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) | [`Dock.Avalonia.Themes.Simple`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Simple.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) |
+| [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.DeferredContentControl.svg)](https://www.nuget.org/packages/Dock.Controls.DeferredContentControl) | [`Dock.Controls.DeferredContentControl`](https://www.nuget.org/packages/Dock.Controls.DeferredContentControl) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.DeferredContentControl.svg)](https://www.nuget.org/packages/Dock.Controls.DeferredContentControl) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.ProportionalStackPanel.svg)](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) | [`Dock.Controls.ProportionalStackPanel`](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.ProportionalStackPanel.svg)](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.Recycling.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling) | [`Dock.Controls.Recycling`](https://www.nuget.org/packages/Dock.Controls.Recycling) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.Recycling.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.Recycling.Model.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling.Model) | [`Dock.Controls.Recycling.Model`](https://www.nuget.org/packages/Dock.Controls.Recycling.Model) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.Recycling.Model.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling.Model) |
@@ -72,6 +74,7 @@ Recommended path:
 - [Documentation index](articles/README.md)
 - [Quick start](articles/quick-start.md)
 - [Document and tool content guide](articles/dock-content-guide.md)
+- [Deferred content presentation](articles/dock-deferred-content.md)
 - [Document and tool ItemsSource guide](articles/dock-itemssource.md)
 - [API documentation](api/index.md)
 

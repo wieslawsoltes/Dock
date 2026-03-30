@@ -144,6 +144,8 @@
     href: dock-overlay-customization.md
   - name: Selector overlay
     href: dock-selector-overlay.md
+  - name: Deferred content presentation
+    href: dock-deferred-content.md
   - name: Control recycling
     href: dock-control-recycling.md
   - name: Proportional StackPanel

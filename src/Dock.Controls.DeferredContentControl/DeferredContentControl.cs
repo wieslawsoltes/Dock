@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -23,6 +24,55 @@ public interface IDeferredContentPresentation
     /// Gets a value indicating whether content presentation should be deferred.
     /// </summary>
     bool DeferContentPresentation { get; }
+}
+
+/// <summary>
+/// Defines how the shared deferred presentation queue limits work done in a single dispatcher pass.
+/// </summary>
+public enum DeferredContentPresentationBudgetMode
+{
+    /// <summary>
+    /// Limits work by the number of realized targets in a single dispatcher pass.
+    /// </summary>
+    ItemCount,
+
+    /// <summary>
+    /// Limits work by elapsed realization time in a single dispatcher pass.
+    /// </summary>
+    RealizationTime
+}
+
+/// <summary>
+/// Configures the shared deferred presentation queue used by all deferred content hosts.
+/// </summary>
+public static class DeferredContentPresentationSettings
+{
+    /// <summary>
+    /// Gets or sets the active budget mode for the shared deferred presentation queue.
+    /// </summary>
+    public static DeferredContentPresentationBudgetMode BudgetMode
+    {
+        get => DeferredContentPresentationQueue.BudgetMode;
+        set => DeferredContentPresentationQueue.BudgetMode = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the maximum number of targets that can be realized in one dispatcher pass when <see cref="BudgetMode"/> is <see cref="DeferredContentPresentationBudgetMode.ItemCount"/>.
+    /// </summary>
+    public static int MaxPresentationsPerPass
+    {
+        get => DeferredContentPresentationQueue.MaxPresentationsPerFrame;
+        set => DeferredContentPresentationQueue.MaxPresentationsPerFrame = value > 0 ? value : 1;
+    }
+
+    /// <summary>
+    /// Gets or sets the maximum elapsed realization time allowed in one dispatcher pass when <see cref="BudgetMode"/> is <see cref="DeferredContentPresentationBudgetMode.RealizationTime"/>.
+    /// </summary>
+    public static TimeSpan MaxRealizationTimePerPass
+    {
+        get => DeferredContentPresentationQueue.MaxRealizationDuration;
+        set => DeferredContentPresentationQueue.MaxRealizationDuration = value >= TimeSpan.Zero ? value : TimeSpan.Zero;
+    }
 }
 
 /// <summary>
@@ -292,8 +342,10 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
 
 internal static class DeferredContentPresentationQueue
 {
+    internal static DeferredContentPresentationBudgetMode BudgetMode { get; set; } = DeferredContentPresentationBudgetMode.ItemCount;
     internal static bool AutoSchedule { get; set; } = true;
     internal static int MaxPresentationsPerFrame { get; set; } = 8;
+    internal static TimeSpan MaxRealizationDuration { get; set; } = TimeSpan.FromMilliseconds(10);
     internal static int PendingCount => s_pendingLookup.Count;
 
     private static readonly LinkedList<IDeferredContentPresentationTarget> s_pending = new();
@@ -385,10 +437,13 @@ internal static class DeferredContentPresentationQueue
         s_isScheduled = false;
 
         var batchSize = Math.Min(Math.Max(1, MaxPresentationsPerFrame), s_pendingLookup.Count);
+        var stopwatch = BudgetMode == DeferredContentPresentationBudgetMode.RealizationTime
+            ? Stopwatch.StartNew()
+            : null;
         var node = s_pending.First;
         var completedCount = 0;
 
-        while (node is not null && completedCount < batchSize)
+        while (node is not null)
         {
             var current = node;
             node = node.Next;
@@ -397,6 +452,15 @@ internal static class DeferredContentPresentationQueue
             {
                 RemovePending(current.Value);
                 completedCount++;
+            }
+            else
+            {
+                MovePendingToBack(current);
+            }
+
+            if (!ShouldContinueProcessing(completedCount, batchSize, stopwatch))
+            {
+                break;
             }
         }
 
@@ -430,5 +494,27 @@ internal static class DeferredContentPresentationQueue
         }
 
         s_pending.Remove(node);
+    }
+
+    private static void MovePendingToBack(LinkedListNode<IDeferredContentPresentationTarget> node)
+    {
+        if (node.List != s_pending || node.Next is null)
+        {
+            return;
+        }
+
+        s_pending.Remove(node);
+        var moved = s_pending.AddLast(node.Value);
+        s_pendingLookup[node.Value] = moved;
+    }
+
+    private static bool ShouldContinueProcessing(int completedCount, int batchSize, Stopwatch? stopwatch)
+    {
+        return BudgetMode switch
+        {
+            DeferredContentPresentationBudgetMode.ItemCount => completedCount < batchSize,
+            DeferredContentPresentationBudgetMode.RealizationTime => stopwatch is not null && stopwatch.Elapsed < MaxRealizationDuration,
+            _ => false
+        };
     }
 }

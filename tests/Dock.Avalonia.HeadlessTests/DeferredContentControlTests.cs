@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -55,14 +56,29 @@ public class DeferredContentControlTests
 
     private sealed class TestDeferredTarget : IDeferredContentPresentationTarget
     {
+        public TimeSpan ApplyDelay { get; set; }
+
         public bool CanApply { get; set; }
 
         public int ApplyCount { get; private set; }
 
+        public int SuccessfulApplyCount { get; private set; }
+
         public bool ApplyDeferredPresentation()
         {
+            if (ApplyDelay > TimeSpan.Zero)
+            {
+                Thread.Sleep(ApplyDelay);
+            }
+
             ApplyCount++;
-            return CanApply;
+            if (CanApply)
+            {
+                SuccessfulApplyCount++;
+                return true;
+            }
+
+            return false;
         }
     }
 
@@ -341,24 +357,76 @@ public class DeferredContentControlTests
 
             Assert.Equal(1, firstBlocked.ApplyCount);
             Assert.Equal(1, secondBlocked.ApplyCount);
-            Assert.Equal(1, firstReady.ApplyCount);
-            Assert.Equal(1, secondReady.ApplyCount);
-            Assert.Equal(0, thirdReady.ApplyCount);
+            Assert.Equal(1, firstReady.SuccessfulApplyCount);
+            Assert.Equal(1, secondReady.SuccessfulApplyCount);
+            Assert.Equal(0, thirdReady.SuccessfulApplyCount);
             Assert.Equal(3, DeferredContentPresentationQueue.PendingCount);
+            Assert.Equal(2, targets.Sum(target => target.SuccessfulApplyCount));
 
             firstBlocked.CanApply = true;
             secondBlocked.CanApply = true;
 
             DeferredContentPresentationQueue.FlushPendingBatchForTesting();
 
-            Assert.Equal(2, firstBlocked.ApplyCount);
-            Assert.Equal(2, secondBlocked.ApplyCount);
-            Assert.Equal(0, thirdReady.ApplyCount);
+            Assert.Equal(4, targets.Sum(target => target.SuccessfulApplyCount));
             Assert.Equal(1, DeferredContentPresentationQueue.PendingCount);
 
             DeferredContentPresentationQueue.FlushPendingBatchForTesting();
 
-            Assert.Equal(1, thirdReady.ApplyCount);
+            Assert.Equal(5, targets.Sum(target => target.SuccessfulApplyCount));
+            Assert.Equal(0, DeferredContentPresentationQueue.PendingCount);
+        }
+        finally
+        {
+            foreach (var target in targets)
+            {
+                DeferredContentPresentationQueue.Remove(target);
+            }
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentQueue_Limits_Realization_Batch_By_Time_Budget()
+    {
+        using var _ = new DeferredBatchLimitScope(
+            budgetMode: DeferredContentPresentationBudgetMode.RealizationTime,
+            maxRealizationTimePerPass: TimeSpan.FromMilliseconds(10),
+            autoSchedule: false);
+
+        var slowReady = new TestDeferredTarget
+        {
+            CanApply = true,
+            ApplyDelay = TimeSpan.FromMilliseconds(25)
+        };
+        var firstReady = new TestDeferredTarget { CanApply = true };
+        var secondReady = new TestDeferredTarget { CanApply = true };
+        var targets = new[]
+        {
+            slowReady,
+            firstReady,
+            secondReady
+        };
+
+        try
+        {
+            foreach (var target in targets)
+            {
+                DeferredContentPresentationQueue.Enqueue(target);
+            }
+
+            Assert.Equal(3, DeferredContentPresentationQueue.PendingCount);
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.Equal(1, slowReady.SuccessfulApplyCount);
+            Assert.Equal(0, firstReady.SuccessfulApplyCount);
+            Assert.Equal(0, secondReady.SuccessfulApplyCount);
+            Assert.Equal(2, DeferredContentPresentationQueue.PendingCount);
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.Equal(1, firstReady.SuccessfulApplyCount);
+            Assert.Equal(1, secondReady.SuccessfulApplyCount);
             Assert.Equal(0, DeferredContentPresentationQueue.PendingCount);
         }
         finally
@@ -942,18 +1010,28 @@ public class DeferredContentControlTests
 
     private sealed class DeferredBatchLimitScope : IDisposable
     {
-        private readonly int _previousLimit = DeferredContentPresentationQueue.MaxPresentationsPerFrame;
+        private readonly DeferredContentPresentationBudgetMode _previousBudgetMode = DeferredContentPresentationSettings.BudgetMode;
+        private readonly int _previousLimit = DeferredContentPresentationSettings.MaxPresentationsPerPass;
+        private readonly TimeSpan _previousMaxRealizationTime = DeferredContentPresentationSettings.MaxRealizationTimePerPass;
         private readonly bool _previousAutoSchedule = DeferredContentPresentationQueue.AutoSchedule;
 
-        public DeferredBatchLimitScope(int limit = int.MaxValue, bool autoSchedule = true)
+        public DeferredBatchLimitScope(
+            DeferredContentPresentationBudgetMode budgetMode = DeferredContentPresentationBudgetMode.ItemCount,
+            int limit = int.MaxValue,
+            TimeSpan? maxRealizationTimePerPass = null,
+            bool autoSchedule = true)
         {
-            DeferredContentPresentationQueue.MaxPresentationsPerFrame = limit;
+            DeferredContentPresentationSettings.BudgetMode = budgetMode;
+            DeferredContentPresentationSettings.MaxPresentationsPerPass = limit;
+            DeferredContentPresentationSettings.MaxRealizationTimePerPass = maxRealizationTimePerPass ?? TimeSpan.FromMilliseconds(10);
             DeferredContentPresentationQueue.AutoSchedule = autoSchedule;
         }
 
         public void Dispose()
         {
-            DeferredContentPresentationQueue.MaxPresentationsPerFrame = _previousLimit;
+            DeferredContentPresentationSettings.BudgetMode = _previousBudgetMode;
+            DeferredContentPresentationSettings.MaxPresentationsPerPass = _previousLimit;
+            DeferredContentPresentationSettings.MaxRealizationTimePerPass = _previousMaxRealizationTime;
             DeferredContentPresentationQueue.AutoSchedule = _previousAutoSchedule;
         }
     }

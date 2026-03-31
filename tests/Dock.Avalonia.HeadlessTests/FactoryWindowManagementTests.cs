@@ -55,4 +55,32 @@ public class FactoryWindowManagementTests
 
         Assert.Empty(root.Windows!);
     }
+
+    [AvaloniaFact]
+    public void RemoveWindow_Clears_Window_Owner_And_Layout_Graph()
+    {
+        var factory = new Factory();
+        var workspaceRoot = new RootDock { Windows = factory.CreateList<IDockWindow>() };
+        workspaceRoot.Factory = factory;
+
+        var floatingRoot = new RootDock { Factory = factory };
+        var parentWindow = new DockWindow();
+        var window = new DockWindow
+        {
+            Layout = floatingRoot,
+            ParentWindow = parentWindow
+        };
+
+        floatingRoot.Window = window;
+        factory.AddWindow(workspaceRoot, window);
+
+        factory.RemoveWindow(window);
+
+        Assert.Empty(workspaceRoot.Windows!);
+        Assert.Null(window.Owner);
+        Assert.Null(window.Factory);
+        Assert.Null(window.Layout);
+        Assert.Null(window.ParentWindow);
+        Assert.Null(floatingRoot.Window);
+    }
 }

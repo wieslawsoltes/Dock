@@ -61,9 +61,20 @@ public abstract partial class FactoryBase
     {
         if (window.Owner is IRootDock rootDock)
         {
+            var layout = window.Layout;
             window.Exit();
             rootDock.Windows?.Remove(window);
             OnWindowRemoved(window);
+
+            if (layout is not null && ReferenceEquals(layout.Window, window))
+            {
+                layout.Window = null;
+            }
+
+            window.ParentWindow = null;
+            window.Owner = null;
+            window.Factory = null;
+            window.Layout = null;
         }
     }
 

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
@@ -13,6 +15,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
+using Avalonia.Visuals;
 
 namespace Dock.Controls.DeferredContentControl;
 
@@ -54,6 +57,7 @@ public sealed class DeferredContentPresentationTimeline
     private TimeSpan _maxRealizationTimePerPass = TimeSpan.FromMilliseconds(10);
     private TimeSpan _initialDelay = TimeSpan.Zero;
     private TimeSpan _followUpDelay = TimeSpan.FromMilliseconds(1);
+    private TimeSpan _revealDuration = TimeSpan.FromMilliseconds(90);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DeferredContentPresentationTimeline"/> class.
@@ -106,6 +110,15 @@ public sealed class DeferredContentPresentationTimeline
     {
         get => _followUpDelay;
         set => _followUpDelay = value >= TimeSpan.Zero ? value : TimeSpan.Zero;
+    }
+
+    /// <summary>
+    /// Gets or sets the short opacity reveal duration applied when deferred content becomes visible. Set to zero to disable the reveal animation.
+    /// </summary>
+    public TimeSpan RevealDuration
+    {
+        get => _revealDuration;
+        set => _revealDuration = value >= TimeSpan.Zero ? value : TimeSpan.Zero;
     }
 
     internal bool AutoSchedule
@@ -187,6 +200,15 @@ public static class DeferredContentPresentationSettings
     {
         get => s_defaultTimeline.FollowUpDelay;
         set => s_defaultTimeline.FollowUpDelay = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the short opacity reveal duration applied when deferred content becomes visible through the shared default timeline. Set to zero to disable the reveal animation.
+    /// </summary>
+    public static TimeSpan RevealDuration
+    {
+        get => s_defaultTimeline.RevealDuration;
+        set => s_defaultTimeline.RevealDuration = value;
     }
 }
 
@@ -367,6 +389,11 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
 
     internal bool ApplyDeferredPresentation()
     {
+        return ApplyDeferredPresentation(animateReveal: true);
+    }
+
+    internal bool ApplyDeferredPresentation(bool animateReveal)
+    {
         if (!IsReadyForPresentation())
         {
             return false;
@@ -382,7 +409,10 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
             return true;
         }
 
-        ApplyDeferredState(_presenter!, content, contentTemplate);
+        var revealDuration = animateReveal
+            ? DeferredContentPresentationTargetHelpers.ResolveRevealDuration(_enqueuedTimeline, this)
+            : TimeSpan.Zero;
+        ApplyDeferredState(_presenter!, content, contentTemplate, revealDuration);
         _appliedContent = content;
         _appliedContentTemplate = contentTemplate;
         _appliedVersion = _requestedVersion;
@@ -405,7 +435,7 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
         if (Content is IDeferredContentPresentation { DeferContentPresentation: false })
         {
             RemoveQueuedPresentation();
-            ApplyDeferredPresentation();
+            ApplyDeferredPresentation(animateReveal: false);
             return;
         }
 
@@ -433,16 +463,21 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
         }
     }
 
-    private static void ApplyDeferredState(ContentPresenter presenter, object? content, IDataTemplate? contentTemplate)
+    private static void ApplyDeferredState(ContentPresenter presenter, object? content, IDataTemplate? contentTemplate, TimeSpan revealDuration)
     {
         if (presenter is DeferredContentPresenter deferredPresenter)
         {
-            deferredPresenter.ApplyDeferredState(content, contentTemplate);
+            deferredPresenter.ApplyDeferredState(content, contentTemplate, revealDuration);
             return;
         }
 
+        var hadPresentedChild = presenter.Child is not null;
         presenter.SetCurrentValue(ContentPresenter.ContentTemplateProperty, contentTemplate);
         presenter.SetCurrentValue(ContentPresenter.ContentProperty, content);
+        DeferredContentPresentationTargetHelpers.ApplyRevealAnimation(
+            presenter,
+            revealDuration,
+            hadPresentedChild && content is not null && presenter.Child is not null);
     }
 }
 
@@ -538,6 +573,12 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
 
     internal void ApplyDeferredState(object? content, IDataTemplate? contentTemplate)
     {
+        ApplyDeferredState(content, contentTemplate, TimeSpan.Zero);
+    }
+
+    internal void ApplyDeferredState(object? content, IDataTemplate? contentTemplate, TimeSpan revealDuration)
+    {
+        var hadPresentedChild = Child is not null;
         _suppressDeferredUpdates = true;
 
         try
@@ -551,6 +592,10 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
         }
 
         UpdatePresentedChild();
+        DeferredContentPresentationTargetHelpers.ApplyRevealAnimation(
+            this,
+            revealDuration,
+            hadPresentedChild && content is not null && Child is not null);
     }
 
     bool IDeferredContentPresentationTarget.ApplyDeferredPresentation()
@@ -559,6 +604,11 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
     }
 
     internal bool ApplyDeferredPresentation()
+    {
+        return ApplyDeferredPresentation(animateReveal: true);
+    }
+
+    internal bool ApplyDeferredPresentation(bool animateReveal)
     {
         if (!IsReadyForPresentation())
         {
@@ -575,7 +625,10 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
             return true;
         }
 
-        ApplyDeferredState(content, contentTemplate);
+        var revealDuration = animateReveal
+            ? DeferredContentPresentationTargetHelpers.ResolveRevealDuration(_enqueuedTimeline, this)
+            : TimeSpan.Zero;
+        ApplyDeferredState(content, contentTemplate, revealDuration);
         _appliedContent = content;
         _appliedContentTemplate = contentTemplate;
         _appliedVersion = _requestedVersion;
@@ -607,7 +660,7 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
         if (_requestedContent is IDeferredContentPresentation { DeferContentPresentation: false })
         {
             RemoveQueuedPresentation();
-            ApplyDeferredPresentation();
+            ApplyDeferredPresentation(animateReveal: false);
             return;
         }
 
@@ -1008,6 +1061,13 @@ internal static class DeferredContentPresentationQueue
 
 internal static class DeferredContentPresentationTargetHelpers
 {
+    private const double RevealStartingOpacity = 0.85D;
+    private static readonly CubicEaseOut s_revealEasing = new();
+
+    private sealed class DeferredRevealTransition : DoubleTransition
+    {
+    }
+
     internal static DeferredContentPresentationTimeline ResolveTimeline(AvaloniaObject target)
     {
         return DeferredContentScheduling.GetTimeline(target) ?? DeferredContentPresentationSettings.DefaultTimeline;
@@ -1022,5 +1082,64 @@ internal static class DeferredContentPresentationTargetHelpers
     internal static int ResolveOrder(AvaloniaObject target)
     {
         return DeferredContentScheduling.GetOrder(target);
+    }
+
+    internal static TimeSpan ResolveRevealDuration(DeferredContentPresentationTimeline? activeTimeline, AvaloniaObject target)
+    {
+        return (activeTimeline ?? ResolveTimeline(target)).RevealDuration;
+    }
+
+    internal static void ApplyRevealAnimation(Control control, TimeSpan revealDuration, bool shouldReveal)
+    {
+        if (!shouldReveal || revealDuration <= TimeSpan.Zero)
+        {
+            control.Opacity = 1D;
+            return;
+        }
+
+        EnsureRevealTransition(control, revealDuration);
+
+        control.Opacity = RevealStartingOpacity;
+        Dispatcher.UIThread.Post(() => control.SetCurrentValue(Visual.OpacityProperty, 1D), DispatcherPriority.Background);
+    }
+
+    private static void EnsureRevealTransition(Control control, TimeSpan revealDuration)
+    {
+        if (control.Transitions is { } transitions)
+        {
+            foreach (var transition in transitions)
+            {
+                if (transition is DeferredRevealTransition revealTransition)
+                {
+                    revealTransition.Duration = revealDuration;
+                    revealTransition.Easing = s_revealEasing;
+                    return;
+                }
+
+                if (transition is DoubleTransition doubleTransition
+                    && doubleTransition.Property == Visual.OpacityProperty)
+                {
+                    return;
+                }
+            }
+
+            transitions.Add(CreateRevealTransition(revealDuration));
+            return;
+        }
+
+        control.Transitions =
+        [
+            CreateRevealTransition(revealDuration)
+        ];
+    }
+
+    private static DeferredRevealTransition CreateRevealTransition(TimeSpan revealDuration)
+    {
+        return new DeferredRevealTransition
+        {
+            Property = Visual.OpacityProperty,
+            Duration = revealDuration,
+            Easing = s_revealEasing
+        };
     }
 }

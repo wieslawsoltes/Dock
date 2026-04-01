@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
@@ -10,6 +11,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Data;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using Avalonia.Visuals;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
@@ -369,6 +371,256 @@ public class DeferredContentControlTests
             DrainDeferredQueueBatch(window);
             Assert.Equal(5, templates.Sum(template => template.BuildCount));
             Assert.All(controls, control => Assert.NotNull(control.Presenter?.Child));
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Does_Not_Reveal_From_Blank_On_First_Materialization()
+    {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
+        var template = new CountingTemplate(() => new TextBlock { Text = "Reveal" });
+        var control = new DeferredContentControl
+        {
+            Content = "Reveal",
+            ContentTemplate = template
+        };
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = control
+        };
+
+        window.Show();
+        control.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.NotNull(control.Presenter?.Child);
+            Assert.Equal(1D, control.Presenter.Opacity);
+            Assert.Null(control.Presenter.Transitions);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Reveals_When_Replacing_Already_Presented_Content()
+    {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
+        var template = new CountingTemplate(() => new TextBlock());
+        var control = new DeferredContentControl
+        {
+            Content = "First",
+            ContentTemplate = template
+        };
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = control
+        };
+
+        window.Show();
+        control.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            DrainDeferredQueueBatch(window);
+
+            var firstTextBlock = Assert.IsType<TextBlock>(control.Presenter!.Child);
+            Assert.Equal("First", firstTextBlock.DataContext);
+
+            control.Content = "Second";
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            var opacityTransition = Assert.Single(control.Presenter.Transitions!.OfType<DoubleTransition>());
+            Assert.Equal(TimeSpan.FromMilliseconds(50), opacityTransition.Duration);
+            Assert.True(control.Presenter.Opacity > 0.5D);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            var secondTextBlock = Assert.IsType<TextBlock>(control.Presenter.Child);
+            Assert.Equal("Second", secondTextBlock.DataContext);
+            Assert.Equal(1D, control.Presenter.Opacity);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void ToolControl_Switching_Active_Tool_Keeps_New_Content_Visible_During_Reveal()
+    {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
+        var factory = new Factory();
+        var dock = new ToolDock
+        {
+            Factory = factory,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var firstTool = new Tool
+        {
+            Id = "tool-1",
+            Title = "Tool 1",
+            Content = (Func<IServiceProvider, object>)(_ => new TextBlock { Text = "ToolOne" })
+        };
+        var secondTool = new Tool
+        {
+            Id = "tool-2",
+            Title = "Tool 2",
+            Content = (Func<IServiceProvider, object>)(_ => new TextBlock { Text = "ToolTwo" })
+        };
+
+        dock.VisibleDockables!.Add(firstTool);
+        dock.VisibleDockables.Add(secondTool);
+        dock.ActiveDockable = firstTool;
+
+        var control = new ToolControl
+        {
+            DataContext = dock
+        };
+
+        var window = ShowInWindow(control, new DockFluentTheme());
+        var presenterHost = GetDeferredPresenter(control);
+
+        try
+        {
+            DrainDeferredQueueBatch(window);
+
+            var firstTextBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            Assert.Equal("ToolOne", firstTextBlock.Text);
+
+            dock.ActiveDockable = secondTool;
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            var secondTextBlock = Assert.IsType<TextBlock>(presenterHost.Presenter.Child);
+            Assert.Equal("ToolTwo", secondTextBlock.Text);
+            Assert.True(presenterHost.Presenter.Opacity > 0.5D);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1D, presenterHost.Presenter.Opacity);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Reveal_Does_Not_Replace_Existing_Opacity_Transition()
+    {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
+        var template = new CountingTemplate(() => new TextBlock { Text = "ExistingTransition" });
+        var control = new DeferredContentControl
+        {
+            Content = "ExistingTransition",
+            ContentTemplate = template
+        };
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = control
+        };
+
+        window.Show();
+        control.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            DrainDeferredQueueBatch(window);
+
+            var transitions = new Transitions
+            {
+                new DoubleTransition
+                {
+                    Property = Visual.OpacityProperty,
+                    Duration = TimeSpan.FromMilliseconds(250)
+                }
+            };
+            control.Presenter!.Transitions = transitions;
+            control.Content = "Updated";
+
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.Same(transitions, control.Presenter.Transitions);
+            var opacityTransition = Assert.Single(control.Presenter.Transitions!.OfType<DoubleTransition>());
+            Assert.Equal(TimeSpan.FromMilliseconds(250), opacityTransition.Duration);
+
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1D, control.Presenter.Opacity);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_RevealDuration_Zero_Skips_Opacity_Staging()
+    {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.Zero);
+        var template = new CountingTemplate(() => new TextBlock { Text = "Immediate" });
+        var control = new DeferredContentControl
+        {
+            Content = "Immediate",
+            ContentTemplate = template
+        };
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = control
+        };
+
+        window.Show();
+        control.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.NotNull(control.Presenter?.Child);
+            Assert.Equal(1D, control.Presenter!.Opacity);
+            Assert.Null(control.Presenter.Transitions);
         }
         finally
         {
@@ -1603,6 +1855,7 @@ public class DeferredContentControlTests
         private readonly TimeSpan _previousMaxRealizationTime = DeferredContentPresentationSettings.MaxRealizationTimePerPass;
         private readonly TimeSpan _previousInitialDelay = DeferredContentPresentationSettings.InitialDelay;
         private readonly TimeSpan _previousFollowUpDelay = DeferredContentPresentationSettings.FollowUpDelay;
+        private readonly TimeSpan _previousRevealDuration = DeferredContentPresentationSettings.RevealDuration;
         private readonly bool _previousAutoSchedule = DeferredContentPresentationQueue.AutoSchedule;
 
         public DeferredBatchLimitScope(
@@ -1611,6 +1864,7 @@ public class DeferredContentControlTests
             TimeSpan? maxRealizationTimePerPass = null,
             TimeSpan? initialDelay = null,
             TimeSpan? followUpDelay = null,
+            TimeSpan? revealDuration = null,
             bool autoSchedule = true)
         {
             DeferredContentPresentationSettings.BudgetMode = budgetMode;
@@ -1618,6 +1872,7 @@ public class DeferredContentControlTests
             DeferredContentPresentationSettings.MaxRealizationTimePerPass = maxRealizationTimePerPass ?? TimeSpan.FromMilliseconds(10);
             DeferredContentPresentationSettings.InitialDelay = initialDelay ?? TimeSpan.Zero;
             DeferredContentPresentationSettings.FollowUpDelay = followUpDelay ?? TimeSpan.FromMilliseconds(1);
+            DeferredContentPresentationSettings.RevealDuration = revealDuration ?? TimeSpan.FromMilliseconds(90);
             DeferredContentPresentationQueue.AutoSchedule = autoSchedule;
         }
 
@@ -1628,6 +1883,7 @@ public class DeferredContentControlTests
             DeferredContentPresentationSettings.MaxRealizationTimePerPass = _previousMaxRealizationTime;
             DeferredContentPresentationSettings.InitialDelay = _previousInitialDelay;
             DeferredContentPresentationSettings.FollowUpDelay = _previousFollowUpDelay;
+            DeferredContentPresentationSettings.RevealDuration = _previousRevealDuration;
             DeferredContentPresentationQueue.AutoSchedule = _previousAutoSchedule;
         }
     }

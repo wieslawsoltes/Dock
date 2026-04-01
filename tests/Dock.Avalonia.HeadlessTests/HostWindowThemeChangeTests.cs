@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Headless.XUnit;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Controls;
@@ -34,15 +35,21 @@ public class HostWindowThemeChangeTests
             window.SetLayout(layout);
             window.Show();
             window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
 
             Assert.Single(factory.DockControls);
             Assert.Same(layout, window.Content);
 
             app.RequestedThemeVariant = ThemeVariant.Dark;
             window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
             Assert.Single(factory.DockControls);
 
             app.RequestedThemeVariant = ThemeVariant.Light;
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
             Assert.Single(factory.DockControls);
         }

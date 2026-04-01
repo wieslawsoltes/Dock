@@ -4,8 +4,10 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
+using Avalonia.Data;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -66,6 +68,8 @@ public class DeferredContentControlTests
 
         public int SuccessfulApplyCount { get; private set; }
 
+        public DeferredContentPresentationTimeline? EnqueuedTimeline { get; set; }
+
         public bool ApplyDeferredPresentation()
         {
             if (ApplyDelay > TimeSpan.Zero)
@@ -86,6 +90,46 @@ public class DeferredContentControlTests
             }
 
             return false;
+        }
+    }
+
+    private sealed class PresenterSlot
+    {
+        public PresenterSlot(object content, IDataTemplate template, int order, TimeSpan delay)
+        {
+            Content = content;
+            Template = template;
+            Order = order;
+            Delay = delay;
+        }
+
+        public object Content { get; }
+
+        public IDataTemplate Template { get; }
+
+        public int Order { get; }
+
+        public TimeSpan Delay { get; }
+    }
+
+    private sealed class TestDeferredPresenterHost : TemplatedControl
+    {
+        public static readonly StyledProperty<object?> CardProperty =
+            AvaloniaProperty.Register<TestDeferredPresenterHost, object?>(nameof(Card));
+
+        public static readonly StyledProperty<IDataTemplate?> CardTemplateProperty =
+            AvaloniaProperty.Register<TestDeferredPresenterHost, IDataTemplate?>(nameof(CardTemplate));
+
+        public object? Card
+        {
+            get => GetValue(CardProperty);
+            set => SetValue(CardProperty, value);
+        }
+
+        public IDataTemplate? CardTemplate
+        {
+            get => GetValue(CardTemplateProperty);
+            set => SetValue(CardTemplateProperty, value);
         }
     }
 
@@ -480,6 +524,486 @@ public class DeferredContentControlTests
             {
                 DeferredContentPresentationQueue.Remove(target);
             }
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Uses_Inherited_Scoped_Timeline()
+    {
+        var timeline = new DeferredContentPresentationTimeline
+        {
+            MaxPresentationsPerPass = 2
+        };
+        timeline.AutoSchedule = false;
+
+        var firstTemplate = new CountingTemplate(() => new TextBlock { Text = "FirstScope" });
+        var secondTemplate = new CountingTemplate(() => new TextBlock { Text = "SecondScope" });
+        var first = new DeferredContentControl
+        {
+            Content = "First",
+            ContentTemplate = firstTemplate
+        };
+        var second = new DeferredContentControl
+        {
+            Content = "Second",
+            ContentTemplate = secondTemplate
+        };
+        var panel = new StackPanel();
+        DeferredContentScheduling.SetTimeline(panel, timeline);
+        panel.Children.Add(first);
+        panel.Children.Add(second);
+
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = panel
+        };
+
+        window.Show();
+        first.ApplyTemplate();
+        second.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            Assert.Equal(2, timeline.PendingCount);
+            Assert.Equal(0, DeferredContentPresentationQueue.PendingCount);
+            Assert.Null(first.Presenter?.Child);
+            Assert.Null(second.Presenter?.Child);
+
+            DrainDeferredQueueBatch(window, timeline);
+
+            Assert.Equal(1, firstTemplate.BuildCount);
+            Assert.Equal(1, secondTemplate.BuildCount);
+            Assert.NotNull(first.Presenter?.Child);
+            Assert.NotNull(second.Presenter?.Child);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Uses_Inherited_Order_Within_Scope()
+    {
+        var timeline = new DeferredContentPresentationTimeline
+        {
+            MaxPresentationsPerPass = 1
+        };
+        timeline.AutoSchedule = false;
+
+        var firstTemplate = new CountingTemplate(() => new TextBlock { Text = "Order20" });
+        var secondTemplate = new CountingTemplate(() => new TextBlock { Text = "OrderMinus10" });
+        var first = new DeferredContentControl
+        {
+            Content = "First",
+            ContentTemplate = firstTemplate
+        };
+        var second = new DeferredContentControl
+        {
+            Content = "Second",
+            ContentTemplate = secondTemplate
+        };
+        DeferredContentScheduling.SetOrder(first, 20);
+        DeferredContentScheduling.SetOrder(second, -10);
+
+        var panel = new StackPanel();
+        DeferredContentScheduling.SetTimeline(panel, timeline);
+        panel.Children.Add(first);
+        panel.Children.Add(second);
+
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = panel
+        };
+
+        window.Show();
+        first.ApplyTemplate();
+        second.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            DrainDeferredQueueBatch(window, timeline);
+
+            Assert.Equal(0, firstTemplate.BuildCount);
+            Assert.Equal(1, secondTemplate.BuildCount);
+            Assert.Null(first.Presenter?.Child);
+            Assert.NotNull(second.Presenter?.Child);
+
+            DrainDeferredQueueBatch(window, timeline);
+
+            Assert.Equal(1, firstTemplate.BuildCount);
+            Assert.NotNull(first.Presenter?.Child);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Uses_Inherited_Delay_Within_Scope()
+    {
+        var timeline = new DeferredContentPresentationTimeline
+        {
+            MaxPresentationsPerPass = 1
+        };
+        timeline.AutoSchedule = false;
+
+        var template = new CountingTemplate(() => new TextBlock { Text = "Delayed" });
+        var control = new DeferredContentControl
+        {
+            Content = "Delayed",
+            ContentTemplate = template
+        };
+        var panel = new StackPanel();
+        DeferredContentScheduling.SetTimeline(panel, timeline);
+        DeferredContentScheduling.SetDelay(panel, TimeSpan.FromMilliseconds(20));
+        panel.Children.Add(control);
+
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = panel
+        };
+
+        window.Show();
+        control.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            DrainDeferredQueueBatch(window, timeline);
+
+            Assert.Equal(0, template.BuildCount);
+            Assert.Null(control.Presenter?.Child);
+
+            Thread.Sleep(40);
+            DrainDeferredQueueBatch(window, timeline);
+
+            Assert.Equal(1, template.BuildCount);
+            Assert.NotNull(control.Presenter?.Child);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentControl_Scoped_Timelines_Are_Independent()
+    {
+        var leftTimeline = new DeferredContentPresentationTimeline
+        {
+            MaxPresentationsPerPass = 1
+        };
+        var rightTimeline = new DeferredContentPresentationTimeline
+        {
+            MaxPresentationsPerPass = 1
+        };
+        leftTimeline.AutoSchedule = false;
+        rightTimeline.AutoSchedule = false;
+
+        var leftTemplate = new CountingTemplate(() => new TextBlock { Text = "LeftScope" });
+        var rightTemplate = new CountingTemplate(() => new TextBlock { Text = "RightScope" });
+        var leftControl = new DeferredContentControl
+        {
+            Content = "Left",
+            ContentTemplate = leftTemplate
+        };
+        var rightControl = new DeferredContentControl
+        {
+            Content = "Right",
+            ContentTemplate = rightTemplate
+        };
+
+        var leftHost = new StackPanel();
+        DeferredContentScheduling.SetTimeline(leftHost, leftTimeline);
+        leftHost.Children.Add(leftControl);
+
+        var rightHost = new StackPanel();
+        DeferredContentScheduling.SetTimeline(rightHost, rightTimeline);
+        rightHost.Children.Add(rightControl);
+
+        var root = new StackPanel();
+        root.Children.Add(leftHost);
+        root.Children.Add(rightHost);
+
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = root
+        };
+
+        window.Show();
+        leftControl.ApplyTemplate();
+        rightControl.ApplyTemplate();
+        window.UpdateLayout();
+
+        try
+        {
+            Assert.Equal(1, leftTimeline.PendingCount);
+            Assert.Equal(1, rightTimeline.PendingCount);
+
+            DrainDeferredQueueBatch(window, leftTimeline);
+
+            Assert.Equal(1, leftTemplate.BuildCount);
+            Assert.Equal(0, rightTemplate.BuildCount);
+            Assert.NotNull(leftControl.Presenter?.Child);
+            Assert.Null(rightControl.Presenter?.Child);
+
+            DrainDeferredQueueBatch(window, rightTimeline);
+
+            Assert.Equal(1, rightTemplate.BuildCount);
+            Assert.NotNull(rightControl.Presenter?.Child);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentTimeline_Applies_Lower_Order_First_In_Time_Budget_Mode()
+    {
+        var timeline = new DeferredContentPresentationTimeline
+        {
+            BudgetMode = DeferredContentPresentationBudgetMode.RealizationTime,
+            MaxRealizationTimePerPass = TimeSpan.Zero
+        };
+        timeline.AutoSchedule = false;
+
+        var slowTarget = new TestDeferredTarget
+        {
+            CanApply = true,
+            ApplyDelay = TimeSpan.FromMilliseconds(20)
+        };
+        var fastTarget = new TestDeferredTarget
+        {
+            CanApply = true
+        };
+
+        try
+        {
+            timeline.Enqueue(slowTarget, TimeSpan.Zero, order: 10);
+            timeline.Enqueue(fastTarget, TimeSpan.Zero, order: -10);
+
+            Assert.Equal(2, timeline.PendingCount);
+
+            timeline.FlushPendingBatchForTesting();
+
+            Assert.Equal(1, fastTarget.SuccessfulApplyCount);
+            Assert.Equal(0, slowTarget.SuccessfulApplyCount);
+            Assert.Equal(1, timeline.PendingCount);
+
+            timeline.FlushPendingBatchForTesting();
+
+            Assert.Equal(1, slowTarget.SuccessfulApplyCount);
+            Assert.Equal(0, timeline.PendingCount);
+        }
+        finally
+        {
+            timeline.Remove(slowTarget);
+            timeline.Remove(fastTarget);
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentPresenter_Uses_Scoped_Time_Budget_Inside_ItemsControl()
+    {
+        var firstTemplate = new CountingTemplate(() => new Border
+        {
+            Child = new TextBlock { Text = "PresenterFirst" }
+        });
+        var secondTemplate = new CountingTemplate(() => new Border
+        {
+            Child = new TextBlock { Text = "PresenterSecond" }
+        });
+        var slots = new[]
+        {
+            new PresenterSlot("First", firstTemplate, order: 10, delay: TimeSpan.FromMilliseconds(20)),
+            new PresenterSlot("Second", secondTemplate, order: -10, delay: TimeSpan.Zero)
+        };
+        var timeline = new DeferredContentPresentationTimeline
+        {
+            BudgetMode = DeferredContentPresentationBudgetMode.RealizationTime,
+            MaxRealizationTimePerPass = TimeSpan.Zero,
+            InitialDelay = TimeSpan.Zero,
+            FollowUpDelay = TimeSpan.FromMilliseconds(1)
+        };
+        timeline.AutoSchedule = false;
+
+        var itemsControl = new ItemsControl
+        {
+            ItemsSource = slots,
+            ItemTemplate = new FuncDataTemplate<PresenterSlot>(
+                (slot, _) =>
+                {
+                    var presenter = new DeferredContentPresenter
+                    {
+                        Content = slot.Content,
+                        ContentTemplate = slot.Template,
+                        Name = $"Presenter_{slot.Order}"
+                    };
+
+                    DeferredContentScheduling.SetOrder(presenter, slot.Order);
+                    DeferredContentScheduling.SetDelay(presenter, slot.Delay);
+                    return presenter;
+                },
+                supportsRecycling: true)
+        };
+        var host = new Border
+        {
+            Child = itemsControl
+        };
+        DeferredContentScheduling.SetTimeline(host, timeline);
+
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = host
+        };
+
+        window.Show();
+        window.UpdateLayout();
+
+        try
+        {
+            var presenters = window.GetVisualDescendants()
+                .OfType<DeferredContentPresenter>()
+                .ToArray();
+            var fastPresenter = presenters.Single(presenter => presenter.Name == "Presenter_-10");
+            var slowPresenter = presenters.Single(presenter => presenter.Name == "Presenter_10");
+
+            Assert.Equal(2, presenters.Length);
+            Assert.Equal(2, timeline.PendingCount);
+            Assert.All(presenters, presenter => Assert.Null(presenter.Child));
+
+            DrainDeferredQueueBatch(window, timeline);
+
+            Assert.Equal(0, firstTemplate.BuildCount);
+            Assert.Equal(1, secondTemplate.BuildCount);
+            Assert.Null(slowPresenter.Child);
+            Assert.NotNull(fastPresenter.Child);
+
+            Thread.Sleep(40);
+            DrainDeferredQueueBatch(window, timeline);
+
+            Assert.Equal(1, firstTemplate.BuildCount);
+            Assert.Equal(1, secondTemplate.BuildCount);
+            Assert.NotNull(slowPresenter.Child);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentPresenter_AutoScheduled_Time_Budget_Materializes_In_ItemsControl()
+    {
+        var firstTemplate = new CountingTemplate(() => new Border
+        {
+            Child = new TextBlock { Text = "PresenterFirstAuto" }
+        });
+        var secondTemplate = new CountingTemplate(() => new Border
+        {
+            Child = new TextBlock { Text = "PresenterSecondAuto" }
+        });
+        var slots = new[]
+        {
+            new PresenterSlot("First", firstTemplate, order: -5, delay: TimeSpan.Zero),
+            new PresenterSlot("Second", secondTemplate, order: 10, delay: TimeSpan.FromMilliseconds(150))
+        };
+        var timeline = new DeferredContentPresentationTimeline
+        {
+            BudgetMode = DeferredContentPresentationBudgetMode.RealizationTime,
+            MaxRealizationTimePerPass = TimeSpan.FromMilliseconds(2),
+            InitialDelay = TimeSpan.Zero,
+            FollowUpDelay = TimeSpan.FromMilliseconds(10)
+        };
+
+        var itemsControl = new ItemsControl
+        {
+            ItemsSource = slots,
+            ItemTemplate = new FuncDataTemplate<PresenterSlot>(
+                (slot, _) =>
+                {
+                    var hostControl = new TestDeferredPresenterHost
+                    {
+                        Card = slot.Content,
+                        CardTemplate = slot.Template,
+                        Name = $"AutoPresenterHost_{slot.Order}",
+                        Template = new FuncControlTemplate<TestDeferredPresenterHost>((_, nameScope) =>
+                            new DeferredContentPresenter
+                            {
+                                Name = "PART_Presenter",
+                                [~DeferredContentPresenter.ContentProperty] = new TemplateBinding(TestDeferredPresenterHost.CardProperty),
+                                [~DeferredContentPresenter.ContentTemplateProperty] = new TemplateBinding(TestDeferredPresenterHost.CardTemplateProperty)
+                            }.RegisterInNameScope(nameScope))
+                    };
+
+                    DeferredContentScheduling.SetOrder(hostControl, slot.Order);
+                    DeferredContentScheduling.SetDelay(hostControl, slot.Delay);
+                    return hostControl;
+                },
+                supportsRecycling: true)
+        };
+        var host = new Border
+        {
+            Child = itemsControl
+        };
+        DeferredContentScheduling.SetTimeline(host, timeline);
+
+        var window = new Window
+        {
+            Width = 800,
+            Height = 600,
+            Content = host
+        };
+
+        window.Show();
+        window.UpdateLayout();
+
+        try
+        {
+            var presenterHosts = window.GetVisualDescendants()
+                .OfType<TestDeferredPresenterHost>()
+                .ToArray();
+            var firstHost = presenterHosts.Single(hostControl => hostControl.Name == "AutoPresenterHost_-5");
+            var secondHost = presenterHosts.Single(hostControl => hostControl.Name == "AutoPresenterHost_10");
+            var firstPresenter = firstHost.GetVisualDescendants().OfType<DeferredContentPresenter>().Single();
+            var secondPresenter = secondHost.GetVisualDescendants().OfType<DeferredContentPresenter>().Single();
+
+            Assert.All(new[] { firstPresenter, secondPresenter }, presenter => Assert.Null(presenter.Child));
+
+            Thread.Sleep(60);
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, firstTemplate.BuildCount);
+            Assert.Equal(0, secondTemplate.BuildCount);
+            Assert.NotNull(firstPresenter.Child);
+            Assert.Null(secondPresenter.Child);
+
+            Thread.Sleep(180);
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Equal(1, secondTemplate.BuildCount);
+            Assert.NotNull(secondPresenter.Child);
+        }
+        finally
+        {
+            window.Close();
         }
     }
 
@@ -896,6 +1420,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void ToolChromeControl_Defers_Content_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var factory = new Factory();
         var toolDock = new ToolDock
         {
@@ -924,6 +1449,11 @@ public class DeferredContentControlTests
         try
         {
             window.UpdateLayout();
+            Assert.Equal(0, template.BuildCount);
+            Assert.Null(presenterHost.Child);
+
+            DrainDeferredQueueBatch(window);
+
             Assert.Equal(1, template.BuildCount);
             var initialTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
             Assert.Equal("First", initialTextBlock.DataContext);
@@ -933,8 +1463,7 @@ public class DeferredContentControlTests
             var staleTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
             Assert.Equal("First", staleTextBlock.DataContext);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, template.BuildCount);
             var textBlock = Assert.IsType<TextBlock>(presenterHost.Child);
@@ -949,6 +1478,7 @@ public class DeferredContentControlTests
     [AvaloniaFact]
     public void HostWindow_Defers_Content_Materialization()
     {
+        using var _ = new DeferredBatchLimitScope(autoSchedule: false);
         var template = new CountingTemplate(() => new TextBlock { Text = "HostWindow" });
         var window = new HostWindow
         {
@@ -967,6 +1497,11 @@ public class DeferredContentControlTests
         try
         {
             window.UpdateLayout();
+            Assert.Equal(0, template.BuildCount);
+            Assert.Null(presenterHost.Child);
+
+            DrainDeferredQueueBatch(window);
+
             Assert.Equal(1, template.BuildCount);
             var initialTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
             Assert.Equal("First", initialTextBlock.DataContext);
@@ -976,8 +1511,7 @@ public class DeferredContentControlTests
             var staleTextBlock = Assert.IsType<TextBlock>(presenterHost.Child);
             Assert.Equal("First", staleTextBlock.DataContext);
 
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, template.BuildCount);
             var textBlock = Assert.IsType<TextBlock>(presenterHost.Child);
@@ -1053,22 +1587,37 @@ public class DeferredContentControlTests
         window.UpdateLayout();
     }
 
+    private static void DrainDeferredQueueBatch(Window window, DeferredContentPresentationTimeline timeline)
+    {
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+        timeline.FlushPendingBatchForTesting();
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+    }
+
     private sealed class DeferredBatchLimitScope : IDisposable
     {
         private readonly DeferredContentPresentationBudgetMode _previousBudgetMode = DeferredContentPresentationSettings.BudgetMode;
         private readonly int _previousLimit = DeferredContentPresentationSettings.MaxPresentationsPerPass;
         private readonly TimeSpan _previousMaxRealizationTime = DeferredContentPresentationSettings.MaxRealizationTimePerPass;
+        private readonly TimeSpan _previousInitialDelay = DeferredContentPresentationSettings.InitialDelay;
+        private readonly TimeSpan _previousFollowUpDelay = DeferredContentPresentationSettings.FollowUpDelay;
         private readonly bool _previousAutoSchedule = DeferredContentPresentationQueue.AutoSchedule;
 
         public DeferredBatchLimitScope(
             DeferredContentPresentationBudgetMode budgetMode = DeferredContentPresentationBudgetMode.ItemCount,
             int limit = int.MaxValue,
             TimeSpan? maxRealizationTimePerPass = null,
+            TimeSpan? initialDelay = null,
+            TimeSpan? followUpDelay = null,
             bool autoSchedule = true)
         {
             DeferredContentPresentationSettings.BudgetMode = budgetMode;
             DeferredContentPresentationSettings.MaxPresentationsPerPass = limit;
             DeferredContentPresentationSettings.MaxRealizationTimePerPass = maxRealizationTimePerPass ?? TimeSpan.FromMilliseconds(10);
+            DeferredContentPresentationSettings.InitialDelay = initialDelay ?? TimeSpan.Zero;
+            DeferredContentPresentationSettings.FollowUpDelay = followUpDelay ?? TimeSpan.FromMilliseconds(1);
             DeferredContentPresentationQueue.AutoSchedule = autoSchedule;
         }
 
@@ -1077,6 +1626,8 @@ public class DeferredContentControlTests
             DeferredContentPresentationSettings.BudgetMode = _previousBudgetMode;
             DeferredContentPresentationSettings.MaxPresentationsPerPass = _previousLimit;
             DeferredContentPresentationSettings.MaxRealizationTimePerPass = _previousMaxRealizationTime;
+            DeferredContentPresentationSettings.InitialDelay = _previousInitialDelay;
+            DeferredContentPresentationSettings.FollowUpDelay = _previousFollowUpDelay;
             DeferredContentPresentationQueue.AutoSchedule = _previousAutoSchedule;
         }
     }

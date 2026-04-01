@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -27,7 +28,7 @@ public interface IDeferredContentPresentation
 }
 
 /// <summary>
-/// Defines how the shared deferred presentation queue limits work done in a single dispatcher pass.
+/// Defines how a deferred timeline limits work done in a single dispatcher pass.
 /// </summary>
 public enum DeferredContentPresentationBudgetMode
 {
@@ -43,26 +44,122 @@ public enum DeferredContentPresentationBudgetMode
 }
 
 /// <summary>
-/// Configures the shared deferred presentation queue used by all deferred content hosts.
+/// Defines a reusable deferred presentation timeline shared by one or more deferred hosts.
 /// </summary>
-public static class DeferredContentPresentationSettings
+public sealed class DeferredContentPresentationTimeline
 {
+    private readonly DeferredContentPresentationTimelineQueue _queue;
+    private DeferredContentPresentationBudgetMode _budgetMode = DeferredContentPresentationBudgetMode.ItemCount;
+    private int _maxPresentationsPerPass = 8;
+    private TimeSpan _maxRealizationTimePerPass = TimeSpan.FromMilliseconds(10);
+    private TimeSpan _initialDelay = TimeSpan.Zero;
+    private TimeSpan _followUpDelay = TimeSpan.FromMilliseconds(1);
+
     /// <summary>
-    /// Gets or sets the active budget mode for the shared deferred presentation queue.
+    /// Initializes a new instance of the <see cref="DeferredContentPresentationTimeline"/> class.
     /// </summary>
-    public static DeferredContentPresentationBudgetMode BudgetMode
+    public DeferredContentPresentationTimeline()
     {
-        get => DeferredContentPresentationQueue.BudgetMode;
-        set => DeferredContentPresentationQueue.BudgetMode = value;
+        _queue = new DeferredContentPresentationTimelineQueue(this);
     }
 
     /// <summary>
-    /// Gets or sets the maximum number of targets that can be realized in one dispatcher pass when <see cref="BudgetMode"/> is <see cref="DeferredContentPresentationBudgetMode.ItemCount"/>.
+    /// Gets or sets the active budget mode for the timeline queue.
+    /// </summary>
+    public DeferredContentPresentationBudgetMode BudgetMode
+    {
+        get => _budgetMode;
+        set => _budgetMode = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the maximum number of successful realizations allowed in one dispatcher pass when <see cref="BudgetMode"/> is <see cref="DeferredContentPresentationBudgetMode.ItemCount"/>.
+    /// </summary>
+    public int MaxPresentationsPerPass
+    {
+        get => _maxPresentationsPerPass;
+        set => _maxPresentationsPerPass = value > 0 ? value : 1;
+    }
+
+    /// <summary>
+    /// Gets or sets the maximum elapsed realization time allowed in one dispatcher pass when <see cref="BudgetMode"/> is <see cref="DeferredContentPresentationBudgetMode.RealizationTime"/>.
+    /// </summary>
+    public TimeSpan MaxRealizationTimePerPass
+    {
+        get => _maxRealizationTimePerPass;
+        set => _maxRealizationTimePerPass = value >= TimeSpan.Zero ? value : TimeSpan.Zero;
+    }
+
+    /// <summary>
+    /// Gets or sets the delay applied when a target first joins the timeline.
+    /// </summary>
+    public TimeSpan InitialDelay
+    {
+        get => _initialDelay;
+        set => _initialDelay = value >= TimeSpan.Zero ? value : TimeSpan.Zero;
+    }
+
+    /// <summary>
+    /// Gets or sets the delay used between follow-up dispatcher passes while the timeline still has pending due targets.
+    /// </summary>
+    public TimeSpan FollowUpDelay
+    {
+        get => _followUpDelay;
+        set => _followUpDelay = value >= TimeSpan.Zero ? value : TimeSpan.Zero;
+    }
+
+    internal bool AutoSchedule
+    {
+        get => _queue.AutoSchedule;
+        set => _queue.AutoSchedule = value;
+    }
+
+    internal int PendingCount => _queue.PendingCount;
+
+    internal void Enqueue(IDeferredContentPresentationTarget target, TimeSpan delay, int order)
+    {
+        _queue.Enqueue(target, delay, order);
+    }
+
+    internal void Remove(IDeferredContentPresentationTarget target)
+    {
+        _queue.Remove(target);
+    }
+
+    internal void FlushPendingBatchForTesting()
+    {
+        _queue.FlushPendingBatchForTesting();
+    }
+}
+
+/// <summary>
+/// Configures the shared default deferred presentation timeline used when no scoped timeline is supplied.
+/// </summary>
+public static class DeferredContentPresentationSettings
+{
+    private static readonly DeferredContentPresentationTimeline s_defaultTimeline = new();
+
+    /// <summary>
+    /// Gets the shared default timeline used by deferred hosts that do not resolve a scoped timeline.
+    /// </summary>
+    public static DeferredContentPresentationTimeline DefaultTimeline => s_defaultTimeline;
+
+    /// <summary>
+    /// Gets or sets the active budget mode for the shared default timeline.
+    /// </summary>
+    public static DeferredContentPresentationBudgetMode BudgetMode
+    {
+        get => s_defaultTimeline.BudgetMode;
+        set => s_defaultTimeline.BudgetMode = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the maximum number of successful realizations allowed in one dispatcher pass when <see cref="BudgetMode"/> is <see cref="DeferredContentPresentationBudgetMode.ItemCount"/>.
     /// </summary>
     public static int MaxPresentationsPerPass
     {
-        get => DeferredContentPresentationQueue.MaxPresentationsPerFrame;
-        set => DeferredContentPresentationQueue.MaxPresentationsPerFrame = value > 0 ? value : 1;
+        get => s_defaultTimeline.MaxPresentationsPerPass;
+        set => s_defaultTimeline.MaxPresentationsPerPass = value;
     }
 
     /// <summary>
@@ -70,13 +167,116 @@ public static class DeferredContentPresentationSettings
     /// </summary>
     public static TimeSpan MaxRealizationTimePerPass
     {
-        get => DeferredContentPresentationQueue.MaxRealizationDuration;
-        set => DeferredContentPresentationQueue.MaxRealizationDuration = value >= TimeSpan.Zero ? value : TimeSpan.Zero;
+        get => s_defaultTimeline.MaxRealizationTimePerPass;
+        set => s_defaultTimeline.MaxRealizationTimePerPass = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the initial delay applied when a target first joins the shared default timeline.
+    /// </summary>
+    public static TimeSpan InitialDelay
+    {
+        get => s_defaultTimeline.InitialDelay;
+        set => s_defaultTimeline.InitialDelay = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the delay used between follow-up dispatcher passes while the shared default timeline still has pending due targets.
+    /// </summary>
+    public static TimeSpan FollowUpDelay
+    {
+        get => s_defaultTimeline.FollowUpDelay;
+        set => s_defaultTimeline.FollowUpDelay = value;
     }
 }
 
 /// <summary>
-/// A <see cref="ContentControl"/> that batches content materialization onto the next dispatcher pass.
+/// Provides inheritable attached properties that scope deferred presentation timelines and per-host scheduling metadata.
+/// </summary>
+public sealed class DeferredContentScheduling
+{
+    /// <summary>
+    /// Defines the deferred presentation timeline attached property.
+    /// </summary>
+    public static readonly AttachedProperty<DeferredContentPresentationTimeline?> TimelineProperty =
+        AvaloniaProperty.RegisterAttached<DeferredContentScheduling, AvaloniaObject, DeferredContentPresentationTimeline?>(
+            "Timeline",
+            defaultValue: null,
+            inherits: true);
+
+    /// <summary>
+    /// Defines the per-host deferred delay attached property.
+    /// </summary>
+    public static readonly AttachedProperty<TimeSpan> DelayProperty =
+        AvaloniaProperty.RegisterAttached<DeferredContentScheduling, AvaloniaObject, TimeSpan>(
+            "Delay",
+            defaultValue: TimeSpan.Zero,
+            inherits: true);
+
+    /// <summary>
+    /// Defines the per-host deferred order attached property.
+    /// </summary>
+    public static readonly AttachedProperty<int> OrderProperty =
+        AvaloniaProperty.RegisterAttached<DeferredContentScheduling, AvaloniaObject, int>(
+            "Order",
+            defaultValue: 0,
+            inherits: true);
+
+    private DeferredContentScheduling()
+    {
+    }
+
+    /// <summary>
+    /// Gets the deferred presentation timeline for the specified object.
+    /// </summary>
+    public static DeferredContentPresentationTimeline? GetTimeline(AvaloniaObject target)
+    {
+        return target.GetValue(TimelineProperty);
+    }
+
+    /// <summary>
+    /// Sets the deferred presentation timeline for the specified object.
+    /// </summary>
+    public static void SetTimeline(AvaloniaObject target, DeferredContentPresentationTimeline? value)
+    {
+        target.SetValue(TimelineProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the deferred delay for the specified object.
+    /// </summary>
+    public static TimeSpan GetDelay(AvaloniaObject target)
+    {
+        return target.GetValue(DelayProperty);
+    }
+
+    /// <summary>
+    /// Sets the deferred delay for the specified object.
+    /// </summary>
+    public static void SetDelay(AvaloniaObject target, TimeSpan value)
+    {
+        target.SetValue(DelayProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the deferred order for the specified object.
+    /// </summary>
+    public static int GetOrder(AvaloniaObject target)
+    {
+        return target.GetValue(OrderProperty);
+    }
+
+    /// <summary>
+    /// Sets the deferred order for the specified object.
+    /// </summary>
+    public static void SetOrder(AvaloniaObject target, int value)
+    {
+        target.SetValue(OrderProperty, value);
+    }
+}
+
+/// <summary>
+/// A <see cref="ContentControl"/> that batches content materialization onto a deferred timeline.
 /// </summary>
 [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
 public class DeferredContentControl : ContentControl, IDeferredContentPresentationTarget
@@ -86,6 +286,7 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
     private IDataTemplate? _appliedContentTemplate;
     private long _requestedVersion;
     private long _appliedVersion = -1;
+    private DeferredContentPresentationTimeline? _enqueuedTimeline;
 
     static DeferredContentControl()
     {
@@ -104,6 +305,12 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
             }.RegisterInNameScope(nameScope)));
     }
 
+    DeferredContentPresentationTimeline? IDeferredContentPresentationTarget.EnqueuedTimeline
+    {
+        get => _enqueuedTimeline;
+        set => _enqueuedTimeline = value;
+    }
+
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -115,18 +322,25 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        DeferredContentPresentationQueue.Remove(this);
+        RemoveQueuedPresentation();
     }
 
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        _presenter = e.NameScope.Find<ContentPresenter>("PART_ContentPresenter");
-        if (_presenter is IDeferredContentPresentationTarget deferredPresenter)
+
+        if (_presenter is DeferredContentPresenter oldDeferredPresenter)
         {
-            DeferredContentPresentationQueue.Remove(deferredPresenter);
+            oldDeferredPresenter.RemoveQueuedPresentation();
         }
+
+        _presenter = e.NameScope.Find<ContentPresenter>("PART_ContentPresenter");
+        if (_presenter is DeferredContentPresenter deferredPresenter)
+        {
+            deferredPresenter.RemoveQueuedPresentation();
+        }
+
         _appliedVersion = -1;
         QueueDeferredPresentation();
     }
@@ -139,6 +353,14 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
         if (change.Property == ContentProperty || change.Property == ContentTemplateProperty)
         {
             _requestedVersion++;
+            QueueDeferredPresentation();
+            return;
+        }
+
+        if (change.Property == DeferredContentScheduling.TimelineProperty
+            || change.Property == DeferredContentScheduling.DelayProperty
+            || change.Property == DeferredContentScheduling.OrderProperty)
+        {
             QueueDeferredPresentation();
         }
     }
@@ -176,17 +398,24 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
     {
         if (!IsReadyForPresentation())
         {
+            RemoveQueuedPresentation();
             return;
         }
 
         if (Content is IDeferredContentPresentation { DeferContentPresentation: false })
         {
-            DeferredContentPresentationQueue.Remove(this);
+            RemoveQueuedPresentation();
             ApplyDeferredPresentation();
             return;
         }
 
-        DeferredContentPresentationQueue.Enqueue(this);
+        var timeline = DeferredContentPresentationTargetHelpers.ResolveTimeline(this);
+        if (!ReferenceEquals(_enqueuedTimeline, timeline))
+        {
+            RemoveQueuedPresentation();
+        }
+
+        timeline.Enqueue(this, DeferredContentPresentationTargetHelpers.ResolveDelay(this), DeferredContentPresentationTargetHelpers.ResolveOrder(this));
     }
 
     private bool IsReadyForPresentation()
@@ -194,6 +423,14 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
         return _presenter is not null
             && VisualRoot is not null
             && ((ILogical)this).IsAttachedToLogicalTree;
+    }
+
+    private void RemoveQueuedPresentation()
+    {
+        if (_enqueuedTimeline is { } timeline)
+        {
+            timeline.Remove(this);
+        }
     }
 
     private static void ApplyDeferredState(ContentPresenter presenter, object? content, IDataTemplate? contentTemplate)
@@ -211,19 +448,31 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
 
 internal interface IDeferredContentPresentationTarget
 {
+    DeferredContentPresentationTimeline? EnqueuedTimeline { get; set; }
+
     bool ApplyDeferredPresentation();
 }
 
 /// <summary>
-/// A <see cref="ContentPresenter"/> that batches content materialization onto the next dispatcher pass.
+/// A <see cref="ContentPresenter"/> that batches content materialization onto a deferred timeline.
 /// </summary>
 public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresentationTarget
 {
     private bool _suppressDeferredUpdates;
+    private object? _requestedContent;
+    private IDataTemplate? _requestedContentTemplate;
     private object? _appliedContent;
     private IDataTemplate? _appliedContentTemplate;
     private long _requestedVersion;
     private long _appliedVersion = -1;
+    private Size _lastDesiredSize;
+    private DeferredContentPresentationTimeline? _enqueuedTimeline;
+
+    DeferredContentPresentationTimeline? IDeferredContentPresentationTarget.EnqueuedTimeline
+    {
+        get => _enqueuedTimeline;
+        set => _enqueuedTimeline = value;
+    }
 
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -236,7 +485,20 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        DeferredContentPresentationQueue.Remove(this);
+        RemoveQueuedPresentation();
+    }
+
+    /// <inheritdoc/>
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        if (ShouldDeferMeasure())
+        {
+            return _lastDesiredSize;
+        }
+
+        var desiredSize = base.MeasureOverride(availableSize);
+        _lastDesiredSize = desiredSize;
+        return desiredSize;
     }
 
     /// <inheritdoc/>
@@ -249,12 +511,29 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
                 return;
             }
 
+            if (change.Property == ContentProperty)
+            {
+                _requestedContent = change.NewValue;
+            }
+            else
+            {
+                _requestedContentTemplate = change.NewValue as IDataTemplate;
+            }
+
             _requestedVersion++;
+            RestoreAppliedState();
             QueueDeferredPresentation();
             return;
         }
 
         base.OnPropertyChanged(change);
+
+        if (change.Property == DeferredContentScheduling.TimelineProperty
+            || change.Property == DeferredContentScheduling.DelayProperty
+            || change.Property == DeferredContentScheduling.OrderProperty)
+        {
+            QueueDeferredPresentation();
+        }
     }
 
     internal void ApplyDeferredState(object? content, IDataTemplate? contentTemplate)
@@ -286,8 +565,8 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
             return false;
         }
 
-        object? content = Content;
-        IDataTemplate? contentTemplate = ContentTemplate;
+        object? content = _requestedContent;
+        IDataTemplate? contentTemplate = _requestedContentTemplate;
 
         if (_appliedVersion == _requestedVersion
             && ReferenceEquals(_appliedContent, content)
@@ -303,33 +582,90 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
         return true;
     }
 
+    internal void RemoveQueuedPresentation()
+    {
+        if (_enqueuedTimeline is { } timeline)
+        {
+            timeline.Remove(this);
+        }
+    }
+
     private void QueueDeferredPresentation()
     {
         if (TemplatedParent is DeferredContentControl)
         {
-            DeferredContentPresentationQueue.Remove(this);
+            RemoveQueuedPresentation();
             return;
         }
 
         if (!IsReadyForPresentation())
         {
+            RemoveQueuedPresentation();
             return;
         }
 
-        if (Content is IDeferredContentPresentation { DeferContentPresentation: false })
+        if (_requestedContent is IDeferredContentPresentation { DeferContentPresentation: false })
         {
-            DeferredContentPresentationQueue.Remove(this);
+            RemoveQueuedPresentation();
             ApplyDeferredPresentation();
             return;
         }
 
-        DeferredContentPresentationQueue.Enqueue(this);
+        var timeline = DeferredContentPresentationTargetHelpers.ResolveTimeline(this);
+        if (!ReferenceEquals(_enqueuedTimeline, timeline))
+        {
+            RemoveQueuedPresentation();
+        }
+
+        timeline.Enqueue(this, DeferredContentPresentationTargetHelpers.ResolveDelay(this), DeferredContentPresentationTargetHelpers.ResolveOrder(this));
     }
 
     private bool IsReadyForPresentation()
     {
         return VisualRoot is not null
             && ((ILogical)this).IsAttachedToLogicalTree;
+    }
+
+    private bool ShouldDeferMeasure()
+    {
+        if (_suppressDeferredUpdates)
+        {
+            return false;
+        }
+
+        if (TemplatedParent is DeferredContentControl)
+        {
+            return false;
+        }
+
+        if (!IsReadyForPresentation())
+        {
+            return false;
+        }
+
+        if (Content is IDeferredContentPresentation { DeferContentPresentation: false })
+        {
+            return false;
+        }
+
+        return _appliedVersion != _requestedVersion;
+    }
+
+    private void RestoreAppliedState()
+    {
+        _suppressDeferredUpdates = true;
+
+        try
+        {
+            SetCurrentValue(ContentTemplateProperty, _appliedContentTemplate);
+            SetCurrentValue(ContentProperty, _appliedContent);
+        }
+        finally
+        {
+            _suppressDeferredUpdates = false;
+        }
+
+        UpdatePresentedChild();
     }
 
     private void UpdatePresentedChild()
@@ -340,125 +676,166 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
     }
 }
 
-internal static class DeferredContentPresentationQueue
+internal sealed class DeferredContentPresentationTimelineQueue
 {
-    internal static DeferredContentPresentationBudgetMode BudgetMode { get; set; } = DeferredContentPresentationBudgetMode.ItemCount;
-    internal static bool AutoSchedule { get; set; } = true;
-    internal static int MaxPresentationsPerFrame { get; set; } = 8;
-    internal static TimeSpan MaxRealizationDuration { get; set; } = TimeSpan.FromMilliseconds(10);
-    internal static int PendingCount => s_pendingLookup.Count;
+    private static readonly DispatcherPriority s_flushPriority = DispatcherPriority.Background;
+    private static readonly Comparison<PendingEntry> s_pendingEntryComparison = ComparePendingEntries;
 
-    private static readonly LinkedList<IDeferredContentPresentationTarget> s_pending = new();
-    private static readonly Dictionary<IDeferredContentPresentationTarget, LinkedListNode<IDeferredContentPresentationTarget>> s_pendingLookup = new();
-    private static readonly TimeSpan s_followUpFlushDelay = TimeSpan.FromMilliseconds(1);
-    private static bool s_isScheduled;
+    private sealed class PendingEntry
+    {
+        public PendingEntry(IDeferredContentPresentationTarget target, DateTimeOffset dueAt, int order, long sequence)
+        {
+            Target = target;
+            DueAt = dueAt;
+            Order = order;
+            Sequence = sequence;
+        }
 
-    internal static void Enqueue(IDeferredContentPresentationTarget control)
+        public IDeferredContentPresentationTarget Target { get; }
+
+        public DateTimeOffset DueAt { get; set; }
+
+        public int Order { get; set; }
+
+        public long Sequence { get; set; }
+    }
+
+    private readonly DeferredContentPresentationTimeline _timeline;
+    private readonly Dictionary<IDeferredContentPresentationTarget, PendingEntry> _pending = new();
+    private readonly List<PendingEntry> _dueEntries = new();
+    private bool _isScheduled;
+    private DateTimeOffset? _scheduledDueAt;
+    private long _nextSequence;
+    private long _scheduleVersion;
+
+    public DeferredContentPresentationTimelineQueue(DeferredContentPresentationTimeline timeline)
+    {
+        _timeline = timeline;
+    }
+
+    internal bool AutoSchedule { get; set; } = true;
+
+    internal int PendingCount => _pending.Count;
+
+    internal void Enqueue(IDeferredContentPresentationTarget target, TimeSpan delay, int order)
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {
-            Dispatcher.UIThread.Post(() => Enqueue(control), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => Enqueue(target, delay, order), s_flushPriority);
             return;
         }
 
-        if (s_pendingLookup.ContainsKey(control))
+        var dueAt = DateTimeOffset.UtcNow + NormalizeDelay(_timeline.InitialDelay + delay);
+        var sequence = ++_nextSequence;
+
+        if (_pending.TryGetValue(target, out var entry))
         {
-            return;
+            entry.DueAt = dueAt;
+            entry.Order = order;
+            entry.Sequence = sequence;
+        }
+        else
+        {
+            _pending.Add(target, new PendingEntry(target, dueAt, order, sequence));
         }
 
-        var node = s_pending.AddLast(control);
-        s_pendingLookup.Add(control, node);
+        target.EnqueuedTimeline = _timeline;
 
         if (AutoSchedule)
         {
-            ScheduleFlush(delayed: false);
+            ScheduleNextPending(DateTimeOffset.UtcNow);
         }
     }
 
-    internal static void Remove(IDeferredContentPresentationTarget control)
+    internal void Remove(IDeferredContentPresentationTarget target)
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {
-            Dispatcher.UIThread.Post(() => Remove(control), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => Remove(target), s_flushPriority);
             return;
         }
 
-        RemovePending(control);
+        RemovePending(target);
 
-        if (s_pendingLookup.Count == 0)
+        if (_pending.Count == 0)
         {
             CancelScheduling();
         }
     }
 
-    private static void ScheduleFlush(bool delayed)
-    {
-        if (s_isScheduled)
-        {
-            return;
-        }
-
-        s_isScheduled = true;
-
-        if (delayed)
-        {
-            DispatcherTimer.RunOnce(FlushScheduledBatch, s_followUpFlushDelay, DispatcherPriority.Render);
-            return;
-        }
-
-        Dispatcher.UIThread.Post(FlushScheduledBatch, DispatcherPriority.Render);
-    }
-
-    internal static void FlushPendingBatchForTesting()
+    internal void FlushPendingBatchForTesting()
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {
-            Dispatcher.UIThread.Post(FlushPendingBatchForTesting, DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(FlushPendingBatchForTesting, s_flushPriority);
             return;
         }
 
-        FlushScheduledBatch();
+        FlushScheduledBatch(_scheduleVersion);
     }
 
-    private static void FlushScheduledBatch()
+    private void FlushScheduledBatch(long scheduledVersion)
     {
         if (!Dispatcher.UIThread.CheckAccess())
         {
-            Dispatcher.UIThread.Post(FlushScheduledBatch, DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => FlushScheduledBatch(scheduledVersion), s_flushPriority);
             return;
         }
 
-        if (s_pendingLookup.Count == 0)
+        if (scheduledVersion != _scheduleVersion)
+        {
+            return;
+        }
+
+        _isScheduled = false;
+        _scheduledDueAt = null;
+
+        if (_pending.Count == 0)
         {
             CancelScheduling();
             return;
         }
 
-        s_isScheduled = false;
+        var now = DateTimeOffset.UtcNow;
+        _dueEntries.Clear();
 
-        var pendingCountAtStart = s_pendingLookup.Count;
-        var batchSize = Math.Min(Math.Max(1, MaxPresentationsPerFrame), s_pendingLookup.Count);
-        var stopwatch = BudgetMode == DeferredContentPresentationBudgetMode.RealizationTime
+        foreach (PendingEntry entry in _pending.Values)
+        {
+            if (entry.DueAt <= now)
+            {
+                _dueEntries.Add(entry);
+            }
+        }
+
+        if (_dueEntries.Count == 0)
+        {
+            if (AutoSchedule)
+            {
+                ScheduleNextPending(now);
+            }
+
+            return;
+        }
+
+        _dueEntries.Sort(s_pendingEntryComparison);
+
+        var batchSize = Math.Min(Math.Max(1, _timeline.MaxPresentationsPerPass), _dueEntries.Count);
+        var stopwatch = _timeline.BudgetMode == DeferredContentPresentationBudgetMode.RealizationTime
             ? Stopwatch.StartNew()
             : null;
-        var node = s_pending.First;
         var completedCount = 0;
-        var processedCount = 0;
 
-        while (node is not null && processedCount < pendingCountAtStart)
+        foreach (PendingEntry entry in _dueEntries)
         {
-            var current = node;
-            node = node.Next;
-            processedCount++;
-
-            if (current.Value.ApplyDeferredPresentation())
+            if (!_pending.TryGetValue(entry.Target, out var current) || !ReferenceEquals(current, entry))
             {
-                RemovePending(current.Value);
-                completedCount++;
+                continue;
             }
-            else
+
+            if (entry.Target.ApplyDeferredPresentation())
             {
-                MovePendingToBack(current);
+                RemovePending(entry.Target);
+                completedCount++;
             }
 
             if (!ShouldContinueProcessing(completedCount, batchSize, stopwatch))
@@ -467,57 +844,183 @@ internal static class DeferredContentPresentationQueue
             }
         }
 
-        if (s_pendingLookup.Count == 0)
+        _dueEntries.Clear();
+
+        if (_pending.Count == 0)
         {
             CancelScheduling();
             return;
         }
 
-        if (AutoSchedule)
-        {
-            ScheduleFlush(delayed: true);
-        }
-    }
-
-    private static void CancelScheduling()
-    {
-        if (!s_isScheduled)
+        if (!AutoSchedule)
         {
             return;
         }
 
-        s_isScheduled = false;
+        now = DateTimeOffset.UtcNow;
+        ScheduleFlush(HasDuePending(now) ? _timeline.FollowUpDelay : GetEarliestDueDelay(now));
     }
 
-    private static void RemovePending(IDeferredContentPresentationTarget control)
+    private void ScheduleNextPending(DateTimeOffset now)
     {
-        if (!s_pendingLookup.Remove(control, out var node))
+        if (_pending.Count == 0)
+        {
+            CancelScheduling();
+            return;
+        }
+
+        ScheduleFlush(GetEarliestDueDelay(now));
+    }
+
+    private void ScheduleFlush(TimeSpan delay)
+    {
+        var normalizedDelay = NormalizeDelay(delay);
+        var dueAt = DateTimeOffset.UtcNow + normalizedDelay;
+
+        if (_isScheduled
+            && _scheduledDueAt is { } scheduledDueAt
+            && scheduledDueAt <= dueAt)
         {
             return;
         }
 
-        s_pending.Remove(node);
+        _isScheduled = true;
+        _scheduledDueAt = dueAt;
+
+        var scheduledVersion = ++_scheduleVersion;
+
+        if (normalizedDelay == TimeSpan.Zero)
+        {
+            Dispatcher.UIThread.Post(() => FlushScheduledBatch(scheduledVersion), s_flushPriority);
+            return;
+        }
+
+        _ = PostDelayedFlushAsync(normalizedDelay, scheduledVersion);
     }
 
-    private static void MovePendingToBack(LinkedListNode<IDeferredContentPresentationTarget> node)
+    private void CancelScheduling()
     {
-        if (node.List != s_pending || node.Next is null)
+        _isScheduled = false;
+        _scheduledDueAt = null;
+        _scheduleVersion++;
+    }
+
+    private void RemovePending(IDeferredContentPresentationTarget target)
+    {
+        if (!_pending.Remove(target))
         {
             return;
         }
 
-        s_pending.Remove(node);
-        var moved = s_pending.AddLast(node.Value);
-        s_pendingLookup[node.Value] = moved;
+        if (ReferenceEquals(target.EnqueuedTimeline, _timeline))
+        {
+            target.EnqueuedTimeline = null;
+        }
     }
 
-    private static bool ShouldContinueProcessing(int completedCount, int batchSize, Stopwatch? stopwatch)
+    private bool ShouldContinueProcessing(int completedCount, int batchSize, Stopwatch? stopwatch)
     {
-        return BudgetMode switch
+        return stopwatch is null
+            ? completedCount < batchSize
+            : stopwatch.Elapsed < _timeline.MaxRealizationTimePerPass;
+    }
+
+    private bool HasDuePending(DateTimeOffset now)
+    {
+        foreach (PendingEntry entry in _pending.Values)
         {
-            DeferredContentPresentationBudgetMode.ItemCount => completedCount < batchSize,
-            DeferredContentPresentationBudgetMode.RealizationTime => stopwatch is not null && stopwatch.Elapsed < MaxRealizationDuration,
-            _ => false
-        };
+            if (entry.DueAt <= now)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private TimeSpan GetEarliestDueDelay(DateTimeOffset now)
+    {
+        using var enumerator = _pending.Values.GetEnumerator();
+        enumerator.MoveNext();
+
+        var earliestDueAt = enumerator.Current.DueAt;
+
+        while (enumerator.MoveNext())
+        {
+            if (enumerator.Current.DueAt < earliestDueAt)
+            {
+                earliestDueAt = enumerator.Current.DueAt;
+            }
+        }
+
+        var delay = earliestDueAt - now;
+        return NormalizeDelay(delay);
+    }
+
+    private static int ComparePendingEntries(PendingEntry left, PendingEntry right)
+    {
+        var orderComparison = left.Order.CompareTo(right.Order);
+        if (orderComparison != 0)
+        {
+            return orderComparison;
+        }
+
+        return left.Sequence.CompareTo(right.Sequence);
+    }
+
+    private static TimeSpan NormalizeDelay(TimeSpan delay)
+    {
+        return delay >= TimeSpan.Zero ? delay : TimeSpan.Zero;
+    }
+
+    private async Task PostDelayedFlushAsync(TimeSpan delay, long scheduledVersion)
+    {
+        await Task.Delay(delay).ConfigureAwait(false);
+        Dispatcher.UIThread.Post(() => FlushScheduledBatch(scheduledVersion), s_flushPriority);
+    }
+}
+
+internal static class DeferredContentPresentationQueue
+{
+    internal static bool AutoSchedule
+    {
+        get => DeferredContentPresentationSettings.DefaultTimeline.AutoSchedule;
+        set => DeferredContentPresentationSettings.DefaultTimeline.AutoSchedule = value;
+    }
+
+    internal static int PendingCount => DeferredContentPresentationSettings.DefaultTimeline.PendingCount;
+
+    internal static void Enqueue(IDeferredContentPresentationTarget target)
+    {
+        DeferredContentPresentationSettings.DefaultTimeline.Enqueue(target, TimeSpan.Zero, 0);
+    }
+
+    internal static void Remove(IDeferredContentPresentationTarget target)
+    {
+        DeferredContentPresentationSettings.DefaultTimeline.Remove(target);
+    }
+
+    internal static void FlushPendingBatchForTesting()
+    {
+        DeferredContentPresentationSettings.DefaultTimeline.FlushPendingBatchForTesting();
+    }
+}
+
+internal static class DeferredContentPresentationTargetHelpers
+{
+    internal static DeferredContentPresentationTimeline ResolveTimeline(AvaloniaObject target)
+    {
+        return DeferredContentScheduling.GetTimeline(target) ?? DeferredContentPresentationSettings.DefaultTimeline;
+    }
+
+    internal static TimeSpan ResolveDelay(AvaloniaObject target)
+    {
+        var delay = DeferredContentScheduling.GetDelay(target);
+        return delay >= TimeSpan.Zero ? delay : TimeSpan.Zero;
+    }
+
+    internal static int ResolveOrder(AvaloniaObject target)
+    {
+        return DeferredContentScheduling.GetOrder(target);
     }
 }

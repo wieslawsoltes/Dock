@@ -19,7 +19,7 @@ A docking layout system.
 - **ItemsSource Support**: Bind document collections directly to DocumentDock for automatic document management
 - **Flexible Content Templates**: Use DocumentTemplate for customizable document content rendering
 - **Optional Document Content Caching**: Keep document views alive across tab switches via theme option (`CacheDocumentTabContent`)
-- **Deferred Content Materialization**: Defer expensive content presenter work to the next dispatcher frame in Dock themes or custom templates
+- **Deferred Content Materialization**: Defer expensive content presenter work with shared or scoped timelines, per-host delay, and explicit ordering
 - **Multiple MVVM Frameworks**: Support for ReactiveUI, Prism, ReactiveProperty, and standard MVVM patterns
 - **Comprehensive Serialization**: Save and restore layouts with multiple format options (JSON, XML, YAML, Protobuf)
 - **Rich Theming**: Fluent and Simple themes with full customization support
@@ -129,6 +129,7 @@ Install-Package Dock.Avalonia.Themes.Browser -Pre
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples
   - **`DockMvvmSample`** - Full MVVM implementation
   - **`DockReactiveUISample`** - ReactiveUI patterns
+  - **`DockDeferredContentSample`** - Deferred timeline scopes, delay, order, and presenter-host behavior
   - **`DockOfficeSample`** - Office-style workspaces with ReactiveUI navigation
   - **`DockCodeOnlySample`** - Pure C# layouts
   - **`Notepad`** - Real-world text editor example

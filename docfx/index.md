@@ -75,6 +75,7 @@ Recommended path:
 - [Quick start](articles/quick-start.md)
 - [Document and tool content guide](articles/dock-content-guide.md)
 - [Deferred content presentation](articles/dock-deferred-content.md)
+- [Deferred content sample](articles/dock-deferred-content-sample.md)
 - [Document and tool ItemsSource guide](articles/dock-itemssource.md)
 - [API documentation](api/index.md)
 

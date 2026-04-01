@@ -22,7 +22,8 @@ If you do nothing beyond replacing an eager content host with `DeferredContentCo
 - a shared default queue,
 - next-pass presentation,
 - FIFO ordering for equal items,
-- count-based batching through `DeferredContentPresentationSettings`.
+- count-based batching through `DeferredContentPresentationSettings`,
+- a short opacity reveal to smooth later deferred content swaps without hiding first paint.
 
 That keeps existing Dock theme behavior unchanged.
 
@@ -73,6 +74,7 @@ DeferredContentPresentationSettings.BudgetMode = DeferredContentPresentationBudg
 DeferredContentPresentationSettings.MaxPresentationsPerPass = 3;
 DeferredContentPresentationSettings.InitialDelay = TimeSpan.Zero;
 DeferredContentPresentationSettings.FollowUpDelay = TimeSpan.FromMilliseconds(16);
+DeferredContentPresentationSettings.RevealDuration = TimeSpan.FromMilliseconds(90);
 ```
 
 For a realization-time budget:
@@ -81,6 +83,7 @@ For a realization-time budget:
 DeferredContentPresentationSettings.BudgetMode = DeferredContentPresentationBudgetMode.RealizationTime;
 DeferredContentPresentationSettings.MaxRealizationTimePerPass = TimeSpan.FromMilliseconds(10);
 DeferredContentPresentationSettings.FollowUpDelay = TimeSpan.FromMilliseconds(33);
+DeferredContentPresentationSettings.RevealDuration = TimeSpan.FromMilliseconds(90);
 ```
 
 Properties:
@@ -90,7 +93,10 @@ Properties:
 - `MaxRealizationTimePerPass`
 - `InitialDelay`
 - `FollowUpDelay`
+- `RevealDuration`
 - `DefaultTimeline`
+
+Set `RevealDuration` to `TimeSpan.Zero` to disable the reveal transition.
 
 ## Scope a timeline to a subtree
 
@@ -154,6 +160,18 @@ Every `DeferredContentPresentationTimeline` owns a separate queue and scheduler.
 - per-host `Delay` and `Order` still apply inside each scope.
 
 This makes deferred loading composable in the same way Dock scopes control recycling.
+
+## Smooth the deferred reveal
+
+Deferred loading can still cause a visible pop when content arrives on a later dispatcher turn. The package smooths later deferred content swaps by fading the presenter in over `RevealDuration`.
+
+The first realization from a blank host stays immediate so startup and structural dock hosts are not hidden behind an extra opacity handoff.
+
+That improves the perceived refresh, but it does not change measurement correctness. If a host is auto-sized and its true size is unknown until the content is materialized, layout can still change when the real content arrives. In those cases, use one or more of:
+
+- explicit width or height on the deferred host,
+- placeholder chrome outside the deferred host,
+- smaller timeline delays so the content lands closer to the initial layout burst.
 
 ## Opt out for specific content
 

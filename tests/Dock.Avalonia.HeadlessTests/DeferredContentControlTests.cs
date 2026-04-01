@@ -64,6 +64,8 @@ public class DeferredContentControlTests
 
         public bool CanApply { get; set; }
 
+        public bool RetainPendingPresentationOnFailure { get; set; } = true;
+
         public int MaxApplyCountBeforeThrow { get; set; } = int.MaxValue;
 
         public int ApplyCount { get; private set; }
@@ -723,6 +725,34 @@ public class DeferredContentControlTests
             {
                 DeferredContentPresentationQueue.Remove(target);
             }
+        }
+    }
+
+    [AvaloniaFact]
+    public void DeferredContentQueue_Removes_NotReady_RealTargets_Instead_Of_Polling_Them()
+    {
+        using var _ = new DeferredBatchLimitScope(limit: 2, autoSchedule: false);
+
+        var target = new TestDeferredTarget
+        {
+            RetainPendingPresentationOnFailure = false
+        };
+
+        DeferredContentPresentationQueue.Enqueue(target);
+
+        try
+        {
+            Assert.Equal(1, DeferredContentPresentationQueue.PendingCount);
+
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
+            Assert.Equal(1, target.ApplyCount);
+            Assert.Equal(0, DeferredContentPresentationQueue.PendingCount);
+            Assert.Null(target.EnqueuedTimeline);
+        }
+        finally
+        {
+            DeferredContentPresentationQueue.Remove(target);
         }
     }
 

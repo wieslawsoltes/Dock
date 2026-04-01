@@ -333,6 +333,8 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
         set => _enqueuedTimeline = value;
     }
 
+    bool IDeferredContentPresentationTarget.RetainPendingPresentationOnFailure => false;
+
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -485,6 +487,8 @@ internal interface IDeferredContentPresentationTarget
 {
     DeferredContentPresentationTimeline? EnqueuedTimeline { get; set; }
 
+    bool RetainPendingPresentationOnFailure { get; }
+
     bool ApplyDeferredPresentation();
 }
 
@@ -508,6 +512,8 @@ public class DeferredContentPresenter : ContentPresenter, IDeferredContentPresen
         get => _enqueuedTimeline;
         set => _enqueuedTimeline = value;
     }
+
+    bool IDeferredContentPresentationTarget.RetainPendingPresentationOnFailure => false;
 
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -889,6 +895,12 @@ internal sealed class DeferredContentPresentationTimelineQueue
             {
                 RemovePending(entry.Target);
                 completedCount++;
+            }
+            else if (!entry.Target.RetainPendingPresentationOnFailure)
+            {
+                // Real control targets re-enqueue themselves from attach/template/content change hooks.
+                // Dropping not-ready items avoids hot polling loops when a dispatcher drain runs eagerly.
+                RemovePending(entry.Target);
             }
 
             if (!ShouldContinueProcessing(completedCount, batchSize, stopwatch))

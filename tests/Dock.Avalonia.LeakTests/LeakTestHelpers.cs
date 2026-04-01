@@ -1626,6 +1626,8 @@ internal static class LeakTestHelpers
         SetStaticField(type, "s_managedLayer", null);
         SetStaticField(type, "s_windowTemplatesInitialized", false);
         SetStaticField(type, "s_managedTemplatesInitialized", false);
+        SetStaticField(type, "s_windowSizeFreezeAbandoned", false);
+        SetStaticField(type, "s_windowSizeFreezeRetryCount", 0);
     }
 
     private static void ClearDragPreviewContext()

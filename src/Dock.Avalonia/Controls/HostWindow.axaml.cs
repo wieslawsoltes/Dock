@@ -7,10 +7,8 @@ using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model;
@@ -24,12 +22,10 @@ namespace Dock.Avalonia.Controls;
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
 [PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow")]
-[TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
-    private HostWindowTitleBar? _hostWindowTitleBar;
     private bool _mouseDown, _draggingWindow;
     private double _normalX = double.NaN;
     private double _normalY = double.NaN;
@@ -126,26 +122,6 @@ public class HostWindow : Window, IHostWindow
     protected override AutomationPeer OnCreateAutomationPeer()
     {
         return new HostWindowAutomationPeer(this);
-    }
-
-    /// <inheritdoc/>
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-    {
-        base.OnApplyTemplate(e);
-
-        _hostWindowTitleBar = e.NameScope.Find<HostWindowTitleBar>("PART_TitleBar");
-        if (_hostWindowTitleBar is { })
-        {
-            _hostWindowTitleBar.ApplyTemplate();
-
-            if (_hostWindowTitleBar.BackgroundControl is { })
-            {
-                _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
-                {
-                    MoveDrag(args);
-                };
-            }
-        }
     }
 
     private PixelPoint ClientPointToScreenRelativeToWindow(Point clientPoint)
@@ -326,11 +302,6 @@ public class HostWindow : Window, IHostWindow
             chromeControl.CloseButton.Click += ChromeCloseClick;
         }
 
-        if (chromeControl.Grip is { } grip)
-        {
-            _chromeGrips.Add(grip);
-        }
-
         ((IPseudoClasses)chromeControl.Classes).Add(":floating");
         IsToolWindow = true;
     }
@@ -352,11 +323,6 @@ public class HostWindow : Window, IHostWindow
     /// <param name="chromeControl">The chrome control.</param>
     public void DetachGrip(ToolChromeControl chromeControl)
     {
-        if (chromeControl.Grip is { } grip)
-        {
-            _chromeGrips.Remove(grip);
-        }
-
         if (chromeControl.CloseButton is not null)
         {
             chromeControl.CloseButton.Click -= ChromeCloseClick;
@@ -772,7 +738,20 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     public void SetLayout(IDock layout)
     {
+        SetCurrentValue(IsToolWindowProperty, ResolveHostedDock(layout) is IToolDock);
         DataContext = layout;
+    }
+
+    private static IDock? ResolveHostedDock(IDock layout)
+    {
+        if (layout is IRootDock root)
+        {
+            return root.ActiveDockable as IDock
+                   ?? root.DefaultDockable as IDock
+                   ?? root.VisibleDockables?.OfType<IDock>().FirstOrDefault();
+        }
+
+        return layout;
     }
 
     private void CaptureNormalBounds()

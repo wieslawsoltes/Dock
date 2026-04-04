@@ -199,7 +199,7 @@ public class WindowDragHelper
             return;
         }
 
-        var root = _owner.GetVisualRoot();
+        var root = TopLevel.GetTopLevel(_owner);
 
         if (root is not HostWindow hostWindow)
         {

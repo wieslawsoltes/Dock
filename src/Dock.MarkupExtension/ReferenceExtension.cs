@@ -3,6 +3,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Metadata;
 
 namespace Avalonia.MarkupExtension;
 

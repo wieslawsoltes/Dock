@@ -189,7 +189,7 @@ Managed windows should look and feel like real windows. The goal is to reuse exi
 - Avoid duplicating theme XAML by referencing shared resources in `Dock.Avalonia.Themes.*` (Fluent/Simple).
 
 ### Theme resource locations (current)
-- `DockFluentTheme.axaml` includes window-related templates from `src/Dock.Avalonia.Themes.Fluent/Controls/*.axaml` (for example `HostWindow.axaml`, `HostWindowTitleBar.axaml`, `DragPreviewWindow.axaml`, `PinnedDockWindow.axaml`, `DockAdornerWindow.axaml`, `MdiDocumentWindow.axaml`, `ManagedWindowLayer.axaml`, `WindowChromeResources.axaml`).
+- `DockFluentTheme.axaml` includes window-related templates from `src/Dock.Avalonia.Themes.Fluent/Controls/*.axaml` (for example `HostWindow.axaml`, `WindowDrawnDecorations.axaml`, `HostWindowTitleBar.axaml`, `DragPreviewWindow.axaml`, `PinnedDockWindow.axaml`, `DockAdornerWindow.axaml`, `MdiDocumentWindow.axaml`, `ManagedWindowLayer.axaml`, `WindowChromeResources.axaml`).
 - `DockSimpleTheme.axaml` includes the same `/Controls/*.axaml` resources; the Simple theme links Fluent control resources via `Dock.Avalonia.Themes.Simple.csproj` (see `AvaloniaResource` link to `Dock.Avalonia.Themes.Fluent/Controls`).
 - New managed-window templates/resources should be added to `src/Dock.Avalonia.Themes.Fluent/Controls/` and referenced in both `DockFluentTheme.axaml` and `DockSimpleTheme.axaml`.
 

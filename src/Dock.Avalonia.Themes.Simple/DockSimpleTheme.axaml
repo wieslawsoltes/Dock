@@ -9,6 +9,7 @@
         <ResourceInclude Source="/Controls/ControlStrings.axaml" />
         <ResourceInclude Source="/Accents/Simple.axaml" />
         <ResourceInclude Source="/Controls/WindowChromeResources.axaml" />
+        <ResourceInclude Source="/Controls/WindowDrawnDecorations.axaml" />
         <ResourceInclude Source="/Controls/ScrollViewer.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStripItem.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStrip.axaml" />

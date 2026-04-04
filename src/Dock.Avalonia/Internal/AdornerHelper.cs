@@ -68,7 +68,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             }
         }
 
-        if (visual.GetVisualRoot() is not Window root)
+        if (TopLevel.GetTopLevel(visual) is not Window root)
         {
             return;
         }
@@ -243,7 +243,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     private static Rect ManagedBoundsFromScreen(ManagedWindowLayer layer, PixelPoint screenPoint, Size size)
     {
-        if (layer.GetVisualRoot() is not TopLevel topLevel)
+        if (TopLevel.GetTopLevel(layer) is not TopLevel topLevel)
         {
             return new Rect(0, 0, size.Width, size.Height);
         }

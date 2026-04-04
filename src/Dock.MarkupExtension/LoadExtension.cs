@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia.Markup.Xaml;
+using Avalonia.Metadata;
 
 namespace Avalonia.MarkupExtension;
 

@@ -50,7 +50,7 @@ public partial class App : Application
                     return null;
                 }
 
-                if (existing is Avalonia.ReactiveUI.ViewModelViewHost existingHost)
+                if (existing is ReactiveUI.Avalonia.ViewModelViewHost existingHost)
                 {
                     existingHost.ViewLocator = viewLocator;
                     if (!ReferenceEquals(existingHost.ViewModel, item))
@@ -60,7 +60,7 @@ public partial class App : Application
                     return existingHost;
                 }
 
-                return new Avalonia.ReactiveUI.ViewModelViewHost
+                return new ReactiveUI.Avalonia.ViewModelViewHost
                 {
                     ViewLocator = viewLocator,
                     ViewModel = item
@@ -132,8 +132,5 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 }

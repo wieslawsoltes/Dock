@@ -41,7 +41,7 @@
                                IsVisible="{Binding !!BottomPinnedDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}" />
             <controls:PinnedDockHostPanel PinnedDockDisplayMode="{Binding PinnedDockDisplayMode}"
                                           PinnedDockAlignment="{Binding PinnedDock?.Alignment, TargetNullValue={x:Static core:Alignment.Unset}, FallbackValue={x:Static core:Alignment.Unset}}">
-              <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />
+              <DeferredContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />
               <PinnedDockControl />
             </controls:PinnedDockHostPanel>
           </DockPanel>

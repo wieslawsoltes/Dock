@@ -298,3 +298,4 @@ docfx/api/*.yml
 docfx/api/*.manifest
 
 /plan
+/report

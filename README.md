@@ -19,6 +19,7 @@ A docking layout system.
 - **ItemsSource Support**: Bind document collections directly to DocumentDock for automatic document management
 - **Flexible Content Templates**: Use DocumentTemplate for customizable document content rendering
 - **Optional Document Content Caching**: Keep document views alive across tab switches via theme option (`CacheDocumentTabContent`)
+- **Deferred Content Materialization**: Defer expensive content presenter work with shared or scoped timelines, per-host delay, and explicit ordering
 - **Multiple MVVM Frameworks**: Support for ReactiveUI, Prism, ReactiveProperty, and standard MVVM patterns
 - **Comprehensive Serialization**: Save and restore layouts with multiple format options (JSON, XML, YAML, Protobuf)
 - **Rich Theming**: Fluent and Simple themes with full customization support
@@ -63,6 +64,7 @@ Install-Package Dock.Model.Mvvm
 Install-Package Dock.Serializer.Newtonsoft
 Install-Package Dock.Avalonia.Themes.Fluent
 Install-Package Dock.Avalonia.Themes.Browser
+Install-Package Dock.Controls.DeferredContentControl
 ```
 
 **Available NuGet packages:**
@@ -74,6 +76,7 @@ Install-Package Dock.Avalonia.Themes.Browser
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [`Dock.Avalonia.Themes.Fluent`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [`Dock.Avalonia.Themes.Browser`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Simple.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) | [`Dock.Avalonia.Themes.Simple`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Simple.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Simple) |
+| [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.DeferredContentControl.svg)](https://www.nuget.org/packages/Dock.Controls.DeferredContentControl) | [`Dock.Controls.DeferredContentControl`](https://www.nuget.org/packages/Dock.Controls.DeferredContentControl) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.DeferredContentControl.svg)](https://www.nuget.org/packages/Dock.Controls.DeferredContentControl) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.ProportionalStackPanel.svg)](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) | [`Dock.Controls.ProportionalStackPanel`](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.ProportionalStackPanel.svg)](https://www.nuget.org/packages/Dock.Controls.ProportionalStackPanel) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.Recycling.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling) | [`Dock.Controls.Recycling`](https://www.nuget.org/packages/Dock.Controls.Recycling) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.Recycling.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Controls.Recycling.Model.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling.Model) | [`Dock.Controls.Recycling.Model`](https://www.nuget.org/packages/Dock.Controls.Recycling.Model) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Controls.Recycling.Model.svg)](https://www.nuget.org/packages/Dock.Controls.Recycling.Model) |
@@ -126,6 +129,7 @@ Install-Package Dock.Avalonia.Themes.Browser -Pre
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples
   - **`DockMvvmSample`** - Full MVVM implementation
   - **`DockReactiveUISample`** - ReactiveUI patterns
+  - **`DockDeferredContentSample`** - Deferred timeline scopes, delay, order, and presenter-host behavior
   - **`DockOfficeSample`** - Office-style workspaces with ReactiveUI navigation
   - **`DockCodeOnlySample`** - Pure C# layouts
   - **`Notepad`** - Real-world text editor example

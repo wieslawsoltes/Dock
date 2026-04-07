@@ -44,7 +44,7 @@ Dock supports a wide range of UI patterns:
 - Floating windows, docking targets, and drag gestures.
 - Layout persistence and restoration.
 - Custom themes and styling.
-- Control recycling for performance.
+- Control recycling and deferred content presentation for performance.
 - Overlay systems for busy states and dialogs.
 
 ## How to approach the documentation
@@ -65,6 +65,7 @@ Sample apps demonstrate complete layouts and patterns:
 Dock is published on NuGet. Common packages include:
 
 - `Dock.Avalonia`
+- `Dock.Controls.DeferredContentControl`
 - `Dock.Model`
 - `Dock.Avalonia.Themes.Fluent`
 - `Dock.Avalonia.Themes.Browser`

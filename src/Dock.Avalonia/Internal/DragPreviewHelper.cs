@@ -28,6 +28,8 @@ internal class DragPreviewHelper
     private static bool s_windowMoveFlushScheduled;
     private static bool s_windowSizeFrozen;
     private static bool s_windowSizeFreezeScheduled;
+    private static bool s_windowSizeFreezeAbandoned;
+    private static int s_windowSizeFreezeRetryCount;
     private static double s_frozenWindowWidthPixels;
     private static double s_frozenWindowHeightPixels;
     private static double s_frozenContentWidthPixels = double.NaN;
@@ -35,6 +37,7 @@ internal class DragPreviewHelper
     private static double s_lastFrozenWindowScaling = 1.0;
     private static int s_windowMoveSessionId;
     private static long s_windowMovePostSequence;
+    private const int MaxWindowSizeFreezeRetries = 4;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -197,7 +200,10 @@ internal class DragPreviewHelper
             MaintainFrozenWindowSize(window, control);
         }
 
-        if (!s_windowSizeFrozen && !s_windowSizeFreezeScheduled && !string.IsNullOrEmpty(status))
+        if (!s_windowSizeFrozen
+            && !s_windowSizeFreezeScheduled
+            && !s_windowSizeFreezeAbandoned
+            && !string.IsNullOrEmpty(status))
         {
             s_windowSizeFreezeScheduled = true;
             Dispatcher.UIThread.Post(FreezeWindowSizeIfNeeded, DispatcherPriority.Render);
@@ -265,13 +271,26 @@ internal class DragPreviewHelper
             var bounds = s_window.Bounds;
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
-                // Retry on the next render pass; on some platforms the preview window
-                // may not have a stable measured size on the first callback.
+                if (s_windowSizeFreezeRetryCount >= MaxWindowSizeFreezeRetries)
+                {
+                    // Some headless/native combinations never produce a stable non-zero size.
+                    // Give up for the current preview session so later move updates do not
+                    // keep reposting freeze work indefinitely.
+                    s_windowSizeFreezeAbandoned = true;
+                    return;
+                }
+
+                s_windowSizeFreezeRetryCount++;
+
+                // Retry on a later dispatcher turn; some platforms do not have a stable
+                // preview size on the first callback, but retries must stay bounded.
                 s_windowSizeFreezeScheduled = true;
-                Dispatcher.UIThread.Post(FreezeWindowSizeIfNeeded, DispatcherPriority.Render);
+                Dispatcher.UIThread.Post(FreezeWindowSizeIfNeeded, DispatcherPriority.Background);
                 return;
             }
 
+            s_windowSizeFreezeRetryCount = 0;
+            s_windowSizeFreezeAbandoned = false;
             var scaling = GetWindowScaling(s_window);
             s_lastFrozenWindowScaling = scaling;
             s_frozenWindowWidthPixels = bounds.Width * scaling;
@@ -354,6 +373,8 @@ internal class DragPreviewHelper
             s_windowMovePostSequence = 0;
             s_windowSizeFrozen = false;
             s_windowSizeFreezeScheduled = false;
+            s_windowSizeFreezeAbandoned = false;
+            s_windowSizeFreezeRetryCount = 0;
             s_frozenWindowWidthPixels = 0;
             s_frozenWindowHeightPixels = 0;
             s_frozenContentWidthPixels = double.NaN;
@@ -465,6 +486,8 @@ internal class DragPreviewHelper
             s_windowMovePostSequence = 0;
             s_windowSizeFrozen = false;
             s_windowSizeFreezeScheduled = false;
+            s_windowSizeFreezeAbandoned = false;
+            s_windowSizeFreezeRetryCount = 0;
             s_frozenWindowWidthPixels = 0;
             s_frozenWindowHeightPixels = 0;
             s_frozenContentWidthPixels = double.NaN;

@@ -55,14 +55,14 @@
           <Border x:Name="PART_Border">
             <DockableControl DataContext="{Binding ActiveDockable}"
                              TrackingMode="Visible">
-              <ContentControl x:Name="PART_ContentPresenter"
-                              Content="{Binding}"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch">
-                <ContentControl.ContentTemplate>
+              <DeferredContentControl x:Name="PART_ContentPresenter"
+                                      Content="{Binding}"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch">
+                <DeferredContentControl.ContentTemplate>
                   <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                </ContentControl.ContentTemplate>
-              </ContentControl>
+                </DeferredContentControl.ContentTemplate>
+              </DeferredContentControl>
             </DockableControl>
           </Border>
         </DockPanel>

@@ -5,6 +5,7 @@ using Avalonia.Automation.Peers;
 using Avalonia.Automation.Provider;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Selectors;
 using Dock.Model.Avalonia;
@@ -32,13 +33,18 @@ public class AutomationReaderCompatibilityTests
         dockControl.ApplyTemplate();
         window.UpdateLayout();
         dockControl.UpdateLayout();
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+        dockControl.UpdateLayout();
 
         if (dockControl is IDockSelectorService selectorService)
         {
             selectorService.ShowSelector(DockSelectorMode.Documents);
         }
 
+        Dispatcher.UIThread.RunJobs();
         window.UpdateLayout();
+        dockControl.UpdateLayout();
 
         try
         {

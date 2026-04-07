@@ -43,15 +43,21 @@ public class HostWindowThemeChangeTests
             window.SetLayout(layout);
             window.Show();
             window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
 
             Assert.Single(factory.DockControls);
             Assert.Same(layout, window.Content);
 
             app.RequestedThemeVariant = ThemeVariant.Dark;
             window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
             Assert.Single(factory.DockControls);
 
             app.RequestedThemeVariant = ThemeVariant.Light;
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
             Assert.Single(factory.DockControls);
         }

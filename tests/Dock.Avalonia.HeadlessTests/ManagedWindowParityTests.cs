@@ -645,6 +645,54 @@ public class ManagedWindowParityTests
     }
 
     [AvaloniaFact]
+    public void DragPreviewHelper_Does_Not_Reschedule_Size_Freeze_After_Abandoning_Current_Preview()
+    {
+        var helper = new DragPreviewHelper();
+        var type = typeof(DragPreviewHelper);
+        var applyWindowMove = type.GetMethod("ApplyWindowMove", BindingFlags.Static | BindingFlags.NonPublic);
+        var windowField = type.GetField("s_window", BindingFlags.Static | BindingFlags.NonPublic);
+        var controlField = type.GetField("s_control", BindingFlags.Static | BindingFlags.NonPublic);
+        var frozenField = type.GetField("s_windowSizeFrozen", BindingFlags.Static | BindingFlags.NonPublic);
+        var scheduledField = type.GetField("s_windowSizeFreezeScheduled", BindingFlags.Static | BindingFlags.NonPublic);
+        var abandonedField = type.GetField("s_windowSizeFreezeAbandoned", BindingFlags.Static | BindingFlags.NonPublic);
+        var retryField = type.GetField("s_windowSizeFreezeRetryCount", BindingFlags.Static | BindingFlags.NonPublic);
+
+        Assert.NotNull(applyWindowMove);
+        Assert.NotNull(windowField);
+        Assert.NotNull(controlField);
+        Assert.NotNull(frozenField);
+        Assert.NotNull(scheduledField);
+        Assert.NotNull(abandonedField);
+        Assert.NotNull(retryField);
+
+        var window = new DragPreviewWindow();
+        var control = new DragPreviewControl();
+
+        helper.Hide();
+
+        try
+        {
+            windowField!.SetValue(null, window);
+            controlField!.SetValue(null, control);
+            frozenField!.SetValue(null, false);
+            scheduledField!.SetValue(null, false);
+            abandonedField!.SetValue(null, true);
+            retryField!.SetValue(null, 4);
+
+            applyWindowMove!.Invoke(null, new object[] { window, control, new PixelPoint(24, 42), "Float" });
+
+            Assert.Equal("Float", control.Status);
+            Assert.Equal(new PixelPoint(24, 42), window.Position);
+            Assert.False((bool)scheduledField.GetValue(null)!);
+            Assert.True((bool)abandonedField.GetValue(null)!);
+        }
+        finally
+        {
+            helper.Hide();
+        }
+    }
+
+    [AvaloniaFact]
     public void DragPreviewControl_Uses_PreviewContent_When_Set()
     {
         var preview = new Border { Name = "Preview" };

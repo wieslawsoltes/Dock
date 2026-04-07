@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <IsPackable>False</IsPackable>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.Themes.Fluent.props" />
+  <Import Project="..\..\build\Avalonia.Desktop.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Controls.DeferredContentControl\Dock.Controls.DeferredContentControl.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,232 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dcc="clr-namespace:Dock.Controls.DeferredContentControl;assembly=Dock.Controls.DeferredContentControl"
+        xmlns:sample="using:DockDeferredContentSample.Controls"
+        xmlns:vm="using:DockDeferredContentSample.ViewModels"
+        x:Class="DockDeferredContentSample.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="1220"
+        Height="860"
+        MinWidth="960"
+        MinHeight="720"
+        Title="Dock Deferred Content Timeline Sample">
+  <Window.Resources>
+    <dcc:DeferredContentPresentationTimeline x:Key="OrderedTimeline"
+                                             MaxPresentationsPerPass="1"
+                                             InitialDelay="0:0:0.00"
+                                             FollowUpDelay="0:0:0.10" />
+    <dcc:DeferredContentPresentationTimeline x:Key="TimeBudgetTimeline"
+                                             BudgetMode="RealizationTime"
+                                             MaxRealizationTimePerPass="0:0:0.002"
+                                             InitialDelay="0:0:0.00"
+                                             FollowUpDelay="0:0:0.04" />
+
+    <DataTemplate x:Key="SampleCardTemplate"
+                  DataType="vm:DeferredSampleCard"
+                  x:DataType="vm:DeferredSampleCard">
+      <Border Background="{Binding AccentBrush}"
+              CornerRadius="18"
+              Padding="16"
+              MinHeight="132">
+        <StackPanel Spacing="6">
+          <TextBlock Text="{Binding Title}"
+                     FontSize="17"
+                     FontWeight="Bold"
+                     Foreground="#FFF9FCFF" />
+          <TextBlock Text="{Binding Scope}"
+                     Opacity="0.82"
+                     Foreground="#FFF9FCFF" />
+          <TextBlock Text="{Binding Notes}"
+                     TextWrapping="Wrap"
+                     Opacity="0.92"
+                     Foreground="#FFF9FCFF" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+  </Window.Resources>
+
+  <Window.Styles>
+    <Style Selector="sample|PresenterCardHost">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <dcc:DeferredContentPresenter Content="{TemplateBinding Card}"
+                                        ContentTemplate="{TemplateBinding CardTemplate}"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch" />
+        </ControlTemplate>
+      </Setter>
+    </Style>
+  </Window.Styles>
+
+  <ScrollViewer>
+    <StackPanel Margin="24"
+                Spacing="24">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Deferred Content Timeline Sample"
+                   FontSize="30"
+                   FontWeight="Bold" />
+        <TextBlock Text="{Binding Overview}"
+                   MaxWidth="980"
+                   Opacity="0.78"
+                   TextWrapping="Wrap" />
+      </StackPanel>
+
+      <Border Background="#141B2B"
+              BorderBrush="#2E3B5C"
+              BorderThickness="1"
+              CornerRadius="22"
+              Padding="20">
+        <StackPanel Spacing="14">
+          <TextBlock Text="Global Default Timeline"
+                     FontSize="22"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="{Binding GlobalSummary}"
+                     Opacity="0.76"
+                     TextWrapping="Wrap" />
+          <ItemsControl ItemsSource="{Binding GlobalSlots}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"
+                           ItemWidth="352"
+                           ItemHeight="252" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="vm:DeferredSampleSlot"
+                            x:DataType="vm:DeferredSampleSlot">
+                <Border Background="#0F1422"
+                        BorderBrush="#2A3955"
+                        BorderThickness="1"
+                        CornerRadius="18"
+                        Margin="0,0,18,18"
+                        Padding="14">
+                  <StackPanel Spacing="10">
+                    <TextBlock Text="{Binding Name}"
+                               FontSize="16"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Hint}"
+                               Opacity="0.72"
+                               TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding Scheduling}"
+                               FontFamily="Consolas"
+                               FontSize="12"
+                               Opacity="0.74" />
+                    <dcc:DeferredContentControl Content="{Binding Card}"
+                                                ContentTemplate="{StaticResource SampleCardTemplate}" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <Border Background="#151925"
+              BorderBrush="#43395C"
+              BorderThickness="1"
+              CornerRadius="22"
+              Padding="20"
+              dcc:DeferredContentScheduling.Timeline="{StaticResource OrderedTimeline}">
+        <StackPanel Spacing="14">
+          <TextBlock Text="Scoped Timeline With Inherited Order And Delay"
+                     FontSize="22"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="{Binding OrderedSummary}"
+                     Opacity="0.76"
+                     TextWrapping="Wrap" />
+          <ItemsControl ItemsSource="{Binding OrderedSlots}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"
+                           ItemWidth="352"
+                           ItemHeight="252" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="vm:DeferredSampleSlot"
+                            x:DataType="vm:DeferredSampleSlot">
+                <Border Background="#101320"
+                        BorderBrush="#473D61"
+                        BorderThickness="1"
+                        CornerRadius="18"
+                        Margin="0,0,18,18"
+                        Padding="14">
+                  <StackPanel Spacing="10">
+                    <TextBlock Text="{Binding Name}"
+                               FontSize="16"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Hint}"
+                               Opacity="0.72"
+                               TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding Scheduling}"
+                               FontFamily="Consolas"
+                               FontSize="12"
+                               Opacity="0.74" />
+                    <dcc:DeferredContentControl Content="{Binding Card}"
+                                                ContentTemplate="{StaticResource SampleCardTemplate}"
+                                                dcc:DeferredContentScheduling.Order="{Binding Order}"
+                                                dcc:DeferredContentScheduling.Delay="{Binding Delay}" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <Border Background="#19151F"
+              BorderBrush="#594166"
+              BorderThickness="1"
+              CornerRadius="22"
+              Padding="20"
+              dcc:DeferredContentScheduling.Timeline="{StaticResource TimeBudgetTimeline}">
+        <StackPanel Spacing="14">
+          <TextBlock Text="Presenter Contract Scope With Time Budget"
+                     FontSize="22"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="{Binding PresenterSummary}"
+                     Opacity="0.76"
+                     TextWrapping="Wrap" />
+          <ItemsControl ItemsSource="{Binding PresenterSlots}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"
+                           ItemWidth="352"
+                           ItemHeight="252" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="vm:DeferredSampleSlot"
+                            x:DataType="vm:DeferredSampleSlot">
+                <Border Background="#121019"
+                        BorderBrush="#5E4468"
+                        BorderThickness="1"
+                        CornerRadius="18"
+                        Margin="0,0,18,18"
+                        Padding="14">
+                  <StackPanel Spacing="10">
+                    <TextBlock Text="{Binding Name}"
+                               FontSize="16"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Hint}"
+                               Opacity="0.72"
+                               TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding Scheduling}"
+                               FontFamily="Consolas"
+                               FontSize="12"
+                               Opacity="0.74" />
+                    <sample:PresenterCardHost Card="{Binding Card}"
+                                              CardTemplate="{StaticResource SampleCardTemplate}"
+                                              dcc:DeferredContentScheduling.Order="{Binding Order}"
+                                              dcc:DeferredContentScheduling.Delay="{Binding Delay}" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

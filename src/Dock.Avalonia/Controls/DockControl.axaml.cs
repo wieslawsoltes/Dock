@@ -1314,7 +1314,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private static bool ShouldIgnorePressedForFloatingToolWindowDrag(Control source)
     {
         var toolChrome = source as ToolChromeControl ?? source.FindAncestorOfType<ToolChromeControl>();
-        return TopLevel.GetTopLevel(toolChrome) is HostWindow { IsToolWindow: true };
+        return TopLevel.GetTopLevel(toolChrome) is HostWindow { IsToolWindow: true, ToolChromeControlsWholeWindow: true };
     }
 
     private static bool ShouldIgnorePressedForItemDrag(Control? source)

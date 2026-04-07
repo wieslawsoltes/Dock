@@ -74,7 +74,6 @@
 
     <Style Selector="^:toolwindow">
 
-      <Setter Property="WindowDecorations" Value="BorderOnly" />
       <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
 
       <Style Selector="^:toolchromecontrolswindow">

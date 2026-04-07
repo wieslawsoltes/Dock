@@ -132,14 +132,11 @@ public class HostWindow : Window, IHostWindow
         return relativeScreenDiff;
     }
 
-    private void MoveDrag(PointerPressedEventArgs e)
+    private bool TryBeginWindowDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope, bool ownsPointerRelease)
     {
-        if (!ToolChromeControlsWholeWindow)
-            return;
-
         if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)
         {
-            return;
+            return false;
         }
 
         if (DockSettings.BringWindowsToFrontOnDrag && Window?.Factory is { } factory)
@@ -148,14 +145,15 @@ public class HostWindow : Window, IHostWindow
         }
 
         _mouseDown = true;
+        _draggingWindow = ownsPointerRelease;
+        WindowDragDockScope = dockScope;
         _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Pressed);
 
         PseudoClasses.Set(":dragging", true);
-        _draggingWindow = true;
-        BeginMoveDrag(e);
+        return true;
     }
 
-    private void EndDrag(PointerEventArgs e)
+    private void EndWindowDrag(PointerEventArgs e)
     {
         PseudoClasses.Set(":dragging", false);
 
@@ -163,6 +161,43 @@ public class HostWindow : Window, IHostWindow
         _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Released);
         _mouseDown = false;
         _draggingWindow = false;
+        WindowDragDockScope = WindowDragDockScope.FullWindow;
+    }
+
+    internal bool TryBeginExternalWindowDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope)
+    {
+        return TryBeginWindowDrag(e, dockScope, ownsPointerRelease: false);
+    }
+
+    internal void EndExternalWindowDrag(PointerEventArgs e)
+    {
+        EndWindowDrag(e);
+    }
+
+    internal void CancelExternalWindowDrag()
+    {
+        PseudoClasses.Set(":dragging", false);
+        Window?.Factory?.OnWindowMoveDragEnd(Window);
+        _mouseDown = false;
+        _draggingWindow = false;
+        WindowDragDockScope = WindowDragDockScope.FullWindow;
+    }
+
+    private void MoveDrag(PointerPressedEventArgs e)
+    {
+        if (!ToolChromeControlsWholeWindow)
+            return;
+
+        if (!TryBeginWindowDrag(e, WindowDragDockScope.FullWindow, ownsPointerRelease: true))
+        {
+            return;
+        }
+        BeginMoveDrag(e);
+    }
+
+    private void EndDrag(PointerEventArgs e)
+    {
+        EndWindowDrag(e);
     }
 
     /// <inheritdoc/>

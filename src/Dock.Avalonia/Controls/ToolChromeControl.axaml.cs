@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
@@ -271,11 +272,15 @@ public class ToolChromeControl : ContentControl
         return false;
     }
 
-    private WindowDragHelper CreateDragHelper(Control owner, bool ignoreFocusable = false, bool handlePointerPressed = true)
+    private WindowDragHelper CreateDragHelper(
+        Control owner,
+        bool ignoreFocusable = false,
+        bool handlePointerPressed = true,
+        Func<bool>? isEnabled = null)
     {
         return new WindowDragHelper(
             owner,
-            () => true,
+            isEnabled ?? (() => true),
             source =>
             {
                 if (source is null)
@@ -307,7 +312,10 @@ public class ToolChromeControl : ContentControl
                 _attachedWindow = hostWindow;
                 SetCurrentValue(IsFloatingProperty, true);
 
-                _windowDragHelper = CreateDragHelper(Grip, ignoreFocusable: true);
+                _windowDragHelper = CreateDragHelper(
+                    Grip,
+                    ignoreFocusable: true,
+                    isEnabled: () => hostWindow.ToolChromeControlsWholeWindow);
                 _windowDragHelper.Attach();
             }
 #if false

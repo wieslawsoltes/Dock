@@ -2244,6 +2244,118 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentControl.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl.DeferredContentControl",
+      "Summary": "<p sourcefile=\"api/Dock.Controls.DeferredContentControl.DeferredContentControl.yml\" sourcestartlinenumber=\"1\">A <xref href=\"Avalonia.Controls.ContentControl\" data-throw-if-not-resolved=\"false\"></xref> that batches content materialization onto a deferred timeline.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresentationBudgetMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresentationBudgetMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl.DeferredContentPresentationBudgetMode",
+      "Summary": "<p sourcefile=\"api/Dock.Controls.DeferredContentControl.DeferredContentPresentationBudgetMode.yml\" sourcestartlinenumber=\"1\">Defines how a deferred timeline limits work done in a single dispatcher pass.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresentationSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresentationSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl.DeferredContentPresentationSettings",
+      "Summary": "<p sourcefile=\"api/Dock.Controls.DeferredContentControl.DeferredContentPresentationSettings.yml\" sourcestartlinenumber=\"1\">Configures the shared default deferred presentation timeline used when no scoped timeline is supplied.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresentationTimeline.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresentationTimeline.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl.DeferredContentPresentationTimeline",
+      "Summary": "<p sourcefile=\"api/Dock.Controls.DeferredContentControl.DeferredContentPresentationTimeline.yml\" sourcestartlinenumber=\"1\">Defines a reusable deferred presentation timeline shared by one or more deferred hosts.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresenter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentPresenter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl.DeferredContentPresenter",
+      "Summary": "<p sourcefile=\"api/Dock.Controls.DeferredContentControl.DeferredContentPresenter.yml\" sourcestartlinenumber=\"1\">A <xref href=\"Avalonia.Controls.Presenters.ContentPresenter\" data-throw-if-not-resolved=\"false\"></xref> that batches content materialization onto a deferred timeline.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentScheduling.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.DeferredContentScheduling.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl.DeferredContentScheduling",
+      "Summary": "<p sourcefile=\"api/Dock.Controls.DeferredContentControl.DeferredContentScheduling.yml\" sourcestartlinenumber=\"1\">Provides inheritable attached properties that scope deferred presentation timelines and per-host scheduling metadata.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.IDeferredContentPresentation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.IDeferredContentPresentation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl.IDeferredContentPresentation",
+      "Summary": "<p sourcefile=\"api/Dock.Controls.DeferredContentControl.IDeferredContentPresentation.yml\" sourcestartlinenumber=\"1\">Defines whether a content instance should bypass deferred presentation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Controls.DeferredContentControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Controls.DeferredContentControl.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Controls.DeferredContentControl",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Controls.ProportionalStackPanel.ProportionalStackPanel.yml",
       "output": {
         ".html": {
@@ -8069,6 +8181,26 @@
       "output": {
         ".html": {
           "relative_path": "articles/dock-deep-dive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-deferred-content-sample.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-deferred-content-sample.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dock-deferred-content.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-deferred-content.html"
         }
       },
       "version": ""

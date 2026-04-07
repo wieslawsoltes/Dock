@@ -121,6 +121,11 @@ or copy them into your own assembly and include <code>/Controls/...</code> resou
     &lt;/Styles.Resources&gt;
 &lt;/Styles&gt;
 </code></pre>
+<p>If your copied templates host expensive document or tool content, add the
+<code>Dock.Controls.DeferredContentControl</code> package and replace eager content hosts
+with <code>DeferredContentControl</code> or <code>DeferredContentPresenter</code>. See the
+<a href="dock-deferred-content.html">Deferred content presentation</a> guide for the theme
+patterns used by the built-in Dock themes.</p>
 <h2 id="3-apply-the-theme">3. Apply the theme</h2>
 <p>Reference the theme from <code>App.axaml</code>:</p>
 <pre><code class="lang-xaml">&lt;Application.Styles&gt;

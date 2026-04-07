@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Deferred Content Presentation | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Deferred Content Presentation | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-deferred-content.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="deferred-content-presentation">Deferred Content Presentation</h1>
+
+<p>Dock can defer expensive content materialization so presenter-heavy layouts do not pay for template creation, logical attachment, and style activation inside the first measure burst.</p>
+<p>The feature lives in the <code>Dock.Controls.DeferredContentControl</code> package and exposes:</p>
+<ul>
+<li><code>DeferredContentControl</code> for templates that can use a <code>ContentControl</code>.</li>
+<li><code>DeferredContentPresenter</code> for templates that must keep a <code>ContentPresenter</code> contract.</li>
+<li><code>DeferredContentPresentationTimeline</code> for shared scoped queues.</li>
+<li><code>DeferredContentScheduling</code> for inherited <code>Timeline</code>, <code>Delay</code>, and <code>Order</code> attached properties.</li>
+</ul>
+<h2 id="add-the-package">Add the package</h2>
+<pre><code class="lang-bash">dotnet add package Dock.Controls.DeferredContentControl
+</code></pre>
+<h2 id="default-behavior">Default behavior</h2>
+<p>If you do nothing beyond replacing an eager content host with <code>DeferredContentControl</code> or <code>DeferredContentPresenter</code>, the package keeps the current default behavior:</p>
+<ul>
+<li>a shared default queue,</li>
+<li>next-pass presentation,</li>
+<li>FIFO ordering for equal items,</li>
+<li>count-based batching through <code>DeferredContentPresentationSettings</code>,</li>
+<li>a short opacity reveal to smooth later deferred content swaps without hiding first paint.</li>
+</ul>
+<p>That keeps existing Dock theme behavior unchanged.</p>
+<h2 id="use-deferredcontentcontrol">Use DeferredContentControl</h2>
+<p>Use <code>DeferredContentControl</code> in theme templates that do not require a <code>ContentPresenter</code>-typed part:</p>
+<pre><code class="lang-xaml">&lt;ResourceDictionary xmlns=&quot;https://github.com/avaloniaui&quot;
+                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+                    xmlns:dcc=&quot;clr-namespace:Dock.Controls.DeferredContentControl;assembly=Dock.Controls.DeferredContentControl&quot;&gt;
+  &lt;ControlTemplate x:Key=&quot;MyDocumentTemplate&quot; TargetType=&quot;DocumentControl&quot;&gt;
+    &lt;dcc:DeferredContentControl x:Name=&quot;PART_ContentPresenter&quot;
+                                Content=&quot;{Binding}&quot;
+                                HorizontalAlignment=&quot;Stretch&quot;
+                                VerticalAlignment=&quot;Stretch&quot;&gt;
+      &lt;dcc:DeferredContentControl.ContentTemplate&gt;
+        &lt;ControlRecyclingDataTemplate Parent=&quot;{Binding #PART_ContentPresenter}&quot; /&gt;
+      &lt;/dcc:DeferredContentControl.ContentTemplate&gt;
+    &lt;/dcc:DeferredContentControl&gt;
+  &lt;/ControlTemplate&gt;
+&lt;/ResourceDictionary&gt;
+</code></pre>
+<p>The host keeps the latest <code>Content</code> and <code>ContentTemplate</code>, then forwards them to its inner presenter when the deferred queue grants that target a turn.</p>
+<h2 id="use-deferredcontentpresenter">Use DeferredContentPresenter</h2>
+<p>Some templates must keep a <code>ContentPresenter</code> contract. In that case, use <code>DeferredContentPresenter</code> directly:</p>
+<pre><code class="lang-xaml">&lt;dcc:DeferredContentPresenter x:Name=&quot;PART_ContentPresenter&quot;
+                              Content=&quot;{TemplateBinding Content}&quot;
+                              ContentTemplate=&quot;{TemplateBinding ContentTemplate}&quot;
+                              Margin=&quot;{TemplateBinding Padding}&quot;
+                              HorizontalContentAlignment=&quot;{TemplateBinding HorizontalContentAlignment}&quot;
+                              VerticalContentAlignment=&quot;{TemplateBinding VerticalContentAlignment}&quot; /&gt;
+</code></pre>
+<p>This is the right choice for host windows, chrome templates, or any control contract that names the part as a <code>ContentPresenter</code>.</p>
+<h2 id="configure-the-default-timeline">Configure the default timeline</h2>
+<p><code>DeferredContentPresentationSettings</code> now configures the shared default timeline:</p>
+<pre><code class="lang-csharp">DeferredContentPresentationSettings.BudgetMode = DeferredContentPresentationBudgetMode.ItemCount;
+DeferredContentPresentationSettings.MaxPresentationsPerPass = 3;
+DeferredContentPresentationSettings.InitialDelay = TimeSpan.Zero;
+DeferredContentPresentationSettings.FollowUpDelay = TimeSpan.FromMilliseconds(16);
+DeferredContentPresentationSettings.RevealDuration = TimeSpan.FromMilliseconds(90);
+</code></pre>
+<p>For a realization-time budget:</p>
+<pre><code class="lang-csharp">DeferredContentPresentationSettings.BudgetMode = DeferredContentPresentationBudgetMode.RealizationTime;
+DeferredContentPresentationSettings.MaxRealizationTimePerPass = TimeSpan.FromMilliseconds(10);
+DeferredContentPresentationSettings.FollowUpDelay = TimeSpan.FromMilliseconds(33);
+DeferredContentPresentationSettings.RevealDuration = TimeSpan.FromMilliseconds(90);
+</code></pre>
+<p>Properties:</p>
+<ul>
+<li><code>BudgetMode</code></li>
+<li><code>MaxPresentationsPerPass</code></li>
+<li><code>MaxRealizationTimePerPass</code></li>
+<li><code>InitialDelay</code></li>
+<li><code>FollowUpDelay</code></li>
+<li><code>RevealDuration</code></li>
+<li><code>DefaultTimeline</code></li>
+</ul>
+<p>Set <code>RevealDuration</code> to <code>TimeSpan.Zero</code> to disable the reveal transition.</p>
+<h2 id="scope-a-timeline-to-a-subtree">Scope a timeline to a subtree</h2>
+<p>Create a <code>DeferredContentPresentationTimeline</code> resource and attach it to a container with <code>DeferredContentScheduling.Timeline</code>.</p>
+<pre><code class="lang-xaml">&lt;Window xmlns=&quot;https://github.com/avaloniaui&quot;
+        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        xmlns:dcc=&quot;clr-namespace:Dock.Controls.DeferredContentControl;assembly=Dock.Controls.DeferredContentControl&quot;&gt;
+  &lt;Window.Resources&gt;
+    &lt;dcc:DeferredContentPresentationTimeline x:Key=&quot;OrderedTimeline&quot;
+                                             MaxPresentationsPerPass=&quot;1&quot;
+                                             FollowUpDelay=&quot;0:0:0.10&quot; /&gt;
+  &lt;/Window.Resources&gt;
+
+  &lt;StackPanel dcc:DeferredContentScheduling.Timeline=&quot;{StaticResource OrderedTimeline}&quot;&gt;
+    &lt;dcc:DeferredContentControl Content=&quot;{Binding PrimaryDocument}&quot; /&gt;
+    &lt;dcc:DeferredContentControl Content=&quot;{Binding SecondaryDocument}&quot; /&gt;
+  &lt;/StackPanel&gt;
+&lt;/Window&gt;
+</code></pre>
+<p>Every deferred host in that subtree shares the same scoped queue. A different subtree can attach a different timeline and realize independently.</p>
+<h2 id="set-per-host-delay-and-order">Set per-host delay and order</h2>
+<p><code>DeferredContentScheduling.Delay</code> and <code>DeferredContentScheduling.Order</code> are inheritable attached properties. You can set them on a scope root or on individual hosts.</p>
+<pre><code class="lang-xaml">&lt;StackPanel dcc:DeferredContentScheduling.Timeline=&quot;{StaticResource OrderedTimeline}&quot;&gt;
+  &lt;dcc:DeferredContentControl Content=&quot;{Binding First}&quot;
+                              dcc:DeferredContentScheduling.Order=&quot;-10&quot;
+                              dcc:DeferredContentScheduling.Delay=&quot;0:0:0.00&quot; /&gt;
+
+  &lt;dcc:DeferredContentControl Content=&quot;{Binding Second}&quot;
+                              dcc:DeferredContentScheduling.Order=&quot;5&quot;
+                              dcc:DeferredContentScheduling.Delay=&quot;0:0:0.04&quot; /&gt;
+
+  &lt;dcc:DeferredContentControl Content=&quot;{Binding Third}&quot;
+                              dcc:DeferredContentScheduling.Order=&quot;20&quot;
+                              dcc:DeferredContentScheduling.Delay=&quot;0:0:0.12&quot; /&gt;
+&lt;/StackPanel&gt;
+</code></pre>
+<p>Rules:</p>
+<ul>
+<li>lower <code>Order</code> values realize first,</li>
+<li>equal <code>Order</code> values preserve FIFO behavior,</li>
+<li><code>Delay</code> adds per-host time on top of the timeline's <code>InitialDelay</code>,</li>
+<li>scoped order and delay work in both count-based and time-based budgets.</li>
+</ul>
+<p>If you configure a non-zero <code>InitialDelay</code> or large per-host <code>Delay</code> values, a host can legitimately remain blank until its scheduled turn. Use smaller delays, or stage visible placeholder UI outside the deferred host, when first-paint completeness matters.</p>
+<h2 id="how-scopes-and-budgets-interact">How scopes and budgets interact</h2>
+<p>Every <code>DeferredContentPresentationTimeline</code> owns a separate queue and scheduler. That means you can mix different policies in one app:</p>
+<ul>
+<li>one subtree can use <code>ItemCount</code> batching,</li>
+<li>another subtree can use <code>RealizationTime</code> batching,</li>
+<li>each subtree can use different <code>InitialDelay</code> and <code>FollowUpDelay</code>,</li>
+<li>per-host <code>Delay</code> and <code>Order</code> still apply inside each scope.</li>
+</ul>
+<p>This makes deferred loading composable in the same way Dock scopes control recycling.</p>
+<h2 id="smooth-the-deferred-reveal">Smooth the deferred reveal</h2>
+<p>Deferred loading can still cause a visible pop when content arrives on a later dispatcher turn. The package smooths later deferred content swaps by fading the presenter in over <code>RevealDuration</code>.</p>
+<p>The first realization from a blank host stays immediate so startup and structural dock hosts are not hidden behind an extra opacity handoff.</p>
+<p>That improves the perceived refresh, but it does not change measurement correctness. If a host is auto-sized and its true size is unknown until the content is materialized, layout can still change when the real content arrives. In those cases, use one or more of:</p>
+<ul>
+<li>explicit width or height on the deferred host,</li>
+<li>placeholder chrome outside the deferred host,</li>
+<li>smaller timeline delays so the content lands closer to the initial layout burst.</li>
+</ul>
+<h2 id="opt-out-for-specific-content">Opt out for specific content</h2>
+<p>If a content object must stay synchronous, implement <code>IDeferredContentPresentation</code> and return <code>false</code>.</p>
+<pre><code class="lang-csharp">public sealed class ManagedDockWindowDocument : IDeferredContentPresentation
+{
+    bool IDeferredContentPresentation.DeferContentPresentation =&gt; false;
+}
+</code></pre>
+<p>Dock uses this for managed floating-window content that should not be delayed.</p>
+<h2 id="built-in-dock-theme-behavior">Built-in Dock theme behavior</h2>
+<p>The Fluent and Simple Dock themes already use deferred presentation for the heavy content hosts:</p>
+<ul>
+<li>document content,</li>
+<li>tool content,</li>
+<li>document and tool active presenters,</li>
+<li>MDI document content,</li>
+<li>split-view content,</li>
+<li>pinned content,</li>
+<li>root and dock-level active hosts,</li>
+<li>host-window and chrome presenter paths.</li>
+</ul>
+<p>Cached document tab content stays eager by design because that path intentionally prebuilds hidden tabs.</p>
+<h2 id="sample">Sample</h2>
+<p>The repository includes a focused sample that demonstrates:</p>
+<ul>
+<li>the shared default timeline,</li>
+<li>scoped timelines,</li>
+<li>inherited <code>Delay</code>,</li>
+<li>inherited <code>Order</code>,</li>
+<li><code>DeferredContentControl</code>,</li>
+<li><code>DeferredContentPresenter</code> through a presenter-contract templated host,</li>
+<li>count-based and time-based budget modes.</li>
+</ul>
+<p>See <a href="dock-deferred-content-sample.html">Deferred content sample</a>.</p>
+<p>Run it with:</p>
+<pre><code class="lang-bash">dotnet run --project samples/DockDeferredContentSample/DockDeferredContentSample.csproj
+</code></pre>
+<h2 id="related-guides">Related guides</h2>
+<ul>
+<li><a href="dock-deferred-content-sample.html">Deferred content sample</a></li>
+<li><a href="dock-control-recycling.html">Control recycling</a></li>
+<li><a href="dock-custom-theme.html">Custom Dock themes</a></li>
+<li><a href="dock-styling.html">Styling and theming</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-deferred-content.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

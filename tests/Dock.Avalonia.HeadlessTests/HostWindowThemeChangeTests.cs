@@ -121,4 +121,60 @@ public class HostWindowThemeChangeTests
             }
         }
     }
+
+    [AvaloniaFact]
+    public void DockControl_Should_Not_Ignore_Floating_Multi_Tab_Tool_Chrome_WindowDrag_Press()
+    {
+        var app = Application.Current ?? throw new InvalidOperationException("Application is not initialized.");
+        var method = typeof(DockControl).GetMethod("ShouldIgnorePressedForWindowDrag", BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.NotNull(method);
+
+        var previousStyles = app.Styles.ToList();
+        app.Styles.Clear();
+        app.Styles.Add(new FluentTheme());
+        app.Styles.Add(new DockFluentTheme());
+
+        var firstTool = new Tool { Title = "Tool1" };
+        var secondTool = new Tool { Title = "Tool2" };
+        var toolDock = new ToolDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { firstTool, secondTool },
+            ActiveDockable = firstTool,
+            OpenedDockablesCount = 2
+        };
+        var layout = new RootDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { toolDock },
+            ActiveDockable = toolDock,
+            DefaultDockable = toolDock,
+            OpenedDockablesCount = 2
+        };
+        var hostWindow = new HostWindow();
+
+        try
+        {
+            hostWindow.SetLayout(layout);
+            hostWindow.Show();
+            hostWindow.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            var toolChrome = hostWindow.GetVisualDescendants().OfType<ToolChromeControl>().FirstOrDefault();
+            Assert.NotNull(toolChrome);
+            Assert.True(hostWindow.IsToolWindow);
+            Assert.False(hostWindow.ToolChromeControlsWholeWindow);
+            Assert.Same(hostWindow, TopLevel.GetTopLevel(toolChrome));
+
+            var result = (bool?)method!.Invoke(null, new object?[] { toolChrome! });
+            Assert.False(result);
+        }
+        finally
+        {
+            hostWindow.Close();
+            app.Styles.Clear();
+            foreach (IStyle style in previousStyles)
+            {
+                app.Styles.Add(style);
+            }
+        }
+    }
 }

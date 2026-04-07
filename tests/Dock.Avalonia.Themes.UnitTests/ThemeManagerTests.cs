@@ -12,6 +12,7 @@ using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes.Browser;
 using Dock.Avalonia.Themes.Fluent;
 using Dock.Avalonia.Themes.Simple;
 using Dock.Avalonia.Themes;
@@ -266,6 +267,73 @@ public class ThemeManagerTests
             Assert.True(window.ToolChromeControlsWholeWindow);
             Assert.True(window.ExtendClientAreaToDecorationsHint);
             Assert.Equal(WindowDecorations.BorderOnly, window.WindowDecorations);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void Fluent_Theme_Should_Keep_Multi_Tab_Tool_Host_Windows_Full_Decorations()
+    {
+        Application app = Application.Current ?? throw new InvalidOperationException("Avalonia application is not initialized.");
+
+        using var scope = new AppResourcesAndStylesScope(app);
+        app.Styles.Add(new FluentTheme());
+        app.Styles.Add(new DockFluentTheme());
+
+        var window = new HostWindow
+        {
+            Width = 400,
+            Height = 300
+        };
+
+        try
+        {
+            window.SetLayout(CreateToolHostLayout(openedDockablesCount: 2));
+            window.Show();
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.True(window.IsToolWindow);
+            Assert.False(window.ToolChromeControlsWholeWindow);
+            Assert.False(window.ExtendClientAreaToDecorationsHint);
+            Assert.Equal(WindowDecorations.Full, window.WindowDecorations);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void Browser_Theme_Should_Keep_Multi_Tab_Tool_Host_Windows_Full_Decorations()
+    {
+        Application app = Application.Current ?? throw new InvalidOperationException("Avalonia application is not initialized.");
+
+        using var scope = new AppResourcesAndStylesScope(app);
+        app.Styles.Add(new FluentTheme());
+        app.Styles.Add(new DockFluentTheme());
+        app.Styles.Add(new BrowserTabTheme());
+
+        var window = new HostWindow
+        {
+            Width = 400,
+            Height = 300
+        };
+
+        try
+        {
+            window.SetLayout(CreateToolHostLayout(openedDockablesCount: 2));
+            window.Show();
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.True(window.IsToolWindow);
+            Assert.False(window.ToolChromeControlsWholeWindow);
+            Assert.True(window.ExtendClientAreaToDecorationsHint);
+            Assert.Equal(WindowDecorations.Full, window.WindowDecorations);
         }
         finally
         {
@@ -710,6 +778,30 @@ public class ThemeManagerTests
             .FirstOrDefault(x => x.Name == "PART_Grid");
 
         return Assert.IsType<Grid>(gripGrid);
+    }
+
+    private static RootDock CreateToolHostLayout(int openedDockablesCount)
+    {
+        var dockables = new AvaloniaList<IDockable>();
+        for (var index = 0; index < openedDockablesCount; index++)
+        {
+            dockables.Add(new Tool { Title = $"Tool{index + 1}" });
+        }
+
+        var toolDock = new ToolDock
+        {
+            VisibleDockables = dockables,
+            ActiveDockable = dockables[0],
+            OpenedDockablesCount = openedDockablesCount
+        };
+
+        return new RootDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { toolDock },
+            ActiveDockable = toolDock,
+            DefaultDockable = toolDock,
+            OpenedDockablesCount = openedDockablesCount
+        };
     }
 
     private static void AssertBrushColor(Control host, string resourceKey, Color expectedColor)

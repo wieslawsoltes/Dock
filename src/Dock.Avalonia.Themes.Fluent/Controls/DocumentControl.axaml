@@ -47,14 +47,14 @@
           <DockableControl DataContext="{Binding ActiveDockable}"
                            TrackingMode="Visible"
                            IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
-            <ContentControl x:Name="PART_ContentPresenter"
-                            Content="{Binding}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch">
-              <ContentControl.ContentTemplate>
+            <DeferredContentControl x:Name="PART_ContentPresenter"
+                                    Content="{Binding}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch">
+              <DeferredContentControl.ContentTemplate>
                 <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-              </ContentControl.ContentTemplate>
-            </ContentControl>
+              </DeferredContentControl.ContentTemplate>
+            </DeferredContentControl>
           </DockableControl>
 
           <ContentControl x:Name="PART_EmptyContentHost"

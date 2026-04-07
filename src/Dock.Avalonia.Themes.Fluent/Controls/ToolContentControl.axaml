@@ -19,8 +19,8 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
-          <ContentControl Content="{Binding}" 
-                          ContentTemplate="{Binding}" />
+          <DeferredContentControl Content="{Binding}"
+                                  ContentTemplate="{Binding}" />
         </DockableControl>
       </ControlTemplate>
     </Setter>

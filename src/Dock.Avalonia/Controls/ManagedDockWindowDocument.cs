@@ -10,6 +10,7 @@ using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
+using Dock.Controls.DeferredContentControl;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -18,7 +19,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Document model used for managed floating windows.
 /// </summary>
-public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocument, IDocumentContent, IRecyclingDataTemplate, IDisposable
+public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocument, IDocumentContent, IRecyclingDataTemplate, IDeferredContentPresentation, IDisposable
 {
     private DockRect _mdiBounds;
     private MdiWindowState _mdiState = MdiWindowState.Normal;
@@ -50,6 +51,8 @@ public sealed class ManagedDockWindowDocument : ManagedDockableBase, IMdiDocumen
     /// Gets the associated dock window.
     /// </summary>
     public IDockWindow? Window => _window;
+
+    bool IDeferredContentPresentation.DeferContentPresentation => false;
 
     /// <summary>
     /// Gets whether the managed window hosts a tool dock.

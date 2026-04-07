@@ -27,17 +27,17 @@
                      PanePlacement="{Binding PanePlacement, Converter={x:Static SplitViewPanePlacementConverter.Instance}}"
                      UseLightDismissOverlayMode="{Binding UseLightDismissOverlayMode}">
             <SplitView.Pane>
-              <ContentControl Content="{Binding PaneDockable}"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch"
-                              HorizontalContentAlignment="Stretch"
-                              VerticalContentAlignment="Stretch" />
+              <DeferredContentControl Content="{Binding PaneDockable}"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalContentAlignment="Stretch" />
             </SplitView.Pane>
-            <ContentControl Content="{Binding ContentDockable}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            VerticalContentAlignment="Stretch" />
+            <DeferredContentControl Content="{Binding ContentDockable}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch" />
           </SplitView>
         </DockableControl>
       </ControlTemplate>

@@ -40,12 +40,12 @@
             <VisualLayerManager.ChromeOverlayLayer>
               <HostWindowTitleBar Name="PART_TitleBar" />
             </VisualLayerManager.ChromeOverlayLayer>
-            <ContentPresenter Name="PART_ContentPresenter"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                              Content="{TemplateBinding Content}"
-                              Margin="{TemplateBinding Padding}"
-                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+            <DeferredContentPresenter Name="PART_ContentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Margin="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
           </VisualLayerManager>
         </Panel>
       </ControlTemplate>
@@ -94,12 +94,12 @@
               <VisualLayerManager.ChromeOverlayLayer>
                 <!-- <TitleBar/> -->
               </VisualLayerManager.ChromeOverlayLayer>
-              <ContentPresenter Name="PART_ContentPresenter"
-                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                Content="{TemplateBinding Content}"
-                                Margin="{TemplateBinding Padding}"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+              <DeferredContentPresenter Name="PART_ContentPresenter"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        Content="{TemplateBinding Content}"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
             </VisualLayerManager>
           </Panel>
         </ControlTemplate>

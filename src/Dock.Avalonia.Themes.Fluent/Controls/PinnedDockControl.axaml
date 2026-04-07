@@ -26,8 +26,8 @@
       <ControlTemplate>
         <Grid Name="PART_PinnedDockGrid"
               IsVisible="{Binding !!PinnedDock?.VisibleDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}">
-          <ContentControl Content="{Binding PinnedDock}" Name="PART_PinnedDock">
-            <ContentControl.Styles>
+          <DeferredContentControl Content="{Binding PinnedDock}" Name="PART_PinnedDock">
+            <DeferredContentControl.Styles>
               <Style Selector="ToolDockControl">
                 <Setter Property="Background">
                   <MultiBinding Converter="{x:Static EitherNotNullConverter.Instance}">
@@ -39,8 +39,8 @@
               <Style Selector="ToolControl">
                 <Setter Property="IsHitTestVisible" Value="{Binding !$parent[DockControl].IsDraggingDock}" />
               </Style>
-            </ContentControl.Styles>
-          </ContentControl>
+            </DeferredContentControl.Styles>
+          </DeferredContentControl>
           <GridSplitter Name="PART_PinnedDockSplitter"
                         Grid.Column="1" Grid.Row="1"
                         Background="{Binding $parent[Window].Background, TargetNullValue={x:Static Brushes.Transparent}}" />

@@ -416,14 +416,14 @@
                 </Border>
                 <Border x:Name="PART_ContentBorder"
                         Background="{TemplateBinding Background}">
-                  <ContentControl x:Name="PART_ContentPresenter"
-                                  Content="{Binding}"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch">
-                    <ContentControl.ContentTemplate>
+                  <DeferredContentControl x:Name="PART_ContentPresenter"
+                                          Content="{Binding}"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch">
+                    <DeferredContentControl.ContentTemplate>
                       <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                    </ContentControl.ContentTemplate>
-                  </ContentControl>
+                    </DeferredContentControl.ContentTemplate>
+                  </DeferredContentControl>
                 </Border>
               </DockPanel>
               <Panel>

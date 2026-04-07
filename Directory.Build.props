@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <VersionPrefix>11.3.12</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionSuffix>preview.1</VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>
     <Description>A docking layout system.</Description>

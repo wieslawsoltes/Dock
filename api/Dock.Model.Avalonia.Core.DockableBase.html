@@ -108,7 +108,7 @@ Class DockableBase  <a class="header-action link-secondary" title="View source" 
 [JsonDerivedType(typeof(Tool), &quot;Tool&quot;)]
 [JsonDerivedType(typeof(ToolDock), &quot;ToolDock&quot;)]
 [JsonDerivedType(typeof(DockBase), &quot;DockBase&quot;)]
-public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockable, IControlRecyclingIdProvider, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata</code></pre>
+public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, INamed, IDockable, IControlRecyclingIdProvider, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata</code></pre>
   </div>
 
 
@@ -139,7 +139,6 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
       <div><span class="xref">ISetLogicalParent</span></div>
       <div><span class="xref">ISetInheritanceParent</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
-      <div><span class="xref">IStyleable</span></div>
       <div><span class="xref">INamed</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></div>
       <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></div>
@@ -343,7 +342,7 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
       <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
     </div>
     <div>
-      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, BindingBase)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
@@ -386,6 +385,9 @@ public abstract class DockableBase : ReactiveBase, INotifyPropertyChanged, IData
     </div>
     <div>
       <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Dispatcher</span>
     </div>
     <div>
       <span class="xref">AvaloniaObject.PropertyChanged</span>

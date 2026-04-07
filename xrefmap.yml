@@ -3368,19 +3368,6 @@ references:
   isSpec: "True"
   fullName: Dock.Avalonia.Controls.HostWindow.IsTracked
   nameWithType: HostWindow.IsTracked
-- uid: Dock.Avalonia.Controls.HostWindow.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
-  name: OnApplyTemplate(TemplateAppliedEventArgs)
-  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_
-  commentId: M:Dock.Avalonia.Controls.HostWindow.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
-  fullName: Dock.Avalonia.Controls.HostWindow.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
-  nameWithType: HostWindow.OnApplyTemplate(TemplateAppliedEventArgs)
-- uid: Dock.Avalonia.Controls.HostWindow.OnApplyTemplate*
-  name: OnApplyTemplate
-  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnApplyTemplate_
-  commentId: Overload:Dock.Avalonia.Controls.HostWindow.OnApplyTemplate
-  isSpec: "True"
-  fullName: Dock.Avalonia.Controls.HostWindow.OnApplyTemplate
-  nameWithType: HostWindow.OnApplyTemplate
 - uid: Dock.Avalonia.Controls.HostWindow.OnClosed(System.EventArgs)
   name: OnClosed(EventArgs)
   href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnClosed_System_EventArgs_

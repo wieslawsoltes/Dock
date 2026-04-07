@@ -98,7 +98,7 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DeferredContentPresenter : ContentPresenter, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue</code></pre>
+    <pre><code class="lang-csharp hljs">public class DeferredContentPresenter : ContentPresenter, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, INamed, IInputElement, IDataTemplateHost, ISetterValue</code></pre>
   </div>
 
 
@@ -134,7 +134,6 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <div><span class="xref">ISetLogicalParent</span></div>
       <div><span class="xref">ISetInheritanceParent</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
-      <div><span class="xref">IStyleable</span></div>
       <div><span class="xref">INamed</span></div>
       <div><span class="xref">IInputElement</span></div>
       <div><span class="xref">IDataTemplateHost</span></div>
@@ -193,6 +192,9 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
     </div>
     <div>
       <span class="xref">ContentPresenter.LineHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">ContentPresenter.LetterSpacingProperty</span>
     </div>
     <div>
       <span class="xref">ContentPresenter.MaxLinesProperty</span>
@@ -282,6 +284,9 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">ContentPresenter.LineHeight</span>
     </div>
     <div>
+      <span class="xref">ContentPresenter.LetterSpacing</span>
+    </div>
+    <div>
       <span class="xref">ContentPresenter.MaxLines</span>
     </div>
     <div>
@@ -321,9 +326,6 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">Control.RequestBringIntoViewEvent</span>
     </div>
     <div>
-      <span class="xref">Control.ContextRequestedEvent</span>
-    </div>
-    <div>
       <span class="xref">Control.LoadedEvent</span>
     </div>
     <div>
@@ -351,10 +353,10 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
     </div>
     <div>
-      <span class="xref">Control.OnGotFocus(GotFocusEventArgs)</span>
+      <span class="xref">Control.OnGotFocus(FocusChangedEventArgs)</span>
     </div>
     <div>
-      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+      <span class="xref">Control.OnLostFocus(FocusChangedEventArgs)</span>
     </div>
     <div>
       <span class="xref">Control.OnCreateAutomationPeer()</span>
@@ -364,6 +366,9 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
     </div>
     <div>
       <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Control.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
     </div>
     <div>
       <span class="xref">Control.FocusAdorner</span>
@@ -382,9 +387,6 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
     </div>
     <div>
       <span class="xref">Control.Tag</span>
-    </div>
-    <div>
-      <span class="xref">Control.ContextRequested</span>
     </div>
     <div>
       <span class="xref">Control.Loaded</span>
@@ -426,7 +428,13 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">InputElement.GotFocusEvent</span>
     </div>
     <div>
+      <span class="xref">InputElement.GettingFocusEvent</span>
+    </div>
+    <div>
       <span class="xref">InputElement.LostFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LosingFocusEvent</span>
     </div>
     <div>
       <span class="xref">InputElement.KeyDownEvent</span>
@@ -465,7 +473,58 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">InputElement.PointerWheelChangedEvent</span>
     </div>
     <div>
+      <span class="xref">InputElement.ContextRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ContextCanceledEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHoldingEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHoldWithMouseEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureInertiaStartingEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureMagnifyEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureRotateEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureSwipeEvent</span>
+    </div>
+    <div>
       <span class="xref">InputElement.TappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.RightTappedEvent</span>
     </div>
     <div>
       <span class="xref">InputElement.HoldingEvent</span>
@@ -478,6 +537,12 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
     </div>
     <div>
       <span class="xref">InputElement.OnAccessKey(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnGettingFocus(FocusChangingEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnLosingFocus(FocusChangingEventArgs)</span>
     </div>
     <div>
       <span class="xref">InputElement.OnKeyDown(KeyEventArgs)</span>
@@ -498,13 +563,55 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
     </div>
     <div>
+      <span class="xref">InputElement.GetNextTabStopOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetPreviousTabStopOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetFirstFocusableElementOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetLastFocusableElementOverride()</span>
+    </div>
+    <div>
       <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.ProcessTabStopOverride(IInputElement, IInputElement, bool, bool, ref IInputElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.ProcessCandidateTabStopOverride(IInputElement, IInputElement, IInputElement, bool, ref IInputElement)</a>
     </div>
     <div>
       <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
     </div>
     <div>
+      <span class="xref">InputElement.OnTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnRightTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnDoubleTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnHolding(HoldingRoutedEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetIsHoldingEnabled(StyledElement)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.SetIsHoldingEnabled(StyledElement, bool)</a>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetIsHoldWithMouseEnabled(StyledElement)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.SetIsHoldWithMouseEnabled(StyledElement, bool)</a>
     </div>
     <div>
       <span class="xref">InputElement.Focusable</span>
@@ -549,7 +656,13 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">InputElement.GotFocus</span>
     </div>
     <div>
+      <span class="xref">InputElement.GettingFocus</span>
+    </div>
+    <div>
       <span class="xref">InputElement.LostFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LosingFocus</span>
     </div>
     <div>
       <span class="xref">InputElement.KeyDown</span>
@@ -585,7 +698,52 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">InputElement.PointerWheelChanged</span>
     </div>
     <div>
+      <span class="xref">InputElement.ContextRequested</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ContextCanceled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Pinch</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureInertiaStarting</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureMagnify</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureRotate</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureSwipe</span>
+    </div>
+    <div>
       <span class="xref">InputElement.Tapped</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.RightTapped</span>
     </div>
     <div>
       <span class="xref">InputElement.Holding</span>
@@ -741,6 +899,9 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">Visual.OpacityMaskProperty</span>
     </div>
     <div>
+      <span class="xref">Visual.CacheModeProperty</span>
+    </div>
+    <div>
       <span class="xref">Visual.EffectProperty</span>
     </div>
     <div>
@@ -799,6 +960,9 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
     </div>
     <div>
       <span class="xref">Visual.OpacityMask</span>
+    </div>
+    <div>
+      <span class="xref">Visual.CacheMode</span>
     </div>
     <div>
       <span class="xref">Visual.Effect</span>
@@ -1005,7 +1169,7 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
     </div>
     <div>
-      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, BindingBase)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
@@ -1032,9 +1196,6 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
       <span class="xref">AvaloniaObject.CoerceValue(AvaloniaProperty)</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">AvaloniaObject.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
-    </div>
-    <div>
       <span class="xref">AvaloniaObject.RaisePropertyChanged&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T, T)</span>
     </div>
     <div>
@@ -1048,6 +1209,9 @@ Class DeferredContentPresenter  <a class="header-action link-secondary" title="V
     </div>
     <div>
       <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Dispatcher</span>
     </div>
     <div>
       <span class="xref">AvaloniaObject.PropertyChanged</span>

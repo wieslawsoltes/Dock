@@ -98,7 +98,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DockWindow : ReactiveBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDockWindow</code></pre>
+    <pre><code class="lang-csharp hljs">public class DockWindow : ReactiveBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, INamed, IDockWindow</code></pre>
   </div>
 
 
@@ -129,7 +129,6 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
       <div><span class="xref">ISetLogicalParent</span></div>
       <div><span class="xref">ISetInheritanceParent</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
-      <div><span class="xref">IStyleable</span></div>
       <div><span class="xref">INamed</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></div>
     </dd>
@@ -320,7 +319,7 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
       <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
     </div>
     <div>
-      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, BindingBase)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
@@ -363,6 +362,9 @@ Class DockWindow  <a class="header-action link-secondary" title="View source" hr
     </div>
     <div>
       <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Dispatcher</span>
     </div>
     <div>
       <span class="xref">AvaloniaObject.PropertyChanged</span>

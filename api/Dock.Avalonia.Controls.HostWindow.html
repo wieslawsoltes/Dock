@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Avalonia_Controls_HostWindow" data-uid="Dock.Avalonia.Controls.HostWindow" class="text-break">
-Class HostWindow  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L26"><i class="bi bi-code-slash"></i></a>
+Class HostWindow  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,8 +99,7 @@ Class HostWindow  <a class="header-action link-secondary" title="View source" hr
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[PseudoClasses(new string[] { &quot;:toolwindow&quot;, &quot;:dragging&quot;, &quot;:toolchromecontrolswindow&quot;, &quot;:documentchromecontrolswindow&quot; })]
-[TemplatePart(&quot;PART_TitleBar&quot;, typeof(HostWindowTitleBar))]
-public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, IThemeVariantHost, IResourceHost, IResourceNode, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IDataTemplateHost, ISetterValue, IRenderRoot, ICloseable, IStyleHost, ILogicalRoot, ILogical, ITextInputMethodRoot, IInputRoot, IInputElement, IFocusScope, ILayoutRoot, IHostWindow</code></pre>
+public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, IThemeVariantHost, IResourceHost, IResourceNode, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, INamed, IInputElement, IDataTemplateHost, ISetterValue, ICloseable, IStyleHost, ILogicalRoot, ILogical, IFocusScope, IHostWindow</code></pre>
   </div>
 
 
@@ -138,20 +137,15 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <div><span class="xref">ISetLogicalParent</span></div>
       <div><span class="xref">ISetInheritanceParent</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
-      <div><span class="xref">IStyleable</span></div>
       <div><span class="xref">INamed</span></div>
+      <div><span class="xref">IInputElement</span></div>
       <div><span class="xref">IDataTemplateHost</span></div>
       <div><span class="xref">ISetterValue</span></div>
-      <div><span class="xref">IRenderRoot</span></div>
       <div><span class="xref">ICloseable</span></div>
       <div><span class="xref">IStyleHost</span></div>
       <div><span class="xref">ILogicalRoot</span></div>
       <div><span class="xref">ILogical</span></div>
-      <div><span class="xref">ITextInputMethodRoot</span></div>
-      <div><span class="xref">IInputRoot</span></div>
-      <div><span class="xref">IInputElement</span></div>
       <div><span class="xref">IFocusScope</span></div>
-      <div><span class="xref">ILayoutRoot</span></div>
       <div><a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></div>
     </dd>
   </dl>
@@ -167,9 +161,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">Window.ExtendClientAreaToDecorationsHintProperty</span>
     </div>
     <div>
-      <span class="xref">Window.ExtendClientAreaChromeHintsProperty</span>
-    </div>
-    <div>
       <span class="xref">Window.ExtendClientAreaTitleBarHeightHintProperty</span>
     </div>
     <div>
@@ -182,7 +173,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">Window.OffScreenMarginProperty</span>
     </div>
     <div>
-      <span class="xref">Window.SystemDecorationsProperty</span>
+      <span class="xref">Window.WindowDecorationsProperty</span>
     </div>
     <div>
       <span class="xref">Window.ShowActivatedProperty</span>
@@ -233,13 +224,13 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Window.Close(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Window.ExtendClientAreaToDecorationsChanged(bool)</a>
-    </div>
-    <div>
       <span class="xref">Window.Hide()</span>
     </div>
     <div>
       <span class="xref">Window.Show()</span>
+    </div>
+    <div>
+      <span class="xref">Window.OnApplyTemplate(TemplateAppliedEventArgs)</span>
     </div>
     <div>
       <span class="xref">Window.IsVisibleChanged(AvaloniaPropertyChangedEventArgs)</span>
@@ -254,13 +245,10 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">Window.ShowDialog&lt;TResult&gt;(Window)</span>
     </div>
     <div>
-      <span class="xref">Window.SortWindowsByZOrder(Window[])</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.span-1">Window.SortWindowsByZOrder(Span&lt;Window&gt;)</a>
     </div>
     <div>
       <span class="xref">Window.MeasureOverride(Size)</span>
-    </div>
-    <div>
-      <span class="xref">Window.ArrangeSetBounds(Size)</span>
     </div>
     <div>
       <span class="xref">Window.PlatformImpl</span>
@@ -278,9 +266,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">Window.ExtendClientAreaToDecorationsHint</span>
     </div>
     <div>
-      <span class="xref">Window.ExtendClientAreaChromeHints</span>
-    </div>
-    <div>
       <span class="xref">Window.ExtendClientAreaTitleBarHeightHint</span>
     </div>
     <div>
@@ -291,6 +276,9 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
     </div>
     <div>
       <span class="xref">Window.OffScreenMargin</span>
+    </div>
+    <div>
+      <span class="xref">Window.WindowDecorations</span>
     </div>
     <div>
       <span class="xref">Window.SystemDecorations</span>
@@ -392,9 +380,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">TopLevel.FrameSizeProperty</span>
     </div>
     <div>
-      <span class="xref">TopLevel.PointerOverElementProperty</span>
-    </div>
-    <div>
       <span class="xref">TopLevel.TransparencyLevelHintProperty</span>
     </div>
     <div>
@@ -443,15 +428,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">TopLevel.RequestAnimationFrame(Action&lt;TimeSpan&gt;)</a>
     </div>
     <div>
-      <span class="xref">TopLevel.StartRendering()</span>
-    </div>
-    <div>
-      <span class="xref">TopLevel.StopRendering()</span>
-    </div>
-    <div>
-      <span class="xref">TopLevel.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)</span>
-    </div>
-    <div>
       <span class="xref">TopLevel.InvalidateMirrorTransform()</span>
     </div>
     <div>
@@ -495,9 +471,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
     </div>
     <div>
       <span class="xref">TopLevel.FocusManager</span>
-    </div>
-    <div>
-      <span class="xref">TopLevel.PlatformSettings</span>
     </div>
     <div>
       <span class="xref">TopLevel.BypassFlowDirectionPolicies</span>
@@ -581,6 +554,9 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">TemplatedControl.ForegroundProperty</span>
     </div>
     <div>
+      <span class="xref">TemplatedControl.LetterSpacingProperty</span>
+    </div>
+    <div>
       <span class="xref">TemplatedControl.PaddingProperty</span>
     </div>
     <div>
@@ -650,6 +626,9 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">TemplatedControl.Foreground</span>
     </div>
     <div>
+      <span class="xref">TemplatedControl.LetterSpacing</span>
+    </div>
+    <div>
       <span class="xref">TemplatedControl.Padding</span>
     </div>
     <div>
@@ -672,9 +651,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
     </div>
     <div>
       <span class="xref">Control.RequestBringIntoViewEvent</span>
-    </div>
-    <div>
-      <span class="xref">Control.ContextRequestedEvent</span>
     </div>
     <div>
       <span class="xref">Control.LoadedEvent</span>
@@ -701,13 +677,16 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
     </div>
     <div>
-      <span class="xref">Control.OnGotFocus(GotFocusEventArgs)</span>
+      <span class="xref">Control.OnGotFocus(FocusChangedEventArgs)</span>
     </div>
     <div>
-      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+      <span class="xref">Control.OnLostFocus(FocusChangedEventArgs)</span>
     </div>
     <div>
       <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Control.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
     </div>
     <div>
       <span class="xref">Control.FocusAdorner</span>
@@ -726,9 +705,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
     </div>
     <div>
       <span class="xref">Control.Tag</span>
-    </div>
-    <div>
-      <span class="xref">Control.ContextRequested</span>
     </div>
     <div>
       <span class="xref">Control.Loaded</span>
@@ -770,7 +746,13 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">InputElement.GotFocusEvent</span>
     </div>
     <div>
+      <span class="xref">InputElement.GettingFocusEvent</span>
+    </div>
+    <div>
       <span class="xref">InputElement.LostFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LosingFocusEvent</span>
     </div>
     <div>
       <span class="xref">InputElement.KeyDownEvent</span>
@@ -809,7 +791,58 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">InputElement.PointerWheelChangedEvent</span>
     </div>
     <div>
+      <span class="xref">InputElement.ContextRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ContextCanceledEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHoldingEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHoldWithMouseEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureInertiaStartingEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureMagnifyEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureRotateEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureSwipeEvent</span>
+    </div>
+    <div>
       <span class="xref">InputElement.TappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.RightTappedEvent</span>
     </div>
     <div>
       <span class="xref">InputElement.HoldingEvent</span>
@@ -822,6 +855,12 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
     </div>
     <div>
       <span class="xref">InputElement.OnAccessKey(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnGettingFocus(FocusChangingEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnLosingFocus(FocusChangingEventArgs)</span>
     </div>
     <div>
       <span class="xref">InputElement.OnKeyDown(KeyEventArgs)</span>
@@ -839,13 +878,55 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
     </div>
     <div>
+      <span class="xref">InputElement.GetNextTabStopOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetPreviousTabStopOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetFirstFocusableElementOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetLastFocusableElementOverride()</span>
+    </div>
+    <div>
       <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.ProcessTabStopOverride(IInputElement, IInputElement, bool, bool, ref IInputElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.ProcessCandidateTabStopOverride(IInputElement, IInputElement, IInputElement, bool, ref IInputElement)</a>
     </div>
     <div>
       <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
     </div>
     <div>
+      <span class="xref">InputElement.OnTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnRightTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnDoubleTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnHolding(HoldingRoutedEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetIsHoldingEnabled(StyledElement)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.SetIsHoldingEnabled(StyledElement, bool)</a>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetIsHoldWithMouseEnabled(StyledElement)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.SetIsHoldWithMouseEnabled(StyledElement, bool)</a>
     </div>
     <div>
       <span class="xref">InputElement.Focusable</span>
@@ -890,7 +971,13 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">InputElement.GotFocus</span>
     </div>
     <div>
+      <span class="xref">InputElement.GettingFocus</span>
+    </div>
+    <div>
       <span class="xref">InputElement.LostFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LosingFocus</span>
     </div>
     <div>
       <span class="xref">InputElement.KeyDown</span>
@@ -926,7 +1013,52 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">InputElement.PointerWheelChanged</span>
     </div>
     <div>
+      <span class="xref">InputElement.ContextRequested</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ContextCanceled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Pinch</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureInertiaStarting</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureMagnify</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureRotate</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureSwipe</span>
+    </div>
+    <div>
       <span class="xref">InputElement.Tapped</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.RightTapped</span>
     </div>
     <div>
       <span class="xref">InputElement.Holding</span>
@@ -1079,6 +1211,9 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">Visual.OpacityMaskProperty</span>
     </div>
     <div>
+      <span class="xref">Visual.CacheModeProperty</span>
+    </div>
+    <div>
       <span class="xref">Visual.EffectProperty</span>
     </div>
     <div>
@@ -1118,6 +1253,9 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Visual.LogicalChildrenCollectionChanged(object, NotifyCollectionChangedEventArgs)</a>
     </div>
     <div>
+      <span class="xref">Visual.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">Visual.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)</span>
     </div>
     <div>
@@ -1140,6 +1278,9 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
     </div>
     <div>
       <span class="xref">Visual.OpacityMask</span>
+    </div>
+    <div>
+      <span class="xref">Visual.CacheMode</span>
     </div>
     <div>
       <span class="xref">Visual.Effect</span>
@@ -1337,7 +1478,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
     </div>
     <div>
-      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, BindingBase)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
@@ -1364,9 +1505,6 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
       <span class="xref">AvaloniaObject.CoerceValue(AvaloniaProperty)</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">AvaloniaObject.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
-    </div>
-    <div>
       <span class="xref">AvaloniaObject.RaisePropertyChanged&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T, T)</span>
     </div>
     <div>
@@ -1380,6 +1518,9 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
     </div>
     <div>
       <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Dispatcher</span>
     </div>
     <div>
       <span class="xref">AvaloniaObject.PropertyChanged</span>
@@ -1430,7 +1571,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow__ctor" data-uid="Dock.Avalonia.Controls.HostWindow.#ctor">
   HostWindow()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L97"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Avalonia.Controls.HostWindow.html">HostWindow</a> class.</p>
@@ -1457,7 +1598,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow__ctor_Dock_Model_Core_DockManagerOptions_" data-uid="Dock.Avalonia.Controls.HostWindow.#ctor(Dock.Model.Core.DockManagerOptions)">
   HostWindow(DockManagerOptions)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Avalonia.Controls.HostWindow.html">HostWindow</a> class with shared dock manager options.</p>
@@ -1493,7 +1634,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_DocumentChromeControlsWholeWindowProperty" data-uid="Dock.Avalonia.Controls.HostWindow.DocumentChromeControlsWholeWindowProperty">
   DocumentChromeControlsWholeWindowProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Define <a class="xref" href="Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_DocumentChromeControlsWholeWindowProperty">DocumentChromeControlsWholeWindowProperty</a> property.</p>
@@ -1524,7 +1665,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_IsToolWindowProperty" data-uid="Dock.Avalonia.Controls.HostWindow.IsToolWindowProperty">
   IsToolWindowProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Define <a class="xref" href="Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_IsToolWindow">IsToolWindow</a> property.</p>
@@ -1555,7 +1696,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_ToolChromeControlsWholeWindowProperty" data-uid="Dock.Avalonia.Controls.HostWindow.ToolChromeControlsWholeWindowProperty">
   ToolChromeControlsWholeWindowProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Define <a class="xref" href="Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_ToolChromeControlsWholeWindow">ToolChromeControlsWholeWindow</a> property.</p>
@@ -1591,7 +1732,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_DocumentChromeControlsWholeWindow" data-uid="Dock.Avalonia.Controls.HostWindow.DocumentChromeControlsWholeWindow">
   DocumentChromeControlsWholeWindow
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the document chrome controls the whole window.</p>
@@ -1623,7 +1764,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_HostWindowState" data-uid="Dock.Avalonia.Controls.HostWindow.HostWindowState">
   HostWindowState
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets host window state.</p>
@@ -1655,7 +1796,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_IsToolWindow" data-uid="Dock.Avalonia.Controls.HostWindow.IsToolWindow">
   IsToolWindow
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if this is the tool window.</p>
@@ -1687,7 +1828,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_IsTracked" data-uid="Dock.Avalonia.Controls.HostWindow.IsTracked">
   IsTracked
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L89"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets value that indicates whether host size and position is tracked.</p>
@@ -1719,7 +1860,7 @@ public class HostWindow : Window, INotifyPropertyChanged, IDataContextProvider, 
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_StyleKeyOverride" data-uid="Dock.Avalonia.Controls.HostWindow.StyleKeyOverride">
   StyleKeyOverride
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the type by which the element is styled.</p>
@@ -1758,7 +1899,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_ToolChromeControlsWholeWindow" data-uid="Dock.Avalonia.Controls.HostWindow.ToolChromeControlsWholeWindow">
   ToolChromeControlsWholeWindow
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets if the tool chrome controls the whole window.</p>
@@ -1790,7 +1931,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_Window" data-uid="Dock.Avalonia.Controls.HostWindow.Window">
   Window
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets dock window.</p>
@@ -1826,7 +1967,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_AttachGrip_Avalonia_Controls_Control_System_String_" data-uid="Dock.Avalonia.Controls.HostWindow.AttachGrip(Avalonia.Controls.Control,System.String)">
   AttachGrip(Control, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L343"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L349"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Attaches a grip control to enable window dragging.</p>
@@ -1862,7 +2003,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_AttachGrip_Dock_Avalonia_Controls_ToolChromeControl_" data-uid="Dock.Avalonia.Controls.HostWindow.AttachGrip(Dock.Avalonia.Controls.ToolChromeControl)">
   AttachGrip(ToolChromeControl)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L333"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Attaches grip to chrome.</p>
@@ -1895,7 +2036,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_DetachGrip_Avalonia_Controls_Control_System_String_" data-uid="Dock.Avalonia.Controls.HostWindow.DetachGrip(Avalonia.Controls.Control,System.String)">
   DetachGrip(Control, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L371"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L372"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Detaches a grip control from window dragging.</p>
@@ -1931,7 +2072,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_DetachGrip_Dock_Avalonia_Controls_ToolChromeControl_" data-uid="Dock.Avalonia.Controls.HostWindow.DetachGrip(Dock.Avalonia.Controls.ToolChromeControl)">
   DetachGrip(ToolChromeControl)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L353"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L359"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Detaches grip to chrome.</p>
@@ -1964,7 +2105,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_Exit" data-uid="Dock.Avalonia.Controls.HostWindow.Exit">
   Exit()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L679"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L680"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exits host.</p>
@@ -1991,7 +2132,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_GetPosition_System_Double__System_Double__" data-uid="Dock.Avalonia.Controls.HostWindow.GetPosition(System.Double@,System.Double@)">
   GetPosition(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L707"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets host position.</p>
@@ -2027,7 +2168,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_GetSize_System_Double__System_Double__" data-uid="Dock.Avalonia.Controls.HostWindow.GetSize(System.Double@,System.Double@)">
   GetSize(out double, out double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L736"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L737"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets host size.</p>
@@ -2063,7 +2204,7 @@ type that you wish the elements to be styled as.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_GetWindowState" data-uid="Dock.Avalonia.Controls.HostWindow.GetWindowState">
   GetWindowState()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L756"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L757"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets host window state.</p>
@@ -2092,45 +2233,11 @@ type that you wish the elements to be styled as.</p>
 
 
 
-  <a id="Dock_Avalonia_Controls_HostWindow_OnApplyTemplate_" data-uid="Dock.Avalonia.Controls.HostWindow.OnApplyTemplate*"></a>
-
-  <h3 id="Dock_Avalonia_Controls_HostWindow_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)">
-  OnApplyTemplate(TemplateAppliedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L132"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Called when the control's template is applied.
-In simple terms, this means the method is called just before the control is displayed.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void OnApplyTemplate(TemplateAppliedEventArgs e)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>e</code> <span class="xref">TemplateAppliedEventArgs</span></dt>
-    <dd><p>The event args.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
   <a id="Dock_Avalonia_Controls_HostWindow_OnClosed_" data-uid="Dock.Avalonia.Controls.HostWindow.OnClosed*"></a>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnClosed_System_EventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnClosed(System.EventArgs)">
   OnClosed(EventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L437"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L438"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Raises the <span class="xref">Avalonia.Controls.TopLevel.Closed</span> event.</p>
@@ -2163,7 +2270,7 @@ In simple terms, this means the method is called just before the control is disp
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnClosing_Avalonia_Controls_WindowClosingEventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnClosing(Avalonia.Controls.WindowClosingEventArgs)">
   OnClosing(WindowClosingEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L456"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L457"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Raises the <span class="xref">Avalonia.Controls.Window.Closing</span> event.</p>
@@ -2201,7 +2308,7 @@ overridden method must call <span class="xref">Avalonia.Controls.Window.OnClosin
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnCreateAutomationPeer" data-uid="Dock.Avalonia.Controls.HostWindow.OnCreateAutomationPeer">
   OnCreateAutomationPeer()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L122"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a new, type-specific <span class="xref">Avalonia.Automation.Peers.AutomationPeer</span> implementation for the control.</p>
@@ -2234,7 +2341,7 @@ overridden method must call <span class="xref">Avalonia.Controls.Window.OnClosin
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnOpened_System_EventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnOpened(System.EventArgs)">
   OnOpened(EventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L429"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L430"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Raises the <span class="xref">Avalonia.Controls.TopLevel.Opened</span> event.</p>
@@ -2267,7 +2374,7 @@ overridden method must call <span class="xref">Avalonia.Controls.Window.OnClosin
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnPointerPressed_Avalonia_Input_PointerPressedEventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnPointerPressed(Avalonia.Input.PointerPressedEventArgs)">
   OnPointerPressed(PointerPressedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L204"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Invoked when an unhandled <span class="xref">Avalonia.Input.InputElement.PointerPressedEvent</span> reaches an element in its
@@ -2302,7 +2409,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnPointerReleased_Avalonia_Input_PointerReleasedEventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnPointerReleased(Avalonia.Input.PointerReleasedEventArgs)">
   OnPointerReleased(PointerReleasedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L223"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Invoked when an unhandled <span class="xref">Avalonia.Input.InputElement.PointerReleasedEvent</span> reaches an element in its
@@ -2337,7 +2444,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
   OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L378"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L379"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when a avalonia property changes on the object.</p>
@@ -2370,7 +2477,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_Present_System_Boolean_" data-uid="Dock.Avalonia.Controls.HostWindow.Present(System.Boolean)">
   Present(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L605"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L606"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Presents host.</p>
@@ -2403,7 +2510,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_SetLayout_Dock_Model_Core_IDock_" data-uid="Dock.Avalonia.Controls.HostWindow.SetLayout(Dock.Model.Core.IDock)">
   SetLayout(IDock)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L773"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L774"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets host layout.</p>
@@ -2436,7 +2543,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_SetPosition_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.HostWindow.SetPosition(System.Double,System.Double)">
   SetPosition(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L695"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L696"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets host position.</p>
@@ -2472,7 +2579,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_SetSize_System_Double_System_Double_" data-uid="Dock.Avalonia.Controls.HostWindow.SetSize(System.Double,System.Double)">
   SetSize(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L720"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L721"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets host size.</p>
@@ -2508,7 +2615,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_SetTitle_System_String_" data-uid="Dock.Avalonia.Controls.HostWindow.SetTitle(System.String)">
   SetTitle(string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L762"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L763"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets host title.</p>
@@ -2541,7 +2648,7 @@ for this event.</p>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_SetWindowState_Dock_Model_Core_DockWindowState_" data-uid="Dock.Avalonia.Controls.HostWindow.SetWindowState(Dock.Model.Core.DockWindowState)">
   SetWindowState(DockWindowState)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L750"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L751"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets host window state.</p>
@@ -2574,7 +2681,7 @@ for this event.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L26" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs/#L24" class="edit-link">Edit this page</a>
         </div>
 
 

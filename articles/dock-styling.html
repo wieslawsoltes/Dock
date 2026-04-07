@@ -182,8 +182,9 @@
 <p>Dock controls mark important elements in their templates with <code>PART_</code> names. When
 copying these templates keep the parts intact so features such as window dragging
 continue to work. For example <code>ToolChromeControl</code> defines <code>PART_Grip</code>,
-<code>PART_CloseButton</code> and <code>PART_MaximizeRestoreButton</code>, while <code>HostWindow</code> exposes
-<code>PART_TitleBar</code>.</p>
+<code>PART_CloseButton</code> and <code>PART_MaximizeRestoreButton</code>. <code>HostWindow</code> now relies on
+Avalonia <code>WindowDrawnDecorations</code> for standard caption chrome rather than a Dock
+title-bar template part.</p>
 <p>Controls also toggle pseudo classes to reflect their current state. These can be
 targeted in selectors to customize the appearance:</p>
 <ul>

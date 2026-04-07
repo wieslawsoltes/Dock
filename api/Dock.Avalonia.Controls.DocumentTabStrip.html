@@ -99,7 +99,7 @@ Class DocumentTabStrip  <a class="header-action link-secondary" title="View sour
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[PseudoClasses(new string[] { &quot;:create&quot;, &quot;:active&quot; })]
-public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, IChildIndexProvider, IExternalDockSurface</code></pre>
+public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, INamed, IInputElement, IDataTemplateHost, ISetterValue, IChildIndexProvider, IExternalDockSurface</code></pre>
   </div>
 
 
@@ -138,7 +138,6 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <div><span class="xref">ISetLogicalParent</span></div>
       <div><span class="xref">ISetInheritanceParent</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
-      <div><span class="xref">IStyleable</span></div>
       <div><span class="xref">INamed</span></div>
       <div><span class="xref">IInputElement</span></div>
       <div><span class="xref">IDataTemplateHost</span></div>
@@ -153,10 +152,10 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <span class="xref">TabStrip.OnGotFocus(GotFocusEventArgs)</span>
+      <span class="xref">TabStrip.ShouldTriggerSelection(Visual, PointerEventArgs)</span>
     </div>
     <div>
-      <span class="xref">TabStrip.OnPointerPressed(PointerPressedEventArgs)</span>
+      <span class="xref">TabStrip.UpdateSelectionFromEvent(Control, RoutedEventArgs)</span>
     </div>
     <div>
       <span class="xref">SelectingItemsControl.AutoScrollToSelectedItemProperty</span>
@@ -213,6 +212,9 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">SelectingItemsControl.GetContainerFromEventSource(object)</a>
     </div>
     <div>
+      <span class="xref">SelectingItemsControl.ItemsControlFromItemContainer(Control)</span>
+    </div>
+    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">SelectingItemsControl.PrepareContainerForItemOverride(Control, object, int)</a>
     </div>
     <div>
@@ -229,9 +231,6 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
     </div>
     <div>
       <span class="xref">SelectingItemsControl.OnDataContextEndUpdate()</span>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">SelectingItemsControl.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
     </div>
     <div>
       <span class="xref">SelectingItemsControl.OnInitialized()</span>
@@ -253,6 +252,9 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">SelectingItemsControl.UpdateSelectionFromEventSource(object, bool, bool, bool, bool, bool)</a>
+    </div>
+    <div>
+      <span class="xref">SelectingItemsControl.ShouldTriggerSelection(Visual, KeyEventArgs)</span>
     </div>
     <div>
       <span class="xref">SelectingItemsControl.AutoScrollToSelectedItem</span>
@@ -330,10 +332,10 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.ScrollIntoView(object)</a>
     </div>
     <div>
-      <span class="xref">ItemsControl.ItemsControlFromItemContainer(Control)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.NeedsContainer&lt;T&gt;(object, out object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.NeedsContainer&lt;T&gt;(object, out object)</a>
+      <span class="xref">ItemsControl.OnGotFocus(FocusChangedEventArgs)</span>
     </div>
     <div>
       <span class="xref">ItemsControl.OnKeyDown(KeyEventArgs)</span>
@@ -429,6 +431,9 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">TemplatedControl.ForegroundProperty</span>
     </div>
     <div>
+      <span class="xref">TemplatedControl.LetterSpacingProperty</span>
+    </div>
+    <div>
       <span class="xref">TemplatedControl.PaddingProperty</span>
     </div>
     <div>
@@ -498,6 +503,9 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">TemplatedControl.Foreground</span>
     </div>
     <div>
+      <span class="xref">TemplatedControl.LetterSpacing</span>
+    </div>
+    <div>
       <span class="xref">TemplatedControl.Padding</span>
     </div>
     <div>
@@ -520,9 +528,6 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
     </div>
     <div>
       <span class="xref">Control.RequestBringIntoViewEvent</span>
-    </div>
-    <div>
-      <span class="xref">Control.ContextRequestedEvent</span>
     </div>
     <div>
       <span class="xref">Control.LoadedEvent</span>
@@ -549,13 +554,16 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
     </div>
     <div>
-      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+      <span class="xref">Control.OnLostFocus(FocusChangedEventArgs)</span>
     </div>
     <div>
       <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
     </div>
     <div>
       <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Control.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
     </div>
     <div>
       <span class="xref">Control.FocusAdorner</span>
@@ -574,9 +582,6 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
     </div>
     <div>
       <span class="xref">Control.Tag</span>
-    </div>
-    <div>
-      <span class="xref">Control.ContextRequested</span>
     </div>
     <div>
       <span class="xref">Control.Loaded</span>
@@ -618,7 +623,13 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">InputElement.GotFocusEvent</span>
     </div>
     <div>
+      <span class="xref">InputElement.GettingFocusEvent</span>
+    </div>
+    <div>
       <span class="xref">InputElement.LostFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LosingFocusEvent</span>
     </div>
     <div>
       <span class="xref">InputElement.KeyDownEvent</span>
@@ -657,7 +668,58 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">InputElement.PointerWheelChangedEvent</span>
     </div>
     <div>
+      <span class="xref">InputElement.ContextRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ContextCanceledEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHoldingEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHoldWithMouseEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureInertiaStartingEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEndedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureMagnifyEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureRotateEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureSwipeEvent</span>
+    </div>
+    <div>
       <span class="xref">InputElement.TappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.RightTappedEvent</span>
     </div>
     <div>
       <span class="xref">InputElement.HoldingEvent</span>
@@ -672,6 +734,12 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">InputElement.OnAccessKey(RoutedEventArgs)</span>
     </div>
     <div>
+      <span class="xref">InputElement.OnGettingFocus(FocusChangingEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnLosingFocus(FocusChangingEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">InputElement.OnPointerEntered(PointerEventArgs)</span>
     </div>
     <div>
@@ -681,13 +749,58 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
     </div>
     <div>
+      <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetNextTabStopOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetPreviousTabStopOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetFirstFocusableElementOverride()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetLastFocusableElementOverride()</span>
+    </div>
+    <div>
       <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.ProcessTabStopOverride(IInputElement, IInputElement, bool, bool, ref IInputElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.ProcessCandidateTabStopOverride(IInputElement, IInputElement, IInputElement, bool, ref IInputElement)</a>
     </div>
     <div>
       <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
     </div>
     <div>
+      <span class="xref">InputElement.OnTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnRightTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnDoubleTapped(TappedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnHolding(HoldingRoutedEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetIsHoldingEnabled(StyledElement)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.SetIsHoldingEnabled(StyledElement, bool)</a>
+    </div>
+    <div>
+      <span class="xref">InputElement.GetIsHoldWithMouseEnabled(StyledElement)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">InputElement.SetIsHoldWithMouseEnabled(StyledElement, bool)</a>
     </div>
     <div>
       <span class="xref">InputElement.Focusable</span>
@@ -732,7 +845,13 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">InputElement.GotFocus</span>
     </div>
     <div>
+      <span class="xref">InputElement.GettingFocus</span>
+    </div>
+    <div>
       <span class="xref">InputElement.LostFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LosingFocus</span>
     </div>
     <div>
       <span class="xref">InputElement.KeyDown</span>
@@ -768,7 +887,52 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">InputElement.PointerWheelChanged</span>
     </div>
     <div>
+      <span class="xref">InputElement.ContextRequested</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ContextCanceled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Pinch</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PinchEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PullGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureInertiaStarting</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.ScrollGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureMagnify</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureRotate</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGesture</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.SwipeGestureEnded</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerTouchPadGestureSwipe</span>
+    </div>
+    <div>
       <span class="xref">InputElement.Tapped</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.RightTapped</span>
     </div>
     <div>
       <span class="xref">InputElement.Holding</span>
@@ -930,6 +1094,9 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">Visual.OpacityMaskProperty</span>
     </div>
     <div>
+      <span class="xref">Visual.CacheModeProperty</span>
+    </div>
+    <div>
       <span class="xref">Visual.EffectProperty</span>
     </div>
     <div>
@@ -991,6 +1158,9 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
     </div>
     <div>
       <span class="xref">Visual.OpacityMask</span>
+    </div>
+    <div>
+      <span class="xref">Visual.CacheMode</span>
     </div>
     <div>
       <span class="xref">Visual.Effect</span>
@@ -1176,7 +1346,7 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
       <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
     </div>
     <div>
-      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, BindingBase)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
@@ -1216,6 +1386,9 @@ public class DocumentTabStrip : TabStrip, INotifyPropertyChanged, IDataContextPr
     </div>
     <div>
       <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Dispatcher</span>
     </div>
     <div>
       <span class="xref">AvaloniaObject.PropertyChanged</span>

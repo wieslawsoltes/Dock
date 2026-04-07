@@ -16,7 +16,7 @@
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         Title="Dock WebView Demo" Width="800" Height="600"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="PreferSystemChrome">
+        >
   <Window.Resources>
     <ExperimentalAcrylicMaterial BackgroundSource="Digger"
                                  TintColor="{DynamicResource SystemAltHighColor}"

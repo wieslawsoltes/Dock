@@ -1,6 +1,6 @@
 using System;
+using System.Reflection;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Themes.Fluent;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
@@ -19,7 +19,7 @@ namespace Dock.Avalonia.LeakTests;
 public class HostWindowDragLeakTests
 {
     [ReleaseFact]
-    public void HostWindow_TitleBarDragBegin_CallsFactory_DoesNotLeak()
+    public void HostWindow_MoveDragBegin_CallsFactory_DoesNotLeak()
     {
         var result = RunInSession(() =>
         {
@@ -51,19 +51,9 @@ public class HostWindowDragLeakTests
             window.UpdateLayout();
             DrainDispatcher();
 
-            var titleBar = FindTemplateChild<HostWindowTitleBar>(window, "PART_TitleBar")
-                           ?? FindVisualDescendant<HostWindowTitleBar>(window);
-            Assert.NotNull(titleBar);
-
-            var background = titleBar is null
-                ? null
-                : FindTemplateChild<Control>(titleBar, "PART_Background");
-            Assert.NotNull(background);
-
-            if (background is not null)
-            {
-                RaisePointerPressed(background, MouseButton.Left);
-            }
+            var moveDrag = typeof(HostWindow).GetMethod("MoveDrag", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(moveDrag);
+            moveDrag!.Invoke(window, [null]);
             DrainDispatcher();
 
             window.Window = null;
@@ -72,14 +62,12 @@ public class HostWindowDragLeakTests
 
             var result = new HostWindowDragLeakResult(
                 new WeakReference(window),
-                titleBar is null ? null : new WeakReference(titleBar),
                 dockWindow,
                 factory,
                 factory.MoveDragBeginCalled);
 
             CleanupWindow(window);
             window = null;
-            titleBar = null;
 
             return result;
         });
@@ -88,10 +76,6 @@ public class HostWindowDragLeakTests
         if (string.Equals(Environment.GetEnvironmentVariable("DOCK_LEAK_STRICT"), "1", StringComparison.Ordinal))
         {
             AssertCollected(result.WindowRef);
-            if (result.TitleBarRef is not null)
-            {
-                AssertCollected(result.TitleBarRef);
-            }
         }
         GC.KeepAlive(result.DockWindowKeepAlive);
         GC.KeepAlive(result.FactoryKeepAlive);
@@ -99,7 +83,6 @@ public class HostWindowDragLeakTests
 
     private sealed record HostWindowDragLeakResult(
         WeakReference WindowRef,
-        WeakReference? TitleBarRef,
         DockWindow DockWindowKeepAlive,
         TestFactory FactoryKeepAlive,
         bool MoveDragBeginCalled);

@@ -1283,11 +1283,16 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         return DragAction.Move;
     }
 
-    private bool ShouldIgnorePressedForWindowDrag(PointerPressedEventArgs e)
+    private static bool ShouldIgnorePressedForWindowDrag(Control? source)
     {
-        if (e.Source is not Control source)
+        if (source is null)
         {
             return false;
+        }
+
+        if (ShouldIgnorePressedForFloatingToolWindowDrag(source))
+        {
+            return true;
         }
 
         var tabItem = source.FindAncestorOfType<DocumentTabStripItem>();
@@ -1306,9 +1311,15 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
                && tabStrip.DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false };
     }
 
-    private static bool ShouldIgnorePressedForItemDrag(PointerPressedEventArgs e)
+    private static bool ShouldIgnorePressedForFloatingToolWindowDrag(Control source)
     {
-        if (e.Source is not Control source)
+        var toolChrome = source as ToolChromeControl ?? source.FindAncestorOfType<ToolChromeControl>();
+        return TopLevel.GetTopLevel(toolChrome) is HostWindow { IsToolWindow: true, ToolChromeControlsWholeWindow: true };
+    }
+
+    private static bool ShouldIgnorePressedForItemDrag(Control? source)
+    {
+        if (source is null)
         {
             return false;
         }
@@ -1349,7 +1360,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             return;
         }
 
-        if (ShouldIgnorePressedForWindowDrag(e) || ShouldIgnorePressedForItemDrag(e))
+        var source = e.Source as Control;
+        if (ShouldIgnorePressedForWindowDrag(source) || ShouldIgnorePressedForItemDrag(source))
         {
             return;
         }

@@ -1082,17 +1082,40 @@ internal static class DeferredContentPresentationTargetHelpers
 
     internal static DeferredContentPresentationTimeline ResolveTimeline(AvaloniaObject target)
     {
-        return DeferredContentScheduling.GetTimeline(target) ?? DeferredContentPresentationSettings.DefaultTimeline;
+        if (DeferredContentScheduling.GetTimeline(target) is { } timeline)
+        {
+            return timeline;
+        }
+
+        if (!target.IsSet(DeferredContentScheduling.TimelineProperty)
+            && target is StyledElement { TemplatedParent: AvaloniaObject templatedParent })
+        {
+            return ResolveTimeline(templatedParent);
+        }
+
+        return DeferredContentPresentationSettings.DefaultTimeline;
     }
 
     internal static TimeSpan ResolveDelay(AvaloniaObject target)
     {
+        if (!target.IsSet(DeferredContentScheduling.DelayProperty)
+            && target is StyledElement { TemplatedParent: AvaloniaObject templatedParent })
+        {
+            return ResolveDelay(templatedParent);
+        }
+
         var delay = DeferredContentScheduling.GetDelay(target);
         return delay >= TimeSpan.Zero ? delay : TimeSpan.Zero;
     }
 
     internal static int ResolveOrder(AvaloniaObject target)
     {
+        if (!target.IsSet(DeferredContentScheduling.OrderProperty)
+            && target is StyledElement { TemplatedParent: AvaloniaObject templatedParent })
+        {
+            return ResolveOrder(templatedParent);
+        }
+
         return DeferredContentScheduling.GetOrder(target);
     }
 

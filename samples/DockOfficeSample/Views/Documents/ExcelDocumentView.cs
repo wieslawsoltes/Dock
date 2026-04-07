@@ -1,5 +1,5 @@
 using DockOfficeSample.ViewModels.Documents;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 
 namespace DockOfficeSample.Views.Documents;
 

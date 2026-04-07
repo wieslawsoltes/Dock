@@ -1203,7 +1203,7 @@ public class DeferredContentControlTests
         var slots = new[]
         {
             new PresenterSlot("First", firstTemplate, order: -5, delay: TimeSpan.Zero),
-            new PresenterSlot("Second", secondTemplate, order: 10, delay: TimeSpan.FromMilliseconds(150))
+            new PresenterSlot("Second", secondTemplate, order: 10, delay: TimeSpan.FromMilliseconds(300))
         };
         var timeline = new DeferredContentPresentationTimeline
         {
@@ -1267,7 +1267,7 @@ public class DeferredContentControlTests
 
             Assert.All(new[] { firstPresenter, secondPresenter }, presenter => Assert.Null(presenter.Child));
 
-            Thread.Sleep(60);
+            Thread.Sleep(40);
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
@@ -1276,7 +1276,7 @@ public class DeferredContentControlTests
             Assert.NotNull(firstPresenter.Child);
             Assert.Null(secondPresenter.Child);
 
-            Thread.Sleep(180);
+            Thread.Sleep(320);
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 

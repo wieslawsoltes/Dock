@@ -7,10 +7,8 @@ using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model;
@@ -24,12 +22,10 @@ namespace Dock.Avalonia.Controls;
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
 [PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow")]
-[TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
-    private HostWindowTitleBar? _hostWindowTitleBar;
     private bool _mouseDown, _draggingWindow;
     private double _normalX = double.NaN;
     private double _normalY = double.NaN;
@@ -128,26 +124,6 @@ public class HostWindow : Window, IHostWindow
         return new HostWindowAutomationPeer(this);
     }
 
-    /// <inheritdoc/>
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-    {
-        base.OnApplyTemplate(e);
-
-        _hostWindowTitleBar = e.NameScope.Find<HostWindowTitleBar>("PART_TitleBar");
-        if (_hostWindowTitleBar is { })
-        {
-            _hostWindowTitleBar.ApplyTemplate();
-
-            if (_hostWindowTitleBar.BackgroundControl is { })
-            {
-                _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
-                {
-                    MoveDrag(args);
-                };
-            }
-        }
-    }
-
     private PixelPoint ClientPointToScreenRelativeToWindow(Point clientPoint)
     {
         var absScreenPoint = this.PointToScreen(clientPoint);
@@ -156,14 +132,11 @@ public class HostWindow : Window, IHostWindow
         return relativeScreenDiff;
     }
 
-    private void MoveDrag(PointerPressedEventArgs e)
+    private bool TryBeginWindowDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope, bool ownsPointerRelease)
     {
-        if (!ToolChromeControlsWholeWindow)
-            return;
-
         if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)
         {
-            return;
+            return false;
         }
 
         if (DockSettings.BringWindowsToFrontOnDrag && Window?.Factory is { } factory)
@@ -172,14 +145,15 @@ public class HostWindow : Window, IHostWindow
         }
 
         _mouseDown = true;
+        _draggingWindow = ownsPointerRelease;
+        WindowDragDockScope = dockScope;
         _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Pressed);
 
         PseudoClasses.Set(":dragging", true);
-        _draggingWindow = true;
-        BeginMoveDrag(e);
+        return true;
     }
 
-    private void EndDrag(PointerEventArgs e)
+    private void EndWindowDrag(PointerEventArgs e)
     {
         PseudoClasses.Set(":dragging", false);
 
@@ -187,6 +161,43 @@ public class HostWindow : Window, IHostWindow
         _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Released);
         _mouseDown = false;
         _draggingWindow = false;
+        WindowDragDockScope = WindowDragDockScope.FullWindow;
+    }
+
+    internal bool TryBeginExternalWindowDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope)
+    {
+        return TryBeginWindowDrag(e, dockScope, ownsPointerRelease: false);
+    }
+
+    internal void EndExternalWindowDrag(PointerEventArgs e)
+    {
+        EndWindowDrag(e);
+    }
+
+    internal void CancelExternalWindowDrag()
+    {
+        PseudoClasses.Set(":dragging", false);
+        Window?.Factory?.OnWindowMoveDragEnd(Window);
+        _mouseDown = false;
+        _draggingWindow = false;
+        WindowDragDockScope = WindowDragDockScope.FullWindow;
+    }
+
+    private void MoveDrag(PointerPressedEventArgs e)
+    {
+        if (!ToolChromeControlsWholeWindow)
+            return;
+
+        if (!TryBeginWindowDrag(e, WindowDragDockScope.FullWindow, ownsPointerRelease: true))
+        {
+            return;
+        }
+        BeginMoveDrag(e);
+    }
+
+    private void EndDrag(PointerEventArgs e)
+    {
+        EndWindowDrag(e);
     }
 
     /// <inheritdoc/>
@@ -326,11 +337,6 @@ public class HostWindow : Window, IHostWindow
             chromeControl.CloseButton.Click += ChromeCloseClick;
         }
 
-        if (chromeControl.Grip is { } grip)
-        {
-            _chromeGrips.Add(grip);
-        }
-
         ((IPseudoClasses)chromeControl.Classes).Add(":floating");
         IsToolWindow = true;
     }
@@ -352,11 +358,6 @@ public class HostWindow : Window, IHostWindow
     /// <param name="chromeControl">The chrome control.</param>
     public void DetachGrip(ToolChromeControl chromeControl)
     {
-        if (chromeControl.Grip is { } grip)
-        {
-            _chromeGrips.Remove(grip);
-        }
-
         if (chromeControl.CloseButton is not null)
         {
             chromeControl.CloseButton.Click -= ChromeCloseClick;
@@ -772,7 +773,20 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     public void SetLayout(IDock layout)
     {
+        SetCurrentValue(IsToolWindowProperty, ResolveHostedDock(layout) is IToolDock);
         DataContext = layout;
+    }
+
+    private static IDock? ResolveHostedDock(IDock layout)
+    {
+        if (layout is IRootDock root)
+        {
+            return root.ActiveDockable as IDock
+                   ?? root.DefaultDockable as IDock
+                   ?? root.VisibleDockables?.OfType<IDock>().FirstOrDefault();
+        }
+
+        return layout;
     }
 
     private void CaptureNormalBounds()

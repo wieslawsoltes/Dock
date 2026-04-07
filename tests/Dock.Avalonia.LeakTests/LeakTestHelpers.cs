@@ -350,7 +350,6 @@ internal static class LeakTestHelpers
 
     internal static void CleanupWindow(Window window)
     {
-        window.FocusManager?.ClearFocus();
         window.Content = null;
         window.DataContext = null;
         window.Close();
@@ -850,7 +849,6 @@ internal static class LeakTestHelpers
         {
             ClearPointerOverPreProcessor(topLevel);
             ClearTopLevelHandlers(topLevel);
-            topLevel.ClearValue(TopLevel.PointerOverElementProperty);
             ClearInputManagerPointerState(topLevel);
             ClearInputManagerObservers(topLevel);
             ScrubInputManagerInstance(topLevel);
@@ -1049,14 +1047,19 @@ internal static class LeakTestHelpers
             return;
         }
 
+        if (topLevel.GetPresentationSource() is not IInputRoot inputRoot)
+        {
+            return;
+        }
+
         var position = new Point(0, 0);
-        var leaveArgs = CreateRawPointerEventArgs(device, topLevel, RawPointerEventType.LeaveWindow, position);
+        var leaveArgs = CreateRawPointerEventArgs(device, inputRoot, RawPointerEventType.LeaveWindow, position);
         if (leaveArgs is not null)
         {
             InvokeInputManager(inputManager, leaveArgs);
         }
 
-        var cancelArgs = CreateRawPointerEventArgs(device, topLevel, RawPointerEventType.CancelCapture, position);
+        var cancelArgs = CreateRawPointerEventArgs(device, inputRoot, RawPointerEventType.CancelCapture, position);
         if (cancelArgs is not null)
         {
             InvokeInputManager(inputManager, cancelArgs);

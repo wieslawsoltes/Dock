@@ -7,7 +7,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Contract;
 using Dock.Model.Core;
@@ -346,6 +346,22 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         return false;
     }
 
+    // Avalonia 12 changed subtree hit testing in CompositionTarget/VisualExtensions.
+    // Use GetVisualsAt for selector containment instead of InputHitTest, then keep
+    // a local-bounds fallback for floating adorner timing/readback edge cases.
+    private static bool IsSelectorHit(Control selector, Point selectorPoint)
+    {
+        foreach (var visual in selector.GetVisualsAt(selectorPoint))
+        {
+            if (ReferenceEquals(visual, selector) || selector.IsVisualAncestorOf(visual))
+            {
+                return true;
+            }
+        }
+
+        return new Rect(selector.Bounds.Size).Contains(selectorPoint);
+    }
+
     /// <summary>
     /// Invalidates the indicator based on the provided parameters.
     /// </summary>
@@ -402,16 +418,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         if (selectorPoint is not null)
         {
-            // Check if the input element is the selector itself.
-            if (selector.InputHitTest(selectorPoint.Value) is { } inputElement)
+            if (IsSelectorHit(selector, selectorPoint.Value))
             {
-                if (Equals(inputElement, selector))
+                if (validate(point, operation, dragAction, relativeTo))
                 {
-                    if (validate(point, operation, dragAction, relativeTo))
-                    {
-                        indicator.Opacity = 0.5;
-                        return true;
-                    }
+                    indicator.Opacity = 0.5;
+                    return true;
                 }
             }
         }

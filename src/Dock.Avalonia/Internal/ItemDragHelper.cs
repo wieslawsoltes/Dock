@@ -41,10 +41,7 @@ internal class ItemDragHelper
     private const double AutoScrollSpeed = 200.0; // pixels per second
     private const double AutoScrollTimerInterval = 16.0; // ~60fps
     private PointerEventArgs? _pressedArgs;
-    private SelectingItemsControl? _selectingItemsControl;
-    private int _selectedIndexOnPress = -1;
-    private object? _selectedItemOnPress;
-    private bool _selectionRestored;
+    private const int DefaultDraggedContainerZIndex = 1;
 
     public ItemDragHelper(
         Control owner,
@@ -80,7 +77,6 @@ internal class ItemDragHelper
         _owner.RemoveHandler(InputElement.PointerCaptureLostEvent, PointerCaptureLost);
         
         StopAutoScroll();
-        ResetSelectionTracking();
     }
 
     private void PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -95,12 +91,11 @@ internal class ItemDragHelper
             _targetIndex = -1;
             _itemsControl = itemsControl;
             _draggedContainer = _owner;
-            CaptureSelection(itemsControl);
 
             if (_draggedContainer is not null)
             {
                 SetDraggingPseudoClasses(_draggedContainer, true);
-                _draggedContainer.SetCurrentValue(Visual.ZIndexProperty, 1);
+                _draggedContainer.SetCurrentValue(Panel.ZIndexProperty, GetDraggedContainerZIndex(itemsControl, _draggedContainer));
             }
 
             AddTransforms(_itemsControl);
@@ -140,7 +135,7 @@ internal class ItemDragHelper
 
         StopAutoScroll();
 
-        _draggedContainer?.ClearValue(Visual.ZIndexProperty);
+        _draggedContainer?.ClearValue(Panel.ZIndexProperty);
         
         RemoveTransforms(_itemsControl);
 
@@ -180,7 +175,23 @@ internal class ItemDragHelper
         _itemsControl = null;
 
         _draggedContainer = null;
-        ResetSelectionTracking();
+    }
+
+    private static int GetDraggedContainerZIndex(ItemsControl itemsControl, Control draggedContainer)
+    {
+        var maxZIndex = 0;
+
+        foreach (var container in itemsControl.GetRealizedContainers())
+        {
+            if (ReferenceEquals(container, draggedContainer))
+            {
+                continue;
+            }
+
+            maxZIndex = Math.Max(maxZIndex, container.GetValue(Panel.ZIndexProperty));
+        }
+
+        return Math.Max(DefaultDraggedContainerZIndex, maxZIndex + 1);
     }
 
     private void AddTransforms(ItemsControl? itemsControl)
@@ -459,7 +470,7 @@ internal class ItemDragHelper
             if (!IsPositionWithinDragBounds(position, _itemsControl))
             {
                 _dragStarted = false;
-                RestoreSelectionIfNeeded();
+                SelectDraggedItemIfNeeded();
                 Released();
                 _captured = false;
                 _dragOutside?.Invoke(_pressedArgs, e);
@@ -481,7 +492,7 @@ internal class ItemDragHelper
                     if (Math.Abs(diff.X) > horizontalDragThreshold)
                     {
                         _dragStarted = true;
-                        RestoreSelectionIfNeeded();
+                        SelectDraggedItemIfNeeded();
                     }
                     else
                     {
@@ -493,7 +504,7 @@ internal class ItemDragHelper
                     if (Math.Abs(diff.Y) > verticalDragThreshold)
                     {
                         _dragStarted = true;
-                        RestoreSelectionIfNeeded();
+                        SelectDraggedItemIfNeeded();
                     }
                     else
                     {
@@ -578,69 +589,24 @@ internal class ItemDragHelper
         }
     }
 
-    private void CaptureSelection(ItemsControl itemsControl)
+    private void SelectDraggedItemIfNeeded()
     {
-        if (itemsControl is SelectingItemsControl selectingItemsControl)
-        {
-            _selectingItemsControl = selectingItemsControl;
-            _selectedIndexOnPress = selectingItemsControl.SelectedIndex;
-            _selectedItemOnPress = selectingItemsControl.SelectedItem;
-            _selectionRestored = false;
-        }
-        else
-        {
-            ResetSelectionTracking();
-        }
-    }
-
-    private void RestoreSelectionIfNeeded()
-    {
-        if (_selectionRestored || _selectingItemsControl is null)
+        if (_itemsControl is not SelectingItemsControl selectingItemsControl || _draggedContainer is null)
         {
             return;
         }
 
-        var selectingItemsControl = _selectingItemsControl;
-
-        if (_selectedItemOnPress is not null)
+        if (_draggedContainer.DataContext is { } draggedItem && !Equals(selectingItemsControl.SelectedItem, draggedItem))
         {
-            if (!Equals(selectingItemsControl.SelectedItem, _selectedItemOnPress))
-            {
-                if (selectingItemsControl.Items is IList list && list.Contains(_selectedItemOnPress))
-                {
-                    selectingItemsControl.SelectedItem = _selectedItemOnPress;
-                    _selectionRestored = true;
-                    return;
-                }
-            }
-            else
-            {
-                _selectionRestored = true;
-                return;
-            }
-        }
-
-        if (_selectedIndexOnPress >= 0 &&
-            selectingItemsControl.Items is { } items &&
-            _selectedIndexOnPress < items.Count)
-        {
-            if (selectingItemsControl.SelectedIndex != _selectedIndexOnPress)
-            {
-                selectingItemsControl.SelectedIndex = _selectedIndexOnPress;
-            }
-            _selectionRestored = true;
+            selectingItemsControl.SelectedItem = draggedItem;
             return;
         }
 
-        _selectionRestored = true;
-    }
-
-    private void ResetSelectionTracking()
-    {
-        _selectingItemsControl = null;
-        _selectedIndexOnPress = -1;
-        _selectedItemOnPress = null;
-        _selectionRestored = false;
+        var draggedIndex = selectingItemsControl.IndexFromContainer(_draggedContainer);
+        if (draggedIndex >= 0 && selectingItemsControl.SelectedIndex != draggedIndex)
+        {
+            selectingItemsControl.SelectedIndex = draggedIndex;
+        }
     }
 
     private void SetDraggingPseudoClasses(Control control, bool isDragging)

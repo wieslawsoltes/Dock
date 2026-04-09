@@ -8,16 +8,15 @@ using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
 
-public class DocumentTabStripSelectionRestoreTests
+public class DocumentTabStripDragSelectionTests
 {
     [AvaloniaFact]
-    public void DragOutside_RestoresSelection()
+    public void DragOutside_SelectsDraggedTab()
     {
         var (window, tabStrip) = CreateTabStrip();
         try
         {
             tabStrip.SelectedIndex = 0;
-            var originalIndex = tabStrip.SelectedIndex;
 
             var tabItem = GetTabItem(tabStrip, 1);
 
@@ -31,7 +30,7 @@ public class DocumentTabStripSelectionRestoreTests
             var moved = CreateMovedArgs(tabItem, tabStrip, new Point(-50, 5), pointer);
             tabItem.RaiseEvent(moved);
 
-            Assert.Equal(originalIndex, tabStrip.SelectedIndex);
+            Assert.Equal(1, tabStrip.SelectedIndex);
         }
         finally
         {
@@ -40,13 +39,12 @@ public class DocumentTabStripSelectionRestoreTests
     }
 
     [AvaloniaFact]
-    public void DragThreshold_RestoresSelection()
+    public void DragThreshold_SelectsDraggedTab()
     {
         var (window, tabStrip) = CreateTabStrip();
         try
         {
             tabStrip.SelectedIndex = 0;
-            var originalIndex = tabStrip.SelectedIndex;
 
             var tabItem = GetTabItem(tabStrip, 1);
 
@@ -60,7 +58,7 @@ public class DocumentTabStripSelectionRestoreTests
             var moved = CreateMovedArgs(tabItem, tabStrip, new Point(20, 5), pointer);
             tabItem.RaiseEvent(moved);
 
-            Assert.Equal(originalIndex, tabStrip.SelectedIndex);
+            Assert.Equal(1, tabStrip.SelectedIndex);
         }
         finally
         {

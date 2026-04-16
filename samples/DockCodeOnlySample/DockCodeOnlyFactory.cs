@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
@@ -97,6 +98,10 @@ internal sealed class DockCodeOnlyFactory : Factory
 
     public override void InitLayout(IDockable layout)
     {
+        DefaultHostWindowLocator ??= CreateHostWindow;
+        HostWindowLocator ??= new Dictionary<string, Func<IHostWindow?>>();
+        HostWindowLocator.TryAdd(nameof(IDockWindow), CreateHostWindow);
+
         base.InitLayout(layout);
 
         foreach (IDockable dockable in EnumerateDockables(layout))
@@ -140,6 +145,11 @@ internal sealed class DockCodeOnlyFactory : Factory
         documentDock.EnableWindowDrag = true;
         documentDock.AllowedDropOperations = DockOperationMask.Fill;
         documentDock.DocumentFactory = CreateGeneratedDocument;
+    }
+
+    private static IHostWindow? CreateHostWindow()
+    {
+        return new HostWindow();
     }
 
     private IDockable CreateGeneratedDocument()

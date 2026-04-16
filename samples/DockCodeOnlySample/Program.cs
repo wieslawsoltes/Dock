@@ -4,11 +4,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
-using Dock.Avalonia.Themes.Fluent;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes.Fluent;
 using Dock.Model;
-using Dock.Model.Avalonia;
-using Dock.Model.Avalonia.Controls;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
 using Dock.Settings;
@@ -18,12 +17,12 @@ namespace DockCodeOnlySample;
 internal class Program
 {
     [STAThread]
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 
-    static AppBuilder BuildAvaloniaApp()
+    private static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .LogToTrace()
@@ -40,80 +39,14 @@ public class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var dockControl = new DockControl();
-
-            var factory = new Factory();
-
-            var documentDock = new DocumentDock
-            {
-                Id = "Documents",
-                IsCollapsable = false,
-                CanCreateDocument = true
-            };
-
-            documentDock.AllowedDropOperations = DockOperationMask.Fill;
-
-            documentDock.DocumentFactory = () =>
-            {
-                var index = documentDock.VisibleDockables?.Count ?? 0;
-                return new Document
-                {
-                    Id = $"Doc{index + 1}",
-                    Title = $"Document {index + 1}",
-                    Content = new TextBox { Text = $"Document {index + 1}", AcceptsReturn = true }
-                };
-            };
-
-            var document = new Document 
-            { 
-                Id = "Doc1", 
-                Title = "Document 1",
-                // Content = new TextBox { Text = "Document 1", AcceptsReturn = true }
-            };
-            documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
-            documentDock.ActiveDockable = document;
-
-            var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
-            var bottomTool = new Tool { Id = "Tool2", Title = "Output" };
-
-            leftTool.AllowedDockOperations = DockOperationMask.Left | DockOperationMask.Fill | DockOperationMask.Window;
-            bottomTool.AllowedDockOperations = DockOperationMask.Bottom | DockOperationMask.Fill | DockOperationMask.Window;
-
-            var mainLayout = new ProportionalDock
-            {
-                Orientation = Orientation.Horizontal,
-                VisibleDockables = factory.CreateList<IDockable>(
-                    new ToolDock
-                    {
-                        Id = "LeftPane",
-                        Alignment = Alignment.Left,
-                        Proportion = 0.25,
-                        VisibleDockables = factory.CreateList<IDockable>(leftTool),
-                        ActiveDockable = leftTool
-                    },
-                    new ProportionalDockSplitter(),
-                    documentDock,
-                    new ProportionalDockSplitter(),
-                    new ToolDock
-                    {
-                        Id = "BottomPane",
-                        Alignment = Alignment.Bottom,
-                        Proportion = 0.25,
-                        VisibleDockables = factory.CreateList<IDockable>(bottomTool),
-                        ActiveDockable = bottomTool
-                    })
-            };
-
-            var root = factory.CreateRootDock();
-            root.VisibleDockables = factory.CreateList<IDockable>(mainLayout);
-            root.DefaultDockable = mainLayout;
-
-            factory.InitLayout(root);
+            DockControl dockControl = new();
+            DockCodeOnlyFactory factory = new();
+            IRootDock layout = factory.CreateLayout();
+            factory.InitLayout(layout);
             dockControl.Factory = factory;
-            dockControl.Layout  = root;
+            dockControl.Layout = layout;
 
-            var serializer = new DockSerializer();
-            var workspaceManager = new DockWorkspaceManager(serializer);
+            DockWorkspaceManager workspaceManager = new(new DockSerializer());
             DockWorkspace? workspaceA = null;
             DockWorkspace? workspaceB = null;
 
@@ -132,32 +65,32 @@ public class App : Application
                     return;
                 }
 
-                var restored = workspaceManager.Restore(workspace);
-                if (restored is null)
+                IDock? restored = workspaceManager.Restore(workspace);
+                if (restored is not IRootDock root)
                 {
                     return;
                 }
 
-                factory.InitLayout(restored);
-                dockControl.Layout = restored;
+                factory.InitLayout(root);
+                dockControl.Layout = root;
             }
 
-            var saveWorkspaceA = new Button { Content = "Save Workspace A" };
+            Button saveWorkspaceA = new() { Content = "Save Workspace A" };
             saveWorkspaceA.Click += (_, _) => SaveWorkspace("A", ref workspaceA);
 
-            var loadWorkspaceA = new Button { Content = "Load Workspace A" };
+            Button loadWorkspaceA = new() { Content = "Load Workspace A" };
             loadWorkspaceA.Click += (_, _) => RestoreWorkspace(workspaceA);
 
-            var saveWorkspaceB = new Button { Content = "Save Workspace B" };
+            Button saveWorkspaceB = new() { Content = "Save Workspace B" };
             saveWorkspaceB.Click += (_, _) => SaveWorkspace("B", ref workspaceB);
 
-            var loadWorkspaceB = new Button { Content = "Load Workspace B" };
+            Button loadWorkspaceB = new() { Content = "Load Workspace B" };
             loadWorkspaceB.Click += (_, _) => RestoreWorkspace(workspaceB);
 
-            var lockLayout = new CheckBox { Content = "Lock layout" };
+            CheckBox lockLayout = new() { Content = "Lock layout" };
             lockLayout.IsCheckedChanged += (_, _) => dockControl.IsDockingEnabled = lockLayout.IsChecked != true;
 
-            var toolbar = new StackPanel
+            StackPanel toolbar = new()
             {
                 Orientation = Avalonia.Layout.Orientation.Horizontal,
                 Spacing = 8,
@@ -169,15 +102,16 @@ public class App : Application
             toolbar.Children.Add(loadWorkspaceB);
             toolbar.Children.Add(lockLayout);
 
-            var content = new DockPanel();
+            DockPanel content = new();
             DockPanel.SetDock(toolbar, Avalonia.Controls.Dock.Top);
             content.Children.Add(toolbar);
             content.Children.Add(dockControl);
 
             desktop.MainWindow = new Window
             {
-                Width = 800,
-                Height = 600,
+                Title = "Dock Code-Only Sample",
+                Width = 1000,
+                Height = 720,
                 Content = content
             };
         }

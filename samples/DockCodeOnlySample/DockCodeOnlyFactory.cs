@@ -107,9 +107,10 @@ internal sealed class DockCodeOnlyFactory : Factory
                     ConfigureDocumentDock(documentDock);
                     break;
                 case Document document when document.Content is null:
-                    document.Content = CreateDocumentContent(
-                        document.Title,
+                    EnsureDocumentText(
+                        document,
                         $"Restored content for {document.Title}. The factory rehydrates missing content so floating windows and workspace restores stay usable.");
+                    document.Content = CreateDocumentContent(document);
                     break;
                 case Tool tool when tool.Content is null:
                     tool.Content = CreateToolContent(
@@ -153,12 +154,15 @@ internal sealed class DockCodeOnlyFactory : Factory
 
     private static Document CreateDocumentDockable(int index, string title, string body)
     {
-        return new Document
+        Document document = new()
         {
             Id = $"Doc{index}",
-            Title = title,
-            Content = CreateDocumentContent(title, body)
+            Title = title
         };
+
+        EnsureDocumentText(document, body);
+        document.Content = CreateDocumentContent(document);
+        return document;
     }
 
     private static Tool CreateToolDockable(string id, string title, string description)
@@ -171,10 +175,12 @@ internal sealed class DockCodeOnlyFactory : Factory
         };
     }
 
-    private static object CreateDocumentContent(string title, string body)
+    private static object CreateDocumentContent(Document document)
     {
         return new Func<IServiceProvider, object>(_ =>
         {
+            string title = document.Title;
+
             TextBlock header = new()
             {
                 Text = title,
@@ -190,12 +196,14 @@ internal sealed class DockCodeOnlyFactory : Factory
 
             TextBox editor = new()
             {
-                Text = body,
+                Text = GetDocumentText(document),
                 AcceptsReturn = true,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 MinHeight = 240
             };
+
+            editor.TextChanged += (_, _) => document.Context = editor.Text ?? string.Empty;
 
             return new Border
             {
@@ -212,6 +220,19 @@ internal sealed class DockCodeOnlyFactory : Factory
                 }
             };
         });
+    }
+
+    private static void EnsureDocumentText(Document document, string fallbackText)
+    {
+        if (document.Context is not string)
+        {
+            document.Context = fallbackText;
+        }
+    }
+
+    private static string GetDocumentText(Document document)
+    {
+        return document.Context as string ?? string.Empty;
     }
 
     private static object CreateToolContent(string title, string description)

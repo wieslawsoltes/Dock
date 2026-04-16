@@ -1,6 +1,8 @@
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
+using Dock.Model.Avalonia.Controls;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Xunit;
 
@@ -52,5 +54,41 @@ public class DockControlTests
         control.Layout = null;
 
         Assert.DoesNotContain(control, factory.DockControls);
+    }
+
+    [AvaloniaFact]
+    public void InitializeFactory_Registers_DockControl_Host_Window_Locators()
+    {
+        var factory = new Factory();
+        var document = new Document { Id = "DocumentA", Title = "Document A" };
+        var documentDock = new DocumentDock
+        {
+            Id = "Documents",
+            VisibleDockables = factory.CreateList<IDockable>(document),
+            ActiveDockable = document
+        };
+
+        var layout = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(documentDock),
+            ActiveDockable = documentDock,
+            DefaultDockable = documentDock
+        };
+
+        factory.InitLayout(layout);
+
+        var control = new DockControl
+        {
+            InitializeFactory = true,
+            InitializeLayout = false,
+            Factory = factory,
+            Layout = layout
+        };
+
+        Assert.NotNull(factory.DefaultHostWindowLocator);
+        Assert.Same(control, factory.DefaultHostWindowLocator!.Target);
+        Assert.NotNull(factory.HostWindowLocator);
+        Assert.True(factory.HostWindowLocator!.TryGetValue(nameof(IDockWindow), out var hostWindowLocator));
+        Assert.Same(control, hostWindowLocator!.Target);
     }
 }

@@ -37,12 +37,16 @@ public class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            DockControl dockControl = new();
             DockCodeOnlyFactory factory = new();
             IRootDock layout = factory.CreateLayout();
             factory.InitLayout(layout);
-            dockControl.Factory = factory;
-            dockControl.Layout = layout;
+            DockControl dockControl = new()
+            {
+                InitializeFactory = true,
+                InitializeLayout = false,
+                Factory = factory,
+                Layout = layout
+            };
 
             DockWorkspaceManager workspaceManager = new(new DockSerializer());
             DockWorkspace? workspaceA = null;

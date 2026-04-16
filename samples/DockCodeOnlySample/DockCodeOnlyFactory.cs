@@ -135,7 +135,7 @@ internal sealed class DockCodeOnlyFactory : Factory
 
     private void ConfigureDocumentDock(DocumentDock documentDock)
     {
-        documentDock.IsCollapsable = false;
+        documentDock.IsCollapsable = true;
         documentDock.CanCreateDocument = true;
         documentDock.EnableWindowDrag = true;
         documentDock.AllowedDropOperations = DockOperationMask.Fill;

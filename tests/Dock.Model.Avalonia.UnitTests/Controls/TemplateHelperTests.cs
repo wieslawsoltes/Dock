@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
+using Dock.Controls.DeferredContentControl;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Xunit;
@@ -63,6 +64,30 @@ public class TemplateHelperTests
     }
 
     [AvaloniaFact]
+    public void Document_Build_Detaches_Direct_Control_From_DeferredContentControl()
+    {
+        var control = new Border();
+        var deferredHost = new DeferredContentControl { Content = control };
+        var window = new Window { Content = deferredHost };
+        var document = new Document { Content = control };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var result = document.Build(null, null);
+
+            Assert.Same(control, result);
+            Assert.Null(deferredHost.Content);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
     public void ManagedDockWindowDocument_Build_Detaches_Direct_Control_From_Parent()
     {
         var window = new DockWindow();
@@ -103,6 +128,30 @@ public class TemplateHelperTests
         finally
         {
             host.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void Tool_Build_Detaches_Direct_Control_From_DeferredContentControl()
+    {
+        var control = new Border();
+        var deferredHost = new DeferredContentControl { Content = control };
+        var window = new Window { Content = deferredHost };
+        var tool = new Tool { Content = control };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var result = tool.Build(null, null);
+
+            Assert.Same(control, result);
+            Assert.Null(deferredHost.Content);
+        }
+        finally
+        {
+            window.Close();
         }
     }
 

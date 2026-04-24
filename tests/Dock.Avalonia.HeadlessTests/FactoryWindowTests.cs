@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using Avalonia.Headless.XUnit;
+using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -124,5 +127,39 @@ public class FactoryWindowTests
         Assert.Same(documentTemplate, createdDocumentDock.DocumentTemplate);
         Assert.Equal("DocumentTheme", createdDocumentDock.DocumentItemContainerTheme);
         Assert.Same(documentSelector, createdDocumentDock.DocumentItemTemplateSelector);
+    }
+
+    [AvaloniaFact]
+    public void FloatDockable_Uses_Configured_Host_Window_Locator()
+    {
+        var factory = new Factory
+        {
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+            {
+                [nameof(IDockWindow)] = static () => new ManagedHostWindow()
+            }
+        };
+
+        var document = new Document { Id = "DocumentA", Title = "Document A" };
+        var documentDock = new DocumentDock
+        {
+            Id = "Documents",
+            VisibleDockables = factory.CreateList<IDockable>(document),
+            ActiveDockable = document
+        };
+
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(documentDock),
+            ActiveDockable = documentDock,
+            DefaultDockable = documentDock
+        };
+
+        factory.InitLayout(root);
+        factory.FloatDockable(document);
+
+        var window = Assert.Single(root.Windows!);
+        Assert.NotNull(window.Host);
+        Assert.IsType<ManagedHostWindow>(window.Host);
     }
 }

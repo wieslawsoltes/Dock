@@ -1,10 +1,18 @@
 using System;
+using System.Linq;
+using System.Reflection;
 using Avalonia;
+using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Styling;
+using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes.Fluent;
 using Dock.Model.Avalonia;
+using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Xunit;
@@ -57,6 +65,116 @@ public class HostWindowThemeChangeTests
         {
             window.Close();
             app.RequestedThemeVariant = originalVariant;
+        }
+    }
+
+    [AvaloniaFact]
+    public void DockControl_Should_Ignore_Floating_Tool_Chrome_WindowDrag_Press()
+    {
+        var app = Application.Current ?? throw new InvalidOperationException("Application is not initialized.");
+        var method = typeof(DockControl).GetMethod("ShouldIgnorePressedForWindowDrag", BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.NotNull(method);
+
+        var previousStyles = app.Styles.ToList();
+        app.Styles.Clear();
+        app.Styles.Add(new FluentTheme());
+        app.Styles.Add(new DockFluentTheme());
+
+        var tool = new Tool { Title = "Tool1" };
+        var toolDock = new ToolDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { tool },
+            ActiveDockable = tool,
+            OpenedDockablesCount = 1
+        };
+        var layout = new RootDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { toolDock },
+            ActiveDockable = toolDock,
+            DefaultDockable = toolDock,
+            OpenedDockablesCount = 1
+        };
+        var hostWindow = new HostWindow();
+
+        try
+        {
+            hostWindow.SetLayout(layout);
+            hostWindow.Show();
+            hostWindow.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            var toolChrome = hostWindow.GetVisualDescendants().OfType<ToolChromeControl>().FirstOrDefault();
+            Assert.NotNull(toolChrome);
+            Assert.True(hostWindow.IsToolWindow);
+            Assert.Same(hostWindow, TopLevel.GetTopLevel(toolChrome));
+
+            var result = (bool?)method!.Invoke(null, new object?[] { toolChrome! });
+            Assert.True(result);
+        }
+        finally
+        {
+            hostWindow.Close();
+            app.Styles.Clear();
+            foreach (IStyle style in previousStyles)
+            {
+                app.Styles.Add(style);
+            }
+        }
+    }
+
+    [AvaloniaFact]
+    public void DockControl_Should_Not_Ignore_Floating_Multi_Tab_Tool_Chrome_WindowDrag_Press()
+    {
+        var app = Application.Current ?? throw new InvalidOperationException("Application is not initialized.");
+        var method = typeof(DockControl).GetMethod("ShouldIgnorePressedForWindowDrag", BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.NotNull(method);
+
+        var previousStyles = app.Styles.ToList();
+        app.Styles.Clear();
+        app.Styles.Add(new FluentTheme());
+        app.Styles.Add(new DockFluentTheme());
+
+        var firstTool = new Tool { Title = "Tool1" };
+        var secondTool = new Tool { Title = "Tool2" };
+        var toolDock = new ToolDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { firstTool, secondTool },
+            ActiveDockable = firstTool,
+            OpenedDockablesCount = 2
+        };
+        var layout = new RootDock
+        {
+            VisibleDockables = new AvaloniaList<IDockable> { toolDock },
+            ActiveDockable = toolDock,
+            DefaultDockable = toolDock,
+            OpenedDockablesCount = 2
+        };
+        var hostWindow = new HostWindow();
+
+        try
+        {
+            hostWindow.SetLayout(layout);
+            hostWindow.Show();
+            hostWindow.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            var toolChrome = hostWindow.GetVisualDescendants().OfType<ToolChromeControl>().FirstOrDefault();
+            Assert.NotNull(toolChrome);
+            Assert.True(hostWindow.IsToolWindow);
+            Assert.False(hostWindow.ToolChromeControlsWholeWindow);
+            Assert.Same(hostWindow, TopLevel.GetTopLevel(toolChrome));
+
+            var result = (bool?)method!.Invoke(null, new object?[] { toolChrome! });
+            Assert.False(result);
+        }
+        finally
+        {
+            hostWindow.Close();
+            app.Styles.Clear();
+            foreach (IStyle style in previousStyles)
+            {
+                app.Styles.Add(style);
+            }
         }
     }
 }

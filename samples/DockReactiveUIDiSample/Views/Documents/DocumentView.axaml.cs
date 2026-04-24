@@ -1,6 +1,6 @@
 using Avalonia.Markup.Xaml;
 using DockReactiveUIDiSample.ViewModels.Documents;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 
 namespace DockReactiveUIDiSample.Views.Documents;
 

@@ -1,7 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:DockReactiveUICanonicalSample"
-             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
+             xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
+             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
              x:Class="DockReactiveUICanonicalSample.App">
   <Application.DataTemplates>
     <DataTemplate DataType="TextPromptDialogViewModel">
@@ -32,10 +33,10 @@
         </ResourceDictionary>
       </Styles.Resources>
     </Styles>
-    <Style Selector="HostWindow">
+    <Style Selector="HostWindow" x:DataType="controls:IRootDock">
       <Setter Property="Content" Value="{Binding}" />
       <Setter Property="ContentTemplate">
-        <DataTemplate>
+        <DataTemplate x:DataType="controls:IRootDock">
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
               <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
@@ -47,10 +48,10 @@
         </DataTemplate>
       </Setter>
     </Style>
-    <Style Selector="HostWindow:toolwindow">
+    <Style Selector="HostWindow:toolwindow" x:DataType="controls:IRootDock">
       <Setter Property="Content" Value="{Binding}" />
       <Setter Property="ContentTemplate">
-        <DataTemplate>
+        <DataTemplate x:DataType="controls:IRootDock">
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
               <DockControl Layout="{Binding}">
@@ -62,7 +63,6 @@
     </Style>
     <Style Selector="HostWindow:toolchromecontrolswindow">
       <Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
-      <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
     </Style>
   </Application.Styles>
 </Application>

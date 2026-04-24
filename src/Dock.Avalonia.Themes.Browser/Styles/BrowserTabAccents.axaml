@@ -121,11 +121,6 @@
   <sys:Double x:Key="DockDocumentTabItemSeparatorOpacity">0.55</sys:Double>
   <sys:Double x:Key="DockToolTabItemMinHeight">0</sys:Double>
   <sys:Double x:Key="DockDocumentTabStripMinHeight">28</sys:Double>
-  <OnPlatform x:Key="DockHostWindowChromeHints"
-              x:TypeArguments="platform:ExtendClientAreaChromeHints"
-              Default="PreferSystemChrome"
-              macOS="Default, PreferSystemChrome, OSXThickTitleBar"
-              Windows="PreferSystemChrome" />
   <OnPlatform x:Key="DockDocumentTabStripLeadingSpacerWidth"
               x:TypeArguments="x:Double"
               Default="12"

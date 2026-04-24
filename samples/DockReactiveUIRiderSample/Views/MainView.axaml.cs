@@ -56,7 +56,7 @@ private void OnTitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
 
     private async void OnOpenSolutionClicked(object? sender, RoutedEventArgs e)
     {
-        var storageProvider = (this.GetVisualRoot() as TopLevel)?.StorageProvider;
+        var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
         if (storageProvider is null)
         {
             return;

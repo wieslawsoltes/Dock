@@ -1,6 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using System.Runtime.InteropServices;
+using System;
 using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
@@ -272,11 +272,15 @@ public class ToolChromeControl : ContentControl
         return false;
     }
 
-    private WindowDragHelper CreateDragHelper(Control owner, bool ignoreFocusable = false, bool handlePointerPressed = true)
+    private WindowDragHelper CreateDragHelper(
+        Control owner,
+        bool ignoreFocusable = false,
+        bool handlePointerPressed = true,
+        Func<bool>? isEnabled = null)
     {
         return new WindowDragHelper(
             owner,
-            () => true,
+            isEnabled ?? (() => true),
             source =>
             {
                 if (source is null)
@@ -300,24 +304,19 @@ public class ToolChromeControl : ContentControl
             return;
         }
 
-        // On linux we use WindowDragHelper because of inconsistent drag behaviour with BeginMoveDrag.
-        if (VisualRoot is Window window)
+        if (TopLevel.GetTopLevel(this) is Window window)
         {
             if (window is HostWindow hostWindow)
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
-                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    hostWindow.AttachGrip(this);
-                    _attachedWindow = hostWindow;
+                hostWindow.AttachGrip(this);
+                _attachedWindow = hostWindow;
+                SetCurrentValue(IsFloatingProperty, true);
 
-                    SetCurrentValue(IsFloatingProperty, true);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    _windowDragHelper = CreateDragHelper(hostWindow, ignoreFocusable: true, handlePointerPressed: false);
-                    _windowDragHelper.Attach();
-                }
+                _windowDragHelper = CreateDragHelper(
+                    Grip,
+                    ignoreFocusable: true,
+                    isEnabled: () => hostWindow.ToolChromeControlsWholeWindow);
+                _windowDragHelper.Attach();
             }
 #if false
             else
@@ -346,7 +345,7 @@ public class ToolChromeControl : ContentControl
 
     private void OnMaximizeRestoreButtonClicked(object? sender, RoutedEventArgs e)
     {
-        if (VisualRoot is HostWindow window)
+        if (TopLevel.GetTopLevel(this) is HostWindow window)
         {
             if (window.WindowState == WindowState.Maximized)
                 window.WindowState = WindowState.Normal;

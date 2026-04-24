@@ -1,4 +1,5 @@
 using System;
+using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -48,5 +49,28 @@ public class DocumentDockNewDockTests
         Assert.NotEqual(docDock, ownerDock);
         Assert.Contains(doc, ownerDock.VisibleDockables!);
         Assert.NotNull(factory.FindDockable(root, d => ReferenceEquals(d, ownerDock)));
+    }
+
+    [AvaloniaFact]
+    public void NewHorizontalDocumentDock_Keeps_Document_Content_Buildable()
+    {
+        var factory = new Factory();
+        var root = new RootDock { VisibleDockables = factory.CreateList<IDockable>() };
+        root.Factory = factory;
+        var docDock = new DocumentDock { VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, docDock);
+
+        var doc = new Document
+        {
+            Content = new Func<IServiceProvider, object>(_ => new TextBox())
+        };
+        factory.AddDockable(docDock, doc);
+
+        factory.NewHorizontalDocumentDock(doc);
+
+        var rebuiltContent = doc.Build(null, null);
+
+        Assert.IsType<TextBox>(rebuiltContent);
+        Assert.IsType<DocumentDock>(doc.Owner);
     }
 }

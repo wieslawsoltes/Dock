@@ -135,14 +135,15 @@
       </StackPanel>
     </Border>
 
-    <dock:DockControl InitializeLayout="True"
+    <dock:DockControl x:DataType="vm:MainWindowViewModel"
+                      InitializeLayout="True"
                       InitializeFactory="True"
-                      Factory="{Binding DataContext.Factory, RelativeSource={RelativeSource AncestorType=Window}}">
+                      Factory="{Binding Factory}">
 
       <model:RootDock x:Name="Root"
                       Id="Root"
                       IsCollapsable="False"
-                      RootDockCapabilityPolicy="{Binding DataContext.RootDockCapabilityPolicy, RelativeSource={RelativeSource AncestorType=Window}}"
+                      RootDockCapabilityPolicy="{Binding RootDockCapabilityPolicy}"
                       DefaultDockable="{Binding #MainLayout}"
                       ActiveDockable="{Binding #MainLayout}">
 
@@ -153,11 +154,11 @@
                             Title="Tools"
                             Alignment="Left"
                             Proportion="0.3"
-                            DockCapabilityPolicy="{Binding DataContext.ToolDockCapabilityPolicy, RelativeSource={RelativeSource AncestorType=Window}}"
+                            DockCapabilityPolicy="{Binding ToolDockCapabilityPolicy}"
                             ToolItemContainerTheme="SampleGeneratedToolContainerTheme"
                             ToolItemTemplateSelector="{StaticResource SampleToolItemTemplateSelector}"
-                            CanUpdateItemsSourceOnUnregister="{Binding DataContext.ToolCanUpdateItemsSourceOnUnregister, RelativeSource={RelativeSource AncestorType=Window}}"
-                            ItemsSource="{Binding DataContext.Tools, RelativeSource={RelativeSource AncestorType=Window}}">
+                            CanUpdateItemsSourceOnUnregister="{Binding ToolCanUpdateItemsSourceOnUnregister}"
+                            ItemsSource="{Binding Tools}">
               <model:ToolDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />
               </model:ToolDock.ItemContainerGenerator>
@@ -183,11 +184,11 @@
                                 Title="Documents"
                                 Proportion="0.7"
                                 CanCreateDocument="False"
-                                DockCapabilityPolicy="{Binding DataContext.DocumentDockCapabilityPolicy, RelativeSource={RelativeSource AncestorType=Window}}"
+                                DockCapabilityPolicy="{Binding DocumentDockCapabilityPolicy}"
                                 DocumentItemContainerTheme="SampleGeneratedDocumentContainerTheme"
                                 DocumentItemTemplateSelector="{StaticResource SampleDocumentItemTemplateSelector}"
-                                CanUpdateItemsSourceOnUnregister="{Binding DataContext.DocumentCanUpdateItemsSourceOnUnregister, RelativeSource={RelativeSource AncestorType=Window}}"
-                                ItemsSource="{Binding DataContext.Documents, RelativeSource={RelativeSource AncestorType=Window}}">
+                                CanUpdateItemsSourceOnUnregister="{Binding DocumentCanUpdateItemsSourceOnUnregister}"
+                                ItemsSource="{Binding Documents}">
               <model:DocumentDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />
               </model:DocumentDock.ItemContainerGenerator>

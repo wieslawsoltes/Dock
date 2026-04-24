@@ -26,11 +26,10 @@
     <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Title" Value="{Binding FocusedDockable.Title}"  />
     <Setter Property="Topmost" Value="{Binding Window.Topmost}" />
-    <Setter Property="SystemDecorations" Value="Full" />
+    <Setter Property="WindowDecorations" Value="Full" />
     <Setter Property="ToolChromeControlsWholeWindow" Value="{Binding OpenedDockablesCount, Converter={StaticResource LessThan2}}" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
     <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
-    <Setter Property="ExtendClientAreaChromeHints" Value="{DynamicResource DockHostWindowChromeHints}" />
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -38,10 +37,7 @@
           <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
           <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
           <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
-          <VisualLayerManager>
-            <VisualLayerManager.ChromeOverlayLayer>
-              <HostWindowTitleBar Name="PART_TitleBar" />
-            </VisualLayerManager.ChromeOverlayLayer>
+          <VisualLayerManager Name="PART_VisualLayerManager">
             <ContentPresenter Name="PART_ContentPresenter"
                               ContentTemplate="{TemplateBinding ContentTemplate}"
                               Content="{TemplateBinding Content}"
@@ -71,19 +67,18 @@
 
       <Style Selector="^:documentchromecontrolswindow">
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+        <Setter Property="WindowDecorations" Value="BorderOnly" />
       </Style>
 
     </Style>
 
     <Style Selector="^:toolwindow">
 
-      <Setter Property="SystemDecorations" Value="Full" />
       <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
 
       <Style Selector="^:toolchromecontrolswindow">
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+        <Setter Property="WindowDecorations" Value="BorderOnly" />
       </Style>
 
       <Setter Property="Template">
@@ -92,10 +87,7 @@
             <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
             <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
             <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
-            <VisualLayerManager>
-              <VisualLayerManager.ChromeOverlayLayer>
-                <!-- <TitleBar/> -->
-              </VisualLayerManager.ChromeOverlayLayer>
+            <VisualLayerManager Name="PART_VisualLayerManager">
               <ContentPresenter Name="PART_ContentPresenter"
                                 ContentTemplate="{TemplateBinding ContentTemplate}"
                                 Content="{TemplateBinding Content}"
@@ -130,10 +122,6 @@
       <Setter Property="Background" Value="{x:Null}" />
       <Setter Property="TransparencyLevelHint" Value="Transparent"/>
       <Setter Property="Opacity" Value="0.5" />
-    </Style>
-
-    <Style Selector="^TitleBar /template/ Border#PART_Background">
-      <Setter Property="IsHitTestVisible" Value="True" />
     </Style>
 
   </ControlTheme>

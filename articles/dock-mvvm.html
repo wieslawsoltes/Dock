@@ -125,7 +125,6 @@ dotnet add package Microsoft.Extensions.DependencyInjection
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Dock.Model.Core;
 using StaticViewLocator;
 
 namespace MyDockApp;
@@ -153,7 +152,7 @@ public partial class ViewLocator : IDataTemplate
         }
 
         var type = data.GetType();
-        return data is IDockable || s_views.ContainsKey(type);
+        return s_views.ContainsKey(type);
     }
 }
 </code></pre>
@@ -161,7 +160,6 @@ public partial class ViewLocator : IDataTemplate
 <pre><code class="lang-csharp">using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Dock.Model.Core;
 
 namespace MyDockApp;
 
@@ -172,13 +170,12 @@ public class ViewLocator : IDataTemplate
         if (data is null)
             return null;
 
-        var name = data.GetType().FullName!.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
-        var type = Type.GetType(name);
+        var type = ResolveViewType(data.GetType());
 
         if (type != null)
             return (Control)Activator.CreateInstance(type)!;
 
-        return new TextBlock { Text = &quot;Not Found: &quot; + name };
+        return new TextBlock { Text = &quot;Not Found: &quot; + data.GetType().FullName };
     }
 
     public bool Match(object? data)
@@ -188,13 +185,22 @@ public class ViewLocator : IDataTemplate
             return false;
         }
 
-        if (data is IDockable)
+        return ResolveViewType(data.GetType()) is not null;
+    }
+
+    private static Type? ResolveViewType(Type viewModelType)
+    {
+        var fullName = viewModelType.FullName;
+        if (fullName is null || !fullName.EndsWith(&quot;ViewModel&quot;, StringComparison.Ordinal))
         {
-            return true;
+            return null;
         }
 
-        var name = data.GetType().FullName?.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
-        return Type.GetType(name) is not null;
+        var viewName = fullName[..^&quot;ViewModel&quot;.Length] + &quot;View&quot;;
+        var assemblyQualifiedName = $&quot;{viewName}, {viewModelType.Assembly.FullName}&quot;;
+        var type = Type.GetType(assemblyQualifiedName);
+
+        return type is not null &amp;&amp; typeof(Control).IsAssignableFrom(type) ? type : null;
     }
 }
 </code></pre>
@@ -276,8 +282,12 @@ public class MainViewModel : INotifyPropertyChanged
         &lt;DocumentDock.DocumentTemplate&gt;
             &lt;DocumentTemplate&gt;
                 &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Document&quot;&gt;
-                    &lt;TextBox Text=&quot;{Binding Context.Title}&quot; Margin=&quot;0,0,0,10&quot;/&gt;
-                    &lt;TextBox Text=&quot;{Binding Context.Content}&quot; AcceptsReturn=&quot;True&quot; Height=&quot;300&quot;/&gt;
+                    &lt;TextBox Text=&quot;{Binding Title}&quot; Margin=&quot;0,0,0,10&quot;/&gt;
+                    &lt;StackPanel DataContext=&quot;{Binding Context}&quot;&gt;
+                        &lt;StackPanel x:DataType=&quot;models:FileDocumentModel&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding Content}&quot; AcceptsReturn=&quot;True&quot; Height=&quot;300&quot;/&gt;
+                        &lt;/StackPanel&gt;
+                    &lt;/StackPanel&gt;
                 &lt;/StackPanel&gt;
             &lt;/DocumentTemplate&gt;
         &lt;/DocumentDock.DocumentTemplate&gt;

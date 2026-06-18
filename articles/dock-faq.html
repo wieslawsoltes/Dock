@@ -92,7 +92,9 @@
     &lt;DocumentTemplate&gt;
       &lt;StackPanel x:DataType=&quot;Document&quot;&gt;
         &lt;TextBlock Text=&quot;{Binding Title}&quot;/&gt;
-        &lt;TextBox Text=&quot;{Binding Context.Content}&quot;/&gt;
+        &lt;StackPanel DataContext=&quot;{Binding Context}&quot;&gt;
+          &lt;TextBox x:DataType=&quot;models:FileModel&quot; Text=&quot;{Binding Content}&quot;/&gt;
+        &lt;/StackPanel&gt;
       &lt;/StackPanel&gt;
     &lt;/DocumentTemplate&gt;
   &lt;/DocumentDock.DocumentTemplate&gt;
@@ -131,7 +133,7 @@
 public class FileModel : INotifyPropertyChanged
 {
     public string Title { get; set; }      // Used for tab title
-    public string Content { get; set; }    // Accessible via Context.Content
+    public string Content { get; set; }    // Accessible through Document.Context
     public bool CanClose { get; set; }     // Controls if tab can be closed
 }
 
@@ -142,7 +144,9 @@ public ObservableCollection&lt;FileModel&gt; OpenFiles { get; } = new();
 <pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding OpenFiles}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
-      &lt;TextBox x:DataType=&quot;Document&quot; Text=&quot;{Binding Context.Content}&quot;/&gt;
+      &lt;ContentControl x:DataType=&quot;Document&quot; DataContext=&quot;{Binding Context}&quot;&gt;
+        &lt;TextBox x:DataType=&quot;models:FileModel&quot; Text=&quot;{Binding Content}&quot;/&gt;
+      &lt;/ContentControl&gt;
     &lt;/DocumentTemplate&gt;
   &lt;/DocumentDock.DocumentTemplate&gt;
 &lt;/DocumentDock&gt;

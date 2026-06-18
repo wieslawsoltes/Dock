@@ -120,7 +120,7 @@ dotnet add package Dock.Avalonia.Diagnostics
 <p>See <a href="dock-dependency-injection.html">dependency injection</a> for manual Dock registrations.</p>
 </li>
 <li><p><strong>Set up View Templates (Optional)</strong></p>
-<p>If you rely on view models via <code>Context</code>, register a view locator or data templates for your document and tool views. If you define <code>Document.Content</code> or use <code>DocumentTemplate</code> in XAML, you can skip this step.</p>
+<p>If you rely on view models via <code>Context</code>, register a view locator or data templates for your document and tool views. If you define <code>Document.Content</code> or use <code>DocumentTemplate</code> in XAML, skip this step; the template supplies the document content directly.</p>
 <p><strong>Option A: Static View Locator with Source Generators (Recommended)</strong></p>
 <p>Add the StaticViewLocator package:</p>
 <pre><code class="lang-bash">dotnet add package StaticViewLocator
@@ -129,7 +129,6 @@ dotnet add package Dock.Avalonia.Diagnostics
 <pre><code class="lang-csharp">using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Dock.Model.Core;
 using StaticViewLocator;
 
 namespace DockQuickStart;
@@ -157,7 +156,7 @@ public partial class ViewLocator : IDataTemplate
         }
 
         var type = data.GetType();
-        return data is IDockable || s_views.ContainsKey(type);
+        return s_views.ContainsKey(type);
     }
 }
 </code></pre>
@@ -165,7 +164,6 @@ public partial class ViewLocator : IDataTemplate
 <pre><code class="lang-csharp">using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Dock.Model.Core;
 
 namespace DockQuickStart;
 
@@ -176,13 +174,12 @@ public class ViewLocator : IDataTemplate
         if (data is null)
             return null;
 
-        var name = data.GetType().FullName!.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
-        var type = Type.GetType(name);
+        var type = ResolveViewType(data.GetType());
 
         if (type != null)
             return (Control)Activator.CreateInstance(type)!;
 
-        return new TextBlock { Text = &quot;Not Found: &quot; + name };
+        return new TextBlock { Text = &quot;Not Found: &quot; + data.GetType().FullName };
     }
 
     public bool Match(object? data)
@@ -192,24 +189,34 @@ public class ViewLocator : IDataTemplate
             return false;
         }
 
-        if (data is IDockable)
+        return ResolveViewType(data.GetType()) is not null;
+    }
+
+    private static Type? ResolveViewType(Type viewModelType)
+    {
+        var fullName = viewModelType.FullName;
+        if (fullName is null || !fullName.EndsWith(&quot;ViewModel&quot;, StringComparison.Ordinal))
         {
-            return true;
+            return null;
         }
 
-        var name = data.GetType().FullName?.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
-        return Type.GetType(name) is not null;
+        var viewName = fullName[..^&quot;ViewModel&quot;.Length] + &quot;View&quot;;
+        var assemblyQualifiedName = $&quot;{viewName}, {viewModelType.Assembly.FullName}&quot;;
+        var type = Type.GetType(assemblyQualifiedName);
+
+        return type is not null &amp;&amp; typeof(Control).IsAssignableFrom(type) ? type : null;
     }
 }
 </code></pre>
 </li>
 <li><p><strong>Add Dock styles (and View Locator if used)</strong></p>
-<p>Reference the theme and register the view locator in <code>App.axaml</code> if you use one:</p>
+<p>Reference the theme in <code>App.axaml</code>. Register the view locator only if you use one; omit <code>Application.DataTemplates</code> for the <code>ItemsSource</code> + <code>DocumentTemplate</code> example below.</p>
 <pre><code class="lang-xaml">&lt;Application xmlns=&quot;https://github.com/avaloniaui&quot;
              xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
              xmlns:local=&quot;using:DockQuickStart&quot;
              x:Class=&quot;DockQuickStart.App&quot;&gt;
 
+  &lt;!-- Include only if you created a ViewLocator in step 3. --&gt;
   &lt;Application.DataTemplates&gt;
     &lt;local:ViewLocator /&gt;
   &lt;/Application.DataTemplates&gt;
@@ -302,21 +309,35 @@ public class MainWindowViewModel
 <pre><code class="lang-xaml">&lt;Window x:Class=&quot;DockQuickStart.MainWindow&quot;
         xmlns=&quot;https://github.com/avaloniaui&quot;
         xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
-        xmlns:dock=&quot;https://github.com/avaloniaui&quot;&gt;
-&lt;DockControl InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
-    &lt;DockControl.Factory&gt;
-        &lt;Factory /&gt;
-    &lt;/DockControl.Factory&gt;
-    &lt;RootDock&gt;
-        &lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
-            &lt;DocumentDock.DocumentTemplate&gt;
-                &lt;DocumentTemplate&gt;
-                    &lt;TextBox Text=&quot;{Binding Context.Content}&quot; AcceptsReturn=&quot;True&quot; /&gt;
-                &lt;/DocumentTemplate&gt;
-            &lt;/DocumentDock.DocumentTemplate&gt;
-        &lt;/DocumentDock&gt;
-    &lt;/RootDock&gt;
-&lt;/DockControl&gt;
+        xmlns:dock=&quot;using:Dock.Avalonia.Controls&quot;
+        xmlns:dockFactory=&quot;using:Dock.Model.Avalonia&quot;
+        xmlns:dockModel=&quot;using:Dock.Model.Avalonia.Controls&quot;
+        xmlns:models=&quot;using:DockQuickStart&quot;
+        xmlns:vm=&quot;using:DockQuickStart&quot;
+        x:DataType=&quot;vm:MainWindowViewModel&quot;&gt;
+&lt;dock:DockControl InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
+    &lt;dock:DockControl.Factory&gt;
+        &lt;dockFactory:Factory /&gt;
+    &lt;/dock:DockControl.Factory&gt;
+    &lt;dockModel:RootDock&gt;
+        &lt;dockModel:DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+            &lt;dockModel:DocumentDock.DocumentTemplate&gt;
+                &lt;dockModel:DocumentTemplate&gt;
+                    &lt;StackPanel x:DataType=&quot;dockModel:Document&quot; Margin=&quot;10&quot;&gt;
+                        &lt;TextBlock Text=&quot;{Binding Title}&quot; /&gt;
+                        &lt;StackPanel DataContext=&quot;{Binding Context}&quot;&gt;
+                            &lt;StackPanel x:DataType=&quot;models:FileDocument&quot;&gt;
+                                &lt;TextBox Text=&quot;{Binding Content}&quot;
+                                         AcceptsReturn=&quot;True&quot;
+                                         TextWrapping=&quot;Wrap&quot; /&gt;
+                            &lt;/StackPanel&gt;
+                        &lt;/StackPanel&gt;
+                    &lt;/StackPanel&gt;
+                &lt;/dockModel:DocumentTemplate&gt;
+            &lt;/dockModel:DocumentDock.DocumentTemplate&gt;
+        &lt;/dockModel:DocumentDock&gt;
+    &lt;/dockModel:RootDock&gt;
+&lt;/dock:DockControl&gt;
 &lt;/Window&gt;
 </code></pre>
 <p>Initialize the view model in <code>MainWindow.axaml.cs</code>:</p>

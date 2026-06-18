@@ -173,7 +173,7 @@ if (container is IDocument document)
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
       &lt;!-- fallback template for items not handled by selector --&gt;
-      &lt;TextBlock Text=&quot;{Binding Context.Title}&quot; /&gt;
+      &lt;TextBlock x:DataType=&quot;Document&quot; Text=&quot;{Binding Title}&quot; /&gt;
     &lt;/DocumentTemplate&gt;
   &lt;/DocumentDock.DocumentTemplate&gt;
 &lt;/DocumentDock&gt;
@@ -278,13 +278,17 @@ if (container is IDocument document)
         &lt;TextBlock Text=&quot;Document Properties&quot; FontWeight=&quot;Bold&quot; Margin=&quot;0,0,0,10&quot;/&gt;
         
         &lt;TextBlock Text=&quot;Title:&quot; FontWeight=&quot;SemiBold&quot;/&gt;
-        &lt;TextBox Text=&quot;{Binding Context.Title}&quot; Margin=&quot;0,0,0,10&quot;/&gt;
+        &lt;TextBox Text=&quot;{Binding Title}&quot; Margin=&quot;0,0,0,10&quot;/&gt;
         
-        &lt;TextBlock Text=&quot;Content:&quot; FontWeight=&quot;SemiBold&quot;/&gt;
-        &lt;TextBox Text=&quot;{Binding Context.Content}&quot; 
-                 AcceptsReturn=&quot;True&quot; 
-                 TextWrapping=&quot;Wrap&quot;
-                 Height=&quot;200&quot;/&gt;
+        &lt;StackPanel DataContext=&quot;{Binding Context}&quot;&gt;
+          &lt;StackPanel x:DataType=&quot;models:FileDocument&quot;&gt;
+            &lt;TextBlock Text=&quot;Content:&quot; FontWeight=&quot;SemiBold&quot;/&gt;
+            &lt;TextBox Text=&quot;{Binding Content}&quot;
+                     AcceptsReturn=&quot;True&quot;
+                     TextWrapping=&quot;Wrap&quot;
+                     Height=&quot;200&quot;/&gt;
+          &lt;/StackPanel&gt;
+        &lt;/StackPanel&gt;
       &lt;/StackPanel&gt;
     &lt;/DocumentTemplate&gt;
   &lt;/DocumentDock.DocumentTemplate&gt;
@@ -339,12 +343,15 @@ if (container is IDocument document)
 <p><code>DocumentTemplate</code> is built with the generated <code>Document</code> as its data context, so bind to document properties directly and use <code>Context</code> to reach the source model:</p>
 <pre><code class="lang-xaml">&lt;DocumentTemplate&gt;
   &lt;Grid x:DataType=&quot;Document&quot;&gt;
-    &lt;!-- Access your model properties via Context --&gt;
-    &lt;TextBlock Text=&quot;{Binding Context.Title}&quot;/&gt;
-    &lt;TextBox Text=&quot;{Binding Context.Content}&quot;/&gt;
-    
-    &lt;!-- You can also access Document properties directly --&gt;
+    &lt;!-- Access generated Document properties directly --&gt;
     &lt;TextBlock Text=&quot;{Binding Title}&quot;/&gt;
+
+    &lt;!-- Rebind to the source model before using its properties --&gt;
+    &lt;StackPanel DataContext=&quot;{Binding Context}&quot;&gt;
+      &lt;StackPanel x:DataType=&quot;models:FileDocument&quot;&gt;
+        &lt;TextBox Text=&quot;{Binding Content}&quot;/&gt;
+      &lt;/StackPanel&gt;
+    &lt;/StackPanel&gt;
   &lt;/Grid&gt;
 &lt;/DocumentTemplate&gt;
 </code></pre>
@@ -470,14 +477,18 @@ public enum DocumentType
 <pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
-      &lt;ContentControl x:DataType=&quot;Document&quot;&gt;
-        &lt;ContentControl.Content&gt;
-          &lt;MultiBinding Converter=&quot;{StaticResource DocumentTypeConverter}&quot;&gt;
-            &lt;Binding Path=&quot;Context.Type&quot;/&gt;
-            &lt;Binding Path=&quot;Context.Data&quot;/&gt;
-          &lt;/MultiBinding&gt;
-        &lt;/ContentControl.Content&gt;
-      &lt;/ContentControl&gt;
+      &lt;StackPanel x:DataType=&quot;Document&quot;&gt;
+        &lt;StackPanel DataContext=&quot;{Binding Context}&quot;&gt;
+          &lt;ContentControl x:DataType=&quot;models:DocumentModel&quot;&gt;
+            &lt;ContentControl.Content&gt;
+              &lt;MultiBinding Converter=&quot;{StaticResource DocumentTypeConverter}&quot;&gt;
+                &lt;Binding Path=&quot;Type&quot;/&gt;
+                &lt;Binding Path=&quot;Data&quot;/&gt;
+              &lt;/MultiBinding&gt;
+            &lt;/ContentControl.Content&gt;
+          &lt;/ContentControl&gt;
+        &lt;/StackPanel&gt;
+      &lt;/StackPanel&gt;
     &lt;/DocumentTemplate&gt;
   &lt;/DocumentDock.DocumentTemplate&gt;
 &lt;/DocumentDock&gt;

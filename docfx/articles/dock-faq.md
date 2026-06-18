@@ -14,7 +14,9 @@ Use `ItemsSource` on `DocumentDock` and `ToolDock` for automatic source-backed d
     <DocumentTemplate>
       <StackPanel x:DataType="Document">
         <TextBlock Text="{Binding Title}"/>
-        <TextBox Text="{Binding Context.Content}"/>
+        <StackPanel DataContext="{Binding Context}">
+          <TextBox x:DataType="models:FileModel" Text="{Binding Content}"/>
+        </StackPanel>
       </StackPanel>
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
@@ -60,7 +62,7 @@ Use the `ItemsSource` property to bind your existing domain models directly:
 public class FileModel : INotifyPropertyChanged
 {
     public string Title { get; set; }      // Used for tab title
-    public string Content { get; set; }    // Accessible via Context.Content
+    public string Content { get; set; }    // Accessible through Document.Context
     public bool CanClose { get; set; }     // Controls if tab can be closed
 }
 
@@ -73,7 +75,9 @@ Then bind in XAML:
 <DocumentDock ItemsSource="{Binding OpenFiles}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
-      <TextBox x:DataType="Document" Text="{Binding Context.Content}"/>
+      <ContentControl x:DataType="Document" DataContext="{Binding Context}">
+        <TextBox x:DataType="models:FileModel" Text="{Binding Content}"/>
+      </ContentControl>
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
 </DocumentDock>

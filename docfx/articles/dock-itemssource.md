@@ -103,7 +103,7 @@ Template selectors return template content for an item. They can return:
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
       <!-- fallback template for items not handled by selector -->
-      <TextBlock Text="{Binding Context.Title}" />
+      <TextBlock x:DataType="Document" Text="{Binding Title}" />
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
 </DocumentDock>
@@ -222,13 +222,17 @@ Bind the collection to `DocumentDock.ItemsSource` and define a `DocumentTemplate
         <TextBlock Text="Document Properties" FontWeight="Bold" Margin="0,0,0,10"/>
         
         <TextBlock Text="Title:" FontWeight="SemiBold"/>
-        <TextBox Text="{Binding Context.Title}" Margin="0,0,0,10"/>
+        <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
         
-        <TextBlock Text="Content:" FontWeight="SemiBold"/>
-        <TextBox Text="{Binding Context.Content}" 
-                 AcceptsReturn="True" 
-                 TextWrapping="Wrap"
-                 Height="200"/>
+        <StackPanel DataContext="{Binding Context}">
+          <StackPanel x:DataType="models:FileDocument">
+            <TextBlock Text="Content:" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding Content}"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Height="200"/>
+          </StackPanel>
+        </StackPanel>
       </StackPanel>
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
@@ -268,12 +272,15 @@ public class DocumentModel
 ```xaml
 <DocumentTemplate>
   <Grid x:DataType="Document">
-    <!-- Access your model properties via Context -->
-    <TextBlock Text="{Binding Context.Title}"/>
-    <TextBox Text="{Binding Context.Content}"/>
-    
-    <!-- You can also access Document properties directly -->
+    <!-- Access generated Document properties directly -->
     <TextBlock Text="{Binding Title}"/>
+
+    <!-- Rebind to the source model before using its properties -->
+    <StackPanel DataContext="{Binding Context}">
+      <StackPanel x:DataType="models:FileDocument">
+        <TextBox Text="{Binding Content}"/>
+      </StackPanel>
+    </StackPanel>
   </Grid>
 </DocumentTemplate>
 ```
@@ -398,14 +405,18 @@ public enum DocumentType
 <DocumentDock ItemsSource="{Binding Documents}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
-      <ContentControl x:DataType="Document">
-        <ContentControl.Content>
-          <MultiBinding Converter="{StaticResource DocumentTypeConverter}">
-            <Binding Path="Context.Type"/>
-            <Binding Path="Context.Data"/>
-          </MultiBinding>
-        </ContentControl.Content>
-      </ContentControl>
+      <StackPanel x:DataType="Document">
+        <StackPanel DataContext="{Binding Context}">
+          <ContentControl x:DataType="models:DocumentModel">
+            <ContentControl.Content>
+              <MultiBinding Converter="{StaticResource DocumentTypeConverter}">
+                <Binding Path="Type"/>
+                <Binding Path="Data"/>
+              </MultiBinding>
+            </ContentControl.Content>
+          </ContentControl>
+        </StackPanel>
+      </StackPanel>
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
 </DocumentDock>

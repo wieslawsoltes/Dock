@@ -122,7 +122,9 @@ With XAML binding:
 <DocumentDock ItemsSource="{Binding OpenFiles}">
     <DocumentDock.DocumentTemplate>
         <DocumentTemplate>
-            <TextEditor Text="{Binding Context.Content}" x:DataType="Document"/>
+            <ContentControl x:DataType="Document" DataContext="{Binding Context}">
+                <TextEditor x:DataType="models:FileModel" Text="{Binding Content}"/>
+            </ContentControl>
         </DocumentTemplate>
     </DocumentDock.DocumentTemplate>
 </DocumentDock>

@@ -56,7 +56,6 @@ The following steps walk you through creating a very small application that uses
    using Avalonia.Controls;
    using Avalonia.Controls.Templates;
    using CommunityToolkit.Mvvm.ComponentModel;
-   using Dock.Model.Core;
    using StaticViewLocator;
 
    namespace MyDockApp;
@@ -84,7 +83,7 @@ The following steps walk you through creating a very small application that uses
            }
 
            var type = data.GetType();
-           return data is IDockable || s_views.ContainsKey(type);
+           return s_views.ContainsKey(type);
        }
    }
    ```
@@ -95,7 +94,6 @@ The following steps walk you through creating a very small application that uses
    using System;
    using Avalonia.Controls;
    using Avalonia.Controls.Templates;
-   using Dock.Model.Core;
 
    namespace MyDockApp;
 
@@ -106,13 +104,12 @@ The following steps walk you through creating a very small application that uses
            if (data is null)
                return null;
 
-           var name = data.GetType().FullName!.Replace("ViewModel", "View");
-           var type = Type.GetType(name);
+           var type = ResolveViewType(data.GetType());
 
            if (type != null)
                return (Control)Activator.CreateInstance(type)!;
 
-           return new TextBlock { Text = "Not Found: " + name };
+           return new TextBlock { Text = "Not Found: " + data.GetType().FullName };
        }
 
        public bool Match(object? data)
@@ -122,13 +119,22 @@ The following steps walk you through creating a very small application that uses
                return false;
            }
 
-           if (data is IDockable)
+           return ResolveViewType(data.GetType()) is not null;
+       }
+
+       private static Type? ResolveViewType(Type viewModelType)
+       {
+           var fullName = viewModelType.FullName;
+           if (fullName is null || !fullName.EndsWith("ViewModel", StringComparison.Ordinal))
            {
-               return true;
+               return null;
            }
 
-           var name = data.GetType().FullName?.Replace("ViewModel", "View");
-           return Type.GetType(name) is not null;
+           var viewName = fullName[..^"ViewModel".Length] + "View";
+           var assemblyQualifiedName = $"{viewName}, {viewModelType.Assembly.FullName}";
+           var type = Type.GetType(assemblyQualifiedName);
+
+           return type is not null && typeof(Control).IsAssignableFrom(type) ? type : null;
        }
    }
    ```
@@ -223,8 +229,12 @@ The following steps walk you through creating a very small application that uses
            <DocumentDock.DocumentTemplate>
                <DocumentTemplate>
                    <StackPanel Margin="10" x:DataType="Document">
-                       <TextBox Text="{Binding Context.Title}" Margin="0,0,0,10"/>
-                       <TextBox Text="{Binding Context.Content}" AcceptsReturn="True" Height="300"/>
+                       <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
+                       <StackPanel DataContext="{Binding Context}">
+                           <StackPanel x:DataType="models:FileDocumentModel">
+                               <TextBox Text="{Binding Content}" AcceptsReturn="True" Height="300"/>
+                           </StackPanel>
+                       </StackPanel>
                    </StackPanel>
                </DocumentTemplate>
            </DocumentDock.DocumentTemplate>

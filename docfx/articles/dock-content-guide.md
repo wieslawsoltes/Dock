@@ -187,8 +187,12 @@ public class MainViewModel : INotifyPropertyChanged
               <StackPanel Margin="10" x:DataType="Document">
                 <TextBlock Text="Document Title:" FontWeight="Bold"/>
                 <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
-                <TextBlock Text="Content:" FontWeight="Bold"/>
-                <TextBox Text="{Binding Context.Content}" AcceptsReturn="True" Height="200" TextWrapping="Wrap"/>
+                <StackPanel DataContext="{Binding Context}">
+                  <StackPanel x:DataType="local:MyDocumentModel">
+                    <TextBlock Text="Content:" FontWeight="Bold"/>
+                    <TextBox Text="{Binding Content}" AcceptsReturn="True" Height="200" TextWrapping="Wrap"/>
+                  </StackPanel>
+                </StackPanel>
               </StackPanel>
             </DocumentTemplate>
           </DocumentDock.DocumentTemplate>
@@ -229,7 +233,7 @@ public class MainViewModel : INotifyPropertyChanged
    - `Name` → Alternative for title
    - `DisplayName` → Alternative for title  
    - `CanClose` → Whether the document can be closed
-6. **Data Context**: Your model object becomes the `Context` of the created `Document`/`Tool` and is accessible via `{Binding Context.PropertyName}`
+6. **Data Context**: Your model object becomes the `Context` of the created `Document`/`Tool`; for compiled bindings, rebind a subtree to `Context` and set `x:DataType` to the model type.
 
 ### Advanced Examples
 
@@ -253,14 +257,16 @@ public class FileModel
 <DocumentDock ItemsSource="{Binding OpenFiles}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
-      <Grid RowDefinitions="Auto,*,Auto" x:DataType="Document">
-        <TextBlock Grid.Row="0" Text="{Binding Context.Path}" FontSize="12" Opacity="0.7"/>
-        <TextBox Grid.Row="1" Text="{Binding Context.Content}" AcceptsReturn="True"/>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Content="Save" Command="{Binding Context.SaveCommand}" Margin="5"/>
-          <Button Content="Revert" Command="{Binding Context.RevertCommand}" Margin="5"/>
-        </StackPanel>
-      </Grid>
+      <ContentControl x:DataType="Document" DataContext="{Binding Context}">
+        <Grid RowDefinitions="Auto,*,Auto" x:DataType="local:FileModel">
+          <TextBlock Grid.Row="0" Text="{Binding Path}" FontSize="12" Opacity="0.7"/>
+          <TextBox Grid.Row="1" Text="{Binding Content}" AcceptsReturn="True"/>
+          <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Save" Command="{Binding SaveCommand}" Margin="5"/>
+            <Button Content="Revert" Command="{Binding RevertCommand}" Margin="5"/>
+          </StackPanel>
+        </Grid>
+      </ContentControl>
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
 </DocumentDock>
@@ -532,7 +538,7 @@ var document = new Document
 
 **Solutions**:
 1. Ensure `DocumentTemplate` has proper `x:DataType="Document"` on the root element
-2. Access your model properties via `{Binding Context.PropertyName}` not `{Binding PropertyName}`
+2. For compiled bindings, rebind a subtree to `{Binding Context}` and set `x:DataType` to your model type
 3. Verify your model implements `INotifyPropertyChanged`
 4. Check that your collection items have the expected property names (Title, Name, etc.)
 
@@ -547,7 +553,9 @@ var document = new Document
 <DocumentTemplate>
   <StackPanel x:DataType="Document">
     <TextBlock Text="{Binding Title}"/>
-    <TextBlock Text="{Binding Context.Content}"/>
+    <StackPanel DataContext="{Binding Context}">
+      <TextBlock x:DataType="vm:MyDocumentModel" Text="{Binding Content}"/>
+    </StackPanel>
   </StackPanel>
 </DocumentTemplate>
 ```
@@ -750,25 +758,27 @@ public class FileManagerViewModel : INotifyPropertyChanged
     <DocumentDock ItemsSource="{Binding OpenFiles}">
       <DocumentDock.DocumentTemplate>
         <DocumentTemplate>
-          <Grid RowDefinitions="Auto,*,Auto" x:DataType="Document">
-            <!-- File path header -->
-            <TextBlock Grid.Row="0" Text="{Binding Context.FilePath}" 
-                       FontSize="10" Opacity="0.7" Margin="5"/>
-            
-            <!-- Main content editor -->
-            <TextBox Grid.Row="1" Text="{Binding Context.Content}" 
-                     AcceptsReturn="True" AcceptsTab="True"
-                     FontFamily="Consolas" Margin="5"/>
-            
-            <!-- Action buttons -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" 
-                        HorizontalAlignment="Right" Margin="5">
-              <Button Content="Save" Command="{Binding Context.SaveCommand}"
-                      IsEnabled="{Binding Context.IsModified}"/>
-              <Button Content="Save As" Command="{Binding Context.SaveAsCommand}"
-                      Margin="5,0,0,0"/>
-            </StackPanel>
-          </Grid>
+          <ContentControl x:DataType="Document" DataContext="{Binding Context}">
+            <Grid RowDefinitions="Auto,*,Auto" x:DataType="local:FileDocument">
+              <!-- File path header -->
+              <TextBlock Grid.Row="0" Text="{Binding FilePath}"
+                         FontSize="10" Opacity="0.7" Margin="5"/>
+
+              <!-- Main content editor -->
+              <TextBox Grid.Row="1" Text="{Binding Content}"
+                       AcceptsReturn="True" AcceptsTab="True"
+                       FontFamily="Consolas" Margin="5"/>
+
+              <!-- Action buttons -->
+              <StackPanel Grid.Row="2" Orientation="Horizontal"
+                          HorizontalAlignment="Right" Margin="5">
+                <Button Content="Save" Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding IsModified}"/>
+                <Button Content="Save As" Command="{Binding SaveAsCommand}"
+                        Margin="5,0,0,0"/>
+              </StackPanel>
+            </Grid>
+          </ContentControl>
         </DocumentTemplate>
       </DocumentDock.DocumentTemplate>
     </DocumentDock>

@@ -49,7 +49,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
 3. **Set up View Templates (Optional)**
 
-   If you rely on view models via `Context`, register a view locator or data templates for your document and tool views. If you define `Document.Content` or use `DocumentTemplate` in XAML, you can skip this step.
+   If you rely on view models via `Context`, register a view locator or data templates for your document and tool views. If you define `Document.Content` or use `DocumentTemplate` in XAML, skip this step; the template supplies the document content directly.
 
    **Option A: Static View Locator with Source Generators (Recommended)**
 
@@ -63,7 +63,6 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    using System;
    using Avalonia.Controls;
    using Avalonia.Controls.Templates;
-   using Dock.Model.Core;
    using StaticViewLocator;
 
    namespace DockQuickStart;
@@ -91,7 +90,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
            }
 
            var type = data.GetType();
-           return data is IDockable || s_views.ContainsKey(type);
+           return s_views.ContainsKey(type);
        }
    }
    ```
@@ -102,7 +101,6 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    using System;
    using Avalonia.Controls;
    using Avalonia.Controls.Templates;
-   using Dock.Model.Core;
 
    namespace DockQuickStart;
 
@@ -113,13 +111,12 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
            if (data is null)
                return null;
 
-           var name = data.GetType().FullName!.Replace("ViewModel", "View");
-           var type = Type.GetType(name);
+           var type = ResolveViewType(data.GetType());
 
            if (type != null)
                return (Control)Activator.CreateInstance(type)!;
 
-           return new TextBlock { Text = "Not Found: " + name };
+           return new TextBlock { Text = "Not Found: " + data.GetType().FullName };
        }
 
        public bool Match(object? data)
@@ -129,20 +126,29 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
                return false;
            }
 
-           if (data is IDockable)
+           return ResolveViewType(data.GetType()) is not null;
+       }
+
+       private static Type? ResolveViewType(Type viewModelType)
+       {
+           var fullName = viewModelType.FullName;
+           if (fullName is null || !fullName.EndsWith("ViewModel", StringComparison.Ordinal))
            {
-               return true;
+               return null;
            }
 
-           var name = data.GetType().FullName?.Replace("ViewModel", "View");
-           return Type.GetType(name) is not null;
+           var viewName = fullName[..^"ViewModel".Length] + "View";
+           var assemblyQualifiedName = $"{viewName}, {viewModelType.Assembly.FullName}";
+           var type = Type.GetType(assemblyQualifiedName);
+
+           return type is not null && typeof(Control).IsAssignableFrom(type) ? type : null;
        }
    }
    ```
 
 4. **Add Dock styles (and View Locator if used)**
 
-   Reference the theme and register the view locator in `App.axaml` if you use one:
+   Reference the theme in `App.axaml`. Register the view locator only if you use one; omit `Application.DataTemplates` for the `ItemsSource` + `DocumentTemplate` example below.
 
    ```xaml
    <Application xmlns="https://github.com/avaloniaui"
@@ -150,6 +156,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
                 xmlns:local="using:DockQuickStart"
                 x:Class="DockQuickStart.App">
 
+     <!-- Include only if you created a ViewLocator in step 3. -->
      <Application.DataTemplates>
        <local:ViewLocator />
      </Application.DataTemplates>
@@ -256,21 +263,35 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    <Window x:Class="DockQuickStart.MainWindow"
            xmlns="https://github.com/avaloniaui"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           xmlns:dock="https://github.com/avaloniaui">
-   <DockControl InitializeLayout="True" InitializeFactory="True">
-       <DockControl.Factory>
-           <Factory />
-       </DockControl.Factory>
-       <RootDock>
-           <DocumentDock ItemsSource="{Binding Documents}">
-               <DocumentDock.DocumentTemplate>
-                   <DocumentTemplate>
-                       <TextBox Text="{Binding Context.Content}" AcceptsReturn="True" />
-                   </DocumentTemplate>
-               </DocumentDock.DocumentTemplate>
-           </DocumentDock>
-       </RootDock>
-   </DockControl>
+           xmlns:dock="using:Dock.Avalonia.Controls"
+           xmlns:dockFactory="using:Dock.Model.Avalonia"
+           xmlns:dockModel="using:Dock.Model.Avalonia.Controls"
+           xmlns:models="using:DockQuickStart"
+           xmlns:vm="using:DockQuickStart"
+           x:DataType="vm:MainWindowViewModel">
+   <dock:DockControl InitializeLayout="True" InitializeFactory="True">
+       <dock:DockControl.Factory>
+           <dockFactory:Factory />
+       </dock:DockControl.Factory>
+       <dockModel:RootDock>
+           <dockModel:DocumentDock ItemsSource="{Binding Documents}">
+               <dockModel:DocumentDock.DocumentTemplate>
+                   <dockModel:DocumentTemplate>
+                       <StackPanel x:DataType="dockModel:Document" Margin="10">
+                           <TextBlock Text="{Binding Title}" />
+                           <StackPanel DataContext="{Binding Context}">
+                               <StackPanel x:DataType="models:FileDocument">
+                                   <TextBox Text="{Binding Content}"
+                                            AcceptsReturn="True"
+                                            TextWrapping="Wrap" />
+                               </StackPanel>
+                           </StackPanel>
+                       </StackPanel>
+                   </dockModel:DocumentTemplate>
+               </dockModel:DocumentDock.DocumentTemplate>
+           </dockModel:DocumentDock>
+       </dockModel:RootDock>
+   </dock:DockControl>
    </Window>
    ```
 

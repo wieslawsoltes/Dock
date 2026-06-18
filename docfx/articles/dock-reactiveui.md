@@ -60,7 +60,6 @@ Follow these instructions to create a minimal ReactiveUI based application using
    using System;
    using Avalonia.Controls;
    using Avalonia.Controls.Templates;
-   using Dock.Model.Core;
    using ReactiveUI;
    using StaticViewLocator;
 
@@ -89,7 +88,7 @@ Follow these instructions to create a minimal ReactiveUI based application using
            }
 
            var type = data.GetType();
-           return data is IDockable || s_views.ContainsKey(type);
+           return s_views.ContainsKey(type);
        }
    }
    ```
@@ -101,7 +100,6 @@ Follow these instructions to create a minimal ReactiveUI based application using
    using System;
    using Avalonia.Controls;
    using Avalonia.Controls.Templates;
-   using Dock.Model.Core;
    using ReactiveUI;
    using Microsoft.Extensions.DependencyInjection;
 
@@ -158,11 +156,6 @@ Follow these instructions to create a minimal ReactiveUI based application using
            if (data is null)
            {
                return false;
-           }
-
-           if (data is IDockable)
-           {
-               return true;
            }
 
            return Resolve(data) is not null;

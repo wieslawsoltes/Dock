@@ -255,7 +255,8 @@ public class DockFactory : Factory
 </code></pre>
 <p><strong>Option B: Modern ItemsSource Approach (Recommended)</strong></p>
 <p>For more dynamic document management, use the ItemsSource approach. First, create a simple document model:</p>
-<pre><code class="lang-csharp">using System.ComponentModel;
+<pre><code class="lang-csharp">using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 public class FileDocument : INotifyPropertyChanged
@@ -314,24 +315,25 @@ public class MainWindowViewModel
         xmlns:dockModel=&quot;using:Dock.Model.Avalonia.Controls&quot;
         xmlns:models=&quot;using:DockQuickStart&quot;
         xmlns:vm=&quot;using:DockQuickStart&quot;
+        x:Name=&quot;RootWindow&quot;
         x:DataType=&quot;vm:MainWindowViewModel&quot;&gt;
 &lt;dock:DockControl InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
     &lt;dock:DockControl.Factory&gt;
         &lt;dockFactory:Factory /&gt;
     &lt;/dock:DockControl.Factory&gt;
     &lt;dockModel:RootDock&gt;
-        &lt;dockModel:DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+        &lt;dockModel:DocumentDock CanCreateDocument=&quot;False&quot;
+                                ItemsSource=&quot;{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}&quot;&gt;
             &lt;dockModel:DocumentDock.DocumentTemplate&gt;
                 &lt;dockModel:DocumentTemplate&gt;
                     &lt;StackPanel x:DataType=&quot;dockModel:Document&quot; Margin=&quot;10&quot;&gt;
                         &lt;TextBlock Text=&quot;{Binding Title}&quot; /&gt;
-                        &lt;StackPanel DataContext=&quot;{Binding Context}&quot;&gt;
-                            &lt;StackPanel x:DataType=&quot;models:FileDocument&quot;&gt;
-                                &lt;TextBox Text=&quot;{Binding Content}&quot;
-                                         AcceptsReturn=&quot;True&quot;
-                                         TextWrapping=&quot;Wrap&quot; /&gt;
-                            &lt;/StackPanel&gt;
-                        &lt;/StackPanel&gt;
+                        &lt;ContentControl DataContext=&quot;{Binding Context}&quot;&gt;
+                            &lt;TextBox x:DataType=&quot;models:FileDocument&quot;
+                                     Text=&quot;{Binding Content}&quot;
+                                     AcceptsReturn=&quot;True&quot;
+                                     TextWrapping=&quot;Wrap&quot; /&gt;
+                        &lt;/ContentControl&gt;
                     &lt;/StackPanel&gt;
                 &lt;/dockModel:DocumentTemplate&gt;
             &lt;/dockModel:DocumentDock.DocumentTemplate&gt;
@@ -340,13 +342,28 @@ public class MainWindowViewModel
 &lt;/dock:DockControl&gt;
 &lt;/Window&gt;
 </code></pre>
-<p>Initialize the view model in <code>MainWindow.axaml.cs</code>:</p>
+<p><code>RootDock</code> and <code>DocumentDock</code> are part of the Dock model tree, so their inherited binding context is a Dock model object, not your window view model. The explicit <code>#RootWindow.((vm:MainWindowViewModel)DataContext).Documents</code> source keeps compiled bindings from trying to cast a <code>RootDock</code> to <code>MainWindowViewModel</code>.</p>
+<p>Keep <code>CanCreateDocument=&quot;False&quot;</code> for source-backed documents unless you also provide a create path that adds a matching <code>FileDocument</code> to <code>MainWindowViewModel.Documents</code>.</p>
+<p>Initialize the view model from the application composition root (<code>App.axaml.cs</code>):</p>
+<pre><code class="lang-csharp">public override void OnFrameworkInitializationCompleted()
+{
+    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+    {
+        desktop.MainWindow = new MainWindow
+        {
+            DataContext = new MainWindowViewModel()
+        };
+    }
+
+    base.OnFrameworkInitializationCompleted();
+}
+</code></pre>
+<p>Keep <code>MainWindow.axaml.cs</code> passive:</p>
 <pre><code class="lang-csharp">public partial class MainWindow : Window
 {
     public MainWindow()
     {
         InitializeComponent();
-        DataContext = new MainWindowViewModel();
     }
 }
 </code></pre>
@@ -368,7 +385,7 @@ public class MainWindowViewModel
 <pre><code class="lang-xaml">&lt;DockControl x:Name=&quot;Dock&quot; /&gt;
 </code></pre>
 <blockquote>
-<p><strong>💡 Tip</strong>: The ItemsSource approach (Option B) is recommended for most scenarios as it provides automatic document management, data binding, and easier maintenance. See the <a href="dock-itemssource.html">DocumentDock ItemsSource guide</a> for more details.</p>
+<p><strong>Tip</strong>: The ItemsSource approach (Option B) is recommended for most scenarios as it provides automatic document management, data binding, and easier maintenance. See the <a href="dock-itemssource.html">DocumentDock ItemsSource guide</a> and the runnable <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockQuickStartSample"><code>DockQuickStartSample</code></a> for more details.</p>
 </blockquote>
 <p>For instructions on mapping documents and tools to views see the <a href="dock-views.html">Views guide</a>.</p>
 </li>

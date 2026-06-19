@@ -87,7 +87,8 @@
 <h2 id="content-setup">Content setup</h2>
 <p><strong>What's the best way to create documents and tools dynamically?</strong></p>
 <p>Use <code>ItemsSource</code> on <code>DocumentDock</code> and <code>ToolDock</code> for automatic source-backed dockable management:</p>
-<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+<p>If the dock is declared under <code>RootDock</code>, bind <code>ItemsSource</code> through a named root such as <code>RootWindow</code> so compiled bindings read the window view model instead of the Dock model object.</p>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
       &lt;StackPanel x:DataType=&quot;Document&quot;&gt;
@@ -141,7 +142,7 @@ public class FileModel : INotifyPropertyChanged
 public ObservableCollection&lt;FileModel&gt; OpenFiles { get; } = new();
 </code></pre>
 <p>Then bind in XAML:</p>
-<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding OpenFiles}&quot;&gt;
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenFiles}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
       &lt;ContentControl x:DataType=&quot;Document&quot; DataContext=&quot;{Binding Context}&quot;&gt;

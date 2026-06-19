@@ -276,9 +276,9 @@ public class MainViewModel : INotifyPropertyChanged
     // Add commands as needed...
 }
 </code></pre>
-<p>Then use XAML with ItemsSource:</p>
+<p>Then use XAML with ItemsSource. In a full window, name the root <code>RootWindow</code> and import the view model namespace as <code>vm</code> so the <code>ItemsSource</code> binding can explicitly read the window view model:</p>
 <pre><code class="lang-xaml">&lt;DockControl&gt;
-    &lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+    &lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;&gt;
         &lt;DocumentDock.DocumentTemplate&gt;
             &lt;DocumentTemplate&gt;
                 &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Document&quot;&gt;

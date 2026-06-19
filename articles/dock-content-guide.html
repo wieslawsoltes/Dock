@@ -218,7 +218,9 @@ xmlns:dockCore=&quot;using:Dock.Model.Core&quot;
 <pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
              xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
              xmlns:local=&quot;using:YourApp&quot;
-             x:Class=&quot;YourApp.ItemsSourceExample&quot;&gt;
+             x:Class=&quot;YourApp.ItemsSourceExample&quot;
+             x:Name=&quot;RootView&quot;
+             x:DataType=&quot;local:MainViewModel&quot;&gt;
 
   &lt;UserControl.DataContext&gt;
     &lt;local:MainViewModel /&gt;
@@ -239,8 +241,8 @@ xmlns:dockCore=&quot;using:Dock.Model.Core&quot;
 
       &lt;RootDock Id=&quot;Root&quot; IsCollapsable=&quot;False&quot;&gt;
         &lt;DocumentDock Id=&quot;DocumentsPane&quot; 
-                      CanCreateDocument=&quot;True&quot;
-                      ItemsSource=&quot;{Binding Documents}&quot;&gt;
+                      CanCreateDocument=&quot;False&quot;
+                      ItemsSource=&quot;{Binding #RootView.((local:MainViewModel)DataContext).Documents}&quot;&gt;
           
           &lt;!-- Define how each document should be displayed --&gt;
           &lt;DocumentDock.DocumentTemplate&gt;
@@ -265,7 +267,9 @@ xmlns:dockCore=&quot;using:Dock.Model.Core&quot;
 &lt;/UserControl&gt;
 </code></pre>
 <h3 id="step-4-bind-to-tooldock-in-xaml">Step 4: Bind to ToolDock in XAML</h3>
-<pre><code class="lang-xaml">&lt;ToolDock Id=&quot;ToolsPane&quot; Alignment=&quot;Left&quot; ItemsSource=&quot;{Binding Tools}&quot;&gt;
+<pre><code class="lang-xaml">&lt;ToolDock Id=&quot;ToolsPane&quot;
+          Alignment=&quot;Left&quot;
+          ItemsSource=&quot;{Binding #RootView.((local:MainViewModel)DataContext).Tools}&quot;&gt;
   &lt;ToolDock.ToolTemplate&gt;
     &lt;ToolTemplate&gt;
       &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Tool&quot;&gt;
@@ -307,7 +311,7 @@ xmlns:dockCore=&quot;using:Dock.Model.Core&quot;
 }
 </code></pre>
 <h4 id="with-commands-and-interactions">With Commands and Interactions</h4>
-<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding OpenFiles}&quot;&gt;
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenFiles}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
       &lt;ContentControl x:DataType=&quot;Document&quot; DataContext=&quot;{Binding Context}&quot;&gt;
@@ -741,7 +745,7 @@ public class FileManagerViewModel : INotifyPropertyChanged
   &lt;/DockControl.Factory&gt;
   
   &lt;RootDock&gt;
-    &lt;DocumentDock ItemsSource=&quot;{Binding OpenFiles}&quot;&gt;
+    &lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenFiles}&quot;&gt;
       &lt;DocumentDock.DocumentTemplate&gt;
         &lt;DocumentTemplate&gt;
           &lt;ContentControl x:DataType=&quot;Document&quot; DataContext=&quot;{Binding Context}&quot;&gt;

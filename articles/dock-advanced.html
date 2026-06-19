@@ -171,7 +171,8 @@ OpenFiles.Add(new FileModel { Title = &quot;New File&quot;, Content = &quot;...&
 OpenFiles.Remove(fileToClose);
 </code></pre>
 <p>With XAML binding:</p>
-<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding OpenFiles}&quot;&gt;
+<p>The examples below assume the containing window is named <code>RootWindow</code> and the view model namespace is imported as <code>vm</code>.</p>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenFiles}&quot;&gt;
     &lt;DocumentDock.DocumentTemplate&gt;
         &lt;DocumentTemplate&gt;
             &lt;ContentControl x:DataType=&quot;Document&quot; DataContext=&quot;{Binding Context}&quot;&gt;
@@ -182,7 +183,7 @@ OpenFiles.Remove(fileToClose);
 &lt;/DocumentDock&gt;
 </code></pre>
 <p>Tool panes can be generated the same way:</p>
-<pre><code class="lang-xaml">&lt;ToolDock ItemsSource=&quot;{Binding OpenTools}&quot; Alignment=&quot;Left&quot;&gt;
+<pre><code class="lang-xaml">&lt;ToolDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenTools}&quot; Alignment=&quot;Left&quot;&gt;
     &lt;ToolDock.ToolTemplate&gt;
         &lt;ToolTemplate&gt;
             &lt;TextBlock Text=&quot;{Binding Context.Description}&quot; x:DataType=&quot;Tool&quot;/&gt;

@@ -130,11 +130,11 @@ if (container is IDocument document)
 <li>Per-document dock override: <code>DocumentDock.CanUpdateItemsSourceOnUnregister</code> (<code>bool?</code>, <code>null</code> = global)</li>
 <li>Per-tool dock override: <code>ToolDock.CanUpdateItemsSourceOnUnregister</code> (<code>bool?</code>, <code>null</code> = global)</li>
 </ul>
-<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;
               CanUpdateItemsSourceOnUnregister=&quot;False&quot; /&gt;
 
-&lt;ToolDock ItemsSource=&quot;{Binding Tools}&quot;
-          CanUpdateItemsSourceOnUnregister=&quot;{Binding ToolUnregisterPolicy}&quot; /&gt;
+&lt;ToolDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Tools}&quot;
+          CanUpdateItemsSourceOnUnregister=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).ToolUnregisterPolicy}&quot; /&gt;
 </code></pre>
 <h2 id="per-dock-theme-and-template-selector-apis">Per-Dock Theme and Template Selector APIs</h2>
 <p>The default generator now supports per-dock presentation customization for generated items:</p>
@@ -167,7 +167,7 @@ if (container is IDocument document)
   &lt;/ControlTheme&gt;
 &lt;/Window.Resources&gt;
 
-&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;
+&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;
               DocumentItemContainerTheme=&quot;GeneratedDocumentTheme&quot;
               DocumentItemTemplateSelector=&quot;{StaticResource DocumentSelector}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
@@ -271,7 +271,7 @@ if (container is IDocument document)
 </code></pre>
 <h3 id="3-xaml-binding">3. XAML Binding</h3>
 <p>Bind the collection to <code>DocumentDock.ItemsSource</code> and define a <code>DocumentTemplate</code>:</p>
-<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
       &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Document&quot;&gt;
@@ -294,6 +294,7 @@ if (container is IDocument document)
   &lt;/DocumentDock.DocumentTemplate&gt;
 &lt;/DocumentDock&gt;
 </code></pre>
+<p>When <code>DocumentDock</code> is declared under <code>RootDock</code>, bind <code>ItemsSource</code> through an explicit named owner (<code>RootWindow</code> in this example). The Dock model tree has its own binding context at runtime, so a shorthand <code>ItemsSource=&quot;{Binding Documents}&quot;</code> can make compiled bindings try to cast <code>RootDock</code> to your view model.</p>
 <h2 id="property-mapping">Property Mapping</h2>
 <p>The system automatically maps properties from your model to <code>Document</code> properties:</p>
 <table>
@@ -409,7 +410,8 @@ if (container is IDocument document)
 <h2 id="advanced-scenarios">Advanced Scenarios</h2>
 <h2 id="tooldock-usage">ToolDock Usage</h2>
 <p>Bind a tools collection to <code>ToolDock.ItemsSource</code> and define a <code>ToolTemplate</code>:</p>
-<pre><code class="lang-xaml">&lt;ToolDock Alignment=&quot;Left&quot; ItemsSource=&quot;{Binding Tools}&quot;&gt;
+<pre><code class="lang-xaml">&lt;ToolDock Alignment=&quot;Left&quot;
+          ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Tools}&quot;&gt;
   &lt;ToolDock.ToolTemplate&gt;
     &lt;ToolTemplate&gt;
       &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Tool&quot;&gt;
@@ -474,7 +476,7 @@ public enum DocumentType
     Table
 }
 </code></pre>
-<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
       &lt;StackPanel x:DataType=&quot;Document&quot;&gt;
@@ -519,11 +521,11 @@ public enum DocumentType
   &lt;local:MyGenerator x:Key=&quot;MyGenerator&quot; /&gt;
 &lt;/Window.Resources&gt;
 
-&lt;ToolDock ItemsSource=&quot;{Binding Tools}&quot;
+&lt;ToolDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Tools}&quot;
           ToolTemplate=&quot;{StaticResource ToolTemplate}&quot;
           ItemContainerGenerator=&quot;{StaticResource MyGenerator}&quot; /&gt;
 
-&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;
+&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;
               DocumentTemplate=&quot;{StaticResource DocumentTemplate}&quot;
               ItemContainerGenerator=&quot;{StaticResource MyGenerator}&quot; /&gt;
 </code></pre>
@@ -605,6 +607,7 @@ public enum DocumentType
 <li><a href="dock-content-guide.html">Document and Tool Content Guide</a> - Comprehensive content setup</li>
 <li><a href="dock-advanced.html">Dock Advanced Topics</a> - Advanced docking scenarios</li>
 <li><a href="dock-faq.html">Dock FAQ</a> - Common questions and troubleshooting</li>
+<li><a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockQuickStartSample"><code>samples/DockQuickStartSample</code></a> - Minimal runnable XAML <code>ItemsSource</code> sample with compiled bindings</li>
 <li><a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlReactiveUISample"><code>samples/DockXamlReactiveUISample</code></a> - ReactiveUI sample using both document and tool items sources</li>
 </ul>
 

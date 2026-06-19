@@ -92,8 +92,9 @@
 </blockquote>
 <h2 id="modern-approach-itemssource-recommended">Modern Approach: ItemsSource (Recommended)</h2>
 <p>Before implementing the wrapper pattern below, consider using <code>ItemsSource</code> which provides automatic domain model binding:</p>
+<p>Name the root window <code>RootWindow</code> and import the view model namespace as <code>vm</code> when using this fragment in compiled-binding XAML.</p>
 <pre><code class="lang-xaml">&lt;!-- Modern approach with ItemsSource --&gt;
-&lt;DocumentDock ItemsSource=&quot;{Binding SceneDocuments}&quot;&gt;
+&lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).SceneDocuments}&quot;&gt;
   &lt;DocumentDock.DocumentTemplate&gt;
     &lt;DocumentTemplate&gt;
       &lt;views:SceneView DataContext=&quot;{Binding Context}&quot; /&gt;

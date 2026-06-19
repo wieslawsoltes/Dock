@@ -205,13 +205,13 @@ public class ViewLocator : IDataTemplate
 &lt;/DockControl&gt;
 </code></pre>
 <p><strong>Option B: ItemsSource Data Binding (Recommended)</strong></p>
-<p>For dynamic document management, use <code>ItemsSource</code> to bind to your data collections:</p>
+<p>For dynamic document management, use <code>ItemsSource</code> to bind to your data collections. If this snippet is inside a window, name the window <code>RootWindow</code> and import the view model namespace as <code>vm</code>:</p>
 <pre><code class="lang-xaml">&lt;DockControl InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
     &lt;DockControl.Factory&gt;
         &lt;Factory /&gt;
     &lt;/DockControl.Factory&gt;
     &lt;RootDock&gt;
-        &lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+        &lt;DocumentDock ItemsSource=&quot;{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}&quot;&gt;
             &lt;DocumentDock.DocumentTemplate&gt;
                 &lt;DocumentTemplate&gt;
                     &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Document&quot;&gt;

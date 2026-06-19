@@ -157,7 +157,9 @@ public class MainViewModel : INotifyPropertyChanged
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:YourApp"
-             x:Class="YourApp.ItemsSourceExample">
+             x:Class="YourApp.ItemsSourceExample"
+             x:Name="RootView"
+             x:DataType="local:MainViewModel">
 
   <UserControl.DataContext>
     <local:MainViewModel />
@@ -179,7 +181,7 @@ public class MainViewModel : INotifyPropertyChanged
       <RootDock Id="Root" IsCollapsable="False">
         <DocumentDock Id="DocumentsPane" 
                       CanCreateDocument="True"
-                      ItemsSource="{Binding Documents}">
+                      ItemsSource="{Binding #RootView.((local:MainViewModel)DataContext).Documents}">
           
           <!-- Define how each document should be displayed -->
           <DocumentDock.DocumentTemplate>
@@ -207,7 +209,9 @@ public class MainViewModel : INotifyPropertyChanged
 ### Step 4: Bind to ToolDock in XAML
 
 ```xaml
-<ToolDock Id="ToolsPane" Alignment="Left" ItemsSource="{Binding Tools}">
+<ToolDock Id="ToolsPane"
+          Alignment="Left"
+          ItemsSource="{Binding #RootView.((local:MainViewModel)DataContext).Tools}">
   <ToolDock.ToolTemplate>
     <ToolTemplate>
       <StackPanel Margin="10" x:DataType="Tool">
@@ -254,7 +258,7 @@ public class FileModel
 #### With Commands and Interactions
 
 ```xaml
-<DocumentDock ItemsSource="{Binding OpenFiles}">
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenFiles}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
       <ContentControl x:DataType="Document" DataContext="{Binding Context}">
@@ -755,7 +759,7 @@ public class FileManagerViewModel : INotifyPropertyChanged
   </DockControl.Factory>
   
   <RootDock>
-    <DocumentDock ItemsSource="{Binding OpenFiles}">
+    <DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenFiles}">
       <DocumentDock.DocumentTemplate>
         <DocumentTemplate>
           <ContentControl x:DataType="Document" DataContext="{Binding Context}">

@@ -3,6 +3,7 @@
              xmlns:dock="using:Dock.Model.Avalonia.Controls"
              xmlns:local="using:DockXamlSample"
              x:Class="DockXamlSample.ItemsSourceExample"
+             x:Name="RootView"
              x:DataType="local:ItemsSourceExampleViewModel"
              x:CompileBindings="True">
 
@@ -33,7 +34,7 @@
         <DocumentDock x:Name="DocumentsPane" 
                       Id="DocumentsPane" 
                       CanCreateDocument="True"
-                      ItemsSource="{Binding Documents}">
+                      ItemsSource="{Binding #RootView.((local:ItemsSourceExampleViewModel)DataContext).Documents}">
           
           <!-- DocumentTemplate for rendering document content -->
           <DocumentDock.DocumentTemplate>

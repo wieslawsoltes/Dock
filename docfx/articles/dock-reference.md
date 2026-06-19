@@ -220,6 +220,7 @@ In XAML you place `RootDock`, `ProportionalDock`, `ToolDock` or `DocumentDock` e
 
 **Sample applications:**
 - `samples/DockMvvmSample` – Full MVVM example with commands and data binding
+- `samples/DockQuickStartSample` – Minimal XAML `ItemsSource` quick-start with compiled bindings
 - `samples/DockReactiveUISample` – ReactiveUI variant with observables
 - `samples/DockXamlReactiveUISample` – ReactiveUI sample using both `DocumentDock.ItemsSource` and `ToolDock.ItemsSource`
 - `samples/DockReactiveUIWorkspaceSample` – ReactiveUI workspace snapshots and layout locking

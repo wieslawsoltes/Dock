@@ -55,6 +55,7 @@
     <Project Path="samples/DockFigmaSample/DockFigmaSample.csproj" />
     <Project Path="samples/DockFluentCodeOnlySample/DockFluentCodeOnlySample.csproj" />
     <Project Path="samples/DockInpcSample/DockInpcSample.csproj" />
+    <Project Path="samples/DockQuickStartSample/DockQuickStartSample.csproj" />
     <Project Path="samples/DockMvvmSample/DockMvvmSample.csproj" />
     <Project Path="samples/DockPrismSample/DockPrismSample.csproj" />
     <Project Path="samples/DockReactivePropertySample/DockReactivePropertySample.csproj" />

@@ -147,7 +147,7 @@ These steps outline how to set up a small Dock application that defines its layo
 
    **Option B: ItemsSource Data Binding (Recommended)**
 
-   For dynamic document management, use `ItemsSource` to bind to your data collections:
+   For dynamic document management, use `ItemsSource` to bind to your data collections. If this snippet is inside a window, name the window `RootWindow` and import the view model namespace as `vm`:
 
    ```xaml
    <DockControl InitializeLayout="True" InitializeFactory="True">
@@ -155,7 +155,7 @@ These steps outline how to set up a small Dock application that defines its layo
            <Factory />
        </DockControl.Factory>
        <RootDock>
-           <DocumentDock ItemsSource="{Binding Documents}">
+           <DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}">
                <DocumentDock.DocumentTemplate>
                    <DocumentTemplate>
                        <StackPanel Margin="10" x:DataType="Document">

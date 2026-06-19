@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Dock.Model.Avalonia;
+using ReactiveUI.Avalonia;
 
 namespace DockQuickStartSample;
 
@@ -16,6 +17,7 @@ internal static class Program
 
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseReactiveUI()
             .LogToTrace();
     }
 }

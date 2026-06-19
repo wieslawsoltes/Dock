@@ -180,7 +180,7 @@ public class MainViewModel : INotifyPropertyChanged
 
       <RootDock Id="Root" IsCollapsable="False">
         <DocumentDock Id="DocumentsPane" 
-                      CanCreateDocument="True"
+                      CanCreateDocument="False"
                       ItemsSource="{Binding #RootView.((local:MainViewModel)DataContext).Documents}">
           
           <!-- Define how each document should be displayed -->

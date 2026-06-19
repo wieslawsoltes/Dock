@@ -44,7 +44,7 @@
                           ActiveDockable="{Binding #DocumentsPane}">
         <dockModel:DocumentDock x:Name="DocumentsPane"
                                 Id="DocumentsPane"
-                                CanCreateDocument="True"
+                                CanCreateDocument="False"
                                 ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}">
           <dockModel:DocumentDock.DocumentTemplate>
             <dockModel:DocumentTemplate>

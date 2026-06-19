@@ -33,7 +33,7 @@
         <!-- Direct DocumentDock with ItemsSource -->
         <DocumentDock x:Name="DocumentsPane" 
                       Id="DocumentsPane" 
-                      CanCreateDocument="True"
+                      CanCreateDocument="False"
                       ItemsSource="{Binding #RootView.((local:ItemsSourceExampleViewModel)DataContext).Documents}">
           
           <!-- DocumentTemplate for rendering document content -->

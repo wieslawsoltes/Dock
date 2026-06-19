@@ -17,6 +17,8 @@ The important details are:
   ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}"
   ```
 
+- `CanCreateDocument` is disabled because source-backed documents should be
+  added through `MainWindowViewModel.Documents`.
 - `DocumentTemplate` first binds to the generated Dock `Document`, then rebinds
   a nested scope to `Document.Context` for the source `FileDocument`.
 

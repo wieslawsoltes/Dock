@@ -276,7 +276,8 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
            <dockFactory:Factory />
        </dock:DockControl.Factory>
        <dockModel:RootDock>
-           <dockModel:DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}">
+           <dockModel:DocumentDock CanCreateDocument="False"
+                                   ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}">
                <dockModel:DocumentDock.DocumentTemplate>
                    <dockModel:DocumentTemplate>
                        <StackPanel x:DataType="dockModel:Document" Margin="10">
@@ -297,6 +298,8 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    ```
 
    `RootDock` and `DocumentDock` are part of the Dock model tree, so their inherited binding context is a Dock model object, not your window view model. The explicit `#RootWindow.((vm:MainWindowViewModel)DataContext).Documents` source keeps compiled bindings from trying to cast a `RootDock` to `MainWindowViewModel`.
+
+   Keep `CanCreateDocument="False"` for source-backed documents unless you also provide a create path that adds a matching `FileDocument` to `MainWindowViewModel.Documents`.
 
    Initialize the view model from the application composition root (`App.axaml.cs`):
 

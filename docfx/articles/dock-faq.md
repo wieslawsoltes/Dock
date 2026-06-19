@@ -8,8 +8,10 @@ This page answers common questions that come up when using Dock.
 
 Use `ItemsSource` on `DocumentDock` and `ToolDock` for automatic source-backed dockable management:
 
+If the dock is declared under `RootDock`, bind `ItemsSource` through a named root such as `RootWindow` so compiled bindings read the window view model instead of the Dock model object.
+
 ```xaml
-<DocumentDock ItemsSource="{Binding Documents}">
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
       <StackPanel x:DataType="Document">
@@ -72,7 +74,7 @@ public ObservableCollection<FileModel> OpenFiles { get; } = new();
 
 Then bind in XAML:
 ```xaml
-<DocumentDock ItemsSource="{Binding OpenFiles}">
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).OpenFiles}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
       <ContentControl x:DataType="Document" DataContext="{Binding Context}">

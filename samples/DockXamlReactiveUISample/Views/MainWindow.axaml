@@ -6,6 +6,7 @@
         xmlns:infra="using:DockXamlReactiveUISample.Infrastructure"
         xmlns:sampleModels="using:DockXamlReactiveUISample.Models"
         x:Class="DockXamlReactiveUISample.Views.MainWindow"
+        x:Name="RootWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Dock ReactiveUI ItemsSource Sample"
         Width="1280"
@@ -143,7 +144,7 @@
       <model:RootDock x:Name="Root"
                       Id="Root"
                       IsCollapsable="False"
-                      RootDockCapabilityPolicy="{Binding RootDockCapabilityPolicy}"
+                      RootDockCapabilityPolicy="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).RootDockCapabilityPolicy}"
                       DefaultDockable="{Binding #MainLayout}"
                       ActiveDockable="{Binding #MainLayout}">
 
@@ -154,11 +155,11 @@
                             Title="Tools"
                             Alignment="Left"
                             Proportion="0.3"
-                            DockCapabilityPolicy="{Binding ToolDockCapabilityPolicy}"
+                            DockCapabilityPolicy="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).ToolDockCapabilityPolicy}"
                             ToolItemContainerTheme="SampleGeneratedToolContainerTheme"
                             ToolItemTemplateSelector="{StaticResource SampleToolItemTemplateSelector}"
-                            CanUpdateItemsSourceOnUnregister="{Binding ToolCanUpdateItemsSourceOnUnregister}"
-                            ItemsSource="{Binding Tools}">
+                            CanUpdateItemsSourceOnUnregister="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).ToolCanUpdateItemsSourceOnUnregister}"
+                            ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Tools}">
               <model:ToolDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />
               </model:ToolDock.ItemContainerGenerator>
@@ -184,11 +185,11 @@
                                 Title="Documents"
                                 Proportion="0.7"
                                 CanCreateDocument="False"
-                                DockCapabilityPolicy="{Binding DocumentDockCapabilityPolicy}"
+                                DockCapabilityPolicy="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).DocumentDockCapabilityPolicy}"
                                 DocumentItemContainerTheme="SampleGeneratedDocumentContainerTheme"
                                 DocumentItemTemplateSelector="{StaticResource SampleDocumentItemTemplateSelector}"
-                                CanUpdateItemsSourceOnUnregister="{Binding DocumentCanUpdateItemsSourceOnUnregister}"
-                                ItemsSource="{Binding Documents}">
+                                CanUpdateItemsSourceOnUnregister="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).DocumentCanUpdateItemsSourceOnUnregister}"
+                                ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}">
               <model:DocumentDock.ItemContainerGenerator>
                 <infra:SampleDockItemContainerGenerator />
               </model:DocumentDock.ItemContainerGenerator>

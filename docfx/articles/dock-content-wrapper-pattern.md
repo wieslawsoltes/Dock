@@ -10,9 +10,11 @@ This guide covers an advanced pattern for wrapping your own domain models with D
 
 Before implementing the wrapper pattern below, consider using `ItemsSource` which provides automatic domain model binding:
 
+Name the root window `RootWindow` and import the view model namespace as `vm` when using this fragment in compiled-binding XAML.
+
 ```xaml
 <!-- Modern approach with ItemsSource -->
-<DocumentDock ItemsSource="{Binding SceneDocuments}">
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).SceneDocuments}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
       <views:SceneView DataContext="{Binding Context}" />

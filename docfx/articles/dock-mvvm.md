@@ -221,11 +221,11 @@ The following steps walk you through creating a very small application that uses
    }
    ```
 
-   Then use XAML with ItemsSource:
+   Then use XAML with ItemsSource. In a full window, name the root `RootWindow` and import the view model namespace as `vm` so the `ItemsSource` binding can explicitly read the window view model:
 
    ```xaml
    <DockControl>
-       <DocumentDock ItemsSource="{Binding Documents}">
+       <DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}">
            <DocumentDock.DocumentTemplate>
                <DocumentTemplate>
                    <StackPanel Margin="10" x:DataType="Document">

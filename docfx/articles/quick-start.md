@@ -203,6 +203,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    For more dynamic document management, use the ItemsSource approach. First, create a simple document model:
 
    ```csharp
+   using System.Collections.Generic;
    using System.ComponentModel;
    using System.Runtime.CompilerServices;
 
@@ -268,24 +269,25 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
            xmlns:dockModel="using:Dock.Model.Avalonia.Controls"
            xmlns:models="using:DockQuickStart"
            xmlns:vm="using:DockQuickStart"
+           x:Name="RootWindow"
            x:DataType="vm:MainWindowViewModel">
    <dock:DockControl InitializeLayout="True" InitializeFactory="True">
        <dock:DockControl.Factory>
            <dockFactory:Factory />
        </dock:DockControl.Factory>
        <dockModel:RootDock>
-           <dockModel:DocumentDock ItemsSource="{Binding Documents}">
+           <dockModel:DocumentDock CanCreateDocument="False"
+                                   ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}">
                <dockModel:DocumentDock.DocumentTemplate>
                    <dockModel:DocumentTemplate>
                        <StackPanel x:DataType="dockModel:Document" Margin="10">
                            <TextBlock Text="{Binding Title}" />
-                           <StackPanel DataContext="{Binding Context}">
-                               <StackPanel x:DataType="models:FileDocument">
-                                   <TextBox Text="{Binding Content}"
-                                            AcceptsReturn="True"
-                                            TextWrapping="Wrap" />
-                               </StackPanel>
-                           </StackPanel>
+                           <ContentControl DataContext="{Binding Context}">
+                               <TextBox x:DataType="models:FileDocument"
+                                        Text="{Binding Content}"
+                                        AcceptsReturn="True"
+                                        TextWrapping="Wrap" />
+                           </ContentControl>
                        </StackPanel>
                    </dockModel:DocumentTemplate>
                </dockModel:DocumentDock.DocumentTemplate>
@@ -295,7 +297,28 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    </Window>
    ```
 
-   Initialize the view model in `MainWindow.axaml.cs`:
+   `RootDock` and `DocumentDock` are part of the Dock model tree, so their inherited binding context is a Dock model object, not your window view model. The explicit `#RootWindow.((vm:MainWindowViewModel)DataContext).Documents` source keeps compiled bindings from trying to cast a `RootDock` to `MainWindowViewModel`.
+
+   Keep `CanCreateDocument="False"` for source-backed documents unless you also provide a create path that adds a matching `FileDocument` to `MainWindowViewModel.Documents`.
+
+   Initialize the view model from the application composition root (`App.axaml.cs`):
+
+   ```csharp
+   public override void OnFrameworkInitializationCompleted()
+   {
+       if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+       {
+           desktop.MainWindow = new MainWindow
+           {
+               DataContext = new MainWindowViewModel()
+           };
+       }
+
+       base.OnFrameworkInitializationCompleted();
+   }
+   ```
+
+   Keep `MainWindow.axaml.cs` passive:
 
    ```csharp
    public partial class MainWindow : Window
@@ -303,7 +326,6 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
        public MainWindow()
        {
            InitializeComponent();
-           DataContext = new MainWindowViewModel();
        }
    }
    ```
@@ -331,7 +353,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    <DockControl x:Name="Dock" />
    ```
 
-   > **💡 Tip**: The ItemsSource approach (Option B) is recommended for most scenarios as it provides automatic document management, data binding, and easier maintenance. See the [DocumentDock ItemsSource guide](dock-itemssource.md) for more details.
+   > **Tip**: The ItemsSource approach (Option B) is recommended for most scenarios as it provides automatic document management, data binding, and easier maintenance. See the [DocumentDock ItemsSource guide](dock-itemssource.md) and the runnable [`DockQuickStartSample`](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockQuickStartSample) for more details.
 
    For instructions on mapping documents and tools to views see the [Views guide](dock-views.md).
 

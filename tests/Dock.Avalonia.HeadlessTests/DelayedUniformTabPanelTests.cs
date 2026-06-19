@@ -83,14 +83,19 @@ public class DelayedUniformTabPanelTests
             $"Expansion happened too early after second close. Elapsed={elapsedSinceSecondClose.TotalMilliseconds:F0}ms Delay={panel.ExpansionDelay.TotalMilliseconds:F0}ms");
     }
 
-    private static async Task<TimeSpan> WaitForTabWidthAsync(DelayedUniformTabPanel panel, double expectedWidth, TimeSpan timeout)
+    private static Task<TimeSpan> WaitForTabWidthAsync(DelayedUniformTabPanel panel, double expectedWidth, TimeSpan timeout)
+    {
+        return WaitForTabWidthAsync(panel, expectedWidth, 1000d, timeout);
+    }
+
+    private static async Task<TimeSpan> WaitForTabWidthAsync(DelayedUniformTabPanel panel, double expectedWidth, double layoutWidth, TimeSpan timeout)
     {
         var stopwatch = Stopwatch.StartNew();
 
         while (stopwatch.Elapsed < timeout)
         {
             Dispatcher.UIThread.RunJobs();
-            Layout(panel, 1000, 32);
+            Layout(panel, layoutWidth, 32);
 
             if (panel.Children.Count > 0 &&
                 Math.Abs(panel.Children[0].Bounds.Width - expectedWidth) <= 0.1)
@@ -122,12 +127,10 @@ public class DelayedUniformTabPanelTests
         Layout(panel, 600, 32);
         AssertTabWidth(panel, 122d);
 
-        await Task.Delay(80);
-        Dispatcher.UIThread.RunJobs();
-        Layout(panel, 600, 32);
-        var expandedWidth = panel.Children[0].Bounds.Width;
-        AssertTabWidth(panel, expandedWidth);
-        Assert.InRange(expandedWidth, 197d, 199d);
+        var elapsedSinceClose = await WaitForTabWidthAsync(panel, 197d, 600d, TimeSpan.FromMilliseconds(800));
+        Assert.True(
+            elapsedSinceClose >= panel.ExpansionDelay - TimeSpan.FromMilliseconds(20),
+            $"Expansion happened too early. Elapsed={elapsedSinceClose.TotalMilliseconds:F0}ms Delay={panel.ExpansionDelay.TotalMilliseconds:F0}ms");
     }
 
     [AvaloniaFact]

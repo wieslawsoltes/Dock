@@ -56,11 +56,11 @@ Control whether closing a generated container removes the source item:
 - Per-tool dock override: `ToolDock.CanUpdateItemsSourceOnUnregister` (`bool?`, `null` = global)
 
 ```xaml
-<DocumentDock ItemsSource="{Binding Documents}"
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}"
               CanUpdateItemsSourceOnUnregister="False" />
 
-<ToolDock ItemsSource="{Binding Tools}"
-          CanUpdateItemsSourceOnUnregister="{Binding ToolUnregisterPolicy}" />
+<ToolDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Tools}"
+          CanUpdateItemsSourceOnUnregister="{Binding #RootWindow.((vm:MainViewModel)DataContext).ToolUnregisterPolicy}" />
 ```
 
 ## Per-Dock Theme and Template Selector APIs
@@ -97,7 +97,7 @@ Template selectors return template content for an item. They can return:
   </ControlTheme>
 </Window.Resources>
 
-<DocumentDock ItemsSource="{Binding Documents}"
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}"
               DocumentItemContainerTheme="GeneratedDocumentTheme"
               DocumentItemTemplateSelector="{StaticResource DocumentSelector}">
   <DocumentDock.DocumentTemplate>
@@ -215,7 +215,7 @@ public class MainViewModel : INotifyPropertyChanged
 Bind the collection to `DocumentDock.ItemsSource` and define a `DocumentTemplate`:
 
 ```xaml
-<DocumentDock ItemsSource="{Binding Documents}">
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
       <StackPanel Margin="10" x:DataType="Document">
@@ -238,6 +238,8 @@ Bind the collection to `DocumentDock.ItemsSource` and define a `DocumentTemplate
   </DocumentDock.DocumentTemplate>
 </DocumentDock>
 ```
+
+When `DocumentDock` is declared under `RootDock`, bind `ItemsSource` through an explicit named owner (`RootWindow` in this example). The Dock model tree has its own binding context at runtime, so a shorthand `ItemsSource="{Binding Documents}"` can make compiled bindings try to cast `RootDock` to your view model.
 
 ## Property Mapping
 
@@ -354,7 +356,8 @@ public class DataView : INotifyPropertyChanged
 Bind a tools collection to `ToolDock.ItemsSource` and define a `ToolTemplate`:
 
 ```xaml
-<ToolDock Alignment="Left" ItemsSource="{Binding Tools}">
+<ToolDock Alignment="Left"
+          ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Tools}">
   <ToolDock.ToolTemplate>
     <ToolTemplate>
       <StackPanel Margin="10" x:DataType="Tool">
@@ -402,7 +405,7 @@ public enum DocumentType
 ```
 
 ```xaml
-<DocumentDock ItemsSource="{Binding Documents}">
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
       <StackPanel x:DataType="Document">
@@ -454,11 +457,11 @@ Assign the generator per dock:
   <local:MyGenerator x:Key="MyGenerator" />
 </Window.Resources>
 
-<ToolDock ItemsSource="{Binding Tools}"
+<ToolDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Tools}"
           ToolTemplate="{StaticResource ToolTemplate}"
           ItemContainerGenerator="{StaticResource MyGenerator}" />
 
-<DocumentDock ItemsSource="{Binding Documents}"
+<DocumentDock ItemsSource="{Binding #RootWindow.((vm:MainViewModel)DataContext).Documents}"
               DocumentTemplate="{StaticResource DocumentTemplate}"
               ItemContainerGenerator="{StaticResource MyGenerator}" />
 ```
@@ -544,4 +547,5 @@ public class CommandDocument : INotifyPropertyChanged
 - [Document and Tool Content Guide](dock-content-guide.md) - Comprehensive content setup
 - [Dock Advanced Topics](dock-advanced.md) - Advanced docking scenarios
 - [Dock FAQ](dock-faq.md) - Common questions and troubleshooting
+- [`samples/DockQuickStartSample`](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockQuickStartSample) - Minimal runnable XAML `ItemsSource` sample with compiled bindings
 - [`samples/DockXamlReactiveUISample`](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlReactiveUISample) - ReactiveUI sample using both document and tool items sources

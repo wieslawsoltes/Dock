@@ -1,0 +1,79 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:dockFactory="using:Dock.Model.Avalonia"
+        xmlns:dockModel="using:Dock.Model.Avalonia.Controls"
+        xmlns:models="using:DockQuickStartSample.Models"
+        xmlns:vm="using:DockQuickStartSample.ViewModels"
+        x:Class="DockQuickStartSample.MainWindow"
+        x:Name="RootWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Dock Quick Start Sample"
+        Width="960"
+        Height="640">
+
+  <Grid RowDefinitions="Auto,*">
+    <Border Grid.Row="0"
+            Padding="12"
+            Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+      <DockPanel LastChildFill="False">
+        <StackPanel DockPanel.Dock="Left"
+                    Orientation="Horizontal"
+                    Spacing="8">
+          <Button Command="{Binding AddDocumentCommand}"
+                  Content="Add Document" />
+          <Button Command="{Binding ResetDocumentsCommand}"
+                  Content="Reset" />
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Right"
+                   VerticalAlignment="Center"
+                   Text="{Binding Status}" />
+      </DockPanel>
+    </Border>
+
+    <dock:DockControl Grid.Row="1"
+                      InitializeFactory="True"
+                      InitializeLayout="True">
+      <dock:DockControl.Factory>
+        <dockFactory:Factory />
+      </dock:DockControl.Factory>
+
+      <dockModel:RootDock Id="Root"
+                          IsCollapsable="False"
+                          DefaultDockable="{Binding #DocumentsPane}"
+                          ActiveDockable="{Binding #DocumentsPane}">
+        <dockModel:DocumentDock x:Name="DocumentsPane"
+                                Id="DocumentsPane"
+                                CanCreateDocument="False"
+                                ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Documents}">
+          <dockModel:DocumentDock.DocumentTemplate>
+            <dockModel:DocumentTemplate>
+              <Grid x:DataType="dockModel:Document"
+                    RowDefinitions="Auto,*"
+                    Margin="12"
+                    RowSpacing="8">
+                <TextBlock Text="{Binding Title}"
+                           FontSize="18"
+                           FontWeight="SemiBold" />
+
+                <Border Grid.Row="1"
+                        Padding="8"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                        BorderThickness="1">
+                  <ContentControl DataContext="{Binding Context}">
+                    <TextBox x:DataType="models:FileDocument"
+                             Text="{Binding Content}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Stretch" />
+                  </ContentControl>
+                </Border>
+              </Grid>
+            </dockModel:DocumentTemplate>
+          </dockModel:DocumentDock.DocumentTemplate>
+        </dockModel:DocumentDock>
+      </dockModel:RootDock>
+    </dock:DockControl>
+  </Grid>
+</Window>

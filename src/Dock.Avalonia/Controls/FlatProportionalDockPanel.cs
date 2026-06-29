@@ -1070,6 +1070,11 @@ public class FlatProportionalDockPanel : Panel
             }
 
             var isPendingInsert = _pendingInsertAnimations.Contains(presenter);
+            if (_activeLayoutPresenters.Contains(presenter))
+            {
+                NextLayoutAnimationVersion(presenter);
+            }
+
             _pendingLayoutAnimations[presenter] = new ConnectedAnimation(fromBounds, nextBounds);
             presenter.Opacity = isPendingInsert ? 0.0 : 1.0;
             presenter.IsHitTestVisible = false;

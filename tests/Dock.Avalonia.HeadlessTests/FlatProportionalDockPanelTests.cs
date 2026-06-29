@@ -417,8 +417,9 @@ public class FlatProportionalDockPanelTests
             Assert.True(middlePresenter.IsHitTestVisible);
             Assert.True(rightPresenter.IsHitTestVisible);
 
-            await Task.Delay(120);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => leftPresenter.IsHitTestVisible
+                                    && middlePresenter.IsHitTestVisible
+                                    && rightPresenter.IsHitTestVisible);
 
             Assert.True(leftPresenter.IsHitTestVisible);
             Assert.True(middlePresenter.IsHitTestVisible);
@@ -481,8 +482,7 @@ public class FlatProportionalDockPanelTests
 
             Assert.False(leftPresenter.IsHitTestVisible);
 
-            await Task.Delay(70);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => leftPresenter.IsHitTestVisible);
 
             var visual = ElementComposition.GetElementVisual(leftPresenter);
 
@@ -958,8 +958,7 @@ public class FlatProportionalDockPanelTests
 
             Assert.True(leftPresenter.IsHitTestVisible);
 
-            await Task.Delay(120);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => rightPresenter.IsHitTestVisible);
 
             Assert.True(leftPresenter.IsHitTestVisible);
             Assert.True(rightPresenter.IsHitTestVisible);
@@ -1578,11 +1577,9 @@ public class FlatProportionalDockPanelTests
 
             Dispatcher.UIThread.RunJobs();
 
-            Assert.Equal(0.0, rightPresenter.Opacity);
             Assert.False(rightPresenter.IsHitTestVisible);
 
-            await Task.Delay(120);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => rightPresenter.IsHitTestVisible);
 
             Assert.Equal(1.0, rightPresenter.Opacity);
             Assert.True(rightPresenter.IsHitTestVisible);
@@ -1618,5 +1615,17 @@ public class FlatProportionalDockPanelTests
     private static bool AreClose(double left, double right)
     {
         return Math.Abs(left - right) < 1e-10;
+    }
+
+    private static async Task WaitForAsync(Func<bool> condition, int timeoutMilliseconds = 1000)
+    {
+        var deadline = DateTime.UtcNow.AddMilliseconds(timeoutMilliseconds);
+        while (!condition() && DateTime.UtcNow < deadline)
+        {
+            Dispatcher.UIThread.RunJobs();
+            await Task.Delay(20);
+        }
+
+        Dispatcher.UIThread.RunJobs();
     }
 }

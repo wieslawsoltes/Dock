@@ -2,8 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Styling;
 using Dock.Avalonia.Themes;
 
 namespace Dock.Avalonia.Themes.Fluent;
@@ -44,12 +46,20 @@ public sealed class DockFluentThemeManager : DockPresetThemeManagerBase
     /// <inheritdoc />
     protected override bool TryGetDefaultPresetOwner(Application application, out IResourceDictionary? owner)
     {
-        foreach (var style in application.Styles)
+        return TryGetDefaultPresetOwner(application.Styles, out owner);
+    }
+
+    private static bool TryGetDefaultPresetOwner(IEnumerable<IStyle> styles, out IResourceDictionary? owner)
+    {
+        foreach (var style in styles)
         {
-            if (style is DockFluentTheme dockTheme && dockTheme.Resources is { } resources)
+            switch (style)
             {
-                owner = resources;
-                return true;
+                case DockFluentTheme { Resources: { } resources }:
+                    owner = resources;
+                    return true;
+                case Styles nestedStyles when TryGetDefaultPresetOwner(nestedStyles, out owner):
+                    return true;
             }
         }
 

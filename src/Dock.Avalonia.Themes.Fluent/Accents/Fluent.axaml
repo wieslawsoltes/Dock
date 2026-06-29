@@ -30,6 +30,8 @@
     <StaticResource x:Key="DockSplitterIdleBrush" ResourceKey="DockThemeBorderLowBrush" />
     <StaticResource x:Key="DockSplitterHoverBrush" ResourceKey="DockApplicationAccentBrushLow" />
     <StaticResource x:Key="DockSplitterDragBrush" ResourceKey="DockApplicationAccentBrushMed" />
+    <sys:Double x:Key="DockFlatSplitterThickness">4</sys:Double>
+    <sys:Double x:Key="DockFlatMinimumProportionSize">75</sys:Double>
 
     <SolidColorBrush x:Key="DockTabBackgroundBrush" Color="#00000000" />
     <StaticResource x:Key="DockTabHoverBackgroundBrush" ResourceKey="DockApplicationAccentBrushMed" />

@@ -45,6 +45,36 @@ public class DockTargetTests
     }
 
     [AvaloniaFact]
+    public void DockTarget_IndicatorActiveOpacity_Default_And_CanSet()
+    {
+        var target = new DockTarget();
+
+        Assert.Equal(0.5, target.IndicatorActiveOpacity);
+
+        target.IndicatorActiveOpacity = 1.0;
+
+        Assert.Equal(1.0, target.IndicatorActiveOpacity);
+    }
+
+    [AvaloniaFact]
+    public void DockTargetMotion_AttachedProperties_Default_And_CanSet()
+    {
+        var control = new Panel();
+
+        Assert.False(DockTargetMotion.GetUseCompositorAnimations(control));
+        Assert.Equal(1.0, DockTargetMotion.GetActiveScale(control));
+        Assert.Equal(0.985, DockTargetMotion.GetInactiveScale(control));
+
+        DockTargetMotion.SetUseCompositorAnimations(control, true);
+        DockTargetMotion.SetActiveScale(control, 1.02);
+        DockTargetMotion.SetInactiveScale(control, 0.95);
+
+        Assert.True(DockTargetMotion.GetUseCompositorAnimations(control));
+        Assert.Equal(1.02, DockTargetMotion.GetActiveScale(control));
+        Assert.Equal(0.95, DockTargetMotion.GetInactiveScale(control));
+    }
+
+    [AvaloniaFact]
     public void AddIndicator_Adds_Mapping()
     {
         var target = new TestDockTarget();

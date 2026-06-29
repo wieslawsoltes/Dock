@@ -4,6 +4,7 @@
         xmlns:fluent="using:Dock.Avalonia.Themes.Fluent"
         x:Class="Dock.Avalonia.Themes.Fluent.DockFluentFlatTheme">
   <fluent:DockFluentTheme />
+  <StyleInclude Source="/Controls/FlatDockTarget.axaml" />
 
   <Style Selector="controls|DockControl">
     <Setter Property="PresentationMode" Value="Flat" />

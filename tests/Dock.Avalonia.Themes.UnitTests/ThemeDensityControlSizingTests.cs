@@ -11,6 +11,7 @@ using Dock.Avalonia.Controls.Overlays;
 using Dock.Avalonia.Themes;
 using Dock.Avalonia.Themes.Fluent;
 using Dock.Avalonia.Themes.Simple;
+using Dock.Model.Core;
 using Xunit;
 
 namespace Dock.Avalonia.Themes.UnitTests;
@@ -97,6 +98,100 @@ public class ThemeDensityControlSizingTests
 
         AssertTemplatePartSizing(new DockFluentTheme { DensityStyle = DockDensityStyle.Compact }, expectedGripHeight: 4d, expectedStatusIconSize: 9d, expectedTargetSelectorSize: 40d, expectedDialogTitleFontSize: 14d, expectedDialogCloseButtonSize: 24d);
         AssertTemplatePartSizing(new DockSimpleTheme { DensityStyle = DockDensityStyle.Compact }, expectedGripHeight: 4d, expectedStatusIconSize: 9d, expectedTargetSelectorSize: 40d, expectedDialogTitleFontSize: 14d, expectedDialogCloseButtonSize: 24d);
+    }
+
+    [AvaloniaFact]
+    public void DockFluentFlatTheme_Should_Use_Flat_DockTarget_Template()
+    {
+        var dockTarget = new DockTarget
+        {
+            Width = 300,
+            Height = 300
+        };
+
+        var window = ShowWithTheme(dockTarget, new DockFluentFlatTheme());
+        try
+        {
+            dockTarget.ApplyTemplate();
+            dockTarget.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            var topSelector = FindNamedControl<Border>(dockTarget, "PART_TopSelector");
+            var topIndicator = FindNamedControl<Grid>(dockTarget, "PART_TopIndicator");
+            var indicatorPreview = topIndicator.GetVisualDescendants().OfType<Border>().FirstOrDefault();
+
+            Assert.NotNull(topSelector.Background);
+            Assert.NotNull(indicatorPreview);
+            Assert.NotNull(indicatorPreview!.Background);
+            Assert.NotNull(indicatorPreview.BorderBrush);
+            Assert.Equal(1d, dockTarget.IndicatorActiveOpacity);
+            Assert.True(DockTargetMotion.GetUseCompositorAnimations(topIndicator));
+            Assert.Equal(1d, DockTargetMotion.GetInactiveScale(topIndicator));
+
+            var operation = dockTarget.GetDockOperation(
+                new Point(150, 20),
+                new Panel(),
+                dockTarget,
+                DragAction.Move,
+                (_, _, _, _) => true);
+
+            Assert.Equal(DockOperation.Top, operation);
+            Assert.Equal(1d, topIndicator.Opacity);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DockFluentFlatTheme_GlobalDockTarget_Should_Only_Hit_Edge_Selectors()
+    {
+        var globalDockTarget = new GlobalDockTarget
+        {
+            Width = 300,
+            Height = 300
+        };
+
+        var window = ShowWithTheme(globalDockTarget, new DockFluentFlatTheme());
+        try
+        {
+            globalDockTarget.ApplyTemplate();
+            globalDockTarget.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+
+            var topSelector = FindNamedControl<Border>(globalDockTarget, "PART_TopSelector");
+            var topIndicator = FindNamedControl<Grid>(globalDockTarget, "PART_TopIndicator");
+
+            Assert.Equal(40d, topSelector.Bounds.Width);
+            Assert.Equal(40d, topSelector.Bounds.Height);
+            Assert.True(DockTargetMotion.GetUseCompositorAnimations(topIndicator));
+            Assert.Equal(1d, DockTargetMotion.GetInactiveScale(topIndicator));
+
+            var edgeOperation = globalDockTarget.GetDockOperation(
+                new Point(150, 20),
+                new Panel(),
+                globalDockTarget,
+                DragAction.Move,
+                (_, _, _, _) => true);
+
+            Assert.Equal(DockOperation.Top, edgeOperation);
+            Assert.Equal(1d, topIndicator.Opacity);
+
+            var interiorOperation = globalDockTarget.GetDockOperation(
+                new Point(150, 80),
+                new Panel(),
+                globalDockTarget,
+                DragAction.Move,
+                (_, _, _, _) => true);
+
+            Assert.Equal(DockOperation.None, interiorOperation);
+            Assert.Equal(0d, topIndicator.Opacity);
+        }
+        finally
+        {
+            window.Close();
+        }
     }
 
     private static void AssertThemeButtonSizing(Styles theme, double expectedCloseSize, double expectedChromeWidth, double expectedChromeHeight)

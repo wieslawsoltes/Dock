@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Diagnostics;
 using Avalonia.Markup.Xaml;
 using Dock.Controls.DeferredContentControl;
 using DockDeferredContentSample.ViewModels;

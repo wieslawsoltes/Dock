@@ -85,6 +85,7 @@
     <Project Path="src/Dock.Avalonia.Themes.Simple/Dock.Avalonia.Themes.Simple.csproj" />
     <Project Path="src/Dock.Avalonia/Dock.Avalonia.csproj" />
     <Project Path="src/Dock.Controls.DeferredContentControl/Dock.Controls.DeferredContentControl.csproj" />
+    <Project Path="src/Dock.Controls.Flat/Dock.Controls.Flat.csproj" />
     <Project Path="src/Dock.Controls.ProportionalStackPanel/Dock.Controls.ProportionalStackPanel.csproj" />
     <Project Path="src/Dock.Controls.Recycling.Model/Dock.Controls.Recycling.Model.csproj" />
     <Project Path="src/Dock.Controls.Recycling/Dock.Controls.Recycling.csproj" />
@@ -113,6 +114,7 @@
     <Project Path="tests/Dock.Avalonia.HeadlessTests/Dock.Avalonia.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Avalonia.Themes.UnitTests/Dock.Avalonia.Themes.UnitTests.csproj" />
     <Project Path="tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj" />
+    <Project Path="tests/Dock.Controls.Flat.UnitTests/Dock.Controls.Flat.UnitTests.csproj" />
     <Project Path="tests/Dock.Controls.Recycling.Model.UnitTests/Dock.Controls.Recycling.Model.UnitTests.csproj" />
     <Project Path="tests/Dock.Controls.Recycling.UnitTests/Dock.Controls.Recycling.UnitTests.csproj" />
     <Project Path="tests/Dock.MarkupExtension.UnitTests/Dock.MarkupExtension.UnitTests.csproj" />

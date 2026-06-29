@@ -108,6 +108,42 @@ public class DockDataTemplateHelperTests
     }
 
     /// <summary>
+    /// Tests that FlatProportionalDockSplitter is created for flat presentation mode.
+    /// </summary>
+    [Fact]
+    public void CreateDefaultDataTemplates_FlatProportionalSplitter_ShouldCreateCorrectControl()
+    {
+        // Act
+        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates(DockPresentationMode.Flat).ToList();
+        var proportionalTemplate = templates
+            .FirstOrDefault(t => GetFuncDataTemplateType(t) == typeof(IProportionalDockSplitter));
+
+        // Assert
+        Assert.NotNull(proportionalTemplate);
+
+        var control = proportionalTemplate.Build(null);
+        Assert.IsType<FlatProportionalDockSplitter>(control);
+    }
+
+    /// <summary>
+    /// Tests that FlatProportionalDockControl is created for flat presentation mode.
+    /// </summary>
+    [Fact]
+    public void CreateDefaultDataTemplates_FlatProportionalDock_ShouldCreateCorrectControl()
+    {
+        // Act
+        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates(DockPresentationMode.Flat).ToList();
+        var proportionalTemplate = templates
+            .FirstOrDefault(t => GetFuncDataTemplateType(t) == typeof(IProportionalDock));
+
+        // Assert
+        Assert.NotNull(proportionalTemplate);
+
+        var control = proportionalTemplate.Build(null);
+        Assert.IsType<FlatProportionalDockControl>(control);
+    }
+
+    /// <summary>
     /// Tests that GridSplitter DataTemplate exists.
     /// Note: Control creation is skipped due to platform dependencies in unit tests.
     /// </summary>

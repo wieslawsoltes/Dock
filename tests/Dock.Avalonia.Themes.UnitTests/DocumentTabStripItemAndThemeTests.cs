@@ -31,6 +31,13 @@ public class DocumentTabStripItemAndThemeTests
     }
 
     [AvaloniaFact]
+    public void DockFluentFlatTheme_Can_Instantiate()
+    {
+        Styles theme = new DockFluentFlatTheme();
+        Assert.NotNull(theme);
+    }
+
+    [AvaloniaFact]
     public void DockSimpleTheme_Can_Instantiate()
     {
         Styles theme = new DockSimpleTheme();

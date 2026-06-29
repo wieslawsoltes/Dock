@@ -61,6 +61,7 @@
     <Project Path="samples/DockReactivePropertySample/DockReactivePropertySample.csproj" />
     <Project Path="samples/DockReactiveUICanonicalSample/DockReactiveUICanonicalSample.csproj" />
     <Project Path="samples/DockReactiveUIDiSample/DockReactiveUIDiSample.csproj" />
+    <Project Path="samples/DockReactiveUIFlatSample/DockReactiveUIFlatSample.csproj" />
     <Project Path="samples/DockReactiveUIRoutingSample/DockReactiveUIRoutingSample.csproj" />
     <Project Path="samples/DockReactiveUISample/DockReactiveUISample.csproj" />
     <Project Path="samples/DockReactiveUIRiderSample/DockReactiveUIRiderSample.csproj" />

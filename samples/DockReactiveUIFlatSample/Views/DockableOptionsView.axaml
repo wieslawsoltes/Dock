@@ -12,6 +12,7 @@
       <CheckBox IsChecked="{Binding KeepPinnedDockableVisible}" ToolTip.Tip="KeepPinnedDockableVisible" />
       <CheckBox IsChecked="{Binding CanDrag}" ToolTip.Tip="CanDrag" />
       <CheckBox IsChecked="{Binding CanDrop}" ToolTip.Tip="CanDrop" />
+      <CheckBox IsChecked="{Binding CanDockAsDocument}" ToolTip.Tip="CanDockAsDocument" />
       <CheckBox IsChecked="{Binding IsModified}" ToolTip.Tip="IsModified" />
     </StackPanel>
     <ComboBox Grid.Row="1"

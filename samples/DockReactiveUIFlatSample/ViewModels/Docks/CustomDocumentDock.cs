@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using DockReactiveUIFlatSample.ViewModels;
 using DockReactiveUIFlatSample.ViewModels.Documents;
 using Dock.Model.ReactiveUI.Controls;
 using ReactiveUI;
@@ -22,7 +23,7 @@ public class CustomDocumentDock : DocumentDock
         }
 
         var index = VisibleDockables?.Count + 1;
-        var document = new DocumentViewModel {Id = $"Document{index}", Title = $"Document{index}"};
+        var document = DockingDefaults.EnableDocking(new DocumentViewModel {Id = $"Document{index}", Title = $"Document{index}"});
 
         Factory?.AddDockable(this, document);
         Factory?.SetActiveDockable(document);

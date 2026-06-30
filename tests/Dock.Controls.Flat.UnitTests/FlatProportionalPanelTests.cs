@@ -341,6 +341,40 @@ public class FlatProportionalPanelTests
     }
 
     [AvaloniaFact]
+    public void Measure_With_UnboundedStackingAxis_Computes_DesiredLength_From_Proportions()
+    {
+        var left = new TestItem("Left", 0.25)
+        {
+            Content = new Border { Width = 300, Height = 45 },
+            MinWidthValue = 300,
+            MinHeightValue = 45
+        };
+        var right = new TestItem("Right", 0.75)
+        {
+            Content = new Border { Width = 100, Height = 45 },
+            MinWidthValue = 100,
+            MinHeightValue = 45
+        };
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, right });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(double.PositiveInfinity, 100));
+        panel.Arrange(new Rect(0, 0, panel.DesiredSize.Width, 100));
+
+        var leftPresenter = panel.Children
+            .OfType<ContentPresenter>()
+            .Single(presenter => ReferenceEquals(presenter.Content, left.Content));
+
+        Assert.True(panel.DesiredSize.Width >= 1200, $"Desired width was {panel.DesiredSize.Width}.");
+        Assert.True(leftPresenter.Bounds.Width >= 300, $"Left width was {leftPresenter.Bounds.Width}.");
+        Assert.Equal(100, panel.DesiredSize.Height);
+    }
+
+    [AvaloniaFact]
     public void Measure_With_UnboundedStackingAxis_Does_NotClamp_MaxConstraint_ToZero()
     {
         var left = new TestItem("Left", 0.4) { MaxWidthValue = 250 };

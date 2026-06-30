@@ -2659,8 +2659,34 @@ public class FlatProportionalPanel : Panel
             return surfaceDesired;
         }
 
-        var width = 0.0;
-        var height = 0.0;
+        var stackingLength = 0.0;
+        var splitterLength = 0.0;
+        var crossLength = 0.0;
+        var restoreCollapsedProportions = ShouldRestoreVisibleCollapsedProportions(visibleDockables);
+        var assignedTotal = 0.0;
+        var unassignedCount = 0;
+
+        foreach (var dockable in visibleDockables)
+        {
+            if (dockable is IFlatProportionalSplitter || IsCollapsed(dockable))
+            {
+                continue;
+            }
+
+            var target = GetTargetProportion(dockable, restoreCollapsedProportions);
+            if (IsValidProportion(target))
+            {
+                assignedTotal += target;
+            }
+            else
+            {
+                unassignedCount++;
+            }
+        }
+
+        var unassignedProportion = unassignedCount > 0 ? Math.Max(0, 1.0 - assignedTotal) / unassignedCount : 0.0;
+        var activeTotal = assignedTotal + (unassignedProportion * unassignedCount);
+        var scale = activeTotal > 0 && Math.Abs(activeTotal - 1.0) >= 1e-10 ? 1.0 / activeTotal : 1.0;
 
         for (var i = 0; i < visibleDockables.Count; i++)
         {
@@ -2675,6 +2701,7 @@ public class FlatProportionalPanel : Panel
                 }
 
                 childDesired = CalculateSplitterDesiredSize(splitter, dock.Orientation);
+                splitterLength += GetLength(childDesired, dock.Orientation);
             }
             else if (IsCollapsed(dockable))
             {
@@ -2683,19 +2710,29 @@ public class FlatProportionalPanel : Panel
             else
             {
                 childDesired = CalculateDesiredSize(dockable);
+                var childStackingLength = GetLength(childDesired, dock.Orientation);
+                var target = GetTargetProportion(dockable, restoreCollapsedProportions);
+                var proportion = (IsValidProportion(target) ? target : unassignedProportion) * scale;
+                var requiredStackingLength = proportion > 0 ? childStackingLength / proportion : childStackingLength;
+                stackingLength = Math.Max(stackingLength, requiredStackingLength);
             }
 
             if (dock.Orientation == Avalonia.Layout.Orientation.Vertical)
             {
-                width = Math.Max(width, childDesired.Width);
-                height += childDesired.Height;
+                crossLength = Math.Max(crossLength, childDesired.Width);
             }
             else
             {
-                width += childDesired.Width;
-                height = Math.Max(height, childDesired.Height);
+                crossLength = Math.Max(crossLength, childDesired.Height);
             }
         }
+
+        var width = dock.Orientation == Avalonia.Layout.Orientation.Vertical
+            ? crossLength
+            : stackingLength + splitterLength;
+        var height = dock.Orientation == Avalonia.Layout.Orientation.Vertical
+            ? stackingLength + splitterLength
+            : crossLength;
 
         width = Math.Max(width, surfaceDesired.Width);
         height = Math.Max(height, surfaceDesired.Height);
@@ -2703,6 +2740,28 @@ public class FlatProportionalPanel : Panel
         height = ApplyDesiredConstraints(height, dock.MinHeight, dock.MaxHeight);
 
         return new Size(width, height);
+    }
+
+    private static bool ShouldRestoreVisibleCollapsedProportions(IList<IFlatProportionalItem> visibleDockables)
+    {
+        for (var i = 0; i < visibleDockables.Count; i++)
+        {
+            var dockable = visibleDockables[i];
+            if (dockable is IFlatProportionalSplitter)
+            {
+                continue;
+            }
+
+            if (!IsCollapsed(dockable)
+                && IsValidProportion(dockable.CollapsedProportion)
+                && dockable.CollapsedProportion > 0
+                && (!IsValidProportion(dockable.Proportion) || dockable.Proportion <= 0))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private Size CalculateItemDesiredSize(IFlatProportionalItem dockable)

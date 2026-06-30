@@ -487,7 +487,7 @@ public class FlatProportionalPanel : Panel
         control.Orientation = ownerDock.Orientation;
         control.Thickness = SplitterThickness;
 
-        if (control.DataContext is not IFlatProportionalSplitter)
+        if (!ReferenceEquals(control.DataContext, splitter))
         {
             control.DataContext = splitter;
         }

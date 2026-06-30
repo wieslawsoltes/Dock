@@ -146,6 +146,53 @@ public class FlatProportionalPanelTests
     }
 
     [AvaloniaFact]
+    public void Rebuild_ReusedSplitter_Refreshes_DataContext()
+    {
+        var firstSplitter = new TestSplitter("Splitter") { CanResizeValue = false, ResizePreviewValue = true };
+        var firstRoot = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[]
+            {
+                new TestItem("Left", 0.5),
+                firstSplitter,
+                new TestItem("Right", 0.5)
+            });
+        var panel = new FlatProportionalPanel
+        {
+            Root = firstRoot,
+            UseLayoutTransitions = false
+        };
+
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        var firstSplitterControl = panel.Children.OfType<FlatProportionalSplitter>().Single();
+        var secondSplitter = new TestSplitter("Splitter") { CanResizeValue = true, ResizePreviewValue = false };
+        var secondRoot = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[]
+            {
+                new TestItem("Left", 0.5),
+                secondSplitter,
+                new TestItem("Right", 0.5)
+            });
+
+        panel.Root = secondRoot;
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        var reusedSplitterControl = panel.Children.OfType<FlatProportionalSplitter>().Single();
+
+        Assert.Same(firstSplitterControl, reusedSplitterControl);
+        Assert.Same(secondSplitter, reusedSplitterControl.Splitter);
+        Assert.Same(secondSplitter, reusedSplitterControl.DataContext);
+    }
+
+    [AvaloniaFact]
     public void Measure_Uses_LiveProportion_When_CollapsedProportion_IsStale()
     {
         var left = new ObservableTestItem("Left", 0.25) { CollapsedProportion = 0.25 };
@@ -350,9 +397,13 @@ public class FlatProportionalPanelTests
         {
         }
 
-        public bool CanResize => true;
+        public bool CanResizeValue { get; init; } = true;
 
-        public bool ResizePreview => false;
+        public bool ResizePreviewValue { get; init; }
+
+        public bool CanResize => CanResizeValue;
+
+        public bool ResizePreview => ResizePreviewValue;
     }
 
     private sealed class ObservableTestItem : TestItem, INotifyPropertyChanged

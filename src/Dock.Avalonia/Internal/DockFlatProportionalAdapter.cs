@@ -22,6 +22,29 @@ internal sealed class DockFlatProportionalAdapter : IDisposable
         return dock is null ? null : (IFlatProportionalDock)GetItem(dock);
     }
 
+    public void PruneUnreachable(IDockable? root)
+    {
+        if (root is null)
+        {
+            Dispose();
+            return;
+        }
+
+        var reachable = new HashSet<IDockable>(ReferenceEqualityComparer.Instance);
+        CollectReachable(root, reachable);
+
+        foreach (var item in new List<KeyValuePair<IDockable, DockFlatItemAdapter>>(_items))
+        {
+            if (reachable.Contains(item.Key))
+            {
+                continue;
+            }
+
+            item.Value.Dispose();
+            _items.Remove(item.Key);
+        }
+    }
+
     private DockFlatItemAdapter GetItem(IDockable dockable)
     {
         if (_items.TryGetValue(dockable, out var item))
@@ -38,6 +61,20 @@ internal sealed class DockFlatProportionalAdapter : IDisposable
 
         _items[dockable] = item;
         return item;
+    }
+
+    private static void CollectReachable(IDockable dockable, ISet<IDockable> reachable)
+    {
+        if (!reachable.Add(dockable)
+            || dockable is not IDock { VisibleDockables: { } visibleDockables })
+        {
+            return;
+        }
+
+        foreach (var child in visibleDockables)
+        {
+            CollectReachable(child, reachable);
+        }
     }
 
     public void Dispose()

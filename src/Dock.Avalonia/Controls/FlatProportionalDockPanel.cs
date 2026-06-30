@@ -66,6 +66,14 @@ public class FlatProportionalDockPanel : FlatProportionalPanel
         Root = null;
     }
 
+    /// <inheritdoc/>
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        var result = base.ArrangeOverride(finalSize);
+        _adapter?.PruneUnreachable(Dock);
+        return result;
+    }
+
     private void SetDockRoot(IProportionalDock? dock)
     {
         DisposeAdapter();

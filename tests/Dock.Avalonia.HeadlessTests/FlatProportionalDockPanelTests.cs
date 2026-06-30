@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
@@ -10,6 +11,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Internal;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -109,6 +111,35 @@ public class FlatProportionalDockPanelTests
 
         Assert.False(panel.UseLayoutTransitions);
         Assert.Equal(TimeSpan.FromMilliseconds(80), panel.LayoutTransitionDuration);
+    }
+
+    [AvaloniaFact]
+    public void DockFlatProportionalAdapter_PruneUnreachable_Disposes_RemovedDockableAdapter()
+    {
+        var removed = new DocumentDock { Id = "Removed", Proportion = 1.0, CollapsedProportion = 1.0 };
+        var root = new ProportionalDock
+        {
+            Id = "Root",
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = new List<IDockable> { removed }
+        };
+        using var adapter = new DockFlatProportionalAdapter();
+        var flatRoot = adapter.GetDock(root);
+        var flatRemoved = Assert.IsAssignableFrom<INotifyPropertyChanged>(
+            Assert.Single(flatRoot!.VisibleItems!));
+        var changeCount = 0;
+        flatRemoved.PropertyChanged += (_, _) => changeCount++;
+
+        removed.Proportion = 0.5;
+
+        Assert.Equal(1, changeCount);
+
+        changeCount = 0;
+        root.VisibleDockables = new List<IDockable>();
+        adapter.PruneUnreachable(root);
+        removed.Proportion = 0.25;
+
+        Assert.Equal(0, changeCount);
     }
 
     [AvaloniaFact]

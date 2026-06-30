@@ -2725,7 +2725,17 @@ public class FlatProportionalPanel : Panel
 
     private static double CalculateDimension(double dimension, double proportion, ref double sumOfFractions)
     {
+        if (!IsValidProportion(proportion) || proportion <= 0 || double.IsNaN(dimension) || dimension <= 0)
+        {
+            return 0;
+        }
+
         var childDimension = dimension * proportion;
+        if (double.IsPositiveInfinity(childDimension))
+        {
+            return double.PositiveInfinity;
+        }
+
         var flooredChildDimension = Math.Floor(childDimension);
         sumOfFractions += childDimension - flooredChildDimension;
 

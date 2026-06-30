@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:DockReactiveUIFlatSample.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1000" d:DesignHeight="550"
@@ -26,11 +25,10 @@
         <MenuItem Header="_Show Windows" Command="{Binding ShowWindows}" />
       </MenuItem>
     </Menu>
-    <Panel x:Name="ToolBar" DataContext="{Binding Layout}" Grid.Row="0" Grid.Column="1">
+    <Panel x:Name="ToolBar" Grid.Row="0" Grid.Column="1">
       <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,200,Auto,Auto,Auto"
             HorizontalAlignment="Right"
-            Margin="4"
-            x:DataType="dmc:IRootDock">
+            Margin="4">
         <Grid.Styles>
           <Style Selector="Button">
             <Setter Property="Margin" Value="0" />
@@ -50,18 +48,20 @@
             <Setter Property="Padding" Value="4" />
           </Style>
         </Grid.Styles>
-        <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
-        <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1" />
-        <Button Content="Dashboard" Command="{Binding Navigate}" CommandParameter="Dashboard" Grid.Column="2" />
-        <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}"
+        <Button Content="Back" Command="{Binding Layout.GoBack}" IsEnabled="{Binding Layout.CanGoBack}" Grid.Column="0" />
+        <Button Content="Forward" Command="{Binding Layout.GoForward}" IsEnabled="{Binding Layout.CanGoForward}" Grid.Column="1" />
+        <Button Content="Dashboard" Command="{Binding Layout.Navigate}" CommandParameter="Dashboard" Grid.Column="2" />
+        <Button Content="Home" Command="{Binding Layout.Navigate}" CommandParameter="{Binding Layout.DefaultDockable}"
                 Grid.Column="3" />
         <TextBox x:Name="Id" Text="" PlaceholderText="Dashboard" UseFloatingPlaceholder="True" Grid.Column="4" />
-        <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
+        <Button Content="Navigate" Command="{Binding Layout.Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
         <ComboBox x:Name="PresetComboBox"
                   Grid.Column="6"
                   Width="160"
-                  HorizontalContentAlignment="Left" />
-        <Button x:Name="ThemeButton" Grid.Column="7" Background="Transparent">
+                  HorizontalContentAlignment="Left"
+                  ItemsSource="{Binding PresetNames}"
+                  SelectedIndex="{Binding SelectedPresetIndex, Mode=TwoWay}" />
+        <Button x:Name="ThemeButton" Grid.Column="7" Background="Transparent" Command="{Binding ToggleTheme}">
           <PathIcon Width="24" Height="24" Opacity="0.6" Data="{StaticResource DarkTheme}"/>
         </Button>
       </Grid>

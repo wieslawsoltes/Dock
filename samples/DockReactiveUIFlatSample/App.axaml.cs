@@ -10,6 +10,7 @@ using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Themes;
 using Dock.Avalonia.Themes.Fluent;
+using DockReactiveUIFlatSample.Services;
 using DockReactiveUIFlatSample.ViewModels;
 using DockReactiveUIFlatSample.Views;
 
@@ -35,7 +36,8 @@ public partial class App : Application
     {
         // DockManager.s_enableSplitToWindow = true;
 
-        var mainWindowViewModel = new MainWindowViewModel();
+        var themeService = ThemeManager is null ? null : new DockThemeService(ThemeManager);
+        var mainWindowViewModel = new MainWindowViewModel(themeService);
 
         switch (ApplicationLifetime)
         {

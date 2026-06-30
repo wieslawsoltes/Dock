@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using DockReactiveUIFlatSample.Models;
@@ -13,8 +15,11 @@ namespace DockReactiveUIFlatSample.ViewModels;
 public class MainWindowViewModel : ReactiveObject
 {
     private readonly IFactory? _factory;
+    private readonly IThemeService? _themeService;
     private IRootDock? _layout;
     private string _globalStatus = "Global: (none)";
+    private int _selectedPresetIndex = -1;
+    private bool _isDarkTheme;
 
     public IRootDock? Layout
     {
@@ -28,10 +33,41 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _globalStatus, value);
     }
 
+    public IReadOnlyList<string> PresetNames { get; }
+
+    public int SelectedPresetIndex
+    {
+        get => _selectedPresetIndex;
+        set
+        {
+            if (_selectedPresetIndex == value)
+            {
+                return;
+            }
+
+            this.RaiseAndSetIfChanged(ref _selectedPresetIndex, value);
+            if (value >= 0)
+            {
+                _themeService?.SwitchPreset(value);
+            }
+        }
+    }
+
     public ICommand NewLayout { get; }
 
+    public ICommand ToggleTheme { get; }
+
     public MainWindowViewModel()
+        : this(null)
     {
+    }
+
+    internal MainWindowViewModel(IThemeService? themeService)
+    {
+        _themeService = themeService;
+        PresetNames = themeService?.PresetNames ?? Array.Empty<string>();
+        _selectedPresetIndex = themeService?.CurrentPresetIndex ?? -1;
+        _isDarkTheme = themeService?.IsDark == true;
         _factory = new DockFactory(new DemoData());
 
         DebugFactoryEvents(_factory);
@@ -48,6 +84,13 @@ public class MainWindowViewModel : ReactiveObject
             : FormatGlobalStatus(_factory?.GlobalDockTrackingState ?? GlobalDockTrackingState.Empty);
 
         NewLayout = ReactiveCommand.Create(ResetLayout);
+        ToggleTheme = ReactiveCommand.Create(ToggleThemeVariant);
+    }
+
+    private void ToggleThemeVariant()
+    {
+        _isDarkTheme = !_isDarkTheme;
+        _themeService?.SwitchDark(_isDarkTheme);
     }
 
     private void DebugFactoryEvents(IFactory factory)

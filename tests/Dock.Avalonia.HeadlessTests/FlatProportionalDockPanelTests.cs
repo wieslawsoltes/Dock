@@ -72,6 +72,114 @@ public class FlatProportionalDockPanelTests
     }
 
     [AvaloniaFact]
+    public void FlatProportionalDockPanel_DropSurface_Remains_Discoverable_Behind_HitTestVisible_Presenter()
+    {
+        var left = new DocumentDock { Id = "Left", Proportion = 0.5, CollapsedProportion = 0.5 };
+        var right = new DocumentDock { Id = "Right", Proportion = 0.5, CollapsedProportion = 0.5 };
+        var visibleDockables = new ObservableCollection<IDockable> { left, right };
+        var root = new ProportionalDock
+        {
+            Id = "Root",
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = visibleDockables
+        };
+        var panel = new FlatProportionalDockPanel
+        {
+            Dock = root,
+            LayoutTransitionDuration = TimeSpan.FromMilliseconds(100)
+        };
+        var window = ShowPanel(panel);
+
+        try
+        {
+            panel.Measure(new Size(1000, 600));
+            panel.Arrange(new Rect(0, 0, 1000, 600));
+
+            visibleDockables.Move(0, 1);
+
+            panel.Measure(new Size(1000, 600));
+            panel.Arrange(new Rect(0, 0, 1000, 600));
+
+            var rightPresenter = GetLivePresenters(panel)
+                .Single(presenter => ReferenceEquals(presenter.Content, right));
+            var point = new Point(
+                rightPresenter.Bounds.X + rightPresenter.Bounds.Width / 2.0,
+                rightPresenter.Bounds.Y + rightPresenter.Bounds.Height / 2.0);
+
+            Assert.True(rightPresenter.IsHitTestVisible);
+
+            var hit = DockHelpers.GetControl(panel, point, DockProperties.IsDropAreaProperty);
+            var surface = Assert.IsType<DockableControl>(hit);
+
+            Assert.Same(root, surface.DataContext);
+            Assert.True(DockProperties.GetIsDockTarget(surface));
+        }
+        finally
+        {
+            window.Close();
+            Dispatcher.UIThread.RunJobs();
+        }
+    }
+
+    [AvaloniaFact]
+    public void FlatProportionalDockPanel_Structurally_Empty_Dock_Does_Not_Reserve_Space()
+    {
+        var left = new DocumentDock { Id = "Left", Proportion = 0.5, CollapsedProportion = 0.5 };
+        var right = new DocumentDock { Id = "Right", Proportion = 1.0, CollapsedProportion = 1.0 };
+        var branchItems = new ObservableCollection<IDockable> { right };
+        var branch = new ProportionalDock
+        {
+            Id = "Branch",
+            Orientation = Orientation.Horizontal,
+            Proportion = 0.5,
+            CollapsedProportion = 0.5,
+            IsEmpty = false,
+            VisibleDockables = branchItems
+        };
+        var splitter = new ProportionalDockSplitter { Id = "Splitter" };
+        var root = new ProportionalDock
+        {
+            Id = "Root",
+            Orientation = Orientation.Horizontal,
+            IsCollapsable = false,
+            VisibleDockables = new ObservableCollection<IDockable> { left, splitter, branch }
+        };
+        var panel = new FlatProportionalDockPanel
+        {
+            Dock = root,
+            UseLayoutTransitions = false
+        };
+        var window = ShowPanel(panel);
+
+        try
+        {
+            panel.Measure(new Size(1000, 600));
+            panel.Arrange(new Rect(0, 0, 1000, 600));
+
+            Assert.Contains(panel.Children.OfType<DockableControl>(), surface => ReferenceEquals(surface.DataContext, branch));
+
+            branchItems.Clear();
+
+            panel.Measure(new Size(1000, 600));
+            panel.Arrange(new Rect(0, 0, 1000, 600));
+            Dispatcher.UIThread.RunJobs();
+
+            var leftPresenter = GetLivePresenters(panel)
+                .Single(presenter => ReferenceEquals(presenter.Content, left));
+
+            Assert.False(branch.IsEmpty);
+            Assert.Equal(1000, leftPresenter.Bounds.Width, 0);
+            Assert.DoesNotContain(panel.Children.OfType<DockableControl>(), surface => ReferenceEquals(surface.DataContext, branch));
+            Assert.DoesNotContain(GetLivePresenters(panel), presenter => ReferenceEquals(presenter.Content, right));
+        }
+        finally
+        {
+            window.Close();
+            Dispatcher.UIThread.RunJobs();
+        }
+    }
+
+    [AvaloniaFact]
     public void FlatProportionalDockPanel_ResizeSplitter_Updates_ModelProportions()
     {
         var left = new DocumentDock { Id = "Left", Proportion = 0.25, CollapsedProportion = 0.25 };

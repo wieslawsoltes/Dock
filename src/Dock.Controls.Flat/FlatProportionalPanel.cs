@@ -437,7 +437,7 @@ public class FlatProportionalPanel : Panel
 
         foreach (var dockable in dock.VisibleItems)
         {
-            if (dockable is IFlatProportionalDock childDock)
+            if (dockable is IFlatProportionalDock childDock && !IsCollapsed(childDock))
             {
                 AddDockSurfaces(childDock);
             }
@@ -473,6 +473,11 @@ public class FlatProportionalPanel : Panel
 
         foreach (var dockable in dock.VisibleItems)
         {
+            if (dockable is not IFlatProportionalSplitter && IsCollapsed(dockable))
+            {
+                continue;
+            }
+
             switch (dockable)
             {
                 case IFlatProportionalSplitter splitter:
@@ -812,7 +817,9 @@ public class FlatProportionalPanel : Panel
 
         if (string.IsNullOrEmpty(e.PropertyName)
             || e.PropertyName == nameof(IFlatProportionalDock.VisibleItems)
-            || e.PropertyName == nameof(IFlatProportionalDock.Orientation))
+            || e.PropertyName == nameof(IFlatProportionalDock.Orientation)
+            || e.PropertyName == nameof(IFlatProportionalItem.IsEmpty)
+            || e.PropertyName == nameof(IFlatProportionalItem.IsCollapsable))
         {
             RequestRebuildVisualTree();
             return;
@@ -1924,6 +1931,11 @@ public class FlatProportionalPanel : Panel
         {
             case IFlatProportionalDock proportionalDock:
             {
+                if (IsCollapsed(proportionalDock))
+                {
+                    return;
+                }
+
                 if (proportionalDock.VisibleItems is null)
                 {
                     return;
@@ -2099,6 +2111,11 @@ public class FlatProportionalPanel : Panel
         {
             case IFlatProportionalDock proportionalDock:
             {
+                if (IsCollapsed(proportionalDock))
+                {
+                    return;
+                }
+
                 if (proportionalDock.VisibleItems is null)
                 {
                     return;
@@ -2926,7 +2943,40 @@ public class FlatProportionalPanel : Panel
 
     private static bool IsCollapsed(IFlatProportionalItem dockable)
     {
-        return dockable.IsCollapsable && dockable.IsEmpty;
+        return dockable.IsCollapsable && IsEffectivelyEmpty(dockable);
+    }
+
+    private static bool IsEffectivelyEmpty(IFlatProportionalItem dockable)
+    {
+        if (dockable is IFlatProportionalSplitter)
+        {
+            return true;
+        }
+
+        if (dockable is not IFlatProportionalDock dock)
+        {
+            return dockable.IsEmpty;
+        }
+
+        if (dock.VisibleItems is not { } visibleDockables || visibleDockables.Count == 0)
+        {
+            return true;
+        }
+
+        foreach (var child in visibleDockables)
+        {
+            if (child is IFlatProportionalSplitter)
+            {
+                continue;
+            }
+
+            if (!IsCollapsed(child))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static bool IsValidProportion(double value)

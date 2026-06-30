@@ -1104,7 +1104,8 @@ public class FlatProportionalPanel : Panel
                 _pendingLayoutAnimations.Remove(presenter);
                 if (_activeLayoutPresenters.Contains(presenter))
                 {
-                    CompleteLayoutAnimation(presenter);
+                    presenter.Opacity = 1.0;
+                    presenter.IsHitTestVisible = false;
                     return;
                 }
 

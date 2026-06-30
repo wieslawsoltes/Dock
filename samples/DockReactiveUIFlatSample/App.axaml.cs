@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+#if DEBUG
 using Avalonia.Diagnostics;
+#endif
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Diagnostics.Controls;

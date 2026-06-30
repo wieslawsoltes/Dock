@@ -18,7 +18,7 @@ namespace Dock.Avalonia.Controls;
 /// </summary>
 public class FlatProportionalDockPanel : FlatProportionalPanel
 {
-    private readonly DockFlatProportionalAdapter _adapter = new();
+    private DockFlatProportionalAdapter? _adapter;
 
     /// <summary>
     /// Defines the <see cref="Dock"/> property.
@@ -42,8 +42,48 @@ public class FlatProportionalDockPanel : FlatProportionalPanel
 
         if (change.Property == DockProperty)
         {
-            Root = _adapter.GetDock(Dock);
+            SetDockRoot(Dock);
         }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        if (Root is null && Dock is not null)
+        {
+            SetDockRoot(Dock);
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        DisposeAdapter();
+        Root = null;
+    }
+
+    private void SetDockRoot(IProportionalDock? dock)
+    {
+        DisposeAdapter();
+
+        if (dock is null)
+        {
+            Root = null;
+            return;
+        }
+
+        _adapter = new DockFlatProportionalAdapter();
+        Root = _adapter.GetDock(dock);
+    }
+
+    private void DisposeAdapter()
+    {
+        _adapter?.Dispose();
+        _adapter = null;
     }
 
     /// <inheritdoc/>

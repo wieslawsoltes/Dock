@@ -13,7 +13,7 @@ using DockOrientation = Dock.Model.Core.Orientation;
 
 namespace Dock.Avalonia.Internal;
 
-internal sealed class DockFlatProportionalAdapter
+internal sealed class DockFlatProportionalAdapter : IDisposable
 {
     private readonly Dictionary<IDockable, DockFlatItemAdapter> _items = new(ReferenceEqualityComparer.Instance);
 
@@ -38,6 +38,16 @@ internal sealed class DockFlatProportionalAdapter
 
         _items[dockable] = item;
         return item;
+    }
+
+    public void Dispose()
+    {
+        foreach (var item in _items.Values)
+        {
+            item.Dispose();
+        }
+
+        _items.Clear();
     }
 
     private sealed class DockFlatItemList : IList<IFlatProportionalItem>, INotifyCollectionChanged, IDisposable
@@ -190,15 +200,18 @@ internal sealed class DockFlatProportionalAdapter
         }
     }
 
-    internal class DockFlatItemAdapter : IFlatProportionalItem, INotifyPropertyChanged
+    internal class DockFlatItemAdapter : IFlatProportionalItem, INotifyPropertyChanged, IDisposable
     {
+        private readonly INotifyPropertyChanged? _dockablePropertyChanged;
+
         public DockFlatItemAdapter(IDockable dockable)
         {
             Dockable = dockable;
+            _dockablePropertyChanged = dockable as INotifyPropertyChanged;
 
-            if (dockable is INotifyPropertyChanged propertyChanged)
+            if (_dockablePropertyChanged is not null)
             {
-                propertyChanged.PropertyChanged += OnDockablePropertyChanged;
+                _dockablePropertyChanged.PropertyChanged += OnDockablePropertyChanged;
             }
         }
 
@@ -242,6 +255,14 @@ internal sealed class DockFlatProportionalAdapter
         private void OnDockablePropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(MapPropertyName(e.PropertyName)));
+        }
+
+        public virtual void Dispose()
+        {
+            if (_dockablePropertyChanged is not null)
+            {
+                _dockablePropertyChanged.PropertyChanged -= OnDockablePropertyChanged;
+            }
         }
     }
 
@@ -296,6 +317,14 @@ internal sealed class DockFlatProportionalAdapter
                 nameof(IProportionalDock.Orientation) => nameof(Orientation),
                 _ => propertyName
             };
+        }
+
+        public override void Dispose()
+        {
+            _visibleItems?.Dispose();
+            _visibleItems = null;
+            _sourceVisibleItems = null;
+            base.Dispose();
         }
     }
 

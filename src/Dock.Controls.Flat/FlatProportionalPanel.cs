@@ -193,6 +193,17 @@ public class FlatProportionalPanel : Panel
     }
 
     /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        if (Root is not null)
+        {
+            RequestRebuildVisualTree();
+        }
+    }
+
+    /// <inheritdoc/>
     protected override Size MeasureOverride(Size availableSize)
     {
         ExecutePendingRebuild(invalidateLayout: false);
@@ -204,7 +215,7 @@ public class FlatProportionalPanel : Panel
 
         MeasureDock(dock, availableSize);
         MeasureRemovalPresenters();
-        return NormalizeDesiredSize(availableSize);
+        return NormalizeDesiredSize(availableSize, dock);
     }
 
     /// <inheritdoc/>
@@ -792,9 +803,31 @@ public class FlatProportionalPanel : Panel
             return;
         }
 
+        if (e.PropertyName == nameof(IFlatProportionalItem.Content)
+            && sender is IFlatProportionalItem item)
+        {
+            UpdateItemContent(item);
+            return;
+        }
+
         CaptureConnectedStartBounds();
         InvalidateMeasure();
         InvalidateArrange();
+    }
+
+    private void UpdateItemContent(IFlatProportionalItem item)
+    {
+        if (_presenters.TryGetValue(GetItemKey(item), out var presenter))
+        {
+            presenter.Content = item.Content;
+            presenter.DataContext = item.Content ?? item;
+        }
+
+        if (item is IFlatProportionalDock
+            && _dockSurfaces.TryGetValue(GetItemKey(item), out var surface))
+        {
+            surface.DataContext = item.Content ?? item;
+        }
     }
 
     private void UpdateSplitterThickness()
@@ -1457,14 +1490,14 @@ public class FlatProportionalPanel : Panel
         var visual = ElementComposition.GetElementVisual(presenter);
         if (visual is null)
         {
-            CompleteInsertAnimation(presenter, version);
+            CompleteInsertAnimationAfterDelay(presenter, version, GetTransitionCompletionDelay());
             return;
         }
 
         var compositor = visual.Compositor;
         if (compositor is null)
         {
-            CompleteInsertAnimation(presenter, version);
+            CompleteInsertAnimationAfterDelay(presenter, version, GetTransitionCompletionDelay());
             return;
         }
 
@@ -1504,7 +1537,7 @@ public class FlatProportionalPanel : Panel
         if (compositor is null
             || !StartConnectedAnimation(presenter, animation, useScaleForSize: false, useCurrentCompositionStart))
         {
-            CompleteLayoutAnimation(presenter, version);
+            CompleteLayoutAnimationAfterDelay(presenter, version, GetTransitionCompletionDelay());
             return;
         }
 
@@ -1518,6 +1551,12 @@ public class FlatProportionalPanel : Panel
         TimeSpan delay)
     {
         await compositor.RequestCommitAsync();
+        await Task.Delay(delay);
+        Dispatcher.UIThread.Post(() => CompleteLayoutAnimation(presenter, version), DispatcherPriority.Background);
+    }
+
+    private async void CompleteLayoutAnimationAfterDelay(ContentPresenter presenter, int version, TimeSpan delay)
+    {
         await Task.Delay(delay);
         Dispatcher.UIThread.Post(() => CompleteLayoutAnimation(presenter, version), DispatcherPriority.Background);
     }
@@ -1569,6 +1608,12 @@ public class FlatProportionalPanel : Panel
         TimeSpan delay)
     {
         await compositor.RequestCommitAsync();
+        await Task.Delay(delay);
+        Dispatcher.UIThread.Post(() => CompleteInsertAnimation(presenter, version), DispatcherPriority.Background);
+    }
+
+    private async void CompleteInsertAnimationAfterDelay(ContentPresenter presenter, int version, TimeSpan delay)
+    {
         await Task.Delay(delay);
         Dispatcher.UIThread.Post(() => CompleteInsertAnimation(presenter, version), DispatcherPriority.Background);
     }
@@ -2227,9 +2272,9 @@ public class FlatProportionalPanel : Panel
                     continue;
                 }
 
-                var target = IsValidProportion(dockable.CollapsedProportion)
-                    ? dockable.CollapsedProportion
-                    : dockable.Proportion;
+                var target = IsValidProportion(dockable.Proportion)
+                    ? dockable.Proportion
+                    : dockable.CollapsedProportion;
 
                 if (IsValidProportion(target))
                 {
@@ -2420,11 +2465,136 @@ public class FlatProportionalPanel : Panel
         return dockable is IFlatProportionalSplitter ? null : dockable;
     }
 
-    private static Size NormalizeDesiredSize(Size availableSize)
+    private Size NormalizeDesiredSize(Size availableSize, IFlatProportionalDock dock)
     {
-        var width = double.IsInfinity(availableSize.Width) ? 0 : availableSize.Width;
-        var height = double.IsInfinity(availableSize.Height) ? 0 : availableSize.Height;
+        var desired = CalculateDesiredSize(dock);
+        var width = double.IsInfinity(availableSize.Width) ? desired.Width : availableSize.Width;
+        var height = double.IsInfinity(availableSize.Height) ? desired.Height : availableSize.Height;
         return new Size(width, height);
+    }
+
+    private Size CalculateDesiredSize(IFlatProportionalItem item)
+    {
+        return item is IFlatProportionalDock dock
+            ? CalculateDockDesiredSize(dock)
+            : CalculateItemDesiredSize(item);
+    }
+
+    private Size CalculateDockDesiredSize(IFlatProportionalDock dock)
+    {
+        var surfaceDesired = GetDockSurfaceDesiredSize(dock);
+        if (dock.VisibleItems is not { } visibleDockables || visibleDockables.Count == 0)
+        {
+            return surfaceDesired;
+        }
+
+        var width = 0.0;
+        var height = 0.0;
+
+        for (var i = 0; i < visibleDockables.Count; i++)
+        {
+            var dockable = visibleDockables[i];
+            Size childDesired;
+
+            if (dockable is IFlatProportionalSplitter splitter)
+            {
+                if (!ShouldUseSplitter(visibleDockables, i))
+                {
+                    continue;
+                }
+
+                childDesired = CalculateSplitterDesiredSize(splitter, dock.Orientation);
+            }
+            else if (IsCollapsed(dockable))
+            {
+                childDesired = default;
+            }
+            else
+            {
+                childDesired = CalculateDesiredSize(dockable);
+            }
+
+            if (dock.Orientation == Avalonia.Layout.Orientation.Vertical)
+            {
+                width = Math.Max(width, childDesired.Width);
+                height += childDesired.Height;
+            }
+            else
+            {
+                width += childDesired.Width;
+                height = Math.Max(height, childDesired.Height);
+            }
+        }
+
+        width = Math.Max(width, surfaceDesired.Width);
+        height = Math.Max(height, surfaceDesired.Height);
+        width = ApplyDesiredConstraints(width, dock.MinWidth, dock.MaxWidth);
+        height = ApplyDesiredConstraints(height, dock.MinHeight, dock.MaxHeight);
+
+        return new Size(width, height);
+    }
+
+    private Size CalculateItemDesiredSize(IFlatProportionalItem dockable)
+    {
+        var width = 0.0;
+        var height = 0.0;
+
+        if (_presenters.TryGetValue(GetItemKey(dockable), out var presenter))
+        {
+            width = GetFiniteDesiredDimension(presenter.DesiredSize.Width);
+            height = GetFiniteDesiredDimension(presenter.DesiredSize.Height);
+        }
+
+        width = ApplyDesiredConstraints(width, dockable.MinWidth, dockable.MaxWidth);
+        height = ApplyDesiredConstraints(height, dockable.MinHeight, dockable.MaxHeight);
+
+        return new Size(width, height);
+    }
+
+    private Size GetDockSurfaceDesiredSize(IFlatProportionalDock dock)
+    {
+        if (!_dockSurfaces.TryGetValue(GetItemKey(dock), out var surface))
+        {
+            return default;
+        }
+
+        return new Size(
+            GetFiniteDesiredDimension(surface.DesiredSize.Width),
+            GetFiniteDesiredDimension(surface.DesiredSize.Height));
+    }
+
+    private Size CalculateSplitterDesiredSize(IFlatProportionalSplitter splitter, Avalonia.Layout.Orientation orientation)
+    {
+        var thickness = SplitterThickness;
+        if (_splitters.TryGetValue(GetItemKey(splitter), out var splitterControl))
+        {
+            thickness = splitterControl.Thickness;
+        }
+
+        return orientation == Avalonia.Layout.Orientation.Vertical
+            ? new Size(0, thickness)
+            : new Size(thickness, 0);
+    }
+
+    private static double ApplyDesiredConstraints(double value, double minimum, double maximum)
+    {
+        var constrained = GetFiniteDesiredDimension(value);
+        if (!double.IsNaN(minimum) && !double.IsInfinity(minimum) && minimum > constrained)
+        {
+            constrained = minimum;
+        }
+
+        if (!double.IsNaN(maximum) && !double.IsPositiveInfinity(maximum) && maximum < constrained)
+        {
+            constrained = Math.Max(0, maximum);
+        }
+
+        return constrained;
+    }
+
+    private static double GetFiniteDesiredDimension(double value)
+    {
+        return double.IsNaN(value) || double.IsInfinity(value) || value < 0 ? 0 : value;
     }
 
     private static Size CreateChildSize(Size availableSize, Avalonia.Layout.Orientation orientation, double length)

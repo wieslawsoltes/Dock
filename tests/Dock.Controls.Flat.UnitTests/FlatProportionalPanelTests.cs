@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Headless.XUnit;
 using Avalonia.Layout;
+using Avalonia.Threading;
 using Xunit;
 
 namespace Dock.Controls.Flat.UnitTests;
@@ -143,6 +145,127 @@ public class FlatProportionalPanelTests
         Assert.Same(firstPresenter, reusedPresenter);
     }
 
+    [AvaloniaFact]
+    public void Measure_Uses_LiveProportion_When_CollapsedProportion_IsStale()
+    {
+        var left = new ObservableTestItem("Left", 0.25) { CollapsedProportion = 0.25 };
+        var right = new ObservableTestItem("Right", 0.75) { CollapsedProportion = 0.75 };
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, new TestSplitter("Splitter"), right });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        left.UpdateProportion(0.4);
+        right.UpdateProportion(0.6);
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        Assert.Equal(0.4, left.Proportion, 2);
+        Assert.Equal(0.6, right.Proportion, 2);
+        Assert.Equal(left.Proportion, left.CollapsedProportion);
+        Assert.Equal(right.Proportion, right.CollapsedProportion);
+    }
+
+    [AvaloniaFact]
+    public void Measure_Returns_ChildDesiredSize_For_UnboundedAxis()
+    {
+        var left = new TestItem("Left", 1.0)
+        {
+            Content = new Border
+            {
+                Width = 123,
+                Height = 45
+            },
+            MinWidthValue = 123,
+            MinHeightValue = 45
+        };
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(double.PositiveInfinity, 100));
+
+        Assert.True(panel.DesiredSize.Width >= 123);
+        Assert.Equal(100, panel.DesiredSize.Height);
+    }
+
+    [AvaloniaFact]
+    public void ContentChange_Refreshes_ExistingPresenter()
+    {
+        var item = new ObservableTestItem("Item", 1.0);
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { item });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        var nextContent = new TextBlock { Text = "Updated" };
+        item.UpdateContent(nextContent);
+
+        var presenter = panel.Children.OfType<ContentPresenter>().Single();
+
+        Assert.Same(nextContent, presenter.Content);
+        Assert.Same(nextContent, presenter.DataContext);
+    }
+
+    [AvaloniaFact]
+    public void Reattach_Resubscribes_VisibleItemsChanges()
+    {
+        var left = new TestItem("Left", 0.5);
+        var right = new TestItem("Right", 0.5);
+        var items = new ObservableCollection<IFlatProportionalItem> { left, new TestSplitter("Splitter"), right };
+        var root = new TestDock("Root", Orientation.Horizontal, 1.0, items);
+        var panel = new FlatProportionalPanel
+        {
+            Root = root,
+            UseLayoutTransitions = false
+        };
+        var window = new Window
+        {
+            Content = panel,
+            Width = 1000,
+            Height = 600
+        };
+
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            panel.Measure(new Size(1000, 600));
+            panel.Arrange(new Rect(0, 0, 1000, 600));
+
+            window.Content = null;
+            Dispatcher.UIThread.RunJobs();
+            window.Content = panel;
+            Dispatcher.UIThread.RunJobs();
+
+            items.Remove(right);
+            panel.Measure(new Size(1000, 600));
+            panel.Arrange(new Rect(0, 0, 1000, 600));
+
+            var presenter = panel.Children.OfType<ContentPresenter>().Single();
+
+            Assert.Same(left.Content, presenter.Content);
+        }
+        finally
+        {
+            window.Close();
+            Dispatcher.UIThread.RunJobs();
+        }
+    }
+
     private class TestItem : IFlatProportionalItem
     {
         public TestItem(string id, double proportion)
@@ -155,15 +278,19 @@ public class FlatProportionalPanelTests
 
         public object Key { get; }
 
-        public object? Content { get; }
+        public object? Content { get; set; }
 
         public double Proportion { get; set; }
 
         public double CollapsedProportion { get; set; }
 
-        public double MinWidth => 0;
+        public double MinWidthValue { get; init; }
 
-        public double MinHeight => 0;
+        public double MinHeightValue { get; init; }
+
+        public double MinWidth => MinWidthValue;
+
+        public double MinHeight => MinHeightValue;
 
         public double MaxWidth => double.PositiveInfinity;
 
@@ -204,5 +331,27 @@ public class FlatProportionalPanelTests
         public bool CanResize => true;
 
         public bool ResizePreview => false;
+    }
+
+    private sealed class ObservableTestItem : TestItem, INotifyPropertyChanged
+    {
+        public ObservableTestItem(string id, double proportion)
+            : base(id, proportion)
+        {
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void UpdateContent(object? content)
+        {
+            Content = content;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Content)));
+        }
+
+        public void UpdateProportion(double proportion)
+        {
+            Proportion = proportion;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Proportion)));
+        }
     }
 }

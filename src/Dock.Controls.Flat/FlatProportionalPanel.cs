@@ -2344,7 +2344,9 @@ public class FlatProportionalPanel : Panel
 
     private double ClampProportion(IFlatProportionalItem dockable, Avalonia.Layout.Orientation orientation, double availableLength, double proportion)
     {
-        if (!IsValidProportion(proportion))
+        if (!IsValidProportion(proportion)
+            || !IsValidProportion(availableLength)
+            || availableLength <= 0)
         {
             return proportion;
         }

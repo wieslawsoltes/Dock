@@ -198,6 +198,24 @@ public class FlatProportionalPanelTests
     }
 
     [AvaloniaFact]
+    public void Measure_With_UnboundedStackingAxis_Does_NotClamp_MaxConstraint_ToZero()
+    {
+        var left = new TestItem("Left", 0.4) { MaxWidthValue = 250 };
+        var right = new TestItem("Right", 0.6);
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, new TestSplitter("Splitter"), right });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(double.PositiveInfinity, 100));
+
+        Assert.Equal(0.4, left.Proportion, 2);
+        Assert.Equal(0.6, right.Proportion, 2);
+    }
+
+    [AvaloniaFact]
     public void ContentChange_Refreshes_ExistingPresenter()
     {
         var item = new ObservableTestItem("Item", 1.0);
@@ -292,9 +310,13 @@ public class FlatProportionalPanelTests
 
         public double MinHeight => MinHeightValue;
 
-        public double MaxWidth => double.PositiveInfinity;
+        public double MaxWidthValue { get; init; } = double.PositiveInfinity;
 
-        public double MaxHeight => double.PositiveInfinity;
+        public double MaxHeightValue { get; init; } = double.PositiveInfinity;
+
+        public double MaxWidth => MaxWidthValue;
+
+        public double MaxHeight => MaxHeightValue;
 
         public bool IsCollapsable => false;
 

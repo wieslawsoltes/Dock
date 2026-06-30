@@ -851,7 +851,7 @@ public class FlatProportionalPanel : Panel
         }
 
         var splitterThickness = GetTotalSplitterThickness(visibleDockables);
-        AssignProportions(dock, availableSize, splitterThickness);
+        var proportions = AssignProportions(dock, availableSize, splitterThickness);
         var availableLength = Math.Max(0, GetLength(availableSize, dock.Orientation) - splitterThickness);
         var sumOfFractions = 0.0;
 
@@ -874,7 +874,7 @@ public class FlatProportionalPanel : Panel
                 dockable,
                 dock.Orientation,
                 availableLength,
-                ResolveValidProportion(dockable.Proportion, 0),
+                GetLayoutProportion(proportions, dockable),
                 ref sumOfFractions);
 
             var childSize = CreateChildSize(availableSize, dock.Orientation, length);
@@ -947,7 +947,7 @@ public class FlatProportionalPanel : Panel
         }
 
         var splitterThickness = GetTotalSplitterThickness(visibleDockables);
-        AssignProportions(dock, bounds.Size, splitterThickness);
+        var proportions = AssignProportions(dock, bounds.Size, splitterThickness);
         var availableLength = Math.Max(0, GetLength(bounds.Size, dock.Orientation) - splitterThickness);
         var offset = 0.0;
         var sumOfFractions = 0.0;
@@ -971,7 +971,7 @@ public class FlatProportionalPanel : Panel
                 dockable,
                 dock.Orientation,
                 availableLength,
-                ResolveValidProportion(dockable.Proportion, 0),
+                GetLayoutProportion(proportions, dockable),
                 ref sumOfFractions);
 
             var childBounds = CreateChildRect(bounds, dock.Orientation, offset, length);
@@ -2229,11 +2229,12 @@ public class FlatProportionalPanel : Panel
         return total;
     }
 
-    private void AssignProportions(IFlatProportionalDock dock, Size size, double splitterThickness)
+    private Dictionary<IFlatProportionalItem, double> AssignProportions(IFlatProportionalDock dock, Size size, double splitterThickness)
     {
+        var targets = new Dictionary<IFlatProportionalItem, double>(ReferenceEqualityComparer.Instance);
         if (dock.VisibleItems is not { } visibleDockables)
         {
-            return;
+            return targets;
         }
 
         var dockables = new List<IFlatProportionalItem>();
@@ -2247,22 +2248,17 @@ public class FlatProportionalPanel : Panel
 
         if (dockables.Count == 0)
         {
-            return;
+            return targets;
         }
 
         _isAssigningProportions = true;
         try
         {
             var availableLength = GetLength(size, dock.Orientation) - splitterThickness;
-            if (!CanAssignConstrainedProportions(dockables, dock.Orientation, availableLength))
-            {
-                return;
-            }
-
+            var canWriteProportions = CanAssignConstrainedProportions(dockables, dock.Orientation, availableLength);
             var hasCollapsed = false;
             var assignedTotal = 0.0;
             var unassignedCount = 0;
-            var targets = new Dictionary<IFlatProportionalItem, double>(ReferenceEqualityComparer.Instance);
             var restoreCollapsedProportions = ShouldRestoreCollapsedProportions(dockables);
 
             foreach (var dockable in dockables)
@@ -2308,6 +2304,11 @@ public class FlatProportionalPanel : Panel
 
             NormalizeActiveProportions(dockables, targets);
 
+            if (!canWriteProportions)
+            {
+                return targets;
+            }
+
             foreach (var dockable in dockables)
             {
                 var isCollapsed = IsCollapsed(dockable);
@@ -2317,8 +2318,11 @@ public class FlatProportionalPanel : Panel
                     target = ClampProportion(dockable, dock.Orientation, availableLength, target);
                 }
 
+                targets[dockable] = target;
                 SetDockableProportion(dockable, target, !isCollapsed && !hasCollapsed);
             }
+
+            return targets;
         }
         finally
         {
@@ -2412,6 +2416,15 @@ public class FlatProportionalPanel : Panel
         return IsValidProportion(dockable.Proportion)
             ? dockable.Proportion
             : collapsedProportion;
+    }
+
+    private static double GetLayoutProportion(
+        IReadOnlyDictionary<IFlatProportionalItem, double> proportions,
+        IFlatProportionalItem dockable)
+    {
+        return proportions.TryGetValue(dockable, out var proportion) && IsValidProportion(proportion)
+            ? proportion
+            : ResolveValidProportion(dockable.Proportion, 0);
     }
 
     private double ClampProportion(IFlatProportionalItem dockable, Avalonia.Layout.Orientation orientation, double availableLength, double proportion)

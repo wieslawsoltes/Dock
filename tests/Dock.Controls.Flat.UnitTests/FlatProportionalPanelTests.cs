@@ -323,6 +323,39 @@ public class FlatProportionalPanelTests
     }
 
     [AvaloniaFact]
+    public void Measure_With_UnboundedStackingAxis_Uses_TemporaryProportions_For_UnsetItems()
+    {
+        var left = new TestItem("Left", double.NaN)
+        {
+            CollapsedProportion = double.NaN,
+            Content = new Border { Width = 120, Height = 45 }
+        };
+        var right = new TestItem("Right", double.NaN)
+        {
+            CollapsedProportion = double.NaN,
+            Content = new Border { Width = 80, Height = 45 }
+        };
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, new TestSplitter("Splitter"), right });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(double.PositiveInfinity, 100));
+
+        var presenters = panel.Children.OfType<ContentPresenter>().ToList();
+
+        Assert.Equal(2, presenters.Count);
+        Assert.All(presenters, presenter => Assert.False(double.IsNaN(presenter.DesiredSize.Width)));
+        Assert.False(double.IsNaN(panel.DesiredSize.Width));
+        Assert.True(double.IsNaN(left.Proportion));
+        Assert.True(double.IsNaN(right.Proportion));
+        Assert.True(double.IsNaN(left.CollapsedProportion));
+        Assert.True(double.IsNaN(right.CollapsedProportion));
+    }
+
+    [AvaloniaFact]
     public void ContentChange_Refreshes_ExistingPresenter()
     {
         var item = new ObservableTestItem("Item", 1.0);

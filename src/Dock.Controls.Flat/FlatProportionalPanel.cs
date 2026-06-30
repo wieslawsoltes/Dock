@@ -283,18 +283,33 @@ public class FlatProportionalPanel : Panel
             ownerBounds = new Rect(Bounds.Size);
         }
 
-        var availableSize = ownerDock.Orientation == Avalonia.Layout.Orientation.Vertical
+        var ownerLength = ownerDock.Orientation == Avalonia.Layout.Orientation.Vertical
             ? ownerBounds.Height
             : ownerBounds.Width;
 
-        if (availableSize <= 0 || double.IsNaN(availableSize) || double.IsInfinity(availableSize))
+        if (ownerLength <= 0 || double.IsNaN(ownerLength) || double.IsInfinity(ownerLength))
+        {
+            return;
+        }
+
+        var availableLength = ownerLength - GetTotalSplitterThickness(visibleDockables);
+        var dockables = new List<IFlatProportionalItem>();
+        foreach (var dockable in visibleDockables)
+        {
+            if (dockable is not IFlatProportionalSplitter)
+            {
+                dockables.Add(dockable);
+            }
+        }
+
+        if (!CanAssignConstrainedProportions(dockables, ownerDock.Orientation, availableLength))
         {
             return;
         }
 
         var targetProportion = ResolveValidProportion(target.Proportion, 0.5);
         var neighborProportion = ResolveValidProportion(neighbor.Proportion, 0.5);
-        var deltaProportion = dragDelta / availableSize;
+        var deltaProportion = dragDelta / availableLength;
 
         if (targetProportion + deltaProportion < 0)
         {
@@ -311,7 +326,7 @@ public class FlatProportionalPanel : Panel
 
         ApplyResizeConstraints(
             ownerDock.Orientation,
-            availableSize,
+            availableLength,
             target,
             neighbor,
             ref nextTargetProportion,
@@ -319,7 +334,7 @@ public class FlatProportionalPanel : Panel
 
         ApplyResizeConstraints(
             ownerDock.Orientation,
-            availableSize,
+            availableLength,
             neighbor,
             target,
             ref nextNeighborProportion,
@@ -2711,6 +2726,8 @@ public class FlatProportionalPanel : Panel
             {
                 childDesired = CalculateDesiredSize(dockable);
                 var childStackingLength = GetLength(childDesired, dock.Orientation);
+                var minimumStackingLength = MinimumProportionSize > 0 ? MinimumProportionSize : 0.0;
+                childStackingLength = Math.Max(childStackingLength, minimumStackingLength);
                 var target = GetTargetProportion(dockable, restoreCollapsedProportions);
                 var proportion = (IsValidProportion(target) ? target : unassignedProportion) * scale;
                 var requiredStackingLength = proportion > 0 ? childStackingLength / proportion : childStackingLength;

@@ -78,6 +78,38 @@ public class FlatProportionalPanelTests
     }
 
     [AvaloniaFact]
+    public void ResizeSplitter_With_InsufficientMinimumBudget_Does_NotRewriteProportions()
+    {
+        var left = new TestItem("Left", 0.5);
+        var right = new TestItem("Right", 0.5);
+        var splitter = new TestSplitter("Splitter");
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, splitter, right });
+        var panel = new FlatProportionalPanel
+        {
+            Root = root,
+            SplitterThickness = 0
+        };
+
+        panel.Measure(new Size(100, 600));
+        panel.Arrange(new Rect(0, 0, 100, 600));
+
+        var splitterControl = panel.Children
+            .OfType<FlatProportionalSplitter>()
+            .Single(control => ReferenceEquals(control.Splitter, splitter));
+
+        panel.ResizeSplitter(splitterControl, 25);
+
+        Assert.Equal(0.5, left.Proportion);
+        Assert.Equal(0.5, right.Proportion);
+        Assert.Equal(0.5, left.CollapsedProportion);
+        Assert.Equal(0.5, right.CollapsedProportion);
+    }
+
+    [AvaloniaFact]
     public void CollectionChange_Rebuilds_FlatChildren()
     {
         var left = new TestItem("Left", 0.5);
@@ -371,6 +403,30 @@ public class FlatProportionalPanelTests
 
         Assert.True(panel.DesiredSize.Width >= 1200, $"Desired width was {panel.DesiredSize.Width}.");
         Assert.True(leftPresenter.Bounds.Width >= 300, $"Left width was {leftPresenter.Bounds.Width}.");
+        Assert.Equal(100, panel.DesiredSize.Height);
+    }
+
+    [AvaloniaFact]
+    public void Measure_With_UnboundedStackingAxis_Includes_MinimumProportionSize()
+    {
+        var left = new TestItem("Left", 0.5);
+        var right = new TestItem("Right", 0.5);
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, new TestSplitter("Splitter"), right });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(double.PositiveInfinity, 100));
+        panel.Arrange(new Rect(0, 0, panel.DesiredSize.Width, 100));
+
+        var leftPresenter = panel.Children
+            .OfType<ContentPresenter>()
+            .Single(presenter => ReferenceEquals(presenter.Content, left.Content));
+
+        Assert.True(panel.DesiredSize.Width >= 154, $"Desired width was {panel.DesiredSize.Width}.");
+        Assert.True(leftPresenter.Bounds.Width >= 75, $"Left width was {leftPresenter.Bounds.Width}.");
         Assert.Equal(100, panel.DesiredSize.Height);
     }
 

@@ -33,6 +33,20 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
+    public void DockControl_PresentationMode_Default_Nested()
+    {
+        var control = new DockControl();
+        Assert.Equal(DockPresentationMode.Nested, control.PresentationMode);
+    }
+
+    [AvaloniaFact]
+    public void DockControl_PresentationMode_CanSet_Flat()
+    {
+        var control = new DockControl { PresentationMode = DockPresentationMode.Flat };
+        Assert.Equal(DockPresentationMode.Flat, control.PresentationMode);
+    }
+
+    [AvaloniaFact]
     public void DockDataTemplateHelper_CreateDefaultDataTemplates_ReturnsCorrectCount()
     {
         var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
@@ -102,6 +116,20 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
+    public void DockDataTemplateHelper_FlatProportionalSplitterTemplate_CanCreateControl()
+    {
+        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates(DockPresentationMode.Flat).ToList();
+        var template = FindTemplateForType<IProportionalDockSplitter>(templates);
+        Assert.NotNull(template);
+
+        var splitter = new ProportionalDockSplitter();
+        var control = template.Build(splitter);
+
+        Assert.NotNull(control);
+        Assert.IsType<FlatProportionalDockSplitter>(control);
+    }
+
+    [AvaloniaFact]
     public void DockDataTemplateHelper_GridSplitterTemplate_CanCreateControl()
     {
         var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
@@ -163,6 +191,20 @@ public class DockControlDataTemplateTests
         
         Assert.NotNull(control);
         Assert.IsType<ProportionalDockControl>(control);
+    }
+
+    [AvaloniaFact]
+    public void DockDataTemplateHelper_FlatProportionalDockTemplate_CanCreateControl()
+    {
+        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates(DockPresentationMode.Flat).ToList();
+        var template = FindTemplateForType<IProportionalDock>(templates);
+        Assert.NotNull(template);
+
+        var dock = new ProportionalDock();
+        var control = template.Build(dock);
+
+        Assert.NotNull(control);
+        Assert.IsType<FlatProportionalDockControl>(control);
     }
 
     [AvaloniaFact]

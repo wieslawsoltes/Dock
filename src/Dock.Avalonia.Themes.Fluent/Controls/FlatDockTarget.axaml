@@ -1,0 +1,269 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Dock.Avalonia.Controls"
+        xmlns:sys="clr-namespace:System;assembly=netstandard"
+        x:CompileBindings="True">
+  <Styles.Resources>
+    <ResourceDictionary>
+
+  <SolidColorBrush x:Key="DockFlatDockTargetPreviewBrush" Color="#7379B7FF" />
+  <SolidColorBrush x:Key="DockFlatDockTargetPreviewBorderBrush" Color="#0078D4" />
+  <Thickness x:Key="DockFlatDockTargetPreviewBorderThickness">2</Thickness>
+  <CornerRadius x:Key="DockFlatDockTargetPreviewCornerRadius">10</CornerRadius>
+  <sys:Double x:Key="DockFlatDockTargetPreviewOpacity">1</sys:Double>
+  <sys:Double x:Key="DockFlatDockTargetInactiveScale">1</sys:Double>
+
+  <ControlTheme x:Key="DockFlatDockTargetTheme" TargetType="DockTarget">
+
+    <Setter Property="IndicatorActiveOpacity" Value="{DynamicResource DockFlatDockTargetPreviewOpacity}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid x:Name="PART_IndicatorGrid" RowDefinitions="*,*" ColumnDefinitions="*,*">
+          <Grid x:Name="PART_TopIndicator"
+                Classes="flatTargetIndicator"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                IsVisible="{TemplateBinding ShowVerticalTargets}"
+                DockProperties.IndicatorDockOperation="Top"
+                controls:DockTargetMotion.UseCompositorAnimations="True"
+                controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+            <Border Classes="flatTargetPreview" />
+          </Grid>
+
+          <Grid x:Name="PART_BottomIndicator"
+                Classes="flatTargetIndicator"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                IsVisible="{TemplateBinding ShowVerticalTargets}"
+                DockProperties.IndicatorDockOperation="Bottom"
+                controls:DockTargetMotion.UseCompositorAnimations="True"
+                controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+            <Border Classes="flatTargetPreview" />
+          </Grid>
+
+          <Grid x:Name="PART_LeftIndicator"
+                Classes="flatTargetIndicator"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                DockProperties.IndicatorDockOperation="Left"
+                controls:DockTargetMotion.UseCompositorAnimations="True"
+                controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+            <Border Classes="flatTargetPreview" />
+          </Grid>
+
+          <Grid x:Name="PART_RightIndicator"
+                Classes="flatTargetIndicator"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                DockProperties.IndicatorDockOperation="Right"
+                controls:DockTargetMotion.UseCompositorAnimations="True"
+                controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+            <Border Classes="flatTargetPreview" />
+          </Grid>
+
+          <Grid x:Name="PART_CenterIndicator"
+                Classes="flatTargetIndicator"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                DockProperties.IndicatorDockOperation="Fill"
+                controls:DockTargetMotion.UseCompositorAnimations="True"
+                controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+            <Border Classes="flatTargetPreview" />
+          </Grid>
+
+          <Panel x:Name="PART_SelectorPanel"
+                 Grid.Row="0"
+                 Grid.RowSpan="2"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2">
+            <Grid x:Name="PART_SelectorGrid" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
+              <Border x:Name="PART_TopSelector"
+                      Classes="flatTargetSelector"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3"
+                      IsVisible="{TemplateBinding ShowVerticalTargets}"
+                      DockProperties.IndicatorDockOperation="Top" />
+              <Border x:Name="PART_BottomSelector"
+                      Classes="flatTargetSelector"
+                      Grid.Row="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3"
+                      IsVisible="{TemplateBinding ShowVerticalTargets}"
+                      DockProperties.IndicatorDockOperation="Bottom" />
+              <Border x:Name="PART_LeftSelector"
+                      Classes="flatTargetSelector"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                      DockProperties.IndicatorDockOperation="Left" />
+              <Border x:Name="PART_RightSelector"
+                      Classes="flatTargetSelector"
+                      Grid.Row="1"
+                      Grid.Column="2"
+                      IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                      DockProperties.IndicatorDockOperation="Right" />
+              <Border x:Name="PART_CenterSelector"
+                      Classes="flatTargetSelector"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      DockProperties.IndicatorDockOperation="Fill" />
+            </Grid>
+          </Panel>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^/template/ Panel.flatTargetIndicator">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Border.flatTargetPreview">
+      <Setter Property="Background" Value="{DynamicResource DockFlatDockTargetPreviewBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DockFlatDockTargetPreviewBorderBrush}" />
+      <Setter Property="BorderThickness" Value="{DynamicResource DockFlatDockTargetPreviewBorderThickness}" />
+      <Setter Property="CornerRadius" Value="{DynamicResource DockFlatDockTargetPreviewCornerRadius}" />
+    </Style>
+
+    <Style Selector="^/template/ Border.flatTargetSelector">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="^[ShowIndicatorsOnly=True] /template/ Panel#PART_SelectorPanel">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+  </ControlTheme>
+
+  <ControlTheme x:Key="DockFlatGlobalDockTargetTheme" TargetType="GlobalDockTarget">
+
+    <Setter Property="IndicatorActiveOpacity" Value="{DynamicResource DockFlatDockTargetPreviewOpacity}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <ProportionalStackPanel Orientation="Horizontal">
+            <Grid x:Name="PART_LeftIndicator"
+                  Classes="flatTargetIndicator"
+                  IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                  ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
+                  DockProperties.IndicatorDockOperation="Left"
+                  controls:DockTargetMotion.UseCompositorAnimations="True"
+                  controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+              <Border Classes="flatTargetPreview" />
+            </Grid>
+            <Border />
+            <Grid x:Name="PART_RightIndicator"
+                  Classes="flatTargetIndicator"
+                  IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                  ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
+                  DockProperties.IndicatorDockOperation="Right"
+                  controls:DockTargetMotion.UseCompositorAnimations="True"
+                  controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+              <Border Classes="flatTargetPreview" />
+            </Grid>
+          </ProportionalStackPanel>
+          <ProportionalStackPanel Orientation="Vertical">
+            <Grid x:Name="PART_TopIndicator"
+                  Classes="flatTargetIndicator"
+                  IsVisible="{TemplateBinding ShowVerticalTargets}"
+                  ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
+                  DockProperties.IndicatorDockOperation="Top"
+                  controls:DockTargetMotion.UseCompositorAnimations="True"
+                  controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+              <Border Classes="flatTargetPreview" />
+            </Grid>
+            <Border />
+            <Grid x:Name="PART_BottomIndicator"
+                  Classes="flatTargetIndicator"
+                  IsVisible="{TemplateBinding ShowVerticalTargets}"
+                  ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
+                  DockProperties.IndicatorDockOperation="Bottom"
+                  controls:DockTargetMotion.UseCompositorAnimations="True"
+                  controls:DockTargetMotion.InactiveScale="{DynamicResource DockFlatDockTargetInactiveScale}">
+              <Border Classes="flatTargetPreview" />
+            </Grid>
+          </ProportionalStackPanel>
+
+          <Grid x:Name="PART_IndicatorGrid" RowDefinitions="*,*" ColumnDefinitions="*,*">
+            <Panel x:Name="PART_SelectorPanel"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2">
+              <Border x:Name="PART_TopSelector"
+                      Classes="flatTargetSelector globalTargetSelector"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Top"
+                      IsVisible="{TemplateBinding ShowVerticalTargets}"
+                      DockProperties.IndicatorDockOperation="Top" />
+              <Border x:Name="PART_BottomSelector"
+                      Classes="flatTargetSelector globalTargetSelector"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Bottom"
+                      IsVisible="{TemplateBinding ShowVerticalTargets}"
+                      DockProperties.IndicatorDockOperation="Bottom" />
+              <Border x:Name="PART_LeftSelector"
+                      Classes="flatTargetSelector globalTargetSelector"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                      DockProperties.IndicatorDockOperation="Left" />
+              <Border x:Name="PART_RightSelector"
+                      Classes="flatTargetSelector globalTargetSelector"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                      DockProperties.IndicatorDockOperation="Right" />
+            </Panel>
+          </Grid>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^/template/ Panel.flatTargetIndicator">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Border.flatTargetPreview">
+      <Setter Property="Background" Value="{DynamicResource DockFlatDockTargetPreviewBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DockFlatDockTargetPreviewBorderBrush}" />
+      <Setter Property="BorderThickness" Value="{DynamicResource DockFlatDockTargetPreviewBorderThickness}" />
+      <Setter Property="CornerRadius" Value="{DynamicResource DockFlatDockTargetPreviewCornerRadius}" />
+    </Style>
+
+    <Style Selector="^/template/ Border.flatTargetSelector">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="^/template/ Border.globalTargetSelector">
+      <Setter Property="Width" Value="{DynamicResource DockTargetSelectorSize}" />
+      <Setter Property="Height" Value="{DynamicResource DockTargetSelectorSize}" />
+    </Style>
+
+    <Style Selector="^[ShowIndicatorsOnly=True] /template/ Panel#PART_SelectorPanel">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+  </ControlTheme>
+
+    </ResourceDictionary>
+  </Styles.Resources>
+
+  <Style Selector="controls|DockTarget">
+    <Setter Property="Theme" Value="{DynamicResource DockFlatDockTargetTheme}" />
+  </Style>
+
+  <Style Selector="controls|GlobalDockTarget">
+    <Setter Property="Theme" Value="{DynamicResource DockFlatGlobalDockTargetTheme}" />
+  </Style>
+</Styles>

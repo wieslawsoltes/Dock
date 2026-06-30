@@ -144,6 +144,49 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
+    public void Process_Moved_Skips_DropTargetScan_For_Initial_Preview_Frame()
+    {
+        var manager = new DockManager(new DockService());
+        var state = CreateState(manager);
+        var dockControl = new DockControl();
+        var dockControls = new List<IDockControl> { dockControl };
+        var dragControl = new Control
+        {
+            DataContext = new Document { Title = "Document" }
+        };
+        var window = new Window
+        {
+            Width = 200,
+            Height = 120,
+            Content = dockControl
+        };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var contextField = typeof(DockControlState)
+                .GetField("_context", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            var context = contextField.GetValue(state)!;
+            context.GetType().GetProperty("DragControl")!.SetValue(context, dragControl);
+            context.GetType().GetProperty("PointerPressed")!.SetValue(context, true);
+            context.GetType().GetProperty("DoDragDrop")!.SetValue(context, true);
+            context.GetType().GetProperty("SkipDropTargetScanOnce")!.SetValue(context, true);
+            context.GetType().GetProperty("ShowWindowsOnNextScan")!.SetValue(context, true);
+
+            state.Process(new Point(10, 10), default, EventType.Moved, DragAction.Move, dockControl, dockControls);
+
+            Assert.False((bool)context.GetType().GetProperty("SkipDropTargetScanOnce")!.GetValue(context)!);
+            Assert.True((bool)context.GetType().GetProperty("ShowWindowsOnNextScan")!.GetValue(context)!);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
     public void GlobalDockOperationSelector_UsesGlobal_WhenNoLocalAdorner()
     {
         var service = new GlobalDockingService();

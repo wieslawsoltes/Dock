@@ -11,6 +11,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Converters;
 using Dock.Avalonia.Controls;
@@ -505,6 +506,39 @@ public class ManagedWindowParityTests
             DragPreviewContext.Clear();
             ManagedWindowRegistry.UnregisterLayer(factory, layer);
             windowHost.Close();
+            DockSettings.ShowDockablePreviewOnDrag = originalPreview;
+            DockSettings.UseManagedWindows = originalManaged;
+        }
+    }
+
+    [AvaloniaFact]
+    public void DragPreviewHelper_Shows_Native_PreviewContent_On_Initial_Show()
+    {
+        var originalPreview = DockSettings.ShowDockablePreviewOnDrag;
+        var originalManaged = DockSettings.UseManagedWindows;
+        DockSettings.ShowDockablePreviewOnDrag = true;
+        DockSettings.UseManagedWindows = false;
+
+        var factory = new Factory();
+        var document = factory.CreateDocument();
+        document.Title = "Doc";
+        document.Factory = factory;
+
+        var controlField = typeof(DragPreviewHelper)
+            .GetField("s_control", BindingFlags.Static | BindingFlags.NonPublic)!;
+
+        var helper = new DragPreviewHelper();
+        try
+        {
+            helper.Show(document, new PixelPoint(50, 60), new PixelPoint(0, 0));
+
+            var preview = Assert.IsType<DragPreviewControl>(controlField.GetValue(null));
+            Assert.True(preview.ShowContent);
+        }
+        finally
+        {
+            helper.Hide();
+            DragPreviewContext.Clear();
             DockSettings.ShowDockablePreviewOnDrag = originalPreview;
             DockSettings.UseManagedWindows = originalManaged;
         }

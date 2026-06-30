@@ -23,13 +23,36 @@ internal static class DockDataTemplateHelper
     /// <returns>A collection of DataTemplates for dock controls.</returns>
     public static IEnumerable<IDataTemplate> CreateDefaultDataTemplates()
     {
+        return CreateDefaultDataTemplates(DockPresentationMode.Nested);
+    }
+
+    /// <summary>
+    /// Creates a collection of default DataTemplates for all dock control types.
+    /// </summary>
+    /// <param name="presentationMode">The proportional dock presentation mode.</param>
+    /// <returns>A collection of DataTemplates for dock controls.</returns>
+    public static IEnumerable<IDataTemplate> CreateDefaultDataTemplates(DockPresentationMode presentationMode)
+    {
         yield return CreateDataTemplate<IDocumentContent>(() => new DocumentContentControl());
         yield return CreateDataTemplate<IToolContent>(() => new ToolContentControl());
-        yield return CreateDataTemplate<IProportionalDockSplitter>(() => new ProportionalStackPanelSplitter
+
+        if (presentationMode == DockPresentationMode.Flat)
         {
-            [!ProportionalStackPanelSplitter.IsResizingEnabledProperty] = new Binding(nameof(IProportionalDockSplitter.CanResize)),
-            [!ProportionalStackPanelSplitter.PreviewResizeProperty] = new Binding(nameof(IProportionalDockSplitter.ResizePreview))
-        });
+            yield return CreateDataTemplate<IProportionalDockSplitter>(() => new FlatProportionalDockSplitter
+            {
+                [!FlatProportionalDockSplitter.IsResizingEnabledProperty] = new Binding(nameof(IProportionalDockSplitter.CanResize)),
+                [!FlatProportionalDockSplitter.PreviewResizeProperty] = new Binding(nameof(IProportionalDockSplitter.ResizePreview))
+            });
+        }
+        else
+        {
+            yield return CreateDataTemplate<IProportionalDockSplitter>(() => new ProportionalStackPanelSplitter
+            {
+                [!ProportionalStackPanelSplitter.IsResizingEnabledProperty] = new Binding(nameof(IProportionalDockSplitter.CanResize)),
+                [!ProportionalStackPanelSplitter.PreviewResizeProperty] = new Binding(nameof(IProportionalDockSplitter.ResizePreview))
+            });
+        }
+
         yield return CreateDataTemplate<IGridDockSplitter>(() => new GridSplitter
         {
             [!GridSplitter.ResizeDirectionProperty] = new Binding(nameof(IGridDockSplitter.ResizeDirection))
@@ -37,7 +60,9 @@ internal static class DockDataTemplateHelper
         yield return CreateDataTemplate<IDocumentDock>(() => new DocumentDockControl());
         yield return CreateDataTemplate<IToolDock>(() => new ToolDockControl());
         yield return CreateDataTemplate<ISplitViewDock>(() => new SplitViewDockControl());
-        yield return CreateDataTemplate<IProportionalDock>(() => new ProportionalDockControl());
+        yield return CreateDataTemplate<IProportionalDock>(() => presentationMode == DockPresentationMode.Flat
+            ? new FlatProportionalDockControl()
+            : new ProportionalDockControl());
         yield return CreateDataTemplate<IStackDock>(() => new StackDockControl());
         yield return CreateDataTemplate<IGridDock>(() => new GridDockControl());
         yield return CreateDataTemplate<IWrapDock>(() => new WrapDockControl());

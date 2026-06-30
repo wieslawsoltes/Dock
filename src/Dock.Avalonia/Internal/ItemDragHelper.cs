@@ -346,6 +346,35 @@ internal class ItemDragHelper
         _currentScrollViewer.Offset = new Vector(newOffsetX, newOffsetY);
     }
 
+    private static void RefreshLayout(Control control)
+    {
+        if (control.GetVisualRoot() is null || IsLayoutValid(control))
+        {
+            return;
+        }
+
+        control.UpdateLayout();
+    }
+
+    private static bool IsLayoutValid(Control control)
+    {
+        if (!control.IsMeasureValid || !control.IsArrangeValid)
+        {
+            return false;
+        }
+
+        foreach (var visual in control.GetVisualDescendants())
+        {
+            if (visual is Control descendant
+                && (!descendant.IsMeasureValid || !descendant.IsArrangeValid))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private Vector CalculateAutoScrollVelocity(Point position, ScrollViewer scrollViewer)
     {
         var viewport = new Rect(scrollViewer.Viewport);
@@ -387,6 +416,12 @@ internal class ItemDragHelper
     {
         // Use the bounds container (TabStrip) if provided, otherwise use ItemsControl
         var boundsContainer = _getBoundsContainer() ?? itemsControl;
+
+        RefreshLayout(boundsContainer);
+        if (!ReferenceEquals(boundsContainer, itemsControl))
+        {
+            RefreshLayout(itemsControl);
+        }
         
         // Get position relative to the bounds container
         var containerPosition = position;
@@ -429,22 +464,8 @@ internal class ItemDragHelper
                 StopAutoScroll();
             }
             
-            // Create bounds that include the full scrollable area
-            var scrollableBounds = new Rect(
-                -scrollViewer.Offset.X,
-                -scrollViewer.Offset.Y,
-                Math.Max(scrollViewer.Viewport.Width, scrollViewer.Extent.Width),
-                Math.Max(scrollViewer.Viewport.Height, scrollViewer.Extent.Height)
-            );
-            
-            // Check if position is within scrollable bounds
-            if (!scrollableBounds.Contains(scrollViewerPosition))
-            {
-                return false;
-            }
-            
-            // Also check if position is within the container bounds (TabStrip visual area)
-            return boundsRect.Contains(containerPosition);
+            var viewportBounds = new Rect(scrollViewer.Viewport);
+            return boundsRect.Contains(containerPosition) && viewportBounds.Contains(scrollViewerPosition);
         }
         else
         {

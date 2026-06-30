@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dock.Controls.Flat\Dock.Controls.Flat.csproj" />
     <ProjectReference Include="..\Dock.Avalonia\Dock.Avalonia.csproj" />
   </ItemGroup>
 

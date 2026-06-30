@@ -49,6 +49,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private DockCommandBarHost? _commandBarHost;
     private DockCommandBarManager? _commandBarManager;
     private DockSelectorOverlay? _selectorOverlay;
+    private readonly List<IDataTemplate> _defaultDataTemplates = new();
     private DockSelectorMode _selectorMode;
     private KeyGesture? _selectorGesture;
     private readonly Dictionary<IDockable, long> _activationOrder = new();
@@ -117,6 +118,12 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     /// </summary>
     public static readonly StyledProperty<bool> AutoCreateDataTemplatesProperty =
         AvaloniaProperty.Register<DockControl, bool>(nameof(AutoCreateDataTemplates), true);
+
+    /// <summary>
+    /// Defines the <see cref="PresentationMode"/> property.
+    /// </summary>
+    public static readonly StyledProperty<DockPresentationMode> PresentationModeProperty =
+        AvaloniaProperty.Register<DockControl, DockPresentationMode>(nameof(PresentationMode), DockPresentationMode.Nested);
 
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
@@ -210,6 +217,15 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     {
         get => GetValue(AutoCreateDataTemplatesProperty);
         set => SetValue(AutoCreateDataTemplatesProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets how proportional docks are presented in the Avalonia visual layer.
+    /// </summary>
+    public DockPresentationMode PresentationMode
+    {
+        get => GetValue(PresentationModeProperty);
+        set => SetValue(PresentationModeProperty, value);
     }
 
     /// <inheritdoc/>
@@ -456,17 +472,34 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             return;
         }
 
-        // Check if auto-creation of DataTemplates is enabled
+        RemoveDefaultDataTemplates();
+
         if (!AutoCreateDataTemplates)
         {
             return;
         }
 
-        // Create and add default DataTemplates using helper class
-        foreach (var template in DockDataTemplateHelper.CreateDefaultDataTemplates())
+        foreach (var template in DockDataTemplateHelper.CreateDefaultDataTemplates(PresentationMode))
         {
             _contentControl.DataTemplates.Add(template);
+            _defaultDataTemplates.Add(template);
         }
+    }
+
+    private void RemoveDefaultDataTemplates()
+    {
+        if (_contentControl?.DataTemplates is null || _defaultDataTemplates.Count == 0)
+        {
+            _defaultDataTemplates.Clear();
+            return;
+        }
+
+        foreach (var template in _defaultDataTemplates)
+        {
+            _contentControl.DataTemplates.Remove(template);
+        }
+
+        _defaultDataTemplates.Clear();
     }
 
     /// <inheritdoc />
@@ -490,6 +523,11 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         else if (change.Property == IsDockingEnabledProperty)
         {
             _dockManagerOptions.IsDockingEnabled = change.GetNewValue<bool>();
+        }
+        else if (change.Property == AutoCreateDataTemplatesProperty
+                 || change.Property == PresentationModeProperty)
+        {
+            InitializeDefaultDataTemplates();
         }
     }
 

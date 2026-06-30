@@ -80,6 +80,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         AvaloniaProperty.Register<DockTargetBase, bool>(nameof(IsGlobalDockActive));
 
     /// <summary>
+    /// Defines the <see cref="IndicatorActiveOpacity"/> property.
+    /// </summary>
+    public static readonly StyledProperty<double> IndicatorActiveOpacityProperty =
+        AvaloniaProperty.Register<DockTargetBase, double>(nameof(IndicatorActiveOpacity), 0.5);
+
+    /// <summary>
     /// Initializes a new instance while wiring pseudo-classes to the target visibility and availability observables.
     /// </summary>
     public DockTargetBase()
@@ -116,7 +122,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
     /// <summary>
     /// Gets or sets whether vertical docking targets should be displayed.
-    /// </summary>s
+    /// </summary>
     public bool ShowVerticalTargets
     {
         get => GetValue(ShowVerticalTargetsProperty);
@@ -139,6 +145,15 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         get => GetValue(IsGlobalDockActiveProperty);
         set => SetValue(IsGlobalDockActiveProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the opacity applied to an active drop indicator.
+    /// </summary>
+    public double IndicatorActiveOpacity
+    {
+        get => GetValue(IndicatorActiveOpacityProperty);
+        set => SetValue(IndicatorActiveOpacityProperty, value);
     }
 
     /// <summary>
@@ -422,7 +437,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             {
                 if (validate(point, operation, dragAction, relativeTo))
                 {
-                    indicator.Opacity = 0.5;
+                    indicator.Opacity = IndicatorActiveOpacity;
                     return true;
                 }
             }
@@ -473,7 +488,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         if (selectorPoint is not null)
         {
-            indicator.Opacity = 0.5;
+            indicator.Opacity = IndicatorActiveOpacity;
             return true;
         }
 

@@ -25,6 +25,8 @@ internal class DockDragContext
     public DockOperation ResolvedOperation { get; set; }
     public bool UseGlobalOperation { get; set; }
     public bool HasResolvedOperation { get; set; }
+    public bool SkipDropTargetScanOnce { get; set; }
+    public bool ShowWindowsOnNextScan { get; set; }
     
     public PixelPoint DragOffset { get; set; }
 
@@ -36,6 +38,8 @@ internal class DockDragContext
         DoDragDrop = false;
         TargetPoint = default;
         TargetDockControl = null;
+        SkipDropTargetScanOnce = false;
+        ShowWindowsOnNextScan = false;
         ClearResolvedOperation();
     }
 
@@ -47,6 +51,8 @@ internal class DockDragContext
         DoDragDrop = false;
         TargetPoint = default;
         TargetDockControl = null;
+        SkipDropTargetScanOnce = false;
+        ShowWindowsOnNextScan = false;
         ClearResolvedOperation();
     }
 
@@ -130,6 +136,27 @@ internal class DockControlState : DockManagerState, IDockControlState
         return new Size(width, height);
     }
 
+    private static void RefreshDockControlLayout(DockControl dockControl)
+    {
+        if (dockControl.GetVisualRoot() is null)
+        {
+            return;
+        }
+
+        dockControl.UpdateLayout();
+    }
+
+    private static void RefreshDockControlLayouts(IList<IDockControl> dockControls)
+    {
+        foreach (var dockControl in dockControls)
+        {
+            if (dockControl is DockControl control)
+            {
+                RefreshDockControlLayout(control);
+            }
+        }
+    }
+
     public void StartDrag(Control dragControl, Point startPoint, Point point, DockControl activeDockControl)
     {
         if (!dragControl.GetValue(DockProperties.IsDragEnabledProperty))
@@ -148,7 +175,6 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (dragControl.DataContext is IDockable targetDockable)
         {
-            DockHelpers.ShowWindows(targetDockable);
             var sp = activeDockControl.PointToScreen(point);
             Size? preferredPreviewSize = GetPreferredPreviewSize(dragControl);
             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
@@ -157,6 +183,8 @@ internal class DockControlState : DockManagerState, IDockControlState
                 _context.DragStartPoint);
             _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, activeDockControl, preferredPreviewSize);
             _context.DoDragDrop = true;
+            _context.SkipDropTargetScanOnce = true;
+            _context.ShowWindowsOnNextScan = true;
         }
     }
 
@@ -507,6 +535,8 @@ internal class DockControlState : DockManagerState, IDockControlState
         {
             case EventType.Pressed:
             {
+                RefreshDockControlLayout(inputActiveDockControl);
+
                 var dragControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDragAreaProperty);
                 if (dragControl is { })
                 {
@@ -538,6 +568,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 if (_context.DoDragDrop)
                 {
                     var executed = false;
+                    var layoutChanged = false;
 
                     if (DropControl is { } dropControl && _context.TargetDockControl is { })
                     {
@@ -565,6 +596,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 _context.TargetDockControl,
                                 useGlobalOperation,
                                 selectedOperation);
+                            layoutChanged = executed;
                             LogDragState($"Drop executed on '{dropControl.GetType().Name}' with action '{dragAction}'.");
                         }
                         else
@@ -578,7 +610,14 @@ internal class DockControlState : DockManagerState, IDockControlState
                         inputActiveDockControl.Layout?.Factory is { } factory)
                     {
                         Float(point, inputActiveDockControl, dockable, factory, _context.DragOffset);
+                        layoutChanged = true;
                         LogDragState($"Drop fallback: floating dockable '{dockable.Title}'.");
+                    }
+
+                    if (layoutChanged)
+                    {
+                        RefreshDockControlLayouts(dockControls);
+                        RefreshDockControlLayout(inputActiveDockControl);
                     }
                 }
                 else
@@ -611,7 +650,6 @@ internal class DockControlState : DockManagerState, IDockControlState
                     {
                         if (_context.DragControl?.DataContext is IDockable targetDockable)
                         {
-                            DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
                             Size? preferredPreviewSize = GetPreferredPreviewSize(_context.DragControl);
 
@@ -619,6 +657,8 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
                             _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, inputActiveDockControl, preferredPreviewSize);
+                            _context.SkipDropTargetScanOnce = true;
+                            _context.ShowWindowsOnNextScan = true;
                             LogDragState($"Drag threshold reached for dockable '{targetDockable.Title}'. Showing preview.");
                         }
                         _context.DoDragDrop = true;
@@ -640,6 +680,28 @@ internal class DockControlState : DockManagerState, IDockControlState
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                     var preview = "None";
 
+                    if (_context.SkipDropTargetScanOnce)
+                    {
+                        _context.SkipDropTargetScanOnce = false;
+                        if (_context.DragControl?.DataContext is IDockable sourceDockable && CanFloatDockable(sourceDockable))
+                        {
+                            preview = "Float";
+                        }
+
+                        _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
+                        LogDragState($"Initial preview frame shown as '{preview}' before drop target scan.");
+                        break;
+                    }
+
+                    if (_context.ShowWindowsOnNextScan)
+                    {
+                        _context.ShowWindowsOnNextScan = false;
+                        if (_context.DragControl?.DataContext is IDockable targetDockable)
+                        {
+                            DockHelpers.ShowWindows(targetDockable);
+                        }
+                    }
+
                     foreach (var inputDockControl in DockHelpers.GetZOrderedDockControls(dockControls))
                     {
                         if (inputActiveDockControl.GetVisualRoot() is null)
@@ -653,6 +715,9 @@ internal class DockControlState : DockManagerState, IDockControlState
                             LogDragState($"Skipping dock control '{inputDockControl.GetType().Name}': not attached to visual tree.");
                             continue;
                         }
+
+                        RefreshDockControlLayout(inputDockControl);
+
                         var dockControlPoint = inputDockControl.PointToClient(screenPoint);
                         LogDragState($"Testing dock control '{inputDockControl.GetType().Name}' (Bounds={inputDockControl.Bounds}) at client point {dockControlPoint} (screen {screenPoint}).");
 
@@ -672,6 +737,8 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                     if (dropControl is null)
                     {
+                        RefreshDockControlLayout(inputActiveDockControl);
+
                         dropControl = DockHelpers.GetControlIncludingExternal(inputActiveDockControl, point, DockProperties.IsDropAreaProperty);
                         if (dropControl is { })
                         {

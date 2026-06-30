@@ -219,6 +219,66 @@ public class FlatProportionalPanelTests
     }
 
     [AvaloniaFact]
+    public void Measure_With_InsufficientStackingLength_Does_NotRewrite_Proportions()
+    {
+        var left = new TestItem("Left", 0.25);
+        var right = new TestItem("Right", 0.75);
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, new TestSplitter("Splitter"), right });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(100, 600));
+        panel.Arrange(new Rect(0, 0, 100, 600));
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        Assert.Equal(0.25, left.Proportion, 2);
+        Assert.Equal(0.75, right.Proportion, 2);
+        Assert.Equal(0.25, left.CollapsedProportion, 2);
+        Assert.Equal(0.75, right.CollapsedProportion, 2);
+    }
+
+    [AvaloniaFact]
+    public void Measure_Restores_CollapsedProportions_When_CollapsibleItem_Reopens()
+    {
+        var left = new ObservableTestItem("Left", 0.5)
+        {
+            IsCollapsableValue = true
+        };
+        var right = new TestItem("Right", 0.5);
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[] { left, new TestSplitter("Splitter"), right });
+        var panel = new FlatProportionalPanel { Root = root };
+
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        left.UpdateIsEmpty(true);
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        Assert.Equal(0.0, left.Proportion, 2);
+        Assert.Equal(1.0, right.Proportion, 2);
+        Assert.Equal(0.5, left.CollapsedProportion, 2);
+        Assert.Equal(0.5, right.CollapsedProportion, 2);
+
+        left.UpdateIsEmpty(false);
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        Assert.Equal(0.5, left.Proportion, 2);
+        Assert.Equal(0.5, right.Proportion, 2);
+        Assert.Equal(0.5, left.CollapsedProportion, 2);
+        Assert.Equal(0.5, right.CollapsedProportion, 2);
+    }
+
+    [AvaloniaFact]
     public void Measure_Returns_ChildDesiredSize_For_UnboundedAxis()
     {
         var left = new TestItem("Left", 1.0)
@@ -365,9 +425,13 @@ public class FlatProportionalPanelTests
 
         public double MaxHeight => MaxHeightValue;
 
-        public bool IsCollapsable => false;
+        public bool IsCollapsableValue { get; init; }
 
-        public bool IsEmpty => false;
+        public bool IsCollapsable => IsCollapsableValue;
+
+        public bool IsEmptyValue { get; set; }
+
+        public bool IsEmpty => IsEmptyValue;
     }
 
     private sealed class TestDock : TestItem, IFlatProportionalDock
@@ -425,6 +489,12 @@ public class FlatProportionalPanelTests
         {
             Proportion = proportion;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Proportion)));
+        }
+
+        public void UpdateIsEmpty(bool isEmpty)
+        {
+            IsEmptyValue = isEmpty;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEmpty)));
         }
     }
 }

@@ -2253,11 +2253,17 @@ public class FlatProportionalPanel : Panel
         _isAssigningProportions = true;
         try
         {
-            var availableLength = Math.Max(1.0, GetLength(size, dock.Orientation) - splitterThickness);
+            var availableLength = GetLength(size, dock.Orientation) - splitterThickness;
+            if (!CanAssignConstrainedProportions(dockables, dock.Orientation, availableLength))
+            {
+                return;
+            }
+
             var hasCollapsed = false;
             var assignedTotal = 0.0;
             var unassignedCount = 0;
             var targets = new Dictionary<IFlatProportionalItem, double>(ReferenceEqualityComparer.Instance);
+            var restoreCollapsedProportions = ShouldRestoreCollapsedProportions(dockables);
 
             foreach (var dockable in dockables)
             {
@@ -2273,9 +2279,7 @@ public class FlatProportionalPanel : Panel
                     continue;
                 }
 
-                var target = IsValidProportion(dockable.Proportion)
-                    ? dockable.Proportion
-                    : dockable.CollapsedProportion;
+                var target = GetTargetProportion(dockable, restoreCollapsedProportions);
 
                 if (IsValidProportion(target))
                 {
@@ -2306,8 +2310,14 @@ public class FlatProportionalPanel : Panel
 
             foreach (var dockable in dockables)
             {
-                var target = ClampProportion(dockable, dock.Orientation, availableLength, targets[dockable]);
-                SetDockableProportion(dockable, target, !IsCollapsed(dockable) && !hasCollapsed);
+                var isCollapsed = IsCollapsed(dockable);
+                var target = targets[dockable];
+                if (!isCollapsed)
+                {
+                    target = ClampProportion(dockable, dock.Orientation, availableLength, target);
+                }
+
+                SetDockableProportion(dockable, target, !isCollapsed && !hasCollapsed);
             }
         }
         finally
@@ -2340,6 +2350,68 @@ public class FlatProportionalPanel : Panel
                 targets[dockable] *= scale;
             }
         }
+    }
+
+    private bool CanAssignConstrainedProportions(
+        IList<IFlatProportionalItem> dockables,
+        Avalonia.Layout.Orientation orientation,
+        double availableLength)
+    {
+        if (!IsValidProportion(availableLength) || availableLength <= 0)
+        {
+            return false;
+        }
+
+        var requiredLength = 0.0;
+        for (var i = 0; i < dockables.Count; i++)
+        {
+            var dockable = dockables[i];
+            if (IsCollapsed(dockable))
+            {
+                continue;
+            }
+
+            var minimum = GetMinimumLength(dockable, orientation);
+            var minimumLength = MinimumProportionSize > 0 ? MinimumProportionSize : 0.0;
+            if (!double.IsNaN(minimum) && minimum > 0)
+            {
+                minimumLength = Math.Max(minimumLength, minimum);
+            }
+
+            requiredLength += minimumLength;
+        }
+
+        return requiredLength <= 0 || availableLength >= requiredLength;
+    }
+
+    private static bool ShouldRestoreCollapsedProportions(IList<IFlatProportionalItem> dockables)
+    {
+        for (var i = 0; i < dockables.Count; i++)
+        {
+            var dockable = dockables[i];
+            if (!IsCollapsed(dockable)
+                && IsValidProportion(dockable.CollapsedProportion)
+                && dockable.CollapsedProportion > 0
+                && (!IsValidProportion(dockable.Proportion) || dockable.Proportion <= 0))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static double GetTargetProportion(IFlatProportionalItem dockable, bool restoreCollapsedProportions)
+    {
+        var collapsedProportion = dockable.CollapsedProportion;
+        if (restoreCollapsedProportions && IsValidProportion(collapsedProportion) && collapsedProportion > 0)
+        {
+            return collapsedProportion;
+        }
+
+        return IsValidProportion(dockable.Proportion)
+            ? dockable.Proportion
+            : collapsedProportion;
     }
 
     private double ClampProportion(IFlatProportionalItem dockable, Avalonia.Layout.Orientation orientation, double availableLength, double proportion)

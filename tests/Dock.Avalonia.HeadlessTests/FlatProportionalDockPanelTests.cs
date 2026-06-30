@@ -1185,8 +1185,7 @@ public class FlatProportionalDockPanelTests
 
             Assert.False(rightPresenter.IsHitTestVisible);
 
-            await Task.Delay(240);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => rightPresenter.IsHitTestVisible, timeoutMilliseconds: 2000);
 
             var visual = ElementComposition.GetElementVisual(rightPresenter);
 

@@ -37,6 +37,7 @@ internal class DragPreviewHelper
     private static double s_lastFrozenWindowScaling = 1.0;
     private static int s_windowMoveSessionId;
     private static long s_windowMovePostSequence;
+    private static bool s_applyNextWindowMoveImmediately;
     private const int MaxWindowSizeFreezeRetries = 4;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
@@ -132,8 +133,9 @@ internal class DragPreviewHelper
             return;
         }
 
-        if (!s_useWindowMoveCoalescing)
+        if (s_applyNextWindowMoveImmediately || !s_useWindowMoveCoalescing)
         {
+            s_applyNextWindowMoveImmediately = false;
             ApplyWindowMove(window, control, targetPosition, status);
             return;
         }
@@ -380,6 +382,7 @@ internal class DragPreviewHelper
             s_frozenContentWidthPixels = double.NaN;
             s_frozenContentHeightPixels = double.NaN;
             s_lastFrozenWindowScaling = 1.0;
+            s_applyNextWindowMoveImmediately = true;
 
             var hasPreferredOuterSize = preferredSize is { Width: > 0, Height: > 0 };
             if (hasPreferredOuterSize)
@@ -493,6 +496,7 @@ internal class DragPreviewHelper
             s_frozenContentWidthPixels = double.NaN;
             s_frozenContentHeightPixels = double.NaN;
             s_lastFrozenWindowScaling = 1.0;
+            s_applyNextWindowMoveImmediately = false;
             s_window.Close();
             s_window = null;
             s_control = null;

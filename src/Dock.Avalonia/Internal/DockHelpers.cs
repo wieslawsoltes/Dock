@@ -176,6 +176,13 @@ internal static class DockHelpers
 
         if (controlsToInspect is null || controlsToInspect.Count == 0)
         {
+            var boundsHit = GetControlByBounds(input, point, property);
+            if (boundsHit is not null)
+            {
+                LogDropSearch($"Selected bounds-matched control {boundsHit.GetType().Name}.");
+                return boundsHit;
+            }
+
             LogDropSearch($"No visuals hit for point {point} on {(input?.GetType().Name ?? "null")}.");
             return null;
         }
@@ -200,8 +207,108 @@ internal static class DockHelpers
             }
         }
 
-        LogDropSearch("No control satisfied drop area requirement.");
+        if (UsesBoundsFallback(property))
+        {
+            var boundsHit = GetControlByBounds(input, point, property);
+            if (boundsHit is not null)
+            {
+                LogDropSearch($"Selected bounds-matched control {boundsHit.GetType().Name}.");
+                return boundsHit;
+            }
+        }
+
+        LogDropSearch("No control satisfied requested property.");
         return null;
+    }
+
+    private static bool UsesBoundsFallback(StyledProperty<bool> property)
+    {
+        return property == DockProperties.IsDropAreaProperty
+               || property == DockProperties.IsDockTargetProperty
+               || property == DockProperties.IsDragAreaProperty;
+    }
+
+    private static bool IsBoundsFallbackCandidate(Control control, StyledProperty<bool> property)
+    {
+        if (property == DockProperties.IsDropAreaProperty)
+        {
+            return control.GetValue(DockProperties.IsDockTargetProperty);
+        }
+
+        if (property == DockProperties.IsDragAreaProperty)
+        {
+            return control.GetValue(DockProperties.IsDragEnabledProperty)
+                   && control.DataContext is IDockable;
+        }
+
+        return true;
+    }
+
+    private static Control? GetControlByBounds(Visual? input, Point point, StyledProperty<bool> property)
+    {
+        if (input is null || !UsesBoundsFallback(property))
+        {
+            return null;
+        }
+
+        var inputRoot = input.GetVisualRoot();
+        Control? result = null;
+        var resultArea = double.PositiveInfinity;
+
+        if (input is Control inputControl)
+        {
+            Inspect(inputControl);
+        }
+
+        foreach (var visual in input.GetVisualDescendants())
+        {
+            if (visual is Control control)
+            {
+                Inspect(control);
+            }
+        }
+
+        return result;
+
+        void Inspect(Control control)
+        {
+            if (inputRoot is { } && control.GetVisualRoot() != inputRoot)
+            {
+                return;
+            }
+
+            if (!control.IsSet(property)
+                || !control.GetValue(property)
+                || !IsHitTestVisible(control)
+                || control.Bounds.Width <= 0
+                || control.Bounds.Height <= 0)
+            {
+                return;
+            }
+
+            if (!IsBoundsFallbackCandidate(control, property))
+            {
+                return;
+            }
+
+            var localPoint = input.TranslatePoint(point, control);
+            if (localPoint is null)
+            {
+                return;
+            }
+
+            if (!new Rect(control.Bounds.Size).Contains(localPoint.Value))
+            {
+                return;
+            }
+
+            var area = control.Bounds.Width * control.Bounds.Height;
+            if (result is null || area < resultArea)
+            {
+                result = control;
+                resultArea = area;
+            }
+        }
     }
 
     public static Control? GetControlIncludingExternal(DockControl dockControl, Point point, StyledProperty<bool> property)

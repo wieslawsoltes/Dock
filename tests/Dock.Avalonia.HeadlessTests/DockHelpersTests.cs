@@ -1,7 +1,10 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Media;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
+using Dock.Settings;
 using Xunit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -35,5 +38,155 @@ public class DockHelpersTests
         var result = DockHelpers.FindProportionalDock(docDock);
 
         Assert.Same(proportional, result);
+    }
+
+    [AvaloniaFact]
+    public void GetControl_Finds_DropArea_ByBounds_When_Overlay_Is_HitTestVisible()
+    {
+        var target = new Border
+        {
+            Width = 200,
+            Height = 120,
+            Background = Brushes.Transparent
+        };
+        DockProperties.SetIsDropArea(target, true);
+        DockProperties.SetIsDockTarget(target, true);
+
+        var overlay = new Border
+        {
+            Width = 200,
+            Height = 120,
+            Background = Brushes.Transparent
+        };
+
+        var canvas = new Canvas
+        {
+            Width = 200,
+            Height = 120
+        };
+        canvas.Children.Add(target);
+        canvas.Children.Add(overlay);
+
+        var window = new Window
+        {
+            Width = 200,
+            Height = 120,
+            Content = canvas
+        };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var hit = DockHelpers.GetControl(canvas, new Point(10, 10), DockProperties.IsDropAreaProperty);
+
+            Assert.Same(target, hit);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void GetControl_Finds_DragArea_ByBounds_When_Overlay_Is_HitTestVisible()
+    {
+        var dockable = new Document { Title = "Document" };
+        var target = new Border
+        {
+            Width = 200,
+            Height = 120,
+            Background = Brushes.Transparent,
+            DataContext = dockable
+        };
+        DockProperties.SetIsDragArea(target, true);
+        DockProperties.SetIsDragEnabled(target, true);
+
+        var overlay = new Border
+        {
+            Width = 200,
+            Height = 120,
+            Background = Brushes.Transparent
+        };
+
+        var canvas = new Canvas
+        {
+            Width = 200,
+            Height = 120
+        };
+        canvas.Children.Add(target);
+        canvas.Children.Add(overlay);
+
+        var window = new Window
+        {
+            Width = 200,
+            Height = 120,
+            Content = canvas
+        };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var hit = DockHelpers.GetControl(canvas, new Point(10, 10), DockProperties.IsDragAreaProperty);
+
+            Assert.Same(target, hit);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void GetControl_Does_Not_Find_DragArea_ByBounds_When_DataContext_Is_Not_Dockable()
+    {
+        var target = new Border
+        {
+            Width = 200,
+            Height = 120,
+            Background = Brushes.Transparent,
+            DataContext = new object()
+        };
+        DockProperties.SetIsDragArea(target, true);
+        DockProperties.SetIsDragEnabled(target, true);
+
+        var overlay = new Border
+        {
+            Width = 200,
+            Height = 120,
+            Background = Brushes.Transparent
+        };
+
+        var canvas = new Canvas
+        {
+            Width = 200,
+            Height = 120
+        };
+        canvas.Children.Add(target);
+        canvas.Children.Add(overlay);
+
+        var window = new Window
+        {
+            Width = 200,
+            Height = 120,
+            Content = canvas
+        };
+
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+
+            var hit = DockHelpers.GetControl(canvas, new Point(10, 10), DockProperties.IsDragAreaProperty);
+
+            Assert.Null(hit);
+        }
+        finally
+        {
+            window.Close();
+        }
     }
 }

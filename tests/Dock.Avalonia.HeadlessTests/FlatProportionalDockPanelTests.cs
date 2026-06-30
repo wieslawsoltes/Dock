@@ -285,8 +285,7 @@ public class FlatProportionalDockPanelTests
 
             Assert.False(leftPresenter.IsHitTestVisible);
 
-            await Task.Delay(120);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => leftPresenter.IsHitTestVisible);
 
             Assert.Equal(1.0, leftPresenter.Opacity);
             Assert.True(leftPresenter.IsHitTestVisible);
@@ -1290,8 +1289,7 @@ public class FlatProportionalDockPanelTests
 
             Assert.True(leftPresenter.IsHitTestVisible);
 
-            await Task.Delay(120);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => rightPresenter.IsHitTestVisible);
 
             Assert.True(leftPresenter.IsHitTestVisible);
             Assert.True(rightPresenter.IsHitTestVisible);

@@ -2309,17 +2309,12 @@ public class FlatProportionalPanel : Panel
                 return targets;
             }
 
+            ApplyActiveProportionConstraints(dockables, targets, dock.Orientation, availableLength);
+
             foreach (var dockable in dockables)
             {
                 var isCollapsed = IsCollapsed(dockable);
-                var target = targets[dockable];
-                if (!isCollapsed)
-                {
-                    target = ClampProportion(dockable, dock.Orientation, availableLength, target);
-                }
-
-                targets[dockable] = target;
-                SetDockableProportion(dockable, target, !isCollapsed && !hasCollapsed);
+                SetDockableProportion(dockable, targets[dockable], !isCollapsed && !hasCollapsed);
             }
 
             return targets;
@@ -2327,6 +2322,126 @@ public class FlatProportionalPanel : Panel
         finally
         {
             _isAssigningProportions = false;
+        }
+    }
+
+    private void ApplyActiveProportionConstraints(
+        IList<IFlatProportionalItem> dockables,
+        IDictionary<IFlatProportionalItem, double> targets,
+        Avalonia.Layout.Orientation orientation,
+        double availableLength)
+    {
+        if (!IsValidProportion(availableLength) || availableLength <= 0)
+        {
+            return;
+        }
+
+        var activeDockables = new List<IFlatProportionalItem>();
+        foreach (var dockable in dockables)
+        {
+            if (!IsCollapsed(dockable))
+            {
+                activeDockables.Add(dockable);
+            }
+        }
+
+        if (activeDockables.Count == 0)
+        {
+            return;
+        }
+
+        var values = new double[activeDockables.Count];
+        var weights = new double[activeDockables.Count];
+        var minimums = new double[activeDockables.Count];
+        var maximums = new double[activeDockables.Count];
+        var isFixed = new bool[activeDockables.Count];
+
+        for (var i = 0; i < activeDockables.Count; i++)
+        {
+            var dockable = activeDockables[i];
+            var target = targets[dockable];
+            var constraints = GetProportionConstraints(dockable, orientation, availableLength);
+            var minimum = ResolveValidProportion(constraints.Min, 0);
+            var maximum = constraints.Max;
+
+            if (double.IsNaN(maximum) || maximum < minimum)
+            {
+                maximum = minimum;
+            }
+
+            weights[i] = ResolveValidProportion(target, 0);
+            minimums[i] = minimum;
+            maximums[i] = maximum;
+        }
+
+        for (var iteration = 0; iteration < activeDockables.Count; iteration++)
+        {
+            var fixedTotal = 0.0;
+            var flexibleCount = 0;
+            var flexibleWeightTotal = 0.0;
+
+            for (var i = 0; i < activeDockables.Count; i++)
+            {
+                if (isFixed[i])
+                {
+                    fixedTotal += values[i];
+                    continue;
+                }
+
+                flexibleCount++;
+                flexibleWeightTotal += weights[i];
+            }
+
+            if (flexibleCount == 0)
+            {
+                break;
+            }
+
+            var remainingTotal = Math.Max(0, 1.0 - fixedTotal);
+            var useEqualWeights = flexibleWeightTotal <= 0;
+            var changed = false;
+
+            for (var i = 0; i < activeDockables.Count; i++)
+            {
+                if (isFixed[i])
+                {
+                    continue;
+                }
+
+                var candidate = useEqualWeights
+                    ? remainingTotal / flexibleCount
+                    : remainingTotal * weights[i] / flexibleWeightTotal;
+                var minimum = minimums[i];
+                var maximum = maximums[i];
+
+                if (candidate < minimum && !AreClose(candidate, minimum))
+                {
+                    values[i] = minimum;
+                    isFixed[i] = true;
+                    changed = true;
+                    continue;
+                }
+
+                if (!double.IsPositiveInfinity(maximum) && candidate > maximum && !AreClose(candidate, maximum))
+                {
+                    values[i] = maximum;
+                    isFixed[i] = true;
+                    changed = true;
+                    continue;
+                }
+
+                values[i] = candidate;
+            }
+
+            if (!changed)
+            {
+                break;
+            }
+        }
+
+        for (var i = 0; i < activeDockables.Count; i++)
+        {
+            targets[activeDockables[i]] = Math.Max(0, values[i]);
         }
     }
 
@@ -2425,38 +2540,6 @@ public class FlatProportionalPanel : Panel
         return proportions.TryGetValue(dockable, out var proportion) && IsValidProportion(proportion)
             ? proportion
             : ResolveValidProportion(dockable.Proportion, 0);
-    }
-
-    private double ClampProportion(IFlatProportionalItem dockable, Avalonia.Layout.Orientation orientation, double availableLength, double proportion)
-    {
-        if (!IsValidProportion(proportion)
-            || !IsValidProportion(availableLength)
-            || availableLength <= 0)
-        {
-            return proportion;
-        }
-
-        var min = GetMinimumLength(dockable, orientation);
-        var max = GetMaximumLength(dockable, orientation);
-        var minProportion = MinimumProportionSize > 0 ? MinimumProportionSize / availableLength : 0.0;
-        var maxProportion = double.PositiveInfinity;
-
-        if (!double.IsNaN(min) && min > 0)
-        {
-            minProportion = Math.Max(minProportion, min / availableLength);
-        }
-
-        if (!double.IsNaN(max) && !double.IsPositiveInfinity(max) && max > 0)
-        {
-            maxProportion = max / availableLength;
-        }
-
-        if (maxProportion < minProportion)
-        {
-            maxProportion = minProportion;
-        }
-
-        return Math.Clamp(proportion, minProportion, maxProportion);
     }
 
     private void ApplyResizeConstraints(

@@ -242,6 +242,42 @@ public class FlatProportionalPanelTests
     }
 
     [AvaloniaFact]
+    public void Measure_Redistributes_MinimumClamp_BeforeWritingProportions()
+    {
+        var left = new TestItem("Left", 0.8);
+        var middle = new TestItem("Middle", 0.1);
+        var right = new TestItem("Right", 0.1);
+        var root = new TestDock(
+            "Root",
+            Orientation.Horizontal,
+            1.0,
+            new IFlatProportionalItem[]
+            {
+                left,
+                new TestSplitter("LeftSplitter"),
+                middle,
+                new TestSplitter("RightSplitter"),
+                right
+            });
+        var panel = new FlatProportionalPanel
+        {
+            Root = root,
+            SplitterThickness = 0,
+            MinimumProportionSize = 75
+        };
+
+        panel.Measure(new Size(300, 600));
+
+        Assert.Equal(1.0, left.Proportion + middle.Proportion + right.Proportion, 10);
+        Assert.Equal(0.5, left.Proportion, 10);
+        Assert.Equal(0.25, middle.Proportion, 10);
+        Assert.Equal(0.25, right.Proportion, 10);
+        Assert.Equal(left.Proportion, left.CollapsedProportion);
+        Assert.Equal(middle.Proportion, middle.CollapsedProportion);
+        Assert.Equal(right.Proportion, right.CollapsedProportion);
+    }
+
+    [AvaloniaFact]
     public void Measure_Restores_CollapsedProportions_When_CollapsibleItem_Reopens()
     {
         var left = new ObservableTestItem("Left", 0.5)

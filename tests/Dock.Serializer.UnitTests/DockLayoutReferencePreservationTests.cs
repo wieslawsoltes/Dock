@@ -4,6 +4,8 @@ using System.IO;
 using Dock.Model.Core;
 using Dock.Model.Inpc;
 using Dock.Model.Inpc.Controls;
+using Dock.Serializer.Xml;
+using Dock.Serializer.Yaml;
 using Xunit;
 using NewtonsoftDockSerializer = Dock.Serializer.DockSerializer;
 using SystemTextJsonDockSerializer = Dock.Serializer.SystemTextJson.DockSerializer;
@@ -15,7 +17,9 @@ public class DockLayoutReferencePreservationTests
     public static IEnumerable<object[]> ReferencePreservingSerializerFactories =>
     [
         new object[] { "Newtonsoft", (Func<IDockSerializer>)(() => new NewtonsoftDockSerializer()) },
-        new object[] { "SystemTextJson", (Func<IDockSerializer>)(() => new SystemTextJsonDockSerializer()) }
+        new object[] { "SystemTextJson", (Func<IDockSerializer>)(() => new SystemTextJsonDockSerializer()) },
+        new object[] { "Yaml", (Func<IDockSerializer>)(() => new DockYamlSerializer()) },
+        new object[] { "Xml", (Func<IDockSerializer>)(() => new DockXmlSerializer()) }
     ];
 
     private sealed class NonClosingMemoryStream : MemoryStream

@@ -353,6 +353,15 @@ public sealed class ProtobufDockSerializer : IDockSerializer
         }
     }
 
+    private static bool IsBackReferenceProperty(PropertyInfo property)
+    {
+        // Owner/OriginalOwner close the reference cycles that protobuf-net 3.x cannot preserve
+        // (AsReference is obsolete-as-error), so they are excluded from the wire; ListTypeConverter
+        // rebuilds Owner from tree containment after deserializing.
+        return (property.Name == nameof(IDockable.Owner) || property.Name == nameof(IDockable.OriginalOwner))
+            && typeof(IDockable).IsAssignableFrom(property.PropertyType);
+    }
+
     private static IReadOnlyList<PropertyInfo> GetSerializableProperties(Type type)
     {
         var properties = new List<PropertyInfo>();
@@ -369,6 +378,11 @@ public sealed class ProtobufDockSerializer : IDockSerializer
             }
 
             if (!property.IsDefined(typeof(DataMemberAttribute), true))
+            {
+                continue;
+            }
+
+            if (IsBackReferenceProperty(property))
             {
                 continue;
             }

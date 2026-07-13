@@ -108,7 +108,10 @@ public sealed class ProtobufDockSerializer : IDockSerializer
         var interfaceHierarchy = BuildInterfaceHierarchy(dockInterfaces);
         var classHierarchy = BuildClassHierarchy(dockInterfaces, dockClasses);
 
-        foreach (var baseType in dockInterfaces)
+        var baseTypes = new HashSet<Type>(dockInterfaces);
+        baseTypes.UnionWith(classHierarchy.Keys);
+
+        foreach (var baseType in baseTypes)
         {
             var derivedTypes = new List<Type>();
             if (interfaceHierarchy.TryGetValue(baseType, out var interfaceTypes))
@@ -225,19 +228,39 @@ public sealed class ProtobufDockSerializer : IDockSerializer
         IReadOnlyCollection<Type> dockInterfaces,
         IReadOnlyCollection<Type> dockClasses)
     {
+        var classSet = new HashSet<Type>(dockClasses);
         var map = new Dictionary<Type, List<Type>>();
         foreach (var dockClass in dockClasses)
         {
-            var baseInterface = GetClosestDockInterface(dockClass, dockInterfaces);
-            if (baseInterface is null)
+            // A subclass must be registered under its nearest concrete Dock base class, not just an
+            // interface, or protobuf-net's base-chain dispatch throws "Unexpected sub-type".
+            var registrationBase = FindNearestTrackedBaseClass(dockClass, classSet)
+                ?? GetClosestDockInterface(dockClass, dockInterfaces);
+            if (registrationBase is null)
             {
                 continue;
             }
 
-            AddToTypeMap(map, baseInterface, dockClass);
+            AddToTypeMap(map, registrationBase, dockClass);
         }
 
         return map;
+    }
+
+    private static Type? FindNearestTrackedBaseClass(Type type, IReadOnlyCollection<Type> classSet)
+    {
+        var current = type.BaseType;
+        while (current is not null && current != typeof(object))
+        {
+            if (classSet.Contains(current))
+            {
+                return current;
+            }
+
+            current = current.BaseType;
+        }
+
+        return null;
     }
 
     private static Type? GetClosestDockInterface(Type type, IReadOnlyCollection<Type> dockInterfaces)

@@ -1201,8 +1201,13 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
-    public virtual void CloseDockable(IDockable dockable)
+    public virtual void CloseDockable(IDockable? dockable)
     {
+        if (dockable is null)
+        {
+            return;
+        }
+
         if (dockable.Owner is IDock dock &&
             !dock.CanCloseLastDockable &&
             dock.VisibleDockables?.Count <= 1)

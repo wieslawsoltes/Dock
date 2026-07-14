@@ -294,6 +294,13 @@ public class NavigateAdapter : INavigateAdapter
             {
                 rootDock.ExitWindows.Execute(null);
             }
+
+            return;
+        }
+
+        if (_dock.Factory is { } factory && _dock.ActiveDockable is { } activeDockable)
+        {
+            factory.CloseDockable(activeDockable);
         }
     }
 }

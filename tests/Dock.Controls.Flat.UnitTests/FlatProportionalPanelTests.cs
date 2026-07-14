@@ -222,6 +222,14 @@ public class FlatProportionalPanelTests
         Assert.Same(firstSplitterControl, reusedSplitterControl);
         Assert.Same(secondSplitter, reusedSplitterControl.Splitter);
         Assert.Same(secondSplitter, reusedSplitterControl.DataContext);
+        Assert.True(reusedSplitterControl.IsResizingEnabled);
+        Assert.False(reusedSplitterControl.PreviewResize);
+
+        secondSplitter.CanResizeValue = false;
+        secondSplitter.ResizePreviewValue = true;
+
+        Assert.False(reusedSplitterControl.IsResizingEnabled);
+        Assert.True(reusedSplitterControl.PreviewResize);
     }
 
     [AvaloniaFact]
@@ -642,16 +650,37 @@ public class FlatProportionalPanelTests
         public IList<IFlatProportionalItem>? VisibleItems => _visibleItems;
     }
 
-    private sealed class TestSplitter : TestItem, IFlatProportionalSplitter
+    private sealed class TestSplitter : TestItem, IFlatProportionalSplitter, INotifyPropertyChanged
     {
+        private bool _canResize = true;
+        private bool _resizePreview;
+
         public TestSplitter(string id)
             : base(id, 0)
         {
         }
 
-        public bool CanResizeValue { get; init; } = true;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public bool ResizePreviewValue { get; init; }
+        public bool CanResizeValue
+        {
+            get => _canResize;
+            set
+            {
+                _canResize = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanResize)));
+            }
+        }
+
+        public bool ResizePreviewValue
+        {
+            get => _resizePreview;
+            set
+            {
+                _resizePreview = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResizePreview)));
+            }
+        }
 
         public bool CanResize => CanResizeValue;
 

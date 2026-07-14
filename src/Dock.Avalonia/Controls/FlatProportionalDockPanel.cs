@@ -3,7 +3,6 @@
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Media;
 using Dock.Avalonia.Internal;
 using Dock.Controls.Flat;
@@ -102,21 +101,41 @@ public class FlatProportionalDockPanel : FlatProportionalPanel
             return base.CreateDockSurface(dock);
         }
 
-        var surface = new DockableControl
+        var surface = new FlatProportionalDockSurface
         {
             TrackingMode = TrackingMode.Visible,
             Background = Brushes.Transparent,
-            DataContext = adapter.Dock,
             [DockProperties.IsDropAreaProperty] = true,
             [DockProperties.IsDockTargetProperty] = true
         };
 
         DockProperties.SetDockAdornerHost(surface, surface);
-
-        surface.Bind(DockProperties.IsDropEnabledProperty, new Binding(nameof(IDockable.CanDrop)));
-        surface.Bind(DockProperties.DockGroupProperty, new Binding(nameof(IDockable.DockGroup)));
-
         return surface;
+    }
+
+    /// <inheritdoc/>
+    protected override void UpdateDockSurface(Control surface, IFlatProportionalDock dock)
+    {
+        if (surface is FlatProportionalDockSurface dockSurface
+            && dock is DockFlatProportionalAdapter.DockFlatDockAdapter adapter)
+        {
+            dockSurface.SetDock(adapter.Dock);
+            return;
+        }
+
+        base.UpdateDockSurface(surface, dock);
+    }
+
+    /// <inheritdoc/>
+    protected override void ClearDockSurface(Control surface)
+    {
+        if (surface is FlatProportionalDockSurface dockSurface)
+        {
+            dockSurface.SetDock(null);
+            return;
+        }
+
+        base.ClearDockSurface(surface);
     }
 
     /// <inheritdoc/>

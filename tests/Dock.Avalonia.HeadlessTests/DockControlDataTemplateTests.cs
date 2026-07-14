@@ -5,6 +5,7 @@ using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Internal;
 using Dock.Controls.ProportionalStackPanel;
@@ -127,6 +128,42 @@ public class DockControlDataTemplateTests
 
         Assert.NotNull(control);
         Assert.IsType<FlatProportionalDockSplitter>(control);
+    }
+
+    [AvaloniaFact]
+    public void DockDataTemplateHelper_FlatProportionalSplitterTemplate_Tracks_ModelProperties()
+    {
+        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates(DockPresentationMode.Flat).ToList();
+        var template = FindTemplateForType<IProportionalDockSplitter>(templates);
+        Assert.NotNull(template);
+        var splitter = new ProportionalDockSplitter
+        {
+            CanResize = false,
+            ResizePreview = true
+        };
+        var control = Assert.IsType<FlatProportionalDockSplitter>(template!.Build(splitter));
+        control.DataContext = splitter;
+        var window = new Window { Content = control };
+
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.False(control.IsResizingEnabled);
+            Assert.True(control.PreviewResize);
+
+            splitter.CanResize = true;
+            splitter.ResizePreview = false;
+
+            Assert.True(control.IsResizingEnabled);
+            Assert.False(control.PreviewResize);
+        }
+        finally
+        {
+            window.Close();
+            Dispatcher.UIThread.RunJobs();
+        }
     }
 
     [AvaloniaFact]

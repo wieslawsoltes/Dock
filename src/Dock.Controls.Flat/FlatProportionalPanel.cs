@@ -10,7 +10,6 @@ using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
-using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Rendering.Composition;
 using Avalonia.Rendering.Composition.Animations;
@@ -426,7 +425,11 @@ public class FlatProportionalPanel : Panel
     private void AddDockSurfaces(IFlatProportionalDock dock)
     {
         var key = GetItemKey(dock);
-        var surface = CreateDockSurface(dock);
+        var surface = _reusableDockSurfaces?.Remove(key, out var reusableSurface) == true
+            ? reusableSurface
+            : CreateDockSurface(dock);
+
+        UpdateDockSurface(surface, dock);
         _dockSurfaces[key] = surface;
         EnsureSurfaceChild(surface);
 
@@ -451,17 +454,29 @@ public class FlatProportionalPanel : Panel
     /// <returns>The surface control.</returns>
     protected virtual Control CreateDockSurface(IFlatProportionalDock dock)
     {
-        if (_reusableDockSurfaces?.Remove(GetItemKey(dock), out var reusableSurface) == true)
-        {
-            reusableSurface.DataContext = dock.Content ?? dock;
-            return reusableSurface;
-        }
-
         return new Border
         {
-            Background = Brushes.Transparent,
-            DataContext = dock.Content ?? dock
+            Background = Brushes.Transparent
         };
+    }
+
+    /// <summary>
+    /// Updates a dock surface before it is added or reused for a proportional container.
+    /// </summary>
+    /// <param name="surface">The surface control.</param>
+    /// <param name="dock">The proportional container item.</param>
+    protected virtual void UpdateDockSurface(Control surface, IFlatProportionalDock dock)
+    {
+        surface.DataContext = dock.Content ?? dock;
+    }
+
+    /// <summary>
+    /// Clears a dock surface that is no longer used by the current layout.
+    /// </summary>
+    /// <param name="surface">The unused surface control.</param>
+    protected virtual void ClearDockSurface(Control surface)
+    {
+        surface.DataContext = null;
     }
 
     private void AddDockVisuals(IFlatProportionalDock dock)
@@ -512,11 +527,7 @@ public class FlatProportionalPanel : Panel
             control.DataContext = splitter;
         }
 
-        if (!reused)
-        {
-            control.Bind(FlatProportionalSplitter.IsResizingEnabledProperty, new Binding(nameof(IFlatProportionalSplitter.CanResize)));
-            control.Bind(FlatProportionalSplitter.PreviewResizeProperty, new Binding(nameof(IFlatProportionalSplitter.ResizePreview)));
-        }
+        UpdateSplitter(control, splitter);
 
         _splitters[key] = control;
         EnsureDockVisualChild(control);
@@ -534,6 +545,14 @@ public class FlatProportionalPanel : Panel
         {
             DataContext = splitter
         };
+    }
+
+    private static void UpdateSplitter(
+        FlatProportionalSplitter control,
+        IFlatProportionalSplitter splitter)
+    {
+        control.IsResizingEnabled = splitter.CanResize;
+        control.PreviewResize = splitter.ResizePreview;
     }
 
     private void AddPresenter(IFlatProportionalItem dockable)
@@ -655,7 +674,7 @@ public class FlatProportionalPanel : Panel
             foreach (var surface in _reusableDockSurfaces.Values)
             {
                 Children.Remove(surface);
-                surface.DataContext = null;
+                ClearDockSurface(surface);
             }
         }
 
@@ -829,6 +848,15 @@ public class FlatProportionalPanel : Panel
             && sender is IFlatProportionalItem item)
         {
             UpdateItemContent(item);
+            return;
+        }
+
+        if (sender is IFlatProportionalSplitter splitter
+            && (e.PropertyName == nameof(IFlatProportionalSplitter.CanResize)
+                || e.PropertyName == nameof(IFlatProportionalSplitter.ResizePreview))
+            && _splitters.TryGetValue(GetItemKey(splitter), out var splitterControl))
+        {
+            UpdateSplitter(splitterControl, splitter);
             return;
         }
 

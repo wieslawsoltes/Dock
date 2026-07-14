@@ -38,11 +38,7 @@ internal static class DockDataTemplateHelper
 
         if (presentationMode == DockPresentationMode.Flat)
         {
-            yield return CreateDataTemplate<IProportionalDockSplitter>(() => new FlatProportionalDockSplitter
-            {
-                [!FlatProportionalDockSplitter.IsResizingEnabledProperty] = new Binding(nameof(IProportionalDockSplitter.CanResize)),
-                [!FlatProportionalDockSplitter.PreviewResizeProperty] = new Binding(nameof(IProportionalDockSplitter.ResizePreview))
-            });
+            yield return CreateDataTemplate<IProportionalDockSplitter>(() => new FlatProportionalDockSplitter());
         }
         else
         {

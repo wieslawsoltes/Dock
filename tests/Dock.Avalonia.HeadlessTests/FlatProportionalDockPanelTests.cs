@@ -109,7 +109,7 @@ public class FlatProportionalDockPanelTests
             Assert.True(rightPresenter.IsHitTestVisible);
 
             var hit = DockHelpers.GetControl(panel, point, DockProperties.IsDropAreaProperty);
-            var surface = Assert.IsType<DockableControl>(hit);
+            var surface = Assert.IsAssignableFrom<DockableControl>(hit);
 
             Assert.Same(root, surface.DataContext);
             Assert.True(DockProperties.GetIsDockTarget(surface));
@@ -119,6 +119,33 @@ public class FlatProportionalDockPanelTests
             window.Close();
             Dispatcher.UIThread.RunJobs();
         }
+    }
+
+    [AvaloniaFact]
+    public void FlatProportionalDockPanel_DropSurface_Tracks_DockProperties()
+    {
+        var root = new ProportionalDock
+        {
+            Id = "Root",
+            CanDrop = false,
+            DockGroup = "Initial",
+            VisibleDockables = new List<IDockable>()
+        };
+        var panel = new FlatProportionalDockPanel { Dock = root };
+
+        panel.Measure(new Size(1000, 600));
+        panel.Arrange(new Rect(0, 0, 1000, 600));
+
+        var surface = panel.Children.OfType<DockableControl>().Single();
+
+        Assert.False(DockProperties.GetIsDropEnabled(surface));
+        Assert.Equal("Initial", DockProperties.GetDockGroup(surface));
+
+        root.CanDrop = true;
+        root.DockGroup = "Updated";
+
+        Assert.True(DockProperties.GetIsDropEnabled(surface));
+        Assert.Equal("Updated", DockProperties.GetDockGroup(surface));
     }
 
     [AvaloniaFact]
@@ -917,8 +944,10 @@ public class FlatProportionalDockPanelTests
 
             Assert.True(leftPresenter.IsHitTestVisible);
 
-            await Task.Delay(120);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(
+                () => GetLivePresenters(panel).All(
+                    presenter => !ReferenceEquals(presenter.Content, right)),
+                timeoutMilliseconds: 2000);
 
             Assert.True(leftPresenter.IsHitTestVisible);
             Assert.DoesNotContain(GetLivePresenters(panel), presenter => ReferenceEquals(presenter.Content, right));
@@ -1181,7 +1210,7 @@ public class FlatProportionalDockPanelTests
         var panel = new FlatProportionalDockPanel
         {
             Dock = root,
-            LayoutTransitionDuration = TimeSpan.FromMilliseconds(100)
+            LayoutTransitionDuration = TimeSpan.FromMilliseconds(1000)
         };
         var window = ShowPanel(panel);
 
@@ -1202,7 +1231,7 @@ public class FlatProportionalDockPanelTests
 
             Assert.False(rightPresenter.IsHitTestVisible);
 
-            await Task.Delay(70);
+            await Task.Delay(50);
             Dispatcher.UIThread.RunJobs();
 
             root.VisibleDockables = new List<IDockable> { right, splitter, left };
@@ -1214,13 +1243,7 @@ public class FlatProportionalDockPanelTests
             Assert.NotEqual(insertedBounds.X, rightPresenter.Bounds.X);
             Assert.False(rightPresenter.IsHitTestVisible);
 
-            await Task.Delay(70);
-            Dispatcher.UIThread.RunJobs();
-
-            Assert.False(rightPresenter.IsHitTestVisible);
-
-            await Task.Delay(140);
-            Dispatcher.UIThread.RunJobs();
+            await WaitForAsync(() => rightPresenter.IsHitTestVisible, timeoutMilliseconds: 3000);
 
             var visual = ElementComposition.GetElementVisual(rightPresenter);
 

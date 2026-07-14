@@ -10,6 +10,8 @@ namespace BrowserTabTheme;
 
 public partial class App : Application
 {
+    private MainWindowViewModel? _mainWindowViewModel;
+
     public override void Initialize()
     {
 #if DOCK_USE_GENERATED_APP_INITIALIZE_COMPONENT
@@ -66,18 +68,21 @@ public partial class App : Application
 
             factory.InitLayout(rootDock);
 
+            _mainWindowViewModel = new MainWindowViewModel(factory, rootDock);
             var mainWindow = new MainWindow
             {
-                DataContext = documentDock
+                DataContext = _mainWindowViewModel
             };
-            mainWindow.DockControl.Factory = factory;
-            mainWindow.DockControl.Layout = rootDock;
-            mainWindow.DockControl.InitializeFactory = true;
-            mainWindow.DockControl.InitializeLayout = false;
-
             desktop.MainWindow = mainWindow;
+            desktop.Exit += (_, _) => DisposeMainWindowViewModel();
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void DisposeMainWindowViewModel()
+    {
+        _mainWindowViewModel?.Dispose();
+        _mainWindowViewModel = null;
     }
 }

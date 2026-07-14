@@ -1,16 +1,20 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:converters="using:Dock.Avalonia.Converters"
-        xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:vm="using:BrowserTabTheme"
         x:Class="BrowserTabTheme.MainWindow"
-        x:DataType="dmc:IDocumentDock"
+        x:DataType="vm:MainWindowViewModel"
         Title="BrowserTabTheme Sample"
         Width="1300"
         Height="820"
         Background="{DynamicResource DockSurfaceHeaderBrush}"
-        ExtendClientAreaToDecorationsHint="{Binding LayoutMode, Converter={x:Static converters:DocumentLayoutModeMatchConverter.Instance}, ConverterParameter=Tabbed}"
+        ExtendClientAreaToDecorationsHint="{CompiledBinding ExtendClientAreaToDecorationsHint}"
         ExtendClientAreaTitleBarHeightHint="-1"
         >
-  <DockControl Name="DockControl" Margin="6" />
+  <DockControl Name="DockControl"
+               Margin="6"
+               Factory="{CompiledBinding Factory}"
+               Layout="{CompiledBinding Layout}"
+               InitializeFactory="True"
+               InitializeLayout="False" />
   
 </Window>

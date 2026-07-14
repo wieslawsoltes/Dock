@@ -32,6 +32,7 @@
     <File Path="build/Avalonia.Headless.props" />
     <File Path="build/Avalonia.props" />
     <File Path="build/Avalonia.Themes.Fluent.props" />
+    <File Path="build/Avalonia.Themes.Simple.props" />
     <File Path="build/Avalonia.Web.props" />
     <File Path="build/CommunityToolkit.Mvvm.props" />
     <File Path="build/Newtonsoft.Json.props" />

@@ -233,6 +233,19 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
+    public void DragDockableResolver_RegularDockableOwner_IsNotSelfDrop()
+    {
+        var factory = new RecordingFactory();
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+        var document = factory.CreateDocument();
+        factory.AddDockable(documentDock, document);
+
+        Assert.True(DragDockableResolver.IsSelfDrop(document, document));
+        Assert.False(DragDockableResolver.IsSelfDrop(document, documentDock));
+    }
+
+    [AvaloniaFact]
     public void GlobalDockOperationSelector_UsesGlobal_WhenNoLocalAdorner()
     {
         var service = new GlobalDockingService();

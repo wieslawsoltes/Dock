@@ -30,7 +30,8 @@ internal static class DragDockableResolver
     }
 
     /// <summary>
-    /// Determines whether a drop targets the dragged dockable or its current owner.
+    /// Determines whether a drop targets the dragged dockable or the owner of a
+    /// resolved pinned-preview dockable.
     /// </summary>
     /// <param name="sourceDockable">The dockable supplied by the drag surface.</param>
     /// <param name="targetDockable">The proposed drop target.</param>
@@ -39,6 +40,7 @@ internal static class DragDockableResolver
     {
         var resolvedSource = Resolve(sourceDockable);
         return ReferenceEquals(resolvedSource, targetDockable)
-               || ReferenceEquals(resolvedSource.Owner, targetDockable);
+               || (!ReferenceEquals(resolvedSource, sourceDockable)
+                   && ReferenceEquals(resolvedSource.Owner, targetDockable));
     }
 }

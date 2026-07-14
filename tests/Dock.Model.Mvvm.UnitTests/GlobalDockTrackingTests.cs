@@ -24,6 +24,47 @@ public class GlobalDockTrackingTests
     }
 
     [Fact]
+    public void InitLayout_Initializes_Global_Tracking_From_Restored_Focused_Dockable()
+    {
+        var factory = new TrackingTestFactory();
+        var context = CreateContext(factory, "A");
+
+        GlobalDockTrackingChangedEventArgs? raised = null;
+        var raisedCount = 0;
+        factory.GlobalDockTrackingChanged += (_, args) =>
+        {
+            raised = args;
+            raisedCount++;
+        };
+
+        factory.InitLayout(context.Root);
+
+        Assert.Equal(1, raisedCount);
+        Assert.NotNull(raised);
+        Assert.Equal(DockTrackingChangeReason.LayoutInitialized, raised!.Reason);
+        Assert.Same(context.Dockable1, raised.Current.Dockable);
+        Assert.Same(context.Root, raised.Current.RootDock);
+        Assert.Same(context.Window, raised.Current.Window);
+        Assert.Same(context.Dockable1, factory.CurrentDockable);
+        Assert.Same(context.Root, factory.CurrentRootDock);
+        Assert.Same(context.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void InitLayout_Falls_Back_To_Deepest_Restored_Active_Dockable()
+    {
+        var factory = new TrackingTestFactory();
+        var context = CreateSplitContext(factory, "A");
+        context.Root.FocusedDockable = null;
+
+        factory.InitLayout(context.Root);
+
+        Assert.Same(context.LeftDocument, factory.CurrentDockable);
+        Assert.Same(context.Root, factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
+    }
+
+    [Fact]
     public void WindowActivated_Updates_State_And_Raises_Reason()
     {
         var factory = new TrackingTestFactory();
@@ -248,6 +289,7 @@ public class GlobalDockTrackingTests
 
         factory.InitLayout(second.Root);
         dockControl.Layout = second.Root;
+        Assert.Same(second.LeftDocument, factory.CurrentDockable);
 
         var raised = 0;
         factory.GlobalDockTrackingChanged += (_, args) =>
@@ -261,7 +303,7 @@ public class GlobalDockTrackingTests
         factory.OnFocusedDockableChanged(second.LeftDocument);
         factory.OnFocusedDockableChanged(second.RightDocument);
 
-        Assert.Equal(2, raised);
+        Assert.Equal(1, raised);
         Assert.Same(second.RightDocument, factory.CurrentDockable);
         Assert.Same(second.Root, factory.CurrentRootDock);
         Assert.Null(factory.CurrentDockWindow);

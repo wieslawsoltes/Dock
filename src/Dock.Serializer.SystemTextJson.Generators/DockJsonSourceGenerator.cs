@@ -1096,6 +1096,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
     private static class SystemTextJsonContextGenerator
     {
+        private const string DockContextHintNamePrefix = "DockSystemTextJsonContext.";
+
         public static ImmutableArray<GeneratedSourceArtifact> Generate(
             Compilation compilation,
             string contextSource,
@@ -1124,6 +1126,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             }
 
             return runResult.Results[0].GeneratedSources
+                .Where(static x => x.HintName.StartsWith(DockContextHintNamePrefix, StringComparison.Ordinal))
                 .Select(static x => new GeneratedSourceArtifact("SystemTextJson." + x.HintName, x.SourceText.ToString()))
                 .ToImmutableArray();
         }

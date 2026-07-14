@@ -66,7 +66,10 @@ public partial class App : Application
 
             factory.InitLayout(rootDock);
 
-            var mainWindow = new MainWindow();
+            var mainWindow = new MainWindow
+            {
+                DataContext = documentDock
+            };
             mainWindow.DockControl.Factory = factory;
             mainWindow.DockControl.Layout = rootDock;
             mainWindow.DockControl.InitializeFactory = true;

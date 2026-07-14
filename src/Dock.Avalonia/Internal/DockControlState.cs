@@ -86,6 +86,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private static bool CanDragDockable(IDockable dockable)
     {
+        dockable = DragDockableResolver.Resolve(dockable);
         return DockCapabilityResolver.IsEnabled(
             dockable,
             DockCapability.Drag,
@@ -94,6 +95,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private static bool CanFloatDockable(IDockable dockable)
     {
+        dockable = DragDockableResolver.Resolve(dockable);
         return DockCapabilityResolver.IsEnabled(
             dockable,
             DockCapability.Float,
@@ -148,6 +150,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (dragControl.DataContext is IDockable targetDockable)
         {
+            targetDockable = DragDockableResolver.Resolve(targetDockable);
             DockHelpers.ShowWindows(targetDockable);
             var sp = activeDockControl.PointToScreen(point);
             Size? preferredPreviewSize = GetPreferredPreviewSize(dragControl);
@@ -251,6 +254,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable
                 && ResolveGlobalTargetDock(dropCtrl) is { } targetDock)
             {
+                sourceDockable = DragDockableResolver.Resolve(sourceDockable);
                 var sourceRoot = sourceDockable.Factory?.FindRoot(sourceDockable, _ => true);
                 var targetRoot = targetDock.Factory?.FindRoot(targetDock, _ => true);
 
@@ -298,6 +302,13 @@ internal class DockControlState : DockManagerState, IDockControlState
                 {
                     return false;
                 }
+
+                if (DragDockableResolver.IsSelfDrop(sourceDockable, target))
+                {
+                    return true;
+                }
+
+                sourceDockable = DragDockableResolver.Resolve(sourceDockable);
 
                 if (!ValidateLocalTarget(sourceDockable, target))
                 {
@@ -351,6 +362,8 @@ internal class DockControlState : DockManagerState, IDockControlState
             return false;
         }
 
+        sourceDockable = DragDockableResolver.Resolve(sourceDockable);
+
         // For local validation during Enter, we just check if source can do local docking
         // Detailed target validation happens later in ValidateDockable when DropControl is set
         if (DropControl?.DataContext is IDockable)
@@ -382,6 +395,8 @@ internal class DockControlState : DockManagerState, IDockControlState
             LogDropRejection(nameof(ValidateGlobal), "DragControl DataContext is not an IDockable.");
             return false;
         }
+
+        sourceDockable = DragDockableResolver.Resolve(sourceDockable);
 
         if (DropControl is not { } dropCtrl)
         {
@@ -443,6 +458,8 @@ internal class DockControlState : DockManagerState, IDockControlState
             return true;
         }
 
+        sourceDockable = DragDockableResolver.Resolve(sourceDockable);
+
         if (DropControl?.DataContext is not IDockable targetDockable)
         {
             return true;
@@ -453,6 +470,8 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
     {
+        sourceDockable = DragDockableResolver.Resolve(sourceDockable);
+
         if (sourceDockable is IDock dock)
         {
             if (dock.ActiveDockable == null)
@@ -611,6 +630,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                     {
                         if (_context.DragControl?.DataContext is IDockable targetDockable)
                         {
+                            targetDockable = DragDockableResolver.Resolve(targetDockable);
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
                             Size? preferredPreviewSize = GetPreferredPreviewSize(_context.DragControl);

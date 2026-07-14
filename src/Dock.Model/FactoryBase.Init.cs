@@ -289,6 +289,7 @@ public abstract partial class FactoryBase
         }
 
         var previousFocused = root.FocusedDockable;
+        var focusedOwnerWasActive = previousFocused?.Owner is IDock focusedOwner && focusedOwner.IsActive;
 
         if (dockable is not null)
         {
@@ -315,7 +316,8 @@ public abstract partial class FactoryBase
             }
         }
 
-        if (root.FocusedDockable?.Owner is not null)
+        if (!ReferenceEquals(root.FocusedDockable, dockable)
+            && root.FocusedDockable?.Owner is not null)
         {
             SetIsActive(root.FocusedDockable.Owner, false);
             // Trigger deactivation event for the dockable that lost focus
@@ -337,6 +339,13 @@ public abstract partial class FactoryBase
         if (root.FocusedDockable?.Owner is not null)
         {
             SetIsActive(root.FocusedDockable.Owner, true);
+        }
+
+        if (dockable is not null
+            && ReferenceEquals(previousFocused, root.FocusedDockable)
+            && !focusedOwnerWasActive)
+        {
+            OnFocusedDockableChanged(dockable);
         }
 
         if (previousFocused is not null && !ReferenceEquals(previousFocused, root.FocusedDockable))

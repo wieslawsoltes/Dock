@@ -24,6 +24,49 @@ public class GlobalDockTrackingTests
     }
 
     [Fact]
+    public void SetFocusedDockable_Raises_Events_When_Focus_Returns_To_Same_Dockables_Across_Roots()
+    {
+        var factory = new TrackingTestFactory();
+        var main = CreateContext(factory, "main");
+        var floating = CreateContext(factory, "floating");
+        factory.DockControls.Add(new TestDockControl { Factory = factory, Layout = main.Root });
+        factory.DockControls.Add(new TestDockControl { Factory = factory, Layout = floating.Root });
+        factory.InitLayout(main.Root);
+        factory.InitLayout(floating.Root);
+        main.Dock.IsActive = false;
+        floating.Dock.IsActive = true;
+
+        FocusedDockableChangedEventArgs? raised = null;
+        var raisedCount = 0;
+        factory.FocusedDockableChanged += (_, args) =>
+        {
+            raised = args;
+            raisedCount++;
+        };
+
+        factory.SetFocusedDockable(main.Root, main.Dockable1);
+        factory.SetFocusedDockable(main.Root, main.Dockable1);
+
+        Assert.Equal(1, raisedCount);
+        Assert.NotNull(raised);
+        Assert.Same(main.Dockable1, raised!.Dockable);
+        Assert.Same(main.Root, raised.RootDock);
+        Assert.Same(main.Window, raised.Window);
+        Assert.True(main.Dock.IsActive);
+        Assert.False(floating.Dock.IsActive);
+
+        factory.SetFocusedDockable(floating.Root, floating.Dockable1);
+        factory.SetFocusedDockable(floating.Root, floating.Dockable1);
+
+        Assert.Equal(2, raisedCount);
+        Assert.Same(floating.Dockable1, raised.Dockable);
+        Assert.Same(floating.Root, raised.RootDock);
+        Assert.Same(floating.Window, raised.Window);
+        Assert.False(main.Dock.IsActive);
+        Assert.True(floating.Dock.IsActive);
+    }
+
+    [Fact]
     public void WindowActivated_Updates_State_And_Raises_Reason()
     {
         var factory = new TrackingTestFactory();

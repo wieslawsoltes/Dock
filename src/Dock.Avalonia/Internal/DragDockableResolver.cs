@@ -4,6 +4,7 @@
 using System;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -42,5 +43,28 @@ internal static class DragDockableResolver
         return ReferenceEquals(resolvedSource, targetDockable)
                || (!ReferenceEquals(resolvedSource, sourceDockable)
                    && ReferenceEquals(resolvedSource.Owner, targetDockable));
+    }
+
+    /// <summary>
+    /// Determines whether the proposed operation should be treated as a no-op self-drop.
+    /// Direct dockables may use non-fill operations to move relative to themselves, while
+    /// pinned preview surfaces must remain no-op targets for every operation.
+    /// </summary>
+    /// <param name="sourceDockable">The dockable supplied by the drag surface.</param>
+    /// <param name="targetDockable">The proposed drop target.</param>
+    /// <param name="operation">The selected docking operation.</param>
+    /// <returns><c>true</c> when the operation must not mutate the layout; otherwise <c>false</c>.</returns>
+    public static bool IsNoOpDrop(
+        IDockable sourceDockable,
+        IDockable targetDockable,
+        DockOperation operation)
+    {
+        if (!IsSelfDrop(sourceDockable, targetDockable))
+        {
+            return false;
+        }
+
+        return operation == DockOperation.Fill
+               || !ReferenceEquals(Resolve(sourceDockable), sourceDockable);
     }
 }

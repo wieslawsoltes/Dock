@@ -303,7 +303,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                     return false;
                 }
 
-                if (DragDockableResolver.IsSelfDrop(sourceDockable, target))
+                if (DragDockableResolver.IsNoOpDrop(sourceDockable, target, selectedOperation))
                 {
                     return true;
                 }

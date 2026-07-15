@@ -214,6 +214,7 @@ public class DockControlStateTests
         Assert.Same(tool, DragDockableResolver.Resolve(previewDock));
         Assert.True(DragDockableResolver.IsSelfDrop(previewDock, previewDock));
         Assert.True(DragDockableResolver.IsSelfDrop(previewDock, tool));
+        Assert.True(DragDockableResolver.IsNoOpDrop(previewDock, previewDock, DockOperation.Left));
     }
 
     [AvaloniaFact]
@@ -243,6 +244,9 @@ public class DockControlStateTests
 
         Assert.True(DragDockableResolver.IsSelfDrop(document, document));
         Assert.False(DragDockableResolver.IsSelfDrop(document, documentDock));
+        Assert.True(DragDockableResolver.IsNoOpDrop(document, document, DockOperation.Fill));
+        Assert.False(DragDockableResolver.IsNoOpDrop(document, document, DockOperation.Left));
+        Assert.False(DragDockableResolver.IsNoOpDrop(document, document, DockOperation.Window));
     }
 
     [AvaloniaFact]

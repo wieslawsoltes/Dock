@@ -330,6 +330,12 @@ public abstract partial class FactoryBase
         var rootDock = window?.Layout;
         var dockable = rootDock?.FocusedDockable ?? rootDock?.ActiveDockable;
         UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.WindowActivated);
+
+        if (rootDock?.FocusedDockable is { Owner: IDock focusedOwner } focusedDockable)
+        {
+            SetFocusedDockable(focusedOwner, focusedDockable);
+        }
+
         WindowActivated?.Invoke(this, new WindowActivatedEventArgs(window));
     }
 

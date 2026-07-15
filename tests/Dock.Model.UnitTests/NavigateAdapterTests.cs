@@ -76,6 +76,31 @@ public class NavigateAdapterTests
         Assert.Same(toolDock, rootDock.ActiveDockable);
     }
 
+    [Fact]
+    public void Navigate_Null_DoesNotCloseDocumentFromActiveDocumentDock()
+    {
+        var factory = new Factory();
+        var rootDock = factory.CreateRootDock();
+        rootDock.VisibleDockables = factory.CreateList<IDockable>();
+        var documentDock = factory.CreateDocumentDock();
+        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+        var document = factory.CreateDocument();
+
+        factory.AddDockable(documentDock, document);
+        documentDock.ActiveDockable = document;
+        factory.AddDockable(rootDock, documentDock);
+        rootDock.ActiveDockable = documentDock;
+        factory.InitLayout(rootDock);
+
+        var adapter = new NavigateAdapter(rootDock);
+
+        adapter.Navigate(null, false);
+
+        Assert.Contains(document, documentDock.VisibleDockables!);
+        Assert.Same(document, documentDock.ActiveDockable);
+        Assert.Null(rootDock.ActiveDockable);
+    }
+
     private sealed class TrackingFactory : Factory
     {
         public IDockable? ClosedDockable { get; private set; }

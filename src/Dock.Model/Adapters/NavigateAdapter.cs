@@ -97,14 +97,13 @@ public class NavigateAdapter : INavigateAdapter
 
     private void ResetActiveDockable()
     {
-        if (_dock.ActiveDockable is IDock activeDockableWindows)
+        if (_dock.ActiveDockable is IRootDock activeRootDock
+            && activeRootDock.ExitWindows.CanExecute(null))
         {
-            if (activeDockableWindows.Close.CanExecute(null))
-            {
-                activeDockableWindows.Close.Execute(null);
-            }
-            _dock.ActiveDockable = null;
+            activeRootDock.ExitWindows.Execute(null);
         }
+
+        _dock.ActiveDockable = null;
     }
 
     private void ResetBack()

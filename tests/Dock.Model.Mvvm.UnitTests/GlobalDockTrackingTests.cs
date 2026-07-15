@@ -33,8 +33,13 @@ public class GlobalDockTrackingTests
         factory.DockControls.Add(new TestDockControl { Factory = factory, Layout = floating.Root });
         factory.InitLayout(main.Root);
         factory.InitLayout(floating.Root);
-        main.Dock.IsActive = false;
+        factory.OnWindowActivated(main.Window);
+        factory.OnWindowActivated(floating.Window);
+        main.Dock.IsActive = true;
         floating.Dock.IsActive = true;
+        factory.OnWindowDeactivated(main.Window);
+        Assert.False(main.Dock.IsActive);
+        factory.OnWindowActivated(main.Window);
 
         FocusedDockableChangedEventArgs? raised = null;
         var raisedCount = 0;
@@ -55,6 +60,8 @@ public class GlobalDockTrackingTests
         Assert.True(main.Dock.IsActive);
         Assert.False(floating.Dock.IsActive);
 
+        factory.OnWindowDeactivated(main.Window);
+        factory.OnWindowActivated(floating.Window);
         factory.SetFocusedDockable(floating.Root, floating.Dockable1);
         factory.SetFocusedDockable(floating.Root, floating.Dockable1);
 

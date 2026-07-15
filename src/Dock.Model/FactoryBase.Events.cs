@@ -412,6 +412,11 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual void OnWindowDeactivated(IDockWindow? window)
     {
+        if (window?.Layout?.FocusedDockable?.Owner is IDock focusedOwner)
+        {
+            SetIsActive(focusedOwner, false);
+        }
+
         if (window is not null && ReferenceEquals(CurrentDockWindow, window))
         {
             UpdateGlobalDockTracking(null, null, null, DockTrackingChangeReason.WindowDeactivated);

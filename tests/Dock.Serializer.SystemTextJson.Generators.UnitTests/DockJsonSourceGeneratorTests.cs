@@ -159,7 +159,7 @@ public class DockJsonSourceGeneratorTests
     }
 
     [Fact]
-    public void ApplicationContextWithDockSimpleName_DoesNotCollideWithGeneratedContext()
+    public void ApplicationContextWithGeneratedSimpleName_DoesNotCollideWithDockContext()
     {
         const string source = """
             using Dock.Serializer.SystemTextJson;
@@ -170,19 +170,20 @@ public class DockJsonSourceGeneratorTests
             namespace Example;
 
             [JsonSerializable(typeof(string))]
-            internal sealed partial class DockSystemTextJsonContext : JsonSerializerContext
+            internal sealed partial class DockSerializerGeneratedJsonContext : JsonSerializerContext
             {
             }
             """;
 
         CompilationRun run = Run(source);
         GeneratorRunResult result = Assert.Single(run.RunResult.Results);
+        Assert.DoesNotContain(run.RunResult.Diagnostics, x => x.Severity == DiagnosticSeverity.Error);
+        Assert.DoesNotContain(result.Diagnostics, x => x.Severity == DiagnosticSeverity.Error);
         string contextSource = GetGeneratedSource(run, "DockSystemTextJsonContext.g.cs");
         string generatedSource = GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs");
 
-        Assert.DoesNotContain(result.Diagnostics, x => x.Severity == DiagnosticSeverity.Error);
-        Assert.Contains("DockSerializerGeneratedJsonContext", contextSource);
-        Assert.Contains("DockSerializerGeneratedJsonContext.Default", generatedSource);
+        Assert.Contains("DockSerializerGeneratedJsonContext_1", contextSource);
+        Assert.Contains("DockSerializerGeneratedJsonContext_1.Default", generatedSource);
     }
 
     [Fact]

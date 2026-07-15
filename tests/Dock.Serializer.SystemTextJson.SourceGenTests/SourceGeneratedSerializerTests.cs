@@ -49,9 +49,13 @@ public class SourceGeneratedSerializerTests
         string secondJson = JsonSerializer.Serialize(
             second,
             ApplicationJsonContexts.WeatherForecast2Context.Default.WeatherForecast2);
+        string collidingNameJson = JsonSerializer.Serialize(
+            first,
+            DockSerializerGeneratedJsonContext.Default.WeatherForecast);
 
         Assert.Contains("Sunny", firstJson, StringComparison.Ordinal);
         Assert.Contains("21", secondJson, StringComparison.Ordinal);
+        Assert.Contains("Sunny", collidingNameJson, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -517,6 +521,11 @@ public static partial class ApplicationJsonContexts
     internal partial class WeatherForecast2Context : JsonSerializerContext
     {
     }
+}
+
+[JsonSerializable(typeof(WeatherForecast))]
+internal partial class DockSerializerGeneratedJsonContext : JsonSerializerContext
+{
 }
 
 public class CustomRootDock : RootDock

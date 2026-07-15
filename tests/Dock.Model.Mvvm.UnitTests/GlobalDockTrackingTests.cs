@@ -57,23 +57,28 @@ public class GlobalDockTrackingTests
     {
         var factory = new TrackingTestFactory();
         var main = CreateContext(factory, "main");
-        var floating = CreateContext(factory, "floating");
+        var floating = CreateSplitContext(factory, "floating");
+        var floatingWindow = factory.CreateDockWindow();
+        floatingWindow.Id = "window-floating";
+        floatingWindow.Layout = floating.Root;
+        floating.Root.Window = floatingWindow;
+        floating.Root.FocusedDockable = null;
         var host = new TestHostWindow
         {
-            Window = floating.Window,
-            Presented = () => factory.OnWindowActivated(floating.Window)
+            Window = floatingWindow,
+            Presented = () => factory.OnWindowActivated(floatingWindow)
         };
         factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
         {
-            [floating.Window.Id!] = () => host
+            [floatingWindow.Id!] = () => host
         };
-        main.Root.Windows = factory.CreateList<IDockWindow>(floating.Window);
+        main.Root.Windows = factory.CreateList<IDockWindow>(floatingWindow);
 
         factory.InitLayout(main.Root);
 
-        Assert.Same(floating.Dockable1, factory.CurrentDockable);
+        Assert.Same(floating.LeftDocument, factory.CurrentDockable);
         Assert.Same(floating.Root, factory.CurrentRootDock);
-        Assert.Same(floating.Window, factory.CurrentDockWindow);
+        Assert.Same(floatingWindow, factory.CurrentDockWindow);
         Assert.Same(host, factory.CurrentHostWindow);
     }
 

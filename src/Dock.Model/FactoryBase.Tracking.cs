@@ -31,7 +31,7 @@ public abstract partial class FactoryBase
 
     private void InitializeGlobalDockTracking(IRootDock rootDock)
     {
-        var dockable = ResolveInitializedDockable(rootDock);
+        var dockable = ResolveTrackedDockable(rootDock);
         var resolvedRoot = ResolveRootDock(dockable) ?? rootDock;
         UpdateGlobalDockTracking(
             dockable,
@@ -40,7 +40,7 @@ public abstract partial class FactoryBase
             DockTrackingChangeReason.LayoutInitialized);
     }
 
-    private static IDockable? ResolveInitializedDockable(IRootDock rootDock)
+    private static IDockable? ResolveTrackedDockable(IRootDock rootDock)
     {
         if (rootDock.FocusedDockable is { } focusedDockable)
         {

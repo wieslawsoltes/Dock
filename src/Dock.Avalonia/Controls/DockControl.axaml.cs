@@ -1150,6 +1150,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
             if (windowModel != null)
             {
+                windowModel.Layout = root;
+
                 if (TopLevel.GetTopLevel(this) is IHostWindow window)
                 {
                     root.Factory?.InitDockWindow(windowModel, root, window);

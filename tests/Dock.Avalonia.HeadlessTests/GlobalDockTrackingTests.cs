@@ -68,11 +68,18 @@ public class GlobalDockTrackingTests
         {
             mainWindow.Show();
             Dispatcher.UIThread.RunJobs();
+            Assert.Same(main.Root, main.Root.Window?.Layout);
             factory.OnWindowActivated(floating.Window);
             Assert.Same(floating.Dockable, factory.CurrentDockable);
 
             mainWindow.Activate();
             Dispatcher.UIThread.RunJobs();
+
+            Assert.Same(main.LeftDocument, factory.CurrentDockable);
+            Assert.Same(main.Root, factory.CurrentRootDock);
+            Assert.Same(main.Root.Window, factory.CurrentDockWindow);
+
+            factory.SetActiveDockable(floating.Dockable);
 
             Assert.Same(main.LeftDocument, factory.CurrentDockable);
             Assert.Same(main.Root, factory.CurrentRootDock);

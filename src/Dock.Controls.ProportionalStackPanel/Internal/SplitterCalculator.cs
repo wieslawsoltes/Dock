@@ -18,26 +18,15 @@ internal static class SplitterCalculator
     public static double GetTotalSplitterThickness(Avalonia.Controls.Controls children, System.Func<Control, bool> getIsCollapsed)
     {
         var totalThickness = 0.0;
-        var previousWasCollapsed = false;
 
         for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
             var isSplitter = ProportionalStackPanelSplitter.IsSplitter(child, out var splitter);
 
-            if (isSplitter && splitter is not null)
+            if (isSplitter && splitter is not null && ShouldUseSplitter(i, children, getIsCollapsed))
             {
-                // Skip splitters adjacent to collapsed elements
-                if (ShouldSkipSplitter(i, children, previousWasCollapsed, getIsCollapsed))
-                {
-                    continue;
-                }
-
                 totalThickness += splitter.Thickness;
-            }
-            else
-            {
-                previousWasCollapsed = getIsCollapsed(child);
             }
         }
 
@@ -45,26 +34,52 @@ internal static class SplitterCalculator
     }
 
     /// <summary>
-    /// Determines whether a splitter should be skipped based on adjacent collapsed elements.
+    /// Determines whether a splitter separates two live children. When collapsed children
+    /// or consecutive splitters occur between the live children, only the first splitter
+    /// after the preceding live child is used.
     /// </summary>
     /// <param name="splitterIndex">The index of the splitter in the children collection.</param>
     /// <param name="children">The collection of child controls.</param>
-    /// <param name="previousWasCollapsed">Whether the previous element was collapsed.</param>
     /// <param name="getIsCollapsed">Function to determine if a control is collapsed.</param>
-    /// <returns>True if the splitter should be skipped, false otherwise.</returns>
-    public static bool ShouldSkipSplitter(int splitterIndex, Avalonia.Controls.Controls children, bool previousWasCollapsed, System.Func<Control, bool> getIsCollapsed)
+    /// <returns><c>true</c> when the splitter should participate in layout; otherwise <c>false</c>.</returns>
+    public static bool ShouldUseSplitter(
+        int splitterIndex,
+        Avalonia.Controls.Controls children,
+        System.Func<Control, bool> getIsCollapsed)
     {
-        // Skip if previous element was collapsed
-        if (previousWasCollapsed)
+        if (splitterIndex < 0
+            || splitterIndex >= children.Count
+            || !ProportionalStackPanelSplitter.IsSplitter(children[splitterIndex], out _))
         {
-            return true;
+            return false;
         }
 
-        // Skip if next element is collapsed
-        if (splitterIndex + 1 < children.Count)
+        var hasPreviousLiveChild = false;
+        for (var i = splitterIndex - 1; i >= 0; i--)
         {
-            var nextChild = children[splitterIndex + 1];
-            if (getIsCollapsed(nextChild))
+            var child = children[i];
+            if (ProportionalStackPanelSplitter.IsSplitter(child, out _))
+            {
+                return false;
+            }
+
+            if (!getIsCollapsed(child))
+            {
+                hasPreviousLiveChild = true;
+                break;
+            }
+        }
+
+        if (!hasPreviousLiveChild)
+        {
+            return false;
+        }
+
+        for (var i = splitterIndex + 1; i < children.Count; i++)
+        {
+            var child = children[i];
+            if (!ProportionalStackPanelSplitter.IsSplitter(child, out _)
+                && !getIsCollapsed(child))
             {
                 return true;
             }

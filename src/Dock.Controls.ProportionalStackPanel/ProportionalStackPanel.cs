@@ -190,7 +190,6 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(constraint, splitterThickness);
 
-        var needsNextSplitter = false;
         double sumOfFractions = 0;
 
         // Measure each of the Children
@@ -238,11 +237,10 @@ public class ProportionalStackPanel : Panel
                     }
                 }
 
-                needsNextSplitter = true;
             }
             else
             {
-                if (!needsNextSplitter)
+                if (!SplitterCalculator.ShouldUseSplitter(i, Children, GetIsCollapsed))
                 {
                     var size = new Size();
                     control.Measure(size);
@@ -250,7 +248,6 @@ public class ProportionalStackPanel : Panel
                 }
 
                 control.Measure(remainingSize);
-                needsNextSplitter = false;
             }
 
             var desiredSize = control.DesiredSize;
@@ -313,7 +310,6 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(arrangeSize, splitterThickness);
 
-        var needsNextSplitter = false;
         double sumOfFractions = 0;
 
         for (var i = 0; i < Children.Count; i++)
@@ -331,14 +327,11 @@ public class ProportionalStackPanel : Panel
                 continue;
             }
 
-            if (!isSplitter)
-                needsNextSplitter = true;
-            else if (isSplitter && !needsNextSplitter)
+            if (isSplitter && !SplitterCalculator.ShouldUseSplitter(i, Children, GetIsCollapsed))
             {
                 var rect = new Rect();
                 control.Arrange(rect);
                 index++;
-                needsNextSplitter = false;
                 continue;
             }
 

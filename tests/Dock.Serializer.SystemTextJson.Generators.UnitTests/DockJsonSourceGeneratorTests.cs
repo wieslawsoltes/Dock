@@ -159,6 +159,33 @@ public class DockJsonSourceGeneratorTests
     }
 
     [Fact]
+    public void ApplicationContextWithDockSimpleName_DoesNotCollideWithGeneratedContext()
+    {
+        const string source = """
+            using Dock.Serializer.SystemTextJson;
+            using System.Text.Json.Serialization;
+
+            [assembly: DockJsonSourceGeneration]
+
+            namespace Example;
+
+            [JsonSerializable(typeof(string))]
+            internal sealed partial class DockSystemTextJsonContext : JsonSerializerContext
+            {
+            }
+            """;
+
+        CompilationRun run = Run(source);
+        GeneratorRunResult result = Assert.Single(run.RunResult.Results);
+        string contextSource = GetGeneratedSource(run, "DockSystemTextJsonContext.g.cs");
+        string generatedSource = GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs");
+
+        Assert.DoesNotContain(result.Diagnostics, x => x.Severity == DiagnosticSeverity.Error);
+        Assert.Contains("DockSerializerGeneratedJsonContext", contextSource);
+        Assert.Contains("DockSerializerGeneratedJsonContext.Default", generatedSource);
+    }
+
+    [Fact]
     public void AutoDiscovery_IncludesProtectedInternalNestedDockTypes()
     {
         const string source = """

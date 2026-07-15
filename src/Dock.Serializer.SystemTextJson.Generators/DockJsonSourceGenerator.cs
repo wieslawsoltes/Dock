@@ -17,6 +17,8 @@ namespace Dock.Serializer.SystemTextJson.Generators;
 [Generator]
 public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 {
+    private const string GeneratedContextTypeName = "DockSerializerGeneratedJsonContext";
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         IncrementalValueProvider<GenerationModel> modelProvider =
@@ -1096,7 +1098,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
     private static class SystemTextJsonContextGenerator
     {
-        private const string DockContextHintNamePrefix = "DockSystemTextJsonContext.";
+        private const string DockContextHintNamePrefix = GeneratedContextTypeName + ".";
 
         public static ImmutableArray<GeneratedSourceArtifact> Generate(
             Compilation compilation,
@@ -1223,7 +1225,9 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 builder.AppendLine("))]");
             }
 
-            builder.AppendLine("internal sealed partial class DockSystemTextJsonContext : global::System.Text.Json.Serialization.JsonSerializerContext");
+            builder.Append("internal sealed partial class ");
+            builder.Append(GeneratedContextTypeName);
+            builder.AppendLine(" : global::System.Text.Json.Serialization.JsonSerializerContext");
             builder.AppendLine("{");
             builder.AppendLine("}");
             return builder.ToString();
@@ -1239,7 +1243,9 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine();
             builder.AppendLine("internal sealed class DockSystemTextJsonResolver : global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver");
             builder.AppendLine("{");
-            builder.AppendLine("    private static readonly global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver s_resolver = global::System.Text.Json.Serialization.Metadata.JsonTypeInfoResolver.WithAddedModifier(DockSystemTextJsonContext.Default, ModifyTypeInfo);");
+            builder.Append("    private static readonly global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver s_resolver = global::System.Text.Json.Serialization.Metadata.JsonTypeInfoResolver.WithAddedModifier(");
+            builder.Append(GeneratedContextTypeName);
+            builder.AppendLine(".Default, ModifyTypeInfo);");
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<global::System.Type, global::System.Collections.Generic.HashSet<string>> s_ignoredMembers = CreateIgnoredMembers();");
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<global::System.Type, string> s_objectPayloadDiscriminators = CreateObjectPayloadDiscriminators();");
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<string, global::System.Type> s_objectPayloadTypes = CreateObjectPayloadTypes();");

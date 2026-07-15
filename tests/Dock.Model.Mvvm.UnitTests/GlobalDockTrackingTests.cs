@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
@@ -48,6 +50,31 @@ public class GlobalDockTrackingTests
         Assert.Same(context.Dockable1, factory.CurrentDockable);
         Assert.Same(context.Root, factory.CurrentRootDock);
         Assert.Same(context.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void InitLayout_Preserves_Window_Activation_Raised_While_Restored_Windows_Are_Shown()
+    {
+        var factory = new TrackingTestFactory();
+        var main = CreateContext(factory, "main");
+        var floating = CreateContext(factory, "floating");
+        var host = new TestHostWindow
+        {
+            Window = floating.Window,
+            Presented = () => factory.OnWindowActivated(floating.Window)
+        };
+        factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+        {
+            [floating.Window.Id!] = () => host
+        };
+        main.Root.Windows = factory.CreateList<IDockWindow>(floating.Window);
+
+        factory.InitLayout(main.Root);
+
+        Assert.Same(floating.Dockable1, factory.CurrentDockable);
+        Assert.Same(floating.Root, factory.CurrentRootDock);
+        Assert.Same(floating.Window, factory.CurrentDockWindow);
+        Assert.Same(host, factory.CurrentHostWindow);
     }
 
     [Fact]
@@ -769,6 +796,8 @@ public class GlobalDockTrackingTests
 
     private sealed class TestHostWindow : IHostWindow
     {
+        public Action? Presented { get; init; }
+
         public IHostWindowState? HostWindowState => null;
 
         public bool IsTracked { get; set; }
@@ -777,6 +806,7 @@ public class GlobalDockTrackingTests
 
         public void Present(bool isDialog)
         {
+            Presented?.Invoke();
         }
 
         public void Exit()

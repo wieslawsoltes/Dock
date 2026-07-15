@@ -129,9 +129,10 @@ public class NavigateAdapter : INavigateAdapter
 
     private void NavigateTo(IDockable? dockable, bool bSnapshot)
     {
-        if (_dock.ActiveDockable is IDock previousDock)
+        if (_dock.ActiveDockable is IRootDock previousRootDock
+            && previousRootDock.ExitWindows.CanExecute(null))
         {
-            previousDock.Close.Execute(null);
+            previousRootDock.ExitWindows.Execute(null);
         }
 
         if (dockable is not null && _dock.ActiveDockable != dockable)

@@ -26,6 +26,31 @@ Follow these instructions to create a minimal ReactiveUI based application using
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.ReactiveUI
    dotnet add package Dock.Avalonia.Themes.Fluent
+   dotnet add package ReactiveUI.Avalonia
+   ```
+
+   ReactiveUI 24 must be initialized by the Avalonia application builder. Update
+   `Program.cs` to import `ReactiveUI.Avalonia` and call `UseReactiveUI`:
+
+   ```csharp
+   using System;
+   using Avalonia;
+   using ReactiveUI.Avalonia;
+
+   namespace MyDockApp;
+
+   internal static class Program
+   {
+       [STAThread]
+       public static void Main(string[] args) =>
+           BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+
+       public static AppBuilder BuildAvaloniaApp() =>
+           AppBuilder.Configure<App>()
+               .UsePlatformDetect()
+               .WithInterFont()
+               .UseReactiveUI(static _ => { });
+   }
    ```
 
    **Optional packages:**
@@ -306,6 +331,8 @@ Dock supports nested navigation through ReactiveUI's `RoutingState`. The
 between dockables via the host screen:
 
 ```csharp
+using Unit = ReactiveUI.Primitives.RxVoid;
+
 public class DocumentViewModel : RoutableDocument
 {
     public ReactiveCommand<Unit, Unit>? GoDocument { get; private set; }

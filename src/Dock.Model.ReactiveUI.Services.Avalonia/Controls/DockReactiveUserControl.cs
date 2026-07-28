@@ -1,4 +1,5 @@
 using System.Reactive;
+using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Services.Lifecycle;

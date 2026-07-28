@@ -49,7 +49,7 @@ internal class Program
         => AppBuilder.Configure(() => CreateApp(provider))
             .UsePlatformDetect()
             .WithInterFont()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
 
     public static AppBuilder BuildAvaloniaApp()
@@ -60,7 +60,7 @@ internal class Program
         })
             .UsePlatformDetect()
             .WithInterFont()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
 
     private static App CreateApp(IServiceProvider provider) => new()

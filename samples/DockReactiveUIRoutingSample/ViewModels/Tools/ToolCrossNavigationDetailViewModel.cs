@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using Unit = ReactiveUI.Primitives.RxVoid;
 using ReactiveUI;
 using DockReactiveUIRoutingSample.Models;
 

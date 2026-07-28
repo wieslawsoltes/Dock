@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;

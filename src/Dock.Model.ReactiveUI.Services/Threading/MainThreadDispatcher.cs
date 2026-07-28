@@ -1,13 +1,12 @@
 using System;
-using System.Reactive;
-using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using ReactiveUI;
+using ReactiveUI.Primitives.Concurrency;
 
 namespace Dock.Model.ReactiveUI.Services.Threading;
 
 /// <summary>
-/// Default dispatcher implementation using <see cref="RxApp.MainThreadScheduler"/>.
+/// Default dispatcher implementation using <see cref="RxSchedulers.MainThreadScheduler"/>.
 /// </summary>
 public sealed class MainThreadDispatcher : IDockDispatcher
 {
@@ -21,7 +20,7 @@ public sealed class MainThreadDispatcher : IDockDispatcher
 
         var completion = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-        RxApp.MainThreadScheduler.Schedule(Unit.Default, (_, __) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
             try
             {
@@ -32,8 +31,6 @@ public sealed class MainThreadDispatcher : IDockDispatcher
             {
                 completion.TrySetException(ex);
             }
-
-            return Disposable.Empty;
         });
 
         return completion.Task;

@@ -32,7 +32,7 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
 
 #if DEBUG
-        this.AttachDeveloperTools();
+        this.AttachDevTools();
 #endif
     }
 }

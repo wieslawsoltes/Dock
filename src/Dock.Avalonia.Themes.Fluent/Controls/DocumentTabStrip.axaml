@@ -3,6 +3,7 @@
                     xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
+                    xmlns:commands="using:Dock.Avalonia.Commands"
                     x:DataType="dmc:IDocumentDock"
                     x:CompileBindings="True">
   <Design.PreviewWith>
@@ -66,7 +67,7 @@
   </ControlTheme>
 
   <DataTemplate x:Key="DockDefaultDocumentCloseTemplate" x:DataType="core:IDockable">
-    <Button Command="{Binding Owner.Factory.CloseDockable}"
+    <Button Command="{x:Static commands:DockCommands.CloseDockable}"
             CommandParameter="{Binding}"
             Theme="{Binding $parent[DocumentTabStrip].CloseButtonTheme}">
       <Button.IsVisible>

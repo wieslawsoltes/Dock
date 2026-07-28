@@ -161,8 +161,19 @@ Follow these instructions to create a minimal ReactiveUI based application using
            return Resolve(data) is not null;
        }
 
-       IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default =>
-           viewModel is null ? null : Resolve(viewModel);
+       public IViewFor<TViewModel>? ResolveView<TViewModel>()
+           where TViewModel : class =>
+           ResolveView<TViewModel>(null);
+
+       public IViewFor<TViewModel>? ResolveView<TViewModel>(string? contract)
+           where TViewModel : class =>
+           _provider.GetService(typeof(IViewFor<TViewModel>)) as IViewFor<TViewModel>;
+
+       public IViewFor? ResolveView(object? instance) =>
+           ResolveView(instance, null);
+
+       public IViewFor? ResolveView(object? instance, string? contract) =>
+           instance is null ? null : Resolve(instance);
    }
    ```
 

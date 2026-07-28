@@ -3,7 +3,6 @@
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
                     xmlns:controls="using:Dock.Avalonia.Controls"
-                    xmlns:commands="using:Dock.Avalonia.Commands"
                     x:DataType="core:IDockable"
                     x:CompileBindings="True">
   <Design.PreviewWith>
@@ -18,7 +17,7 @@
 
   <ContextMenu x:Key="DocumentTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
-              Command="{x:Static commands:DockCommands.FloatDockable}"
+              Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -36,7 +35,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatAllString}"
-              Command="{x:Static commands:DockCommands.FloatAllDockables}"
+              Command="{Binding Owner.Factory.FloatAllDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -70,7 +69,7 @@
       </Separator.IsVisible>
     </Separator>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseString}"
-              Command="{x:Static commands:DockCommands.CloseDockable}"
+              Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -88,7 +87,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}"
-              Command="{x:Static commands:DockCommands.CloseOtherDockables}"
+              Command="{Binding Owner.Factory.CloseOtherDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -106,7 +105,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}"
-              Command="{x:Static commands:DockCommands.CloseAllDockables}"
+              Command="{Binding Owner.Factory.CloseAllDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -124,7 +123,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsLeftString}"
-              Command="{x:Static commands:DockCommands.CloseLeftDockables}"
+              Command="{Binding Owner.Factory.CloseLeftDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -145,7 +144,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsAboveString}"
-              Command="{x:Static commands:DockCommands.CloseLeftDockables}"
+              Command="{Binding Owner.Factory.CloseLeftDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -166,7 +165,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsRightString}"
-              Command="{x:Static commands:DockCommands.CloseRightDockables}"
+              Command="{Binding Owner.Factory.CloseRightDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -187,7 +186,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsBelowString}"
-              Command="{x:Static commands:DockCommands.CloseRightDockables}"
+              Command="{Binding Owner.Factory.CloseRightDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -224,7 +223,7 @@
       </Separator.IsVisible>
     </Separator>
     <MenuItem Header="{DynamicResource DocumentTabStripItemNewHorizontalDockString}"
-              Command="{x:Static commands:DockCommands.NewHorizontalDocumentDock}"
+              Command="{Binding Owner.Factory.NewHorizontalDocumentDock}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -244,7 +243,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemNewVerticalDockString}"
-              Command="{x:Static commands:DockCommands.NewVerticalDocumentDock}"
+              Command="{Binding Owner.Factory.NewVerticalDocumentDock}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -266,21 +265,21 @@
     <Separator />
     <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutString}">
       <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutLeftString}"
-                Command="{x:Static commands:DockCommands.SetDocumentDockTabsLayoutLeft}"
+                Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutLeft}"
                 CommandParameter="{Binding Owner}" />
       <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutTopString}"
-                Command="{x:Static commands:DockCommands.SetDocumentDockTabsLayoutTop}"
+                Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutTop}"
                 CommandParameter="{Binding Owner}" />
       <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutRightString}"
-                Command="{x:Static commands:DockCommands.SetDocumentDockTabsLayoutRight}"
+                Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutRight}"
                 CommandParameter="{Binding Owner}" />
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeString}">
       <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeTabbedString}"
-                Command="{x:Static commands:DockCommands.SetDocumentDockLayoutModeTabbed}"
+                Command="{Binding Owner.Factory.SetDocumentDockLayoutModeTabbed}"
                 CommandParameter="{Binding Owner}" />
       <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeMdiString}"
-                Command="{x:Static commands:DockCommands.SetDocumentDockLayoutModeMdi}"
+                Command="{Binding Owner.Factory.SetDocumentDockLayoutModeMdi}"
                 CommandParameter="{Binding Owner}" />
     </MenuItem>
   </ContextMenu>

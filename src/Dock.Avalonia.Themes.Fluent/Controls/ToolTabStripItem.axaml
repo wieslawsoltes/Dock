@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
-                    xmlns:commands="using:Dock.Avalonia.Commands"
                     x:DataType="core:IDockable"
                     x:CompileBindings="True">
   <Design.PreviewWith>
@@ -20,7 +19,7 @@
 
   <ContextMenu x:Key="ToolTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource ToolTabStripItemFloatString}"
-              Command="{x:Static commands:DockCommands.FloatDockable}"
+              Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -38,7 +37,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemFloatAllString}"
-              Command="{x:Static commands:DockCommands.FloatAllDockables}"
+              Command="{Binding Owner.Factory.FloatAllDockables}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -56,7 +55,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemDockString}"
-              Command="{x:Static commands:DockCommands.PinDockable}"
+              Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding}"
               IsEnabled="{Binding OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}">
       <MenuItem.IsVisible>
@@ -69,7 +68,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemDockAsDocumentString}"
-              Command="{x:Static commands:DockCommands.DockAsDocument}"
+              Command="{Binding Owner.Factory.DockAsDocument}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -84,7 +83,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemAutoHideString}"
-              Command="{x:Static commands:DockCommands.PinDockable}"
+              Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding }"
               IsEnabled="{Binding OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
       <MenuItem.IsVisible>
@@ -100,7 +99,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemCloseString}"
-              Command="{x:Static commands:DockCommands.CloseDockable}"
+              Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">

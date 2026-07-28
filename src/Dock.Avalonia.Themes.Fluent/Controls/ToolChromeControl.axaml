@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:controls="using:Dock.Model.Controls"
-                    xmlns:commands="using:Dock.Avalonia.Commands"
                     x:DataType="controls:IToolDock"
                     xmlns:converters="using:Dock.Avalonia.Converters"
                     x:CompileBindings="True">
@@ -12,7 +11,7 @@
 
   <MenuFlyout x:Key="ToolChromeControlContextMenu">
     <MenuItem Header="{DynamicResource ToolChromeControlFloatString}"
-              Command="{x:Static commands:DockCommands.FloatDockable}"
+              Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding ActiveDockable}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -30,7 +29,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlDockString}"
-              Command="{x:Static commands:DockCommands.PinDockable}"
+              Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"
               IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}">
       <MenuItem.IsVisible>
@@ -43,7 +42,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}"
-              Command="{x:Static commands:DockCommands.DockAsDocument}"
+              Command="{Binding Owner.Factory.DockAsDocument}"
               CommandParameter="{Binding ActiveDockable}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -58,7 +57,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlAutoHideString}"
-              Command="{x:Static commands:DockCommands.PinDockable}"
+              Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"
               IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
       <MenuItem.IsVisible>
@@ -74,7 +73,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlCloseString}"
-              Command="{x:Static commands:DockCommands.CloseDockable}"
+              Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding ActiveDockable}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -179,7 +178,7 @@
                     </Viewbox>
                   </Button>
                   <Button x:Name="PART_PinButton"
-                          Command="{x:Static commands:DockCommands.PinDockable}"
+                          Command="{Binding Owner.Factory.PinDockable}"
                           CommandParameter="{Binding ActiveDockable}"
                           Theme="{TemplateBinding PinButtonTheme}">
                     <Button.IsVisible>
@@ -205,7 +204,7 @@
                     </Viewbox>
                   </Button>
                   <Button x:Name="PART_CloseButton"
-                          Command="{x:Static commands:DockCommands.CloseDockable}"
+                          Command="{Binding Owner.Factory.CloseDockable}"
                           CommandParameter="{Binding ActiveDockable}"
                           Theme="{TemplateBinding CloseButtonTheme}">
                     <Button.IsVisible>

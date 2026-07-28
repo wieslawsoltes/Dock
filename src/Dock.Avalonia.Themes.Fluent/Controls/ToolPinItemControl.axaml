@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
-                    xmlns:commands="using:Dock.Avalonia.Commands"
                     x:DataType="core:IDockable"
                     x:CompileBindings="True">
   <Design.PreviewWith>
@@ -12,7 +11,7 @@
 
   <ContextMenu x:Key="ToolPinItemControlContextMenu">
     <MenuItem Header="{DynamicResource ToolPinItemControlFloatString}"
-              Command="{x:Static commands:DockCommands.FloatDockable}"
+              Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -30,7 +29,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolPinItemControlShowString}"
-              Command="{x:Static commands:DockCommands.PreviewPinnedDockable}"
+              Command="{Binding Owner.Factory.PreviewPinnedDockable}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">
@@ -42,7 +41,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolPinItemControlDockAsDocumentString}"
-              Command="{x:Static commands:DockCommands.DockAsDocument}"
+              Command="{Binding Owner.Factory.DockAsDocument}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -57,7 +56,7 @@
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolPinItemControlCloseString}"
-              Command="{x:Static commands:DockCommands.CloseDockable}"
+              Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -120,7 +119,7 @@
                       BorderBrush="Transparent"
                       BorderThickness="0"
                       CornerRadius="0"
-                      Command="{x:Static commands:DockCommands.TogglePreviewPinnedDockable}"
+                      Command="{Binding Owner.Factory.TogglePreviewPinnedDockable}"
                       CommandParameter="{Binding}">
                 <Button.IsVisible>
                   <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">

@@ -98,7 +98,7 @@ Class DockDialogService  <a class="header-action link-secondary" title="View sou
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class DockDialogService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IDockDialogService, INotifyPropertyChanged</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class DockDialogService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockDialogService, INotifyPropertyChanged</code></pre>
   </div>
 
 
@@ -121,6 +121,7 @@ Class DockDialogService  <a class="header-action link-secondary" title="View sou
       <div><span class="xref">IReactiveObject</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Services.IDockDialogService.html">IDockDialogService</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
     </dd>
@@ -230,7 +231,8 @@ Class DockDialogService  <a class="header-action link-secondary" title="View sou
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockDialogService.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the currently active dialog request.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

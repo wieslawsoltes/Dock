@@ -98,7 +98,7 @@ Class RoutableRootDock  <a class="header-action link-secondary" title="View sour
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class RoutableRootDock : RootDock, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IDockSelectorInfo, IDockableDockingRestrictions, IRootDock, IDock, IDockable, IControlRecyclingIdProvider, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen</code></pre>
+    <pre><code class="lang-csharp hljs">public class RoutableRootDock : RootDock, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObjectStateSlot, IDockSelectorInfo, IDockableDockingRestrictions, IRootDock, IDock, IDockable, IControlRecyclingIdProvider, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen</code></pre>
   </div>
 
 
@@ -122,6 +122,7 @@ Class RoutableRootDock  <a class="header-action link-secondary" title="View sour
     <dd>
       <div><span class="xref">IReactiveNotifyPropertyChanged</span>&lt;<span class="xref">IReactiveObject</span>&gt;</div>
       <div><span class="xref">IHandleObservableErrors</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></div>
@@ -508,9 +509,8 @@ Class RoutableRootDock  <a class="header-action link-secondary" title="View sour
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableRootDock.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the IScreen that this ViewModel is currently being shown in. This
-is usually passed into the ViewModel in the Constructor and saved
-as a ReadOnly Property.</p>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">ReactiveUI.IScreen</span> instance that hosts this view model. Use this reference to access the
+shared <span class="xref">ReactiveUI.RoutingState</span> when chaining navigation from child view models.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -576,7 +576,7 @@ public RoutingState Router { get; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/Controls/RoutableRootDock.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets a string token representing the current ViewModel, such as 'login' or 'user'.</p>
+  <div class="markdown level1 summary"><p>Gets a string token representing the current view model, such as &quot;login&quot; or &quot;user&quot;.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 

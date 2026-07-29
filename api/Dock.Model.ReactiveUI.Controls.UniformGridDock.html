@@ -98,7 +98,7 @@ Class UniformGridDock  <a class="header-action link-secondary" title="View sourc
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class UniformGridDock : DockBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, IDockableDockingRestrictions, IUniformGridDock, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class UniformGridDock : DockBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockSelectorInfo, IDockableDockingRestrictions, IUniformGridDock, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -125,6 +125,7 @@ Class UniformGridDock  <a class="header-action link-secondary" title="View sourc
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a></div>
@@ -414,7 +415,8 @@ Class UniformGridDock  <a class="header-action link-secondary" title="View sourc
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/UniformGridDock.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets number of columns.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -447,7 +449,8 @@ public int Columns { get; set; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/UniformGridDock.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets number of rows.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

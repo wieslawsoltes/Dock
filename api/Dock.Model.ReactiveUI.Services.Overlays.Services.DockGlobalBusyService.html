@@ -98,7 +98,7 @@ Class DockGlobalBusyService  <a class="header-action link-secondary" title="View
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class DockGlobalBusyService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IDockGlobalBusyService, INotifyPropertyChanged</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class DockGlobalBusyService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockGlobalBusyService, INotifyPropertyChanged</code></pre>
   </div>
 
 
@@ -121,6 +121,7 @@ Class DockGlobalBusyService  <a class="header-action link-secondary" title="View
       <div><span class="xref">IReactiveObject</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Services.IDockGlobalBusyService.html">IDockGlobalBusyService</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
     </dd>
@@ -230,7 +231,8 @@ Class DockGlobalBusyService  <a class="header-action link-secondary" title="View
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockGlobalBusyService.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether any window is busy.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -262,7 +264,8 @@ public bool IsBusy { get; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockGlobalBusyService.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the global busy message.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

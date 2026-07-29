@@ -98,7 +98,7 @@ Class RoutableDocumentBase  <a class="header-action link-secondary" title="View 
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class RoutableDocumentBase : RoutableDocument, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IDockSelectorInfo, IDockableDockingRestrictions, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget, IDockingWindowState, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class RoutableDocumentBase : RoutableDocument, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObjectStateSlot, IDockSelectorInfo, IDockableDockingRestrictions, IMdiDocument, IDocument, IDockable, IControlRecyclingIdProvider, ILocalTarget, IDockingWindowState, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IScreen</code></pre>
   </div>
 
 
@@ -122,6 +122,7 @@ Class RoutableDocumentBase  <a class="header-action link-secondary" title="View 
     <dd>
       <div><span class="xref">IReactiveNotifyPropertyChanged</span>&lt;<span class="xref">IReactiveObject</span>&gt;</div>
       <div><span class="xref">IHandleObservableErrors</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IMdiDocument.html">IMdiDocument</a></div>

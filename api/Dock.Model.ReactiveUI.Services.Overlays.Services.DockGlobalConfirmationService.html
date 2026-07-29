@@ -98,7 +98,7 @@ Class DockGlobalConfirmationService  <a class="header-action link-secondary" tit
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class DockGlobalConfirmationService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IDockGlobalConfirmationService, INotifyPropertyChanged</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class DockGlobalConfirmationService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockGlobalConfirmationService, INotifyPropertyChanged</code></pre>
   </div>
 
 
@@ -121,6 +121,7 @@ Class DockGlobalConfirmationService  <a class="header-action link-secondary" tit
       <div><span class="xref">IReactiveObject</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Services.IDockGlobalConfirmationService.html">IDockGlobalConfirmationService</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
     </dd>
@@ -230,7 +231,8 @@ Class DockGlobalConfirmationService  <a class="header-action link-secondary" tit
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockGlobalConfirmationService.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether any confirmation is open.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -262,7 +264,8 @@ public bool IsConfirmationOpen { get; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockGlobalConfirmationService.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the global confirmation message.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

@@ -98,7 +98,7 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GridDockSplitter : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, IDockableDockingRestrictions, IGridDockSplitter, ISplitter, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class GridDockSplitter : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockSelectorInfo, IDockableDockingRestrictions, IGridDockSplitter, ISplitter, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -124,6 +124,7 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a></div>
@@ -368,7 +369,8 @@ Class GridDockSplitter  <a class="header-action link-secondary" title="View sour
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/GridDockSplitter.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets resize direction.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

@@ -85,7 +85,7 @@
 
 
   <h1 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService" class="text-break">
-Class DockBusyService  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L17"><i class="bi bi-code-slash"></i></a>
+Class DockBusyService  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -98,7 +98,7 @@ Class DockBusyService  <a class="header-action link-secondary" title="View sourc
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class DockBusyService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IDockBusyService, INotifyPropertyChanged</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class DockBusyService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockBusyService, INotifyPropertyChanged</code></pre>
   </div>
 
 
@@ -121,6 +121,7 @@ Class DockBusyService  <a class="header-action link-secondary" title="View sourc
       <div><span class="xref">IReactiveObject</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Services.IDockBusyService.html">IDockBusyService</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
     </dd>
@@ -187,7 +188,7 @@ Class DockBusyService  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService__ctor_Dock_Model_Services_IDockGlobalBusyService_System_Threading_SynchronizationContext_" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.#ctor(Dock.Model.Services.IDockGlobalBusyService,System.Threading.SynchronizationContext)">
   DockBusyService(IDockGlobalBusyService?, SynchronizationContext?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.html">DockBusyService</a> class.</p>
@@ -227,10 +228,11 @@ Class DockBusyService  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_CanReload" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.CanReload">
   CanReload
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L55"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether a reload handler is available.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -259,10 +261,11 @@ public bool CanReload { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_IsBusy" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.IsBusy">
   IsBusy
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the host is busy.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -291,10 +294,11 @@ public bool IsBusy { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_IsReloadVisible" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.IsReloadVisible">
   IsReloadVisible
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets whether the reload button is visible.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -323,10 +327,11 @@ public bool IsReloadVisible { get; set; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_Message" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.Message">
   Message
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the current busy message.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -355,7 +360,7 @@ public string? Message { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_ReloadCommand" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.ReloadCommand">
   ReloadCommand
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the command used by the overlay to trigger reload.</p>
@@ -391,7 +396,7 @@ public string? Message { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_Begin_System_String_" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.Begin(System.String)">
   Begin(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Begins a busy scope with the provided message.</p>
@@ -430,7 +435,7 @@ public string? Message { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_RunAsync_System_String_System_Func_System_Threading_Tasks_Task__" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.RunAsync(System.String,System.Func{System.Threading.Tasks.Task})">
   RunAsync(string, Func&lt;Task&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Runs an async action within a busy scope.</p>
@@ -471,7 +476,7 @@ public string? Message { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_SetReloadHandler_System_Func_System_Threading_Tasks_Task__" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.SetReloadHandler(System.Func{System.Threading.Tasks.Task})">
   SetReloadHandler(Func&lt;Task&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the reload handler invoked by <a class="xref" href="Dock.Model.Services.IDockBusyService.html#Dock_Model_Services_IDockBusyService_ReloadCommand">ReloadCommand</a>.</p>
@@ -504,7 +509,7 @@ public string? Message { get; }</code></pre>
 
   <h3 id="Dock_Model_ReactiveUI_Services_Overlays_Services_DockBusyService_UpdateMessage_System_String_" data-uid="Dock.Model.ReactiveUI.Services.Overlays.Services.DockBusyService.UpdateMessage(System.String)">
   UpdateMessage(string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates the current busy message.</p>
@@ -537,7 +542,7 @@ public string? Message { get; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L17" class="edit-link">Edit this page</a>
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockBusyService.cs/#L18" class="edit-link">Edit this page</a>
         </div>
 
 

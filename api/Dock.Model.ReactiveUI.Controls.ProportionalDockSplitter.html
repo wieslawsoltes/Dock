@@ -98,7 +98,7 @@ Class ProportionalDockSplitter  <a class="header-action link-secondary" title="V
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ProportionalDockSplitter : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, IDockableDockingRestrictions, IProportionalDockSplitter, ISplitter, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class ProportionalDockSplitter : DockableBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockSelectorInfo, IDockableDockingRestrictions, IProportionalDockSplitter, ISplitter, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -124,6 +124,7 @@ Class ProportionalDockSplitter  <a class="header-action link-secondary" title="V
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a></div>
@@ -399,7 +400,8 @@ Class ProportionalDockSplitter  <a class="header-action link-secondary" title="V
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/ProportionalDockSplitter.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets whether the splitter allows resizing.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -432,7 +434,9 @@ public bool CanResize { get; set; }</code></pre>
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/ProportionalDockSplitter.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets whether resizing occurs only after the pointer is released.
+When true a drag preview is shown during movement.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

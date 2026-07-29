@@ -104,6 +104,28 @@ cd MyDockApp
 <pre><code class="lang-bash">dotnet add package Dock.Avalonia
 dotnet add package Dock.Model.ReactiveUI
 dotnet add package Dock.Avalonia.Themes.Fluent
+dotnet add package ReactiveUI.Avalonia
+</code></pre>
+<p>ReactiveUI 24 must be initialized by the Avalonia application builder. Update
+<code>Program.cs</code> to import <code>ReactiveUI.Avalonia</code> and call <code>UseReactiveUI</code>:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia;
+using ReactiveUI.Avalonia;
+
+namespace MyDockApp;
+
+internal static class Program
+{
+    [STAThread]
+    public static void Main(string[] args) =&gt;
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+
+    public static AppBuilder BuildAvaloniaApp() =&gt;
+        AppBuilder.Configure&lt;App&gt;()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .UseReactiveUI(static _ =&gt; { });
+}
 </code></pre>
 <p><strong>Optional packages:</strong></p>
 <pre><code class="lang-bash"># For serialization (choose one):
@@ -227,8 +249,19 @@ public class ViewLocator : IDataTemplate, IViewLocator
         return Resolve(data) is not null;
     }
 
-    IViewFor? IViewLocator.ResolveView&lt;T&gt;(T? viewModel, string? contract) where T : default =&gt;
-        viewModel is null ? null : Resolve(viewModel);
+    public IViewFor&lt;TViewModel&gt;? ResolveView&lt;TViewModel&gt;()
+        where TViewModel : class =&gt;
+        ResolveView&lt;TViewModel&gt;(null);
+
+    public IViewFor&lt;TViewModel&gt;? ResolveView&lt;TViewModel&gt;(string? contract)
+        where TViewModel : class =&gt;
+        _provider.GetService(typeof(IViewFor&lt;TViewModel&gt;)) as IViewFor&lt;TViewModel&gt;;
+
+    public IViewFor? ResolveView(object? instance) =&gt;
+        ResolveView(instance, null);
+
+    public IViewFor? ResolveView(object? instance, string? contract) =&gt;
+        instance is null ? null : Resolve(instance);
 }
 </code></pre>
 <p>Register the view locator in <code>App.axaml</code>:</p>
@@ -336,7 +369,9 @@ delegate should return an <code>IDockable</code> which is then passed to
 <code>DockReactiveUIRoutingSample</code> shows how documents and tools act as
 <code>IScreen</code> instances with their own <code>Router</code>. Navigation commands switch
 between dockables via the host screen:</p>
-<pre><code class="lang-csharp">public class DocumentViewModel : RoutableDocument
+<pre><code class="lang-csharp">using Unit = ReactiveUI.Primitives.RxVoid;
+
+public class DocumentViewModel : RoutableDocument
 {
     public ReactiveCommand&lt;Unit, Unit&gt;? GoDocument { get; private set; }
     public ReactiveCommand&lt;Unit, Unit&gt;? GoTool1 { get; private set; }

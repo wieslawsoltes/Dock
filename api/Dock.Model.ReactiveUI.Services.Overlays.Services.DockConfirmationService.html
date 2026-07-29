@@ -98,7 +98,7 @@ Class DockConfirmationService  <a class="header-action link-secondary" title="Vi
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class DockConfirmationService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IDockConfirmationService, INotifyPropertyChanged</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class DockConfirmationService : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockConfirmationService, INotifyPropertyChanged</code></pre>
   </div>
 
 
@@ -121,6 +121,7 @@ Class DockConfirmationService  <a class="header-action link-secondary" title="Vi
       <div><span class="xref">IReactiveObject</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Services.IDockConfirmationService.html">IDockConfirmationService</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
     </dd>
@@ -230,7 +231,8 @@ Class DockConfirmationService  <a class="header-action link-secondary" title="Vi
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Overlays/Services/DockConfirmationService.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the currently active confirmation request.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

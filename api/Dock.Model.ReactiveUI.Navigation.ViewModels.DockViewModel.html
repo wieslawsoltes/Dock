@@ -98,7 +98,7 @@ Class DockViewModel  <a class="header-action link-secondary" title="View source"
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DockViewModel : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IHostOverlayServices</code></pre>
+    <pre><code class="lang-csharp hljs">public class DockViewModel : ReactiveObject, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObjectStateSlot, IRoutableViewModel, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IHostOverlayServices</code></pre>
   </div>
 
 
@@ -118,6 +118,7 @@ Class DockViewModel  <a class="header-action link-secondary" title="View source"
     <dd>
       <div><span class="xref">IReactiveNotifyPropertyChanged</span>&lt;<span class="xref">IReactiveObject</span>&gt;</div>
       <div><span class="xref">IHandleObservableErrors</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><span class="xref">IRoutableViewModel</span></div>
       <div><span class="xref">IReactiveObject</span></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
@@ -234,9 +235,8 @@ Class DockViewModel  <a class="header-action link-secondary" title="View source"
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/ViewModels/DockViewModel.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the IScreen that this ViewModel is currently being shown in. This
-is usually passed into the ViewModel in the Constructor and saved
-as a ReadOnly Property.</p>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">ReactiveUI.IScreen</span> instance that hosts this view model. Use this reference to access the
+shared <span class="xref">ReactiveUI.RoutingState</span> when chaining navigation from child view models.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -300,7 +300,7 @@ as a ReadOnly Property.</p>
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI.Services/Navigation/ViewModels/DockViewModel.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets a string token representing the current ViewModel, such as 'login' or 'user'.</p>
+  <div class="markdown level1 summary"><p>Gets a string token representing the current view model, such as &quot;login&quot; or &quot;user&quot;.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 

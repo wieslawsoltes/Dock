@@ -98,7 +98,7 @@ Class DockDock  <a class="header-action link-secondary" title="View source" href
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DockDock : DockBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IDockSelectorInfo, IDockableDockingRestrictions, IDockDock, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class DockDock : DockBase, IReactiveNotifyPropertyChanged&lt;IReactiveObject&gt;, IHandleObservableErrors, IReactiveObject, INotifyPropertyChanged, INotifyPropertyChanging, IEnableLogger, IReactiveObjectStateSlot, IDockSelectorInfo, IDockableDockingRestrictions, IDockDock, IDock, IDockable, IControlRecyclingIdProvider</code></pre>
   </div>
 
 
@@ -125,6 +125,7 @@ Class DockDock  <a class="header-action link-secondary" title="View source" href
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging">INotifyPropertyChanging</a></div>
       <div><span class="xref">IEnableLogger</span></div>
+      <div><span class="xref">IReactiveObjectStateSlot</span></div>
       <div><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></div>
       <div><a class="xref" href="Dock.Model.Core.IDockableDockingRestrictions.html">IDockableDockingRestrictions</a></div>
       <div><a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a></div>
@@ -445,7 +446,8 @@ Class DockDock  <a class="header-action link-secondary" title="View source" href
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveUI/Controls/DockDock.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets a value which indicates whether the last child of the fills the remaining space in the panel.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">

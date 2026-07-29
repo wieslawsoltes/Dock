@@ -7280,7 +7280,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Dock.Model.ReactiveUI.Services.Threading.MainThreadDispatcher",
-      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Threading.MainThreadDispatcher.yml\" sourcestartlinenumber=\"1\">Default dispatcher implementation using <xref href=\"ReactiveUI.RxApp.MainThreadScheduler\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+      "Summary": "<p sourcefile=\"api/Dock.Model.ReactiveUI.Services.Threading.MainThreadDispatcher.yml\" sourcestartlinenumber=\"1\">Default dispatcher implementation using <xref href=\"ReactiveUI.RxSchedulers.MainThreadScheduler\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",

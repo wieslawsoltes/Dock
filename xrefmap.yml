@@ -26791,6 +26791,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.CloseAllDockables(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.CloseAllDockables(Dock.Model.Core.IDockable)
   nameWithType: IFactory.CloseAllDockables(IDockable)
+- uid: Dock.Model.Core.IFactory.CloseAllDockables(System.Object)
+  name: CloseAllDockables(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseAllDockables_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.CloseAllDockables(System.Object)
+  name.vb: CloseAllDockables(Object)
+  fullName: Dock.Model.Core.IFactory.CloseAllDockables(object?)
+  fullName.vb: Dock.Model.Core.IFactory.CloseAllDockables(Object)
+  nameWithType: IFactory.CloseAllDockables(object?)
+  nameWithType.vb: IFactory.CloseAllDockables(Object)
 - uid: Dock.Model.Core.IFactory.CloseAllDockables*
   name: CloseAllDockables
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseAllDockables_
@@ -26804,6 +26813,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.CloseDockable(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.CloseDockable(Dock.Model.Core.IDockable)
   nameWithType: IFactory.CloseDockable(IDockable)
+- uid: Dock.Model.Core.IFactory.CloseDockable(System.Object)
+  name: CloseDockable(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.CloseDockable(System.Object)
+  name.vb: CloseDockable(Object)
+  fullName: Dock.Model.Core.IFactory.CloseDockable(object?)
+  fullName.vb: Dock.Model.Core.IFactory.CloseDockable(Object)
+  nameWithType: IFactory.CloseDockable(object?)
+  nameWithType.vb: IFactory.CloseDockable(Object)
 - uid: Dock.Model.Core.IFactory.CloseDockable*
   name: CloseDockable
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_
@@ -26817,6 +26835,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.CloseLeftDockables(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.CloseLeftDockables(Dock.Model.Core.IDockable)
   nameWithType: IFactory.CloseLeftDockables(IDockable)
+- uid: Dock.Model.Core.IFactory.CloseLeftDockables(System.Object)
+  name: CloseLeftDockables(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseLeftDockables_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.CloseLeftDockables(System.Object)
+  name.vb: CloseLeftDockables(Object)
+  fullName: Dock.Model.Core.IFactory.CloseLeftDockables(object?)
+  fullName.vb: Dock.Model.Core.IFactory.CloseLeftDockables(Object)
+  nameWithType: IFactory.CloseLeftDockables(object?)
+  nameWithType.vb: IFactory.CloseLeftDockables(Object)
 - uid: Dock.Model.Core.IFactory.CloseLeftDockables*
   name: CloseLeftDockables
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseLeftDockables_
@@ -26830,6 +26857,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.CloseOtherDockables(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.CloseOtherDockables(Dock.Model.Core.IDockable)
   nameWithType: IFactory.CloseOtherDockables(IDockable)
+- uid: Dock.Model.Core.IFactory.CloseOtherDockables(System.Object)
+  name: CloseOtherDockables(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseOtherDockables_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.CloseOtherDockables(System.Object)
+  name.vb: CloseOtherDockables(Object)
+  fullName: Dock.Model.Core.IFactory.CloseOtherDockables(object?)
+  fullName.vb: Dock.Model.Core.IFactory.CloseOtherDockables(Object)
+  nameWithType: IFactory.CloseOtherDockables(object?)
+  nameWithType.vb: IFactory.CloseOtherDockables(Object)
 - uid: Dock.Model.Core.IFactory.CloseOtherDockables*
   name: CloseOtherDockables
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseOtherDockables_
@@ -26843,6 +26879,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.CloseRightDockables(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.CloseRightDockables(Dock.Model.Core.IDockable)
   nameWithType: IFactory.CloseRightDockables(IDockable)
+- uid: Dock.Model.Core.IFactory.CloseRightDockables(System.Object)
+  name: CloseRightDockables(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseRightDockables_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.CloseRightDockables(System.Object)
+  name.vb: CloseRightDockables(Object)
+  fullName: Dock.Model.Core.IFactory.CloseRightDockables(object?)
+  fullName.vb: Dock.Model.Core.IFactory.CloseRightDockables(Object)
+  nameWithType: IFactory.CloseRightDockables(object?)
+  nameWithType.vb: IFactory.CloseRightDockables(Object)
 - uid: Dock.Model.Core.IFactory.CloseRightDockables*
   name: CloseRightDockables
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseRightDockables_
@@ -27232,6 +27277,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.DockAsDocument(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.DockAsDocument(Dock.Model.Core.IDockable)
   nameWithType: IFactory.DockAsDocument(IDockable)
+- uid: Dock.Model.Core.IFactory.DockAsDocument(System.Object)
+  name: DockAsDocument(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_DockAsDocument_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.DockAsDocument(System.Object)
+  name.vb: DockAsDocument(Object)
+  fullName: Dock.Model.Core.IFactory.DockAsDocument(object?)
+  fullName.vb: Dock.Model.Core.IFactory.DockAsDocument(Object)
+  nameWithType: IFactory.DockAsDocument(object?)
+  nameWithType.vb: IFactory.DockAsDocument(Object)
 - uid: Dock.Model.Core.IFactory.DockAsDocument*
   name: DockAsDocument
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_DockAsDocument_
@@ -27440,6 +27494,15 @@ references:
   fullName.vb: Dock.Model.Core.IFactory.FloatAllDockables(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
   nameWithType: IFactory.FloatAllDockables(IDockable, DockWindowOptions?)
   nameWithType.vb: IFactory.FloatAllDockables(IDockable, DockWindowOptions)
+- uid: Dock.Model.Core.IFactory.FloatAllDockables(System.Object)
+  name: FloatAllDockables(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatAllDockables_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.FloatAllDockables(System.Object)
+  name.vb: FloatAllDockables(Object)
+  fullName: Dock.Model.Core.IFactory.FloatAllDockables(object?)
+  fullName.vb: Dock.Model.Core.IFactory.FloatAllDockables(Object)
+  nameWithType: IFactory.FloatAllDockables(object?)
+  nameWithType.vb: IFactory.FloatAllDockables(Object)
 - uid: Dock.Model.Core.IFactory.FloatAllDockables*
   name: FloatAllDockables
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatAllDockables_
@@ -27462,6 +27525,15 @@ references:
   fullName.vb: Dock.Model.Core.IFactory.FloatDockable(Dock.Model.Core.IDockable, Dock.Model.Core.DockWindowOptions)
   nameWithType: IFactory.FloatDockable(IDockable, DockWindowOptions?)
   nameWithType.vb: IFactory.FloatDockable(IDockable, DockWindowOptions)
+- uid: Dock.Model.Core.IFactory.FloatDockable(System.Object)
+  name: FloatDockable(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatDockable_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.FloatDockable(System.Object)
+  name.vb: FloatDockable(Object)
+  fullName: Dock.Model.Core.IFactory.FloatDockable(object?)
+  fullName.vb: Dock.Model.Core.IFactory.FloatDockable(Object)
+  nameWithType: IFactory.FloatDockable(object?)
+  nameWithType.vb: IFactory.FloatDockable(Object)
 - uid: Dock.Model.Core.IFactory.FloatDockable*
   name: FloatDockable
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_FloatDockable_
@@ -27804,6 +27876,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.NewHorizontalDocumentDock(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.NewHorizontalDocumentDock(Dock.Model.Core.IDockable)
   nameWithType: IFactory.NewHorizontalDocumentDock(IDockable)
+- uid: Dock.Model.Core.IFactory.NewHorizontalDocumentDock(System.Object)
+  name: NewHorizontalDocumentDock(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_NewHorizontalDocumentDock_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.NewHorizontalDocumentDock(System.Object)
+  name.vb: NewHorizontalDocumentDock(Object)
+  fullName: Dock.Model.Core.IFactory.NewHorizontalDocumentDock(object?)
+  fullName.vb: Dock.Model.Core.IFactory.NewHorizontalDocumentDock(Object)
+  nameWithType: IFactory.NewHorizontalDocumentDock(object?)
+  nameWithType.vb: IFactory.NewHorizontalDocumentDock(Object)
 - uid: Dock.Model.Core.IFactory.NewHorizontalDocumentDock*
   name: NewHorizontalDocumentDock
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_NewHorizontalDocumentDock_
@@ -27817,6 +27898,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.NewVerticalDocumentDock(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.NewVerticalDocumentDock(Dock.Model.Core.IDockable)
   nameWithType: IFactory.NewVerticalDocumentDock(IDockable)
+- uid: Dock.Model.Core.IFactory.NewVerticalDocumentDock(System.Object)
+  name: NewVerticalDocumentDock(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_NewVerticalDocumentDock_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.NewVerticalDocumentDock(System.Object)
+  name.vb: NewVerticalDocumentDock(Object)
+  fullName: Dock.Model.Core.IFactory.NewVerticalDocumentDock(object?)
+  fullName.vb: Dock.Model.Core.IFactory.NewVerticalDocumentDock(Object)
+  nameWithType: IFactory.NewVerticalDocumentDock(object?)
+  nameWithType.vb: IFactory.NewVerticalDocumentDock(Object)
 - uid: Dock.Model.Core.IFactory.NewVerticalDocumentDock*
   name: NewVerticalDocumentDock
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_NewVerticalDocumentDock_
@@ -28262,6 +28352,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.PinDockable(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.PinDockable(Dock.Model.Core.IDockable)
   nameWithType: IFactory.PinDockable(IDockable)
+- uid: Dock.Model.Core.IFactory.PinDockable(System.Object)
+  name: PinDockable(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_PinDockable_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.PinDockable(System.Object)
+  name.vb: PinDockable(Object)
+  fullName: Dock.Model.Core.IFactory.PinDockable(object?)
+  fullName.vb: Dock.Model.Core.IFactory.PinDockable(Object)
+  nameWithType: IFactory.PinDockable(object?)
+  nameWithType.vb: IFactory.PinDockable(Object)
 - uid: Dock.Model.Core.IFactory.PinDockable*
   name: PinDockable
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_PinDockable_
@@ -28301,6 +28400,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.PreviewPinnedDockable(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.PreviewPinnedDockable(Dock.Model.Core.IDockable)
   nameWithType: IFactory.PreviewPinnedDockable(IDockable)
+- uid: Dock.Model.Core.IFactory.PreviewPinnedDockable(System.Object)
+  name: PreviewPinnedDockable(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_PreviewPinnedDockable_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.PreviewPinnedDockable(System.Object)
+  name.vb: PreviewPinnedDockable(Object)
+  fullName: Dock.Model.Core.IFactory.PreviewPinnedDockable(object?)
+  fullName.vb: Dock.Model.Core.IFactory.PreviewPinnedDockable(Object)
+  nameWithType: IFactory.PreviewPinnedDockable(object?)
+  nameWithType.vb: IFactory.PreviewPinnedDockable(Object)
 - uid: Dock.Model.Core.IFactory.PreviewPinnedDockable*
   name: PreviewPinnedDockable
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_PreviewPinnedDockable_
@@ -28391,6 +28499,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi(Dock.Model.Core.IDockable)
   nameWithType: IFactory.SetDocumentDockLayoutModeMdi(IDockable)
+- uid: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi(System.Object)
+  name: SetDocumentDockLayoutModeMdi(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockLayoutModeMdi_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi(System.Object)
+  name.vb: SetDocumentDockLayoutModeMdi(Object)
+  fullName: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi(object?)
+  fullName.vb: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi(Object)
+  nameWithType: IFactory.SetDocumentDockLayoutModeMdi(object?)
+  nameWithType.vb: IFactory.SetDocumentDockLayoutModeMdi(Object)
 - uid: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeMdi*
   name: SetDocumentDockLayoutModeMdi
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockLayoutModeMdi_
@@ -28404,6 +28521,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed(Dock.Model.Core.IDockable)
   nameWithType: IFactory.SetDocumentDockLayoutModeTabbed(IDockable)
+- uid: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed(System.Object)
+  name: SetDocumentDockLayoutModeTabbed(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockLayoutModeTabbed_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed(System.Object)
+  name.vb: SetDocumentDockLayoutModeTabbed(Object)
+  fullName: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed(object?)
+  fullName.vb: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed(Object)
+  nameWithType: IFactory.SetDocumentDockLayoutModeTabbed(object?)
+  nameWithType.vb: IFactory.SetDocumentDockLayoutModeTabbed(Object)
 - uid: Dock.Model.Core.IFactory.SetDocumentDockLayoutModeTabbed*
   name: SetDocumentDockLayoutModeTabbed
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockLayoutModeTabbed_
@@ -28430,6 +28556,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft(Dock.Model.Core.IDockable)
   nameWithType: IFactory.SetDocumentDockTabsLayoutLeft(IDockable)
+- uid: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft(System.Object)
+  name: SetDocumentDockTabsLayoutLeft(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutLeft_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft(System.Object)
+  name.vb: SetDocumentDockTabsLayoutLeft(Object)
+  fullName: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft(object?)
+  fullName.vb: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft(Object)
+  nameWithType: IFactory.SetDocumentDockTabsLayoutLeft(object?)
+  nameWithType.vb: IFactory.SetDocumentDockTabsLayoutLeft(Object)
 - uid: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutLeft*
   name: SetDocumentDockTabsLayoutLeft
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutLeft_
@@ -28443,6 +28578,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight(Dock.Model.Core.IDockable)
   nameWithType: IFactory.SetDocumentDockTabsLayoutRight(IDockable)
+- uid: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight(System.Object)
+  name: SetDocumentDockTabsLayoutRight(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutRight_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight(System.Object)
+  name.vb: SetDocumentDockTabsLayoutRight(Object)
+  fullName: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight(object?)
+  fullName.vb: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight(Object)
+  nameWithType: IFactory.SetDocumentDockTabsLayoutRight(object?)
+  nameWithType.vb: IFactory.SetDocumentDockTabsLayoutRight(Object)
 - uid: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutRight*
   name: SetDocumentDockTabsLayoutRight
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutRight_
@@ -28456,6 +28600,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop(Dock.Model.Core.IDockable)
   nameWithType: IFactory.SetDocumentDockTabsLayoutTop(IDockable)
+- uid: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop(System.Object)
+  name: SetDocumentDockTabsLayoutTop(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutTop_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop(System.Object)
+  name.vb: SetDocumentDockTabsLayoutTop(Object)
+  fullName: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop(object?)
+  fullName.vb: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop(Object)
+  nameWithType: IFactory.SetDocumentDockTabsLayoutTop(object?)
+  nameWithType.vb: IFactory.SetDocumentDockTabsLayoutTop(Object)
 - uid: Dock.Model.Core.IFactory.SetDocumentDockTabsLayoutTop*
   name: SetDocumentDockTabsLayoutTop
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_SetDocumentDockTabsLayoutTop_
@@ -28568,6 +28721,15 @@ references:
   commentId: M:Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
   fullName: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(Dock.Model.Core.IDockable)
   nameWithType: IFactory.TogglePreviewPinnedDockable(IDockable)
+- uid: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(System.Object)
+  name: TogglePreviewPinnedDockable(object?)
+  href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_TogglePreviewPinnedDockable_System_Object_
+  commentId: M:Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(System.Object)
+  name.vb: TogglePreviewPinnedDockable(Object)
+  fullName: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(object?)
+  fullName.vb: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable(Object)
+  nameWithType: IFactory.TogglePreviewPinnedDockable(object?)
+  nameWithType.vb: IFactory.TogglePreviewPinnedDockable(Object)
 - uid: Dock.Model.Core.IFactory.TogglePreviewPinnedDockable*
   name: TogglePreviewPinnedDockable
   href: api/Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_TogglePreviewPinnedDockable_

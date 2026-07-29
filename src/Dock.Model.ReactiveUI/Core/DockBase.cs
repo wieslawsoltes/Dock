@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using System.Reactive;
+using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Adapters;

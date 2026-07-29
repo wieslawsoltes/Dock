@@ -1,4 +1,5 @@
 using System.Reactive;
+using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Threading.Tasks;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Navigation.Services;

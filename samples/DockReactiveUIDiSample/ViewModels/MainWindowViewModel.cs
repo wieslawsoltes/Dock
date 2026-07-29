@@ -1,5 +1,6 @@
 using System.IO;
 using System.Reactive;
+using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;

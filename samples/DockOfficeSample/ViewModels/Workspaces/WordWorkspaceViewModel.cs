@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reactive;
+using Unit = ReactiveUI.Primitives.RxVoid;
 using Dock.Model.Controls;
 using DockOfficeSample.ViewModels.Documents;
 using DockOfficeSample.ViewModels.Tools;

@@ -17,7 +17,7 @@ internal static class Program
 
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
     }
 }

@@ -1,20 +1,20 @@
 using System;
-using System.Reactive.Concurrency;
 using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
+using ReactiveUI.Primitives.Concurrency;
 
 namespace Dock.Model.ReactiveUI.Services.Threading;
 
 internal sealed class ServiceDispatcher
 {
     private readonly SynchronizationContext? _context;
-    private readonly IScheduler _scheduler;
+    private readonly ISequencer _scheduler;
 
-    public ServiceDispatcher(SynchronizationContext? context = null, IScheduler? scheduler = null)
+    public ServiceDispatcher(SynchronizationContext? context = null, ISequencer? scheduler = null)
     {
         _context = context ?? SynchronizationContext.Current;
-        _scheduler = scheduler ?? RxApp.MainThreadScheduler;
+        _scheduler = scheduler ?? RxSchedulers.MainThreadScheduler;
     }
 
     public bool CheckAccess()

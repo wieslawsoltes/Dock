@@ -132,10 +132,10 @@ Follow these instructions to create a ReactiveUI application with routing using 
 
    ```csharp
    using System;
-   using System.Reactive;
    using System.Reactive.Disposables;
    using Dock.Model.ReactiveUI.Navigation.Controls;
    using ReactiveUI;
+   using Unit = ReactiveUI.Primitives.RxVoid;
 
    namespace MyDockApp.ViewModels.Documents
    {

@@ -7,6 +7,18 @@ commands are implemented using `ReactiveCommand`. The sample project
 interface details refer to the [Dock API Reference](dock-reference.md) and see
 the [Advanced Guide](dock-advanced.md) for more customization options.
 
+## ReactiveUI 24 distribution
+
+The samples and recommended setup use the System.Reactive-compatible package
+family. Install `ReactiveUI.Reactive`, `ReactiveUI.Avalonia.Reactive`, and the
+matching `Dock.Model.ReactiveUI.Reactive` packages together. This distribution
+exposes `System.Reactive.Unit`, `System.Reactive.Concurrency.IScheduler`, and
+System.Reactive subjects at ReactiveUI's public boundary.
+
+Do not combine these packages with the unsuffixed `ReactiveUI`,
+`ReactiveUI.Avalonia`, or `Dock.Model.ReactiveUI` packages. The unsuffixed family
+is the optional ReactiveUI.Primitives lane and has distinct type identities.
+
 > **💡 Modern Approach**: For easier source-backed layout management, consider using [DocumentDock/ToolDock ItemsSource](dock-itemssource.md) which automatically creates and manages documents and tools from collections. The ItemsSource approach works seamlessly with ReactiveUI's observable collections and `ReactiveCommand`. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
 
 ## Step-by-step tutorial
@@ -24,18 +36,18 @@ Follow these instructions to create a minimal ReactiveUI based application using
 
    ```bash
    dotnet add package Dock.Avalonia
-   dotnet add package Dock.Model.ReactiveUI
+   dotnet add package Dock.Model.ReactiveUI.Reactive
    dotnet add package Dock.Avalonia.Themes.Fluent
-   dotnet add package ReactiveUI.Avalonia
+   dotnet add package ReactiveUI.Avalonia.Reactive
    ```
 
    ReactiveUI 24 must be initialized by the Avalonia application builder. Update
-   `Program.cs` to import `ReactiveUI.Avalonia` and call `UseReactiveUI`:
+   `Program.cs` to import `ReactiveUI.Avalonia.Reactive` and call `UseReactiveUI`:
 
    ```csharp
    using System;
    using Avalonia;
-   using ReactiveUI.Avalonia;
+   using ReactiveUI.Avalonia.Reactive;
 
    namespace MyDockApp;
 
@@ -60,13 +72,13 @@ Follow these instructions to create a minimal ReactiveUI based application using
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    
    # For navigation helpers and overlay services:
-   dotnet add package Dock.Model.ReactiveUI.Services
+   dotnet add package Dock.Model.ReactiveUI.Services.Reactive
    
    # For dependency injection:
    dotnet add package Microsoft.Extensions.DependencyInjection
    ```
 
-   Navigation types ship in `Dock.Model.ReactiveUI.Services` and keep the
+   Navigation types ship in `Dock.Model.ReactiveUI.Services.Reactive` and keep the
    `Dock.Model.ReactiveUI.Navigation.*` namespaces for compatibility.
 
 3. **Set up View Locator (Required)**

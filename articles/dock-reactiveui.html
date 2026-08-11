@@ -89,6 +89,15 @@ commands are implemented using <code>ReactiveCommand</code>. The sample project
 <code>DockReactiveUISample</code> demonstrates these concepts in a working application. For
 interface details refer to the <a href="dock-reference.html">Dock API Reference</a> and see
 the <a href="dock-advanced.html">Advanced Guide</a> for more customization options.</p>
+<h2 id="reactiveui-24-distribution">ReactiveUI 24 distribution</h2>
+<p>The samples and recommended setup use the System.Reactive-compatible package
+family. Install <code>ReactiveUI.Reactive</code>, <code>ReactiveUI.Avalonia.Reactive</code>, and the
+matching <code>Dock.Model.ReactiveUI.Reactive</code> packages together. This distribution
+exposes <code>System.Reactive.Unit</code>, <code>System.Reactive.Concurrency.IScheduler</code>, and
+System.Reactive subjects at ReactiveUI's public boundary.</p>
+<p>Do not combine these packages with the unsuffixed <code>ReactiveUI</code>,
+<code>ReactiveUI.Avalonia</code>, or <code>Dock.Model.ReactiveUI</code> packages. The unsuffixed family
+is the optional ReactiveUI.Primitives lane and has distinct type identities.</p>
 <blockquote>
 <p><strong>💡 Modern Approach</strong>: For easier source-backed layout management, consider using <a href="dock-itemssource.html">DocumentDock/ToolDock ItemsSource</a> which automatically creates and manages documents and tools from collections. The ItemsSource approach works seamlessly with ReactiveUI's observable collections and <code>ReactiveCommand</code>. This approach is covered in detail in the <a href="dock-content-guide.html">Document and Tool Content Guide</a>.</p>
 </blockquote>
@@ -102,15 +111,15 @@ cd MyDockApp
 </li>
 <li><p><strong>Install the Dock packages</strong></p>
 <pre><code class="lang-bash">dotnet add package Dock.Avalonia
-dotnet add package Dock.Model.ReactiveUI
+dotnet add package Dock.Model.ReactiveUI.Reactive
 dotnet add package Dock.Avalonia.Themes.Fluent
-dotnet add package ReactiveUI.Avalonia
+dotnet add package ReactiveUI.Avalonia.Reactive
 </code></pre>
 <p>ReactiveUI 24 must be initialized by the Avalonia application builder. Update
-<code>Program.cs</code> to import <code>ReactiveUI.Avalonia</code> and call <code>UseReactiveUI</code>:</p>
+<code>Program.cs</code> to import <code>ReactiveUI.Avalonia.Reactive</code> and call <code>UseReactiveUI</code>:</p>
 <pre><code class="lang-csharp">using System;
 using Avalonia;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace MyDockApp;
 
@@ -133,12 +142,12 @@ dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
 dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
 
 # For navigation helpers and overlay services:
-dotnet add package Dock.Model.ReactiveUI.Services
+dotnet add package Dock.Model.ReactiveUI.Services.Reactive
 
 # For dependency injection:
 dotnet add package Microsoft.Extensions.DependencyInjection
 </code></pre>
-<p>Navigation types ship in <code>Dock.Model.ReactiveUI.Services</code> and keep the
+<p>Navigation types ship in <code>Dock.Model.ReactiveUI.Services.Reactive</code> and keep the
 <code>Dock.Model.ReactiveUI.Navigation.*</code> namespaces for compatibility.</p>
 </li>
 <li><p><strong>Set up View Locator (Required)</strong></p>

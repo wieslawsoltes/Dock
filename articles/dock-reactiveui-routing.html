@@ -98,12 +98,12 @@ cd MyDockApp
 </li>
 <li><p><strong>Install the required packages</strong></p>
 <pre><code class="lang-bash">dotnet add package Dock.Avalonia
-dotnet add package Dock.Model.ReactiveUI
-dotnet add package Dock.Model.ReactiveUI.Services
+dotnet add package Dock.Model.ReactiveUI.Reactive
+dotnet add package Dock.Model.ReactiveUI.Services.Reactive
 dotnet add package Dock.Avalonia.Themes.Fluent
-dotnet add package ReactiveUI.Avalonia
+dotnet add package ReactiveUI.Avalonia.Reactive
 </code></pre>
-<p>Navigation types ship in <code>Dock.Model.ReactiveUI.Services</code> and keep the
+<p>Navigation types ship in <code>Dock.Model.ReactiveUI.Services.Reactive</code> and keep the
 <code>Dock.Model.ReactiveUI.Navigation.*</code> namespaces for compatibility.</p>
 <p><strong>Optional packages:</strong></p>
 <pre><code class="lang-bash"># For serialization (choose one):

@@ -1,7 +1,11 @@
 using System;
+#if DOCK_REACTIVEUI_REACTIVE
+using System.Reactive.Concurrency;
+#else
+using ReactiveUI.Primitives.Concurrency;
+#endif
 using System.Threading.Tasks;
 using ReactiveUI;
-using ReactiveUI.Primitives.Concurrency;
 
 namespace Dock.Model.ReactiveUI.Services.Threading;
 

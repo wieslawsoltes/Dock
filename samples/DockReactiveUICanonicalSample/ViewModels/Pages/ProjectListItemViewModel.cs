@@ -1,8 +1,7 @@
 using System;
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using DockReactiveUICanonicalSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Pages;
 

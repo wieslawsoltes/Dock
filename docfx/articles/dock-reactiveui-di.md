@@ -21,11 +21,11 @@ Follow these instructions to create a ReactiveUI application with dependency inj
 
    ```bash
    dotnet add package Dock.Avalonia
-   dotnet add package Dock.Model.ReactiveUI
+   dotnet add package Dock.Model.ReactiveUI.Reactive
    dotnet add package Dock.Avalonia.Themes.Fluent
    dotnet add package Microsoft.Extensions.DependencyInjection
    dotnet add package Microsoft.Extensions.Hosting
-   dotnet add package ReactiveUI.Avalonia
+   dotnet add package ReactiveUI.Avalonia.Reactive
    ```
 
    **Optional packages:**

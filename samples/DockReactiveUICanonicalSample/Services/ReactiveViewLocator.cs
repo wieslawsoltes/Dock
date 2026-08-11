@@ -1,4 +1,5 @@
 using System;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 using Splat;
 

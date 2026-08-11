@@ -1,17 +1,27 @@
 using System;
+#if DOCK_REACTIVEUI_REACTIVE
+using System.Reactive.Concurrency;
+#else
+using ReactiveUI.Primitives.Concurrency;
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
-using ReactiveUI.Primitives.Concurrency;
 
 namespace Dock.Model.ReactiveUI.Services.Threading;
 
 internal sealed class ServiceDispatcher
 {
     private readonly SynchronizationContext? _context;
+#if DOCK_REACTIVEUI_REACTIVE
+    private readonly IScheduler _scheduler;
+
+    public ServiceDispatcher(SynchronizationContext? context = null, IScheduler? scheduler = null)
+#else
     private readonly ISequencer _scheduler;
 
     public ServiceDispatcher(SynchronizationContext? context = null, ISequencer? scheduler = null)
+#endif
     {
         _context = context ?? SynchronizationContext.Current;
         _scheduler = scheduler ?? RxSchedulers.MainThreadScheduler;

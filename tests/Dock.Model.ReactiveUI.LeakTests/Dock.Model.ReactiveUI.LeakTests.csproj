@@ -16,8 +16,8 @@
   <ItemGroup>
     <Compile Include="..\ReactiveUITestInitializer.cs" Link="ReactiveUITestInitializer.cs" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Services\Dock.Model.ReactiveUI.Services.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Reactive\Dock.Model.ReactiveUI.Reactive.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Services.Reactive\Dock.Model.ReactiveUI.Services.Reactive.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using DockQuickStartSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockQuickStartSample.ViewModels;
 

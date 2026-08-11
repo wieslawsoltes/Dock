@@ -1,11 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockCodeOnlySample;
 

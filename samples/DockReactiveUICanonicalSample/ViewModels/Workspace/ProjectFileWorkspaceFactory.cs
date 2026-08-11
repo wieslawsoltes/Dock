@@ -9,7 +9,7 @@ using Dock.Model.ReactiveUI.Controls;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using Dock.Model.Services;
 using DockReactiveUICanonicalSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 

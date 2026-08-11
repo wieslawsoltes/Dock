@@ -20,7 +20,7 @@
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Microsoft.Extensions.DependencyInjection.props" />
-  <Import Project="..\..\build\ReactiveUI.props" />
+  <Import Project="..\..\build\ReactiveUI.Primitives.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />

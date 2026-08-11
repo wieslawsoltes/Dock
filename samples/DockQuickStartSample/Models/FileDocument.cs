@@ -1,4 +1,4 @@
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockQuickStartSample.Models;
 

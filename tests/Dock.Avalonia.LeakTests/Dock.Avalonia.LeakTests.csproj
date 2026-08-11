@@ -22,7 +22,7 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Simple\Dock.Avalonia.Themes.Simple.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Reactive\Dock.Model.ReactiveUI.Reactive.csproj" />
   </ItemGroup>
 
   <ItemGroup>

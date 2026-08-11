@@ -1,11 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Reactive.Linq;
 using DockOfficeSample.Models;
 using DockOfficeSample.ViewModels.Workspaces;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockOfficeSample.ViewModels;
 

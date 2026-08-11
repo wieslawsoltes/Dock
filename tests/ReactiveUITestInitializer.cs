@@ -1,5 +1,5 @@
 using System.Runtime.CompilerServices;
-using ReactiveUI.Builder;
+using ReactiveUI.Reactive.Builder;
 
 namespace Dock.Tests;
 

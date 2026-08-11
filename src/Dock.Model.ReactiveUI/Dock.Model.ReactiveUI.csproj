@@ -19,7 +19,7 @@
   <!--<Import Project="..\..\build\SignAssembly.props" />-->
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
-  <Import Project="..\..\build\ReactiveUI.props" />
+  <Import Project="..\..\build\ReactiveUI.Primitives.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />

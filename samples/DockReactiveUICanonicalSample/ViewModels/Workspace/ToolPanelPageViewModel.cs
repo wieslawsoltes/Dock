@@ -1,11 +1,10 @@
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Threading.Tasks;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Navigation.Services;
 using Dock.Model.Services;
 using DockReactiveUICanonicalSample.ViewModels.Dialogs;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 

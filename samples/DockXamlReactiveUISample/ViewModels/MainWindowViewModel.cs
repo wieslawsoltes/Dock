@@ -1,11 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using DockXamlReactiveUISample.Models;
 using Dock.Model.Core;
 using Dock.Settings;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockXamlReactiveUISample.ViewModels;
 

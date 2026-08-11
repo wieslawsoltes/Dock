@@ -1,7 +1,7 @@
 using System;
 using Avalonia;
 using Dock.Model.Avalonia;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace DockQuickStartSample;
 

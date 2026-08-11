@@ -4,8 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Dock.Avalonia.Controls;
-using ReactiveUI;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Reactive;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace DockCodeOnlySample;
 

@@ -1,9 +1,8 @@
 using System;
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUIRoutingSample.ViewModels.Inner;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRoutingSample.ViewModels.Tools;
 

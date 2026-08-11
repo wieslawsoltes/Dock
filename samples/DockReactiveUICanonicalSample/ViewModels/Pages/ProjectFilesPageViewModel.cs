@@ -1,7 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using Unit = ReactiveUI.Primitives.RxVoid;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
@@ -12,7 +11,7 @@ using DockNavigationHelpers = Dock.Model.ReactiveUI.Navigation.Services.DockNavi
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using SampleDockNavigationService = DockReactiveUICanonicalSample.Services.IDockNavigationService;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Pages;

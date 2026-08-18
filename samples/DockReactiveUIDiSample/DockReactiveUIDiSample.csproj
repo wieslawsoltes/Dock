@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Reactive\Dock.Model.ReactiveUI.Reactive.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Diagnostics\Dock.Avalonia.Diagnostics.csproj" />

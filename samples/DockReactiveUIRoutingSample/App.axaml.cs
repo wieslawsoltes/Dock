@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using DockReactiveUIRoutingSample.ViewModels;
 using DockReactiveUIRoutingSample.Views;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 using Splat;
 

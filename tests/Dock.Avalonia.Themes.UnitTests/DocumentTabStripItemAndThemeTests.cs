@@ -1,6 +1,8 @@
+using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Styling;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes.Browser;
 using Dock.Avalonia.Themes.Fluent;
 using Dock.Avalonia.Themes.Simple;
 using Xunit;
@@ -35,5 +37,18 @@ public class DocumentTabStripItemAndThemeTests
     {
         Styles theme = new DockSimpleTheme();
         Assert.NotNull(theme);
+    }
+
+    [AvaloniaFact]
+    public void BrowserTabTheme_Enables_Full_Document_Dock_Selector()
+    {
+        var theme = new BrowserTabTheme();
+        var resourceNode = Assert.IsAssignableFrom<IResourceNode>(theme);
+
+        Assert.True(resourceNode.TryGetResource(
+            "DockDocumentControlShowDockIndicatorOnly",
+            ThemeVariant.Default,
+            out var resource));
+        Assert.False(Assert.IsType<bool>(resource));
     }
 }

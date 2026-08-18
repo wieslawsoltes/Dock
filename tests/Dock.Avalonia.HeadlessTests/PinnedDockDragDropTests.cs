@@ -381,6 +381,33 @@ public class PinnedDockDragDropTests
     #region Multiple Tool Cross-Side Move Tests
 
     [AvaloniaFact]
+    public void ValidateTool_PinnedPreviewToOuterTarget_DocksExactlyOnce()
+    {
+        var (factory, root, sourceDock, tool) = CreateTestLayout();
+        var targetDock = new ToolDock
+        {
+            Alignment = Alignment.Right,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        factory.AddDockable(root, targetDock);
+
+        factory.PinDockable(tool);
+        factory.PreviewPinnedDockable(tool);
+        var previewDock = root.PinnedDock;
+        var manager = new DockManager(new DockService());
+
+        var result = manager.ValidateTool(tool, targetDock, DragAction.Move, DockOperation.Left, bExecute: true);
+
+        Assert.True(result);
+        Assert.False(factory.IsDockablePinned(tool, root));
+        Assert.Null(root.PinnedDock);
+        Assert.DoesNotContain(tool, sourceDock.VisibleDockables!);
+        Assert.NotSame(previewDock, tool.Owner);
+        var owner = Assert.IsAssignableFrom<IToolDock>(tool.Owner);
+        Assert.Single(owner.VisibleDockables!, dockable => ReferenceEquals(dockable, tool));
+    }
+
+    [AvaloniaFact]
     public void ValidateTool_MultipleCrossSideMoves_WorksCorrectly()
     {
         var (factory, root, _, _) = CreateTestLayout();
@@ -406,4 +433,4 @@ public class PinnedDockDragDropTests
     }
 
     #endregion
-} 
+}

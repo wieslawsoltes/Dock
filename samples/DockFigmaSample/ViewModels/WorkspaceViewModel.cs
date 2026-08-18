@@ -2,7 +2,7 @@ using System.Reactive;
 using Dock.Model.Controls;
 using DockFigmaSample.ViewModels.Documents;
 using DockFigmaSample.ViewModels.Tools;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockFigmaSample.ViewModels;
 

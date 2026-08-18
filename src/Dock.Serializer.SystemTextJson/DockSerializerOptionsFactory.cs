@@ -37,10 +37,9 @@ internal static class DockSerializerOptionsFactory
             ReferenceHandler = ReferenceHandler.Preserve,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-            TypeInfoResolver = typeInfoResolver
+            TypeInfoResolver = typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType))
         };
 
-        options.Converters.Add(new JsonConverterFactoryList(listType));
         return options;
     }
 }

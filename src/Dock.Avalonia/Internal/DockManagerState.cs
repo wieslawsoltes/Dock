@@ -359,6 +359,7 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory, PixelPoint dragOffset)
     {
+        dockable = DragDockableResolver.Resolve(dockable);
         var screen = inputActiveDockControl.PointToScreen(point);
         var adjustedScreen = new PixelPoint(screen.X + dragOffset.X, screen.Y + dragOffset.Y);
         var pointer = new Point(adjustedScreen.X, adjustedScreen.Y);

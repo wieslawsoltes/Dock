@@ -198,6 +198,11 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     /// <param name="visual">The visual to remove from its parent.</param>
     private static bool TryDetachFromParent(Visual visual)
     {
+        if (visual.GetVisualParent() is ContentPresenter visualContentPresenter)
+        {
+            return TryDetachFromContentPresenter(visualContentPresenter, visual);
+        }
+
         var parent = (visual as Control)?.Parent ?? visual.GetVisualParent();
 
         if (parent is null)

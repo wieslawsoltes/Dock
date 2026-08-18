@@ -105,7 +105,7 @@ public class NavigateAdapterTests
     {
         public IDockable? ClosedDockable { get; private set; }
 
-        public override void CloseDockable(IDockable dockable)
+        public override void CloseDockable(IDockable? dockable)
         {
             ClosedDockable = dockable;
         }

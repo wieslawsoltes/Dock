@@ -4,7 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using DockOfficeSample.Models;
 using DockOfficeSample.ViewModels.Workspaces;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockOfficeSample.ViewModels;
 

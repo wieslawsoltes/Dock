@@ -2,7 +2,7 @@ using System;
 using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockOfficeSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockOfficeSample.ViewModels.Documents;
 

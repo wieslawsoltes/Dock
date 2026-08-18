@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Dock.Settings;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -22,7 +22,7 @@ internal class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .ShowDockablePreviewOnDrag()
             .SetDragPreviewOpacity(0.6)
             // .UseManagedWindows()

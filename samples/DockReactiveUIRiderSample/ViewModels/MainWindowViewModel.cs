@@ -13,7 +13,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using DockReactiveUIRiderSample.Services;
 using DockReactiveUIRiderSample.ViewModels.Documents;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRiderSample.ViewModels;
 

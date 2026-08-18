@@ -1,5 +1,5 @@
 using DockReactiveUICanonicalSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.Services;
 

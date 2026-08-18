@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization.Metadata;
 using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.Inpc.Controls;
+using Dock.Model.Inpc.Core;
 using Dock.Serializer.SystemTextJson;
 using Xunit;
 
@@ -67,6 +70,24 @@ public class SystemTextJsonDockSerializerTests
 
         Assert.NotNull(result);
         Assert.IsType<List<int>>(result!.Numbers);
+    }
+
+    [Fact]
+    public void DockModelLists_UseAotSafeObservableCollections()
+    {
+        var serializer = new DockSerializer();
+        var root = new RootDock
+        {
+            VisibleDockables = new List<IDockable> { new DocumentDock() },
+            Windows = new List<IDockWindow> { new DockWindow() }
+        };
+
+        var json = serializer.Serialize(root);
+        var result = serializer.Deserialize<RootDock>(json);
+
+        Assert.NotNull(result);
+        Assert.IsType<ObservableCollection<IDockable>>(result!.VisibleDockables);
+        Assert.IsType<ObservableCollection<IDockWindow>>(result.Windows);
     }
 
     [Fact]

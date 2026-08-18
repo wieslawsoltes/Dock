@@ -2,7 +2,7 @@ using System;
 using System.Reactive;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUIRoutingSample.ViewModels.Inner;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRoutingSample.ViewModels.Tools;
 

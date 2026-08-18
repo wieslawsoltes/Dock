@@ -4,7 +4,7 @@ using Dock.Model.ReactiveUI.Controls;
 using DockReactiveUIRiderSample.Models;
 using DockReactiveUIRiderSample.Services;
 using Microsoft.CodeAnalysis;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRiderSample.ViewModels.Tools;
 

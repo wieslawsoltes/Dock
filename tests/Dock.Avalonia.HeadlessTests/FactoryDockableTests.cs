@@ -1,8 +1,10 @@
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
 using Avalonia.Controls;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
@@ -125,5 +127,59 @@ public class FactoryDockableTests
         Assert.Null(ex);
         Assert.Contains(document, dock.VisibleDockables!);
         Assert.Equal(dock, document.Owner);
+    }
+
+    /// <summary>
+    /// Regression test for Dock #1125
+    /// </summary>
+    [AvaloniaFact]
+    public void MoveDockable_CrossWindow_Commits_Target_Before_Collapsing_Floating_Source()
+    {
+        var factory = new Factory();
+
+        var workspaceRoot = new RootDock { Windows = factory.CreateList<IDockWindow>() };
+        workspaceRoot.Factory = factory;
+
+        var floatingRoot = new RootDock { Factory = factory, VisibleDockables = factory.CreateList<IDockable>() };
+        var document = new Document { Title = "Doc" };
+        factory.AddDockable(floatingRoot, document);
+
+        var window = new DockWindow { Layout = floatingRoot };
+        floatingRoot.Window = window;
+        factory.AddWindow(workspaceRoot, window);
+
+        var target = new ProportionalDock { VisibleDockables = factory.CreateList<IDockable>() };
+        target.Factory = factory;
+
+        var events = new List<string>();
+        factory.DockableAdded += (_, args) =>
+        {
+            if (ReferenceEquals(args.Dockable, document))
+            {
+                events.Add("DockableAdded");
+            }
+        };
+        factory.WindowRemoved += (_, args) =>
+        {
+            if (ReferenceEquals(args.Window, window))
+            {
+                events.Add("WindowRemoved");
+            }
+        };
+
+        var exception = Record.Exception(() => factory.MoveDockable(floatingRoot, target, document, null));
+
+        Assert.Null(exception);
+
+        // The dockable must be committed into the target before the floating window is
+        // torn down - never the other way around.
+        Assert.Equal(new[] { "DockableAdded", "WindowRemoved" }, events);
+
+        // Final state: target owns the document, and the floating window is fully gone.
+        Assert.Contains(document, target.VisibleDockables!);
+        Assert.Equal(target, document.Owner);
+        Assert.Empty(workspaceRoot.Windows!);
+        Assert.Null(floatingRoot.Window);
+        Assert.Null(window.Owner);
     }
 }

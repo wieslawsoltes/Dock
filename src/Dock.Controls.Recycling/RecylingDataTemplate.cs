@@ -191,6 +191,11 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
 
     private static bool TryDetachFromParent(Control control)
     {
+        if (control.GetVisualParent() is ContentPresenter visualContentPresenter)
+        {
+            return TryDetachFromContentPresenter(visualContentPresenter, control);
+        }
+
         var parent = control.Parent ?? control.GetVisualParent();
 
         if (parent is null)

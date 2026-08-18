@@ -53,11 +53,14 @@ public sealed class OverlayHost : Decorator
     private OverlayLayerCollection _overlayLayers = new();
     private OverlayLayerCollection? _serviceLayers;
     private bool _isAttached;
+    private bool _isRebuilding;
+    private bool _rebuildRequested;
+    private bool _rebuildScheduled;
 
     static OverlayHost()
     {
-        ContentProperty.Changed.AddClassHandler<OverlayHost>((host, _) => host.RebuildPipeline());
-        ContentTemplateProperty.Changed.AddClassHandler<OverlayHost>((host, _) => host.RebuildPipeline());
+        ContentProperty.Changed.AddClassHandler<OverlayHost>((host, _) => host.RequestRebuild());
+        ContentTemplateProperty.Changed.AddClassHandler<OverlayHost>((host, _) => host.RequestRebuild());
         OverlaysProperty.Changed.AddClassHandler<OverlayHost>((host, args) => host.OnOverlaysChanged(args));
         OverlayLayersProperty.Changed.AddClassHandler<OverlayHost>((host, args) => host.OnOverlayLayersChanged(args));
         UseServiceLayersProperty.Changed.AddClassHandler<OverlayHost>((host, _) => host.OnUseServiceLayersChanged());
@@ -126,7 +129,7 @@ public sealed class OverlayHost : Decorator
         AttachOverlayCollections();
         OverlayLayerRegistry.ProviderChanged += OnOverlayLayerProviderChanged;
         ResetServiceLayers();
-        RebuildPipeline();
+        RebuildPipelineCore();
     }
 
     /// <inheritdoc />
@@ -153,23 +156,32 @@ public sealed class OverlayHost : Decorator
             newList.CollectionChanged += OnOverlaysCollectionChanged;
         }
 
-        RebuildPipeline();
+        RequestRebuild();
     }
 
     private void OnOverlaysCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        RebuildPipeline();
+        RequestRebuild();
     }
 
     private void OnOverlayLayersChanged(AvaloniaPropertyChangedEventArgs args)
     {
+        var newLayers = args.NewValue as OverlayLayerCollection ?? new OverlayLayerCollection();
+
+        if (IsStructurallyEquivalent(_overlayLayers, newLayers))
+        {
+            // Treat a structurally-equivalent replacement as a no-op and keep the current,
+            // already-attached layers/content untouched.
+            return;
+        }
+
         if (_overlayLayers is INotifyCollectionChanged oldList)
         {
             oldList.CollectionChanged -= OnOverlayLayersCollectionChanged;
         }
 
         UnsubscribeLayerChanges(_overlayLayers);
-        _overlayLayers = args.NewValue as OverlayLayerCollection ?? new OverlayLayerCollection();
+        _overlayLayers = newLayers;
         if (_isAttached)
         {
             SubscribeLayerChanges(_overlayLayers);
@@ -180,7 +192,64 @@ public sealed class OverlayHost : Decorator
             newList.CollectionChanged += OnOverlayLayersCollectionChanged;
         }
 
-        RebuildPipeline();
+        RequestRebuild();
+    }
+
+    /// <summary>
+    /// Compares two overlay layer collections for structural equivalence: same ordered
+    /// sequence of layer kinds/visibility/z-order/style-key, regardless of whether the
+    /// individual layer/control instances are the same objects.
+    /// </summary>
+    private static bool IsStructurallyEquivalent(OverlayLayerCollection oldLayers, OverlayLayerCollection newLayers)
+    {
+        if (ReferenceEquals(oldLayers, newLayers))
+        {
+            return true;
+        }
+
+        if (oldLayers.Count != newLayers.Count)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < oldLayers.Count; i++)
+        {
+            var a = oldLayers[i];
+            var b = newLayers[i];
+
+            if (a is null || b is null)
+            {
+                if (!ReferenceEquals(a, b))
+                {
+                    return false;
+                }
+
+                continue;
+            }
+
+            if (a.ZIndex != b.ZIndex
+                || a.IsVisible != b.IsVisible
+                || a.BlocksInput != b.BlocksInput
+                || !Equals(a.StyleKey, b.StyleKey))
+            {
+                return false;
+            }
+
+            var overlayA = a.Overlay;
+            var overlayB = b.Overlay;
+
+            if (ReferenceEquals(overlayA, overlayB))
+            {
+                continue;
+            }
+
+            if (overlayA is null || overlayB is null || overlayA.GetType() != overlayB.GetType())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void OnOverlayLayersCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -195,7 +264,7 @@ public sealed class OverlayHost : Decorator
             SubscribeLayerChanges(e.NewItems.OfType<IOverlayLayer>());
         }
 
-        RebuildPipeline();
+        RequestRebuild();
     }
 
     private void OnServiceLayersCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -210,39 +279,30 @@ public sealed class OverlayHost : Decorator
             SubscribeLayerChanges(e.NewItems.OfType<IOverlayLayer>());
         }
 
-        RebuildPipeline();
+        RequestRebuild();
     }
 
     private void OnUseServiceLayersChanged()
     {
         ResetServiceLayers();
-        RebuildPipeline();
+        RequestRebuild();
     }
 
     private void OnOverlayLayerProviderChanged(object? sender, EventArgs e)
     {
+        if (!Dispatcher.UIThread.CheckAccess())
+        {
+            Dispatcher.UIThread.Post(() => OnOverlayLayerProviderChanged(sender, e));
+            return;
+        }
+
         if (!_isAttached)
         {
             return;
         }
 
-        if (!Dispatcher.UIThread.CheckAccess())
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                if (!_isAttached)
-                {
-                    return;
-                }
-
-                ResetServiceLayers();
-                RebuildPipeline();
-            });
-            return;
-        }
-
         ResetServiceLayers();
-        RebuildPipeline();
+        RequestRebuild();
     }
 
     private void AttachOverlayCollections()
@@ -299,7 +359,80 @@ public sealed class OverlayHost : Decorator
 
     private void OnOverlayLayerPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        RebuildPipeline();
+        RequestRebuild();
+    }
+
+    /// <summary>
+    /// Requests that the overlay pipeline be rebuilt.
+    /// </summary>
+    /// <remarks>
+    /// Multiple requests arriving before the pipeline is rebuilt are coalesced onto a
+    /// single dispatcher callback.
+    /// </remarks>
+    private void RequestRebuild()
+    {
+        if (!_isAttached)
+        {
+            // Nothing is observing the pipeline yet; OnAttachedToVisualTree will
+            // build it synchronously with the latest values once attached.
+            return;
+        }
+
+        if (_isRebuilding)
+        {
+            _rebuildRequested = true;
+            return;
+        }
+
+        if (_rebuildScheduled)
+        {
+            return;
+        }
+
+        _rebuildScheduled = true;
+        Dispatcher.UIThread.Post(() =>
+        {
+            _rebuildScheduled = false;
+
+            if (!_isAttached)
+            {
+                return;
+            }
+
+            RebuildPipelineCore();
+        });
+    }
+
+    /// <summary>
+    /// Rebuilds the overlay pipeline, guarding against reentrancy.
+    /// </summary>
+    /// <remarks>
+    /// If <see cref="RebuildPipeline"/> triggers another rebuild request while it is
+    /// executing (directly or indirectly, e.g. via a property changed on an overlay it
+    /// just attached), that request is not run recursively.
+    /// </remarks>s
+    private void RebuildPipelineCore()
+    {
+        if (_isRebuilding)
+        {
+            _rebuildRequested = true;
+            return;
+        }
+
+        _isRebuilding = true;
+        try
+        {
+            do
+            {
+                _rebuildRequested = false;
+                RebuildPipeline();
+            }
+            while (_rebuildRequested);
+        }
+        finally
+        {
+            _isRebuilding = false;
+        }
     }
 
     private void RebuildPipeline()

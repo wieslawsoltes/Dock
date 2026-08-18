@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
@@ -27,6 +28,41 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc />
     public IHostWindow? CurrentHostWindow => _globalDockTrackingState.HostWindow;
+
+    private void InitializeGlobalDockTracking(IRootDock rootDock)
+    {
+        var dockable = ResolveTrackedDockable(rootDock);
+        var resolvedRoot = ResolveRootDock(dockable) ?? rootDock;
+        UpdateGlobalDockTracking(
+            dockable,
+            resolvedRoot,
+            resolvedRoot.Window,
+            DockTrackingChangeReason.LayoutInitialized);
+    }
+
+    private static IDockable? ResolveTrackedDockable(IRootDock rootDock)
+    {
+        if (rootDock.FocusedDockable is { } focusedDockable)
+        {
+            return focusedDockable;
+        }
+
+        var current = rootDock.ActiveDockable;
+        if (current is not IDock)
+        {
+            return current;
+        }
+
+        var visited = new HashSet<IDockable>(ReferenceEqualityComparer.Instance);
+        while (current is IDock dock
+               && dock.ActiveDockable is { } activeDockable
+               && visited.Add(current))
+        {
+            current = activeDockable;
+        }
+
+        return current;
+    }
 
     /// <summary>
     /// Updates global dock tracking state.

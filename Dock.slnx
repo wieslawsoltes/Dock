@@ -133,5 +133,6 @@
     <Project Path="tests/Dock.Serializer.SystemTextJson.SourceGenTests/Dock.Serializer.SystemTextJson.SourceGenTests.csproj" />
     <Project Path="tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj" />
     <Project Path="tests/Dock.Settings.UnitTests/Dock.Settings.UnitTests.csproj" />
+    <Project Path="tests/DockXamlSample.HeadlessTests/DockXamlSample.HeadlessTests.csproj" />
   </Folder>
 </Solution>

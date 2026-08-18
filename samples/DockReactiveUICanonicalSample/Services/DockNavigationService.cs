@@ -1,7 +1,7 @@
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.ViewModels.Documents;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.Services;
 

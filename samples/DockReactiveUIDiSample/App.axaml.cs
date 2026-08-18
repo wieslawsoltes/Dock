@@ -9,6 +9,7 @@ using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Avalonia.Diagnostics;
 using DockReactiveUIDiSample.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 
 namespace DockReactiveUIDiSample;

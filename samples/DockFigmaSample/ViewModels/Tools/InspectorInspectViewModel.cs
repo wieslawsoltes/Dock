@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using DockFigmaSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockFigmaSample.ViewModels.Tools;
 

@@ -54,7 +54,7 @@ public class ProportionalStackPanel : Panel
     /// <param name="value">The value of the Proportion property.</param>
     public static void SetProportion(AvaloniaObject control, double value)
     {
-        control.SetValue(ProportionProperty, value);
+        control.SetCurrentValue(ProportionProperty, value);
     }
 
     /// <summary>

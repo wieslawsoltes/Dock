@@ -103,6 +103,11 @@ internal static class TemplateHelper
 
     private static bool TryDetachFromParent(Visual visual)
     {
+        if (visual.GetVisualParent() is ContentPresenter visualContentPresenter)
+        {
+            return TryDetachFromContentPresenter(visualContentPresenter, visual);
+        }
+
         var parent = (visual as Control)?.Parent ?? visual.GetVisualParent();
 
         if (parent is null)

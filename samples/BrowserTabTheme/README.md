@@ -6,7 +6,11 @@ This sample backports a browser-tab visual style from StackWich into the origina
 
 - Browser-like document and tool tab visuals.
 - Browser-style window chrome driven by Avalonia drawn decorations and Dock theme resources.
-- Dock drag/drop, float, pin, and document creation behavior preserved.
+- Dock drag/drop, including dropping a tab onto a side target to create a new
+  horizontal or vertical document dock.
+- Native main-window chrome while document layout mode is MDI, keeping maximized
+  MDI children clear of the operating-system caption controls.
+- Float, pin, and document creation behavior preserved.
 - Theme dictionaries for both Light (`Default`) and Dark variants.
 
 ## What is intentionally excluded

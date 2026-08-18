@@ -13,6 +13,96 @@ This guide documents the Dock Simple theme in detail, including architecture, de
 </Application.Styles>
 ```
 
+Keep the base Avalonia theme first and the matching Dock theme second. Do not
+load `FluentTheme` and `SimpleTheme` together.
+
+## Switch DockMvvmSample from Fluent to Simple
+
+`DockMvvmSample` uses Fluent by default. The theme boundary is confined to the
+composition root, so its views and view models do not need theme-specific
+changes.
+
+### 1. Change the theme package import
+
+In `samples/DockMvvmSample/DockMvvmSample.csproj`, replace:
+
+```xml
+<Import Project="..\..\build\Avalonia.Themes.Fluent.props" />
+```
+
+with:
+
+```xml
+<Import Project="..\..\build\Avalonia.Themes.Simple.props" />
+```
+
+The Simple props file includes both `Avalonia.Themes.Simple` and
+`Avalonia.Fonts.Inter`; the sample's views continue to use the Inter font asset.
+
+Replace the Dock theme project reference as well:
+
+```xml
+<ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Simple\Dock.Avalonia.Themes.Simple.csproj" />
+```
+
+Remove the corresponding `Dock.Avalonia.Themes.Fluent` project reference.
+
+Applications using Central Package Management need this entry (the repository
+already defines it in `Directory.Packages.props`):
+
+```xml
+<PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
+```
+
+### 2. Change App.axaml
+
+Use the Simple preset URI, then replace the two theme styles:
+
+```xaml
+<Application.Resources>
+  <ResourceDictionary>
+    <ResourceDictionary.MergedDictionaries>
+      <ResourceInclude Source="avares://Dock.Avalonia.Themes.Simple/Presets/Ide/Default.axaml" />
+      <!-- Keep the sample's other dictionaries after the preset. -->
+    </ResourceDictionary.MergedDictionaries>
+  </ResourceDictionary>
+</Application.Resources>
+
+<Application.Styles>
+  <SimpleTheme />
+  <DockSimpleTheme DensityStyle="Normal" />
+
+  <!-- Keep the sample's app-specific styles after both themes. -->
+</Application.Styles>
+```
+
+The order is intentional: base theme, Dock theme, then app-specific overrides.
+Preset dictionaries belong in application resources and their assembly URI must
+match the selected Dock theme.
+
+### 3. Change the theme manager
+
+In `App.axaml.cs`, replace the Fluent namespace and manager:
+
+```csharp
+using Dock.Avalonia.Themes.Simple;
+
+// In App.Initialize():
+ThemeManager = new DockSimpleThemeManager();
+```
+
+The existing theme and preset controls in `MainView` continue to work because
+both managers implement `IDockThemeManager`.
+
+### 4. Build the converted sample
+
+```bash
+dotnet build samples/DockMvvmSample/DockMvvmSample.csproj -c Release
+```
+
+The document-tab overflow buttons are supported by the current Simple theme;
+the missing scrollbar resources reported in #1025 were added in Dock 12.
+
 Theme implementation:
 
 - `src/Dock.Avalonia.Themes.Simple/DockSimpleTheme.axaml`

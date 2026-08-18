@@ -1,6 +1,6 @@
 using System;
 using Dock.Model.Services;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Dialogs;
 

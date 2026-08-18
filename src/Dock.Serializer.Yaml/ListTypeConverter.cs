@@ -11,13 +11,20 @@ internal static class ListTypeConverter
 {
     public static void Convert(object? obj, Type listType)
     {
+        Convert(obj, listType, new HashSet<object>(ReferenceEqualityComparer.Instance));
+    }
+
+    private static void Convert(object? obj, Type listType, HashSet<object> visited)
+    {
         if (obj is null)
+            return;
+        if (!visited.Add(obj))
             return;
         if (obj is IEnumerable enumerable && obj is not string)
         {
             foreach (var item in enumerable)
             {
-                Convert(item, listType);
+                Convert(item, listType, visited);
             }
         }
         var type = obj.GetType();
@@ -39,13 +46,13 @@ internal static class ListTypeConverter
                 }
                 foreach (var item in list)
                 {
-                    Convert(item, listType);
+                    Convert(item, listType, visited);
                 }
                 property.SetValue(obj, list);
             }
             else
             {
-                Convert(value, listType);
+                Convert(value, listType, visited);
             }
         }
     }

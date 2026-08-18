@@ -29,6 +29,41 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public IHostWindow? CurrentHostWindow => _globalDockTrackingState.HostWindow;
 
+    private void InitializeGlobalDockTracking(IRootDock rootDock)
+    {
+        var dockable = ResolveTrackedDockable(rootDock);
+        var resolvedRoot = ResolveRootDock(dockable) ?? rootDock;
+        UpdateGlobalDockTracking(
+            dockable,
+            resolvedRoot,
+            resolvedRoot.Window,
+            DockTrackingChangeReason.LayoutInitialized);
+    }
+
+    private static IDockable? ResolveTrackedDockable(IRootDock rootDock)
+    {
+        if (rootDock.FocusedDockable is { } focusedDockable)
+        {
+            return focusedDockable;
+        }
+
+        var current = rootDock.ActiveDockable;
+        if (current is not IDock)
+        {
+            return current;
+        }
+
+        var visited = new HashSet<IDockable>(ReferenceEqualityComparer.Instance);
+        while (current is IDock dock
+               && dock.ActiveDockable is { } activeDockable
+               && visited.Add(current))
+        {
+            current = activeDockable;
+        }
+
+        return current;
+    }
+
     /// <summary>
     /// Resolves a dockable container to the focused or deepest active dockable used for global tracking.
     /// </summary>

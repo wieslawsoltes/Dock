@@ -346,7 +346,9 @@ public abstract partial class FactoryBase
             }
             else
             {
-                RemoveDockable(sourceDockable, true);
+                var deferCollapse = sourceDock is IRootDock { Window: { } };
+
+                RemoveDockable(sourceDockable, !deferCollapse);
                 OnDockableUndocked(sourceDockable, DockOperation.Fill);
                 InsertVisibleDockable(targetDock, targetIndex, sourceDockable);
                 
@@ -358,8 +360,16 @@ public abstract partial class FactoryBase
                 OnDockableDocked(sourceDockable, DockOperation.Fill);
 
                 // Clean up orphaned splitters in both source and target docks
-                // Note: sourceDock cleanup is already handled by RemoveDockable call above
+                // Note: sourceDock splitter cleanup already happened inside RemoveDockable above
                 CleanupOrphanedSplitters(targetDock);
+
+                if (deferCollapse)
+                {
+                    // Now that the target commit has succeeded, collapse the (now empty)
+                    // floating source root. This is what removes its HostWindow, so it
+                    // must come last.
+                    CollapseDock(sourceDock);
+                }
             }
         }
     }
@@ -1201,8 +1211,13 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
-    public virtual void CloseDockable(IDockable dockable)
+    public virtual void CloseDockable(IDockable? dockable)
     {
+        if (dockable is null)
+        {
+            return;
+        }
+
         if (dockable.Owner is IDock dock &&
             !dock.CanCloseLastDockable &&
             dock.VisibleDockables?.Count <= 1)

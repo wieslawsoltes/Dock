@@ -9,6 +9,7 @@ using DockOfficeSample.Views;
 using DockOfficeSample.Views.Documents;
 using DockOfficeSample.Views.Tools;
 using DockOfficeSample.Views.Workspaces;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 using Splat;
 

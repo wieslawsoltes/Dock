@@ -437,6 +437,57 @@ For simple static content, you can define it directly in XAML:
 </dock:DocumentDock>
 ```
 
+### Direct content lifecycle and renderer controls
+
+Direct content declared inside `Document` or `Tool` is template content. Dock
+materializes it when the dockable is presented, and can later detach and reuse it
+when tabs move or layouts change. It is therefore not part of the parent window's
+visual tree or name scope when the window's `InitializeComponent()` returns.
+
+Do not initialize nested content by calling `FindControl` from the parent window:
+
+```csharp
+// The document template has not been materialized here, so this can return null.
+var renderer = this.FindControl<RenderWindowControl>("Renderer");
+```
+
+This is especially important for `OpenGlControlBase`, `NativeControlHost`, web
+views, media controls, and other controls that allocate resources when attached.
+Keep their setup with the content itself:
+
+- Prefer a view model plus a compiled `DataTemplate` for application state.
+- Put renderer-specific attachment and cleanup in a focused custom control,
+  attached behavior, or service owned by that control.
+- Let the integration react to its own attach/detach lifecycle instead of the
+  parent window's lifecycle.
+- Declare the renderer directly as document content when an extra wrapper is not
+  needed.
+
+For example, the document can host a dedicated scene control whose behavior owns
+the renderer lifecycle:
+
+```xaml
+<dock:Document Id="Scene" Title="Scene">
+  <local:SceneControl />
+</dock:Document>
+```
+
+`SceneControl` can contain the third-party renderer and a behavior that initializes
+it when attached and releases resources when detached. The view remains passive,
+while the integration code has a single lifecycle responsibility.
+
+If a `ContentControl` wrapper is required, make its content alignment explicit so
+a renderer without an intrinsic desired size fills the available document area:
+
+```xaml
+<dock:Document Id="Scene" Title="Scene">
+  <ContentControl HorizontalContentAlignment="Stretch"
+                  VerticalContentAlignment="Stretch">
+    <local:SceneControl />
+  </ContentControl>
+</dock:Document>
+```
+
 ## Working with Tools
 
 Tools work similarly to documents. Here's an example using MVVM base classes:

@@ -70,7 +70,7 @@ internal sealed class NoOpFactory : Factory, IFactory
     {
     }
 
-    public override void CloseDockable(IDockable dockable)
+    public override void CloseDockable(IDockable? dockable)
     {
     }
 

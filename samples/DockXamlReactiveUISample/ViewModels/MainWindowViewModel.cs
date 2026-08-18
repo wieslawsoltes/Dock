@@ -4,7 +4,7 @@ using System.Reactive;
 using DockXamlReactiveUISample.Models;
 using Dock.Model.Core;
 using Dock.Settings;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockXamlReactiveUISample.ViewModels;
 

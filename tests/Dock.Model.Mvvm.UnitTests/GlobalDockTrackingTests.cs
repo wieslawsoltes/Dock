@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
@@ -21,6 +23,121 @@ public class GlobalDockTrackingTests
         Assert.Null(factory.GlobalDockTrackingState.RootDock);
         Assert.Null(factory.GlobalDockTrackingState.Window);
         Assert.Null(factory.GlobalDockTrackingState.HostWindow);
+    }
+
+    [Fact]
+    public void WindowActivated_Raises_Focus_Events_When_Focus_Returns_To_Same_Dockables_Across_Roots()
+    {
+        var factory = new TrackingTestFactory();
+        var main = CreateContext(factory, "main");
+        var floating = CreateContext(factory, "floating");
+        factory.DockControls.Add(new TestDockControl { Factory = factory, Layout = main.Root });
+        factory.DockControls.Add(new TestDockControl { Factory = factory, Layout = floating.Root });
+        factory.InitLayout(main.Root);
+        factory.InitLayout(floating.Root);
+        factory.OnWindowActivated(main.Window);
+        factory.OnWindowActivated(floating.Window);
+
+        FocusedDockableChangedEventArgs? raised = null;
+        var raisedCount = 0;
+        factory.FocusedDockableChanged += (_, args) =>
+        {
+            raised = args;
+            raisedCount++;
+        };
+
+        factory.OnWindowActivated(main.Window);
+        factory.OnWindowActivated(main.Window);
+
+        Assert.Equal(1, raisedCount);
+        Assert.NotNull(raised);
+        Assert.Same(main.Dockable1, raised!.Dockable);
+        Assert.Same(main.Root, raised.RootDock);
+        Assert.Same(main.Window, raised.Window);
+        Assert.True(main.Dock.IsActive);
+        Assert.False(floating.Dock.IsActive);
+
+        factory.OnWindowDeactivated(main.Window);
+        factory.OnWindowActivated(floating.Window);
+        factory.OnWindowActivated(floating.Window);
+
+        Assert.Equal(2, raisedCount);
+        Assert.Same(floating.Dockable1, raised.Dockable);
+        Assert.Same(floating.Root, raised.RootDock);
+        Assert.Same(floating.Window, raised.Window);
+        Assert.False(main.Dock.IsActive);
+        Assert.True(floating.Dock.IsActive);
+    }
+
+    [Fact]
+    public void InitLayout_Initializes_Global_Tracking_From_Restored_Focused_Dockable()
+    {
+        var factory = new TrackingTestFactory();
+        var context = CreateContext(factory, "A");
+
+        GlobalDockTrackingChangedEventArgs? raised = null;
+        var raisedCount = 0;
+        factory.GlobalDockTrackingChanged += (_, args) =>
+        {
+            raised = args;
+            raisedCount++;
+        };
+
+        factory.InitLayout(context.Root);
+
+        Assert.Equal(1, raisedCount);
+        Assert.NotNull(raised);
+        Assert.Equal(DockTrackingChangeReason.LayoutInitialized, raised!.Reason);
+        Assert.Same(context.Dockable1, raised.Current.Dockable);
+        Assert.Same(context.Root, raised.Current.RootDock);
+        Assert.Same(context.Window, raised.Current.Window);
+        Assert.Same(context.Dockable1, factory.CurrentDockable);
+        Assert.Same(context.Root, factory.CurrentRootDock);
+        Assert.Same(context.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
+    public void InitLayout_Preserves_Window_Activation_Raised_While_Restored_Windows_Are_Shown()
+    {
+        var factory = new TrackingTestFactory();
+        var main = CreateContext(factory, "main");
+        var floating = CreateSplitContext(factory, "floating");
+        var floatingWindow = factory.CreateDockWindow();
+        floatingWindow.Id = "window-floating";
+        floatingWindow.Layout = floating.Root;
+        floating.Root.Window = floatingWindow;
+        floating.Root.FocusedDockable = null;
+        var host = new TestHostWindow
+        {
+            Window = floatingWindow,
+            Presented = () => factory.OnWindowActivated(floatingWindow)
+        };
+        factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+        {
+            [floatingWindow.Id!] = () => host
+        };
+        main.Root.Windows = factory.CreateList<IDockWindow>(floatingWindow);
+
+        factory.InitLayout(main.Root);
+
+        Assert.Same(floating.LeftDocument, factory.CurrentDockable);
+        Assert.Same(floating.Root, factory.CurrentRootDock);
+        Assert.Same(floatingWindow, factory.CurrentDockWindow);
+        Assert.Same(host, factory.CurrentHostWindow);
+    }
+
+    [Fact]
+    public void InitLayout_Falls_Back_To_Deepest_Restored_Active_Dockable()
+    {
+        var factory = new TrackingTestFactory();
+        var context = CreateSplitContext(factory, "A");
+        context.Root.FocusedDockable = null;
+
+        factory.InitLayout(context.Root);
+
+        Assert.Same(context.LeftDocument, factory.CurrentDockable);
+        Assert.Same(context.Root, factory.CurrentRootDock);
+        Assert.Null(factory.CurrentDockWindow);
     }
 
     [Fact]
@@ -248,6 +365,7 @@ public class GlobalDockTrackingTests
 
         factory.InitLayout(second.Root);
         dockControl.Layout = second.Root;
+        Assert.Same(second.LeftDocument, factory.CurrentDockable);
 
         var raised = 0;
         factory.GlobalDockTrackingChanged += (_, args) =>
@@ -261,7 +379,7 @@ public class GlobalDockTrackingTests
         factory.OnFocusedDockableChanged(second.LeftDocument);
         factory.OnFocusedDockableChanged(second.RightDocument);
 
-        Assert.Equal(2, raised);
+        Assert.Equal(1, raised);
         Assert.Same(second.RightDocument, factory.CurrentDockable);
         Assert.Same(second.Root, factory.CurrentRootDock);
         Assert.Null(factory.CurrentDockWindow);
@@ -727,6 +845,8 @@ public class GlobalDockTrackingTests
 
     private sealed class TestHostWindow : IHostWindow
     {
+        public Action? Presented { get; init; }
+
         public IHostWindowState? HostWindowState => null;
 
         public bool IsTracked { get; set; }
@@ -735,6 +855,7 @@ public class GlobalDockTrackingTests
 
         public void Present(bool isDialog)
         {
+            Presented?.Invoke();
         }
 
         public void Exit()

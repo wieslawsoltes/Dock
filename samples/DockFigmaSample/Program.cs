@@ -1,6 +1,6 @@
 using System;
 using Avalonia;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace DockFigmaSample;
 
@@ -15,6 +15,6 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
 }

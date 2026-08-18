@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using Dock.Model.Controls;
 using Dock.Model.Core.Events;
 
 namespace Dock.Model.Core;
@@ -298,6 +299,13 @@ public partial interface IFactory
     /// </summary>
     /// <param name="window">The activated window.</param>
     void OnWindowActivated(IDockWindow? window);
+
+    /// <summary>
+    /// Called when a window has been activated for an explicitly resolved root dock.
+    /// </summary>
+    /// <param name="window">The activated window.</param>
+    /// <param name="rootDock">The activated root dock.</param>
+    void OnWindowActivated(IDockWindow? window, IRootDock? rootDock);
 
     /// <summary>
     /// Called when the dockable has been activated.

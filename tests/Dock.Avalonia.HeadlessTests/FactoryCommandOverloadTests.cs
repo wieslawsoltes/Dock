@@ -127,7 +127,7 @@ public class FactoryCommandOverloadTests
 
         public IDockable? LastDockable { get; private set; }
 
-        private void Record(string operation, IDockable dockable)
+        private void Record(string operation, IDockable? dockable)
         {
             LastOperation = operation;
             LastDockable = dockable;
@@ -151,7 +151,7 @@ public class FactoryCommandOverloadTests
         void IFactory.DockAsDocument(IDockable dockable) =>
             Record(nameof(IFactory.DockAsDocument), dockable);
 
-        void IFactory.CloseDockable(IDockable dockable) =>
+        void IFactory.CloseDockable(IDockable? dockable) =>
             Record(nameof(IFactory.CloseDockable), dockable);
 
         void IFactory.CloseOtherDockables(IDockable dockable) =>

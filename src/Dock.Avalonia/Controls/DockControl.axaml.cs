@@ -1150,6 +1150,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
             if (windowModel != null)
             {
+                windowModel.Layout = root;
+
                 if (TopLevel.GetTopLevel(this) is IHostWindow window)
                 {
                     root.Factory?.InitDockWindow(windowModel, root, window);
@@ -1160,8 +1162,14 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         }
 
         RestoreExternalDockSurfaceOwners();
+        AttachMainWindowHandlers(TopLevel.GetTopLevel(this) as Window);
+    }
 
-        AttachMainWindowClosingHandler();
+    /// <inheritdoc/>
+    protected override void OnLoaded(RoutedEventArgs e)
+    {
+        base.OnLoaded(e);
+        AttachMainWindowHandlers(TopLevel.GetTopLevel(this) as Window);
     }
 
     /// <inheritdoc/>
@@ -1169,7 +1177,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     {
         base.OnDetachedFromVisualTree(e);
 
-        DetachMainWindowClosingHandler();
+        DetachMainWindowHandlers();
 
         var layout = Layout;
 
@@ -1203,14 +1211,9 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         root.Factory?.OnWindowClosed(root.Window);
     }
 
-    private void AttachMainWindowClosingHandler()
+    private void AttachMainWindowHandlers(Window? window)
     {
-        if (!DockSettings.CloseFloatingWindowsOnMainWindowClose)
-        {
-            return;
-        }
-
-        if (TopLevel.GetTopLevel(this) is not Window window || window is IHostWindow)
+        if (window is null || window is IHostWindow)
         {
             return;
         }
@@ -1220,20 +1223,36 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             return;
         }
 
-        DetachMainWindowClosingHandler();
+        DetachMainWindowHandlers();
         _attachedWindow = window;
-        _attachedWindow.Closing += OnMainWindowClosing;
+        _attachedWindow.Activated += OnMainWindowActivated;
+        if (DockSettings.CloseFloatingWindowsOnMainWindowClose)
+        {
+            _attachedWindow.Closing += OnMainWindowClosing;
+        }
     }
 
-    private void DetachMainWindowClosingHandler()
+    private void DetachMainWindowHandlers()
     {
         if (_attachedWindow is null)
         {
             return;
         }
 
+        _attachedWindow.Activated -= OnMainWindowActivated;
         _attachedWindow.Closing -= OnMainWindowClosing;
         _attachedWindow = null;
+    }
+
+    private void OnMainWindowActivated(object? sender, EventArgs e)
+    {
+        if (Layout?.Factory is not { } factory
+            || factory.FindRoot(Layout, _ => true) is not IRootDock root)
+        {
+            return;
+        }
+
+        factory.OnWindowActivated(root.Window, root);
     }
 
     private void OnMainWindowClosing(object? sender, global::Avalonia.Controls.WindowClosingEventArgs e)

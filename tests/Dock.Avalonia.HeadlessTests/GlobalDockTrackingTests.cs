@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -11,6 +13,84 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class GlobalDockTrackingTests
 {
+    [AvaloniaFact]
+    public void WindowActivated_Tracks_Deepest_Active_Dockable_Instead_Of_Container()
+    {
+        var factory = new Factory();
+        var layout = CreateSplitTrackingLayout(factory, "A");
+        var window = factory.CreateDockWindow();
+        window.Layout = layout.Root;
+        layout.Root.Window = window;
+        layout.Root.FocusedDockable = null;
+
+        factory.OnWindowActivated(window);
+
+        Assert.Same(layout.LeftDocument, factory.CurrentDockable);
+        Assert.Same(layout.Root, factory.CurrentRootDock);
+        Assert.Same(window, factory.CurrentDockWindow);
+    }
+
+    [AvaloniaFact]
+    public void DockableActivated_Container_Does_Not_Replace_Tracked_Leaf()
+    {
+        var factory = new Factory();
+        var layout = CreateSplitTrackingLayout(factory, "A");
+        var window = factory.CreateDockWindow();
+        window.Layout = layout.Root;
+        layout.Root.Window = window;
+        factory.OnWindowActivated(window);
+
+        factory.OnDockableActivated(layout.Root.ActiveDockable);
+
+        Assert.Same(layout.LeftDocument, factory.CurrentDockable);
+        Assert.Same(layout.Root, factory.CurrentRootDock);
+        Assert.Same(window, factory.CurrentDockWindow);
+    }
+
+    [AvaloniaFact]
+    public void Main_Window_Activation_Restores_Tracking_From_Floating_Window()
+    {
+        var factory = new Factory();
+        var main = CreateSplitTrackingLayout(factory, "main");
+        var floating = CreateContext(factory, "floating");
+        factory.InitLayout(main.Root);
+
+        var dockControl = new DockControl
+        {
+            Factory = factory,
+            Layout = main.Root,
+            InitializeFactory = false,
+            InitializeLayout = false
+        };
+        var mainWindow = new Window { Content = dockControl };
+
+        try
+        {
+            mainWindow.Show();
+            Dispatcher.UIThread.RunJobs();
+            Assert.Same(main.Root, main.Root.Window?.Layout);
+            factory.OnWindowActivated(floating.Window);
+            Assert.Same(floating.Dockable, factory.CurrentDockable);
+
+            mainWindow.Activate();
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.Same(main.LeftDocument, factory.CurrentDockable);
+            Assert.Same(main.Root, factory.CurrentRootDock);
+            Assert.Same(main.Root.Window, factory.CurrentDockWindow);
+
+            factory.SetActiveDockable(floating.Dockable);
+
+            Assert.Same(main.LeftDocument, factory.CurrentDockable);
+            Assert.Same(main.Root, factory.CurrentRootDock);
+            Assert.Same(main.Root.Window, factory.CurrentDockWindow);
+        }
+        finally
+        {
+            mainWindow.Close();
+        }
+    }
+
     [AvaloniaFact]
     public void ManagedWindowDock_Switch_Updates_Global_Tracking_Context()
     {

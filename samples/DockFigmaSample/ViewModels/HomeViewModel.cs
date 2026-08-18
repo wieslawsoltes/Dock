@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using DockFigmaSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockFigmaSample.ViewModels;
 

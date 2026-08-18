@@ -1,6 +1,6 @@
 using Dock.Model.ReactiveUI.Controls;
 using DockReactiveUIRiderSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRiderSample.ViewModels.Tools;
 

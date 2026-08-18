@@ -4,7 +4,7 @@ using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockCodeOnlySample;
 

@@ -1,5 +1,5 @@
 using Dock.Model.Core;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockXamlReactiveUISample.ViewModels;
 

@@ -1,5 +1,5 @@
 using System.Reactive;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Dialogs;
 

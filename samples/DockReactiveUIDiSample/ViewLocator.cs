@@ -2,6 +2,7 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Model.Core;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 
 namespace DockReactiveUIDiSample;
@@ -63,5 +64,25 @@ public class ViewLocator : IDataTemplate, IViewLocator
         return data is IDockable || Resolve(data) is not null;
     }
 
-    IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default => viewModel is null ? null : Resolve(viewModel);
+    public IViewFor<TViewModel>? ResolveView<TViewModel>()
+        where TViewModel : class
+    {
+        return ResolveView<TViewModel>(null);
+    }
+
+    public IViewFor<TViewModel>? ResolveView<TViewModel>(string? contract)
+        where TViewModel : class
+    {
+        return _provider.GetService(typeof(IViewFor<TViewModel>)) as IViewFor<TViewModel>;
+    }
+
+    public IViewFor? ResolveView(object? instance)
+    {
+        return ResolveView(instance, null);
+    }
+
+    public IViewFor? ResolveView(object? instance, string? contract)
+    {
+        return instance is null ? null : Resolve(instance);
+    }
 }

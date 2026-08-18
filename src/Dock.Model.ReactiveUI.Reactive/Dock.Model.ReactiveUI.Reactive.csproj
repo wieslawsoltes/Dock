@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Nullable>enable</Nullable>
+    <DefineConstants>$(DefineConstants);DOCK_REACTIVEUI_REACTIVE</DefineConstants>
+    <PackageId>Dock.Model.ReactiveUI.Reactive</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsDocFx)' == 'true'">
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <!--<Import Project="..\..\build\SignAssembly.props" />-->
+  <Import Project="..\..\build\SourceLink.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\ReactiveUI.props" />
+
+  <ItemGroup>
+    <Compile Include="..\Dock.Model.ReactiveUI\**\*.cs"
+             Exclude="..\Dock.Model.ReactiveUI\bin\**;..\Dock.Model.ReactiveUI\obj\**"
+             LinkBase="Shared" />
+    <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI.SourceGenerators">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

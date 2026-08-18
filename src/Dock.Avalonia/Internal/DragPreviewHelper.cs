@@ -4,9 +4,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -357,7 +359,7 @@ internal class DragPreviewHelper
                 s_control.PreviewContentHeight = double.NaN;
             }
 
-            s_control.PreviewContent = null;
+            s_control.PreviewContent = BuildDockablePreviewContent(dockable, showDockablePreview);
             s_window.DataContext = dockable;
             s_control.Status = string.Empty;
             s_window.Opacity = ClampOpacity(DockSettings.DragPreviewOpacity);
@@ -683,6 +685,39 @@ internal class DragPreviewHelper
         return DockSettings.ShowDockablePreviewOnDrag;
     }
 
+    internal static Control? BuildDockablePreviewContent(IDockable dockable, bool showDockablePreview)
+    {
+        if (!showDockablePreview || dockable.Factory is not { } factory)
+        {
+            return null;
+        }
+
+        object? registeredControl = null;
+        if (dockable is ITool)
+        {
+            factory.ToolControls.TryGetValue(dockable, out registeredControl);
+        }
+        else if (dockable is IDocument)
+        {
+            factory.DocumentControls.TryGetValue(dockable, out registeredControl);
+        }
+
+        if (registeredControl is not Visual visual || visual.GetVisualRoot() is null)
+        {
+            return null;
+        }
+
+        return new Border
+        {
+            Background = new VisualBrush
+            {
+                Visual = visual,
+                Stretch = Stretch.Uniform
+            },
+            ClipToBounds = true
+        };
+    }
+
     private static Control? BuildManagedPreviewContent(IDockable dockable, bool showDockablePreview)
     {
         if (!showDockablePreview)
@@ -695,6 +730,6 @@ internal class DragPreviewHelper
             return managedDockable.Build(null);
         }
 
-        return null;
+        return BuildDockablePreviewContent(dockable, showDockablePreview);
     }
 }

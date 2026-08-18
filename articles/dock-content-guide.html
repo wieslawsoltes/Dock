@@ -467,6 +467,45 @@ public class TextDocumentViewModel : Document
   
 &lt;/dock:DocumentDock&gt;
 </code></pre>
+<h3 id="direct-content-lifecycle-and-renderer-controls">Direct content lifecycle and renderer controls</h3>
+<p>Direct content declared inside <code>Document</code> or <code>Tool</code> is template content. Dock
+materializes it when the dockable is presented, and can later detach and reuse it
+when tabs move or layouts change. It is therefore not part of the parent window's
+visual tree or name scope when the window's <code>InitializeComponent()</code> returns.</p>
+<p>Do not initialize nested content by calling <code>FindControl</code> from the parent window:</p>
+<pre><code class="lang-csharp">// The document template has not been materialized here, so this can return null.
+var renderer = this.FindControl&lt;RenderWindowControl&gt;(&quot;Renderer&quot;);
+</code></pre>
+<p>This is especially important for <code>OpenGlControlBase</code>, <code>NativeControlHost</code>, web
+views, media controls, and other controls that allocate resources when attached.
+Keep their setup with the content itself:</p>
+<ul>
+<li>Prefer a view model plus a compiled <code>DataTemplate</code> for application state.</li>
+<li>Put renderer-specific attachment and cleanup in a focused custom control,
+attached behavior, or service owned by that control.</li>
+<li>Let the integration react to its own attach/detach lifecycle instead of the
+parent window's lifecycle.</li>
+<li>Declare the renderer directly as document content when an extra wrapper is not
+needed.</li>
+</ul>
+<p>For example, the document can host a dedicated scene control whose behavior owns
+the renderer lifecycle:</p>
+<pre><code class="lang-xaml">&lt;dock:Document Id=&quot;Scene&quot; Title=&quot;Scene&quot;&gt;
+  &lt;local:SceneControl /&gt;
+&lt;/dock:Document&gt;
+</code></pre>
+<p><code>SceneControl</code> can contain the third-party renderer and a behavior that initializes
+it when attached and releases resources when detached. The view remains passive,
+while the integration code has a single lifecycle responsibility.</p>
+<p>If a <code>ContentControl</code> wrapper is required, make its content alignment explicit so
+a renderer without an intrinsic desired size fills the available document area:</p>
+<pre><code class="lang-xaml">&lt;dock:Document Id=&quot;Scene&quot; Title=&quot;Scene&quot;&gt;
+  &lt;ContentControl HorizontalContentAlignment=&quot;Stretch&quot;
+                  VerticalContentAlignment=&quot;Stretch&quot;&gt;
+    &lt;local:SceneControl /&gt;
+  &lt;/ContentControl&gt;
+&lt;/dock:Document&gt;
+</code></pre>
 <h2 id="working-with-tools">Working with Tools</h2>
 <p>Tools work similarly to documents. Here's an example using MVVM base classes:</p>
 <h3 id="tool-viewmodel">Tool ViewModel</h3>

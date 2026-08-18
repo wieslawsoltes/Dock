@@ -97,14 +97,13 @@ public class NavigateAdapter : INavigateAdapter
 
     private void ResetActiveDockable()
     {
-        if (_dock.ActiveDockable is IDock activeDockableWindows)
+        if (_dock.ActiveDockable is IRootDock activeRootDock
+            && activeRootDock.ExitWindows.CanExecute(null))
         {
-            if (activeDockableWindows.Close.CanExecute(null))
-            {
-                activeDockableWindows.Close.Execute(null);
-            }
-            _dock.ActiveDockable = null;
+            activeRootDock.ExitWindows.Execute(null);
         }
+
+        _dock.ActiveDockable = null;
     }
 
     private void ResetBack()
@@ -129,9 +128,10 @@ public class NavigateAdapter : INavigateAdapter
 
     private void NavigateTo(IDockable? dockable, bool bSnapshot)
     {
-        if (_dock.ActiveDockable is IDock previousDock)
+        if (_dock.ActiveDockable is IRootDock previousRootDock
+            && previousRootDock.ExitWindows.CanExecute(null))
         {
-            previousDock.Close.Execute(null);
+            previousRootDock.ExitWindows.Execute(null);
         }
 
         if (dockable is not null && _dock.ActiveDockable != dockable)
@@ -294,6 +294,13 @@ public class NavigateAdapter : INavigateAdapter
             {
                 rootDock.ExitWindows.Execute(null);
             }
+
+            return;
+        }
+
+        if (_dock.Factory is { } factory && _dock.ActiveDockable is { } activeDockable)
+        {
+            factory.CloseDockable(activeDockable);
         }
     }
 }

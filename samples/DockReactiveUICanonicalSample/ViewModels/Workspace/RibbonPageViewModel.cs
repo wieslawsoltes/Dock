@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 

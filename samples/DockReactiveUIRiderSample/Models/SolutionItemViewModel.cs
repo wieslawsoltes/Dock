@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRiderSample.Models;
 

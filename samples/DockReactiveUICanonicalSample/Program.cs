@@ -1,6 +1,6 @@
 using System;
 using Avalonia;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace DockReactiveUICanonicalSample;
 
@@ -16,6 +16,6 @@ internal static class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
 }

@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Dock.Settings;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace DockReactiveUIWindowRelationsSample;
 
@@ -23,6 +23,6 @@ internal class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
 }

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Dock.Serializer.SystemTextJson.Generators;
@@ -17,6 +18,9 @@ namespace Dock.Serializer.SystemTextJson.Generators;
 [Generator]
 public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 {
+    private const string GeneratedContextTypeNameBase = "DockSerializerGeneratedJsonContext";
+    private const string GeneratedContextNamespace = "Dock.Serializer.SystemTextJson";
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         IncrementalValueProvider<GenerationModel> modelProvider =
@@ -166,6 +170,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
     private sealed record GenerationModel(
         bool ShouldGenerate,
         ImmutableArray<Diagnostic> Diagnostics,
+        string ContextTypeName,
         string ContextSource,
         ImmutableArray<GeneratedSourceArtifact> AdditionalSources,
         ImmutableArray<string> ContextTypes,
@@ -177,6 +182,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             return new GenerationModel(
                 ShouldGenerate: false,
                 Diagnostics: diagnostics,
+                ContextTypeName: string.Empty,
                 ContextSource: string.Empty,
                 AdditionalSources: ImmutableArray<GeneratedSourceArtifact>.Empty,
                 ContextTypes: ImmutableArray<string>.Empty,
@@ -232,18 +238,36 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
             ImmutableArray<string> contextTypes =
                 BuildContextTypes(serializableTypes, dockSymbols!);
-            string contextSource = SourceEmitter.EmitContext(contextTypes);
+            string contextTypeName = GetUniqueContextTypeName(compilation, cancellationToken);
+            string contextSource = SourceEmitter.EmitContext(contextTypes, contextTypeName);
             ImmutableArray<GeneratedSourceArtifact> additionalSources =
-                SystemTextJsonContextGenerator.Generate(compilation, contextSource, cancellationToken);
+                SystemTextJsonContextGenerator.Generate(compilation, contextSource, contextTypeName, cancellationToken);
 
             return new GenerationModel(
                 ShouldGenerate: true,
                 Diagnostics: diagnostics.ToImmutable(),
+                ContextTypeName: contextTypeName,
                 ContextSource: contextSource,
                 AdditionalSources: additionalSources,
                 ContextTypes: contextTypes,
                 Polymorphisms: polymorphisms,
                 IgnoredMembers: ignoredMembers);
+        }
+
+        private static string GetUniqueContextTypeName(
+            Compilation compilation,
+            System.Threading.CancellationToken cancellationToken)
+        {
+            var suffix = 0;
+            var candidate = GeneratedContextTypeNameBase;
+
+            while (compilation.GetSymbolsWithName(candidate, SymbolFilter.Type, cancellationToken).Any())
+            {
+                suffix++;
+                candidate = GeneratedContextTypeNameBase + "_" + suffix.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return candidate;
         }
 
         private static ImmutableArray<RegistrationCandidate> GetRegisteredTypes(
@@ -1099,6 +1123,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
         public static ImmutableArray<GeneratedSourceArtifact> Generate(
             Compilation compilation,
             string contextSource,
+            string contextTypeName,
             System.Threading.CancellationToken cancellationToken)
         {
             ISourceGenerator? generator = CreateGenerator(compilation);
@@ -1115,7 +1140,11 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             GeneratorDriver driver = CSharpGeneratorDriver.Create(
                 generators: new[] { generator },
                 parseOptions: parseOptions);
-            driver = driver.RunGenerators(augmentedCompilation, cancellationToken);
+            driver = driver.RunGeneratorsAndUpdateCompilation(
+                augmentedCompilation,
+                out Compilation outputCompilation,
+                out _,
+                cancellationToken);
 
             GeneratorDriverRunResult runResult = driver.GetRunResult();
             if (runResult.Results.Length == 0)
@@ -1123,9 +1152,38 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 return ImmutableArray<GeneratedSourceArtifact>.Empty;
             }
 
+            INamedTypeSymbol? contextSymbol = outputCompilation.GetTypeByMetadataName(
+                GeneratedContextNamespace + "." + contextTypeName);
+            if (contextSymbol is null)
+            {
+                return ImmutableArray<GeneratedSourceArtifact>.Empty;
+            }
+
             return runResult.Results[0].GeneratedSources
+                .Where(x => IsContextArtifact(x, outputCompilation, contextSymbol, cancellationToken))
                 .Select(static x => new GeneratedSourceArtifact("SystemTextJson." + x.HintName, x.SourceText.ToString()))
                 .ToImmutableArray();
+        }
+
+        private static bool IsContextArtifact(
+            GeneratedSourceResult source,
+            Compilation outputCompilation,
+            INamedTypeSymbol contextSymbol,
+            System.Threading.CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = outputCompilation.GetSemanticModel(source.SyntaxTree);
+            SyntaxNode root = source.SyntaxTree.GetRoot(cancellationToken);
+
+            foreach (ClassDeclarationSyntax declaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
+            {
+                if (semanticModel.GetDeclaredSymbol(declaration, cancellationToken) is INamedTypeSymbol declaredSymbol
+                    && SymbolEqualityComparer.Default.Equals(declaredSymbol, contextSymbol))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static ISourceGenerator? CreateGenerator(Compilation compilation)
@@ -1203,7 +1261,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
     private static class SourceEmitter
     {
-        public static string EmitContext(ImmutableArray<string> contextTypes)
+        public static string EmitContext(ImmutableArray<string> contextTypes, string contextTypeName)
         {
             var builder = new StringBuilder();
             builder.AppendLine("// <auto-generated />");
@@ -1220,7 +1278,9 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 builder.AppendLine("))]");
             }
 
-            builder.AppendLine("internal sealed partial class DockSystemTextJsonContext : global::System.Text.Json.Serialization.JsonSerializerContext");
+            builder.Append("internal sealed partial class ");
+            builder.Append(contextTypeName);
+            builder.AppendLine(" : global::System.Text.Json.Serialization.JsonSerializerContext");
             builder.AppendLine("{");
             builder.AppendLine("}");
             return builder.ToString();
@@ -1236,7 +1296,9 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine();
             builder.AppendLine("internal sealed class DockSystemTextJsonResolver : global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver");
             builder.AppendLine("{");
-            builder.AppendLine("    private static readonly global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver s_resolver = global::System.Text.Json.Serialization.Metadata.JsonTypeInfoResolver.WithAddedModifier(DockSystemTextJsonContext.Default, ModifyTypeInfo);");
+            builder.Append("    private static readonly global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver s_resolver = global::System.Text.Json.Serialization.Metadata.JsonTypeInfoResolver.WithAddedModifier(");
+            builder.Append(model.ContextTypeName);
+            builder.AppendLine(".Default, ModifyTypeInfo);");
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<global::System.Type, global::System.Collections.Generic.HashSet<string>> s_ignoredMembers = CreateIgnoredMembers();");
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<global::System.Type, string> s_objectPayloadDiscriminators = CreateObjectPayloadDiscriminators();");
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<string, global::System.Type> s_objectPayloadTypes = CreateObjectPayloadTypes();");

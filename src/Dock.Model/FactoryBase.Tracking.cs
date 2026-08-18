@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
@@ -28,6 +29,69 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public IHostWindow? CurrentHostWindow => _globalDockTrackingState.HostWindow;
 
+    private void InitializeGlobalDockTracking(IRootDock rootDock)
+    {
+        var dockable = ResolveTrackedDockable(rootDock);
+        var resolvedRoot = ResolveRootDock(dockable) ?? rootDock;
+        UpdateGlobalDockTracking(
+            dockable,
+            resolvedRoot,
+            resolvedRoot.Window,
+            DockTrackingChangeReason.LayoutInitialized);
+    }
+
+    private static IDockable? ResolveTrackedDockable(IRootDock rootDock)
+    {
+        if (rootDock.FocusedDockable is { } focusedDockable)
+        {
+            return focusedDockable;
+        }
+
+        var current = rootDock.ActiveDockable;
+        if (current is not IDock)
+        {
+            return current;
+        }
+
+        var visited = new HashSet<IDockable>(ReferenceEqualityComparer.Instance);
+        while (current is IDock dock
+               && dock.ActiveDockable is { } activeDockable
+               && visited.Add(current))
+        {
+            current = activeDockable;
+        }
+
+        return current;
+    }
+
+    /// <summary>
+    /// Resolves a dockable container to the focused or deepest active dockable used for global tracking.
+    /// </summary>
+    /// <param name="dockable">The candidate dockable.</param>
+    /// <returns>The resolved dockable, or null when no candidate is available.</returns>
+    protected static IDockable? ResolveTrackedDockable(IDockable? dockable)
+    {
+        var current = dockable;
+        if (current is not IDock)
+        {
+            return current;
+        }
+
+        var visited = new HashSet<IDockable>(ReferenceEqualityComparer.Instance);
+        while (current is IDock dock && visited.Add(current))
+        {
+            var next = dock.FocusedDockable ?? dock.ActiveDockable;
+            if (next is null)
+            {
+                break;
+            }
+
+            current = next;
+        }
+
+        return current;
+    }
+
     /// <summary>
     /// Updates global dock tracking state.
     /// </summary>
@@ -47,7 +111,8 @@ public abstract partial class FactoryBase
 
         if (resolvedDockable is null && reason == DockTrackingChangeReason.WindowActivated)
         {
-            resolvedDockable = resolvedRoot?.FocusedDockable ?? resolvedRoot?.ActiveDockable;
+            resolvedDockable = ResolveTrackedDockable(
+                resolvedRoot?.FocusedDockable ?? resolvedRoot?.ActiveDockable);
         }
 
         var next = new GlobalDockTrackingState(resolvedDockable, resolvedRoot, resolvedWindow);

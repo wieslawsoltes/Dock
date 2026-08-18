@@ -46,6 +46,19 @@ For the ViewModel + DataTemplate approach, check:
 
 For comprehensive setup guides, see [Document and Tool Content Guide](dock-content-guide.md).
 
+**Why does `FindControl` return null for a control inside `Document` or `Tool`?**
+
+Direct XAML content inside a dockable is compiled as template content and is not
+materialized until Dock presents that dockable. It is not available in the parent
+window's visual tree or name scope immediately after the window's
+`InitializeComponent()` call.
+
+Do not use parent-window code-behind to find and initialize that content. Put the
+integration in a dedicated custom control or attached behavior that owns its own
+attach/detach lifecycle, or use a view model with a compiled `DataTemplate`. This
+also handles tab moves, floating windows, and recycled content correctly. See
+[Direct content lifecycle and renderer controls](dock-content-guide.md#direct-content-lifecycle-and-renderer-controls).
+
 **I get "Unexpected content" errors when adding documents**
 
 This happens when you set a UserControl instance directly to the `Content` property. Use one of these approaches instead:

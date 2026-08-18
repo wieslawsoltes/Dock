@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIWindowRelationsSample.ViewModels;
 

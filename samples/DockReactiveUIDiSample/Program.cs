@@ -1,6 +1,6 @@
 using System;
 using Avalonia;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 using Dock.Serializer;
 using DockReactiveUIDiSample.Models;
 using DockReactiveUIDiSample.ViewModels;
@@ -9,6 +9,7 @@ using DockReactiveUIDiSample.ViewModels.Tools;
 using DockReactiveUIDiSample.Views;
 using DockReactiveUIDiSample.Views.Documents;
 using DockReactiveUIDiSample.Views.Tools;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -49,7 +50,7 @@ internal class Program
         => AppBuilder.Configure(() => CreateApp(provider))
             .UsePlatformDetect()
             .WithInterFont()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
 
     public static AppBuilder BuildAvaloniaApp()
@@ -60,7 +61,7 @@ internal class Program
         })
             .UsePlatformDetect()
             .WithInterFont()
-            .UseReactiveUI()
+            .UseReactiveUI(static _ => { })
             .LogToTrace();
 
     private static App CreateApp(IServiceProvider provider) => new()

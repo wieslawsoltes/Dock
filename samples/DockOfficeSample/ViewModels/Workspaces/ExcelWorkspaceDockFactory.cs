@@ -10,7 +10,7 @@ using Dock.Settings;
 using DockOfficeSample.Models;
 using DockOfficeSample.ViewModels.Documents;
 using DockOfficeSample.ViewModels.Tools;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockOfficeSample.ViewModels.Workspaces;
 

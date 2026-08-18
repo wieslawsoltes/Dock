@@ -21,13 +21,13 @@ Follow these instructions to create a ReactiveUI application with routing using 
 
    ```bash
    dotnet add package Dock.Avalonia
-   dotnet add package Dock.Model.ReactiveUI
-   dotnet add package Dock.Model.ReactiveUI.Services
+   dotnet add package Dock.Model.ReactiveUI.Reactive
+   dotnet add package Dock.Model.ReactiveUI.Services.Reactive
    dotnet add package Dock.Avalonia.Themes.Fluent
-   dotnet add package ReactiveUI.Avalonia
+   dotnet add package ReactiveUI.Avalonia.Reactive
    ```
 
-   Navigation types ship in `Dock.Model.ReactiveUI.Services` and keep the
+   Navigation types ship in `Dock.Model.ReactiveUI.Services.Reactive` and keep the
    `Dock.Model.ReactiveUI.Navigation.*` namespaces for compatibility.
 
    **Optional packages:**
@@ -132,10 +132,10 @@ Follow these instructions to create a ReactiveUI application with routing using 
 
    ```csharp
    using System;
-   using System.Reactive;
    using System.Reactive.Disposables;
    using Dock.Model.ReactiveUI.Navigation.Controls;
    using ReactiveUI;
+   using Unit = ReactiveUI.Primitives.RxVoid;
 
    namespace MyDockApp.ViewModels.Documents
    {

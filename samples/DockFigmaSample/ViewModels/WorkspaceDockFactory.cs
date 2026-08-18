@@ -9,7 +9,7 @@ using Dock.Model.ReactiveUI.Navigation.Controls;
 using Dock.Settings;
 using DockFigmaSample.ViewModels.Documents;
 using DockFigmaSample.ViewModels.Tools;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockFigmaSample.ViewModels;
 

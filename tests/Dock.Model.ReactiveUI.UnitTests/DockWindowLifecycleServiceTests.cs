@@ -9,7 +9,7 @@ using Dock.Model.ReactiveUI.Core;
 using Dock.Model.ReactiveUI.Services.Lifecycle;
 using Dock.Model.ReactiveUI.Services.Overlays.Hosting;
 using Dock.Model.Services;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using Xunit;
 
 namespace Dock.Model.ReactiveUI.UnitTests;

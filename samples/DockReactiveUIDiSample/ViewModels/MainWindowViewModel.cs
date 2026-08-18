@@ -3,7 +3,7 @@ using System.Reactive;
 using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIDiSample.ViewModels;
 

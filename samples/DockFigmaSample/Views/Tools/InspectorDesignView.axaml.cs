@@ -1,6 +1,6 @@
 using Avalonia.Markup.Xaml;
 using DockFigmaSample.ViewModels.Tools;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace DockFigmaSample.Views.Tools;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRoutingSample.ViewModels.Tools;
 

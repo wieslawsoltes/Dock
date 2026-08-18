@@ -35,8 +35,8 @@ public class DockFactory : Factory
         var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
         var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1", KeepPinnedDockableVisible = true};
         var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2", KeepPinnedDockableVisible = true};
-        var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3", CanDrag = false };
-        var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4", CanDrag = false };
+        var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3"};
+        var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4"};
         var tool5 = new Tool5ViewModel {Id = "Tool5", Title = "Tool5" };
         var tool6 = new Tool6ViewModel {Id = "Tool6", Title = "Tool6", CanClose = true, CanPin = true};
         var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false};
@@ -61,9 +61,7 @@ public class DockFactory : Factory
                 {
                     ActiveDockable = tool3,
                     VisibleDockables = CreateList<IDockable>(tool3, tool4),
-                    Alignment = Alignment.Bottom,
-                    CanDrag = false,
-                    CanDrop = false
+                    Alignment = Alignment.Bottom
                 }
             ),
             // CanDrop = false
@@ -86,7 +84,7 @@ public class DockFactory : Factory
                     ActiveDockable = tool5,
                     VisibleDockables = CreateList<IDockable>(tool5, tool6),
                     Alignment = Alignment.Top,
-                    GripMode = GripMode.Hidden,
+                    GripMode = GripMode.Visible,
                 },
                 new ProportionalDockSplitter(),
                 new ToolDock

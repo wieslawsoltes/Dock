@@ -91,6 +91,64 @@
   &lt;dockSimple:DockSimpleTheme /&gt;
 &lt;/Application.Styles&gt;
 </code></pre>
+<p>Keep the base Avalonia theme first and the matching Dock theme second. Do not
+load <code>FluentTheme</code> and <code>SimpleTheme</code> together.</p>
+<h2 id="switch-dockmvvmsample-from-fluent-to-simple">Switch DockMvvmSample from Fluent to Simple</h2>
+<p><code>DockMvvmSample</code> uses Fluent by default. The theme boundary is confined to the
+composition root, so its views and view models do not need theme-specific
+changes.</p>
+<h3 id="1-change-the-theme-package-import">1. Change the theme package import</h3>
+<p>In <code>samples/DockMvvmSample/DockMvvmSample.csproj</code>, replace:</p>
+<pre><code class="lang-xml">&lt;Import Project=&quot;..\..\build\Avalonia.Themes.Fluent.props&quot; /&gt;
+</code></pre>
+<p>with:</p>
+<pre><code class="lang-xml">&lt;Import Project=&quot;..\..\build\Avalonia.Themes.Simple.props&quot; /&gt;
+</code></pre>
+<p>The Simple props file includes both <code>Avalonia.Themes.Simple</code> and
+<code>Avalonia.Fonts.Inter</code>; the sample's views continue to use the Inter font asset.</p>
+<p>Replace the Dock theme project reference as well:</p>
+<pre><code class="lang-xml">&lt;ProjectReference Include=&quot;..\..\src\Dock.Avalonia.Themes.Simple\Dock.Avalonia.Themes.Simple.csproj&quot; /&gt;
+</code></pre>
+<p>Remove the corresponding <code>Dock.Avalonia.Themes.Fluent</code> project reference.</p>
+<p>Applications using Central Package Management need this entry (the repository
+already defines it in <code>Directory.Packages.props</code>):</p>
+<pre><code class="lang-xml">&lt;PackageVersion Include=&quot;Avalonia.Themes.Simple&quot; Version=&quot;$(AvaloniaVersion)&quot; /&gt;
+</code></pre>
+<h3 id="2-change-appaxaml">2. Change App.axaml</h3>
+<p>Use the Simple preset URI, then replace the two theme styles:</p>
+<pre><code class="lang-xaml">&lt;Application.Resources&gt;
+  &lt;ResourceDictionary&gt;
+    &lt;ResourceDictionary.MergedDictionaries&gt;
+      &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Simple/Presets/Ide/Default.axaml&quot; /&gt;
+      &lt;!-- Keep the sample's other dictionaries after the preset. --&gt;
+    &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;
+
+&lt;Application.Styles&gt;
+  &lt;SimpleTheme /&gt;
+  &lt;DockSimpleTheme DensityStyle=&quot;Normal&quot; /&gt;
+
+  &lt;!-- Keep the sample's app-specific styles after both themes. --&gt;
+&lt;/Application.Styles&gt;
+</code></pre>
+<p>The order is intentional: base theme, Dock theme, then app-specific overrides.
+Preset dictionaries belong in application resources and their assembly URI must
+match the selected Dock theme.</p>
+<h3 id="3-change-the-theme-manager">3. Change the theme manager</h3>
+<p>In <code>App.axaml.cs</code>, replace the Fluent namespace and manager:</p>
+<pre><code class="lang-csharp">using Dock.Avalonia.Themes.Simple;
+
+// In App.Initialize():
+ThemeManager = new DockSimpleThemeManager();
+</code></pre>
+<p>The existing theme and preset controls in <code>MainView</code> continue to work because
+both managers implement <code>IDockThemeManager</code>.</p>
+<h3 id="4-build-the-converted-sample">4. Build the converted sample</h3>
+<pre><code class="lang-bash">dotnet build samples/DockMvvmSample/DockMvvmSample.csproj -c Release
+</code></pre>
+<p>The document-tab overflow buttons are supported by the current Simple theme;
+the missing scrollbar resources reported in #1025 were added in Dock 12.</p>
 <p>Theme implementation:</p>
 <ul>
 <li><code>src/Dock.Avalonia.Themes.Simple/DockSimpleTheme.axaml</code></li>

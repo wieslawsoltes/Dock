@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using AvaloniaEdit.Document;
 using Dock.Model.ReactiveUI.Controls;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIRiderSample.ViewModels.Documents;
 

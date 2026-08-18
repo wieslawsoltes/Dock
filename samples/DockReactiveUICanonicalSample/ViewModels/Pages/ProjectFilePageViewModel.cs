@@ -10,7 +10,7 @@ using Dock.Model.Services;
 using Dock.Model.ReactiveUI.Navigation.Services;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Pages;
 

@@ -2,6 +2,8 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Controls.DeferredContentControl;
 using Dock.Model.Avalonia.Controls;
@@ -80,6 +82,39 @@ public class TemplateHelperTests
 
             Assert.Same(control, result);
             Assert.Null(deferredHost.Content);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void Document_Build_Detaches_Content_Realized_Through_DeferredContentControl_With_Different_Host_Content()
+    {
+        var control = new Border();
+        var document = new Document { Content = control };
+        var deferredHost = new DeferredContentControl
+        {
+            Content = document,
+            ContentTemplate = document
+        };
+        var window = new Window { Content = deferredHost };
+
+        try
+        {
+            window.Show();
+            deferredHost.ApplyTemplate();
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Same(control, deferredHost.Presenter?.Child);
+
+            var result = document.Build(null, null);
+
+            Assert.Same(control, result);
+            Assert.Null(control.GetVisualParent());
         }
         finally
         {

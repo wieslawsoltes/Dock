@@ -525,6 +525,29 @@ public class FactoryTests
     }
 
     [Fact]
+    public void InitLayout_Restored_Context_Initializes_Global_Dock_Tracking()
+    {
+        var factory = new TestFactory();
+        var context = CreateDockableContext(factory);
+        var eventCount = 0;
+        var reason = DockTrackingChangeReason.Unknown;
+
+        factory.GlobalDockTrackingChanged += (_, args) =>
+        {
+            eventCount++;
+            reason = args.Reason;
+        };
+
+        factory.InitLayout(context.Root);
+
+        Assert.Equal(1, eventCount);
+        Assert.Equal(DockTrackingChangeReason.LayoutInitialized, reason);
+        Assert.Same(context.Dockable, factory.CurrentDockable);
+        Assert.Same(context.Root, factory.CurrentRootDock);
+        Assert.Same(context.Window, factory.CurrentDockWindow);
+    }
+
+    [Fact]
     public void OnWindowRemoved_Clears_Current_Global_Tracking()
     {
         var factory = new TestFactory();

@@ -1,24 +1,27 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AvaloniaVersion>12.0.0</AvaloniaVersion>
+    <AvaloniaVersion>12.1.0</AvaloniaVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="ProDiagnostics" Version="12.0.4" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
-    <PackageVersion Include="AvaloniaEdit.TextMate" Version="11.4.1" />
-    <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
-    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="2.6.1" />
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
+    <PackageVersion Include="AvaloniaEdit.TextMate" Version="12.0.0" />
+    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.0" />
+    <PackageVersion Include="ReactiveUI.Avalonia.Reactive" Version="12.1.0" />
+    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="3.1.0" />
     <PackageVersion Include="StaticViewLocator" Version="0.1.0" />
-    <PackageVersion Include="reactiveui" Version="22.2.1" />
+    <PackageVersion Include="ReactiveUI" Version="24.0.0" />
+    <PackageVersion Include="ReactiveUI.Reactive" Version="24.0.0" />
+    <PackageVersion Include="System.Reactive" Version="7.0.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="YamlDotNet" Version="16.3.0" />

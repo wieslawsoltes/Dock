@@ -471,22 +471,6 @@ internal class DockControlState : DockManagerState, IDockControlState
     protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
     {
         sourceDockable = DragDockableResolver.Resolve(sourceDockable);
-
-        if (sourceDockable is IDock dock)
-        {
-            if (dock.ActiveDockable == null)
-            {
-                return;
-            }
-
-            sourceDockable = dock.ActiveDockable;
-        }
-
-        if (sourceDockable == null)
-        {
-            return;
-        }
-
         base.Execute(point, operation, dragAction, relativeTo, sourceDockable, targetDockable);
     }
 

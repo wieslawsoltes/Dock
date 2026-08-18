@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using DockReactiveUIManagedSample.ViewModels.Documents;
 using Dock.Model.ReactiveUI.Controls;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIManagedSample.ViewModels.Docks;
 

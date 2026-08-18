@@ -17,6 +17,7 @@ using Dock.Model.Core;
 using Dock.Model.Services;
 using Dock.Model.ReactiveUI.Navigation.ViewModels;
 using Dock.Model.ReactiveUI.Services.Avalonia;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 using Splat;
 
@@ -50,7 +51,7 @@ public partial class App : Application
                     return null;
                 }
 
-                if (existing is ReactiveUI.Avalonia.ViewModelViewHost existingHost)
+                if (existing is ReactiveUI.Avalonia.Reactive.ViewModelViewHost existingHost)
                 {
                     existingHost.ViewLocator = viewLocator;
                     if (!ReferenceEquals(existingHost.ViewModel, item))
@@ -60,7 +61,7 @@ public partial class App : Application
                     return existingHost;
                 }
 
-                return new ReactiveUI.Avalonia.ViewModelViewHost
+                return new ReactiveUI.Avalonia.Reactive.ViewModelViewHost
                 {
                     ViewLocator = viewLocator,
                     ViewModel = item

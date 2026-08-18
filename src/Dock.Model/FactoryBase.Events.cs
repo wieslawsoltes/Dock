@@ -330,6 +330,12 @@ public abstract partial class FactoryBase
         var rootDock = window?.Layout;
         var dockable = rootDock is null ? null : ResolveTrackedDockable(rootDock);
         UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.WindowActivated);
+
+        if (rootDock?.FocusedDockable is { Owner: IDock focusedOwner } focusedDockable)
+        {
+            SetFocusedDockable(focusedOwner, focusedDockable);
+        }
+
         WindowActivated?.Invoke(this, new WindowActivatedEventArgs(window));
     }
 
@@ -412,6 +418,11 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual void OnWindowDeactivated(IDockWindow? window)
     {
+        if (window?.Layout?.FocusedDockable?.Owner is IDock focusedOwner)
+        {
+            SetIsActive(focusedOwner, false);
+        }
+
         if (window is not null && ReferenceEquals(CurrentDockWindow, window))
         {
             UpdateGlobalDockTracking(null, null, null, DockTrackingChangeReason.WindowDeactivated);

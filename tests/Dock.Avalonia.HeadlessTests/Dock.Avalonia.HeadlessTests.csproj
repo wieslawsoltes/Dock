@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />
+    <ProjectReference Include="..\..\samples\DockSimplifiedSample\DockSimplifiedSample.csproj" />
     <ProjectReference Include="..\..\samples\DockMvvmSample\DockMvvmSample.csproj" />
   </ItemGroup>
 

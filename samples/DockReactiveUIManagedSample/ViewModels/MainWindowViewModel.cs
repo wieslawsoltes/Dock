@@ -4,7 +4,7 @@ using System.Windows.Input;
 using DockReactiveUIManagedSample.Models;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIManagedSample.ViewModels;
 

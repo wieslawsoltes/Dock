@@ -164,12 +164,14 @@
                   ContextFlyout="{TemplateBinding ToolFlyout}"
                   Grid.Row="{Binding GripMode, Converter={x:Static GripModeConverters.GridRowAutoHideConverter}}">
             <Grid x:Name="PART_Grip">
-              <DockPanel LastChildFill="True" Margin="{DynamicResource DockToolChromeHeaderMargin}">
-                <Panel DockPanel.Dock="Left">
+              <Grid ColumnDefinitions="*,Auto"
+                    Margin="{DynamicResource DockToolChromeHeaderMargin}">
+                <Panel Grid.Column="0" HorizontalAlignment="Left">
                   <TextBlock x:Name="PART_Title"
+                             TextTrimming="CharacterEllipsis"
                              Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}" />
                 </Panel>
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
                   <Button x:Name="PART_MenuButton"
                           Theme="{TemplateBinding MenuButtonTheme}"
                           Flyout="{TemplateBinding ToolFlyout}">
@@ -227,7 +229,7 @@
                   </Button>
                 </StackPanel>
                 <Grid x:Name="PART_Grid" />
-              </DockPanel>
+              </Grid>
             </Grid>
           </Border>
           <Panel x:Name="PART_Panel"

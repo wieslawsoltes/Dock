@@ -6,7 +6,7 @@
   <StackPanel Spacing="12">
     <TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
     <TextBox Text="{Binding Input}"
-             Watermark="{Binding Placeholder}"
+             PlaceholderText="{Binding Placeholder}"
              MinWidth="280" />
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
       <Button Content="{Binding SecondaryText}" Command="{Binding Cancel}" />

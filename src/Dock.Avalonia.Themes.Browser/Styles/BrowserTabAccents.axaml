@@ -165,7 +165,9 @@
   <x:Boolean x:Key="DockDocumentTabStripHideWhenEmpty">False</x:Boolean>
   <x:Boolean x:Key="DockDocumentTabStripToggleWindowStateOnDoubleTap">True</x:Boolean>
   <x:Boolean x:Key="DockDocumentControlTabStripVisible">True</x:Boolean>
-  <x:Boolean x:Key="DockDocumentControlShowDockIndicatorOnly">True</x:Boolean>
+  <!-- Keep the full local selector available so a tab can be dropped into a
+       newly created horizontal or vertical document dock. -->
+  <x:Boolean x:Key="DockDocumentControlShowDockIndicatorOnly">False</x:Boolean>
   <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">False</x:Boolean>
   <sys:Double x:Key="DockDocumentControlVerticalSpacing">6</sys:Double>
   <StaticResource x:Key="DockDocumentContentBorderBrush" ResourceKey="DockBorderSubtleBrush" />

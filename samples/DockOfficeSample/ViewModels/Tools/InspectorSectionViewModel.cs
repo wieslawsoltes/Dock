@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using DockOfficeSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockOfficeSample.ViewModels.Tools;
 

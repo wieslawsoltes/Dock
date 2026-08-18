@@ -5,7 +5,7 @@ using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Controls;
 using Dock.Settings;
 using DockReactiveUIWindowRelationsSample.ViewModels.Documents;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUIWindowRelationsSample.ViewModels.Tools;
 

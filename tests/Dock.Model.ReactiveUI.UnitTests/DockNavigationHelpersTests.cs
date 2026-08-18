@@ -4,7 +4,7 @@ using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using Dock.Model.ReactiveUI.Core;
 using Dock.Model.ReactiveUI.Navigation.Services;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using Xunit;
 
 namespace Dock.Model.ReactiveUI.UnitTests;

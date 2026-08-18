@@ -1,6 +1,6 @@
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUICanonicalSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 

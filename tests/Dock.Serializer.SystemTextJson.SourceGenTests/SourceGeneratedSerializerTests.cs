@@ -30,6 +30,35 @@ namespace Dock.Serializer.SystemTextJson.SourceGenTests;
 public class SourceGeneratedSerializerTests
 {
     [Fact]
+    public void DockGenerator_CoexistsWithApplicationJsonContexts()
+    {
+        var first = new WeatherForecast
+        {
+            Date = new DateTime(2026, 7, 14),
+            Summary = "Sunny"
+        };
+        var second = new WeatherForecast2
+        {
+            TemperatureCelsius = 21,
+            Summary = "Clear"
+        };
+
+        string firstJson = JsonSerializer.Serialize(
+            first,
+            ApplicationJsonContexts.WeatherForecastContext.Default.WeatherForecast);
+        string secondJson = JsonSerializer.Serialize(
+            second,
+            ApplicationJsonContexts.WeatherForecast2Context.Default.WeatherForecast2);
+        string collidingNameJson = JsonSerializer.Serialize(
+            first,
+            DockSerializerGeneratedJsonContext.Default.WeatherForecast);
+
+        Assert.Contains("Sunny", firstJson, StringComparison.Ordinal);
+        Assert.Contains("21", secondJson, StringComparison.Ordinal);
+        Assert.Contains("Sunny", collidingNameJson, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void GeneratedSerializer_Roundtrip_CustomDockTypes_Works()
     {
         var serializer = DockSystemTextJsonGenerated.CreateSerializer();
@@ -463,6 +492,40 @@ public sealed class TypeNamedPayload
 public sealed class UnregisteredPayload
 {
     public string? Name { get; set; }
+}
+
+public sealed class WeatherForecast
+{
+    public DateTime Date { get; set; }
+
+    public string? Summary { get; set; }
+}
+
+public sealed class WeatherForecast2
+{
+    public int TemperatureCelsius { get; set; }
+
+    public string? Summary { get; set; }
+}
+
+public static partial class ApplicationJsonContexts
+{
+    [JsonSourceGenerationOptions(WriteIndented = true)]
+    [JsonSerializable(typeof(WeatherForecast))]
+    internal partial class WeatherForecastContext : JsonSerializerContext
+    {
+    }
+
+    [JsonSourceGenerationOptions(WriteIndented = true)]
+    [JsonSerializable(typeof(WeatherForecast2))]
+    internal partial class WeatherForecast2Context : JsonSerializerContext
+    {
+    }
+}
+
+[JsonSerializable(typeof(WeatherForecast))]
+internal partial class DockSerializerGeneratedJsonContext : JsonSerializerContext
+{
 }
 
 public class CustomRootDock : RootDock

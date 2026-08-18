@@ -403,6 +403,18 @@ public partial interface IFactory
     void PinDockable(IDockable dockable);
 
     /// <summary>
+    /// Pins or unpins the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void PinDockable(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            PinDockable(dockable);
+        }
+    }
+
+    /// <summary>
     /// Unpins a dockable.
     /// </summary>
     /// <param name="dockable">The dockable to unpin.</param>
@@ -415,10 +427,34 @@ public partial interface IFactory
     void PreviewPinnedDockable(IDockable dockable);
 
     /// <summary>
+    /// Temporarily shows the pinned dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void PreviewPinnedDockable(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            PreviewPinnedDockable(dockable);
+        }
+    }
+
+    /// <summary>
     /// Toggles preview for a pinned dockable.
     /// </summary>
     /// <param name="dockable">The dockable to toggle.</param>
     void TogglePreviewPinnedDockable(IDockable dockable);
+
+    /// <summary>
+    /// Toggles preview for the pinned dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void TogglePreviewPinnedDockable(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            TogglePreviewPinnedDockable(dockable);
+        }
+    }
 
     /// <summary>
     /// Hides all temporarily shown pinned dockables.
@@ -447,6 +483,18 @@ public partial interface IFactory
     void FloatDockable(IDockable dockable);
 
     /// <summary>
+    /// Floats the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void FloatDockable(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            FloatDockable(dockable);
+        }
+    }
+
+    /// <summary>
     /// Floats dockable with the specified window options.
     /// </summary>
     /// <param name="dockable">The dockable to float.</param>
@@ -458,6 +506,18 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void FloatAllDockables(IDockable dockable);
+
+    /// <summary>
+    /// Floats the owner dock for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void FloatAllDockables(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            FloatAllDockables(dockable);
+        }
+    }
 
     /// <summary>
     /// Floats owner dock with all dockables using the specified window options.
@@ -473,34 +533,106 @@ public partial interface IFactory
     void DockAsDocument(IDockable dockable);
 
     /// <summary>
+    /// Docks the dockable supplied as a command parameter as a tabbed document.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void DockAsDocument(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            DockAsDocument(dockable);
+        }
+    }
+
+    /// <summary>
     /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
     /// </summary>
-    /// <param name="dockable">The dockable to remove.</param>
-    void CloseDockable(IDockable dockable);
+    /// <param name="dockable">The dockable to remove, or <see langword="null"/> when no dockable is active.</param>
+    void CloseDockable(IDockable? dockable);
+
+    /// <summary>
+    /// Closes the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void CloseDockable(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            CloseDockable(dockable);
+        }
+    }
         
     /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself.
+    /// Calls <see cref="IFactory.CloseDockable(IDockable)"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself.
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void CloseOtherDockables(IDockable dockable);
 
     /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner.
+    /// Closes the other dockables for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void CloseOtherDockables(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            CloseOtherDockables(dockable);
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="IFactory.CloseDockable(IDockable)"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner.
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void CloseAllDockables(IDockable dockable);
 
     /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the left of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
+    /// Closes all dockables for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void CloseAllDockables(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            CloseAllDockables(dockable);
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="IFactory.CloseDockable(IDockable)"/> on all tabs to the left of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void CloseLeftDockables(IDockable dockable);
 
     /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the right of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
+    /// Closes the dockables to the left of the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void CloseLeftDockables(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            CloseLeftDockables(dockable);
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="IFactory.CloseDockable(IDockable)"/> on all tabs to the right of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void CloseRightDockables(IDockable dockable);
+
+    /// <summary>
+    /// Closes the dockables to the right of the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void CloseRightDockables(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            CloseRightDockables(dockable);
+        }
+    }
 
     /// <summary>
     /// Sets the tabs layout for the specified document dock.
@@ -516,16 +648,52 @@ public partial interface IFactory
     void SetDocumentDockTabsLayoutLeft(IDockable dockable);
 
     /// <summary>
+    /// Sets the tabs layout to left for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void SetDocumentDockTabsLayoutLeft(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            SetDocumentDockTabsLayoutLeft(dockable);
+        }
+    }
+
+    /// <summary>
     /// Sets the tabs layout to top.
     /// </summary>
     /// <param name="dockable">The document dock.</param>
     void SetDocumentDockTabsLayoutTop(IDockable dockable);
 
     /// <summary>
+    /// Sets the tabs layout to top for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void SetDocumentDockTabsLayoutTop(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            SetDocumentDockTabsLayoutTop(dockable);
+        }
+    }
+
+    /// <summary>
     /// Sets the tabs layout to right.
     /// </summary>
     /// <param name="dockable">The document dock.</param>
     void SetDocumentDockTabsLayoutRight(IDockable dockable);
+
+    /// <summary>
+    /// Sets the tabs layout to right for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void SetDocumentDockTabsLayoutRight(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            SetDocumentDockTabsLayoutRight(dockable);
+        }
+    }
 
     /// <summary>
     /// Sets the layout mode for the specified document dock.
@@ -541,10 +709,34 @@ public partial interface IFactory
     void SetDocumentDockLayoutModeTabbed(IDockable dockable);
 
     /// <summary>
+    /// Sets tabbed layout mode for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void SetDocumentDockLayoutModeTabbed(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            SetDocumentDockLayoutModeTabbed(dockable);
+        }
+    }
+
+    /// <summary>
     /// Sets the layout mode to MDI.
     /// </summary>
     /// <param name="dockable">The document dock.</param>
     void SetDocumentDockLayoutModeMdi(IDockable dockable);
+
+    /// <summary>
+    /// Sets MDI layout mode for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void SetDocumentDockLayoutModeMdi(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            SetDocumentDockLayoutModeMdi(dockable);
+        }
+    }
 
     /// <summary>
     /// Hides the dockable and stores it in <see cref="IRootDock.HiddenDockables"/>.
@@ -666,8 +858,32 @@ public partial interface IFactory
     void NewHorizontalDocumentDock(IDockable dockable);
 
     /// <summary>
+    /// Creates a horizontal document dock for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void NewHorizontalDocumentDock(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            NewHorizontalDocumentDock(dockable);
+        }
+    }
+
+    /// <summary>
     /// Splits document into a new vertical document dock.
     /// </summary>
     /// <param name="dockable">The dockable to split.</param>
     void NewVerticalDocumentDock(IDockable dockable);
+
+    /// <summary>
+    /// Creates a vertical document dock for the dockable supplied as a command parameter.
+    /// </summary>
+    /// <param name="parameter">The command parameter.</param>
+    void NewVerticalDocumentDock(object? parameter)
+    {
+        if (parameter is IDockable dockable)
+        {
+            NewVerticalDocumentDock(dockable);
+        }
+    }
 }

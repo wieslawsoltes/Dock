@@ -7,6 +7,7 @@ using DockFigmaSample.ViewModels.Tools;
 using DockFigmaSample.Views;
 using DockFigmaSample.Views.Documents;
 using DockFigmaSample.Views.Tools;
+using ReactiveUI.Reactive;
 using ReactiveUI;
 using Splat;
 

@@ -16,6 +16,7 @@
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Themes.Fluent.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
+  <Import Project="..\..\build\Avalonia.ReactiveUI.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
@@ -25,5 +26,11 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent\Dock.Avalonia.Themes.Fluent.csproj" />
   </ItemGroup>
 
-</Project>
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI.SourceGenerators">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
+</Project>

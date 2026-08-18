@@ -8,6 +8,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Xunit;
 
 namespace Dock.Controls.Recycling.UnitTests.Controls;
@@ -203,16 +204,16 @@ public class ControlRecyclingTests
         var data = new object();
         var control = new TextBlock { Background = Brushes.Red };
         var parentPanel = new StackPanel();
-        
+
         // Add the control to the parent panel
         parentPanel.Children.Add(control);
-        
+
         // Cache the control
         recycling.Add(data, control);
-        
+
         // Build should return the cached control and remove it from its parent
         var result = recycling.Build(data, null, null);
-        
+
         Assert.Same(control, result);
         Assert.Empty(parentPanel.Children); // Parent should no longer contain the control
     }
@@ -245,18 +246,55 @@ public class ControlRecyclingTests
     }
 
     [AvaloniaFact]
+    public void Build_Removes_Cached_Control_From_ContentPresenter_Hosted_By_Templated_Control_With_Different_Content()
+    {
+        var recycling = new ControlRecycling();
+        var data = new object();
+        var control = new TextBlock { Background = Brushes.Red };
+        var hostContent = new object();
+        var host = new ManualPresenterHost { Content = hostContent };
+        var window = new Window { Content = host };
+
+        try
+        {
+            window.Show();
+            host.ApplyTemplate();
+            window.UpdateLayout();
+
+            // Realize the control directly on the internal presenter, the same way
+            // DeferredContentControl.ApplyDeferredState assigns its presenter's Content
+            // programmatically rather than through a TemplateBinding from the host.
+            host.Presenter!.Content = control;
+            window.UpdateLayout();
+
+            Assert.Same(control, host.Presenter.Child);
+
+            recycling.Add(data, control);
+
+            var result = recycling.Build(data, null, null);
+
+            Assert.Same(control, result);
+            Assert.Null(control.GetVisualParent());
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
     public void Build_Handles_Cached_Control_Without_Visual_Parent()
     {
         var recycling = new ControlRecycling();
         var data = new object();
         var control = new TextBlock { Background = Brushes.Blue };
-        
+
         // Cache the control without adding it to any parent first
         recycling.Add(data, control);
-        
+
         // Build should return the cached control
         var result = recycling.Build(data, null, null);
-        
+
         Assert.Same(control, result);
     }
 
@@ -271,7 +309,8 @@ public class ControlRecyclingTests
 
         var presenterA = new ContentPresenter();
         presenterA.DataTemplates.Add(template);
-        presenterA.Bind(ContentPresenter.ContentProperty, new Binding(nameof(TestViewModel.Item)) { Source = viewModel });
+        presenterA.Bind(ContentPresenter.ContentProperty,
+            new Binding(nameof(TestViewModel.Item)) { Source = viewModel });
         ControlRecyclingDataTemplate.SetControlRecycling(presenterA, recycling);
         presenterA.ContentTemplate = new ControlRecyclingDataTemplate { Parent = presenterA };
 
@@ -280,17 +319,7 @@ public class ControlRecyclingTests
         ControlRecyclingDataTemplate.SetControlRecycling(presenterB, recycling);
         presenterB.ContentTemplate = new ControlRecyclingDataTemplate { Parent = presenterB };
 
-        var window = new Window
-        {
-            Content = new StackPanel
-            {
-                Children =
-                {
-                    presenterA,
-                    presenterB
-                }
-            }
-        };
+        var window = new Window { Content = new StackPanel { Children = { presenterA, presenterB } } };
 
         try
         {
@@ -325,14 +354,14 @@ public class ControlRecyclingTests
         var recycling = new ControlRecycling();
         var data = new object();
         var control = new TextBlock { Background = Brushes.Green };
-        
+
         // Cache the control
         recycling.Add(data, control);
-        
+
         // Build should return the cached control
         var result1 = recycling.Build(data, null, null);
         var result2 = recycling.Build(data, null, null);
-        
+
         Assert.Same(control, result1);
         Assert.Same(control, result2);
     }

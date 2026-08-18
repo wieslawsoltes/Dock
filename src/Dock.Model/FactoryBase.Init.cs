@@ -48,6 +48,8 @@ public abstract partial class FactoryBase
                 }
             }
 
+            InitializeGlobalDockTracking(rootDock);
+
             if (rootDock.ShowWindows.CanExecute(null))
             {
                 rootDock.ShowWindows.Execute(null);

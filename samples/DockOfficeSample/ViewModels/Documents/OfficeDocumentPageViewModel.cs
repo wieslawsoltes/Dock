@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using DockOfficeSample.Models;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace DockOfficeSample.ViewModels.Documents;
 

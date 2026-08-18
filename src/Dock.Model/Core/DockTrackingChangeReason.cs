@@ -51,5 +51,10 @@ public enum DockTrackingChangeReason
     /// <summary>
     /// A window was removed.
     /// </summary>
-    WindowRemoved = 8
+    WindowRemoved = 8,
+
+    /// <summary>
+    /// A layout was initialized.
+    /// </summary>
+    LayoutInitialized = 9
 }

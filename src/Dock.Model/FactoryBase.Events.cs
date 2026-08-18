@@ -328,7 +328,7 @@ public abstract partial class FactoryBase
     public virtual void OnWindowActivated(IDockWindow? window)
     {
         var rootDock = window?.Layout;
-        var dockable = rootDock?.FocusedDockable ?? rootDock?.ActiveDockable;
+        var dockable = rootDock is null ? null : ResolveTrackedDockable(rootDock);
         UpdateGlobalDockTracking(dockable, rootDock, window, DockTrackingChangeReason.WindowActivated);
 
         if (rootDock?.FocusedDockable is { Owner: IDock focusedOwner } focusedDockable)

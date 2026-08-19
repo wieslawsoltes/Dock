@@ -1,0 +1,13 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Dock.Avalonia.HeadlessTests"
+             xmlns:model="using:Dock.Model.Avalonia.Controls"
+             x:Class="Dock.Avalonia.HeadlessTests.BoundContentControlView"
+             x:DataType="model:Document"
+             x:CompileBindings="True">
+  <StackPanel DataContext="{Binding Context}">
+    <StackPanel x:DataType="local:BoundControlContext">
+      <ContentControl Content="{Binding SharedControl}" />
+    </StackPanel>
+  </StackPanel>
+</UserControl>

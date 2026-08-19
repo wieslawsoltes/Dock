@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Input;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Internal;
 using Dock.Model;
@@ -100,6 +101,159 @@ public class DockControlStateTests
         state.Process(new Point(), new Vector(), EventType.Released, DragAction.None, dock, docks);
 
         Assert.False(dock.IsDraggingDock);
+    }
+
+    [AvaloniaFact]
+    public void StartDrag_DetachedSource_DoesNotConvertPointToScreen()
+    {
+        var state = CreateState(new DockManager(new DockService()));
+        var dockControl = new DockControl();
+        var dragControl = new Control
+        {
+            DataContext = new Tool { CanDrag = true }
+        };
+        DockProperties.SetIsDragEnabled(dragControl, true);
+
+        state.StartDrag(dragControl, new Point(5, 5), new Point(20, 20), dockControl);
+        state.Process(
+            new Point(30, 30),
+            default,
+            EventType.Moved,
+            DragAction.Move,
+            dockControl,
+            new List<IDockControl> { dockControl });
+
+        Assert.True(dockControl.IsDraggingDock);
+
+        state.Process(
+            default,
+            default,
+            EventType.CaptureLost,
+            DragAction.None,
+            dockControl,
+            new List<IDockControl> { dockControl });
+    }
+
+    [AvaloniaFact]
+    public void Process_ThresholdMove_DetachedSource_DoesNotConvertPointToScreen()
+    {
+        var state = CreateState(new DockManager(new DockService()));
+        var dockControl = new DockControl();
+        var dragControl = new Control
+        {
+            DataContext = new object()
+        };
+        DockProperties.SetIsDragEnabled(dragControl, true);
+        state.StartDrag(dragControl, new Point(0, 0), new Point(0, 0), dockControl);
+        dragControl.DataContext = new Tool { CanDrag = true };
+
+        state.Process(
+            new Point(100, 100),
+            default,
+            EventType.Moved,
+            DragAction.Move,
+            dockControl,
+            new List<IDockControl> { dockControl });
+
+        Assert.True(dockControl.IsDraggingDock);
+
+        state.Process(
+            default,
+            default,
+            EventType.CaptureLost,
+            DragAction.None,
+            dockControl,
+            new List<IDockControl> { dockControl });
+    }
+
+    [AvaloniaFact]
+    public void DetachedSource_TransfersDragCaptureAndReleaseToAttachedDockControl()
+    {
+        var factory = new RecordingFactory();
+        var root = factory.CreateRootDock();
+        root.Factory = factory;
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        var toolDock = factory.CreateToolDock();
+        toolDock.VisibleDockables = factory.CreateList<IDockable>();
+        var tool = factory.CreateTool();
+        tool.CanDrag = true;
+        factory.AddDockable(toolDock, tool);
+        toolDock.ActiveDockable = tool;
+        factory.AddDockable(root, toolDock);
+
+        var targetDockControl = new DockControl { Layout = root };
+        var sourceDockControl = new DockControl { Layout = root };
+        var dragControl = new Control { DataContext = new object() };
+        DockProperties.SetIsDragEnabled(dragControl, true);
+        var sourceHost = new Grid();
+        sourceHost.Children.Add(sourceDockControl);
+        sourceHost.Children.Add(dragControl);
+        var sourceWindow = new Window
+        {
+            Width = 300,
+            Height = 200,
+            Content = sourceHost
+        };
+        var targetWindow = new Window
+        {
+            Width = 300,
+            Height = 200,
+            Content = targetDockControl
+        };
+        var pointer = new global::Avalonia.Input.Pointer(1, PointerType.Mouse, true);
+
+        try
+        {
+            targetWindow.Show();
+            sourceWindow.Show();
+            targetWindow.UpdateLayout();
+            sourceWindow.UpdateLayout();
+
+            var sourceState = Assert.IsType<DockControlState>(sourceDockControl.DockControlState);
+            sourceState.StartDrag(
+                dragControl,
+                new Point(5, 5),
+                new Point(20, 20),
+                sourceDockControl);
+            dragControl.DataContext = tool;
+
+            sourceHost.Children.Remove(sourceDockControl);
+            sourceWindow.UpdateLayout();
+
+            Assert.True(sourceDockControl.TryTransferDragCapture(pointer));
+            Assert.Same(targetDockControl, pointer.Captured);
+            Assert.False(sourceDockControl.IsDraggingDock);
+            Assert.False(targetDockControl.IsDraggingDock);
+
+            var targetState = Assert.IsType<DockControlState>(targetDockControl.DockControlState);
+            targetState.Process(
+                new Point(100, 100),
+                default,
+                EventType.Moved,
+                DragAction.Move,
+                targetDockControl,
+                factory.DockControls);
+
+            Assert.True(targetDockControl.IsDraggingDock);
+
+            targetState.Process(
+                new Point(30, 30),
+                default,
+                EventType.Released,
+                DragAction.Move,
+                targetDockControl,
+                factory.DockControls);
+
+            Assert.Equal(1, factory.FloatCount);
+            Assert.Same(tool, factory.LastFloatedDockable);
+            Assert.False(targetDockControl.IsDraggingDock);
+        }
+        finally
+        {
+            pointer.Capture(null);
+            sourceWindow.Close();
+            targetWindow.Close();
+        }
     }
 
     [AvaloniaFact]

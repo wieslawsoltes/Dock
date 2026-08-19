@@ -1448,6 +1448,11 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
     private void CaptureLostHandler(object? sender, PointerCaptureLostEventArgs e)
     {
+        if (TryTransferDragCapture(e.Pointer))
+        {
+            return;
+        }
+
         if (Layout?.Factory?.DockControls is { })
         {
             var position = new Point();
@@ -1455,6 +1460,37 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             var action = DragAction.None;
             _dockControlState.Process(position, delta, EventType.CaptureLost, action, this, Layout.Factory.DockControls);
         }
+    }
+
+    internal bool TryTransferDragCapture(IPointer pointer)
+    {
+        if (this.GetVisualRoot() is not null
+            || !_dockControlState.HasActiveDrag
+            || Layout?.Factory?.DockControls is not { } dockControls)
+        {
+            return false;
+        }
+
+        foreach (var dockControl in DockHelpers.GetZOrderedDockControls(dockControls))
+        {
+            if (dockControl is not DockControl targetDockControl
+                || ReferenceEquals(targetDockControl, this)
+                || targetDockControl.GetVisualRoot() is null
+                || targetDockControl.DockControlState is not DockControlState targetState)
+            {
+                continue;
+            }
+
+            if (!_dockControlState.TryTransferDragTo(targetState, this, targetDockControl))
+            {
+                continue;
+            }
+
+            pointer.Capture(targetDockControl);
+            return true;
+        }
+
+        return false;
     }
 
     private void WheelChangedHandler(object? sender, PointerWheelEventArgs e)

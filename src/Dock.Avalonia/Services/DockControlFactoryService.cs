@@ -40,16 +40,8 @@ internal sealed class DockControlFactoryService : IDockControlFactoryService
             controlRecycling = new ControlRecycling();
         }
 
-        controlRecycling = CreateFactoryOwnedRecycling(controlRecycling);
         ControlRecyclingDataTemplate.SetControlRecycling(control, controlRecycling);
         s_controlRecycling.Add(factory, controlRecycling);
-    }
-
-    private static IControlRecycling CreateFactoryOwnedRecycling(IControlRecycling recycling)
-    {
-        return recycling is ControlRecycling defaultRecycling
-            ? new ControlRecycling { TryToUseIdAsKey = defaultRecycling.TryToUseIdAsKey }
-            : recycling;
     }
 
     public void CleanupFactory(DockControl control, IDock layout)

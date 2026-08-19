@@ -16,10 +16,13 @@ namespace Dock.Avalonia.HeadlessTests;
 public class BoundContentControlReparentingTests
 {
     [AvaloniaFact]
-    public void DockControl_PropagatesConfiguredControlRecyclingAcrossFactory()
+    public void DockControl_PropagatesOriginalConfiguredControlRecyclingAcrossFactory()
     {
         var factory = new Factory();
         var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var cacheKey = new object();
+        var cachedControl = new Border();
+        recycling.Add(cacheKey, cachedControl);
         var firstRoot = new RootDock
         {
             Id = "FirstRoot",
@@ -44,6 +47,10 @@ public class BoundContentControlReparentingTests
             firstDockControl.ApplyTemplate();
             var sharedRecycling = Assert.IsType<ControlRecycling>(
                 ControlRecyclingDataTemplate.GetControlRecycling(firstDockControl));
+
+            Assert.Same(recycling, sharedRecycling);
+            Assert.True(sharedRecycling.TryGetValue(cacheKey, out var cached));
+            Assert.Same(cachedControl, cached);
 
             secondWindow.Show();
             secondDockControl.ApplyTemplate();

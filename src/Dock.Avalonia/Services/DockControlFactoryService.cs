@@ -13,7 +13,14 @@ namespace Dock.Avalonia.Services;
 
 internal sealed class DockControlFactoryService : IDockControlFactoryService
 {
-    private static readonly ConditionalWeakTable<IFactory, IControlRecycling> s_controlRecycling = new();
+    private sealed class FactoryControlRecyclingState(IControlRecycling recycling, bool isFallback)
+    {
+        public IControlRecycling Recycling { get; set; } = recycling;
+
+        public bool IsFallback { get; set; } = isFallback;
+    }
+
+    private static readonly ConditionalWeakTable<IFactory, FactoryControlRecyclingState> s_controlRecycling = new();
 
     public void InitializeControlRecycling(DockControl control)
     {
@@ -24,8 +31,10 @@ internal sealed class DockControlFactoryService : IDockControlFactoryService
 
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(control);
 
-        if (s_controlRecycling.TryGetValue(factory, out var shared))
+        if (s_controlRecycling.TryGetValue(factory, out var state))
         {
+            var shared = state.Recycling;
+
             if (controlRecycling is null)
             {
                 ControlRecyclingDataTemplate.SetControlRecycling(control, shared);
@@ -34,6 +43,15 @@ internal sealed class DockControlFactoryService : IDockControlFactoryService
 
             if (ReferenceEquals(shared, controlRecycling))
             {
+                return;
+            }
+
+            if (state.IsFallback)
+            {
+                var configured = CreateFactoryOwnedRecycling(controlRecycling);
+                state.Recycling = configured;
+                state.IsFallback = false;
+                PropagateControlRecycling(factory, configured);
                 return;
             }
 
@@ -48,30 +66,34 @@ internal sealed class DockControlFactoryService : IDockControlFactoryService
                 return;
             }
 
-            if (controlRecycling is ControlRecycling)
-            {
-                ControlRecyclingDataTemplate.SetControlRecycling(control, shared);
-            }
-
+            ControlRecyclingDataTemplate.SetControlRecycling(control, shared);
             return;
         }
 
+        var isFallback = controlRecycling is null;
         if (controlRecycling is null)
         {
             controlRecycling = new ControlRecycling();
-            ControlRecyclingDataTemplate.SetControlRecycling(control, controlRecycling);
         }
 
-        if (controlRecycling is ControlRecycling defaultRecycling)
+        controlRecycling = CreateFactoryOwnedRecycling(controlRecycling);
+        ControlRecyclingDataTemplate.SetControlRecycling(control, controlRecycling);
+        s_controlRecycling.Add(factory, new FactoryControlRecyclingState(controlRecycling, isFallback));
+    }
+
+    private static IControlRecycling CreateFactoryOwnedRecycling(IControlRecycling recycling)
+    {
+        return recycling is ControlRecycling defaultRecycling
+            ? new ControlRecycling { TryToUseIdAsKey = defaultRecycling.TryToUseIdAsKey }
+            : recycling;
+    }
+
+    private static void PropagateControlRecycling(IFactory factory, IControlRecycling recycling)
+    {
+        foreach (var dockControl in factory.DockControls.OfType<DockControl>())
         {
-            controlRecycling = new ControlRecycling
-            {
-                TryToUseIdAsKey = defaultRecycling.TryToUseIdAsKey
-            };
-            ControlRecyclingDataTemplate.SetControlRecycling(control, controlRecycling);
+            ControlRecyclingDataTemplate.SetControlRecycling(dockControl, recycling);
         }
-
-        s_controlRecycling.Add(factory, controlRecycling);
     }
 
     public void CleanupFactory(DockControl control, IDock layout)
@@ -136,12 +158,12 @@ internal sealed class DockControlFactoryService : IDockControlFactoryService
 
     private static void PruneControlRecycling(IFactory factory, HashSet<IDockable> dockables)
     {
-        if (!s_controlRecycling.TryGetValue(factory, out var recycling))
+        if (!s_controlRecycling.TryGetValue(factory, out var state))
         {
             return;
         }
 
-        if (recycling is not ControlRecycling controlRecycling)
+        if (state.Recycling is not ControlRecycling controlRecycling)
         {
             return;
         }

@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Recycling;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -49,6 +50,50 @@ public class BoundContentControlReparentingTests
 
             Assert.True(sharedRecycling.TryToUseIdAsKey);
             Assert.Same(sharedRecycling, ControlRecyclingDataTemplate.GetControlRecycling(secondDockControl));
+        }
+        finally
+        {
+            secondWindow.Close();
+            firstWindow.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void DockControl_ExplicitCustomRecyclingReplacesGeneratedFactoryFallback()
+    {
+        var factory = new Factory();
+        var firstRoot = new RootDock
+        {
+            Id = "FirstRoot",
+            Factory = factory,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        var secondRoot = new RootDock
+        {
+            Id = "SecondRoot",
+            Factory = factory,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        var firstDockControl = new DockControl { Layout = firstRoot };
+        var secondDockControl = new DockControl { Layout = secondRoot };
+        var customRecycling = new CustomControlRecycling();
+        ControlRecyclingDataTemplate.SetControlRecycling(secondDockControl, customRecycling);
+        var firstWindow = new Window { Content = firstDockControl };
+        var secondWindow = new Window { Content = secondDockControl };
+
+        firstWindow.Show();
+        try
+        {
+            firstDockControl.ApplyTemplate();
+            var fallback = Assert.IsType<ControlRecycling>(
+                ControlRecyclingDataTemplate.GetControlRecycling(firstDockControl));
+
+            secondWindow.Show();
+            secondDockControl.ApplyTemplate();
+
+            Assert.NotSame(fallback, customRecycling);
+            Assert.Same(customRecycling, ControlRecyclingDataTemplate.GetControlRecycling(firstDockControl));
+            Assert.Same(customRecycling, ControlRecyclingDataTemplate.GetControlRecycling(secondDockControl));
         }
         finally
         {
@@ -145,4 +190,23 @@ public class BoundContentControlReparentingTests
 public sealed class BoundControlContext
 {
     public Button SharedControl { get; } = new() { Content = "Shared control" };
+}
+
+internal sealed class CustomControlRecycling : IControlRecycling
+{
+    private readonly ControlRecycling _inner = new();
+
+    public bool TryToUseIdAsKey
+    {
+        get => _inner.TryToUseIdAsKey;
+        set => _inner.TryToUseIdAsKey = value;
+    }
+
+    public bool TryGetValue(object? data, out object? control) => _inner.TryGetValue(data, out control);
+
+    public void Add(object data, object control) => _inner.Add(data, control);
+
+    public object? Build(object? data, object? existing, object? parent) => _inner.Build(data, existing, parent);
+
+    public void Clear() => _inner.Clear();
 }

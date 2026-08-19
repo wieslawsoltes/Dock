@@ -56,6 +56,20 @@ internal class DockDragContext
         UseGlobalOperation = false;
         HasResolvedOperation = false;
     }
+
+    public void CopyTo(DockDragContext target)
+    {
+        target.DragControl = DragControl;
+        target.DragStartPoint = DragStartPoint;
+        target.PointerPressed = PointerPressed;
+        target.DoDragDrop = DoDragDrop;
+        target.TargetPoint = TargetPoint;
+        target.TargetDockControl = TargetDockControl;
+        target.ResolvedOperation = ResolvedOperation;
+        target.UseGlobalOperation = UseGlobalOperation;
+        target.HasResolvedOperation = HasResolvedOperation;
+        target.DragOffset = DragOffset;
+    }
 }
 
 /// <summary>
@@ -72,6 +86,8 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private readonly DockDragContext _context = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
+    private DockControlState? _transferTarget;
+    private DockControl? _activeDockControl;
 
     public IDragOffsetCalculator DragOffsetCalculator { get; set; }
 
@@ -144,23 +160,149 @@ internal class DockControlState : DockManagerState, IDockControlState
             return;
         }
 
-        _context.Start(dragControl, startPoint);
+        BeginDrag(dragControl, startPoint, activeDockControl);
         DropControl = null;
         activeDockControl.IsDraggingDock = true;
 
         if (dragControl.DataContext is IDockable targetDockable)
         {
             targetDockable = DragDockableResolver.Resolve(targetDockable);
-            DockHelpers.ShowWindows(targetDockable);
-            var sp = activeDockControl.PointToScreen(point);
-            Size? preferredPreviewSize = GetPreferredPreviewSize(dragControl);
-            _context.DragOffset = DragOffsetCalculator.CalculateOffset(
+            var canShowPreview = TryGetPreviewPlacement(
                 dragControl,
                 activeDockControl,
-                _context.DragStartPoint);
-            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, activeDockControl, preferredPreviewSize);
-            _context.DoDragDrop = true;
+                point,
+                out var screenPoint,
+                out var dragOffset);
+            if (canShowPreview)
+            {
+                _context.DragOffset = dragOffset;
+            }
+
+            DockHelpers.ShowWindows(targetDockable);
+            if (!_context.PointerPressed)
+            {
+                return;
+            }
+
+            var previewShown = false;
+            if (canShowPreview && activeDockControl.GetVisualRoot() is not null)
+            {
+                Size? preferredPreviewSize = GetPreferredPreviewSize(dragControl);
+                _dragPreviewHelper.Show(targetDockable, screenPoint, _context.DragOffset, activeDockControl, preferredPreviewSize);
+                previewShown = true;
+            }
+
+            CompleteDragActivation(previewShown);
         }
+    }
+
+    private void BeginDrag(Control dragControl, Point startPoint, DockControl activeDockControl)
+    {
+        _transferTarget = null;
+        _activeDockControl = activeDockControl;
+        _context.Start(dragControl, startPoint);
+    }
+
+    private bool TryGetPreviewPlacement(
+        Control dragControl,
+        DockControl activeDockControl,
+        Point point,
+        out PixelPoint screenPoint,
+        out PixelPoint dragOffset)
+    {
+        screenPoint = default;
+        dragOffset = _context.DragOffset;
+
+        if (activeDockControl.GetVisualRoot() is null)
+        {
+            LogDragState("Skipping drag preview placement: active dock control not attached to visual tree.");
+            return false;
+        }
+
+        screenPoint = activeDockControl.PointToScreen(point);
+        if (dragControl.GetVisualRoot() is null)
+        {
+            LogDragState("Using cached drag offset: dragged control not attached to visual tree.");
+            return true;
+        }
+
+        dragOffset = DragOffsetCalculator.CalculateOffset(
+            dragControl,
+            activeDockControl,
+            _context.DragStartPoint);
+        return true;
+    }
+
+    private void CompleteDragActivation(bool previewShown)
+    {
+        var owner = ResolveCurrentOwner();
+        if (!owner._context.PointerPressed)
+        {
+            if (previewShown)
+            {
+                _dragPreviewHelper.Hide();
+            }
+            return;
+        }
+
+        // When capture moved before a preview was shown, leave the transferred context
+        // below threshold so its next move can create the preview from an attached visual.
+        if (!ReferenceEquals(owner, this) && !previewShown)
+        {
+            return;
+        }
+
+        owner._context.DoDragDrop = true;
+        if (owner._activeDockControl is { } activeDockControl)
+        {
+            activeDockControl.IsDraggingDock = true;
+        }
+    }
+
+    private DockControlState ResolveCurrentOwner()
+    {
+        var owner = this;
+        while (owner._transferTarget is { } target && !ReferenceEquals(owner, target))
+        {
+            owner = target;
+        }
+
+        return owner;
+    }
+
+    internal bool HasActiveDrag => ResolveCurrentOwner()._context.PointerPressed;
+
+    internal bool TryTransferDragTo(
+        DockControlState target,
+        DockControl sourceDockControl,
+        DockControl targetDockControl)
+    {
+        var owner = ResolveCurrentOwner();
+        if (!ReferenceEquals(owner, this)
+            || !_context.PointerPressed
+            || ReferenceEquals(this, target)
+            || target._context.PointerPressed)
+        {
+            return false;
+        }
+
+        Leave();
+        DropControl = null;
+        _context.ClearResolvedOperation();
+
+        target._transferTarget = null;
+        target.DropControl = null;
+        target._context.End();
+        _context.CopyTo(target._context);
+        target._activeDockControl = targetDockControl;
+
+        _transferTarget = target;
+        _context.End();
+        _activeDockControl = null;
+        sourceDockControl.IsDraggingDock = false;
+        targetDockControl.IsDraggingDock = target._context.DoDragDrop;
+        LogDragState($"Transferred active drag to attached dock control '{targetDockControl.GetType().Name}'.");
+        return true;
     }
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
@@ -526,7 +668,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         break;
                     }
 
-                    _context.Start(dragControl, point);
+                    BeginDrag(dragControl, point, activeDockControl);
                     DropControl = null;
                     LogDragState($"Drag started from control '{dragControl.GetType().Name}' at {point}.");
                 }
@@ -578,7 +720,8 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                     if (!executed && _context.DragControl?.DataContext is IDockable dockable &&
                         CanFloatDockable(dockable) &&
-                        inputActiveDockControl.Layout?.Factory is { } factory)
+                        inputActiveDockControl.Layout?.Factory is { } factory &&
+                        inputActiveDockControl.GetVisualRoot() is not null)
                     {
                         Float(point, inputActiveDockControl, dockable, factory, _context.DragOffset);
                         LogDragState($"Drop fallback: floating dockable '{dockable.Title}'.");
@@ -615,18 +758,39 @@ internal class DockControlState : DockManagerState, IDockControlState
                         if (_context.DragControl?.DataContext is IDockable targetDockable)
                         {
                             targetDockable = DragDockableResolver.Resolve(targetDockable);
+                            var canShowPreview = TryGetPreviewPlacement(
+                                _context.DragControl,
+                                inputActiveDockControl,
+                                point,
+                                out var previewPoint,
+                                out var dragOffset);
+                            if (canShowPreview)
+                            {
+                                _context.DragOffset = dragOffset;
+                            }
+
                             DockHelpers.ShowWindows(targetDockable);
-                            var sp = inputActiveDockControl.PointToScreen(point);
-                            Size? preferredPreviewSize = GetPreferredPreviewSize(_context.DragControl);
+                            if (!_context.PointerPressed)
+                            {
+                                LogDragState("Drag activation handed off while showing related windows.");
+                                break;
+                            }
 
-                            _context.DragOffset = DragOffsetCalculator.CalculateOffset(
-                                _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
+                            var previewShown = false;
+                            if (canShowPreview && inputActiveDockControl.GetVisualRoot() is not null)
+                            {
+                                Size? preferredPreviewSize = GetPreferredPreviewSize(_context.DragControl);
+                                _dragPreviewHelper.Show(targetDockable, previewPoint, _context.DragOffset, inputActiveDockControl, preferredPreviewSize);
+                                previewShown = true;
+                                LogDragState($"Drag threshold reached for dockable '{targetDockable.Title}'. Showing preview.");
+                            }
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset, inputActiveDockControl, preferredPreviewSize);
-                            LogDragState($"Drag threshold reached for dockable '{targetDockable.Title}'. Showing preview.");
+                            CompleteDragActivation(previewShown);
                         }
-                        _context.DoDragDrop = true;
-                        activeDockControl.IsDraggingDock = true;
+                        else
+                        {
+                            CompleteDragActivation(previewShown: false);
+                        }
                         LogDragState("Drag operation activated.");
                     }
                     else
@@ -641,17 +805,17 @@ internal class DockControlState : DockManagerState, IDockControlState
                     Visual? targetDockControl = null;
                     Control? dropControl = null;
 
+                    if (inputActiveDockControl.GetVisualRoot() is null)
+                    {
+                        LogDragState("Move deferred: active dock control not attached to visual tree.");
+                        break;
+                    }
+
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                     var preview = "None";
 
                     foreach (var inputDockControl in DockHelpers.GetZOrderedDockControls(dockControls))
                     {
-                        if (inputActiveDockControl.GetVisualRoot() is null)
-                        {
-                            LogDragState("Skipping dock control search: active dock control not attached to visual tree.");
-                            continue;
-                        }
-
                         if (inputDockControl.GetVisualRoot() is null)
                         {
                             LogDragState($"Skipping dock control '{inputDockControl.GetType().Name}': not attached to visual tree.");

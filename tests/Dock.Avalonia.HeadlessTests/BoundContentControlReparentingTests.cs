@@ -59,45 +59,100 @@ public class BoundContentControlReparentingTests
     }
 
     [AvaloniaFact]
-    public void DockControl_ExplicitCustomRecyclingReplacesGeneratedFactoryFallback()
+    public void MovingDocumentToDockControlWithCustomRecyclingUsesOriginalFactoryCache()
     {
         var factory = new Factory();
+        var model = new BoundControlContext();
+        var buildCount = 0;
+        var document = new Document
+        {
+            Id = "Document",
+            Title = "Document",
+            Context = model,
+            Content = new Func<IServiceProvider, object>(_ =>
+            {
+                buildCount++;
+                return new BoundContentControlView();
+            })
+        };
+        var source = new DocumentDock
+        {
+            Id = "Source",
+            VisibleDockables = factory.CreateList<IDockable>(document),
+            ActiveDockable = document
+        };
         var firstRoot = new RootDock
         {
             Id = "FirstRoot",
             Factory = factory,
-            VisibleDockables = factory.CreateList<IDockable>()
+            VisibleDockables = factory.CreateList<IDockable>(source),
+            ActiveDockable = source,
+            DefaultDockable = source
         };
-        var secondRoot = new RootDock
+        var firstDockControl = new DockControl
         {
-            Id = "SecondRoot",
             Factory = factory,
-            VisibleDockables = factory.CreateList<IDockable>()
+            Layout = firstRoot,
+            InitializeFactory = true,
+            InitializeLayout = true
         };
-        var firstDockControl = new DockControl { Layout = firstRoot };
-        var secondDockControl = new DockControl { Layout = secondRoot };
-        var customRecycling = new CustomControlRecycling();
-        ControlRecyclingDataTemplate.SetControlRecycling(secondDockControl, customRecycling);
         var firstWindow = new Window { Content = firstDockControl };
-        var secondWindow = new Window { Content = secondDockControl };
+        Window? secondWindow = null;
 
         firstWindow.Show();
         try
         {
-            firstDockControl.ApplyTemplate();
-            var fallback = Assert.IsType<ControlRecycling>(
+            firstWindow.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            firstWindow.UpdateLayout();
+            var sharedRecycling = Assert.IsType<ControlRecycling>(
                 ControlRecyclingDataTemplate.GetControlRecycling(firstDockControl));
+            Assert.Equal(1, buildCount);
+            Assert.NotNull(model.SharedControl.GetVisualParent());
 
+            var target = new DocumentDock
+            {
+                Id = "Target",
+                VisibleDockables = factory.CreateList<IDockable>()
+            };
+            var secondRoot = new RootDock
+            {
+                Id = "SecondRoot",
+                Factory = factory,
+                VisibleDockables = factory.CreateList<IDockable>(target),
+                ActiveDockable = target,
+                DefaultDockable = target
+            };
+            var secondDockControl = new DockControl
+            {
+                Factory = factory,
+                Layout = secondRoot,
+                InitializeFactory = true,
+                InitializeLayout = true
+            };
+            var customRecycling = new CustomControlRecycling();
+            ControlRecyclingDataTemplate.SetControlRecycling(secondDockControl, customRecycling);
+            secondWindow = new Window { Content = secondDockControl };
             secondWindow.Show();
-            secondDockControl.ApplyTemplate();
+            secondWindow.UpdateLayout();
 
-            Assert.NotSame(fallback, customRecycling);
-            Assert.Same(customRecycling, ControlRecyclingDataTemplate.GetControlRecycling(firstDockControl));
-            Assert.Same(customRecycling, ControlRecyclingDataTemplate.GetControlRecycling(secondDockControl));
+            Assert.NotSame(customRecycling, sharedRecycling);
+            Assert.Same(sharedRecycling, ControlRecyclingDataTemplate.GetControlRecycling(secondDockControl));
+
+            factory.MoveDockable(source, target, document, null);
+            firstWindow.UpdateLayout();
+            secondWindow.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            firstWindow.UpdateLayout();
+            secondWindow.UpdateLayout();
+
+            Assert.Same(target, document.Owner);
+            Assert.NotNull(model.SharedControl.GetVisualParent());
+            Assert.Equal(1, buildCount);
         }
         finally
         {
-            secondWindow.Close();
+            secondWindow?.Close();
             firstWindow.Close();
         }
     }

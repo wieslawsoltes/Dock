@@ -23,13 +23,15 @@ internal sealed class DockControlFactoryService : IDockControlFactoryService
         }
 
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(control);
-        if (controlRecycling is null)
-        {
-            return;
-        }
 
         if (s_controlRecycling.TryGetValue(factory, out var shared))
         {
+            if (controlRecycling is null)
+            {
+                ControlRecyclingDataTemplate.SetControlRecycling(control, shared);
+                return;
+            }
+
             if (ReferenceEquals(shared, controlRecycling))
             {
                 return;
@@ -52,6 +54,12 @@ internal sealed class DockControlFactoryService : IDockControlFactoryService
             }
 
             return;
+        }
+
+        if (controlRecycling is null)
+        {
+            controlRecycling = new ControlRecycling();
+            ControlRecyclingDataTemplate.SetControlRecycling(control, controlRecycling);
         }
 
         if (controlRecycling is ControlRecycling defaultRecycling)

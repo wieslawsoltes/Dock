@@ -520,7 +520,10 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         layout.Factory.DockControls.Add(this);
 
-        _factoryService.InitializeControlRecycling(this);
+        if (_contentControl is not null)
+        {
+            _factoryService.InitializeControlRecycling(this);
+        }
         UpdateManagedWindowLayer(layout);
 
         if (InitializeFactory)

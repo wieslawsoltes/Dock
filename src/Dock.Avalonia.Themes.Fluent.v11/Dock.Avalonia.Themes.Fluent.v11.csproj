@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.Avalonia.Themes.Fluent</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.Avalonia.Themes.Fluent</DockSourceProjectDirectory>
+    <DockAvalonia11ResourceExcludes>$(DockSourceProjectDirectory)\Controls\DockAdornerWindow.axaml;$(DockSourceProjectDirectory)\Controls\DragPreviewWindow.axaml;$(DockSourceProjectDirectory)\Controls\HostWindow.axaml;$(DockSourceProjectDirectory)\Controls\HostWindowTitleBar.axaml;$(DockSourceProjectDirectory)\Controls\PinnedDockWindow.axaml;$(DockSourceProjectDirectory)\Controls\WindowDrawnDecorations.axaml</DockAvalonia11ResourceExcludes>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Avalonia.v11\Dock.Avalonia.v11.csproj" />
+  </ItemGroup>
+</Project>

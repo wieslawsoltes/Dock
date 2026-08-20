@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.Avalonia.Diagnostics</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.Avalonia.Diagnostics</DockSourceProjectDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Avalonia.v11\Dock.Avalonia.v11.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>False</IsPackable>
+    <IsTestProject>True</IsTestProject>
+    <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Headless.XUnit" VersionOverride="$(Avalonia11Version)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" VersionOverride="$(Avalonia11Version)" />
+    <PackageReference Include="xunit" VersionOverride="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\samples\DockReactiveUISample.v11\DockReactiveUISample.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.v11\Dock.Avalonia.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Diagnostics.v11\Dock.Avalonia.Diagnostics.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Browser.v11\Dock.Avalonia.Themes.Browser.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent.v11\Dock.Avalonia.Themes.Fluent.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Simple.v11\Dock.Avalonia.Themes.Simple.v11.csproj" />
+  </ItemGroup>
+</Project>

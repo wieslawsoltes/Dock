@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Dock.Model.ReactiveUI</AssemblyName>
+    <RootNamespace>Dock.Model.ReactiveUI</RootNamespace>
+    <PackageId>Dock.Model.ReactiveUI.v11</PackageId>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Nullable>enable</Nullable>
+    <DefineConstants>$(DefineConstants);REACTIVEUI_23</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\SourceLink.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+
+  <ItemGroup>
+    <Compile Include="..\Dock.Model.ReactiveUI\**\*.cs"
+             Exclude="..\Dock.Model.ReactiveUI\bin\**;..\Dock.Model.ReactiveUI\obj\**">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <PackageReference Include="ReactiveUI" VersionOverride="$(ReactiveUI23Version)" />
+    <PackageReference Include="System.Reactive" VersionOverride="$(SystemReactive6Version)" />
+    <PackageReference Include="ReactiveUI.SourceGenerators"
+                      VersionOverride="$(ReactiveUISourceGenerators2Version)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.Controls.Recycling</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.Controls.Recycling</DockSourceProjectDirectory>
+    <RootNamespace>Avalonia.Controls.Recycling</RootNamespace>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Controls.Recycling.Model\Dock.Controls.Recycling.Model.csproj" />
+  </ItemGroup>
+</Project>

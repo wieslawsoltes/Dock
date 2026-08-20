@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.Avalonia</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.Avalonia</DockSourceProjectDirectory>
+    <DockAvalonia11CompileExcludes>$(DockSourceProjectDirectory)\Internal\VisualRootCompatExtensions.cs</DockAvalonia11CompileExcludes>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Controls.DeferredContentControl.v11\Dock.Controls.DeferredContentControl.v11.csproj" />
+    <ProjectReference Include="..\Dock.Controls.ProportionalStackPanel.v11\Dock.Controls.ProportionalStackPanel.v11.csproj" />
+    <ProjectReference Include="..\Dock.Controls.Recycling.v11\Dock.Controls.Recycling.v11.csproj" />
+    <ProjectReference Include="..\Dock.MarkupExtension.v11\Dock.MarkupExtension.v11.csproj" />
+    <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\Dock.Settings.v11\Dock.Settings.v11.csproj" />
+  </ItemGroup>
+</Project>

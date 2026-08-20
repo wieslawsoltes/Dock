@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>DockReactiveUISample</AssemblyName>
+    <RootNamespace>DockReactiveUISample</RootNamespace>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <IsPackable>False</IsPackable>
+    <Nullable>enable</Nullable>
+    <AvaloniaNameGeneratorBehavior>InitializeComponent</AvaloniaNameGeneratorBehavior>
+    <DockEnableGeneratedAppInitializeComponent>true</DockEnableGeneratedAppInitializeComponent>
+    <DefineConstants>$(DefineConstants);AVALONIA_11</DefineConstants>
+    <PublishAot>true</PublishAot>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" VersionOverride="$(Avalonia11Version)" />
+    <PackageReference Include="Avalonia.Desktop" VersionOverride="$(Avalonia11Version)" />
+    <PackageReference Include="Avalonia.Fonts.Inter" VersionOverride="$(Avalonia11Version)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" VersionOverride="$(Avalonia11Version)" />
+    <PackageReference Include="ReactiveUI.Avalonia" VersionOverride="$(ReactiveUIAvalonia11Version)" />
+    <PackageReference Include="ReactiveUI" VersionOverride="$(ReactiveUI23Version)" />
+    <PackageReference Include="System.Reactive" VersionOverride="$(SystemReactive6Version)" />
+    <PackageReference Include="StaticViewLocator">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\DockReactiveUISample\**\*.cs"
+             Exclude="..\DockReactiveUISample\bin\**;..\DockReactiveUISample\obj\**">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <AvaloniaXaml Include="..\DockReactiveUISample\**\*.axaml"
+                  Exclude="..\DockReactiveUISample\bin\**;..\DockReactiveUISample\obj\**;..\DockReactiveUISample\Views\MainView.axaml">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AvaloniaXaml>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.v11\Dock.Model.ReactiveUI.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.v11\Dock.Avalonia.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Diagnostics.v11\Dock.Avalonia.Diagnostics.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent.v11\Dock.Avalonia.Themes.Fluent.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer.Newtonsoft\Dock.Serializer.Newtonsoft.csproj" />
+  </ItemGroup>
+</Project>

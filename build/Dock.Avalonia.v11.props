@@ -1,0 +1,35 @@
+<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Nullable>enable</Nullable>
+    <AssemblyName>$(DockSourceProjectName)</AssemblyName>
+    <RootNamespace Condition="'$(RootNamespace)' == ''">$(DockSourceProjectName)</RootNamespace>
+    <PackageId>$(DockSourceProjectName).v11</PackageId>
+    <DefineConstants>$(DefineConstants);AVALONIA_11</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="SignAssembly.props" />
+  <Import Project="SourceLink.props" />
+  <Import Project="ReferenceAssemblies.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" VersionOverride="$(Avalonia11Version)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(DockSourceProjectDirectory)\**\*.cs"
+             Exclude="$(DockSourceProjectDirectory)\bin\**;$(DockSourceProjectDirectory)\obj\**;$(DockAvalonia11CompileExcludes)">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <AvaloniaXaml Include="$(DockSourceProjectDirectory)\**\*.axaml"
+                  Exclude="$(DockSourceProjectDirectory)\bin\**;$(DockSourceProjectDirectory)\obj\**;$(DockAvalonia11ResourceExcludes)">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AvaloniaXaml>
+    <AvaloniaResource Include="$(DockSourceProjectDirectory)\Assets\*"
+                      Condition="Exists('$(DockSourceProjectDirectory)\Assets')">
+      <Link>Assets\%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+  </ItemGroup>
+</Project>

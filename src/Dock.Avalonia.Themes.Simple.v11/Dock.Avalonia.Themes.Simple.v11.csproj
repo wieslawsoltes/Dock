@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.Avalonia.Themes.Simple</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.Avalonia.Themes.Simple</DockSourceProjectDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+  <ItemGroup>
+    <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Controls\**\*.axaml"
+                      Exclude="..\Dock.Avalonia.Themes.Fluent\Controls\DockAdornerWindow.axaml;..\Dock.Avalonia.Themes.Fluent\Controls\DragPreviewWindow.axaml;..\Dock.Avalonia.Themes.Fluent\Controls\HostWindow.axaml;..\Dock.Avalonia.Themes.Fluent\Controls\HostWindowTitleBar.axaml;..\Dock.Avalonia.Themes.Fluent\Controls\PinnedDockWindow.axaml;..\Dock.Avalonia.Themes.Fluent\Controls\WindowDrawnDecorations.axaml">
+      <Link>Controls\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+    <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent.v11\Controls\**\*.axaml">
+      <Link>Controls\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+    <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Assets\*">
+      <Link>Assets\%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+    <ProjectReference Include="..\Dock.Avalonia.v11\Dock.Avalonia.v11.csproj" />
+  </ItemGroup>
+</Project>

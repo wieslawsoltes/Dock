@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using System.Reactive;
-#if !DOCK_REACTIVEUI_REACTIVE
+#if !DOCK_REACTIVEUI_REACTIVE && !REACTIVEUI_23
 using Unit = ReactiveUI.Primitives.RxVoid;
 #endif
 using System.Runtime.Serialization;

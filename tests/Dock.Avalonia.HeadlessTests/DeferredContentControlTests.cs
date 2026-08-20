@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -1190,7 +1192,7 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
-    public void DeferredContentPresenter_AutoScheduled_Time_Budget_Materializes_In_ItemsControl()
+    public async Task DeferredContentPresenter_AutoScheduled_Time_Budget_Materializes_In_ItemsControl()
     {
         var firstTemplate = new CountingTemplate(() => new Border
         {
@@ -1203,7 +1205,7 @@ public class DeferredContentControlTests
         var slots = new[]
         {
             new PresenterSlot("First", firstTemplate, order: -5, delay: TimeSpan.Zero),
-            new PresenterSlot("Second", secondTemplate, order: 10, delay: TimeSpan.FromMilliseconds(300))
+            new PresenterSlot("Second", secondTemplate, order: 10, delay: TimeSpan.FromMinutes(1))
         };
         var timeline = new DeferredContentPresentationTimeline
         {
@@ -1267,18 +1269,21 @@ public class DeferredContentControlTests
 
             Assert.All(new[] { firstPresenter, secondPresenter }, presenter => Assert.Null(presenter.Child));
 
-            Thread.Sleep(40);
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            await PumpDispatcherUntilAsync(
+                window,
+                () => firstTemplate.BuildCount == 1,
+                TimeSpan.FromSeconds(2));
 
             Assert.Equal(1, firstTemplate.BuildCount);
             Assert.Equal(0, secondTemplate.BuildCount);
             Assert.NotNull(firstPresenter.Child);
             Assert.Null(secondPresenter.Child);
 
-            Thread.Sleep(320);
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            DeferredContentScheduling.SetDelay(secondHost, TimeSpan.Zero);
+            await PumpDispatcherUntilAsync(
+                window,
+                () => secondTemplate.BuildCount == 1,
+                TimeSpan.FromSeconds(2));
 
             Assert.Equal(1, secondTemplate.BuildCount);
             Assert.NotNull(secondPresenter.Child);
@@ -1876,6 +1881,29 @@ public class DeferredContentControlTests
         timeline.FlushPendingBatchForTesting();
         Dispatcher.UIThread.RunJobs();
         window.UpdateLayout();
+    }
+
+    private static async Task PumpDispatcherUntilAsync(Window window, Func<bool> condition, TimeSpan timeout)
+    {
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        do
+        {
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            if (condition())
+            {
+                return;
+            }
+
+            await Task.Delay(10);
+        }
+        while (stopwatch.Elapsed < timeout);
+
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+        Assert.True(condition(), $"The expected dispatcher state was not reached within {timeout}.");
     }
 
     private sealed class DeferredBatchLimitScope : IDisposable

@@ -101,6 +101,24 @@ Install-Package Dock.Controls.DeferredContentControl
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Serializer.Yaml.svg)](https://www.nuget.org/packages/Dock.Serializer.Yaml) | [`Dock.Serializer.Yaml`](https://www.nuget.org/packages/Dock.Serializer.Yaml) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Serializer.Yaml.svg)](https://www.nuget.org/packages/Dock.Serializer.Yaml) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Settings.svg)](https://www.nuget.org/packages/Dock.Settings) | [`Dock.Settings`](https://www.nuget.org/packages/Dock.Settings) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Settings.svg)](https://www.nuget.org/packages/Dock.Settings) |
 
+### Avalonia 11 packages
+
+Applications that remain on Avalonia 11 should use the `.v11` package lane. These packages are source-linked from the current Dock implementation, target Avalonia 11.3.20, and must not be mixed with the unsuffixed Avalonia 12 Dock packages.
+
+```powershell
+Install-Package Dock.Avalonia.v11
+Install-Package Dock.Avalonia.Diagnostics.v11
+Install-Package Dock.Avalonia.Themes.Fluent.v11
+Install-Package Dock.Avalonia.Themes.Browser.v11
+Install-Package Dock.Avalonia.Themes.Simple.v11
+```
+
+The Avalonia 11 ReactiveUI sample can be built with:
+
+```bash
+dotnet build samples/DockReactiveUISample.v11/DockReactiveUISample.v11.csproj -c Release
+```
+
 ## Nightly Packages
 
 Nightly builds are published to GitHub Packages on pushes to `master`. Versions use the `nightly.YYYYMMDD.RUN` suffix.

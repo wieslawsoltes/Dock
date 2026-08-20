@@ -7,8 +7,14 @@ using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+#if AVALONIA_11
+using Avalonia.Controls.Primitives;
+#endif
 using Avalonia.Input;
 using Avalonia.Interactivity;
+#if AVALONIA_11
+using Avalonia.VisualTree;
+#endif
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Internal;
 using Dock.Model;
@@ -22,10 +28,16 @@ namespace Dock.Avalonia.Controls;
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
 [PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow")]
+#if AVALONIA_11
+[TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
+#endif
 public class HostWindow : Window, IHostWindow
 {
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
+#if AVALONIA_11
+    private HostWindowTitleBar? _hostWindowTitleBar;
+#endif
     private bool _mouseDown, _draggingWindow;
     private double _normalX = double.NaN;
     private double _normalY = double.NaN;
@@ -123,6 +135,28 @@ public class HostWindow : Window, IHostWindow
     {
         return new HostWindowAutomationPeer(this);
     }
+
+#if AVALONIA_11
+    /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        _hostWindowTitleBar = e.NameScope.Find<HostWindowTitleBar>("PART_TitleBar");
+        if (_hostWindowTitleBar is { })
+        {
+            _hostWindowTitleBar.ApplyTemplate();
+
+            if (_hostWindowTitleBar.BackgroundControl is { })
+            {
+                _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
+                {
+                    MoveDrag(args);
+                };
+            }
+        }
+    }
+#endif
 
     private PixelPoint ClientPointToScreenRelativeToWindow(Point clientPoint)
     {

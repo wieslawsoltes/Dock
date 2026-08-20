@@ -31,6 +31,7 @@
     <File Path="build/Avalonia.Diagnostics.props" />
     <File Path="build/Avalonia.Headless.props" />
     <File Path="build/Avalonia.props" />
+    <File Path="build/Dock.Avalonia.v11.props" />
     <File Path="build/Avalonia.Themes.Fluent.props" />
     <File Path="build/Avalonia.Themes.Simple.props" />
     <File Path="build/Avalonia.Web.props" />
@@ -64,6 +65,7 @@
     <Project Path="samples/DockReactiveUIDiSample/DockReactiveUIDiSample.csproj" />
     <Project Path="samples/DockReactiveUIRoutingSample/DockReactiveUIRoutingSample.csproj" />
     <Project Path="samples/DockReactiveUISample/DockReactiveUISample.csproj" />
+    <Project Path="samples/DockReactiveUISample.v11/DockReactiveUISample.v11.csproj" />
     <Project Path="samples/DockReactiveUIRiderSample/DockReactiveUIRiderSample.csproj" />
     <Project Path="samples/DockReactiveUIManagedSample/DockReactiveUIManagedSample.csproj" />
     <Project Path="samples/DockXamlReactiveUISample/DockXamlReactiveUISample.csproj" />
@@ -80,15 +82,24 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Dock.Avalonia.Diagnostics/Dock.Avalonia.Diagnostics.csproj" />
+    <Project Path="src/Dock.Avalonia.Diagnostics.v11/Dock.Avalonia.Diagnostics.v11.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Browser/Dock.Avalonia.Themes.Browser.csproj" />
+    <Project Path="src/Dock.Avalonia.Themes.Browser.v11/Dock.Avalonia.Themes.Browser.v11.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Fluent/Dock.Avalonia.Themes.Fluent.csproj" />
+    <Project Path="src/Dock.Avalonia.Themes.Fluent.v11/Dock.Avalonia.Themes.Fluent.v11.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Simple/Dock.Avalonia.Themes.Simple.csproj" />
+    <Project Path="src/Dock.Avalonia.Themes.Simple.v11/Dock.Avalonia.Themes.Simple.v11.csproj" />
     <Project Path="src/Dock.Avalonia/Dock.Avalonia.csproj" />
+    <Project Path="src/Dock.Avalonia.v11/Dock.Avalonia.v11.csproj" />
     <Project Path="src/Dock.Controls.DeferredContentControl/Dock.Controls.DeferredContentControl.csproj" />
+    <Project Path="src/Dock.Controls.DeferredContentControl.v11/Dock.Controls.DeferredContentControl.v11.csproj" />
     <Project Path="src/Dock.Controls.ProportionalStackPanel/Dock.Controls.ProportionalStackPanel.csproj" />
+    <Project Path="src/Dock.Controls.ProportionalStackPanel.v11/Dock.Controls.ProportionalStackPanel.v11.csproj" />
     <Project Path="src/Dock.Controls.Recycling.Model/Dock.Controls.Recycling.Model.csproj" />
     <Project Path="src/Dock.Controls.Recycling/Dock.Controls.Recycling.csproj" />
+    <Project Path="src/Dock.Controls.Recycling.v11/Dock.Controls.Recycling.v11.csproj" />
     <Project Path="src/Dock.MarkupExtension/Dock.MarkupExtension.csproj" />
+    <Project Path="src/Dock.MarkupExtension.v11/Dock.MarkupExtension.v11.csproj" />
     <Project Path="src/Dock.Model.Avalonia/Dock.Model.Avalonia.csproj" />
     <Project Path="src/Dock.Model.CaliburMicro/Dock.Model.CaliburMicro.csproj" />
     <Project Path="src/Dock.Model.Inpc/Dock.Model.Inpc.csproj" />
@@ -96,6 +107,7 @@
     <Project Path="src/Dock.Model.Prism/Dock.Model.Prism.csproj" />
     <Project Path="src/Dock.Model.ReactiveProperty/Dock.Model.ReactiveProperty.csproj" />
     <Project Path="src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj" />
+    <Project Path="src/Dock.Model.ReactiveUI.v11/Dock.Model.ReactiveUI.v11.csproj" />
     <Project Path="src/Dock.Model.ReactiveUI.Services/Dock.Model.ReactiveUI.Services.csproj" />
     <Project Path="src/Dock.Model.ReactiveUI.Services.Avalonia/Dock.Model.ReactiveUI.Services.Avalonia.csproj" />
     <Project Path="src/Dock.Model.ReactiveUI.Reactive/Dock.Model.ReactiveUI.Reactive.csproj" />
@@ -109,8 +121,10 @@
     <Project Path="src/Dock.Serializer.Xml/Dock.Serializer.Xml.csproj" />
     <Project Path="src/Dock.Serializer.Yaml/Dock.Serializer.Yaml.csproj" />
     <Project Path="src/Dock.Settings/Dock.Settings.csproj" />
+    <Project Path="src/Dock.Settings.v11/Dock.Settings.v11.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Dock.Avalonia.v11.HeadlessTests/Dock.Avalonia.v11.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Avalonia.Diagnostics.UnitTests/Dock.Avalonia.Diagnostics.UnitTests.csproj" />
     <Project Path="tests/Dock.Avalonia.LeakTests/Dock.Avalonia.LeakTests.csproj" />
     <Project Path="tests/Dock.Avalonia.HeadlessTests/Dock.Avalonia.HeadlessTests.csproj" />

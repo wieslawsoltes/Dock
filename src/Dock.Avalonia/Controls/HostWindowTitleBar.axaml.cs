@@ -5,6 +5,9 @@ using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
+#if AVALONIA_11
+using Avalonia.Controls.Chrome;
+#endif
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
 using Dock.Avalonia.Automation.Peers;
@@ -15,7 +18,12 @@ namespace Dock.Avalonia.Controls;
 /// Interaction logic for <see cref="HostWindowTitleBar"/> xaml.
 /// </summary>
 [TemplatePart("PART_Background", typeof(Control))]
-public class HostWindowTitleBar : TemplatedControl
+public class HostWindowTitleBar :
+#if AVALONIA_11
+    TitleBar
+#else
+    TemplatedControl
+#endif
 {
     internal Control? BackgroundControl { get; private set; }
 

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.Avalonia.Themes.Browser</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.Avalonia.Themes.Browser</DockSourceProjectDirectory>
+    <DockAvalonia11ResourceExcludes>$(DockSourceProjectDirectory)\Styles\Controls\HostWindow.axaml</DockAvalonia11ResourceExcludes>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Avalonia.v11\Dock.Avalonia.v11.csproj" />
+    <ProjectReference Include="..\Dock.Avalonia.Themes.Fluent.v11\Dock.Avalonia.Themes.Fluent.v11.csproj" />
+  </ItemGroup>
+</Project>

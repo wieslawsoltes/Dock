@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.MarkupExtension</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.MarkupExtension</DockSourceProjectDirectory>
+    <RootNamespace>Avalonia.MarkupExtension</RootNamespace>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+</Project>

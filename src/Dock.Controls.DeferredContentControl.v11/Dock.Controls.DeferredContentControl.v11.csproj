@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DockSourceProjectName>Dock.Controls.DeferredContentControl</DockSourceProjectName>
+    <DockSourceProjectDirectory>..\Dock.Controls.DeferredContentControl</DockSourceProjectDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\build\Dock.Avalonia.v11.props" />
+</Project>

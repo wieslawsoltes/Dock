@@ -4,7 +4,11 @@ using System.Windows.Input;
 using DockReactiveUISample.Models;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+#if AVALONIA_11
+using ReactiveUI;
+#else
 using ReactiveUI.Reactive;
+#endif
 
 namespace DockReactiveUISample.ViewModels;
 

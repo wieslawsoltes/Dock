@@ -3,7 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 //using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Core;
+#if AVALONIA_11
+using ReactiveUI;
+#else
 using ReactiveUI.Reactive;
+#endif
 using StaticViewLocator;
 
 namespace DockReactiveUISample;

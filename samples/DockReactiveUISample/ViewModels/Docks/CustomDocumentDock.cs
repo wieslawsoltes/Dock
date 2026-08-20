@@ -1,7 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using DockReactiveUISample.ViewModels.Documents;
 using Dock.Model.ReactiveUI.Controls;
+#if AVALONIA_11
+using ReactiveUI;
+#else
 using ReactiveUI.Reactive;
+#endif
 
 namespace DockReactiveUISample.ViewModels.Docks;
 

@@ -1,7 +1,11 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
+#if AVALONIA_11
+using ReactiveUI.Avalonia;
+#else
 using ReactiveUI.Avalonia.Reactive;
+#endif
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Dock.Settings;

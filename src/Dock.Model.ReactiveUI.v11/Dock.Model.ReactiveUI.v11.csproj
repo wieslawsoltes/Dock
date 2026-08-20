@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
+    <VersionPrefix>$(DockV11VersionPrefix)</VersionPrefix>
     <AssemblyName>Dock.Model.ReactiveUI</AssemblyName>
     <RootNamespace>Dock.Model.ReactiveUI</RootNamespace>
     <PackageId>Dock.Model.ReactiveUI.v11</PackageId>

@@ -122,7 +122,7 @@ public partial interface IFactory
     IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
 
     /// <summary>
-    /// Creates list of type <see cref="IList{T}"/>.
+    /// Creates an observable list of type <see cref="IList{T}"/>.
     /// </summary>
     /// <typeparam name="T">The list item type.</typeparam>
     /// <param name="items">The initial list items.</param>

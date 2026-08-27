@@ -18,6 +18,19 @@ public class WindowStateGlobalTargetResolutionTests
 {
     private static readonly IGlobalDockingService GlobalDockingService = new GlobalDockingService();
 
+    private sealed class TestDockManagerState : DockManagerState
+    {
+        public TestDockManagerState(IDockManager dockManager)
+            : base(dockManager)
+        {
+        }
+
+        public bool ValidateResolvedGlobalTarget(IDockable sourceDockable, IDockable targetDockable)
+        {
+            return ValidateGlobalTarget(sourceDockable, targetDockable);
+        }
+    }
+
     private static (Factory factory, RootDock root, Document sourceDocument, Document targetDocument) CreateScenario()
     {
         var factory = new Factory();
@@ -100,6 +113,41 @@ public class WindowStateGlobalTargetResolutionTests
             new object[] { new Point(20, 20), DockOperation.Fill, DragAction.Move, relativeTo });
 
         return Assert.IsType<bool>(result);
+    }
+
+    [Fact]
+    public void ValidateGlobalTarget_AllowsFreshFloatingToolDockFallback()
+    {
+        var factory = new Factory();
+        var sourceDock = new ToolDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        var sourceTool = new Tool
+        {
+            Id = "SourceTool",
+            Title = "SourceTool"
+        };
+        factory.AddDockable(sourceDock, sourceTool);
+
+        var targetDock = new ToolDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        var targetTool = new Tool
+        {
+            Id = "TargetTool",
+            Title = "TargetTool"
+        };
+        factory.AddDockable(targetDock, targetTool);
+
+        var dropControl = new Border { DataContext = targetTool };
+        var resolvedTarget = GlobalDockingService.ResolveGlobalTargetDock(dropControl);
+        var state = new TestDockManagerState(new DockManager(new DockService()));
+
+        Assert.Same(targetDock, resolvedTarget);
+        Assert.IsNotAssignableFrom<IGlobalTarget>(resolvedTarget);
+        Assert.True(state.ValidateResolvedGlobalTarget(sourceTool, resolvedTarget!));
     }
 
     [AvaloniaFact]

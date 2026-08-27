@@ -18,10 +18,15 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class LastDockableRemovalTests
 {
-    [AvaloniaFact]
-    public void CloseDockable_Removing_Last_Item_From_Plain_Child_List_Does_Not_Throw()
+    private sealed class PlainListFactory : Factory
     {
-        var factory = new Factory();
+        public override IList<T> CreateList<T>(params T[] items) => new List<T>(items);
+    }
+
+    [AvaloniaFact]
+    public void CloseDockable_With_Plain_Factory_Lists_Does_Not_Throw()
+    {
+        var factory = new PlainListFactory();
         var leftDocument = new Document { Id = "left-document", Title = "Left" };
         var middleDocument = new Document { Id = "middle-document", Title = "Middle" };
         var rightDocument = new Document { Id = "right-document", Title = "Right" };
@@ -51,7 +56,8 @@ public class LastDockableRemovalTests
 
         Assert.NotSame(originalMiddleDockables, middleDock.VisibleDockables);
         Assert.IsAssignableFrom<INotifyCollectionChanged>(middleDock.VisibleDockables);
-        Assert.Same(originalMainDockables, mainDock.VisibleDockables);
+        Assert.NotSame(originalMainDockables, mainDock.VisibleDockables);
+        Assert.IsAssignableFrom<INotifyCollectionChanged>(mainDock.VisibleDockables);
 
         var dockControl = new DockControl { Factory = factory, Layout = rootDock };
         var window = new Window { Width = 800, Height = 600, Content = dockControl };
@@ -76,6 +82,21 @@ public class LastDockableRemovalTests
         {
             window.Close();
         }
+    }
+
+    [AvaloniaFact]
+    public void InitLayout_Preserves_Observable_VisibleDockables()
+    {
+        var factory = new Factory();
+        var documentDock = new DocumentDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        var originalDockables = documentDock.VisibleDockables;
+
+        factory.InitLayout(documentDock);
+
+        Assert.Same(originalDockables, documentDock.VisibleDockables);
     }
 
     private static DocumentDock CreateDocumentDock(string id, Document document)

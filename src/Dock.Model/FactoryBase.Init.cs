@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -190,6 +191,11 @@ public abstract partial class FactoryBase
         }
 
         var observableItems = CreateList<T>();
+        if (observableItems is not INotifyCollectionChanged)
+        {
+            observableItems = new ObservableCollection<T>();
+        }
+
         foreach (var item in items)
         {
             observableItems.Add(item);

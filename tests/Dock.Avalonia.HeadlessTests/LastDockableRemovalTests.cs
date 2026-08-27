@@ -99,6 +99,22 @@ public class LastDockableRemovalTests
         Assert.Same(originalDockables, documentDock.VisibleDockables);
     }
 
+    [AvaloniaFact]
+    public void InitLayout_Creates_Observable_VisibleDockables_When_Null()
+    {
+        var factory = new PlainListFactory();
+        var documentDock = new DocumentDock
+        {
+            VisibleDockables = null
+        };
+
+        factory.InitLayout(documentDock);
+
+        Assert.NotNull(documentDock.VisibleDockables);
+        Assert.IsAssignableFrom<INotifyCollectionChanged>(documentDock.VisibleDockables);
+        Assert.Empty(documentDock.VisibleDockables);
+    }
+
     private static DocumentDock CreateDocumentDock(string id, Document document)
     {
         return new DocumentDock

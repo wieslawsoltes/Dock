@@ -75,14 +75,12 @@ public abstract partial class FactoryBase
 
         if (dockable is IDock dock)
         {
-            if (dock.VisibleDockables is not null)
-            {
-                // Item controls cache collection state and require change notifications when
-                // FactoryBase mutates a live layout. Normalize user-created layout lists before
-                // they are attached to the UI.
-                dock.VisibleDockables = EnsureObservableList(dock.VisibleDockables);
-                InitDockables(dockable, dock.VisibleDockables);
-            }
+            // Item controls cache collection state and require change notifications when
+            // FactoryBase mutates a live layout. Normalize user-created layout lists before
+            // they are attached to the UI.
+            var visibleDockables = EnsureObservableList(dock.VisibleDockables);
+            dock.VisibleDockables = visibleDockables;
+            InitDockables(dockable, visibleDockables);
 
             UpdateIsEmpty(dock);
         }
@@ -183,7 +181,7 @@ public abstract partial class FactoryBase
         }
     }
 
-    private IList<T> EnsureObservableList<T>(IList<T> items)
+    private IList<T> EnsureObservableList<T>(IList<T>? items)
     {
         if (items is INotifyCollectionChanged)
         {
@@ -194,6 +192,11 @@ public abstract partial class FactoryBase
         if (observableItems is not INotifyCollectionChanged)
         {
             observableItems = new ObservableCollection<T>();
+        }
+
+        if (items is null)
+        {
+            return observableItems;
         }
 
         foreach (var item in items)

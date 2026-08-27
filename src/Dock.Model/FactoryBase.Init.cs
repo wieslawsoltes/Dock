@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -75,6 +76,10 @@ public abstract partial class FactoryBase
         {
             if (dock.VisibleDockables is not null)
             {
+                // Item controls cache collection state and require change notifications when
+                // FactoryBase mutates a live layout. Normalize user-created layout lists before
+                // they are attached to the UI.
+                dock.VisibleDockables = EnsureObservableList(dock.VisibleDockables);
                 InitDockables(dockable, dock.VisibleDockables);
             }
 
@@ -175,6 +180,22 @@ public abstract partial class FactoryBase
         {
             InitDockable(child, dockable);
         }
+    }
+
+    private IList<T> EnsureObservableList<T>(IList<T> items)
+    {
+        if (items is INotifyCollectionChanged)
+        {
+            return items;
+        }
+
+        var observableItems = CreateList<T>();
+        foreach (var item in items)
+        {
+            observableItems.Add(item);
+        }
+
+        return observableItems;
     }
 
     private void InitSplitViewDockables(ISplitViewDock splitViewDock)

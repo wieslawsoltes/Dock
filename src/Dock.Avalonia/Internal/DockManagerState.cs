@@ -322,16 +322,9 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected bool ValidateGlobalTarget(IDockable sourceDockable, IDockable targetDockable)
     {
-        // Validate both interface and docking groups
-        if (targetDockable is not IGlobalTarget)
-        {
-            LogDropRejection(
-                nameof(ValidateGlobalTarget),
-                $"Target '{targetDockable.Title}' does not implement {nameof(IGlobalTarget)}.");
-            return false;
-        }
-
-        // For global targets, use special validation that allows non-grouped dockables
+        // Global target resolution intentionally falls back to the nearest dock when a
+        // layout has no explicit IGlobalTarget (for example, a freshly floated ToolDock).
+        // Apply the global docking rules to that resolved dock as well.
         if (targetDockable is IDock targetDock)
         {
             var isValid = DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock);
@@ -345,7 +338,15 @@ internal abstract class DockManagerState : IDockManagerState
             return isValid;
         }
 
-        // Fallback to standard validation for non-dock targets
+        if (targetDockable is not IGlobalTarget)
+        {
+            LogDropRejection(
+                nameof(ValidateGlobalTarget),
+                $"Target '{targetDockable.Title}' does not implement {nameof(IGlobalTarget)}.");
+            return false;
+        }
+
+        // Fallback to standard validation for non-dock global targets.
         var defaultValid = DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable);
         if (!defaultValid)
         {

@@ -1,6 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>12.1.0.4</VersionPrefix>
+    <VersionPrefix>12.1.0.5</VersionPrefix>
     <DockV11VersionPrefix>11.3.20</DockV11VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>

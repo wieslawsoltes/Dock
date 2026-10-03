@@ -125,7 +125,7 @@ public class ProportionalStackPanel : Panel
 
             if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
             {
-                SetCollapsedProportion(sender, value);
+                sender.SetCurrentValue(CollapsedProportionProperty, value);
             }
 
             parent.InvalidateMeasure();

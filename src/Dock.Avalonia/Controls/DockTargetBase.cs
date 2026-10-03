@@ -74,7 +74,18 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         SetAndRaise(PreviewHeightProperty, ref _previewHeight, rect.Height);
         PseudoClasses.Set(":preview", bounds.HasValue);
         // A collapsed source may move the projected pane beyond the old target.
-        AdornerLayer.SetIsClipEnabled(this, !bounds.HasValue);
+        var clipEnabled = !bounds.HasValue;
+        if (AdornerLayer.GetIsClipEnabled(this) != clipEnabled)
+        {
+            AdornerLayer.SetIsClipEnabled(this, clipEnabled);
+            // Avalonia 11.3 updates the compositor's clip flag when the adorned element changes.
+            // Changing IsClipEnabled alone only invalidates the ordinary layout clip.
+            if (AdornerLayer.GetAdornedElement(this) is { } adorned)
+            {
+                AdornerLayer.SetAdornedElement(this, null);
+                AdornerLayer.SetAdornedElement(this, adorned);
+            }
+        }
     }
 
     private static readonly string[] s_indicators =

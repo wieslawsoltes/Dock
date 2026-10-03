@@ -288,25 +288,13 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             using var frame = window.CaptureRenderedFrame()!;
             Assert.NotNull(frame);
-            var pixelSize = frame.PixelSize;
-            var pixels = new byte[pixelSize.Width * pixelSize.Height * 4];
-            var pinned = GCHandle.Alloc(pixels, GCHandleType.Pinned);
-            try { frame.CopyPixels(new PixelRect(pixelSize), pinned.AddrOfPinnedObject(), pixels.Length, pixelSize.Width * 4); }
-            finally { pinned.Free(); }
-            var minX = pixelSize.Width; var minY = pixelSize.Height; var maxX = -1; var maxY = -1;
-            for (var y = 0; y < pixelSize.Height; y++)
-                for (var x = 0; x < pixelSize.Width; x++)
-                {
-                    var offset = (y * pixelSize.Width + x) * 4;
-                    if (pixels[offset] == color.R && pixels[offset + 1] == color.G && pixels[offset + 2] == color.B && pixels[offset + 3] == color.A)
-                    { minX = Math.Min(minX, x); minY = Math.Min(minY, y); maxX = Math.Max(maxX, x); maxY = Math.Max(maxY, y); }
-                }
+            var rendered = RenderedColorBounds(frame, color);
             var expectedOrigin = control.TranslatePoint(expected.Position, window)!.Value;
-            Assert.Equal(expectedOrigin.X, minX, 0);
-            Assert.Equal(expectedOrigin.Y, minY, 0);
+            Assert.Equal(expectedOrigin.X, rendered.X, 0);
+            Assert.Equal(expectedOrigin.Y, rendered.Y, 0);
             // Rasterization can antialias the final fractional edge by one pixel.
-            Assert.InRange(maxX - minX + 1 - expected.Width, -1, 1);
-            Assert.InRange(maxY - minY + 1 - expected.Height, -1, 1);
+            Assert.InRange(rendered.Width - expected.Width, -1, 1);
+            Assert.InRange(rendered.Height - expected.Height, -1, 1);
             Assert.False(global::Avalonia.Controls.Primitives.AdornerLayer.GetIsClipEnabled(target));
             ((IDockTarget)target).Reset();
             Assert.True(global::Avalonia.Controls.Primitives.AdornerLayer.GetIsClipEnabled(target));
@@ -331,6 +319,136 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
         Assert.True(GlobalDockingService.Instance.TryApplyGlobalDockingProportion(source, null, root, 0.33));
         AssertBounds(expected, Measure(root)[source.Owner!]);
     }
+
+
+    [AvaloniaTheory]
+    [InlineData(true, false, DockOperation.Left)]
+    [InlineData(true, false, DockOperation.Right)]
+    [InlineData(true, false, DockOperation.Top)]
+    [InlineData(true, false, DockOperation.Bottom)]
+    [InlineData(false, false, DockOperation.Left)]
+    [InlineData(false, false, DockOperation.Right)]
+    [InlineData(false, false, DockOperation.Top)]
+    [InlineData(false, false, DockOperation.Bottom)]
+    [InlineData(false, true, DockOperation.Right)]
+    public void Rendered_release_matches_preview_after_first_frame(bool global, bool resize, DockOperation operation)
+    {
+        var (factory, root, panes) = CreateLayout(0.4, 0.3, 0.3);
+        for (var i = 0; i < panes.Length; i++) panes[i].ActiveDockable!.Title = "Widget " + (char)('A' + i);
+        var source = panes[0].ActiveDockable!;
+        if (global)
+        {
+            var catalog = factory.CreateWrapDock();
+            catalog.IsCollapsable = false;
+            source = factory.CreateTool();
+            source.Title = "New widget from palette";
+            catalog.VisibleDockables = factory.CreateList<IDockable>(source);
+            factory.InitLayout(catalog);
+            Assert.Null(factory.FindRoot(source, _ => true));
+        }
+        var control = new DockControl { Layout = root, Margin = new Thickness(73, 84, 0, 0) };
+        var window = new Window { Width = 1073, Height = 684, Content = control, Background = Brushes.DimGray };
+        var prior = Dock.Settings.DockSettings.GlobalDockingProportion;
+        var directory = System.Environment.GetEnvironmentVariable("DOCK_PROOF_DIRECTORY");
+        var name = (global ? "palette-global-" : resize ? "resized-local-" : "collapse-local-") + operation.ToString().ToLowerInvariant();
+        if (directory is not null) System.IO.Directory.CreateDirectory(directory);
+        try
+        {
+            Dock.Settings.DockSettings.GlobalDockingProportion = 0.33;
+            window.Show();
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            using var initial = window.CaptureRenderedFrame()!;
+            if (directory is not null) initial.Save(System.IO.Path.Combine(directory, name + "-initial.png"));
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            if (resize)
+            {
+                var splitter = control.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().First();
+                var start = splitter.TranslatePoint(new Point(2, 300), window)!.Value;
+                window.MouseDown(start, global::Avalonia.Input.MouseButton.Left);
+                window.MouseMove(start + new Vector(60, 0), global::Avalonia.Input.RawInputModifiers.LeftMouseButton);
+                window.MouseUp(start + new Vector(60, 0), global::Avalonia.Input.MouseButton.Left);
+                global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+                window.UpdateLayout();
+                Assert.True(panes[0].Proportion > 0.4);
+                // A later model update must still reach the control after the user has resized it.
+                panes[0].Proportion = panes[0].CollapsedProportion = 0.45;
+                panes[1].Proportion = panes[1].CollapsedProportion = 0.25;
+                global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+                window.UpdateLayout();
+                var first = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[panes[0]]);
+                Assert.Equal(446, first.Bounds.Width, 0);
+            }
+            var drop = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[panes[1]]);
+            drop.SetValue(Dock.Settings.DockProperties.IsDockTargetProperty, true);
+            drop.SetValue(Dock.Settings.DockProperties.IsDropEnabledProperty, true);
+            var context = new DockDragContext {
+                DragControl = new Border { DataContext = source }, DoDragDrop = true,
+                TargetPoint = new Point(10, 10), TargetDockControl = control,
+                ResolvedOperation = operation, UseGlobalOperation = global, HasResolvedOperation = true
+            };
+            var service = new DockDropPreviewService();
+            var state = new DropState(new DockManager(new DockService()), context, drop, service);
+            state.ShowAdorners(global);
+            state.UpdatePreview(operation, global, true, DragAction.Move);
+            var expected = service.GetBounds(source,
+                global ? GlobalDockingService.Instance.ResolveGlobalTargetDock(drop)! : panes[1],
+                operation, control, global ? 0.33 : double.NaN)!.Value;
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            using var warmup = window.CaptureRenderedFrame();
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            using var previewFrame = window.CaptureRenderedFrame()!;
+            if (directory is not null) previewFrame.Save(System.IO.Path.Combine(directory, name + "-preview.png"));
+            var indicator = state.Target(global).GetVisualDescendants().OfType<Border>().Single(x => x.Name == "PART_PreviewIndicator");
+            var color = Assert.IsAssignableFrom<ISolidColorBrush>(indicator.Background).Color;
+            var rendered = RenderedColorBounds(previewFrame, color);
+            var expectedOrigin = control.TranslatePoint(expected.Position, window)!.Value;
+            state.Process(default, default, EventType.Released, DragAction.Move, control, new List<IDockControl> { control });
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            using var afterWarmup = window.CaptureRenderedFrame();
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            using var dropFrame = window.CaptureRenderedFrame()!;
+            if (directory is not null) dropFrame.Save(System.IO.Path.Combine(directory, name + "-drop.png"));
+            var realized = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[source.Owner!]);
+            var actual = new Rect(realized.TranslatePoint(default, control)!.Value, realized.Bounds.Size);
+            var origin = control.TranslatePoint(default, window)!.Value;
+            static object Bounds(Rect r) => new { x = r.X, y = r.Y, width = r.Width, height = r.Height };
+            if (directory is not null) System.IO.File.WriteAllText(System.IO.Path.Combine(directory, name + ".json"),
+                System.Text.Json.JsonSerializer.Serialize(new {
+                    expected = Bounds(expected), actual = Bounds(actual), renderedPreview = Bounds(rendered), dashboardOrigin = new { x = origin.X, y = origin.Y },
+                    sourceTitle = source.Title, paneShare = source.Owner!.Proportion
+                }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+            output.WriteLine($"{name}: preview={expected}; rendered={rendered}; actual={actual}");
+            Assert.Equal(expectedOrigin.X, rendered.X, 0);
+            Assert.Equal(expectedOrigin.Y, rendered.Y, 0);
+            Assert.InRange(rendered.Width - expected.Width, -1, 1);
+            Assert.InRange(rendered.Height - expected.Height, -1, 1);
+            AssertBounds(expected, actual);
+        }
+        finally { window.Close(); Dock.Settings.DockSettings.GlobalDockingProportion = prior; }
+    }
+
+    private static Rect RenderedColorBounds(global::Avalonia.Media.Imaging.Bitmap frame, Color color)
+    {
+        var pixelSize = frame.PixelSize;
+        var pixels = new byte[pixelSize.Width * pixelSize.Height * 4];
+        var pinned = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+        try { frame.CopyPixels(new PixelRect(pixelSize), pinned.AddrOfPinnedObject(), pixels.Length, pixelSize.Width * 4); }
+        finally { pinned.Free(); }
+        var minX = pixelSize.Width; var minY = pixelSize.Height; var maxX = -1; var maxY = -1;
+        for (var y = 0; y < pixelSize.Height; y++)
+            for (var x = 0; x < pixelSize.Width; x++)
+            {
+                var offset = (y * pixelSize.Width + x) * 4;
+                if (pixels[offset] == color.R && pixels[offset + 1] == color.G && pixels[offset + 2] == color.B && pixels[offset + 3] == color.A)
+                { minX = Math.Min(minX, x); minY = Math.Min(minY, y); maxX = Math.Max(maxX, x); maxY = Math.Max(maxY, y); }
+            }
+        Assert.True(maxX >= minX && maxY >= minY, "The proposed area must actually be visible in the rendered frame.");
+        return new Rect(minX, minY, maxX - minX + 1, maxY - minY + 1);
+    }
+
 
     internal static (Factory factory, IRootDock root, IToolDock[] panes) CreateLayout(params double[] shares) => CreateLayout(new Factory(), shares);
 

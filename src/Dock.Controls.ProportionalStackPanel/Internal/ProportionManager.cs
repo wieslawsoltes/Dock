@@ -56,7 +56,7 @@ internal class ProportionManager
                 // Store current proportion before collapsing
                 if (ProportionUtils.IsValidProportion(info.CurrentProportion) && info.CurrentProportion > 0)
                 {
-                    ProportionalStackPanel.SetCollapsedProportion(info.Control, info.CurrentProportion);
+                    info.Control.SetCurrentValue(ProportionalStackPanel.CollapsedProportionProperty, info.CurrentProportion);
                 }
                 info.TargetProportion = 0.0;
             }
@@ -115,11 +115,12 @@ internal class ProportionManager
         foreach (var info in _childInfos)
         {
             var clampedProportion = _constraintHandler.ClampProportion(info.Control, info.TargetProportion);
-            ProportionalStackPanel.SetProportion(info.Control, clampedProportion);
+            // Layout writes must preserve model bindings so later splits/resizes can update the pane.
+            info.Control.SetCurrentValue(ProportionalStackPanel.ProportionProperty, clampedProportion);
             
             if (!info.IsCollapsed && !hasCollapsedChildren)
             {
-                ProportionalStackPanel.SetCollapsedProportion(info.Control, clampedProportion);
+                info.Control.SetCurrentValue(ProportionalStackPanel.CollapsedProportionProperty, clampedProportion);
             }
         }
     }

@@ -17,6 +17,30 @@ namespace Dock.Serializer.SystemTextJson.Generators.UnitTests;
 public class DockJsonSourceGeneratorTests
 {
     [Fact]
+    public void DefaultSerializer_GeneratesAndRegistersMetadataWithoutActivation()
+    {
+        const string source = """
+            using Dock.Serializer.SystemTextJson;
+            namespace Example;
+            internal sealed class Payload { public string? Name { get; set; } }
+            public static class Usage
+            {
+                public static string Save() => new DockSerializer().Serialize(new Payload { Name = "Saved" });
+            }
+            """;
+
+        CompilationRun run = Run(source);
+        Assert.DoesNotContain(run.RunResult.Diagnostics, x => x.Severity == DiagnosticSeverity.Error);
+        Assert.Contains("global::Example.Payload", GetGeneratedSource(run, "DockSystemTextJsonContext.g.cs"));
+        string generated = GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs");
+        Assert.Contains("ModuleInitializer", generated);
+        Assert.Contains("DockJsonMetadata.Register", generated);
+        Assert.Contains("new global::System.Collections.ObjectModel.ObservableCollection<", generated);
+        Assert.DoesNotContain("Activator", generated);
+        Assert.DoesNotContain("MakeGenericType", generated);
+    }
+
+    [Fact]
     public void ActivationAttribute_ProducesGeneratedSources()
     {
         const string source = """

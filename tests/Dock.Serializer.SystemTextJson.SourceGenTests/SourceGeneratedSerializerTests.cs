@@ -29,6 +29,11 @@ namespace Dock.Serializer.SystemTextJson.SourceGenTests;
 
 public class SourceGeneratedSerializerTests
 {
+    private sealed class UnregisteredPayload
+    {
+        public string? Name { get; set; }
+    }
+
     [Fact]
     public void DockGenerator_CoexistsWithApplicationJsonContexts()
     {
@@ -141,15 +146,10 @@ public class SourceGeneratedSerializerTests
     [Fact]
     public void GeneratedSerializer_ReadsLegacyTemplateContentWithoutTypeDiscriminator()
     {
-        var reflectionSerializer = new DockSerializer();
         var generatedSerializer = DockSystemTextJsonGenerated.CreateSerializer();
-        var source = new CustomDocumentTemplate
-        {
-            TemplateTag = "LegacyTemplate",
-            Content = new RegisteredPayload { Name = "LegacyPayload" }
-        };
-
-        string legacyJson = reflectionSerializer.Serialize(source);
+        const string legacyJson = """
+            {"TemplateTag":"LegacyTemplate","Content":{"Name":"LegacyPayload"}}
+            """;
         CustomDocumentTemplate? restored = generatedSerializer.Deserialize<CustomDocumentTemplate>(legacyJson);
 
         Assert.NotNull(restored);
@@ -489,10 +489,6 @@ public sealed class TypeNamedPayload
     public string? Name { get; set; }
 }
 
-public sealed class UnregisteredPayload
-{
-    public string? Name { get; set; }
-}
 
 public sealed class WeatherForecast
 {

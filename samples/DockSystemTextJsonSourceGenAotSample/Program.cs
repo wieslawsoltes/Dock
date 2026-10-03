@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm.Controls;
 using Dock.Model.Mvvm.Core;
 using Dock.Serializer.SystemTextJson;
 
-[assembly: DockJsonSourceGeneration]
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.RegisteredPayload))]
 
 namespace DockSystemTextJsonSourceGenAotSample;
@@ -16,13 +16,14 @@ internal static class Program
     private static int Main()
     {
         ValidateRoundTrip();
+        ValidateLegacyJson();
         Console.WriteLine("Dock source-generated AOT serialization round trip succeeded.");
         return 0;
     }
 
     private static void ValidateRoundTrip()
     {
-        DockSerializer serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        DockSerializer serializer = new();
         SampleRootDock source = CreateLayout();
 
         string json = serializer.Serialize(source);
@@ -55,6 +56,37 @@ internal static class Program
 
         Ensure(sampleTemplate.TemplateTag == "TemplateTag", "Template tag was not preserved.");
         Ensure(payload.Name == "TemplatePayload", "Template payload value was not preserved.");
+    }
+
+    private static void ValidateLegacyJson()
+    {
+        const string json = """
+            {
+              "$id": "1",
+              "$type": "DockSystemTextJsonSourceGenAotSample.SampleRootDock, DockSystemTextJsonSourceGenAotSample",
+              "Id": "LegacyRoot",
+              "VisibleDockables": [
+                {
+                  "$id": "2",
+                  "$type": "DockSystemTextJsonSourceGenAotSample.SampleDocument, DockSystemTextJsonSourceGenAotSample",
+                  "Id": "LegacyDocument",
+                  "Owner": { "$ref": "1" },
+                  "DocumentTag": "LegacyTag"
+                }
+              ],
+              "ActiveDockable": { "$ref": "2" }
+            }
+            """;
+        var serializer = new Dock.Serializer.DockSerializer();
+        SampleRootDock restored = Require(serializer.Deserialize<SampleRootDock>(json), "Legacy layout returned null.");
+        SampleDocument document = RequireType<SampleDocument>(restored.VisibleDockables?[0], "Legacy document type was lost.");
+        Ensure(document.DocumentTag == "LegacyTag", "Legacy document properties were lost.");
+        Ensure(ReferenceEquals(document, restored.ActiveDockable), "Legacy active document identity was lost.");
+        Ensure(ReferenceEquals(restored, document.Owner), "Legacy owner identity was lost.");
+
+        string currentJson = serializer.Serialize(restored);
+        SampleRootDock replay = Require(serializer.Deserialize<SampleRootDock>(currentJson), "New layout returned null.");
+        Ensure(ReferenceEquals(replay.VisibleDockables?[0], replay.ActiveDockable), "New layout references were lost.");
     }
 
     private static void VerifyLayout(SampleRootDock restored)
@@ -189,30 +221,36 @@ public sealed class SampleDocumentTemplate : IDocumentTemplate
 
 public class SampleRootDock : RootDock
 {
+    [DataMember]
     public string? RootTag { get; set; }
 }
 
 public class SampleDocumentDock : DocumentDock
 {
+    [DataMember]
     public string? DockTag { get; set; }
 }
 
 public class SampleToolDock : ToolDock
 {
+    [DataMember]
     public string? DockTag { get; set; }
 }
 
 public class SampleDocument : Document
 {
+    [DataMember]
     public string? DocumentTag { get; set; }
 }
 
 public class SampleTool : Tool
 {
+    [DataMember]
     public string? ToolTag { get; set; }
 }
 
 public class SampleDockWindow : DockWindow
 {
+    [DataMember]
     public string? WindowTag { get; set; }
 }

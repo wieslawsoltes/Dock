@@ -9,21 +9,21 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Inpc.Controls;
 using Dock.Model.Inpc.Core;
-using Dock.Serializer.SystemTextJson;
+using SystemTextJsonSerializer = Dock.Serializer.SystemTextJson.DockSerializer;
 using Xunit;
 
 namespace Dock.Serializer.UnitTests;
 
 public class SystemTextJsonDockSerializerTests
 {
-    private class Sample
+    internal class Sample
     {
         public string? Name { get; set; }
         public IList<int>? Numbers { get; set; }
         public string ReadOnly => "skip";
     }
 
-    private sealed class TemplateSample : IDocumentTemplate
+    internal sealed class TemplateSample : IDocumentTemplate
     {
         public object? Content { get; set; }
 
@@ -44,7 +44,7 @@ public class SystemTextJsonDockSerializerTests
     [Fact]
     public void SerializeDeserialize_DefaultListType_ObservableCollection()
     {
-        var serializer = new DockSerializer();
+        var serializer = new SystemTextJsonSerializer();
         var sample = new Sample { Name = "Test", Numbers = new List<int> { 1, 2 } };
 
         var json = serializer.Serialize(sample);
@@ -62,7 +62,7 @@ public class SystemTextJsonDockSerializerTests
     [Fact]
     public void CustomListType_List_DeserializesToList()
     {
-        var serializer = new DockSerializer(typeof(List<>));
+        var serializer = new SystemTextJsonSerializer(typeof(List<>));
         var sample = new Sample { Name = "Test", Numbers = new List<int> { 7, 8 } };
 
         var json = serializer.Serialize(sample);
@@ -75,7 +75,7 @@ public class SystemTextJsonDockSerializerTests
     [Fact]
     public void DockModelLists_UseAotSafeObservableCollections()
     {
-        var serializer = new DockSerializer();
+        var serializer = new SystemTextJsonSerializer();
         var root = new RootDock
         {
             VisibleDockables = new List<IDockable> { new DocumentDock() },
@@ -93,7 +93,7 @@ public class SystemTextJsonDockSerializerTests
     [Fact]
     public void SaveLoad_Roundtrip_Works()
     {
-        var serializer = new DockSerializer();
+        var serializer = new SystemTextJsonSerializer();
         var sample = new Sample { Name = "Test", Numbers = new List<int> { 3, 4, 5 } };
         using var stream = new NonClosingMemoryStream();
 
@@ -112,7 +112,7 @@ public class SystemTextJsonDockSerializerTests
     [Fact]
     public void Load_EmptyStream_ReturnsNull()
     {
-        var serializer = new DockSerializer();
+        var serializer = new SystemTextJsonSerializer();
         using var stream = new NonClosingMemoryStream();
 
         var result = serializer.Load<Sample>(stream);
@@ -123,7 +123,7 @@ public class SystemTextJsonDockSerializerTests
     [Fact]
     public void Save_Null_WritesNullString()
     {
-        var serializer = new DockSerializer();
+        var serializer = new SystemTextJsonSerializer();
         using var stream = new NonClosingMemoryStream();
 
         serializer.Save<object?>(stream, null);
@@ -142,10 +142,10 @@ public class SystemTextJsonDockSerializerTests
     }
 
     [Fact]
-    public void ReflectionSerializerInstances_DoNotReusePolymorphismState()
+    public void DefaultSerializerInstances_DoNotReusePolymorphismState()
     {
-        var writerSerializer = new DockSerializer();
-        var readerSerializer = new DockSerializer();
+        var writerSerializer = new SystemTextJsonSerializer();
+        var readerSerializer = new SystemTextJsonSerializer();
         IDocumentTemplate source = new TemplateSample
         {
             TemplateTag = "Template"

@@ -6,7 +6,7 @@ Dock provides multiple serialization options. Each serializer accepts an optiona
 for dockable collections. If you do not specify one, the serializers default to
 `ObservableCollection<>`.
 
-- **`Dock.Serializer.Newtonsoft`** - JSON serialization using Newtonsoft.Json
+- **`Dock.Serializer.Newtonsoft`** - Compatibility package for the existing `Dock.Serializer.DockSerializer` API, now backed by System.Text.Json
 - **`Dock.Serializer.SystemTextJson`** - JSON serialization using System.Text.Json  
 - **`Dock.Serializer.Protobuf`** - Binary serialization using protobuf-net
 - **`Dock.Serializer.Xml`** - XML serialization
@@ -14,7 +14,7 @@ for dockable collections. If you do not specify one, the serializers default to
 
 All serializers implement `IDockSerializer` and can be paired with `DockState` to restore document/tool content and document templates that are not serialized. The code snippets below use asynchronous file APIs but any `Stream` works.
 
-## Using JSON serialization (Newtonsoft.Json)
+## Keeping the existing Dock JSON serializer API
 
 ```csharp
 using Dock.Serializer;
@@ -40,7 +40,8 @@ using Dock.Serializer.SystemTextJson;
 var serializer = new DockSerializer();
 ```
 
-The default constructor keeps the existing reflection-based compatibility path.
+The default constructor uses generated metadata with no reflection fallback.
+It can also load layouts previously written by the Newtonsoft serializer.
 To customize list types, use the list type overload.
 
 ```csharp
@@ -51,32 +52,56 @@ var serializer = new DockSerializer(typeof(List<>));
 
 ## Using source-generated JSON serialization (System.Text.Json)
 
-To opt into source generation, add the assembly attributes in the application
-assembly that owns your Dock layout types:
+Source generation runs automatically when the serializer package is referenced.
+The existing default constructors use generated metadata, so application calls do
+not need to change:
+
+```csharp
+var existingApi = new Dock.Serializer.DockSerializer();
+var jsonApi = new Dock.Serializer.SystemTextJson.DockSerializer();
+```
+
+The generator discovers accessible Dock types in the application and referenced
+Dock model libraries, types passed to `Serialize`, `Deserialize`, `Save`, or
+`Load`, and statically created object-valued payloads. Add an assembly registration
+for a payload selected dynamically, for example by a factory or plugin:
 
 ```csharp
 using Dock.Serializer.SystemTextJson;
 
-[assembly: DockJsonSourceGeneration]
 [assembly: DockJsonSerializable(typeof(MyTemplatePayload))]
 ```
 
-Then construct the generated serializer from the helper emitted into that same
-assembly:
+`[assembly: DockJsonSourceGeneration]` and the generated
+`DockSystemTextJsonGenerated.CreateSerializer()` helper remain supported, but
+neither is required by the default constructors. Types must be accessible from
+generated code; a private nested type requires an explicitly supplied JSON context
+that can access it.
 
-```csharp
-using Dock.Serializer.SystemTextJson;
+### Previously saved JSON
 
-var serializer = DockSystemTextJsonGenerated.CreateSerializer();
-var serializerWithList = DockSystemTextJsonGenerated.CreateSerializer(typeof(List<>));
-```
+The default serializers accept Newtonsoft layouts containing assembly-qualified
+`$type` names, plain list arrays, `$id`/`$ref` references, and named floating-point
+values. The compatibility API also retains data contract member names and its
+`IServiceProvider` constructors. Type names are resolved against generated
+contracts; deserialization never loads assemblies named in a layout file.
+
+Newly saved layouts use the System.Text.Json reference-preserving format. Existing
+layout files do not require conversion, but older Newtonsoft-based app versions
+are not guaranteed to read newly saved files.
+
+The serializers use compiled factories for `List<>`, `ObservableCollection<>`,
+and accessible custom list types statically passed using `typeof(MyList<>)`.
+Dynamically selected types still need generated metadata; the default path fails
+with a descriptive exception rather than falling back to reflection. AOT safety
+of custom constructors and converters remains the application's responsibility.
 
 The source-generated path:
 
-- Auto-discovers concrete Dock-derived types declared in the current compilation.
-- Requires `[assembly: DockJsonSerializable(typeof(...))]` for Dock types that come from referenced class libraries.
-- Requires `[assembly: DockJsonSerializable(typeof(...))]` for object-valued payloads you expect to serialize, such as custom template content.
-- Uses the same JSON shape as the reflection serializer, including the `$type` discriminator and ignored command members.
+- Auto-discovers concrete Dock-derived types in the current compilation and referenced Dock model libraries.
+- Includes accessible Dock types from referenced class libraries that reference Dock model contracts.
+- Accepts `[assembly: DockJsonSerializable(typeof(...))]` for dynamically selected object-valued payloads, such as custom template content.
+- Uses System.Text.Json reference metadata, including the `$type` discriminator and ignored command members.
 - Fails fast for unregistered object payloads instead of falling back to reflection.
 
 For advanced composition scenarios, the serializer also exposes resolver-based
@@ -168,7 +193,7 @@ if (layout is { })
 }
 ```
 
-Before calling `Load`, make sure the assemblies that define your dockable types are loaded. If you need
+Before calling `Load`, reference the assemblies that define your dockable types so their metadata is generated. If you need
 DI-based construction, use the `Dock.Serializer.DockSerializer` overload that accepts an
 `IServiceProvider`.
 

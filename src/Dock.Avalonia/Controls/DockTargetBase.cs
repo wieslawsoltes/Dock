@@ -73,6 +73,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         SetAndRaise(PreviewWidthProperty, ref _previewWidth, rect.Width);
         SetAndRaise(PreviewHeightProperty, ref _previewHeight, rect.Height);
         PseudoClasses.Set(":preview", bounds.HasValue);
+        // A collapsed source may move the projected pane beyond the old target.
+        AdornerLayer.SetIsClipEnabled(this, !bounds.HasValue);
     }
 
     private static readonly string[] s_indicators =

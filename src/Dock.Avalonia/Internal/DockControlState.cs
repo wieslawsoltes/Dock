@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
@@ -484,7 +485,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     internal static IDockable? ResolveDragDockable(IDockable source) => source is IDock dock ? dock.ActiveDockable : source;
 
-    private void UpdatePreview(DockOperation operation, bool global, bool valid, DragAction action)
+    internal void UpdatePreview(DockOperation operation, bool global, bool valid, DragAction action)
     {
         _dropPreview.Deactivate();
         if (LocalAdornerHelper.Adorner is DockTargetBase local) local.SetPreviewBounds(null);
@@ -499,11 +500,14 @@ internal class DockControlState : DockManagerState, IDockControlState
         var proportion = global ? DockSettings.GlobalDockingProportion : double.NaN;
         var bounds = _dropPreview.GetBounds(source, target, operation, dockControl, proportion);
         if (bounds is null) return;
-        var origin = dockControl.TranslatePoint(bounds.Value.Position, adorner);
+        // Avalonia's compositor positions an adorner relative to AdornedElement.
+        // The ordinary visual tree does not include that transform (notably on 11.3).
+        var coordinateSpace = AdornerLayer.GetAdornedElement(adorner) ?? adorner;
+        var origin = dockControl.TranslatePoint(bounds.Value.Position, coordinateSpace);
         if (origin is null)
         {
             var screen = dockControl.PointToScreen(bounds.Value.Position);
-            origin = adorner.PointToClient(screen);
+            origin = coordinateSpace.PointToClient(screen);
         }
         adorner.SetPreviewBounds(new Rect(origin.Value, bounds.Value.Size));
     }

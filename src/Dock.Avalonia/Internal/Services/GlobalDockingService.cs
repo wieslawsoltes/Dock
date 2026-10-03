@@ -65,7 +65,8 @@ internal sealed class GlobalDockingService : IGlobalDockingService
 
     public bool TryApplyGlobalDockingProportion(IDockable sourceDockable, IDockable? sourceRoot, IDockable? targetRoot, double proportion)
     {
-        if (sourceRoot is null || targetRoot is null || sourceDockable.Owner is null)
+        // Catalog tools can come from a rootless layout; the resulting target owner is what matters.
+        if (targetRoot is null || sourceDockable.Owner is null)
         {
             return false;
         }

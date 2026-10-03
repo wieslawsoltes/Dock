@@ -196,19 +196,28 @@ public class DockControlStateTests
     }
 
     [AvaloniaFact]
-    public void GlobalDockingProportionService_TryApply_UpdatesOwnerProportionAndCollapsedProportion()
+    public void GlobalDockingProportionService_TryApply_UpdatesCompleteSiblingDistribution()
     {
         var service = new GlobalDockingService();
+        var factory = new Factory();
         var sourceDock = new DocumentDock();
+        var retained = new DocumentDock { Proportion = 0.5 };
+        var parent = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(sourceDock, retained)
+        };
+        sourceDock.Owner = parent;
         var sourceDocument = new Document { Owner = sourceDock };
         var sourceRoot = new RootDock();
         var targetRoot = new RootDock();
 
-        var apply = service.TryApplyGlobalDockingProportion(sourceDocument, sourceRoot, targetRoot, proportion: 0.5);
+        var apply = service.TryApplyGlobalDockingProportion(sourceDocument, sourceRoot, targetRoot, proportion: 0.33);
 
         Assert.True(apply);
-        Assert.Equal(0.5, sourceDock.Proportion, 3);
-        Assert.Equal(0.5, sourceDock.CollapsedProportion, 3);
+        Assert.Equal(0.33, sourceDock.Proportion, 3);
+        Assert.Equal(0.33, sourceDock.CollapsedProportion, 3);
+        Assert.Equal(0.67, retained.Proportion, 3);
+        Assert.Equal(0.67, retained.CollapsedProportion, 3);
     }
 
     [AvaloniaFact]

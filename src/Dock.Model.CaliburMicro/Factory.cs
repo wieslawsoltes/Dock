@@ -12,7 +12,7 @@ namespace Dock.Model.CaliburMicro;
 /// <summary>
 /// Factory.
 /// </summary>
-public class Factory : FactoryBase
+public class Factory : FactoryBase, IDockPreviewFactoryProvider
 {
     /// <summary>
     /// Initializes the new instance of <see cref="Factory"/> class.
@@ -30,6 +30,9 @@ public class Factory : FactoryBase
         DockControls = new ObservableCollection<IDockControl>();
         HostWindows = new ObservableCollection<IHostWindow>();
     }
+
+    /// <inheritdoc />
+    public virtual IFactory CreatePreviewFactory() => new Factory();
 
     /// <inheritdoc/>
     public override IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }

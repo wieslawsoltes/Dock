@@ -27,8 +27,10 @@
 
   <ControlTheme x:Key="{x:Type DockTarget}" TargetType="DockTarget">
 
+    <Setter Property="ClipToBounds" Value="False" />
     <Setter Property="Template">
       <ControlTemplate>
+        <Panel>
         <Grid x:Name="PART_IndicatorGrid" RowDefinitions="*,*" ColumnDefinitions="*,*">
           <Panel x:Name="PART_TopIndicator" 
                  Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0"
@@ -74,6 +76,13 @@
             </Grid>
           </Panel>
         </Grid>
+          <Canvas IsHitTestVisible="False">
+            <Border x:Name="PART_PreviewIndicator"
+                    Canvas.Left="{TemplateBinding PreviewX}" Canvas.Top="{TemplateBinding PreviewY}"
+                    Width="{TemplateBinding PreviewWidth}" Height="{TemplateBinding PreviewHeight}"
+                    Background="{DynamicResource DockTargetIndicatorBrush}" />
+          </Canvas>
+        </Panel>
       </ControlTemplate>
     </Setter>
 
@@ -144,6 +153,27 @@
       <Setter Property="IsVisible" Value="False" />
     </Style>
 
+    <Style Selector="^/template/ Border#PART_PreviewIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Border#PART_PreviewIndicator">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_TopIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_BottomIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_LeftIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_RightIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_CenterIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
   </ControlTheme>
 
 </ResourceDictionary>

@@ -15,7 +15,7 @@ namespace Dock.Model.Avalonia;
 /// <summary>
 /// Factory.
 /// </summary>
-public class Factory : FactoryBase
+public class Factory : FactoryBase, IDockPreviewFactoryProvider
 {
     private readonly Func<IRootDock>? _createLayoutFunc;
 
@@ -44,6 +44,9 @@ public class Factory : FactoryBase
     {
         _createLayoutFunc = createLayoutFunc ?? throw new ArgumentNullException(nameof(createLayoutFunc));
     }
+
+    /// <inheritdoc />
+    public virtual IFactory CreatePreviewFactory() => new Factory();
 
     /// <inheritdoc/>
     [JsonIgnore]

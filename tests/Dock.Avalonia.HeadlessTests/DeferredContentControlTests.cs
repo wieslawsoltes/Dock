@@ -380,6 +380,26 @@ public class DeferredContentControlTests
         }
     }
 
+    private static void AssertRevealCompletes(Window window, Control presenter)
+    {
+        // Draining dispatcher jobs sets the target opacity but does not finish
+        // its transition. Drive frames until it completes, checking visibility
+        // throughout instead of depending on the runner's frame timing.
+        var timeout = System.Diagnostics.Stopwatch.StartNew();
+        do
+        {
+            global::Avalonia.Headless.AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            Assert.InRange(presenter.Opacity, 0.5D, 1D);
+            if (!presenter.IsAnimating(Visual.OpacityProperty) && presenter.Opacity == 1D) break;
+            Thread.Sleep(10);
+        } while (timeout.Elapsed < TimeSpan.FromSeconds(10));
+
+        Assert.False(presenter.IsAnimating(Visual.OpacityProperty));
+        Assert.Equal(1D, presenter.Opacity);
+    }
+
     [AvaloniaFact]
     public void DeferredContentControl_Does_Not_Reveal_From_Blank_On_First_Materialization()
     {
@@ -462,7 +482,7 @@ public class DeferredContentControlTests
 
             var secondTextBlock = Assert.IsType<TextBlock>(control.Presenter.Child);
             Assert.Equal("Second", secondTextBlock.DataContext);
-            Assert.Equal(1D, control.Presenter.Opacity);
+            AssertRevealCompletes(window, control.Presenter);
         }
         finally
         {
@@ -527,7 +547,7 @@ public class DeferredContentControlTests
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
-            Assert.Equal(1D, presenterHost.Presenter.Opacity);
+            AssertRevealCompletes(window, presenterHost.Presenter);
         }
         finally
         {
@@ -584,7 +604,7 @@ public class DeferredContentControlTests
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
-            Assert.Equal(1D, control.Presenter.Opacity);
+            AssertRevealCompletes(window, control.Presenter);
         }
         finally
         {

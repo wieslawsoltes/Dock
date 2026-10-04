@@ -1189,14 +1189,27 @@ public class DeferredContentControlTests
         }
     }
 
-    [AvaloniaFact]
-    public void DeferredContentPresenter_AutoScheduled_Time_Budget_Materializes_In_ItemsControl()
+    [AvaloniaTheory]
+    [InlineData(0)]
+    [InlineData(200)]
+    public void DeferredContentPresenter_AutoScheduled_Time_Budget_Materializes_In_ItemsControl(int dispatcherPauseMilliseconds)
     {
-        var firstTemplate = new CountingTemplate(() => new Border
+        var observedFirstPass = false;
+        CountingTemplate? firstTemplate = null;
+        CountingTemplate? secondTemplate = null;
+        firstTemplate = new CountingTemplate(() =>
         {
-            Child = new TextBlock { Text = "PresenterFirstAuto" }
+            // Observe the boundary between automatic batches, even if the runner
+            // was paused long enough for both entries to become due.
+            Dispatcher.UIThread.Post(() =>
+            {
+                Assert.Equal(1, firstTemplate!.BuildCount);
+                Assert.Equal(0, secondTemplate!.BuildCount);
+                observedFirstPass = true;
+            }, DispatcherPriority.Normal);
+            return new Border { Child = new TextBlock { Text = "PresenterFirstAuto" } };
         });
-        var secondTemplate = new CountingTemplate(() => new Border
+        secondTemplate = new CountingTemplate(() => new Border
         {
             Child = new TextBlock { Text = "PresenterSecondAuto" }
         });
@@ -1208,7 +1221,7 @@ public class DeferredContentControlTests
         var timeline = new DeferredContentPresentationTimeline
         {
             BudgetMode = DeferredContentPresentationBudgetMode.RealizationTime,
-            MaxRealizationTimePerPass = TimeSpan.FromMilliseconds(2),
+            MaxRealizationTimePerPass = TimeSpan.Zero,
             InitialDelay = TimeSpan.Zero,
             FollowUpDelay = TimeSpan.FromMilliseconds(10)
         };
@@ -1267,20 +1280,19 @@ public class DeferredContentControlTests
 
             Assert.All(new[] { firstPresenter, secondPresenter }, presenter => Assert.Null(presenter.Child));
 
-            Thread.Sleep(60);
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
+            Thread.Sleep(dispatcherPauseMilliseconds);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (secondTemplate.BuildCount == 0 && timeout.Elapsed < TimeSpan.FromSeconds(10))
+            {
+                Dispatcher.UIThread.RunJobs();
+                window.UpdateLayout();
+                if (secondTemplate.BuildCount == 0) Thread.Sleep(10);
+            }
 
+            Assert.True(observedFirstPass);
             Assert.Equal(1, firstTemplate.BuildCount);
-            Assert.Equal(0, secondTemplate.BuildCount);
-            Assert.NotNull(firstPresenter.Child);
-            Assert.Null(secondPresenter.Child);
-
-            Thread.Sleep(180);
-            Dispatcher.UIThread.RunJobs();
-            window.UpdateLayout();
-
             Assert.Equal(1, secondTemplate.BuildCount);
+            Assert.NotNull(firstPresenter.Child);
             Assert.NotNull(secondPresenter.Child);
         }
         finally

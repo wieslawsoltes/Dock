@@ -372,10 +372,44 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             constrained: true, maximum: maximum,
             caseName: $"constrained-{(global ? "outer" : "inner")}-{operation}-{(vertical ? "vertical" : "horizontal")}-{(maximum ? "max" : "min")}");
 
-    private void AssertRenderedRelease(bool global, bool resize, DockOperation operation, string sourceKind,
-        bool nested = false, bool vertical = false, bool constrained = false, bool maximum = false, string? caseName = null)
+    public static IEnumerable<object[]> DocumentDockingCases()
     {
-        var (factory, root, panes) = CreateLayout(0.4, 0.3, 0.3);
+        foreach (var source in new[] { "collapse", "retained", "external" })
+        foreach (var global in new[] { false, true })
+        foreach (var operation in new[] { DockOperation.Left, DockOperation.Right, DockOperation.Top, DockOperation.Bottom, DockOperation.Fill })
+            if (!global || operation != DockOperation.Fill)
+                yield return new object[] { source, global, operation };
+    }
+
+    [AvaloniaTheory]
+    [MemberData(nameof(DocumentDockingCases))]
+    public void Rendered_document_release_matches_preview(string source, bool global, DockOperation operation)
+        => AssertRenderedRelease(global, false, operation, source, documents: true,
+            caseName: $"document-{source}-{global}-{operation}");
+
+    public static IEnumerable<object[]> FloatingAdornerCases()
+    {
+        foreach (var managed in new[] { false, true })
+        foreach (var resizeViewport in new[] { false, true })
+        foreach (var global in new[] { false, true })
+        foreach (var operation in new[] { DockOperation.Left, DockOperation.Right, DockOperation.Top, DockOperation.Bottom })
+            yield return new object[] { managed, resizeViewport, global, operation };
+    }
+
+    [AvaloniaTheory]
+    [MemberData(nameof(FloatingAdornerCases))]
+    public void Rendered_floating_adorner_matches_release(bool managed, bool resizeViewport, bool global, DockOperation operation)
+        => AssertRenderedRelease(global, false, operation, global ? "catalog" : "collapse", floating: true,
+            managed: managed, resizeViewport: resizeViewport,
+            caseName: $"floating-{managed}-{resizeViewport}-{global}-{operation}");
+
+    private void AssertRenderedRelease(bool global, bool resize, DockOperation operation, string sourceKind,
+        bool nested = false, bool vertical = false, bool constrained = false, bool maximum = false, string? caseName = null,
+        bool documents = false, bool floating = false, bool managed = false, bool resizeViewport = false)
+    {
+        (Factory factory, IRootDock root, IDock[] panes) = documents
+            ? CreateDocumentLayout(0.4, 0.3, 0.3) : CreateLayout(0.4, 0.3, 0.3);
+        if (floating) root.FloatingWindowHostMode = managed ? DockFloatingWindowHostMode.Managed : DockFloatingWindowHostMode.Native;
         for (var i = 0; i < panes.Length; i++) panes[i].ActiveDockable!.Title = "Widget " + (char)('A' + i);
         var source = panes[0].ActiveDockable!;
         var row = Assert.IsAssignableFrom<IProportionalDock>(panes[0].Owner);
@@ -399,11 +433,11 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             secondColumn = group;
         }
         if (sourceKind is "retained" or "container")
-            factory.AddDockable(panes[0], factory.CreateTool());
+            factory.AddDockable(panes[0], documents ? factory.CreateDocument() : factory.CreateTool());
         factory.InitLayout(root);
         if (sourceKind == "external")
         {
-            var (_, _, externalPanes) = CreateLayout(1.0);
+            (Factory _, IRootDock _, IDock[] externalPanes) = documents ? CreateDocumentLayout(1.0) : CreateLayout(1.0);
             source = externalPanes[0].ActiveDockable!;
         }
         if (sourceKind == "catalog")
@@ -430,11 +464,13 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
         var window = new Window { Width = 1073, Height = 684, Content = control, Background = Brushes.DimGray };
         var prior = Dock.Settings.DockSettings.GlobalDockingProportion;
         var directory = System.Environment.GetEnvironmentVariable("DOCK_PROOF_DIRECTORY");
+        var priorFloating = Dock.Settings.DockSettings.UseFloatingDockAdorner;
         var name = caseName ?? (global ? "palette-global-" : resize ? "resized-local-" : "collapse-local-") + operation.ToString().ToLowerInvariant();
         if (directory is not null) System.IO.Directory.CreateDirectory(directory);
         try
         {
             Dock.Settings.DockSettings.GlobalDockingProportion = 0.33;
+            Dock.Settings.DockSettings.UseFloatingDockAdorner = floating;
             window.Show();
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
@@ -473,19 +509,38 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             var state = new DropState(new DockManager(new DockService()), context, drop, service);
             state.ShowAdorners(global);
             state.UpdatePreview(operation, global, true, DragAction.Move);
+            if (resizeViewport)
+            {
+                window.Width += 137;
+                window.Height += 93;
+                global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+                window.UpdateLayout();
+                state.UpdatePreview(operation, global, true, DragAction.Move);
+            }
             var expected = service.GetBounds(source,
                 global ? GlobalDockingService.Instance.ResolveGlobalTargetDock(drop)! : panes[1],
                 operation, control, global ? 0.33 : double.NaN)!.Value;
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
-            using var warmup = window.CaptureRenderedFrame();
+            var previewSurface = Assert.IsAssignableFrom<Window>(TopLevel.GetTopLevel(state.Target(global)));
+            if (floating && !managed)
+            {
+                Assert.IsType<DockAdornerWindow>(previewSurface);
+                Assert.Equal(control.PointToScreen(default), previewSurface.Position);
+                Assert.Equal(control.Bounds.Size, previewSurface.Bounds.Size);
+                output.WriteLine($"Native overlay: position={previewSurface.Position}, screenOrigin={previewSurface.PointToScreen(default)}, dockOrigin={control.PointToScreen(default)}, size={previewSurface.Bounds.Size}");
+            }
+            previewSurface.UpdateLayout();
+            using var warmup = previewSurface.CaptureRenderedFrame();
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
-            using var previewFrame = window.CaptureRenderedFrame()!;
+            using var previewFrame = previewSurface.CaptureRenderedFrame()!;
             if (directory is not null) previewFrame.Save(System.IO.Path.Combine(directory, name + "-preview.png"));
             var indicator = state.Target(global).GetVisualDescendants().OfType<Border>().Single(x => x.Name == "PART_PreviewIndicator");
             var color = Assert.IsAssignableFrom<ISolidColorBrush>(indicator.Background).Color;
             var rendered = RenderedColorBounds(previewFrame, color);
-            var expectedOrigin = control.TranslatePoint(expected.Position, window)!.Value;
+            // The headless backend deliberately returns identity screen transforms for
+            // windows. Verify native placement separately above, then inspect its client pixels.
+            var expectedOrigin = floating && !managed ? expected.Position : control.TranslatePoint(expected.Position, window)!.Value;
             state.Process(default, default, EventType.Released, DragAction.Move, control, new List<IDockControl> { control });
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
@@ -513,7 +568,7 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             Assert.InRange(rendered.Height - expected.Height, -1, 1);
             AssertBounds(expected, actual);
         }
-        finally { window.Close(); Dock.Settings.DockSettings.GlobalDockingProportion = prior; }
+        finally { window.Close(); Dock.Settings.DockSettings.GlobalDockingProportion = prior; Dock.Settings.DockSettings.UseFloatingDockAdorner = priorFloating; }
     }
 
     private static Rect RenderedColorBounds(global::Avalonia.Media.Imaging.Bitmap frame, Color color)
@@ -535,6 +590,34 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
         return new Rect(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 
+
+    private static (Factory factory, IRootDock root, IDock[] panes) CreateDocumentLayout(params double[] shares)
+    {
+        var factory = new Factory();
+        var root = factory.CreateRootDock();
+        root.IsCollapsable = false;
+        root.VisibleDockables = factory.CreateList<IDockable>();
+        var row = factory.CreateProportionalDock();
+        row.Orientation = Orientation.Horizontal;
+        row.VisibleDockables = factory.CreateList<IDockable>();
+        factory.AddDockable(root, row);
+        var panes = new IDock[shares.Length];
+        for (var i = 0; i < shares.Length; i++)
+        {
+            if (i > 0) factory.AddDockable(row, factory.CreateProportionalDockSplitter());
+            var pane = factory.CreateDocumentDock();
+            pane.IsCollapsable = true;
+            pane.Proportion = pane.CollapsedProportion = shares[i];
+            pane.VisibleDockables = factory.CreateList<IDockable>();
+            factory.AddDockable(row, pane);
+            var document = factory.CreateDocument();
+            factory.AddDockable(pane, document);
+            pane.ActiveDockable = document;
+            panes[i] = pane;
+        }
+        factory.InitLayout(root);
+        return (factory, root, panes);
+    }
 
     internal static (Factory factory, IRootDock root, IToolDock[] panes) CreateLayout(params double[] shares) => CreateLayout(new Factory(), shares);
 

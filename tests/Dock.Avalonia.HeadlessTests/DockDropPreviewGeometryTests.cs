@@ -21,6 +21,95 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class DockDropPreviewGeometryTests(Xunit.Abstractions.ITestOutputHelper output)
 {
+    private sealed class ScaledWindow : Window, global::Avalonia.Layout.ILayoutRoot
+    {
+        public double LayoutScaling { get; set; } = 1;
+    }
+
+    public static System.Collections.Generic.IEnumerable<object[]> ScalingCases()
+    {
+        foreach (var scale in new[] { 1.25, 1.5, 2.0 })
+        foreach (var global in new[] { false, true })
+        foreach (var operation in new[] { DockOperation.Left, DockOperation.Right, DockOperation.Top, DockOperation.Bottom })
+            yield return new object[] { scale, global, operation };
+    }
+
+    [AvaloniaTheory]
+    [MemberData(nameof(ScalingCases))]
+    public void Nested_projection_matches_release_at_display_scaling(double scale, bool global, DockOperation operation)
+    {
+        var (factory, root, panes) = DockDropPreviewTests.CreateLayout(0.41, 0.59);
+        var (_, _, sources) = DockDropPreviewTests.CreateLayout(1.0);
+        var source = sources[0].ActiveDockable!;
+        IDock targetPane = panes[1];
+        for (var depth = 0; depth < 4; depth++)
+        {
+            var parent = Assert.IsAssignableFrom<IDock>(targetPane.Owner);
+            var group = factory.CreateProportionalDock();
+            group.Orientation = depth % 2 == 0 ? Orientation.Vertical : Orientation.Horizontal;
+            group.Proportion = group.CollapsedProportion = targetPane.Proportion;
+            group.VisibleDockables = factory.CreateList<IDockable>();
+            parent.VisibleDockables![parent.VisibleDockables.IndexOf(targetPane)] = group;
+            factory.AddDockable(group, targetPane);
+            targetPane.Proportion = targetPane.CollapsedProportion = 0.71;
+            factory.AddDockable(group, factory.CreateProportionalDockSplitter());
+            var sibling = factory.CreateToolDock();
+            sibling.Proportion = sibling.CollapsedProportion = 0.29;
+            sibling.VisibleDockables = factory.CreateList<IDockable>(factory.CreateTool());
+            sibling.ActiveDockable = sibling.VisibleDockables[0];
+            factory.AddDockable(group, sibling);
+        }
+        factory.InitLayout(root);
+        var control = new DockControl { Layout = root };
+        var window = new ScaledWindow { LayoutScaling = scale, Width = 1003, Height = 607, Content = control };
+        try
+        {
+            window.Show();
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            Assert.Equal(scale, global::Avalonia.Layout.LayoutHelper.GetLayoutScale(control));
+            var target = global ? root.VisibleDockables![0] : targetPane;
+            var proportion = global ? 0.33 : double.NaN;
+            var visualChildren = control.GetVisualChildren().ToArray();
+            var preview = new DockDropPreviewService().GetBounds(source, target, operation, control, proportion)!.Value;
+            Assert.Equal(visualChildren, control.GetVisualChildren().ToArray());
+            Assert.True(new DockManager(new DockService()).ValidateDockable(source, target, DragAction.Move, operation, true));
+            if (global) Assert.True(DockSplitProportion.Apply(Assert.IsAssignableFrom<IDock>(source.Owner), proportion));
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            var realized = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[source.Owner!]);
+            var actual = new Rect(realized.TranslatePoint(default, control)!.Value, realized.Bounds.Size);
+            output.WriteLine($"Scaling={scale}; preview={preview}; actual={actual}");
+            var pixel = 1 / scale + 0.00001;
+            Assert.InRange(preview.X - actual.X, -pixel, pixel);
+            Assert.InRange(preview.Y - actual.Y, -pixel, pixel);
+            Assert.InRange(preview.Right - actual.Right, -pixel, pixel);
+            Assert.InRange(preview.Bottom - actual.Bottom, -pixel, pixel);
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public void Preview_cache_invalidates_when_display_scaling_changes()
+    {
+        var (_, root, panes) = DockDropPreviewTests.CreateLayout(0.4, 0.6);
+        var control = new DockControl { Layout = root };
+        var window = new ScaledWindow { Width = 1000, Height = 600, Content = control };
+        try
+        {
+            window.Show();
+            global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            var service = new DockDropPreviewService();
+            var source = panes[0].ActiveDockable!;
+            Assert.NotNull(service.GetBounds(source, panes[1], DockOperation.Right, control, double.NaN));
+            Assert.True(service.IsCurrent(source, panes[1], DockOperation.Right, control, double.NaN));
+            window.LayoutScaling = 1.5;
+            Assert.False(service.IsCurrent(source, panes[1], DockOperation.Right, control, double.NaN));
+        }
+        finally { window.Close(); }
+    }
+
     private sealed class WidePaneFactory : Factory
     {
         public override IToolDock CreateToolDock()

@@ -20,6 +20,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     private Visual? _floatingAdornedVisual;
     private AdornerLayer? _layer;
     private ManagedWindowLayer? _managedLayer;
+    private string ManagedOverlayKey => _adorner is GlobalDockTarget ? "GlobalDockAdorner" : "DockAdorner";
 
     public void AddAdorner(Visual visual, bool indicatorsOnly, bool allowHorizontalDocking = true, bool allowVerticalDocking = true)
     {
@@ -88,7 +89,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         if (_managedLayer is { } layer)
         {
             var bounds = new Rect(visual.TranslatePoint(default, layer) ?? default, visual.Bounds.Size);
-            layer.ShowOverlay("DockAdorner", _adorner, bounds, true);
+            layer.ShowOverlay(ManagedOverlayKey, _adorner, bounds, true);
             return;
         }
         if (_window is null) return;
@@ -241,7 +242,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     {
         if (_managedLayer is not null)
         {
-            _managedLayer.HideOverlay("DockAdorner");
+            _managedLayer.HideOverlay(ManagedOverlayKey);
             _managedLayer = null;
         }
 

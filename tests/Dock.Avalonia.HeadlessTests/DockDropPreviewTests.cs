@@ -72,7 +72,7 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
     {
         internal DropState(DockManager manager, DockDragContext context, Control dropControl, DockDropPreviewService? preview = null)
             : base(manager, new DefaultDragOffsetCalculator(), context: context, dropPreview: preview) => DropControl = dropControl;
-        internal void ShowAdorners(bool global) => AddAdorners(!global, global);
+        internal void ShowAdorners(bool global, bool both = false) => AddAdorners(both || !global, both || global);
         internal Dock.Avalonia.Controls.DockTargetBase Target(bool global) =>
             (Dock.Avalonia.Controls.DockTargetBase)(global ? GlobalAdornerHelper.Adorner! : LocalAdornerHelper.Adorner!);
     }
@@ -507,7 +507,7 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             };
             var service = new DockDropPreviewService();
             var state = new DropState(new DockManager(new DockService()), context, drop, service);
-            state.ShowAdorners(global);
+            state.ShowAdorners(global, both: floating);
             state.UpdatePreview(operation, global, true, DragAction.Move);
             if (resizeViewport)
             {
@@ -554,6 +554,11 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             Assert.Contains(source, Assert.IsAssignableFrom<IDock>(source.Owner).VisibleDockables!);
             Assert.DoesNotContain(source, originalOwner.VisibleDockables!);
             Assert.False(control.IsDraggingDock);
+            if (floating)
+            {
+                Assert.Empty(window.OwnedWindows.OfType<DockAdornerWindow>());
+                Assert.Empty(window.GetVisualDescendants().OfType<DockTargetBase>());
+            }
             var origin = control.TranslatePoint(default, window)!.Value;
             static object Bounds(Rect r) => new { x = r.X, y = r.Y, width = r.Width, height = r.Height };
             if (directory is not null) System.IO.File.WriteAllText(System.IO.Path.Combine(directory, name + ".json"),

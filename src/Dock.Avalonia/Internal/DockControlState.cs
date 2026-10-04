@@ -488,6 +488,8 @@ internal class DockControlState : DockManagerState, IDockControlState
     internal void UpdatePreview(DockOperation operation, bool global, bool valid, DragAction action)
     {
         _dropPreview.Deactivate();
+        LocalAdornerHelper.UpdateGeometry();
+        GlobalAdornerHelper.UpdateGeometry();
         if (LocalAdornerHelper.Adorner is DockTargetBase local) local.SetPreviewBounds(null);
         if (GlobalAdornerHelper.Adorner is DockTargetBase globalAdorner) globalAdorner.SetPreviewBounds(null);
         if (!valid || action != DragAction.Move || _context.DragControl?.DataContext is not IDockable dragModel

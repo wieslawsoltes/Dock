@@ -13,7 +13,7 @@ namespace Dock.Avalonia.Internal;
 /// <summary>Measures a detached docking projection with the same panel used by the live layout.</summary>
 internal static class DockPreviewLayout
 {
-    internal static Rect? Measure(DockSplitPreview preview, Size size, double splitterThickness = 4)
+    internal static Rect? Measure(DockSplitPreview preview, Size size, double splitterThickness = 4, DockControl? layoutHost = null)
     {
         var controls = new Dictionary<IDockable, Control>();
         var rootPadding = new Dictionary<IDockable, Thickness>();
@@ -21,8 +21,13 @@ internal static class DockPreviewLayout
             if (pair.Key is IRootDock) rootPadding[pair.Value] = GetRootPadding(pair.Key);
         var layout = Build(preview.Layout, controls, splitterThickness, rootPadding);
         if (layout is null || !controls.TryGetValue(preview.InsertedDock, out var inserted)) return null;
-        layout.Measure(size);
-        layout.Arrange(new Rect(size));
+        if (layoutHost is not null && global::Avalonia.Layout.LayoutHelper.GetLayoutScale(layoutHost) != 1)
+            layoutHost.MeasurePreview(layout, size);
+        else
+        {
+            layout.Measure(size);
+            layout.Arrange(new Rect(size));
+        }
         var position = inserted.TranslatePoint(default, layout);
         return position.HasValue ? new Rect(position.Value, inserted.Bounds.Size) : null;
     }

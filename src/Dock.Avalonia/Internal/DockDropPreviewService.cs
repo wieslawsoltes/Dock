@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Controls.ProportionalStackPanel;
@@ -22,6 +23,7 @@ internal sealed class DockDropPreviewService
     private Rect _viewport;
     private ProportionalStackPanelSplitter? _splitter;
     private double _splitterThickness;
+    private double _scaling;
     private int _version;
     private Rect? _bounds;
     private bool _active;
@@ -32,6 +34,7 @@ internal sealed class DockDropPreviewService
     internal bool IsCurrent(IDockable source, IDockable target, DockOperation operation, DockControl control, double proportion) =>
         ReferenceEquals(source, _source) && ReferenceEquals(target, _target) && operation == _operation
         && proportion.Equals(_proportion) && ReferenceEquals(control, _control)
+        && LayoutHelper.GetLayoutScale(control).Equals(_scaling)
         && control.PreviewViewport == _viewport && GetSplitterThickness(control).Equals(_splitterThickness)
         && HashCode.Combine(Fingerprint(LayoutRoot(source)), Fingerprint(LayoutRoot(target))) == _version;
 
@@ -39,12 +42,13 @@ internal sealed class DockDropPreviewService
     {
         var viewport = dockControl.PreviewViewport;
         var thickness = GetSplitterThickness(dockControl);
+        var scaling = LayoutHelper.GetLayoutScale(dockControl);
         var sourceRoot = LayoutRoot(source);
         var targetRoot = LayoutRoot(target);
         var version = HashCode.Combine(Fingerprint(sourceRoot), Fingerprint(targetRoot));
         if (ReferenceEquals(source, _source) && ReferenceEquals(target, _target) && operation == _operation
             && proportion.Equals(_proportion) && ReferenceEquals(dockControl, _control)
-            && viewport == _viewport && thickness.Equals(_splitterThickness) && version == _version)
+            && viewport == _viewport && scaling.Equals(_scaling) && thickness.Equals(_splitterThickness) && version == _version)
         {
             _active = _bounds.HasValue;
             return _bounds;
@@ -57,13 +61,14 @@ internal sealed class DockDropPreviewService
         _control = dockControl;
         _viewport = viewport;
         _splitterThickness = thickness;
+        _scaling = scaling;
         _version = version;
         _bounds = null;
         _active = false;
         if (viewport.Width <= 0 || viewport.Height <= 0) return null;
         var preview = DockSplitPreview.Create(source, target, operation, proportion);
         if (preview is null) return null;
-        var measured = DockPreviewLayout.Measure(preview, viewport.Size, thickness);
+        var measured = DockPreviewLayout.Measure(preview, viewport.Size, thickness, dockControl);
         if (measured is { } bounds)
             _bounds = new Rect(bounds.Position + (Vector)viewport.Position, bounds.Size);
         _active = _bounds.HasValue;

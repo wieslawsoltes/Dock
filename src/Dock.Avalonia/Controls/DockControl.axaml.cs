@@ -467,6 +467,20 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         }
     }
 
+    internal void MeasurePreview(Control projection, Size size)
+    {
+        // Avalonia takes layout rounding from the visual root. Borrow that root
+        // synchronously so both framework rounding and the panel's own DIP-based
+        // allocation match the live layout. Remove the projection before rendering.
+        VisualChildren.Add(projection);
+        try
+        {
+            projection.Measure(size);
+            projection.Arrange(new Rect(size));
+        }
+        finally { VisualChildren.Remove(projection); }
+    }
+
     internal Rect PreviewViewport => _contentControl is { } content
         && content.TranslatePoint(default, this) is { } origin
             ? new Rect(origin, content.Bounds.Size)

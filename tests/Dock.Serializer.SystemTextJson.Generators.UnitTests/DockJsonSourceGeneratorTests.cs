@@ -17,6 +17,53 @@ namespace Dock.Serializer.SystemTextJson.Generators.UnitTests;
 public class DockJsonSourceGeneratorTests
 {
     [Fact]
+    public void ReferencedTypeWithInternalInterfaces_ProducesCompilableMetadata()
+    {
+        MetadataReference reference = CreateAliasedReference("""
+            using Dock.Model.Inpc.Controls;
+            namespace External;
+            internal interface IHidden { }
+            internal interface IHiddenGeneric<T> { }
+            internal sealed class HiddenType { }
+            public interface IPublic<T> { }
+            public class ExternalDocument : Document, IHidden, IHiddenGeneric<string>, IPublic<HiddenType> { }
+            """, "ExternalModels", "global");
+        CompilationRun run = Run("""
+            namespace Example;
+            public sealed class CustomDocument : External.ExternalDocument { }
+            """, reference);
+
+        Assert.DoesNotContain(run.RunResult.Diagnostics, x => x.Severity == DiagnosticSeverity.Error);
+        string generated = GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs");
+        Assert.DoesNotContain("typeof(global::External.IHidden", generated);
+        Assert.DoesNotContain("typeof(global::External.IPublic<global::External.HiddenType>)", generated);
+        using var stream = new MemoryStream();
+        EmitResult result = run.OutputCompilation.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+    }
+
+    [Fact]
+    public void DockKeyedDictionary_UsesCompatibleSystemTextJsonGenerator()
+    {
+        CompilationRun run = Run("""
+            using System.Collections.Generic;
+            using System.Runtime.Serialization;
+            using Dock.Model.Core;
+            using Dock.Model.Inpc.Controls;
+            namespace Example;
+            public sealed class CustomDocument : Document
+            {
+                [IgnoreDataMember]
+                public IDictionary<IDockable, object>? Index { get; set; }
+            }
+            """);
+
+        using var stream = new MemoryStream();
+        EmitResult result = run.OutputCompilation.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+    }
+
+    [Fact]
     public void DefaultSerializer_GeneratesAndRegistersMetadataWithoutActivation()
     {
         const string source = """
@@ -325,6 +372,9 @@ public class DockJsonSourceGeneratorTests
 
     private static CompilationRun Run(string source, params MetadataReference[] additionalReferences)
     {
+        // Roslyn's compiler host normally loads this analyzer. The in-process test
+        // host must also load it so emitted contexts can be compiled, not just inspected.
+        _ = new global::System.Text.Json.SourceGeneration.JsonSourceGenerator();
         CSharpCompilation compilation = CreateCompilation(
             assemblyName: "DockGeneratorConsumer",
             source: source,
@@ -367,6 +417,12 @@ public class DockJsonSourceGeneratorTests
 
         foreach (string path in trustedPlatformAssemblies!.Split(Path.PathSeparator))
         {
+            // This is a generator implementation, not a consumer reference. It
+            // embeds STJ helper types that would conflict with the runtime types.
+            if (Path.GetFileName(path) == "System.Text.Json.SourceGeneration.dll")
+            {
+                continue;
+            }
             if (seenPaths.Add(path))
             {
                 references.Add(MetadataReference.CreateFromFile(path));

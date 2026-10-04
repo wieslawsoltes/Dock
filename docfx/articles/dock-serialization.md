@@ -86,6 +86,13 @@ values. The compatibility API also retains data contract member names and its
 `IServiceProvider` constructors. Type names are resolved against generated
 contracts; deserialization never loads assemblies named in a layout file.
 
+Collection element and dictionary value contracts are discovered recursively.
+The compatibility API preserves `[DataMember]` fields and properties, including
+member names and default-value settings. Nonpublic members use generated
+`UnsafeAccessor` methods, which require .NET 8 or later (.NET 9 for members declared
+on generic types). On older targets, make those getters/setters accessible to the
+generated code; unsupported access fails explicitly instead of dropping saved values.
+
 Newly saved layouts use the System.Text.Json reference-preserving format. Existing
 layout files do not require conversion, but older Newtonsoft-based app versions
 are not guaranteed to read newly saved files.

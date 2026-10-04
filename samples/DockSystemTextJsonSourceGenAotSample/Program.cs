@@ -71,7 +71,16 @@ internal static class Program
                   "$type": "DockSystemTextJsonSourceGenAotSample.SampleDocument, DockSystemTextJsonSourceGenAotSample",
                   "Id": "LegacyDocument",
                   "Owner": { "$ref": "1" },
-                  "DocumentTag": "LegacyTag"
+                  "DocumentTag": "LegacyTag",
+                  "private_tag": "PrivateTag",
+                  "GenericTag": "GenericTag",
+                  "secret": "Secret",
+                  "LegacyItems": [
+                    {
+                      "$type": "DockSystemTextJsonSourceGenAotSample.LegacyItem, DockSystemTextJsonSourceGenAotSample",
+                      "Value": "CollectionValue"
+                    }
+                  ]
                 }
               ],
               "ActiveDockable": { "$ref": "2" }
@@ -81,12 +90,22 @@ internal static class Program
         SampleRootDock restored = Require(serializer.Deserialize<SampleRootDock>(json), "Legacy layout returned null.");
         SampleDocument document = RequireType<SampleDocument>(restored.VisibleDockables?[0], "Legacy document type was lost.");
         Ensure(document.DocumentTag == "LegacyTag", "Legacy document properties were lost.");
+        VerifyLegacyMembers(document);
         Ensure(ReferenceEquals(document, restored.ActiveDockable), "Legacy active document identity was lost.");
         Ensure(ReferenceEquals(restored, document.Owner), "Legacy owner identity was lost.");
 
         string currentJson = serializer.Serialize(restored);
         SampleRootDock replay = Require(serializer.Deserialize<SampleRootDock>(currentJson), "New layout returned null.");
         Ensure(ReferenceEquals(replay.VisibleDockables?[0], replay.ActiveDockable), "New layout references were lost.");
+        VerifyLegacyMembers(RequireType<SampleDocument>(replay.ActiveDockable, "Replayed document type was lost."));
+    }
+
+    private static void VerifyLegacyMembers(SampleDocument document)
+    {
+        Ensure(document.PrivateTag == "PrivateTag", "Legacy private setter value was lost.");
+        Ensure(document.GenericTag == "GenericTag", "Legacy generic private setter value was lost.");
+        Ensure(document.ReadSecret() == "Secret", "Legacy private field value was lost.");
+        Ensure(document.LegacyItems?[0].Value == "CollectionValue", "Legacy collection item was lost.");
     }
 
     private static void VerifyLayout(SampleRootDock restored)
@@ -237,10 +256,32 @@ public class SampleToolDock : ToolDock
     public string? DockTag { get; set; }
 }
 
-public class SampleDocument : Document
+public abstract class GenericSampleDocument<T> : Document where T : class
+{
+    [DataMember]
+    public T? GenericTag { get; private set; }
+}
+
+public class SampleDocument : GenericSampleDocument<string>
 {
     [DataMember]
     public string? DocumentTag { get; set; }
+
+    [DataMember(Name = "private_tag")]
+    public string? PrivateTag { get; private set; }
+
+    [DataMember(Name = "secret")]
+    private string? _secret = null;
+
+    public string? ReadSecret() => _secret;
+
+    [DataMember]
+    public List<LegacyItem>? LegacyItems;
+}
+
+public sealed class LegacyItem
+{
+    public string? Value { get; set; }
 }
 
 public class SampleTool : Tool

@@ -10,6 +10,47 @@ namespace Dock.Avalonia.UnitTests.Controls
 {
     public class ProportionalStackPanelMinMaxTests
     {
+        [AvaloniaTheory]
+        [InlineData(Orientation.Horizontal, false)]
+        [InlineData(Orientation.Vertical, false)]
+        [InlineData(Orientation.Horizontal, true)]
+        [InlineData(Orientation.Vertical, true)]
+        public void Constrained_allocation_fills_available_space_and_is_stable_on_first_layout(Orientation orientation, bool maximum)
+        {
+            var first = new Border();
+            var second = new Border();
+            if (orientation == Orientation.Horizontal)
+            {
+                first.MinWidth = maximum ? 0 : 180;
+                first.MaxWidth = maximum ? 70 : double.PositiveInfinity;
+            }
+            else
+            {
+                first.MinHeight = maximum ? 0 : 180;
+                first.MaxHeight = maximum ? 70 : double.PositiveInfinity;
+            }
+            ProportionalStackPanel.SetProportion(first, 0.5);
+            ProportionalStackPanel.SetProportion(second, 0.5);
+            var panel = new ProportionalStackPanel
+            {
+                Orientation = orientation,
+                Children = { first, new ProportionalStackPanelSplitter { Thickness = 4 }, second }
+            };
+            var size = orientation == Orientation.Horizontal ? new Size(248, 100) : new Size(100, 248);
+            var expectedFirst = maximum ? 70 : 180;
+            var expectedSecond = 244 - expectedFirst;
+            for (var pass = 0; pass < 5; pass++)
+            {
+                panel.InvalidateMeasure();
+                panel.InvalidateArrange();
+                panel.Measure(size);
+                panel.Arrange(new Rect(size));
+                Assert.Equal(expectedFirst, orientation == Orientation.Horizontal ? first.Bounds.Width : first.Bounds.Height);
+                Assert.Equal(expectedSecond, orientation == Orientation.Horizontal ? second.Bounds.Width : second.Bounds.Height);
+                Assert.Equal(1, ProportionalStackPanel.GetProportion(first) + ProportionalStackPanel.GetProportion(second), 8);
+            }
+        }
+
         [AvaloniaFact]
         public void Respects_MinWidth_During_Layout_With_Constraints()
         {

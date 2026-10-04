@@ -332,11 +332,81 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
     [InlineData(false, false, DockOperation.Bottom)]
     [InlineData(false, true, DockOperation.Right)]
     public void Rendered_release_matches_preview_after_first_frame(bool global, bool resize, DockOperation operation)
+        => AssertRenderedRelease(global, resize, operation, global ? "catalog" : "collapse");
+
+    // Cross source lifetime, docking scope, edge, nesting, resize history and layout axis.
+    // Each row renders the real adorner, releases through DockControlState, then measures
+    // the realized control independently of the preview's detached layout calculation.
+    public static IEnumerable<object[]> DockingCases()
+    {
+        foreach (var source in new[] { "collapse", "retained", "catalog", "external", "container" })
+        foreach (var global in new[] { false, true })
+        foreach (var operation in new[] { DockOperation.Left, DockOperation.Right, DockOperation.Top, DockOperation.Bottom, DockOperation.Fill })
+        foreach (var nested in new[] { false, true })
+        foreach (var resize in new[] { false, true })
+        foreach (var vertical in new[] { false, true })
+            if (!global || operation != DockOperation.Fill)
+                yield return new object[] { source, global, operation, nested, resize, vertical };
+    }
+
+    [AvaloniaTheory]
+    [MemberData(nameof(DockingCases))]
+    public void Rendered_docking_matrix_matches_actual_release(string source, bool global, DockOperation operation,
+        bool nested, bool resize, bool vertical)
+        => AssertRenderedRelease(global, resize, operation, source, nested, vertical,
+            caseName: $"matrix-{source}-{(global ? "outer" : "inner")}-{operation}-{(nested ? "nested" : "flat")}-{(resize ? "resized" : "initial")}-{(vertical ? "vertical" : "horizontal")}");
+
+    public static IEnumerable<object[]> ConstrainedDockingCases()
+    {
+        foreach (var global in new[] { false, true })
+        foreach (var operation in new[] { DockOperation.Left, DockOperation.Right, DockOperation.Top, DockOperation.Bottom })
+        foreach (var vertical in new[] { false, true })
+        foreach (var maximum in new[] { false, true })
+            yield return new object[] { global, operation, vertical, maximum };
+    }
+
+    [AvaloniaTheory]
+    [MemberData(nameof(ConstrainedDockingCases))]
+    public void Rendered_constrained_nested_release_matches_preview(bool global, DockOperation operation, bool vertical, bool maximum)
+        => AssertRenderedRelease(global, true, operation, "catalog", nested: true, vertical: vertical,
+            constrained: true, maximum: maximum,
+            caseName: $"constrained-{(global ? "outer" : "inner")}-{operation}-{(vertical ? "vertical" : "horizontal")}-{(maximum ? "max" : "min")}");
+
+    private void AssertRenderedRelease(bool global, bool resize, DockOperation operation, string sourceKind,
+        bool nested = false, bool vertical = false, bool constrained = false, bool maximum = false, string? caseName = null)
     {
         var (factory, root, panes) = CreateLayout(0.4, 0.3, 0.3);
         for (var i = 0; i < panes.Length; i++) panes[i].ActiveDockable!.Title = "Widget " + (char)('A' + i);
         var source = panes[0].ActiveDockable!;
-        if (global)
+        var row = Assert.IsAssignableFrom<IProportionalDock>(panes[0].Owner);
+        row.Orientation = vertical ? Orientation.Vertical : Orientation.Horizontal;
+        IDockable secondColumn = panes[1];
+        if (nested)
+        {
+            var group = factory.CreateProportionalDock();
+            group.Orientation = vertical ? Orientation.Horizontal : Orientation.Vertical;
+            group.Proportion = group.CollapsedProportion = 0.3;
+            group.VisibleDockables = factory.CreateList<IDockable>();
+            row.VisibleDockables![2] = group;
+            factory.AddDockable(group, panes[1]);
+            factory.AddDockable(group, factory.CreateProportionalDockSplitter());
+            var sibling = factory.CreateToolDock();
+            sibling.VisibleDockables = factory.CreateList<IDockable>(factory.CreateTool());
+            sibling.ActiveDockable = sibling.VisibleDockables[0];
+            sibling.Proportion = sibling.CollapsedProportion = 0.28;
+            factory.AddDockable(group, sibling);
+            panes[1].Proportion = panes[1].CollapsedProportion = 0.72;
+            secondColumn = group;
+        }
+        if (sourceKind is "retained" or "container")
+            factory.AddDockable(panes[0], factory.CreateTool());
+        factory.InitLayout(root);
+        if (sourceKind == "external")
+        {
+            var (_, _, externalPanes) = CreateLayout(1.0);
+            source = externalPanes[0].ActiveDockable!;
+        }
+        if (sourceKind == "catalog")
         {
             var catalog = factory.CreateWrapDock();
             catalog.IsCollapsable = false;
@@ -346,11 +416,21 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             factory.InitLayout(catalog);
             Assert.Null(factory.FindRoot(source, _ => true));
         }
+        if (constrained)
+        {
+            panes[1].MinWidth = maximum ? 0 : vertical ? 500 : 180;
+            panes[1].MinHeight = maximum ? 0 : vertical ? 100 : 280;
+            panes[1].MaxWidth = maximum ? (vertical ? 280 : 80) : double.PositiveInfinity;
+            panes[1].MaxHeight = maximum ? (vertical ? 50 : 150) : double.PositiveInfinity;
+            source.MinWidth = 140;
+            source.MinHeight = 110;
+        }
+        var originalOwner = Assert.IsAssignableFrom<IDock>(source.Owner);
         var control = new DockControl { Layout = root, Margin = new Thickness(73, 84, 0, 0) };
         var window = new Window { Width = 1073, Height = 684, Content = control, Background = Brushes.DimGray };
         var prior = Dock.Settings.DockSettings.GlobalDockingProportion;
         var directory = System.Environment.GetEnvironmentVariable("DOCK_PROOF_DIRECTORY");
-        var name = (global ? "palette-global-" : resize ? "resized-local-" : "collapse-local-") + operation.ToString().ToLowerInvariant();
+        var name = caseName ?? (global ? "palette-global-" : resize ? "resized-local-" : "collapse-local-") + operation.ToString().ToLowerInvariant();
         if (directory is not null) System.IO.Directory.CreateDirectory(directory);
         try
         {
@@ -363,27 +443,29 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             if (resize)
             {
-                var splitter = control.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().First();
-                var start = splitter.TranslatePoint(new Point(2, 300), window)!.Value;
+                var splitter = control.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>()
+                    .Single(x => ReferenceEquals(x.DataContext, row.VisibleDockables![1]));
+                var start = splitter.TranslatePoint(new Point(splitter.Bounds.Width / 2, splitter.Bounds.Height / 2), window)!.Value;
+                var movement = vertical ? new Vector(0, 40) : new Vector(60, 0);
                 window.MouseDown(start, global::Avalonia.Input.MouseButton.Left);
-                window.MouseMove(start + new Vector(60, 0), global::Avalonia.Input.RawInputModifiers.LeftMouseButton);
-                window.MouseUp(start + new Vector(60, 0), global::Avalonia.Input.MouseButton.Left);
+                window.MouseMove(start + movement, global::Avalonia.Input.RawInputModifiers.LeftMouseButton);
+                window.MouseUp(start + movement, global::Avalonia.Input.MouseButton.Left);
                 global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
                 window.UpdateLayout();
                 Assert.True(panes[0].Proportion > 0.4);
                 // A later model update must still reach the control after the user has resized it.
                 panes[0].Proportion = panes[0].CollapsedProportion = 0.45;
-                panes[1].Proportion = panes[1].CollapsedProportion = 0.25;
+                secondColumn.Proportion = secondColumn.CollapsedProportion = 0.25;
                 global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
                 window.UpdateLayout();
                 var first = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[panes[0]]);
-                Assert.Equal(446, first.Bounds.Width, 0);
+                Assert.Equal(vertical ? 266 : 446, vertical ? first.Bounds.Height : first.Bounds.Width, 0);
             }
             var drop = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[panes[1]]);
             drop.SetValue(Dock.Settings.DockProperties.IsDockTargetProperty, true);
             drop.SetValue(Dock.Settings.DockProperties.IsDropEnabledProperty, true);
             var context = new DockDragContext {
-                DragControl = new Border { DataContext = source }, DoDragDrop = true,
+                DragControl = new Border { DataContext = sourceKind == "container" ? originalOwner : source }, DoDragDrop = true,
                 TargetPoint = new Point(10, 10), TargetDockControl = control,
                 ResolvedOperation = operation, UseGlobalOperation = global, HasResolvedOperation = true
             };
@@ -413,6 +495,10 @@ public class DockDropPreviewTests(Xunit.Abstractions.ITestOutputHelper output)
             if (directory is not null) dropFrame.Save(System.IO.Path.Combine(directory, name + "-drop.png"));
             var realized = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[source.Owner!]);
             var actual = new Rect(realized.TranslatePoint(default, control)!.Value, realized.Bounds.Size);
+            Assert.NotSame(originalOwner, source.Owner);
+            Assert.Contains(source, Assert.IsAssignableFrom<IDock>(source.Owner).VisibleDockables!);
+            Assert.DoesNotContain(source, originalOwner.VisibleDockables!);
+            Assert.False(control.IsDraggingDock);
             var origin = control.TranslatePoint(default, window)!.Value;
             static object Bounds(Rect r) => new { x = r.X, y = r.Y, width = r.Width, height = r.Height };
             if (directory is not null) System.IO.File.WriteAllText(System.IO.Path.Combine(directory, name + ".json"),

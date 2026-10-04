@@ -17,6 +17,146 @@ namespace Dock.Serializer.SystemTextJson.Generators.UnitTests;
 public class DockJsonSourceGeneratorTests
 {
     [Fact]
+    public void PackageGenerator_IsolatedFromSameNameGeneratorInCompilerHost()
+    {
+        _ = new global::System.Text.Json.SourceGeneration.JsonSourceGenerator();
+        string package = Path.Combine(Path.GetTempPath(), "dock-generator-" + Guid.NewGuid().ToString("N"));
+        string runtime = Path.Combine(package, "lib", "net10.0", "System.Text.Json.dll");
+        string analyzer = Path.Combine(package, "analyzers", "dotnet", "roslyn4.4", "cs", "System.Text.Json.SourceGeneration.dll");
+        Directory.CreateDirectory(Path.GetDirectoryName(runtime)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(analyzer)!);
+        try
+        {
+            File.Copy(typeof(global::System.Text.Json.JsonSerializer).Assembly.Location, runtime);
+            // A different package implementation with the same simple assembly name
+            // must be selected even when the host already loaded its own generator.
+            CSharpCompilation packageGenerator = CreateCompilation("System.Text.Json.SourceGeneration", """"
+                using Microsoft.CodeAnalysis;
+                [assembly: System.Reflection.AssemblyVersion("1.0.0.0")]
+                public sealed class JsonSourceGenerator : ISourceGenerator
+                {
+                    public void Initialize(GeneratorInitializationContext context) { }
+                    public void Execute(GeneratorExecutionContext context) => context.AddSource("PackageContext.g.cs", """
+                        #nullable enable
+                        namespace Dock.Serializer.SystemTextJson;
+                        internal partial class DockSerializerGeneratedJsonContext
+                        {
+                            public DockSerializerGeneratedJsonContext() : base(null) { }
+                            public const string SelectedPackage = "isolated package";
+                            public static DockSerializerGeneratedJsonContext Default { get; } = new();
+                            protected override global::System.Text.Json.JsonSerializerOptions? GeneratedSerializerOptions => null;
+                            public override global::System.Text.Json.Serialization.Metadata.JsonTypeInfo? GetTypeInfo(global::System.Type type) => null;
+                        }
+                        """);
+                }
+                """");
+            EmitResult emitted = packageGenerator.Emit(analyzer, cancellationToken: TestContext.Current.CancellationToken);
+            Assert.True(emitted.Success, string.Join(Environment.NewLine, emitted.Diagnostics));
+
+            CSharpCompilation compilation = CreateCompilation("PackageConsumer", """
+                namespace Example;
+                public sealed class CustomDocument : Dock.Model.Inpc.Controls.Document { }
+                """);
+            MetadataReference original = Assert.Single(compilation.References, r => r.Display?.EndsWith("System.Text.Json.dll", StringComparison.Ordinal) == true);
+            compilation = compilation.ReplaceReference(original, MetadataReference.CreateFromFile(runtime));
+            GeneratorDriver driver = CSharpGeneratorDriver.Create(new[] { new DockJsonSourceGenerator().AsSourceGenerator() },
+                parseOptions: (CSharpParseOptions)compilation.SyntaxTrees[0].Options);
+            driver = driver.RunGeneratorsAndUpdateCompilation(compilation, out Compilation output, out _, TestContext.Current.CancellationToken);
+            var run = new CompilationRun(driver.GetRunResult(), output);
+            Assert.Contains("isolated package", GetGeneratedSource(run, "SystemTextJson.PackageContext.g.cs"));
+            using var stream = new MemoryStream();
+            EmitResult result = output.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+            Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+        }
+        finally
+        {
+            // Windows may retain the loaded analyzer until the test host exits.
+            try { Directory.Delete(package, recursive: true); }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+        }
+    }
+
+    [Fact]
+    public void BrokenPackageGenerator_ProducesBuildErrorInsteadOfMissingMetadata()
+    {
+        string package = Path.Combine(Path.GetTempPath(), "dock-broken-generator-" + Guid.NewGuid().ToString("N"));
+        string runtime = Path.Combine(package, "lib", "net10.0", "System.Text.Json.dll");
+        string analyzer = Path.Combine(package, "analyzers", "dotnet", "roslyn4.4", "cs", "System.Text.Json.SourceGeneration.dll");
+        Directory.CreateDirectory(Path.GetDirectoryName(runtime)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(analyzer)!);
+        try
+        {
+            File.Copy(typeof(global::System.Text.Json.JsonSerializer).Assembly.Location, runtime);
+            File.WriteAllText(analyzer, "not a managed assembly");
+            CSharpCompilation compilation = CreateCompilation("BrokenPackageConsumer", """
+                namespace Example;
+                public sealed class CustomDocument : Dock.Model.Inpc.Controls.Document { }
+                """);
+            MetadataReference original = Assert.Single(compilation.References, r => r.Display?.EndsWith("System.Text.Json.dll", StringComparison.Ordinal) == true);
+            compilation = compilation.ReplaceReference(original, MetadataReference.CreateFromFile(runtime));
+            GeneratorDriver driver = CSharpGeneratorDriver.Create(new[] { new DockJsonSourceGenerator().AsSourceGenerator() },
+                parseOptions: (CSharpParseOptions)compilation.SyntaxTrees[0].Options);
+            driver = driver.RunGeneratorsAndUpdateCompilation(compilation, out _, out _, TestContext.Current.CancellationToken);
+            Diagnostic diagnostic = Assert.Single(driver.GetRunResult().Diagnostics, d => d.Id == "DSTJ005");
+            Assert.Equal(DiagnosticSeverity.Error, diagnostic.Severity);
+        }
+        finally
+        {
+            Directory.Delete(package, recursive: true);
+        }
+    }
+
+    [Fact]
+    public void OpenNestedSerializerTypeArguments_DoNotLeakIntoGeneratedCode()
+    {
+        CompilationRun run = Run("""
+            using System.Collections.Generic;
+            using Dock.Serializer.SystemTextJson;
+            using Dock.Model.Inpc.Controls;
+            namespace Example;
+            public sealed class CustomDocument : Document { }
+            public static class Usage
+            {
+                public static string Save<T>(List<List<T>> values) => new DockSerializer().Serialize(values);
+            }
+            """);
+        using var stream = new MemoryStream();
+        EmitResult result = run.OutputCompilation.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+    }
+
+    [Fact]
+    public void PublicFieldsAndCollectionInterfaces_ProduceCompilableDescriptors()
+    {
+        CompilationRun run = Run("""
+            using System;
+            using System.Collections.Generic;
+            using System.Runtime.Serialization;
+            using Dock.Serializer.SystemTextJson;
+            using Dock.Model.Inpc.Controls;
+            namespace Example;
+            public sealed class Payload { public string? Value; }
+            public sealed class PayloadList : List<Payload> { }
+            public sealed class CustomDocument : Document
+            {
+                [DataMember] public PayloadList? Items { get; set; }
+                [DataMember] public HashSet<Payload>? Set { get; set; }
+            }
+            public static class Usage
+            {
+                public static Guid[]? Load(string text) => new DockSerializer().Deserialize<Guid[]>(text);
+            }
+            """);
+        using var stream = new MemoryStream();
+        EmitResult result = run.OutputCompilation.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+        string generated = GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs");
+        Assert.Contains("elementType: typeof(global::Example.Payload)", generated);
+        Assert.Contains("elementType: typeof(global::System.Guid)", generated);
+    }
+
+    [Fact]
     public void ReferencedTypeWithInternalInterfaces_ProducesCompilableMetadata()
     {
         MetadataReference reference = CreateAliasedReference("""

@@ -93,6 +93,16 @@ values as `double`) without requiring registrations. Properties removed from the
 current contract are ignored, including obsolete nested type names and lists;
 `[JsonExtensionData]` members instead retain their raw JSON.
 
+The compatibility API also preserves ordinary public payload fields, Newtonsoft
+`[JsonProperty]` member names, `[JsonIgnore]` exclusions, and `JsonObject` opt-in
+and field contracts. `[DataMember]` names apply within a `[DataContract]`, matching
+Newtonsoft. Generated object handling applies to roots, properties, collection
+elements, and dictionary values, preserving registered payload types and shared
+references. Collection descriptors follow their generic interfaces, including
+sets, queues, read-only collection interfaces, and custom list subclasses. Arrays
+used directly in serializer calls are discovered automatically. Untyped JSON
+objects and arrays without a CLR type discriminator are retained as `JsonElement`.
+
 Collection element and dictionary value contracts are discovered recursively.
 The compatibility API preserves `[DataMember]` fields and properties, including
 member names and default-value settings. Nonpublic members use generated

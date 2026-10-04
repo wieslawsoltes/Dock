@@ -42,6 +42,11 @@ internal static class DockSerializerOptionsFactory
                 : typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType))
         };
 
+        if (typeInfoResolver is DockJsonMetadata.MetadataResolver generated)
+        {
+            options.Converters.Add(new DockObjectJsonConverter(generated));
+        }
+
         return options;
     }
 }

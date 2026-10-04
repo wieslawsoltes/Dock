@@ -14,6 +14,33 @@ public sealed partial class DockJsonSourceGenerator
     // Emit these contracts separately so the compatibility facade can opt into them.
     private static class LegacyMemberEmitter
     {
+        internal static AttributeData? Attribute(ISymbol member, string name) =>
+            member.GetAttributes().FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == name);
+
+        internal static bool IsIncluded(ISymbol member, bool optIn, bool dataContract, bool fieldsOnly = false)
+        {
+            if (Attribute(member, "Newtonsoft.Json.JsonIgnoreAttribute") is not null
+                || Attribute(member, "System.Runtime.Serialization.IgnoreDataMemberAttribute") is not null)
+                return false;
+            if (fieldsOnly) return member is IFieldSymbol;
+            bool explicitMember = Attribute(member, "Newtonsoft.Json.JsonPropertyAttribute") is not null
+                || dataContract && Attribute(member, "System.Runtime.Serialization.DataMemberAttribute") is not null;
+            if (member is IPropertySymbol property && (property.GetMethod is null || property.SetMethod is null)) return false;
+            if (!explicitMember && member is IPropertySymbol publicProperty
+                && publicProperty.SetMethod!.DeclaredAccessibility != Accessibility.Public) return false;
+            if (member is IFieldSymbol { IsReadOnly: true } && !explicitMember) return false;
+            return explicitMember || !optIn && member.DeclaredAccessibility == Accessibility.Public;
+        }
+
+        internal static string Name(ISymbol member, bool dataContract)
+        {
+            AttributeData? json = Attribute(member, "Newtonsoft.Json.JsonPropertyAttribute");
+            return json?.NamedArguments.FirstOrDefault(a => a.Key == "PropertyName").Value.Value as string
+                ?? (json?.ConstructorArguments.Length > 0 ? json.ConstructorArguments[0].Value as string : null)
+                ?? (dataContract ? Attribute(member, "System.Runtime.Serialization.DataMemberAttribute")?.NamedArguments.FirstOrDefault(a => a.Key == "Name").Value.Value as string : null)
+                ?? member.Name;
+        }
+
         internal static IEnumerable<ISymbol> GetDataMembers(INamedTypeSymbol type)
         {
             var names = new HashSet<string>(StringComparer.Ordinal);
@@ -24,7 +51,7 @@ public sealed partial class DockJsonSourceGenerator
                     if (member.IsStatic || member is not (IFieldSymbol or IPropertySymbol)
                         || member is IPropertySymbol { IsIndexer: true }
                         || !names.Add(member.Name)
-                        || !member.GetAttributes().Any(static a => a.AttributeClass?.ToDisplayString() == "System.Runtime.Serialization.DataMemberAttribute"))
+                        || !IsIncluded(member, SourceEmitter.UsesOptInContract(type), SourceEmitter.HasInheritedDataContract(type), SourceEmitter.UsesFieldContract(type)))
                     {
                         continue;
                     }
@@ -119,8 +146,9 @@ public sealed partial class DockJsonSourceGenerator
                     accessors.AppendLine("    }");
                 }
 
-                AttributeData dataMember = member.GetAttributes().First(static a => a.AttributeClass?.ToDisplayString() == "System.Runtime.Serialization.DataMemberAttribute");
-                string name = dataMember.NamedArguments.FirstOrDefault(static a => a.Key == "Name").Value.Value as string ?? member.Name;
+                bool dataContract = SourceEmitter.HasInheritedDataContract(type);
+                AttributeData? dataMember = dataContract ? Attribute(member, "System.Runtime.Serialization.DataMemberAttribute") : null;
+                string name = Name(member, dataContract);
                 builder.AppendLine("                    {");
                 builder.AppendLine("                        global::System.Text.Json.Serialization.Metadata.JsonPropertyInfo? member = null;");
                 builder.AppendLine("                        foreach (var candidate in info.Properties)");
@@ -144,14 +172,14 @@ public sealed partial class DockJsonSourceGenerator
                 builder.Append("                        member.Set = static (obj, value) => ").Append(set).AppendLine(";");
                 if (valueType.SpecialType == SpecialType.System_Object)
                 {
-                    builder.AppendLine("                        member.CustomConverter ??= DockSystemTextJsonResolver.GetObjectPayloadConverter();");
+                    builder.AppendLine("                        if (info.Options.Converters.Count == 0) member.CustomConverter ??= DockSystemTextJsonResolver.GetObjectPayloadConverter();");
                 }
-                if (dataMember.NamedArguments.FirstOrDefault(static a => a.Key == "EmitDefaultValue").Value.Value is false)
+                if (dataMember?.NamedArguments.FirstOrDefault(static a => a.Key == "EmitDefaultValue").Value.Value is false)
                 {
                     builder.Append("                        member.ShouldSerialize = static (_, value) => !global::System.Collections.Generic.EqualityComparer<")
                         .Append(valueExpression).Append(">.Default.Equals((").Append(valueExpression).AppendLine(")value!, default!);");
                 }
-                if (dataMember.NamedArguments.FirstOrDefault(static a => a.Key == "Order").Value.Value is int order)
+                if (dataMember?.NamedArguments.FirstOrDefault(static a => a.Key == "Order").Value.Value is int order)
                 {
                     builder.Append("                        member.Order = ").Append(order).AppendLine(";");
                 }

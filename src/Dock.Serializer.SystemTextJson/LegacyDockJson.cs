@@ -38,6 +38,13 @@ internal sealed class LegacyDockJson
     {
         if (element.ValueKind == JsonValueKind.Array)
         {
+            if (type == typeof(object))
+            {
+                // Legacy untyped arrays have no collection discriminator. Their
+                // contents belong to the untyped JSON value, not a CLR contract.
+                element.WriteTo(writer);
+                return;
+            }
             Type elementType = _resolver.GetContract(type)?.ElementType
                 ?? throw new NotSupportedException($"No generated element contract exists for '{type}'.");
             writer.WriteStartArray();

@@ -9,6 +9,7 @@ using Dock.Serializer.SystemTextJson;
 
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.RegisteredPayload))]
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.DerivedMetadata))]
+[assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.LegacyFieldPayload))]
 
 namespace DockSystemTextJsonSourceGenAotSample;
 
@@ -19,6 +20,7 @@ internal static class Program
         ValidateRoundTrip();
         ValidateLegacyJson();
         ValidateLegacyValuesAndPolymorphism();
+        ValidateLegacyMembersAndCollections();
         Console.WriteLine("Dock source-generated AOT serialization round trip succeeded.");
         return 0;
     }
@@ -142,6 +144,36 @@ internal static class Program
             var result = Require(serializer.Deserialize<SampleDocument>(serializer.Serialize(document)), "Scalar replay returned null.");
             Ensure(Equals(value, result.ScalarValue), "Scalar value or CLR type was lost.");
         }
+    }
+
+    private static void ValidateLegacyMembersAndCollections()
+    {
+        const string json = """
+            {
+              "Items":[
+                {"$id":"payload","$type":"DockSystemTextJsonSourceGenAotSample.LegacyFieldPayload, DockSystemTextJsonSourceGenAotSample","Value":"field","saved_name":"name"},
+                {"$ref":"payload"}, "text", 42
+              ],
+              "Map":{"same":{"$ref":"payload"}},
+              "Tags":["saved"], "Untyped":[1,2]
+            }
+            """;
+        var serializer = new Dock.Serializer.DockSerializer();
+        string current = json;
+        for (int i = 0; i < 2; i++)
+        {
+            var restored = Require(serializer.Deserialize<LegacyCollectionPayload>(current), "Collections returned null.");
+            var payload = RequireType<LegacyFieldPayload>(restored.Items![0], "Object collection type was lost.");
+            Ensure(payload.Value == "field" && payload.Name == "name", "Public field or Newtonsoft name was lost.");
+            Ensure(ReferenceEquals(payload, restored.Items[1]) && ReferenceEquals(payload, restored.Map!["same"]), "Collection references were lost.");
+            Ensure(restored.Items[2] is string && restored.Items[3] is long, "Collection scalars changed type.");
+            Ensure(restored.Tags!.Contains("saved"), "HashSet values were lost.");
+            Ensure(restored.Untyped is System.Text.Json.JsonElement { ValueKind: System.Text.Json.JsonValueKind.Array }, "Untyped array was lost.");
+            current = serializer.Serialize(restored);
+            Ensure(!current.Contains("excluded"), "JsonIgnore was not respected.");
+        }
+        var rootArray = new[] { Guid.Empty };
+        Ensure(Require(serializer.Deserialize<Guid[]>(serializer.Serialize(rootArray)), "Root array returned null.").Length == 1, "Root array was lost.");
     }
 
     private static void VerifyLayout(SampleRootDock restored)
@@ -298,6 +330,7 @@ public abstract class GenericSampleDocument<T> : Document where T : class
     public T? GenericTag { get; private set; }
 }
 
+[DataContract]
 public class SampleDocument : GenericSampleDocument<string>
 {
     [DataMember]
@@ -337,6 +370,21 @@ public sealed class DerivedMetadata : LayoutMetadata
 public sealed class LegacyItem
 {
     public string? Value { get; set; }
+}
+
+public sealed class LegacyFieldPayload
+{
+    public string? Value;
+    [Newtonsoft.Json.JsonProperty("saved_name")] public string? Name { get; private set; }
+    [Newtonsoft.Json.JsonIgnore] public string Ignored { get; set; } = "excluded";
+}
+
+public sealed class LegacyCollectionPayload
+{
+    public List<object>? Items { get; set; }
+    public Dictionary<string, object>? Map { get; set; }
+    public HashSet<string>? Tags { get; set; }
+    public object? Untyped { get; set; }
 }
 
 public class SampleTool : Tool

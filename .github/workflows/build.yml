@@ -8,10 +8,12 @@ on:
     branches:
     - master
     - release/*
+    - 11.3.12.1
   pull_request:
     branches:
     - master
     - release/*
+    - 11.3.12.1
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1

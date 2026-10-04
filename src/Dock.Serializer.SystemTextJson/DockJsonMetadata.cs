@@ -174,15 +174,18 @@ public static class DockJsonMetadata
                     ?? throw new NotSupportedException($"No generated constructor or service registration exists for '{type}'.");
             }
 
-            if (info.PolymorphismOptions is { } polymorphism)
+            if (type != typeof(object))
             {
-                // Each module contributes its own derived types. Compose them without assembly scanning.
+                // Concrete base classes need the same runtime-type preservation as
+                // Dock interfaces. Only generated assignability checks are used.
+                JsonPolymorphismOptions? polymorphism = info.PolymorphismOptions;
                 foreach (KeyValuePair<Type, DockJsonType> entry in _types)
                 {
                     if (!entry.Value.CanAssignTo(type) || entry.Key == type)
                     {
                         continue;
                     }
+                    polymorphism ??= new JsonPolymorphismOptions { TypeDiscriminatorPropertyName = "$type" };
                     bool exists = false;
                     foreach (JsonDerivedType derived in polymorphism.DerivedTypes)
                     {
@@ -197,8 +200,12 @@ public static class DockJsonMetadata
                         polymorphism.DerivedTypes.Add(new JsonDerivedType(entry.Key, entry.Key.FullName ?? entry.Key.Name));
                     }
                 }
-                polymorphism.UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization;
-                polymorphism.IgnoreUnrecognizedTypeDiscriminators = false;
+                if (polymorphism is not null)
+                {
+                    polymorphism.UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization;
+                    polymorphism.IgnoreUnrecognizedTypeDiscriminators = false;
+                    info.PolymorphismOptions = polymorphism;
+                }
             }
             return info;
         }

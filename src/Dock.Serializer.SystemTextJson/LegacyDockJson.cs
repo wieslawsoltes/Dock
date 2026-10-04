@@ -62,7 +62,8 @@ internal sealed class LegacyDockJson
         {
             writer.WriteString("$id", id.GetString());
         }
-        if (element.TryGetProperty("$type", out _) && (declaredInfo.PolymorphismOptions is not null || type == typeof(object)))
+        if (element.TryGetProperty("$type", out _) && concreteType != type
+            && (declaredInfo.PolymorphismOptions is not null || type == typeof(object)))
         {
             writer.WriteString("$type", concreteType.FullName ?? concreteType.Name);
         }
@@ -70,6 +71,22 @@ internal sealed class LegacyDockJson
         {
             if (property.NameEquals("$id") || property.NameEquals("$type"))
             {
+                continue;
+            }
+            JsonPropertyInfo? member = GetProperty(info, property.Name);
+            if (info.Kind == JsonTypeInfoKind.Object && member is null)
+            {
+                // Newtonsoft skips unknown members without inspecting their values.
+                // A removed property's array or obsolete $type is not part of the
+                // current contract, so it must not require generated metadata.
+                foreach (JsonPropertyInfo candidate in info.Properties)
+                {
+                    if (candidate.IsExtensionData)
+                    {
+                        property.WriteTo(writer);
+                        break;
+                    }
+                }
                 continue;
             }
             writer.WritePropertyName(property.Name);
@@ -81,7 +98,7 @@ internal sealed class LegacyDockJson
             {
                 ReadElement(writer, property.Value, info.Kind == JsonTypeInfoKind.Dictionary
                     ? _resolver.GetContract(concreteType)?.DictionaryValueType ?? typeof(object)
-                    : GetPropertyType(info, property.Name));
+                    : member?.PropertyType ?? typeof(object));
             }
         }
         writer.WriteEndObject();
@@ -102,16 +119,16 @@ internal sealed class LegacyDockJson
         return concreteType;
     }
 
-    private static Type GetPropertyType(JsonTypeInfo info, string name)
+    private static JsonPropertyInfo? GetProperty(JsonTypeInfo info, string name)
     {
         foreach (JsonPropertyInfo property in info.Properties)
         {
             if (property.Name == name)
             {
-                return property.PropertyType;
+                return property;
             }
         }
-        return typeof(object);
+        return null;
     }
 
     internal static string NormalizeTypeName(string name)

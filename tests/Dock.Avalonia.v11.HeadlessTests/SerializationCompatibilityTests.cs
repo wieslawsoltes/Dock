@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Avalonia.Headless.XUnit;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Controls;
 using Xunit;
@@ -8,7 +9,7 @@ namespace Dock.Avalonia.v11.HeadlessTests;
 
 public class SerializationCompatibilityTests
 {
-    [Fact]
+    [AvaloniaFact]
     public void Avalonia11ReactiveLayout_PreviouslySavedJson_PreservesDockableIdentity()
     {
         const string json = """

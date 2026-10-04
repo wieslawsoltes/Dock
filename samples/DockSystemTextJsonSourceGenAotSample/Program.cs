@@ -8,6 +8,7 @@ using Dock.Model.Mvvm.Core;
 using Dock.Serializer.SystemTextJson;
 
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.RegisteredPayload))]
+[assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.DerivedMetadata))]
 
 namespace DockSystemTextJsonSourceGenAotSample;
 
@@ -17,6 +18,7 @@ internal static class Program
     {
         ValidateRoundTrip();
         ValidateLegacyJson();
+        ValidateLegacyValuesAndPolymorphism();
         Console.WriteLine("Dock source-generated AOT serialization round trip succeeded.");
         return 0;
     }
@@ -106,6 +108,40 @@ internal static class Program
         Ensure(document.GenericTag == "GenericTag", "Legacy generic private setter value was lost.");
         Ensure(document.ReadSecret() == "Secret", "Legacy private field value was lost.");
         Ensure(document.LegacyItems?[0].Value == "CollectionValue", "Legacy collection item was lost.");
+    }
+
+    private static void ValidateLegacyValuesAndPolymorphism()
+    {
+        const string json = """
+            {
+              "$type":"DockSystemTextJsonSourceGenAotSample.SampleDocument, DockSystemTextJsonSourceGenAotSample",
+              "ScalarValue":"saved",
+              "Metadata":{
+                "$id":"metadata",
+                "$type":"DockSystemTextJsonSourceGenAotSample.DerivedMetadata, DockSystemTextJsonSourceGenAotSample",
+                "Name":"base", "Extra":"derived"
+              },
+              "SharedMetadata":{"$ref":"metadata"},
+              "RemovedItems":[{"$type":"Removed.Type, Removed.Assembly"}]
+            }
+            """;
+        var serializer = new Dock.Serializer.DockSerializer();
+        SampleDocument restored = Require(serializer.Deserialize<SampleDocument>(json), "Legacy values returned null.");
+        Ensure(restored.ScalarValue is string text && text == "saved", "Legacy scalar CLR type was lost.");
+        Ensure(RequireType<DerivedMetadata>(restored.Metadata, "Legacy derived metadata was lost.").Extra == "derived", "Legacy derived value was lost.");
+        Ensure(ReferenceEquals(restored.Metadata, restored.SharedMetadata), "Legacy metadata reference was lost.");
+
+        Document declaredBase = restored;
+        SampleDocument replay = RequireType<SampleDocument>(serializer.Deserialize<Document>(serializer.Serialize(declaredBase)), "Concrete base serialization lost its runtime type.");
+        Ensure(RequireType<DerivedMetadata>(replay.Metadata, "Derived metadata replay was lost.").Extra == "derived", "Derived value replay was lost.");
+        Ensure(ReferenceEquals(replay.Metadata, replay.SharedMetadata), "Replayed metadata reference was lost.");
+
+        foreach (object value in new object[] { "text", true, 42L, 1.5d })
+        {
+            var document = new SampleDocument { ScalarValue = value };
+            var result = Require(serializer.Deserialize<SampleDocument>(serializer.Serialize(document)), "Scalar replay returned null.");
+            Ensure(Equals(value, result.ScalarValue), "Scalar value or CLR type was lost.");
+        }
     }
 
     private static void VerifyLayout(SampleRootDock restored)
@@ -277,6 +313,25 @@ public class SampleDocument : GenericSampleDocument<string>
 
     [DataMember]
     public List<LegacyItem>? LegacyItems;
+
+    [DataMember]
+    public object? ScalarValue { get; set; }
+
+    [DataMember]
+    public LayoutMetadata? Metadata { get; set; }
+
+    [DataMember]
+    public LayoutMetadata? SharedMetadata { get; set; }
+}
+
+public class LayoutMetadata
+{
+    public string? Name { get; set; }
+}
+
+public sealed class DerivedMetadata : LayoutMetadata
+{
+    public string? Extra { get; set; }
 }
 
 public sealed class LegacyItem

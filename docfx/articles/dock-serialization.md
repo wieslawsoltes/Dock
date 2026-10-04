@@ -86,6 +86,13 @@ values. The compatibility API also retains data contract member names and its
 `IServiceProvider` constructors. Type names are resolved against generated
 contracts; deserialization never loads assemblies named in a layout file.
 
+Registered derived types retain their data when saved or loaded through concrete
+base types, including shared references. Scalar `object` payloads use the legacy
+Newtonsoft value types (for example, integer values load as `long` and fractional
+values as `double`) without requiring registrations. Properties removed from the
+current contract are ignored, including obsolete nested type names and lists;
+`[JsonExtensionData]` members instead retain their raw JSON.
+
 Collection element and dictionary value contracts are discovered recursively.
 The compatibility API preserves `[DataMember]` fields and properties, including
 member names and default-value settings. Nonpublic members use generated

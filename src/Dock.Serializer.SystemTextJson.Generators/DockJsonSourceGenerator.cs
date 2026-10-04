@@ -1928,6 +1928,26 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("                return null;");
             builder.AppendLine("            }");
             builder.AppendLine();
+            builder.AppendLine("""
+            switch (reader.TokenType)
+            {
+                case global::System.Text.Json.JsonTokenType.String:
+                    string? scalarText = reader.GetString();
+                    // Newtonsoft only infers ISO dates containing a time component.
+                    return scalarText is { Length: >= 19 } && reader.TryGetDateTime(out var date) ? (object)date : scalarText;
+                case global::System.Text.Json.JsonTokenType.True: return true;
+                case global::System.Text.Json.JsonTokenType.False: return false;
+                case global::System.Text.Json.JsonTokenType.Number:
+                    if (reader.TryGetInt64(out long integer)) return integer;
+                    using (var number = global::System.Text.Json.JsonDocument.ParseValue(ref reader))
+                    {
+                        string text = number.RootElement.GetRawText();
+                        return text.IndexOf('.') >= 0 || text.IndexOf('e') >= 0 || text.IndexOf('E') >= 0
+                            ? (object)number.RootElement.GetDouble()
+                            : global::System.Numerics.BigInteger.Parse(text, global::System.Globalization.CultureInfo.InvariantCulture);
+                    }
+            }
+            """);
             builder.AppendLine("            using global::System.Text.Json.JsonDocument document = global::System.Text.Json.JsonDocument.ParseValue(ref reader);");
             builder.AppendLine("            if (document.RootElement.ValueKind != global::System.Text.Json.JsonValueKind.Object)");
             builder.AppendLine("            {");
@@ -2013,6 +2033,40 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("                return;");
             builder.AppendLine("            }");
             builder.AppendLine();
+            builder.AppendLine("""
+            // JSON scalars do not carry a type discriminator in Newtonsoft layouts.
+            // Write them directly, without reflection or payload registration.
+            switch (value)
+            {
+                case string scalar: writer.WriteStringValue(scalar); return;
+                case bool scalar: writer.WriteBooleanValue(scalar); return;
+                case char scalar: writer.WriteStringValue(scalar.ToString()); return;
+                case byte scalar: writer.WriteNumberValue(scalar); return;
+                case sbyte scalar: writer.WriteNumberValue(scalar); return;
+                case short scalar: writer.WriteNumberValue(scalar); return;
+                case ushort scalar: writer.WriteNumberValue(scalar); return;
+                case int scalar: writer.WriteNumberValue(scalar); return;
+                case uint scalar: writer.WriteNumberValue(scalar); return;
+                case long scalar: writer.WriteNumberValue(scalar); return;
+                case ulong scalar: writer.WriteNumberValue(scalar); return;
+                case decimal scalar: WriteFloatingPoint(writer, scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture)); return;
+                case float scalar:
+                    if (float.IsFinite(scalar)) WriteFloatingPoint(writer, scalar.ToString("R", global::System.Globalization.CultureInfo.InvariantCulture));
+                    else writer.WriteStringValue(scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture));
+                    return;
+                case double scalar:
+                    if (double.IsFinite(scalar)) WriteFloatingPoint(writer, scalar.ToString("R", global::System.Globalization.CultureInfo.InvariantCulture));
+                    else writer.WriteStringValue(scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture));
+                    return;
+                case global::System.DateTime scalar: writer.WriteStringValue(scalar); return;
+                case global::System.DateTimeOffset scalar: writer.WriteStringValue(scalar); return;
+                case global::System.Guid scalar: writer.WriteStringValue(scalar); return;
+                case global::System.TimeSpan scalar: writer.WriteStringValue(scalar.ToString("c", global::System.Globalization.CultureInfo.InvariantCulture)); return;
+                case global::System.Uri scalar: writer.WriteStringValue(scalar.OriginalString); return;
+                case global::System.Numerics.BigInteger scalar:
+                    writer.WriteRawValue(scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture)); return;
+            }
+            """);
             builder.AppendLine("            global::System.Type runtimeType = value.GetType();");
             builder.AppendLine("            if (!s_objectPayloadDiscriminators.TryGetValue(runtimeType, out string? discriminator))");
             builder.AppendLine("            {");
@@ -2039,6 +2093,15 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("            }");
             builder.AppendLine("            writer.WriteEndObject();");
             builder.AppendLine("        }");
+            builder.AppendLine("""
+            private static void WriteFloatingPoint(global::System.Text.Json.Utf8JsonWriter writer, string text)
+            {
+                // Keep the floating-point token shape so an integral-valued float or
+                // decimal still reads as double in an object slot, as with Newtonsoft.
+                bool fractional = text.IndexOf('.') >= 0 || text.IndexOf('e') >= 0 || text.IndexOf('E') >= 0;
+                writer.WriteRawValue(fractional ? text : text + ".0");
+            }
+            """);
             builder.AppendLine("    }");
             builder.AppendLine();
         }

@@ -30,12 +30,10 @@ public sealed class DockSplitPreview
     /// <returns>A detached projection, or null for unsupported layouts or rejected operations.</returns>
     public static DockSplitPreview? Create(IDockable source, IDockable target, DockOperation operation, double proportion = double.NaN)
     {
-        if (source.Factory is not IDockPreviewFactoryProvider provider
-            || operation is DockOperation.None or DockOperation.Window)
+        if (operation is DockOperation.None or DockOperation.Window)
             return null;
 
-        var factory = provider.CreatePreviewFactory();
-        var cloner = new DockPreviewCloner(factory);
+        var cloner = new DockPreviewCloner();
         var targetRoot = FindLayout(target);
         var sourceRoot = FindLayout(source);
         var layout = cloner.Copy(targetRoot) as IDock;

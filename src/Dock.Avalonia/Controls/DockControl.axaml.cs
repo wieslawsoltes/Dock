@@ -449,6 +449,11 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         InitializeCommandBars();
     }
 
+    internal Rect PreviewViewport => _contentControl is { } content
+        && content.TranslatePoint(default, this) is { } origin
+            ? new Rect(origin, content.Bounds.Size)
+            : new Rect(Bounds.Size);
+
     private void InitializeDefaultDataTemplates()
     {
         if (_contentControl?.DataTemplates is null)

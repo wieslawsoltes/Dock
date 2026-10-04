@@ -4,13 +4,22 @@ using Dock.Model.Core;
 
 namespace Dock.Model;
 
-internal sealed class DockPreviewCloner(IFactory factory)
+internal sealed class DockPreviewCloner
 {
+    private readonly Dictionary<IFactory, IFactory> _factories = new(ReferenceEqualityComparer.Instance);
+
     internal Dictionary<IDockable, IDockable> Copies { get; } = new();
 
     internal IDockable? Copy(IDockable original)
     {
         if (Copies.TryGetValue(original, out var existing)) return existing;
+        if (original.Factory is not { } liveFactory || liveFactory is not IDockPreviewFactoryProvider provider)
+            return null;
+        if (!_factories.TryGetValue(liveFactory, out var factory))
+        {
+            factory = provider.CreatePreviewFactory();
+            _factories.Add(liveFactory, factory);
+        }
         IDockable? copy = original switch
         {
             IRootDock => factory.CreateRootDock(),

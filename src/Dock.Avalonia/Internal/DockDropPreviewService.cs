@@ -90,7 +90,7 @@ internal sealed class DockDropPreviewService
             _splitter = null;
         }
         _splitter = FindSplitter(control);
-        return _splitter?.Thickness ?? 4.0;
+        return _splitter?.Thickness ?? control.PreviewSplitterThickness;
     }
 
     private static ProportionalStackPanelSplitter? FindSplitter(Visual visual)
@@ -131,6 +131,7 @@ internal sealed class DockDropPreviewService
         hash.Add(model.MaxWidth);
         hash.Add(model.MinHeight);
         hash.Add(model.MaxHeight);
+        if (model is IRootDock) hash.Add(DockPreviewLayout.GetRootPadding(model));
         if (model is IProportionalDock proportional) hash.Add(proportional.Orientation);
         if (model is IDock { VisibleDockables: { } children })
             for (var index = 0; index < children.Count; index++) hash.Add(Fingerprint(children[index]));

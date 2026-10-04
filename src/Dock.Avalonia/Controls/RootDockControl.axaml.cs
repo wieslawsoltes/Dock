@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using Avalonia;
 using Avalonia.Automation.Peers;
 using Avalonia.Controls;
@@ -7,6 +8,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Model.Controls;
 
@@ -19,6 +21,18 @@ namespace Dock.Avalonia.Controls;
 public class RootDockControl : TemplatedControl
 {
     private ContentControl? _mainContent;
+
+    internal Thickness PreviewPadding
+    {
+        get
+        {
+            if (_mainContent is not { } content || content.TranslatePoint(default, this) is not { } origin)
+                return default;
+            return new Thickness(Math.Max(0, origin.X), Math.Max(0, origin.Y),
+                Math.Max(0, Bounds.Width - origin.X - content.Bounds.Width),
+                Math.Max(0, Bounds.Height - origin.Y - content.Bounds.Height));
+        }
+    }
 
     /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()

@@ -22,6 +22,7 @@ using Dock.Avalonia.Internal;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Selectors;
 using Dock.Avalonia.Services;
+using Dock.Controls.ProportionalStackPanel;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -45,6 +46,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private readonly IDockControlFactoryService _factoryService;
     private bool _isInitialized;
     private ContentControl? _contentControl;
+    private ProportionalStackPanelSplitter? _previewSplitter;
     private ManagedWindowLayer? _managedWindowLayer;
     private DockCommandBarHost? _commandBarHost;
     private DockCommandBarManager? _commandBarManager;
@@ -447,6 +449,22 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
         UpdateManagedWindowLayer(Layout);
         InitializeCommandBars();
+    }
+
+    internal double PreviewSplitterThickness
+    {
+        get
+        {
+            if (_previewSplitter is null)
+            {
+                // A logical child inherits theme/styles and observes later style changes, even
+                // before the layout contains its first splitter. It never enters the visual tree.
+                _previewSplitter = new ProportionalStackPanelSplitter();
+                LogicalChildren.Add(_previewSplitter);
+            }
+            _previewSplitter.ApplyStyling();
+            return _previewSplitter.Thickness;
+        }
     }
 
     internal Rect PreviewViewport => _contentControl is { } content

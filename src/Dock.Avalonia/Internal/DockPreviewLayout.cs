@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Dock.Avalonia.Controls;
 using Dock.Controls.ProportionalStackPanel;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -15,7 +16,10 @@ internal static class DockPreviewLayout
     internal static Rect? Measure(DockSplitPreview preview, Size size, double splitterThickness = 4)
     {
         var controls = new Dictionary<IDockable, Control>();
-        var layout = Build(preview.Layout, controls, splitterThickness);
+        var rootPadding = new Dictionary<IDockable, Thickness>();
+        foreach (var pair in preview.Copies)
+            if (pair.Key is IRootDock) rootPadding[pair.Value] = GetRootPadding(pair.Key);
+        var layout = Build(preview.Layout, controls, splitterThickness, rootPadding);
         if (layout is null || !controls.TryGetValue(preview.InsertedDock, out var inserted)) return null;
         layout.Measure(size);
         layout.Arrange(new Rect(size));
@@ -23,7 +27,12 @@ internal static class DockPreviewLayout
         return position.HasValue ? new Rect(position.Value, inserted.Bounds.Size) : null;
     }
 
-    private static Control? Build(IDockable model, Dictionary<IDockable, Control> controls, double splitterThickness)
+    internal static Thickness GetRootPadding(IDockable model) =>
+        model.Factory?.VisibleRootControls.TryGetValue(model, out var visual) == true
+        && visual is RootDockControl root ? root.PreviewPadding : default;
+
+    private static Control? Build(IDockable model, Dictionary<IDockable, Control> controls, double splitterThickness,
+        Dictionary<IDockable, Thickness> rootPadding)
     {
         Control control;
         if (model is IProportionalDock proportional)
@@ -37,7 +46,7 @@ internal static class DockPreviewLayout
             {
                 foreach (var child in children)
                 {
-                    var childControl = Build(child, controls, splitterThickness);
+                    var childControl = Build(child, controls, splitterThickness, rootPadding);
                     if (childControl is null) return null;
                     panel.Children.Add(childControl);
                 }
@@ -46,9 +55,9 @@ internal static class DockPreviewLayout
         }
         else if (model is IRootDock root && root.VisibleDockables is { Count: 1 } visible)
         {
-            var child = Build(visible[0], controls, splitterThickness);
+            var child = Build(visible[0], controls, splitterThickness, rootPadding);
             if (child is null) return null;
-            control = new Border { Child = child };
+            control = new Border { Child = child, Padding = rootPadding.TryGetValue(model, out var padding) ? padding : default };
         }
         else if (model is IProportionalDockSplitter)
             control = new ProportionalStackPanelSplitter { Thickness = splitterThickness };

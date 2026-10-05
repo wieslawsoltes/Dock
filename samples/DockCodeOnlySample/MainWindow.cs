@@ -11,13 +11,13 @@ namespace DockCodeOnlySample;
 
 public sealed class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
-    private readonly DockControl _dockControl;
-    private readonly CheckBox _dockingEnabledCheckBox;
-    private readonly TextBlock _workspaceStatusTextBlock;
-    private readonly Button _saveWorkspaceAButton;
-    private readonly Button _loadWorkspaceAButton;
-    private readonly Button _saveWorkspaceBButton;
-    private readonly Button _loadWorkspaceBButton;
+    internal DockControl DockControl { get; }
+    internal CheckBox DockingEnabledCheckBox { get; }
+    internal TextBlock WorkspaceStatusTextBlock { get; }
+    internal Button SaveWorkspaceAButton { get; }
+    internal Button LoadWorkspaceAButton { get; }
+    internal Button SaveWorkspaceBButton { get; }
+    internal Button LoadWorkspaceBButton { get; }
 
     public MainWindow()
     {
@@ -27,18 +27,18 @@ public sealed class MainWindow : ReactiveWindow<MainWindowViewModel>
         MinWidth = 900;
         MinHeight = 600;
 
-        _saveWorkspaceAButton = CreateToolbarButton("Save Workspace A");
-        _loadWorkspaceAButton = CreateToolbarButton("Load Workspace A");
-        _saveWorkspaceBButton = CreateToolbarButton("Save Workspace B");
-        _loadWorkspaceBButton = CreateToolbarButton("Load Workspace B");
+        SaveWorkspaceAButton = CreateToolbarButton("Save Workspace A");
+        LoadWorkspaceAButton = CreateToolbarButton("Load Workspace A");
+        SaveWorkspaceBButton = CreateToolbarButton("Save Workspace B");
+        LoadWorkspaceBButton = CreateToolbarButton("Load Workspace B");
 
-        _dockingEnabledCheckBox = new CheckBox
+        DockingEnabledCheckBox = new CheckBox
         {
             Content = "Docking Enabled",
             VerticalAlignment = VerticalAlignment.Center
         };
 
-        _workspaceStatusTextBlock = new TextBlock
+        WorkspaceStatusTextBlock = new TextBlock
         {
             Margin = new Thickness(16, 0, 0, 0),
             VerticalAlignment = VerticalAlignment.Center
@@ -50,12 +50,12 @@ public sealed class MainWindow : ReactiveWindow<MainWindowViewModel>
             Spacing = 8,
             Children =
             {
-                _saveWorkspaceAButton,
-                _loadWorkspaceAButton,
-                _saveWorkspaceBButton,
-                _loadWorkspaceBButton,
-                _dockingEnabledCheckBox,
-                _workspaceStatusTextBlock
+                SaveWorkspaceAButton,
+                LoadWorkspaceAButton,
+                SaveWorkspaceBButton,
+                LoadWorkspaceBButton,
+                DockingEnabledCheckBox,
+                WorkspaceStatusTextBlock
             }
         };
 
@@ -65,7 +65,7 @@ public sealed class MainWindow : ReactiveWindow<MainWindowViewModel>
             Child = toolbarPanel
         };
 
-        _dockControl = new DockControl
+        DockControl = new DockControl
         {
             InitializeFactory = true,
             InitializeLayout = false
@@ -74,22 +74,22 @@ public sealed class MainWindow : ReactiveWindow<MainWindowViewModel>
         DockPanel root = new();
         DockPanel.SetDock(toolbar, Avalonia.Controls.Dock.Top);
         root.Children.Add(toolbar);
-        root.Children.Add(_dockControl);
+        root.Children.Add(DockControl);
         Content = root;
 
         this.WhenActivated(disposables =>
         {
-            disposables.Add(this.BindCommand(ViewModel, vm => vm.SaveWorkspaceA, v => v._saveWorkspaceAButton));
-            disposables.Add(this.BindCommand(ViewModel, vm => vm.LoadWorkspaceA, v => v._loadWorkspaceAButton));
-            disposables.Add(this.BindCommand(ViewModel, vm => vm.SaveWorkspaceB, v => v._saveWorkspaceBButton));
-            disposables.Add(this.BindCommand(ViewModel, vm => vm.LoadWorkspaceB, v => v._loadWorkspaceBButton));
+            disposables.Add(this.BindCommand(ViewModel, vm => vm.SaveWorkspaceA, v => v.SaveWorkspaceAButton));
+            disposables.Add(this.BindCommand(ViewModel, vm => vm.LoadWorkspaceA, v => v.LoadWorkspaceAButton));
+            disposables.Add(this.BindCommand(ViewModel, vm => vm.SaveWorkspaceB, v => v.SaveWorkspaceBButton));
+            disposables.Add(this.BindCommand(ViewModel, vm => vm.LoadWorkspaceB, v => v.LoadWorkspaceBButton));
 
-            disposables.Add(this.Bind(ViewModel, vm => vm.IsDockingEnabled, v => v._dockingEnabledCheckBox.IsChecked));
-            disposables.Add(this.Bind(ViewModel, vm => vm.IsDockingEnabled, v => v._dockControl.IsDockingEnabled));
+            disposables.Add(this.Bind(ViewModel, vm => vm.IsDockingEnabled, v => v.DockingEnabledCheckBox.IsChecked));
+            disposables.Add(this.Bind(ViewModel, vm => vm.IsDockingEnabled, v => v.DockControl.IsDockingEnabled));
 
-            disposables.Add(this.OneWayBind(ViewModel, vm => vm.Factory, v => v._dockControl.Factory));
-            disposables.Add(this.OneWayBind(ViewModel, vm => vm.Layout, v => v._dockControl.Layout));
-            disposables.Add(this.OneWayBind(ViewModel, vm => vm.WorkspaceStatus, v => v._workspaceStatusTextBlock.Text));
+            disposables.Add(this.OneWayBind(ViewModel, vm => vm.Factory, v => v.DockControl.Factory));
+            disposables.Add(this.OneWayBind(ViewModel, vm => vm.Layout, v => v.DockControl.Layout));
+            disposables.Add(this.OneWayBind(ViewModel, vm => vm.WorkspaceStatus, v => v.WorkspaceStatusTextBlock.Text));
         });
     }
 

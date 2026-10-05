@@ -25,7 +25,7 @@ namespace DockReactiveUICanonicalSample;
 
 public partial class App : Application
 {
-    public static IViewLocator ViewLocator { get; } = new ReactiveViewLocator();
+    public static IViewLocator ViewLocator { get; } = new DefaultViewLocator();
 
     public override void Initialize()
     {
@@ -99,25 +99,25 @@ public partial class App : Application
 
     private static void RegisterViews()
     {
-        var services = Locator.CurrentMutable;
+        var viewLocator = (DefaultViewLocator)ViewLocator;
 
-        services.Register<IViewFor<DockViewModel>>(() => new DockView());
+        viewLocator.Map<DockViewModel>(() => new DockView());
 
-        services.Register<IViewFor<ProjectListDocumentViewModel>>(() => new ProjectListDocumentView());
-        services.Register<IViewFor<ProjectFilesDocumentViewModel>>(() => new ProjectFilesDocumentView());
-        services.Register<IViewFor<ProjectFileDocumentViewModel>>(() => new ProjectFileDocumentView());
-        services.Register<IViewFor<ProjectFileEditorDocumentViewModel>>(() => new ProjectFileEditorDocumentView());
+        viewLocator.Map<ProjectListDocumentViewModel>(() => new ProjectListDocumentView());
+        viewLocator.Map<ProjectFilesDocumentViewModel>(() => new ProjectFilesDocumentView());
+        viewLocator.Map<ProjectFileDocumentViewModel>(() => new ProjectFileDocumentView());
+        viewLocator.Map<ProjectFileEditorDocumentViewModel>(() => new ProjectFileEditorDocumentView());
 
-        services.Register<IViewFor<ProjectListPageViewModel>>(() => new ProjectListPageView());
-        services.Register<IViewFor<ProjectFilesPageViewModel>>(() => new ProjectFilesPageView());
-        services.Register<IViewFor<ProjectFilePageViewModel>>(() => new ProjectFilePageView());
+        viewLocator.Map<ProjectListPageViewModel>(() => new ProjectListPageView());
+        viewLocator.Map<ProjectFilesPageViewModel>(() => new ProjectFilesPageView());
+        viewLocator.Map<ProjectFilePageViewModel>(() => new ProjectFilePageView());
 
-        services.Register<IViewFor<RibbonToolViewModel>>(() => new RibbonToolView());
-        services.Register<IViewFor<RibbonPageViewModel>>(() => new RibbonPageView());
-        services.Register<IViewFor<FileActionsToolViewModel>>(() => new FileActionsToolView());
-        services.Register<IViewFor<FileActionsPageViewModel>>(() => new FileActionsPageView());
-        services.Register<IViewFor<ToolPanelViewModel>>(() => new ToolPanelView());
-        services.Register<IViewFor<ToolPanelPageViewModel>>(() => new ToolPanelPageView());
+        viewLocator.Map<RibbonToolViewModel>(() => new RibbonToolView());
+        viewLocator.Map<RibbonPageViewModel>(() => new RibbonPageView());
+        viewLocator.Map<FileActionsToolViewModel>(() => new FileActionsToolView());
+        viewLocator.Map<FileActionsPageViewModel>(() => new FileActionsPageView());
+        viewLocator.Map<ToolPanelViewModel>(() => new ToolPanelView());
+        viewLocator.Map<ToolPanelPageViewModel>(() => new ToolPanelPageView());
     }
 
     public override void OnFrameworkInitializationCompleted()

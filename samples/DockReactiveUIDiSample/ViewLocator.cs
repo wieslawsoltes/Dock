@@ -1,88 +1,59 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Model.Core;
 using ReactiveUI.Reactive;
-using ReactiveUI;
 
 namespace DockReactiveUIDiSample;
 
+/// <summary>Resolves registered views without runtime type construction.</summary>
 public class ViewLocator : IDataTemplate, IViewLocator
 {
-    private readonly IServiceProvider _provider;
+    private readonly IReadOnlyDictionary<Type, Func<IViewFor>> _viewFactories;
 
-    public ViewLocator(IServiceProvider provider)
+    /// <summary>Creates a locator using view factories from the composition root.</summary>
+    /// <param name="viewFactories">Factories keyed by their view model type.</param>
+    public ViewLocator(IReadOnlyDictionary<Type, Func<IViewFor>> viewFactories)
     {
-        _provider = provider;
+        _viewFactories = viewFactories;
     }
 
-    private IViewFor? Resolve(object viewModel)
-    {
-        var vmType = viewModel.GetType();
-        var serviceType = typeof(IViewFor<>).MakeGenericType(vmType);
-        if (_provider.GetService(serviceType) is IViewFor view)
-        {
-            view.ViewModel = viewModel;
-            return view;
-        }
-
-        var viewName = vmType.FullName?.Replace("ViewModel", "View");
-        if (viewName is null)
-            return null;
-
-        var viewType = Type.GetType(viewName);
-        if (viewType != null && _provider.GetService(viewType) is IViewFor view2)
-        {
-            view2.ViewModel = viewModel;
-            return view2;
-        }
-
-        return null;
-    }
-
+    /// <inheritdoc />
     public Control? Build(object? data)
     {
         if (data is null)
+        {
             return null;
-
-        if (Resolve(data) is IViewFor view && view is Control control)
-        {
-            return control;
         }
 
-        var viewName = data.GetType().FullName?.Replace("ViewModel", "View");
-        return new TextBlock { Text = $"Not Found: {viewName}" };
+        return ResolveView(data, null) as Control
+            ?? new TextBlock { Text = $"Not Found: {data.GetType().FullName}" };
     }
 
+    /// <inheritdoc />
     public bool Match(object? data)
+        => data is IDockable || (data is not null && _viewFactories.ContainsKey(data.GetType()));
+
+    /// <inheritdoc />
+    public IViewFor? ResolveView<TViewModel>(TViewModel viewModel, string? contract)
+        where TViewModel : class
+        => ResolveView((object?)viewModel, contract);
+
+    /// <inheritdoc />
+    public IViewFor? ResolveView(object? viewModel, string? contract)
     {
-        if (data is null)
+        if (viewModel is null || !_viewFactories.TryGetValue(viewModel.GetType(), out var factory))
         {
-            return false;
+            return null;
         }
 
-        return data is IDockable || Resolve(data) is not null;
+        var view = factory();
+        view.ViewModel = viewModel;
+        return view;
     }
 
-    public IViewFor<TViewModel>? ResolveView<TViewModel>()
-        where TViewModel : class
-    {
-        return ResolveView<TViewModel>(null);
-    }
-
-    public IViewFor<TViewModel>? ResolveView<TViewModel>(string? contract)
-        where TViewModel : class
-    {
-        return _provider.GetService(typeof(IViewFor<TViewModel>)) as IViewFor<TViewModel>;
-    }
-
-    public IViewFor? ResolveView(object? instance)
-    {
-        return ResolveView(instance, null);
-    }
-
-    public IViewFor? ResolveView(object? instance, string? contract)
-    {
-        return instance is null ? null : Resolve(instance);
-    }
+    /// <inheritdoc />
+    public IViewFor? ResolveViewUnsafe(object? viewModel, string? contract)
+        => ResolveView(viewModel, contract);
 }

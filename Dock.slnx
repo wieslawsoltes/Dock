@@ -143,6 +143,7 @@
     <Project Path="tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj" />
     <Project Path="tests/Dock.Serializer.SystemTextJson.SourceGenSharedTypes/Dock.Serializer.SystemTextJson.SourceGenSharedTypes.csproj" />
+    <Project Path="tests/Dock.ReactiveUI.HeadlessTests/Dock.ReactiveUI.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Serializer.SystemTextJson.Generators.UnitTests/Dock.Serializer.SystemTextJson.Generators.UnitTests.csproj" />
     <Project Path="tests/Dock.Serializer.SystemTextJson.SourceGenTests/Dock.Serializer.SystemTextJson.SourceGenTests.csproj" />
     <Project Path="tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj" />

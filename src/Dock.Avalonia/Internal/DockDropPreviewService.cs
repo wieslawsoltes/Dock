@@ -138,6 +138,7 @@ internal sealed class DockDropPreviewService
         hash.Add(model.MaxHeight);
         if (model is IRootDock) hash.Add(DockPreviewLayout.GetRootPadding(model));
         if (model is IProportionalDock proportional) hash.Add(proportional.Orientation);
+        if (model is IEqualProportionalDock equal) hash.Add(equal.KeepProportionsEqual);
         if (model is IDock { VisibleDockables: { } children })
             for (var index = 0; index < children.Count; index++) hash.Add(Fingerprint(children[index]));
         return hash.ToHashCode();

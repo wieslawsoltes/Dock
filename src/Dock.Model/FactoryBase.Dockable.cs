@@ -1628,6 +1628,7 @@ public abstract partial class FactoryBase
         }
         dock.VisibleDockables.Add(dockable);
         UpdateIsEmpty(dock);
+        DockSplitProportion.Equalize(dock);
     }
 
     /// <summary>
@@ -1641,6 +1642,7 @@ public abstract partial class FactoryBase
         }
         dock.VisibleDockables.Insert(index, dockable);
         UpdateIsEmpty(dock);
+        DockSplitProportion.Equalize(dock);
     }
 
     /// <summary>
@@ -1653,6 +1655,7 @@ public abstract partial class FactoryBase
             dock.VisibleDockables.Remove(dockable);
         }
         UpdateIsEmpty(dock);
+        DockSplitProportion.Equalize(dock);
     }
 
     /// <summary>
@@ -1668,6 +1671,7 @@ public abstract partial class FactoryBase
             }
         }
         UpdateIsEmpty(dock);
+        DockSplitProportion.Equalize(dock);
     }
 
     /// <summary>
@@ -1681,6 +1685,7 @@ public abstract partial class FactoryBase
         }
 
         UpdateIsEmpty(dock);
+        DockSplitProportion.Equalize(dock);
     }
 
     private static bool IsDockableEmpty(IDockable? dockable)

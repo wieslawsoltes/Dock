@@ -55,6 +55,8 @@ internal sealed class DockPreviewCloner
             copiedRestrictions.AllowedDropOperations = restrictions.AllowedDropOperations;
         }
         if (original is IProportionalDock row && copy is IProportionalDock copiedRow) copiedRow.Orientation = row.Orientation;
+        if (original is IEqualProportionalDock equal && copy is IEqualProportionalDock copiedEqual)
+            copiedEqual.KeepProportionsEqual = equal.KeepProportionsEqual;
         if (original is IRootDock root && copy is IRootDock copiedRoot) copiedRoot.EnableGlobalDocking = root.EnableGlobalDocking;
         if (original is IToolDock toolDock && copy is IToolDock copiedToolDock)
         {

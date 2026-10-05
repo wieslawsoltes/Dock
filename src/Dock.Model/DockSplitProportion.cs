@@ -31,6 +31,12 @@ public static class DockSplitProportion
         }
         if (!containsInserted || count == 0) return false;
 
+        if (insertedDock.Owner is IEqualProportionalDock { KeepProportionsEqual: true } equalDock)
+        {
+            Equalize(equalDock);
+            return true;
+        }
+
         // NaN siblings share the unused allocation, just as ProportionalStackPanel does.
         var inferred = unassigned > 0 ? Math.Max(0, 1 - assigned) / unassigned : 0;
         var total = assigned + inferred * unassigned;
@@ -45,5 +51,33 @@ public static class DockSplitProportion
         insertedDock.Proportion = proportion;
         insertedDock.CollapsedProportion = proportion;
         return true;
+    }
+
+    /// <summary>Rebalances an opted-in proportional dock after a content change, excluding splitters.</summary>
+    /// <param name="dock">The parent whose sizing policy and visible panes are inspected.</param>
+    public static void Equalize(IDock dock)
+    {
+        if (dock is not IEqualProportionalDock { KeepProportionsEqual: true, VisibleDockables: { } children } equal) return;
+        var count = 0;
+        foreach (var child in children)
+            if (child is not IProportionalDockSplitter) count += Units(child, equal.Orientation);
+        if (count == 0) return;
+        foreach (var child in children)
+        {
+            if (child is IProportionalDockSplitter) continue;
+            var share = (double)Units(child, equal.Orientation) / count;
+            child.Proportion = share;
+            child.CollapsedProportion = share;
+        }
+        if (dock.Owner is IDock owner) Equalize(owner);
+    }
+
+    private static int Units(IDockable child, Orientation axis)
+    {
+        if (child is not IProportionalDock { VisibleDockables: { } children } dock || dock.Orientation != axis) return 1;
+        var count = 0;
+        foreach (var item in children)
+            if (item is not IProportionalDockSplitter) count += Units(item, axis);
+        return System.Math.Max(1, count);
     }
 }

@@ -103,7 +103,7 @@ Install-Package Dock.Controls.DeferredContentControl
 
 ### Avalonia 11 packages
 
-Applications that remain on Avalonia 11 should use the `.v11` package lane. These packages are source-linked from the current Dock implementation, target Avalonia 11.3.20, and must not be mixed with the unsuffixed Avalonia 12 Dock packages.
+Applications that remain on Avalonia 11 should use the `.v11` package lane. These packages are source-linked from the current Dock implementation, target Avalonia 11.3.22, and must not be mixed with the unsuffixed Avalonia 12 Dock packages.
 
 ```powershell
 Install-Package Dock.Avalonia.v11

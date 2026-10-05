@@ -21,20 +21,12 @@ internal static class DockListTypeInfoModifier
             return;
         }
 
-        var type = typeInfo.Type;
-        if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(IList<>))
+        if (DockJsonMetadata.TryGetCollectionCreator(typeInfo.Type, listType, out Func<object>? creator))
         {
+            typeInfo.CreateObject = creator;
             return;
         }
-
-        if (TryAssignAotSafeCreator(typeInfo, type, listType))
-        {
-            return;
-        }
-
-        var elementType = type.GetGenericArguments()[0];
-        var concreteListType = listType.MakeGenericType(elementType);
-        typeInfo.CreateObject = () => Activator.CreateInstance(concreteListType)!;
+        TryAssignAotSafeCreator(typeInfo, typeInfo.Type, listType);
     }
 
     private static bool TryAssignAotSafeCreator(JsonTypeInfo typeInfo, Type type, Type listType)

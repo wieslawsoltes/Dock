@@ -16,7 +16,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Dock.Serializer.SystemTextJson.Generators;
 
 [Generator]
-public sealed class DockJsonSourceGenerator : IIncrementalGenerator
+public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
 {
     private const string GeneratedContextTypeNameBase = "DockSerializerGeneratedJsonContext";
     private const string GeneratedContextNamespace = "Dock.Serializer.SystemTextJson";
@@ -81,15 +81,6 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 DiagnosticSeverity.Error,
                 isEnabledByDefault: true);
 
-        public static readonly DiagnosticDescriptor MissingActivation =
-            new(
-                id: "DSTJ002",
-                title: "Dock JSON source generation is not enabled",
-                messageFormat: "Add [assembly: DockJsonSourceGeneration] before using DockJsonSerializableAttribute",
-                category: "Dock.Serializer.SystemTextJson",
-                DiagnosticSeverity.Error,
-                isEnabledByDefault: true);
-
         public static readonly DiagnosticDescriptor DuplicateDiscriminator =
             new(
                 id: "DSTJ003",
@@ -104,6 +95,15 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 id: "DSTJ004",
                 title: "Missing Dock model contracts",
                 messageFormat: "Dock JSON source generation requires references to Dock model contracts. Missing: {0}.",
+                category: "Dock.Serializer.SystemTextJson",
+                DiagnosticSeverity.Error,
+                isEnabledByDefault: true);
+
+        public static readonly DiagnosticDescriptor ContextGenerationFailed =
+            new(
+                id: "DSTJ005",
+                title: "Dock JSON metadata generation failed",
+                messageFormat: "Dock cannot generate AOT serialization metadata: {0}",
                 category: "Dock.Serializer.SystemTextJson",
                 DiagnosticSeverity.Error,
                 isEnabledByDefault: true);
@@ -175,7 +175,13 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
         ImmutableArray<GeneratedSourceArtifact> AdditionalSources,
         ImmutableArray<string> ContextTypes,
         ImmutableArray<PolymorphismModel> Polymorphisms,
-        ImmutableArray<IgnoredMembersModel> IgnoredMembers)
+        ImmutableArray<IgnoredMembersModel> IgnoredMembers,
+        ImmutableArray<SerializableTypeModel> SerializableTypes,
+        ImmutableArray<ITypeSymbol> CollectionTypes,
+        ImmutableArray<INamedTypeSymbol> ListTypes,
+        IAssemblySymbol? GeneratedAssembly,
+        bool SupportsUnsafeAccessors,
+        bool SupportsGenericUnsafeAccessors)
     {
         public static GenerationModel Empty(ImmutableArray<Diagnostic> diagnostics)
         {
@@ -187,7 +193,13 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 AdditionalSources: ImmutableArray<GeneratedSourceArtifact>.Empty,
                 ContextTypes: ImmutableArray<string>.Empty,
                 Polymorphisms: ImmutableArray<PolymorphismModel>.Empty,
-                IgnoredMembers: ImmutableArray<IgnoredMembersModel>.Empty);
+                IgnoredMembers: ImmutableArray<IgnoredMembersModel>.Empty,
+                SerializableTypes: ImmutableArray<SerializableTypeModel>.Empty,
+                CollectionTypes: ImmutableArray<ITypeSymbol>.Empty,
+                ListTypes: ImmutableArray<INamedTypeSymbol>.Empty,
+                GeneratedAssembly: null,
+                SupportsUnsafeAccessors: false,
+                SupportsGenericUnsafeAccessors: false);
         }
     }
 
@@ -199,18 +211,10 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
         {
             var diagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
             ImmutableArray<RegistrationCandidate> registeredTypes = GetRegisteredTypes(compilation, diagnostics, cancellationToken);
-            bool isActivated = HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute);
-
-            if (!isActivated)
+            // Metadata generation is automatic for serializer consumers. The activation
+            // attribute remains accepted for source compatibility.
+            if (compilation.GetTypeByMetadataName(MetadataNames.SourceGenerationAttribute) is null)
             {
-                foreach (RegistrationCandidate registeredType in registeredTypes)
-                {
-                    diagnostics.Add(
-                        Diagnostic.Create(
-                            DiagnosticDescriptors.MissingActivation,
-                            registeredType.Location ?? Location.None));
-                }
-
                 return GenerationModel.Empty(diagnostics.ToImmutable());
             }
 
@@ -230,6 +234,13 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             ImmutableArray<SerializableTypeModel> serializableTypes =
                 GetSerializableTypes(compilation, dockSymbols!, registeredTypes, cancellationToken);
 
+            if (serializableTypes.IsEmpty && !HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute)
+                && !GetSerializerCallTypes(compilation).Any())
+            {
+                return GenerationModel.Empty(diagnostics.ToImmutable());
+            }
+
+            ImmutableArray<ITypeSymbol> collectionTypes = GetCollectionTypes(serializableTypes, dockSymbols!, compilation);
             ImmutableArray<IgnoredMembersModel> ignoredMembers =
                 BuildIgnoredMembers(serializableTypes, dockSymbols!);
 
@@ -237,11 +248,30 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 BuildPolymorphisms(serializableTypes, diagnostics);
 
             ImmutableArray<string> contextTypes =
-                BuildContextTypes(serializableTypes, dockSymbols!);
+                BuildContextTypes(serializableTypes, dockSymbols!)
+                    .AddRange(collectionTypes.Select(static t => t.ToDisplayString(s_fullyQualifiedFormat)))
+                    .AddRange(serializableTypes.SelectMany(static t => LegacyMemberEmitter.GetDataMembers(t.Type))
+                        .Select(static member => member is IFieldSymbol field ? field.Type : ((IPropertySymbol)member).Type)
+                        .Select(static t => t.ToDisplayString(s_fullyQualifiedFormat)));
             string contextTypeName = GetUniqueContextTypeName(compilation, cancellationToken);
             string contextSource = SourceEmitter.EmitContext(contextTypes, contextTypeName);
-            ImmutableArray<GeneratedSourceArtifact> additionalSources =
-                SystemTextJsonContextGenerator.Generate(compilation, contextSource, contextTypeName, cancellationToken);
+            ImmutableArray<GeneratedSourceArtifact> additionalSources;
+            try
+            {
+                additionalSources = SystemTextJsonContextGenerator.Generate(compilation, contextSource, contextTypeName, cancellationToken);
+            }
+            catch (Exception exception) when (exception is FileLoadException or FileNotFoundException or BadImageFormatException
+                or TypeLoadException or ReflectionTypeLoadException or MissingMethodException or TargetInvocationException)
+            {
+                diagnostics.Add(Diagnostic.Create(DiagnosticDescriptors.ContextGenerationFailed, Location.None, exception.Message));
+                return GenerationModel.Empty(diagnostics.ToImmutable());
+            }
+            if (additionalSources.IsDefaultOrEmpty)
+            {
+                diagnostics.Add(Diagnostic.Create(DiagnosticDescriptors.ContextGenerationFailed, Location.None,
+                    "The System.Text.Json generator did not produce a serialization context."));
+                return GenerationModel.Empty(diagnostics.ToImmutable());
+            }
 
             return new GenerationModel(
                 ShouldGenerate: true,
@@ -251,7 +281,13 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 AdditionalSources: additionalSources,
                 ContextTypes: contextTypes,
                 Polymorphisms: polymorphisms,
-                IgnoredMembers: ignoredMembers);
+                IgnoredMembers: ignoredMembers,
+                SerializableTypes: serializableTypes,
+                CollectionTypes: collectionTypes,
+                ListTypes: GetConfiguredListTypes(compilation, cancellationToken),
+                GeneratedAssembly: compilation.Assembly,
+                SupportsUnsafeAccessors: compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.UnsafeAccessorAttribute") is not null,
+                SupportsGenericUnsafeAccessors: compilation.GetSpecialType(SpecialType.System_Object).ContainingAssembly.Identity.Version.Major >= 9);
         }
 
         private static string GetUniqueContextTypeName(
@@ -461,6 +497,62 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 }
             }
 
+            foreach (IAssemblySymbol assembly in compilation.SourceModule.ReferencedAssemblySymbols)
+            {
+                if (!assembly.Name.StartsWith("Dock.Model.", StringComparison.Ordinal)
+                    && !assembly.Modules.Any(static module => module.ReferencedAssemblySymbols.Any(static reference => reference.Name == "Dock.Model")))
+                {
+                    continue;
+                }
+                foreach (INamedTypeSymbol candidate in EnumerateNamedTypes(assembly.GlobalNamespace, cancellationToken))
+                {
+                    if (IsDiscoverableDockType(candidate, symbols, compilation.Assembly) && seen.Add(candidate))
+                    {
+                        result.Add(CreateSerializableType(candidate, null, false, symbols));
+                    }
+                }
+            }
+
+            foreach (SyntaxTree tree in compilation.SyntaxTrees)
+            {
+                SemanticModel semanticModel = compilation.GetSemanticModel(tree);
+                foreach (InvocationExpressionSyntax invocation in tree.GetRoot(cancellationToken).DescendantNodes().OfType<InvocationExpressionSyntax>())
+                {
+                    if (semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is not IMethodSymbol method
+                        || method.TypeArguments.Length != 1
+                        || method.Name is not ("Serialize" or "Deserialize" or "Save" or "Load")
+                        || !method.ContainingType.ToDisplayString().StartsWith("Dock.", StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+                    if (method.TypeArguments[0] is INamedTypeSymbol candidate
+                        && !HasOpenTypeParameters(candidate)
+                        && IsAccessibleFromGeneratedCode(candidate, compilation.Assembly)
+                        && candidate.TypeKind is not (TypeKind.Interface or TypeKind.Delegate)
+                        && seen.Add(candidate))
+                    {
+                        result.Add(CreateSerializableType(candidate, invocation.GetLocation(), false, symbols));
+                    }
+                }
+            }
+
+            foreach (SyntaxTree tree in compilation.SyntaxTrees)
+            {
+                SemanticModel semanticModel = compilation.GetSemanticModel(tree);
+                foreach (AssignmentExpressionSyntax assignment in tree.GetRoot(cancellationToken).DescendantNodes().OfType<AssignmentExpressionSyntax>())
+                {
+                    if (semanticModel.GetSymbolInfo(assignment.Left, cancellationToken).Symbol is IPropertySymbol member
+                        && member.Type.SpecialType == SpecialType.System_Object
+                        && (seen.Contains(member.ContainingType) || IsAssignableToAnyDockContract(member.ContainingType, symbols))
+                        && semanticModel.GetTypeInfo(assignment.Right, cancellationToken).Type is INamedTypeSymbol payload
+                        && payload.SpecialType == SpecialType.None
+                        && IsValidRegisteredType(payload, compilation.Assembly) && seen.Add(payload))
+                    {
+                        result.Add(CreateSerializableType(payload, assignment.GetLocation(), true, symbols));
+                    }
+                }
+            }
+
             foreach (RegistrationCandidate registration in registeredTypes)
             {
                 if (seen.Add(registration.Type))
@@ -470,10 +562,206 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 }
             }
 
+            // Follow collection elements and dictionary values as well as direct members.
+            // Every reachable legacy $type needs a registered descriptor, even when STJ
+            // already includes that type transitively in its own context.
+            var pending = new Queue<ITypeSymbol>(result.Select(static t => (ITypeSymbol)t.Type).Concat(GetSerializerCallTypes(compilation)));
+            var visited = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default);
+            while (pending.Count > 0)
+            {
+                ITypeSymbol value = pending.Dequeue();
+                if (!visited.Add(value))
+                {
+                    continue;
+                }
+                if (value is IArrayTypeSymbol array)
+                {
+                    pending.Enqueue(array.ElementType);
+                    continue;
+                }
+                if (value is not INamedTypeSymbol candidate || HasOpenTypeParameters(candidate))
+                {
+                    continue;
+                }
+                foreach (ITypeSymbol argument in candidate.TypeArguments)
+                {
+                    pending.Enqueue(argument);
+                }
+                if (GetCollectionValueType(candidate, out _) is { } collectionValue) pending.Enqueue(collectionValue);
+                if (candidate.SpecialType != SpecialType.None || candidate.TypeKind == TypeKind.Enum
+                    || candidate.ContainingNamespace.ToDisplayString().StartsWith("System", StringComparison.Ordinal)
+                    || !IsAccessibleFromGeneratedCode(candidate, compilation.Assembly))
+                {
+                    continue;
+                }
+                if (!candidate.IsAbstract && candidate.TypeKind is TypeKind.Class or TypeKind.Struct && seen.Add(candidate))
+                {
+                    result.Add(CreateSerializableType(candidate, null, false, symbols));
+                }
+                foreach (ITypeSymbol memberType in GetSerializableMemberTypes(candidate, symbols))
+                {
+                    pending.Enqueue(memberType);
+                }
+            }
+
             return result
                 .OrderBy(static x => x.TypeExpression, StringComparer.Ordinal)
                 .ToImmutableArray();
         }
+
+        private static IEnumerable<ITypeSymbol> GetSerializableMemberTypes(INamedTypeSymbol type, DockSymbols symbols)
+        {
+            foreach (IPropertySymbol property in GetAllPublicInstanceProperties(type))
+            {
+                if (!ShouldIgnoreProperty(property, symbols))
+                {
+                    yield return property.Type;
+                }
+            }
+            foreach (ISymbol member in LegacyMemberEmitter.GetDataMembers(type))
+            {
+                if (member is IFieldSymbol field)
+                {
+                    yield return field.Type;
+                }
+                else if (member is IPropertySymbol property && !ShouldIgnoreProperty(property, symbols))
+                {
+                    yield return property.Type;
+                }
+            }
+        }
+
+        private static ImmutableArray<INamedTypeSymbol> GetConfiguredListTypes(
+            Compilation compilation, System.Threading.CancellationToken cancellationToken)
+        {
+            var results = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+            foreach (SyntaxTree tree in compilation.SyntaxTrees)
+            {
+                SemanticModel model = compilation.GetSemanticModel(tree);
+                foreach (TypeOfExpressionSyntax expression in tree.GetRoot(cancellationToken).DescendantNodes().OfType<TypeOfExpressionSyntax>())
+                {
+                    if (model.GetTypeInfo(expression.Type, cancellationToken).Type is INamedTypeSymbol type
+                        && type.IsUnboundGenericType && type.Arity == 1 && !type.IsAbstract
+                        && type.ContainingNamespace.ToDisplayString() != "System.Collections.Generic"
+                        && type.ContainingNamespace.ToDisplayString() != "System.Collections.ObjectModel"
+                        && IsAccessibleFromGeneratedCode(type, compilation.Assembly)
+                        && type.OriginalDefinition.InstanceConstructors.Any(static c => c.Parameters.Length == 0 && c.DeclaredAccessibility == Accessibility.Public)
+                        && type.OriginalDefinition.AllInterfaces.Any(static i => i.OriginalDefinition.ToDisplayString() == "System.Collections.Generic.IList<T>"))
+                    {
+                        results.Add(type.OriginalDefinition);
+                    }
+                }
+            }
+            return results.OrderBy(static t => t.ToDisplayString(), StringComparer.Ordinal).ToImmutableArray();
+        }
+
+        private static ImmutableArray<ITypeSymbol> GetCollectionTypes(
+            ImmutableArray<SerializableTypeModel> types, DockSymbols symbols, Compilation compilation)
+        {
+            var collections = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default);
+            var visited = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default);
+            var pending = new Queue<ITypeSymbol>();
+            foreach (SerializableTypeModel type in types)
+            {
+                pending.Enqueue(type.Type);
+            }
+            foreach (ITypeSymbol type in GetSerializerCallTypes(compilation)) pending.Enqueue(type);
+            INamedTypeSymbol? list = compilation.GetTypeByMetadataName("System.Collections.Generic.IList`1");
+            if (list is not null)
+            {
+                pending.Enqueue(list.Construct(symbols.IDockable));
+                pending.Enqueue(list.Construct(symbols.IDockWindow));
+            }
+            while (pending.Count > 0)
+            {
+                ITypeSymbol candidate = pending.Dequeue();
+                if (!visited.Add(candidate))
+                {
+                    continue;
+                }
+                if (candidate is IArrayTypeSymbol array)
+                {
+                    collections.Add(array);
+                    pending.Enqueue(array.ElementType);
+                    continue;
+                }
+                if (candidate is not INamedTypeSymbol named || HasOpenTypeParameters(named))
+                {
+                    continue;
+                }
+                ITypeSymbol? element = GetCollectionValueType(named, out bool dictionary);
+                if (element is not null)
+                {
+                    collections.Add(named);
+                    pending.Enqueue(element);
+                    string definition = named.OriginalDefinition.ToDisplayString();
+                    if (definition == "System.Collections.Generic.IList<T>")
+                    {
+                        pending.Enqueue(compilation.GetTypeByMetadataName("System.Collections.Generic.List`1")!.Construct(element));
+                        pending.Enqueue(compilation.GetTypeByMetadataName("System.Collections.ObjectModel.ObservableCollection`1")!.Construct(element));
+                    }
+                    if (dictionary && definition == "System.Collections.Generic.IDictionary<TKey, TValue>")
+                    {
+                        pending.Enqueue(compilation.GetTypeByMetadataName("System.Collections.Generic.Dictionary`2")!.Construct(named.TypeArguments[0], element));
+                    }
+                    continue;
+                }
+                if (named.SpecialType != SpecialType.None || named.TypeKind == TypeKind.Enum
+                    || named.ContainingNamespace.ToDisplayString().StartsWith("System", StringComparison.Ordinal))
+                {
+                    continue;
+                }
+                foreach (ITypeSymbol memberType in GetSerializableMemberTypes(named, symbols))
+                {
+                    pending.Enqueue(memberType);
+                }
+            }
+            return collections.OrderBy(static t => t.ToDisplayString(), StringComparer.Ordinal).ToImmutableArray();
+        }
+
+        internal static ITypeSymbol? GetCollectionValueType(ITypeSymbol type, out bool dictionary)
+        {
+            dictionary = false;
+            if (type is IArrayTypeSymbol array) return array.ElementType;
+            if (type is not INamedTypeSymbol named || named.SpecialType == SpecialType.System_String) return null;
+            IEnumerable<INamedTypeSymbol> contracts = named.AllInterfaces.Prepend(named);
+            foreach (INamedTypeSymbol contract in contracts)
+            {
+                if (contract.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.IDictionary<TKey, TValue>" or "System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>")
+                {
+                    dictionary = true;
+                    return contract.TypeArguments[1];
+                }
+            }
+            foreach (INamedTypeSymbol contract in contracts)
+                if (contract.OriginalDefinition.ToDisplayString() == "System.Collections.Generic.IEnumerable<T>") return contract.TypeArguments[0];
+            return null;
+        }
+
+        private static IEnumerable<ITypeSymbol> GetSerializerCallTypes(Compilation compilation)
+        {
+            foreach (SyntaxTree tree in compilation.SyntaxTrees)
+            {
+                SemanticModel semanticModel = compilation.GetSemanticModel(tree);
+                foreach (InvocationExpressionSyntax invocation in tree.GetRoot().DescendantNodes().OfType<InvocationExpressionSyntax>())
+                {
+                    if (semanticModel.GetSymbolInfo(invocation).Symbol is IMethodSymbol method
+                        && method.TypeArguments.Length == 1
+                        && method.Name is "Serialize" or "Deserialize" or "Save" or "Load"
+                        && method.ContainingType.ToDisplayString().StartsWith("Dock.", StringComparison.Ordinal)
+                        && IsClosedAccessibleType(method.TypeArguments[0], compilation.Assembly))
+                        yield return method.TypeArguments[0];
+                }
+            }
+        }
+
+        private static bool IsClosedAccessibleType(ITypeSymbol type, IAssemblySymbol assembly) => type switch
+        {
+            IArrayTypeSymbol array => IsClosedAccessibleType(array.ElementType, assembly),
+            INamedTypeSymbol named => !HasOpenTypeParameters(named) && IsAccessibleFromGeneratedCode(named, assembly)
+                && named.TypeArguments.All(t => IsClosedAccessibleType(t, assembly)),
+            _ => false
+        };
 
         private static SerializableTypeModel CreateSerializableType(
             INamedTypeSymbol typeSymbol,
@@ -619,7 +907,9 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                     "object",
                     "global::System.Text.Json.Serialization.JsonUnknownDerivedTypeHandling.FailSerialization",
                     false,
-                    serializableTypes.Where(static x => x.IsObjectPayload).Select(ToDerivedModel),
+                    serializableTypes.Where(static x => x.IsObjectPayload
+                        || x.Type.SpecialType == SpecialType.None && !x.IsDockable && !x.IsDockWindow && !x.IsDocumentTemplate && !x.IsToolTemplate
+                        && !x.Type.ContainingNamespace.ToDisplayString().StartsWith("System", StringComparison.Ordinal)).Select(ToDerivedModel),
                     diagnostics)
             ];
         }
@@ -724,7 +1014,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 .ToImmutableArray();
         }
 
-        private static IEnumerable<IPropertySymbol> GetAllPublicInstanceProperties(INamedTypeSymbol typeSymbol)
+        public static IEnumerable<IPropertySymbol> GetAllPublicInstanceProperties(INamedTypeSymbol typeSymbol)
         {
             var results = new Dictionary<string, IPropertySymbol>(StringComparer.Ordinal);
 
@@ -779,7 +1069,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
         private static bool ShouldIgnoreProperty(IPropertySymbol propertySymbol, DockSymbols symbols)
         {
-            return IsCommandType(propertySymbol.Type, symbols.ICommand)
+            return propertySymbol.SetMethod is null
+                   || IsCommandType(propertySymbol.Type, symbols.ICommand)
                    || HasIgnoreDataMemberAttribute(propertySymbol, symbols.IgnoreDataMemberAttribute);
         }
 
@@ -832,13 +1123,21 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 return true;
             }
 
-            if (typeSymbol.TypeArguments.Any(static x => x.TypeKind == TypeKind.TypeParameter))
+            if (typeSymbol.TypeArguments.Any(ContainsOpenType))
             {
                 return true;
             }
 
             return typeSymbol.ContainingType is not null && HasOpenTypeParameters(typeSymbol.ContainingType);
         }
+
+        private static bool ContainsOpenType(ITypeSymbol type) => type switch
+        {
+            ITypeParameterSymbol => true,
+            IArrayTypeSymbol array => ContainsOpenType(array.ElementType),
+            INamedTypeSymbol named => HasOpenTypeParameters(named),
+            _ => false
+        };
 
         private static bool IsSupportedObjectPayloadType(INamedTypeSymbol typeSymbol)
         {
@@ -887,7 +1186,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             return false;
         }
 
-        private static bool IsAccessibleFromGeneratedCode(INamedTypeSymbol typeSymbol, IAssemblySymbol generatedAssembly)
+        internal static bool IsAccessibleFromGeneratedCode(INamedTypeSymbol typeSymbol, IAssemblySymbol generatedAssembly)
         {
             INamedTypeSymbol? current = typeSymbol;
             while (current is not null)
@@ -900,7 +1199,12 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 current = current.ContainingType;
             }
 
-            return true;
+            return typeSymbol.IsUnboundGenericType || typeSymbol.TypeArguments.All(argument => argument switch
+            {
+                INamedTypeSymbol named => IsAccessibleFromGeneratedCode(named, generatedAssembly),
+                IArrayTypeSymbol array when array.ElementType is INamedTypeSymbol element => IsAccessibleFromGeneratedCode(element, generatedAssembly),
+                _ => true
+            });
         }
 
         private static bool IsDirectlyAccessibleFromGeneratedCode(INamedTypeSymbol typeSymbol, IAssemblySymbol generatedAssembly)
@@ -908,8 +1212,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             return typeSymbol.DeclaredAccessibility switch
             {
                 Accessibility.Public => true,
-                Accessibility.Internal => typeSymbol.ContainingAssembly.GivesAccessTo(generatedAssembly),
-                Accessibility.ProtectedOrInternal => typeSymbol.ContainingAssembly.GivesAccessTo(generatedAssembly),
+                Accessibility.Internal => SymbolEqualityComparer.Default.Equals(typeSymbol.ContainingAssembly, generatedAssembly) || typeSymbol.ContainingAssembly.GivesAccessTo(generatedAssembly),
+                Accessibility.ProtectedOrInternal => SymbolEqualityComparer.Default.Equals(typeSymbol.ContainingAssembly, generatedAssembly) || typeSymbol.ContainingAssembly.GivesAccessTo(generatedAssembly),
                 _ => false
             };
         }
@@ -970,7 +1274,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             return GetTypeFullName(typeSymbol);
         }
 
-        private static string GetTypeFullName(ITypeSymbol typeSymbol)
+        public static string GetTypeFullName(ITypeSymbol typeSymbol)
         {
             return typeSymbol switch
             {
@@ -1188,18 +1492,21 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
         private static ISourceGenerator? CreateGenerator(Compilation compilation)
         {
-            Assembly? assembly = AppDomain.CurrentDomain.GetAssemblies()
-                .FirstOrDefault(static x => string.Equals(x.GetName().Name, "System.Text.Json.SourceGeneration", StringComparison.Ordinal));
-
+            // Compiler servers can host several STJ generator versions. Prefer the
+            // generator shipped with this compilation's package, not one loaded by
+            // an unrelated project (or the package's oldest Roslyn implementation).
+            string? assemblyPath = TryGetAssemblyPath(compilation);
+            Assembly? assembly = assemblyPath is not null
+                // LoadFile isolates the selected package from same-name generators
+                // already loaded by the shared compiler for another target/package.
+                ? Assembly.LoadFile(assemblyPath)
+                : AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(static x => string.Equals(x.GetName().Name, "System.Text.Json.SourceGeneration", StringComparison.Ordinal))
+                    .OrderByDescending(static x => x.GetName().Version)
+                    .FirstOrDefault();
             if (assembly is null)
             {
-                string? assemblyPath = TryGetAssemblyPath(compilation);
-                if (assemblyPath is null)
-                {
-                    return null;
-                }
-
-                assembly = Assembly.LoadFrom(assemblyPath);
+                return null;
             }
 
             Type? generatorType = assembly.GetTypes()
@@ -1250,12 +1557,24 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 return null;
             }
 
+            Version compilerVersion = typeof(Compilation).Assembly.GetName().Version!;
             return Directory.EnumerateFiles(
                     analyzersDirectory,
                     "System.Text.Json.SourceGeneration.dll",
                     SearchOption.AllDirectories)
-                .OrderBy(static x => x, StringComparer.Ordinal)
+                .Select(static path => (Path: path, Version: GetRoslynVersion(path)))
+                .Where(candidate => candidate.Version <= compilerVersion)
+                .OrderByDescending(static candidate => candidate.Version)
+                .Select(static candidate => candidate.Path)
                 .FirstOrDefault();
+        }
+
+        private static Version GetRoslynVersion(string path)
+        {
+            string? directory = Directory.GetParent(path)?.Parent?.Name;
+            return directory is not null && directory.StartsWith("roslyn", StringComparison.Ordinal)
+                && Version.TryParse(directory.Substring("roslyn".Length), out Version? version)
+                ? version : new Version(0, 0);
         }
     }
 
@@ -1271,11 +1590,19 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine();
             builder.AppendLine("[global::System.Text.Json.Serialization.JsonSourceGenerationOptions(GenerationMode = global::System.Text.Json.Serialization.JsonSourceGenerationMode.Metadata)]");
 
-            foreach (string contextType in contextTypes)
+            int typeIndex = 0;
+            foreach (string contextType in contextTypes.Select(static t => t == "object" ? "global::System.Object" : t).Distinct(StringComparer.Ordinal))
             {
                 builder.Append("[global::System.Text.Json.Serialization.JsonSerializable(typeof(");
                 builder.Append(contextType);
-                builder.AppendLine("))]");
+                if (contextType == "global::System.Object" || contextType is "string" or "bool" or "int" or "long" or "double" or "float" or "decimal" or "byte" or "short" or "uint" or "ulong" or "ushort" or "sbyte" or "char")
+                {
+                    builder.AppendLine("))]");
+                }
+                else
+                {
+                    builder.Append("), TypeInfoPropertyName = \"DockType").Append(typeIndex++).AppendLine("\")]");
+                }
             }
 
             builder.Append("internal sealed partial class ");
@@ -1303,6 +1630,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<global::System.Type, string> s_objectPayloadDiscriminators = CreateObjectPayloadDiscriminators();");
             builder.AppendLine("    private static readonly global::System.Collections.Generic.IReadOnlyDictionary<string, global::System.Type> s_objectPayloadTypes = CreateObjectPayloadTypes();");
             builder.AppendLine("    private static readonly global::System.Text.Json.Serialization.JsonConverter<object?> s_objectPayloadConverter = new ObjectPayloadConverter();");
+            builder.AppendLine("    internal static global::System.Text.Json.Serialization.JsonConverter<object?> GetObjectPayloadConverter() => s_objectPayloadConverter;");
             builder.AppendLine();
             builder.AppendLine("    public global::System.Text.Json.Serialization.Metadata.JsonTypeInfo? GetTypeInfo(global::System.Type type, global::System.Text.Json.JsonSerializerOptions options)");
             builder.AppendLine("    {");
@@ -1334,6 +1662,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine();
             builder.AppendLine("    private static void ApplyObjectPayloadConverters(global::System.Text.Json.Serialization.Metadata.JsonTypeInfo jsonTypeInfo)");
             builder.AppendLine("    {");
+            builder.AppendLine("        foreach (var converter in jsonTypeInfo.Options.Converters)");
+            builder.AppendLine("            if (converter.CanConvert(typeof(object))) return;");
             builder.AppendLine("        if (jsonTypeInfo.Kind != global::System.Text.Json.Serialization.Metadata.JsonTypeInfoKind.Object)");
             builder.AppendLine("        {");
             builder.AppendLine("            return;");
@@ -1456,7 +1786,173 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("    }");
             builder.AppendLine("}");
 
+            EmitRegistration(builder, model);
+
             return builder.ToString();
+        }
+
+        private static void EmitRegistration(StringBuilder builder, GenerationModel model)
+        {
+            builder.AppendLine("internal static class DockGeneratedMetadataRegistration");
+            builder.AppendLine("{");
+            builder.AppendLine("    [global::System.Runtime.CompilerServices.ModuleInitializer]");
+            builder.AppendLine("    internal static void Initialize()");
+            builder.AppendLine("    {");
+            builder.AppendLine("        global::Dock.Serializer.SystemTextJson.DockJsonMetadata.Register(");
+            builder.AppendLine("            new DockSystemTextJsonResolver(),");
+            builder.AppendLine("            new global::System.Collections.Generic.Dictionary<global::System.Type, global::Dock.Serializer.SystemTextJson.DockJsonType>");
+            builder.AppendLine("            {");
+            var accessors = new StringBuilder();
+            int accessorIndex = 0;
+            foreach (SerializableTypeModel type in model.SerializableTypes)
+            {
+                builder.Append("                [typeof(").Append(type.TypeExpression).Append(")] = new(");
+                builder.Append(EscapeString(GenerationModelBuilder.GetTypeFullName(type.Type) + ", " + type.Type.ContainingAssembly.Name));
+                builder.AppendLine(", static info =>");
+                builder.AppendLine("                {");
+                builder.AppendLine("                    for (int i = info.Properties.Count - 1; i >= 0; i--)");
+                builder.AppendLine("                    {");
+                builder.AppendLine("                        var property = info.Properties[i];");
+                builder.AppendLine("                        switch (property.Name)");
+                builder.AppendLine("                        {");
+                bool dataContract = HasInheritedDataContract(type.Type);
+                bool optIn = UsesOptInContract(type.Type);
+                bool fieldsOnly = UsesFieldContract(type.Type);
+                foreach (IPropertySymbol property in GenerationModelBuilder.GetAllPublicInstanceProperties(type.Type))
+                {
+                    AttributeData? dataMember = dataContract ? LegacyMemberEmitter.Attribute(property, "System.Runtime.Serialization.DataMemberAttribute") : null;
+                    if (!LegacyMemberEmitter.IsIncluded(property, optIn, dataContract, fieldsOnly))
+                    {
+                        builder.Append("                            case ").Append(EscapeString(property.Name)).AppendLine(": info.Properties.RemoveAt(i); break;");
+                        continue;
+                    }
+                    string name = LegacyMemberEmitter.Name(property, dataContract);
+                    var emitDefault = dataMember?.NamedArguments.FirstOrDefault(static a => a.Key == "EmitDefaultValue") ?? default;
+                    var order = dataMember?.NamedArguments.FirstOrDefault(static a => a.Key == "Order") ?? default;
+                    if (name == property.Name && emitDefault.Key is null && order.Key is null)
+                    {
+                        continue;
+                    }
+                    builder.Append("                            case ").Append(EscapeString(property.Name)).AppendLine(":");
+                    if (name is not null)
+                    {
+                        builder.Append("                                property.Name = ").Append(EscapeString(name)).AppendLine(";");
+                    }
+                    if (emitDefault.Value.Value is false)
+                    {
+                        builder.Append("                                property.ShouldSerialize = static (_, value) => !global::System.Collections.Generic.EqualityComparer<")
+                            .Append(property.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).Append(">.Default.Equals((")
+                            .Append(property.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).AppendLine(")value!, default!);");
+                    }
+                    if (order.Value.Value is int propertyOrder)
+                    {
+                        builder.Append("                                property.Order = ").Append(propertyOrder).AppendLine(";");
+                    }
+                    builder.AppendLine("                                break;");
+                }
+                builder.AppendLine("                            default: break;");
+                builder.AppendLine("                        }");
+                builder.AppendLine("                    }");
+                LegacyMemberEmitter.Emit(builder, accessors, type.Type, model, ref accessorIndex);
+                builder.Append("                }");
+                if (model.CollectionTypes.Contains(type.Type, SymbolEqualityComparer.Default))
+                {
+                    ITypeSymbol element = GenerationModelBuilder.GetCollectionValueType(type.Type, out bool dictionary)!;
+                    builder.Append(dictionary ? ", dictionaryValueType: typeof(" : ", elementType: typeof(")
+                        .Append(element.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).Append(")");
+                }
+                builder.Append(", canAssignTo: static requested => requested == typeof(global::System.Object)");
+                for (INamedTypeSymbol? current = type.Type; current is not null; current = current.BaseType)
+                {
+                    builder.Append(" || requested == typeof(").Append(current.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).Append(")");
+                }
+                foreach (INamedTypeSymbol contract in type.Type.AllInterfaces.Where(t => GenerationModelBuilder.IsAccessibleFromGeneratedCode(t, model.GeneratedAssembly!)))
+                {
+                    builder.Append(" || requested == typeof(").Append(contract.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).Append(")");
+                }
+                builder.AppendLine("),");
+            }
+            foreach (ITypeSymbol collection in model.CollectionTypes)
+            {
+                string expression = collection.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                ITypeSymbol element = GenerationModelBuilder.GetCollectionValueType(collection, out bool dictionary)!;
+                // A root collection may already be registered among directly serialized types.
+                if (model.SerializableTypes.Any(t => SymbolEqualityComparer.Default.Equals(t.Type, collection)))
+                {
+                    continue;
+                }
+                builder.Append("                [typeof(").Append(expression).Append(")] = new(")
+                    .Append(EscapeString(GenerationModelBuilder.GetTypeFullName(collection) + ", " + (collection.ContainingAssembly ?? element.ContainingAssembly).Name))
+                    .Append(", static _ => { }, ").Append(dictionary ? "dictionaryValueType: typeof(" : "elementType: typeof(")
+                    .Append(element.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).Append("), canAssignTo: static requested => requested == typeof(")
+                    .Append(expression).Append(") || requested == typeof(global::System.Object)");
+                if (collection is INamedTypeSymbol namedCollection)
+                {
+                    foreach (INamedTypeSymbol contract in namedCollection.AllInterfaces.Where(t => GenerationModelBuilder.IsAccessibleFromGeneratedCode(t, model.GeneratedAssembly!)))
+                    {
+                        builder.Append(" || requested == typeof(").Append(contract.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).Append(")");
+                    }
+                }
+                builder.AppendLine("),");
+            }
+            builder.AppendLine("            },");
+            builder.AppendLine("            new global::System.Collections.Generic.Dictionary<global::System.Type, global::System.Collections.Generic.IReadOnlyDictionary<global::System.Type, global::System.Func<object>>>");
+            builder.AppendLine("            {");
+            foreach (INamedTypeSymbol collection in model.CollectionTypes.OfType<INamedTypeSymbol>().Where(static t => t.OriginalDefinition.ToDisplayString() == "System.Collections.Generic.IList<T>"))
+            {
+                string expression = collection.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                string element = collection.TypeArguments[0].ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                builder.Append("                [typeof(").Append(expression).AppendLine(")] = new global::System.Collections.Generic.Dictionary<global::System.Type, global::System.Func<object>>");
+                builder.AppendLine("                {");
+                builder.Append("                    [typeof(global::System.Collections.Generic.List<>)] = static () => new global::System.Collections.Generic.List<").Append(element).AppendLine(">(),");
+                builder.Append("                    [typeof(global::System.Collections.ObjectModel.ObservableCollection<>)] = static () => new global::System.Collections.ObjectModel.ObservableCollection<").Append(element).AppendLine(">(),");
+                foreach (INamedTypeSymbol listType in model.ListTypes)
+                {
+                    // Emit only closed constructions whose constraints are satisfied by this element.
+                    ITypeParameterSymbol parameter = listType.TypeParameters[0];
+                    ITypeSymbol argument = collection.TypeArguments[0];
+                    if (parameter.HasReferenceTypeConstraint && !argument.IsReferenceType
+                        || parameter.HasValueTypeConstraint && !argument.IsValueType
+                        || parameter.HasConstructorConstraint || !parameter.ConstraintTypes.IsEmpty)
+                    {
+                        continue;
+                    }
+                    string openType = listType.ConstructUnboundGenericType().ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                    string closedType = listType.Construct(argument).ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                    builder.Append("                    [typeof(").Append(openType).Append(")] = static () => new ").Append(closedType).AppendLine("(),");
+                }
+                builder.AppendLine("                },");
+            }
+            builder.AppendLine("            });");
+            builder.AppendLine("    }");
+            builder.Append(accessors);
+            builder.AppendLine("}");
+        }
+
+        internal static bool HasInheritedDataContract(INamedTypeSymbol type)
+        {
+            for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
+                if (LegacyMemberEmitter.Attribute(current, "System.Runtime.Serialization.DataContractAttribute") is not null) return true;
+            return false;
+        }
+
+        internal static bool UsesOptInContract(INamedTypeSymbol type) => GetMemberSerializationMode(type) == 1;
+
+        internal static bool UsesFieldContract(INamedTypeSymbol type) => GetMemberSerializationMode(type) == 2;
+
+        private static int GetMemberSerializationMode(INamedTypeSymbol type)
+        {
+            for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
+            {
+                AttributeData? jsonObject = LegacyMemberEmitter.Attribute(current, "Newtonsoft.Json.JsonObjectAttribute");
+                if (jsonObject is not null)
+                {
+                    object? mode = jsonObject.NamedArguments.FirstOrDefault(a => a.Key == "MemberSerialization").Value.Value
+                        ?? (jsonObject.ConstructorArguments.Length > 0 ? jsonObject.ConstructorArguments[0].Value : null);
+                    return mode is int serialization ? serialization : 0;
+                }
+            }
+            return HasInheritedDataContract(type) ? 1 : 0;
         }
 
         private static void EmitOptionsFactory(StringBuilder builder, PolymorphismModel polymorphism, bool nullableReturn)
@@ -1520,10 +2016,35 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("                return null;");
             builder.AppendLine("            }");
             builder.AppendLine();
+            builder.AppendLine("""
+            switch (reader.TokenType)
+            {
+                case global::System.Text.Json.JsonTokenType.String:
+                    string? scalarText = reader.GetString();
+                    // Newtonsoft only infers ISO dates containing a time component.
+                    return scalarText is { Length: >= 19 } && reader.TryGetDateTime(out var date) ? (object)date : scalarText;
+                case global::System.Text.Json.JsonTokenType.True: return true;
+                case global::System.Text.Json.JsonTokenType.False: return false;
+                case global::System.Text.Json.JsonTokenType.Number:
+                    if (reader.TryGetInt64(out long integer)) return integer;
+                    using (var number = global::System.Text.Json.JsonDocument.ParseValue(ref reader))
+                    {
+                        string text = number.RootElement.GetRawText();
+                        return text.IndexOf('.') >= 0 || text.IndexOf('e') >= 0 || text.IndexOf('E') >= 0
+                            ? (object)number.RootElement.GetDouble()
+                            : global::System.Numerics.BigInteger.Parse(text, global::System.Globalization.CultureInfo.InvariantCulture);
+                    }
+            }
+            """);
             builder.AppendLine("            using global::System.Text.Json.JsonDocument document = global::System.Text.Json.JsonDocument.ParseValue(ref reader);");
             builder.AppendLine("            if (document.RootElement.ValueKind != global::System.Text.Json.JsonValueKind.Object)");
             builder.AppendLine("            {");
             builder.AppendLine("                return document.RootElement.Clone();");
+            builder.AppendLine("            }");
+            builder.AppendLine();
+            builder.AppendLine("            if (document.RootElement.TryGetProperty(\"$ref\", out global::System.Text.Json.JsonElement reference))");
+            builder.AppendLine("            {");
+            builder.AppendLine("                return options.ReferenceHandler!.CreateResolver().ResolveReference(reference.GetString()!);");
             builder.AppendLine("            }");
             builder.AppendLine();
             builder.AppendLine("            int discriminatorIndex = -1;");
@@ -1577,7 +2098,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("                writer.WriteEndObject();");
             builder.AppendLine("            }");
             builder.AppendLine();
-            builder.AppendLine("            return global::System.Text.Json.JsonSerializer.Deserialize(stream.ToArray(), payloadType, options);");
+            builder.AppendLine("            return global::System.Text.Json.JsonSerializer.Deserialize(stream.ToArray(), options.GetTypeInfo(payloadType));");
             builder.AppendLine("        }");
             builder.AppendLine();
             builder.AppendLine("        public override void Write(global::System.Text.Json.Utf8JsonWriter writer, object? value, global::System.Text.Json.JsonSerializerOptions options)");
@@ -1600,16 +2121,56 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("                return;");
             builder.AppendLine("            }");
             builder.AppendLine();
+            builder.AppendLine("""
+            // JSON scalars do not carry a type discriminator in Newtonsoft layouts.
+            // Write them directly, without reflection or payload registration.
+            switch (value)
+            {
+                case string scalar: writer.WriteStringValue(scalar); return;
+                case bool scalar: writer.WriteBooleanValue(scalar); return;
+                case char scalar: writer.WriteStringValue(scalar.ToString()); return;
+                case byte scalar: writer.WriteNumberValue(scalar); return;
+                case sbyte scalar: writer.WriteNumberValue(scalar); return;
+                case short scalar: writer.WriteNumberValue(scalar); return;
+                case ushort scalar: writer.WriteNumberValue(scalar); return;
+                case int scalar: writer.WriteNumberValue(scalar); return;
+                case uint scalar: writer.WriteNumberValue(scalar); return;
+                case long scalar: writer.WriteNumberValue(scalar); return;
+                case ulong scalar: writer.WriteNumberValue(scalar); return;
+                case decimal scalar: WriteFloatingPoint(writer, scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture)); return;
+                case float scalar:
+                    if (float.IsFinite(scalar)) WriteFloatingPoint(writer, scalar.ToString("R", global::System.Globalization.CultureInfo.InvariantCulture));
+                    else writer.WriteStringValue(scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture));
+                    return;
+                case double scalar:
+                    if (double.IsFinite(scalar)) WriteFloatingPoint(writer, scalar.ToString("R", global::System.Globalization.CultureInfo.InvariantCulture));
+                    else writer.WriteStringValue(scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture));
+                    return;
+                case global::System.DateTime scalar: writer.WriteStringValue(scalar); return;
+                case global::System.DateTimeOffset scalar: writer.WriteStringValue(scalar); return;
+                case global::System.Guid scalar: writer.WriteStringValue(scalar); return;
+                case global::System.TimeSpan scalar: writer.WriteStringValue(scalar.ToString("c", global::System.Globalization.CultureInfo.InvariantCulture)); return;
+                case global::System.Uri scalar: writer.WriteStringValue(scalar.OriginalString); return;
+                case global::System.Numerics.BigInteger scalar:
+                    writer.WriteRawValue(scalar.ToString(global::System.Globalization.CultureInfo.InvariantCulture)); return;
+            }
+            """);
             builder.AppendLine("            global::System.Type runtimeType = value.GetType();");
             builder.AppendLine("            if (!s_objectPayloadDiscriminators.TryGetValue(runtimeType, out string? discriminator))");
             builder.AppendLine("            {");
             builder.AppendLine("                throw new global::System.NotSupportedException($\"Dock source-generated object payload '{runtimeType.FullName ?? runtimeType.Name}' is not registered.\");");
             builder.AppendLine("            }");
             builder.AppendLine();
-            builder.AppendLine("            global::System.Text.Json.JsonElement element = global::System.Text.Json.JsonSerializer.SerializeToElement(value, runtimeType, options);");
+            builder.AppendLine("            global::System.Text.Json.JsonElement element = global::System.Text.Json.JsonSerializer.SerializeToElement(value, options.GetTypeInfo(runtimeType));");
             builder.AppendLine("            if (element.ValueKind != global::System.Text.Json.JsonValueKind.Object)");
             builder.AppendLine("            {");
             builder.AppendLine("                throw new global::System.NotSupportedException(\"Dock source-generated object payloads must serialize as JSON objects.\");");
+            builder.AppendLine("            }");
+            builder.AppendLine();
+            builder.AppendLine("            if (element.TryGetProperty(\"$ref\", out _))");
+            builder.AppendLine("            {");
+            builder.AppendLine("                element.WriteTo(writer);");
+            builder.AppendLine("                return;");
             builder.AppendLine("            }");
             builder.AppendLine();
             builder.AppendLine("            writer.WriteStartObject();");
@@ -1620,6 +2181,15 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("            }");
             builder.AppendLine("            writer.WriteEndObject();");
             builder.AppendLine("        }");
+            builder.AppendLine("""
+            private static void WriteFloatingPoint(global::System.Text.Json.Utf8JsonWriter writer, string text)
+            {
+                // Keep the floating-point token shape so an integral-valued float or
+                // decimal still reads as double in an object slot, as with Newtonsoft.
+                bool fractional = text.IndexOf('.') >= 0 || text.IndexOf('e') >= 0 || text.IndexOf('E') >= 0;
+                writer.WriteRawValue(fractional ? text : text + ".0");
+            }
+            """);
             builder.AppendLine("    }");
             builder.AppendLine();
         }

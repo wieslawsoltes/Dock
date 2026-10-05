@@ -1,0 +1,11 @@
+<Project>
+  <!-- Project references do not propagate analyzers like NuGet dependencies do. -->
+  <ItemGroup Condition="('@(ProjectReference->WithMetadataValue('Filename', 'Dock.Serializer.SystemTextJson'))' != '' or '@(ProjectReference->WithMetadataValue('Filename', 'Dock.Serializer.Newtonsoft'))' != '') and '@(ProjectReference->WithMetadataValue('Filename', 'Dock.Serializer.SystemTextJson.Generators'))' == ''">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)src/Dock.Serializer.SystemTextJson.Generators/Dock.Serializer.SystemTextJson.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"
+                      PrivateAssets="all"
+                      GlobalPropertiesToRemove="RuntimeIdentifier;SelfContained;PublishAot;PublishTrimmed;TrimMode;InvariantGlobalization;StripSymbols"
+                      SetTargetFramework="TargetFramework=netstandard2.0" />
+  </ItemGroup>
+</Project>

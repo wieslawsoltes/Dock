@@ -16,5 +16,8 @@
     <ProjectReference Include="..\..\src\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Inpc\Dock.Model.Inpc.csproj" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="System.Text.Json" GeneratePathProperty="true" />
+    <Reference Include="System.Text.Json.SourceGeneration"
+               HintPath="$(PkgSystem_Text_Json)/analyzers/dotnet/roslyn4.4/cs/System.Text.Json.SourceGeneration.dll" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj"
+                      PrivateAssets="none" />
   </ItemGroup>
 
 </Project>

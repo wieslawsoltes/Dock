@@ -7,6 +7,8 @@
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+    <WarningsAsErrors>$(WarningsAsErrors);IL2026;IL3050</WarningsAsErrors>
     <RuntimeIdentifiers>linux-x64;osx-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
@@ -23,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer.Newtonsoft\Dock.Serializer.Newtonsoft.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
     <ProjectReference Include="..\..\src\Dock.Serializer.SystemTextJson.Generators\Dock.Serializer.SystemTextJson.Generators.csproj"
                       OutputItemType="Analyzer"

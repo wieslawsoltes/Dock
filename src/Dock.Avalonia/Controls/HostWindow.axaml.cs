@@ -189,13 +189,16 @@ public class HostWindow : Window, IHostWindow
 
     private void EndWindowDrag(PointerEventArgs e)
     {
-        PseudoClasses.Set(":dragging", false);
-
-        Window?.Factory?.OnWindowMoveDragEnd(Window);
-        _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Released);
+        var wasDragging = _mouseDown;
         _mouseDown = false;
         _draggingWindow = false;
+        _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Released);
         WindowDragDockScope = WindowDragDockScope.FullWindow;
+        PseudoClasses.Set(":dragging", false);
+        if (wasDragging)
+        {
+            Window?.Factory?.OnWindowMoveDragEnd(Window);
+        }
     }
 
     internal bool TryBeginExternalWindowDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope)
@@ -210,11 +213,16 @@ public class HostWindow : Window, IHostWindow
 
     internal void CancelExternalWindowDrag()
     {
-        PseudoClasses.Set(":dragging", false);
-        Window?.Factory?.OnWindowMoveDragEnd(Window);
+        var wasDragging = _mouseDown;
         _mouseDown = false;
         _draggingWindow = false;
         WindowDragDockScope = WindowDragDockScope.FullWindow;
+        _hostWindowState.Process(default, EventType.CaptureLost);
+        PseudoClasses.Set(":dragging", false);
+        if (wasDragging)
+        {
+            Window?.Factory?.OnWindowMoveDragEnd(Window);
+        }
     }
 
     private void MoveDrag(PointerPressedEventArgs e)
@@ -471,6 +479,7 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
+        CancelExternalWindowDrag();
         base.OnClosed(e);
 
         Window?.Factory?.HostWindows.Remove(this);

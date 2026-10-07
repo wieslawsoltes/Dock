@@ -159,7 +159,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
     }
 
-    public void RemoveAdorner(Visual visual)
+    public void RemoveAdorner(Visual? visual = null)
     {
         if (useFloatingDockAdorner)
         {

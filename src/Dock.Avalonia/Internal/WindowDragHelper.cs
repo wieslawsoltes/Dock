@@ -78,14 +78,15 @@ public class WindowDragHelper
             _disposables = null;
         }
 
+        CancelDrag();
+    }
+
+    private void CancelDrag()
+    {
         _releasedEventDisposable?.Dispose();
         _releasedEventDisposable = null;
 
-        if (_dragWindow is HostWindow hostWindow)
-        {
-            hostWindow.CancelExternalWindowDrag();
-        }
-
+        var hostWindow = _dragWindow as HostWindow;
         if (_dragWindow is not null && _positionChangedHandler is not null)
         {
             _dragWindow.PositionChanged -= _positionChangedHandler;
@@ -98,6 +99,7 @@ public class WindowDragHelper
         _handledPointerPressed = false;
         _dockScope = WindowDragDockScope.FullWindow;
         _lastPointerPressedArgs = null;
+        hostWindow?.CancelExternalWindowDrag();
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -107,13 +109,14 @@ public class WindowDragHelper
             return;
         }
 
-        _lastPointerPressedArgs = e;
-        _handledPointerPressed = false;
-
         if (!e.GetCurrentPoint(_owner).Properties.IsLeftButtonPressed)
         {
             return;
         }
+
+        // A new press can follow a native move whose release was never routed here.
+        CancelDrag();
+        _lastPointerPressedArgs = e;
 
         var source = e.Source as Control;
         if (_canStartDrag(source))
@@ -236,7 +239,8 @@ public class WindowDragHelper
 
     private IDisposable SubscribeToPointerReleased(Window window)
     {
-        return window.AddDisposableHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
+        return window.AddDisposableHandler(InputElement.PointerReleasedEvent, OnPointerReleased,
+            RoutingStrategies.Tunnel, handledEventsToo: true);
     }
 
     /// <summary>

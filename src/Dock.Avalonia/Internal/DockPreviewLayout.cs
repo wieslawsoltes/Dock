@@ -58,6 +58,27 @@ internal static class DockPreviewLayout
         return position.HasValue ? new Rect(position.Value, inserted.Bounds.Size) : null;
     }
 
+    internal static Dictionary<IDockable, Rect>? MeasureSourceRemoval(DockSplitPreview preview, Size size,
+        double splitterThickness, DockControl layoutHost)
+    {
+        var controls = new Dictionary<IDockable, Control>();
+        var padding = new Dictionary<IDockable, Thickness>();
+        foreach (var pair in preview.Copies)
+        {
+            if (!HasModelConstraints(pair.Key)) return null;
+            if (pair.Key is IRootDock) padding[pair.Value] = GetRootPadding(pair.Key);
+        }
+        var layout = Build(preview.Layout, controls, splitterThickness, padding);
+        if (layout is null) return null;
+        layoutHost.MeasurePreview(layout, size);
+        var result = new Dictionary<IDockable, Rect>();
+        foreach (var pair in preview.Copies)
+            if (controls.TryGetValue(pair.Value, out var control)
+                && control.TranslatePoint(default, layout) is { } position)
+                result[pair.Key] = new Rect(position, control.Bounds.Size);
+        return result;
+    }
+
     internal static Thickness GetRootPadding(IDockable model) =>
         model.Factory?.VisibleRootControls.TryGetValue(model, out var visual) == true
         && visual is RootDockControl root ? root.PreviewPadding : default;

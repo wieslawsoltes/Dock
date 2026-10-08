@@ -60,6 +60,21 @@ public sealed class DockSplitPreview
         return new DockSplitPreview(layout, inserted, cloner.Copies);
     }
 
+    internal static DockSplitPreview? CreateSourceRemoval(IDockable source)
+    {
+        if (source is IDock and not (IToolDock or IDocumentDock)) return null;
+        var cloner = new DockPreviewCloner();
+        if (cloner.Copy(FindLayout(source)) is not IDock layout
+            || !cloner.Copies.TryGetValue(source, out var copy)) return null;
+        if (copy is IDock { VisibleDockables: { } children })
+        {
+            var moving = new List<IDockable>(children);
+            foreach (var child in moving) child.Factory!.RemoveDockable(child, true);
+        }
+        else copy.Factory!.RemoveDockable(copy, true);
+        return new DockSplitPreview(layout, layout, cloner.Copies);
+    }
+
     private static IDockable FindLayout(IDockable dockable)
     {
         while (dockable.Owner is IDock owner) dockable = owner;

@@ -773,6 +773,13 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 
     private void KeyDownHandler(object? sender, KeyEventArgs e)
     {
+        if (e.Key == Key.Escape && _dockControlState.HasActiveDrag
+            && Layout?.Factory?.DockControls is { } dockControls)
+        {
+            _dockControlState.Process(default, default, EventType.CaptureLost, DragAction.None, this, dockControls);
+            e.Handled = true;
+            return;
+        }
         if (!DockSettings.SelectorEnabled)
         {
             return;

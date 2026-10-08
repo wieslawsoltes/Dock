@@ -181,6 +181,18 @@ renders the full dockable layout instead of only the title/status badge.
 
 `DockSettings.DragPreviewOpacity` controls the preview window opacity (0.0 to 1.0).
 
+During a move drag, a collapsible tool/document pane is temporarily omitted from
+proportional layout once the drag threshold is crossed. The remaining panes reflow
+before hit-testing and highlighting a drop target. Dragging one tab out of a group
+retains the group's space; dragging the whole group vacates it.
+
+This is a visual arrangement only: models, tab selection, saved proportions and
+widget lifetimes remain unchanged until the drop commits. Escape, capture loss,
+docking being disabled, or an invalid non-floating drop restores the original
+arrangement. Copy/swap operations retain the source arrangement. Layouts with
+unsupported containers or application constraints that cannot be projected keep
+the existing preview behavior. No theme/template changes are required.
+
 ## ItemsSource unregister synchronization
 
 `DockSettings.UpdateItemsSourceOnUnregister` controls whether closing an ItemsSource-generated

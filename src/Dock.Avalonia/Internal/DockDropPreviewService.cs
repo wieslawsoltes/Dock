@@ -119,13 +119,13 @@ internal sealed class DockDropPreviewService
         return null;
     }
 
-    private static IDockable LayoutRoot(IDockable dockable)
+    internal static IDockable LayoutRoot(IDockable dockable)
     {
         while (dockable.Owner is IDock owner) dockable = owner;
         return dockable;
     }
 
-    private static int Fingerprint(IDockable model)
+    internal static int Fingerprint(IDockable model)
     {
         var hash = new HashCode();
         hash.Add(RuntimeHelpers.GetHashCode(model));

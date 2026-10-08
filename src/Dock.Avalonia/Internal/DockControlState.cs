@@ -28,9 +28,12 @@ internal class DockDragContext
     public bool HasResolvedOperation { get; set; }
     
     public PixelPoint DragOffset { get; set; }
+    public DockDragPreviewLayout? SourcePreview { get; set; }
+    public bool SourcePreviewInitialized { get; set; }
 
     public void Start(Control dragControl, Point point)
     {
+        End();
         DragControl = dragControl;
         DragStartPoint = point;
         PointerPressed = true;
@@ -42,6 +45,9 @@ internal class DockDragContext
 
     public void End()
     {
+        SourcePreview?.Dispose();
+        SourcePreview = null;
+        SourcePreviewInitialized = false;
         DragControl = null;
         DragStartPoint = default;
         PointerPressed = false;
@@ -60,6 +66,9 @@ internal class DockDragContext
 
     public void CopyTo(DockDragContext target)
     {
+        target.SourcePreviewInitialized = SourcePreviewInitialized;
+        target.SourcePreview = SourcePreview;
+        SourcePreview = null;
         target.DragControl = DragControl;
         target.DragStartPoint = DragStartPoint;
         target.PointerPressed = PointerPressed;
@@ -259,10 +268,27 @@ internal class DockControlState : DockManagerState, IDockControlState
         }
 
         owner._context.DoDragDrop = true;
+        owner.UpdateSourcePreview(DragAction.Move);
         if (owner._activeDockControl is { } activeDockControl)
         {
             activeDockControl.IsDraggingDock = true;
         }
+    }
+
+    private void UpdateSourcePreview(DragAction action)
+    {
+        if (action != DragAction.Move || _context.SourcePreview is { IsCurrent: false })
+        {
+            _context.SourcePreview?.Dispose();
+            _context.SourcePreview = null;
+            _context.SourcePreviewInitialized = false;
+            _activeDockControl?.UpdateLayout();
+        }
+        if (action != DragAction.Move || _context.SourcePreviewInitialized) return;
+        _context.SourcePreviewInitialized = true;
+        if (_context.DragControl is { DataContext: IDockable source } dragControl
+            && dragControl.FindAncestorOfType<DockControl>() is { } sourceHost)
+            _context.SourcePreview = DockDragPreviewLayout.TryCreate(DragDockableResolver.Resolve(source), sourceHost);
     }
 
     private DockControlState ResolveCurrentOwner()
@@ -739,6 +765,10 @@ internal class DockControlState : DockManagerState, IDockControlState
             }
             case EventType.Released:
             {
+                // Remove only visual overrides before committing. No layout pass or
+                // hit-test occurs here, so the target still denotes the shown preview.
+                _context.SourcePreview?.Dispose();
+                _context.SourcePreview = null;
                 if (_context.DoDragDrop)
                 {
                     var executed = false;
@@ -870,6 +900,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         break;
                     }
 
+                    UpdateSourcePreview(dragAction);
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                     var preview = "None";
 

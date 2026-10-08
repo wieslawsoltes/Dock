@@ -25,6 +25,9 @@ internal sealed class DockDragPreviewLayout : IDisposable
     private int _version;
     private ProportionalStackPanelSplitter? _splitter;
     private double _thickness;
+    private IDock? _tabPane;
+    private IDockable? _originalActive;
+    private IDockable? _temporaryActive;
 
     internal bool IsCurrent => _host is { } host && _root is { } root
         && host.PreviewViewport == _viewport && LayoutHelper.GetLayoutScale(host).Equals(_scale)
@@ -33,12 +36,12 @@ internal sealed class DockDragPreviewLayout : IDisposable
 
     internal static DockDragPreviewLayout? TryCreate(IDockable source, DockControl host)
     {
-        // Dragging one tab out of a group does not vacate its pane. Keep that pane's
-        // content and selection alive; the existing tab drag handles its header.
         var pane = source as IDock ?? source.Owner as IDock;
-        if (pane is not (IToolDock or IDocumentDock) || !pane.IsCollapsable
-            || (source is not IDock && pane.VisibleDockables?.Count != 1)
-            || host.GetVisualRoot() is null)
+        if (pane is not (IToolDock or IDocumentDock) || host.GetVisualRoot() is null)
+            return null;
+        if (source is not IDock && pane.VisibleDockables is { Count: > 1 })
+            return CreateTabPreview(source, pane, host);
+        if (!pane.IsCollapsable || (source is not IDock && pane.VisibleDockables?.Count != 1))
             return null;
         var projection = DockSplitPreview.CreateSourceRemoval(source);
         if (projection is null) return null;
@@ -103,6 +106,34 @@ internal sealed class DockDragPreviewLayout : IDisposable
         return session;
     }
 
+    private static DockDragPreviewLayout CreateTabPreview(IDockable source, IDock pane, DockControl host)
+    {
+        var session = new DockDragPreviewLayout
+        {
+            _host = host, _root = DockDropPreviewService.LayoutRoot(source),
+            _viewport = host.PreviewViewport, _scale = LayoutHelper.GetLayoutScale(host),
+            _thickness = host.PreviewSplitterThickness
+        };
+        // Retain ownership and collection order until the drop commits. Normal tab
+        // selection lets custom and cached-content templates reveal the remaining item.
+        foreach (var visual in host.GetVisualDescendants())
+            if (visual is Control control && control is ToolTabStripItem or DocumentTabStripItem
+                && ReferenceEquals(control.DataContext, source))
+                session._visibility.Add(control.SetValue(Visual.IsVisibleProperty, false, BindingPriority.Animation)!);
+        if (ReferenceEquals(pane.ActiveDockable, source))
+        {
+            var index = pane.VisibleDockables!.IndexOf(source);
+            session._tabPane = pane;
+            session._originalActive = source;
+            session._temporaryActive = pane.VisibleDockables[index > 0 ? index - 1 : 1];
+            pane.ActiveDockable = session._temporaryActive;
+        }
+        session._version = DockDropPreviewService.Fingerprint(session._root);
+        host.DetachedFromVisualTree += session.OnDetached;
+        host.UpdateLayout();
+        return session;
+    }
+
     private static Rect? FindBounds(IDockable model, Dictionary<IDockable, Rect> bounds)
     {
         if (bounds.TryGetValue(model, out var rect)) return rect;
@@ -129,5 +160,11 @@ internal sealed class DockDragPreviewLayout : IDisposable
         foreach (var visibility in _visibility) visibility.Dispose();
         _panels.Clear();
         _visibility.Clear();
+        if (_tabPane is { } pane && ReferenceEquals(pane.ActiveDockable, _temporaryActive)
+            && _originalActive is { } original && pane.VisibleDockables?.Contains(original) == true)
+            pane.ActiveDockable = original;
+        _tabPane = null;
+        _originalActive = null;
+        _temporaryActive = null;
     }
 }

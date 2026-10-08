@@ -184,10 +184,15 @@ renders the full dockable layout instead of only the title/status badge.
 During a move drag, a collapsible tool/document pane is temporarily omitted from
 proportional layout once the drag threshold is crossed. The remaining panes reflow
 before hit-testing and highlighting a drop target. Dragging one tab out of a group
-retains the group's space; dragging the whole group vacates it.
+retains the group's space, hides the dragged tab and temporarily selects a
+remaining tab; dragging the whole group vacates the pane.
 
-This is a visual arrangement only: models, tab selection, saved proportions and
-widget lifetimes remain unchanged until the drop commits. Escape, capture loss,
+Pane reflow changes only visual arrangement. Tab previews use normal active-tab
+selection, including its selection notifications, so custom and cached-content
+templates display the remaining tab. Ownership, tab order and saved proportions
+remain unchanged until the drop commits; no add/remove/close events are raised.
+Cancellation restores the previous tab selection unless the application changed
+it during the drag. Escape, capture loss,
 docking being disabled, or an invalid non-floating drop restores the original
 arrangement. Copy/swap operations retain the source arrangement. Layouts with
 unsupported containers or application constraints that cannot be projected keep

@@ -7,6 +7,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
 using Dock.Model;
@@ -30,6 +32,7 @@ internal class DockDragContext
     public PixelPoint DragOffset { get; set; }
     public DockDragPreviewLayout? SourcePreview { get; set; }
     public bool SourcePreviewInitialized { get; set; }
+    public IDisposable? CancellationSubscription { get; set; }
 
     public void Start(Control dragControl, Point point)
     {
@@ -45,6 +48,8 @@ internal class DockDragContext
 
     public void End()
     {
+        CancellationSubscription?.Dispose();
+        CancellationSubscription = null;
         SourcePreview?.Dispose();
         SourcePreview = null;
         SourcePreviewInitialized = false;
@@ -66,6 +71,8 @@ internal class DockDragContext
 
     public void CopyTo(DockDragContext target)
     {
+        target.CancellationSubscription = CancellationSubscription;
+        CancellationSubscription = null;
         target.SourcePreviewInitialized = SourcePreviewInitialized;
         target.SourcePreview = SourcePreview;
         SourcePreview = null;
@@ -216,6 +223,24 @@ internal class DockControlState : DockManagerState, IDockControlState
         _transferTarget = null;
         _activeDockControl = activeDockControl;
         _context.Start(dragControl, startPoint);
+        // Pointer capture does not redirect keyboard input. Focus may remain outside
+        // this DockControl, or move when the source pane is hidden during preview.
+        _context.CancellationSubscription = InputElement.KeyDownEvent.AddClassHandler<TopLevel>(
+            (_, e) => CancelOnEscape(e), RoutingStrategies.Tunnel, handledEventsToo: true);
+    }
+
+    private void CancelOnEscape(KeyEventArgs input)
+    {
+        if (input.Key != Key.Escape)
+            return;
+
+        var owner = ResolveCurrentOwner();
+        if (owner._context.PointerPressed && owner._activeDockControl is { } host)
+        {
+            input.Handled = true;
+            owner.Process(default, default, EventType.CaptureLost, DragAction.None,
+                host, Array.Empty<IDockControl>());
+        }
     }
 
     private bool TryGetPreviewPlacement(

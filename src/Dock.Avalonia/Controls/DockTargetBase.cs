@@ -296,12 +296,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         return ShowIndicatorsOnly 
             ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 
-            : GetDockOperationFromSelectors(point, relativeTo, dragAction, validate, visible);
+            : GetDockOperationFromSelectors(point, dropControl, relativeTo, dragAction, validate, visible);
     }
 
     private DockOperation GetDockOperationIndicatorsOnly(
         Point point, 
-        Control dropControl, 
+        Control dropControl,
         Visual relativeTo,
         DragAction dragAction, 
         DockOperationHandler? visible)
@@ -340,7 +340,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     }
 
     private DockOperation GetDockOperationFromSelectors(
-        Point point, 
+        Point point,
+        Control dropControl,
         Visual relativeTo, 
         DragAction dragAction,
         DockOperationHandler validate, 
@@ -368,7 +369,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
                 continue;
             }
 
-            if (InvalidateIndicator(selector, kvp.Value, point, relativeTo, operation, dragAction,
+            if (InvalidateIndicator(selector, kvp.Value, point, dropControl, relativeTo, operation, dragAction,
                     validate, visible))
             {
                 result = operation;
@@ -404,6 +405,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         return false;
     }
 
+    internal virtual bool IsWithinTarget(Point point, Visual relativeTo, Control dropControl, DockOperation operation) => true;
+
     // Avalonia 12 changed subtree hit testing in CompositionTarget/VisualExtensions.
     // Use GetVisualsAt for selector containment instead of InputHitTest, then keep
     // a local-bounds fallback for floating adorner timing/readback edge cases.
@@ -426,6 +429,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// <param name="selector">Selector used to hit test the pointer.</param>
     /// <param name="indicator">Visual indicator to update.</param>
     /// <param name="point">Pointer position relative to <paramref name="relativeTo"/>.</param>
+    /// <param name="dropControl">Hovered pane used to limit custom edge zones.</param>
     /// <param name="relativeTo">Visual used for coordinate translation.</param>
     /// <param name="operation">Dock operation represented by the selector.</param>
     /// <param name="dragAction">Current drag action type.</param>
@@ -436,6 +440,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         Control? selector,
         Control? indicator,
         Point point,
+        Control dropControl,
         Visual relativeTo,
         DockOperation operation,
         DragAction dragAction,
@@ -476,7 +481,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         if (selectorPoint is not null)
         {
-            if (IsSelectorHit(selector, selectorPoint.Value))
+            if (IsSelectorHit(selector, selectorPoint.Value)
+                && IsWithinTarget(point, relativeTo, dropControl, operation))
             {
                 if (validate(point, operation, dragAction, relativeTo))
                 {

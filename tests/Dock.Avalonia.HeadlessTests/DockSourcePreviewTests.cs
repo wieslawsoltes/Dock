@@ -238,6 +238,65 @@ public class DockSourcePreviewTests
         finally { window.Close(); }
     }
 
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Escape_with_focus_outside_dock_cancels_and_release_cannot_commit(bool transfer)
+    {
+        var (factory, root, panes) = DockDropPreviewTests.CreateLayout(0.4, 0.3, 0.3);
+        var host = new DockControl { Layout = root };
+        var toolbar = new TextBox();
+        var transferredHost = new DockControl { Height = 1 };
+        var panel = new DockPanel();
+        DockPanel.SetDock(toolbar, global::Avalonia.Controls.Dock.Top);
+        panel.Children.Add(toolbar);
+        DockPanel.SetDock(transferredHost, global::Avalonia.Controls.Dock.Top);
+        panel.Children.Add(transferredHost);
+        panel.Children.Add(host);
+        var window = new Window { Width = 1000, Height = 600, Content = panel };
+        var state = (DockControlState)host.DockControlState;
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            var original = panes.Select(p => Bounds(factory, p, host)).ToArray();
+            var source = panes[2].ActiveDockable!;
+            var originalOwner = source.Owner;
+            var drag = host.GetVisualDescendants().OfType<Control>().First(c => ReferenceEquals(c.DataContext, source));
+            var escaped = 0;
+            toolbar.KeyDown += (_, e) => { if (e.Key == Key.Escape) escaped++; };
+            state.StartDrag(drag, default, new Point(500, 300), host);
+            if (transfer)
+            {
+                var transferredState = (DockControlState)transferredHost.DockControlState;
+                Assert.True(state.TryTransferDragTo(transferredState, host, transferredHost));
+                state = transferredState;
+            }
+            Assert.True(toolbar.Focus());
+            Assert.True(state.HasActiveDrag);
+            window.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+            window.KeyReleaseQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+            window.UpdateLayout();
+            Assert.False(state.HasActiveDrag);
+            Assert.False(host.IsDraggingDock);
+            Assert.False(transferredHost.IsDraggingDock);
+            Assert.Equal(0, escaped);
+            for (var i = 0; i < panes.Length; i++) DockDropPreviewTests.AssertBounds(original[i], Bounds(factory, panes[i], host));
+            state.Process(new Point(100, 100), default, EventType.Moved, DragAction.Move, host, new List<IDockControl> { host });
+            state.Process(new Point(100, 100), default, EventType.Released, DragAction.Move, host, new List<IDockControl> { host });
+            Assert.Same(originalOwner, source.Owner);
+            Assert.False(state.HasActiveDrag);
+            window.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+            Assert.Equal(1, escaped); // Cancellation must unsubscribe and leave ordinary Escape alone.
+        }
+        finally
+        {
+            state.Process(default, default, EventType.CaptureLost, DragAction.None, host, new List<IDockControl> { host });
+            window.Close();
+        }
+    }
+
     private static Rect Bounds(IFactory factory, IDockable model, Control relativeTo)
     {
         var control = (Control)factory.VisibleDockableControls[model];

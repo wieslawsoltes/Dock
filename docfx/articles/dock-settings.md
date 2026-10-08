@@ -337,3 +337,22 @@ the `CloseDockable` command ignores requests that would remove the final
 visible item from that dock.
 
 For more details on dockable properties see [Dockable Property Settings](dock-dockable-properties.md).
+
+### Custom edge docking zones
+
+For themes using stretched transparent edge selectors, set
+`GlobalDockTarget.EdgeHitTestThickness` to the maximum outer-edge hit thickness
+in DIPs (for example, `20`). The effective zone is also capped at one fifth of the
+hovered pane's width or height, leaving local docking targets reachable in narrow
+panes. Local selector templates should use proportional regions without fixed
+insets that can consume the whole pane. Outer docking still targets the layout
+root; `GlobalDockingPreset` need not change.
+
+The default `NaN` preserves existing template-defined hit areas, so stock docking
+buttons and themes require no changes. This option only restricts existing edge
+selectors; it does not enlarge or reposition them.
+
+Escape cancels an active dock drag even when keyboard focus is outside its
+`DockControl` or capture has transferred to another host. It restores the source
+preview layout and clears the pending drop; later pointer release cannot commit
+it. The keyboard handler is removed when the drag ends.

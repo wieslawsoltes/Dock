@@ -405,23 +405,29 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         return false;
     }
 
+    // Unclipped adorners are positioned by the compositor. Translate through the
+    // adorned visual, just as projected preview drawing does, rather than using
+    // the adorner's ordinary visual-tree origin (which can remain at zero).
+    internal Point? GetTargetPoint(Point point, Visual relativeTo)
+    {
+        var coordinateSpace = AdornerLayer.GetAdornedElement(this) ?? this;
+        return relativeTo.TranslatePoint(point, coordinateSpace)
+            ?? coordinateSpace.PointToClient(relativeTo.PointToScreen(point));
+    }
+
+    private Point? GetSelectorPoint(Point point, Visual relativeTo, Control selector)
+    {
+        var local = GetTargetPoint(point, relativeTo);
+        return local is { } targetPoint ? this.TranslatePoint(targetPoint, selector) : null;
+    }
+
     internal virtual bool IsWithinTarget(Point point, Visual relativeTo, Control dropControl, DockOperation operation) => true;
 
-    // Avalonia 12 changed subtree hit testing in CompositionTarget/VisualExtensions.
-    // Use GetVisualsAt for selector containment instead of InputHitTest, then keep
-    // a local-bounds fallback for floating adorner timing/readback edge cases.
-    private static bool IsSelectorHit(Control selector, Point selectorPoint)
-    {
-        foreach (var visual in selector.GetVisualsAt(selectorPoint))
-        {
-            if (ReferenceEquals(visual, selector) || selector.IsVisualAncestorOf(visual))
-            {
-                return true;
-            }
-        }
-
-        return new Rect(selector.Bounds.Size).Contains(selectorPoint);
-    }
+    // Selectors already have explicit rectangular hit regions. Compositor subtree
+    // hit testing can report a different selector after an unclipped adorner moves,
+    // causing the last matching operation (usually Fill) to override a side target.
+    private static bool IsSelectorHit(Control selector, Point selectorPoint) =>
+        new Rect(selector.Bounds.Size).Contains(selectorPoint);
 
     /// <summary>
     /// Invalidates the indicator based on the provided parameters.
@@ -471,13 +477,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             selector.Opacity = 1;
         }
 
-        var selectorPoint = relativeTo.TranslatePoint(point, selector);
-        if (selectorPoint is null)
-        {
-            var screenPoint = relativeTo.PointToScreen(point);
-            var localPoint = this.PointToClient(screenPoint);
-            selectorPoint = this.TranslatePoint(localPoint, selector);
-        }
+        var selectorPoint = GetSelectorPoint(point, relativeTo, selector);
 
         if (selectorPoint is not null)
         {
@@ -527,13 +527,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             return false;
         }
 
-        var selectorPoint = relativeTo.TranslatePoint(point, selector);
-        if (selectorPoint is null)
-        {
-            var screenPoint = relativeTo.PointToScreen(point);
-            var localPoint = this.PointToClient(screenPoint);
-            selectorPoint = this.TranslatePoint(localPoint, selector);
-        }
+        var selectorPoint = GetSelectorPoint(point, relativeTo, selector);
 
         if (selectorPoint is not null)
         {

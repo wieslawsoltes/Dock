@@ -3,6 +3,8 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.VisualTree;
+using Dock.Settings;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -31,10 +33,11 @@ public class GlobalDockTarget : DockTargetBase
     internal override bool IsWithinTarget(Point point, Visual relativeTo, Control dropControl, DockOperation operation)
     {
         if (double.IsNaN(EdgeHitTestThickness)) return true;
-        var local = relativeTo.TranslatePoint(point, this);
+        var local = GetTargetPoint(point, relativeTo);
         if (local is not { } p) return false;
         var horizontal = operation is DockOperation.Left or DockOperation.Right;
-        var paneSize = horizontal ? dropControl.Bounds.Width : dropControl.Bounds.Height;
+        var pane = ResolvePane(dropControl);
+        var paneSize = horizontal ? pane.Bounds.Width : pane.Bounds.Height;
         var thickness = Math.Min(EdgeHitTestThickness, paneSize / 5);
         var distance = operation switch
         {
@@ -45,6 +48,17 @@ public class GlobalDockTarget : DockTargetBase
             _ => double.PositiveInfinity
         };
         return distance >= 0 && distance < thickness;
+    }
+
+    private static Control ResolvePane(Control dropControl)
+    {
+        for (Visual? current = dropControl; current is not null and not DockControl; current = current.GetVisualParent())
+        {
+            if (current is not Control control) continue;
+            if (DockProperties.GetDockAdornerHost(control) is { } host) return host;
+            if (control.GetValue(DockProperties.IsDockTargetProperty)) return control;
+        }
+        return dropControl;
     }
 
     /// <inheritdoc />

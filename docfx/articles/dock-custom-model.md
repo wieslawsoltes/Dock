@@ -148,6 +148,42 @@ template content and to custom model members that intentionally serialize
 runtime payload objects. Unregistered object payloads throw at runtime in the
 source-generated path instead of silently falling back to reflection.
 
+## Isolated docking preview factories
+
+Stock factories support exact docking projections. A derived factory retains
+legacy indicators until it overrides `CreatePreviewFactory()` explicitly; Dock
+cannot assume that its pane defaults or docking overrides match the stock
+implementation. Direct `IFactory` implementations can opt in by implementing
+`IDockPreviewFactoryProvider`.
+
+Return a fresh, isolated factory that preserves layout-affecting behavior:
+
+```csharp
+public class AppFactory : Dock.Model.Mvvm.Factory
+{
+    public override Dock.Model.Controls.IToolDock CreateToolDock()
+    {
+        var pane = base.CreateToolDock();
+        pane.MinWidth = 300;
+        return pane;
+    }
+
+    public override Dock.Model.Core.IFactory CreatePreviewFactory() => new AppFactory();
+}
+```
+
+The isolated factory must not subscribe to live application events, open windows,
+resolve widget services or mutate the live layout. If your factory constructor
+does those things, share its layout defaults with a separate preview factory.
+Returning `this` is rejected. Return `null` when an isolated projection cannot
+reproduce your behavior; docking continues with legacy indicators. Both the
+source and target factory must support projection for cross-factory moves.
+
+An application using standard pane sizing but custom lifecycle services may
+explicitly return a fresh stock factory. Revisit that override if you later add
+layout-affecting defaults. See [Custom Dock Themes](dock-custom-theme.md#migrating-custom-docking-indicators-to-projected-bounds)
+for custom indicator templates and model size constraints.
+
 ## Conclusion
 
 Custom implementations let you integrate Dock with any MVVM pattern while

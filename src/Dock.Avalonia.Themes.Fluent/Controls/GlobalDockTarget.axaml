@@ -24,8 +24,10 @@
 
   <ControlTheme x:Key="{x:Type GlobalDockTarget}" TargetType="GlobalDockTarget">
 
+    <Setter Property="ClipToBounds" Value="False" />
     <Setter Property="Template">
       <ControlTemplate>
+        <Panel>
         <Panel>
           <ProportionalStackPanel Orientation="Horizontal">
             <Panel x:Name="PART_LeftIndicator"
@@ -65,6 +67,13 @@
           </Grid>
         </Panel>
         
+          <Canvas IsHitTestVisible="False">
+            <Border x:Name="PART_PreviewIndicator" Opacity="0.5"
+                    Canvas.Left="{TemplateBinding PreviewX}" Canvas.Top="{TemplateBinding PreviewY}"
+                    Width="{TemplateBinding PreviewWidth}" Height="{TemplateBinding PreviewHeight}"
+                    Background="{DynamicResource DockTargetIndicatorBrush}" />
+          </Canvas>
+        </Panel>
       </ControlTemplate>
     </Setter>
 
@@ -147,6 +156,24 @@
       </Style>
     </Style>
 
+    <Style Selector="^/template/ Border#PART_PreviewIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Border#PART_PreviewIndicator">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_TopIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_BottomIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_LeftIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_RightIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
   </ControlTheme>
 
 </ResourceDictionary>

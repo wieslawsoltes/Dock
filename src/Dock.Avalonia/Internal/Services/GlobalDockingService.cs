@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Model;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
@@ -64,14 +65,13 @@ internal sealed class GlobalDockingService : IGlobalDockingService
 
     public bool TryApplyGlobalDockingProportion(IDockable sourceDockable, IDockable? sourceRoot, IDockable? targetRoot, double proportion)
     {
-        if (sourceRoot is null || targetRoot is null || sourceDockable.Owner is null)
+        // Catalog tools can come from a rootless layout; the resulting target owner is what matters.
+        if (targetRoot is null || sourceDockable.Owner is null)
         {
             return false;
         }
 
-        sourceDockable.Owner.Proportion = proportion;
-        sourceDockable.Owner.CollapsedProportion = proportion;
-        return true;
+        return sourceDockable.Owner is IDock insertedDock && DockSplitProportion.Apply(insertedDock, proportion);
     }
 
     private static IDock? ResolveOutermostGlobalTargetDock(IDockable? dockable)

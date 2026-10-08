@@ -16,5 +16,14 @@
     <ProjectReference Include="..\..\src\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Inpc\Dock.Model.Inpc.csproj" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <!-- Copy analyzer binaries as test fixtures; they are not consumer runtime references. -->
+    <PackageReference Include="System.Text.Json" GeneratePathProperty="true" PrivateAssets="all" IncludeAssets="none" NoWarn="NU1510" />
+    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[6.0.36]" />
+    <None Include="$(NuGetPackageRoot)microsoft.netcore.app.ref/6.0.36/analyzers/dotnet/cs/System.Text.Json.SourceGeneration.dll"
+          Link="analyzers/legacy/System.Text.Json.SourceGeneration.dll" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(PkgSystem_Text_Json)/analyzers/dotnet/roslyn3.11/cs/System.Text.Json.SourceGeneration.dll"
+          Link="analyzers/roslyn3.11/System.Text.Json.SourceGeneration.dll" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(PkgSystem_Text_Json)/analyzers/dotnet/roslyn4.4/cs/System.Text.Json.SourceGeneration.dll"
+          Link="analyzers/roslyn4.4/System.Text.Json.SourceGeneration.dll" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

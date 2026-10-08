@@ -28,8 +28,66 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_LeftSelector", typeof(Control))]
 [TemplatePart("PART_RightSelector", typeof(Control))]
 [TemplatePart("PART_CenterSelector", typeof(Control))]
+[PseudoClasses(":preview")]
 public abstract class DockTargetBase : TemplatedControl, IDockTarget
 {
+    /// <summary>Defines the projected docking rectangle's x property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewXProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewX), target => target.PreviewX);
+
+    private double _previewX;
+    /// <summary>Gets the projected docking rectangle's x.</summary>
+    public double PreviewX => _previewX;
+
+    /// <summary>Defines the projected docking rectangle's y property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewYProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewY), target => target.PreviewY);
+
+    private double _previewY;
+    /// <summary>Gets the projected docking rectangle's y.</summary>
+    public double PreviewY => _previewY;
+
+    /// <summary>Defines the projected docking rectangle's width property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewWidthProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewWidth), target => target.PreviewWidth);
+
+    private double _previewWidth;
+    /// <summary>Gets the projected docking rectangle's width.</summary>
+    public double PreviewWidth => _previewWidth;
+
+    /// <summary>Defines the projected docking rectangle's height property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewHeightProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewHeight), target => target.PreviewHeight);
+
+    private double _previewHeight;
+    /// <summary>Gets the projected docking rectangle's height.</summary>
+    public double PreviewHeight => _previewHeight;
+
+    /// <summary>Updates the projected indicator bounds in this adorner's coordinate space.</summary>
+    /// <param name="bounds">The projected rectangle, or null to restore legacy indicators.</param>
+    public void SetPreviewBounds(Rect? bounds)
+    {
+        var rect = bounds ?? default;
+        SetAndRaise(PreviewXProperty, ref _previewX, rect.X);
+        SetAndRaise(PreviewYProperty, ref _previewY, rect.Y);
+        SetAndRaise(PreviewWidthProperty, ref _previewWidth, rect.Width);
+        SetAndRaise(PreviewHeightProperty, ref _previewHeight, rect.Height);
+        PseudoClasses.Set(":preview", bounds.HasValue);
+        // A collapsed source may move the projected pane beyond the old target.
+        var clipEnabled = !bounds.HasValue;
+        if (AdornerLayer.GetIsClipEnabled(this) != clipEnabled)
+        {
+            AdornerLayer.SetIsClipEnabled(this, clipEnabled);
+            // Avalonia 11.3 updates the compositor's clip flag when the adorned element changes.
+            // Changing IsClipEnabled alone only invalidates the ordinary layout clip.
+            if (AdornerLayer.GetAdornedElement(this) is { } adorned)
+            {
+                AdornerLayer.SetAdornedElement(this, null);
+                AdornerLayer.SetAdornedElement(this, adorned);
+            }
+        }
+    }
+
     private static readonly string[] s_indicators =
     [
         "PART_TopIndicator",
@@ -483,6 +541,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
     void IDockTarget.Reset()
     {
+        SetPreviewBounds(null);
         foreach (var control in IndicatorOperations.Values.Concat(SelectorsOperations.Values))
         {
             control.Opacity = 0;

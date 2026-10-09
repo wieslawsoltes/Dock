@@ -181,6 +181,23 @@ renders the full dockable layout instead of only the title/status badge.
 
 `DockSettings.DragPreviewOpacity` controls the preview window opacity (0.0 to 1.0).
 
+During a move drag, a collapsible tool/document pane is temporarily omitted from
+proportional layout once the drag threshold is crossed. The remaining panes reflow
+before hit-testing and highlighting a drop target. Dragging one tab out of a group
+retains the group's space, hides the dragged tab and temporarily selects a
+remaining tab; dragging the whole group vacates the pane.
+
+Pane reflow changes only visual arrangement. Tab previews use normal active-tab
+selection, including its selection notifications, so custom and cached-content
+templates display the remaining tab. Ownership, tab order and saved proportions
+remain unchanged until the drop commits; no add/remove/close events are raised.
+Cancellation restores the previous tab selection unless the application changed
+it during the drag. Escape, capture loss,
+docking being disabled, or an invalid non-floating drop restores the original
+arrangement. Copy/swap operations retain the source arrangement. Layouts with
+unsupported containers or application constraints that cannot be projected keep
+the existing preview behavior. No theme/template changes are required.
+
 ## ItemsSource unregister synchronization
 
 `DockSettings.UpdateItemsSourceOnUnregister` controls whether closing an ItemsSource-generated
@@ -325,3 +342,26 @@ the `CloseDockable` command ignores requests that would remove the final
 visible item from that dock.
 
 For more details on dockable properties see [Dockable Property Settings](dock-dockable-properties.md).
+
+### Custom edge docking zones
+
+For themes using stretched transparent edge selectors, set
+`GlobalDockTarget.EdgeHitTestThickness` to the maximum outer-edge hit thickness
+in DIPs (for example, `20`). The effective zone is also capped at one fifth of the
+hovered pane's width or height, leaving local docking targets reachable in narrow
+panes. The pane is resolved from `DockAdornerHost` or the nearest `IsDockTarget`
+ancestor, so hovering a small tab/header does not shrink the outer zone. Local selector templates should use proportional regions without fixed
+insets that can consume the whole pane. Outer docking still targets the layout
+root; `GlobalDockingPreset` need not change.
+
+The default `NaN` preserves existing template-defined hit areas, so stock docking
+buttons and themes require no changes. This option only restricts existing edge
+selectors; it does not enlarge or reposition them. Selector rectangles are tested
+in the adorned pane's coordinate space, including when an unclipped projected
+preview extends beyond that pane. Keep local selector regions measured while
+global highlighting is active; hide only the local highlight visuals.
+
+Escape cancels an active dock drag even when keyboard focus is outside its
+`DockControl` or capture has transferred to another host. It restores the source
+preview layout and clears the pending drop; later pointer release cannot commit
+it. The keyboard handler is removed when the drag ends.

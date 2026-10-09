@@ -28,8 +28,66 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_LeftSelector", typeof(Control))]
 [TemplatePart("PART_RightSelector", typeof(Control))]
 [TemplatePart("PART_CenterSelector", typeof(Control))]
+[PseudoClasses(":preview")]
 public abstract class DockTargetBase : TemplatedControl, IDockTarget
 {
+    /// <summary>Defines the projected docking rectangle's x property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewXProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewX), target => target.PreviewX);
+
+    private double _previewX;
+    /// <summary>Gets the projected docking rectangle's x.</summary>
+    public double PreviewX => _previewX;
+
+    /// <summary>Defines the projected docking rectangle's y property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewYProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewY), target => target.PreviewY);
+
+    private double _previewY;
+    /// <summary>Gets the projected docking rectangle's y.</summary>
+    public double PreviewY => _previewY;
+
+    /// <summary>Defines the projected docking rectangle's width property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewWidthProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewWidth), target => target.PreviewWidth);
+
+    private double _previewWidth;
+    /// <summary>Gets the projected docking rectangle's width.</summary>
+    public double PreviewWidth => _previewWidth;
+
+    /// <summary>Defines the projected docking rectangle's height property.</summary>
+    public static readonly DirectProperty<DockTargetBase, double> PreviewHeightProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewHeight), target => target.PreviewHeight);
+
+    private double _previewHeight;
+    /// <summary>Gets the projected docking rectangle's height.</summary>
+    public double PreviewHeight => _previewHeight;
+
+    /// <summary>Updates the projected indicator bounds in this adorner's coordinate space.</summary>
+    /// <param name="bounds">The projected rectangle, or null to restore legacy indicators.</param>
+    public void SetPreviewBounds(Rect? bounds)
+    {
+        var rect = bounds ?? default;
+        SetAndRaise(PreviewXProperty, ref _previewX, rect.X);
+        SetAndRaise(PreviewYProperty, ref _previewY, rect.Y);
+        SetAndRaise(PreviewWidthProperty, ref _previewWidth, rect.Width);
+        SetAndRaise(PreviewHeightProperty, ref _previewHeight, rect.Height);
+        PseudoClasses.Set(":preview", bounds.HasValue);
+        // A collapsed source may move the projected pane beyond the old target.
+        var clipEnabled = !bounds.HasValue;
+        if (AdornerLayer.GetIsClipEnabled(this) != clipEnabled)
+        {
+            AdornerLayer.SetIsClipEnabled(this, clipEnabled);
+            // Avalonia 11.3 updates the compositor's clip flag when the adorned element changes.
+            // Changing IsClipEnabled alone only invalidates the ordinary layout clip.
+            if (AdornerLayer.GetAdornedElement(this) is { } adorned)
+            {
+                AdornerLayer.SetAdornedElement(this, null);
+                AdornerLayer.SetAdornedElement(this, adorned);
+            }
+        }
+    }
+
     private static readonly string[] s_indicators =
     [
         "PART_TopIndicator",
@@ -238,12 +296,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         return ShowIndicatorsOnly 
             ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 
-            : GetDockOperationFromSelectors(point, relativeTo, dragAction, validate, visible);
+            : GetDockOperationFromSelectors(point, dropControl, relativeTo, dragAction, validate, visible);
     }
 
     private DockOperation GetDockOperationIndicatorsOnly(
         Point point, 
-        Control dropControl, 
+        Control dropControl,
         Visual relativeTo,
         DragAction dragAction, 
         DockOperationHandler? visible)
@@ -282,7 +340,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     }
 
     private DockOperation GetDockOperationFromSelectors(
-        Point point, 
+        Point point,
+        Control dropControl,
         Visual relativeTo, 
         DragAction dragAction,
         DockOperationHandler validate, 
@@ -310,7 +369,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
                 continue;
             }
 
-            if (InvalidateIndicator(selector, kvp.Value, point, relativeTo, operation, dragAction,
+            if (InvalidateIndicator(selector, kvp.Value, point, dropControl, relativeTo, operation, dragAction,
                     validate, visible))
             {
                 result = operation;
@@ -346,21 +405,29 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         return false;
     }
 
-    // Avalonia 12 changed subtree hit testing in CompositionTarget/VisualExtensions.
-    // Use GetVisualsAt for selector containment instead of InputHitTest, then keep
-    // a local-bounds fallback for floating adorner timing/readback edge cases.
-    private static bool IsSelectorHit(Control selector, Point selectorPoint)
+    // Unclipped adorners are positioned by the compositor. Translate through the
+    // adorned visual, just as projected preview drawing does, rather than using
+    // the adorner's ordinary visual-tree origin (which can remain at zero).
+    internal Point? GetTargetPoint(Point point, Visual relativeTo)
     {
-        foreach (var visual in selector.GetVisualsAt(selectorPoint))
-        {
-            if (ReferenceEquals(visual, selector) || selector.IsVisualAncestorOf(visual))
-            {
-                return true;
-            }
-        }
-
-        return new Rect(selector.Bounds.Size).Contains(selectorPoint);
+        var coordinateSpace = AdornerLayer.GetAdornedElement(this) ?? this;
+        return relativeTo.TranslatePoint(point, coordinateSpace)
+            ?? coordinateSpace.PointToClient(relativeTo.PointToScreen(point));
     }
+
+    private Point? GetSelectorPoint(Point point, Visual relativeTo, Control selector)
+    {
+        var local = GetTargetPoint(point, relativeTo);
+        return local is { } targetPoint ? this.TranslatePoint(targetPoint, selector) : null;
+    }
+
+    internal virtual bool IsWithinTarget(Point point, Visual relativeTo, Control dropControl, DockOperation operation) => true;
+
+    // Selectors already have explicit rectangular hit regions. Compositor subtree
+    // hit testing can report a different selector after an unclipped adorner moves,
+    // causing the last matching operation (usually Fill) to override a side target.
+    private static bool IsSelectorHit(Control selector, Point selectorPoint) =>
+        new Rect(selector.Bounds.Size).Contains(selectorPoint);
 
     /// <summary>
     /// Invalidates the indicator based on the provided parameters.
@@ -368,6 +435,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// <param name="selector">Selector used to hit test the pointer.</param>
     /// <param name="indicator">Visual indicator to update.</param>
     /// <param name="point">Pointer position relative to <paramref name="relativeTo"/>.</param>
+    /// <param name="dropControl">Hovered pane used to limit custom edge zones.</param>
     /// <param name="relativeTo">Visual used for coordinate translation.</param>
     /// <param name="operation">Dock operation represented by the selector.</param>
     /// <param name="dragAction">Current drag action type.</param>
@@ -378,6 +446,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         Control? selector,
         Control? indicator,
         Point point,
+        Control dropControl,
         Visual relativeTo,
         DockOperation operation,
         DragAction dragAction,
@@ -408,17 +477,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             selector.Opacity = 1;
         }
 
-        var selectorPoint = relativeTo.TranslatePoint(point, selector);
-        if (selectorPoint is null)
-        {
-            var screenPoint = relativeTo.PointToScreen(point);
-            var localPoint = this.PointToClient(screenPoint);
-            selectorPoint = this.TranslatePoint(localPoint, selector);
-        }
+        var selectorPoint = GetSelectorPoint(point, relativeTo, selector);
 
         if (selectorPoint is not null)
         {
-            if (IsSelectorHit(selector, selectorPoint.Value))
+            if (IsSelectorHit(selector, selectorPoint.Value)
+                && IsWithinTarget(point, relativeTo, dropControl, operation))
             {
                 if (validate(point, operation, dragAction, relativeTo))
                 {
@@ -463,13 +527,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             return false;
         }
 
-        var selectorPoint = relativeTo.TranslatePoint(point, selector);
-        if (selectorPoint is null)
-        {
-            var screenPoint = relativeTo.PointToScreen(point);
-            var localPoint = this.PointToClient(screenPoint);
-            selectorPoint = this.TranslatePoint(localPoint, selector);
-        }
+        var selectorPoint = GetSelectorPoint(point, relativeTo, selector);
 
         if (selectorPoint is not null)
         {
@@ -483,6 +541,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
     void IDockTarget.Reset()
     {
+        SetPreviewBounds(null);
         foreach (var control in IndicatorOperations.Values.Concat(SelectorsOperations.Values))
         {
             control.Opacity = 0;

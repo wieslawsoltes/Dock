@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
 using Dock.Model;
@@ -27,9 +30,13 @@ internal class DockDragContext
     public bool HasResolvedOperation { get; set; }
     
     public PixelPoint DragOffset { get; set; }
+    public DockDragPreviewLayout? SourcePreview { get; set; }
+    public bool SourcePreviewInitialized { get; set; }
+    public IDisposable? CancellationSubscription { get; set; }
 
     public void Start(Control dragControl, Point point)
     {
+        End();
         DragControl = dragControl;
         DragStartPoint = point;
         PointerPressed = true;
@@ -41,6 +48,11 @@ internal class DockDragContext
 
     public void End()
     {
+        CancellationSubscription?.Dispose();
+        CancellationSubscription = null;
+        SourcePreview?.Dispose();
+        SourcePreview = null;
+        SourcePreviewInitialized = false;
         DragControl = null;
         DragStartPoint = default;
         PointerPressed = false;
@@ -59,6 +71,11 @@ internal class DockDragContext
 
     public void CopyTo(DockDragContext target)
     {
+        target.CancellationSubscription = CancellationSubscription;
+        CancellationSubscription = null;
+        target.SourcePreviewInitialized = SourcePreviewInitialized;
+        target.SourcePreview = SourcePreview;
+        SourcePreview = null;
         target.DragControl = DragControl;
         target.DragStartPoint = DragStartPoint;
         target.PointerPressed = PointerPressed;
@@ -84,7 +101,8 @@ internal class DockControlState : DockManagerState, IDockControlState
         DockOperation SelectedOperation,
         bool IsValid);
 
-    private readonly DockDragContext _context = new();
+    private readonly DockDragContext _context;
+    private readonly DockDropPreviewService _dropPreview;
     private readonly DragPreviewHelper _dragPreviewHelper = new();
     private DockControlState? _transferTarget;
     private DockControl? _activeDockControl;
@@ -94,9 +112,13 @@ internal class DockControlState : DockManagerState, IDockControlState
     public DockControlState(
         IDockManager dockManager,
         IDragOffsetCalculator dragOffsetCalculator,
-        IGlobalDockingService? globalDockingService = null)
+        IGlobalDockingService? globalDockingService = null,
+        DockDragContext? context = null,
+        DockDropPreviewService? dropPreview = null)
         : base(dockManager, globalDockingService)
     {
+        _context = context ?? new DockDragContext();
+        _dropPreview = dropPreview ?? new DockDropPreviewService();
         DragOffsetCalculator = dragOffsetCalculator;
     }
 
@@ -201,6 +223,24 @@ internal class DockControlState : DockManagerState, IDockControlState
         _transferTarget = null;
         _activeDockControl = activeDockControl;
         _context.Start(dragControl, startPoint);
+        // Pointer capture does not redirect keyboard input. Focus may remain outside
+        // this DockControl, or move when the source pane is hidden during preview.
+        _context.CancellationSubscription = InputElement.KeyDownEvent.AddClassHandler<TopLevel>(
+            (_, e) => CancelOnEscape(e), RoutingStrategies.Tunnel, handledEventsToo: true);
+    }
+
+    private void CancelOnEscape(KeyEventArgs input)
+    {
+        if (input.Key != Key.Escape)
+            return;
+
+        var owner = ResolveCurrentOwner();
+        if (owner._context.PointerPressed && owner._activeDockControl is { } host)
+        {
+            input.Handled = true;
+            owner.Process(default, default, EventType.CaptureLost, DragAction.None,
+                host, Array.Empty<IDockControl>());
+        }
     }
 
     private bool TryGetPreviewPlacement(
@@ -253,10 +293,27 @@ internal class DockControlState : DockManagerState, IDockControlState
         }
 
         owner._context.DoDragDrop = true;
+        owner.UpdateSourcePreview(DragAction.Move);
         if (owner._activeDockControl is { } activeDockControl)
         {
             activeDockControl.IsDraggingDock = true;
         }
+    }
+
+    private void UpdateSourcePreview(DragAction action)
+    {
+        if (action != DragAction.Move || _context.SourcePreview is { IsCurrent: false })
+        {
+            _context.SourcePreview?.Dispose();
+            _context.SourcePreview = null;
+            _context.SourcePreviewInitialized = false;
+            _activeDockControl?.UpdateLayout();
+        }
+        if (action != DragAction.Move || _context.SourcePreviewInitialized) return;
+        _context.SourcePreviewInitialized = true;
+        if (_context.DragControl is { DataContext: IDockable source } dragControl
+            && dragControl.FindAncestorOfType<DockControl>() is { } sourceHost)
+            _context.SourcePreview = DockDragPreviewLayout.TryCreate(DragDockableResolver.Resolve(source), sourceHost);
     }
 
     private DockControlState ResolveCurrentOwner()
@@ -356,6 +413,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         if (updateAdornerState)
         {
             LocalAdornerHelper.SetGlobalDockActive(useGlobalOperation);
+            UpdatePreview(selectedOperation, useGlobalOperation, isValid, dragAction);
         }
 
         return new DockOperationResolution(
@@ -377,6 +435,20 @@ internal class DockControlState : DockManagerState, IDockControlState
         if (selectedOperation == DockOperation.None)
         {
             return false;
+        }
+
+        // A preview is a promise about this layout. Cancel a stale drop rather than
+        // applying it to a layout the user has not seen highlighted.
+        if (_dropPreview.HasProjection && dragAction == DragAction.Move
+            && _context.DragControl?.DataContext is IDockable dragModel
+            && DragDockableResolver.Resolve(dragModel) is { } resolved
+            && DropControl is { } previewDropControl
+            && previewDropControl.FindAncestorOfType<DockControl>() is { } previewDockControl)
+        {
+            var previewTarget = useGlobalOperation ? ResolveGlobalTargetDock(previewDropControl) : previewDropControl.DataContext as IDockable;
+            var proportion = useGlobalOperation ? DockSettings.GlobalDockingProportion : double.NaN;
+            if (previewTarget is null || !_dropPreview.IsCurrent(resolved, previewTarget, selectedOperation, previewDockControl, proportion))
+                return true;
         }
 
         RemoveAdorners();
@@ -425,10 +497,18 @@ internal class DockControlState : DockManagerState, IDockControlState
                  //     return;
                  // }
 
+                 var movedItem = sourceDockable switch
+                 {
+                     IDock { VisibleDockables: { Count: > 0 } children } => children[0],
+                     IDock => null,
+                     _ => sourceDockable
+                 };
+                 var previousOwner = movedItem?.Owner;
                  Execute(point, selectedOperation, dragAction, relativeTo, sourceDockable, targetDock);
 
-                 GlobalDocking.TryApplyGlobalDockingProportion(
-                     sourceDockable,
+                 if (movedItem is not null && !ReferenceEquals(previousOwner, movedItem.Owner))
+                     GlobalDocking.TryApplyGlobalDockingProportion(
+                     movedItem,
                      sourceRoot,
                      targetRoot,
                      DockSettings.GlobalDockingProportion);
@@ -487,6 +567,7 @@ internal class DockControlState : DockManagerState, IDockControlState
      private void Leave()
      {
          _context.ClearResolvedOperation();
+         _dropPreview.Clear();
          RemoveAdorners();
      }
 
@@ -610,6 +691,35 @@ internal class DockControlState : DockManagerState, IDockControlState
         return DockManager.IsDockTargetVisible(sourceDockable, targetDockable, operation);
     }
 
+    internal void UpdatePreview(DockOperation operation, bool global, bool valid, DragAction action)
+    {
+        _dropPreview.Deactivate();
+        LocalAdornerHelper.UpdateGeometry();
+        GlobalAdornerHelper.UpdateGeometry();
+        if (LocalAdornerHelper.Adorner is DockTargetBase local) local.SetPreviewBounds(null);
+        if (GlobalAdornerHelper.Adorner is DockTargetBase globalAdorner) globalAdorner.SetPreviewBounds(null);
+        if (!valid || action != DragAction.Move || _context.DragControl?.DataContext is not IDockable dragModel
+            || DragDockableResolver.Resolve(dragModel) is not { } source || DropControl is not { } dropControl
+            || dropControl.FindAncestorOfType<DockControl>() is not { } dockControl)
+            return;
+        var target = global ? ResolveGlobalTargetDock(dropControl) : dropControl.DataContext as IDockable;
+        var adorner = (global ? GlobalAdornerHelper.Adorner : LocalAdornerHelper.Adorner) as DockTargetBase;
+        if (target is null || adorner is null) return;
+        var proportion = global ? DockSettings.GlobalDockingProportion : double.NaN;
+        var bounds = _dropPreview.GetBounds(source, target, operation, dockControl, proportion);
+        if (bounds is null) return;
+        // Avalonia's compositor positions an adorner relative to AdornedElement.
+        // The ordinary visual tree does not include that transform (notably on 11.3).
+        var coordinateSpace = AdornerLayer.GetAdornedElement(adorner) ?? adorner;
+        var origin = dockControl.TranslatePoint(bounds.Value.Position, coordinateSpace);
+        if (origin is null)
+        {
+            var screen = dockControl.PointToScreen(bounds.Value.Position);
+            origin = coordinateSpace.PointToClient(screen);
+        }
+        adorner.SetPreviewBounds(new Rect(origin.Value, bounds.Value.Size));
+    }
+
     protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
     {
         sourceDockable = DragDockableResolver.Resolve(sourceDockable);
@@ -680,6 +790,10 @@ internal class DockControlState : DockManagerState, IDockControlState
             }
             case EventType.Released:
             {
+                // Remove only visual overrides before committing. No layout pass or
+                // hit-test occurs here, so the target still denotes the shown preview.
+                _context.SourcePreview?.Dispose();
+                _context.SourcePreview = null;
                 if (_context.DoDragDrop)
                 {
                     var executed = false;
@@ -811,6 +925,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         break;
                     }
 
+                    UpdateSourcePreview(dragAction);
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                     var preview = "None";
 

@@ -42,8 +42,8 @@ internal class ProportionResizer
         // Apply constraints and adjust proportions accordingly
         ApplyConstraints(ref newTargetProportion, ref newNeighborProportion);
 
-        ProportionalStackPanel.SetProportion(_target, Math.Max(0, newTargetProportion));
-        ProportionalStackPanel.SetProportion(_neighbor, Math.Max(0, newNeighborProportion));
+        _target.SetCurrentValue(ProportionalStackPanel.ProportionProperty, Math.Max(0, newTargetProportion));
+        _neighbor.SetCurrentValue(ProportionalStackPanel.ProportionProperty, Math.Max(0, newNeighborProportion));
     }
 
     private double ClampDeltaProportion(double delta, double targetProportion, double neighborProportion)

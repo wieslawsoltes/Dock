@@ -23,6 +23,7 @@ using Dock.Avalonia.Internal;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Selectors;
 using Dock.Avalonia.Services;
+using Dock.Controls.ProportionalStackPanel;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -46,6 +47,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private readonly IDockControlFactoryService _factoryService;
     private bool _isInitialized;
     private ContentControl? _contentControl;
+    private ProportionalStackPanelSplitter? _previewSplitter;
     private ManagedWindowLayer? _managedWindowLayer;
     private DockCommandBarHost? _commandBarHost;
     private DockCommandBarManager? _commandBarManager;
@@ -454,6 +456,41 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         UpdateManagedWindowLayer(Layout);
         InitializeCommandBars();
     }
+
+    internal double PreviewSplitterThickness
+    {
+        get
+        {
+            if (_previewSplitter is null)
+            {
+                // A logical child inherits theme/styles and observes later style changes, even
+                // before the layout contains its first splitter. It never enters the visual tree.
+                _previewSplitter = new ProportionalStackPanelSplitter();
+                LogicalChildren.Add(_previewSplitter);
+            }
+            _previewSplitter.ApplyStyling();
+            return _previewSplitter.Thickness;
+        }
+    }
+
+    internal void MeasurePreview(Control projection, Size size)
+    {
+        // Avalonia takes layout rounding from the visual root. Borrow that root
+        // synchronously so both framework rounding and the panel's own DIP-based
+        // allocation match the live layout. Remove the projection before rendering.
+        VisualChildren.Add(projection);
+        try
+        {
+            projection.Measure(size);
+            projection.Arrange(new Rect(size));
+        }
+        finally { VisualChildren.Remove(projection); }
+    }
+
+    internal Rect PreviewViewport => _contentControl is { } content
+        && content.TranslatePoint(default, this) is { } origin
+            ? new Rect(origin, content.Bounds.Size)
+            : new Rect(Bounds.Size);
 
     private void InitializeDefaultDataTemplates()
     {

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -73,6 +74,16 @@ public class ProportionalStackPanel : Panel
             BindingMode.TwoWay);
 
     private bool _isAssigningProportions;
+    private IReadOnlyDictionary<Control, Rect>? _previewSlots;
+
+    // A drag layout arranges existing controls without writing transient proportions
+    // through the normal two-way model bindings.
+    internal void SetPreviewSlots(IReadOnlyDictionary<Control, Rect>? slots)
+    {
+        _previewSlots = slots;
+        InvalidateMeasure();
+        InvalidateArrange();
+    }
 
     /// <summary>
     /// Gets the value of the CollapsedProportion attached property on the specified control.
@@ -125,7 +136,7 @@ public class ProportionalStackPanel : Panel
 
             if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
             {
-                SetCollapsedProportion(sender, value);
+                sender.SetCurrentValue(CollapsedProportionProperty, value);
             }
 
             parent.InvalidateMeasure();
@@ -173,6 +184,22 @@ public class ProportionalStackPanel : Panel
     /// <inheritdoc/>
     protected override Size MeasureOverride(Size constraint)
     {
+        if (_previewSlots is { } slots)
+        {
+            var previewWidth = 0.0;
+            var previewHeight = 0.0;
+            foreach (var child in Children)
+            {
+                var slot = slots.TryGetValue(child, out var bounds) ? bounds : default;
+                child.Measure(slot.Size);
+                previewWidth = Math.Max(previewWidth, slot.Right);
+                previewHeight = Math.Max(previewHeight, slot.Bottom);
+            }
+            // ScrollViewer and StackPanel can offer an unbounded cross axis.
+            // Keep bounded dimensions, but report finite preview extents there.
+            return new Size(double.IsInfinity(constraint.Width) ? previewWidth : constraint.Width,
+                double.IsInfinity(constraint.Height) ? previewHeight : constraint.Height);
+        }
         var horizontal = Orientation == Orientation.Horizontal;
 
         if (constraint == Size.Infinity
@@ -302,6 +329,12 @@ public class ProportionalStackPanel : Panel
     /// <inheritdoc/>
     protected override Size ArrangeOverride(Size arrangeSize)
     {
+        if (_previewSlots is { } slots)
+        {
+            foreach (var child in Children)
+                child.Arrange(slots.TryGetValue(child, out var slot) ? slot : default);
+            return arrangeSize;
+        }
         var left = 0.0;
         var top = 0.0;
         var right = 0.0;

@@ -186,9 +186,19 @@ public class ProportionalStackPanel : Panel
     {
         if (_previewSlots is { } slots)
         {
+            var previewWidth = 0.0;
+            var previewHeight = 0.0;
             foreach (var child in Children)
-                child.Measure(slots.TryGetValue(child, out var slot) ? slot.Size : default);
-            return constraint;
+            {
+                var slot = slots.TryGetValue(child, out var bounds) ? bounds : default;
+                child.Measure(slot.Size);
+                previewWidth = Math.Max(previewWidth, slot.Right);
+                previewHeight = Math.Max(previewHeight, slot.Bottom);
+            }
+            // ScrollViewer and StackPanel can offer an unbounded cross axis.
+            // Keep bounded dimensions, but report finite preview extents there.
+            return new Size(double.IsInfinity(constraint.Width) ? previewWidth : constraint.Width,
+                double.IsInfinity(constraint.Height) ? previewHeight : constraint.Height);
         }
         var horizontal = Orientation == Orientation.Horizontal;
 

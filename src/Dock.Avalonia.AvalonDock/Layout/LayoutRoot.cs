@@ -58,7 +58,8 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
         _hidden = new LayoutChildren<LayoutAnchorable>(this, model, () => model.HiddenDockables, value => model.HiddenDockables = value);
         if (model.Factory is null)
         {
-            Factory factory = new() { HideToolsOnClose = false, HideDocumentsOnClose = false };
+            Factory factory = new LayoutFactory(window => LayoutWindowClosing.TryClose(this, window))
+                { HideToolsOnClose = false, HideDocumentsOnClose = false };
             model.Factory = factory;
             factory.DockableClosing += (_, args) =>
             {

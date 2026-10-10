@@ -66,6 +66,9 @@ supported by corresponding implementation and test evidence.
   panes and tab indices. Docked tools can reuse their former floating windows;
   both return locations survive XML. Protected docking fallbacks invoke layout
   insertion strategies when there is no previous pane.
+  Native floating host close requests honor factory/content cancellation and
+  close capabilities. Tool groups hide when they cannot close but can hide,
+  retaining their floating return pane for `Show()`.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
@@ -80,14 +83,14 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 106 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 115 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
 ## Open work (not release-complete)
 
 - Complete native floating lifecycle/state synchronization, including tool
-  group return locations, native window-close cancellation, and grouped-document/mixed native windows. XML rejects
+  group return locations and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: item containers and commands, additional update

@@ -21,7 +21,7 @@ public class LayoutBridgeTests
         Assert.IsType<Document>(document.DockModel);
         Assert.IsType<DocumentDock>(pane.DockModel);
         Assert.IsType<RootDock>(root.DockModel);
-        Assert.IsType<Model.Avalonia.Factory>(root.DockFactory);
+        Assert.IsAssignableFrom<Model.Avalonia.Factory>(root.DockFactory);
         Assert.Same(root.DockFactory, document.DockModel.Factory);
         Assert.Same(document.DockModel, Assert.Single(((DocumentDock)pane.DockModel).VisibleDockables!));
         Assert.Same(pane, document.Parent);

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
@@ -37,6 +38,17 @@ if (!window.GetVisualDescendants().OfType<TextBlock>().Any(x => x.Text == docume
 fromSource.Float();
 Dispatcher.UIThread.RunJobs();
 AssertFloatingSourceTemplate(manager, documents[0]);
+HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().DockWindow.Host!;
+EventHandler<CancelEventArgs> cancelClose = (_, args) => args.Cancel = true;
+fromSource.Closing += cancelClose;
+sourceHost.Close();
+if (!sourceHost.IsVisible || !ReferenceEquals(fromSource.Root, manager.Layout))
+    throw new Exception("The native host ignored content closing cancellation.");
+fromSource.Closing -= cancelClose;
+fromSource.Dock();
+if (fromSource.IsFloating || manager.Layout.FloatingWindows.Count != 0)
+    throw new Exception("The source document did not return to its original pane.");
+fromSource.Float();
 XmlLayoutSerializer sourceSerializer = new(manager);
 using StringWriter sourceWriter = new();
 sourceSerializer.Serialize(sourceWriter);
@@ -64,7 +76,7 @@ if (!Equals(restoredWindow.RootDocument!.Content, "Floating package content") ||
     restoredWindow.DockWindow.Height != 380 || restoredWindow.DockWindow.X != 50 || restoredWindow.DockWindow.Y != 70 ||
     !restoredWindow.RootDocument.IsMaximized)
     throw new Exception("Floating layout content or window state was not preserved.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, observable sources, and floating content templates passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, observable sources, floating templates, docking, and close cancellation passed.");
 
 static void AssertFloatingSourceTemplate(DockingManager manager, string content)
 {

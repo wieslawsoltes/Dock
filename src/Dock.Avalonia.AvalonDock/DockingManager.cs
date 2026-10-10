@@ -7,6 +7,7 @@ using Avalonia.Metadata;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 using Xceed.Wpf.AvalonDock.Layout;
+using Xceed.Wpf.AvalonDock.Infrastructure;
 
 namespace Xceed.Wpf.AvalonDock;
 
@@ -28,6 +29,7 @@ public class DockingManager : TemplatedControl
 
     private LayoutRoot _layout;
     private object? _activeContent;
+    private readonly LayoutSizing _sizing = new();
 
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
@@ -97,6 +99,13 @@ public class DockingManager : TemplatedControl
     public event EventHandler<DocumentClosedEventArgs>? DocumentClosed;
     /// <summary>Occurs when active content changes.</summary>
     public event EventHandler? ActiveContentChanged;
+
+    /// <summary>Applies AvalonDock pane dimensions to Dock before measuring.</summary>
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        _sizing.Apply(Layout, availableSize);
+        return base.MeasureOverride(availableSize);
+    }
 
     private void LayoutPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {

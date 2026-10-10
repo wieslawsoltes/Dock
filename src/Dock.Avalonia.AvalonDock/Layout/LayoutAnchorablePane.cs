@@ -14,7 +14,7 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     public LayoutAnchorablePane(LayoutAnchorable anchorable) : this() => Children.Add(anchorable);
     internal LayoutAnchorablePane(ToolDock model, LayoutModelContext? context = null) : base(model, context) { }
     /// <summary>Gets or sets the pane's name.</summary>
-    public string Name { get => DockModel.Id; set => DockModel.Id = value; }
+    public string Name { get => DockModel.Name ?? string.Empty; set => DockModel.Name = value; }
     /// <summary>Gets whether every child can be hidden.</summary>
     public bool CanHide { get { foreach (LayoutAnchorable child in Children) if (!child.CanHide) return false; return Children.Count > 0; } }
     /// <summary>Gets whether every child can be closed.</summary>

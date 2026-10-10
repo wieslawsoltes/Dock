@@ -198,8 +198,7 @@ internal static class AvalonDockXml
             tool.AutoHideMinHeight = Number(xml, "AutoHideMinHeight", tool.AutoHideMinHeight);
         }
         if (element is LayoutDocumentPane documents) documents.ShowHeader = Boolean(xml, "ShowHeader", documents.ShowHeader);
-        // Name and persistence Id are distinct upstream. Preserve Id for references.
-        if (element is LayoutAnchorablePane tools && xml.Attribute("Name") is { } name && xml.Attribute("Id") is null) tools.Name = name.Value;
+        if (element is LayoutAnchorablePane tools && xml.Attribute("Name") is { } name) tools.Name = name.Value;
         foreach (XElement child in xml.Elements())
         {
             if (element is not ILayoutGroup group) throw new XmlException($"'{xml.Name}' cannot contain layout children.");

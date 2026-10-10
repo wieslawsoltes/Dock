@@ -34,8 +34,10 @@ public class XmlLayoutSerializer : LayoutSerializer
     /// <summary>Writes to a file.</summary>
     public void Serialize(string filepath)
     {
+        XElement layout = AvalonDockXml.Write(Manager.Layout);
         using FileStream stream = File.Create(filepath);
-        Serialize(stream);
+        using XmlWriter writer = XmlWriter.Create(stream, WriterSettings());
+        layout.WriteTo(writer);
     }
     /// <summary>Reads from a caller-owned stream.</summary>
     public void Deserialize(Stream stream)

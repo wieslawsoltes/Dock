@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Controls.ProportionalStackPanel;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xunit;
@@ -15,6 +16,72 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 
 public class CompiledXamlTests
 {
+    [AvaloniaFact]
+    public void Splitter_Drag_Updates_Public_Width_And_Survives_Window_Resize()
+    {
+        XamlFixture window = new();
+        try
+        {
+            DockingManager manager = window.FindControl<DockingManager>("Manager")!;
+            LayoutAnchorablePane pane = manager.Layout.Descendents().OfType<LayoutAnchorablePane>().Single();
+            pane.DockWidth = new GridLength(180);
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            ProportionalStackPanelSplitter splitter = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().First();
+            Point start = splitter.TranslatePoint(new Point(splitter.Bounds.Width / 2, splitter.Bounds.Height / 2), window)!.Value;
+            window.MouseDown(start, MouseButton.Left);
+            window.MouseMove(start + new Vector(60, 0));
+            window.MouseUp(start + new Vector(60, 0), MouseButton.Left);
+            Dispatcher.UIThread.RunJobs();
+            Assert.InRange(pane.DockWidth.Value, 236, 244);
+            window.Width = 1000;
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            ToolDockControl control = Assert.Single(manager.GetVisualDescendants().OfType<ToolDockControl>());
+            Assert.InRange(control.Bounds.Width, 236, 244);
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public void Vertical_Layout_Applies_Pixel_Height()
+    {
+        XamlFixture window = new();
+        try
+        {
+            DockingManager manager = window.FindControl<DockingManager>("Manager")!;
+            manager.Layout.RootPanel.Orientation = global::Avalonia.Layout.Orientation.Vertical;
+            LayoutAnchorablePane pane = manager.Layout.Descendents().OfType<LayoutAnchorablePane>().Single();
+            pane.DockHeight = new GridLength(140);
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            ToolDockControl control = Assert.Single(manager.GetVisualDescendants().OfType<ToolDockControl>());
+            Assert.InRange(control.Bounds.Height, 136, 144);
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public void Pixel_Pane_Width_Is_Applied_And_Can_Be_Changed_At_Runtime()
+    {
+        XamlFixture window = new();
+        try
+        {
+            DockingManager manager = window.FindControl<DockingManager>("Manager")!;
+            LayoutAnchorablePane pane = manager.Layout.Descendents().OfType<LayoutAnchorablePane>().Single();
+            pane.DockWidth = new GridLength(180);
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            ToolDockControl control = Assert.Single(manager.GetVisualDescendants().OfType<ToolDockControl>());
+            Assert.InRange(control.Bounds.Width, 176, 184);
+            pane.DockWidth = new GridLength(240);
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            Assert.InRange(control.Bounds.Width, 236, 244);
+        }
+        finally { window.Close(); }
+    }
+
     [AvaloniaFact]
     public void Xceed_Xml_Namespace_Builds_And_Renders_Dock_Controls()
     {

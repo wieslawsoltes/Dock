@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -18,15 +19,26 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     private double _floatingLeft;
     private double _floatingTop;
     private bool _isMaximized;
+    private bool _applyingProportion;
+    private double _availableExtent;
+    private bool _horizontal;
 
     /// <summary>Creates a positionable split group.</summary>
     public LayoutPositionableGroup() : this(new ProportionalDock()) { }
     internal LayoutPositionableGroup(DockBase model, LayoutModelContext? context = null) : base(model, context) { }
 
     /// <summary>Gets or sets the preferred docked width.</summary>
-    public GridLength DockWidth { get => _dockWidth; set => SetField(ref _dockWidth, value); }
+    public GridLength DockWidth
+    {
+        get => _dockWidth;
+        set { if (SetField(ref _dockWidth, value)) Root?.Manager?.InvalidateMeasure(); }
+    }
     /// <summary>Gets or sets the preferred docked height.</summary>
-    public GridLength DockHeight { get => _dockHeight; set => SetField(ref _dockHeight, value); }
+    public GridLength DockHeight
+    {
+        get => _dockHeight;
+        set { if (SetField(ref _dockHeight, value)) Root?.Manager?.InvalidateMeasure(); }
+    }
     /// <summary>Gets or sets whether duplicate content is allowed.</summary>
     public bool AllowDuplicateContent { get => _allowDuplicateContent; set => SetField(ref _allowDuplicateContent, value); }
     /// <summary>Gets or sets whether items can be repositioned.</summary>
@@ -45,4 +57,27 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     public double FloatingTop { get => _floatingTop; set => SetField(ref _floatingTop, value); }
     /// <summary>Gets or sets whether the floating window is maximized.</summary>
     public bool IsMaximized { get => _isMaximized; set => SetField(ref _isMaximized, value); }
+
+    void ILayoutPositionableGroup.ApplyDockProportion(double proportion, double availableExtent, bool horizontal)
+    {
+        _availableExtent = availableExtent;
+        _horizontal = horizontal;
+        _applyingProportion = true;
+        try { DockModel.Proportion = proportion; }
+        finally { _applyingProportion = false; }
+    }
+
+    internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        base.OnModelPropertyChanged(sender, e);
+        if (e.Property != DockableBase.ProportionProperty || _applyingProportion || _availableExtent <= 0
+            || !double.IsFinite(DockModel.Proportion) || DockModel.Proportion < 0) return;
+        // Retain user splitter resizing when the manager is measured again.
+        GridLength previous = _horizontal ? _dockWidth : _dockHeight;
+        GridLength next = previous.IsAbsolute
+            ? new GridLength(DockModel.Proportion * _availableExtent)
+            : new GridLength(DockModel.Proportion, GridUnitType.Star);
+        if (_horizontal) SetField(ref _dockWidth, next, nameof(DockWidth));
+        else SetField(ref _dockHeight, next, nameof(DockHeight));
+    }
 }

@@ -15,4 +15,5 @@ internal interface ILayoutPositionableGroup
     bool IsMaximized { get; set; }
     bool AllowDuplicateContent { get; set; }
     bool CanRepositionItems { get; set; }
+    void ApplyDockProportion(double proportion, double availableExtent, bool horizontal);
 }

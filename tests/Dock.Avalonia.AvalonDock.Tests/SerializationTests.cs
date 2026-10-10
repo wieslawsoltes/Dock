@@ -15,6 +15,26 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class SerializationTests
 {
     [AvaloniaFact]
+    public void Rejected_Layout_Does_Not_Truncate_Existing_Save_File()
+    {
+        LayoutAnchorable tool = new() { ContentId = "tool" };
+        DockingManager manager = new()
+        {
+            Layout = new LayoutRoot { RootPanel = new LayoutPanel(new LayoutAnchorablePane(tool)) }
+        };
+        tool.ToggleAutoHide();
+        Assert.True(tool.IsAutoHidden);
+        string path = Path.GetTempFileName();
+        try
+        {
+            File.WriteAllText(path, "previous layout");
+            Assert.Throws<NotSupportedException>(() => new XmlLayoutSerializer(manager).Serialize(path));
+            Assert.Equal("previous layout", File.ReadAllText(path));
+        }
+        finally { File.Delete(path); }
+    }
+
+    [AvaloniaFact]
     public void Round_Trip_Preserves_Content_Selection_And_Pane_Constraints()
     {
         object firstContent = new();
@@ -82,7 +102,7 @@ public class SerializationTests
     public void Hidden_Tool_Round_Trip_Restores_To_Original_Pane()
     {
         LayoutAnchorable tool = new() { ContentId = "properties", Content = new object() };
-        LayoutAnchorablePane pane = new(tool);
+        LayoutAnchorablePane pane = new(tool) { Name = "PropertyPane" };
         DockingManager manager = new() { Layout = new LayoutRoot { RootPanel = new LayoutPanel(pane) } };
         tool.Hide();
         Assert.Same(tool, Assert.Single(manager.Layout.Hidden));
@@ -91,6 +111,7 @@ public class SerializationTests
         serializer.Serialize(writer);
         serializer.Deserialize(new StringReader(writer.ToString()));
         LayoutAnchorable hidden = Assert.Single(manager.Layout.Hidden);
+        Assert.Equal("PropertyPane", Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorablePane>()).Name);
         Assert.True(hidden.IsHidden);
         hidden.Show();
         Assert.Empty(manager.Layout.Hidden);

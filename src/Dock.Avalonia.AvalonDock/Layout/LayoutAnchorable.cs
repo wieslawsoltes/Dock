@@ -4,9 +4,9 @@ using Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>An AvalonDock tool backed by a Dock Avalonia tool.</summary>
 public class LayoutAnchorable : LayoutContent

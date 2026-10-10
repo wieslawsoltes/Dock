@@ -3,9 +3,9 @@ using System.Runtime.CompilerServices;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // A weak identity map shared by nodes when trees join. Removed models are not
 // retained by the layout, and a Dock move preserves the public wrapper identity.

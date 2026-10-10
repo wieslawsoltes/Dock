@@ -1,6 +1,6 @@
 using Dock.Model.Avalonia.Controls;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>A group of tools in an auto-hide strip.</summary>
 public class LayoutAnchorGroup : LayoutGroup<LayoutAnchorable>

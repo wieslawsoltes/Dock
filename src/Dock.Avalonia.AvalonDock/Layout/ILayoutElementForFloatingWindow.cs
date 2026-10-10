@@ -1,4 +1,4 @@
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 internal interface ILayoutElementForFloatingWindow
 {

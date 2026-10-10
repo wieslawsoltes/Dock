@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Xceed.Wpf.AvalonDock.Layout.Serialization;
+namespace AvalonDock.Layout.Serialization;
 
 /// <summary>Resolves content identities while restoring an AvalonDock layout.</summary>
 public abstract class LayoutSerializer

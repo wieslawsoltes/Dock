@@ -1,12 +1,16 @@
 # AvalonDock compatibility
 
 `Dock.Avalonia.AvalonDock` lets an Avalonia application use the
-`Xceed.Wpf.AvalonDock` C# namespaces and layout names. The implementation wraps
+`AvalonDock` C# namespaces and layout names. The implementation wraps
 `Dock.Model.Avalonia` models and renders them through Dock's controls. It is an
 in-progress compatibility project; the
 [acceptance checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md)
 records implemented behavior and remaining API gaps. WPF controls, dependency
 properties, and assemblies require their Avalonia counterparts.
+
+The CLR namespaces are `AvalonDock.*`; update using directives and any explicit
+CLR namespace declarations when porting source from the WPF library. The
+assembly/package name remains `Dock.Avalonia.AvalonDock`.
 
 ## Reference the package and theme
 
@@ -91,8 +95,8 @@ dependency and its view code-behind only initializes XAML.
 
 ```csharp
 using System.Linq;
-using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using AvalonDock.Layout;
+using AvalonDock.Layout.Serialization;
 
 LayoutDocument document = manager.Layout.Descendents()
     .OfType<LayoutDocument>().Single(item => item.ContentId == "readme");
@@ -189,7 +193,7 @@ flowchart TB
     App["Application XAML, ViewModels, and workspace service"]
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
-        Layout["Xceed.Wpf.AvalonDock.Layout API"]
+        Layout["AvalonDock.Layout API"]
         Bridge["Identity, collections, selection, sizing, and return history"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]

@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using ReactiveUI.Reactive;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
 

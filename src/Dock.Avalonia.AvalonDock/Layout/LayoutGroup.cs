@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Metadata;
 using Dock.Model.Avalonia.Core;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>A typed view of the children of a live Dock container.</summary>
 /// <typeparam name="T">The accepted layout child type.</typeparam>

@@ -2,9 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>A layout group with docked and floating dimensions.</summary>
 /// <typeparam name="T">The accepted child type.</typeparam>

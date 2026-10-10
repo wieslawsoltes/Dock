@@ -3,9 +3,9 @@ using System.ComponentModel;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // Floating geometry is exposed on AvalonDock's contents and groups while Dock
 // stores it on the window. Keep those views synchronized without moving a host

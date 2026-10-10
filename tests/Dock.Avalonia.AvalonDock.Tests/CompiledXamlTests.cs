@@ -8,8 +8,8 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Controls.ProportionalStackPanel;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock;
+using AvalonDock.Layout;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;

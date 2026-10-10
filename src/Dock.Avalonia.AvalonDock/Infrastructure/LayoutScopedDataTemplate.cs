@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // A separate floating root resolves application templates in the manager's
 // scope. Resolve on each build so template and logical-parent changes remain

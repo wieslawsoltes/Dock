@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Xceed.Wpf.AvalonDock.Layout.Serialization;
+namespace AvalonDock.Layout.Serialization;
 
 /// <summary>Supplies application content while restoring a layout.</summary>
 public class LayoutSerializationCallbackEventArgs : CancelEventArgs

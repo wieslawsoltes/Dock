@@ -6,7 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using DockAvalonDockSample.Services;
 using DockAvalonDockSample.ViewModels;
-using Xceed.Wpf.AvalonDock;
+using AvalonDock;
 
 namespace DockAvalonDockSample;
 

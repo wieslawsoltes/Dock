@@ -29,13 +29,15 @@ HashSet<string> actualKeys = new(actual.Select(Key), StringComparer.Ordinal);
 List<string> missing = expected.Where(line => !actualKeys.Contains(Key(line))).ToList();
 foreach (string line in missing) Console.WriteLine("MISSING\t" + line);
 Console.WriteLine($"Presence audit: {expected.Count - missing.Count}/{expected.Count} declarations have a matching type/member key; {missing.Count} missing.");
+Console.WriteLine("Namespace mapping: upstream Xceed.Wpf.AvalonDock.* corresponds to AvalonDock.* in the adapter.");
 Console.WriteLine("A matching key is not proof of signature or behavioral compatibility. Verify framework types, inheritance, defaults, bindings, templates, and behavior separately.");
 return missing.Count == 0 ? 0 : 1;
 
 static string Key(string declaration)
 {
     int separator = declaration.IndexOf('\t');
-    return separator < 0 ? declaration : declaration[..separator];
+    string key = separator < 0 ? declaration : declaration[..separator];
+    return key.Replace("Xceed.Wpf.AvalonDock.", "AvalonDock.", StringComparison.Ordinal);
 }
 
 static SortedSet<string> ReadInventory(string directory)
@@ -50,7 +52,8 @@ static SortedSet<string> ReadInventory(string directory)
         {
             if (!IsExported(type)) continue;
             string ns = string.Join(".", type.Ancestors().OfType<BaseNamespaceDeclarationSyntax>().Reverse().Select(x => x.Name.ToString()));
-            if (!ns.StartsWith("Xceed.Wpf.AvalonDock", StringComparison.Ordinal)) continue;
+            if (ns != "AvalonDock" && !ns.StartsWith("AvalonDock.", StringComparison.Ordinal) &&
+                ns != "Xceed.Wpf.AvalonDock" && !ns.StartsWith("Xceed.Wpf.AvalonDock.", StringComparison.Ordinal)) continue;
             string name = ns + "." + string.Join(".", type.AncestorsAndSelf().OfType<BaseTypeDeclarationSyntax>().Reverse().Select(TypeName));
             string kind = type is TypeDeclarationSyntax typed ? typed.Keyword.ValueText : "enum";
             result.Add(name + "|type\t" + type.Modifiers + " " + kind + " " + TypeName(type) + " " + type.BaseList?.WithoutTrivia().NormalizeWhitespace());

@@ -11,6 +11,11 @@ interfaces, extension methods, `DockingManager`, controls, commands, themes,
 converters, events, and XML serialization. Public WPF framework types require
 Avalonia counterparts; binary compatibility with WPF is not possible.
 
+The public CLR namespaces intentionally use `AvalonDock.*`, dropping the
+upstream `Xceed.Wpf` prefix. Source consumers update their using directives;
+the API inventory applies this explicit namespace mapping. The default
+Avalonia XML namespace and the Xceed XML namespace alias are both supported.
+
 Required verification before declaring completion:
 
 - Public type/member/signature inventory compared to the pinned upstream API,

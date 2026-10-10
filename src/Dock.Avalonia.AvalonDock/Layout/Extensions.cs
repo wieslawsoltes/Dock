@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Avalonia.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>Traversal helpers retaining AvalonDock's API spelling.</summary>
 public static class Extensions

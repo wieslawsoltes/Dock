@@ -1,7 +1,7 @@
 using System.ComponentModel;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock;
+namespace AvalonDock;
 
 /// <summary>Describes a document close request that may be canceled.</summary>
 public class DocumentClosingEventArgs : CancelEventArgs

@@ -6,9 +6,9 @@ using Avalonia.Metadata;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>A document or tool whose state is owned by Dock.</summary>
 public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>, ILayoutElementForFloatingWindow

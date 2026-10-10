@@ -1,7 +1,7 @@
 using System;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock;
+namespace AvalonDock;
 
 /// <summary>Describes a document that has closed.</summary>
 public class DocumentClosedEventArgs : EventArgs

@@ -1,6 +1,6 @@
 using Dock.Avalonia.Controls;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 internal partial class LayoutHostWindow : HostWindow
 {

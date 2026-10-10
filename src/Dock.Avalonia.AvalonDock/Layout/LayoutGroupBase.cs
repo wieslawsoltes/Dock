@@ -1,8 +1,8 @@
 using System;
 using Dock.Model.Avalonia.Core;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>Describes the scope of a tree change.</summary>
 public enum ChildrenTreeChange

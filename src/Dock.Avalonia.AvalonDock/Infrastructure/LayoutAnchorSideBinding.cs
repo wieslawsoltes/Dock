@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using Avalonia.Collections;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 internal sealed class LayoutAnchorSideBinding : IDisposable
 {

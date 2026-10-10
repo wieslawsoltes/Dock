@@ -7,9 +7,9 @@ using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : class, ILayoutElement
 {

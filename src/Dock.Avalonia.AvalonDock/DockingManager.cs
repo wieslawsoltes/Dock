@@ -8,10 +8,10 @@ using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Layout;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock;
+namespace AvalonDock;
 
 /// <summary>Hosts an AvalonDock-compatible layout using Dock's controls and models.</summary>
 public class DockingManager : TemplatedControl

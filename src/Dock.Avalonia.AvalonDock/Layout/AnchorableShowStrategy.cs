@@ -1,6 +1,6 @@
 using System;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>Chooses the edge and whether to create an outer pane when adding a tool.</summary>
 [Flags]

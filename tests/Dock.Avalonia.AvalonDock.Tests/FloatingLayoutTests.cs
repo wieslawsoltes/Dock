@@ -10,8 +10,8 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock;
+using AvalonDock.Layout;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;

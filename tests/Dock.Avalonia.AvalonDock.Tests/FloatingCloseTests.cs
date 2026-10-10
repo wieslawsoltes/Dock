@@ -4,8 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using Dock.Avalonia.Controls;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock;
+using AvalonDock.Layout;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;

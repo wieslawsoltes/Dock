@@ -1,6 +1,6 @@
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // A manager owns host visibility; detaching a view must preserve its layout.
 internal sealed class LayoutFloatingWindowPresenter

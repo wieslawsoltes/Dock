@@ -12,8 +12,8 @@ using Avalonia.VisualTree;
 using DockAvalonDockSample;
 using DockAvalonDockSample.Services;
 using DockAvalonDockSample.ViewModels;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock;
+using AvalonDock.Layout;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;

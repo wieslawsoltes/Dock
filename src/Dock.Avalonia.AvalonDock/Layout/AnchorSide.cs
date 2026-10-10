@@ -1,4 +1,4 @@
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>Identifies an auto-hide strip around the layout.</summary>
 public enum AnchorSide

@@ -1,7 +1,7 @@
 using Avalonia.Layout;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 internal static class LayoutAnchorablePlacement
 {

@@ -1,7 +1,7 @@
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>A split group containing document panes.</summary>
 public class LayoutDocumentPaneGroup : LayoutPositionableGroup<ILayoutDocumentPane>, ILayoutDocumentPane, ILayoutOrientableGroup

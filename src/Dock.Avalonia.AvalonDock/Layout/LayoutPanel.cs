@@ -1,8 +1,8 @@
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>A split panel containing document and anchorable panes.</summary>
 public class LayoutPanel : LayoutPositionableGroup<ILayoutPanelElement>, ILayoutOrientableGroup

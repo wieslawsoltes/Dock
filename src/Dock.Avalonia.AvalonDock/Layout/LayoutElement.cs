@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>An AvalonDock layout node backed by a live Dock Avalonia model.</summary>
 public abstract class LayoutElement : AvaloniaObject, ILayoutElement

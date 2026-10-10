@@ -2,7 +2,7 @@ using System;
 using Dock.Model.Avalonia;
 using Dock.Model.Core;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // Keep native window vetoes first, then let the compatibility layer close or
 // hide content before the native host can detach the floating layout.

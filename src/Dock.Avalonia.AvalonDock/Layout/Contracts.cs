@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>A node in an AvalonDock layout.</summary>
 public interface ILayoutElement : INotifyPropertyChanged, INotifyPropertyChanging

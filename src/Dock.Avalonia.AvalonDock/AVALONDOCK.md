@@ -1,10 +1,13 @@
 # AvalonDock compatibility for Dock
 
-This package is under development. It exposes the `Xceed.Wpf.AvalonDock`
+This package is under development. It exposes the `AvalonDock`
 namespaces over `Dock.Model.Avalonia` and Dock's controls. Its XAML types are
 available in Avalonia's default `https://github.com/avaloniaui` XML namespace
 and in `http://schemas.xceed.com/wpf/xaml/avalondock`. Dock owns the live layout,
 selection, dragging, docking, floating, and rendering.
+
+Use `AvalonDock`, `AvalonDock.Layout`, and `AvalonDock.Layout.Serialization`
+in C#. The upstream `Xceed.Wpf` CLR namespace prefix is intentionally omitted.
 
 The compatibility target is the public AvalonDock API documented at
 https://github.com/xceedsoftware/wpftoolkit/wiki/AvalonDock and the upstream
@@ -47,8 +50,8 @@ The familiar C# operations are available to a workspace service called by
 ViewModel commands. Given a manager and content nodes from its layout:
 
 ```csharp
-using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using AvalonDock.Layout;
+using AvalonDock.Layout.Serialization;
 
 document.IsActive = true;
 document.Float();

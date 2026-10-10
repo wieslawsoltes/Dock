@@ -2,8 +2,8 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:dock="using:Dock.Avalonia.Controls"
                  xmlns:models="using:Dock.Model.Avalonia.Controls"
-                 xmlns:themes="using:Xceed.Wpf.AvalonDock.Themes"
-                 x:Class="Xceed.Wpf.AvalonDock.Infrastructure.LayoutHostWindow"
+                 xmlns:themes="using:AvalonDock.Themes"
+                 x:Class="AvalonDock.Infrastructure.LayoutHostWindow"
                  x:DataType="models:RootDock"
                  Classes="avalondock">
   <dock:HostWindow.Styles>

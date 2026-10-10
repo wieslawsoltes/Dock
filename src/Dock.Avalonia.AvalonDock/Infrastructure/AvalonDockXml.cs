@@ -6,9 +6,9 @@ using System.Xml.Linq;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // Explicit codecs keep persistence independent of reflection and CLR type names.
 internal static class AvalonDockXml

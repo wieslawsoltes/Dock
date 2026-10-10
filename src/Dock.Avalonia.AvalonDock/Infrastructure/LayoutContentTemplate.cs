@@ -4,7 +4,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Controls;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // Selects compiled presenters for ordinary AvalonDock content while retaining
 // Dock's native recycling and control-detachment path for explicit controls.

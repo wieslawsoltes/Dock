@@ -1,7 +1,7 @@
 using Dock.Model.Avalonia.Controls;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 /// <summary>An AvalonDock document backed by a Dock Avalonia document.</summary>
 public class LayoutDocument : LayoutContent

@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-using Xceed.Wpf.AvalonDock.Infrastructure;
+using AvalonDock.Infrastructure;
 
-namespace Xceed.Wpf.AvalonDock.Layout.Serialization;
+namespace AvalonDock.Layout.Serialization;
 
 /// <summary>Reads and writes AvalonDock XML without runtime type discovery.</summary>
 public class XmlLayoutSerializer : LayoutSerializer

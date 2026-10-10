@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Headless;
 using Avalonia.Themes.Fluent;
-using Xceed.Wpf.AvalonDock.Themes;
+using AvalonDock.Themes;
 
 [assembly: AvaloniaTestApplication(typeof(Dock.Avalonia.AvalonDock.Tests.TestApplication))]
 

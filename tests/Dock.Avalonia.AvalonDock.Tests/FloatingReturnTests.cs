@@ -7,9 +7,9 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using AvalonDock;
+using AvalonDock.Layout;
+using AvalonDock.Layout.Serialization;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;

@@ -4,7 +4,7 @@ using Avalonia.Headless.XUnit;
 using Orientation = Avalonia.Layout.Orientation;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;

@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Xceed.Wpf.AvalonDock.Layout;
+namespace AvalonDock.Layout;
 
 internal interface ILayoutPositionableGroup : ILayoutElementForFloatingWindow
 {

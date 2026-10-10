@@ -1,7 +1,7 @@
 using System;
 using Dock.Model.Core;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 internal sealed class LayoutHostWindowFactory(DockingManager manager)
 {

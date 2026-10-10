@@ -13,5 +13,11 @@ checker. Source aliases, fully qualified names, generic parameter spellings,
 framework types, and inherited members require subsequent review. Compile and
 exercise representative C# and XAML consumers in addition to this inventory.
 
+The adapter intentionally uses `AvalonDock.*` CLR namespaces instead of
+upstream's `Xceed.Wpf.AvalonDock.*`. The snapshot retains the original upstream
+names. Comparison applies this namespace mapping to keys on both sides; it
+does not exclude any upstream declarations. Both source namespaces are accepted
+so the pinned upstream source can still be used for the 951/951 self-check.
+
 The inventory is API metadata. No upstream method bodies, field initializers,
 resources, or implementation are copied into the compatibility library.

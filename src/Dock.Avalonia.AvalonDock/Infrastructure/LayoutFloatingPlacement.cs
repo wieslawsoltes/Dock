@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 internal interface ILayoutFloatingPlacement
 {

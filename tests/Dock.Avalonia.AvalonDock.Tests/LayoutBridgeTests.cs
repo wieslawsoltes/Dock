@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia.Controls;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock;
+using AvalonDock.Layout;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;

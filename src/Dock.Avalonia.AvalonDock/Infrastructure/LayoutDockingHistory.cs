@@ -1,8 +1,8 @@
 using System;
 using Dock.Model.Core;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Layout;
 
-namespace Xceed.Wpf.AvalonDock.Infrastructure;
+namespace AvalonDock.Infrastructure;
 
 // Native Dock moves remove a child before reporting the completed operation.
 // Keep the original position until that notification, without retaining the

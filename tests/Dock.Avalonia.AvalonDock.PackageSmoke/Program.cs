@@ -66,6 +66,10 @@ if (!ReferenceEquals(sourceItem, manager.GetLayoutItemFromModel(fromSource)) || 
     throw new Exception("Floating did not preserve the item container and command state.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().DockWindow.Host!;
+// The compiled title is wider than the native 300-pixel default host. Keep the
+// close target inside the viewport before exercising actual pointer input.
+sourceHost.Width = 640;
+sourceHost.UpdateLayout();
 System.Windows.Input.ICommand defaultClose = sourceItem.CloseCommand!;
 int closeRequests = 0;
 using var applicationClose = ReactiveCommand.Create(() => closeRequests++, outputScheduler: ImmediateScheduler.Instance);
@@ -75,6 +79,10 @@ Button nativeClose = sourceHost.GetVisualDescendants().OfType<Button>().Single(b
 sourceHost.UpdateLayout();
 Point closePoint = nativeClose.TranslatePoint(new Point(nativeClose.Bounds.Width / 2, nativeClose.Bounds.Height / 2), sourceHost)!.Value;
 sourceHost.MouseMove(closePoint);
+IInputElement? closeHit = sourceHost.InputHitTest(closePoint);
+if (!ReferenceEquals(closeHit, nativeClose) &&
+    (closeHit is not Visual closeVisual || !closeVisual.GetVisualAncestors().Contains(nativeClose)))
+    throw new Exception($"The floating close button at {closePoint} is not hit-testable: {closeHit?.GetType().Name}, window {sourceHost.Bounds}.");
 sourceHost.MouseDown(closePoint, MouseButton.Left);
 sourceHost.MouseUp(closePoint, MouseButton.Left);
 Dispatcher.UIThread.RunJobs();

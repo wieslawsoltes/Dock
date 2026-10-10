@@ -123,6 +123,15 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>
 
     internal void NotifyClosing(CancelEventArgs args) => Closing?.Invoke(this, args);
     internal void NotifyClosed() => Closed?.Invoke(this, EventArgs.Empty);
+    internal void RememberDockedLocation()
+    {
+        if (Parent is not LayoutElement parent || parent is LayoutAnchorGroup or LayoutAnchorSide
+            || parent is not ILayoutGroup group) return;
+        PreviousContainer = group;
+        PreviousContainerIndex = group.IndexOfChild(this);
+        PreviousContainerId = parent.DockModel.Id;
+        DockModel.OriginalOwner = parent.DockModel;
+    }
     internal void CloseCore()
     {
         if (!CanClose) return;

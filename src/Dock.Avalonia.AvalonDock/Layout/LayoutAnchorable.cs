@@ -70,7 +70,21 @@ public class LayoutAnchorable : LayoutContent
     {
         if (!CanAutoHide) return;
         if (IsAutoHidden) DockModel.Factory?.UnpinDockable(DockModel);
-        else DockModel.Factory?.PinDockable(DockModel);
+        else
+        {
+            RememberDockedLocation();
+            if (DockModel.Owner is ToolDock pane)
+            {
+                pane.Alignment = (Parent?.GetSide() ?? AnchorSide.Right) switch
+                {
+                    AnchorSide.Left => Alignment.Left,
+                    AnchorSide.Top => Alignment.Top,
+                    AnchorSide.Right => Alignment.Right,
+                    _ => Alignment.Bottom
+                };
+            }
+            DockModel.Factory?.PinDockable(DockModel);
+        }
     }
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {

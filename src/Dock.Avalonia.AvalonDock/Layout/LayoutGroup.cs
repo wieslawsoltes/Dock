@@ -33,7 +33,9 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     /// <inheritdoc/>
     public int ChildrenCount => Children.Count;
     /// <inheritdoc/>
-    public bool IsVisible => Children.Count > 0;
+    public bool IsVisible => GetVisibility();
+    /// <summary>Determines whether the group has visible content.</summary>
+    protected virtual bool GetVisibility() => Children.Count > 0;
     /// <inheritdoc/>
     public void ComputeVisibility() => RaisePropertyChanged(nameof(IsVisible));
     /// <inheritdoc/>
@@ -57,6 +59,9 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     }
     /// <inheritdoc/>
     public void ReplaceChildAt(int index, ILayoutElement element) => Children[index] = (T)element;
+
+    internal void AddProjectedChild(T child) => _children.AddProjected(child);
+    internal void RemoveProjectedChild(T child) => _children.RemoveProjected(child);
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Avalonia.Layout;
 
 namespace Xceed.Wpf.AvalonDock.Layout;
 
@@ -38,4 +39,27 @@ public static class Extensions
     }
     /// <summary>Tests whether the container has either requested type.</summary>
     public static bool IsOfType<T, S>(this ILayoutContainer container) => container is T or S;
+
+    /// <summary>Gets the pane's edge from its position in the containing panel.</summary>
+    public static AnchorSide GetSide(this ILayoutElement element)
+    {
+        if (element.Parent is not ILayoutOrientableGroup parent) return AnchorSide.Right;
+        LayoutPanel? panel = parent as LayoutPanel ?? parent.FindParent<LayoutPanel>();
+        if (panel is null || panel.ChildrenCount == 0) return AnchorSide.Right;
+        int index = -1;
+        for (int i = 0; i < panel.Children.Count; i++)
+        {
+            ILayoutPanelElement child = panel.Children[i];
+            if (ReferenceEquals(child, element)) { index = i; break; }
+            foreach (ILayoutElement descendant in child.Descendents())
+            {
+                if (ReferenceEquals(descendant, element)) { index = i; break; }
+            }
+            if (index >= 0) break;
+        }
+        bool firstHalf = index >= 0 && index < panel.Children.Count / 2d;
+        return panel.Orientation == Orientation.Horizontal
+            ? firstHalf ? AnchorSide.Left : AnchorSide.Right
+            : firstHalf ? AnchorSide.Top : AnchorSide.Bottom;
+    }
 }

@@ -11,6 +11,7 @@ namespace Xceed.Wpf.AvalonDock.Layout;
 /// <summary>An AvalonDock layout node backed by a live Dock Avalonia model.</summary>
 public abstract class LayoutElement : AvaloniaObject, ILayoutElement
 {
+    private ILayoutContainer? _projectedParent;
     internal LayoutElement(DockableBase model, LayoutModelContext? context = null)
     {
         DockModel = model;
@@ -27,7 +28,7 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     /// <summary>Gets or sets the containing element.</summary>
     public ILayoutContainer? Parent
     {
-        get => DockModel.Owner is { } owner ? Context.Get(owner) as ILayoutContainer : null;
+        get => _projectedParent ?? (DockModel.Owner is { } owner ? Context.Get(owner) as ILayoutContainer : null);
         set
         {
             if (value is LayoutElement element)
@@ -44,6 +45,15 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
                 throw new ArgumentException("A parent must be a Dock-backed layout element.", nameof(value));
             }
         }
+    }
+
+    internal void SetProjectedParent(ILayoutContainer? parent)
+    {
+        if (ReferenceEquals(_projectedParent, parent)) return;
+        RaisePropertyChanging(nameof(Parent));
+        _projectedParent = parent;
+        RaisePropertyChanged(nameof(Parent));
+        RaisePropertyChanged(nameof(Root));
     }
 
     /// <inheritdoc/>

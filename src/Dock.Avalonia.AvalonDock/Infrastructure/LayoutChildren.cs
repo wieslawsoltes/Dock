@@ -41,6 +41,17 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
         Refresh();
     }
 
+    // Auto-hide grouping is metadata over Dock's flat pinned lists. Updating
+    // that projection must not change native ownership during a Dock operation.
+    internal void AddProjected(T item)
+    {
+        LayoutElement element = (LayoutElement)(ILayoutElement)item;
+        _owner.Context.Adopt(element.Context);
+        _source.Add(element.DockModel);
+    }
+
+    internal void RemoveProjected(T item) => _source.Remove(((LayoutElement)(ILayoutElement)item).DockModel);
+
     private void SourceChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (!_syncing) Refresh();
@@ -73,6 +84,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
         for (ILayoutElement? ancestor = _owner; ancestor is not null; ancestor = ancestor.Parent)
             if (ReferenceEquals(ancestor, item)) throw new InvalidOperationException("A layout cannot contain itself or an ancestor.");
         if (Contains(item)) throw new InvalidOperationException("A layout element cannot occur twice in one group.");
+        if (_owner is LayoutAnchorGroup && element is LayoutContent content) content.RememberDockedLocation();
         element.Parent?.RemoveChild(element);
         _owner.Context.Adopt(element.Context);
         if (_model.Factory is { } factory) factory.InitDockable(element.DockModel, _model);

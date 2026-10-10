@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Dock.Model.Core;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
@@ -22,8 +23,7 @@ public class SerializationTests
         {
             Layout = new LayoutRoot { RootPanel = new LayoutPanel(new LayoutAnchorablePane(tool)) }
         };
-        tool.ToggleAutoHide();
-        Assert.True(tool.IsAutoHidden);
+        manager.DockLayout.Windows = manager.DockFactory.CreateList<IDockWindow>(new Model.Avalonia.Core.DockWindow());
         string path = Path.GetTempFileName();
         try
         {
@@ -116,6 +116,67 @@ public class SerializationTests
         hidden.Show();
         Assert.Empty(manager.Layout.Hidden);
         Assert.Same(hidden, Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorablePane>()).Children[0]);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(AnchorSide.Left)]
+    [InlineData(AnchorSide.Top)]
+    [InlineData(AnchorSide.Right)]
+    [InlineData(AnchorSide.Bottom)]
+    public void Auto_Hide_Round_Trip_Preserves_Groups_Contents_And_Restore_Pane(AnchorSide side)
+    {
+        object content = new();
+        LayoutAnchorable tool = new() { ContentId = "tool", Content = content, AutoHideWidth = 280 };
+        LayoutAnchorablePane pane = new(tool) { Name = "OriginalPane" };
+        DockingManager manager = new() { Layout = new LayoutRoot { RootPanel = new LayoutPanel(pane) } };
+        ((Model.Avalonia.Controls.ToolDock)pane.DockModel).Alignment = side switch
+        {
+            AnchorSide.Left => Alignment.Left,
+            AnchorSide.Top => Alignment.Top,
+            AnchorSide.Right => Alignment.Right,
+            _ => Alignment.Bottom
+        };
+        manager.DockFactory.PinDockable(tool.DockModel);
+        XmlLayoutSerializer serializer = new(manager);
+        StringWriter writer = new();
+        serializer.Serialize(writer);
+        Assert.Contains("<LayoutAnchorGroup", writer.ToString());
+        serializer.Deserialize(new StringReader(writer.ToString()));
+        LayoutAnchorable restored = Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorable>());
+        LayoutAnchorGroup group = Assert.IsType<LayoutAnchorGroup>(restored.Parent);
+        Assert.Equal(side, Assert.IsType<LayoutAnchorSide>(group.Parent).Side);
+        Assert.True(restored.IsAutoHidden);
+        Assert.Same(content, restored.Content);
+        Assert.Equal(280, restored.AutoHideWidth);
+        restored.ToggleAutoHide();
+        Assert.Equal("OriginalPane", Assert.IsType<LayoutAnchorablePane>(restored.Parent).Name);
+        Assert.False(restored.IsAutoHidden);
+    }
+
+    [AvaloniaFact]
+    public void Upstream_Auto_Hide_Group_Reference_Resolves_Without_Per_Item_References()
+    {
+        const string xml = """
+            <LayoutRoot>
+              <RootPanel><LayoutAnchorablePane Id="pane" Name="Tools" /></RootPanel>
+              <LeftSide><LayoutAnchorGroup PreviousContainerId="pane">
+                <LayoutAnchorable ContentId="agenda" Title="Agenda" />
+                <LayoutAnchorable ContentId="missing" Title="Missing" />
+              </LayoutAnchorGroup></LeftSide>
+            </LayoutRoot>
+            """;
+        DockingManager manager = new();
+        XmlLayoutSerializer serializer = new(manager);
+        serializer.LayoutSerializationCallback += (_, args) =>
+        {
+            if (args.Model.ContentId == "agenda") args.Content = new object();
+        };
+        serializer.Deserialize(new StringReader(xml));
+        LayoutAnchorable tool = Assert.Single(Assert.Single(manager.Layout.LeftSide.Children).Children);
+        Assert.Equal("agenda", tool.ContentId);
+        Assert.Equal("missing", Assert.Single(manager.Layout.Hidden).ContentId);
+        tool.ToggleAutoHide();
+        Assert.Equal("Tools", Assert.IsType<LayoutAnchorablePane>(tool.Parent).Name);
     }
 
     [AvaloniaTheory]

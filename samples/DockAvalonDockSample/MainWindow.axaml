@@ -73,6 +73,20 @@
             </ad:LayoutAnchorablePane>
           </ad:LayoutAnchorablePaneGroup>
         </ad:LayoutPanel>
+        <ad:LayoutRoot.LeftSide>
+          <ad:LayoutAnchorSide>
+            <ad:LayoutAnchorGroup>
+              <ad:LayoutAnchorable Title="Agenda" ContentId="agenda" AutoHideWidth="260">
+                <TextBlock Text="Agenda Content" Margin="10" FontSize="18"
+                           FontWeight="Black" TextWrapping="Wrap" />
+              </ad:LayoutAnchorable>
+              <ad:LayoutAnchorable Title="Contacts" ContentId="contacts" AutoHideWidth="260">
+                <TextBlock Text="Contacts Content" Margin="10" FontSize="18"
+                           FontWeight="Black" TextWrapping="Wrap" />
+              </ad:LayoutAnchorable>
+            </ad:LayoutAnchorGroup>
+          </ad:LayoutAnchorSide>
+        </ad:LayoutRoot.LeftSide>
       </ad:LayoutRoot>
     </ad:DockingManager>
 

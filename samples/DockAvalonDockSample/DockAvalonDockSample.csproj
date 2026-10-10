@@ -9,12 +9,12 @@
   <Import Project="../../build/Avalonia.Desktop.props" />
   <Import Project="../../build/Avalonia.Themes.Fluent.props" />
   <Import Project="../../build/Avalonia.ReactiveUI.props" />
-  <Import Project="../../build/ReactiveUI.props" />
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>Dock.Avalonia.AvalonDock.Tests</_Parameter1>
     </AssemblyAttribute>
     <PackageReference Include="ReactiveUI.SourceGenerators" />
+    <PackageReference Include="ReactiveUI.Reactive" />
     <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
     <None Include="LICENSE-XCEED.txt" CopyToOutputDirectory="PreserveNewest" />
     <None Include="NOTICE.txt" CopyToOutputDirectory="PreserveNewest" />

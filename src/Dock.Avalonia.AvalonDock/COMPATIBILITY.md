@@ -43,24 +43,27 @@ supported by corresponding implementation and test evidence.
   retained using a per-tree weak identity map.
 - Document close cancellation, tool hide/restore, hidden collection, active
   content, and title/content/capability forwarding.
+- Auto-hide sides and groups project Dock's native pinned lists, preserving
+  public group ownership through pin, preview, unpin, collection replacement,
+  and reordering. Headless pointer input opens the sample's Agenda strip.
 - Compiled Xceed XML namespace; headless pointer tab selection and text input.
   Pixel/star pane dimensions translate to Dock proportions, with headless
   verification of runtime sizing, vertical sizing, and pointer splitter drag
   persistence across window resizing.
-- XML for the docked hierarchy and hidden tools, callbacks, content identities,
+- XML for the docked hierarchy, auto-hide groups and hidden tools, callbacks, content identities,
   selected documents, basic metadata and constraints, file/stream/text APIs,
   malformed input rejection, and atomic manager layout replacement.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 28 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 44 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
 ## Open work (not release-complete)
 
-- Side/group models and floating-window models, all corresponding XML, native
-  window lifecycle and state synchronization. The XML writer explicitly rejects
-  populated auto-hide or floating layouts to prevent silent data loss.
+- Floating-window models and corresponding XML, native window lifecycle and
+  state synchronization. The XML writer explicitly rejects populated floating
+  layouts to prevent silent data loss.
 - Remaining manager APIs: document/tool sources, item containers and commands,
   update strategy invocation, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
@@ -74,13 +77,13 @@ supported by corresponding implementation and test evidence.
   nested groups, layout detachment and leak checks, and source-driven content.
 - Exact signatures, framework substitutions, inheritance, defaults, and member
   behavior must be audited independently of the presence inventory.
-- Complete the sample's auto-hide side example and all its persistence paths.
+- Complete the sample's floating-window persistence paths.
 
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 223
-matching type/member keys and 728 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 245
+matching type/member keys and 706 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

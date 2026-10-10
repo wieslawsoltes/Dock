@@ -25,11 +25,27 @@ public abstract class LayoutSerializer
     protected virtual void FixupLayout(LayoutRoot layout)
     {
         List<LayoutContent> contents = new();
+        List<LayoutAnchorGroup> anchorGroups = new();
         Dictionary<string, LayoutElement> containers = new(StringComparer.Ordinal);
         foreach (ILayoutElement element in layout.Descendents())
         {
+            if (element is LayoutAnchorGroup anchorGroup) anchorGroups.Add(anchorGroup);
             if (element is LayoutContent content) contents.Add(content);
             else if (element is LayoutElement node && !string.IsNullOrEmpty(node.DockModel.Id)) containers.TryAdd(node.DockModel.Id, node);
+        }
+        foreach (LayoutAnchorGroup group in anchorGroups)
+        {
+            if (group.PreviousContainerId is not { Length: > 0 } id) continue;
+            if (!containers.TryGetValue(id, out LayoutElement? previous) || previous is not ILayoutContainer parent)
+                throw new ArgumentException($"Unable to find a pane with id '{id}'.");
+            group.PreviousContainer = parent;
+            foreach (LayoutAnchorable tool in group.Children)
+            {
+                tool.PreviousContainer = parent;
+                tool.DockModel.OriginalOwner = previous.DockModel;
+            }
+            if (previous.DockModel is Dock.Model.Avalonia.Controls.ToolDock pane && group.Parent is LayoutAnchorSide side)
+                pane.Alignment = side.DockAlignment;
         }
         foreach (LayoutContent content in contents)
         {

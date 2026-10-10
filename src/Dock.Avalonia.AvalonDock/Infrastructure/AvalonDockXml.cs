@@ -15,14 +15,12 @@ internal static class AvalonDockXml
     internal static XElement Write(LayoutRoot layout)
     {
         var model = (Dock.Model.Avalonia.Controls.RootDock)layout.DockModel;
-        if (model.LeftPinnedDockables is { Count: > 0 } || model.RightPinnedDockables is { Count: > 0 }
-            || model.TopPinnedDockables is { Count: > 0 } || model.BottomPinnedDockables is { Count: > 0 })
-            throw new NotSupportedException("Serialization of auto-hide groups is not implemented yet.");
         XElement root = new("LayoutRoot");
         XElement panel = WriteElement(layout.RootPanel);
         panel.Name = "RootPanel";
         root.Add(panel);
-        root.Add(new XElement("TopSide"), new XElement("RightSide"), new XElement("LeftSide"), new XElement("BottomSide"));
+        root.Add(WriteSide(layout.TopSide, "TopSide"), WriteSide(layout.RightSide, "RightSide"),
+            WriteSide(layout.LeftSide, "LeftSide"), WriteSide(layout.BottomSide, "BottomSide"));
         if (model.Windows is { Count: > 0 })
             throw new NotSupportedException("Serialization of floating windows is not implemented yet.");
         root.Add(new XElement("FloatingWindows"));
@@ -51,7 +49,11 @@ internal static class AvalonDockXml
                 case "Hidden":
                     foreach (XElement hidden in child.Elements()) root.Hidden.Add((LayoutAnchorable)ReadElement(hidden, selected, ref active));
                     break;
-                case "TopSide": case "RightSide": case "LeftSide": case "BottomSide": case "FloatingWindows":
+                case "TopSide": root.TopSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
+                case "RightSide": root.RightSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
+                case "LeftSide": root.LeftSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
+                case "BottomSide": root.BottomSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
+                case "FloatingWindows":
                     if (child.HasElements) throw new NotSupportedException($"Persistence of '{child.Name}' is not implemented yet.");
                     break;
                 default: throw new XmlException($"Unknown layout element '{child.Name}'.");
@@ -61,6 +63,13 @@ internal static class AvalonDockXml
         foreach (LayoutContent content in selected) content.IsSelected = true;
         if (active is not null) root.ActiveContent = active;
         return root;
+    }
+
+    private static XElement WriteSide(LayoutAnchorSide side, string name)
+    {
+        XElement xml = WriteElement(side);
+        xml.Name = name;
+        return xml;
     }
 
     private static XElement WriteElement(LayoutElement element)
@@ -74,6 +83,8 @@ internal static class AvalonDockXml
             LayoutAnchorablePane => "LayoutAnchorablePane",
             LayoutDocument => "LayoutDocument",
             LayoutAnchorable => "LayoutAnchorable",
+            LayoutAnchorGroup => "LayoutAnchorGroup",
+            LayoutAnchorSide => "LayoutAnchorSide",
             _ => throw new NotSupportedException("Unsupported AvalonDock layout node.")
         });
         if (element is ILayoutOrientableGroup orientable) xml.SetAttributeValue("Orientation", orientable.Orientation);
@@ -127,6 +138,11 @@ internal static class AvalonDockXml
         }
         if (element is LayoutDocumentPane documents) xml.SetAttributeValue("ShowHeader", documents.ShowHeader);
         if (element is LayoutAnchorablePane tools) xml.SetAttributeValue("Name", tools.Name);
+        if (element is LayoutAnchorGroup anchorGroup)
+        {
+            xml.SetAttributeValue("Id", anchorGroup.DockModel.Id);
+            xml.SetAttributeValue("PreviousContainerId", (anchorGroup.PreviousContainer as LayoutElement)?.DockModel.Id);
+        }
         if (element is ILayoutContainer container)
             foreach (ILayoutElement child in container.Children) xml.Add(WriteElement((LayoutElement)child));
         return xml;
@@ -143,6 +159,8 @@ internal static class AvalonDockXml
             "LayoutAnchorablePane" => new LayoutAnchorablePane(),
             "LayoutDocument" => new LayoutDocument(),
             "LayoutAnchorable" => new LayoutAnchorable(),
+            "LayoutAnchorGroup" => new LayoutAnchorGroup(),
+            "LayoutAnchorSide" or "TopSide" or "RightSide" or "LeftSide" or "BottomSide" => new LayoutAnchorSide(),
             _ => throw new XmlException($"Unknown AvalonDock element '{xml.Name}'.")
         };
         if (element is ILayoutOrientableGroup orientable && xml.Attribute("Orientation") is { } direction)
@@ -199,6 +217,11 @@ internal static class AvalonDockXml
         }
         if (element is LayoutDocumentPane documents) documents.ShowHeader = Boolean(xml, "ShowHeader", documents.ShowHeader);
         if (element is LayoutAnchorablePane tools && xml.Attribute("Name") is { } name) tools.Name = name.Value;
+        if (element is LayoutAnchorGroup anchorGroup)
+        {
+            anchorGroup.DockModel.Id = (string?)xml.Attribute("Id") ?? string.Empty;
+            anchorGroup.PreviousContainerId = (string?)xml.Attribute("PreviousContainerId");
+        }
         foreach (XElement child in xml.Elements())
         {
             if (element is not ILayoutGroup group) throw new XmlException($"'{xml.Name}' cannot contain layout children.");

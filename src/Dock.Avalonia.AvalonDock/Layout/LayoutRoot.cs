@@ -19,6 +19,14 @@ public interface ILayoutRoot
     DockingManager? Manager { get; }
     /// <summary>Gets the root split panel.</summary>
     LayoutPanel RootPanel { get; }
+    /// <summary>Gets the top auto-hide strip.</summary>
+    LayoutAnchorSide TopSide { get; }
+    /// <summary>Gets the left auto-hide strip.</summary>
+    LayoutAnchorSide LeftSide { get; }
+    /// <summary>Gets the right auto-hide strip.</summary>
+    LayoutAnchorSide RightSide { get; }
+    /// <summary>Gets the bottom auto-hide strip.</summary>
+    LayoutAnchorSide BottomSide { get; }
     /// <summary>Gets or sets the active content.</summary>
     LayoutContent? ActiveContent { get; set; }
     /// <summary>Gets the hidden tools.</summary>
@@ -32,6 +40,10 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
 {
     private LayoutContent? _lastFocusedDocument;
     private readonly LayoutChildren<LayoutAnchorable> _hidden;
+    private LayoutAnchorSide _leftSide = null!;
+    private LayoutAnchorSide _topSide = null!;
+    private LayoutAnchorSide _rightSide = null!;
+    private LayoutAnchorSide _bottomSide = null!;
     /// <summary>Creates a layout with an empty document pane.</summary>
     public LayoutRoot() : this(new RootDock { IsCollapsable = false })
     {
@@ -60,6 +72,10 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
                 content.DockModel.Owner = null;
             };
         }
+        LeftSide = new LayoutAnchorSide();
+        TopSide = new LayoutAnchorSide();
+        RightSide = new LayoutAnchorSide();
+        BottomSide = new LayoutAnchorSide();
     }
     /// <summary>Gets the Dock factory which operates this layout.</summary>
     public IFactory DockFactory => DockModel.Factory!;
@@ -91,6 +107,26 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     }
     /// <inheritdoc/>
     public DockingManager? Manager { get; internal set; }
+    /// <summary>Gets or sets the left auto-hide strip.</summary>
+    public LayoutAnchorSide LeftSide { get => _leftSide; set => SetSide(ref _leftSide, value, AnchorSide.Left, nameof(LeftSide)); }
+    /// <summary>Gets or sets the top auto-hide strip.</summary>
+    public LayoutAnchorSide TopSide { get => _topSide; set => SetSide(ref _topSide, value, AnchorSide.Top, nameof(TopSide)); }
+    /// <summary>Gets or sets the right auto-hide strip.</summary>
+    public LayoutAnchorSide RightSide { get => _rightSide; set => SetSide(ref _rightSide, value, AnchorSide.Right, nameof(RightSide)); }
+    /// <summary>Gets or sets the bottom auto-hide strip.</summary>
+    public LayoutAnchorSide BottomSide { get => _bottomSide; set => SetSide(ref _bottomSide, value, AnchorSide.Bottom, nameof(BottomSide)); }
+
+    private void SetSide(ref LayoutAnchorSide field, LayoutAnchorSide value, AnchorSide side, string name)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        if (ReferenceEquals(field, value)) return;
+        value.Parent?.RemoveChild(value);
+        field?.Detach();
+        field = value;
+        value.Attach(this, side);
+        RaisePropertyChanged(name);
+        NotifyUpdated();
+    }
     /// <inheritdoc/>
     public LayoutContent? ActiveContent
     {
@@ -107,21 +143,33 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
         get
         {
             yield return RootPanel;
+            yield return TopSide;
+            yield return RightSide;
+            yield return LeftSide;
+            yield return BottomSide;
             foreach (LayoutAnchorable hidden in Hidden) yield return hidden;
         }
     }
     /// <inheritdoc/>
-    public int ChildrenCount => (((RootDock)DockModel).VisibleDockables?.Count ?? 0) + Hidden.Count;
+    public int ChildrenCount => (((RootDock)DockModel).VisibleDockables?.Count ?? 0) + 4 + Hidden.Count;
     /// <inheritdoc/>
     public void RemoveChild(ILayoutElement element)
     {
         if (ReferenceEquals(element, RootPanel)) RootPanel = new LayoutPanel(new LayoutDocumentPane());
+        else if (ReferenceEquals(element, LeftSide)) LeftSide = new LayoutAnchorSide();
+        else if (ReferenceEquals(element, TopSide)) TopSide = new LayoutAnchorSide();
+        else if (ReferenceEquals(element, RightSide)) RightSide = new LayoutAnchorSide();
+        else if (ReferenceEquals(element, BottomSide)) BottomSide = new LayoutAnchorSide();
         else if (element is LayoutAnchorable hidden) Hidden.Remove(hidden);
     }
     /// <inheritdoc/>
     public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
     {
         if (ReferenceEquals(oldElement, RootPanel)) RootPanel = (LayoutPanel)newElement;
+        else if (ReferenceEquals(oldElement, LeftSide)) LeftSide = (LayoutAnchorSide)newElement;
+        else if (ReferenceEquals(oldElement, TopSide)) TopSide = (LayoutAnchorSide)newElement;
+        else if (ReferenceEquals(oldElement, RightSide)) RightSide = (LayoutAnchorSide)newElement;
+        else if (ReferenceEquals(oldElement, BottomSide)) BottomSide = (LayoutAnchorSide)newElement;
         else if (oldElement is LayoutAnchorable hidden && Hidden.IndexOf(hidden) is int index && index >= 0)
             Hidden[index] = (LayoutAnchorable)newElement;
     }
@@ -140,6 +188,10 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     {
         base.OnModelPropertyChanged(sender, e);
         if (e.Property == RootDock.HiddenDockablesProperty) _hidden?.Reconnect();
+        if (e.Property == RootDock.LeftPinnedDockablesProperty) _leftSide?.Reconnect();
+        if (e.Property == RootDock.TopPinnedDockablesProperty) _topSide?.Reconnect();
+        if (e.Property == RootDock.RightPinnedDockablesProperty) _rightSide?.Reconnect();
+        if (e.Property == RootDock.BottomPinnedDockablesProperty) _bottomSide?.Reconnect();
         if (e.Property == DockBase.FocusedDockableProperty)
         {
             if (ActiveContent is LayoutDocument document)

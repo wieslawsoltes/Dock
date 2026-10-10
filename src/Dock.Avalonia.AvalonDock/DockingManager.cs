@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
@@ -20,6 +21,12 @@ public class DockingManager : TemplatedControl
     /// <summary>Identifies whether document-group commands may change a populated group's orientation.</summary>
     public static readonly StyledProperty<bool> AllowMixedOrientationProperty =
         AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMixedOrientation));
+    /// <summary>Identifies the template used to display application content.</summary>
+    public static readonly StyledProperty<IDataTemplate?> LayoutItemTemplateProperty =
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(LayoutItemTemplate));
+    /// <summary>Identifies the application content template selector.</summary>
+    public static readonly StyledProperty<DataTemplateSelector?> LayoutItemTemplateSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(LayoutItemTemplateSelector));
     /// <summary>Identifies the layout property.</summary>
     public static readonly DirectProperty<DockingManager, LayoutRoot> LayoutProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, LayoutRoot>(nameof(Layout), x => x.Layout, (x, v) => x.Layout = v);
@@ -104,6 +111,10 @@ public class DockingManager : TemplatedControl
     public IFactory DockFactory => Layout.DockFactory;
     /// <summary>Gets or sets whether document-group commands may change a populated group's orientation.</summary>
     public bool AllowMixedOrientation { get => GetValue(AllowMixedOrientationProperty); set => SetValue(AllowMixedOrientationProperty, value); }
+    /// <summary>Gets or sets the template used to display application content.</summary>
+    public IDataTemplate? LayoutItemTemplate { get => GetValue(LayoutItemTemplateProperty); set => SetValue(LayoutItemTemplateProperty, value); }
+    /// <summary>Gets or sets the content template selector used when no explicit template is set.</summary>
+    public DataTemplateSelector? LayoutItemTemplateSelector { get => GetValue(LayoutItemTemplateSelectorProperty); set => SetValue(LayoutItemTemplateSelectorProperty, value); }
     /// <summary>Gets the stable item container for content in this manager, or null for unattached content.</summary>
     public LayoutItem? GetLayoutItemFromModel(LayoutContent content)
     {
@@ -161,6 +172,10 @@ public class DockingManager : TemplatedControl
     protected virtual void OnDocumentsSourceChanged(AvaloniaPropertyChangedEventArgs e) => _documents.SetSource(DocumentsSource);
     /// <summary>Replaces the observed tool source.</summary>
     protected virtual void OnAnchorablesSourceChanged(AvaloniaPropertyChangedEventArgs e) => _anchorables.SetSource(AnchorablesSource);
+    /// <summary>Called when the application content template changes.</summary>
+    protected virtual void OnLayoutItemTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Called when the application content template selector changes.</summary>
+    protected virtual void OnLayoutItemTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -168,6 +183,16 @@ public class DockingManager : TemplatedControl
         if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);
         if (change.Property == AnchorablesSourceProperty) OnAnchorablesSourceChanged(change);
         if (change.Property == AllowMixedOrientationProperty) _layoutItems?.RefreshCommands();
+        if (change.Property == LayoutItemTemplateProperty)
+        {
+            _layoutItems?.RefreshTemplates();
+            OnLayoutItemTemplateChanged(change);
+        }
+        if (change.Property == LayoutItemTemplateSelectorProperty)
+        {
+            _layoutItems?.RefreshTemplates();
+            OnLayoutItemTemplateSelectorChanged(change);
+        }
     }
     /// <summary>Occurs before replacing the layout.</summary>
     public event EventHandler? LayoutChanging;

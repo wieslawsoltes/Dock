@@ -65,6 +65,11 @@ internal sealed class LayoutItemRegistry
         finally { _refreshing = false; }
     }
 
+    public void RefreshTemplates()
+    {
+        for (int i = 0; i < _items.Count; i++) _items[i].RefreshViewTemplate();
+    }
+
     private void Reconcile()
     {
         if (_root is null) return;

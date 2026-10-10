@@ -165,10 +165,10 @@ default commands without disposing application commands. `IsVisible` hides or
 shows tools and closes documents, honoring cancellation; Avalonia does not
 provide WPF's separate `Hidden` and `Collapsed` states.
 
-`View` provides a compiled content presenter using the manager's data-template
-scope. The native Dock controls still render their own content and chrome.
-Manager container-style/template selectors and routing native chrome through
-application container commands remain part of the compatibility work.
+`View` is the compiled content presenter used by the native Dock controls. It
+moves with its content between docked and floating hosts. Manager container
+styles/selectors and routing native chrome through application container
+commands remain part of the compatibility work.
 
 ## Bind ViewModel content
 
@@ -203,6 +203,57 @@ Moving a source entry preserves the user's tab order. Resetting a source clears
 all layout items of that type, including manually inserted items. Floating
 hosts resolve content templates from the manager's current scope, including
 ancestor templates.
+
+## Select content templates
+
+`LayoutItemTemplate` applies an explicit Avalonia `IDataTemplate` to application
+content in both docked and floating panes. For example, when every document
+uses the same ViewModel type:
+
+```xml
+<DockingManager DocumentsSource="{Binding Documents}">
+  <DockingManager.LayoutItemTemplate>
+    <DataTemplate x:DataType="vm:EditorViewModel">
+      <TextBox Text="{Binding Text, Mode=TwoWay}" AcceptsReturn="True" />
+    </DataTemplate>
+  </DockingManager.LayoutItemTemplate>
+</DockingManager>
+```
+
+For different content types, use `LayoutItemTemplateSelector`. The WPF selector
+counterpart is `AvalonDock.Controls.DataTemplateSelector`: override
+`SelectTemplate(object?, AvaloniaObject)` and return an Avalonia `IDataTemplate`.
+The arguments are the application content and its actual `ContentPresenter`.
+The selector can refer to compiled templates declared in XAML resources:
+
+```csharp
+using Avalonia;
+using Avalonia.Controls.Templates;
+using AvalonDock.Controls;
+
+public sealed class WorkspaceTemplateSelector : DataTemplateSelector
+{
+    public IDataTemplate? EditorTemplate { get; set; }
+    public IDataTemplate? PropertiesTemplate { get; set; }
+
+    public override IDataTemplate? SelectTemplate(object? item, AvaloniaObject container)
+        => item switch
+        {
+            EditorViewModel => EditorTemplate,
+            PropertiesViewModel => PropertiesTemplate,
+            _ => null
+        };
+}
+```
+
+Set `LayoutItemTemplateSelector` to an instance of this selector. An explicit
+`LayoutItemTemplate` takes precedence. When the selector returns null, normal
+manager, ancestor, and application data-template lookup applies. Inline
+controls and Dock template content retain Dock's native content handling.
+Changing either manager property updates existing presenters; changing content
+selects the appropriate template for the new object. Recycling is limited to
+controls built by the same selected template. An explicit template can also
+display null content.
 
 ## Restore application content from XML
 
@@ -251,7 +302,7 @@ flowchart TB
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
-        Items["LayoutItem containers + ReactiveUI commands"]
+        Items["LayoutItem containers, content templates, and ReactiveUI commands"]
         Bridge["Identity, collections, selection, sizing, and return history"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
@@ -268,6 +319,7 @@ flowchart TB
     Manager --> Items
     Items <--> Layout
     Items --> Factory
+    Items --> Controls
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models
@@ -303,6 +355,9 @@ batch-floating boundaries. It composes lifecycle helpers to honor AvalonDock
 capabilities and return positions, then delegates actual movement to Dock.
 `LayoutFloatingWindowPresenter`, the host factory, and scoped templates manage
 floating presentation and preserve the manager's template lookup scope.
+The native content template obtains the corresponding `LayoutItem.View` from
+the factory. That presenter selects manager content templates and delegates
+inline controls and Dock template content to the native model's template path.
 
 `XmlLayoutSerializer` uses explicit codecs and content callbacks without
 runtime type discovery. It restores the facade and its native models together.

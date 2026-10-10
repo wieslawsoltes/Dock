@@ -88,8 +88,19 @@ if (item?.FloatCommand is { } command && command.CanExecute(null))
 
 Containers survive moves and floating. Layout replacement detaches old
 containers, so look them up again after loading XML. Container commands are
-available to compiled bindings; manager container-style/template selectors and
-native chrome command overrides remain open compatibility work.
+available to compiled bindings; manager container styles/selectors and native
+chrome command overrides remain open compatibility work.
+
+`LayoutItem.View` is the presenter displayed by the native Dock controls.
+`DockingManager.LayoutItemTemplate` accepts an Avalonia `IDataTemplate` for
+application content. Alternatively, use `LayoutItemTemplateSelector` with an
+`AvalonDock.Controls.DataTemplateSelector` subclass overriding
+`SelectTemplate(object?, AvaloniaObject)`. Its arguments are the application
+content and actual presenter. An explicit template takes precedence; a null
+selector result uses normal template lookup. Template changes update existing
+docked and floating presenters. Inline controls retain their identity through
+Dock's native content handling, and selected templates only recycle their own
+controls. The full guide includes compiled XAML and selector examples.
 
 `DocumentsSource` and `AnchorablesSource` accept observable content collections.
 Bind them within a view with an explicit `x:DataType`, and supply compiled
@@ -120,7 +131,7 @@ compatibility has not yet been established.
 flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
-    Items["LayoutItem containers and ReactiveUI commands"]
+    Items["LayoutItem containers, content templates, and ReactiveUI commands"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
@@ -134,6 +145,7 @@ flowchart TB
     Bridge --> Factory
     Factory --> Models
     Api --> View
+    Items --> View
     Models --> View
     View --> Factory
     Xml <--> Api

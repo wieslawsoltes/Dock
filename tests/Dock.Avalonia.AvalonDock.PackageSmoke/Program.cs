@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
@@ -50,6 +51,15 @@ if (!ReferenceEquals(sourceItem, manager.GetLayoutItemFromModel(fromSource)) || 
     throw new Exception("Floating did not preserve the item container and command state.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().DockWindow.Host!;
+manager.LayoutItemTemplate = (IDataTemplate)window.Resources["ExplicitTemplate"]!;
+Dispatcher.UIThread.RunJobs();
+if (!sourceHost.GetVisualDescendants().Contains(sourceItem.View) ||
+    sourceItem.View.Child is not TextBlock { Text: "Explicit package template" })
+    throw new Exception("The manager template did not update the native floating item presenter.");
+manager.LayoutItemTemplate = null;
+manager.LayoutItemTemplateSelector = new DataTemplateSelector();
+Dispatcher.UIThread.RunJobs();
+AssertFloatingSourceTemplate(manager, documents[0]);
 EventHandler<CancelEventArgs> cancelClose = (_, args) => args.Cancel = true;
 fromSource.Closing += cancelClose;
 sourceHost.Close();
@@ -118,7 +128,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, manager templates/selectors, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
 
 static void RoundTrip(DockingManager manager)
 {

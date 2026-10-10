@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Core;
 
 namespace AvalonDock.Infrastructure;
 
@@ -17,6 +18,8 @@ internal sealed class LayoutContentTemplate : IRecyclingDataTemplate
     public Control? Build(object? data) => Build(data, null);
     public Control? Build(object? data, Control? existing)
     {
+        if (data is IDockable { Factory: LayoutFactory factory } model && factory.GetLayoutItem(model) is { } item)
+            return LayoutItemViewTransfer.Prepare(item.View, existing);
         object? content = data switch { Document document => document.Content, Tool tool => tool.Content, _ => null };
         if (content is null or Control or ITemplate or IDataTemplate or Func<IServiceProvider, object>)
             return (data as IRecyclingDataTemplate)?.Build(data, existing);

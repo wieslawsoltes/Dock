@@ -64,6 +64,15 @@ supported by corresponding implementation and test evidence.
   application commands. Compiled bindings and pointer input exercise container
   content and commands. Avalonia `IsVisible` hides tools or closes documents;
   WPF's separate hidden/collapsed distinction has no direct Avalonia equivalent.
+- Native Dock content controls display `LayoutItem.View`, retaining presenter
+  identity between docked and floating hosts. Manager `LayoutItemTemplate` and
+  `LayoutItemTemplateSelector` support compiled templates, explicit-template
+  precedence, null-selector fallback, runtime replacement, content type changes,
+  and recycling within the selected template. The selector framework counterpart
+  is `AvalonDock.Controls.DataTemplateSelector`, returning an Avalonia
+  `IDataTemplate` from `SelectTemplate(object?, AvaloniaObject)`. Inline controls
+  retain native identity and handling. Retained empty presenters release closed
+  models and managers; XML replacement releases old presenter content.
 - Layout cleanup retains the last document pane and referenced return panes,
   clears detached active content, and collapses redundant typed pane groups.
 - Document and tool floating models expose native Dock windows through an
@@ -109,7 +118,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 165 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 178 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -120,7 +129,7 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: container styles/template selectors, routing native
+- Remaining manager APIs: container styles/selectors, header/title/menu templates, routing native
   chrome through application container commands, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
@@ -140,8 +149,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 372
-matching type/member keys and 579 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 376
+matching type/member keys and 575 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

@@ -3,6 +3,9 @@
         Width="640" Height="480">
   <Window.Resources>
     <LayoutDocumentItem x:Key="Container" Description="Unprefixed packaged container" />
+    <DataTemplate x:Key="ExplicitTemplate" x:DataType="x:Object">
+      <TextBlock Classes="explicit-package-template" Text="Explicit package template" />
+    </DataTemplate>
   </Window.Resources>
   <Window.Styles>
     <AvalonDockTheme />

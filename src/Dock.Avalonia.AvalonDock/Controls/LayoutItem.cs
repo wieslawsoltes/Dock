@@ -85,7 +85,7 @@ public abstract class LayoutItem : Control
     public LayoutContent? LayoutElement => _layoutElement;
     /// <summary>Gets the application content exposed by the layout model.</summary>
     public object? Model => _model;
-    /// <summary>Gets a compiled presenter for the application content.</summary>
+    /// <summary>Gets the compiled presenter used by native Dock controls for this content.</summary>
     public ContentPresenter View
     {
         get
@@ -93,7 +93,7 @@ public abstract class LayoutItem : Control
             if (_view is null)
             {
                 _view = new LayoutItemPresenter { Item = this };
-                if (Manager is { } manager) _view.DataTemplates.Add(new LayoutScopedDataTemplate(manager));
+                RefreshViewTemplate();
             }
             return _view;
         }
@@ -160,11 +160,19 @@ public abstract class LayoutItem : Control
         if (_view is not null)
         {
             _view.Item = null;
+            _view.ContentTemplate = null;
             _view.DataTemplates.Clear();
+            _view.UpdateChild();
         }
     }
 
     internal void RefreshCommands() => _commands?.Refresh();
+
+    internal void RefreshViewTemplate()
+    {
+        if (_view is not null && Manager is { } manager && LayoutElement is { } content)
+            _view.SetCurrentValue(ContentPresenter.ContentTemplateProperty, new LayoutItemContentTemplate(content, manager, _view));
+    }
 
     internal void SynchronizeModel()
     {

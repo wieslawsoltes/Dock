@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Metadata;
@@ -20,6 +21,8 @@ public interface ILayoutRoot
     LayoutPanel RootPanel { get; }
     /// <summary>Gets or sets the active content.</summary>
     LayoutContent? ActiveContent { get; set; }
+    /// <summary>Gets the hidden tools.</summary>
+    ObservableCollection<LayoutAnchorable> Hidden { get; }
     /// <summary>Removes empty collapsible groups.</summary>
     void CollectGarbage();
 }
@@ -28,6 +31,7 @@ public interface ILayoutRoot
 public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
 {
     private LayoutContent? _lastFocusedDocument;
+    private readonly LayoutChildren<LayoutAnchorable> _hidden;
     /// <summary>Creates a layout with an empty document pane.</summary>
     public LayoutRoot() : this(new RootDock { IsCollapsable = false })
     {
@@ -35,6 +39,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     }
     internal LayoutRoot(RootDock model, LayoutModelContext? context = null) : base(model, context)
     {
+        _hidden = new LayoutChildren<LayoutAnchorable>(this, model, () => model.HiddenDockables, value => model.HiddenDockables = value);
         if (model.Factory is null)
         {
             Factory factory = new() { HideToolsOnClose = false, HideDocumentsOnClose = false };
@@ -95,18 +100,30 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     /// <summary>Gets the most recently focused document.</summary>
     public LayoutContent? LastFocusedDocument => _lastFocusedDocument;
     /// <inheritdoc/>
-    public IEnumerable<ILayoutElement> Children { get { yield return RootPanel; } }
+    public ObservableCollection<LayoutAnchorable> Hidden => _hidden;
     /// <inheritdoc/>
-    public int ChildrenCount => ((RootDock)DockModel).VisibleDockables?.Count ?? 0;
+    public IEnumerable<ILayoutElement> Children
+    {
+        get
+        {
+            yield return RootPanel;
+            foreach (LayoutAnchorable hidden in Hidden) yield return hidden;
+        }
+    }
+    /// <inheritdoc/>
+    public int ChildrenCount => (((RootDock)DockModel).VisibleDockables?.Count ?? 0) + Hidden.Count;
     /// <inheritdoc/>
     public void RemoveChild(ILayoutElement element)
     {
         if (ReferenceEquals(element, RootPanel)) RootPanel = new LayoutPanel(new LayoutDocumentPane());
+        else if (element is LayoutAnchorable hidden) Hidden.Remove(hidden);
     }
     /// <inheritdoc/>
     public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
     {
         if (ReferenceEquals(oldElement, RootPanel)) RootPanel = (LayoutPanel)newElement;
+        else if (oldElement is LayoutAnchorable hidden && Hidden.IndexOf(hidden) is int index && index >= 0)
+            Hidden[index] = (LayoutAnchorable)newElement;
     }
     /// <inheritdoc/>
     public void CollectGarbage()
@@ -122,6 +139,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         base.OnModelPropertyChanged(sender, e);
+        if (e.Property == RootDock.HiddenDockablesProperty) _hidden?.Reconnect();
         if (e.Property == DockBase.FocusedDockableProperty)
         {
             if (ActiveContent is LayoutDocument document)

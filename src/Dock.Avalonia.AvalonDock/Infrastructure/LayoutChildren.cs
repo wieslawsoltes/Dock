@@ -15,20 +15,28 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
 {
     private readonly LayoutElement _owner;
     private readonly DockBase _model;
+    private readonly Func<IList<IDockable>?> _getSource;
+    private readonly Action<IList<IDockable>> _setSource;
+    private readonly bool _visible;
     private IList<IDockable> _source = null!;
     private bool _syncing;
 
-    internal LayoutChildren(LayoutElement owner, DockBase model)
+    internal LayoutChildren(LayoutElement owner, DockBase model,
+        Func<IList<IDockable>?>? getSource = null, Action<IList<IDockable>>? setSource = null)
     {
         _owner = owner;
         _model = model;
+        _visible = getSource is null;
+        _getSource = getSource ?? (() => model.VisibleDockables);
+        _setSource = setSource ?? (value => model.VisibleDockables = value);
         Reconnect();
     }
 
     internal void Reconnect()
     {
         if (_source is INotifyCollectionChanged old) old.CollectionChanged -= SourceChanged;
-        _source = _model.VisibleDockables ??= new AvaloniaList<IDockable>();
+        _source = _getSource() ?? new AvaloniaList<IDockable>();
+        if (_getSource() is null) _setSource(_source);
         if (_source is INotifyCollectionChanged current) current.CollectionChanged += SourceChanged;
         Refresh();
     }
@@ -137,11 +145,18 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
         try
         {
             action();
-            if (_model is ProportionalDock) NormalizeSplitters();
-            if (_model.ActiveDockable is null || !_source.Contains(_model.ActiveDockable))
-                _model.ActiveDockable = Count > 0 ? ((LayoutElement)(ILayoutElement)this[0]).DockModel : null;
-            _model.DefaultDockable = _model.ActiveDockable;
-            _model.IsEmpty = Count == 0;
+            if (_visible)
+            {
+                if (_model is ProportionalDock) NormalizeSplitters();
+                if (_model.ActiveDockable is null || !_source.Contains(_model.ActiveDockable))
+                    _model.ActiveDockable = Count > 0 ? ((LayoutElement)(ILayoutElement)this[0]).DockModel : null;
+                _model.DefaultDockable = _model.ActiveDockable;
+                _model.IsEmpty = Count == 0;
+            }
+            else if (_model.Factory is { } factory)
+            {
+                foreach (IDockable child in _source) factory.InitDockable(child, _model);
+            }
         }
         finally { _syncing = false; }
     }

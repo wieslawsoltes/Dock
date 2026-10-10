@@ -7,7 +7,7 @@ namespace Xceed.Wpf.AvalonDock.Layout;
 
 /// <summary>A layout group with docked and floating dimensions.</summary>
 /// <typeparam name="T">The accepted child type.</typeparam>
-public abstract class LayoutPositionableGroup<T> : LayoutGroup<T> where T : class, ILayoutElement
+public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositionableGroup where T : class, ILayoutElement
 {
     private GridLength _dockWidth = new(1, GridUnitType.Star);
     private GridLength _dockHeight = new(1, GridUnitType.Star);

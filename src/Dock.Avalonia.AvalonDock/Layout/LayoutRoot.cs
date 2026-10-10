@@ -31,6 +31,8 @@ public interface ILayoutRoot
     LayoutContent? ActiveContent { get; set; }
     /// <summary>Gets the hidden tools.</summary>
     ObservableCollection<LayoutAnchorable> Hidden { get; }
+    /// <summary>Gets the floating windows.</summary>
+    ObservableCollection<LayoutFloatingWindow> FloatingWindows { get; }
     /// <summary>Removes empty collapsible groups.</summary>
     void CollectGarbage();
 }
@@ -40,6 +42,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
 {
     private LayoutContent? _lastFocusedDocument;
     private readonly LayoutChildren<LayoutAnchorable> _hidden;
+    private readonly LayoutFloatingWindows _floatingWindows;
     private LayoutAnchorSide _leftSide = null!;
     private LayoutAnchorSide _topSide = null!;
     private LayoutAnchorSide _rightSide = null!;
@@ -48,6 +51,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     public LayoutRoot() : this(new RootDock { IsCollapsable = false })
     {
         RootPanel = new LayoutPanel(new LayoutDocumentPane());
+        DockFactory.InitLayout(DockModel);
     }
     internal LayoutRoot(RootDock model, LayoutModelContext? context = null) : base(model, context)
     {
@@ -76,6 +80,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
         TopSide = new LayoutAnchorSide();
         RightSide = new LayoutAnchorSide();
         BottomSide = new LayoutAnchorSide();
+        _floatingWindows = new LayoutFloatingWindows(this);
     }
     /// <summary>Gets the Dock factory which operates this layout.</summary>
     public IFactory DockFactory => DockModel.Factory!;
@@ -99,8 +104,10 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
             Context.Adopt(value.Context);
             root.VisibleDockables!.Clear();
             root.VisibleDockables.Add(value.DockModel);
+            value.DockModel.IsCollapsable = false;
             root.DefaultDockable = value.DockModel;
-            DockFactory.InitLayout(root);
+            DockFactory.InitDockable(value.DockModel, root);
+            root.ActiveDockable = value.DockModel;
             RaisePropertyChanged();
             NotifyUpdated();
         }
@@ -138,6 +145,8 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     /// <inheritdoc/>
     public ObservableCollection<LayoutAnchorable> Hidden => _hidden;
     /// <inheritdoc/>
+    public ObservableCollection<LayoutFloatingWindow> FloatingWindows => _floatingWindows;
+    /// <inheritdoc/>
     public IEnumerable<ILayoutElement> Children
     {
         get
@@ -147,11 +156,12 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
             yield return RightSide;
             yield return LeftSide;
             yield return BottomSide;
+            foreach (LayoutFloatingWindow window in FloatingWindows) yield return window;
             foreach (LayoutAnchorable hidden in Hidden) yield return hidden;
         }
     }
     /// <inheritdoc/>
-    public int ChildrenCount => (((RootDock)DockModel).VisibleDockables?.Count ?? 0) + 4 + Hidden.Count;
+    public int ChildrenCount => (((RootDock)DockModel).VisibleDockables?.Count ?? 0) + 4 + Hidden.Count + FloatingWindows.Count;
     /// <inheritdoc/>
     public void RemoveChild(ILayoutElement element)
     {
@@ -161,6 +171,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
         else if (ReferenceEquals(element, RightSide)) RightSide = new LayoutAnchorSide();
         else if (ReferenceEquals(element, BottomSide)) BottomSide = new LayoutAnchorSide();
         else if (element is LayoutAnchorable hidden) Hidden.Remove(hidden);
+        else if (element is LayoutFloatingWindow window) FloatingWindows.Remove(window);
     }
     /// <inheritdoc/>
     public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
@@ -172,6 +183,8 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
         else if (ReferenceEquals(oldElement, BottomSide)) BottomSide = (LayoutAnchorSide)newElement;
         else if (oldElement is LayoutAnchorable hidden && Hidden.IndexOf(hidden) is int index && index >= 0)
             Hidden[index] = (LayoutAnchorable)newElement;
+        else if (oldElement is LayoutFloatingWindow window && FloatingWindows.IndexOf(window) is int windowIndex && windowIndex >= 0)
+            FloatingWindows[windowIndex] = (LayoutFloatingWindow)newElement;
     }
     /// <inheritdoc/>
     public void CollectGarbage() => LayoutGarbageCollector.Collect(this);
@@ -186,6 +199,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
         if (e.Property == RootDock.TopPinnedDockablesProperty) _topSide?.Reconnect();
         if (e.Property == RootDock.RightPinnedDockablesProperty) _rightSide?.Reconnect();
         if (e.Property == RootDock.BottomPinnedDockablesProperty) _bottomSide?.Reconnect();
+        if (e.Property == RootDock.WindowsProperty) _floatingWindows?.Reconnect();
         if (e.Property == DockBase.FocusedDockableProperty)
         {
             if (ActiveContent is LayoutDocument document)

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
+using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
@@ -40,6 +41,7 @@ public class DockingManager : TemplatedControl
     private LayoutRoot _layout;
     private object? _activeContent;
     private readonly LayoutSizing _sizing = new();
+    private readonly LayoutFloatingWindowPresenter _floatingWindows = new();
     private readonly LayoutSourceBinding<LayoutDocument> _documents;
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
     private IEnumerable? _documentsSource;
@@ -67,6 +69,7 @@ public class DockingManager : TemplatedControl
             if (value.Manager is not null && !ReferenceEquals(value.Manager, this))
                 throw new InvalidOperationException("A layout can belong to only one DockingManager.");
             LayoutChanging?.Invoke(this, EventArgs.Empty);
+            _floatingWindows.Detach();
             RootDock oldDock = DockLayout;
             LayoutRoot oldLayout = _layout;
             IFactory oldFactory = DockFactory;
@@ -129,6 +132,7 @@ public class DockingManager : TemplatedControl
     {
         _documents.SetLayout(newLayout);
         _anchorables.SetLayout(newLayout);
+        if (IsLoaded) _floatingWindows.Attach(newLayout);
     }
     /// <summary>Replaces the observed document source.</summary>
     protected virtual void OnDocumentsSourceChanged(AvaloniaPropertyChangedEventArgs e) => _documents.SetSource(DocumentsSource);
@@ -158,6 +162,22 @@ public class DockingManager : TemplatedControl
         _sizing.Apply(Layout, availableSize);
         return base.MeasureOverride(availableSize);
     }
+
+    /// <summary>Presents floating layouts after Dock has configured its host factory.</summary>
+    protected override void OnLoaded(RoutedEventArgs e)
+    {
+        base.OnLoaded(e);
+        _floatingWindows.Attach(Layout);
+    }
+
+    /// <summary>Closes native hosts while preserving their layout contents for reattachment.</summary>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        _floatingWindows.Detach();
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    internal void PresentFloatingWindow(LayoutFloatingWindow window) => _floatingWindows.Present(window);
 
     private void LayoutPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {

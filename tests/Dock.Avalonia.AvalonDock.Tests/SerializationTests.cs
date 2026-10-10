@@ -23,7 +23,7 @@ public class SerializationTests
         {
             Layout = new LayoutRoot { RootPanel = new LayoutPanel(new LayoutAnchorablePane(tool)) }
         };
-        manager.DockLayout.Windows = manager.DockFactory.CreateList<IDockWindow>(new Model.Avalonia.Core.DockWindow());
+        manager.Layout.FloatingWindows.Add(new LayoutDocumentFloatingWindow { RootDocument = new LayoutDocument() });
         string path = Path.GetTempFileName();
         try
         {

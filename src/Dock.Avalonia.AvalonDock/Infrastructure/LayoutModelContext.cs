@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
 using Xceed.Wpf.AvalonDock.Layout;
 
@@ -37,8 +38,29 @@ internal sealed class LayoutModelContext
             DocumentDock documents => new LayoutDocumentPane(documents, current),
             ToolDock tools => new LayoutAnchorablePane(tools, current),
             ProportionalDock panel => new LayoutPanel(panel, current),
+            RootDock { Window: { } window } => GetWindow(window),
             RootDock root => new LayoutRoot(root, current),
             _ => throw new NotSupportedException($"The Dock node '{model.Id}' has no AvalonDock adapter.")
         };
+    }
+
+    internal LayoutAnchorablePaneGroup GetAnchorableGroup(ProportionalDock model)
+    {
+        LayoutModelContext current = Current;
+        if (current._elements.TryGetValue(model, out LayoutElement? element) && element is LayoutAnchorablePaneGroup group) return group;
+        if (model.VisibleDockables is { } children)
+            foreach (IDockable child in children) if (child is ProportionalDock nested) GetAnchorableGroup(nested);
+        return new LayoutAnchorablePaneGroup(model, current);
+    }
+
+    internal LayoutFloatingWindow GetWindow(IDockWindow window)
+    {
+        LayoutModelContext current = Current;
+        if (window is not DockWindow native || window.Layout is not RootDock root)
+            throw new NotSupportedException("Floating layouts require a Dock Avalonia window and root.");
+        if (current._elements.TryGetValue(root, out LayoutElement? element) && element is LayoutFloatingWindow floating) return floating;
+        if (root.VisibleDockables is { Count: > 0 } children && children[0] is DocumentDock)
+            return new LayoutDocumentFloatingWindow(native, current);
+        return new LayoutAnchorableFloatingWindow(native, current);
     }
 }

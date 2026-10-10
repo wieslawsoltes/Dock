@@ -52,6 +52,11 @@ supported by corresponding implementation and test evidence.
   contents; source subscriptions do not retain unused managers.
 - Layout cleanup retains the last document pane and referenced return panes,
   clears detached active content, and collapses redundant typed pane groups.
+- Document and tool floating models expose native Dock windows through an
+  observable `FloatingWindows` collection. Native single-document float/dock
+  and tool floating operations preserve content wrappers and public ownership.
+  Compiled floating XAML renders in native hosts; collection removal, manager
+  detachment/reattachment, and layout replacement preserve the layout contents.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
@@ -64,15 +69,16 @@ supported by corresponding implementation and test evidence.
   malformed input rejection, and atomic manager layout replacement.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 68 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 78 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
 ## Open work (not release-complete)
 
-- Floating-window models and corresponding XML, native window lifecycle and
-  state synchronization. The XML writer explicitly rejects populated floating
-  layouts to prevent silent data loss.
+- Floating-window XML and complete native window lifecycle/state synchronization,
+  including floating bounds, tool return locations, grouped-document/mixed
+  native windows, and ViewModel content templates in separate hosts. The XML
+  writer explicitly rejects populated floating layouts to prevent silent data loss.
 - Remaining manager APIs: item containers and commands, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
@@ -92,8 +98,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 260
-matching type/member keys and 691 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 290
+matching type/member keys and 661 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

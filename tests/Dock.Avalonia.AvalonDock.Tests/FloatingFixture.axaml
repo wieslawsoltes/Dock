@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.FloatingFixture"
+        x:DataType="DockingManager" Width="800" Height="500">
+  <DockingManager x:Name="Manager">
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutDocumentPane />
+      </LayoutPanel>
+      <LayoutRoot.FloatingWindows>
+        <LayoutDocumentFloatingWindow>
+          <LayoutDocument Title="Floating document" ContentId="floating-document"
+                          FloatingWidth="400" FloatingHeight="300">
+            <TextBox Text="Floating editor" />
+          </LayoutDocument>
+        </LayoutDocumentFloatingWindow>
+      </LayoutRoot.FloatingWindows>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

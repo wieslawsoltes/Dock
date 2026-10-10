@@ -28,7 +28,7 @@
           <dock:DockControl x:Name="PART_DockControl" Classes="avalondock"
                             Layout="{TemplateBinding DockLayout}"
                             Factory="{TemplateBinding DockFactory}"
-                            InitializeFactory="True" InitializeLayout="True" />
+                            InitializeFactory="True" />
         </ControlTemplate>
       </Setter>
     </ControlTheme>

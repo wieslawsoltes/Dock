@@ -1,5 +1,6 @@
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
+using Xceed.Wpf.AvalonDock.Infrastructure;
 
 namespace Xceed.Wpf.AvalonDock.Layout;
 
@@ -10,6 +11,7 @@ public class LayoutAnchorablePaneGroup : LayoutPositionableGroup<ILayoutAnchorab
     public LayoutAnchorablePaneGroup() { }
     /// <summary>Creates a group containing an anchorable pane.</summary>
     public LayoutAnchorablePaneGroup(LayoutAnchorablePane anchorablePane) => Children.Add(anchorablePane);
+    internal LayoutAnchorablePaneGroup(ProportionalDock model, LayoutModelContext context) : base(model, context) { }
     /// <inheritdoc/>
     public Orientation Orientation
     {

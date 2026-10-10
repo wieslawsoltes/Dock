@@ -43,6 +43,9 @@ supported by corresponding implementation and test evidence.
   retained using a per-tree weak identity map.
 - Document close cancellation, tool hide/restore, hidden collection, active
   content, and title/content/capability forwarding.
+- Anchorable edge placement with `AddToLayout`, writable visibility, cancelable
+  hiding callbacks, tab-index restoration, and `Show` insertion strategies.
+  Hidden auto-hide tools retain their group and original pane across XML saves.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
@@ -55,7 +58,7 @@ supported by corresponding implementation and test evidence.
   malformed input rejection, and atomic manager layout replacement.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 44 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 56 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
@@ -82,8 +85,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 245
-matching type/member keys and 706 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 254
+matching type/member keys and 697 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

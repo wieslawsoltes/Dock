@@ -93,11 +93,11 @@ public interface ILayoutContentSelector
 public interface ILayoutUpdateStrategy
 {
     /// <summary>Returns true if the strategy inserted the anchorable.</summary>
-    bool BeforeInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableToShow, ILayoutContainer destinationContainer);
+    bool BeforeInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableToShow, ILayoutContainer? destinationContainer);
     /// <summary>Called after inserting an anchorable.</summary>
     void AfterInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableShown);
     /// <summary>Returns true if the strategy inserted the document.</summary>
-    bool BeforeInsertDocument(LayoutRoot layout, LayoutDocument anchorableToShow, ILayoutContainer destinationContainer);
+    bool BeforeInsertDocument(LayoutRoot layout, LayoutDocument anchorableToShow, ILayoutContainer? destinationContainer);
     /// <summary>Called after inserting a document.</summary>
     void AfterInsertDocument(LayoutRoot layout, LayoutDocument anchorableShown);
 }

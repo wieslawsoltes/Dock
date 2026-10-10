@@ -67,6 +67,9 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>
     public string? PreviousContainerId { get => _previousContainerId; set => SetField(ref _previousContainerId, value); }
     /// <summary>Gets or sets the previous index in a container.</summary>
     public int PreviousContainerIndex { get => _previousContainerIndex; set => SetField(ref _previousContainerIndex, value); }
+    internal ILayoutContainer? InitialContainer { get; set; }
+    internal string? InitialContainerId { get; set; }
+    internal int InitialContainerIndex { get; set; } = -1;
     /// <summary>Gets or sets the last activation time.</summary>
     public DateTime? LastActivationTimeStamp { get => _lastActivationTimeStamp; set => SetField(ref _lastActivationTimeStamp, value); }
     /// <summary>Gets or sets the floating width.</summary>

@@ -14,6 +14,11 @@ internal static class AvalonDockXml
 {
     internal static XElement Write(LayoutRoot layout)
     {
+        foreach (ILayoutElement child in layout.Descendents())
+        {
+            if (child is LayoutElement element && child is ILayoutPositionableGroup or LayoutAnchorGroup
+                && string.IsNullOrEmpty(element.DockModel.Id)) element.DockModel.Id = Guid.NewGuid().ToString("N");
+        }
         var model = (Dock.Model.Avalonia.Controls.RootDock)layout.DockModel;
         XElement root = new("LayoutRoot");
         XElement panel = WriteElement(layout.RootPanel);
@@ -120,6 +125,11 @@ internal static class AvalonDockXml
                 xml.SetAttributeValue("PreviousContainerId", previous.Id);
                 xml.SetAttributeValue("PreviousContainerIndex", content.PreviousContainerIndex);
             }
+            if (content.InitialContainer is LayoutElement initial)
+            {
+                xml.SetAttributeValue("InitialContainerId", initial.DockModel.Id);
+                xml.SetAttributeValue("InitialContainerIndex", content.InitialContainerIndex);
+            }
         }
         if (element is LayoutDocument document)
         {
@@ -196,6 +206,8 @@ internal static class AvalonDockXml
             content.ToolTip = (string?)xml.Attribute("ToolTip");
             content.PreviousContainerId = (string?)xml.Attribute("PreviousContainerId");
             content.PreviousContainerIndex = (int?)xml.Attribute("PreviousContainerIndex") ?? -1;
+            content.InitialContainerId = (string?)xml.Attribute("InitialContainerId");
+            content.InitialContainerIndex = (int?)xml.Attribute("InitialContainerIndex") ?? -1;
             if (xml.Attribute("LastActivationTimeStamp") is { } time) content.LastActivationTimeStamp = DateTime.Parse(time.Value, CultureInfo.InvariantCulture);
             if (Boolean(xml, "IsSelected", false)) selected.Add(content);
             if (Boolean(xml, "IsLastFocusedDocument", false)) active = content;

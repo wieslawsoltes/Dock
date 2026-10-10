@@ -108,10 +108,12 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
         try
         {
             List<LayoutAnchorable> removed = new();
+            HashSet<LayoutAnchorGroup> changedGroups = new();
             foreach (var pair in _projected)
             {
                 if (_pinned.Contains(pair.Key.DockModel)) continue;
                 pair.Value.RemoveProjectedChild(pair.Key);
+                changedGroups.Add(pair.Value);
                 pair.Key.SetProjectedParent(null);
                 removed.Add(pair.Key);
             }
@@ -133,8 +135,8 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
                 group.AddProjectedChild(tool);
                 _projected.Add(tool, group);
             }
-            for (int i = _side.Children.Count - 1; i >= 0; i--)
-                if (_side.Children[i].ChildrenCount == 0) _side.Children.RemoveAt(i);
+            foreach (LayoutAnchorGroup group in changedGroups)
+                if (group.ChildrenCount == 0) _side.Children.Remove(group);
             List<LayoutAnchorGroup> orderedGroups = new();
             Dictionary<LayoutAnchorGroup, int> positions = new();
             foreach (IDockable model in _pinned)

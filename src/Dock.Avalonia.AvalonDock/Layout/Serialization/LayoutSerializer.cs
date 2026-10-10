@@ -49,6 +49,12 @@ public abstract class LayoutSerializer
         }
         foreach (LayoutContent content in contents)
         {
+            if (content.InitialContainerId is { Length: > 0 } initialId)
+            {
+                if (!containers.TryGetValue(initialId, out LayoutElement? initial) || initial is not ILayoutContainer initialParent)
+                    throw new ArgumentException($"Unable to find a pane with id '{initialId}'.");
+                content.InitialContainer = initialParent;
+            }
             if (content.PreviousContainerId is { Length: > 0 } id)
             {
                 if (!containers.TryGetValue(id, out LayoutElement? previous) || previous is not ILayoutContainer parent)

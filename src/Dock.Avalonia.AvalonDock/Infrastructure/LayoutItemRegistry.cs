@@ -77,6 +77,11 @@ internal sealed class LayoutItemRegistry
         for (int i = 0; i < _items.Count; i++) _items[i].RefreshViewTemplate();
     }
 
+    public void RefreshHeaders(LayoutHeaderKind kind)
+    {
+        for (int i = 0; i < _items.Count; i++) _items[i].RefreshHeaders(kind);
+    }
+
     public void RefreshStyles()
     {
         Reconcile();

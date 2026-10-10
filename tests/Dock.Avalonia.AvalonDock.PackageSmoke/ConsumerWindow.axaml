@@ -7,6 +7,12 @@
     <DataTemplate x:Key="ExplicitTemplate" x:DataType="x:Object">
       <TextBlock Classes="explicit-package-template" Text="Explicit package template" />
     </DataTemplate>
+    <DataTemplate x:Key="DocumentHeader" x:DataType="LayoutContent">
+      <TextBlock Classes="package-document-header" Text="{Binding Title, StringFormat='Tab: {0}'}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolHeader" x:DataType="LayoutAnchorable">
+      <TextBlock Classes="package-tool-header" Text="{Binding Title, StringFormat='Tool: {0}'}" />
+    </DataTemplate>
     <ControlTheme x:Key="SourceContainerStyle" TargetType="LayoutDocumentItem" x:DataType="LayoutDocumentItem">
       <Setter Property="Title" Value="{Binding Model, StringFormat='Styled: {0}'}" />
       <Setter Property="CanFloat" Value="True" />
@@ -21,7 +27,9 @@
   <Window.Styles>
     <AvalonDockTheme />
   </Window.Styles>
-  <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}">
+  <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}"
+                  DocumentHeaderTemplate="{StaticResource DocumentHeader}"
+                  AnchorableHeaderTemplate="{StaticResource ToolHeader}">
     <DockingManager.DataTemplates>
       <DataTemplate DataType="{x:Type x:String}" x:DataType="x:String">
         <TextBlock Classes="source-template" Text="{Binding .}" />

@@ -323,6 +323,47 @@ selects the appropriate template for the new object. Recycling is limited to
 controls built by the same selected template. An explicit template can also
 display null content.
 
+## Customize tab and auto-hide headers
+
+Header templates receive the public layout node. Content templates receive the
+application object stored in that node's `Content` property.
+
+| Manager property | Native presentation | Template data |
+| --- | --- | --- |
+| `DocumentHeaderTemplate` | Document tabs, docked or floating | `LayoutContent` (documents and tools docked as documents) |
+| `AnchorableHeaderTemplate` | Tool tabs and auto-hide strips | `LayoutAnchorable` |
+
+For example, add these properties to a manager declared in the default Avalonia
+XML namespace:
+
+```xml
+<DockingManager.DocumentHeaderTemplate>
+  <DataTemplate x:DataType="LayoutContent">
+    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+  </DataTemplate>
+</DockingManager.DocumentHeaderTemplate>
+<DockingManager.AnchorableHeaderTemplate>
+  <DataTemplate x:DataType="LayoutAnchorable">
+    <TextBlock Text="{Binding Title}" FontStyle="Italic" />
+  </DataTemplate>
+</DockingManager.AnchorableHeaderTemplate>
+```
+
+`DocumentHeaderTemplateSelector` and `AnchorableHeaderTemplateSelector` accept
+`AvalonDock.Controls.DataTemplateSelector`. `SelectTemplate` receives the
+layout node and the actual header presenter. A document-header selector should
+also handle `LayoutAnchorable` when tools can be docked into document panes.
+
+As in AvalonDock, header selectors take precedence: setting a selector clears
+the explicit header template, and the template property is coerced to null
+while a selector is present. A null selector result uses a title header.
+Changing a manager header property updates existing docked, floating, and
+auto-hide headers. Compiled bindings observe live title and metadata changes.
+Native tab selection, activation, and auto-hide preview input continue to work.
+XML restoration releases old header content and binds the replacement nodes.
+Pane title bars and document-menu header templates remain open compatibility
+work.
+
 ## Restore application content from XML
 
 The XML describes layout structure and metadata; it does not serialize controls
@@ -370,7 +411,7 @@ flowchart TB
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
-        Items["LayoutItem containers, styles, content templates, and ReactiveUI commands"]
+        Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
         Bridge["Identity, collections, selection, sizing, and return history"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
@@ -429,6 +470,10 @@ inline controls and Dock template content to the native model's template path.
 The item registry keeps containers in the manager's logical scope and applies
 selected control themes. Compiled container bindings synchronize metadata and
 capabilities with those same native models.
+Header template adapters translate native document/tool models to their
+existing public wrappers before applying compiled templates. Their presenters
+remain inside Dock's tab controls and auto-hide buttons. Closed containers
+release their header bindings and native presentation parents.
 
 `XmlLayoutSerializer` uses explicit codecs and content callbacks without
 runtime type discovery. It restores the facade and its native models together.

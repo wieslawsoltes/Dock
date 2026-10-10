@@ -35,6 +35,7 @@
     </ControlTheme>
   </Styles.Resources>
   <fluent:DockFluentTheme />
+  <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeaders.axaml" />
   <Style Selector="dock|DockControl.avalondock dock|DocumentControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
     <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
   </Style>

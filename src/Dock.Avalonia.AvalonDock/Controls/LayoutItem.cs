@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -76,6 +77,7 @@ public abstract class LayoutItem : Control
     private LayoutContent? _layoutElement;
     private object? _model;
     private LayoutItemPresenter? _view;
+    private LayoutHeaderViews? _headers;
     private bool _synchronizing;
     private bool _updatingModel;
     private bool _applyingStyle;
@@ -169,6 +171,8 @@ public abstract class LayoutItem : Control
         SetAndRaise(LayoutElementProperty, ref _layoutElement, null);
         SetAndRaise(ModelProperty, ref _model, null);
         DataContext = null;
+        _headers?.Detach();
+        _headers = null;
         if (_view is not null)
         {
             _view.Item = null;
@@ -179,6 +183,11 @@ public abstract class LayoutItem : Control
     }
 
     internal void RefreshCommands() => _commands?.Refresh();
+
+    internal Control BuildHeader(LayoutHeaderKind kind, IDataTemplate? fallback, Control? existing) =>
+        (_headers ??= new LayoutHeaderViews(this)).Build(kind, fallback, existing);
+
+    internal void RefreshHeaders(LayoutHeaderKind kind) => _headers?.Refresh(kind);
 
     internal void ApplyContainerStyle()
     {

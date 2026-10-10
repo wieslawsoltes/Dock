@@ -28,6 +28,20 @@ public class DockingManager : TemplatedControl
     /// <summary>Identifies the application content template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> LayoutItemTemplateSelectorProperty =
         AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(LayoutItemTemplateSelector));
+    /// <summary>Identifies the document tab header template selector.</summary>
+    public static readonly StyledProperty<DataTemplateSelector?> DocumentHeaderTemplateSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(DocumentHeaderTemplateSelector));
+    /// <summary>Identifies the template used for document tab headers.</summary>
+    public static readonly StyledProperty<IDataTemplate?> DocumentHeaderTemplateProperty =
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentHeaderTemplate),
+            coerce: static (owner, value) => owner.GetValue(DocumentHeaderTemplateSelectorProperty) is null ? value : null);
+    /// <summary>Identifies the tool tab and auto-hide header template selector.</summary>
+    public static readonly StyledProperty<DataTemplateSelector?> AnchorableHeaderTemplateSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(AnchorableHeaderTemplateSelector));
+    /// <summary>Identifies the template used for tool tab and auto-hide headers.</summary>
+    public static readonly StyledProperty<IDataTemplate?> AnchorableHeaderTemplateProperty =
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(AnchorableHeaderTemplate),
+            coerce: static (owner, value) => owner.GetValue(AnchorableHeaderTemplateSelectorProperty) is null ? value : null);
     /// <summary>Identifies the theme applied to document and tool containers.</summary>
     public static readonly StyledProperty<ControlTheme?> LayoutItemContainerStyleProperty =
         AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(LayoutItemContainerStyle));
@@ -125,6 +139,14 @@ public class DockingManager : TemplatedControl
     public IDataTemplate? LayoutItemTemplate { get => GetValue(LayoutItemTemplateProperty); set => SetValue(LayoutItemTemplateProperty, value); }
     /// <summary>Gets or sets the content template selector used when no explicit template is set.</summary>
     public DataTemplateSelector? LayoutItemTemplateSelector { get => GetValue(LayoutItemTemplateSelectorProperty); set => SetValue(LayoutItemTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the template for document tab headers, receiving the layout content.</summary>
+    public IDataTemplate? DocumentHeaderTemplate { get => GetValue(DocumentHeaderTemplateProperty); set => SetValue(DocumentHeaderTemplateProperty, value); }
+    /// <summary>Gets or sets the selector that takes precedence over the document header template.</summary>
+    public DataTemplateSelector? DocumentHeaderTemplateSelector { get => GetValue(DocumentHeaderTemplateSelectorProperty); set => SetValue(DocumentHeaderTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the template for tool tab and auto-hide headers, receiving the layout content.</summary>
+    public IDataTemplate? AnchorableHeaderTemplate { get => GetValue(AnchorableHeaderTemplateProperty); set => SetValue(AnchorableHeaderTemplateProperty, value); }
+    /// <summary>Gets or sets the selector that takes precedence over the tool header template.</summary>
+    public DataTemplateSelector? AnchorableHeaderTemplateSelector { get => GetValue(AnchorableHeaderTemplateSelectorProperty); set => SetValue(AnchorableHeaderTemplateSelectorProperty, value); }
     /// <summary>Gets or sets the Avalonia control theme applied to item containers.</summary>
     public ControlTheme? LayoutItemContainerStyle { get => GetValue(LayoutItemContainerStyleProperty); set => SetValue(LayoutItemContainerStyleProperty, value); }
     /// <summary>Gets or sets the container theme selector used when no explicit style is set.</summary>
@@ -190,6 +212,20 @@ public class DockingManager : TemplatedControl
     protected virtual void OnLayoutItemTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the application content template selector changes.</summary>
     protected virtual void OnLayoutItemTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Called when the document tab header template changes.</summary>
+    protected virtual void OnDocumentHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Clears an explicit document header template when a selector is supplied.</summary>
+    protected virtual void OnDocumentHeaderTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not null) SetCurrentValue(DocumentHeaderTemplateProperty, null);
+    }
+    /// <summary>Called when the tool tab and auto-hide header template changes.</summary>
+    protected virtual void OnAnchorableHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Clears an explicit tool header template when a selector is supplied.</summary>
+    protected virtual void OnAnchorableHeaderTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not null) SetCurrentValue(AnchorableHeaderTemplateProperty, null);
+    }
     /// <summary>Applies the new item container style to existing layout content.</summary>
     protected virtual void OnLayoutItemContainerStyleChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <summary>Applies the new item container style selector to existing layout content.</summary>
@@ -213,6 +249,28 @@ public class DockingManager : TemplatedControl
         }
         if (change.Property == LayoutItemContainerStyleProperty) OnLayoutItemContainerStyleChanged(change);
         if (change.Property == LayoutItemContainerStyleSelectorProperty) OnLayoutItemContainerStyleSelectorChanged(change);
+        if (change.Property == DocumentHeaderTemplateProperty)
+        {
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document);
+            OnDocumentHeaderTemplateChanged(change);
+        }
+        if (change.Property == AnchorableHeaderTemplateProperty)
+        {
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);
+            OnAnchorableHeaderTemplateChanged(change);
+        }
+        if (change.Property == DocumentHeaderTemplateSelectorProperty)
+        {
+            OnDocumentHeaderTemplateSelectorChanged(change);
+            CoerceValue(DocumentHeaderTemplateProperty);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document);
+        }
+        if (change.Property == AnchorableHeaderTemplateSelectorProperty)
+        {
+            OnAnchorableHeaderTemplateSelectorChanged(change);
+            CoerceValue(AnchorableHeaderTemplateProperty);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);
+        }
     }
     /// <summary>Occurs before replacing the layout.</summary>
     public event EventHandler? LayoutChanging;

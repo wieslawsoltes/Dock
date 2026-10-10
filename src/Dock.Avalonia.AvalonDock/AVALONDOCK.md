@@ -128,6 +128,17 @@ docked and floating presenters. Inline controls retain their identity through
 Dock's native content handling, and selected templates only recycle their own
 controls. The full guide includes compiled XAML and selector examples.
 
+`DocumentHeaderTemplate` and `AnchorableHeaderTemplate` customize native tabs
+and auto-hide strips using compiled Avalonia templates. Headers receive the
+public `LayoutContent` / `LayoutAnchorable` node, so `Title` and other metadata
+can be bound directly. Document headers also apply to tools docked as documents.
+The corresponding `DocumentHeaderTemplateSelector` and
+`AnchorableHeaderTemplateSelector` receive the layout node and its header
+presenter. Header selectors take precedence and coerce the explicit header
+template to null; a null selection falls back to the title. Runtime changes
+update docked, floating, and auto-hide headers while preserving native input.
+Title-bar and document-menu templates remain open work.
+
 `DocumentsSource` and `AnchorablesSource` accept observable content collections.
 Bind them within a view with an explicit `x:DataType`, and supply compiled
 Avalonia `DataTemplate` entries for the content ViewModels. A manager's
@@ -157,7 +168,7 @@ compatibility has not yet been established.
 flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
-    Items["LayoutItem containers, styles, content templates, and ReactiveUI commands"]
+    Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]

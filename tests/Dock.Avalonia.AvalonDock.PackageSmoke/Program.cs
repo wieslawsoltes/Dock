@@ -33,6 +33,10 @@ LayoutDocument document = manager.Layout.Descendents().OfType<LayoutDocument>().
 if (((TextBox)document.Content!).Text != "Package consumer") throw new Exception("Content was not preserved.");
 LayoutAnchorable tool = manager.Layout.LeftSide.Children.Single().Children.Single();
 if (!tool.IsAutoHidden || tool.ContentId != "agenda") throw new Exception("Auto-hide content was not preserved.");
+Dispatcher.UIThread.RunJobs();
+if (!window.GetVisualDescendants().OfType<TextBlock>().Any(text =>
+        text.Classes.Contains("package-tool-header") && ReferenceEquals(text.DataContext, tool) && text.Text == "Tool: Agenda"))
+    throw new Exception("The compiled auto-hide header did not receive the public anchorable model.");
 ObservableCollection<string> documents = new() { "Source document content" };
 manager.DocumentsSource = documents;
 LayoutDocument fromSource = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => Equals(x.Content, documents[0]));
@@ -59,6 +63,16 @@ if (!ReferenceEquals(sourceItem, manager.GetLayoutItemFromModel(fromSource)) || 
     throw new Exception("Floating did not preserve the item container and command state.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().DockWindow.Host!;
+if (!sourceHost.GetVisualDescendants().OfType<TextBlock>().Any(text =>
+        text.Classes.Contains("package-document-header") && ReferenceEquals(text.DataContext, fromSource) && text.Text == "Tab: " + fromSource.Title))
+    throw new Exception("The compiled floating tab header did not receive the public document model.");
+manager.DocumentHeaderTemplateSelector = new DataTemplateSelector();
+Dispatcher.UIThread.RunJobs();
+if (manager.DocumentHeaderTemplate is not null || sourceHost.GetVisualDescendants().OfType<TextBlock>()
+    .Any(text => text.Classes.Contains("package-document-header")))
+    throw new Exception("The header selector did not take precedence over the explicit header template.");
+manager.DocumentHeaderTemplateSelector = null;
+manager.DocumentHeaderTemplate = (IDataTemplate)window.Resources["DocumentHeader"]!;
 manager.LayoutItemTemplate = (IDataTemplate)window.Resources["ExplicitTemplate"]!;
 Dispatcher.UIThread.RunJobs();
 if (!sourceHost.GetVisualDescendants().Contains(sourceItem.View) ||
@@ -136,7 +150,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, container styles/selectors, manager templates/selectors, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
 
 static void RoundTrip(DockingManager manager)
 {

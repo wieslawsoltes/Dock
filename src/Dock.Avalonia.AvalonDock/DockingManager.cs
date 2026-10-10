@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls.Primitives;
@@ -26,16 +27,32 @@ public class DockingManager : TemplatedControl
     /// <summary>Identifies the factory used by the control template.</summary>
     public static readonly DirectProperty<DockingManager, IFactory> DockFactoryProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, IFactory>(nameof(DockFactory), x => x.DockFactory);
+    /// <summary>Identifies the document content source.</summary>
+    public static readonly DirectProperty<DockingManager, IEnumerable?> DocumentsSourceProperty =
+        AvaloniaProperty.RegisterDirect<DockingManager, IEnumerable?>(nameof(DocumentsSource), x => x.DocumentsSource, (x, value) => x.DocumentsSource = value);
+    /// <summary>Identifies the tool content source.</summary>
+    public static readonly DirectProperty<DockingManager, IEnumerable?> AnchorablesSourceProperty =
+        AvaloniaProperty.RegisterDirect<DockingManager, IEnumerable?>(nameof(AnchorablesSource), x => x.AnchorablesSource, (x, value) => x.AnchorablesSource = value);
+    /// <summary>Identifies the insertion strategy.</summary>
+    public static readonly DirectProperty<DockingManager, ILayoutUpdateStrategy?> LayoutUpdateStrategyProperty =
+        AvaloniaProperty.RegisterDirect<DockingManager, ILayoutUpdateStrategy?>(nameof(LayoutUpdateStrategy), x => x.LayoutUpdateStrategy, (x, value) => x.LayoutUpdateStrategy = value);
 
     private LayoutRoot _layout;
     private object? _activeContent;
     private readonly LayoutSizing _sizing = new();
+    private readonly LayoutSourceBinding<LayoutDocument> _documents;
+    private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
+    private IEnumerable? _documentsSource;
+    private IEnumerable? _anchorablesSource;
+    private ILayoutUpdateStrategy? _layoutUpdateStrategy;
 
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
     {
         _layout = new LayoutRoot { Manager = this };
         _layout.PropertyChanged += LayoutPropertyChanged;
+        _documents = new(this, static content => new LayoutDocument { Content = content }, LayoutSourcePlacement.InsertDocument);
+        _anchorables = new(this, static content => new LayoutAnchorable { Content = content }, LayoutSourcePlacement.InsertAnchorable);
     }
 
     /// <summary>Gets or sets the AvalonDock layout.</summary>
@@ -51,6 +68,7 @@ public class DockingManager : TemplatedControl
                 throw new InvalidOperationException("A layout can belong to only one DockingManager.");
             LayoutChanging?.Invoke(this, EventArgs.Empty);
             RootDock oldDock = DockLayout;
+            LayoutRoot oldLayout = _layout;
             IFactory oldFactory = DockFactory;
             _layout.PropertyChanged -= LayoutPropertyChanged;
             _layout.Manager = null;
@@ -59,6 +77,7 @@ public class DockingManager : TemplatedControl
             _layout.PropertyChanged += LayoutPropertyChanged;
             RaisePropertyChanged(DockFactoryProperty, oldFactory, DockFactory);
             RaisePropertyChanged(DockLayoutProperty, oldDock, DockLayout);
+            OnLayoutChanged(oldLayout, value);
             SynchronizeActiveContent();
             LayoutChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -88,7 +107,40 @@ public class DockingManager : TemplatedControl
         }
     }
     /// <summary>Gets or sets the strategy used to insert source items.</summary>
-    public ILayoutUpdateStrategy? LayoutUpdateStrategy { get; set; }
+    public ILayoutUpdateStrategy? LayoutUpdateStrategy
+    {
+        get => _layoutUpdateStrategy;
+        set => SetAndRaise(LayoutUpdateStrategyProperty, ref _layoutUpdateStrategy, value);
+    }
+    /// <summary>Gets or sets the document contents, observing collection changes.</summary>
+    public IEnumerable? DocumentsSource
+    {
+        get => _documentsSource;
+        set => SetAndRaise(DocumentsSourceProperty, ref _documentsSource, value);
+    }
+    /// <summary>Gets or sets the tool contents, observing collection changes.</summary>
+    public IEnumerable? AnchorablesSource
+    {
+        get => _anchorablesSource;
+        set => SetAndRaise(AnchorablesSourceProperty, ref _anchorablesSource, value);
+    }
+    /// <summary>Reattaches source contents to a replacement layout.</summary>
+    protected virtual void OnLayoutChanged(LayoutRoot oldLayout, LayoutRoot newLayout)
+    {
+        _documents.SetLayout(newLayout);
+        _anchorables.SetLayout(newLayout);
+    }
+    /// <summary>Replaces the observed document source.</summary>
+    protected virtual void OnDocumentsSourceChanged(AvaloniaPropertyChangedEventArgs e) => _documents.SetSource(DocumentsSource);
+    /// <summary>Replaces the observed tool source.</summary>
+    protected virtual void OnAnchorablesSourceChanged(AvaloniaPropertyChangedEventArgs e) => _anchorables.SetSource(AnchorablesSource);
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);
+        if (change.Property == AnchorablesSourceProperty) OnAnchorablesSourceChanged(change);
+    }
     /// <summary>Occurs before replacing the layout.</summary>
     public event EventHandler? LayoutChanging;
     /// <summary>Occurs after replacing the layout.</summary>

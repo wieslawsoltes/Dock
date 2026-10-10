@@ -26,6 +26,18 @@ Declare `xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"`, then use
 The runnable `samples/DockAvalonDockSample` contains a licensed adaptation of
 the Xceed Live Explorer 3.7.0 sample.
 
+`DocumentsSource` and `AnchorablesSource` accept observable content collections.
+Bind them within a view with an explicit `x:DataType`, and supply compiled
+Avalonia `DataTemplate` entries for the content ViewModels. A manager's
+`LayoutUpdateStrategy` can set titles and identifiers and choose destination
+panes. Collection changes update the live Dock models. As in AvalonDock,
+moving source entries leaves the user's tab order intact, and resetting a
+source clears all layout items of that type.
+
+`LayoutAnchorSide` and `LayoutAnchorGroup` expose the four native auto-hide
+strips. The XML serializer preserves these groups, their content identities,
+and return panes alongside docked and hidden content.
+
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as
 Avalonia controls. Framework type substitutions and any outstanding API or

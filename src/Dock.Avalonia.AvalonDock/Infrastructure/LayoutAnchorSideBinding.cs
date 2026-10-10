@@ -136,7 +136,7 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
                 _projected.Add(tool, group);
             }
             foreach (LayoutAnchorGroup group in changedGroups)
-                if (group.ChildrenCount == 0) _side.Children.Remove(group);
+                if (group.ChildrenCount == 0 && !IsReturnDestination(group)) _side.Children.Remove(group);
             List<LayoutAnchorGroup> orderedGroups = new();
             Dictionary<LayoutAnchorGroup, int> positions = new();
             foreach (IDockable model in _pinned)
@@ -155,6 +155,13 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
             }
         }
         finally { _busy = false; }
+    }
+
+    private bool IsReturnDestination(LayoutAnchorGroup group)
+    {
+        foreach (LayoutAnchorable hidden in _root.Hidden)
+            if (ReferenceEquals(hidden.PreviousContainer, group) || ReferenceEquals(hidden.InitialContainer, group)) return true;
+        return false;
     }
 
     public void Dispose()

@@ -174,13 +174,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
             Hidden[index] = (LayoutAnchorable)newElement;
     }
     /// <inheritdoc/>
-    public void CollectGarbage()
-    {
-        List<LayoutElement> empty = new();
-        foreach (ILayoutElement child in this.Descendents())
-            if (child is LayoutElement element && element.DockModel.IsCollapsable && child is ILayoutContainer { ChildrenCount: 0 }) empty.Add(element);
-        for (int i = empty.Count - 1; i >= 0; i--) empty[i].Parent?.RemoveChild(empty[i]);
-    }
+    public void CollectGarbage() => LayoutGarbageCollector.Collect(this);
     /// <summary>Occurs when the layout tree changes.</summary>
     public event EventHandler? Updated;
     internal void NotifyUpdated() => Updated?.Invoke(this, EventArgs.Empty);

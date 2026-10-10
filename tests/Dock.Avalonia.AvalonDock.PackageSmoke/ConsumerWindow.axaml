@@ -10,6 +10,15 @@
           </ad:LayoutDocument>
         </ad:LayoutDocumentPane>
       </ad:LayoutPanel>
+      <ad:LayoutRoot.LeftSide>
+        <ad:LayoutAnchorSide>
+          <ad:LayoutAnchorGroup>
+            <ad:LayoutAnchorable ContentId="agenda" Title="Agenda">
+              <TextBlock Text="Package auto-hide content" />
+            </ad:LayoutAnchorable>
+          </ad:LayoutAnchorGroup>
+        </ad:LayoutAnchorSide>
+      </ad:LayoutRoot.LeftSide>
     </ad:LayoutRoot>
   </ad:DockingManager>
 </Window>

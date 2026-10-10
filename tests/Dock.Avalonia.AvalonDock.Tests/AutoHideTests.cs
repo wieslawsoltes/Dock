@@ -145,6 +145,28 @@ public class AutoHideTests
     }
 
     [AvaloniaFact]
+    public void Native_Unpin_Keeps_Group_Referenced_By_Hidden_Tool()
+    {
+        LayoutAnchorable first = new();
+        LayoutAnchorable second = new();
+        LayoutAnchorablePane pane = new(first);
+        pane.Children.Add(second);
+        LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };
+        first.ToggleAutoHide();
+        second.ToggleAutoHide();
+        LayoutAnchorGroup group = Assert.IsType<LayoutAnchorGroup>(first.Parent);
+        Assert.Same(group, second.Parent);
+        first.Hide();
+        root.DockFactory.UnpinDockable(second.DockModel);
+        Assert.Empty(group.Children);
+        Assert.Same(root, group.Root);
+        root.CollectGarbage();
+        first.Show();
+        Assert.Same(group, first.Parent);
+        Assert.True(first.IsAutoHidden);
+    }
+
+    [AvaloniaFact]
     public void Toggle_Uses_The_Upstream_Pane_Side_Algorithm()
     {
         LayoutAnchorable first = new();

@@ -145,9 +145,11 @@ Install-Package Dock.Avalonia.Themes.Browser -Pre
 
 ## Resources
 * [Documentation index](https://wieslawsoltes.github.io/Dock/)
+* [AvalonDock compatibility guide](docfx/articles/dock-avalondock.md) — usage, architecture, and current scope
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project:
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples
+  - **`DockAvalonDockSample`** - AvalonDock API on Dock, including floating, auto-hide, and XML persistence
   - **`DockMvvmSample`** - Full MVVM implementation
   - **`DockReactiveUISample`** - ReactiveUI patterns
   - **`DockDeferredContentSample`** - Deferred timeline scopes, delay, order, and presenter-host behavior

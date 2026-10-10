@@ -53,6 +53,10 @@ Start with the Quick start, then continue with the content guides and the framew
 
 If you are building a full application, the sample projects are the best end-to-end reference for layout construction, navigation, and overlays.
 
+For applications using AvalonDock layout names and C# APIs, see the
+[AvalonDock compatibility guide](dock-avalondock.md). It covers the adapter's
+XAML and C# usage, architecture, XML persistence, and current compatibility scope.
+
 ## Sample applications
 
 Sample apps demonstrate complete layouts and patterns:

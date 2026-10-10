@@ -19,4 +19,10 @@ The view's code-behind only initializes its XAML.
 Save/load preserves docked, hidden, auto-hide, and floating layouts, including
 floating window bounds and maximization. This is an in-progress compatibility
 sample; the complete remaining compatibility scope is tracked in
-`src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md`.
+[the compatibility checklist](../../src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md).
+
+See the [AvalonDock compatibility guide](../../docfx/articles/dock-avalondock.md)
+for XAML and C# examples, ViewModel content, XML callbacks, and the architecture
+diagram. The sample's [workspace service](Services/AvalonDockWorkspace.cs)
+contains the corresponding C# operations; [MainWindow.axaml](MainWindow.axaml)
+declares the layout.

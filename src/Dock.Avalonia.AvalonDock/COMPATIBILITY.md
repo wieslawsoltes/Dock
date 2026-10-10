@@ -59,6 +59,9 @@ supported by corresponding implementation and test evidence.
   detachment/reattachment, and layout replacement preserve the layout contents.
   Floating position, size, and maximization synchronize between native hosts,
   Dock windows, and all public content/group models in the floating tree.
+  Floating hosts resolve compiled content templates in the manager's current
+  scope, including ancestor templates, and preserve template recycling without
+  retaining an unused manager.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
@@ -73,16 +76,16 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 94 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 97 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
 ## Open work (not release-complete)
 
 - Complete native floating lifecycle/state synchronization, including tool
-  return locations, grouped-document/mixed native windows, and ViewModel content
-  templates in separate hosts. XML rejects native floating shapes that cannot
-  be represented by the AvalonDock hierarchy before overwriting a saved file.
+  return locations and grouped-document/mixed native windows. XML rejects
+  native floating shapes that cannot be represented by the AvalonDock hierarchy
+  before overwriting a saved file.
 - Remaining manager APIs: item containers and commands, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.

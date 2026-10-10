@@ -28,6 +28,7 @@
           <dock:DockControl x:Name="PART_DockControl" Classes="avalondock"
                             Layout="{TemplateBinding DockLayout}"
                             Factory="{TemplateBinding DockFactory}"
+                            HostWindowFactory="{TemplateBinding DockHostWindowFactory}"
                             InitializeFactory="True" />
         </ControlTemplate>
       </Setter>
@@ -38,6 +39,12 @@
     <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
+    <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
+  </Style>
+  <Style Selector="dock|HostWindow.avalondock dock|DocumentControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
+    <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
+  </Style>
+  <Style Selector="dock|HostWindow.avalondock dock|ToolControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
     <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
   </Style>
 </Styles>

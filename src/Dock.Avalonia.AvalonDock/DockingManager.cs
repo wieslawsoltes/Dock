@@ -28,6 +28,9 @@ public class DockingManager : TemplatedControl
     /// <summary>Identifies the factory used by the control template.</summary>
     public static readonly DirectProperty<DockingManager, IFactory> DockFactoryProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, IFactory>(nameof(DockFactory), x => x.DockFactory);
+    /// <summary>Identifies the native floating host factory used by the control template.</summary>
+    public static readonly DirectProperty<DockingManager, Func<IHostWindow?>> DockHostWindowFactoryProperty =
+        AvaloniaProperty.RegisterDirect<DockingManager, Func<IHostWindow?>>(nameof(DockHostWindowFactory), x => x.DockHostWindowFactory);
     /// <summary>Identifies the document content source.</summary>
     public static readonly DirectProperty<DockingManager, IEnumerable?> DocumentsSourceProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, IEnumerable?>(nameof(DocumentsSource), x => x.DocumentsSource, (x, value) => x.DocumentsSource = value);
@@ -51,6 +54,7 @@ public class DockingManager : TemplatedControl
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
     {
+        DockHostWindowFactory = new LayoutHostWindowFactory(this).Create;
         _layout = new LayoutRoot { Manager = this };
         _layout.PropertyChanged += LayoutPropertyChanged;
         _documents = new(this, static content => new LayoutDocument { Content = content }, LayoutSourcePlacement.InsertDocument);
@@ -89,6 +93,8 @@ public class DockingManager : TemplatedControl
     public RootDock DockLayout => (RootDock)Layout.DockModel;
     /// <summary>Gets the factory operating the live layout.</summary>
     public IFactory DockFactory => Layout.DockFactory;
+    /// <summary>Gets the native host factory that preserves this manager's template scope.</summary>
+    public Func<IHostWindow?> DockHostWindowFactory { get; }
     /// <summary>Gets or sets the active document or tool content.</summary>
     public object? ActiveContent
     {

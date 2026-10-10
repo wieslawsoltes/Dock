@@ -175,7 +175,7 @@ public class FloatingSerializationTests
             view.Show();
             Dispatcher.UIThread.RunJobs();
             LayoutDocumentFloatingWindow original = (LayoutDocumentFloatingWindow)manager.Layout.FloatingWindows[0];
-            HostWindow oldHost = Assert.IsType<HostWindow>(original.DockWindow.Host);
+            HostWindow oldHost = Assert.IsAssignableFrom<HostWindow>(original.DockWindow.Host);
             TextBox editor = Assert.IsType<TextBox>(original.RootDocument!.Content);
             editor.Text = "Unsaved floating edits";
             original.RootDocument.FloatingWidth = 550;
@@ -185,7 +185,7 @@ public class FloatingSerializationTests
             serializer.Deserialize(new StringReader(writer.ToString()));
             Dispatcher.UIThread.RunJobs();
             LayoutDocumentFloatingWindow restored = (LayoutDocumentFloatingWindow)Assert.Single(manager.Layout.FloatingWindows);
-            HostWindow newHost = Assert.IsType<HostWindow>(restored.DockWindow.Host);
+            HostWindow newHost = Assert.IsAssignableFrom<HostWindow>(restored.DockWindow.Host);
             Assert.False(oldHost.IsVisible);
             Assert.NotSame(oldHost, newHost);
             Assert.True(newHost.IsVisible);
@@ -235,7 +235,7 @@ public class FloatingSerializationTests
         {
             view.Show();
             Dispatcher.UIThread.RunJobs();
-            HostWindow oldHost = Assert.IsType<HostWindow>(window.DockWindow.Host);
+            HostWindow oldHost = Assert.IsAssignableFrom<HostWindow>(window.DockWindow.Host);
             tool.Hide();
             Dispatcher.UIThread.RunJobs();
             Assert.False(oldHost.IsVisible);
@@ -244,7 +244,7 @@ public class FloatingSerializationTests
             Assert.Same(tool, Assert.Single(manager.Layout.Hidden));
             tool.Show();
             Dispatcher.UIThread.RunJobs();
-            HostWindow newHost = Assert.IsType<HostWindow>(window.DockWindow.Host);
+            HostWindow newHost = Assert.IsAssignableFrom<HostWindow>(window.DockWindow.Host);
             Assert.True(newHost.IsVisible);
             Assert.NotSame(oldHost, newHost);
             Assert.True(tool.IsFloating);

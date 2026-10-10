@@ -8,6 +8,7 @@ using Avalonia.Headless;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
@@ -28,12 +29,22 @@ if (!tool.IsAutoHidden || tool.ContentId != "agenda") throw new Exception("Auto-
 ObservableCollection<string> documents = new() { "Source document content" };
 manager.DocumentsSource = documents;
 LayoutDocument fromSource = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => Equals(x.Content, documents[0]));
+fromSource.ContentId = "source-document";
 fromSource.IsActive = true;
 Dispatcher.UIThread.RunJobs();
 if (!window.GetVisualDescendants().OfType<TextBlock>().Any(x => x.Text == documents[0] && x.Bounds.Width > 0))
     throw new Exception("Source content was not rendered.");
+fromSource.Float();
+Dispatcher.UIThread.RunJobs();
+AssertFloatingSourceTemplate(manager, documents[0]);
+using StringWriter sourceWriter = new();
+serializer.Serialize(sourceWriter);
+serializer.Deserialize(new StringReader(sourceWriter.ToString()));
+Dispatcher.UIThread.RunJobs();
+AssertFloatingSourceTemplate(manager, documents[0]);
 documents.RemoveAt(0);
 if (manager.Layout.Descendents().OfType<LayoutDocument>().Count() != 1) throw new Exception("Source changes were not observed.");
+if (manager.Layout.FloatingWindows.Count != 0) throw new Exception("The removed source left an empty floating window.");
 window.Close();
 
 DockingManager floatingManager = new();
@@ -52,7 +63,16 @@ if (!Equals(restoredWindow.RootDocument!.Content, "Floating package content") ||
     restoredWindow.DockWindow.Height != 380 || restoredWindow.DockWindow.X != 50 || restoredWindow.DockWindow.Y != 70 ||
     !restoredWindow.RootDocument.IsMaximized)
     throw new Exception("Floating layout content or window state was not preserved.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, and observable sources passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, observable sources, and floating content templates passed.");
+
+static void AssertFloatingSourceTemplate(DockingManager manager, string content)
+{
+    LayoutFloatingWindow floatingWindow = manager.Layout.FloatingWindows.Single();
+    if (floatingWindow.DockWindow.Host is not HostWindow host || !host.IsVisible ||
+        !host.GetVisualDescendants().OfType<TextBlock>().Any(x =>
+            Equals(x.DataContext, content) && x.Text == content && x.Classes.Contains("source-template") && x.Bounds.Width > 0))
+        throw new Exception("The floating host did not render the manager's compiled content template.");
+}
 
 namespace PackageConsumer
 {

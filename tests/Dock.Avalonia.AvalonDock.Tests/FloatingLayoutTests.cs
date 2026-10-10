@@ -226,7 +226,7 @@ public class FloatingLayoutTests
             Dispatcher.UIThread.RunJobs();
             Assert.Equal(0, closed);
             Assert.Contains(floating, manager.Layout.FloatingWindows);
-            HostWindow host = Assert.IsType<HostWindow>(floating.DockWindow.Host);
+            HostWindow host = Assert.IsAssignableFrom<HostWindow>(floating.DockWindow.Host);
             Assert.True(host.IsVisible);
             Assert.Contains(host.GetVisualDescendants().OfType<TextBox>(), x => x.Text == "Floating editor" && x.Bounds.Width > 0);
             manager.Layout.RootPanel = new LayoutPanel(new LayoutDocumentPane());
@@ -258,7 +258,7 @@ public class FloatingLayoutTests
         {
             window.Show();
             Dispatcher.UIThread.RunJobs();
-            HostWindow originalHost = Assert.IsType<HostWindow>(floating.DockWindow.Host);
+            HostWindow originalHost = Assert.IsAssignableFrom<HostWindow>(floating.DockWindow.Host);
             window.Content = null;
             Dispatcher.UIThread.RunJobs();
             Assert.False(originalHost.IsVisible);
@@ -268,7 +268,7 @@ public class FloatingLayoutTests
 
             window.Content = manager;
             Dispatcher.UIThread.RunJobs();
-            HostWindow newHost = Assert.IsType<HostWindow>(floating.DockWindow.Host);
+            HostWindow newHost = Assert.IsAssignableFrom<HostWindow>(floating.DockWindow.Host);
             Assert.NotSame(originalHost, newHost);
             Assert.True(newHost.IsVisible);
             Assert.Same(document, floating.RootDocument);
@@ -294,7 +294,7 @@ public class FloatingLayoutTests
         {
             window.Show();
             Dispatcher.UIThread.RunJobs();
-            HostWindow oldHost = Assert.IsType<HostWindow>(oldFloating.DockWindow.Host);
+            HostWindow oldHost = Assert.IsAssignableFrom<HostWindow>(oldFloating.DockWindow.Host);
             LayoutRoot replacement = new();
             LayoutDocumentFloatingWindow newFloating = new() { RootDocument = new LayoutDocument { Content = new TextBox { Text = "New editor" } } };
             replacement.FloatingWindows.Add(newFloating);
@@ -304,7 +304,7 @@ public class FloatingLayoutTests
             Assert.Same(document, oldFloating.RootDocument);
             Assert.Null(previous.Manager);
             Assert.Same(previous, document.Root);
-            Assert.True(Assert.IsType<HostWindow>(newFloating.DockWindow.Host).IsVisible);
+            Assert.True(Assert.IsAssignableFrom<HostWindow>(newFloating.DockWindow.Host).IsVisible);
 
             LayoutAnchorableFloatingWindow added = new()
             {
@@ -315,7 +315,7 @@ public class FloatingLayoutTests
             };
             manager.Layout.FloatingWindows.Add(added);
             Dispatcher.UIThread.RunJobs();
-            HostWindow toolHost = Assert.IsType<HostWindow>(added.DockWindow.Host);
+            HostWindow toolHost = Assert.IsAssignableFrom<HostWindow>(added.DockWindow.Host);
             Assert.True(toolHost.IsVisible);
             Assert.Contains(toolHost.GetVisualDescendants().OfType<TextBlock>(), x => x.Text == "New tool" && x.Bounds.Width > 0);
         }

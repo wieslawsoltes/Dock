@@ -5,6 +5,11 @@
     <AvalonDockTheme />
   </Window.Styles>
   <DockingManager x:Name="Manager">
+    <DockingManager.DataTemplates>
+      <DataTemplate DataType="{x:Type x:String}" x:DataType="x:String">
+        <TextBlock Classes="source-template" Text="{Binding .}" />
+      </DataTemplate>
+    </DockingManager.DataTemplates>
     <LayoutRoot>
       <LayoutPanel>
         <LayoutDocumentPane>

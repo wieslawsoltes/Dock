@@ -104,7 +104,7 @@ public class FloatingBoundsTests
         {
             view.Show();
             Dispatcher.UIThread.RunJobs();
-            HostWindow host = Assert.IsType<HostWindow>(window.DockWindow.Host);
+            HostWindow host = Assert.IsAssignableFrom<HostWindow>(window.DockWindow.Host);
             Assert.Equal(400, host.Width);
             Assert.Equal(300, host.Height);
             document.FloatingWidth = 540;

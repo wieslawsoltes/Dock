@@ -60,7 +60,11 @@ public abstract class LayoutSerializer
                 if (!containers.TryGetValue(id, out LayoutElement? previous) || previous is not ILayoutContainer parent)
                     throw new ArgumentException($"Unable to find a pane with id '{id}'.");
                 content.PreviousContainer = parent;
-                content.DockModel.OriginalOwner = previous.DockModel;
+                // Dock uses OriginalOwner to determine the location of hidden
+                // and pinned items. Visible contents may remember a floating
+                // return pane without currently belonging to that window.
+                if (content.Parent is LayoutRoot or LayoutAnchorGroup)
+                    content.DockModel.OriginalOwner = previous.DockModel;
             }
             _previousContent.TryGetValue(content.ContentId, out LayoutContent? old);
             LayoutSerializationCallbackEventArgs args = new(content, old?.Content);

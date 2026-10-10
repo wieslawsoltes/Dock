@@ -16,10 +16,16 @@ internal static class AvalonDockXml
     internal static XElement Write(LayoutRoot layout)
     {
         foreach (LayoutFloatingWindow window in layout.FloatingWindows) window.DockWindow.Save();
+        HashSet<string> containerIds = new(StringComparer.Ordinal);
         foreach (ILayoutElement child in layout.Descendents())
         {
-            if (child is LayoutElement element && child is ILayoutPositionableGroup or LayoutAnchorGroup
-                && string.IsNullOrEmpty(element.DockModel.Id)) element.DockModel.Id = Guid.NewGuid().ToString("N");
+            if (child is not LayoutElement element || child is not (ILayoutPositionableGroup or LayoutAnchorGroup)) continue;
+            // Native pane copies may share an Id. References in AvalonDock XML
+            // must identify one return container, including across repeat saves.
+            if (!string.IsNullOrEmpty(element.DockModel.Id) && containerIds.Add(element.DockModel.Id)) continue;
+            string id;
+            do { id = Guid.NewGuid().ToString("N"); } while (!containerIds.Add(id));
+            element.DockModel.Id = id;
         }
         XElement root = new("LayoutRoot");
         XElement panel = WriteElement(layout.RootPanel);

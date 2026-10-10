@@ -6,7 +6,7 @@ namespace Xceed.Wpf.AvalonDock.Infrastructure;
 
 // Keep native window vetoes first, then let the compatibility layer close or
 // hide content before the native host can detach the floating layout.
-internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow) : Factory
+internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement) : Factory
 {
     private IDockWindow? _evaluatingClose;
 
@@ -26,4 +26,10 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow) : Facto
     {
         if (!ReferenceEquals(_evaluatingClose, window)) base.CloseWindow(window);
     }
+
+    public override void FloatAllDockables(IDockable dockable, DockWindowOptions? options) =>
+        floatingPlacement.FloatAll(dockable, () => base.FloatAllDockables(dockable, options));
+
+    public override void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height, DockWindowOptions? options) =>
+        floatingPlacement.FloatContainer(dockable, () => base.SplitToWindow(dock, dockable, x, y, width, height, options));
 }

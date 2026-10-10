@@ -52,6 +52,7 @@ internal sealed class LayoutDockingHistory(LayoutContent content)
 
     internal void Remember(ILayoutContainer? container, int index)
     {
+        _removedFrom = null;
         content.PreviousContainer = container;
         content.PreviousContainerIndex = index;
         content.PreviousContainerId = (container as LayoutElement)?.DockModel.Id;

@@ -76,7 +76,31 @@ if (!Equals(restoredWindow.RootDocument!.Content, "Floating package content") ||
     restoredWindow.DockWindow.Height != 380 || restoredWindow.DockWindow.X != 50 || restoredWindow.DockWindow.Y != 70 ||
     !restoredWindow.RootDocument.IsMaximized)
     throw new Exception("Floating layout content or window state was not preserved.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, observable sources, floating templates, docking, and close cancellation passed.");
+LayoutAnchorablePane batchPane = new(new LayoutAnchorable { ContentId = "first-tool", Content = "First tool" });
+batchPane.Children.Add(new LayoutAnchorable { ContentId = "second-tool", Content = "Second tool" });
+DockingManager batchManager = new() { Layout = new LayoutRoot { RootPanel = new LayoutPanel(batchPane) } };
+RoundTrip(batchManager);
+LayoutAnchorable[] batchTools = batchManager.Layout.Descendents().OfType<LayoutAnchorable>().ToArray();
+batchManager.DockFactory.FloatAllDockables(batchTools[0].DockModel);
+RoundTrip(batchManager);
+foreach (LayoutAnchorable item in batchManager.Layout.Descendents().OfType<LayoutAnchorable>().ToArray()) item.Dock();
+RoundTrip(batchManager);
+LayoutFloatingWindow batchWindow = batchManager.Layout.FloatingWindows.Single();
+batchTools = batchManager.Layout.Descendents().OfType<LayoutAnchorable>().ToArray();
+if (batchTools.Any(item => item.IsFloating)) throw new Exception("Docked tools retained a floating state after XML reload.");
+foreach (LayoutAnchorable item in batchTools.Reverse()) item.Float();
+if (!ReferenceEquals(batchWindow, batchManager.Layout.FloatingWindows.Single()) ||
+    !batchWindow.Descendents().OfType<LayoutAnchorable>().Select(item => item.ContentId).SequenceEqual(new[] { "first-tool", "second-tool" }))
+    throw new Exception("Batch floating did not preserve tab order and return locations across XML saves.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+
+static void RoundTrip(DockingManager manager)
+{
+    XmlLayoutSerializer serializer = new(manager);
+    using StringWriter writer = new();
+    serializer.Serialize(writer);
+    serializer.Deserialize(new StringReader(writer.ToString()));
+}
 
 static void AssertFloatingSourceTemplate(DockingManager manager, string content)
 {

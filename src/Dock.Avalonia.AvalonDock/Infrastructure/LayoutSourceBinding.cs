@@ -81,6 +81,7 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
 
     private void SourceChanged(NotifyCollectionChangedEventArgs args)
     {
+        if (_manager.AreSourceBindingsSuspended) return;
         if (args.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace && args.OldItems is { } removed)
             RemoveMatching(removed, true);
         if (args.Action is NotifyCollectionChangedAction.Add or NotifyCollectionChangedAction.Replace && args.NewItems is { } added)

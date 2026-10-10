@@ -57,10 +57,15 @@ public class XmlLayoutSerializer : LayoutSerializer
     public void Deserialize(XmlReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);
-        XElement xml = XElement.Load(reader);
-        LayoutRoot layout = AvalonDockXml.Read(xml);
-        FixupLayout(layout);
-        Manager.Layout = layout;
+        StartDeserialization();
+        try
+        {
+            XElement xml = XElement.Load(reader);
+            LayoutRoot layout = AvalonDockXml.Read(xml);
+            FixupLayout(layout);
+            Manager.Layout = layout;
+        }
+        finally { EndDeserialization(); }
     }
     /// <summary>Reads a layout file.</summary>
     public void Deserialize(string filepath)

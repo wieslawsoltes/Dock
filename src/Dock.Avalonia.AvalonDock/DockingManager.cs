@@ -50,6 +50,7 @@ public class DockingManager : TemplatedControl
     private IEnumerable? _documentsSource;
     private IEnumerable? _anchorablesSource;
     private ILayoutUpdateStrategy? _layoutUpdateStrategy;
+    private int _sourceBindingSuspensions;
 
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
@@ -184,6 +185,12 @@ public class DockingManager : TemplatedControl
     }
 
     internal void PresentFloatingWindow(LayoutFloatingWindow window) => _floatingWindows.Present(window);
+    internal bool AreSourceBindingsSuspended => _sourceBindingSuspensions > 0;
+    internal void SuspendSourceBindings() => _sourceBindingSuspensions++;
+    internal void ResumeSourceBindings()
+    {
+        if (_sourceBindingSuspensions > 0) _sourceBindingSuspensions--;
+    }
 
     private void LayoutPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {

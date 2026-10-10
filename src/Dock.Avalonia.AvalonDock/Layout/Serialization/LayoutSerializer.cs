@@ -7,6 +7,7 @@ namespace Xceed.Wpf.AvalonDock.Layout.Serialization;
 public abstract class LayoutSerializer
 {
     private readonly Dictionary<string, LayoutContent> _previousContent = new(StringComparer.Ordinal);
+    private int _deserializationDepth;
 
     /// <summary>Creates a serializer and captures the existing content identities.</summary>
     public LayoutSerializer(DockingManager manager)
@@ -20,6 +21,21 @@ public abstract class LayoutSerializer
     public DockingManager Manager { get; }
     /// <summary>Occurs for each restored content item.</summary>
     public event EventHandler<LayoutSerializationCallbackEventArgs>? LayoutSerializationCallback;
+
+    /// <summary>Suspends source collection notifications while layout contents are restored.</summary>
+    protected void StartDeserialization()
+    {
+        _deserializationDepth++;
+        Manager.SuspendSourceBindings();
+    }
+
+    /// <summary>Resumes source collection notifications after restoration, including failed attempts.</summary>
+    protected void EndDeserialization()
+    {
+        if (_deserializationDepth == 0) return;
+        _deserializationDepth--;
+        Manager.ResumeSourceBindings();
+    }
 
     /// <summary>Resolves application content and removes canceled documents.</summary>
     protected virtual void FixupLayout(LayoutRoot layout)

@@ -80,5 +80,6 @@ public abstract class LayoutSerializer
                 else content.Parent?.RemoveChild(content);
             }
         }
+        layout.CollectGarbage();
     }
 }

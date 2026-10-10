@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Avalonia;
 using Avalonia.Collections;
 using Dock.Model.Avalonia.Controls;
@@ -9,7 +12,7 @@ using Xceed.Wpf.AvalonDock.Infrastructure;
 namespace Xceed.Wpf.AvalonDock.Layout;
 
 /// <summary>A floating layout backed by a native Dock window and root.</summary>
-public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer
+public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IXmlSerializable
 {
     private readonly LayoutFloatingBounds _bounds;
     /// <summary>Creates an empty floating window.</summary>
@@ -34,9 +37,23 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer
     public abstract void RemoveChild(ILayoutElement element);
     /// <summary>Replaces a public child.</summary>
     public abstract void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement);
+    /// <summary>Returns no custom XML schema.</summary>
+    public XmlSchema? GetSchema() => null;
+    /// <summary>Reads this floating layout using the AvalonDock XML format.</summary>
+    public abstract void ReadXml(XmlReader reader);
+    /// <summary>Writes this floating layout's children without runtime type discovery.</summary>
+    public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteFloatingContents(this, writer);
 
     internal RootDock NativeRoot => (RootDock)DockModel;
     internal void RefreshBounds() => _bounds.Refresh();
+    internal void CopyBoundsFrom(LayoutFloatingWindow window)
+    {
+        DockWindow.X = window.DockWindow.X;
+        DockWindow.Y = window.DockWindow.Y;
+        DockWindow.Width = window.DockWindow.Width;
+        DockWindow.Height = window.DockWindow.Height;
+        DockWindow.WindowState = window.DockWindow.WindowState;
+    }
     internal void Attach(LayoutRoot root)
     {
         root.Context.Adopt(Context);

@@ -55,6 +55,11 @@ source clears all layout items of that type.
 strips. The XML serializer preserves these groups, their content identities,
 and return panes alongside docked and hidden content.
 
+`LayoutRoot.FloatingWindows` exposes `LayoutDocumentFloatingWindow` and
+`LayoutAnchorableFloatingWindow` over native Dock windows. Floating geometry
+and maximization synchronize with the content and pane models and persist in
+XML. Layout reloads and manager reattachment preserve the application content.
+
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as
 Avalonia controls. Framework type substitutions and any outstanding API or

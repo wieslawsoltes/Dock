@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Xml;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Metadata;
@@ -98,6 +99,14 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
     }
     void ILayoutElementWithVisibility.ComputeVisibility() => NotifyPaneState();
 
+    /// <inheritdoc/>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutAnchorableFloatingWindow restored = (LayoutAnchorableFloatingWindow)AvalonDockXml.ReadFloatingWindow(reader, nameof(LayoutAnchorableFloatingWindow));
+        CopyBoundsFrom(restored);
+        RootPanel = restored.RootPanel;
+    }
+
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
     {
         base.OnModelPropertyChanged(sender, args);
@@ -136,7 +145,11 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
         if (!visible && _panel is not null)
             foreach (ILayoutElement element in _panel.Descendents())
                 if (element is LayoutAnchorablePane { IsVisible: true }) { visible = true; break; }
-        if (SetField(ref _visible, visible, nameof(IsVisible))) IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+        if (SetField(ref _visible, visible, nameof(IsVisible)))
+        {
+            IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+            (Root as LayoutRoot)?.Manager?.PresentFloatingWindow(this);
+        }
         (Root as LayoutRoot)?.NotifyUpdated();
     }
 }

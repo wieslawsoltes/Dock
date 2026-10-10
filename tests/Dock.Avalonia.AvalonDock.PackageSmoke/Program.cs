@@ -35,7 +35,24 @@ if (!window.GetVisualDescendants().OfType<TextBlock>().Any(x => x.Text == docume
 documents.RemoveAt(0);
 if (manager.Layout.Descendents().OfType<LayoutDocument>().Count() != 1) throw new Exception("Source changes were not observed.");
 window.Close();
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide XML, and observable sources passed.");
+
+DockingManager floatingManager = new();
+LayoutDocument floatingDocument = new()
+{
+    ContentId = "floating", Content = "Floating package content", FloatingWidth = 520,
+    FloatingHeight = 380, FloatingLeft = 50, FloatingTop = 70, IsMaximized = true
+};
+floatingManager.Layout.FloatingWindows.Add(new LayoutDocumentFloatingWindow { RootDocument = floatingDocument });
+XmlLayoutSerializer floatingSerializer = new(floatingManager);
+using StringWriter floatingWriter = new();
+floatingSerializer.Serialize(floatingWriter);
+floatingSerializer.Deserialize(new StringReader(floatingWriter.ToString()));
+LayoutDocumentFloatingWindow restoredWindow = (LayoutDocumentFloatingWindow)floatingManager.Layout.FloatingWindows.Single();
+if (!Equals(restoredWindow.RootDocument!.Content, "Floating package content") || restoredWindow.DockWindow.Width != 520 ||
+    restoredWindow.DockWindow.Height != 380 || restoredWindow.DockWindow.X != 50 || restoredWindow.DockWindow.Y != 70 ||
+    !restoredWindow.RootDocument.IsMaximized)
+    throw new Exception("Floating layout content or window state was not preserved.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, and observable sources passed.");
 
 namespace PackageConsumer
 {

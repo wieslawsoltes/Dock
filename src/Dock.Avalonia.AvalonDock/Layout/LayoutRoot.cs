@@ -75,6 +75,12 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
                 if (content is LayoutDocument document) Manager?.NotifyDocumentClosed(document);
                 content.DockModel.Owner = null;
             };
+            factory.DockableHidden += (_, args) =>
+            {
+                if (args.Dockable is Tool tool && tool.Owner is RootDock floatingRoot &&
+                    !ReferenceEquals(floatingRoot, model) && floatingRoot.HiddenDockables?.Remove(tool) == true)
+                    Hidden.Add((LayoutAnchorable)Context.Get(tool));
+            };
         }
         LeftSide = new LayoutAnchorSide();
         TopSide = new LayoutAnchorSide();

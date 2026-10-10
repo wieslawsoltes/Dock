@@ -16,7 +16,10 @@ internal sealed class LayoutFloatingWindowPresenter
 
     internal void Present(LayoutFloatingWindow window)
     {
-        if (ReferenceEquals(window.Root, _layout) && _layout is not null)
+        if (!ReferenceEquals(window.Root, _layout) || _layout is null) return;
+        if (!window.IsValid || window is LayoutAnchorableFloatingWindow { IsVisible: false })
+            window.CloseHost();
+        else if (window.DockWindow.Host?.IsTracked != true)
             window.DockWindow.Present(window.DockWindow.IsModal);
     }
 

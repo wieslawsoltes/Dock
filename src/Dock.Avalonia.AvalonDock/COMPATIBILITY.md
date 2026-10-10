@@ -66,21 +66,23 @@ supported by corresponding implementation and test evidence.
   Pixel/star pane dimensions translate to Dock proportions, with headless
   verification of runtime sizing, vertical sizing, and pointer splitter drag
   persistence across window resizing.
-- XML for the docked hierarchy, auto-hide groups and hidden tools, callbacks, content identities,
+- XML for docked, floating, auto-hide and hidden layouts, callbacks, content identities,
   selected documents, basic metadata and constraints, file/stream/text APIs,
   malformed input rejection, and atomic manager layout replacement.
+  Floating `IXmlSerializable` methods share the explicit codecs. Missing or
+  canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 82 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 94 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
 ## Open work (not release-complete)
 
-- Floating-window XML and complete native window lifecycle/state synchronization,
-  including tool return locations, grouped-document/mixed
-  native windows, and ViewModel content templates in separate hosts. The XML
-  writer explicitly rejects populated floating layouts to prevent silent data loss.
+- Complete native floating lifecycle/state synchronization, including tool
+  return locations, grouped-document/mixed native windows, and ViewModel content
+  templates in separate hosts. XML rejects native floating shapes that cannot
+  be represented by the AvalonDock hierarchy before overwriting a saved file.
 - Remaining manager APIs: item containers and commands, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
@@ -95,13 +97,13 @@ supported by corresponding implementation and test evidence.
   content and changes during deserialization.
 - Exact signatures, framework substitutions, inheritance, defaults, and member
   behavior must be audited independently of the presence inventory.
-- Complete the sample's floating-window persistence paths.
+- Broader sample interaction and platform coverage for floating windows.
 
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 290
-matching type/member keys and 661 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 295
+matching type/member keys and 656 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

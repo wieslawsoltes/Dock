@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Xml;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Metadata;
@@ -82,6 +83,14 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
     }
     /// <summary>Occurs when the root document changes.</summary>
     public event EventHandler? RootDocumentChanged;
+
+    /// <inheritdoc/>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutDocumentFloatingWindow restored = (LayoutDocumentFloatingWindow)AvalonDockXml.ReadFloatingWindow(reader, nameof(LayoutDocumentFloatingWindow));
+        CopyBoundsFrom(restored);
+        RootDocument = restored.RootDocument;
+    }
 
     private void Reconnect()
     {

@@ -5,6 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia.Controls;
 using Avalonia.Layout;
+using Dock.Model.Avalonia.Controls;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Xceed.Wpf.AvalonDock.Infrastructure;
@@ -14,21 +15,21 @@ internal static class AvalonDockXml
 {
     internal static XElement Write(LayoutRoot layout)
     {
+        foreach (LayoutFloatingWindow window in layout.FloatingWindows) window.DockWindow.Save();
         foreach (ILayoutElement child in layout.Descendents())
         {
             if (child is LayoutElement element && child is ILayoutPositionableGroup or LayoutAnchorGroup
                 && string.IsNullOrEmpty(element.DockModel.Id)) element.DockModel.Id = Guid.NewGuid().ToString("N");
         }
-        var model = (Dock.Model.Avalonia.Controls.RootDock)layout.DockModel;
         XElement root = new("LayoutRoot");
         XElement panel = WriteElement(layout.RootPanel);
         panel.Name = "RootPanel";
         root.Add(panel);
         root.Add(WriteSide(layout.TopSide, "TopSide"), WriteSide(layout.RightSide, "RightSide"),
             WriteSide(layout.LeftSide, "LeftSide"), WriteSide(layout.BottomSide, "BottomSide"));
-        if (model.Windows is { Count: > 0 })
-            throw new NotSupportedException("Serialization of floating windows is not implemented yet.");
-        root.Add(new XElement("FloatingWindows"));
+        XElement floating = new("FloatingWindows");
+        foreach (LayoutFloatingWindow window in layout.FloatingWindows) floating.Add(WriteElement(window));
+        root.Add(floating);
         XElement hidden = new("Hidden");
         foreach (LayoutAnchorable content in layout.Hidden) hidden.Add(WriteElement(content));
         root.Add(hidden);
@@ -59,7 +60,12 @@ internal static class AvalonDockXml
                 case "LeftSide": root.LeftSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
                 case "BottomSide": root.BottomSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
                 case "FloatingWindows":
-                    if (child.HasElements) throw new NotSupportedException($"Persistence of '{child.Name}' is not implemented yet.");
+                    foreach (XElement window in child.Elements())
+                    {
+                        if (ReadElement(window, selected, ref active) is not LayoutFloatingWindow floating)
+                            throw new XmlException("FloatingWindows can contain only floating layouts.");
+                        root.FloatingWindows.Add(floating);
+                    }
                     break;
                 default: throw new XmlException($"Unknown layout element '{child.Name}'.");
             }
@@ -79,6 +85,7 @@ internal static class AvalonDockXml
 
     private static XElement WriteElement(LayoutElement element)
     {
+        if (element is LayoutFloatingWindow window) ValidateFloatingWindow(window);
         XElement xml = new(element switch
         {
             LayoutPanel => "LayoutPanel",
@@ -90,6 +97,8 @@ internal static class AvalonDockXml
             LayoutAnchorable => "LayoutAnchorable",
             LayoutAnchorGroup => "LayoutAnchorGroup",
             LayoutAnchorSide => "LayoutAnchorSide",
+            LayoutDocumentFloatingWindow => "LayoutDocumentFloatingWindow",
+            LayoutAnchorableFloatingWindow => "LayoutAnchorableFloatingWindow",
             _ => throw new NotSupportedException("Unsupported AvalonDock layout node.")
         });
         if (element is ILayoutOrientableGroup orientable) xml.SetAttributeValue("Orientation", orientable.Orientation);
@@ -104,6 +113,14 @@ internal static class AvalonDockXml
             xml.SetAttributeValue("AllowDuplicateContent", position.AllowDuplicateContent);
             xml.SetAttributeValue("CanRepositionItems", position.CanRepositionItems);
         }
+        if (element is ILayoutElementForFloatingWindow floating)
+        {
+            xml.SetAttributeValue("FloatingWidth", floating.FloatingWidth);
+            xml.SetAttributeValue("FloatingHeight", floating.FloatingHeight);
+            xml.SetAttributeValue("FloatingLeft", floating.FloatingLeft);
+            xml.SetAttributeValue("FloatingTop", floating.FloatingTop);
+            xml.SetAttributeValue("IsMaximized", floating.IsMaximized);
+        }
         if (element is LayoutContent content)
         {
             xml.SetAttributeValue("Title", content.Title);
@@ -112,11 +129,6 @@ internal static class AvalonDockXml
             xml.SetAttributeValue("CanFloat", content.CanFloat);
             xml.SetAttributeValue("IsSelected", content.IsSelected);
             xml.SetAttributeValue("IsLastFocusedDocument", content.IsLastFocusedDocument);
-            xml.SetAttributeValue("FloatingWidth", content.FloatingWidth);
-            xml.SetAttributeValue("FloatingHeight", content.FloatingHeight);
-            xml.SetAttributeValue("FloatingLeft", content.FloatingLeft);
-            xml.SetAttributeValue("FloatingTop", content.FloatingTop);
-            xml.SetAttributeValue("IsMaximized", content.IsMaximized);
             if (content.ToolTip is string tip) xml.SetAttributeValue("ToolTip", tip);
             if (content.LastActivationTimeStamp is { } time) xml.SetAttributeValue("LastActivationTimeStamp", time.ToString(CultureInfo.InvariantCulture));
             var previous = (content.PreviousContainer as LayoutElement)?.DockModel ?? content.DockModel.OriginalOwner;
@@ -170,6 +182,8 @@ internal static class AvalonDockXml
             "LayoutDocument" => new LayoutDocument(),
             "LayoutAnchorable" => new LayoutAnchorable(),
             "LayoutAnchorGroup" => new LayoutAnchorGroup(),
+            "LayoutDocumentFloatingWindow" => new LayoutDocumentFloatingWindow(),
+            "LayoutAnchorableFloatingWindow" => new LayoutAnchorableFloatingWindow(),
             "LayoutAnchorSide" or "TopSide" or "RightSide" or "LeftSide" or "BottomSide" => new LayoutAnchorSide(),
             _ => throw new XmlException($"Unknown AvalonDock element '{xml.Name}'.")
         };
@@ -192,17 +206,20 @@ internal static class AvalonDockXml
             position.AllowDuplicateContent = Boolean(xml, "AllowDuplicateContent", position.AllowDuplicateContent);
             position.CanRepositionItems = Boolean(xml, "CanRepositionItems", position.CanRepositionItems);
         }
+        if (element is ILayoutElementForFloatingWindow floating)
+        {
+            floating.FloatingWidth = Number(xml, "FloatingWidth", floating.FloatingWidth);
+            floating.FloatingHeight = Number(xml, "FloatingHeight", floating.FloatingHeight);
+            floating.FloatingLeft = Number(xml, "FloatingLeft", floating.FloatingLeft);
+            floating.FloatingTop = Number(xml, "FloatingTop", floating.FloatingTop);
+            floating.IsMaximized = Boolean(xml, "IsMaximized", false);
+        }
         if (element is LayoutContent content)
         {
             content.Title = (string?)xml.Attribute("Title") ?? string.Empty;
             content.ContentId = (string?)xml.Attribute("ContentId") ?? string.Empty;
             content.CanClose = Boolean(xml, "CanClose", content.CanClose);
             content.CanFloat = Boolean(xml, "CanFloat", content.CanFloat);
-            content.FloatingWidth = Number(xml, "FloatingWidth", content.FloatingWidth);
-            content.FloatingHeight = Number(xml, "FloatingHeight", content.FloatingHeight);
-            content.FloatingLeft = Number(xml, "FloatingLeft", content.FloatingLeft);
-            content.FloatingTop = Number(xml, "FloatingTop", content.FloatingTop);
-            content.IsMaximized = Boolean(xml, "IsMaximized", false);
             content.ToolTip = (string?)xml.Attribute("ToolTip");
             content.PreviousContainerId = (string?)xml.Attribute("PreviousContainerId");
             content.PreviousContainerIndex = (int?)xml.Attribute("PreviousContainerIndex") ?? -1;
@@ -236,10 +253,63 @@ internal static class AvalonDockXml
         }
         foreach (XElement child in xml.Elements())
         {
-            if (element is not ILayoutGroup group) throw new XmlException($"'{xml.Name}' cannot contain layout children.");
-            group.InsertChildAt(group.ChildrenCount, ReadElement(child, selected, ref active));
+            LayoutElement childElement = ReadElement(child, selected, ref active);
+            switch (element)
+            {
+                case LayoutDocumentFloatingWindow { RootDocument: null } documentWindow when childElement is LayoutDocument rootDocument:
+                    documentWindow.RootDocument = rootDocument;
+                    break;
+                case LayoutAnchorableFloatingWindow { RootPanel: null } toolWindow when childElement is LayoutAnchorablePaneGroup panel:
+                    toolWindow.RootPanel = panel;
+                    break;
+                case ILayoutGroup group:
+                    group.InsertChildAt(group.ChildrenCount, childElement);
+                    break;
+                default: throw new XmlException($"Invalid child in '{xml.Name}'.");
+            }
         }
         return element;
+    }
+
+    internal static void WriteFloatingContents(LayoutFloatingWindow window, XmlWriter writer)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        window.DockWindow.Save();
+        XElement xml = WriteElement(window);
+        foreach (XElement child in xml.Elements()) child.WriteTo(writer);
+    }
+
+    internal static LayoutFloatingWindow ReadFloatingWindow(XmlReader reader, string expectedName)
+    {
+        ArgumentNullException.ThrowIfNull(reader);
+        if (reader.MoveToContent() != XmlNodeType.Element || reader.LocalName != expectedName)
+            throw new XmlException($"Expected a {expectedName} element.");
+        XElement xml = (XElement)XNode.ReadFrom(reader);
+        List<LayoutContent> selected = new();
+        LayoutContent? active = null;
+        LayoutFloatingWindow window = (LayoutFloatingWindow)ReadElement(xml, selected, ref active);
+        foreach (LayoutContent content in selected) content.IsSelected = true;
+        return window;
+    }
+
+    private static void ValidateFloatingWindow(LayoutFloatingWindow window)
+    {
+        RootDock root = window.NativeRoot;
+        if (root.HiddenDockables is { Count: > 0 } || root.LeftPinnedDockables is { Count: > 0 } ||
+            root.TopPinnedDockables is { Count: > 0 } || root.RightPinnedDockables is { Count: > 0 } ||
+            root.BottomPinnedDockables is { Count: > 0 } || root.Windows is { Count: > 0 })
+            throw new NotSupportedException("The native floating window contains content outside the AvalonDock floating hierarchy.");
+        if (window is LayoutDocumentFloatingWindow document)
+        {
+            if (root.VisibleDockables is not { Count: 1 } children || children[0] is not DocumentDock pane ||
+                (pane.VisibleDockables?.Count ?? 0) != document.ChildrenCount ||
+                (document.RootDocument is { } content && !ReferenceEquals(pane.VisibleDockables![0], content.DockModel)))
+                throw new NotSupportedException("An AvalonDock document floating window can contain only its root document.");
+        }
+        else if (window is LayoutAnchorableFloatingWindow tools &&
+                 ((root.VisibleDockables?.Count ?? 0) != tools.ChildrenCount ||
+                  (tools.RootPanel is { } panel && !ReferenceEquals(root.VisibleDockables![0], panel.DockModel))))
+            throw new NotSupportedException("An AvalonDock tool floating window can contain only its root pane group.");
     }
 
     private static bool Boolean(XElement element, string name, bool fallback) =>

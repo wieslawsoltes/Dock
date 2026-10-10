@@ -21,6 +21,44 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class SampleTests
 {
     [AvaloniaFact]
+    public void Sample_Save_Load_Restores_Floating_Document_And_Journal()
+    {
+        MainWindow window = new();
+        string path = Path.Combine(Path.GetTempPath(), "dock-avalondock-" + Guid.NewGuid().ToString("N"), "layout.xml");
+        DockingManager manager = window.FindControl<DockingManager>("DockManager")!;
+        try
+        {
+            AvalonDockWorkspace service = new(manager, path);
+            window.DataContext = new MainWindowViewModel(service);
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            LayoutDocument document = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => x.ContentId == "document2");
+            TextBox editor = Assert.IsType<TextBox>(document.Content);
+            editor.Text = "Floating sample edits";
+            document.Float();
+            LayoutAnchorable journal = manager.Layout.Descendents().OfType<LayoutAnchorable>().Single(x => x.ContentId == "journal");
+            journal.Float();
+            Dispatcher.UIThread.RunJobs();
+            Assert.Equal(2, manager.Layout.FloatingWindows.Count);
+            Assert.Contains("Saved layout", service.Save());
+            Assert.Contains("Layout restored", service.Load());
+            Dispatcher.UIThread.RunJobs();
+            Assert.Equal(2, manager.Layout.FloatingWindows.Count);
+            LayoutDocument restored = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => x.ContentId == "document2");
+            Assert.Same(editor, restored.Content);
+            Assert.Equal("Floating sample edits", editor.Text);
+            Assert.True(editor.Bounds.Width > 0);
+            Assert.True(manager.Layout.Descendents().OfType<LayoutAnchorable>().Single(x => x.ContentId == "journal").IsFloating);
+        }
+        finally
+        {
+            manager.Layout.FloatingWindows.Clear();
+            window.Close();
+            if (Directory.Exists(Path.GetDirectoryName(path))) Directory.Delete(Path.GetDirectoryName(path)!, true);
+        }
+    }
+
+    [AvaloniaFact]
     public void ViewModel_Commands_Delegate_To_Workspace_And_Publish_Status()
     {
         FakeWorkspace workspace = new();

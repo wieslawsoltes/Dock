@@ -55,6 +55,15 @@ supported by corresponding implementation and test evidence.
   insertion strategies, and source removal from visible, hidden, and pinned
   locations. Compiled bindings and data templates render ReactiveUI ViewModel
   contents; source subscriptions do not retain unused managers.
+- Stable document/tool item containers with live model metadata, selection,
+  activation, content presenters, and replaceable ReactiveUI commands. Commands
+  cover close/float/activate/dock-as-document, document sets, document splitting
+  and adjacent-pane moves, plus tool hide/auto-hide/dock. Native capabilities and
+  close/hide cancellation are honored. Containers survive moves and floating;
+  removed nodes and replaced layouts detach their containers without disposing
+  application commands. Compiled bindings and pointer input exercise container
+  content and commands. Avalonia `IsVisible` hides tools or closes documents;
+  WPF's separate hidden/collapsed distinction has no direct Avalonia equivalent.
 - Layout cleanup retains the last document pane and referenced return panes,
   clears detached active content, and collapses redundant typed pane groups.
 - Document and tool floating models expose native Dock windows through an
@@ -100,9 +109,10 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 148 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 165 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
-  documentation with dependencies on Dock's Avalonia model and Fluent theme.
+  documentation with dependencies on Dock's Avalonia model, Fluent theme, and
+  ReactiveUI commands.
 
 ## Open work (not release-complete)
 
@@ -110,7 +120,8 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: item containers and commands, additional update
+- Remaining manager APIs: container styles/template selectors, routing native
+  chrome through application container commands, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,
@@ -129,8 +140,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 305
-matching type/member keys and 646 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 372
+matching type/member keys and 579 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

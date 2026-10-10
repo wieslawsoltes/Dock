@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Infrastructure;
 
@@ -16,6 +17,9 @@ namespace AvalonDock;
 /// <summary>Hosts an AvalonDock-compatible layout using Dock's controls and models.</summary>
 public class DockingManager : TemplatedControl
 {
+    /// <summary>Identifies whether document-group commands may change a populated group's orientation.</summary>
+    public static readonly StyledProperty<bool> AllowMixedOrientationProperty =
+        AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMixedOrientation));
     /// <summary>Identifies the layout property.</summary>
     public static readonly DirectProperty<DockingManager, LayoutRoot> LayoutProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, LayoutRoot>(nameof(Layout), x => x.Layout, (x, v) => x.Layout = v);
@@ -47,6 +51,7 @@ public class DockingManager : TemplatedControl
     private readonly LayoutFloatingWindowPresenter _floatingWindows = new();
     private readonly LayoutSourceBinding<LayoutDocument> _documents;
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
+    private readonly LayoutItemRegistry _layoutItems;
     private IEnumerable? _documentsSource;
     private IEnumerable? _anchorablesSource;
     private ILayoutUpdateStrategy? _layoutUpdateStrategy;
@@ -58,6 +63,8 @@ public class DockingManager : TemplatedControl
         DockHostWindowFactory = new LayoutHostWindowFactory(this).Create;
         _layout = new LayoutRoot { Manager = this };
         _layout.PropertyChanged += LayoutPropertyChanged;
+        _layoutItems = new LayoutItemRegistry(this);
+        _layoutItems.SetLayout(_layout);
         _documents = new(this, static content => new LayoutDocument { Content = content }, LayoutSourcePlacement.InsertDocument);
         _anchorables = new(this, static content => new LayoutAnchorable { Content = content }, LayoutSourcePlacement.InsertAnchorable);
     }
@@ -83,6 +90,7 @@ public class DockingManager : TemplatedControl
             SetAndRaise(LayoutProperty, ref _layout, value);
             _layout.Manager = this;
             _layout.PropertyChanged += LayoutPropertyChanged;
+            _layoutItems.SetLayout(_layout);
             RaisePropertyChanged(DockFactoryProperty, oldFactory, DockFactory);
             RaisePropertyChanged(DockLayoutProperty, oldDock, DockLayout);
             OnLayoutChanged(oldLayout, value);
@@ -94,6 +102,14 @@ public class DockingManager : TemplatedControl
     public RootDock DockLayout => (RootDock)Layout.DockModel;
     /// <summary>Gets the factory operating the live layout.</summary>
     public IFactory DockFactory => Layout.DockFactory;
+    /// <summary>Gets or sets whether document-group commands may change a populated group's orientation.</summary>
+    public bool AllowMixedOrientation { get => GetValue(AllowMixedOrientationProperty); set => SetValue(AllowMixedOrientationProperty, value); }
+    /// <summary>Gets the stable item container for content in this manager, or null for unattached content.</summary>
+    public LayoutItem? GetLayoutItemFromModel(LayoutContent content)
+    {
+        ArgumentNullException.ThrowIfNull(content);
+        return _layoutItems.Get(content);
+    }
     /// <summary>Gets the native host factory that preserves this manager's template scope.</summary>
     public Func<IHostWindow?> DockHostWindowFactory { get; }
     /// <summary>Gets or sets the active document or tool content.</summary>
@@ -151,6 +167,7 @@ public class DockingManager : TemplatedControl
         base.OnPropertyChanged(change);
         if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);
         if (change.Property == AnchorablesSourceProperty) OnAnchorablesSourceChanged(change);
+        if (change.Property == AllowMixedOrientationProperty) _layoutItems?.RefreshCommands();
     }
     /// <summary>Occurs before replacing the layout.</summary>
     public event EventHandler? LayoutChanging;

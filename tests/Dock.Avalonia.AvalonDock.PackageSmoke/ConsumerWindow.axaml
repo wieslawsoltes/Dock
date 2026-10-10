@@ -1,6 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
+  <Window.Resources>
+    <LayoutDocumentItem x:Key="Container" Description="Unprefixed packaged container" />
+  </Window.Resources>
   <Window.Styles>
     <AvalonDockTheme />
   </Window.Styles>

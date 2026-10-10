@@ -1,0 +1,8 @@
+<ContentPresenter xmlns="https://github.com/avaloniaui"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:infrastructure="using:AvalonDock.Infrastructure"
+                  x:Class="AvalonDock.Infrastructure.LayoutItemPresenter"
+                  x:DataType="infrastructure:LayoutItemPresenter"
+                  Content="{Binding Item.Model, RelativeSource={RelativeSource Self}}"
+                  HorizontalContentAlignment="Stretch"
+                  VerticalContentAlignment="Stretch" />

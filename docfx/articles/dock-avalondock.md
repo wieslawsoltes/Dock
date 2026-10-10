@@ -121,6 +121,55 @@ pane and tab position are retained when it floats, docks, hides, or is restored.
 After deserialization, look up layout nodes again: the manager now owns a new
 layout tree, while content can retain its application identity.
 
+## Bind item containers and commands
+
+`DockingManager.GetLayoutItemFromModel` returns a `LayoutDocumentItem` or
+`LayoutAnchorableItem` from `AvalonDock.Controls`. Its `LayoutElement` is the
+layout node and its `Model` is the application content. Title, identifier,
+icon, selection, active state, and capabilities synchronize with the live model.
+
+```csharp
+using AvalonDock.Controls;
+
+LayoutItem? item = manager.GetLayoutItemFromModel(document);
+if (item?.FloatCommand is { } floatCommand && floatCommand.CanExecute(null))
+    floatCommand.Execute(null);
+```
+
+A view whose data context is the returned container can bind its commands
+using the default XML namespace:
+
+```xml
+<StackPanel x:DataType="LayoutItem">
+  <TextBlock Text="{Binding Title}" />
+  <Button Content="Activate" Command="{Binding ActivateCommand}" />
+  <Button Content="Float" Command="{Binding FloatCommand}" />
+  <Button Content="Close" Command="{Binding CloseCommand}" />
+</StackPanel>
+```
+
+The default ReactiveUI commands cover closing, floating, activation, docking as
+a document, closing document sets, splitting document panes, and moving between
+adjacent document panes. Tool containers add hide, auto-hide, and dock commands.
+Document-group commands honor `CanMove` and the manager's
+`AllowMixedOrientation` setting. Closing document sets uses each container's
+current `CloseCommand`, including application replacements, and honors close
+capabilities and cancellation. Individual command properties can be replaced
+or bound to application commands.
+
+Containers retain identity during moves, floating, auto-hide, and tool hiding.
+Removal detaches a container after the current layout mutation; replacing or
+deserializing the manager's layout detaches the old containers immediately.
+Resolve containers again after loading. Detachment disables and releases
+default commands without disposing application commands. `IsVisible` hides or
+shows tools and closes documents, honoring cancellation; Avalonia does not
+provide WPF's separate `Hidden` and `Collapsed` states.
+
+`View` provides a compiled content presenter using the manager's data-template
+scope. The native Dock controls still render their own content and chrome.
+Manager container-style/template selectors and routing native chrome through
+application container commands remain part of the compatibility work.
+
 ## Bind ViewModel content
 
 `DocumentsSource` and `AnchorablesSource` accept observable collections of
@@ -202,6 +251,7 @@ flowchart TB
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
+        Items["LayoutItem containers + ReactiveUI commands"]
         Bridge["Identity, collections, selection, sizing, and return history"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
@@ -215,6 +265,9 @@ flowchart TB
     App --> Layout
     App --> Xml
     Manager --> Layout
+    Manager --> Items
+    Items <--> Layout
+    Items --> Factory
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models
@@ -243,6 +296,7 @@ metadata, such as AvalonDock return-container references, remains in the adapter
 | `LayoutAnchorSide`, `LayoutAnchorGroup` | Projections over native pinned lists |
 | Document/tool floating windows | `DockWindow`, a floating `RootDock`, and `HostWindow` |
 | `DockingManager` | A themed `DockControl` using the live root and factory |
+| `LayoutDocumentItem`, `LayoutAnchorableItem` | Container state and commands over the same `Document`/`Tool` |
 
 `LayoutFactory` extends the native Avalonia factory at the window-close and
 batch-floating boundaries. It composes lifecycle helpers to honor AvalonDock

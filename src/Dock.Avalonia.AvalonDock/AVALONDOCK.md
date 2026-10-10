@@ -70,6 +70,27 @@ Construct the serializer after the content exists, or provide
 registry. Look up layout nodes again after loading, because the manager's layout
 tree has been replaced.
 
+`manager.GetLayoutItemFromModel(document)` returns a stable `LayoutDocumentItem`
+or `LayoutAnchorableItem` in `AvalonDock.Controls`. Its `Model` is the application
+content; its metadata, selection, and capabilities track the live Dock model.
+Default ReactiveUI commands support close, float, activate, dock-as-document,
+close document sets, split/move document groups, and tool hide/auto-hide/dock.
+Commands honor capabilities and cancellation and can be replaced with
+application commands. For example:
+
+```csharp
+using AvalonDock.Controls;
+
+LayoutItem? item = manager.GetLayoutItemFromModel(document);
+if (item?.FloatCommand is { } command && command.CanExecute(null))
+    command.Execute(null);
+```
+
+Containers survive moves and floating. Layout replacement detaches old
+containers, so look them up again after loading XML. Container commands are
+available to compiled bindings; manager container-style/template selectors and
+native chrome command overrides remain open compatibility work.
+
 `DocumentsSource` and `AnchorablesSource` accept observable content collections.
 Bind them within a view with an explicit `x:DataType`, and supply compiled
 Avalonia `DataTemplate` entries for the content ViewModels. A manager's
@@ -99,12 +120,15 @@ compatibility has not yet been established.
 flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
+    Items["LayoutItem containers and ReactiveUI commands"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
     Xml["XmlLayoutSerializer and explicit XML codec"]
     App --> Api
+    Api --> Items
+    Items --> Factory
     Api <--> Bridge
     Bridge <--> Models
     Bridge --> Factory

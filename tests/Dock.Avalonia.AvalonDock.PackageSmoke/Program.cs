@@ -12,11 +12,14 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using AvalonDock;
+using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithoutStarting();
 PackageConsumer.ConsumerWindow window = new();
+if (window.Resources["Container"] is not LayoutDocumentItem { Description: "Unprefixed packaged container" })
+    throw new Exception("The packaged item container did not compile in the default XML namespace.");
 window.Show();
 Dispatcher.UIThread.RunJobs();
 DockingManager manager = window.FindControl<DockingManager>("Manager")!;
@@ -33,11 +36,18 @@ manager.DocumentsSource = documents;
 LayoutDocument fromSource = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => Equals(x.Content, documents[0]));
 fromSource.ContentId = "source-document";
 fromSource.IsActive = true;
+LayoutDocumentItem sourceItem = (LayoutDocumentItem)manager.GetLayoutItemFromModel(fromSource)!;
+sourceItem.Title = "Command-backed source document";
+if (fromSource.Title != sourceItem.Title || !ReferenceEquals(sourceItem.Model, fromSource.Content))
+    throw new Exception("The item container is not attached to the live source model.");
 Dispatcher.UIThread.RunJobs();
 if (!window.GetVisualDescendants().OfType<TextBlock>().Any(x => x.Text == documents[0] && x.Bounds.Width > 0))
     throw new Exception("Source content was not rendered.");
-fromSource.Float();
+if (sourceItem.FloatCommand?.CanExecute(null) != true) throw new Exception("The source item cannot float.");
+sourceItem.FloatCommand.Execute(null);
 Dispatcher.UIThread.RunJobs();
+if (!ReferenceEquals(sourceItem, manager.GetLayoutItemFromModel(fromSource)) || sourceItem.FloatCommand.CanExecute(null))
+    throw new Exception("Floating did not preserve the item container and command state.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().DockWindow.Host!;
 EventHandler<CancelEventArgs> cancelClose = (_, args) => args.Cancel = true;
@@ -55,6 +65,8 @@ using StringWriter sourceWriter = new();
 sourceSerializer.Serialize(sourceWriter);
 sourceSerializer.Deserialize(new StringReader(sourceWriter.ToString()));
 Dispatcher.UIThread.RunJobs();
+if (sourceItem.LayoutElement is not null || sourceItem.Model is not null)
+    throw new Exception("XML restoration did not detach the old item container.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 documents.RemoveAt(0);
 if (manager.Layout.Descendents().OfType<LayoutDocument>().Count() != 1) throw new Exception("Source changes were not observed.");
@@ -106,7 +118,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
 
 static void RoundTrip(DockingManager manager)
 {

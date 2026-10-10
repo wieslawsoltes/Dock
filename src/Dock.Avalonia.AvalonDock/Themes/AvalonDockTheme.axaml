@@ -1,0 +1,22 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:Xceed.Wpf.AvalonDock"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:fluent="using:Dock.Avalonia.Themes.Fluent"
+        x:Class="Xceed.Wpf.AvalonDock.Themes.AvalonDockTheme"
+        x:DataType="ad:DockingManager">
+  <Styles.Resources>
+    <ControlTheme x:Key="{x:Type ad:DockingManager}" TargetType="ad:DockingManager"
+                  x:DataType="ad:DockingManager">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <dock:DockControl x:Name="PART_DockControl"
+                            Layout="{TemplateBinding DockLayout}"
+                            Factory="{TemplateBinding DockFactory}"
+                            InitializeFactory="True" InitializeLayout="True" />
+        </ControlTemplate>
+      </Setter>
+    </ControlTheme>
+  </Styles.Resources>
+  <fluent:DockFluentTheme />
+</Styles>

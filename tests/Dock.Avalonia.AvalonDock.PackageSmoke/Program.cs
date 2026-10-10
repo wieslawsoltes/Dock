@@ -37,9 +37,10 @@ if (!window.GetVisualDescendants().OfType<TextBlock>().Any(x => x.Text == docume
 fromSource.Float();
 Dispatcher.UIThread.RunJobs();
 AssertFloatingSourceTemplate(manager, documents[0]);
+XmlLayoutSerializer sourceSerializer = new(manager);
 using StringWriter sourceWriter = new();
-serializer.Serialize(sourceWriter);
-serializer.Deserialize(new StringReader(sourceWriter.ToString()));
+sourceSerializer.Serialize(sourceWriter);
+sourceSerializer.Deserialize(new StringReader(sourceWriter.ToString()));
 Dispatcher.UIThread.RunJobs();
 AssertFloatingSourceTemplate(manager, documents[0]);
 documents.RemoveAt(0);

@@ -11,12 +11,14 @@ namespace Xceed.Wpf.AvalonDock.Layout;
 /// <summary>A floating layout backed by a native Dock window and root.</summary>
 public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer
 {
+    private readonly LayoutFloatingBounds _bounds;
     /// <summary>Creates an empty floating window.</summary>
     public LayoutFloatingWindow() : this(CreateWindow()) { }
     internal LayoutFloatingWindow(DockWindow window, LayoutModelContext? context = null)
         : base((RootDock)window.Layout!, context)
     {
         DockWindow = window;
+        _bounds = new LayoutFloatingBounds(this);
         window.PropertyChanged += WindowChanged;
     }
 
@@ -34,6 +36,7 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer
     public abstract void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement);
 
     internal RootDock NativeRoot => (RootDock)DockModel;
+    internal void RefreshBounds() => _bounds.Refresh();
     internal void Attach(LayoutRoot root)
     {
         root.Context.Adopt(Context);

@@ -11,7 +11,7 @@ using Xceed.Wpf.AvalonDock.Infrastructure;
 namespace Xceed.Wpf.AvalonDock.Layout;
 
 /// <summary>A document or tool whose state is owned by Dock.</summary>
-public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>
+public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>, ILayoutElementForFloatingWindow
 {
     /// <summary>Identifies the title property.</summary>
     public static readonly DirectProperty<LayoutContent, string> TitleProperty =

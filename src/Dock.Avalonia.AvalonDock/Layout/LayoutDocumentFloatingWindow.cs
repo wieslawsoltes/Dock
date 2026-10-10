@@ -104,6 +104,7 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
         _document?.SetProjectedParent(null);
         _document = next;
         next?.SetProjectedParent(this);
+        RefreshBounds();
         RaisePropertyChanged(nameof(RootDocument));
         RaisePropertyChanged(nameof(Children));
         RaisePropertyChanged(nameof(ChildrenCount));

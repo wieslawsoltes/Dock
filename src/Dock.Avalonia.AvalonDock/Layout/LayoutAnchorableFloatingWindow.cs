@@ -129,6 +129,7 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
     }
     private void NotifyPaneState()
     {
+        RefreshBounds();
         RaisePropertyChanged(nameof(IsSinglePane));
         RaisePropertyChanged(nameof(SinglePane));
         bool visible = SinglePane is not null;

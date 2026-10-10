@@ -57,6 +57,8 @@ supported by corresponding implementation and test evidence.
   and tool floating operations preserve content wrappers and public ownership.
   Compiled floating XAML renders in native hosts; collection removal, manager
   detachment/reattachment, and layout replacement preserve the layout contents.
+  Floating position, size, and maximization synchronize between native hosts,
+  Dock windows, and all public content/group models in the floating tree.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
@@ -69,14 +71,14 @@ supported by corresponding implementation and test evidence.
   malformed input rejection, and atomic manager layout replacement.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 78 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 82 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
 ## Open work (not release-complete)
 
 - Floating-window XML and complete native window lifecycle/state synchronization,
-  including floating bounds, tool return locations, grouped-document/mixed
+  including tool return locations, grouped-document/mixed
   native windows, and ViewModel content templates in separate hosts. The XML
   writer explicitly rejects populated floating layouts to prevent silent data loss.
 - Remaining manager APIs: item containers and commands, additional update
@@ -85,7 +87,7 @@ supported by corresponding implementation and test evidence.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
 - Complete auto sizing, themed splitter sizing, header visibility,
-  repositioning policies, icons, tooltips, enablement, and floating dimensions
+  repositioning policies, icons, tooltips, and enablement
   in actual rendering and behavior. Several metadata properties currently
   round-trip without applying all upstream visual or behavioral effects.
 - Full native drag/float/redock and lifecycle coverage, including native-created

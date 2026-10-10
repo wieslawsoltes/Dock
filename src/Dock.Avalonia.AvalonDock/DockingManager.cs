@@ -7,6 +7,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
+using Avalonia.Styling;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 using AvalonDock.Controls;
@@ -27,6 +28,12 @@ public class DockingManager : TemplatedControl
     /// <summary>Identifies the application content template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> LayoutItemTemplateSelectorProperty =
         AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(LayoutItemTemplateSelector));
+    /// <summary>Identifies the theme applied to document and tool containers.</summary>
+    public static readonly StyledProperty<ControlTheme?> LayoutItemContainerStyleProperty =
+        AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(LayoutItemContainerStyle));
+    /// <summary>Identifies the item container style selector.</summary>
+    public static readonly StyledProperty<StyleSelector?> LayoutItemContainerStyleSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, StyleSelector?>(nameof(LayoutItemContainerStyleSelector));
     /// <summary>Identifies the layout property.</summary>
     public static readonly DirectProperty<DockingManager, LayoutRoot> LayoutProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, LayoutRoot>(nameof(Layout), x => x.Layout, (x, v) => x.Layout = v);
@@ -76,6 +83,9 @@ public class DockingManager : TemplatedControl
         _anchorables = new(this, static content => new LayoutAnchorable { Content = content }, LayoutSourcePlacement.InsertAnchorable);
     }
 
+    /// <summary>Preserves the default manager theme for derived controls.</summary>
+    protected override Type StyleKeyOverride => typeof(DockingManager);
+
     /// <summary>Gets or sets the AvalonDock layout.</summary>
     [Content]
     public LayoutRoot Layout
@@ -115,6 +125,10 @@ public class DockingManager : TemplatedControl
     public IDataTemplate? LayoutItemTemplate { get => GetValue(LayoutItemTemplateProperty); set => SetValue(LayoutItemTemplateProperty, value); }
     /// <summary>Gets or sets the content template selector used when no explicit template is set.</summary>
     public DataTemplateSelector? LayoutItemTemplateSelector { get => GetValue(LayoutItemTemplateSelectorProperty); set => SetValue(LayoutItemTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the Avalonia control theme applied to item containers.</summary>
+    public ControlTheme? LayoutItemContainerStyle { get => GetValue(LayoutItemContainerStyleProperty); set => SetValue(LayoutItemContainerStyleProperty, value); }
+    /// <summary>Gets or sets the container theme selector used when no explicit style is set.</summary>
+    public StyleSelector? LayoutItemContainerStyleSelector { get => GetValue(LayoutItemContainerStyleSelectorProperty); set => SetValue(LayoutItemContainerStyleSelectorProperty, value); }
     /// <summary>Gets the stable item container for content in this manager, or null for unattached content.</summary>
     public LayoutItem? GetLayoutItemFromModel(LayoutContent content)
     {
@@ -176,6 +190,10 @@ public class DockingManager : TemplatedControl
     protected virtual void OnLayoutItemTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the application content template selector changes.</summary>
     protected virtual void OnLayoutItemTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Applies the new item container style to existing layout content.</summary>
+    protected virtual void OnLayoutItemContainerStyleChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
+    /// <summary>Applies the new item container style selector to existing layout content.</summary>
+    protected virtual void OnLayoutItemContainerStyleSelectorChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -193,6 +211,8 @@ public class DockingManager : TemplatedControl
             _layoutItems?.RefreshTemplates();
             OnLayoutItemTemplateSelectorChanged(change);
         }
+        if (change.Property == LayoutItemContainerStyleProperty) OnLayoutItemContainerStyleChanged(change);
+        if (change.Property == LayoutItemContainerStyleSelectorProperty) OnLayoutItemContainerStyleSelectorChanged(change);
     }
     /// <summary>Occurs before replacing the layout.</summary>
     public event EventHandler? LayoutChanging;
@@ -227,6 +247,8 @@ public class DockingManager : TemplatedControl
     }
 
     internal void PresentFloatingWindow(LayoutFloatingWindow window) => _floatingWindows.Present(window);
+    internal void AttachLayoutItem(LayoutItem item) => LogicalChildren.Add(item);
+    internal void DetachLayoutItem(LayoutItem item) => LogicalChildren.Remove(item);
     internal bool AreSourceBindingsSuspended => _sourceBindingSuspensions > 0;
     internal void SuspendSourceBindings() => _sourceBindingSuspensions++;
     internal void ResumeSourceBindings()

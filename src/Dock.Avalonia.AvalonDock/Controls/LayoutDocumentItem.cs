@@ -36,11 +36,11 @@ public class LayoutDocumentItem : LayoutItem
         if (change.Property == DescriptionProperty) OnDescriptionChanged(change);
     }
 
-    internal override void UpdateModelProperties()
+    internal override void UpdateModelProperties(string? propertyName)
     {
-        base.UpdateModelProperties();
+        base.UpdateModelProperties(propertyName);
         if (LayoutElement is not LayoutDocument document) return;
-        SetCurrentValue(DescriptionProperty, document.Description);
-        SetCurrentValue(IsVisibleProperty, document.IsVisible);
+        if (propertyName is null or nameof(Description)) SetCurrentValue(DescriptionProperty, document.Description);
+        if (propertyName is null or nameof(IsVisible) or "Parent" or "Root") SetCurrentValue(IsVisibleProperty, document.IsVisible);
     }
 }

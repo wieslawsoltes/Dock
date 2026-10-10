@@ -1,4 +1,5 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:PackageConsumer"
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
@@ -6,11 +7,21 @@
     <DataTemplate x:Key="ExplicitTemplate" x:DataType="x:Object">
       <TextBlock Classes="explicit-package-template" Text="Explicit package template" />
     </DataTemplate>
+    <ControlTheme x:Key="SourceContainerStyle" TargetType="LayoutDocumentItem" x:DataType="LayoutDocumentItem">
+      <Setter Property="Title" Value="{Binding Model, StringFormat='Styled: {0}'}" />
+      <Setter Property="CanFloat" Value="True" />
+    </ControlTheme>
+    <ControlTheme x:Key="ExplicitContainerStyle" TargetType="LayoutItem" x:DataType="LayoutItem">
+      <Setter Property="Title" Value="Explicit package container" />
+      <Setter Property="CanFloat" Value="False" />
+    </ControlTheme>
+    <StyleSelector x:Key="DefaultStyleSelector" />
+    <local:SourceStyleSelector x:Key="SourceStyleSelector" SourceStyle="{StaticResource SourceContainerStyle}" />
   </Window.Resources>
   <Window.Styles>
     <AvalonDockTheme />
   </Window.Styles>
-  <DockingManager x:Name="Manager">
+  <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}">
     <DockingManager.DataTemplates>
       <DataTemplate DataType="{x:Type x:String}" x:DataType="x:String">
         <TextBlock Classes="source-template" Text="{Binding .}" />

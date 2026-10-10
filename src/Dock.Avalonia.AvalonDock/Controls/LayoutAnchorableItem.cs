@@ -79,11 +79,11 @@ public class LayoutAnchorableItem : LayoutItem
         else if (change.Property == CanHideProperty) OnCanHideChanged(change);
     }
 
-    internal override void UpdateModelProperties()
+    internal override void UpdateModelProperties(string? propertyName)
     {
-        base.UpdateModelProperties();
+        base.UpdateModelProperties(propertyName);
         if (LayoutElement is not LayoutAnchorable tool) return;
-        SetCurrentValue(CanHideProperty, tool.CanHide);
-        SetCurrentValue(IsVisibleProperty, tool.IsVisible);
+        if (propertyName is null or nameof(CanHide)) SetCurrentValue(CanHideProperty, tool.CanHide);
+        if (propertyName is null or nameof(IsVisible) or "Parent" or "Root") SetCurrentValue(IsVisibleProperty, tool.IsVisible);
     }
 }

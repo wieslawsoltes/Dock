@@ -2,8 +2,9 @@
 
 This project intentionally uses package references only and is excluded from
 the solution: the package must be built before it can restore. It verifies
-that a real consumer can compile the Xceed XML namespace, render Dock, and
-restore application content from XML using the packaged assemblies.
+that a real consumer can compile the default Avalonia XML namespace, render
+Dock, apply compiled container styles and content templates, execute container
+commands, and restore application content from XML using the packaged assemblies.
 
 ```sh
 dotnet pack src/Dock.Avalonia.AvalonDock -c Release -o artifacts/nuget

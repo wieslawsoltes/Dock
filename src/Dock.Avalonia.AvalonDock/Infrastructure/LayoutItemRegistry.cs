@@ -18,6 +18,7 @@ internal sealed class LayoutItemRegistry
     private LayoutRoot? _root;
     private bool _queued;
     private bool _refreshing;
+    private bool _reconciling;
     private int _generation;
 
     public LayoutItemRegistry(DockingManager manager) => _manager = manager;
@@ -26,6 +27,13 @@ internal sealed class LayoutItemRegistry
     {
         if (!ReferenceEquals(content.Root, _root)) return null;
         if (_byContent.TryGetValue(content, out LayoutItem? existing)) return existing;
+        LayoutItem item = Create(content);
+        Reconcile();
+        return item;
+    }
+
+    private LayoutItem Create(LayoutContent content)
+    {
         LayoutItem item = content switch
         {
             LayoutDocument => new LayoutDocumentItem(),
@@ -34,7 +42,6 @@ internal sealed class LayoutItemRegistry
         };
         _byContent.Add(content, item);
         _items.Add(item);
-        Reconcile();
         item.Attach(_manager, content);
         return item;
     }
@@ -70,7 +77,21 @@ internal sealed class LayoutItemRegistry
         for (int i = 0; i < _items.Count; i++) _items[i].RefreshViewTemplate();
     }
 
+    public void RefreshStyles()
+    {
+        Reconcile();
+        for (int i = 0; i < _items.Count; i++) _items[i].ApplyContainerStyle();
+    }
+
     private void Reconcile()
+    {
+        if (_root is null || _reconciling) return;
+        _reconciling = true;
+        try { ReconcileCore(); }
+        finally { _reconciling = false; }
+    }
+
+    private void ReconcileCore()
     {
         if (_root is null) return;
         HashSet<LayoutElement> current = new() { _root };
@@ -90,6 +111,10 @@ internal sealed class LayoutItemRegistry
             _items.RemoveAt(i);
             item.Detach();
         }
+        if (_manager.LayoutItemContainerStyle is not null || _manager.LayoutItemContainerStyleSelector is not null)
+            foreach (LayoutElement element in current)
+                if (element is LayoutContent content && ReferenceEquals(content.Root, _root) && !_byContent.ContainsKey(content))
+                    Create(content);
         RefreshCommands();
     }
 
@@ -105,7 +130,7 @@ internal sealed class LayoutItemRegistry
         {
             if (e.PropertyName is "Title" or "ContentId" or "Id" or "Content" or "IconSource" or "ToolTip" or
                 "IsSelected" or "IsActive" or "CanClose" or "CanFloat" or "CanHide" or "Description" or
-                "IsVisible" or "Parent" or "Root") item.SynchronizeModel();
+                "IsVisible" or "Parent" or "Root") item.SynchronizeModel(e.PropertyName);
             if (e.PropertyName is "CanClose" or "CanFloat" or "CanHide" or "CanDrag" or "CanMove" or
                 "CanPin" or "CanAutoHide" or "CanDockAsDocument" or "CanDockAsTabbedDocument" or
                 "DockingState" or "IsFloating" or "IsHidden") item.RefreshCommands();

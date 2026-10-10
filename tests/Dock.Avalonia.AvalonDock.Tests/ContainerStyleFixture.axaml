@@ -1,0 +1,48 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.ContainerStyleFixture"
+        x:DataType="local:StyledWorkspaceViewModel" Width="700" Height="500">
+  <Window.Resources>
+    <x:String x:Key="ContainerTitle">Title from resource</x:String>
+    <ControlTheme x:Key="BaseItemStyle" TargetType="LayoutItem" x:DataType="LayoutItem">
+      <Setter Property="Title" Value="{Binding ((local:StyledContentViewModel)Model).Title}" />
+      <Setter Property="ContentId" Value="{Binding ((local:StyledContentViewModel)Model).Identifier}" />
+      <Setter Property="CanClose" Value="{Binding ((local:StyledContentViewModel)Model).CanClose, Mode=TwoWay}" />
+      <Setter Property="CanFloat" Value="{Binding ((local:StyledContentViewModel)Model).CanFloat}" />
+    </ControlTheme>
+    <ControlTheme x:Key="DocumentStyle" TargetType="LayoutDocumentItem" x:DataType="LayoutDocumentItem"
+                  BasedOn="{StaticResource BaseItemStyle}">
+      <Setter Property="Description" Value="{Binding ((local:StyledContentViewModel)Model).Title, StringFormat='Description: {0}'}" />
+    </ControlTheme>
+    <ControlTheme x:Key="ToolStyle" TargetType="LayoutAnchorableItem" x:DataType="LayoutAnchorableItem"
+                  BasedOn="{StaticResource BaseItemStyle}">
+      <Setter Property="CanHide" Value="{Binding ((local:StyledContentViewModel)Model).CanHide}" />
+    </ControlTheme>
+    <ControlTheme x:Key="CommandStyle" TargetType="LayoutItem" x:DataType="LayoutItem"
+                  BasedOn="{StaticResource BaseItemStyle}">
+      <Setter Property="CloseCommand" Value="{Binding ((local:StyledContentViewModel)Model).CloseCommand}" />
+    </ControlTheme>
+    <ControlTheme x:Key="ExplicitStyle" TargetType="LayoutItem" x:DataType="LayoutItem">
+      <Setter Property="Title" Value="{DynamicResource ContainerTitle}" />
+      <Setter Property="CanFloat" Value="False" />
+    </ControlTheme>
+    <ControlTheme x:Key="AlternateStyle" TargetType="LayoutDocumentItem" x:DataType="LayoutDocumentItem">
+      <Setter Property="Title" Value="{Binding ((local:AlternateContent)Model).Description}" />
+    </ControlTheme>
+    <ad:StyleSelector x:Key="DefaultStyleSelector" />
+    <local:ContainerStyleSelector x:Key="Selector" DocumentStyle="{StaticResource DocumentStyle}"
+                                  ToolStyle="{StaticResource ToolStyle}" AlternateStyle="{StaticResource AlternateStyle}" />
+  </Window.Resources>
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type local:StyledContentViewModel}" x:DataType="local:StyledContentViewModel">
+      <TextBlock Text="{Binding Title}" />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:AlternateContent}" x:DataType="local:AlternateContent">
+      <TextBlock Text="{Binding Description}" />
+    </DataTemplate>
+  </Window.DataTemplates>
+  <DockingManager x:Name="Manager" DocumentsSource="{Binding Documents}" AnchorablesSource="{Binding Tools}"
+                  LayoutItemContainerStyleSelector="{StaticResource Selector}" />
+</Window>

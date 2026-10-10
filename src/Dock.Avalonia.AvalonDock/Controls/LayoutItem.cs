@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Styling;
 using AvalonDock.Infrastructure;
 using AvalonDock.Layout;
 
@@ -76,6 +77,10 @@ public abstract class LayoutItem : Control
     private object? _model;
     private LayoutItemPresenter? _view;
     private bool _synchronizing;
+    private bool _updatingModel;
+    private bool _applyingStyle;
+    private bool _styleInitialized;
+    private ControlTheme? _containerTheme;
     private LayoutItemCommands? _commands;
 
     /// <summary>Creates an unattached layout container.</summary>
@@ -146,6 +151,9 @@ public abstract class LayoutItem : Control
         _commands = new LayoutItemCommands(this);
         SynchronizeModel();
         InitDefaultCommands();
+        manager.AttachLayoutItem(this);
+        _styleInitialized = true;
+        ApplyContainerStyle();
         SetDefaultBindings();
     }
 
@@ -153,7 +161,11 @@ public abstract class LayoutItem : Control
     {
         ClearDefaultBindings();
         ClearDefaultCommands();
+        _styleInitialized = false;
+        DockingManager? manager = Manager;
         Manager = null;
+        ClearContainerStyle();
+        manager?.DetachLayoutItem(this);
         SetAndRaise(LayoutElementProperty, ref _layoutElement, null);
         SetAndRaise(ModelProperty, ref _model, null);
         DataContext = null;
@@ -168,32 +180,76 @@ public abstract class LayoutItem : Control
 
     internal void RefreshCommands() => _commands?.Refresh();
 
+    internal void ApplyContainerStyle()
+    {
+        if (_applyingStyle || Manager is not { } manager) return;
+        ControlTheme? theme = manager.LayoutItemContainerStyle ?? manager.LayoutItemContainerStyleSelector?.SelectStyle(Model, this);
+        if (ReferenceEquals(theme, _containerTheme)) return;
+        _applyingStyle = true;
+        try
+        {
+            ClearDefaultBindings();
+            ClearContainerStyle();
+            _containerTheme = theme;
+            SetCurrentValue(ThemeProperty, theme);
+            ApplyStyling();
+        }
+        finally { _applyingStyle = false; }
+        SetDefaultBindings();
+    }
+
+    private void ClearContainerStyle()
+    {
+        if (_containerTheme is null) return;
+        bool synchronizing = _synchronizing;
+        _synchronizing = true;
+        try
+        {
+            SetCurrentValue(ThemeProperty, null);
+            _containerTheme = null;
+        }
+        finally { _synchronizing = synchronizing; }
+    }
+
     internal void RefreshViewTemplate()
     {
         if (_view is not null && Manager is { } manager && LayoutElement is { } content)
             _view.SetCurrentValue(ContentPresenter.ContentTemplateProperty, new LayoutItemContentTemplate(content, manager, _view));
     }
 
-    internal void SynchronizeModel()
+    internal void SynchronizeModel(string? propertyName = null)
     {
-        if (_synchronizing || LayoutElement is null) return;
+        if (_synchronizing || _updatingModel || _applyingStyle || LayoutElement is not { } content) return;
+        if (!ReferenceEquals(_model, content.Content))
+        {
+            _updatingModel = true;
+            try
+            {
+                // Detach bindings for the old content type before publishing
+                // the new Model and selecting its container theme.
+                ClearContainerStyle();
+                SetAndRaise(ModelProperty, ref _model, content.Content);
+                if (_styleInitialized) ApplyContainerStyle();
+            }
+            finally { _updatingModel = false; }
+            propertyName = null;
+        }
         _synchronizing = true;
-        try { UpdateModelProperties(); }
+        try { UpdateModelProperties(propertyName); }
         finally { _synchronizing = false; }
     }
 
-    internal virtual void UpdateModelProperties()
+    internal virtual void UpdateModelProperties(string? propertyName)
     {
         if (LayoutElement is not { } content) return;
-        SetAndRaise(ModelProperty, ref _model, content.Content);
-        SetCurrentValue(TitleProperty, content.Title);
-        SetCurrentValue(ContentIdProperty, content.ContentId);
-        SetCurrentValue(IconSourceProperty, content.IconSource);
-        SetCurrentValue(IsSelectedProperty, content.IsSelected);
-        SetCurrentValue(IsActiveProperty, content.IsActive);
-        SetCurrentValue(CanCloseProperty, content.CanClose);
-        SetCurrentValue(CanFloatProperty, content.CanFloat);
-        SetCurrentValue(ToolTip.TipProperty, content.ToolTip);
+        if (propertyName is null or nameof(Title)) SetCurrentValue(TitleProperty, content.Title);
+        if (propertyName is null or nameof(ContentId) or "Id") SetCurrentValue(ContentIdProperty, content.ContentId);
+        if (propertyName is null or nameof(IconSource)) SetCurrentValue(IconSourceProperty, content.IconSource);
+        if (propertyName is null or nameof(IsSelected)) SetCurrentValue(IsSelectedProperty, content.IsSelected);
+        if (propertyName is null or nameof(IsActive)) SetCurrentValue(IsActiveProperty, content.IsActive);
+        if (propertyName is null or nameof(CanClose)) SetCurrentValue(CanCloseProperty, content.CanClose);
+        if (propertyName is null or nameof(CanFloat)) SetCurrentValue(CanFloatProperty, content.CanFloat);
+        if (propertyName is null or nameof(ToolTip)) SetCurrentValue(ToolTip.TipProperty, content.ToolTip);
     }
 
     /// <summary>Closes the attached content through the docking implementation.</summary>

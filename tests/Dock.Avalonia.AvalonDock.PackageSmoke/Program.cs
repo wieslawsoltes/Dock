@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
+using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -38,9 +39,16 @@ LayoutDocument fromSource = manager.Layout.Descendents().OfType<LayoutDocument>(
 fromSource.ContentId = "source-document";
 fromSource.IsActive = true;
 LayoutDocumentItem sourceItem = (LayoutDocumentItem)manager.GetLayoutItemFromModel(fromSource)!;
-sourceItem.Title = "Command-backed source document";
-if (fromSource.Title != sourceItem.Title || !ReferenceEquals(sourceItem.Model, fromSource.Content))
-    throw new Exception("The item container is not attached to the live source model.");
+if (sourceItem.Title != "Styled: " + documents[0] || fromSource.Title != sourceItem.Title ||
+    !ReferenceEquals(sourceItem.Model, fromSource.Content))
+    throw new Exception("The packaged compiled container style did not update the live source model.");
+manager.LayoutItemContainerStyle = (ControlTheme)window.Resources["ExplicitContainerStyle"]!;
+if (sourceItem.Title != "Explicit package container" || fromSource.Title != sourceItem.Title ||
+    sourceItem.CanFloat || fromSource.CanFloat || sourceItem.FloatCommand?.CanExecute(null) != false)
+    throw new Exception("The explicit container style did not take precedence over its selector.");
+manager.LayoutItemContainerStyle = null;
+if (sourceItem.Title != "Styled: " + documents[0] || !fromSource.CanFloat)
+    throw new Exception("Clearing the explicit container style did not restore the selected style.");
 Dispatcher.UIThread.RunJobs();
 if (!window.GetVisualDescendants().OfType<TextBlock>().Any(x => x.Text == documents[0] && x.Bounds.Width > 0))
     throw new Exception("Source content was not rendered.");
@@ -128,7 +136,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, manager templates/selectors, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, container styles/selectors, manager templates/selectors, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
 
 static void RoundTrip(DockingManager manager)
 {
@@ -149,6 +157,13 @@ static void AssertFloatingSourceTemplate(DockingManager manager, string content)
 
 namespace PackageConsumer
 {
+    public sealed class SourceStyleSelector : StyleSelector
+    {
+        public ControlTheme? SourceStyle { get; set; }
+        public override ControlTheme? SelectStyle(object? item, AvaloniaObject container)
+            => item is string && container is LayoutDocumentItem ? SourceStyle : null;
+    }
+
     public class ConsumerApp : Application
     {
         public override void Initialize()

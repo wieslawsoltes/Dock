@@ -166,9 +166,9 @@ shows tools and closes documents, honoring cancellation; Avalonia does not
 provide WPF's separate `Hidden` and `Collapsed` states.
 
 `View` is the compiled content presenter used by the native Dock controls. It
-moves with its content between docked and floating hosts. Manager container
-styles/selectors and routing native chrome through application container
-commands remain part of the compatibility work.
+moves with its content between docked and floating hosts. Routing native
+chrome through application container commands remains part of the
+compatibility work.
 
 ## Bind ViewModel content
 
@@ -194,15 +194,83 @@ application objects. With a view's `x:DataType` set to a ViewModel exposing
 
 Here `vm` refers to the application's ViewModel namespace. The ViewModels derive
 from `ReactiveObject`; editing properties must notify changes. Keep UI logic in
-commands and services. A `LayoutUpdateStrategy` can set each generated layout
-item's title and stable `ContentId`, and choose its destination pane. There is
-no implicit mapping from a ViewModel's property names to these layout properties.
+commands and services. Container styles can bind each generated layout item's
+title and stable `ContentId`. A `LayoutUpdateStrategy` can also set these values
+and choose its destination pane. There is no implicit mapping from a
+ViewModel's property names to these layout properties.
 
 Source additions, removals, replacements, and resets update the live layout.
 Moving a source entry preserves the user's tab order. Resetting a source clears
 all layout items of that type, including manually inserted items. Floating
 hosts resolve content templates from the manager's current scope, including
 ancestor templates.
+
+## Style item containers
+
+`LayoutItemContainerStyle` accepts an Avalonia `ControlTheme`. Its target is a
+`LayoutItem`, `LayoutDocumentItem`, or `LayoutAnchorableItem`, and the container
+is its own data context. Compiled bindings access the application ViewModel
+through `Model`. For a document collection whose `EditorViewModel` exposes
+`Title`, `ContentId`, `CanClose`, and `CanFloat`:
+
+```xml
+<DockingManager DocumentsSource="{Binding Documents}">
+  <DockingManager.LayoutItemContainerStyle>
+    <ControlTheme TargetType="LayoutItem" x:DataType="LayoutItem">
+      <Setter Property="Title" Value="{Binding ((vm:EditorViewModel)Model).Title}" />
+      <Setter Property="ContentId" Value="{Binding ((vm:EditorViewModel)Model).ContentId}" />
+      <Setter Property="CanClose" Value="{Binding ((vm:EditorViewModel)Model).CanClose, Mode=TwoWay}" />
+      <Setter Property="CanFloat" Value="{Binding ((vm:EditorViewModel)Model).CanFloat}" />
+    </ControlTheme>
+  </DockingManager.LayoutItemContainerStyle>
+</DockingManager>
+```
+
+Use one-way bindings unless the ViewModel must also receive changes made by
+Dock. The two-way `CanClose` binding above demonstrates that option. Titles,
+identifiers, and capabilities affect the same native models that Dock renders.
+Containers belong to the manager's logical tree, so themes can use manager and
+ancestor resources, including `DynamicResource`, while content is floating.
+Shared setters can live in a base theme referenced through `BasedOn`.
+
+For different document and tool types, set `LayoutItemContainerStyleSelector`
+to an `AvalonDock.Controls.StyleSelector` subclass. This is the counterpart of
+WPF's `StyleSelector`; its result is an Avalonia `ControlTheme`:
+
+```csharp
+using Avalonia;
+using Avalonia.Styling;
+using AvalonDock.Controls;
+
+public sealed class WorkspaceStyleSelector : StyleSelector
+{
+    public ControlTheme? EditorStyle { get; set; }
+    public ControlTheme? PropertiesStyle { get; set; }
+
+    public override ControlTheme? SelectStyle(object? item, AvaloniaObject container)
+        => item switch
+        {
+            EditorViewModel => EditorStyle,
+            PropertiesViewModel => PropertiesStyle,
+            _ => null
+        };
+}
+```
+
+Declare the themes and selector in XAML resources and assign the selector with
+`StaticResource`. The selector receives the application object and its actual
+item container. An explicit `LayoutItemContainerStyle` takes precedence.
+Changing either manager property reapplies the style; replacing content
+selects a theme for the new object and detaches the old typed bindings first.
+A null selection removes the previously selected theme while preserving the
+live layout state. Styles also apply to new source entries and hidden tools.
+
+Command setters may bind application `ReactiveCommand` properties through
+`Model`, just like metadata. Replacing a theme or restoring XML releases its
+bindings without disposing application commands; available default container
+commands are restored when no application command is supplied. Native chrome
+command overrides are still an open compatibility item, so use the container
+commands from application bindings until that integration is complete.
 
 ## Select content templates
 
@@ -302,7 +370,7 @@ flowchart TB
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
-        Items["LayoutItem containers, content templates, and ReactiveUI commands"]
+        Items["LayoutItem containers, styles, content templates, and ReactiveUI commands"]
         Bridge["Identity, collections, selection, sizing, and return history"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
@@ -358,6 +426,9 @@ floating presentation and preserve the manager's template lookup scope.
 The native content template obtains the corresponding `LayoutItem.View` from
 the factory. That presenter selects manager content templates and delegates
 inline controls and Dock template content to the native model's template path.
+The item registry keeps containers in the manager's logical scope and applies
+selected control themes. Compiled container bindings synchronize metadata and
+capabilities with those same native models.
 
 `XmlLayoutSerializer` uses explicit codecs and content callbacks without
 runtime type discovery. It restores the facade and its native models together.

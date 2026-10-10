@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Avalonia;
 using Avalonia.Metadata;
 using Dock.Model.Avalonia;
@@ -38,7 +41,7 @@ public interface ILayoutRoot
 }
 
 /// <summary>A layout root backed by a Dock Avalonia root and factory.</summary>
-public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
+public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSerializable
 {
     private LayoutContent? _lastFocusedDocument;
     private readonly LayoutChildren<LayoutAnchorable> _hidden;
@@ -204,6 +207,30 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
     }
     /// <inheritdoc/>
     public void CollectGarbage() => LayoutGarbageCollector.Collect(this);
+    /// <summary>Returns no custom XML schema.</summary>
+    public XmlSchema? GetSchema() => null;
+    /// <summary>Reads the layout hierarchy while retaining this root's native model and factory.</summary>
+    public void ReadXml(XmlReader reader)
+    {
+        LayoutRoot? restored = AvalonDockXml.ReadRoot(reader);
+        if (restored is null) return;
+        LayoutContent? active = restored.ActiveContent;
+        ActiveContent = null;
+        _lastFocusedDocument = null;
+        RaisePropertyChanged(nameof(LastFocusedDocument));
+        FloatingWindows.Clear();
+        Hidden.Clear();
+        RootPanel = restored.RootPanel;
+        TopSide = restored.TopSide;
+        RightSide = restored.RightSide;
+        LeftSide = restored.LeftSide;
+        BottomSide = restored.BottomSide;
+        while (restored.FloatingWindows.Count > 0) FloatingWindows.Add(restored.FloatingWindows[0]);
+        while (restored.Hidden.Count > 0) Hidden.Add(restored.Hidden[0]);
+        if (active is not null) ActiveContent = active;
+    }
+    /// <summary>Writes the layout hierarchy inside the caller's XML element.</summary>
+    public void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <summary>Occurs when the layout tree changes.</summary>
     public event EventHandler? Updated;
     internal void NotifyUpdated() => Updated?.Invoke(this, EventArgs.Empty);

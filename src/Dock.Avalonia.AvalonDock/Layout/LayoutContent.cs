@@ -1,5 +1,8 @@
 using System;
 using System.ComponentModel;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Metadata;
@@ -11,7 +14,7 @@ using AvalonDock.Infrastructure;
 namespace AvalonDock.Layout;
 
 /// <summary>A document or tool whose state is owned by Dock.</summary>
-public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>, ILayoutElementForFloatingWindow
+public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>, ILayoutElementForFloatingWindow, IXmlSerializable
 {
     /// <summary>Identifies the title property.</summary>
     public static readonly DirectProperty<LayoutContent, string> TitleProperty =
@@ -97,6 +100,12 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     public bool IsEnabled { get => _isEnabled; set => SetField(ref _isEnabled, value); }
     /// <summary>Closes the item, honoring capabilities and cancellation.</summary>
     public abstract void Close();
+    /// <summary>Returns no custom XML schema.</summary>
+    public XmlSchema? GetSchema() => null;
+    /// <summary>Reads content metadata, retaining its application content and native model.</summary>
+    public virtual void ReadXml(XmlReader reader) => AvalonDockXml.ReadContents(this, reader);
+    /// <summary>Writes content metadata inside the caller's XML element.</summary>
+    public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <summary>Compares titles using the current culture.</summary>
     public int CompareTo(LayoutContent? other) => other is null ? 1 : string.Compare(Title, other.Title, StringComparison.CurrentCulture);
     /// <summary>Floats this item through Dock's window implementation.</summary>

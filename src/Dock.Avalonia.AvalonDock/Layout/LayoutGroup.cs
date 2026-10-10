@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Avalonia;
 using Avalonia.Metadata;
 using Dock.Model.Avalonia.Core;
@@ -10,7 +13,7 @@ namespace AvalonDock.Layout;
 
 /// <summary>A typed view of the children of a live Dock container.</summary>
 /// <typeparam name="T">The accepted layout child type.</typeparam>
-public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPane, ILayoutPanelElement where T : class, ILayoutElement
+public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPane, ILayoutPanelElement, IXmlSerializable where T : class, ILayoutElement
 {
     private readonly LayoutChildren<T> _children;
 
@@ -32,6 +35,12 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     IEnumerable<ILayoutElement> ILayoutContainer.Children => _children;
     /// <inheritdoc/>
     public int ChildrenCount => Children.Count;
+    /// <summary>Returns no custom XML schema.</summary>
+    public XmlSchema? GetSchema() => null;
+    /// <summary>Reads group metadata and appends children to the live native container.</summary>
+    public virtual void ReadXml(XmlReader reader) => AvalonDockXml.ReadContents(this, reader);
+    /// <summary>Writes group metadata and children inside the caller's XML element.</summary>
+    public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <inheritdoc/>
     public bool IsVisible => GetVisibility();
     /// <summary>Determines whether the group has visible content.</summary>

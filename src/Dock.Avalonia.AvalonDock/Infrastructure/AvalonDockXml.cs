@@ -16,17 +16,7 @@ internal static class AvalonDockXml
     internal static XElement Write(LayoutRoot layout)
     {
         foreach (LayoutFloatingWindow window in layout.FloatingWindows) window.DockWindow.Save();
-        HashSet<string> containerIds = new(StringComparer.Ordinal);
-        foreach (ILayoutElement child in layout.Descendents())
-        {
-            if (child is not LayoutElement element || child is not (ILayoutPositionableGroup or LayoutAnchorGroup)) continue;
-            // Native pane copies may share an Id. References in AvalonDock XML
-            // must identify one return container, including across repeat saves.
-            if (!string.IsNullOrEmpty(element.DockModel.Id) && containerIds.Add(element.DockModel.Id)) continue;
-            string id;
-            do { id = Guid.NewGuid().ToString("N"); } while (!containerIds.Add(id));
-            element.DockModel.Id = id;
-        }
+        EnsureContainerIds(layout);
         XElement root = new("LayoutRoot");
         XElement panel = WriteElement(layout.RootPanel);
         panel.Name = "RootPanel";
@@ -40,6 +30,24 @@ internal static class AvalonDockXml
         foreach (LayoutAnchorable content in layout.Hidden) hidden.Add(WriteElement(content));
         root.Add(hidden);
         return root;
+    }
+
+    private static void EnsureContainerIds(LayoutElement scope)
+    {
+        HashSet<string> containerIds = new(StringComparer.Ordinal);
+        EnsureId(scope);
+        foreach (ILayoutElement child in scope.Descendents()) EnsureId(child);
+
+        void EnsureId(ILayoutElement child)
+        {
+            if (child is not LayoutElement element || child is not (ILayoutPositionableGroup or LayoutAnchorGroup)) return;
+            // Native pane copies may share an Id. References in AvalonDock XML
+            // must identify one return container, including across repeat saves.
+            if (!string.IsNullOrEmpty(element.DockModel.Id) && containerIds.Add(element.DockModel.Id)) return;
+            string id;
+            do { id = Guid.NewGuid().ToString("N"); } while (!containerIds.Add(id));
+            element.DockModel.Id = id;
+        }
     }
 
     internal static LayoutRoot Read(XElement xml)
@@ -77,7 +85,7 @@ internal static class AvalonDockXml
             }
         }
         if (!hasPanel) throw new XmlException("A layout must contain a RootPanel.");
-        foreach (LayoutContent content in selected) content.IsSelected = true;
+        RestoreSelection(selected);
         if (active is not null) root.ActiveContent = active;
         return root;
     }
@@ -193,6 +201,12 @@ internal static class AvalonDockXml
             "LayoutAnchorSide" or "TopSide" or "RightSide" or "LeftSide" or "BottomSide" => new LayoutAnchorSide(),
             _ => throw new XmlException($"Unknown AvalonDock element '{xml.Name}'.")
         };
+        ReadInto(element, xml, selected, ref active);
+        return element;
+    }
+
+    private static void ReadInto(LayoutElement element, XElement xml, List<LayoutContent> selected, ref LayoutContent? active)
+    {
         if (element is ILayoutOrientableGroup orientable && xml.Attribute("Orientation") is { } direction)
         {
             orientable.Orientation = direction.Value switch
@@ -218,26 +232,27 @@ internal static class AvalonDockXml
             floating.FloatingHeight = Number(xml, "FloatingHeight", floating.FloatingHeight);
             floating.FloatingLeft = Number(xml, "FloatingLeft", floating.FloatingLeft);
             floating.FloatingTop = Number(xml, "FloatingTop", floating.FloatingTop);
-            floating.IsMaximized = Boolean(xml, "IsMaximized", false);
+            floating.IsMaximized = Boolean(xml, "IsMaximized", floating.IsMaximized);
         }
         if (element is LayoutContent content)
         {
-            content.Title = (string?)xml.Attribute("Title") ?? string.Empty;
-            content.ContentId = (string?)xml.Attribute("ContentId") ?? string.Empty;
+            if (xml.Attribute("Title") is { } title) content.Title = title.Value;
+            if (xml.Attribute("ContentId") is { } contentId) content.ContentId = contentId.Value;
             content.CanClose = Boolean(xml, "CanClose", content.CanClose);
             content.CanFloat = Boolean(xml, "CanFloat", content.CanFloat);
-            content.ToolTip = (string?)xml.Attribute("ToolTip");
-            content.PreviousContainerId = (string?)xml.Attribute("PreviousContainerId");
-            content.PreviousContainerIndex = (int?)xml.Attribute("PreviousContainerIndex") ?? -1;
-            content.InitialContainerId = (string?)xml.Attribute("InitialContainerId");
-            content.InitialContainerIndex = (int?)xml.Attribute("InitialContainerIndex") ?? -1;
+            if (xml.Attribute("ToolTip") is { } tip) content.ToolTip = tip.Value;
+            if (xml.Attribute("PreviousContainerId") is { } previousId) content.PreviousContainerId = previousId.Value;
+            if (xml.Attribute("PreviousContainerIndex") is { } previousIndex) content.PreviousContainerIndex = (int)previousIndex;
+            if (xml.Attribute("InitialContainerId") is { } initialId) content.InitialContainerId = initialId.Value;
+            if (xml.Attribute("InitialContainerIndex") is { } initialIndex) content.InitialContainerIndex = (int)initialIndex;
             if (xml.Attribute("LastActivationTimeStamp") is { } time) content.LastActivationTimeStamp = DateTime.Parse(time.Value, CultureInfo.InvariantCulture);
             if (Boolean(xml, "IsSelected", false)) selected.Add(content);
+            else if (xml.Attribute("IsSelected") is not null) content.IsSelected = false;
             if (Boolean(xml, "IsLastFocusedDocument", false)) active = content;
         }
         if (element is LayoutDocument document)
         {
-            document.Description = (string?)xml.Attribute("Description");
+            if (xml.Attribute("Description") is { } description) document.Description = description.Value;
             document.CanMove = Boolean(xml, "CanMove", document.CanMove);
         }
         if (element is LayoutAnchorable tool)
@@ -254,8 +269,8 @@ internal static class AvalonDockXml
         if (element is LayoutAnchorablePane tools && xml.Attribute("Name") is { } name) tools.Name = name.Value;
         if (element is LayoutAnchorGroup anchorGroup)
         {
-            anchorGroup.DockModel.Id = (string?)xml.Attribute("Id") ?? string.Empty;
-            anchorGroup.PreviousContainerId = (string?)xml.Attribute("PreviousContainerId");
+            if (xml.Attribute("Id") is { } groupId) anchorGroup.DockModel.Id = groupId.Value;
+            if (xml.Attribute("PreviousContainerId") is { } previousId) anchorGroup.PreviousContainerId = previousId.Value;
         }
         foreach (XElement child in xml.Elements())
         {
@@ -274,7 +289,46 @@ internal static class AvalonDockXml
                 default: throw new XmlException($"Invalid child in '{xml.Name}'.");
             }
         }
-        return element;
+    }
+
+    internal static void WriteContents(LayoutElement element, XmlWriter writer)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        XElement xml;
+        if (element is LayoutRoot root) xml = Write(root);
+        else
+        {
+            EnsureContainerIds(element.Root as LayoutElement ?? element);
+            xml = WriteElement(element);
+        }
+        foreach (XAttribute attribute in xml.Attributes()) writer.WriteAttributeString(attribute.Name.LocalName, attribute.Value);
+        foreach (XNode child in xml.Nodes()) child.WriteTo(writer);
+    }
+
+    internal static void ReadContents(LayoutElement element, XmlReader reader)
+    {
+        XElement xml = ReadNode(reader);
+        List<LayoutContent> selected = new();
+        LayoutContent? active = null;
+        ReadInto(element, xml, selected, ref active);
+        RestoreSelection(selected);
+        if (active is not null && element.Root is { } root) root.ActiveContent = active;
+    }
+
+    internal static LayoutRoot? ReadRoot(XmlReader reader)
+    {
+        XElement xml = ReadNode(reader);
+        if (xml.IsEmpty) return null;
+        // IXmlSerializable callers own the surrounding element name.
+        xml.Name = "LayoutRoot";
+        return Read(xml);
+    }
+
+    private static XElement ReadNode(XmlReader reader)
+    {
+        ArgumentNullException.ThrowIfNull(reader);
+        if (reader.MoveToContent() != XmlNodeType.Element) throw new XmlException("Expected a layout element.");
+        return (XElement)XNode.ReadFrom(reader);
     }
 
     internal static void WriteFloatingContents(LayoutFloatingWindow window, XmlWriter writer)
@@ -294,8 +348,23 @@ internal static class AvalonDockXml
         List<LayoutContent> selected = new();
         LayoutContent? active = null;
         LayoutFloatingWindow window = (LayoutFloatingWindow)ReadElement(xml, selected, ref active);
-        foreach (LayoutContent content in selected) content.IsSelected = true;
+        RestoreSelection(selected);
         return window;
+    }
+
+    private static void RestoreSelection(List<LayoutContent> selected)
+    {
+        foreach (LayoutContent content in selected)
+        {
+            if (content.Parent is ILayoutContentSelector selector && content.Parent is ILayoutContainer container)
+            {
+                selector.SelectedContentIndex = selector.IndexOf(content);
+                // Standalone XML models have no factory to update sibling state.
+                foreach (ILayoutElement sibling in container.Children)
+                    if (sibling is LayoutContent other && !ReferenceEquals(other, content)) other.IsSelected = false;
+            }
+            content.IsSelected = true;
+        }
     }
 
     private static void ValidateFloatingWindow(LayoutFloatingWindow window)

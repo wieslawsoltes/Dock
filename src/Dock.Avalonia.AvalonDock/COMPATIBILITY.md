@@ -92,11 +92,15 @@ supported by corresponding implementation and test evidence.
   Source collection notifications are suspended during XML content callbacks
   and resume after successful or failed restoration, including nested serializer
   scopes through the protected deserialization hooks.
-  Floating `IXmlSerializable` methods share the explicit codecs. Missing or
+  Content, pane/group, root, and floating `IXmlSerializable` methods share the
+  explicit codecs. Standalone readers consume one element, preserve existing
+  native model identity and application content, and restore tab selection
+  before a factory is attached. Root reads replace the hierarchy while retaining
+  the manager's native root and factory. Missing or
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 132 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 148 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
@@ -125,8 +129,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 300
-matching type/member keys and 651 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 305
+matching type/member keys and 646 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

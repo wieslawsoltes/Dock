@@ -186,6 +186,14 @@ locations and floating geometry. Native grouped-document or mixed floating
 shapes that the current AvalonDock hierarchy cannot represent are rejected
 before an existing save file is overwritten.
 
+Individual content, pane/group, root, and floating models also implement
+`IXmlSerializable`. Their `WriteXml` methods write attributes and children inside
+an element opened by the caller; `ReadXml` consumes that element. Content reads
+preserve an existing `Content` object, group reads append children, and root
+reads replace the hierarchy while retaining the native root and factory.
+These methods do not resolve application content or return-container references;
+use `XmlLayoutSerializer` for complete layout restoration and content callbacks.
+
 ## Implementation architecture
 
 ```mermaid

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
@@ -92,7 +93,20 @@ foreach (LayoutAnchorable item in batchTools.Reverse()) item.Float();
 if (!ReferenceEquals(batchWindow, batchManager.Layout.FloatingWindows.Single()) ||
     !batchWindow.Descendents().OfType<LayoutAnchorable>().Select(item => item.ContentId).SequenceEqual(new[] { "first-tool", "second-tool" }))
     throw new Exception("Batch floating did not preserve tab order and return locations across XML saves.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+LayoutDocument metadata = new() { ContentId = "metadata", Title = "XML contract", CanFloat = false };
+using StringWriter metadataWriter = new();
+using (XmlWriter xml = XmlWriter.Create(metadataWriter))
+{
+    xml.WriteStartElement("LayoutDocument");
+    metadata.WriteXml(xml);
+    xml.WriteEndElement();
+}
+LayoutDocument restoredMetadata = new() { Content = "Existing content" };
+using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString()))) restoredMetadata.ReadXml(xml);
+if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
+    restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
+    throw new Exception("The model XML contract did not preserve metadata and existing content.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
 
 static void RoundTrip(DockingManager manager)
 {

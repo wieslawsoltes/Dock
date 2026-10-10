@@ -12,7 +12,9 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     public LayoutAnchorablePane() : this(new ToolDock()) { }
     /// <summary>Creates a pane containing its first anchorable.</summary>
     public LayoutAnchorablePane(LayoutAnchorable anchorable) : this() => Children.Add(anchorable);
-    internal LayoutAnchorablePane(ToolDock model, LayoutModelContext? context = null) : base(model, context) { }
+    // AvalonDock retains empty panes while floating/hidden contents refer to
+    // them. Its layout collector decides when the native pane can be removed.
+    internal LayoutAnchorablePane(ToolDock model, LayoutModelContext? context = null) : base(model, context) => model.IsCollapsable = false;
     /// <summary>Gets or sets the pane's name.</summary>
     public string Name { get => DockModel.Name ?? string.Empty; set => DockModel.Name = value; }
     /// <summary>Gets whether every child can be hidden.</summary>

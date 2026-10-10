@@ -7,6 +7,40 @@ namespace Xceed.Wpf.AvalonDock.Infrastructure;
 
 internal static class LayoutSourcePlacement
 {
+    internal static void DockAnchorable(LayoutRoot root, LayoutAnchorable tool, ILayoutUpdateStrategy? strategy)
+    {
+        ILayoutGroup? destination = !ReferenceEquals(root.ActiveContent, tool)
+            ? root.ActiveContent?.Parent as LayoutAnchorablePane : null;
+        LayoutAnchorablePane? firstToolPane = null;
+        LayoutDocumentPane? firstDocumentPane = null;
+        if (destination is null)
+        {
+            foreach (ILayoutElement element in root.Descendents())
+            {
+                if (element is LayoutDocumentPane documents) firstDocumentPane ??= documents;
+                if (element is not LayoutAnchorablePane pane || pane.IsHostedInFloatingWindow) continue;
+                firstToolPane ??= pane;
+                if (pane.GetSide() == AnchorSide.Right) { destination = pane; break; }
+            }
+            destination ??= (ILayoutGroup?)firstToolPane ?? firstDocumentPane;
+        }
+        if (strategy?.BeforeInsertAnchorable(root, tool, destination) != true)
+        {
+            if (destination is null)
+            {
+                LayoutPanel original = root.RootPanel;
+                LayoutPanel outer = new() { Orientation = Orientation.Horizontal };
+                root.RootPanel = outer;
+                outer.Children.Add(original);
+                LayoutAnchorablePane pane = new() { DockWidth = new GridLength(200) };
+                outer.Children.Add(pane);
+                destination = pane;
+            }
+            destination.InsertChildAt(destination.ChildrenCount, tool);
+        }
+        strategy?.AfterInsertAnchorable(root, tool);
+    }
+
     internal static void InsertDocument(LayoutRoot root, LayoutDocument document, ILayoutUpdateStrategy? strategy)
     {
         LayoutDocumentPane? destination = root.LastFocusedDocument?.Parent as LayoutDocumentPane;

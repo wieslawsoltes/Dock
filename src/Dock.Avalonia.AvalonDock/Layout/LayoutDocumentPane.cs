@@ -14,7 +14,7 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
     public LayoutDocumentPane() : this(new DocumentDock { IsCollapsable = false }) { }
     /// <summary>Creates a pane containing its first document.</summary>
     public LayoutDocumentPane(LayoutContent firstChild) : this() => Children.Add(firstChild);
-    internal LayoutDocumentPane(DocumentDock model, LayoutModelContext? context = null) : base(model, context) { }
+    internal LayoutDocumentPane(DocumentDock model, LayoutModelContext? context = null) : base(model, context) => model.IsCollapsable = false;
     /// <summary>Gets or sets whether document headers are shown.</summary>
     public bool ShowHeader { get => _showHeader; set => SetField(ref _showHeader, value); }
     /// <inheritdoc/>

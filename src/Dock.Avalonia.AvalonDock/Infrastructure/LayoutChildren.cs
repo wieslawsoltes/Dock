@@ -54,7 +54,12 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
 
     private void SourceChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (!_syncing) Refresh();
+        if (_syncing) return;
+        if (_visible && _owner is ILayoutGroup group)
+            for (int i = 0; i < Count; i++)
+                if (this[i] is LayoutContent content && !_source.Contains(content.DockModel))
+                    content.DockingHistory.CaptureRemoval(group, i);
+        Refresh();
     }
 
     private void Refresh()

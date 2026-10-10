@@ -62,6 +62,10 @@ supported by corresponding implementation and test evidence.
   Floating hosts resolve compiled content templates in the manager's current
   scope, including ancestor templates, and preserve template recycling without
   retaining an unused manager.
+  Public and native single-content floating operations preserve tool return
+  panes and tab indices. Docked tools can reuse their former floating windows;
+  both return locations survive XML. Protected docking fallbacks invoke layout
+  insertion strategies when there is no previous pane.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
@@ -76,14 +80,14 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 97 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 106 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model and Fluent theme.
 
 ## Open work (not release-complete)
 
 - Complete native floating lifecycle/state synchronization, including tool
-  return locations and grouped-document/mixed native windows. XML rejects
+  group return locations, native window-close cancellation, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: item containers and commands, additional update
@@ -105,8 +109,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 295
-matching type/member keys and 656 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 298
+matching type/member keys and 653 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

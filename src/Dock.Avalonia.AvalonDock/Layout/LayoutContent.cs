@@ -36,7 +36,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private int _previousContainerIndex = -1;
     private DateTime? _lastActivationTimeStamp;
 
-    internal LayoutContent(DockableBase model, LayoutModelContext? context = null) : base(model, context) { }
+    internal LayoutContent(DockableBase model, LayoutModelContext? context = null) : base(model, context) => DockingHistory = new(this);
+    internal LayoutDockingHistory DockingHistory { get; }
     private IDockingWindowState State => (IDockingWindowState)DockModel;
 
     /// <summary>Gets or sets the tab title.</summary>
@@ -102,19 +103,27 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     public void Float()
     {
         if (!CanFloat || IsFloating) return;
-        PreviousContainer = Parent;
-        PreviousContainerIndex = Parent is ILayoutGroup group ? group.IndexOfChild(this) : -1;
-        DockModel.SetVisibleBounds(FloatingLeft, FloatingTop, FloatingWidth, FloatingHeight);
-        DockModel.Factory?.FloatDockable(DockModel);
+        if (!DockingHistory.RestorePrevious(floatingOnly: true))
+        {
+            DockModel.SetVisibleBounds(FloatingLeft, FloatingTop, FloatingWidth, FloatingHeight);
+            DockModel.Factory?.FloatDockable(DockModel);
+        }
+        IsSelected = true;
+        IsActive = true;
+        Root?.CollectGarbage();
     }
     /// <summary>Docks this item in a document pane.</summary>
     public void DockAsDocument() => DockModel.Factory?.DockAsDocument(DockModel);
     /// <summary>Returns the item to its previous container.</summary>
     public void Dock()
     {
-        if (PreviousContainer is LayoutElement previous && previous.DockModel is IDock target && DockModel.Owner is IDock source && DockModel.Factory is { } factory)
-            factory.MoveDockable(source, target, DockModel, null);
+        if (!DockingHistory.RestorePrevious()) InternalDock();
+        IsSelected = true;
+        IsActive = true;
+        Root?.CollectGarbage();
     }
+    /// <summary>Chooses a docking destination when no previous container is available.</summary>
+    protected virtual void InternalDock() { }
     /// <summary>Occurs after the item is closed.</summary>
     public event EventHandler? Closed;
     /// <summary>Occurs before closing and permits cancellation.</summary>

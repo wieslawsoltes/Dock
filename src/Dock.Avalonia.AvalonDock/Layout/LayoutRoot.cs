@@ -74,6 +74,15 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot
                 content.NotifyClosed();
                 if (content is LayoutDocument document) Manager?.NotifyDocumentClosed(document);
                 content.DockModel.Owner = null;
+                CollectGarbage();
+            };
+            factory.DockableDocked += (_, args) =>
+            {
+                if (args.Dockable is Document or Tool && Context.Get(args.Dockable) is LayoutContent content)
+                {
+                    content.DockingHistory.CompleteMove();
+                    CollectGarbage();
+                }
             };
             factory.DockableHidden += (_, args) =>
             {

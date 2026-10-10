@@ -22,7 +22,6 @@ public class FloatingTemplateTests
     public void ViewModel_Content_Renders_In_Floating_Hosts_And_Survives_Xml_Restore()
     {
         SourceViewModel viewModel = new();
-        viewModel.Tools.Add(new SourceContent("Docked tool"));
         SourcesFixture view = new() { DataContext = viewModel };
         DockingManager manager = view.FindControl<DockingManager>("Manager")!;
         try

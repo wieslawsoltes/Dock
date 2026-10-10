@@ -89,7 +89,7 @@ public interface ILayoutContentSelector
     int IndexOf(LayoutContent content);
 }
 
-/// <summary>Customizes insertion of items from a manager's sources.</summary>
+/// <summary>Customizes document and tool insertion.</summary>
 public interface ILayoutUpdateStrategy
 {
     /// <summary>Returns true if the strategy inserted the anchorable.</summary>

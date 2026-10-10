@@ -27,6 +27,7 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
     private void InitializePane()
     {
         _pane = NativeRoot.VisibleDockables is { Count: > 0 } children && children[0] is DocumentDock pane ? pane : new DocumentDock();
+        _pane.IsCollapsable = false;
         if (NativeRoot.VisibleDockables!.Count == 0) NativeRoot.VisibleDockables.Add(_pane);
         _pane.Owner = NativeRoot;
         NativeRoot.ActiveDockable = _pane;
@@ -110,6 +111,7 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
         if (_pane.VisibleDockables is { } children)
             foreach (IDockable model in children) if (model is Document) { next = (LayoutDocument)Context.Get(model); break; }
         if (ReferenceEquals(_document, next)) return;
+        _document?.DockingHistory.CaptureRemoval(this, -1);
         _document?.SetProjectedParent(null);
         _document = next;
         next?.SetProjectedParent(this);

@@ -18,4 +18,10 @@ public class LayoutDocument : LayoutContent
     public string? Description { get => _description; set => SetField(ref _description, value); }
     /// <inheritdoc/>
     public override void Close() => CloseCore();
+    /// <inheritdoc/>
+    protected override void InternalDock()
+    {
+        if (Root is LayoutRoot root) LayoutSourcePlacement.InsertDocument(root, this, root.Manager?.LayoutUpdateStrategy);
+        base.InternalDock();
+    }
 }

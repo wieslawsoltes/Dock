@@ -20,7 +20,8 @@ internal static class LayoutGarbageCollector
                 if (node is LayoutContent content)
                 {
                     if (content.PreviousContainer?.Root != root ||
-                        (content.PreviousContainer is { ChildrenCount: 0 } && !content.IsFloating &&
+                        (content.PreviousContainer is { ChildrenCount: 0 } previousEmpty &&
+                         !LayoutDockingHistory.IsFloatingContainer(previousEmpty) && !content.IsFloating &&
                          content is not LayoutAnchorable { IsVisible: false }))
                     {
                         content.PreviousContainer = null;

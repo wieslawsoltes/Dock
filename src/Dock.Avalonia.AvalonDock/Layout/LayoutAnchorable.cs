@@ -70,6 +70,12 @@ public class LayoutAnchorable : LayoutContent
     public event EventHandler? Hidden;
     /// <inheritdoc/>
     public override void Close() => CloseCore();
+    /// <inheritdoc/>
+    protected override void InternalDock()
+    {
+        if (Root is LayoutRoot root) LayoutSourcePlacement.DockAnchorable(root, this, root.Manager?.LayoutUpdateStrategy);
+        base.InternalDock();
+    }
     /// <summary>Hides this tool without destroying its content.</summary>
     public void Hide(bool cancelable = true)
     {

@@ -166,9 +166,23 @@ shows tools and closes documents, honoring cancellation; Avalonia does not
 provide WPF's separate `Hidden` and `Collapsed` states.
 
 `View` is the compiled content presenter used by the native Dock controls. It
-moves with its content between docked and floating hosts. Routing native
-chrome through application container commands remains part of the
-compatibility work.
+moves with its content between docked and floating hosts. Native document close
+buttons, tool title-bar close/pin buttons, context menus, tab middle-clicks, and
+tab double-clicks use the current container commands in docked and floating
+hosts. Menus on auto-hide strips use the same tool container. Command parameters
+are null, so parameterless `ReactiveCommand` properties work directly.
+
+Tool title-bar close buttons use `CloseCommand` when `CanClose` is true and
+`HideCommand` otherwise. A disabled command cannot fall through to the native
+factory's default action. Floating-tool close commands run before the host's
+window-close action, preserving application overrides and close/hide
+cancellation. Native window decoration close requests still use the window
+lifecycle and its cancellation events. Calling layout methods such as `Close`
+or `Float` directly invokes model operations, independently of UI commands.
+
+`DockAsDocumentCommand` returns a floating document to its previous document
+pane. Without a previous document pane, docking chooses the last focused main
+document pane or another main document pane, creating one when necessary.
 
 ## Bind ViewModel content
 
@@ -265,12 +279,20 @@ selects a theme for the new object and detaches the old typed bindings first.
 A null selection removes the previously selected theme while preserving the
 live layout state. Styles also apply to new source entries and hidden tools.
 
-Command setters may bind application `ReactiveCommand` properties through
-`Model`, just like metadata. Replacing a theme or restoring XML releases its
-bindings without disposing application commands; available default container
-commands are restored when no application command is supplied. Native chrome
-command overrides are still an open compatibility item, so use the container
-commands from application bindings until that integration is complete.
+Command setters bind application `ReactiveCommand` properties through `Model`,
+just like metadata. For example, add this setter to the document theme when
+`EditorViewModel.CloseCommand` implements the application's close workflow:
+
+```xml
+<Setter Property="CloseCommand" Value="{Binding ((vm:EditorViewModel)Model).CloseCommand}" />
+```
+
+The tab close button, Close menu item, and middle-click then invoke that
+command. Replacing the command or changing its `CanExecute` updates the UI.
+Replacing a theme or restoring XML releases its bindings without disposing
+application commands; available defaults return when the style stops supplying
+a command. Menus belong to their native controls, so closing a manager releases
+their models even if the application retains its theme and commands.
 
 ## Select content templates
 
@@ -412,6 +434,7 @@ flowchart TB
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
+        Commands["Compiled command bindings<br/>Native input routing"]
         Bridge["Identity, collections, selection, sizing, and return history"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
@@ -429,6 +452,8 @@ flowchart TB
     Items <--> Layout
     Items --> Factory
     Items --> Controls
+    Controls --> Commands
+    Commands --> Items
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models

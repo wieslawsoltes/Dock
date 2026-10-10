@@ -87,9 +87,12 @@ if (item?.FloatCommand is { } command && command.CanExecute(null))
 ```
 
 Containers survive moves and floating. Layout replacement detaches old
-containers, so look them up again after loading XML. Container commands are
-available to compiled bindings; native chrome command overrides remain open
-compatibility work.
+containers, so look them up again after loading XML. Native close/pin buttons,
+document/tool/auto-hide menus, and tab middle/double-clicks use the current
+container commands in docked and floating hosts. Commands receive a null
+parameter and observe `CanExecute`. Tool close buttons choose `CloseCommand`
+when `CanClose` is true and `HideCommand` otherwise; cancellation and application
+overrides also work in floating windows.
 
 `LayoutItemContainerStyle` accepts an Avalonia `ControlTheme`, with the item
 container as its data context. Bind through `Model` to application properties
@@ -113,9 +116,16 @@ subclass overriding `ControlTheme? SelectStyle(object?, AvaloniaObject)`. An
 explicit theme takes precedence. Themes use the manager's logical resource
 scope, including while floating. Runtime style and content changes detach old
 bindings and apply the appropriate theme. Command setters can supply
-application commands; removing a theme restores available defaults without
-disposing application commands. The full guide covers selectors, capabilities,
-and two-way metadata bindings.
+application commands; for an `EditorViewModel` with a `CloseCommand`, add:
+
+```xml
+<Setter Property="CloseCommand" Value="{Binding ((vm:EditorViewModel)Model).CloseCommand}" />
+```
+
+The native tab close button, Close menu item, and middle-click invoke it.
+Removing the theme restores available defaults without disposing application
+commands. Layout methods remain direct model operations. The full guide covers
+selectors, capabilities, and two-way metadata bindings.
 
 `LayoutItem.View` is the presenter displayed by the native Dock controls.
 `DockingManager.LayoutItemTemplate` accepts an Avalonia `IDataTemplate` for
@@ -169,6 +179,7 @@ flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
+    Commands["Compiled command bindings<br/>Native input routing"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
@@ -183,6 +194,8 @@ flowchart TB
     Factory --> Models
     Api --> View
     Items --> View
+    View --> Commands
+    Commands --> Items
     Models --> View
     View --> Factory
     Xml <--> Api

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml;
+using System.Reactive.Concurrency;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
+using Avalonia.Input;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
@@ -17,6 +19,7 @@ using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
+using ReactiveUI.Reactive;
 
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithoutStarting();
 PackageConsumer.ConsumerWindow window = new();
@@ -63,6 +66,21 @@ if (!ReferenceEquals(sourceItem, manager.GetLayoutItemFromModel(fromSource)) || 
     throw new Exception("Floating did not preserve the item container and command state.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().DockWindow.Host!;
+System.Windows.Input.ICommand defaultClose = sourceItem.CloseCommand!;
+int closeRequests = 0;
+using var applicationClose = ReactiveCommand.Create(() => closeRequests++, outputScheduler: ImmediateScheduler.Instance);
+sourceItem.CloseCommand = applicationClose;
+Button nativeClose = sourceHost.GetVisualDescendants().OfType<Button>().Single(button =>
+    button.IsEffectivelyVisible && button.Classes.Contains("avalondock-close") && ReferenceEquals(button.DataContext, sourceItem));
+sourceHost.UpdateLayout();
+Point closePoint = nativeClose.TranslatePoint(new Point(nativeClose.Bounds.Width / 2, nativeClose.Bounds.Height / 2), sourceHost)!.Value;
+sourceHost.MouseMove(closePoint);
+sourceHost.MouseDown(closePoint, MouseButton.Left);
+sourceHost.MouseUp(closePoint, MouseButton.Left);
+Dispatcher.UIThread.RunJobs();
+if (closeRequests != 1 || !ReferenceEquals(fromSource.Root, manager.Layout))
+    throw new Exception("The native floating tab did not execute the application container command.");
+sourceItem.CloseCommand = defaultClose;
 if (!sourceHost.GetVisualDescendants().OfType<TextBlock>().Any(text =>
         text.Classes.Contains("package-document-header") && ReferenceEquals(text.DataContext, fromSource) && text.Text == "Tab: " + fromSource.Title))
     throw new Exception("The compiled floating tab header did not receive the public document model.");
@@ -88,7 +106,7 @@ sourceHost.Close();
 if (!sourceHost.IsVisible || !ReferenceEquals(fromSource.Root, manager.Layout))
     throw new Exception("The native host ignored content closing cancellation.");
 fromSource.Closing -= cancelClose;
-fromSource.Dock();
+sourceItem.DockAsDocumentCommand!.Execute(null);
 if (fromSource.IsFloating || manager.Layout.FloatingWindows.Count != 0)
     throw new Exception("The source document did not return to its original pane.");
 fromSource.Float();
@@ -150,7 +168,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
 
 static void RoundTrip(DockingManager manager)
 {

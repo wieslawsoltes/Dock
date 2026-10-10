@@ -122,7 +122,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         Root?.CollectGarbage();
     }
     /// <summary>Docks this item in a document pane.</summary>
-    public void DockAsDocument() => DockModel.Factory?.DockAsDocument(DockModel);
+    /// <exception cref="InvalidOperationException">The content does not belong to a layout.</exception>
+    public void DockAsDocument() => LayoutDocumentPlacement.Dock(this);
     /// <summary>Returns the item to its previous container.</summary>
     public void Dock()
     {

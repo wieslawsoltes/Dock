@@ -24,7 +24,8 @@
                   docking:DockProperties.IsDockTarget="True" docking:DockProperties.ShowDockIndicatorOnly="True"
                   docking:DockProperties.IndicatorDockOperation="Fill">
             <Button Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0"
-                    Command="{Binding Owner.Factory.TogglePreviewPinnedDockable}" CommandParameter="{Binding}">
+                    Command="{Binding Owner.Factory.TogglePreviewPinnedDockable}" CommandParameter="{Binding}"
+                    ContextMenu="{TemplateBinding PinContextMenu}">
               <Button.IsVisible>
                 <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">
                   <Binding />
@@ -33,8 +34,7 @@
                   <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanPin" />
                 </MultiBinding>
               </Button.IsVisible>
-              <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AvalonDockAnchorableHeader}"
-                                ContextMenu="{TemplateBinding PinContextMenu}" />
+              <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AvalonDockAnchorableHeader}" />
             </Button>
           </Border>
         </LayoutTransformControl>

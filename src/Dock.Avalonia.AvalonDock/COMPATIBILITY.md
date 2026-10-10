@@ -76,6 +76,16 @@ supported by corresponding implementation and test evidence.
   Replacing or clearing styles preserves native state and application command
   ownership. A retained ViewModel does not keep an unused styled manager alive.
   Derived managers retain the native default control theme.
+- Native document close buttons, tool title-bar close/pin buttons, document/tool
+  context menus, auto-hide menus, and tab middle/double-clicks use current item
+  commands, including compiled application command bindings. Runtime replacement,
+  command enablement, native capability policies, and docked/floating rendering
+  are covered by pointer tests. Floating-tool close commands preserve cancellation
+  and overrides before native window closing. Tool close buttons fall back to
+  hide when closing is disabled. Layout/factory methods remain direct operations.
+  Per-control menus release closed managers with application commands and themes
+  retained. Floating document docking returns to the previous document pane or
+  selects/creates a main document pane through native factory movement.
 - Native Dock content controls display `LayoutItem.View`, retaining presenter
   identity between docked and floating hosts. Manager `LayoutItemTemplate` and
   `LayoutItemTemplateSelector` support compiled templates, explicit-template
@@ -142,7 +152,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 205 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 226 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -153,8 +163,8 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: title/menu/icon templates, routing native
-  chrome through application container commands, additional update
+- Remaining manager APIs: title/menu/icon templates, custom manager context
+  menus, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,

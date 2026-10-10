@@ -7,7 +7,6 @@
 -->
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:vm="using:DockAvalonDockSample.ViewModels"
         x:Class="DockAvalonDockSample.MainWindow" x:DataType="vm:MainWindowViewModel"
         Title="AvalonDock on Dock — Live Explorer" Width="1180" Height="760"
@@ -28,11 +27,11 @@
       </Grid>
     </Border>
 
-    <ad:DockingManager x:Name="DockManager" Grid.Row="1" Margin="8">
-      <ad:LayoutRoot>
-        <ad:LayoutPanel Orientation="Horizontal">
-          <ad:LayoutAnchorablePane DockWidth="230" DockMinWidth="180">
-            <ad:LayoutAnchorable ContentId="properties" Title="Properties" CanHide="False" CanClose="False" AutoHideWidth="240">
+    <DockingManager x:Name="DockManager" Grid.Row="1" Margin="8">
+      <LayoutRoot>
+        <LayoutPanel Orientation="Horizontal">
+          <LayoutAnchorablePane DockWidth="230" DockMinWidth="180">
+            <LayoutAnchorable ContentId="properties" Title="Properties" CanHide="False" CanClose="False" AutoHideWidth="240">
               <StackPanel Margin="16" Spacing="12">
                 <TextBlock Text="Workspace properties" FontWeight="SemiBold" />
                 <TextBlock Text="This tool stays open while you work with documents." TextWrapping="Wrap" />
@@ -41,54 +40,54 @@
                 <CheckBox Content="Show details" IsChecked="True" />
                 <TextBlock Text="Move a tab between panes, float it, or close a document. Save the layout to restore the workspace." TextWrapping="Wrap" Opacity="0.65" />
               </StackPanel>
-            </ad:LayoutAnchorable>
-          </ad:LayoutAnchorablePane>
-          <ad:LayoutDocumentPaneGroup>
-            <ad:LayoutDocumentPane>
-              <ad:LayoutDocument ContentId="document1" Title="Document 1">
+            </LayoutAnchorable>
+          </LayoutAnchorablePane>
+          <LayoutDocumentPaneGroup>
+            <LayoutDocumentPane>
+              <LayoutDocument ContentId="document1" Title="Document 1">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
                   <TextBlock Text="Document 1" FontSize="28" />
                   <TextBlock Text="An AvalonDock document rendered by Dock." />
                 </StackPanel>
-              </ad:LayoutDocument>
-              <ad:LayoutDocument ContentId="document2" Title="Document 2">
+              </LayoutDocument>
+              <LayoutDocument ContentId="document2" Title="Document 2">
                 <TextBox x:Name="DocumentEditor" Text="Document 2 Content" AcceptsReturn="True"
                          FontFamily="monospace" BorderThickness="0" Padding="16" />
-              </ad:LayoutDocument>
-            </ad:LayoutDocumentPane>
-          </ad:LayoutDocumentPaneGroup>
-          <ad:LayoutAnchorablePaneGroup DockWidth="230" DockMinWidth="160">
-            <ad:LayoutAnchorablePane>
-              <ad:LayoutAnchorable ContentId="alarms" Title="Alarms" CanClose="True">
+              </LayoutDocument>
+            </LayoutDocumentPane>
+          </LayoutDocumentPaneGroup>
+          <LayoutAnchorablePaneGroup DockWidth="230" DockMinWidth="160">
+            <LayoutAnchorablePane>
+              <LayoutAnchorable ContentId="alarms" Title="Alarms" CanClose="True">
                 <ListBox Margin="8">
                   <ListBoxItem Content="Alarm 1" />
                   <ListBoxItem Content="Alarm 2" />
                   <ListBoxItem Content="Alarm 3" />
                 </ListBox>
-              </ad:LayoutAnchorable>
-              <ad:LayoutAnchorable ContentId="journal" Title="Journal">
+              </LayoutAnchorable>
+              <LayoutAnchorable ContentId="journal" Title="Journal">
                 <TextBox Text="This is the content of the Journal Pane." AcceptsReturn="True"
                          TextWrapping="Wrap" BorderThickness="0" Padding="16" />
-              </ad:LayoutAnchorable>
-            </ad:LayoutAnchorablePane>
-          </ad:LayoutAnchorablePaneGroup>
-        </ad:LayoutPanel>
-        <ad:LayoutRoot.LeftSide>
-          <ad:LayoutAnchorSide>
-            <ad:LayoutAnchorGroup>
-              <ad:LayoutAnchorable Title="Agenda" ContentId="agenda" AutoHideWidth="260">
+              </LayoutAnchorable>
+            </LayoutAnchorablePane>
+          </LayoutAnchorablePaneGroup>
+        </LayoutPanel>
+        <LayoutRoot.LeftSide>
+          <LayoutAnchorSide>
+            <LayoutAnchorGroup>
+              <LayoutAnchorable Title="Agenda" ContentId="agenda" AutoHideWidth="260">
                 <TextBlock Text="Agenda Content" Margin="10" FontSize="18"
                            FontWeight="Black" TextWrapping="Wrap" />
-              </ad:LayoutAnchorable>
-              <ad:LayoutAnchorable Title="Contacts" ContentId="contacts" AutoHideWidth="260">
+              </LayoutAnchorable>
+              <LayoutAnchorable Title="Contacts" ContentId="contacts" AutoHideWidth="260">
                 <TextBlock Text="Contacts Content" Margin="10" FontSize="18"
                            FontWeight="Black" TextWrapping="Wrap" />
-              </ad:LayoutAnchorable>
-            </ad:LayoutAnchorGroup>
-          </ad:LayoutAnchorSide>
-        </ad:LayoutRoot.LeftSide>
-      </ad:LayoutRoot>
-    </ad:DockingManager>
+              </LayoutAnchorable>
+            </LayoutAnchorGroup>
+          </LayoutAnchorSide>
+        </LayoutRoot.LeftSide>
+      </LayoutRoot>
+    </DockingManager>
 
     <Border Grid.Row="2" Padding="16,8" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
       <TextBlock Text="{Binding Status}" TextWrapping="Wrap" />

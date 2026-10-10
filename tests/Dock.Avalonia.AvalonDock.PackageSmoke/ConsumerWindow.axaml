@@ -1,24 +1,27 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock" x:Class="PackageConsumer.ConsumerWindow" x:DataType="ad:DockingManager"
+        x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
-  <ad:DockingManager x:Name="Manager">
-    <ad:LayoutRoot>
-      <ad:LayoutPanel>
-        <ad:LayoutDocumentPane>
-          <ad:LayoutDocument Title="NuGet document" ContentId="document">
+  <Window.Styles>
+    <AvalonDockTheme />
+  </Window.Styles>
+  <DockingManager x:Name="Manager">
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutDocumentPane>
+          <LayoutDocument Title="NuGet document" ContentId="document">
             <TextBox Text="Package consumer" />
-          </ad:LayoutDocument>
-        </ad:LayoutDocumentPane>
-      </ad:LayoutPanel>
-      <ad:LayoutRoot.LeftSide>
-        <ad:LayoutAnchorSide>
-          <ad:LayoutAnchorGroup>
-            <ad:LayoutAnchorable ContentId="agenda" Title="Agenda">
+          </LayoutDocument>
+        </LayoutDocumentPane>
+      </LayoutPanel>
+      <LayoutRoot.LeftSide>
+        <LayoutAnchorSide>
+          <LayoutAnchorGroup>
+            <LayoutAnchorable ContentId="agenda" Title="Agenda">
               <TextBlock Text="Package auto-hide content" />
-            </ad:LayoutAnchorable>
-          </ad:LayoutAnchorGroup>
-        </ad:LayoutAnchorSide>
-      </ad:LayoutRoot.LeftSide>
-    </ad:LayoutRoot>
-  </ad:DockingManager>
+            </LayoutAnchorable>
+          </LayoutAnchorGroup>
+        </LayoutAnchorSide>
+      </LayoutRoot.LeftSide>
+    </LayoutRoot>
+  </DockingManager>
 </Window>

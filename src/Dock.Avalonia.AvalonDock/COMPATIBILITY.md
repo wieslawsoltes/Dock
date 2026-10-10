@@ -55,7 +55,7 @@ supported by corresponding implementation and test evidence.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
-- Compiled Xceed XML namespace; headless pointer tab selection and text input.
+- Compiled Avalonia default and Xceed XML namespaces; headless pointer tab selection and text input.
   Pixel/star pane dimensions translate to Dock proportions, with headless
   verification of runtime sizing, vertical sizing, and pointer splitter drag
   persistence across window resizing.

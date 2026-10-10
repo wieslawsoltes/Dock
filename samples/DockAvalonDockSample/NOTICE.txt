@@ -15,6 +15,7 @@ and Contacts layout and save/load actions. Avalonia controls replace WPF control
 commands replace view event handlers. Xceed's PropertyGrid, RichTextBox,
 images, and docking implementation are not redistributed. Agenda and Contacts
 use the compatibility package's auto-hide side and group adapters.
+The adapted XAML uses Avalonia's default XML namespace for the AvalonDock types.
 
 Other new source files and the Dock compatibility library are licensed under
 the repository's MIT license. Xceed and AvalonDock are names belonging to

@@ -1,8 +1,9 @@
 # AvalonDock compatibility for Dock
 
 This package is under development. It exposes the `Xceed.Wpf.AvalonDock`
-namespaces and `http://schemas.xceed.com/wpf/xaml/avalondock` XAML namespace
-over `Dock.Model.Avalonia` and Dock's controls. Dock owns the live layout,
+namespaces over `Dock.Model.Avalonia` and Dock's controls. Its XAML types are
+available in Avalonia's default `https://github.com/avaloniaui` XML namespace
+and in `http://schemas.xceed.com/wpf/xaml/avalondock`. Dock owns the live layout,
 selection, dragging, docking, floating, and rendering.
 
 The compatibility target is the public AvalonDock API documented at
@@ -16,13 +17,29 @@ Reference this package and add the adapter theme alongside your Avalonia theme:
 ```xml
 <Application.Styles>
   <FluentTheme />
-  <ad:AvalonDockTheme />
+  <AvalonDockTheme />
 </Application.Styles>
 ```
 
-Declare `xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"`, then use
-`ad:DockingManager`, `ad:LayoutRoot`, `ad:LayoutPanel`, `ad:LayoutDocumentPane`,
-`ad:LayoutDocument`, and the corresponding anchorable types in Avalonia XAML.
+With `xmlns="https://github.com/avaloniaui"` on your view, no additional XML
+namespace declaration or AvalonDock prefix is needed:
+
+```xml
+<DockingManager>
+  <LayoutRoot>
+    <LayoutPanel>
+      <LayoutDocumentPane>
+        <LayoutDocument Title="Document">
+          <TextBox Text="Editable content" />
+        </LayoutDocument>
+      </LayoutDocumentPane>
+    </LayoutPanel>
+  </LayoutRoot>
+</DockingManager>
+```
+
+The existing `xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"`
+declaration and prefixed types such as `ad:DockingManager` remain supported.
 The runnable `samples/DockAvalonDockSample` contains a licensed adaptation of
 the Xceed Live Explorer 3.7.0 sample.
 

@@ -11,7 +11,6 @@ using Avalonia.VisualTree;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
-using Xceed.Wpf.AvalonDock.Themes;
 
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithoutStarting();
 PackageConsumer.ConsumerWindow window = new();
@@ -36,7 +35,7 @@ if (!window.GetVisualDescendants().OfType<TextBlock>().Any(x => x.Text == docume
 documents.RemoveAt(0);
 if (manager.Layout.Descendents().OfType<LayoutDocument>().Count() != 1) throw new Exception("Source changes were not observed.");
 window.Close();
-Console.WriteLine("NuGet consumer: compiled XAML, Dock rendering, auto-hide XML, and observable sources passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, auto-hide XML, and observable sources passed.");
 
 namespace PackageConsumer
 {
@@ -45,7 +44,6 @@ namespace PackageConsumer
         public override void Initialize()
         {
             Styles.Add(new FluentTheme());
-            Styles.Add(new AvalonDockTheme());
         }
     }
     public partial class ConsumerWindow : Window

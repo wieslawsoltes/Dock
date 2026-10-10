@@ -2,7 +2,9 @@
 
 Run `dotnet run --project samples/DockAvalonDockSample` from the repository root.
 The sample adapts the Xceed Live Explorer 3.7.0 layout to Avalonia while keeping
-the AvalonDock layout names and XML namespace. See `NOTICE.txt` and
+the AvalonDock layout names. It uses Avalonia's default XML namespace, so the
+layout types and `AvalonDockTheme` need no AvalonDock prefix. The original Xceed
+XML namespace remains supported by the compatibility package. See `NOTICE.txt` and
 `LICENSE-XCEED.txt` for the source and license of the adapted XAML.
 
 Select and edit Document 2, move document and tool tabs, hide/show Journal,

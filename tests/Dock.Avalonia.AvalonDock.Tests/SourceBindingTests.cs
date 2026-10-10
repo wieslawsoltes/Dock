@@ -180,7 +180,7 @@ public class SourceBindingTests
         new(new DockingManager { DocumentsSource = source });
 
     [AvaloniaFact]
-    public void Compiled_Bindings_Render_Observable_ViewModel_Sources_Using_DataTemplates()
+    public void Xceed_Xml_Namespace_And_Compiled_Bindings_Render_Observable_Sources()
     {
         SourceViewModel viewModel = new();
         SourcesFixture window = new() { DataContext = viewModel };

@@ -83,7 +83,7 @@ public class CompiledXamlTests
     }
 
     [AvaloniaFact]
-    public void Xceed_Xml_Namespace_Builds_And_Renders_Dock_Controls()
+    public void Avalonia_Default_Xml_Namespace_Builds_And_Renders_Dock_Controls()
     {
         XamlFixture window = new();
         try

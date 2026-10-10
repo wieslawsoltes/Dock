@@ -1,27 +1,26 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
         x:Class="Dock.Avalonia.AvalonDock.Tests.XamlFixture"
-        x:DataType="ad:DockingManager" Width="800" Height="500">
-  <ad:DockingManager x:Name="Manager">
-    <ad:LayoutRoot>
-      <ad:LayoutPanel Orientation="Horizontal">
-        <ad:LayoutAnchorablePane>
-          <ad:LayoutAnchorable Title="Properties" ContentId="properties" CanHide="False">
+        x:DataType="DockingManager" Width="800" Height="500">
+  <DockingManager x:Name="Manager">
+    <LayoutRoot>
+      <LayoutPanel Orientation="Horizontal">
+        <LayoutAnchorablePane>
+          <LayoutAnchorable Title="Properties" ContentId="properties" CanHide="False">
             <TextBlock Text="Property inspector" />
-          </ad:LayoutAnchorable>
-        </ad:LayoutAnchorablePane>
-        <ad:LayoutDocumentPaneGroup>
-          <ad:LayoutDocumentPane>
-            <ad:LayoutDocument Title="First document" ContentId="one">
+          </LayoutAnchorable>
+        </LayoutAnchorablePane>
+        <LayoutDocumentPaneGroup>
+          <LayoutDocumentPane>
+            <LayoutDocument Title="First document" ContentId="one">
               <TextBox x:Name="Editor" Text="Editable document" AcceptsReturn="True" />
-            </ad:LayoutDocument>
-            <ad:LayoutDocument Title="Second document" ContentId="two">
+            </LayoutDocument>
+            <LayoutDocument Title="Second document" ContentId="two">
               <TextBlock Text="Second document content" />
-            </ad:LayoutDocument>
-          </ad:LayoutDocumentPane>
-        </ad:LayoutDocumentPaneGroup>
-      </ad:LayoutPanel>
-    </ad:LayoutRoot>
-  </ad:DockingManager>
+            </LayoutDocument>
+          </LayoutDocumentPane>
+        </LayoutDocumentPaneGroup>
+      </LayoutPanel>
+    </LayoutRoot>
+  </DockingManager>
 </Window>

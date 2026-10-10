@@ -13,6 +13,7 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
     <File Path="global.json" />
+    <Project Path="build/AvalonDockApiAudit/AvalonDockApiAudit.csproj" />
     <Project Path="build/build/_build.csproj" />
   </Folder>
   <Folder Name="/build/git/">

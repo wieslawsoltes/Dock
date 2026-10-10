@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock" x:Class="PackageConsumer.ConsumerWindow" x:DataType="ad:DockingManager"
+        Width="640" Height="480">
+  <ad:DockingManager x:Name="Manager">
+    <ad:LayoutRoot>
+      <ad:LayoutPanel>
+        <ad:LayoutDocumentPane>
+          <ad:LayoutDocument Title="NuGet document" ContentId="document">
+            <TextBox Text="Package consumer" />
+          </ad:LayoutDocument>
+        </ad:LayoutDocumentPane>
+      </ad:LayoutPanel>
+    </ad:LayoutRoot>
+  </ad:DockingManager>
+</Window>

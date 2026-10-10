@@ -32,3 +32,67 @@ Required verification before declaring completion:
 
 Current status: implementation in progress. The checklist above is open until
 supported by corresponding implementation and test evidence.
+
+## Verified implementation
+
+- `DockingManager` template renders `DockControl` using the same live
+  `Dock.Model.Avalonia.RootDock` and factory exposed by the compatibility model.
+- Panels, document/anchorable panes, typed pane groups, documents, and tools;
+  observable collections synchronize with native Dock collection replacement,
+  insertion, movement, selection, and close operations. Wrapper identity is
+  retained using a per-tree weak identity map.
+- Document close cancellation, tool hide/restore, hidden collection, active
+  content, and title/content/capability forwarding.
+- Compiled Xceed XML namespace; headless pointer tab selection and text input.
+  Pixel/star pane dimensions translate to Dock proportions, with headless
+  verification of runtime sizing, vertical sizing, and pointer splitter drag
+  persistence across window resizing.
+- XML for the docked hierarchy and hidden tools, callbacks, content identities,
+  selected documents, basic metadata and constraints, file/stream/text APIs,
+  malformed input rejection, and atomic manager layout replacement.
+- Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
+  notice, passive views, ReactiveUI commands, and save/load integration tests.
+- 28 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+  NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
+  documentation with dependencies on Dock's Avalonia model and Fluent theme.
+
+## Open work (not release-complete)
+
+- Side/group models and floating-window models, all corresponding XML, native
+  window lifecycle and state synchronization. The XML writer explicitly rejects
+  populated auto-hide or floating layouts to prevent silent data loss.
+- Remaining manager APIs: document/tool sources, item containers and commands,
+  update strategy invocation, templates/selectors, styles, themes, routed
+  events, converters, and the control adapter surface.
+- All upstream interfaces, extension methods, protected extensibility points,
+  and `IXmlSerializable` methods not yet represented in the adapter.
+- Complete auto sizing, themed splitter sizing, header visibility,
+  repositioning policies, icons, tooltips, enablement, and floating dimensions
+  in actual rendering and behavior. Several metadata properties currently
+  round-trip without applying all upstream visual or behavioral effects.
+- Full native drag/float/redock and lifecycle coverage, including native-created
+  nested groups, layout detachment and leak checks, and source-driven content.
+- Exact signatures, framework substitutions, inheritance, defaults, and member
+  behavior must be audited independently of the presence inventory.
+- Complete the sample's auto-hide side example and all its persistence paths.
+
+## Reproducible API inventory
+
+`UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
+types in the pinned upstream source. The Roslyn-based source audit counts 223
+matching type/member keys and 728 missing declarations at this checkpoint.
+This is a **presence audit only**, not a percentage of completed compatibility.
+It includes the upstream control, theme, converter, and resource surfaces.
+
+```sh
+dotnet run --project build/AvalonDockApiAudit -- snapshot \
+  /path/to/wpftoolkit/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock \
+  src/Dock.Avalonia.AvalonDock/UPSTREAM-API.txt
+dotnet run --project build/AvalonDockApiAudit -- compare \
+  src/Dock.Avalonia.AvalonDock/UPSTREAM-API.txt src/Dock.Avalonia.AvalonDock
+```
+
+The comparison deliberately returns a nonzero status while declarations are
+missing. Comparing the snapshot to its pinned upstream source returns 951/951.
+Neither that self-check nor a matching member key verifies signature or
+behavioral parity. Do not make the check pass by filtering out missing API.

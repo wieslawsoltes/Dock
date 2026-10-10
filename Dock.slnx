@@ -48,6 +48,7 @@
     <File Path="build/XUnit.props" />
   </Folder>
   <Folder Name="/samples/">
+    <Project Path="samples/DockAvalonDockSample/DockAvalonDockSample.csproj" />
     <Project Path="samples/DockCodeOnlyMvvmSample/DockCodeOnlyMvvmSample.csproj" />
     <Project Path="samples/DockCodeOnlySample/DockCodeOnlySample.csproj" />
     <Project Path="samples/DockControlPanelsSample/DockControlPanelsSample.csproj" />

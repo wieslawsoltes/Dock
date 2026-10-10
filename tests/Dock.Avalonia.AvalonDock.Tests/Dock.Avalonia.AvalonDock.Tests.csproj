@@ -10,5 +10,6 @@
   <Import Project="../../build/XUnit.props" />
   <ItemGroup>
     <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
+    <ProjectReference Include="../../samples/DockAvalonDockSample/DockAvalonDockSample.csproj" />
   </ItemGroup>
 </Project>

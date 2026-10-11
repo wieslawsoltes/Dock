@@ -13,6 +13,8 @@ notifications around native movement, inspect typed native floating controls and
 their collection changes, create and explicitly show an immutable floating window,
 bind unprefixed window-wide commands and invoke current item commands with parameters,
 hide and restore a tool while retaining its floating host and native registration,
+enable unprefixed keyboard movement and move a floating host with Headless arrow-key input,
+inspect the protected close-origin property from a derived consumer control,
 resolve a container with the unprefixed converter,
 and restore application content
 from XML using the packaged assemblies. Pack the native

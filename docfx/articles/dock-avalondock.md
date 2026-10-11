@@ -721,9 +721,27 @@ upstream, this records the internal-close request, not whether a human physicall
 clicked a button. Inspect it in Avalonia's `OnClosing(WindowClosingEventArgs)` or
 `OnClosed(EventArgs)` overrides.
 
+To enable arrow-key movement of floating windows, set the manager property:
+
+```xml
+<DockingManager AllowMovingFloatingWindowWithKeyboard="True">
+  <!-- LayoutRoot and application content -->
+</DockingManager>
+```
+
+It defaults to false and can also use a compiled ViewModel binding or a style
+setter. The C# wrapper has a private setter, matching upstream; from a workspace
+service use `manager.SetValue(DockingManager.AllowMovingFloatingWindowWithKeyboardProperty, true)`.
+Unhandled arrow keys move the current floating document or tool window by 25
+device-independent units, converted to desktop coordinates. Editors retain
+their handled arrow keys, and window movement does not mark the key event
+handled. Changes to the option take effect immediately for that manager's
+existing hosts. Native position saving and XML persistence retain the moved
+window's coordinates.
+
 The floating-control surface is still being completed: resize-border customization,
-exact close-event ordering, and remaining protected/platform hooks are
-tracked in the compatibility checklist.
+exact close-event ordering, native cleanup cancellation and host registration,
+and remaining protected/platform hooks are tracked in the compatibility checklist.
 
 ## Restore application content from XML
 

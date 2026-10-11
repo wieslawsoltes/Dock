@@ -12,6 +12,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Input;
+using Avalonia.Input.Raw;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
@@ -26,12 +27,18 @@ using AvalonDock.Layout.Serialization;
 using ReactiveUI.Reactive;
 
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithoutStarting();
+PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
+if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
+((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
+if (closeOrigin.UserOrigin) throw new Exception("Native host exit did not expose internal close origin.");
 PackageConsumer.ConsumerWindow window = new();
 if (window.Resources["Container"] is not LayoutDocumentItem { Description: "Unprefixed packaged container" })
     throw new Exception("The packaged item container did not compile in the default XML namespace.");
 window.Show();
 Dispatcher.UIThread.RunJobs();
 DockingManager manager = window.FindControl<DockingManager>("Manager")!;
+if (!manager.AllowMovingFloatingWindowWithKeyboard)
+    throw new Exception("The unprefixed keyboard-movement property did not compile from XAML.");
 XmlLayoutSerializer serializer = new(manager);
 using StringWriter writer = new();
 serializer.Serialize(writer);
@@ -66,6 +73,7 @@ AssertSplitters(manager);
 tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+AssertFloatingKeyboard(toolHost, (Control)tool.Content!);
 AssertFloatingWindowCommands(window, manager, tool, (LayoutAnchorableFloatingWindowControl)toolHost);
 tool.Hide();
 Dispatcher.UIThread.RunJobs();
@@ -264,6 +272,27 @@ if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML c
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
 Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container conversion, and close cancellation passed.");
 
+static void AssertFloatingKeyboard(HostWindow host, Control target)
+{
+    PixelPoint before = host.Position;
+    bool wasFocusable = target.Focusable;
+    try
+    {
+        target.Focusable = true;
+        if (!target.Focus()) throw new Exception("The floating keyboard target could not receive focus.");
+        host.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
+        host.KeyReleaseQwerty(PhysicalKey.ArrowRight, RawInputModifiers.None);
+        int step = (int)Math.Round(25 * host.DesktopScaling);
+        if (host.Position != new PixelPoint(before.X + step, before.Y))
+            throw new Exception("The packaged floating host did not respond to an unhandled arrow key.");
+    }
+    finally
+    {
+        target.Focusable = wasFocusable;
+        host.Position = before;
+    }
+}
+
 static void AssertFloatingWindowCommands(Window resources, DockingManager manager, LayoutAnchorable tool, LayoutAnchorableFloatingWindowControl host)
 {
     LayoutAnchorableItem item = (LayoutAnchorableItem)manager.GetLayoutItemFromModel(tool)!;
@@ -458,6 +487,12 @@ static void AssertFloatingSourceTemplate(DockingManager manager, string content)
 
 namespace PackageConsumer
 {
+    public sealed class CloseOriginProbe(ILayoutElement model) : LayoutFloatingWindowControl(model)
+    {
+        public override ILayoutElement Model { get; } = model;
+        public bool UserOrigin => CloseInitiatedByUser;
+    }
+
     public sealed class SourceStyleSelector : StyleSelector
     {
         public ControlTheme? SourceStyle { get; set; }

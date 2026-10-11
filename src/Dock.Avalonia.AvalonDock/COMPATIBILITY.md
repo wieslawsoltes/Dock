@@ -203,6 +203,12 @@ supported by corresponding implementation and test evidence.
   of native tracking/visibility. Derived-control tests cover initial state,
   user cancellation, hiding/restoration, model cleanup, native exit, layout
   replacement, view unload/reattachment, and a canceled internal request.
+- `AllowMovingFloatingWindowWithKeyboard` defaults to false and supports
+  compiled XAML bindings. Floating hosts move by 25 device-independent units
+  on unhandled arrow keys, using desktop scaling. Headless key input verifies
+  both host types, runtime toggles, unrelated/handled keys, modifiers without
+  swallowing the event, per-manager state, hide/show, view reattachment, and
+  native/XML position persistence.
 - Document and tool floating models expose native Dock windows through an
   observable `FloatingWindows` collection. Native single-document float/dock
   and tool floating operations preserve content wrappers and public ownership.
@@ -252,7 +258,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 396 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 401 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -266,8 +272,8 @@ supported by corresponding implementation and test evidence.
 - Remaining manager APIs: additional update strategy invocation paths,
   templates/selectors, styles, themes, remaining converters, and the control
   adapter surface. Floating controls still need resize-border customization,
-  exact close-event ordering, and remaining
-  protected/platform hooks.
+  exact close-event ordering, native cleanup cancellation and host registration,
+  and remaining protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
 - Complete auto sizing, header visibility,
@@ -285,8 +291,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 464
-matching type/member keys and 487 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 467
+matching type/member keys and 484 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

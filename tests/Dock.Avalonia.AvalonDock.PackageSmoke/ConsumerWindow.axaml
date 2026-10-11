@@ -38,6 +38,7 @@
     <AvalonDockTheme />
   </Window.Styles>
   <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}"
+                  AllowMovingFloatingWindowWithKeyboard="True"
                   GridSplitterWidth="16" GridSplitterHeight="10"
                   DocumentHeaderTemplate="{StaticResource DocumentHeader}"
                   AnchorableHeaderTemplate="{StaticResource ToolHeader}"

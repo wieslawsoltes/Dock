@@ -50,6 +50,9 @@ public class DockingManager : TemplatedControl
     /// <summary>Identifies whether document-group commands may change a populated group's orientation.</summary>
     public static readonly StyledProperty<bool> AllowMixedOrientationProperty =
         AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMixedOrientation));
+    /// <summary>Identifies whether unhandled arrow keys move floating windows.</summary>
+    public static readonly StyledProperty<bool> AllowMovingFloatingWindowWithKeyboardProperty =
+        AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMovingFloatingWindowWithKeyboard));
     /// <summary>Identifies the template used to display application content.</summary>
     public static readonly StyledProperty<IDataTemplate?> LayoutItemTemplateProperty =
         AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(LayoutItemTemplate));
@@ -226,6 +229,13 @@ public class DockingManager : TemplatedControl
     public ContextMenu? AnchorableContextMenu { get => GetValue(AnchorableContextMenuProperty); set => SetValue(AnchorableContextMenuProperty, value); }
     /// <summary>Gets or sets whether document-group commands may change a populated group's orientation.</summary>
     public bool AllowMixedOrientation { get => GetValue(AllowMixedOrientationProperty); set => SetValue(AllowMixedOrientationProperty, value); }
+    /// <summary>Gets whether unhandled arrow keys move floating windows by 25 device-independent units.</summary>
+    /// <remarks>Defaults to false. Configure the styled property from XAML, a style, or SetValue.</remarks>
+    public bool AllowMovingFloatingWindowWithKeyboard
+    {
+        get => GetValue(AllowMovingFloatingWindowWithKeyboardProperty);
+        private set => SetValue(AllowMovingFloatingWindowWithKeyboardProperty, value);
+    }
     /// <summary>Gets or sets the template used to display application content.</summary>
     public IDataTemplate? LayoutItemTemplate { get => GetValue(LayoutItemTemplateProperty); set => SetValue(LayoutItemTemplateProperty, value); }
     /// <summary>Gets or sets the content template selector used when no explicit template is set.</summary>

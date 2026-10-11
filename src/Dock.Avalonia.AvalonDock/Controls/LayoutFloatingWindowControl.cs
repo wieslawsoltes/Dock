@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using AvalonDock.Layout;
 using AvalonDock.Infrastructure;
 using AvalonDock.Themes;
@@ -161,6 +162,24 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         if (CanClose() && Model is LayoutFloatingWindow model)
             LayoutFloatingWindowOperations.Execute(model, hide: false, parameter: null);
         else if (CanHide()) DoHide();
+    }
+
+    /// <summary>Moves the native window with arrow keys when enabled by its manager.</summary>
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (Model.Root?.Manager is { AllowMovingFloatingWindowWithKeyboard: true })
+        {
+            int step = (int)Math.Round(25 * DesktopScaling);
+            PixelPoint position = Position;
+            switch (e.Key)
+            {
+                case Key.Left: Position = new(position.X - step, position.Y); break;
+                case Key.Right: Position = new(position.X + step, position.Y); break;
+                case Key.Up: Position = new(position.X, position.Y - step); break;
+                case Key.Down: Position = new(position.X, position.Y + step); break;
+            }
+        }
+        base.OnKeyDown(e);
     }
 
     /// <inheritdoc/>

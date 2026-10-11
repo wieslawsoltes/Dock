@@ -18,6 +18,9 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Defines whether application content can be replaced after loading.</summary>
     public static readonly StyledProperty<bool> IsContentImmutableProperty =
         AvaloniaProperty.Register<LayoutFloatingWindowControl, bool>(nameof(IsContentImmutable));
+    /// <summary>Defines the thickness of the floating window's resize hit areas.</summary>
+    public static readonly StyledProperty<Thickness> ResizeBorderThicknessProperty =
+        AvaloniaProperty.Register<LayoutFloatingWindowControl, Thickness>(nameof(ResizeBorderThickness), new Thickness(10));
     /// <summary>Defines the current native window drag state.</summary>
     public static readonly DirectProperty<LayoutFloatingWindowControl, bool> IsDraggingProperty =
         AvaloniaProperty.RegisterDirect<LayoutFloatingWindowControl, bool>(nameof(IsDragging), window => window.IsDragging);
@@ -58,6 +61,10 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     /// <summary>Gets the public floating model presented by this native window.</summary>
     public abstract ILayoutElement Model { get; }
+    /// <inheritdoc/>
+    protected override Type StyleKeyOverride => typeof(LayoutFloatingWindowControl);
+    /// <summary>Gets or sets resize hit-area thickness in device-independent units. Defaults to 10 on each edge.</summary>
+    public Thickness ResizeBorderThickness { get => GetValue(ResizeBorderThicknessProperty); set => SetValue(ResizeBorderThicknessProperty, value); }
     /// <summary>Gets whether loaded application content is protected from replacement.</summary>
     public bool IsContentImmutable { get => GetValue(IsContentImmutableProperty); private set => SetValue(IsContentImmutableProperty, value); }
     /// <summary>Gets whether Dock is dragging this native window.</summary>

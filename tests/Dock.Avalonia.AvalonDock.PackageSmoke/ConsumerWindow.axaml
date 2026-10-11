@@ -3,6 +3,9 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <Style x:Key="FloatingResizeStyle" Selector=":is(LayoutFloatingWindowControl)" x:DataType="LayoutFloatingWindowControl">
+      <Setter Property="ResizeBorderThickness" Value="4,6,8,12" />
+    </Style>
     <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
     <DataTemplate x:Key="FloatingWindowCommands" x:DataType="LayoutAnchorableFloatingWindowControl">
       <StackPanel>

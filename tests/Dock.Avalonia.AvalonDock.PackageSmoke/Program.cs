@@ -9,6 +9,7 @@ using System.Xml;
 using System.Reactive.Concurrency;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Input;
@@ -73,6 +74,7 @@ AssertSplitters(manager);
 tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+AssertFloatingResize(window, (LayoutFloatingWindowControl)toolHost);
 AssertFloatingKeyboard(toolHost, (Control)tool.Content!);
 AssertFloatingWindowCommands(window, manager, tool, (LayoutAnchorableFloatingWindowControl)toolHost);
 tool.Hide();
@@ -271,6 +273,45 @@ if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML c
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
 Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container conversion, and close cancellation passed.");
+
+static void AssertFloatingResize(Window view, LayoutFloatingWindowControl host)
+{
+    Style style = (Style)view.Resources["FloatingResizeStyle"]!;
+    host.Styles.Add(style);
+    try
+    {
+        Dispatcher.UIThread.RunJobs();
+        host.UpdateLayout();
+        AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+        if (host.ResizeBorderThickness != new Thickness(4, 6, 8, 12))
+            throw new Exception("The unprefixed resize-border style did not configure the native host.");
+        Point edge = new(1, host.Bounds.Height / 2);
+        if (host.InputHitTest(edge) is not Visual grip ||
+            WindowDecorationProperties.GetElementRole(grip) != WindowDecorationsElementRole.ResizeW)
+            throw new Exception("The configured floating border did not expose a native resize role.");
+        bool handled = false;
+        EventHandler<PointerPressedEventArgs> observe = (_, args) => handled = args.Handled;
+        host.AddHandler(InputElement.PointerPressedEvent, observe, RoutingStrategies.Bubble, handledEventsToo: true);
+        try
+        {
+            host.MouseDown(edge, MouseButton.Left);
+            host.MouseUp(edge, MouseButton.Left);
+            if (!handled) throw new Exception("The resize grip did not handle native resize input.");
+        }
+        finally { host.RemoveHandler(InputElement.PointerPressedEvent, observe); }
+        host.CanResize = false;
+        Dispatcher.UIThread.RunJobs();
+        AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+        if (host.InputHitTest(edge) is Visual disabled &&
+            WindowDecorationProperties.GetElementRole(disabled) == WindowDecorationsElementRole.ResizeW)
+            throw new Exception("A fixed-size floating host still exposed resize input.");
+    }
+    finally
+    {
+        host.CanResize = true;
+        host.Styles.Remove(style);
+    }
+}
 
 static void AssertFloatingKeyboard(HostWindow host, Control target)
 {

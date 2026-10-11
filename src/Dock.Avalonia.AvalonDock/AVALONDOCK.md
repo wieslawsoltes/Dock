@@ -318,8 +318,8 @@ context. Enablement follows tool capabilities, membership, and command changes.
 Native window-close requests respect factory vetoes and use those item commands
 with a null parameter, falling back to hiding when closing is disabled. Content
 cancellation keeps the remaining tools open. Closing the host releases command
-subscriptions while preserving application command ownership. Resize borders,
-exact close-event ordering, cancellation during manager layout replacement/view
+subscriptions while preserving application command ownership. Exact close-event
+ordering, cancellation during manager layout replacement/view
 unload, and remaining floating-control hooks are still open.
 
 Canceling native window closing or the factory's `WindowClosing` event keeps a
@@ -347,6 +347,23 @@ compiled literal XAML, which directly calls the CLR setter; upstream WPF writes
 the dependency property despite its private CLR setter. Each arrow moves by 25
 device-independent units with desktop scaling applied. Keys handled by an editor keep their normal behavior, and
 native layout saving retains the window's new position.
+
+`ResizeBorderThickness` configures each floating host's resize hit areas and
+defaults to 10 device-independent units on all edges. A style after
+`AvalonDockTheme` in `Application.Styles` can set all hosts:
+
+```xml
+<Style Selector=":is(LayoutFloatingWindowControl)" x:DataType="LayoutFloatingWindowControl">
+  <Setter Property="ResizeBorderThickness" Value="6,8,10,12" />
+</Style>
+```
+
+The values specify left, top, right, and bottom thickness. Compiled bindings and
+runtime assignments update the hit areas. The template uses native resize roles
+and window dragging, keeps application content inside a border/inset, and hides
+resize grips when `CanResize` is false or the host is maximized/fullscreen. Zero
+removes the adapter's hit area on that edge; system decorations remain controlled
+by the platform. A replacement window template must supply its own resize areas.
 
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as

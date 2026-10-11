@@ -14,6 +14,7 @@ their collection changes, create and explicitly show an immutable floating windo
 bind unprefixed window-wide commands and invoke current item commands with parameters,
 hide and restore a tool while retaining its floating host and native registration,
 enable unprefixed keyboard movement and move a floating host with Headless arrow-key input,
+style unprefixed resize borders and verify native resize roles and pointer handling,
 inspect the protected close-origin property from a derived consumer control,
 preserve host/model ownership during canceled cleanup and release it on retry,
 resolve a container with the unprefixed converter,

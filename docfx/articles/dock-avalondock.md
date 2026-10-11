@@ -754,8 +754,27 @@ handled. Changes to the option take effect immediately for that manager's
 existing hosts. Native position saving and XML persistence retain the moved
 window's coordinates.
 
-The floating-control surface is still being completed: resize-border customization,
-exact close-event ordering, cancellation during manager layout replacement/view unload,
+The default floating template supports `ResizeBorderThickness`, with a default
+of 10 device-independent units on every edge. Add a style after `AvalonDockTheme`
+in `Application.Styles` to configure all floating hosts:
+
+```xml
+<Style Selector=":is(LayoutFloatingWindowControl)" x:DataType="LayoutFloatingWindowControl">
+  <Setter Property="ResizeBorderThickness" Value="6,8,10,12" />
+</Style>
+```
+
+Values are left, top, right, and bottom. Compiled style bindings and assignments
+to an individual host update its hit areas at runtime. Eight transparent regions
+provide edge/corner cursors, native resize roles, and Avalonia window resize
+dragging. The template retains Dock's content presenter inside a border/inset so
+ordinary tab and caption input stays inside the resize areas. Grips are hidden
+when `CanResize` is false or the host is maximized/fullscreen. Zero removes the
+adapter's area for that edge; platform-owned system decorations are independent.
+If you replace the floating window template, include your own resize hit areas.
+
+The floating-control surface is still being completed: exact close-event ordering,
+cancellation during manager layout replacement/view unload,
 and remaining protected/platform hooks are tracked in the compatibility checklist.
 
 ## Restore application content from XML

@@ -641,6 +641,23 @@ and `GlobalDockTarget`; Dock still performs hit testing, capability validation,
 input capture, and docking. Inline adorners keep the native layer presentation.
 Manager resource themes also reach these overlay windows.
 
+Docking destinations follow AvalonDock's floating-window rules: single-document
+floating windows do not accept incoming drops, and floating tool windows accept
+tools from the same manager. Native target visibility and drop execution share
+these checks. Splitting into a floating tool group preserves its typed public
+groups, content containers, and XML round trip.
+
+`AllowMixedOrientation` also controls native document-pane split targets. When
+its parent group has more than one visible child, the default `False` permits
+only splits matching that group's orientation. `True` permits either axis;
+an empty sibling does not restrict the available axis. Native splits inside a
+document group create `LayoutDocumentPaneGroup` wrappers for new split groups.
+
+The native factory exposes optional `IDockDropPolicy` validation, implemented
+by the adapter's `LayoutDropPolicy`. Direct native factory edits bypass this
+drag policy; generic, grouped-document, or mixed floating shapes remain outside
+the supported public hierarchy and are rejected by XML serialization.
+
 `DropArea<T>`, `IDropArea`, `DropAreaType`, `OverlayArea`, the manager/document/tool
 overlay-area types, `OverlayWindowDropTarget`, and both target enums describe
 the existing controls. Their constructors remain internal, as upstream. The
@@ -811,6 +828,7 @@ flowchart TB
     TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
     Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
     DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
+    DropPolicy["Optional IDockDropPolicy<br/>Floating destinations and mixed-orientation splits"]
     ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
     Commands["Compiled command bindings<br/>Native input routing"]
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
@@ -900,6 +918,9 @@ flowchart TB
     Tabs --> Factory
     View --> DragPolicy
     DragPolicy --> Factory
+    View --> DropPolicy
+    DropPolicy --> Api
+    DropPolicy --> Factory
     View --> ToolTitle
     ToolTitle --> Items
     ToolTitle --> Factory

@@ -115,6 +115,12 @@ public class DockManager : IDockManager
             return false;
         }
 
+        if (sourceDockable.Factory is IDockDropPolicy sourcePolicy &&
+            !sourcePolicy.CanDrop(sourceDockable, targetDockable, operation)) return false;
+        if (!ReferenceEquals(sourceDockable.Factory, targetDockable.Factory) &&
+            targetDockable.Factory is IDockDropPolicy targetPolicy &&
+            !targetPolicy.CanDrop(sourceDockable, targetDockable, operation)) return false;
+
         return true;
     }
 

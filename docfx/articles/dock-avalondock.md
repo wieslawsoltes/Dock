@@ -1390,6 +1390,24 @@ stable data context for source bindings while the manager is detached.
 
 ## Observe docking and floating operations
 
+Native drag destinations follow the upstream floating-window rules.
+`LayoutDocumentFloatingWindow` contains one document and does not accept
+incoming drops. A `LayoutAnchorableFloatingWindow` accepts tools from its own
+manager, including tools dragged from another floating tool window. Its native
+splits retain typed `LayoutAnchorablePaneGroup` wrappers, item containers, and
+content through XML restoration and docking back.
+
+`AllowMixedOrientation` controls document-pane split indicators and execution.
+With the default `False`, a document group with more than one visible child
+offers splits along its current orientation. Set it to `True` to allow either
+axis. Empty siblings do not restrict the split axis. Native splits within a
+document group retain `LayoutDocumentPaneGroup` wrappers for new groups.
+
+These checks run before layout mutation through the native factory's optional
+`IDockDropPolicy` contract. Direct factory edits bypass drag validation; native
+generic, grouped-document, or mixed floating shapes still have the limitations
+listed in the compatibility checklist.
+
 `DockingManager` exposes four bubbling routed events: `PreviewFloat`, `Floated`,
 `PreviewDock`, and `Docked`. Their `Source` is the public `LayoutContent`, while
 the handler's sender is the manager or ancestor handling the event. Preview
@@ -1934,6 +1952,7 @@ flowchart TB
         Controls["DockControl, HostWindow, and Fluent controls"]
         OverlayFactory["Optional IDockAdornerWindowFactory"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
+        DropPolicy["Optional IDockDropPolicy<br/>Target visibility and drop validation"]
     end
     Manager -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
@@ -1981,6 +2000,9 @@ flowchart TB
     Tabs --> Factory
     Controls --> DragPolicy
     DragPolicy --> Factory
+    Controls --> DropPolicy
+    DropPolicy --> Layout
+    DropPolicy --> Factory
     Controls --> ToolTitle
     ToolTitle --> Items
     ToolTitle --> Factory
@@ -2032,6 +2054,15 @@ The facade wraps the same native objects that Dock renders and moves.
 native child lists as observable AvalonDock collections. Native changes flow
 back into public ownership, selection, and active-content state. Compatibility
 metadata, such as AvalonDock return-container references, remains in the adapter.
+
+For native split groups, the containing public group determines whether the
+new `ProportionalDock` is projected as a document or tool group. This retains
+the typed hierarchy even while native collection notifications precede owner
+assignment. `LayoutFactory` composes `LayoutDropPolicy` through the optional
+native `IDockDropPolicy` interface. `DockManager` checks source and destination
+policies before exposing targets or executing a drop; ordinary factories retain
+their existing behavior. The adapter supplies floating-destination and
+mixed-orientation rules while Dock performs the accepted operation.
 
 `LayoutPaneSelection` composes the document/tool selection rules and notifications.
 The native factory's protected `ShouldFocusActiveDockable` policy lets the adapter

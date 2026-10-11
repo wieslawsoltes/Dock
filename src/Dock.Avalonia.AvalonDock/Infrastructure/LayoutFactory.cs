@@ -10,9 +10,9 @@ namespace AvalonDock.Infrastructure;
 
 // Keep native window vetoes first, then let the compatibility layer close or
 // hide content before the native host can detach the floating layout.
-internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement,
+internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement, IDockDropPolicy dropPolicy,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy
+    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy
 {
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
@@ -21,6 +21,9 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     internal IDockWindow? RequestedHostWindow { get; private set; }
     internal event Action? SettingFocus;
     internal event Action<IDock>? FocusSet;
+
+    bool IDockDropPolicy.CanDrop(IDockable source, IDockable target, DockOperation operation) =>
+        dropPolicy.CanDrop(source, target, operation);
 
     internal void SetPaneSelection(IDock owner, IDockable? selected)
     {

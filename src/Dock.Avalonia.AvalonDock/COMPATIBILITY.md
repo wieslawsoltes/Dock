@@ -547,7 +547,16 @@ supported by corresponding implementation and test evidence.
   presentations while retaining unchanged models. Floating `OnClosing(CancelEventArgs)`
   shares native arguments with the Avalonia overload and event, preserves native
   factory/content vetoes, and supports canceled cleanup retries.
-- 1046 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- Native destination validation matches the upstream floating-host rules:
+  document floating windows reject incoming drops; tool floating windows accept
+  tools from the same manager. `AllowMixedOrientation` restricts document split
+  targets to the parent group's axis when it has multiple visible children.
+  Native indicators and execution consult the optional `IDockDropPolicy`;
+  direct factory edits bypass it. Native splits within typed document/tool groups
+  preserve their public group types, item containers, and floating ownership.
+  Tests cover all drop directions, docked and floating sources, rejected drops
+  without mutation, XML restoration, and redocking.
+- 1085 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -578,8 +587,8 @@ supported by corresponding implementation and test evidence.
 - Finish the rendering and behavior audit of repositioning policies and remaining
   metadata edge cases. Tab icons, tooltips, enablement, and document header
   visibility are implemented; auto-hide resizer control parity remains open.
-- Full native drag/float/redock and lifecycle coverage, including native-created
-  nested groups, layout detachment and leak checks, and source-driven floating
+- Full native drag/float/redock and lifecycle coverage, including generic and
+  mixed native-created groups, layout detachment and leak checks, and source-driven floating
   content and changes during deserialization.
 - Exact signatures, framework substitutions, inheritance, defaults, and member
   behavior must be audited independently of the presence inventory, including

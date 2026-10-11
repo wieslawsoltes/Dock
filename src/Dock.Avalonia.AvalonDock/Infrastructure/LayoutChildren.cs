@@ -76,7 +76,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
             foreach (IDockable model in _source)
             {
                 if (model is ISplitter) continue;
-                T child = (T)(ILayoutElement)_owner.Context.Get(model);
+                T child = (T)(ILayoutElement)_owner.Context.GetChild(model, _owner);
                 if (target < Count && ReferenceEquals(this[target], child)) { target++; continue; }
                 int existing = IndexOf(child);
                 if (existing >= 0) base.MoveItem(existing, target);

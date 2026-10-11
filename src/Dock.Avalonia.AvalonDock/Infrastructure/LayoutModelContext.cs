@@ -25,7 +25,7 @@ internal sealed class LayoutModelContext
         else element.DockModel.SetValue(ElementProperty, new WeakReference<LayoutElement>(element));
     }
 
-    private LayoutElement? FindExisting(IDockable model)
+    internal LayoutElement? FindExisting(IDockable model)
     {
         LayoutModelContext current = Current;
         if (current._elements.TryGetValue(model, out LayoutElement? element)) return element;
@@ -73,6 +73,25 @@ internal sealed class LayoutModelContext
         if (model.VisibleDockables is { } children)
             foreach (IDockable child in children) if (child is ProportionalDock nested) GetAnchorableGroup(nested);
         return new LayoutAnchorablePaneGroup(model, current);
+    }
+
+    internal LayoutElement GetChild(IDockable model, LayoutElement owner)
+    {
+        if (model is ProportionalDock split)
+        {
+            if (owner is LayoutAnchorablePaneGroup) return GetAnchorableGroup(split);
+            if (owner is LayoutDocumentPaneGroup) return GetDocumentGroup(split);
+        }
+        return Get(model);
+    }
+
+    private LayoutDocumentPaneGroup GetDocumentGroup(ProportionalDock model)
+    {
+        LayoutModelContext current = Current;
+        if (FindExisting(model) is LayoutDocumentPaneGroup group) return group;
+        if (model.VisibleDockables is { } children)
+            foreach (IDockable child in children) if (child is ProportionalDock nested) GetDocumentGroup(nested);
+        return new LayoutDocumentPaneGroup(model, current);
     }
 
     internal LayoutFloatingWindow GetWindow(IDockWindow window)

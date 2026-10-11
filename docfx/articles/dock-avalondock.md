@@ -654,9 +654,8 @@ proportional panel still measures and arranges panes and handles splitter
 dragging, including floating tool groups. Their inherited `Children`, row, and
 column collections therefore do not reproduce WPF's direct pane/splitter visual
 tree. The existing grouped/mixed floating-document limitations remain tracked
-separately. Native proportional sizing also redistributes a split consisting
-entirely of pixel lengths and can write those resized lengths back; exact WPF
-all-pixel and auto-size behavior remains unfinished.
+separately. The adapter preserves all-pixel requests and measures `Auto` from
+content and chrome through Dock's native proportional panel.
 
 ## Lay out tab headers and handle overflow
 
@@ -1187,7 +1186,7 @@ closes the old invocation and releases its generated presentation.
 ## Size panes and splitters
 
 `DockWidth` and `DockHeight` accept Avalonia `GridLength` values, including pixel
-sizes such as `240` and star sizes such as `*` or `2*`. The manager exposes the
+sizes such as `240`, `Auto`, and star sizes such as `*` or `2*`. The manager exposes the
 split gap separately for each layout direction:
 
 | Manager property | Applies to | Default |
@@ -1215,11 +1214,33 @@ Avalonia XML namespace:
 
 Each nested or floating panel calculates pane proportions using its own available
 space and the configured splitter gap. Pixel panes keep their requested size
-when the host or gap changes, subject to available space and native constraints;
-star panes share the remainder. Collapsed return panes and adjacent hidden
-splitters do not consume this space. Native splitter dragging updates public
-pane dimensions, which survive subsequent window resizing. Changing the group
-orientation selects the corresponding manager setting.
+when the host or gap changes; an all-pixel split can leave unused space or extend
+beyond the viewport. `Auto` measures the existing pane's content and chrome and
+remeasures when content or tab selection changes. Star panes divide the space
+remaining after fixed sizes, intrinsic sizes, and minimums. `DockMinWidth` and
+`DockMinHeight` start at 25 and constrain rendering without replacing requested
+lengths. Collapsed return panes and adjacent hidden splitters consume no space.
+Changing group orientation selects the corresponding manager splitter setting.
+
+Native splitter previews commit public pane dimensions on release and cancel
+when pointer capture is lost. Pixel lengths retain their units, a resized
+star/star pair retains its combined weight, and resizing `Auto` converts it to
+pixels. XML otherwise preserves `Auto` and restores independent pane lengths.
+
+Derived positionable groups can override `OnDockWidthChanged()` and
+`OnDockHeightChanged()`. The hooks run after property-changing and property-changed
+notifications for a changed value, including committed native splitter sizes
+and external native proportion changes. Assigning an equal value does nothing.
+Mapping requested sizes into native proportions during measurement does not
+invoke these hooks. XML restores stored lengths without these notifications or
+callbacks.
+
+`LayoutAnchorablePaneGroup` uses these hooks to pass a changed pixel length to
+its only child's corresponding dimension, including through nested single-child
+tool groups. This applies to either axis regardless of orientation. `Auto` and
+star changes, changes with zero or multiple children, and subsequent child
+additions do not copy sizes. Plain panels and document groups do not copy them
+either. Call the base hook when overriding a tool group to preserve this behavior.
 
 The pane-group rebuild policy above can convert pixel lengths to stars. Set
 pixel dimensions after the first layout when exercising runtime splitter sizing;

@@ -545,6 +545,16 @@ Manager settings survive XML restoration and view reattachment and remain
 independent between managers. Replacing a resource theme restores generated
 presenter dimensions even when their model proportions have not changed.
 
+Derived positionable groups can override `OnDockWidthChanged()` and
+`OnDockHeightChanged()`. A changed value raises property notifications before
+the hook; equal assignments do nothing. Committed native splitter sizes and
+external proportion changes invoke the hooks, while render-time proportion
+updates and XML length restoration do not. A tool group's base hooks copy a
+changed pixel dimension to its only child, including nested single-child tool
+groups. Other units, multiple children, child additions, plain panels, and
+document groups do not copy dimensions. Calling the base hook preserves this
+behavior when deriving from `LayoutAnchorablePaneGroup`.
+
 `LayoutRoot.FloatingWindows` exposes `LayoutDocumentFloatingWindow` and
 `LayoutAnchorableFloatingWindow` over native Dock windows. Floating geometry
 and maximization synchronize with the content and pane models and persist in

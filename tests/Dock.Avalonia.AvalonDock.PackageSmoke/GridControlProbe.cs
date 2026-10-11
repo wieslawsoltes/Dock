@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -64,6 +66,7 @@ internal static class GridControlProbe
                 throw new Exception("Replacing the packaged layout did not replace its public grid.");
             PixelSizingProbe.Verify(window, manager);
             AutoSizingProbe.Verify(window, manager);
+            VerifyLengthHooks();
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
 
@@ -74,5 +77,41 @@ internal static class GridControlProbe
     {
         if (!ReferenceEquals(control.Model, model) || !ReferenceEquals(control.Tag, model) || !Equals(control.Background, Brushes.Transparent))
             throw new Exception("The packaged grid types or compiled styles did not resolve in both XML namespaces.");
+    }
+
+    private static void VerifyLengthHooks()
+    {
+        SizePaneProbe pane = new();
+        SizeGroupProbe group = new() { Children = { pane } };
+        group.DockWidth = new GridLength(320);
+        group.DockHeight = new GridLength(240);
+        if (pane.DockWidth != group.DockWidth || pane.DockHeight != group.DockHeight ||
+            pane.WidthChanges != 1 || pane.HeightChanges != 1 || group.WidthChanges != 1 || group.HeightChanges != 1)
+            throw new Exception("Packaged length hooks did not propagate pixel sizes to the group's only child.");
+        group.DockWidth = new GridLength(320);
+        group.DockHeight = GridLength.Auto;
+        if (group.WidthChanges != 1 || pane.WidthChanges != 1 || pane.HeightChanges != 1)
+            throw new Exception("Packaged length hooks did not preserve equal values and independent non-pixel child sizes.");
+        using StringReader text = new("<LayoutAnchorablePaneGroup DockWidth=\"410\" DockHeight=\"280\" />");
+        using XmlReader reader = XmlReader.Create(text);
+        group.ReadXml(reader);
+        if (group.DockWidth != new GridLength(410) || group.DockHeight != new GridLength(280) ||
+            group.WidthChanges != 1 || group.HeightChanges != 2 || pane.DockWidth != new GridLength(320) || pane.DockHeight != new GridLength(240))
+            throw new Exception("Packaged XML restoration invoked sizing hooks or overwrote existing child lengths.");
+    }
+
+    private sealed class SizePaneProbe : LayoutAnchorablePane
+    {
+        public int WidthChanges { get; private set; }
+        public int HeightChanges { get; private set; }
+        protected override void OnDockWidthChanged() { WidthChanges++; base.OnDockWidthChanged(); }
+        protected override void OnDockHeightChanged() { HeightChanges++; base.OnDockHeightChanged(); }
+    }
+    private sealed class SizeGroupProbe : LayoutAnchorablePaneGroup
+    {
+        public int WidthChanges { get; private set; }
+        public int HeightChanges { get; private set; }
+        protected override void OnDockWidthChanged() { WidthChanges++; base.OnDockWidthChanged(); }
+        protected override void OnDockHeightChanged() { HeightChanges++; base.OnDockHeightChanged(); }
     }
 }

@@ -40,6 +40,14 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- Positionable groups expose `OnDockWidthChanged` and `OnDockHeightChanged`
+  after changed-value property notifications. Public assignments, native
+  splitter commits, and external native proportion changes invoke these hooks;
+  internal measurement updates and XML length restoration do not. Tool-group
+  base hooks propagate pixel lengths through single-child tool groups, while
+  preserving other units and independent multi-child lengths. Tests cover both
+  axes, notification ordering, reentrancy, native previews, and silent XML
+  restoration without overwriting existing child dimensions.
 - `AvalonDock.Controls.Extentions` exposes all six upstream tree helpers using
   Avalonia objects and their current visual/logical trees. Tests cover ordered
   descendants, type and interface matching, logical-to-visual parent fallback,
@@ -508,7 +516,7 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 961 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 973 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -552,8 +560,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 701
-matching type/member keys and 250 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 705
+matching type/member keys and 246 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

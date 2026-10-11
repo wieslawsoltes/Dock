@@ -111,6 +111,9 @@ public class DockingManager : TemplatedControl
     /// <summary>Identifies the control theme applied to tool panes.</summary>
     public static readonly StyledProperty<ControlTheme?> AnchorablePaneControlStyleProperty =
         AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(AnchorablePaneControlStyle));
+    /// <summary>Identifies the public control displayed for the layout's root panel.</summary>
+    public static readonly StyledProperty<LayoutPanelControl?> LayoutRootPanelProperty =
+        AvaloniaProperty.Register<DockingManager, LayoutPanelControl?>(nameof(LayoutRootPanel));
     /// <summary>Identifies the theme applied to document and tool containers.</summary>
     public static readonly StyledProperty<ControlTheme?> LayoutItemContainerStyleProperty =
         AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(LayoutItemContainerStyle));
@@ -158,6 +161,7 @@ public class DockingManager : TemplatedControl
     private IEnumerable? _anchorablesSource;
     private ILayoutUpdateStrategy? _layoutUpdateStrategy;
     private int _sourceBindingSuspensions;
+    private LayoutPanel? _presentedRootPanel;
 
     static DockingManager()
     {
@@ -306,6 +310,8 @@ public class DockingManager : TemplatedControl
     public ControlTheme? DocumentPaneControlStyle { get => GetValue(DocumentPaneControlStyleProperty); set => SetValue(DocumentPaneControlStyleProperty, value); }
     /// <summary>Gets or sets the Avalonia control theme for existing and future tool panes.</summary>
     public ControlTheme? AnchorablePaneControlStyle { get => GetValue(AnchorablePaneControlStyleProperty); set => SetValue(AnchorablePaneControlStyleProperty, value); }
+    /// <summary>Gets or sets the root panel control displayed by the native layout template.</summary>
+    public LayoutPanelControl? LayoutRootPanel { get => GetValue(LayoutRootPanelProperty); set => SetValue(LayoutRootPanelProperty, value); }
     /// <summary>Gets or sets the Avalonia control theme applied to item containers.</summary>
     public ControlTheme? LayoutItemContainerStyle { get => GetValue(LayoutItemContainerStyleProperty); set => SetValue(LayoutItemContainerStyleProperty, value); }
     /// <summary>Gets or sets the container theme selector used when no explicit style is set.</summary>
@@ -360,6 +366,7 @@ public class DockingManager : TemplatedControl
     /// <summary>Reattaches source contents to a replacement layout.</summary>
     protected virtual void OnLayoutChanged(LayoutRoot oldLayout, LayoutRoot newLayout)
     {
+        if (IsInitialized) EnsureLayoutRootPanel();
         _documents.SetLayout(newLayout);
         _anchorables.SetLayout(newLayout);
         if (IsLoaded) _floatingWindows.Attach(newLayout);
@@ -413,6 +420,8 @@ public class DockingManager : TemplatedControl
     protected virtual void OnDocumentPaneControlStyleChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the tool pane control theme changes.</summary>
     protected virtual void OnAnchorablePaneControlStyleChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Called after the displayed root panel control changes.</summary>
+    protected virtual void OnLayoutRootPanelChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Applies the new item container style to existing layout content.</summary>
     protected virtual void OnLayoutItemContainerStyleChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <summary>Applies the new item container style selector to existing layout content.</summary>
@@ -424,6 +433,7 @@ public class DockingManager : TemplatedControl
         if (change.Property == ThemeProperty) OnThemeChanged(change);
         if (change.Property == DocumentPaneControlStyleProperty) OnDocumentPaneControlStyleChanged(change);
         if (change.Property == AnchorablePaneControlStyleProperty) OnAnchorablePaneControlStyleChanged(change);
+        if (change.Property == LayoutRootPanelProperty) OnLayoutRootPanelChanged(change);
         if (change.Property == DocumentContextMenuProperty || change.Property == AnchorableContextMenuProperty)
             _contextMenus?.Release(change.OldValue as ContextMenu);
         if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);
@@ -570,6 +580,7 @@ public class DockingManager : TemplatedControl
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
+        EnsureLayoutRootPanel();
         _floatingWindows.Attach(Layout);
     }
 
@@ -604,6 +615,14 @@ public class DockingManager : TemplatedControl
     private void LayoutPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(LayoutRoot.ActiveContent)) SynchronizeActiveContent();
+        if (e.PropertyName == nameof(LayoutRoot.RootPanel) && IsInitialized) EnsureLayoutRootPanel();
+    }
+
+    internal void EnsureLayoutRootPanel()
+    {
+        if (ReferenceEquals(_presentedRootPanel, Layout.RootPanel)) return;
+        _presentedRootPanel = Layout.RootPanel;
+        SetCurrentValue(LayoutRootPanelProperty, new LayoutPanelControl(Layout.RootPanel));
     }
     private void SynchronizeActiveContent()
     {

@@ -79,6 +79,9 @@ public class SplitterSizingTests
         if (equalDimensions) workspace.Manager.GridSplitterWidth = 8;
         workspace.Group.Orientation = Orientation.Horizontal;
         workspace.Update();
+        Assert.Equal(GridLength.Star, workspace.Top.DockWidth);
+        workspace.Top.DockWidth = new GridLength(140);
+        workspace.Update();
         ProportionalStackPanelSplitter splitter = Splitter(workspace.Scope, workspace.Group);
         ProportionalStackPanel panel = splitter.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
         Assert.Equal(equalDimensions ? 8 : 12, splitter.Bounds.Width);
@@ -89,6 +92,9 @@ public class SplitterSizingTests
         Assert.Equal(30, Splitter(workspace.Scope, workspace.Group).Bounds.Width);
         AssertExtent(workspace.TopControl.Bounds.Width, 140);
         workspace.Group.Orientation = Orientation.Vertical;
+        workspace.Update();
+        Assert.Equal(GridLength.Star, workspace.Top.DockHeight);
+        workspace.Top.DockHeight = new GridLength(200);
         workspace.Update();
         Assert.Equal(8, Splitter(workspace.Scope, workspace.Group).Bounds.Height);
         AssertExtent(splitter.Bounds.Width, panel.Bounds.Width);
@@ -161,9 +167,17 @@ public class SplitterSizingTests
         workspace.Group.Children.Insert(1, empty);
         workspace.Update();
         Assert.True(empty.DockModel.IsEmpty);
+        Assert.Equal(GridLength.Star, workspace.Top.DockHeight);
+        Assert.Equal(GridLength.Star, empty.DockHeight);
+        workspace.Top.DockHeight = new GridLength(200);
+        workspace.Update();
         AssertExtent(workspace.TopControl.Bounds.Height, 200);
         AssertExtent(workspace.TopControl.Bounds.Height + workspace.BottomControl.Bounds.Height, workspace.GroupControl.Bounds.Height);
         empty.Children.Add(new LayoutAnchorable { Title = "Restored pane" });
+        workspace.Update();
+        Assert.Equal(GridLength.Star, workspace.Top.DockHeight);
+        workspace.Top.DockHeight = new GridLength(200);
+        empty.DockHeight = new GridLength(120);
         workspace.Update();
         ToolDockControl restored = workspace.Scope.GetVisualDescendants().OfType<ToolDockControl>()
             .Single(control => ReferenceEquals(control.DataContext, empty.DockModel));
@@ -293,6 +307,10 @@ public class SplitterSizingTests
             Scope = floating ? (HostWindow)Group.FindParent<LayoutFloatingWindow>()!.DockWindow.Host! : Manager;
             Host = floating ? (Window)Scope : Window;
             if (floating) { Host.Width = 600; Host.Height = 460; }
+            Update();
+            // Upstream pane groups normalize initial/rebuilt lengths to stars.
+            // These tests exercise explicit pixel changes after the first layout.
+            Top.DockHeight = new GridLength(200);
             Update();
         }
 

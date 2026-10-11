@@ -32,6 +32,15 @@
             <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
           </Style>
         </ItemsControl.Styles>
+        <ItemsControl.Template>
+          <ControlTemplate>
+            <infrastructure:LayoutGridPresenter>
+              <infrastructure:LayoutGridPresenter.Body>
+                <ItemsPresenter x:Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
+              </infrastructure:LayoutGridPresenter.Body>
+            </infrastructure:LayoutGridPresenter>
+          </ControlTemplate>
+        </ItemsControl.Template>
       </ItemsControl>
     </dock:DockableControl>
   </ControlTemplate>

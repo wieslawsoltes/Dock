@@ -677,6 +677,60 @@ Avalonia counterpart of the upstream mouse-exit hook; its base implementation
 preserves normal pointer routing. Ordinary application layouts need only the
 compiled panel templates.
 
+## Customize auto-hide strips
+
+The four side properties on `DockingManager` expose the controls displayed by
+Dock's native pinned strips: `LeftSidePanel`, `TopSidePanel`, `RightSidePanel`,
+and `BottomSidePanel`. Each is a `LayoutAnchorSideControl` whose `Model` is the
+corresponding `LayoutAnchorSide` and whose observable `Children` contains
+`LayoutAnchorGroupControl` instances. Each group's `Children` contains
+`LayoutAnchorControl` instances over its existing `LayoutAnchorable` models.
+The side controls expose `IsLeftSide`, `IsTopSide`, `IsRightSide`, and
+`IsBottomSide`; each anchor exposes `Side`. All three control types implement
+`ILayoutControl` and live in `AvalonDock.Controls`.
+
+Use the manager's `AnchorSideTemplate`, `AnchorGroupTemplate`, and
+`AnchorTemplate` properties to customize this hierarchy. These are Avalonia
+`IControlTemplate` properties. Model-bearing constructors remain internal, as
+in AvalonDock; applications style or template the manager-created controls.
+This example uses the ordinary Avalonia XML namespace without an AvalonDock
+prefix:
+
+```xml
+<DockingManager.AnchorTemplate>
+  <ControlTemplate TargetType="LayoutAnchorControl" x:DataType="LayoutAnchorControl">
+    <Border Padding="8,5" Background="Transparent">
+      <TextBlock Text="{Binding ((LayoutAnchorable)Model).Title, RelativeSource={RelativeSource TemplatedParent}}" />
+    </Border>
+  </ControlTemplate>
+</DockingManager.AnchorTemplate>
+```
+
+The historical `http://schemas.xceed.com/wpf/xaml/avalondock` namespace resolves
+the same types. Bind a custom side/group template's `ItemsControl.ItemsSource`
+to `Children` on its templated parent. The default group uses Dock's
+`ToolPinnedControl`, and anchors extend its native pinned item control so the
+default presentation retains pinned reordering and docking drag input. Template
+bindings to public models should use an explicit `x:DataType` and cast `Model`
+to the relevant layout type, as above.
+
+An unhandled pointer press opens the native preview and activates the tool.
+Hovering for 400 milliseconds opens a preview without replacing the active
+document; leaving before the delay or detaching cancels the pending preview.
+Setting an attached auto-hidden tool's `IsSelected` also opens a passive preview
+and resets the selection flag to false. Setting `IsActive` opens and activates
+the preview. Disabled anchors cannot open it, and interactive children such as
+buttons can handle their own pointer presses. The preview displays the existing
+`LayoutAnchorableControl` and `LayoutItem.View`.
+
+Changing the three templates updates existing controls. Setting a side-panel
+property to null removes that side's presentation; restoring the control reuses
+it. A new side model or XML layout creates the corresponding new controls.
+Derived managers can override `OnLeftSidePanelChanged`, `OnTopSidePanelChanged`,
+`OnRightSidePanelChanged`, and `OnBottomSidePanelChanged` with
+`AvaloniaPropertyChangedEventArgs`. These controls do not yet supply the separate
+public `LayoutAutoHideWindowControl` API or its automatic closing timer.
+
 ## Use converters in compiled bindings
 
 Converters live in `AvalonDock.Converters` and resolve through both XML namespaces.
@@ -1598,6 +1652,7 @@ flowchart TB
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
         PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
+        Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
         TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
         Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
@@ -1630,6 +1685,10 @@ flowchart TB
     GridControls --> Sizing
     GridControls --> Controls
     Manager --> PaneControls
+    Manager -->|Side panels and anchor templates| Anchors
+    Anchors --> Models
+    Anchors -->|Pinned reorder and preview| Factory
+    Controls --> Anchors
     PaneControls --> ContentControls
     PaneControls --> Tabs
     PaneControls --> Selection

@@ -395,6 +395,33 @@ source clears all layout items of that type.
 strips. The XML serializer preserves these groups, their content identities,
 and return panes alongside docked and hidden content.
 
+The strips present public `LayoutAnchorSideControl`, `LayoutAnchorGroupControl`,
+and `LayoutAnchorControl` instances from `AvalonDock.Controls`. The manager's
+`LeftSidePanel`, `TopSidePanel`, `RightSidePanel`, and `BottomSidePanel` expose the
+displayed sides. Each side and group exposes its model and observable `Children`;
+each anchor exposes its `LayoutAnchorable` model and `Side`. Constructors are
+internal, as upstream: customize the generated controls through styles and
+`AnchorSideTemplate`, `AnchorGroupTemplate`, and `AnchorTemplate`.
+
+```xml
+<DockingManager.AnchorTemplate>
+  <ControlTemplate TargetType="LayoutAnchorControl" x:DataType="LayoutAnchorControl">
+    <Border Padding="8,5" Background="Transparent">
+      <TextBlock Text="{Binding ((LayoutAnchorable)Model).Title, RelativeSource={RelativeSource TemplatedParent}}" />
+    </Border>
+  </ControlTemplate>
+</DockingManager.AnchorTemplate>
+```
+
+Both XML namespaces support these controls. An unhandled pointer press opens and
+activates the tool through Dock's native preview. Hovering for 400 milliseconds
+or setting an attached auto-hidden tool's `IsSelected` opens a passive preview;
+selection resets to false without changing the active document. Setting
+`IsActive` opens and activates it. The default group template keeps native pinned
+dragging. Replacing a manager template updates existing controls; clearing a side
+property removes that presentation until restored or its side model is replaced.
+The separate public auto-hide window API and its closing timer remain open work.
+
 Floating document captions use `DocumentTitleTemplate` and its selector with the
 public `LayoutDocument` from `LayoutDocumentFloatingWindow.RootDocument`:
 
@@ -663,6 +690,7 @@ flowchart TB
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
     GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
     PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
+    Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]
     ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
     TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
     Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
@@ -692,6 +720,10 @@ flowchart TB
     GridControls --> Sizing
     GridControls --> View
     Api --> PaneControls
+    Api -->|Side panels and anchor templates| Anchors
+    Anchors --> Models
+    Anchors -->|Pinned reorder and preview| Factory
+    View --> Anchors
     PaneControls --> ContentControls
     PaneControls --> Tabs
     PaneControls --> Selection

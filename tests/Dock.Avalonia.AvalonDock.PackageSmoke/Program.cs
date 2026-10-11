@@ -46,6 +46,7 @@ PackageConsumer.TabControlProbe.Verify();
 PackageConsumer.TabPanelProbe.Verify();
 PackageConsumer.PaneControlProbe.Verify();
 PackageConsumer.GridControlProbe.Verify();
+PackageConsumer.AnchorControlProbe.Verify();
 PackageConsumer.MenuControlProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");

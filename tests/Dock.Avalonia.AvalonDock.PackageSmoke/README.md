@@ -1,5 +1,11 @@
 # NuGet consumer smoke test
 
+Anchor probes compile side/group/anchor controls and manager templates through
+both XML namespaces, invoke external side-panel change hooks, and inspect the
+actual native model hierarchy. They exercise passive programmatic previews,
+pointer activation and native pinned reordering, live template/title changes,
+side clear/restore, XML content identity, and visual reattachment.
+
 Pane-control probes compile themes for both public pane types through both XML
 namespaces, exercise external constructor/selection/manager hooks, and check live
 model identity, passive selection, empty selection, reordering, runtime themes,

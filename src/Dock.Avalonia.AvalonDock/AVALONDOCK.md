@@ -330,10 +330,10 @@ than physical user input.
 
 Set `AllowMovingFloatingWindowWithKeyboard="True"` on the manager to move its
 floating windows with unhandled arrow keys. The default is false; compiled
-bindings and styles can update it at runtime. The C# wrapper has a private setter,
-so code configures `DockingManager.AllowMovingFloatingWindowWithKeyboardProperty`
-with `SetValue`. Each arrow moves by 25 device-independent units with desktop
-scaling applied. Keys handled by an editor keep their normal behavior, and
+bindings and styles can update it at runtime. Its setter is public for Avalonia's
+compiled literal XAML, which directly calls the CLR setter; upstream WPF writes
+the dependency property despite its private CLR setter. Each arrow moves by 25
+device-independent units with desktop scaling applied. Keys handled by an editor keep their normal behavior, and
 native layout saving retains the window's new position.
 
 Avalonia applications use Avalonia controls, properties, templates, and

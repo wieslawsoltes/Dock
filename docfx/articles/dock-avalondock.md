@@ -730,8 +730,11 @@ To enable arrow-key movement of floating windows, set the manager property:
 ```
 
 It defaults to false and can also use a compiled ViewModel binding or a style
-setter. The C# wrapper has a private setter, matching upstream; from a workspace
-service use `manager.SetValue(DockingManager.AllowMovingFloatingWindowWithKeyboardProperty, true)`.
+setter. The Avalonia wrapper has a public setter, so a workspace service can use
+`manager.AllowMovingFloatingWindowWithKeyboard = true`. This is a framework
+adaptation: upstream's writable dependency property has a private CLR setter,
+whereas Avalonia's compiled literal XAML calls that setter directly. WPF instead
+[writes dependency properties through its property system](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/properties/xaml-loading-and-dependency-properties).
 Unhandled arrow keys move the current floating document or tool window by 25
 device-independent units, converted to desktop coordinates. Editors retain
 their handled arrow keys, and window movement does not mark the key event

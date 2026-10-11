@@ -229,12 +229,12 @@ public class DockingManager : TemplatedControl
     public ContextMenu? AnchorableContextMenu { get => GetValue(AnchorableContextMenuProperty); set => SetValue(AnchorableContextMenuProperty, value); }
     /// <summary>Gets or sets whether document-group commands may change a populated group's orientation.</summary>
     public bool AllowMixedOrientation { get => GetValue(AllowMixedOrientationProperty); set => SetValue(AllowMixedOrientationProperty, value); }
-    /// <summary>Gets whether unhandled arrow keys move floating windows by 25 device-independent units.</summary>
-    /// <remarks>Defaults to false. Configure the styled property from XAML, a style, or SetValue.</remarks>
+    /// <summary>Gets or sets whether unhandled arrow keys move floating windows by 25 device-independent units.</summary>
+    /// <remarks>Defaults to false. The setter is public so Avalonia can compile literal XAML assignments.</remarks>
     public bool AllowMovingFloatingWindowWithKeyboard
     {
         get => GetValue(AllowMovingFloatingWindowWithKeyboardProperty);
-        private set => SetValue(AllowMovingFloatingWindowWithKeyboardProperty, value);
+        set => SetValue(AllowMovingFloatingWindowWithKeyboardProperty, value);
     }
     /// <summary>Gets or sets the template used to display application content.</summary>
     public IDataTemplate? LayoutItemTemplate { get => GetValue(LayoutItemTemplateProperty); set => SetValue(LayoutItemTemplateProperty, value); }

@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Dock.Avalonia.AvalonDock.Tests.FloatingFixture"
         x:DataType="DockingManager" Width="800" Height="500">
-  <DockingManager x:Name="Manager">
+  <DockingManager x:Name="Manager" AllowMovingFloatingWindowWithKeyboard="True">
     <LayoutRoot>
       <LayoutPanel>
         <LayoutDocumentPane />

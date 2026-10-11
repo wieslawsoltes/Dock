@@ -26,6 +26,20 @@ public class FloatingKeyboardOptions : ReactiveObject
 
 public class FloatingKeyboardTests
 {
+    [AvaloniaFact]
+    public void A_Literal_Xaml_Option_Can_Be_Constructed_From_A_Consumer_Assembly()
+    {
+        FloatingFixture view = new();
+        try
+        {
+            DockingManager manager = view.FindControl<DockingManager>("Manager")!;
+            Assert.True(manager.AllowMovingFloatingWindowWithKeyboard);
+            manager.AllowMovingFloatingWindowWithKeyboard = false;
+            Assert.False(manager.AllowMovingFloatingWindowWithKeyboard);
+        }
+        finally { view.Close(); }
+    }
+
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]

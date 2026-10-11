@@ -204,7 +204,10 @@ supported by corresponding implementation and test evidence.
   user cancellation, hiding/restoration, model cleanup, native exit, layout
   replacement, view unload/reattachment, and a canceled internal request.
 - `AllowMovingFloatingWindowWithKeyboard` defaults to false and supports
-  compiled XAML bindings. Floating hosts move by 25 device-independent units
+  compiled XAML bindings and literal assignments from another assembly. Its
+  public CLR setter is an explicit Avalonia adaptation: literal XAML calls the
+  setter directly, whereas WPF can write the underlying dependency property
+  with its private CLR setter. Floating hosts move by 25 device-independent units
   on unhandled arrow keys, using desktop scaling. Headless key input verifies
   both host types, runtime toggles, unrelated/handled keys, modifiers without
   swallowing the event, per-manager state, hide/show, view reattachment, and
@@ -258,7 +261,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 401 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 402 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

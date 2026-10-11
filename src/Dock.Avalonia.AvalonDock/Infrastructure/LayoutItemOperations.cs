@@ -30,7 +30,7 @@ internal static class LayoutItemOperations
         {
             // Resolve each container after preceding callbacks, which may
             // themselves close documents or replace the manager's layout.
-            if (!content.CanClose || manager.GetLayoutItemFromModel(content) is not { } container) continue;
+            if (!LayoutCommandCapabilities.CanClose(content) || manager.GetLayoutItemFromModel(content) is not { } container) continue;
             if (container.CloseCommand is { } command)
             {
                 if (command.CanExecute(null)) command.Execute(null);

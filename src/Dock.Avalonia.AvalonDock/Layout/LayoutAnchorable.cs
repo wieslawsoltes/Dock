@@ -143,12 +143,11 @@ public class LayoutAnchorable : LayoutContent
     protected virtual void OnHiding(CancelEventArgs args) => Hiding?.Invoke(this, args);
     /// <summary>Raises the hidden event.</summary>
     protected virtual void OnHidden() => Hidden?.Invoke(this, EventArgs.Empty);
-    /// <summary>Toggles Dock's auto-hide state.</summary>
+    /// <summary>Toggles Dock's auto-hide state independently of <see cref="CanAutoHide"/>.</summary>
     public void ToggleAutoHide()
     {
-        if (!CanAutoHide) return;
-        if (IsAutoHidden) DockModel.Factory?.UnpinDockable(DockModel);
-        else
+        if (!IsAutoHidden && Parent is not LayoutAnchorablePane) return;
+        if (!IsAutoHidden)
         {
             RememberDockedLocation();
             if (DockModel.Owner is ToolDock pane)
@@ -161,8 +160,9 @@ public class LayoutAnchorable : LayoutContent
                     _ => Alignment.Bottom
                 };
             }
-            DockModel.Factory?.PinDockable(DockModel);
         }
+        if (DockModel.Factory is LayoutFactory factory) factory.ToggleAutoHideContent(DockModel);
+        else DockModel.Factory?.PinDockable(DockModel);
     }
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {

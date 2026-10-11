@@ -64,6 +64,15 @@ new XmlLayoutSerializer(manager).Serialize("layout.xml");
 new XmlLayoutSerializer(manager).Deserialize("layout.xml");
 ```
 
+Explicit `Close()`, `ToggleAutoHide()`, and `DockAsDocument()` follow upstream
+model behavior independently of `CanClose`, `CanAutoHide`, and
+`CanDockAsTabbedDocument`. Closing still honors cancellation. Default item
+commands and native factory methods retain capability checks, and commands
+observe replacement native policies and last-child close restrictions.
+`Float()` can reuse an existing previous floating pane when `CanFloat` is false;
+creating a new window still requires the native float capability. The call
+selects and activates the content in either case.
+
 `manager.Layout.ActiveContent` identifies the active layout node across docked
 and floating windows; `manager.ActiveContent` exposes its application content.
 Set either property, set a node's `IsActive`, or use its activation command.
@@ -902,7 +911,9 @@ flowchart TB
     Api --> Navigator
     Navigator --> Items
     Api --> Items
-    Items --> Factory
+    Items -->|Capability and last-child checks| Factory
+    Api --> ModelOperations["Explicit model operation contracts"]
+    ModelOperations -->|Shared native lifecycle| Factory
     Api <--> Bridge
     Bridge <--> Models
     Api --> Selection

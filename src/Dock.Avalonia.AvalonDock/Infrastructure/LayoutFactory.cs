@@ -97,6 +97,11 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     internal LayoutItem? GetLayoutItem(IDockable model) => getLayoutItem(model);
     internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutContainer(model);
 
+    // AvalonDock's explicit model operations are independent of UI capability
+    // flags. Keep their native lifecycle without changing policy for other calls.
+    internal void CloseContent(IDockable model) => CloseDockableCore(model);
+    internal void ToggleAutoHideContent(IDockable model) => PinDockableCore(model);
+
     public override IProportionalDockSplitter CreateProportionalDockSplitter()
     {
         IProportionalDockSplitter splitter = base.CreateProportionalDockSplitter();

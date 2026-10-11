@@ -1,6 +1,8 @@
 using System.Windows.Input;
 using Avalonia;
+using AvalonDock.Infrastructure;
 using AvalonDock.Layout;
+using Dock.Model.Core;
 
 namespace AvalonDock.Controls;
 
@@ -43,7 +45,8 @@ public class LayoutAnchorableItem : LayoutItem
         DefaultCommands.Add(HideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.Hide(),
             () => IsAttached && LayoutElement is LayoutAnchorable { CanHide: true });
         DefaultCommands.Add(AutoHideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.ToggleAutoHide(),
-            () => IsAttached && LayoutElement is LayoutAnchorable { CanAutoHide: true, IsFloating: false, IsHidden: false });
+            () => IsAttached && LayoutElement is LayoutAnchorable { CanAutoHide: true, IsFloating: false, IsHidden: false } tool &&
+                LayoutCommandCapabilities.IsEnabled(tool, DockCapability.Pin));
         DefaultCommands.Add(DockCommandProperty, () => LayoutElement?.Dock(),
             () => IsAttached && LayoutElement?.FindParent<LayoutAnchorableFloatingWindow>() is not null);
     }

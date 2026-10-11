@@ -163,6 +163,17 @@ supported by corresponding implementation and test evidence.
 - Anchorable edge placement with `AddToLayout`, writable visibility, cancelable
   hiding callbacks, tab-index restoration, and `Show` insertion strategies.
   Hidden auto-hide tools retain their group and original pane across XML saves.
+- Explicit `Close`, `ToggleAutoHide`, and `DockAsDocument` follow the upstream
+  model contract independently of command capability flags. Protected native
+  close/pin operations preserve cancellation, lifecycle events, ItemsSource
+  removal, ownership, and cleanup without changing policy for reentrant calls.
+  Closing hidden content removes its native hidden-list entry; pinned removal
+  unpins as cleanup even when the pin command is disabled.
+  Default commands retain native policy/last-child checks and refresh on policy
+  replacement. `Float` restores a previous floating pane with `CanFloat=false`,
+  activates even after a rejected new float, and can refloat existing floating
+  content while retaining its original docked return pane. Headless and external
+  package-consumer tests exercise these differences from UI command eligibility.
 - Observable document/tool sources, source replacement, layout replacement,
   insertion strategies, and source removal from visible, hidden, and pinned
   locations. Compiled bindings and data templates render ReactiveUI ViewModel
@@ -564,7 +575,7 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1111 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1142 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -573,7 +584,8 @@ supported by corresponding implementation and test evidence.
 
 - Remaining auto-hide platform behavior: WPF `HwndHost`/Win32 hooks have no
   direct Avalonia equivalent; separate native pinned-window modes and desktop
-  focus behavior require validation.
+  focus behavior require validation. Explicit auto-hide from a floating tool pane
+  and redirection of hidden tools' return-group references need further parity work.
 - Complete native floating lifecycle/state synchronization, including native
   group redocking, generic panels, and grouped-document/mixed native windows.
   Floating the entire root panel through the extra native factory API can leave

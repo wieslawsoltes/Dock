@@ -155,7 +155,8 @@ internal sealed class LayoutItemRegistry
             QueueReconcile();
             RefreshCommands();
         }
-        else if (e.PropertyName is "Orientation" or "ChildrenCount") RefreshCommands();
+        else if (e.PropertyName is "Orientation" or "ChildrenCount" or "DockCapabilityPolicy" or
+            "RootDockCapabilityPolicy" or "DockCapabilityOverrides" or "CanCloseLastDockable") RefreshCommands();
     }
 
     private void QueueReconcile()

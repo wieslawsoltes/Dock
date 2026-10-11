@@ -11,6 +11,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using AvalonDock.Infrastructure;
 using AvalonDock.Layout;
+using DockCapability = Dock.Model.Core.DockCapability;
 
 namespace AvalonDock.Controls;
 
@@ -275,13 +276,15 @@ public abstract class LayoutItem : Control
     protected virtual void Float() => LayoutElement?.Float();
     /// <summary>Determines whether the content can enter a document pane.</summary>
     protected virtual bool CanExecuteDockAsDocumentCommand() =>
-        IsAttached && LayoutElement?.Parent is not LayoutDocumentPane;
+        IsAttached && LayoutElement is { } content && content.Parent is not LayoutDocumentPane &&
+        LayoutCommandCapabilities.IsEnabled(content, DockCapability.DockAsDocument);
 
     /// <summary>Creates the default commands for the attached model.</summary>
     protected virtual void InitDefaultCommands()
     {
-        DefaultCommands.Add(CloseCommandProperty, Close, () => IsAttached && LayoutElement!.CanClose);
-        DefaultCommands.Add(FloatCommandProperty, Float, () => IsAttached && LayoutElement is { CanFloat: true, IsFloating: false });
+        DefaultCommands.Add(CloseCommandProperty, Close, () => IsAttached && LayoutCommandCapabilities.CanClose(LayoutElement!));
+        DefaultCommands.Add(FloatCommandProperty, Float, () => IsAttached && LayoutElement is { CanFloat: true, IsFloating: false } content &&
+            LayoutCommandCapabilities.IsEnabled(content, DockCapability.Float));
         DefaultCommands.Add(DockAsDocumentCommandProperty, () => LayoutElement?.DockAsDocument(), CanExecuteDockAsDocumentCommand);
         DefaultCommands.Add(CloseAllButThisCommandProperty, () => LayoutItemOperations.CloseDocuments(this, true),
             () => LayoutItemOperations.HasDocuments(this, true));

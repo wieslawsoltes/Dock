@@ -116,13 +116,13 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     public IImage? IconSource { get => _iconSource; set => SetField(ref _iconSource, value); }
     /// <summary>Gets whether this item is in a floating window.</summary>
     public bool IsFloating => (DockModel.DockingState & DockingWindowState.Floating) != 0;
-    /// <summary>Gets or sets whether this item can be closed.</summary>
+    /// <summary>Gets or sets whether UI commands can close this item.</summary>
     public bool CanClose { get => DockModel.CanClose; set => DockModel.CanClose = value; }
     /// <summary>Gets or sets whether this item can be floated.</summary>
     public bool CanFloat { get => DockModel.CanFloat; set => DockModel.CanFloat = value; }
     /// <summary>Gets or sets whether the content is enabled.</summary>
     public bool IsEnabled { get => _isEnabled; set => SetField(ref _isEnabled, value); }
-    /// <summary>Closes the item, honoring capabilities and cancellation.</summary>
+    /// <summary>Closes the item, honoring cancellation independently of <see cref="CanClose"/>.</summary>
     public abstract void Close();
     /// <summary>Returns no custom XML schema.</summary>
     public XmlSchema? GetSchema() => null;
@@ -133,9 +133,13 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// <summary>Compares titles using the current culture.</summary>
     public int CompareTo(LayoutContent? other) => other is null ? 1 : string.Compare(Title, other.Title, StringComparison.CurrentCulture);
     /// <summary>Floats this item through Dock's window implementation.</summary>
+    /// <remarks>
+    /// Restoring a previous floating pane is independent of <see cref="CanFloat"/>.
+    /// Creating a new window uses the native factory's capability rules. The item
+    /// is selected and activated even when new window creation is disabled.
+    /// </remarks>
     public void Float()
     {
-        if (!CanFloat || IsFloating) return;
         if (!DockingHistory.RestorePrevious(floatingOnly: true))
         {
             DockModel.SetVisibleBounds(FloatingLeft, FloatingTop, FloatingWidth, FloatingHeight);
@@ -146,6 +150,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         Root?.CollectGarbage();
     }
     /// <summary>Docks this item in a document pane.</summary>
+    /// <remarks>This explicit operation does not consult an anchorable's tabbed-document capability.</remarks>
     /// <exception cref="InvalidOperationException">The content does not belong to a layout.</exception>
     public void DockAsDocument() => LayoutDocumentPlacement.Dock(this);
     /// <summary>Returns the item to its previous container.</summary>
@@ -259,8 +264,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             NotifyClosed();
             return;
         }
-        if (!CanClose) return;
-        if (DockModel.Factory is { } factory) factory.CloseDockable(DockModel);
+        if (DockModel.Factory is LayoutFactory layoutFactory) layoutFactory.CloseContent(DockModel);
+        else if (DockModel.Factory is { } factory) factory.CloseDockable(DockModel);
         else
         {
             CancelEventArgs args = new();

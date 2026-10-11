@@ -40,8 +40,23 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void RemoveDockable(IDockable dockable, bool collapse)
     {
-        // to correctly remove a pinned dockable, it needs to be unpinned
-        UnpinDockable(dockable);
+        // Removal owns its eligibility checks. Unpinning here is lifecycle
+        // cleanup, so a disabled pin command must not leave a removed item in
+        // the root's pinned list.
+        if (IsDockablePinned(dockable))
+        {
+            PinDockableCore(dockable);
+        }
+
+        if (dockable.Owner is IRootDock hiddenRoot && hiddenRoot.HiddenDockables?.Remove(dockable) == true)
+        {
+            OnDockableRemoved(dockable);
+            if (ReferenceEquals(hiddenRoot.FocusedDockable, dockable))
+            {
+                SetFocusedDockable(hiddenRoot, hiddenRoot.ActiveDockable);
+            }
+            return;
+        }
 
         if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
         {
@@ -664,6 +679,20 @@ public abstract partial class FactoryBase
             return;
         }
 
+        PinDockableCore(dockable);
+    }
+
+    /// <summary>
+    /// Toggles a dockable's pinned state without evaluating capability policy.
+    /// </summary>
+    /// <param name="dockable">The dockable to pin or unpin.</param>
+    /// <remarks>
+    /// Derived factories can use this operation when their programmatic API has
+    /// different eligibility rules from <see cref="PinDockable"/>. Native ownership,
+    /// preview cleanup, selection, and pin notifications are preserved.
+    /// </remarks>
+    protected virtual void PinDockableCore(IDockable dockable)
+    {
         var rootDock = FindRoot(dockable, _ => true);
         if (rootDock is null)
         {
@@ -1233,6 +1262,21 @@ public abstract partial class FactoryBase
             return;
         }
 
+        CloseDockableCore(dockable);
+    }
+
+    /// <summary>
+    /// Closes a dockable without evaluating capability or last-child policy.
+    /// </summary>
+    /// <param name="dockable">The dockable to close.</param>
+    /// <remarks>
+    /// Derived factories can use this operation when their programmatic API has
+    /// different eligibility rules from <see cref="CloseDockable"/>. Closing can
+    /// still be canceled, and ItemsSource removal, hide-on-close behavior, and
+    /// native lifecycle notifications are preserved.
+    /// </remarks>
+    protected virtual void CloseDockableCore(IDockable dockable)
+    {
         if (OnDockableClosing(dockable))
         {
             // Source-generated dockables should be removed (not hidden) so UI state

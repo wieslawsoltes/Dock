@@ -468,6 +468,34 @@ cancellation. Native window decoration close requests still use the window
 lifecycle and its cancellation events. Calling layout methods such as `Close`
 or `Float` directly invokes model operations, independently of UI commands.
 
+As in upstream AvalonDock, capability flags control the default UI commands;
+some explicit model methods deliberately have different rules:
+
+| Explicit model call | Contract |
+| --- | --- |
+| `content.Close()` | Closes even when `CanClose` is false. Document-manager, content, and native closing cancellation still apply. |
+| `tool.ToggleAutoHide()` | Pins or restores a tool in a docked anchorable pane or auto-hide group even when `CanAutoHide` is false. Hidden tools and tools in document panes stay in place. |
+| `tool.DockAsDocument()` | Moves to a document pane even when `CanDockAsTabbedDocument` is false, then selects and activates the tool. |
+| `content.Float()` | Reuses a previous floating pane regardless of `CanFloat`; creating a new window still requires the native float capability. Both paths select and activate the content. Floating an already floating item can create another window while keeping its original docked return pane. |
+
+For example, an application can disable a document's close button while keeping
+its own programmatic close workflow:
+
+```csharp
+document.CanClose = false;
+var item = manager.GetLayoutItemFromModel(document);
+// item.CloseCommand.CanExecute(null) is false.
+document.Close(); // Still raises cancelable closing notifications.
+```
+
+These explicit methods do not temporarily enable capabilities. Default item
+commands continue to check their flags and native Dock policies; close commands
+also honor `CanCloseLastDockable`. Replacing a root/pane policy or a content
+override refreshes command availability. Native `manager.DockFactory` methods
+retain their own capability checks. The adapter reuses the factory's protected
+close and pin operations to preserve native lifecycle events, ItemsSource
+removal, pinned ownership, and cleanup.
+
 `DockAsDocumentCommand` returns a floating document to its previous document
 pane. Without a previous document pane, docking chooses the last focused main
 document pane or another main document pane, creating one when necessary.
@@ -1955,6 +1983,7 @@ flowchart TB
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
+        ModelOperations["Explicit model operation contracts<br/>Close, auto-hide, document placement, and float history"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
         PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
@@ -2023,7 +2052,9 @@ flowchart TB
     Manager --> Layout
     Manager --> Items
     Items <--> Layout
-    Items --> Factory
+    Items -->|Capability and last-child checks| Factory
+    Layout --> ModelOperations
+    ModelOperations -->|Shared native lifecycle| Factory
     Items --> Controls
     Controls --> ContentControls
     ContentControls --> Items

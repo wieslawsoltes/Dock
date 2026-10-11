@@ -391,15 +391,32 @@ public partial class NativeCommandTests
         // Avalonia's hold gesture timer retains the last pressed visual until
         // its deadline even when MouseUp has canceled the gesture.
         await Task.Delay(Application.Current!.PlatformSettings!.HoldWaitDuration + TimeSpan.FromMilliseconds(50));
-        Dispatcher.UIThread.RunJobs();
-        for (int i = 0; i < 3; i++)
+        System.Diagnostics.Stopwatch timeout = System.Diagnostics.Stopwatch.StartNew();
+        bool alive;
+        do
         {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            alive = CollectClosedManager(reference);
+            if (!alive) break;
+            // Let queued timer and compositor callbacks finish between checks.
+            // A persistent command/style/menu reference still fails the bound.
+            await Task.Delay(20);
         }
-        Assert.False(reference.TryGetTarget(out _));
+        while (timeout.Elapsed < TimeSpan.FromSeconds(5));
+        Assert.False(alive, "The closed manager remained reachable after input and render cleanup.");
         GC.KeepAlive(retained);
         GC.KeepAlive(retainedStyles);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static bool CollectClosedManager(WeakReference<DockingManager> reference)
+    {
+        Dispatcher.UIThread.RunJobs();
+        AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+        // Keep the temporary strong target off the async test's stack.
+        return reference.TryGetTarget(out _);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]

@@ -6,6 +6,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives.PopupPositioning;
 using AvalonDock.Controls;
 using Dock.Model.Core;
 
@@ -24,7 +25,7 @@ internal sealed class LayoutContextMenus
     private IDock? _pane;
     private ContextMenu? _previousTargetMenu;
 
-    public void Show(ContextMenu? menu, Control target, LayoutItem item, ContextRequestedEventArgs? request, IDock? pane)
+    public void Show(ContextMenu? menu, Control target, LayoutItem item, ContextRequestedEventArgs? request, IDock? pane, PixelPoint? screenPosition = null)
     {
         Close();
         if (menu is null || !item.IsAttached) return;
@@ -44,6 +45,14 @@ internal sealed class LayoutContextMenus
         if (pane is AvaloniaObject observable) observable.PropertyChanged += PaneChanged;
         menu.SetCurrentValue(StyledElement.DataContextProperty, item);
         menu.SetCurrentValue(ContextMenu.PlacementProperty, request?.TryGetPosition(null, out _) == true ? PlacementMode.Pointer : PlacementMode.Bottom);
+        menu.SetCurrentValue(ContextMenu.PlacementRectProperty, null);
+        if (screenPosition is { } point)
+        {
+            menu.SetCurrentValue(ContextMenu.PlacementProperty, PlacementMode.AnchorAndGravity);
+            menu.SetCurrentValue(ContextMenu.PlacementAnchorProperty, PopupAnchor.TopLeft);
+            menu.SetCurrentValue(ContextMenu.PlacementGravityProperty, PopupGravity.BottomRight);
+            menu.SetCurrentValue(ContextMenu.PlacementRectProperty, new Rect(target.PointToClient(point), default(Size)));
+        }
         menu.SetCurrentValue(ContextMenu.PlacementTargetProperty, target);
         menu.SetCurrentValue(ContextMenu.HorizontalOffsetProperty, 0);
         menu.SetCurrentValue(ContextMenu.VerticalOffsetProperty, 0);

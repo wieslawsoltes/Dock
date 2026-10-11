@@ -574,6 +574,15 @@ supported by corresponding implementation and test evidence.
   presentations while retaining unchanged models. Floating `OnClosing(CancelEventArgs)`
   shares native arguments with the Avalonia overload and event, preserves native
   factory/content vetoes, and supports canceled cleanup retries.
+  Overlay BCL/Avalonia closing hooks also share arguments and preserve their
+  projections until closure succeeds. Protected typed-host and overlay
+  constructors support application subclasses through native window factories.
+- `ShowSystemMenu` defaults to true and compiles in both XML namespaces.
+  Native Windows caption right-clicks prefer custom document/single-pane tool
+  menus, including canceled menu openings, before consulting system fallback.
+  Signed native screen positions are preserved. Floating `FilterMessage`
+  hooks register with Avalonia from the first opening until close; caption
+  activation leaves movement and unhandled messages to the native host.
 - Native destination validation matches the upstream floating-host rules:
   document floating windows reject incoming drops; tool floating windows accept
   tools from the same manager. `AllowMixedOrientation` restricts document split
@@ -583,7 +592,7 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1169 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1190 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -604,7 +613,9 @@ supported by corresponding implementation and test evidence.
   loading, translated localization resources, and the control adapter surface.
   Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,
-  and remaining protected/platform hooks.
+  remaining protected/platform hooks, and desktop validation of Windows
+  message delivery and system-menu fallback. Headless message-policy tests do
+  not exercise the Windows window procedure or its native system-menu UI.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
   Additional selection edge cases and protected override ordering still require
@@ -629,8 +640,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 811
-matching type/member keys and 140 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 817
+matching type/member keys and 134 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

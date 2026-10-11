@@ -653,6 +653,22 @@ content commands run. Calling base preserves native event, factory, and content
 cancellation; the Avalonia `OnClosing(WindowClosingEventArgs)` overload remains
 available. These hooks also run during internal layout cleanup.
 
+`OverlayWindow.OnClosing(CancelEventArgs)` shares Avalonia's native arguments
+and preserves content and selector projections when canceled. The document/tool
+floating controls and overlay have protected constructors for custom hosts
+supplied through Dock's window factories.
+
+`ShowSystemMenu="False"` on the manager disables Windows native-caption
+system-menu fallback. Custom document and single-pane tool menus still take
+precedence, receive the current item container, and open at the native screen
+position. Canceling their opening consumes the request. The protected
+`FilterMessage(IntPtr, int, IntPtr, IntPtr, ref bool)` hooks use Avalonia's Win32
+callback from the first opening until close. Call base to retain caption
+activation and menu routing; Avalonia and Dock handle unconsumed native input.
+Other platforms keep their managed captions and menus. Headless coverage tests
+the message policy; native Windows message delivery and system-menu display
+remain subject to desktop validation.
+
 When Dock's floating docking adorners are enabled with
 `.UseFloatingDockAdorner(true)` on the application builder, native dragging
 creates public `OverlayWindow` hosts. They contain the existing `DockTarget`

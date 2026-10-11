@@ -1528,6 +1528,39 @@ close/cleanup semantics and can still complete window closure.
 These hooks belong to custom controls. Ordinary application close policy can
 continue using the model commands and cancelable closing notifications.
 
+`OverlayWindow` also exposes `OnClosing(CancelEventArgs)`, preserving the native
+arguments and the Avalonia overload. A canceled close leaves its content and
+native selector projections available; successful closure releases them.
+Protected constructors on the document/tool floating controls and overlay allow
+subclasses to participate through Dock's host and adorner-window factories.
+
+## Configure native floating captions
+
+`ShowSystemMenu` defaults to `true` and can be set in either XML namespace:
+
+```xml
+<DockingManager ShowSystemMenu="False" />
+```
+
+This disables the Windows system-menu fallback for native caption right-clicks.
+An available `DocumentContextMenu`, or `AnchorableContextMenu` for a single-pane
+tool window, takes precedence regardless of this setting. Its data context is
+the current `LayoutItem`, and it opens at the physical screen position supplied
+by Windows, including negative monitor coordinates. Canceling that menu's
+`Opening` event also consumes the request. Multi-pane tool windows without a
+single content item use the system fallback.
+
+Floating controls expose the protected upstream
+`FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)`
+hook through Avalonia's `Win32Properties` callback. Registration starts at the
+first opening, after derived constructor state is available, and ends on close.
+Call base to retain caption activation and menu routing. The adapter leaves
+unhandled movement, resizing, hit testing, and system menus to Avalonia and Dock.
+The managed caption templates and menus continue to work on other platforms;
+those platforms do not deliver Win32 messages. Headless tests exercise the
+message policy and overrides; native Windows delivery and system-menu display
+still need a desktop validation pass.
+
 ## Inspect native floating-window controls
 
 `DockingManager.FloatingWindows` enumerates `LayoutFloatingWindowControl`

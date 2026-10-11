@@ -52,6 +52,9 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Identifies the tool context menu.</summary>
     public static readonly StyledProperty<ContextMenu?> AnchorableContextMenuProperty =
         AvaloniaProperty.Register<DockingManager, ContextMenu?>(nameof(AnchorableContextMenu));
+    /// <summary>Identifies whether a floating caption may fall back to the Windows system menu.</summary>
+    public static readonly StyledProperty<bool> ShowSystemMenuProperty =
+        AvaloniaProperty.Register<DockingManager, bool>(nameof(ShowSystemMenu), true);
     /// <summary>Identifies whether document-group commands may change a populated group's orientation.</summary>
     public static readonly StyledProperty<bool> AllowMixedOrientationProperty =
         AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMixedOrientation));
@@ -273,6 +276,10 @@ public partial class DockingManager : TemplatedControl
     public ContextMenu? DocumentContextMenu { get => GetValue(DocumentContextMenuProperty); set => SetValue(DocumentContextMenuProperty, value); }
     /// <summary>Gets or sets the tool menu used by tabs, title bars, and auto-hide strips.</summary>
     public ContextMenu? AnchorableContextMenu { get => GetValue(AnchorableContextMenuProperty); set => SetValue(AnchorableContextMenuProperty, value); }
+    /// <summary>Gets or sets whether a native floating caption may show the Windows system menu. Defaults to true.</summary>
+    /// <remarks>A configured document or single-pane tool menu takes precedence, including when this is false.
+    /// This controls native Windows caption right-clicks; it does not disable application context menus.</remarks>
+    public bool ShowSystemMenu { get => GetValue(ShowSystemMenuProperty); set => SetValue(ShowSystemMenuProperty, value); }
     /// <summary>Gets or sets whether document-group commands may change a populated group's orientation.</summary>
     public bool AllowMixedOrientation { get => GetValue(AllowMixedOrientationProperty); set => SetValue(AllowMixedOrientationProperty, value); }
     /// <summary>Gets or sets whether unhandled arrow keys move floating windows by 25 device-independent units.</summary>
@@ -619,9 +626,9 @@ public partial class DockingManager : TemplatedControl
     internal void RemoveFloatingWindow(LayoutFloatingWindowControl window) => _floatingControls.Remove(window);
     internal void NotifyFloatingWindowControlsChanged(NotifyCollectionChangedEventArgs args) =>
         LayoutFloatingWindowControlCollectionChanged?.Invoke(this, new(args));
-    internal void ShowContextMenu(Control target, LayoutItem item, LayoutHeaderKind kind, ContextRequestedEventArgs? request, IDock? pane = null) =>
+    internal void ShowContextMenu(Control target, LayoutItem item, LayoutHeaderKind kind, ContextRequestedEventArgs? request, IDock? pane = null, PixelPoint? screenPosition = null) =>
         _contextMenus.Show(kind == LayoutHeaderKind.Document ? DocumentContextMenu : AnchorableContextMenu,
-            target, item, request, pane);
+            target, item, request, pane, screenPosition);
     internal void AttachLayoutItem(LayoutItem item) => LogicalChildren.Add(item);
     internal void DetachLayoutItem(LayoutItem item) => LogicalChildren.Remove(item);
     internal bool AreSourceBindingsSuspended => _sourceBindingSuspensions > 0;

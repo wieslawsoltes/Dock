@@ -4,6 +4,8 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <DockingManager x:Key="SystemMenuOption" ShowSystemMenu="False" />
+    <ad:DockingManager x:Key="LegacySystemMenuOption" ShowSystemMenu="False" />
     <ControlTheme x:Key="Overlay" TargetType="OverlayWindow" x:DataType="OverlayWindow"
                   BasedOn="{StaticResource {x:Type OverlayWindow}}">
       <Setter Property="Tag" Value="{x:Static DropTargetType.DocumentPaneDockInside}" />

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using AvalonDock.Infrastructure;
@@ -15,7 +16,9 @@ public class OverlayWindow : DockAdornerWindow
 {
     private LayoutOverlayProjection? _projection;
 
-    internal OverlayWindow(DockingManager manager, Control surface, Control adorner)
+    /// <summary>Creates a native overlay for a manager, docking surface, and adorner.</summary>
+    /// <remarks>This Avalonia constructor also supports subclasses supplied by a native adorner-window factory.</remarks>
+    protected internal OverlayWindow(DockingManager manager, Control surface, Control adorner)
     {
         _projection = new LayoutOverlayProjection(surface, adorner);
         Styles.Add(new AvalonDockTheme());
@@ -48,6 +51,23 @@ public class OverlayWindow : DockAdornerWindow
     public virtual void OnApplyTemplate()
     {
         if (Content is TemplatedControl target) target.ApplyTemplate();
+    }
+
+    /// <summary>Dispatches a native close request to the AvalonDock cancellation hook.</summary>
+    protected override void OnClosing(WindowClosingEventArgs e) => OnClosing((CancelEventArgs)e);
+
+    /// <summary>Preserves overload dispatch from derived Avalonia closing overrides.</summary>
+    /// <typeparam name="TEventArgs">The native window-closing argument type.</typeparam>
+    /// <param name="e">The arguments supplied by Avalonia.</param>
+    protected void OnClosing<TEventArgs>(TEventArgs e) where TEventArgs : WindowClosingEventArgs =>
+        OnClosing((CancelEventArgs)e);
+
+    /// <summary>Processes an overlay close request using AvalonDock's cancellation signature.</summary>
+    /// <remarks>Calling base raises Avalonia's Closing event with the same native arguments.
+    /// A canceled close preserves the content, native selectors, and current projections.</remarks>
+    protected virtual void OnClosing(CancelEventArgs e)
+    {
+        if (e is WindowClosingEventArgs nativeArgs) base.OnClosing(nativeArgs);
     }
 
     /// <inheritdoc/>

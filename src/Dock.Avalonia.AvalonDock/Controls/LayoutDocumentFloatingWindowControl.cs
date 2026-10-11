@@ -9,7 +9,10 @@ public class LayoutDocumentFloatingWindowControl : LayoutFloatingWindowControl
 {
     private readonly LayoutDocumentFloatingWindow _model;
 
-    internal LayoutDocumentFloatingWindowControl(LayoutDocumentFloatingWindow model, bool isContentImmutable = false)
+    /// <summary>Creates a document host, including a host subclass supplied through the native window locator.</summary>
+    /// <param name="model">The floating document model.</param>
+    /// <param name="isContentImmutable">Whether loaded content is protected from replacement.</param>
+    protected internal LayoutDocumentFloatingWindowControl(LayoutDocumentFloatingWindow model, bool isContentImmutable = false)
         : base(model, isContentImmutable) => _model = model;
 
     /// <inheritdoc/>
@@ -23,4 +26,11 @@ public class LayoutDocumentFloatingWindowControl : LayoutFloatingWindowControl
     /// <inheritdoc/>
     protected override bool CanClose(object? parameter = null) =>
         LayoutFloatingWindowOperations.CanExecute(_model, hide: false, parameter);
+
+    /// <summary>Activates a clicked native caption and routes its context menu before native fallback.</summary>
+    protected override IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        LayoutFloatingCaptionMessages.Process(this, msg, wParam, lParam, ref handled);
+        return base.FilterMessage(hwnd, msg, wParam, lParam, ref handled);
+    }
 }

@@ -55,11 +55,15 @@ PackageConsumer.DestinationProbe.Verify();
 PackageConsumer.SerializationProbe.Verify();
 PackageConsumer.OperationProbe.Verify();
 PackageConsumer.AutoHideReturnProbe.Verify();
+PackageConsumer.NativeWindowProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
 if (closeOrigin.UserOrigin) throw new Exception("Native host exit did not expose internal close origin.");
 PackageConsumer.ConsumerWindow window = new();
+if (window.Resources["SystemMenuOption"] is not DockingManager { ShowSystemMenu: false } ||
+    window.Resources["LegacySystemMenuOption"] is not DockingManager { ShowSystemMenu: false })
+    throw new Exception("The packaged system-menu property did not compile in both XML namespaces.");
 if (window.Resources["Container"] is not LayoutDocumentItem { Description: "Unprefixed packaged container" })
     throw new Exception("The packaged item container did not compile in the default XML namespace.");
 window.Show();

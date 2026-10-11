@@ -18,7 +18,10 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
     private readonly LayoutAnchorableFloatingWindow _model;
     private readonly LayoutFloatingWindowCommands _commands;
 
-    internal LayoutAnchorableFloatingWindowControl(LayoutAnchorableFloatingWindow model, bool isContentImmutable = false)
+    /// <summary>Creates a tool host, including a host subclass supplied through the native window locator.</summary>
+    /// <param name="model">The floating tool model.</param>
+    /// <param name="isContentImmutable">Whether loaded content is protected from replacement.</param>
+    protected internal LayoutAnchorableFloatingWindowControl(LayoutAnchorableFloatingWindow model, bool isContentImmutable = false)
         : base(model, isContentImmutable)
     {
         _model = model;
@@ -51,6 +54,13 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
         LayoutFloatingWindowOperations.CanExecute(_model, hide: true, parameter);
     /// <inheritdoc/>
     protected override void DoHide() => HideContents(null);
+
+    /// <summary>Activates a clicked native caption and routes a single-pane menu before native fallback.</summary>
+    protected override IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        LayoutFloatingCaptionMessages.Process(this, msg, wParam, lParam, ref handled);
+        return base.FilterMessage(hwnd, msg, wParam, lParam, ref handled);
+    }
 
     private void HideContents(object? parameter)
     {

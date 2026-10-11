@@ -35,6 +35,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     private bool _notifyOpened;
     private bool _internalCloseRequested;
     private bool _preserveCloseOrigin;
+    private bool _messageHookAttached;
 
     static LayoutFloatingWindowControl()
     {
@@ -152,6 +153,16 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <remarks>Call the base hook to retain native initialization. The public Initialized event follows this hook.</remarks>
     protected virtual void OnInitialized(EventArgs e) => base.OnInitialized();
 
+    /// <summary>Filters native Windows messages before Avalonia processes them.</summary>
+    /// <remarks>Invoked through Avalonia's Win32 callback after the first opening until the window closes.
+    /// Set handled to true and return the native result to consume a message. The base implementation
+    /// leaves native docking, movement, resizing, and system-menu handling to Avalonia and Dock.
+    /// Other platforms do not deliver Win32 messages.</remarks>
+    protected virtual IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) => IntPtr.Zero;
+
+    private IntPtr DispatchWindowMessage(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+        FilterMessage(hwnd, unchecked((int)message), wParam, lParam, ref handled);
+
     /// <summary>Dispatches a native close request to the AvalonDock cancellation hook.</summary>
     protected override void OnClosing(WindowClosingEventArgs e) => OnClosing((CancelEventArgs)e);
 
@@ -175,6 +186,13 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Notifies the native factory when an explicitly created window is first shown.</summary>
     protected override void OnOpened(EventArgs e)
     {
+        // Initialization may run while a base constructor installs its styles.
+        // Native callbacks must wait until derived hosts have their model state.
+        if (!_messageHookAttached)
+        {
+            Win32Properties.AddWndProcHookCallback(this, DispatchWindowMessage);
+            _messageHookAttached = true;
+        }
         Model.Root?.Manager?.AttachThemeResources(this);
         NotifyOpened();
         base.OnOpened(e);
@@ -260,6 +278,11 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         ((INotifyCollectionChanged)Classes).CollectionChanged -= NativeDragChanged;
         try
         {
+            if (_messageHookAttached)
+            {
+                Win32Properties.RemoveWndProcHookCallback(this, DispatchWindowMessage);
+                _messageHookAttached = false;
+            }
             SetIsDragging(false);
             root?.Manager?.RemoveFloatingWindow(this);
         }

@@ -78,7 +78,7 @@ public partial class NativeCommandTests
         using Workspace workspace = new(new ContextMenuFixture());
         ContextMenu tools = workspace.Manager.AnchorableContextMenu!;
         ContextMenu documents = workspace.Manager.DocumentContextMenu!;
-        Control title = workspace.Manager.GetVisualDescendants().OfType<TextBlock>().Single(control => control.Name == "PART_Title");
+        Control title = workspace.Manager.GetVisualDescendants().OfType<Control>().Single(control => control.Name == "PART_Title");
         Click(title, MouseButton.Right);
         Assert.True(tools.IsOpen);
         Assert.Same(workspace.Manager.GetLayoutItemFromModel(workspace.Tool), tools.DataContext);

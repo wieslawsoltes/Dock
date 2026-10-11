@@ -19,9 +19,13 @@ internal sealed class LayoutHeaderContentTemplate(DockingManager manager, Layout
     {
         if (data is not LayoutContent) return null;
         _manager.TryGetTarget(out DockingManager? owner);
-        IDataTemplate? template = kind == LayoutHeaderKind.Document
-            ? owner?.DocumentHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentHeaderTemplate
-            : owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableHeaderTemplate;
+        IDataTemplate? template = kind switch
+        {
+            LayoutHeaderKind.Document => owner?.DocumentHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentHeaderTemplate,
+            LayoutHeaderKind.Anchorable => owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableHeaderTemplate,
+            LayoutHeaderKind.AnchorableTitle => owner?.AnchorableTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableTitleTemplate,
+            _ => null
+        };
         template ??= fallback;
         if (template is null) return null;
         if (existing is not null && (!_builtTemplates.TryGetValue(existing, out IDataTemplate? previous) ||

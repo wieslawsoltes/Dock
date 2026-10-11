@@ -19,6 +19,11 @@
     <x:String x:Key="AvalonDockMoveToPreviousTabGroupString">Move to Previous Tab Group</x:String>
     <infrastructure:LayoutItemConverter x:Key="AvalonDockLayoutItem" />
     <infrastructure:LayoutToolCloseCommandConverter x:Key="AvalonDockToolCloseCommand" />
+    <DataTemplate x:Key="AvalonDockDefaultToolTitle" x:DataType="layout:LayoutContent">
+      <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+    </DataTemplate>
+    <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockToolTitle" Kind="AnchorableTitle"
+                                         DefaultTemplate="{StaticResource AvalonDockDefaultToolTitle}" />
     <ControlTheme x:Key="AvalonDockAutoHideMenuItem" TargetType="MenuItem" x:DataType="items:LayoutAnchorableItem"
                   BasedOn="{StaticResource {x:Type MenuItem}}">
       <Setter Property="Header" Value="{DynamicResource ToolChromeControlAutoHideString}" />
@@ -85,9 +90,9 @@
             <Grid ColumnDefinitions="*,Auto,Auto"
                   Margin="{DynamicResource DockToolChromeHeaderMargin}">
               <Panel Grid.Column="0" HorizontalAlignment="Left">
-                <TextBlock x:Name="PART_Title"
-                           TextTrimming="CharacterEllipsis"
-                           Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}" />
+                <ContentPresenter x:Name="PART_Title"
+                                  Content="{Binding $parent[dock:ToolChromeControl].((dmc:IToolDock)DataContext).ActiveDockable}"
+                                  ContentTemplate="{StaticResource AvalonDockToolTitle}" />
               </Panel>
               <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <Button x:Name="PART_MenuButton"
@@ -225,5 +230,14 @@
   <Style Selector="dock|DockControl.avalondock dock|ToolChromeControl, dock|HostWindow.avalondock dock|ToolChromeControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockToolChrome}" />
     <Setter Property="ToolFlyout" Value="{x:Null}" />
+    <Style Selector="^ /template/ ContentPresenter#PART_Title">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="Margin" Value="{DynamicResource DockToolChromeTitleMargin}" />
+      <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
+    </Style>
+    <Style Selector="^:active /template/ ContentPresenter#PART_Title">
+      <Setter Property="Foreground" Value="{DynamicResource DockTabActiveForegroundBrush}" />
+    </Style>
   </Style>
 </Styles>

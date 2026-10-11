@@ -117,6 +117,13 @@ supported by corresponding implementation and test evidence.
   Native tool chrome also releases its shared flyout's button reference when
   detached and restores the current menu binding on reattachment, including
   menu replacement or removal while detached.
+- `AnchorableTitleTemplate` and `AnchorableTitleTemplateSelector` apply compiled
+  templates to native tool chrome for docked and floating panes and auto-hide
+  previews. They receive the selected public `LayoutAnchorable` and its presenter,
+  independently of tab headers. Selector precedence, null fallback, runtime
+  replacement, native tab selection, metadata updates, context-menu input, and
+  close commands are covered by Headless tests. Source removal and XML replacement
+  detach old title presenters; retaining them does not retain a model or manager.
 - Layout cleanup retains the last document pane and referenced return panes,
   clears detached active content, and collapses redundant typed pane groups.
 - Document and tool floating models expose native Dock windows through an
@@ -162,7 +169,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 252 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 266 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -173,7 +180,7 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: title/menu/icon templates, additional update
+- Remaining manager APIs: floating document title/menu/icon templates, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,
@@ -192,8 +199,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 392
-matching type/member keys and 559 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 396
+matching type/member keys and 555 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

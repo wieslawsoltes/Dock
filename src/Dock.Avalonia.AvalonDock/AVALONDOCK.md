@@ -170,7 +170,24 @@ The corresponding `DocumentHeaderTemplateSelector` and
 presenter. Header selectors take precedence and coerce the explicit header
 template to null; a null selection falls back to the title. Runtime changes
 update docked, floating, and auto-hide headers while preserving native input.
-Title-bar and document-menu templates remain open work.
+
+`AnchorableTitleTemplate` customizes the selected tool's title bar independently
+of its tab header, including floating panes and open auto-hide previews:
+
+```xml
+<DockingManager.AnchorableTitleTemplate>
+  <DataTemplate x:DataType="LayoutAnchorable">
+    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+  </DataTemplate>
+</DockingManager.AnchorableTitleTemplate>
+```
+
+`AnchorableTitleTemplateSelector` receives the selected layout node and its
+presenter. As with header selectors, it takes precedence and coerces the explicit
+template to null; a null selection uses the default title text. Template changes,
+tab selection, and metadata changes update the visible title. Native context
+menus and title-bar buttons keep their command behavior. Floating document title
+and document-menu header templates remain open work.
 
 `DocumentsSource` and `AnchorablesSource` accept observable content collections.
 Bind them within a view with an explicit `x:DataType`, and supply compiled
@@ -201,7 +218,7 @@ compatibility has not yet been established.
 flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
-    Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
+    Items["LayoutItem containers<br/>Content, headers, tool titles, styles, and commands"]
     Commands["Compiled command bindings<br/>Native input routing"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     Bridge["Identity, collection, state, and lifecycle adapters"]

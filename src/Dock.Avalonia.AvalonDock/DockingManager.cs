@@ -50,6 +50,13 @@ public class DockingManager : TemplatedControl
     public static readonly StyledProperty<IDataTemplate?> AnchorableHeaderTemplateProperty =
         AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(AnchorableHeaderTemplate),
             coerce: static (owner, value) => owner.GetValue(AnchorableHeaderTemplateSelectorProperty) is null ? value : null);
+    /// <summary>Identifies the tool title bar template selector.</summary>
+    public static readonly StyledProperty<DataTemplateSelector?> AnchorableTitleTemplateSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(AnchorableTitleTemplateSelector));
+    /// <summary>Identifies the template used for the selected tool's title bar.</summary>
+    public static readonly StyledProperty<IDataTemplate?> AnchorableTitleTemplateProperty =
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(AnchorableTitleTemplate),
+            coerce: static (owner, value) => owner.GetValue(AnchorableTitleTemplateSelectorProperty) is null ? value : null);
     /// <summary>Identifies the theme applied to document and tool containers.</summary>
     public static readonly StyledProperty<ControlTheme?> LayoutItemContainerStyleProperty =
         AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(LayoutItemContainerStyle));
@@ -161,6 +168,10 @@ public class DockingManager : TemplatedControl
     public IDataTemplate? AnchorableHeaderTemplate { get => GetValue(AnchorableHeaderTemplateProperty); set => SetValue(AnchorableHeaderTemplateProperty, value); }
     /// <summary>Gets or sets the selector that takes precedence over the tool header template.</summary>
     public DataTemplateSelector? AnchorableHeaderTemplateSelector { get => GetValue(AnchorableHeaderTemplateSelectorProperty); set => SetValue(AnchorableHeaderTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the tool title bar template, receiving the selected layout content.</summary>
+    public IDataTemplate? AnchorableTitleTemplate { get => GetValue(AnchorableTitleTemplateProperty); set => SetValue(AnchorableTitleTemplateProperty, value); }
+    /// <summary>Gets or sets the selector that takes precedence over the tool title bar template.</summary>
+    public DataTemplateSelector? AnchorableTitleTemplateSelector { get => GetValue(AnchorableTitleTemplateSelectorProperty); set => SetValue(AnchorableTitleTemplateSelectorProperty, value); }
     /// <summary>Gets or sets the Avalonia control theme applied to item containers.</summary>
     public ControlTheme? LayoutItemContainerStyle { get => GetValue(LayoutItemContainerStyleProperty); set => SetValue(LayoutItemContainerStyleProperty, value); }
     /// <summary>Gets or sets the container theme selector used when no explicit style is set.</summary>
@@ -240,6 +251,13 @@ public class DockingManager : TemplatedControl
     {
         if (e.NewValue is not null) SetCurrentValue(AnchorableHeaderTemplateProperty, null);
     }
+    /// <summary>Called when the tool title bar template changes.</summary>
+    protected virtual void OnAnchorableTitleTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Clears an explicit tool title bar template when a selector is supplied.</summary>
+    protected virtual void OnAnchorableTitleTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not null) SetCurrentValue(AnchorableTitleTemplateProperty, null);
+    }
     /// <summary>Applies the new item container style to existing layout content.</summary>
     protected virtual void OnLayoutItemContainerStyleChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <summary>Applies the new item container style selector to existing layout content.</summary>
@@ -286,6 +304,17 @@ public class DockingManager : TemplatedControl
             OnAnchorableHeaderTemplateSelectorChanged(change);
             CoerceValue(AnchorableHeaderTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);
+        }
+        if (change.Property == AnchorableTitleTemplateProperty)
+        {
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.AnchorableTitle);
+            OnAnchorableTitleTemplateChanged(change);
+        }
+        if (change.Property == AnchorableTitleTemplateSelectorProperty)
+        {
+            OnAnchorableTitleTemplateSelectorChanged(change);
+            CoerceValue(AnchorableTitleTemplateProperty);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.AnchorableTitle);
         }
     }
     /// <summary>Occurs before replacing the layout.</summary>

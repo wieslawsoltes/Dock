@@ -7,8 +7,8 @@ using AvalonDock.Controls;
 
 namespace AvalonDock.Infrastructure;
 
-// One item may have several headers (for example a tab and an auto-hide strip).
-// Weak registrations allow discarded native tab presenters to be collected.
+// One item may have several headers (a tab, title bar, and auto-hide strip).
+// Weak registrations allow discarded native presenters to be collected.
 internal sealed class LayoutHeaderViews(LayoutItem item)
 {
     private readonly List<WeakReference<LayoutHeaderPresenter>> _views = new();

@@ -388,7 +388,7 @@ selects the appropriate template for the new object. Recycling is limited to
 controls built by the same selected template. An explicit template can also
 display null content.
 
-## Customize tab and auto-hide headers
+## Customize tab headers and tool titles
 
 Header templates receive the public layout node. Content templates receive the
 application object stored in that node's `Content` property.
@@ -397,6 +397,7 @@ application object stored in that node's `Content` property.
 | --- | --- | --- |
 | `DocumentHeaderTemplate` | Document tabs, docked or floating | `LayoutContent` (documents and tools docked as documents) |
 | `AnchorableHeaderTemplate` | Tool tabs and auto-hide strips | `LayoutAnchorable` |
+| `AnchorableTitleTemplate` | Selected tool's title bar, including floating panes and auto-hide previews | `LayoutAnchorable` |
 
 For example, add these properties to a manager declared in the default Avalonia
 XML namespace:
@@ -412,11 +413,17 @@ XML namespace:
     <TextBlock Text="{Binding Title}" FontStyle="Italic" />
   </DataTemplate>
 </DockingManager.AnchorableHeaderTemplate>
+<DockingManager.AnchorableTitleTemplate>
+  <DataTemplate x:DataType="LayoutAnchorable">
+    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+  </DataTemplate>
+</DockingManager.AnchorableTitleTemplate>
 ```
 
-`DocumentHeaderTemplateSelector` and `AnchorableHeaderTemplateSelector` accept
+`DocumentHeaderTemplateSelector`, `AnchorableHeaderTemplateSelector`, and
+`AnchorableTitleTemplateSelector` accept
 `AvalonDock.Controls.DataTemplateSelector`. `SelectTemplate` receives the
-layout node and the actual header presenter. A document-header selector should
+layout node and the actual presenter. A document-header selector should
 also handle `LayoutAnchorable` when tools can be docked into document panes.
 
 As in AvalonDock, header selectors take precedence: setting a selector clears
@@ -426,8 +433,15 @@ Changing a manager header property updates existing docked, floating, and
 auto-hide headers. Compiled bindings observe live title and metadata changes.
 Native tab selection, activation, and auto-hide preview input continue to work.
 XML restoration releases old header content and binds the replacement nodes.
-Pane title bars and document-menu header templates remain open compatibility
-work.
+
+Tool titles follow the selected tab independently of its tab header. The title
+template and selector use the same precedence rules as header templates;
+clearing both returns to the default title text. Runtime changes reach existing
+tool title bars, including floating panes and open auto-hide previews. Native
+context menus, title-bar buttons, and input handling remain available. Source
+removal and XML replacement release the old title's model and manager references.
+Floating document title templates (`DocumentTitleTemplate`) and document-menu
+header templates remain open compatibility work.
 
 ## Restore application content from XML
 
@@ -476,7 +490,7 @@ flowchart TB
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
-        Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
+        Items["LayoutItem containers<br/>Content, headers, tool titles, styles, and commands"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         Bridge["Identity, collections, selection, sizing, and return history"]
@@ -542,10 +556,11 @@ inline controls and Dock template content to the native model's template path.
 The item registry keeps containers in the manager's logical scope and applies
 selected control themes. Compiled container bindings synchronize metadata and
 capabilities with those same native models.
-Header template adapters translate native document/tool models to their
-existing public wrappers before applying compiled templates. Their presenters
-remain inside Dock's tab controls and auto-hide buttons. Closed containers
-release their header bindings and native presentation parents.
+Header and tool-title template adapters translate native document/tool models
+to their existing public wrappers before applying compiled templates. Their presenters
+remain inside Dock's tab controls, auto-hide buttons, and tool chrome. Tool titles
+observe the native pane's selected model. Closed containers release their
+header bindings and native presentation parents.
 
 `XmlLayoutSerializer` uses explicit codecs and content callbacks without
 runtime type discovery. It restores the facade and its native models together.

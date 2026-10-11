@@ -49,6 +49,28 @@ if (!toolMenu.IsOpen || !ReferenceEquals(toolMenu.DataContext, manager.GetLayout
 ClickNative(toolMenu.Items.OfType<MenuItem>().Single());
 if (tool.IsAutoHidden || toolMenu.DataContext is not null || toolMenu.PlacementTarget is not null)
     throw new Exception("The custom tool menu did not restore the tool and clear its invocation.");
+tool.IsActive = true;
+Dispatcher.UIThread.RunJobs();
+AssertToolTitle(manager, tool);
+tool.Float();
+Dispatcher.UIThread.RunJobs();
+HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+AssertToolTitle(toolHost, tool);
+tool.Title = "Floating agenda";
+AssertToolTitle(toolHost, tool);
+manager.AnchorableTitleTemplateSelector = new DataTemplateSelector();
+Dispatcher.UIThread.RunJobs();
+if (manager.AnchorableTitleTemplate is not null || toolHost.GetVisualDescendants().OfType<TextBlock>()
+    .Any(text => text.Classes.Contains("package-tool-title")))
+    throw new Exception("The tool title selector did not take precedence over its explicit template.");
+manager.AnchorableTitleTemplateSelector = null;
+manager.AnchorableTitleTemplate = (IDataTemplate)window.Resources["ToolTitle"]!;
+Dispatcher.UIThread.RunJobs();
+AssertToolTitle(toolHost, tool);
+tool.Dock();
+tool.Title = "Agenda";
+Dispatcher.UIThread.RunJobs();
+AssertToolTitle(manager, tool);
 tool.ToggleAutoHide();
 ObservableCollection<string> documents = new() { "Source document content" };
 manager.DocumentsSource = documents;
@@ -196,7 +218,14 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, docked/floating tool titles and selectors, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+
+static void AssertToolTitle(Control scope, LayoutAnchorable tool)
+{
+    if (!scope.GetVisualDescendants().OfType<TextBlock>().Any(text => text.IsEffectivelyVisible &&
+        text.Classes.Contains("package-tool-title") && ReferenceEquals(text.DataContext, tool) && text.Text == "Title: " + tool.Title))
+        throw new Exception("The packaged tool title template did not render the selected public model and its current title.");
+}
 
 static void ClickNative(Control control, MouseButton button = MouseButton.Left)
 {

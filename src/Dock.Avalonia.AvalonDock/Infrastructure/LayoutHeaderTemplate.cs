@@ -4,9 +4,9 @@ using Dock.Model.Core;
 
 namespace AvalonDock.Infrastructure;
 
-internal enum LayoutHeaderKind { Document, Anchorable }
+internal enum LayoutHeaderKind { Document, Anchorable, AnchorableTitle }
 
-// Adapt the native tab's model without changing Dock's tab containers or input.
+// Adapt native tab and title models without changing Dock's containers or input.
 internal sealed class LayoutHeaderTemplate : IRecyclingDataTemplate
 {
     public LayoutHeaderKind Kind { get; set; }

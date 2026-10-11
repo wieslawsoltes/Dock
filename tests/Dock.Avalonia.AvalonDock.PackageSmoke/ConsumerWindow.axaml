@@ -13,6 +13,9 @@
     <DataTemplate x:Key="ToolHeader" x:DataType="LayoutAnchorable">
       <TextBlock Classes="package-tool-header" Text="{Binding Title, StringFormat='Tool: {0}'}" />
     </DataTemplate>
+    <DataTemplate x:Key="ToolTitle" x:DataType="LayoutAnchorable">
+      <TextBlock Classes="package-tool-title" Text="{Binding Title, StringFormat='Title: {0}'}" />
+    </DataTemplate>
     <ControlTheme x:Key="SourceContainerStyle" TargetType="LayoutDocumentItem" x:DataType="LayoutDocumentItem">
       <Setter Property="Title" Value="{Binding Model, StringFormat='Styled: {0}'}" />
       <Setter Property="CanFloat" Value="True" />
@@ -29,7 +32,8 @@
   </Window.Styles>
   <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}"
                   DocumentHeaderTemplate="{StaticResource DocumentHeader}"
-                  AnchorableHeaderTemplate="{StaticResource ToolHeader}">
+                  AnchorableHeaderTemplate="{StaticResource ToolHeader}"
+                  AnchorableTitleTemplate="{StaticResource ToolTitle}">
     <DockingManager.DocumentContextMenu>
       <ContextMenu x:DataType="LayoutItem">
         <MenuItem Header="Close package document" Command="{Binding CloseCommand}" />

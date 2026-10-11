@@ -208,17 +208,23 @@ public class AutoHideWindowTests
         Assert.Same(tool, workspace.Preview.Model);
     }
 
-    [AvaloniaFact]
-    public async Task Pointer_Reentry_At_The_Close_Deadline_Returns_To_Idle_Monitoring()
+    [AvaloniaTheory]
+    [InlineData(80)]
+    [InlineData(350)]
+    public async Task Pointer_Reentry_At_The_Close_Deadline_Returns_To_Idle_Monitoring(int reentryDelay)
     {
         using Workspace workspace = new();
-        workspace.Manager.AutoHideWindowClosingTimer = 200;
+        // Hold the deadline while awaiting the first idle poll. A busy runner
+        // may resume this continuation much later than the requested delay.
+        workspace.Manager.AutoHideWindowClosingTimer = int.MaxValue;
         LayoutAnchorable tool = workspace.Tool();
         workspace.Show(tool); workspace.MoveAway();
-        await workspace.Wait(80);
+        await workspace.Wait(reentryDelay);
         workspace.Window.MouseMove(workspace.Center(workspace.Preview));
-        await workspace.Wait(250);
+        workspace.Manager.AutoHideWindowClosingTimer = 0;
+        await workspace.Wait(80);
         Assert.Same(tool, workspace.Preview.Model);
+        workspace.Manager.AutoHideWindowClosingTimer = 200;
         TimeSpan elapsed = await workspace.ObserveClosing(workspace.MoveAway);
         Assert.True(elapsed.TotalMilliseconds >= 199, $"The restarted 200 ms delay ended after {elapsed.TotalMilliseconds} ms.");
         Assert.Null(workspace.Preview.Model);

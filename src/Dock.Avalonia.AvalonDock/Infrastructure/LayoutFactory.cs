@@ -1,4 +1,5 @@
 using System;
+using Dock.Model;
 using Dock.Model.Avalonia;
 using Dock.Model.Core;
 using AvalonDock.Controls;
@@ -47,6 +48,17 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     {
         using IDockOperationScope? scope = operations.Begin(dockable.Owner ?? dockable, LayoutOperation.Float);
         floatingPlacement.FloatAll(dockable, () => base.FloatAllDockables(dockable, options));
+        scope?.Complete();
+    }
+
+    public override void FloatDockable(IDockable dockable, DockWindowOptions? options)
+    {
+        if (dockable.Owner is not IDock || !DockCapabilityResolver.IsEnabled(dockable,
+                DockCapability.Float, DockCapabilityResolver.ResolveOperationDock(dockable))) return;
+        // Native floating first unpins auto-hidden content. Observe that change
+        // within the same scope as the later window creation.
+        using IDockOperationScope? scope = operations.Begin(dockable, LayoutOperation.Float);
+        base.FloatDockable(dockable, options);
         scope?.Complete();
     }
 

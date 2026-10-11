@@ -85,6 +85,8 @@ internal static class LayoutItemOperations
     private static void Move(LayoutContent content, LayoutDocumentPane destination)
     {
         if (content.DockModel.Owner is not IDock source || content.DockModel.Factory is not { } factory) return;
+        // Upstream tab-group commands manipulate panes without docking events.
+        using IDockOperationScope? scope = (content.Root as LayoutRoot)?.Operations.Begin(content.DockModel, LayoutOperation.Silent);
         factory.MoveDockable(source, (IDock)destination.DockModel, content.DockModel, null);
         int index = destination.Children.IndexOf(content);
         if (index > 0) destination.MoveChild(index, 0);

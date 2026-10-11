@@ -577,12 +577,14 @@ void OnDocked(object? sender, RoutedEventArgs args)
 manager.Docked -= OnDocked;
 ```
 
-The events cover layout methods, container commands, native menus, and native
+The events cover layout methods, float/dock commands, native menus, and native
 drag execution. A group operation raises one pair: floating uses its selected
 content, and docking uses its first content. Native validation does not raise
 events or mutate the layout. Internal moves in a split or group operation do
 not produce additional pairs. Reordering tabs and restoring a previous floating
 pane without creating a new window are silent, matching the upstream paths.
+Document tab-group commands are also silent. Floating an auto-hidden tool raises
+its preview before Dock unpins it.
 
 Despite the `Preview` names, these events bubble rather than tunnel. Setting
 `Handled` affects event routing and does not cancel docking or floating. Native

@@ -110,6 +110,20 @@ public class DockingEventTests
     }
 
     [AvaloniaFact]
+    public void Floating_An_Auto_Hidden_Tool_Notifies_Before_Unpinning_It()
+    {
+        using Workspace workspace = new();
+        workspace.Tool.ToggleAutoHide();
+        LayoutAnchorGroup group = Assert.IsType<LayoutAnchorGroup>(workspace.Tool.Parent);
+        List<Notification> events = Observe(workspace.Manager);
+        workspace.Tool.Float();
+        Assert.Equal(new[] { "PreviewFloat", "Floated" }, events.Select(item => item.Name));
+        Assert.Same(group, events[0].Parent);
+        Assert.False(workspace.Tool.IsAutoHidden);
+        Assert.True(workspace.Tool.IsFloating);
+    }
+
+    [AvaloniaFact]
     public void Native_Drag_Validation_Is_Silent_And_Execution_Uses_The_Same_Float_Events()
     {
         using Workspace workspace = new();
@@ -220,6 +234,21 @@ public class DockingEventTests
         DockManager native = new(new DockService());
         Assert.True(native.ValidateDockable(workspace.First.DockModel, workspace.Second.DockModel,
             DragAction.Move, DockOperation.Fill, true));
+        Assert.Empty(events);
+    }
+
+    [AvaloniaFact]
+    public void Document_Tab_Group_Commands_Remain_Silent()
+    {
+        using Workspace workspace = new();
+        List<Notification> events = Observe(workspace.Manager);
+        var item = workspace.Manager.GetLayoutItemFromModel(workspace.First)!;
+        Assert.True(item.NewHorizontalTabGroupCommand!.CanExecute(null));
+        item.NewHorizontalTabGroupCommand.Execute(null);
+        Assert.NotSame(workspace.Documents, workspace.First.Parent);
+        Assert.True(item.MoveToPreviousTabGroupCommand!.CanExecute(null));
+        item.MoveToPreviousTabGroupCommand.Execute(null);
+        Assert.Same(workspace.Documents, workspace.First.Parent);
         Assert.Empty(events);
     }
 

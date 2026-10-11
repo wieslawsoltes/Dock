@@ -222,9 +222,9 @@ source removal release old title presenters and caption commands.
 
 `PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` are bubbling routed events.
 `Source` contains the public `LayoutContent`; `Handled` affects routing without
-canceling the operation. Layout methods, commands, native menu input, and native
+canceling the operation. Layout methods, float/dock commands, native menu input, and native
 drag execution share operation scopes, so a split or group move raises one pair.
-Native validation is silent. Reordering tabs or reusing a previous floating pane
+Native validation and document tab-group commands are silent. Reordering tabs or reusing a previous floating pane
 without creating a window is also silent. Subscribe from a workspace service
 and unsubscribe when that service detaches. Derived managers can override the
 corresponding `Raise…Event(LayoutContent)` methods.

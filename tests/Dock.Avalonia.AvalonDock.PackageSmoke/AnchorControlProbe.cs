@@ -70,13 +70,18 @@ internal static class AnchorControlProbe
                 throw new Exception("The packaged anchor did not open a passive native preview for selection.");
             Control view = manager.GetLayoutItemFromModel(tool)!.View;
             LayoutAutoHideWindowControl preview = manager.AutoHideWindow!;
-            if (!ReferenceEquals(view.FindVisualAncestor<LayoutAutoHideWindowControl>(), preview) ||
-                !ReferenceEquals(view.FindLogicalAncestor<DockingManager>(), manager) ||
-                !ReferenceEquals(view.FindVisualTreeRoot(), window.GetVisualParent() ?? window) ||
-                !manager.FindVisualChildren<LayoutAutoHideWindowControl>().Contains(preview) ||
-                !manager.FindLogicalChildren<LayoutAutoHideWindowControl>().Contains(preview) ||
-                !view.FindLogicalAncestorsAndSelf().Contains(manager))
-                throw new Exception("The packaged AvalonDock tree helpers did not traverse the current native preview hierarchy.");
+            if (!ReferenceEquals(view.FindVisualAncestor<LayoutAutoHideWindowControl>(), preview))
+                throw new Exception("The packaged visual ancestor helper did not find the existing preview.");
+            if (!ReferenceEquals(view.FindLogicalAncestor<DockingManager>(), manager))
+                throw new Exception("The packaged logical ancestor helper did not reach the manager through template parents.");
+            if (!ReferenceEquals(view.FindVisualTreeRoot(), window.GetVisualParent() ?? window))
+                throw new Exception("The packaged visual root helper did not reach the window's host.");
+            if (!manager.FindVisualChildren<LayoutAutoHideWindowControl>().Contains(preview))
+                throw new Exception("The packaged visual descendant helper did not find the displayed preview.");
+            if (preview.Content is not Control body || !preview.FindLogicalChildren<Control>().Contains(body))
+                throw new Exception("The packaged logical descendant helper did not find the preview's existing content.");
+            if (!view.FindLogicalAncestorsAndSelf().Contains(manager))
+                throw new Exception("The packaged logical ancestor sequence did not reach the manager.");
             if (manager.PreviewChanges != 1 || !ReferenceEquals(preview.Model, tool) || !ReferenceEquals(preview.Tag, tool) ||
                 !preview.GetVisualDescendants().Contains(view) || ((ISolidColorBrush)preview.Presenter!.Background!).Color != Colors.Coral ||
                 preview.GetVisualDescendants().OfType<LayoutAnchorableControl>().Single().Tag is not "Packaged preview")

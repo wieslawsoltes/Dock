@@ -707,6 +707,7 @@ ancestor searches exclude self except for the explicitly named self variant.
 Logical ancestor searches prefer logical parents and fall back to visual
 parents. These query current UI trees, including native Dock controls; layout
 nodes use `Descendents()`. The visual root may be Avalonia's host above a window.
+Logical descendant queries do not cross visual-only template boundaries.
 The full guide documents null/nonvisual inputs and includes a usage example.
 
 ## Architecture

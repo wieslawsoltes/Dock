@@ -128,6 +128,9 @@ public class TreeExtensionTests
             tool.IsSelected = true; Update();
             Control view = manager.GetLayoutItemFromModel(tool)!.View;
             Assert.Same(manager.AutoHideWindow, Assert.Single(manager.FindVisualChildren<LayoutAutoHideWindowControl>()));
+            Control body = Assert.IsAssignableFrom<Control>(manager.AutoHideWindow!.Content);
+            Assert.Contains(body, manager.AutoHideWindow.FindLogicalChildren<Control>());
+            Assert.DoesNotContain(manager.AutoHideWindow, manager.FindLogicalChildren<Control>());
             Assert.Contains(view, manager.FindVisualChildren<Control>());
             Assert.Same(manager, view.FindLogicalAncestor<DockingManager>());
             Assert.Same(manager.AutoHideWindow, view.FindVisualAncestor<LayoutAutoHideWindowControl>());

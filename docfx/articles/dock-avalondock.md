@@ -317,6 +317,9 @@ DockingManager? owner = toolView?.FindLogicalAncestor<DockingManager>();
 
 These methods query the current Avalonia UI trees, including Dock's native
 controls. Use the layout model's `Descendents()` extension to walk layout nodes.
+Logical descendant searches do not cross visual-only template boundaries. For
+example, find a displayed auto-hide preview through the manager's visual
+descendants, then query the preview's logical descendants for its content.
 `FindVisualTreeRoot` walks to the topmost visual, using logical parents to reach
 the visual tree from nonvisual objects. In Avalonia, that root can be a hosting
 visual above a `Window`; use `FindVisualAncestor<Window>` to find the window.

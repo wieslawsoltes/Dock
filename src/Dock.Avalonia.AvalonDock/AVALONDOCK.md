@@ -123,8 +123,8 @@ orientation changes. Existing star weights and cross-axis lengths are preserved.
 Pixel changes after layout remain until a rebuild. Plain layout panels apply no
 such conversion. The grids host compiled Dock items presenters; Dock retains
 measurement and splitter input. Their child/row/column collections consequently
-differ from WPF's direct pane/splitter tree. All-pixel splits still use native
-proportional redistribution; exact WPF all-pixel and auto sizing remain open.
+differ from WPF's direct pane/splitter tree. Fixed lengths preserve unused space
+or extend beyond a constrained viewport. Intrinsic `Auto` sizing remains open.
 
 Derived documents and tools can override `OnIsSelectedChanged(bool, bool)` and
 `OnIsActiveChanged(bool, bool)`. They receive the old and new states before the
@@ -456,8 +456,16 @@ device-independent pixels and support styles and bindings:
 
 Pane `DockWidth`/`DockHeight` pixel and star values use the actual space in each
 nested or floating native panel. Runtime splitter settings and window resizing
-preserve pixel pane sizes where available space and native constraints permit;
-star panes share the remainder. Native dragging updates public pane dimensions.
+preserve requested pixel lengths, including all-pixel splits. Fixed panes leave
+unused space in a larger host and can exceed a smaller viewport. Star panes
+share the remainder after fixed sizes and minimum constraints are reserved.
+`DockMinWidth` and `DockMinHeight` default to 25, reject negative values, and
+update layout without overwriting the requested `DockWidth` or `DockHeight`.
+
+Native splitters display a preview and commit public dimensions on release;
+losing pointer capture cancels the gesture. A resized star/star pair preserves
+its combined weight and leaves other star weights unchanged. Pixel lengths
+retain their units after resizing, XML restoration, and host resizing.
 The pane-group rebuild policy described above can convert pixel lengths to stars.
 Manager settings survive XML restoration and view reattachment and remain
 independent between managers.
@@ -644,7 +652,8 @@ flowchart TB
     TreeEvents["Parent and root hooks<br/>Layout membership events"]
     Events["Operation notifications<br/>Public layout source and routed events"]
     Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
-    Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
+    Sizing["Pixel/star lengths and minimums<br/>Native proportional-panel sizing policies"]
+    SplitterInput["Native splitter input and preview<br/>Commit public lengths on release"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
@@ -675,6 +684,8 @@ flowchart TB
     Api --> Sizing
     Sizing --> Models
     Sizing --> View
+    View --> SplitterInput
+    SplitterInput --> Sizing
     Bridge --> Factory
     Factory --> Models
     Factory --> Focus

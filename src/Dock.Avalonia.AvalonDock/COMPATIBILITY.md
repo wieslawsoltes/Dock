@@ -407,8 +407,19 @@ supported by corresponding implementation and test evidence.
   splitters do not consume space. Headless tests cover star ratios, pixel sizes,
   pointer drag persistence across resizing, XML replacement, reattachment,
   independent managers, and collection of replaced panels and closed hosts.
+  All-pixel splits preserve unused space and fixed lengths beyond a constrained
+  viewport. Minimums default to 25, reject negative values, notify through public
+  aliases, and redistribute remaining star space without changing requested
+  lengths. Native preview resizing commits on release, cancels on capture loss,
+  and preserves the combined weight of a resized star pair. Mixed pixel/star
+  resizing uses the upstream pair-weight rule. Both axes and floating panes are
+  covered. Intrinsic `Auto` measurement remains open.
   Native Dock retains its default splitter thickness; its proportional panel
-  now refreshes splitter dimensions on thickness and orientation changes.
+  refreshes splitter dimensions on thickness and orientation changes. Protected
+  assignment, dimension, and resize policies let the adapter reuse native layout
+  and pointer handling while ordinary Dock retains its normalization behavior.
+  The native document create-button presenter no longer parents an Avalonia
+  model into its logical tree, so retaining an old model releases discarded grids.
 - XML for docked, floating, auto-hide and hidden layouts, callbacks, content identities,
   selected documents, basic metadata and constraints, file/stream/text APIs,
   malformed input rejection, and atomic manager layout replacement.
@@ -462,7 +473,7 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 852 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 880 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -470,7 +481,9 @@ supported by corresponding implementation and test evidence.
 ## Open work (not release-complete)
 
 - Complete native floating lifecycle/state synchronization, including native
-  group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
+  group redocking, generic panels, and grouped-document/mixed native windows.
+  Floating the entire root panel through the extra native factory API can leave
+  the public root without a panel and is not yet supported. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
@@ -483,9 +496,8 @@ supported by corresponding implementation and test evidence.
   and `IXmlSerializable` methods not yet represented in the adapter.
   Additional selection edge cases and protected override ordering still require
   the broader signature and behavior audit below.
-- Exact all-pixel and auto sizing: the native proportional panel currently
-  redistributes an all-pixel split and can write resized lengths back. Public
-  grid child/row/column collections host a native items presenter rather than
+- Intrinsic auto sizing. Public grid child/row/column collections host a native
+  items presenter rather than
   reproducing WPF's direct pane/splitter visual tree.
 - Complete header visibility,
   repositioning policies, icons, tooltips, and enablement

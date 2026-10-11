@@ -4,6 +4,11 @@ Pane-control probes compile themes for both public pane types through both XML
 namespaces, exercise external constructor/selection/manager hooks, and check live
 model identity, passive selection, empty selection, reordering, runtime themes,
 and existing content views across document floating and docking.
+Sizing probes retain all-pixel pane lengths across host resizing, commit native
+splitter previews only on release, apply minimums without replacing requested
+lengths, and restore those dimensions from XML on both axes. The external grid
+probe also verifies that the packaged native create-button host does not parent
+the document model into the UI.
 
 This project intentionally uses package references only and is excluded from
 the solution: the package must be built before it can restore. It checks
@@ -72,11 +77,12 @@ preserves hidden navigators while completing it releases them and permits
 `OnLastWindowClose` desktop lifetime shutdown,
 and restore application content
 from XML using the packaged assemblies. Pack the native
-control, core model, Avalonia model, and proportional-panel packages too: they contain the tool-menu
+control, core model, Avalonia model, Fluent theme, and proportional-panel packages too: they contain the tool-menu
 lifetime, window drag input, operation observation, model-aware host creation, unique
 host registration across hide/show, canceled-exit ownership preservation,
 hidden-window drop/activation guards, native ownership-changing notifications,
-replacement-selection, automatic-focus and tab-drag policies, and runtime splitter sizing
+replacement-selection, automatic-focus and tab-drag policies, model-safe create-button
+presentation, and runtime splitter sizing
 changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.
@@ -87,6 +93,7 @@ dotnet pack src/Dock.Avalonia -c Release --no-build -o artifacts/nuget
 dotnet pack src/Dock.Model -c Release -o artifacts/nuget
 dotnet pack src/Dock.Model.Avalonia -c Release --no-build -o artifacts/nuget
 dotnet pack src/Dock.Controls.ProportionalStackPanel -c Release --no-build -o artifacts/nuget
+dotnet pack src/Dock.Avalonia.Themes.Fluent -c Release --no-build -o artifacts/nuget
 dock_consumer_validation=$(mktemp -d)
 cat > "$dock_consumer_validation/NuGet.Config" <<EOF
 <configuration>
@@ -102,6 +109,7 @@ cat > "$dock_consumer_validation/NuGet.Config" <<EOF
       <package pattern="Dock.Model" />
       <package pattern="Dock.Model.Avalonia" />
       <package pattern="Dock.Controls.ProportionalStackPanel" />
+      <package pattern="Dock.Avalonia.Themes.Fluent" />
     </packageSource>
     <packageSource key="nuget.org"><package pattern="*" /></packageSource>
   </packageSourceMapping>

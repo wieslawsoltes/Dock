@@ -38,6 +38,8 @@ internal static class GridControlProbe
             CheckGrid<ILayoutAnchorablePane>(tools, manager.Layout.RootPanel.Children[1]);
             LayoutDocumentPaneGroup documentModel = (LayoutDocumentPaneGroup)documents.Model;
             LayoutAnchorablePaneGroup toolModel = (LayoutAnchorablePaneGroup)tools.Model;
+            if (((LayoutDocumentPane)documentModel.Children[0]).DockModel is StyledElement { Parent: Control })
+                throw new Exception("The packaged native create-button host parented a model into its visual controls.");
             if (((LayoutDocumentPane)documentModel.Children[0]).DockWidth != GridLength.Star ||
                 ((LayoutAnchorablePane)toolModel.Children[0]).DockHeight != GridLength.Star || toolModel.DockWidth != new GridLength(400))
                 throw new Exception("The packaged grids did not apply the group/panel length policies.");
@@ -60,6 +62,7 @@ internal static class GridControlProbe
             Update();
             if (ReferenceEquals(root, manager.LayoutRootPanel) || !ReferenceEquals(manager.LayoutRootPanel?.Model, manager.Layout.RootPanel))
                 throw new Exception("Replacing the packaged layout did not replace its public grid.");
+            PixelSizingProbe.Verify(window, manager);
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
 

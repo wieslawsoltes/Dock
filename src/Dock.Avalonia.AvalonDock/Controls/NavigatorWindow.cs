@@ -43,6 +43,8 @@ public class NavigatorWindow : Window
     private INameScope? _templateScope;
     private bool _selectingDocument;
     private bool _settingSelection;
+    private readonly LayoutNavigatorOwner _ownerLifetime;
+    private bool _closingWithOwner;
 
     static NavigatorWindow()
     {
@@ -57,6 +59,7 @@ public class NavigatorWindow : Window
     public NavigatorWindow(DockingManager manager)
     {
         ArgumentNullException.ThrowIfNull(manager);
+        _ownerLifetime = new(this);
         (LayoutDocumentItem[] documents, LayoutAnchorableItem[] tools) = LayoutNavigatorItems.Capture(manager);
         _settingSelection = true;
         try
@@ -109,8 +112,30 @@ public class NavigatorWindow : Window
     /// <summary>Focuses the initially selected list after pending host input and activation complete.</summary>
     protected override void OnOpened(EventArgs e)
     {
+        _ownerLifetime.Attach(Owner as Window);
         base.OnOpened(e);
         Dispatcher.UIThread.Post(FocusSelectedList, DispatcherPriority.Input);
+    }
+
+    /// <summary>Releases owner-lifetime tracking when the navigator closes.</summary>
+    protected override void OnClosed(EventArgs e)
+    {
+        _ownerLifetime.Dispose();
+        base.OnClosed(e);
+    }
+
+    /// <summary>Raises the closing notification and disregards event-handler cancellation after the former owner has closed.</summary>
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        base.OnClosing(e);
+        if (_closingWithOwner) e.Cancel = false;
+    }
+
+    internal void CloseWithOwner()
+    {
+        _closingWithOwner = true;
+        try { Close(); }
+        finally { _closingWithOwner = false; }
     }
 
     /// <summary>Cycles the current list with Up/Down, crosses lists with Left/Right, and traverses both with Tab.</summary>

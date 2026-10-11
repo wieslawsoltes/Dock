@@ -384,6 +384,9 @@ public class NavigatorTests
         for (int attempt = 0; attempt < 5 && reference.IsAlive; attempt++)
         {
             Dispatcher.UIThread.RunJobs();
+            // Closing queues disposal of the composition target. Render that
+            // batch before testing collection of its navigator presentation source.
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();

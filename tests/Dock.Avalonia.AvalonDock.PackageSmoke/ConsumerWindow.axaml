@@ -4,6 +4,31 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <DataTemplate x:Key="PackagedMenuIcon" x:DataType="LayoutItem">
+      <Border><TextBlock Text="{Binding Title}" /></Border>
+    </DataTemplate>
+    <DataTemplate x:Key="MenuButton" x:DataType="LayoutItem">
+      <local:MenuButton />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyMenuButton" x:DataType="LayoutItem">
+      <ad:DropDownButton Content="Actions" Width="180" Height="40" DropDownContextMenuDataContext="{Binding}">
+        <ad:DropDownButton.DropDownContextMenu>
+          <ad:ContextMenuEx x:DataType="LayoutItem">
+            <ad:MenuItemEx Header="{Binding Title}" Command="{Binding ActivateCommand}" IconTemplate="{StaticResource PackagedMenuIcon}" />
+          </ad:ContextMenuEx>
+        </ad:DropDownButton.DropDownContextMenu>
+      </ad:DropDownButton>
+    </DataTemplate>
+    <DataTemplate x:Key="MenuArea" x:DataType="LayoutItem">
+      <DropDownControlArea Width="180" Height="40" DropDownContextMenuDataContext="{Binding}">
+        <DropDownControlArea.DropDownContextMenu>
+          <ContextMenuEx x:DataType="LayoutItem">
+            <MenuItemEx Header="{Binding Title}" Command="{Binding ActivateCommand}" IconTemplate="{StaticResource PackagedMenuIcon}" />
+          </ContextMenuEx>
+        </DropDownControlArea.DropDownContextMenu>
+        <Border Background="Transparent"><TextBlock Text="{Binding Title}" /></Border>
+      </DropDownControlArea>
+    </DataTemplate>
     <ResourceInclude x:Key="GenericByUri" Source="avares://Dock.Avalonia.AvalonDock/Themes/Generic.axaml" />
     <DataTemplate x:Key="AnchorableTitleControl" x:DataType="LayoutAnchorable">
       <AnchorablePaneTitle Model="{Binding}" />

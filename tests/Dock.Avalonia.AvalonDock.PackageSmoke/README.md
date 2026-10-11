@@ -97,3 +97,10 @@ dotnet run --project tests/Dock.Avalonia.AvalonDock.PackageSmoke \
 
 Override `DockCompatibilityPackageVersion` when testing a prerelease package.
 Both target frameworks are compiled; the executable smoke test uses .NET 10.
+
+The menu probe opens compiled `DropDownButton` and `DropDownControlArea` menus,
+activates the existing layout item command, and reopens their nested icon bindings.
+`MenuButton.axaml` uses the historical URI as its root default namespace; the
+ordinary Avalonia window disambiguates `ad:DropDownButton`. It also compiles and
+invokes the public menu, icon, and dropdown protected hooks from this external
+consumer assembly.

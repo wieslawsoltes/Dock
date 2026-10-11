@@ -639,6 +639,90 @@ Closing, detaching, or replacing the layout clears the invocation's data context
 and placement references. The application retains ownership of its menu items
 and commands.
 
+## Use the public menu controls
+
+`AvalonDock.Controls` includes `ContextMenuEx`, `MenuItemEx`, `DropDownButton`,
+and `DropDownControlArea`. The manager's default document and tool menus use
+`ContextMenuEx` and `MenuItemEx`; custom menus can use either these controls or
+ordinary Avalonia menus. `ContextMenuEx` generates `MenuItemEx` containers for
+data items and refreshes a bound `ItemsSource` when opened, including a computed
+snapshot that changed without a property notification while the menu was closed.
+Explicit menu items and separators retain their identity.
+
+`MenuItemEx.IconTemplate` builds an icon that inherits the item's data context.
+`IconTemplateSelector` receives the current `Icon` and the menu item. A selector
+takes precedence over `IconTemplate`; a null result preserves the current icon.
+Changing a template, selector, or non-null icon reevaluates the template.
+Explicitly clearing `Icon` leaves it null; clearing the template keeps the icon
+already created. Use compiled templates with the appropriate `x:DataType`.
+
+`DropDownButton` opens `DropDownContextMenu` below the button on click or keyboard
+activation. Its checked state follows the open menu. `DropDownControlArea` opens
+the same property at the pointer on a right-button release, respecting child
+menus and flyouts. Both controls copy `DropDownContextMenuDataContext` into the
+menu when opening it. For example, with a `LayoutItem` as the view's data context:
+
+```xml
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:DataType="LayoutItem">
+  <ad:DropDownButton Content="Actions" DropDownContextMenuDataContext="{Binding}">
+    <ad:DropDownButton.DropDownContextMenu>
+      <ContextMenuEx x:DataType="LayoutItem">
+        <MenuItemEx Header="Activate" Command="{Binding ActivateCommand}">
+          <MenuItemEx.IconTemplate>
+            <DataTemplate x:DataType="LayoutItem">
+              <TextBlock Text="{Binding Title}" />
+            </DataTemplate>
+          </MenuItemEx.IconTemplate>
+        </MenuItemEx>
+      </ContextMenuEx>
+    </ad:DropDownButton.DropDownContextMenu>
+  </ad:DropDownButton>
+</Window>
+```
+
+Avalonia also has a `DropDownButton`, so that name needs disambiguation in a
+view using Avalonia's default XML namespace. The other three menu controls and
+the layout API remain available unprefixed. To use the compatibility button
+unprefixed, give a dedicated control or resource file the historical namespace
+as its **root** default namespace:
+
+```xml
+<DropDownButton xmlns="http://schemas.xceed.com/wpf/xaml/avalondock"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:av="https://github.com/avaloniaui"
+                x:DataType="LayoutItem"
+                Content="Actions" DropDownContextMenuDataContext="{av:Binding}">
+  <DropDownButton.DropDownContextMenu>
+    <ContextMenuEx x:DataType="LayoutItem">
+      <MenuItemEx Header="Activate" Command="{av:Binding ActivateCommand}" />
+    </ContextMenuEx>
+  </DropDownButton.DropDownContextMenu>
+</DropDownButton>
+```
+
+Avalonia permits XML namespace declarations only on the file's root; a nested
+default-namespace override cannot resolve this collision. In C#, when importing
+both control namespaces, use `using DropDownButton = AvalonDock.Controls.DropDownButton;`.
+
+Closing, replacing, canceling, or detaching a dropdown clears its invocation
+data and placement references, restores an existing `ContextMenu` binding, and
+preserves application items, commands, icon/header content, and templates for
+reopening. Application templates retain their normal Avalonia resource scope:
+retaining a compiled template can retain its declaring XAML root. Prefer shared
+resource dictionaries for templates that must outlive a view.
+
+Derived controls can override `ContextMenuEx.GetContainerForItemOverride()` and
+`OnOpened(RoutedEventArgs)`, `MenuItemEx.OnIconTemplateChanged` and
+`OnIconTemplateSelectorChanged`, and `DropDownButton.OnDropDownContextMenuChanged`.
+The property hooks receive `AvaloniaPropertyChangedEventArgs`.
+`DropDownControlArea` exposes `OnMouseRightButtonDown(PointerPressedEventArgs)`
+and `OnPreviewMouseRightButtonUp(PointerReleasedEventArgs)` over Avalonia's
+bubbling press and tunneling release routes. Call the base implementation to
+retain the default behavior.
+
 ## Select content templates
 
 `LayoutItemTemplate` applies an explicit Avalonia `IDataTemplate` to application
@@ -1274,6 +1358,7 @@ flowchart TB
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
         ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
+    MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
         Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
@@ -1319,6 +1404,8 @@ flowchart TB
     Manager --> Menus
     Controls --> Menus
     Menus --> Items
+    App --> MenuControls
+    MenuControls --> Menus
     Manager --> DocumentList
     Controls --> DocumentList
     DocumentList --> Layout

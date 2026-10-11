@@ -161,6 +161,19 @@ supported by corresponding implementation and test evidence.
   changes preserved. Generated presentation and focus references are released
   using public Avalonia APIs: retained application menus do not keep closed
   docked/floating managers alive. Focus returns after closing or canceled opening.
+- Public `DropDownButton`, `DropDownControlArea`, `ContextMenuEx`, and `MenuItemEx`
+  use Avalonia menu input and themes. Coverage includes compiled XAML, external
+  protected overrides, generated/explicit containers, source snapshot refresh,
+  icon selector precedence/null results, command activation, checked state,
+  cancellation, replacement during opening, reentrant reopening, bound existing
+  menus, keyboard activation, child menus, and view detachment/reattachment.
+  Closing preserves application icon/header bindings and retires old presentation
+  and compositor references; retained menus with independent templates release
+  closed controls/managers. Application-owned compiled templates retain their
+  declaring XAML resource scope. `DropDownButton` collides with Avalonia's control
+  name, so ordinary Avalonia XAML uses a prefix; a dedicated file with the
+  historical URI as its root default namespace supports the unprefixed form.
+  The other menu controls and layout API remain unprefixed in Avalonia XAML.
 - Native Dock content controls display `LayoutItem.View`, retaining presenter
   identity between docked and floating hosts. Manager `LayoutItemTemplate` and
   `LayoutItemTemplateSelector` support compiled templates, explicit-template
@@ -400,7 +413,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 706 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 732 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -437,8 +450,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 579
-matching type/member keys and 372 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 601
+matching type/member keys and 350 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

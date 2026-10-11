@@ -167,6 +167,29 @@ and runtime replacement closes the old one. Menu invocation state is cleared
 when the menu closes or its layout/view detaches. The full guide covers menu
 ownership, active-item changes, and cancellation.
 
+`ContextMenuEx` and `MenuItemEx` are the public menu controls used by the default
+menus. `ContextMenuEx` refreshes its bound item source on opening and generates
+`MenuItemEx` containers. `MenuItemEx.IconTemplate` creates icons with the item's
+data context; `IconTemplateSelector` receives the current icon and item and
+takes precedence, including a null result that keeps the current icon.
+
+`AvalonDock.Controls.DropDownButton` opens `DropDownContextMenu` below itself and
+tracks its checked state. `DropDownControlArea` opens it on right-button release,
+respecting child menus. Both copy `DropDownContextMenuDataContext` when opening
+and clear invocation references on closing, cancellation, replacement, or view
+detachment. Existing context-menu bindings and application menu content remain
+usable on reopening. A retained compiled template keeps its normal XAML resource
+scope, which can retain the declaring view.
+
+Avalonia has its own `DropDownButton`, so use `ad:DropDownButton` in an ordinary
+Avalonia view. For an unprefixed compatibility button, set the historical
+AvalonDock URI as the **root** default namespace in a dedicated control/resource
+file and prefix Avalonia controls and markup extensions. Avalonia does not allow
+namespace declarations on nested elements. The layout API and other menu types
+still work unprefixed in Avalonia's default namespace. In C#, disambiguate with
+`using DropDownButton = AvalonDock.Controls.DropDownButton;`. The full guide
+contains both XAML forms, compiled icon bindings, and protected override hooks.
+
 `LayoutItemContainerStyle` accepts an Avalonia `ControlTheme`, with the item
 container as its data context. Bind through `Model` to application properties
 using compiled bindings. For an `EditorViewModel` with `Title` and `ContentId`:
@@ -515,6 +538,7 @@ flowchart TB
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
     ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
+    MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
@@ -576,6 +600,8 @@ flowchart TB
     Api --> Menus
     View --> Menus
     Menus --> Items
+    App --> MenuControls
+    MenuControls --> Menus
     Api --> DocumentList
     View --> DocumentList
     DocumentList --> Api

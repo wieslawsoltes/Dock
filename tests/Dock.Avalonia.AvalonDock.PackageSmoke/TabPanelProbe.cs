@@ -67,14 +67,15 @@ internal static class TabPanelProbe
         Window window = new() { Content = panel, Width = 100, Height = 40 };
         try
         {
-            window.Show(); window.UpdateLayout();
+            window.Show(); Dispatcher.UIThread.RunJobs(); window.UpdateLayout();
             if (hidden.Opacity != 0 || hidden.IsHitTestVisible || hidden.Focus())
                 throw new Exception("The packaged document panel did not suppress overflow rendering and input.");
             source.Opacity = .75;
             window.Width = 220;
+            Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
             if (hidden.Opacity != .75 || !hidden.IsHitTestVisible || !hidden.IsEnabled)
-                throw new Exception("Expanding the packaged document panel did not restore its application binding.");
+                throw new Exception($"Expanding the packaged document panel did not restore its binding: width={panel.Bounds.Width}, opacity={hidden.Opacity}, input={hidden.IsHitTestVisible}, enabled={hidden.IsEnabled}.");
             window.MouseMove(new Point(10, 10));
             window.MouseMove(new Point(250, 70));
             if (panel.Measures == 0 || panel.Arranges == 0 || panel.Exits == 0)

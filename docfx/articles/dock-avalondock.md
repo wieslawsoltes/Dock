@@ -436,6 +436,79 @@ or `Float` directly invokes model operations, independently of UI commands.
 pane. Without a previous document pane, docking chooses the last focused main
 document pane or another main document pane, creating one when necessary.
 
+## Use public document and tool tabs
+
+`AvalonDock.Controls.LayoutDocumentTabItem` and `LayoutAnchorableTabItem` are
+public headers inside Dock's native document and tool tab containers. Both
+accept a `LayoutContent` in `Model` and expose the manager's existing, read-only
+`LayoutItem`. A tool docked as a document uses `LayoutDocumentTabItem` and keeps
+its `LayoutAnchorableItem`. Auto-hide strips keep their separate native pin
+presentation.
+
+The default themes use `DocumentHeaderTemplate` or `AnchorableHeaderTemplate`
+and their selectors; their data remains the public layout node. Usually,
+customize those manager templates. For an application-provided tab row, bind the
+public controls to the live pane children. This resource can be declared in a
+view using Avalonia's default XML namespace:
+
+```xml
+<DataTemplate x:Key="DocumentTabs" x:DataType="LayoutDocumentPane">
+  <ItemsControl ItemsSource="{Binding Children}">
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal" />
+      </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+    <ItemsControl.ItemTemplate>
+      <DataTemplate x:DataType="LayoutContent">
+        <LayoutDocumentTabItem Model="{Binding}" />
+      </DataTemplate>
+    </ItemsControl.ItemTemplate>
+  </ItemsControl>
+</DataTemplate>
+```
+
+For tools, use `LayoutAnchorablePane` for the outer data type and
+`LayoutAnchorableTabItem` for each header. Both controls also compile with the
+historical `ad` namespace alias. Include `AvalonDockTheme` in the application or
+host window so the controls receive their compiled themes.
+
+Custom document tabs activate on left press; custom tool tabs activate on left
+release. A document's middle-click invokes its current item `CloseCommand` when
+closing is allowed and the command can execute. Focusable children keep their
+input. Dragging across a custom row calls the live pane's `MoveChild`; a bound
+row follows the new collection order. Leaving the row floats that content and
+starts its native window drag. Factory cancellation stops the window drag but
+does not undo the preceding float. Native tab containers retain Dock's existing
+selection, drag preview/drop, context-menu, and command input.
+
+`LayoutDocument.CanMove`, model enablement, and native drag capabilities gate
+tab dragging. The pane's and its immediate group's `CanRepositionItems` gate
+reordering while still allowing an outside drag. The compatibility factory
+implements the optional `Dock.Model.Core.IDockItemDragPolicy` so native tab input
+honors these restrictions too. Factories without this policy retain Dock's
+existing behavior; direct factory operations are unaffected. Restrictions
+changed during a native gesture are checked before moving the item.
+
+Derived controls can override `OnModelChanged(AvaloniaPropertyChangedEventArgs)`
+and call protected `SetLayoutItem(LayoutItem?)`. Their protected mouse-named
+hooks use Avalonia arguments: `OnMouseLeftButtonDown(PointerPressedEventArgs)`,
+`OnMouseLeftButtonUp(PointerReleasedEventArgs)`, and
+`OnMouseMove`, `OnMouseLeave`, and `OnMouseEnter` with `PointerEventArgs`.
+`LayoutDocumentTabItem` additionally exposes
+`OnMouseDown(PointerPressedEventArgs)` for middle-click handling. Call the base
+hook to preserve its normal behavior. These are framework-control extension
+points; application actions belong in bound ViewModel commands or services.
+
+Weak model/container subscriptions follow manager transfers. XML replacement
+clears generated tabs' old models and resolves the replacement nodes; custom
+tabs retain an explicitly assigned model until its binding is updated. Dock can
+recycle generated headers, so retain model or item identity instead of assuming
+one control per document. Changing or detaching a custom tab cancels its pending
+drag. Headless tests cover collection updates, capabilities, cancellation,
+manager transfer, XML replacement, and retained-control lifetime. Native desktop
+move behavior still needs platform integration validation.
+
 ## Use converters in compiled bindings
 
 Converters live in `AvalonDock.Converters` and resolve through both XML namespaces.
@@ -1352,13 +1425,14 @@ flowchart TB
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
+        Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
         ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
         ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
-    MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
+        MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
         Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
@@ -1375,6 +1449,7 @@ flowchart TB
         Models["Dock.Model.Avalonia models"]
         Factory["Dock factory and docking operations"]
         Controls["DockControl, HostWindow, and Fluent controls"]
+        DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     end
     App --> Manager
     App --> Converters
@@ -1395,6 +1470,12 @@ flowchart TB
     Controls --> ContentControls
     ContentControls --> Items
     ContentControls --> Layout
+    Controls --> Tabs
+    Tabs --> Items
+    Tabs --> Layout
+    Tabs --> Factory
+    Controls --> DragPolicy
+    DragPolicy --> Factory
     Controls --> ToolTitle
     ToolTitle --> Items
     ToolTitle --> Factory

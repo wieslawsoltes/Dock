@@ -217,6 +217,20 @@ supported by corresponding implementation and test evidence.
   `HostWindow.TryBeginMoveDrag` exposes the existing drag lifecycle with factory
   cancellation and pointer-release completion. Platform movement remains an
   integration-validation requirement.
+- Public `LayoutDocumentTabItem` and `LayoutAnchorableTabItem` use a
+  `LayoutContent` model, the existing read-only `LayoutItem`, and manager header
+  templates/selectors inside native tabs. Compiled XAML supports both namespaces;
+  tools docked as documents retain their tool item in a document tab.
+  Custom rows activate, invoke current document close commands, reorder the
+  live pane, and float one tab through native window-drag cancellation. Native
+  tab containers keep their drag preview/drop and command handling. `CanMove`,
+  enablement, drag capabilities, and pane/group `CanRepositionItems` are checked
+  by custom input and the factory's optional native `IDockItemDragPolicy`.
+  The policy preserves ordinary Dock defaults and outside dragging when only
+  reordering is restricted; changes during a gesture cancel pending moves.
+  Tests cover protected model/container and Avalonia pointer hooks, focusable
+  children, bound collection reordering, interrupted drags, XML replacement,
+  manager transfers, and collection of unused and retained closed tabs.
 - `DocumentHeaderTemplate` and `AnchorableHeaderTemplate`, plus their selector
   properties, apply compiled templates to native document/tool tabs and
   auto-hide strips. Templates and selectors receive public layout nodes;
@@ -413,7 +427,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 732 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 790 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -450,8 +464,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 601
-matching type/member keys and 350 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 615
+matching type/member keys and 336 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

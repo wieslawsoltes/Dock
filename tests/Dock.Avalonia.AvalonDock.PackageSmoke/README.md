@@ -17,6 +17,13 @@ and support external model/input overrides and the protected container setter.
 The consumer checks native title presentation and a custom title's whole-pane
 float through Dock's cancelable window-drag entry point.
 
+Public document/tool tab headers compile through both XML namespaces, retain the
+existing item in native docked/floating tabs, and expose externally overridden
+model and pointer hooks plus the protected container setter. The consumer checks
+the packaged optional native drag policy, restrictions on native and custom tab
+reordering, custom-row movement, and floating one tab through canceled native
+window dragging.
+
 Content controls compile in the default and historical XML namespaces, expose
 their existing model containers, and support an external model-change override
 and protected container setter. The consumer checks model enablement and verifies
@@ -56,7 +63,7 @@ control, core model, Avalonia model, and proportional-panel packages too: they c
 lifetime, window drag input, operation observation, model-aware host creation, unique
 host registration across hide/show, canceled-exit ownership preservation,
 hidden-window drop/activation guards, native ownership-changing notifications,
-replacement-selection and automatic-focus policies, and runtime splitter sizing
+replacement-selection, automatic-focus and tab-drag policies, and runtime splitter sizing
 changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.

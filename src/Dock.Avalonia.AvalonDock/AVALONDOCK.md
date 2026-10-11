@@ -254,6 +254,34 @@ Interactive title children keep their input. Derived titles can override the
 model and mouse-named hooks using Avalonia property/pointer event arguments.
 The full guide documents those signatures, lifetime rules, and platform limits.
 
+`LayoutDocumentTabItem` and `LayoutAnchorableTabItem` are the public headers
+inside native document/tool tab containers. Both take a `LayoutContent` model,
+resolve the existing read-only `LayoutItem`, and use the manager's header
+templates and selectors. Tools docked as documents use the document tab control.
+Custom tab rows can bind them to a pane's `Children` in compiled templates:
+
+```xml
+<DataTemplate x:DataType="LayoutContent">
+  <LayoutDocumentTabItem Model="{Binding}" />
+</DataTemplate>
+```
+
+Use `LayoutAnchorableTabItem` for tool rows. Both the default Avalonia XML
+namespace and the historical alias work. Custom document tabs activate on press,
+tool tabs on release, and document middle-click invokes the current close
+command. Custom rows reorder the live pane and float a tab when it leaves the
+row; native containers retain Dock's input and drag preview/drop behavior.
+`CanMove`, enablement, and drag capabilities restrict dragging;
+`CanRepositionItems` on the pane or its immediate group restricts reordering.
+The factory's optional `IDockItemDragPolicy` applies these restrictions to native
+tab input without changing ordinary factories or direct factory operations.
+
+Model/container hooks and mouse-named hooks use Avalonia event arguments.
+Manager transfers refresh the existing item; generated tabs release old models
+on removal or XML replacement. Custom tabs preserve an explicitly assigned model
+and cancel pending input on replacement/detachment. The full guide includes a
+bound tab row, hook signatures, and lifetime and platform limits.
+
 `DockingManager.LayoutItemTemplate` accepts an Avalonia `IDataTemplate` for
 application content. Alternatively, use `LayoutItemTemplateSelector` with an
 `AvalonDock.Controls.DataTemplateSelector` subclass overriding
@@ -532,6 +560,8 @@ flowchart TB
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
     ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
+    Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
+    DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
     Commands["Compiled command bindings<br/>Native input routing"]
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
@@ -591,6 +621,12 @@ flowchart TB
     View --> ContentControls
     ContentControls --> Items
     ContentControls --> Api
+    View --> Tabs
+    Tabs --> Items
+    Tabs --> Api
+    Tabs --> Factory
+    View --> DragPolicy
+    DragPolicy --> Factory
     View --> ToolTitle
     ToolTitle --> Items
     ToolTitle --> Factory

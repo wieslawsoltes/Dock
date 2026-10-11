@@ -4,6 +4,18 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <DataTemplate x:Key="DocumentTabControl" x:DataType="LayoutContent">
+      <LayoutDocumentTabItem Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyDocumentTabControl" x:DataType="LayoutContent">
+      <ad:LayoutDocumentTabItem Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolTabControl" x:DataType="LayoutContent">
+      <LayoutAnchorableTabItem Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyToolTabControl" x:DataType="LayoutContent">
+      <ad:LayoutAnchorableTabItem Model="{Binding}" />
+    </DataTemplate>
     <DataTemplate x:Key="PackagedMenuIcon" x:DataType="LayoutItem">
       <Border><TextBlock Text="{Binding Title}" /></Border>
     </DataTemplate>

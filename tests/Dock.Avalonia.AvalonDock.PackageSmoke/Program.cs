@@ -42,6 +42,7 @@ AssertPaneSelectionPolicies();
 AssertContentHooks();
 PackageConsumer.ContentControlProbe.Verify();
 PackageConsumer.TitleControlProbe.Verify();
+PackageConsumer.TabControlProbe.Verify();
 PackageConsumer.MenuControlProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");

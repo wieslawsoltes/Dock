@@ -152,6 +152,9 @@ public class ProportionalStackPanel : Panel
 
         if (change.Property == OrientationProperty)
         {
+            for (int i = 0; i < Children.Count; i++)
+                if (ProportionalStackPanelSplitter.IsSplitter(Children[i], out ProportionalStackPanelSplitter? splitter))
+                    splitter?.UpdateVisualState();
             InvalidateMeasure();
         }
     }

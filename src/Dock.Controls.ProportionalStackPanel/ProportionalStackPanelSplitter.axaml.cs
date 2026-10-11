@@ -19,6 +19,8 @@ namespace Dock.Controls.ProportionalStackPanel;
 [PseudoClasses(":horizontal", ":vertical", ":preview")]
 public class ProportionalStackPanelSplitter : Thumb
 {
+    static ProportionalStackPanelSplitter() => AffectsMeasure<ProportionalStackPanelSplitter>(ThicknessProperty);
+
     /// <summary>
     /// Defines the <see cref="Thickness"/> property.
     /// </summary>
@@ -107,7 +109,7 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == IsResizingEnabledProperty)
+        if (change.Property == IsResizingEnabledProperty || change.Property == ThicknessProperty)
         {
             UpdateVisualState();
         }
@@ -306,7 +308,7 @@ public class ProportionalStackPanelSplitter : Thumb
         resizer.ApplyResize();
     }
 
-    private void UpdateVisualState()
+    internal void UpdateVisualState()
     {
         if (GetPanel() is { } panel)
         {

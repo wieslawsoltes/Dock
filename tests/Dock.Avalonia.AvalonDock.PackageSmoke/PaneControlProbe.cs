@@ -47,7 +47,7 @@ internal static class PaneControlProbe
         tools.Children.Add(new() { Title = "Other tool" });
         PaneManagerProbe manager = new()
         {
-            Layout = new() { RootPanel = new LayoutPanel(documents, tools) },
+            Layout = new() { RootPanel = new LayoutPanel { Children = { documents, tools } } },
             DocumentPaneControlStyle = (ControlTheme)resources.Resources["DocumentPaneStyle"]!,
             AnchorablePaneControlStyle = (ControlTheme)resources.Resources["ToolPaneStyle"]!
         };

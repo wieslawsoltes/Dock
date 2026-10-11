@@ -1,0 +1,90 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AvalonDock.Controls"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:layout="using:AvalonDock.Layout"
+        xmlns:converters="using:AvalonDock.Converters"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        xmlns:chrome="using:Avalonia.Controls.Chrome"
+        x:DataType="controls:LayoutAnchorableFloatingWindowControl">
+  <converters:LayoutItemFromLayoutModelConverter x:Key="AvalonDockItemFromModel" />
+  <ControlTemplate x:Key="AvalonDockFloatingWindowTemplate" TargetType="controls:LayoutFloatingWindowControl"
+                   x:DataType="controls:LayoutFloatingWindowControl">
+    <Panel>
+      <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+      <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+      <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+      <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="3">
+        <VisualLayerManager Name="PART_VisualLayerManager">
+          <DeferredContentPresenter Name="PART_ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </VisualLayerManager>
+      </Border>
+      <Panel Name="PART_ResizeBorder">
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="LeftSide"
+            HorizontalAlignment="Left" Width="{Binding ResizeBorderThickness.Left, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeW" />
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="RightSide"
+            HorizontalAlignment="Right" Width="{Binding ResizeBorderThickness.Right, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeE" />
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="TopSide"
+            VerticalAlignment="Top" Height="{Binding ResizeBorderThickness.Top, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeN" />
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="BottomSide"
+            VerticalAlignment="Bottom" Height="{Binding ResizeBorderThickness.Bottom, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeS" />
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="TopLeftCorner"
+            HorizontalAlignment="Left" VerticalAlignment="Top"
+            Width="{Binding ResizeBorderThickness.Left, RelativeSource={RelativeSource TemplatedParent}}"
+            Height="{Binding ResizeBorderThickness.Top, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeNW" />
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="TopRightCorner"
+            HorizontalAlignment="Right" VerticalAlignment="Top"
+            Width="{Binding ResizeBorderThickness.Right, RelativeSource={RelativeSource TemplatedParent}}"
+            Height="{Binding ResizeBorderThickness.Top, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeNE" />
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="BottomLeftCorner"
+            HorizontalAlignment="Left" VerticalAlignment="Bottom"
+            Width="{Binding ResizeBorderThickness.Left, RelativeSource={RelativeSource TemplatedParent}}"
+            Height="{Binding ResizeBorderThickness.Bottom, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeSW" />
+        <infrastructure:LayoutWindowResizeGrip Background="Transparent" Cursor="BottomRightCorner"
+            HorizontalAlignment="Right" VerticalAlignment="Bottom"
+            Width="{Binding ResizeBorderThickness.Right, RelativeSource={RelativeSource TemplatedParent}}"
+            Height="{Binding ResizeBorderThickness.Bottom, RelativeSource={RelativeSource TemplatedParent}}"
+            chrome:WindowDecorationProperties.ElementRole="ResizeSE" />
+      </Panel>
+    </Panel>
+  </ControlTemplate>
+  <ControlTheme x:Key="{x:Type controls:LayoutFloatingWindowControl}"
+                TargetType="controls:LayoutFloatingWindowControl"
+                x:DataType="controls:LayoutFloatingWindowControl"
+                BasedOn="{StaticResource {x:Type dock:HostWindow}}">
+    <Setter Property="BorderThickness" Value="3" />
+    <Setter Property="Template" Value="{StaticResource AvalonDockFloatingWindowTemplate}" />
+    <Style Selector="^:toolwindow">
+      <Setter Property="Template" Value="{StaticResource AvalonDockFloatingWindowTemplate}" />
+    </Style>
+    <Style Selector="^[CanResize=False] /template/ Panel#PART_ResizeBorder">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^[WindowState=Maximized] /template/ Panel#PART_ResizeBorder">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^[WindowState=FullScreen] /template/ Panel#PART_ResizeBorder">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+  </ControlTheme>
+  <ControlTheme x:Key="{x:Type controls:LayoutDocumentFloatingWindowControl}"
+                TargetType="controls:LayoutDocumentFloatingWindowControl"
+                x:DataType="controls:LayoutDocumentFloatingWindowControl"
+                BasedOn="{StaticResource {x:Type controls:LayoutFloatingWindowControl}}" />
+  <ControlTheme x:Key="{x:Type controls:LayoutAnchorableFloatingWindowControl}"
+                TargetType="controls:LayoutAnchorableFloatingWindowControl"
+                x:DataType="controls:LayoutAnchorableFloatingWindowControl"
+                BasedOn="{StaticResource {x:Type controls:LayoutFloatingWindowControl}}" />
+</ResourceDictionary>

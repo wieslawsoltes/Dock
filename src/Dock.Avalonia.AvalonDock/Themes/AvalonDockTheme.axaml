@@ -8,33 +8,11 @@
         x:Class="AvalonDock.Themes.AvalonDockTheme"
         x:DataType="ad:DockingManager">
   <Styles.Resources>
-    <infrastructure:LayoutContentConverter x:Key="AvalonDockLayoutContent" />
-    <infrastructure:LayoutContentTemplate x:Key="AvalonDockContentTemplate">
-      <infrastructure:LayoutContentTemplate.DocumentTemplate>
-        <DataTemplate x:DataType="models:Document">
-          <ContentControl Classes="avalondock-content" Content="{Binding Content}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
-        </DataTemplate>
-      </infrastructure:LayoutContentTemplate.DocumentTemplate>
-      <infrastructure:LayoutContentTemplate.ToolTemplate>
-        <DataTemplate x:DataType="models:Tool">
-          <ContentControl Classes="avalondock-content" Content="{Binding Content}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
-        </DataTemplate>
-      </infrastructure:LayoutContentTemplate.ToolTemplate>
-    </infrastructure:LayoutContentTemplate>
-    <ControlTheme x:Key="{x:Type ad:DockingManager}" TargetType="ad:DockingManager"
-                  x:DataType="ad:DockingManager">
-      <Setter Property="Template">
-        <ControlTemplate>
-          <dock:DockControl x:Name="PART_DockControl" Classes="avalondock"
-                            Layout="{TemplateBinding DockLayout}"
-                            Factory="{TemplateBinding DockFactory}"
-                            HostWindowFactory="{TemplateBinding DockHostWindowFactory}"
-                            infrastructure:LayoutSplitterSizing.Width="{TemplateBinding GridSplitterWidth}"
-                            infrastructure:LayoutSplitterSizing.Height="{TemplateBinding GridSplitterHeight}"
-                            InitializeFactory="True" />
-        </ControlTemplate>
-      </Setter>
-    </ControlTheme>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/GenericThemeResources.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </Styles.Resources>
   <fluent:DockFluentTheme />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContent.axaml" />
@@ -44,5 +22,4 @@
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutFloatingWindowControls.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutSizing.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutCommands.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/NavigatorWindow.axaml" />
 </Styles>

@@ -1,0 +1,38 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:models="using:Dock.Model.Controls"
+        xmlns:docking="using:Dock.Settings"
+        xmlns:proportional="using:Dock.Controls.ProportionalStackPanel"
+        xmlns:converters="using:Dock.Avalonia.Converters"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="models:IProportionalDock">
+  <infrastructure:LayoutSplitterSizing x:Key="AvalonDockSplitterSize" />
+  <ItemsPanelTemplate x:Key="AvalonDockSizingPanel">
+    <infrastructure:LayoutSizingPanel docking:DockProperties.IsDropArea="True" Background="Transparent"
+        Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}" />
+  </ItemsPanelTemplate>
+  <ControlTemplate x:Key="AvalonDockProportionalLayout" TargetType="dock:ProportionalDockControl">
+    <dock:DockableControl TrackingMode="Visible">
+      <ItemsControl x:Name="PART_ItemsControl" ItemsSource="{Binding VisibleDockables}"
+                    Classes="ProportionalStackPanel" ItemsPanel="{StaticResource AvalonDockSizingPanel}">
+        <ItemsControl.Styles>
+          <Style Selector="ItemsControl.ProportionalStackPanel > ContentPresenter">
+            <Setter Property="(proportional:ProportionalStackPanel.Proportion)" Value="{Binding Proportion, Mode=TwoWay}" />
+            <Setter Property="(proportional:ProportionalStackPanel.CollapsedProportion)" Value="{Binding CollapsedProportion, Mode=TwoWay}" />
+            <Setter Property="(proportional:ProportionalStackPanel.IsCollapsed)">
+              <MultiBinding Converter="{x:Static BoolConverters.And}">
+                <Binding Path="IsCollapsable" />
+                <Binding Path="IsEmpty" />
+              </MultiBinding>
+            </Setter>
+            <Setter Property="MinWidth" Value="{Binding MinWidth}" />
+            <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
+            <Setter Property="MinHeight" Value="{Binding MinHeight}" />
+            <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
+          </Style>
+        </ItemsControl.Styles>
+      </ItemsControl>
+    </dock:DockableControl>
+  </ControlTemplate>
+</ResourceDictionary>

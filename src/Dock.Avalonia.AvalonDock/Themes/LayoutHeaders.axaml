@@ -7,40 +7,7 @@
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:DataType="core:IDockable">
-  <Styles.Resources>
-    <DataTemplate x:Key="AvalonDockDefaultHeader" x:DataType="layout:LayoutContent">
-      <TextBlock Text="{Binding Title}" VerticalAlignment="Center"
-                 Padding="{DynamicResource DockHeaderContentPadding}" />
-    </DataTemplate>
-    <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockDocumentHeader" Kind="Document"
-                                         DefaultTemplate="{StaticResource AvalonDockDefaultHeader}" />
-    <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockAnchorableHeader" Kind="Anchorable"
-                                         DefaultTemplate="{StaticResource AvalonDockDefaultHeader}" />
-    <ControlTemplate x:Key="AvalonDockAutoHideHeader" TargetType="dock:ToolPinItemControl">
-      <dock:DockableControl TrackingMode="Pinned">
-        <LayoutTransformControl x:Name="PART_LayoutTransformControl">
-          <Border Background="{TemplateBinding Background}"
-                  docking:DockProperties.IsDragArea="True" docking:DockProperties.IsDropArea="True"
-                  docking:DockProperties.IsDockTarget="True" docking:DockProperties.ShowDockIndicatorOnly="True"
-                  docking:DockProperties.IndicatorDockOperation="Fill">
-            <Button Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0"
-                    Command="{Binding Owner.Factory.TogglePreviewPinnedDockable}" CommandParameter="{Binding}"
-                    ContextMenu="{TemplateBinding PinContextMenu}">
-              <Button.IsVisible>
-                <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">
-                  <Binding />
-                  <Binding Path="CanPin" />
-                  <Binding Path="DockCapabilityOverrides.CanPin" />
-                  <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanPin" />
-                </MultiBinding>
-              </Button.IsVisible>
-              <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AvalonDockAnchorableHeader}" />
-            </Button>
-          </Border>
-        </LayoutTransformControl>
-      </dock:DockableControl>
-    </ControlTemplate>
-  </Styles.Resources>
+
   <Style Selector="dock|DockControl.avalondock dock|DocumentControl">
     <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockDocumentHeader}" />
   </Style>

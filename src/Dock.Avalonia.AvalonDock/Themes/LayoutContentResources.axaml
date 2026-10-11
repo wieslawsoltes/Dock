@@ -1,0 +1,89 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:converters="using:Dock.Avalonia.Converters">
+  <!-- Compose the native pane controls with persistent adapter content bindings.
+       Keeping these bindings in the templates also preserves logical ownership
+       while ancestor styles detach and reattach. -->
+  <ControlTemplate x:Key="AvalonDockDocumentContent" TargetType="DocumentControl" x:DataType="dmc:IDocumentDock">
+    <DockPanel x:Name="PART_DockPanel"
+               DockProperties.IsDropArea="True"
+               DockProperties.IsDockTarget="True"
+               DockProperties.ShowDockIndicatorOnly="{DynamicResource DockDocumentControlShowDockIndicatorOnly}"
+               DockProperties.IndicatorDockOperation="{DynamicResource DockDocumentControlIndicatorDockOperation}"
+               VerticalSpacing="{DynamicResource DockDocumentControlVerticalSpacing}"
+               Background="Transparent"
+               ZIndex="1">
+      <DocumentTabStrip x:Name="PART_TabStrip"
+                        ItemsSource="{Binding VisibleDockables}"
+                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        CanCreateItem="{Binding CanCreateDocument}"
+                        IconTemplate="{TemplateBinding IconTemplate}"
+                        HeaderTemplate="{TemplateBinding HeaderTemplate}"
+                        ModifiedTemplate="{TemplateBinding ModifiedTemplate}"
+                        CloseTemplate="{TemplateBinding CloseTemplate}"
+                        CloseButtonTheme="{TemplateBinding CloseButtonTheme}"
+                        IsActive="{TemplateBinding IsActive}"
+                        Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
+                        DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
+                        DockProperties.IsDropArea="True"
+                        DockProperties.DockAdornerHost="{Binding #PART_DockPanel}">
+        <DocumentTabStrip.Styles>
+          <Style Selector="DocumentTabStripItem">
+            <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
+          </Style>
+        </DocumentTabStrip.Styles>
+      </DocumentTabStrip>
+      <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{Binding #PART_TabStrip.IsVisible}">
+        <Panel x:Name="PART_DocumentSeperator"
+               IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}" />
+      </Panel>
+      <Border x:Name="PART_Border">
+        <Grid>
+          <DockableControl DataContext="{Binding ActiveDockable}"
+                           TrackingMode="Visible"
+                           IsVisible="{Binding $parent[DocumentControl].HasVisibleDockables}">
+            <DeferredContentControl x:Name="PART_ContentPresenter"
+                                    Content="{Binding Converter={StaticResource AvalonDockLayoutContent}}"
+                                    ContentTemplate="{StaticResource AvalonDockContentTemplate}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch" />
+          </DockableControl>
+
+          <ContentControl x:Name="PART_EmptyContentHost"
+                          Content="{Binding EmptyContent}"
+                          ContentTemplate="{Binding $parent[DocumentControl].EmptyContentTemplate}"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          IsVisible="{Binding !$parent[DocumentControl].HasVisibleDockables}" />
+        </Grid>
+      </Border>
+    </DockPanel>
+  </ControlTemplate>
+  <ControlTemplate x:Key="AvalonDockToolContent" TargetType="ToolControl" x:DataType="dmc:IToolDock">
+    <DockPanel x:Name="PART_DockPanel"
+               DockProperties.IsDropArea="True"
+               DockProperties.IsDockTarget="True">
+      <ToolTabStrip x:Name="PART_TabStrip"
+                    ItemsSource="{Binding VisibleDockables}"
+                    SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                    IconTemplate="{TemplateBinding IconTemplate}"
+                    HeaderTemplate="{TemplateBinding HeaderTemplate}"
+                    ModifiedTemplate="{TemplateBinding ModifiedTemplate}"
+                    DockPanel.Dock="Bottom"
+                    DockProperties.IsDropArea="True"
+                    DockProperties.DockAdornerHost="{Binding #PART_DockPanel}" />
+      <Border x:Name="PART_Border">
+        <DockableControl DataContext="{Binding ActiveDockable}"
+                         TrackingMode="Visible">
+          <DeferredContentControl x:Name="PART_ContentPresenter"
+                                  Content="{Binding Converter={StaticResource AvalonDockLayoutContent}}"
+                                  ContentTemplate="{StaticResource AvalonDockContentTemplate}"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch" />
+        </DockableControl>
+      </Border>
+    </DockPanel>
+  </ControlTemplate>
+</ResourceDictionary>

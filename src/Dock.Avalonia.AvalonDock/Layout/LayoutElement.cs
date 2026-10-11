@@ -39,6 +39,7 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         get => _projectedParent ?? GetNativeParent(DockModel.Owner);
         set
         {
+            VerifyAccess();
             if (value is not null and not LayoutElement)
                 throw new ArgumentException("A parent must be a Dock-backed layout element.", nameof(value));
             ILayoutContainer? previous = Parent;

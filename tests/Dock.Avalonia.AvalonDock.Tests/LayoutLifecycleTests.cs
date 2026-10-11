@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
@@ -281,6 +282,27 @@ public class LayoutLifecycleTests
         Assert.NotEmpty(tool.Transitions);
         foreach (Transition change in tool.Transitions)
             Assert.Same(change.Phase == "changing" ? change.Previous : change.Next, change.ObservedParent);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Public_Parent_Changes_Reject_Invalid_Thread_Access_Before_Callbacks_Or_Projection_Changes(bool floating)
+    {
+        ProbeDocument document = new();
+        LayoutRoot root = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(document)) };
+        if (floating) document.Float();
+        ILayoutContainer? parent = document.Parent;
+        IDockable? owner = document.DockModel.Owner;
+        document.Transitions.Clear();
+
+        Exception? exception = await Task.Run(() => Record.Exception(() => document.Parent = null));
+
+        Assert.IsType<InvalidOperationException>(exception);
+        Assert.Same(parent, document.Parent);
+        Assert.Same(owner, document.DockModel.Owner);
+        Assert.Empty(document.Transitions);
+        GC.KeepAlive(root);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]

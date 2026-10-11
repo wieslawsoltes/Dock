@@ -176,7 +176,8 @@ notifies the destination root afterward.
 Native factory moves use the same callbacks. `Dock.Model.Avalonia.Core.DockableBase`
 provides `OwnerChanging`, with `DockableOwnerChangingEventArgs` from
 `Dock.Model.Core.Events`, so the adapter can notify before the native assignment.
-Native thread-affinity checks run before observer callbacks. A throwing changing
+Both public `Parent` assignments and native owner assignments check thread access
+before observer callbacks or ownership projections change. A throwing changing
 hook prevents that owner assignment; it does not roll back collection mutations
 that a larger docking operation has already performed.
 

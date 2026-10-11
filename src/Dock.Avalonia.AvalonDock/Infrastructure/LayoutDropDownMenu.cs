@@ -91,7 +91,9 @@ internal sealed class LayoutDropDownMenu(Control target, Action? closed = null)
     }
     private void Closed(object? sender, RoutedEventArgs e)
     {
-        if (ReferenceEquals(sender, _menu)) Close();
+        // A preceding Closed handler can reopen this same menu. The old
+        // routed event must not close the replacement invocation.
+        if (ReferenceEquals(sender, _menu) && !_menu!.IsOpen) Close();
     }
     private void SubmenuOpened(object? sender, RoutedEventArgs e)
     {

@@ -20,7 +20,7 @@ using DropDownButton = AvalonDock.Controls.DropDownButton;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
 
-public class MenuControlTests
+public partial class MenuControlTests
 {
     [AvaloniaTheory]
     [InlineData("Button")]

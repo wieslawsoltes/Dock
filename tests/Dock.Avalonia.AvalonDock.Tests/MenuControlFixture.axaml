@@ -11,6 +11,9 @@
     <DataTemplate x:Key="AlternateIcon" x:DataType="LayoutItem">
       <TextBlock Text="{Binding Title, StringFormat='Icon: {0}'}" Classes="alternate-icon" />
     </DataTemplate>
+    <DataTemplate x:Key="NestedContent" x:DataType="LayoutItem">
+      <Border><TextBlock Text="{Binding Title}" /></Border>
+    </DataTemplate>
     <ContextMenuEx x:Key="SnapshotMenu" x:DataType="local:SnapshotMenuSource" ItemsSource="{Binding Entries}" />
     <DataTemplate x:Key="Button" x:DataType="LayoutItem">
       <local:UnprefixedMenuButton />

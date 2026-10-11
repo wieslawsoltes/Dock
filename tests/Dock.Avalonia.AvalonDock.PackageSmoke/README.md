@@ -21,7 +21,8 @@ resolve a container and activate, hide, and auto-hide tools through unprefixed
 command converters, update converted visibility and preserve null binding targets,
 open the navigator with native Ctrl+Tab input, apply unprefixed label styles,
 cycle its document/tool lists, invoke its public template hook, and activate/focus
-the chosen document on Control release, compile unprefixed `GenericTheme`, include
+the chosen document on Control release while its scoped timeline delays presentation,
+then focus it after resuming the timeline, compile unprefixed `GenericTheme`, include
 its packaged resource URI, share and update a dictionary theme across native
 floating and navigator windows, replace it and release the old dictionary owner,
 and verify that canceling an owner's close

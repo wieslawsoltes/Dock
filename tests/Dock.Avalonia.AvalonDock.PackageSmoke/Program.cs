@@ -31,6 +31,7 @@ using AvalonDock.Converters;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 using AvalonDock.Themes;
+using Dock.Controls.DeferredContentControl;
 using ReactiveUI.Reactive;
 
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
@@ -372,6 +373,11 @@ static void AssertNavigator(Window view, DockingManager manager, LayoutDocument 
         document.IsActive = true;
         document.LastActivationTimeStamp = DateTime.MaxValue;
         next.LastActivationTimeStamp = DateTime.MinValue;
+        DeferredContentScheduling.SetTimeline(manager, new DeferredContentPresentationTimeline
+        {
+            InitialDelay = TimeSpan.FromHours(1),
+            RevealDuration = TimeSpan.Zero
+        });
         if (!((Control)document.Content!).Focus()) throw new Exception("The document did not receive focus before Ctrl+Tab.");
         view.KeyPressQwerty(PhysicalKey.Tab, RawInputModifiers.Control);
         navigator = view.OwnedWindows.OfType<NavigatorWindow>().Single();
@@ -396,12 +402,22 @@ static void AssertNavigator(Window view, DockingManager manager, LayoutDocument 
         if (!ReferenceEquals(navigator.SelectedDocument?.LayoutElement, next))
             throw new Exception("The packaged navigator did not cycle back to the second document.");
         navigator.KeyReleaseQwerty(PhysicalKey.ControlLeft, RawInputModifiers.None);
+        if (navigator.IsVisible || !ReferenceEquals(manager.Layout.ActiveContent, next) || TopLevel.GetTopLevel(editor) is not null)
+            throw new Exception("The packaged navigator did not activate the document while its scoped timeline deferred presentation.");
+        DeferredContentScheduling.SetTimeline(manager, new DeferredContentPresentationTimeline
+        {
+            FollowUpDelay = TimeSpan.Zero,
+            MaxPresentationsPerPass = 1,
+            RevealDuration = TimeSpan.Zero
+        });
+        view.MouseMove(default);
         if (navigator.IsVisible || !ReferenceEquals(manager.Layout.ActiveContent, next) ||
             !ReferenceEquals(view.FocusManager!.GetFocusedElement(), editor))
             throw new Exception("The packaged navigator did not activate and focus the selected native document.");
     }
     finally
     {
+        manager.ClearValue(DeferredContentScheduling.TimelineProperty);
         navigator?.Close();
         next.Close();
         document.IsActive = true;

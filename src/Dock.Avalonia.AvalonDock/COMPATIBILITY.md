@@ -293,7 +293,10 @@ supported by corresponding implementation and test evidence.
   Ctrl+Tab works from the manager and both native floating host types. Tests cover
   stable activation ordering, filtering, snapshot and live metadata behavior,
   upstream initial-selection and keyboard rules, pointer input, command overrides
-  and availability, nested editor focus after deferred presentation, labels in both
+  and availability, nested editor focus after delayed/budgeted presentation in
+  docked and floating documents, native floating-host activation after modal
+  closure, cancellation on replacement/deactivation/detachment/new focus (including
+  handled events), collection while unrealized content is retained, labels in both
   XML namespaces, public/protected template and selection hooks, empty/custom
   lists, cancellation, reentrant/failing creation, layout replacement, view
   detachment, collection of closed navigators, and hidden-window owner cleanup,
@@ -313,7 +316,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 495 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 505 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -324,6 +327,8 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
+  `LayoutRoot.ActiveContent` still reads the primary native root's focused item;
+  unifying that API and its notifications across floating roots remains open.
 - Remaining manager APIs: additional update strategy invocation paths,
   templates/selectors, styles, general theme URI loading, the URI image and
   localized auto-hide header converters, localization resources, and the control

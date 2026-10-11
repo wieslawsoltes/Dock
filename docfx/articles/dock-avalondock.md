@@ -917,6 +917,12 @@ and releasing any non-navigation key, including Control or Escape, closes the
 navigator and invokes the selected item's available `ActivateCommand` with null.
 For inline Avalonia controls, focus is restored after Dock's queued deferred
 presentation, either to the content itself or its next focusable child.
+This also works with delayed timelines and a presentation budget, in docked and
+floating documents. The request waits for visual attachment and ends when content
+changes or deactivates, the manager detaches, or the user focuses another control
+in the destination window. Floating selection uses Dock's host activation API
+after the modal navigator closes. Retaining unrealized content does not retain
+its closed manager through the pending request.
 
 Pointer or application selection of `SelectedDocument` hides the navigator and
 executes its available command; selecting `SelectedAnchorable` closes it and

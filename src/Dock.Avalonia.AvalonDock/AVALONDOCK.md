@@ -403,7 +403,10 @@ their current activation commands. Documents are ordered by recent activation;
 visible, enabled tools retain layout order. Arrow keys cycle within or across
 lists, and Tab traverses both. Releasing a non-navigation key commits the selected
 item, following upstream behavior, including Escape and forward-only Shift+Tab.
-Focus restoration follows Dock's queued deferred content presentation.
+Focus restoration waits for Dock's deferred content presentation, including
+delayed timelines and budgets in docked and floating documents. Pending requests
+end on content replacement/deactivation, manager detachment, or a newer focus
+choice in the destination window. Floating selection activates the native host.
 Selecting a document hides the navigator. The hidden window remains reusable
 and follows its former owner's lifetime: a canceled owner close preserves it,
 and a completed owner close releases it from Avalonia's desktop window list.

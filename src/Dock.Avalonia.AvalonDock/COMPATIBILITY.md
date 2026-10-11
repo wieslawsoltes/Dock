@@ -48,6 +48,14 @@ supported by corresponding implementation and test evidence.
   retained using a per-tree weak identity map.
 - Document close cancellation, tool hide/restore, hidden collection, active
   content, and title/content/capability forwarding.
+- `LayoutRoot.ActiveContent` and manager active-content notifications span the
+  primary and floating native roots while retaining each root's own focused
+  item. Model-only activation also deactivates the preceding pane before its
+  view is loaded. `LastFocusedDocument` includes tools in document panes and
+  notifies both affected `IsLastFocusedDocument` properties. Activation, source
+  root-specific focus clearing, window reactivation, callback redirection,
+  hierarchy removal/replacement, unrelated native roots, and deferred floating
+  navigator selection are covered by Headless tests.
 - `PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` bubble through the
   manager and its ancestors with the public layout content as `Source`.
   Protected notification hooks support derived managers. Model methods,
@@ -316,7 +324,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 505 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 524 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -327,8 +335,6 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-  `LayoutRoot.ActiveContent` still reads the primary native root's focused item;
-  unifying that API and its notifications across floating roots remains open.
 - Remaining manager APIs: additional update strategy invocation paths,
   templates/selectors, styles, general theme URI loading, the URI image and
   localized auto-hide header converters, localization resources, and the control

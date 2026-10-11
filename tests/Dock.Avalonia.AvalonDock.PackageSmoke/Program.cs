@@ -90,6 +90,7 @@ AssertSplitters(manager);
 tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+AssertActiveContent(manager, document, tool);
 AssertThemes(window, manager, toolHost);
 AssertFloatingResize(window, (LayoutFloatingWindowControl)toolHost);
 AssertFloatingKeyboard(toolHost, (Control)tool.Content!);
@@ -358,6 +359,36 @@ static void AssertThemes(Window owner, DockingManager manager, HostWindow host)
     {
         navigator?.Close();
         manager.Theme = previous;
+    }
+}
+
+static void AssertActiveContent(DockingManager manager, LayoutDocument document, LayoutAnchorable tool)
+{
+    try
+    {
+        document.Float();
+        Dispatcher.UIThread.RunJobs();
+        LayoutFloatingWindow window = document.FindParent<LayoutFloatingWindow>()!;
+        tool.IsActive = true;
+        manager.ActiveContent = document.Content;
+        if (!ReferenceEquals(manager.Layout.ActiveContent, document) ||
+            !ReferenceEquals(manager.ActiveContent, document.Content) ||
+            !ReferenceEquals(manager.Layout.LastFocusedDocument, document) ||
+            !document.IsLastFocusedDocument || !document.IsActive || tool.IsActive ||
+            !ReferenceEquals(((Dock.Model.Controls.IRootDock)window.DockModel).FocusedDockable, document.DockModel) ||
+            ReferenceEquals(manager.DockLayout.FocusedDockable, document.DockModel))
+            throw new Exception("Floating activation did not synchronize public content with the owning native root.");
+        manager.ActiveContent = null;
+        if (manager.Layout.ActiveContent is not null || manager.Layout.LastFocusedDocument is not null ||
+            document.IsLastFocusedDocument || document.IsActive ||
+            ((Dock.Model.Controls.IRootDock)window.DockModel).FocusedDockable is not null)
+            throw new Exception("Clearing floating activation did not clear its native focus and document history.");
+    }
+    finally
+    {
+        document.Dock();
+        Dispatcher.UIThread.RunJobs();
+        tool.IsActive = true;
     }
 }
 

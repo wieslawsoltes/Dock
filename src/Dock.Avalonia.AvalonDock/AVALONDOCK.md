@@ -64,6 +64,15 @@ new XmlLayoutSerializer(manager).Serialize("layout.xml");
 new XmlLayoutSerializer(manager).Deserialize("layout.xml");
 ```
 
+`manager.Layout.ActiveContent` identifies the active layout node across docked
+and floating windows; `manager.ActiveContent` exposes its application content.
+Set either property, set a node's `IsActive`, or use its activation command.
+The bridge selects and focuses the node in its owning native Dock root, then
+notifies bindings. `LastFocusedDocument` tracks documents and tools hosted in
+document panes, with `IsLastFocusedDocument` notifications on the affected nodes.
+Window deactivation retains this history; clearing active content or removing
+the corresponding layout nodes clears it.
+
 XML restores layout nodes and resolves application content by `ContentId`.
 Construct the serializer after the content exists, or provide
 `LayoutSerializationCallback` to resolve ViewModels from an application-owned
@@ -435,6 +444,7 @@ flowchart TB
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
+    Focus["Active content and document history<br/>Across native roots"]
     Events["Operation notifications<br/>Public layout source and routed events"]
     Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
     Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
@@ -460,6 +470,8 @@ flowchart TB
     Sizing --> View
     Bridge --> Factory
     Factory --> Models
+    Factory --> Focus
+    Focus --> Bridge
     Factory --> Events
     Events --> Api
     Factory --> Hosts

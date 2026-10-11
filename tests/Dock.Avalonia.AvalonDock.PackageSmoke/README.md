@@ -13,6 +13,9 @@ notifications around native movement, inspect typed native floating controls and
 their collection changes, create and explicitly show an immutable floating window,
 bind unprefixed window-wide commands and invoke current item commands with parameters,
 hide and restore a tool while retaining its floating host and native registration,
+activate a floating document through manager content, verify its owning native
+root and last-focused-document state, and clear activation without assigning it
+to the primary root,
 enable unprefixed keyboard movement and move a floating host with Headless arrow-key input,
 style unprefixed resize borders and verify native resize roles and pointer handling,
 inspect the protected close-origin property from a derived consumer control,

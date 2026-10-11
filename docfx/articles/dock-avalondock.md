@@ -130,6 +130,30 @@ pane and tab position are retained when it floats, docks, hides, or is restored.
 After deserialization, look up layout nodes again: the manager now owns a new
 layout tree, while content can retain its application identity.
 
+`manager.Layout.ActiveContent` is the public document or tool node, including
+nodes in floating windows. `manager.ActiveContent` exposes that node's `Content`
+and accepts either application content or a layout node when assigning it:
+
+```csharp
+document.Float();
+manager.Layout.ActiveContent = document;
+LayoutContent? activeNode = manager.Layout.ActiveContent;
+object? activeContent = manager.ActiveContent;
+```
+
+Activation through either property, `IsActive`, a container command, or the
+native Dock factory updates the same public state. Each native root retains
+its own focused item; floating content is never assigned as the primary root's
+focused item. Notifications follow native selection and activation so observers
+can inspect the completed state or activate a different item from a callback.
+
+`LastFocusedDocument` remembers the latest document or tool hosted in a document
+pane. Activating an ordinary tool preserves that value. The previous and new
+nodes notify `IsLastFocusedDocument`, and the root notifies `LastFocusedDocument`.
+Window deactivation retains the active-content history. Explicitly setting
+`ActiveContent` to `null` clears the active node and document history; removing
+nodes or replacing their layout clears references to the removed nodes.
+
 ## Bind item containers and commands
 
 `DockingManager.GetLayoutItemFromModel` returns a `LayoutDocumentItem` or
@@ -1031,6 +1055,7 @@ flowchart TB
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
+        Focus["Active content and document history<br/>Across native roots"]
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
@@ -1078,6 +1103,8 @@ flowchart TB
     Lifecycle --> Controls
     Controls --> Factory
     Factory --> Models
+    Factory --> Focus
+    Focus --> Layout
     Factory --> Events
     Events --> Manager
     Factory --> Hosts

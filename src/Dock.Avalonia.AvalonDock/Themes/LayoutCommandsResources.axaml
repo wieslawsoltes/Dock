@@ -177,34 +177,34 @@
     </Grid>
   </ControlTemplate>
   <Template x:Key="AvalonDockDocumentCommands">
-    <ContextMenu x:DataType="items:LayoutItem">
-      <MenuItem Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
-      <MenuItem Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}" Command="{Binding CloseAllButThisCommand}" />
-      <MenuItem Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}" Command="{Binding CloseAllCommand}" />
-      <MenuItem Header="{DynamicResource ToolChromeControlFloatString}" Command="{Binding FloatCommand}" />
-      <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
-      <MenuItem Header="{DynamicResource AvalonDockNewHorizontalTabGroupString}" Command="{Binding NewHorizontalTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
-      <MenuItem Header="{DynamicResource AvalonDockNewVerticalTabGroupString}" Command="{Binding NewVerticalTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
-      <MenuItem Header="{DynamicResource AvalonDockMoveToNextTabGroupString}" Command="{Binding MoveToNextTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
-      <MenuItem Header="{DynamicResource AvalonDockMoveToPreviousTabGroupString}" Command="{Binding MoveToPreviousTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
-    </ContextMenu>
+    <items:ContextMenuEx x:DataType="items:LayoutItem">
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}" Command="{Binding CloseAllButThisCommand}" />
+      <items:MenuItemEx Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}" Command="{Binding CloseAllCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlFloatString}" Command="{Binding FloatCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockNewHorizontalTabGroupString}" Command="{Binding NewHorizontalTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockNewVerticalTabGroupString}" Command="{Binding NewVerticalTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockMoveToNextTabGroupString}" Command="{Binding MoveToNextTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockMoveToPreviousTabGroupString}" Command="{Binding MoveToPreviousTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+    </items:ContextMenuEx>
   </Template>
   <Template x:Key="AvalonDockToolCommands">
-    <ContextMenu x:DataType="items:LayoutAnchorableItem">
-      <MenuItem Header="{DynamicResource ToolChromeControlFloatString}" Command="{Binding FloatCommand}" />
-      <MenuItem Header="{DynamicResource ToolChromeControlDockString}" Command="{Binding DockCommand}" />
-      <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
-      <MenuItem Theme="{StaticResource AvalonDockAutoHideMenuItem}"
+    <items:ContextMenuEx x:DataType="items:LayoutAnchorableItem">
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlFloatString}" Command="{Binding FloatCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockString}" Command="{Binding DockCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
+      <items:MenuItemEx Theme="{StaticResource AvalonDockAutoHideMenuItem}"
                 Classes.avalondock-auto-hidden="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden}" Command="{Binding AutoHideCommand}" />
-      <MenuItem Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
-      <MenuItem Header="{DynamicResource AvalonDockHideString}" Command="{Binding HideCommand}">
-        <MenuItem.IsVisible>
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockHideString}" Command="{Binding HideCommand}">
+        <items:MenuItemEx.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="$self.IsEffectivelyEnabled" />
             <Binding Path="CanClose" Converter="{x:Static BoolConverters.Not}" />
           </MultiBinding>
-        </MenuItem.IsVisible>
-      </MenuItem>
-    </ContextMenu>
+        </items:MenuItemEx.IsVisible>
+      </items:MenuItemEx>
+    </items:ContextMenuEx>
   </Template>
 </ResourceDictionary>

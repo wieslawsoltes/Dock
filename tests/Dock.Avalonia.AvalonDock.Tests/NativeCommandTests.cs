@@ -151,7 +151,7 @@ public partial class NativeCommandTests
         Click(ToolButton(workspace.Manager, "PART_PinButton"));
         Assert.Equal(1, pinRequests);
         Button button = ToolButton(workspace.Manager, "PART_MenuButton");
-        ContextMenu menu = Assert.IsType<ContextMenu>(workspace.Manager.AnchorableContextMenu);
+        ContextMenu menu = Assert.IsType<ContextMenuEx>(workspace.Manager.AnchorableContextMenu);
         Click(button);
         Assert.True(menu.IsOpen);
         MenuItem close = menu.Items.OfType<MenuItem>().Single(entry => ReferenceEquals(entry.Command, closeCommand));
@@ -282,7 +282,7 @@ public partial class NativeCommandTests
     {
         using Workspace workspace = new();
         Button button = ToolButton(workspace.Manager, "PART_MenuButton");
-        ContextMenu menu = Assert.IsType<ContextMenu>(workspace.Manager.AnchorableContextMenu);
+        ContextMenu menu = Assert.IsType<ContextMenuEx>(workspace.Manager.AnchorableContextMenu);
         Click(button);
         LayoutItem first = workspace.Manager.GetLayoutItemFromModel(workspace.Tool)!;
         MenuItem close = menu.Items.OfType<MenuItem>().Single(entry => ReferenceEquals(entry.Command, first.CloseCommand));

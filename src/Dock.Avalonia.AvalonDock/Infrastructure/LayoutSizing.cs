@@ -1,54 +1,86 @@
 using System;
-using Avalonia;
+using System.Collections;
 using Avalonia.Controls;
-using Orientation = Avalonia.Layout.Orientation;
-using Dock.Model.Core;
-using Dock.Model.Controls;
 using AvalonDock.Layout;
+using Dock.Model.Core;
+using Orientation = Avalonia.Layout.Orientation;
 
 namespace AvalonDock.Infrastructure;
 
-// Translates AvalonDock's pixel/star dimensions into Dock's proportional layout.
+// Translates public lengths into proportions without normalizing fixed columns
+// or writing render-time constraints back into the requested model dimensions.
 internal sealed class LayoutSizing
 {
-    internal void Apply(ILayoutContainer container, Size available, double splitterWidth, double splitterHeight)
+    internal bool Apply(ILayoutContainer container, double available, double denominator)
     {
-        if (container is not ILayoutOrientableGroup oriented) return;
+        if (container is not ILayoutOrientableGroup oriented || container.Children is not IList children
+            || !double.IsFinite(available) || !double.IsFinite(denominator) || denominator <= 0) return false;
         bool horizontal = oriented.Orientation == Orientation.Horizontal;
-        double extent = horizontal ? available.Width : available.Height;
-        if (!double.IsFinite(extent) || extent <= 0) return;
-        double splitterSize = horizontal ? splitterWidth : splitterHeight;
-        int splitters = 0;
-        if (container is LayoutElement { DockModel: IDock { VisibleDockables: { } models } })
-            for (int i = 1; i + 1 < models.Count; i++)
-                if (models[i] is ISplitter && !IsCollapsed(models[i - 1]) && !IsCollapsed(models[i + 1])) splitters++;
-        double usable = Math.Max(0, extent - splitters * splitterSize);
-        if (usable <= 0) return;
         double pixels = 0;
-        double stars = 0;
-        foreach (ILayoutElement child in container.Children)
+        double maxWeight = 0;
+        for (int i = 0; i < children.Count; i++)
         {
-            if (child is not ILayoutPositionableGroup position || child is LayoutElement element && IsCollapsed(element.DockModel)) continue;
-            GridLength length = horizontal ? position.DockWidth : position.DockHeight;
-            if (length.IsAbsolute) pixels += length.Value;
-            else stars += length.IsStar ? length.Value : 1;
+            if (children[i] is not ILayoutPositionableGroup child || IsCollapsed(child)) continue;
+            GridLength length = GetLength(child, horizontal);
+            if (length.IsAbsolute) pixels += Math.Max(length.Value, GetMinimum(child, horizontal));
+            else maxWeight = Math.Max(maxWeight, GetWeight(length));
         }
-        double remainder = Math.Max(0, usable - pixels);
-        foreach (ILayoutElement child in container.Children)
+        double remaining = Math.Max(0, available - pixels);
+        double scale = GetStarScale(children, horizontal, maxWeight, remaining);
+        for (int i = 0; i < children.Count; i++)
         {
-            if (child is not ILayoutPositionableGroup position) continue;
-            if (child is LayoutElement element && IsCollapsed(element.DockModel))
+            if (children[i] is not ILayoutPositionableGroup child) continue;
+            double desired = 0;
+            if (!IsCollapsed(child))
             {
-                position.ApplyDockProportion(0, usable, horizontal);
-                continue;
+                GridLength length = GetLength(child, horizontal);
+                desired = length.IsAbsolute ? length.Value : maxWeight > 0 ? GetWeight(length) / maxWeight * scale : 0;
+                desired = Math.Max(desired, GetMinimum(child, horizontal));
             }
-            GridLength length = horizontal ? position.DockWidth : position.DockHeight;
-            double desired = length.IsAbsolute ? length.Value : stars > 0 ? remainder * (length.IsStar ? length.Value : 1) / stars : 0;
-            double total = pixels > usable ? pixels : usable;
-            double proportion = desired / total;
-            position.ApplyDockProportion(proportion, usable, horizontal);
+            child.ApplyDockProportion(desired / denominator, denominator, horizontal);
         }
+        return true;
     }
 
-    private static bool IsCollapsed(IDockable model) => model.IsCollapsable && model.IsEmpty;
+    // Water-fill the star allocation: reserve constrained children first, then
+    // divide the remaining space among the others. Scaling weights avoids overflow.
+    private static double GetStarScale(IList children, bool horizontal, double maxWeight, double available)
+    {
+        if (maxWeight <= 0) return 0;
+        double weight = 0;
+        for (int i = 0; i < children.Count; i++)
+            if (children[i] is ILayoutPositionableGroup child && !IsCollapsed(child) && !GetLength(child, horizontal).IsAbsolute)
+                weight += GetWeight(GetLength(child, horizontal)) / maxWeight;
+        double scale = weight > 0 ? available / weight : 0;
+        for (int pass = 0; pass < children.Count; pass++)
+        {
+            double reserved = 0;
+            double activeWeight = 0;
+            for (int i = 0; i < children.Count; i++)
+            {
+                if (children[i] is not ILayoutPositionableGroup child || IsCollapsed(child)) continue;
+                GridLength length = GetLength(child, horizontal);
+                if (length.IsAbsolute) continue;
+                double normalizedWeight = GetWeight(length) / maxWeight;
+                double minimum = GetMinimum(child, horizontal);
+                if (minimum > normalizedWeight * scale) reserved += minimum;
+                else activeWeight += normalizedWeight;
+            }
+            double next = activeWeight > 0 ? Math.Max(0, available - reserved) / activeWeight : 0;
+            if (next >= scale) break;
+            scale = next;
+        }
+        return scale;
+    }
+
+    private static bool IsCollapsed(ILayoutPositionableGroup child) =>
+        child is LayoutElement { DockModel: IDockable { IsCollapsable: true, IsEmpty: true } };
+    private static GridLength GetLength(ILayoutPositionableGroup child, bool horizontal) => horizontal ? child.DockWidth : child.DockHeight;
+    private static double GetMinimum(ILayoutPositionableGroup child, bool horizontal)
+    {
+        double value = horizontal ? child.DockMinWidth : child.DockMinHeight;
+        return double.IsNaN(value) ? 0 : Math.Max(0, value);
+    }
+    // Intrinsic auto measurement is a separate policy still to be implemented.
+    private static double GetWeight(GridLength length) => length.IsStar ? length.Value : 1;
 }

@@ -242,7 +242,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
             if (_source[i] is ISplitter) _source.RemoveAt(i);
         for (int i = _source.Count - 1; i > 0; i--)
         {
-            ProportionalDockSplitter splitter = new() { Owner = _model, Factory = _model.Factory };
+            ProportionalDockSplitter splitter = new() { Owner = _model, Factory = _model.Factory, ResizePreview = true };
             _source.Insert(i, splitter);
         }
     }

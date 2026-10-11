@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Dock.Controls.ProportionalStackPanel;
@@ -16,11 +17,23 @@ internal sealed class LayoutSizingPanel : ProportionalStackPanel
     static LayoutSizingPanel() => AffectsMeasure<LayoutSizingPanel>(DataContextProperty,
         LayoutSplitterSizing.WidthProperty, LayoutSplitterSizing.HeightProperty);
 
-    protected override Size MeasureOverride(Size availableSize)
+    protected override void OnAssignProportions(Size size, double splitterThickness)
     {
-        if (GetContainer() is { } group)
-            _sizing.Apply(group, availableSize, LayoutSplitterSizing.GetWidth(this), LayoutSplitterSizing.GetHeight(this));
-        return base.MeasureOverride(availableSize);
+        double available = base.GetProportionalDimension(size, splitterThickness);
+        if (GetContainer() is not { } group || !_sizing.Apply(group, available, GetProportionalDimension(size, splitterThickness)))
+            base.OnAssignProportions(size, splitterThickness);
+    }
+
+    // Fixed columns can exceed a constrained viewport, even when the splitter
+    // gaps consume all available space. A positive denominator preserves them.
+    protected override double GetProportionalDimension(Size size, double splitterThickness) =>
+        GetContainer() is not null ? Math.Max(1, base.GetProportionalDimension(size, splitterThickness))
+            : base.GetProportionalDimension(size, splitterThickness);
+
+    protected override void ResizeProportions(Control target, Control neighbor, double dragDelta, double minimumSize)
+    {
+        if (!LayoutSplitterResize.TryResize(target, neighbor, Orientation, dragDelta, minimumSize))
+            base.ResizeProportions(target, neighbor, dragDelta, minimumSize);
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)

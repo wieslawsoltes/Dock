@@ -304,8 +304,7 @@ public class ProportionalStackPanelSplitter : Thumb
         var neighbor = FindNextChild(panel);
         if (neighbor is null) return;
 
-        var resizer = new ProportionResizer(panel, target, neighbor, dragDelta, GetValue(MinimumProportionSizeProperty));
-        resizer.ApplyResize();
+        panel.ResizeProportions(target, neighbor, dragDelta, GetValue(MinimumProportionSizeProperty));
     }
 
     internal void UpdateVisualState()

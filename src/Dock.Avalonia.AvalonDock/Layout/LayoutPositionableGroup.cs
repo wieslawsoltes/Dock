@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
@@ -25,7 +26,12 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
 
     /// <summary>Creates a positionable split group.</summary>
     public LayoutPositionableGroup() : this(new ProportionalDock()) { }
-    internal LayoutPositionableGroup(DockBase model, LayoutModelContext? context = null) : base(model, context) { }
+    internal LayoutPositionableGroup(DockBase model, LayoutModelContext? context = null) : base(model, context)
+    {
+        // Dock uses NaN for an unspecified constraint; AvalonDock starts at 25.
+        if (double.IsNaN(model.MinWidth)) model.MinWidth = 25;
+        if (double.IsNaN(model.MinHeight)) model.MinHeight = 25;
+    }
 
     /// <summary>Gets or sets the preferred docked width.</summary>
     public GridLength DockWidth
@@ -43,10 +49,34 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     public bool AllowDuplicateContent { get => _allowDuplicateContent; set => SetField(ref _allowDuplicateContent, value); }
     /// <summary>Gets or sets whether items can be repositioned.</summary>
     public bool CanRepositionItems { get => _canRepositionItems; set => SetField(ref _canRepositionItems, value); }
-    /// <summary>Gets or sets the minimum docked width.</summary>
-    public double DockMinWidth { get => DockModel.MinWidth; set => DockModel.MinWidth = value; }
-    /// <summary>Gets or sets the minimum docked height.</summary>
-    public double DockMinHeight { get => DockModel.MinHeight; set => DockModel.MinHeight = value; }
+    /// <summary>Gets or sets the minimum docked width, initially 25 pixels.</summary>
+    /// <exception cref="ArgumentException">The value is negative.</exception>
+    public double DockMinWidth
+    {
+        get => DockModel.MinWidth;
+        set
+        {
+            VerifyAccess();
+            if (value < 0) throw new ArgumentException("The minimum width must not be negative.", nameof(value));
+            if (DockModel.MinWidth.Equals(value)) return;
+            RaisePropertyChanging();
+            DockModel.MinWidth = value;
+        }
+    }
+    /// <summary>Gets or sets the minimum docked height, initially 25 pixels.</summary>
+    /// <exception cref="ArgumentException">The value is negative.</exception>
+    public double DockMinHeight
+    {
+        get => DockModel.MinHeight;
+        set
+        {
+            VerifyAccess();
+            if (value < 0) throw new ArgumentException("The minimum height must not be negative.", nameof(value));
+            if (DockModel.MinHeight.Equals(value)) return;
+            RaisePropertyChanging();
+            DockModel.MinHeight = value;
+        }
+    }
     /// <summary>Gets or sets the floating width.</summary>
     public double FloatingWidth { get => _floatingWidth; set => SetField(ref _floatingWidth, value); }
     /// <summary>Gets or sets the floating height.</summary>
@@ -70,6 +100,11 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         base.OnModelPropertyChanged(sender, e);
+        if (e.Property == DockableBase.MinWidthProperty || e.Property == DockableBase.MinHeightProperty)
+        {
+            RaisePropertyChanged(e.Property == DockableBase.MinWidthProperty ? nameof(DockMinWidth) : nameof(DockMinHeight));
+            Root?.Manager?.SizingViews.Invalidate();
+        }
         if (e.Property != DockableBase.ProportionProperty || _applyingProportion || _availableExtent <= 0
             || !double.IsFinite(DockModel.Proportion) || DockModel.Proportion < 0) return;
         // Retain user splitter resizing when the manager is measured again.

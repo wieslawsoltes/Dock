@@ -67,6 +67,13 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     internal LayoutItem? GetLayoutItem(IDockable model) => getLayoutItem(model);
     internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutContainer(model);
 
+    public override IProportionalDockSplitter CreateProportionalDockSplitter()
+    {
+        IProportionalDockSplitter splitter = base.CreateProportionalDockSplitter();
+        splitter.ResizePreview = true;
+        return splitter;
+    }
+
     bool IDockItemDragPolicy.CanDragItem(IDockable dockable) =>
         getLayoutItem(dockable)?.LayoutElement is { IsEnabled: true } &&
         DockCapabilityResolver.IsEnabled(dockable, DockCapability.Drag, DockCapabilityResolver.ResolveOperationDock(dockable));

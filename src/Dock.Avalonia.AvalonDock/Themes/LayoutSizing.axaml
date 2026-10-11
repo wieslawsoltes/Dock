@@ -12,6 +12,7 @@
     <Setter Property="Template" Value="{StaticResource AvalonDockProportionalLayout}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock proportional|ProportionalStackPanelSplitter, :is(dock|HostWindow).avalondock proportional|ProportionalStackPanelSplitter">
+    <Setter Property="(proportional:ProportionalStackPanelSplitter.MinimumProportionSize)" Value="0" />
     <Setter Property="Thickness">
       <MultiBinding Converter="{StaticResource AvalonDockSplitterSize}">
         <Binding Path="(infrastructure:LayoutSplitterSizing.Width)" RelativeSource="{RelativeSource Self}" />

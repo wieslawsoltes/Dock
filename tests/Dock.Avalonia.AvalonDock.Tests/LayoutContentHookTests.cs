@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
 using AvalonDock;
 using AvalonDock.Layout;
+using Dock.Avalonia.Controls;
 using Dock.Model.Core;
 using Xunit;
 
@@ -103,6 +107,8 @@ public class LayoutContentHookTests
     [InlineData(true, 2)]
     [InlineData(false, 3)]
     [InlineData(true, 3)]
+    [InlineData(false, 4)]
+    [InlineData(true, 4)]
     public void Activation_Hooks_See_The_Selected_Content_And_Updated_Root(bool tools, int route)
     {
         (LayoutContent content, Probe probe) = CreateContent(tools);
@@ -127,6 +133,11 @@ public class LayoutContentHookTests
             case 1: ((IDockingWindowState)content.DockModel).IsActive = true; break;
             case 2: root.DockFactory.SetActiveDockable(content.DockModel); break;
             case 3: root.ActiveContent = content; break;
+            case 4:
+                content.IsSelected = true;
+                Assert.Same(other, root.ActiveContent);
+                root.DockFactory.SetActiveDockable(content.DockModel);
+                break;
         }
 
         Assert.Equal(new[] { (false, true) }, probe.Activations);
@@ -253,6 +264,145 @@ public class LayoutContentHookTests
         Assert.Same(second, document.Root);
         Assert.Contains(document, destination.Children);
         GC.KeepAlive(first);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void An_Activation_Override_Can_Redirect_Focus_To_Another_Content(bool tools, bool native)
+    {
+        (LayoutContent content, Probe probe) = CreateContent(tools);
+        LayoutDocument first = new();
+        LayoutDocument destination = new();
+        LayoutDocumentPane pane = new(first);
+        pane.Children.Add(content);
+        pane.Children.Add(destination);
+        LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };
+        first.IsActive = true;
+        probe.Activation = (_, active) => { if (active) destination.IsActive = true; };
+
+        if (native) root.DockFactory.SetActiveDockable(content.DockModel);
+        else content.IsActive = true;
+
+        Assert.Same(destination, root.ActiveContent);
+        Assert.Same(destination, pane.SelectedContent);
+        Assert.True(destination.IsActive);
+        Assert.False(content.IsActive);
+        Assert.False(first.IsActive);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void A_Throwing_Activation_Override_Does_Not_Block_Later_Focus_Changes(bool tools)
+    {
+        (LayoutContent content, Probe probe) = CreateContent(tools);
+        LayoutDocument other = new();
+        LayoutDocumentPane pane = new(other);
+        pane.Children.Add(content);
+        LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };
+        other.IsActive = true;
+        probe.Activation = (_, active) => { if (active) throw new InvalidOperationException("activation observer"); };
+
+        Assert.Throws<InvalidOperationException>(() => root.ActiveContent = content);
+        probe.Activation = null;
+        other.IsActive = true;
+        content.IsActive = true;
+
+        Assert.Same(content, root.ActiveContent);
+        Assert.Same(content, pane.SelectedContent);
+        Assert.True(content.IsActive);
+        Assert.False(other.IsActive);
+    }
+
+    [AvaloniaFact]
+    public void A_Failed_Activation_Notification_Does_Not_Retain_Removed_Content()
+    {
+        LayoutRoot root = new();
+        WeakReference<LayoutContent> reference = RemoveAfterFailedActivation(root);
+        for (int attempt = 0; attempt < 3; attempt++)
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+        Assert.False(reference.TryGetTarget(out _));
+        GC.KeepAlive(root);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static WeakReference<LayoutContent> RemoveAfterFailedActivation(LayoutRoot root)
+    {
+        ProbeDocument content = new();
+        LayoutDocument other = new();
+        LayoutDocumentPane pane = new(other);
+        pane.Children.Add(content);
+        root.RootPanel = new LayoutPanel(pane);
+        other.IsActive = true;
+        content.Probe.Activation = (_, active) => { if (active) throw new InvalidOperationException("activation observer"); };
+        Assert.Throws<InvalidOperationException>(() => root.ActiveContent = content);
+        content.Probe.Activation = null;
+        pane.Children.Remove(content);
+        return new(content);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Floating_Host_Closure_Uses_The_Derived_Content_Hooks(bool tools)
+    {
+        (LayoutContent content, Probe probe) = CreateContent(tools);
+        LayoutDocumentPane pane = new(content);
+        DockingManager manager = new() { Layout = new LayoutRoot { RootPanel = new LayoutPanel(pane) } };
+        Window owner = new() { Content = manager, Width = 640, Height = 400 };
+        owner.Show();
+        HostWindow? host = null;
+        try
+        {
+            content.Float();
+            Dispatcher.UIThread.RunJobs();
+            host = Assert.IsAssignableFrom<HostWindow>(Assert.Single(manager.Layout.FloatingWindows).DockWindow.Host);
+            probe.CancelClose = true;
+            probe.Closed = () => { Assert.Null(content.Parent); Assert.Null(content.Root); };
+
+            host.Close();
+            Assert.True(host.IsVisible);
+            Assert.DoesNotContain("closed:hook", probe.Trace);
+            probe.CancelClose = false;
+            host.Close();
+
+            Assert.False(host.IsVisible);
+            Assert.Null(content.Parent);
+            Assert.Single(probe.Trace, value => value == "closed:hook");
+        }
+        finally { probe.CancelClose = false; host?.Close(); owner.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Native_Floating_Title_Bindings_Keep_The_Activated_Content_Title_Current(bool tools)
+    {
+        (LayoutContent content, _) = CreateContent(tools);
+        content.Title = "Initial title";
+        DockingManager manager = new() { Layout = new LayoutRoot { RootPanel = new LayoutPanel(new LayoutDocumentPane(content)) } };
+        Window owner = new() { Content = manager, Width = 640, Height = 400 };
+        owner.Show();
+        HostWindow? host = null;
+        try
+        {
+            content.Float();
+            Dispatcher.UIThread.RunJobs();
+            host = Assert.IsAssignableFrom<HostWindow>(Assert.Single(manager.Layout.FloatingWindows).DockWindow.Host);
+            Assert.Equal("Initial title", host.Title);
+
+            content.Title = "Updated title";
+
+            Assert.Equal("Updated title", host.Title);
+        }
+        finally { host?.Close(); owner.Close(); }
     }
 
     private static (LayoutContent, Probe) CreateContent(bool tools)

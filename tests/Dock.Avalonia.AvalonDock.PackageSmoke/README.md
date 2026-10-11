@@ -8,16 +8,19 @@ headers, render tool and floating document titles and select their templates, cl
 floating caption buttons to maximize/restore and execute the current close command,
 native tabs and custom manager menus to execute container commands, activate
 documents through the list menu with compiled header and icon templates, resize
-native splitters through the manager properties, and restore application content
+native splitters through the manager properties, observe bubbling docking/floating
+notifications around native movement, and restore application content
 from XML using the packaged assemblies. Pack the native
-control and proportional-panel packages too: they contain the tool-menu lifetime,
-window drag input, and runtime splitter sizing fixes. An isolated cache
+control, model, and proportional-panel packages too: they contain the tool-menu
+lifetime, window drag input, operation observation, and runtime splitter sizing
+changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.
 
 ```sh
 dotnet pack src/Dock.Avalonia.AvalonDock -c Release -o artifacts/nuget
 dotnet pack src/Dock.Avalonia -c Release --no-build -o artifacts/nuget
+dotnet pack src/Dock.Model -c Release -o artifacts/nuget
 dotnet pack src/Dock.Controls.ProportionalStackPanel -c Release --no-build -o artifacts/nuget
 dock_consumer_validation=$(mktemp -d)
 cat > "$dock_consumer_validation/NuGet.Config" <<EOF
@@ -31,6 +34,7 @@ cat > "$dock_consumer_validation/NuGet.Config" <<EOF
     <packageSource key="local">
       <package pattern="Dock.Avalonia.AvalonDock" />
       <package pattern="Dock.Avalonia" />
+      <package pattern="Dock.Model" />
       <package pattern="Dock.Controls.ProportionalStackPanel" />
     </packageSource>
     <packageSource key="nuget.org"><package pattern="*" /></packageSource>

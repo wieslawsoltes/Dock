@@ -39,6 +39,9 @@ internal sealed class LayoutDockingHistory(LayoutContent content)
             content.DockModel.Factory is not { } factory || ReferenceEquals(source, target)) return false;
 
         int index = content.PreviousContainerIndex;
+        // Upstream Float reuses a previous floating pane without creating a
+        // window or raising the manager's float/dock notifications.
+        using IDockOperationScope? silent = floatingOnly ? root.Operations.Begin(content.DockModel, LayoutOperation.Silent) : null;
         factory.MoveDockable(source, target, content.DockModel, null);
         if (!ReferenceEquals(content.Parent, group)) return false;
         if (group is ILayoutPane pane)

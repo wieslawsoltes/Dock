@@ -48,6 +48,17 @@ supported by corresponding implementation and test evidence.
   retained using a per-tree weak identity map.
 - Document close cancellation, tool hide/restore, hidden collection, active
   content, and title/content/capability forwarding.
+- `PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` bubble through the
+  manager and its ancestors with the public layout content as `Source`.
+  Protected notification hooks support derived managers. Model methods,
+  container commands, menu pointer input, and native drag execution share
+  operation scopes; internal split/group moves do not duplicate notifications.
+  Native validation, tab reordering, and reuse of an existing floating pane are
+  silent. Tests cover timing against live native ownership, group selection,
+  grouped redocking, handled routing without cancellation, capabilities,
+  reentrant/throwing handlers, layout replacement, and disposed-scope lifetime.
+  Dock's optional model-only factory observer brackets an executed operation
+  before its first collection mutation and releases its scope after failure.
 - Anchorable edge placement with `AddToLayout`, writable visibility, cancelable
   hiding callbacks, tab-index restoration, and `Show` insertion strategies.
   Hidden auto-hide tools retain their group and original pane across XML saves.
@@ -198,7 +209,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 319 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 339 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -210,8 +221,8 @@ supported by corresponding implementation and test evidence.
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
-  templates/selectors, styles, themes, routed
-  events, converters, and the control adapter surface.
+  templates/selectors, styles, themes, floating-control collection events,
+  converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
 - Complete auto sizing, header visibility,
@@ -229,8 +240,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 413
-matching type/member keys and 538 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 425
+matching type/member keys and 526 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

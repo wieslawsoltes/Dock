@@ -220,6 +220,15 @@ current item close command. Double-click and maximize/restore buttons change
 the native window state; closing honors cancellation. XML replacement and
 source removal release old title presenters and caption commands.
 
+`PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` are bubbling routed events.
+`Source` contains the public `LayoutContent`; `Handled` affects routing without
+canceling the operation. Layout methods, commands, native menu input, and native
+drag execution share operation scopes, so a split or group move raises one pair.
+Native validation is silent. Reordering tabs or reusing a previous floating pane
+without creating a window is also silent. Subscribe from a workspace service
+and unsubscribe when that service detaches. Derived managers can override the
+corresponding `Raise…Event(LayoutContent)` methods.
+
 The document tab strip's **Open documents** button lists the pane's
 `ChildrenSorted` and invokes the selected item's current `ActivateCommand`.
 `DocumentPaneMenuItemHeaderTemplate` and its selector customize the entry header;
@@ -280,6 +289,7 @@ flowchart TB
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
+    Events["Operation notifications<br/>Public layout source and routed events"]
     Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
@@ -295,6 +305,8 @@ flowchart TB
     Sizing --> View
     Bridge --> Factory
     Factory --> Models
+    Factory --> Events
+    Events --> Api
     Api --> View
     Items --> View
     View --> Commands
@@ -321,6 +333,9 @@ container's presentation lifecycle.
 Floating document captions compose native window state and dragging. Pane
 templates keep public layout wrappers in content hosts and native models in
 Dock's data contexts, preserving ownership during view reattachment.
+The optional native factory observation contract brackets executed drag
+operations before their first mutation. The adapter scopes notifications by
+content and clears them on completion or failure, including reentrant handlers.
 
 The [full guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/docfx/articles/dock-avalondock.md)
 includes complete usage examples, source bindings, content callbacks, and a

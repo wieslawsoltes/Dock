@@ -9,7 +9,8 @@ namespace AvalonDock.Infrastructure;
 // Keep native window vetoes first, then let the compatibility layer close or
 // hide content before the native host can detach the floating layout.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement,
-    Func<IDockable, LayoutItem?> getLayoutItem, Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory
+    ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
+    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver
 {
     private IDockWindow? _evaluatingClose;
 
@@ -33,9 +34,41 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         if (!ReferenceEquals(_evaluatingClose, window)) base.CloseWindow(window);
     }
 
-    public override void FloatAllDockables(IDockable dockable, DockWindowOptions? options) =>
-        floatingPlacement.FloatAll(dockable, () => base.FloatAllDockables(dockable, options));
+    public IDockOperationScope? BeginDockOperation(IDockable source, IDockable target, DockOperation operation)
+    {
+        LayoutOperation notification = operation == DockOperation.Window ? LayoutOperation.Float : LayoutOperation.Dock;
+        if (operation == DockOperation.Fill && source is not IDock &&
+            (ReferenceEquals(source.Owner, target) || ReferenceEquals(source.Owner, target.Owner)))
+            notification = LayoutOperation.Silent;
+        return operations.Begin(source, notification);
+    }
 
-    public override void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height, DockWindowOptions? options) =>
+    public override void FloatAllDockables(IDockable dockable, DockWindowOptions? options)
+    {
+        using IDockOperationScope? scope = operations.Begin(dockable.Owner ?? dockable, LayoutOperation.Float);
+        floatingPlacement.FloatAll(dockable, () => base.FloatAllDockables(dockable, options));
+        scope?.Complete();
+    }
+
+    public override void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height, DockWindowOptions? options)
+    {
+        using IDockOperationScope? scope = operations.Begin(dockable, LayoutOperation.Float);
         floatingPlacement.FloatContainer(dockable, () => base.SplitToWindow(dock, dockable, x, y, width, height, options));
+        scope?.Complete();
+    }
+
+    public override void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable)
+    {
+        using IDockOperationScope? scope = ReferenceEquals(sourceDock, targetDock)
+            ? null : operations.Begin(sourceDockable, LayoutOperation.Dock);
+        base.MoveDockable(sourceDock, targetDock, sourceDockable, targetDockable);
+        scope?.Complete();
+    }
+
+    public override void SplitToDock(IDock dock, IDockable dockable, DockOperation operation)
+    {
+        using IDockOperationScope? scope = operations.Begin(dockable, LayoutOperation.Dock);
+        base.SplitToDock(dock, dockable, operation);
+        scope?.Complete();
+    }
 }

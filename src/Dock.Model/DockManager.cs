@@ -636,6 +636,27 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        if (bExecute && sourceDockable.Factory is IDockOperationObserver observer)
+        {
+            if (!ValidateDockableCore(sourceDockable, targetDockable, action, operation, false))
+            {
+                return false;
+            }
+
+            using var scope = observer.BeginDockOperation(sourceDockable, targetDockable, operation);
+            var result = ValidateDockableCore(sourceDockable, targetDockable, action, operation, true);
+            if (result)
+            {
+                scope?.Complete();
+            }
+            return result;
+        }
+
+        return ValidateDockableCore(sourceDockable, targetDockable, action, operation, bExecute);
+    }
+
+    private bool ValidateDockableCore(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
         LastCapabilityEvaluation = null;
 
         if (!IsDockingAllowed(sourceDockable, targetDockable, operation))

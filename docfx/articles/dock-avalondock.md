@@ -549,6 +549,47 @@ caption content retain their own input. Reattaching a manager recreates its
 floating hosts while retaining layout models and application content. Keep a
 stable data context for source bindings while the manager is detached.
 
+## Observe docking and floating operations
+
+`DockingManager` exposes four bubbling routed events: `PreviewFloat`, `Floated`,
+`PreviewDock`, and `Docked`. Their `Source` is the public `LayoutContent`, while
+the handler's sender is the manager or ancestor handling the event. Preview
+notifications run before native movement; completion notifications run after
+the operation. The protected `RaisePreviewFloatEvent`/`RaiseFloatedEvent` and
+protected-internal `RaisePreviewDockEvent`/`RaiseDockedEvent` methods let derived
+managers extend these notifications.
+
+A workspace service can subscribe without putting handlers in view code-behind:
+
+```csharp
+using Avalonia.Interactivity;
+using AvalonDock.Layout;
+
+manager.Docked += OnDocked;
+
+void OnDocked(object? sender, RoutedEventArgs args)
+{
+    if (args.Source is LayoutContent content)
+        Console.WriteLine($"Docked: {content.ContentId}");
+}
+
+// Unsubscribe when the workspace service detaches.
+manager.Docked -= OnDocked;
+```
+
+The events cover layout methods, container commands, native menus, and native
+drag execution. A group operation raises one pair: floating uses its selected
+content, and docking uses its first content. Native validation does not raise
+events or mutate the layout. Internal moves in a split or group operation do
+not produce additional pairs. Reordering tabs and restoring a previous floating
+pane without creating a new window are silent, matching the upstream paths.
+
+Despite the `Preview` names, these events bubble rather than tunnel. Setting
+`Handled` affects event routing and does not cancel docking or floating. Native
+capabilities still apply, and a rejected floating attempt does not raise
+`Floated`. Exceptions release the operation scope, and changing the manager's
+layout during a preview prevents stale completion notifications.
+
 ## Restore application content from XML
 
 The XML describes layout structure and metadata; it does not serialize controls
@@ -603,6 +644,7 @@ flowchart TB
         Bridge["Identity, collections, selection, and return history"]
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
+        Events["Operation notifications<br/>Public layout source and routed events"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
     end
     subgraph Native["Existing Dock implementation"]
@@ -638,6 +680,8 @@ flowchart TB
     Lifecycle --> Controls
     Controls --> Factory
     Factory --> Models
+    Factory --> Events
+    Events --> Manager
     Models --> Controls
     Xml <--> Layout
 ```
@@ -682,6 +726,14 @@ and compose native `HostWindow` state and drag handling. Pane content templates
 pass public layout wrappers into their deferred presenters, then resolve the
 same native-backed `LayoutItem.View`. This keeps native models out of competing
 logical-parent relationships when tab and content hosts detach and reattach.
+
+The native factory optionally implements `IDockOperationObserver`.
+`DockManager.ValidateDockable` opens its scope only for validated execution,
+before the first collection mutation. The adapter shares that scope with layout
+methods and factory calls, suppressing duplicate notifications from internal
+moves while allowing event handlers to operate other contents. Scopes release
+their references on success or failure. Routed-event class handlers preserve
+the public layout source through Avalonia's event routing without reflection.
 
 The document list uses the native tab strip's right-content slot and Avalonia's
 `MenuFlyout`. Its sorted entries bind to public layout contents, and their header

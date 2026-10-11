@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml;
 using System.Reactive.Concurrency;
@@ -10,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
@@ -201,6 +203,7 @@ AssertFloatingSourceTemplate(manager, documents[0]);
 documents.RemoveAt(0);
 if (manager.Layout.Descendents().OfType<LayoutDocument>().Count() != 1) throw new Exception("Source changes were not observed.");
 if (manager.Layout.FloatingWindows.Count != 0) throw new Exception("The removed source left an empty floating window.");
+AssertDockingNotifications(manager, window);
 window.Close();
 
 DockingManager floatingManager = new();
@@ -248,7 +251,45 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, and close cancellation passed.");
+
+static void AssertDockingNotifications(DockingManager manager, Window window)
+{
+    LayoutDocument document = new() { ContentId = "event-probe", Title = "Docking events" };
+    LayoutDocumentPane pane = manager.Layout.RootPanel.Descendents().OfType<LayoutDocumentPane>().First();
+    pane.Children.Add(document);
+    List<string> events = new();
+    void Record(object? sender, RoutedEventArgs args)
+    {
+        if (!ReferenceEquals(sender, window) || !ReferenceEquals(args.Source, document))
+            throw new Exception("The packaged docking event lost its public source or bubbling route.");
+        events.Add(args.RoutedEvent!.Name);
+    }
+    window.AddHandler(DockingManager.PreviewFloatEvent, Record);
+    window.AddHandler(DockingManager.FloatedEvent, Record);
+    window.AddHandler(DockingManager.PreviewDockEvent, Record);
+    window.AddHandler(DockingManager.DockedEvent, Record);
+    try
+    {
+        document.Float();
+        Dock.Model.DockManager native = new(new Dock.Model.DockService());
+        if (!native.ValidateDockable(document.DockModel, pane.DockModel, Dock.Model.Core.DragAction.Move,
+                Dock.Model.Core.DockOperation.Fill, false) || events.Count != 2)
+            throw new Exception("Native docking validation raised notifications or rejected the document.");
+        if (!native.ValidateDockable(document.DockModel, pane.DockModel, Dock.Model.Core.DragAction.Move,
+                Dock.Model.Core.DockOperation.Fill, true) || document.IsFloating ||
+            !events.SequenceEqual(new[] { "PreviewFloat", "Floated", "PreviewDock", "Docked" }))
+            throw new Exception("The packaged native docking operation did not raise one ordered event pair.");
+    }
+    finally
+    {
+        window.RemoveHandler(DockingManager.PreviewFloatEvent, Record);
+        window.RemoveHandler(DockingManager.FloatedEvent, Record);
+        window.RemoveHandler(DockingManager.PreviewDockEvent, Record);
+        window.RemoveHandler(DockingManager.DockedEvent, Record);
+        document.Close();
+    }
+}
 
 static void AssertDocumentMenu(DockingManager manager)
 {

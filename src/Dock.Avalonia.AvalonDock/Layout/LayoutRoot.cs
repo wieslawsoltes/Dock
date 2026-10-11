@@ -58,10 +58,11 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     }
     internal LayoutRoot(RootDock model, LayoutModelContext? context = null) : base(model, context)
     {
+        Operations = new LayoutOperationEvents(this);
         _hidden = new LayoutChildren<LayoutAnchorable>(this, model, () => model.HiddenDockables, value => model.HiddenDockables = value);
         if (model.Factory is null)
         {
-            Factory factory = new LayoutFactory(window => LayoutWindowClosing.TryClose(this, window), new LayoutFloatingPlacement(this),
+            Factory factory = new LayoutFactory(window => LayoutWindowClosing.TryClose(this, window), new LayoutFloatingPlacement(this), Operations,
                 dockable => Context.Get(dockable) is LayoutContent content ? Manager?.GetLayoutItemFromModel(content) : null,
                 dockable => Context.Get(dockable) as ILayoutContainer)
                 { HideToolsOnClose = false, HideDocumentsOnClose = false };
@@ -105,6 +106,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     }
     /// <summary>Gets the Dock factory which operates this layout.</summary>
     public IFactory DockFactory => DockModel.Factory!;
+    internal ILayoutOperationEvents Operations { get; }
     /// <summary>Gets or sets the root split panel.</summary>
     [Content]
     public LayoutPanel RootPanel

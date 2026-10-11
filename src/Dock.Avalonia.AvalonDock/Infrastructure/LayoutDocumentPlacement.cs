@@ -13,9 +13,11 @@ internal static class LayoutDocumentPlacement
         if (content.Parent is LayoutDocumentPane || content.DockModel.Owner is not IDock source ||
             !DockCapabilityResolver.IsEnabled(content.DockModel, DockCapability.DockAsDocument,
                 DockCapabilityResolver.ResolveOperationDock(content.DockModel))) return;
+        using IDockOperationScope? scope = root.Operations.Begin(content.DockModel, LayoutOperation.Dock);
         if (content.PreviousContainer is LayoutDocumentPane previous && ReferenceEquals(previous.Root, root))
         {
             content.Dock();
+            scope?.Complete();
             return;
         }
 
@@ -41,5 +43,6 @@ internal static class LayoutDocumentPlacement
         content.IsSelected = true;
         content.IsActive = true;
         root.CollectGarbage();
+        scope?.Complete();
     }
 }

@@ -127,10 +127,12 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// <summary>Returns the item to its previous container.</summary>
     public void Dock()
     {
+        using IDockOperationScope? scope = (Root as LayoutRoot)?.Operations.Begin(DockModel, LayoutOperation.Dock);
         if (!DockingHistory.RestorePrevious()) InternalDock();
         IsSelected = true;
         IsActive = true;
         Root?.CollectGarbage();
+        scope?.Complete();
     }
     /// <summary>Chooses a docking destination when no previous container is available.</summary>
     protected virtual void InternalDock() { }

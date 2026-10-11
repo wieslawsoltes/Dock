@@ -21,6 +21,18 @@ namespace AvalonDock;
 /// <summary>Hosts an AvalonDock-compatible layout using Dock's controls and models.</summary>
 public class DockingManager : TemplatedControl
 {
+    /// <summary>Identifies the bubbling notification before creating a floating window.</summary>
+    public static readonly RoutedEvent<RoutedEventArgs> PreviewFloatEvent =
+        RoutedEvent.Register<DockingManager, RoutedEventArgs>(nameof(PreviewFloat), RoutingStrategies.Bubble);
+    /// <summary>Identifies the bubbling notification after creating a floating window.</summary>
+    public static readonly RoutedEvent<RoutedEventArgs> FloatedEvent =
+        RoutedEvent.Register<DockingManager, RoutedEventArgs>(nameof(Floated), RoutingStrategies.Bubble);
+    /// <summary>Identifies the bubbling notification before docking content.</summary>
+    public static readonly RoutedEvent<RoutedEventArgs> PreviewDockEvent =
+        RoutedEvent.Register<DockingManager, RoutedEventArgs>(nameof(PreviewDock), RoutingStrategies.Bubble);
+    /// <summary>Identifies the bubbling notification after docking content.</summary>
+    public static readonly RoutedEvent<RoutedEventArgs> DockedEvent =
+        RoutedEvent.Register<DockingManager, RoutedEventArgs>(nameof(Docked), RoutingStrategies.Bubble);
     /// <summary>Identifies the width of splitters between horizontally arranged panes.</summary>
     public static readonly StyledProperty<double> GridSplitterWidthProperty =
         AvaloniaProperty.Register<DockingManager, double>(nameof(GridSplitterWidth), 6);
@@ -127,6 +139,14 @@ public class DockingManager : TemplatedControl
     private IEnumerable? _anchorablesSource;
     private ILayoutUpdateStrategy? _layoutUpdateStrategy;
     private int _sourceBindingSuspensions;
+
+    static DockingManager()
+    {
+        PreviewFloatEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
+        FloatedEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
+        PreviewDockEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
+        DockedEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
+    }
 
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
@@ -412,6 +432,58 @@ public class DockingManager : TemplatedControl
     public event EventHandler<DocumentClosedEventArgs>? DocumentClosed;
     /// <summary>Occurs when active content changes.</summary>
     public event EventHandler? ActiveContentChanged;
+
+    /// <summary>Occurs before creating a floating window. Source is the public layout content; Handled does not cancel floating.</summary>
+    public event EventHandler<RoutedEventArgs> PreviewFloat
+    {
+        add => AddHandler(PreviewFloatEvent, value);
+        remove => RemoveHandler(PreviewFloatEvent, value);
+    }
+    /// <summary>Occurs after creating a floating window. Source is the public layout content.</summary>
+    public event EventHandler<RoutedEventArgs> Floated
+    {
+        add => AddHandler(FloatedEvent, value);
+        remove => RemoveHandler(FloatedEvent, value);
+    }
+    /// <summary>Occurs before docking content. Source is the public layout content; Handled does not cancel docking.</summary>
+    public event EventHandler<RoutedEventArgs> PreviewDock
+    {
+        add => AddHandler(PreviewDockEvent, value);
+        remove => RemoveHandler(PreviewDockEvent, value);
+    }
+    /// <summary>Occurs after docking content. Source is the public layout content.</summary>
+    public event EventHandler<RoutedEventArgs> Docked
+    {
+        add => AddHandler(DockedEvent, value);
+        remove => RemoveHandler(DockedEvent, value);
+    }
+
+    /// <summary>Raises the bubbling notification before creating a floating window.</summary>
+    protected virtual void RaisePreviewFloatEvent(LayoutContent layoutContent) =>
+        RaiseEvent(new LayoutOperationEventArgs(PreviewFloatEvent, layoutContent));
+    /// <summary>Raises the bubbling notification after creating a floating window.</summary>
+    protected virtual void RaiseFloatedEvent(LayoutContent layoutContent) =>
+        RaiseEvent(new LayoutOperationEventArgs(FloatedEvent, layoutContent));
+    /// <summary>Raises the bubbling notification before docking content.</summary>
+    protected internal virtual void RaisePreviewDockEvent(LayoutContent layoutContent) =>
+        RaiseEvent(new LayoutOperationEventArgs(PreviewDockEvent, layoutContent));
+    /// <summary>Raises the bubbling notification after docking content.</summary>
+    protected internal virtual void RaiseDockedEvent(LayoutContent layoutContent) =>
+        RaiseEvent(new LayoutOperationEventArgs(DockedEvent, layoutContent));
+
+    internal void NotifyLayoutOperation(LayoutContent content, bool floating, bool preview)
+    {
+        if (floating)
+        {
+            if (preview) RaisePreviewFloatEvent(content);
+            else RaiseFloatedEvent(content);
+        }
+        else
+        {
+            if (preview) RaisePreviewDockEvent(content);
+            else RaiseDockedEvent(content);
+        }
+    }
 
     /// <summary>Presents floating layouts after Dock has configured its host factory.</summary>
     protected override void OnLoaded(RoutedEventArgs e)

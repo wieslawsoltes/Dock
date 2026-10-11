@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
         xmlns:converters="using:Dock.Avalonia.Converters">
   <!-- Compose the native pane controls with persistent adapter content bindings.
        Keeping these bindings in the templates also preserves logical ownership
@@ -15,7 +16,7 @@
                VerticalSpacing="{DynamicResource DockDocumentControlVerticalSpacing}"
                Background="Transparent"
                ZIndex="1">
-      <DocumentTabStrip x:Name="PART_TabStrip"
+      <infrastructure:LayoutDocumentTabStrip x:Name="PART_TabStrip"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         CanCreateItem="{Binding CanCreateDocument}"
@@ -34,7 +35,7 @@
             <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
           </Style>
         </DocumentTabStrip.Styles>
-      </DocumentTabStrip>
+      </infrastructure:LayoutDocumentTabStrip>
       <Panel x:Name="PART_DocumentSeperatorHost" IsVisible="{Binding #PART_TabStrip.IsVisible}">
         <Panel x:Name="PART_DocumentSeperator"
                IsVisible="{DynamicResource DockDocumentTabStripSeparatorVisible}" />
@@ -65,7 +66,7 @@
     <DockPanel x:Name="PART_DockPanel"
                DockProperties.IsDropArea="True"
                DockProperties.IsDockTarget="True">
-      <ToolTabStrip x:Name="PART_TabStrip"
+      <infrastructure:LayoutAnchorableTabStrip x:Name="PART_TabStrip"
                     ItemsSource="{Binding VisibleDockables}"
                     SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                     IconTemplate="{TemplateBinding IconTemplate}"

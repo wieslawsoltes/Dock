@@ -105,6 +105,12 @@ public class DockingManager : TemplatedControl
     public static readonly StyledProperty<IDataTemplate?> AnchorableTitleTemplateProperty =
         AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(AnchorableTitleTemplate),
             coerce: static (owner, value) => owner.GetValue(AnchorableTitleTemplateSelectorProperty) is null ? value : null);
+    /// <summary>Identifies the control theme applied to document panes.</summary>
+    public static readonly StyledProperty<ControlTheme?> DocumentPaneControlStyleProperty =
+        AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(DocumentPaneControlStyle));
+    /// <summary>Identifies the control theme applied to tool panes.</summary>
+    public static readonly StyledProperty<ControlTheme?> AnchorablePaneControlStyleProperty =
+        AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(AnchorablePaneControlStyle));
     /// <summary>Identifies the theme applied to document and tool containers.</summary>
     public static readonly StyledProperty<ControlTheme?> LayoutItemContainerStyleProperty =
         AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(LayoutItemContainerStyle));
@@ -296,6 +302,10 @@ public class DockingManager : TemplatedControl
     public IDataTemplate? AnchorableTitleTemplate { get => GetValue(AnchorableTitleTemplateProperty); set => SetValue(AnchorableTitleTemplateProperty, value); }
     /// <summary>Gets or sets the selector that takes precedence over the tool title bar template.</summary>
     public DataTemplateSelector? AnchorableTitleTemplateSelector { get => GetValue(AnchorableTitleTemplateSelectorProperty); set => SetValue(AnchorableTitleTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the Avalonia control theme for existing and future document panes.</summary>
+    public ControlTheme? DocumentPaneControlStyle { get => GetValue(DocumentPaneControlStyleProperty); set => SetValue(DocumentPaneControlStyleProperty, value); }
+    /// <summary>Gets or sets the Avalonia control theme for existing and future tool panes.</summary>
+    public ControlTheme? AnchorablePaneControlStyle { get => GetValue(AnchorablePaneControlStyleProperty); set => SetValue(AnchorablePaneControlStyleProperty, value); }
     /// <summary>Gets or sets the Avalonia control theme applied to item containers.</summary>
     public ControlTheme? LayoutItemContainerStyle { get => GetValue(LayoutItemContainerStyleProperty); set => SetValue(LayoutItemContainerStyleProperty, value); }
     /// <summary>Gets or sets the container theme selector used when no explicit style is set.</summary>
@@ -399,6 +409,10 @@ public class DockingManager : TemplatedControl
     {
         if (e.NewValue is not null) SetCurrentValue(AnchorableTitleTemplateProperty, null);
     }
+    /// <summary>Called when the document pane control theme changes.</summary>
+    protected virtual void OnDocumentPaneControlStyleChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Called when the tool pane control theme changes.</summary>
+    protected virtual void OnAnchorablePaneControlStyleChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Applies the new item container style to existing layout content.</summary>
     protected virtual void OnLayoutItemContainerStyleChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <summary>Applies the new item container style selector to existing layout content.</summary>
@@ -408,6 +422,8 @@ public class DockingManager : TemplatedControl
     {
         base.OnPropertyChanged(change);
         if (change.Property == ThemeProperty) OnThemeChanged(change);
+        if (change.Property == DocumentPaneControlStyleProperty) OnDocumentPaneControlStyleChanged(change);
+        if (change.Property == AnchorablePaneControlStyleProperty) OnAnchorablePaneControlStyleChanged(change);
         if (change.Property == DocumentContextMenuProperty || change.Property == AnchorableContextMenuProperty)
             _contextMenus?.Release(change.OldValue as ContextMenu);
         if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);

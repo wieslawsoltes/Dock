@@ -11,7 +11,7 @@ using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
 
-internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : class, ILayoutElement
+internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildrenNotification where T : class, ILayoutElement
 {
     private readonly LayoutElement _owner;
     private readonly DockBase _model;
@@ -22,6 +22,8 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
     private bool _syncing;
     private LayoutElement? _pendingAttachment;
     internal bool IsRefreshingSource { get; private set; }
+    public bool IsNotifying { get; private set; }
+    public event Action? NotificationCompleted;
 
     internal LayoutChildren(LayoutElement owner, DockBase model,
         Func<IList<IDockable>?>? getSource = null, Action<IList<IDockable>>? setSource = null)
@@ -147,16 +149,26 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
-        // ObservableCollection has inserted the item at this point, so parent
-        // hooks can resolve its index. Publish only after native initialization.
-        if (_pendingAttachment is { } attachment)
+        bool previousNotifying = IsNotifying;
+        IsNotifying = true;
+        try
         {
-            _pendingAttachment = null;
-            if (e.Action == NotifyCollectionChangedAction.Replace && e.OldItems?[0] is LayoutElement previous &&
-                ReferenceEquals(previous.DockModel.Owner, _model)) previous.DockModel.Owner = null;
-            Attach(attachment);
+            // ObservableCollection has inserted the item at this point, so parent
+            // hooks can resolve its index. Publish only after native initialization.
+            if (_pendingAttachment is { } attachment)
+            {
+                _pendingAttachment = null;
+                if (e.Action == NotifyCollectionChangedAction.Replace && e.OldItems?[0] is LayoutElement previous &&
+                    ReferenceEquals(previous.DockModel.Owner, _model)) previous.DockModel.Owner = null;
+                Attach(attachment);
+            }
+            base.OnCollectionChanged(e);
         }
-        base.OnCollectionChanged(e);
+        finally
+        {
+            IsNotifying = previousNotifying;
+            if (!IsNotifying) NotificationCompleted?.Invoke();
+        }
     }
 
     protected override void MoveItem(int oldIndex, int newIndex)
@@ -165,10 +177,30 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
         Mutate(() =>
         {
             base.MoveItem(oldIndex, newIndex);
-            // Reorder the actual models, preserving the selected item and wrappers.
-            for (int i = _source.Count - 1; i >= 0; i--) _source.RemoveAt(i);
-            foreach (T child in this) _source.Add(((LayoutElement)(ILayoutElement)child).DockModel);
+            ILayoutContentSelector? selector = _owner as ILayoutContentSelector;
+            LayoutContent? selected = selector?.SelectedContent;
+            if (!MoveNativePane(oldIndex, newIndex))
+            {
+                // Groups also contain native splitters, normalized below.
+                for (int i = _source.Count - 1; i >= 0; i--) _source.RemoveAt(i);
+                foreach (T child in this) _source.Add(((LayoutElement)(ILayoutElement)child).DockModel);
+            }
+            // Native item generators can transiently deselect a moved container.
+            // Restore through the passive pane API without changing activation.
+            if (selected is not null && selector is { SelectedContent: null })
+            {
+                int index = selector.IndexOf(selected);
+                if (index >= 0) selector.SelectedContentIndex = index;
+            }
         });
+    }
+
+    private bool MoveNativePane(int oldIndex, int newIndex)
+    {
+        if (_owner is not ILayoutContentSelector) return false;
+        if (_source is AvaloniaList<IDockable> avalonia) { avalonia.Move(oldIndex, newIndex); return true; }
+        if (_source is ObservableCollection<IDockable> observable) { observable.Move(oldIndex, newIndex); return true; }
+        return false;
     }
 
     protected override void ClearItems()

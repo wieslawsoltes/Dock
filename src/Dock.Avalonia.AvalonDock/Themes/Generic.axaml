@@ -4,6 +4,7 @@
     <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/HostWindow.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/AvalonDockManagerResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContentResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutPaneControlsResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContentControlsResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutTitleControlsResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutTabControlsResources.axaml" />

@@ -1,0 +1,55 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:AvalonDock.Controls"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
+                    xmlns:models="using:Dock.Model.Controls"
+                    xmlns:infrastructure="using:AvalonDock.Infrastructure">
+  <infrastructure:LayoutPaneControlTemplate x:Key="AvalonDockPaneControl" />
+  <infrastructure:LayoutPaneModelConverter x:Key="AvalonDockNativePane" />
+
+  <ControlTheme x:Key="{x:Type controls:LayoutCachePaneControl}" TargetType="controls:LayoutCachePaneControl"
+                BasedOn="{StaticResource {x:Type TabControl}}" />
+  <ControlTheme x:Key="{x:Type controls:LayoutDocumentPaneControl}" TargetType="controls:LayoutDocumentPaneControl"
+                x:DataType="models:IDocumentDock">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DocumentControl x:DataType="models:IDocumentDock" DataContext="{Binding Model, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockNativePane}}"
+                         IsActive="{Binding IsActive}"
+                         Template="{StaticResource AvalonDockDocumentContent}"
+                         HeaderTemplate="{StaticResource AvalonDockDocumentTabHeader}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+  <ControlTheme x:Key="{x:Type controls:LayoutAnchorablePaneControl}" TargetType="controls:LayoutAnchorablePaneControl"
+                x:DataType="models:IToolDock">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ToolControl DataContext="{Binding Model, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockNativePane}}"
+                     Template="{StaticResource AvalonDockToolContent}"
+                     HeaderTemplate="{StaticResource AvalonDockAnchorableTabHeader}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTemplate x:Key="AvalonDockDocumentPaneTemplate" TargetType="DocumentDockControl" x:DataType="models:IDocumentDock">
+    <DockableControl TrackingMode="Visible">
+      <Panel>
+        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AvalonDockPaneControl}"
+                          HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                          IsVisible="{Binding LayoutMode, Converter={x:Static converters:DocumentLayoutModeMatchConverter.Instance}, ConverterParameter=Tabbed}" />
+        <MdiDocumentControl IsActive="{Binding IsActive}"
+                            IsVisible="{Binding LayoutMode, Converter={x:Static converters:DocumentLayoutModeMatchConverter.Instance}, ConverterParameter=Mdi}" />
+      </Panel>
+    </DockableControl>
+  </ControlTemplate>
+  <ControlTemplate x:Key="AvalonDockToolPaneTemplate" TargetType="ToolDockControl" x:DataType="models:IToolDock">
+    <DockableControl x:Name="PART_DockableControl" TrackingMode="Visible"
+                     Background="{TemplateBinding Background}"
+                     DockProperties.IsDropArea="True" DockProperties.IsDockTarget="True">
+      <ToolChromeControl IsActive="{Binding IsActive}" IsVisible="{Binding !!VisibleDockables.Count}">
+        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AvalonDockPaneControl}"
+                          HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+      </ToolChromeControl>
+    </DockableControl>
+  </ControlTemplate>
+</ResourceDictionary>

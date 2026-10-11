@@ -227,8 +227,8 @@ supported by corresponding implementation and test evidence.
   edges/corners, nonuniform values, compiled literal/style bindings, runtime
   updates, zero thickness, fixed-size/maximized/fullscreen hosts, center content
   input, and hidden-host restoration. The floating template retains native Dock
-  content with a border/inset that keeps ordinary tab clicks inside the resize
-  area. Native system decorations remain platform-controlled; real-platform
+  content with a border/inset that keeps ordinary tab clicks clear of the resize
+  regions. Native system decorations remain platform-controlled; real-platform
   resize and hit-test parity still require integration validation.
 - Document and tool floating models expose native Dock windows through an
   observable `FloatingWindows` collection. Native single-document float/dock

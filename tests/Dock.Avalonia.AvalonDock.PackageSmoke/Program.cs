@@ -282,10 +282,10 @@ static void AssertFloatingResize(Window view, LayoutFloatingWindowControl host)
     {
         Dispatcher.UIThread.RunJobs();
         host.UpdateLayout();
-        AvaloniaHeadlessPlatform.ForceRenderTimerTick();
         if (host.ResizeBorderThickness != new Thickness(4, 6, 8, 12))
             throw new Exception("The unprefixed resize-border style did not configure the native host.");
         Point edge = new(1, host.Bounds.Height / 2);
+        host.MouseMove(edge);
         if (host.InputHitTest(edge) is not Visual grip ||
             WindowDecorationProperties.GetElementRole(grip) != WindowDecorationsElementRole.ResizeW)
             throw new Exception("The configured floating border did not expose a native resize role.");
@@ -300,8 +300,7 @@ static void AssertFloatingResize(Window view, LayoutFloatingWindowControl host)
         }
         finally { host.RemoveHandler(InputElement.PointerPressedEvent, observe); }
         host.CanResize = false;
-        Dispatcher.UIThread.RunJobs();
-        AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+        host.MouseMove(edge);
         if (host.InputHitTest(edge) is Visual disabled &&
             WindowDecorationProperties.GetElementRole(disabled) == WindowDecorationsElementRole.ResizeW)
             throw new Exception("A fixed-size floating host still exposed resize input.");

@@ -768,7 +768,7 @@ Values are left, top, right, and bottom. Compiled style bindings and assignments
 to an individual host update its hit areas at runtime. Eight transparent regions
 provide edge/corner cursors, native resize roles, and Avalonia window resize
 dragging. The template retains Dock's content presenter inside a border/inset so
-ordinary tab and caption input stays inside the resize areas. Grips are hidden
+ordinary tab and caption input stays clear of the resize areas. Grips are hidden
 when `CanResize` is false or the host is maximized/fullscreen. Zero removes the
 adapter's area for that edge; platform-owned system decorations are independent.
 If you replace the floating window template, include your own resize hit areas.

@@ -9,6 +9,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -38,6 +39,14 @@ public class ProportionalStackPanelSplitter : Thumb
     /// </summary>
     public static readonly StyledProperty<bool> PreviewResizeProperty =
         AvaloniaProperty.Register<ProportionalStackPanelSplitter, bool>(nameof(PreviewResize));
+
+    /// <summary>Defines the preview brush, or null to use the panel's accent resource.</summary>
+    public static readonly StyledProperty<IBrush?> PreviewBackgroundProperty =
+        AvaloniaProperty.Register<ProportionalStackPanelSplitter, IBrush?>(nameof(PreviewBackground));
+
+    /// <summary>Defines the opacity of the resize preview.</summary>
+    public static readonly StyledProperty<double> PreviewOpacityProperty =
+        AvaloniaProperty.Register<ProportionalStackPanelSplitter, double>(nameof(PreviewOpacity), 1);
 
     /// <summary>
     /// Defines the MinimumProportionSize attached property.
@@ -93,6 +102,12 @@ public class ProportionalStackPanelSplitter : Thumb
         set => SetValue(PreviewResizeProperty, value);
     }
 
+    /// <summary>Gets or sets the preview brush. Null retains the panel's accent resource.</summary>
+    public IBrush? PreviewBackground { get => GetValue(PreviewBackgroundProperty); set => SetValue(PreviewBackgroundProperty, value); }
+
+    /// <summary>Gets or sets the resize preview opacity. Defaults to one.</summary>
+    public double PreviewOpacity { get => GetValue(PreviewOpacityProperty); set => SetValue(PreviewOpacityProperty, value); }
+
     private Point _startPoint;
     private bool _isMoving;
     private SplitterPreviewAdorner? _previewAdorner;
@@ -117,6 +132,13 @@ public class ProportionalStackPanelSplitter : Thumb
         if (change.Property == PreviewResizeProperty)
         {
             UpdatePreviewPseudoClass();
+        }
+
+        if (_previewAdorner is not null && (change.Property == PreviewBackgroundProperty || change.Property == PreviewOpacityProperty))
+        {
+            _previewAdorner.Background = PreviewBackground;
+            _previewAdorner.Opacity = PreviewOpacity;
+            _previewAdorner.InvalidateVisual();
         }
     }
 
@@ -172,6 +194,8 @@ public class ProportionalStackPanelSplitter : Thumb
                             Orientation = panel.Orientation,
                             Thickness = Thickness,
                             Offset = _startOffset,
+                            Background = PreviewBackground,
+                            Opacity = PreviewOpacity,
                             [AdornerLayer.AdornedElementProperty] = panel
                         };
                         ((ISetLogicalParent)_previewAdorner).SetParent(panel);

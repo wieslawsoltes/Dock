@@ -161,6 +161,10 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Called when the native drag state changes. Dock owns pointer capture and drag execution.</summary>
     protected virtual void OnIsDraggingChanged(AvaloniaPropertyChangedEventArgs e) { }
 
+    /// <summary>Synchronizes the public maximized state after the native window state changes.</summary>
+    protected virtual void OnStateChanged(EventArgs e) =>
+        SetAndRaise(IsMaximizedProperty, ref _maximized, WindowState == WindowState.Maximized);
+
     /// <summary>Checks whether the contents' current close commands permit closing this window.</summary>
     protected virtual bool CanClose(object? parameter = null) => false;
     /// <summary>Checks whether the contents' current hide commands permit hiding this window.</summary>
@@ -209,7 +213,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         base.OnPropertyChanged(change);
         if (change.Property == WindowStateProperty)
-            SetAndRaise(IsMaximizedProperty, ref _maximized, WindowState == WindowState.Maximized);
+            OnStateChanged(EventArgs.Empty);
         else if (change.Property == IsDraggingProperty)
             OnIsDraggingChanged(change);
         else if (change.Property == ContentProperty)

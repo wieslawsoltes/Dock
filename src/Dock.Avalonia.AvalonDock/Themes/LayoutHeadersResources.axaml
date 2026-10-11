@@ -10,14 +10,10 @@
         x:DataType="core:IDockable">
   <ItemsPanelTemplate x:Key="AvalonDockDocumentTabPanel"><controls:DocumentPaneTabPanel /></ItemsPanelTemplate>
   <ItemsPanelTemplate x:Key="AvalonDockAnchorableTabPanel"><controls:AnchorablePaneTabPanel /></ItemsPanelTemplate>
-  <DataTemplate x:Key="AvalonDockDefaultHeader" x:DataType="layout:LayoutContent">
-    <TextBlock Text="{Binding Title}" VerticalAlignment="Center"
-               Padding="{DynamicResource DockHeaderContentPadding}" />
-  </DataTemplate>
   <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockDocumentHeader" Kind="Document"
-                                       DefaultTemplate="{StaticResource AvalonDockDefaultHeader}" />
+                                       DefaultTemplate="{StaticResource AvalonDockDefaultDocumentHeader}" />
   <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockAnchorableHeader" Kind="Anchorable"
-                                       DefaultTemplate="{StaticResource AvalonDockDefaultHeader}" />
+                                       DefaultTemplate="{StaticResource AvalonDockDefaultAnchorableHeader}" />
   <infrastructure:LayoutTabItemTemplate x:Key="AvalonDockDocumentTabHeader">
     <infrastructure:LayoutTabItemTemplate.TabTemplate>
       <DataTemplate x:DataType="layout:LayoutContent"><controls:LayoutDocumentTabItem /></DataTemplate>

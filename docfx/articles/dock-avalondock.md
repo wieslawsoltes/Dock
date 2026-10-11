@@ -622,6 +622,10 @@ provided. These controls also do not resolve the separately tracked grouped or
 mixed floating-layout gaps. Their default presentation continues to use Dock's
 content caching rather than creating an additional application view cache.
 
+`DockingManager.LogicalChildrenPublic` exposes an enumerator over its current
+Avalonia logical children, including the existing layout item containers.
+Template visuals are excluded. Use a new enumerator after replacing the layout.
+
 ## Inspect and style split containers
 
 `LayoutPanelControl`, `LayoutDocumentPaneGroupControl`, and
@@ -872,9 +876,28 @@ for reverse conversion. The hide-menu converter retains its public array-based
 `Convert`/`ConvertBack` methods and implements Avalonia's list-based
 `IMultiValueConverter` for XAML bindings.
 
-`UriSourceToBitmapImageConverter`, localized
-`AnchorableContextMenuAutoHideHeaderConverter`, and the public localization
-resource API are still missing.
+`AnchorableContextMenuAutoHideHeaderConverter` returns the public Auto Hide or
+Restore resource string from a Boolean auto-hide state. The command labels and
+hints are exposed by `AvalonDock.Properties.Resources`, including its
+`ResourceManager` and optional `Culture` override. Setting `Culture` affects
+subsequent lookups without changing `CultureInfo.CurrentUICulture` or refreshing
+already-created static XAML values. English fallback resources are included;
+translated satellite resources remain open work.
+
+`UriSourceToBitmapImageConverter` creates an Avalonia `Image` from a file or
+compiled `avares` URI. Its optional converter parameter supplies the absolute
+base URI for a relative asset path. Null returns `BindingOperations.DoNothing`;
+reverse conversion is unsupported. The returned image uses a bitmap source,
+which its owner should dispose when no longer needed. HTTP/HTTPS URI loading is
+not implemented. Both converters support the default and historical XML
+namespaces:
+
+```xml
+<Window.Resources>
+  <UriSourceToBitmapImageConverter x:Key="UriImage" />
+  <AnchorableContextMenuAutoHideHeaderConverter x:Key="AutoHideHeader" />
+</Window.Resources>
+```
 
 ## Bind ViewModel content
 
@@ -1248,6 +1271,14 @@ when pointer capture is lost. Pixel lengths retain their units, a resized
 star/star pair retains its combined weight, and resizing `Auto` converts it to
 pixels. XML otherwise preserves `Auto` and restores independent pane lengths.
 
+The adapter presents `LayoutGridResizerControl`, derived from Dock's native
+`ProportionalStackPanelSplitter`, for proportional pane splits. Style its
+`BackgroundWhileDragging` and `OpacityWhileDragging` properties to customize
+the preview. The defaults are black and 0.5; use opacity between zero and one.
+Changes also update an open drag preview. Both XML namespace forms
+are supported. Ordinary native Dock splitters retain their accent resource and
+opacity of one. Auto-hide previews use a separate native grid splitter.
+
 Derived positionable groups can override `OnDockWidthChanged()` and
 `OnDockHeightChanged()`. The hooks run after property-changing and property-changed
 notifications for a changed value, including committed native splitter sizes
@@ -1316,6 +1347,12 @@ the explicit header template, and the template property is coerced to null
 while a selector is present. A null selector result uses a title header.
 Changing a manager header property updates existing docked, floating, and
 auto-hide headers. Compiled bindings observe live title and metadata changes.
+Native document/tool tab containers and custom public tab controls apply the
+model's `IsEnabled` and `ToolTip`. Disabled tabs reject pointer selection.
+Default tool headers include the current `IconSource` in docked, floating, and
+auto-hide locations; clearing the icon removes its spacing. Default document
+headers remain text-only. A custom header template replaces the entire default
+header, so it should bind the icon explicitly when needed.
 Native tab selection, activation, and auto-hide preview input continue to work.
 XML restoration releases old header content and binds the replacement nodes.
 
@@ -1525,6 +1562,10 @@ an internal request. Hiding and ordinary view unload preserve its value. As in
 upstream, this records the internal-close request, not whether a human physically
 clicked a button. Inspect it in Avalonia's `OnClosing(WindowClosingEventArgs)` or
 `OnClosed(EventArgs)` overrides.
+
+The protected `OnStateChanged(EventArgs)` hook runs when the native window state
+changes. Call the base implementation to update the public `IsMaximized` value
+before observing it in a derived control.
 
 To enable arrow-key movement of floating windows, set the manager property:
 

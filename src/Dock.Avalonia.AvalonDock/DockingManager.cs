@@ -324,6 +324,12 @@ public partial class DockingManager : TemplatedControl
         ArgumentNullException.ThrowIfNull(content);
         return _layoutItems.Get(content);
     }
+    /// <summary>Gets an enumerator over this manager's current Avalonia logical children.</summary>
+    /// <remarks>Template visuals are excluded; item containers and explicitly attached logical children are included.</remarks>
+    public IEnumerator LogicalChildrenPublic
+    {
+        get { VerifyAccess(); return LogicalChildren.GetEnumerator(); }
+    }
     internal LayoutItem? GetLayoutItemForNativePresentation(LayoutContent content) => _layoutItems.GetForNativePresentation(content);
     /// <summary>Gets the native host factory that preserves this manager's template scope.</summary>
     public Func<IHostWindow?> DockHostWindowFactory { get; }

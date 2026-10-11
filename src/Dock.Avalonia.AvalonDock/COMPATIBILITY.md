@@ -521,7 +521,19 @@ supported by corresponding implementation and test evidence.
   view, focus, and activation. Pane policies remain independent through runtime
   themes, floating/docking, XML restoration, and reattachment. Both XML namespace
   forms and Dock's dynamic tab-strip visibility resource are tested.
-- 979 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- Native and custom public tab headers apply live `IsEnabled` and `ToolTip`;
+  default tool headers include `IconSource` in docked, floating, and auto-hide
+  locations. Custom header templates replace the default icon/title content.
+- Public command resources provide an English fallback, `ResourceManager`, and
+  `Culture`. The auto-hide header converter uses those labels; the URI image
+  converter loads local files and compiled assets, including relative base URIs.
+- `LayoutGridResizerControl` uses native proportional splitter input and preview
+  commit/cancel behavior. Its brush and opacity settings update an active preview.
+  Ordinary native splitter defaults remain unchanged.
+- `DockingManager.LogicalChildrenPublic` exposes the current Avalonia logical
+  collection. Floating `OnStateChanged` overrides synchronize maximization when
+  they call the base hook.
+- 1010 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -538,9 +550,9 @@ supported by corresponding implementation and test evidence.
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
-  templates/selectors, styles, general theme URI loading, the URI image and
-  localized auto-hide header converters, localization resources, and the control
-  adapter surface. Floating controls still need exact close-event ordering,
+  templates/selectors, styles, general theme URI loading, HTTP/HTTPS image URI
+  loading, translated localization resources, and the control adapter surface.
+  Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,
   and remaining protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
@@ -549,9 +561,9 @@ supported by corresponding implementation and test evidence.
   the broader signature and behavior audit below.
 - Public grid child/row/column collections host a native items presenter rather than
   reproducing WPF's direct pane/splitter visual tree.
-- Finish the rendering and behavior audit of icons, tooltips, repositioning
-  policies, and enablement. Document header visibility is implemented; additional
-  metadata edge cases still need comparison with upstream behavior.
+- Finish the rendering and behavior audit of repositioning policies and remaining
+  metadata edge cases. Tab icons, tooltips, enablement, and document header
+  visibility are implemented; auto-hide resizer control parity remains open.
 - Full native drag/float/redock and lifecycle coverage, including native-created
   nested groups, layout detachment and leak checks, and source-driven floating
   content and changes during deserialization.
@@ -564,8 +576,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 705
-matching type/member keys and 246 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 742
+matching type/member keys and 209 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

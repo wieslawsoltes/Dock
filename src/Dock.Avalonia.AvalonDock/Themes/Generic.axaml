@@ -3,7 +3,9 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/HostWindow.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/ToolPinItemControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/AvalonDockManagerResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeaderDefaults.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContentResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutPaneControlsResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContentControlsResources.axaml" />

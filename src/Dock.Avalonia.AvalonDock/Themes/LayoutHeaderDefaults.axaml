@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:layout="using:AvalonDock.Layout">
+  <DataTemplate x:Key="AvalonDockDefaultDocumentHeader" x:DataType="layout:LayoutContent">
+    <TextBlock Text="{Binding Title}" VerticalAlignment="Center"
+               Padding="{DynamicResource DockHeaderContentPadding}" />
+  </DataTemplate>
+  <DataTemplate x:Key="AvalonDockDefaultAnchorableHeader" x:DataType="layout:LayoutContent">
+    <Border Padding="{DynamicResource DockHeaderContentPadding}">
+      <Grid ColumnDefinitions="Auto,*">
+        <Image Classes="avalondock-tool-icon" Source="{Binding IconSource}" Stretch="Uniform"
+               Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"
+               IsVisible="{Binding IconSource, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center"
+                   TextTrimming="CharacterEllipsis" />
+      </Grid>
+    </Border>
+  </DataTemplate>
+</ResourceDictionary>

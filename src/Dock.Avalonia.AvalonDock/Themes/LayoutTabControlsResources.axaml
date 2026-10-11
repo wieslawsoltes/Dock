@@ -3,16 +3,14 @@
                     xmlns:controls="using:AvalonDock.Controls"
                     xmlns:layout="using:AvalonDock.Layout"
                     xmlns:infrastructure="using:AvalonDock.Infrastructure">
-  <DataTemplate x:Key="AvalonDockDefaultTabHeader" x:DataType="layout:LayoutContent">
-    <TextBlock Text="{Binding Title}" VerticalAlignment="Center"
-               Padding="{DynamicResource DockHeaderContentPadding}" />
-  </DataTemplate>
   <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockDocumentTabContent" Kind="Document"
-                                       DefaultTemplate="{StaticResource AvalonDockDefaultTabHeader}" />
+                                       DefaultTemplate="{StaticResource AvalonDockDefaultDocumentHeader}" />
   <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockAnchorableTabContent" Kind="Anchorable"
-                                       DefaultTemplate="{StaticResource AvalonDockDefaultTabHeader}" />
+                                       DefaultTemplate="{StaticResource AvalonDockDefaultAnchorableHeader}" />
   <ControlTheme x:Key="{x:Type controls:LayoutDocumentTabItem}" TargetType="controls:LayoutDocumentTabItem"
                 x:DataType="controls:LayoutDocumentTabItem">
+    <Setter Property="IsEnabled" Value="{Binding $self.Model.IsEnabled, FallbackValue=True}" />
+    <Setter Property="ToolTip.Tip" Value="{Binding $self.Model.ToolTip}" />
     <Setter Property="Template">
       <ControlTemplate>
         <ContentPresenter Background="Transparent" Content="{TemplateBinding LayoutItem}"
@@ -22,6 +20,8 @@
   </ControlTheme>
   <ControlTheme x:Key="{x:Type controls:LayoutAnchorableTabItem}" TargetType="controls:LayoutAnchorableTabItem"
                 x:DataType="controls:LayoutAnchorableTabItem">
+    <Setter Property="IsEnabled" Value="{Binding $self.Model.IsEnabled, FallbackValue=True}" />
+    <Setter Property="ToolTip.Tip" Value="{Binding $self.Model.ToolTip}" />
     <Setter Property="Template">
       <ControlTemplate>
         <ContentPresenter Background="Transparent" Content="{TemplateBinding LayoutItem}"

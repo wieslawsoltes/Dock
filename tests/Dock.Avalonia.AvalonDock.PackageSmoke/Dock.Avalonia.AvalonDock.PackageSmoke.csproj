@@ -9,6 +9,7 @@
     <DockCompatibilityPackageVersion Condition="'$(DockCompatibilityPackageVersion)' == ''">$(VersionPrefix)</DockCompatibilityPackageVersion>
   </PropertyGroup>
   <ItemGroup>
+    <AvaloniaResource Include="Assets/**" />
     <PackageReference Include="Dock.Avalonia.AvalonDock" Version="$(DockCompatibilityPackageVersion)" />
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />

@@ -6,8 +6,11 @@
         xmlns:proportional="using:Dock.Controls.ProportionalStackPanel"
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        xmlns:controls="using:AvalonDock.Controls"
         x:DataType="models:IProportionalDock">
   <infrastructure:LayoutSplitterSizing x:Key="AvalonDockSplitterSize" />
+  <ControlTheme x:Key="{x:Type controls:LayoutGridResizerControl}" TargetType="controls:LayoutGridResizerControl"
+                BasedOn="{StaticResource {x:Type proportional:ProportionalStackPanelSplitter}}" />
   <ItemsPanelTemplate x:Key="AvalonDockSizingPanel">
     <infrastructure:LayoutSizingPanel docking:DockProperties.IsDropArea="True" Background="Transparent"
         Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}" />
@@ -16,6 +19,11 @@
     <dock:DockableControl TrackingMode="Visible">
       <ItemsControl x:Name="PART_ItemsControl" ItemsSource="{Binding VisibleDockables}"
                     Classes="ProportionalStackPanel" ItemsPanel="{StaticResource AvalonDockSizingPanel}">
+        <ItemsControl.DataTemplates>
+          <DataTemplate DataType="models:IProportionalDockSplitter" x:DataType="models:IProportionalDockSplitter">
+            <controls:LayoutGridResizerControl IsResizingEnabled="{Binding CanResize}" PreviewResize="{Binding ResizePreview}" />
+          </DataTemplate>
+        </ItemsControl.DataTemplates>
         <ItemsControl.Styles>
           <Style Selector="ItemsControl.ProportionalStackPanel > ContentPresenter">
             <Setter Property="(proportional:ProportionalStackPanel.Proportion)" Value="{Binding Proportion, Mode=TwoWay}" />

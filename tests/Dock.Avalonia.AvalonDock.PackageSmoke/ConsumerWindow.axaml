@@ -4,6 +4,14 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <AnchorableContextMenuAutoHideHeaderConverter x:Key="AutoHideHeaderConverter" />
+    <ad:UriSourceToBitmapImageConverter x:Key="UriImageConverter" />
+    <DataTemplate x:Key="Resizer" x:DataType="x:Object">
+      <LayoutGridResizerControl BackgroundWhileDragging="Blue" OpacityWhileDragging="0.7" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyResizer" x:DataType="x:Object">
+      <ad:LayoutGridResizerControl BackgroundWhileDragging="Blue" OpacityWhileDragging="0.7" />
+    </DataTemplate>
     <LayoutDocumentPane x:Key="HeaderlessPane" ShowHeader="False" />
     <ad:LayoutDocumentPane x:Key="LegacyHeaderlessPane" ShowHeader="False" />
     <ControlTheme x:Key="DocumentPaneStyle" TargetType="LayoutDocumentPaneControl"

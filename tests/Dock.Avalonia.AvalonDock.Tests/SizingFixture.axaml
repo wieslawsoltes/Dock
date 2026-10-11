@@ -1,7 +1,18 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
         x:Class="Dock.Avalonia.AvalonDock.Tests.SizingFixture"
         x:DataType="DockingManager" Width="1000" Height="720">
+  <Window.Resources>
+    <DataTemplate x:Key="Resizer" x:DataType="x:Object">
+      <LayoutGridResizerControl BackgroundWhileDragging="Blue" OpacityWhileDragging="0.7" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyResizer" x:DataType="x:Object">
+      <ad:LayoutGridResizerControl BackgroundWhileDragging="Blue" OpacityWhileDragging="0.7" />
+    </DataTemplate>
+    <AnchorableContextMenuAutoHideHeaderConverter x:Key="AutoHideHeaderConverter" />
+    <ad:UriSourceToBitmapImageConverter x:Key="UriImageConverter" />
+  </Window.Resources>
   <DockingManager x:Name="Manager" GridSplitterWidth="12" GridSplitterHeight="8" Margin="16">
     <LayoutRoot>
       <LayoutPanel>

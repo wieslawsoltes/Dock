@@ -8,14 +8,14 @@
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:items="using:AvalonDock.Controls"
         xmlns:layout="using:AvalonDock.Layout"
+        xmlns:properties="using:AvalonDock.Properties"
+        xmlns:compatConverters="using:AvalonDock.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:DataType="core:IDockable">
-  <x:String x:Key="AvalonDockRestoreString">Restore</x:String>
-  <x:String x:Key="AvalonDockHideString">Hide</x:String>
-  <x:String x:Key="AvalonDockNewHorizontalTabGroupString">New Horizontal Tab Group</x:String>
-  <x:String x:Key="AvalonDockNewVerticalTabGroupString">New Vertical Tab Group</x:String>
-  <x:String x:Key="AvalonDockMoveToNextTabGroupString">Move to Next Tab Group</x:String>
-  <x:String x:Key="AvalonDockMoveToPreviousTabGroupString">Move to Previous Tab Group</x:String>
+  <ResourceDictionary.MergedDictionaries>
+    <infrastructure:LayoutCommandResources />
+  </ResourceDictionary.MergedDictionaries>
+  <compatConverters:AnchorableContextMenuAutoHideHeaderConverter x:Key="AvalonDockAutoHideHeaderConverter" />
   <infrastructure:LayoutItemConverter x:Key="AvalonDockLayoutItem" />
   <infrastructure:LayoutToolCloseCommandConverter x:Key="AvalonDockToolCloseCommand" />
   <infrastructure:LayoutAnchorableTitleTemplate x:Key="AvalonDockToolTitle">
@@ -27,10 +27,7 @@
   </infrastructure:LayoutAnchorableTitleTemplate>
   <ControlTheme x:Key="AvalonDockAutoHideMenuItem" TargetType="MenuItem" x:DataType="items:LayoutAnchorableItem"
                 BasedOn="{StaticResource {x:Type MenuItem}}">
-    <Setter Property="Header" Value="{DynamicResource ToolChromeControlAutoHideString}" />
-    <Style Selector="^.avalondock-auto-hidden">
-      <Setter Property="Header" Value="{DynamicResource AvalonDockRestoreString}" />
-    </Style>
+    <Setter Property="Header" Value="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden, Converter={StaticResource AvalonDockAutoHideHeaderConverter}}" />
   </ControlTheme>
   <DataTemplate x:Key="AvalonDockDocumentCloseTemplate" x:DataType="core:IDockable">
     <Border>
@@ -54,6 +51,7 @@
       </Border.IsVisible>
 
       <Button x:DataType="items:LayoutItem" Classes="avalondock-close"
+              ToolTip.Tip="{x:Static properties:Resources.Document_Close}"
               DataContext="{Binding $parent[ContentPresenter].Content, Converter={StaticResource AvalonDockLayoutItem}}"
               Command="{Binding CloseCommand}"
               IsVisible="{Binding $self.IsEffectivelyEnabled}"
@@ -97,6 +95,7 @@
             </Panel>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
               <Button x:Name="PART_MenuButton"
+                      ToolTip.Tip="{x:Static properties:Resources.Anchorable_CxMenu_Hint}"
                       Theme="{TemplateBinding MenuButtonTheme}"
                       Flyout="{TemplateBinding ToolFlyout}">
                 <Viewbox Margin="{DynamicResource DockToolChromeMenuIconMargin}">
@@ -104,6 +103,7 @@
                 </Viewbox>
               </Button>
               <Button x:Name="PART_PinButton" x:DataType="items:LayoutAnchorableItem"
+                      ToolTip.Tip="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden, Converter={StaticResource AvalonDockAutoHideHeaderConverter}}"
                       DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
                       Command="{Binding AutoHideCommand}"
                       Theme="{TemplateBinding PinButtonTheme}">
@@ -131,6 +131,7 @@
                 </Viewbox>
               </Button>
               <Button x:Name="PART_CloseButton" x:DataType="items:LayoutAnchorableItem"
+                      ToolTip.Tip="{x:Static properties:Resources.Anchorable_BtnClose_Hint}"
                       DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
                       Theme="{TemplateBinding CloseButtonTheme}">
                 <Button.IsVisible>
@@ -195,7 +196,7 @@
       <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockString}" Command="{Binding DockCommand}" />
       <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
       <items:MenuItemEx Theme="{StaticResource AvalonDockAutoHideMenuItem}"
-                Classes.avalondock-auto-hidden="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden}" Command="{Binding AutoHideCommand}" />
+                Command="{Binding AutoHideCommand}" />
       <items:MenuItemEx Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
       <items:MenuItemEx Header="{DynamicResource AvalonDockHideString}" Command="{Binding HideCommand}">
         <items:MenuItemEx.IsVisible>

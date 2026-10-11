@@ -105,6 +105,8 @@ control selection activates its document. Empty selection is supported, and
 The tool-pane constructor accepts an existing `LayoutAnchorablePane`; the
 document-pane constructor remains internal, as upstream. Avalonia uses its own
 logical-child collection instead of the WPF `LogicalChildren` enumerator hook.
+`DockingManager.LogicalChildrenPublic` enumerates that collection, including
+current layout item containers; template visuals are not logical children.
 
 Set `LayoutDocumentPane.ShowHeader="False"` to hide a pane's tabs, document list
 menu, and separator while retaining the selected content view, activation, and
@@ -594,8 +596,30 @@ values for `IsVisible`; use a Boolean converter parameter for the non-visible
 result. `AnchorableContextMenuHideVisibilityConverter` combines `IsVisible` and
 `CanClose` in a `MultiBinding`. The side converters expose header angle and
 orientation, and `NullToDoNothingConverter` retains the target on a null input.
-The full guide includes compiled converter bindings. URI image loading and the
-localized auto-hide header converter remain open work.
+`AnchorableContextMenuAutoHideHeaderConverter` uses the public
+`AvalonDock.Properties.Resources` strings for Auto Hide and Restore.
+`Resources.ResourceManager` exposes all command labels and hints; set
+`Resources.Culture` for subsequent lookups without changing the thread's UI
+culture. The package currently provides English fallback strings only.
+`UriSourceToBitmapImageConverter` returns an Avalonia `Image` for file and
+`avares` URIs, accepts a base URI as its converter parameter, and retains the
+binding target on null. Dispose the image's bitmap source when it is no longer
+needed. HTTP/HTTPS image loading is not implemented.
+
+Native document/tool tabs and custom public tab controls bind `IsEnabled` and
+`ToolTip` to their public layout content. Default tool headers show `IconSource`
+in docked, floating, and auto-hide locations; default document headers remain
+text-only. A custom header template replaces the entire default header.
+
+`LayoutGridResizerControl` is the proportional pane splitter used by the
+adapter. Its `BackgroundWhileDragging` and `OpacityWhileDragging` properties
+configure Dock's native preview, including during an active drag. Defaults are
+black and 0.5; use opacity between zero and one. Native Dock splitters retain
+their accent brush and opacity of one. Auto-hide resizing uses a separate native
+grid splitter.
+
+Derived floating controls can override `OnStateChanged(EventArgs)`; call the
+base hook to synchronize `IsMaximized` with the native window state.
 
 Subscribe to `LayoutFloatingWindowControlCollectionChanged` in a workspace
 service to observe added/removed host controls and their collection indices;

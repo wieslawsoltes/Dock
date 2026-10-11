@@ -9,6 +9,7 @@
   <Import Project="../../build/Avalonia.Headless.props" />
   <Import Project="../../build/XUnit.props" />
   <ItemGroup>
+    <AvaloniaResource Include="Assets/**" />
     <Compile Include="../../build/AvalonDockApiAudit/ApiKey.cs" Link="Build/ApiKey.cs" />
     <PackageReference Include="ReactiveUI.SourceGenerators" PrivateAssets="all" />
     <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />

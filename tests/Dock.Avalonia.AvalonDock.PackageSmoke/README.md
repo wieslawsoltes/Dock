@@ -1,5 +1,11 @@
 # NuGet consumer smoke test
 
+Metadata and utility probes load consumer-owned compiled image assets through
+the public URI converter, resolve resource strings with a culture override,
+compile resizers in both XML namespaces, and check the actual native tool tab's
+live icon, tooltip, and enablement. They also verify that the public logical-child
+enumerator exposes the existing item container.
+
 Anchor probes compile side/group/anchor controls and manager templates through
 both XML namespaces, invoke external side-panel change hooks, and inspect the
 actual native model hierarchy. They exercise passive programmatic previews,

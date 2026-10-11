@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:Class="AvalonDock.Infrastructure.LayoutMenuTemplates">
+  <!-- Replace cached framework parts without recreating visible menu content. -->
+  <ControlTemplate x:Key="ReleasedMenuTemplate" TargetType="ItemsControl" x:DataType="x:Object">
+    <Panel>
+      <ContentPresenter x:Name="PART_HeaderPresenter" />
+      <ItemsPresenter x:Name="PART_ItemsPresenter" />
+    </Panel>
+  </ControlTemplate>
+</ResourceDictionary>

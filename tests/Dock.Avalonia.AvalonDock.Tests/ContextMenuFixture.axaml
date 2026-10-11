@@ -1,0 +1,22 @@
+<DockingManager xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                x:Class="Dock.Avalonia.AvalonDock.Tests.ContextMenuFixture"
+                x:DataType="LayoutRoot">
+  <DockingManager.Resources>
+    <ContextMenu x:Key="NestedMenu" x:DataType="LayoutItem">
+      <MenuItem Header="More">
+        <MenuItem Header="{Binding Title}" Command="{Binding FloatCommand}" />
+      </MenuItem>
+    </ContextMenu>
+  </DockingManager.Resources>
+  <DockingManager.DocumentContextMenu>
+    <ContextMenu x:DataType="LayoutItem">
+      <MenuItem Header="{Binding Title}" Command="{Binding CloseCommand}" />
+    </ContextMenu>
+  </DockingManager.DocumentContextMenu>
+  <DockingManager.AnchorableContextMenu>
+    <ContextMenu x:DataType="LayoutAnchorableItem">
+      <MenuItem Header="{Binding Title}" Command="{Binding HideCommand}" />
+    </ContextMenu>
+  </DockingManager.AnchorableContextMenu>
+</DockingManager>

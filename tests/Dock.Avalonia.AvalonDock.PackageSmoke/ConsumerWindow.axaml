@@ -30,6 +30,16 @@
   <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}"
                   DocumentHeaderTemplate="{StaticResource DocumentHeader}"
                   AnchorableHeaderTemplate="{StaticResource ToolHeader}">
+    <DockingManager.DocumentContextMenu>
+      <ContextMenu x:DataType="LayoutItem">
+        <MenuItem Header="Close package document" Command="{Binding CloseCommand}" />
+      </ContextMenu>
+    </DockingManager.DocumentContextMenu>
+    <DockingManager.AnchorableContextMenu>
+      <ContextMenu x:DataType="LayoutAnchorableItem">
+        <MenuItem Header="Restore package tool" Command="{Binding AutoHideCommand}" />
+      </ContextMenu>
+    </DockingManager.AnchorableContextMenu>
     <DockingManager.DataTemplates>
       <DataTemplate DataType="{x:Type x:String}" x:DataType="x:String">
         <TextBlock Classes="source-template" Text="{Binding .}" />

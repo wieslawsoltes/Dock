@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
+using Avalonia.Input;
 using Avalonia.Metadata;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Controls;
@@ -19,6 +21,12 @@ namespace AvalonDock;
 /// <summary>Hosts an AvalonDock-compatible layout using Dock's controls and models.</summary>
 public class DockingManager : TemplatedControl
 {
+    /// <summary>Identifies the document context menu.</summary>
+    public static readonly StyledProperty<ContextMenu?> DocumentContextMenuProperty =
+        AvaloniaProperty.Register<DockingManager, ContextMenu?>(nameof(DocumentContextMenu));
+    /// <summary>Identifies the tool context menu.</summary>
+    public static readonly StyledProperty<ContextMenu?> AnchorableContextMenuProperty =
+        AvaloniaProperty.Register<DockingManager, ContextMenu?>(nameof(AnchorableContextMenu));
     /// <summary>Identifies whether document-group commands may change a populated group's orientation.</summary>
     public static readonly StyledProperty<bool> AllowMixedOrientationProperty =
         AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMixedOrientation));
@@ -80,6 +88,7 @@ public class DockingManager : TemplatedControl
     private readonly LayoutSourceBinding<LayoutDocument> _documents;
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
     private readonly LayoutItemRegistry _layoutItems;
+    private readonly LayoutContextMenus _contextMenus = new();
     private IEnumerable? _documentsSource;
     private IEnumerable? _anchorablesSource;
     private ILayoutUpdateStrategy? _layoutUpdateStrategy;
@@ -112,6 +121,7 @@ public class DockingManager : TemplatedControl
             if (value.Manager is not null && !ReferenceEquals(value.Manager, this))
                 throw new InvalidOperationException("A layout can belong to only one DockingManager.");
             LayoutChanging?.Invoke(this, EventArgs.Empty);
+            _contextMenus.Close();
             _floatingWindows.Detach();
             RootDock oldDock = DockLayout;
             LayoutRoot oldLayout = _layout;
@@ -133,6 +143,10 @@ public class DockingManager : TemplatedControl
     public RootDock DockLayout => (RootDock)Layout.DockModel;
     /// <summary>Gets the factory operating the live layout.</summary>
     public IFactory DockFactory => Layout.DockFactory;
+    /// <summary>Gets or sets the document menu, whose data context is the requested item container.</summary>
+    public ContextMenu? DocumentContextMenu { get => GetValue(DocumentContextMenuProperty); set => SetValue(DocumentContextMenuProperty, value); }
+    /// <summary>Gets or sets the tool menu used by tabs, title bars, and auto-hide strips.</summary>
+    public ContextMenu? AnchorableContextMenu { get => GetValue(AnchorableContextMenuProperty); set => SetValue(AnchorableContextMenuProperty, value); }
     /// <summary>Gets or sets whether document-group commands may change a populated group's orientation.</summary>
     public bool AllowMixedOrientation { get => GetValue(AllowMixedOrientationProperty); set => SetValue(AllowMixedOrientationProperty, value); }
     /// <summary>Gets or sets the template used to display application content.</summary>
@@ -234,6 +248,8 @@ public class DockingManager : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        if (change.Property == DocumentContextMenuProperty || change.Property == AnchorableContextMenuProperty)
+            _contextMenus?.Release(change.OldValue as ContextMenu);
         if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);
         if (change.Property == AnchorablesSourceProperty) OnAnchorablesSourceChanged(change);
         if (change.Property == AllowMixedOrientationProperty) _layoutItems?.RefreshCommands();
@@ -300,11 +316,15 @@ public class DockingManager : TemplatedControl
     /// <summary>Closes native hosts while preserving their layout contents for reattachment.</summary>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        _contextMenus.Close();
         _floatingWindows.Detach();
         base.OnDetachedFromVisualTree(e);
     }
 
     internal void PresentFloatingWindow(LayoutFloatingWindow window) => _floatingWindows.Present(window);
+    internal void ShowContextMenu(Control target, LayoutItem item, LayoutHeaderKind kind, ContextRequestedEventArgs? request, IDock? pane = null) =>
+        _contextMenus.Show(kind == LayoutHeaderKind.Document ? DocumentContextMenu : AnchorableContextMenu,
+            target, item, request, pane);
     internal void AttachLayoutItem(LayoutItem item) => LogicalChildren.Add(item);
     internal void DetachLayoutItem(LayoutItem item) => LogicalChildren.Remove(item);
     internal bool AreSourceBindingsSuspended => _sourceBindingSuspensions > 0;

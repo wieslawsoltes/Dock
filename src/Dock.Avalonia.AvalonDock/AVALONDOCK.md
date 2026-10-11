@@ -94,6 +94,29 @@ parameter and observe `CanExecute`. Tool close buttons choose `CloseCommand`
 when `CanClose` is true and `HideCommand` otherwise; cancellation and application
 overrides also work in floating windows.
 
+`DocumentContextMenu` and `AnchorableContextMenu` accept custom Avalonia menus.
+Their data context is the requested `LayoutItem`, including in floating windows:
+
+```xml
+<DockingManager>
+  <DockingManager.DocumentContextMenu>
+    <ContextMenu x:DataType="LayoutItem">
+      <MenuItem Header="Close" Command="{Binding CloseCommand}" />
+      <MenuItem Header="Float" Command="{Binding FloatCommand}" />
+    </ContextMenu>
+  </DockingManager.DocumentContextMenu>
+</DockingManager>
+```
+
+Use `x:DataType="LayoutAnchorableItem"` for a tool menu with `HideCommand`,
+`AutoHideCommand`, or `DockCommand`. Tool menus apply to tabs, title bars, and
+auto-hide strips; tools docked as documents use the document menu. Keyboard
+context-menu requests use the active item unless a child control owns the menu.
+The theme provides default menus per manager; explicit `null` disables a menu,
+and runtime replacement closes the old one. Menu invocation state is cleared
+when the menu closes or its layout/view detaches. The full guide covers menu
+ownership, active-item changes, and cancellation.
+
 `LayoutItemContainerStyle` accepts an Avalonia `ControlTheme`, with the item
 container as its data context. Bind through `Model` to application properties
 using compiled bindings. For an `EditorViewModel` with `Title` and `ContentId`:
@@ -180,6 +203,7 @@ flowchart TB
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
     Commands["Compiled command bindings<br/>Native input routing"]
+    Menus["Document and tool context menus<br/>LayoutItem binding context"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
@@ -196,6 +220,9 @@ flowchart TB
     Items --> View
     View --> Commands
     Commands --> Items
+    Api --> Menus
+    View --> Menus
+    Menus --> Items
     Models --> View
     View --> Factory
     Xml <--> Api

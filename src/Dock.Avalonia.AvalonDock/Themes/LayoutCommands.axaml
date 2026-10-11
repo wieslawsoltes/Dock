@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:ad="using:AvalonDock"
         xmlns:core="using:Dock.Model.Core"
         xmlns:dmc="using:Dock.Model.Controls"
         xmlns:deferred="using:Dock.Controls.DeferredContentControl"
@@ -170,8 +171,7 @@
       </Grid>
     </ControlTemplate>
     <Template x:Key="AvalonDockDocumentCommands">
-      <ContextMenu x:DataType="items:LayoutItem"
-                   DataContext="{Binding Converter={StaticResource AvalonDockLayoutItem}}">
+      <ContextMenu x:DataType="items:LayoutItem">
         <MenuItem Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
         <MenuItem Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}" Command="{Binding CloseAllButThisCommand}" />
         <MenuItem Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}" Command="{Binding CloseAllCommand}" />
@@ -184,8 +184,7 @@
       </ContextMenu>
     </Template>
     <Template x:Key="AvalonDockToolCommands">
-      <ContextMenu x:DataType="items:LayoutAnchorableItem"
-                   DataContext="{Binding Converter={StaticResource AvalonDockLayoutItem}}">
+      <ContextMenu x:DataType="items:LayoutAnchorableItem">
         <MenuItem Header="{DynamicResource ToolChromeControlFloatString}" Command="{Binding FloatCommand}" />
         <MenuItem Header="{DynamicResource ToolChromeControlDockString}" Command="{Binding DockCommand}" />
         <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
@@ -202,54 +201,29 @@
         </MenuItem>
       </ContextMenu>
     </Template>
-    <infrastructure:LayoutFlyoutTemplate x:Key="AvalonDockToolFlyout">
-      <MenuFlyout x:DataType="dmc:IToolDock">
-        <MenuItem Header="{DynamicResource ToolChromeControlFloatString}" x:DataType="items:LayoutAnchorableItem"
-                  DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
-                  Command="{Binding FloatCommand}" />
-        <MenuItem Header="{DynamicResource ToolChromeControlDockString}" x:DataType="items:LayoutAnchorableItem"
-                  DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
-                  Command="{Binding DockCommand}" />
-        <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}" x:DataType="items:LayoutAnchorableItem"
-                  DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
-                  Command="{Binding DockAsDocumentCommand}" />
-        <MenuItem Theme="{StaticResource AvalonDockAutoHideMenuItem}"
-                  Classes.avalondock-auto-hidden="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden}" x:DataType="items:LayoutAnchorableItem"
-                  DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
-                  Command="{Binding AutoHideCommand}" />
-        <MenuItem Header="{DynamicResource ToolChromeControlCloseString}" x:DataType="items:LayoutAnchorableItem"
-                  DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
-                  Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
-        <MenuItem Header="{DynamicResource AvalonDockHideString}" x:DataType="items:LayoutAnchorableItem"
-                  DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
-                  Command="{Binding HideCommand}">
-          <MenuItem.IsVisible>
-            <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <Binding Path="$self.IsEffectivelyEnabled" />
-              <Binding Path="CanClose" Converter="{x:Static BoolConverters.Not}" />
-            </MultiBinding>
-          </MenuItem.IsVisible>
-        </MenuItem>
-      </MenuFlyout>
-    </infrastructure:LayoutFlyoutTemplate>
   </Styles.Resources>
+  <Style Selector="ad|DockingManager">
+    <Setter Property="DocumentContextMenu" Value="{StaticResource AvalonDockDocumentCommands}" />
+    <Setter Property="AnchorableContextMenu" Value="{StaticResource AvalonDockToolCommands}" />
+  </Style>
   <Style Selector="dock|DockControl.avalondock, dock|HostWindow.avalondock dock|DockControl">
     <Setter Property="infrastructure:LayoutCommandRouting.IsEnabled" Value="True" />
+    <Setter Property="infrastructure:LayoutContextMenuRouting.IsEnabled" Value="True" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|DocumentControl, dock|HostWindow.avalondock dock|DocumentControl">
     <Setter Property="CloseTemplate" Value="{StaticResource AvalonDockDocumentCloseTemplate}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|DocumentTabStripItem, dock|HostWindow.avalondock dock|DocumentTabStripItem">
-    <Setter Property="DocumentContextMenu" Value="{StaticResource AvalonDockDocumentCommands}" />
+    <Setter Property="DocumentContextMenu" Value="{x:Null}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolTabStripItem, dock|HostWindow.avalondock dock|ToolTabStripItem">
-    <Setter Property="TabContextMenu" Value="{StaticResource AvalonDockToolCommands}" />
+    <Setter Property="TabContextMenu" Value="{x:Null}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolPinItemControl, dock|HostWindow.avalondock dock|ToolPinItemControl">
-    <Setter Property="PinContextMenu" Value="{StaticResource AvalonDockToolCommands}" />
+    <Setter Property="PinContextMenu" Value="{x:Null}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolChromeControl, dock|HostWindow.avalondock dock|ToolChromeControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockToolChrome}" />
-    <Setter Property="ToolFlyout" Value="{StaticResource AvalonDockToolFlyout}" />
+    <Setter Property="ToolFlyout" Value="{x:Null}" />
   </Style>
 </Styles>

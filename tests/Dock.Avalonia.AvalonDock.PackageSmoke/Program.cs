@@ -40,6 +40,16 @@ Dispatcher.UIThread.RunJobs();
 if (!window.GetVisualDescendants().OfType<TextBlock>().Any(text =>
         text.Classes.Contains("package-tool-header") && ReferenceEquals(text.DataContext, tool) && text.Text == "Tool: Agenda"))
     throw new Exception("The compiled auto-hide header did not receive the public anchorable model.");
+ToolPinItemControl pin = manager.GetVisualDescendants().OfType<ToolPinItemControl>()
+    .Single(control => ReferenceEquals(control.DataContext, tool.DockModel));
+ClickNative(pin, MouseButton.Right);
+ContextMenu toolMenu = manager.AnchorableContextMenu!;
+if (!toolMenu.IsOpen || !ReferenceEquals(toolMenu.DataContext, manager.GetLayoutItemFromModel(tool)))
+    throw new Exception("The packaged anchorable menu did not open for the auto-hide item.");
+ClickNative(toolMenu.Items.OfType<MenuItem>().Single());
+if (tool.IsAutoHidden || toolMenu.DataContext is not null || toolMenu.PlacementTarget is not null)
+    throw new Exception("The custom tool menu did not restore the tool and clear its invocation.");
+tool.ToggleAutoHide();
 ObservableCollection<string> documents = new() { "Source document content" };
 manager.DocumentsSource = documents;
 LayoutDocument fromSource = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => Equals(x.Content, documents[0]));
@@ -88,6 +98,16 @@ sourceHost.MouseUp(closePoint, MouseButton.Left);
 Dispatcher.UIThread.RunJobs();
 if (closeRequests != 1 || !ReferenceEquals(fromSource.Root, manager.Layout))
     throw new Exception("The native floating tab did not execute the application container command.");
+DocumentTabStripItem sourceTab = sourceHost.GetVisualDescendants().OfType<DocumentTabStripItem>()
+    .Single(tab => ReferenceEquals(tab.DataContext, fromSource.DockModel));
+ClickNative(sourceTab, MouseButton.Right);
+ContextMenu documentMenu = manager.DocumentContextMenu!;
+MenuItem menuClose = documentMenu.Items.OfType<MenuItem>().Single();
+if (!documentMenu.IsOpen || !ReferenceEquals(documentMenu.DataContext, sourceItem) || !ReferenceEquals(menuClose.Command, applicationClose))
+    throw new Exception("The packaged document menu did not bind the floating item's current command.");
+ClickNative(menuClose);
+if (closeRequests != 2 || documentMenu.IsOpen || documentMenu.DataContext is not null || documentMenu.PlacementTarget is not null)
+    throw new Exception("The custom document menu did not execute the application command and release its invocation.");
 sourceItem.CloseCommand = defaultClose;
 if (!sourceHost.GetVisualDescendants().OfType<TextBlock>().Any(text =>
         text.Classes.Contains("package-document-header") && ReferenceEquals(text.DataContext, fromSource) && text.Text == "Tab: " + fromSource.Title))
@@ -176,7 +196,22 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+
+static void ClickNative(Control control, MouseButton button = MouseButton.Left)
+{
+    TopLevel topLevel = TopLevel.GetTopLevel(control)!;
+    topLevel.UpdateLayout();
+    Point point = control.TranslatePoint(new Point(control.Bounds.Width / 2, control.Bounds.Height / 2), topLevel)!.Value;
+    topLevel.MouseMove(point);
+    IInputElement? hit = topLevel.InputHitTest(point);
+    if (!ReferenceEquals(hit, control) && (hit is not Visual visual || !visual.GetVisualAncestors().Contains(control)))
+        throw new Exception($"The {control.GetType().Name} menu target at {point} is not hit-testable.");
+    topLevel.MouseDown(point, button);
+    topLevel.MouseUp(point, button);
+    Dispatcher.UIThread.RunJobs();
+    topLevel.UpdateLayout();
+}
 
 static void RoundTrip(DockingManager manager)
 {

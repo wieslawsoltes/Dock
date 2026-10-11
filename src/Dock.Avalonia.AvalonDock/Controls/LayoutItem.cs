@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -183,6 +185,12 @@ public abstract class LayoutItem : Control
     }
 
     internal void RefreshCommands() => _commands?.Refresh();
+
+    internal void RequestContextMenu(Control target, ContextRequestedEventArgs request)
+    {
+        using EventRoute route = BuildEventRoute(Control.ContextRequestedEvent);
+        route.RaiseEvent(target, request);
+    }
 
     internal Control BuildHeader(LayoutHeaderKind kind, IDataTemplate? fallback, Control? existing) =>
         (_headers ??= new LayoutHeaderViews(this)).Build(kind, fallback, existing);

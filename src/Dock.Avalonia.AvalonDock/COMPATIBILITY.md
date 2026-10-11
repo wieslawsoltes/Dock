@@ -83,9 +83,19 @@ supported by corresponding implementation and test evidence.
   are covered by pointer tests. Floating-tool close commands preserve cancellation
   and overrides before native window closing. Tool close buttons fall back to
   hide when closing is disabled. Layout/factory methods remain direct operations.
-  Per-control menus release closed managers with application commands and themes
+  Default menus release closed managers with application commands and themes
   retained. Floating document docking returns to the previous document pane or
   selects/creates a main document pane through native factory movement.
+- Manager `DocumentContextMenu` and `AnchorableContextMenu` use custom Avalonia
+  menus with compiled `LayoutItem` bindings in document/tool tabs, title bars,
+  auto-hide strips, and floating hosts. Tools docked as documents use the
+  document menu. Keyboard requests use the active item and respect child menus,
+  including canceled child requests. Default menus are per manager; explicit
+  null, replacement, cancelable opening, active-tool changes, and layout/view
+  detachment are covered. Submenus reopen with application bindings and theme
+  changes preserved. Generated presentation and focus references are released
+  using public Avalonia APIs: retained application menus do not keep closed
+  docked/floating managers alive. Focus returns after closing or canceled opening.
 - Native Dock content controls display `LayoutItem.View`, retaining presenter
   identity between docked and floating hosts. Manager `LayoutItemTemplate` and
   `LayoutItemTemplateSelector` support compiled templates, explicit-template
@@ -152,7 +162,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 226 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 252 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -163,8 +173,7 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: title/menu/icon templates, custom manager context
-  menus, additional update
+- Remaining manager APIs: title/menu/icon templates, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,
@@ -183,8 +192,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 388
-matching type/member keys and 563 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 392
+matching type/member keys and 559 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

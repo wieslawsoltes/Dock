@@ -291,8 +291,51 @@ The tab close button, Close menu item, and middle-click then invoke that
 command. Replacing the command or changing its `CanExecute` updates the UI.
 Replacing a theme or restoring XML releases its bindings without disposing
 application commands; available defaults return when the style stops supplying
-a command. Menus belong to their native controls, so closing a manager releases
-their models even if the application retains its theme and commands.
+a command.
+
+## Customize document and tool context menus
+
+`DocumentContextMenu` and `AnchorableContextMenu` accept Avalonia `ContextMenu`
+instances. Each open menu receives the relevant `LayoutItem` as its data context,
+so compiled bindings can use container commands and metadata directly:
+
+```xml
+<DockingManager>
+  <DockingManager.DocumentContextMenu>
+    <ContextMenu x:DataType="LayoutItem">
+      <MenuItem Header="Close" Command="{Binding CloseCommand}" />
+      <MenuItem Header="Float" Command="{Binding FloatCommand}" />
+    </ContextMenu>
+  </DockingManager.DocumentContextMenu>
+  <DockingManager.AnchorableContextMenu>
+    <ContextMenu x:DataType="LayoutAnchorableItem">
+      <MenuItem Header="Hide" Command="{Binding HideCommand}" />
+      <MenuItem Header="Auto Hide" Command="{Binding AutoHideCommand}" />
+    </ContextMenu>
+  </DockingManager.AnchorableContextMenu>
+  <!-- Add a LayoutRoot or bind the content sources here. -->
+</DockingManager>
+```
+
+The enclosing view declares the default Avalonia XML namespace and `x` namespace,
+as in the layout example above. No `avalondock` prefix is required. Use `Model`
+to reach application content or `LayoutElement` to reach the public layout node.
+A tool docked in a document pane uses `DocumentContextMenu`, with its existing
+`LayoutAnchorableItem` as the binding context.
+
+Tool menus also apply to title bars, their menu buttons, and auto-hide strips.
+Both properties work in floating windows. Keyboard context-menu requests from
+pane content use the active item, while a child control's own context menu or
+flyout takes precedence, including when its opening is canceled. Title-bar menus
+track active-tool changes; tab menus keep the requested tab's item.
+
+The adapter theme supplies separate default menus per manager. Assigning `null`
+(or `{x:Null}` in XAML) disables the corresponding menu. Replacing a menu closes
+the old invocation; clearing the local property value restores the theme default.
+Application menu opening can be canceled using Avalonia's `Opening` event.
+Closing, detaching, or replacing the layout clears the invocation's data context
+and placement references. The application retains ownership of its menu items
+and commands.
 
 ## Select content templates
 
@@ -435,6 +478,7 @@ flowchart TB
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, styles, and commands"]
         Commands["Compiled command bindings<br/>Native input routing"]
+        Menus["Document and tool context menus<br/>LayoutItem binding context"]
         Bridge["Identity, collections, selection, sizing, and return history"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
@@ -454,6 +498,9 @@ flowchart TB
     Items --> Controls
     Controls --> Commands
     Commands --> Items
+    Manager --> Menus
+    Controls --> Menus
+    Menus --> Items
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models

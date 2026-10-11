@@ -4,7 +4,7 @@ This project intentionally uses package references only and is excluded from
 the solution: the package must be built before it can restore. It verifies
 that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
-headers, click native tabs to execute application container commands, and restore
+headers, click native tabs and custom manager menus to execute container commands, and restore
 application content from XML using the packaged assemblies. Pack the native
 control package too: it contains the tool-menu lifetime fix. An isolated cache
 and package-source mapping ensure these local packages are tested even when the

@@ -23,7 +23,7 @@ using Orientation = Avalonia.Layout.Orientation;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
 
-public class NativeCommandTests
+public partial class NativeCommandTests
 {
     [AvaloniaTheory]
     [InlineData(false)]
@@ -126,7 +126,7 @@ public class NativeCommandTests
         using var command = ReactiveCommand.Create(() => requests++, outputScheduler: ImmediateScheduler.Instance);
         item.CloseCommand = command;
         Control tab = Tab(workspace.Manager, content);
-        ContextMenu menu = tool ? ((ToolTabStripItem)tab).TabContextMenu! : ((DocumentTabStripItem)tab).DocumentContextMenu!;
+        ContextMenu menu = (tool ? workspace.Manager.AnchorableContextMenu : workspace.Manager.DocumentContextMenu)!;
         Click(tab, MouseButton.Right);
         Assert.True(menu.IsOpen);
         Assert.Same(item, menu.DataContext);
@@ -138,7 +138,7 @@ public class NativeCommandTests
     }
 
     [AvaloniaFact]
-    public void Native_Tool_Flyout_And_Pin_Button_Invoke_Current_Commands()
+    public void Native_Tool_Menu_And_Pin_Button_Invoke_Current_Commands()
     {
         using Workspace workspace = new();
         LayoutAnchorableItem item = (LayoutAnchorableItem)workspace.Manager.GetLayoutItemFromModel(workspace.Tool)!;
@@ -151,14 +151,14 @@ public class NativeCommandTests
         Click(ToolButton(workspace.Manager, "PART_PinButton"));
         Assert.Equal(1, pinRequests);
         Button button = ToolButton(workspace.Manager, "PART_MenuButton");
-        MenuFlyout menu = Assert.IsType<MenuFlyout>(button.Flyout);
+        ContextMenu menu = Assert.IsType<ContextMenu>(workspace.Manager.AnchorableContextMenu);
         Click(button);
         Assert.True(menu.IsOpen);
         MenuItem close = menu.Items.OfType<MenuItem>().Single(entry => ReferenceEquals(entry.Command, closeCommand));
         Assert.Same(item, close.DataContext);
         Click(close);
         Assert.Equal(1, closeRequests);
-        menu.Hide();
+        menu.Close();
     }
 
     [AvaloniaTheory]
@@ -256,36 +256,36 @@ public class NativeCommandTests
         LayoutItem documentItem = workspace.Manager.GetLayoutItemFromModel(workspace.Document)!;
         DocumentTabStripItem tab = (DocumentTabStripItem)Tab(workspace.Manager, workspace.Document);
         Click(tab, MouseButton.Right);
-        Click(tab.DocumentContextMenu!.Items.OfType<MenuItem>().Single(item => ReferenceEquals(item.Command, documentItem.FloatCommand)));
+        Click(workspace.Manager.DocumentContextMenu!.Items.OfType<MenuItem>().Single(item => ReferenceEquals(item.Command, documentItem.FloatCommand)));
         Assert.True(workspace.Document.IsFloating);
         workspace.Update();
         tab = (DocumentTabStripItem)Tab(Scope(workspace, workspace.Document), workspace.Document);
         Click(tab, MouseButton.Right);
         Assert.True(documentItem.DockAsDocumentCommand!.CanExecute(null), workspace.Document.Parent?.GetType().FullName);
-        Click(tab.DocumentContextMenu!.Items.OfType<MenuItem>().Single(item => ReferenceEquals(item.Command, documentItem.DockAsDocumentCommand)));
+        Click(workspace.Manager.DocumentContextMenu!.Items.OfType<MenuItem>().Single(item => ReferenceEquals(item.Command, documentItem.DockAsDocumentCommand)));
         Assert.False(workspace.Document.IsFloating);
         Click(ToolButton(workspace.Manager, "PART_PinButton"));
         Assert.True(workspace.Tool.IsAutoHidden);
         ToolPinItemControl pin = workspace.Manager.GetVisualDescendants().OfType<ToolPinItemControl>()
             .Single(control => ReferenceEquals(control.DataContext, workspace.Tool.DockModel));
         Click(pin, MouseButton.Right);
-        Assert.True(pin.PinContextMenu!.IsOpen);
+        Assert.True(workspace.Manager.AnchorableContextMenu!.IsOpen);
         LayoutAnchorableItem toolItem = (LayoutAnchorableItem)workspace.Manager.GetLayoutItemFromModel(workspace.Tool)!;
-        Assert.Same(toolItem, pin.PinContextMenu.DataContext);
-        Click(pin.PinContextMenu.Items.OfType<MenuItem>().Single(item => ReferenceEquals(item.Command, toolItem.AutoHideCommand)));
+        Assert.Same(toolItem, workspace.Manager.AnchorableContextMenu!.DataContext);
+        Click(workspace.Manager.AnchorableContextMenu!.Items.OfType<MenuItem>().Single(item => ReferenceEquals(item.Command, toolItem.AutoHideCommand)));
         Assert.False(workspace.Tool.IsAutoHidden);
         Assert.IsType<LayoutAnchorablePane>(workspace.Tool.Parent);
     }
 
     [AvaloniaFact]
-    public void Open_Tool_Flyout_Tracks_The_Active_Content_And_Command_Replacement()
+    public void Open_Tool_Menu_Tracks_The_Active_Content_And_Command_Replacement()
     {
         using Workspace workspace = new();
         Button button = ToolButton(workspace.Manager, "PART_MenuButton");
-        MenuFlyout flyout = Assert.IsType<MenuFlyout>(button.Flyout);
+        ContextMenu menu = Assert.IsType<ContextMenu>(workspace.Manager.AnchorableContextMenu);
         Click(button);
         LayoutItem first = workspace.Manager.GetLayoutItemFromModel(workspace.Tool)!;
-        MenuItem close = flyout.Items.OfType<MenuItem>().Single(entry => ReferenceEquals(entry.Command, first.CloseCommand));
+        MenuItem close = menu.Items.OfType<MenuItem>().Single(entry => ReferenceEquals(entry.Command, first.CloseCommand));
         workspace.OtherTool.IsActive = true;
         workspace.Update();
         LayoutItem second = workspace.Manager.GetLayoutItemFromModel(workspace.OtherTool)!;
@@ -410,13 +410,13 @@ public class NativeCommandTests
         workspace.Manager.GetLayoutItemFromModel(workspace.Tool)!.CloseCommand = retained.CloseCommand;
         DocumentTabStripItem document = (DocumentTabStripItem)Tab(workspace.Manager, workspace.Document);
         Click(document, MouseButton.Right);
-        document.DocumentContextMenu!.Close();
+        workspace.Manager.DocumentContextMenu!.Close();
         ToolTabStripItem tool = (ToolTabStripItem)Tab(workspace.Manager, workspace.Tool);
         Click(tool, MouseButton.Right);
-        tool.TabContextMenu!.Close();
+        workspace.Manager.AnchorableContextMenu!.Close();
         Button button = ToolButton(workspace.Manager, "PART_MenuButton");
         Click(button);
-        button.Flyout!.Hide();
+        workspace.Manager.AnchorableContextMenu!.Close();
         return new(workspace.Manager);
     }
 
@@ -460,19 +460,17 @@ public class NativeCommandTests
         public DockingManager Manager { get; }
         public Window Window { get; }
 
-        public Workspace()
+        public Workspace(DockingManager? manager = null)
         {
-            Manager = new DockingManager
+            Manager = manager ?? new DockingManager();
+            Manager.Layout = new LayoutRoot
             {
-                Layout = new LayoutRoot
+                RootPanel = new LayoutPanel
                 {
-                    RootPanel = new LayoutPanel
+                    Children =
                     {
-                        Children =
-                        {
-                            new LayoutDocumentPane { Children = { Document, OtherDocument } },
-                            new LayoutAnchorablePane { Children = { Tool, OtherTool } }
-                        }
+                        new LayoutDocumentPane { Children = { Document, OtherDocument } },
+                        new LayoutAnchorablePane { Children = { Tool, OtherTool } }
                     }
                 }
             };

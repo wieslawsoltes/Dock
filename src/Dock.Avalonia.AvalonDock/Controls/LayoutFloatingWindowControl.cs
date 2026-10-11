@@ -58,6 +58,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
             Classes.Add("avalondock-document-window");
         }
         Styles.Add(new AvalonDockTheme());
+        model.Root?.Manager?.AttachThemeResources(this);
         ((INotifyCollectionChanged)Classes).CollectionChanged += NativeDragChanged;
     }
 
@@ -142,6 +143,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Notifies the native factory when an explicitly created window is first shown.</summary>
     protected override void OnOpened(EventArgs e)
     {
+        Model.Root?.Manager?.AttachThemeResources(this);
         NotifyOpened();
         base.OnOpened(e);
         if (Model is LayoutAnchorableFloatingWindow { IsVisible: false }) HideForLayout();

@@ -17,12 +17,16 @@ using Dock.Model.Core;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Infrastructure;
+using CompatibilityTheme = AvalonDock.Themes.Theme;
 
 namespace AvalonDock;
 
 /// <summary>Hosts an AvalonDock-compatible layout using Dock's controls and models.</summary>
 public class DockingManager : TemplatedControl
 {
+    /// <summary>Identifies the AvalonDock resource theme applied to this manager and its auxiliary windows.</summary>
+    public new static readonly StyledProperty<CompatibilityTheme?> ThemeProperty =
+        AvaloniaProperty.Register<DockingManager, CompatibilityTheme?>(nameof(Theme));
     /// <summary>Identifies the bubbling notification before creating a floating window.</summary>
     public static readonly RoutedEvent<RoutedEventArgs> PreviewFloatEvent =
         RoutedEvent.Register<DockingManager, RoutedEventArgs>(nameof(PreviewFloat), RoutingStrategies.Bubble);
@@ -143,6 +147,7 @@ public class DockingManager : TemplatedControl
     private readonly LayoutItemRegistry _layoutItems;
     private readonly LayoutContextMenus _contextMenus = new();
     private readonly LayoutNavigatorPresenter _navigator = new();
+    private readonly LayoutThemeCoordinator _themeResources;
     private IEnumerable? _documentsSource;
     private IEnumerable? _anchorablesSource;
     private ILayoutUpdateStrategy? _layoutUpdateStrategy;
@@ -160,6 +165,7 @@ public class DockingManager : TemplatedControl
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
     {
+        _themeResources = new(this);
         LayoutHostWindowFactory hosts = new(this);
         DockHostWindowFactory = hosts.Create;
         FloatingWindowCreation = new(this, hosts);
@@ -175,6 +181,12 @@ public class DockingManager : TemplatedControl
 
     /// <summary>Preserves the default manager theme for derived controls.</summary>
     protected override Type StyleKeyOverride => typeof(DockingManager);
+
+    /// <summary>Gets or sets AvalonDock resource themes. Avalonia's control template theme remains available through StyledElement.Theme.</summary>
+    public new CompatibilityTheme? Theme { get => GetValue(ThemeProperty); set => SetValue(ThemeProperty, value); }
+
+    /// <summary>Updates theme resources on this manager and its existing floating and navigator windows.</summary>
+    protected virtual void OnThemeChanged(AvaloniaPropertyChangedEventArgs e) => _themeResources.Apply(Theme);
 
     /// <summary>Gets or sets the AvalonDock layout.</summary>
     [Content]
@@ -394,6 +406,7 @@ public class DockingManager : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        if (change.Property == ThemeProperty) OnThemeChanged(change);
         if (change.Property == DocumentContextMenuProperty || change.Property == AnchorableContextMenuProperty)
             _contextMenus?.Release(change.OldValue as ContextMenu);
         if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);
@@ -555,6 +568,7 @@ public class DockingManager : TemplatedControl
     }
 
     internal void PresentFloatingWindow(LayoutFloatingWindow window) => _floatingWindows.Present(window);
+    internal void AttachThemeResources(StyledElement window) => _themeResources.Attach(window);
     internal void RemoveFloatingWindow(LayoutFloatingWindowControl window) => _floatingControls.Remove(window);
     internal void NotifyFloatingWindowControlsChanged(NotifyCollectionChangedEventArgs args) =>
         LayoutFloatingWindowControlCollectionChanged?.Invoke(this, new(args));

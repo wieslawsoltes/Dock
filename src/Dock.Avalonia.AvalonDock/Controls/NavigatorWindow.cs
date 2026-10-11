@@ -72,6 +72,7 @@ public class NavigatorWindow : Window
         finally { _settingSelection = false; }
         DataContext = this;
         Styles.Add(new AvalonDockTheme());
+        manager.AttachThemeResources(this);
     }
 
     /// <summary>Preserves the default navigator template for derived controls.</summary>

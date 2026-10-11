@@ -161,7 +161,12 @@ public partial class MenuControlTests
     {
         var (menu, control, manager) = CreateRetainedMenu(key, open);
         // Avalonia's canceled hold timer retains the last press until it fires.
-        await Task.Delay(Application.Current!.PlatformSettings!.HoldWaitDuration + TimeSpan.FromMilliseconds(50));
+        // Wait on the same dispatcher timer queue: a thread-pool delay can finish
+        // before due UI timers have been promoted on a busy test runner.
+        TaskCompletionSource drained = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        using IDisposable timer = DispatcherTimer.RunOnce(() => drained.SetResult(),
+            Application.Current!.PlatformSettings!.HoldWaitDuration + TimeSpan.FromMilliseconds(50));
+        await drained.Task;
         for (int index = 0; index < 3; index++)
         {
             Dispatcher.UIThread.RunJobs();

@@ -156,12 +156,23 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Filters native Windows messages before Avalonia processes them.</summary>
     /// <remarks>Invoked through Avalonia's Win32 callback after the first opening until the window closes.
     /// Set handled to true and return the native result to consume a message. The base implementation
-    /// leaves native docking, movement, resizing, and system-menu handling to Avalonia and Dock.
+    /// leaves messages unhandled; typed hosts add caption activation and menu routing.
+    /// Avalonia and Dock retain movement, resizing, and execution of native window commands.
     /// Other platforms do not deliver Win32 messages.</remarks>
     protected virtual IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) => IntPtr.Zero;
 
     private IntPtr DispatchWindowMessage(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam, ref bool handled) =>
         FilterMessage(hwnd, unchecked((int)message), wParam, lParam, ref handled);
+
+    /// <summary>Shows the native Windows system menu at a physical screen position.</summary>
+    /// <remarks>Called for an enabled caption fallback when no custom layout-item menu owns the request.
+    /// Return true when the request is consumed, including a dismissed menu. The default implementation
+    /// uses the owning manager's native menu service and returns false for a non-Windows or non-native host.
+    /// Native commands continue through the host's normal state and closing lifecycle.</remarks>
+    protected virtual bool ShowSystemMenu(PixelPoint position) =>
+        Model.Root?.Manager?.TryShowSystemMenu(this, position, CanClose() || CanHide()) == true;
+
+    internal bool TryShowSystemMenu(PixelPoint position) => ShowSystemMenu(position);
 
     /// <summary>Dispatches a native close request to the AvalonDock cancellation hook.</summary>
     protected override void OnClosing(WindowClosingEventArgs e) => OnClosing((CancelEventArgs)e);

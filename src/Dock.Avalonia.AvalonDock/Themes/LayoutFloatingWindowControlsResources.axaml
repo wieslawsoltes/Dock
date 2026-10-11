@@ -8,6 +8,16 @@
         xmlns:chrome="using:Avalonia.Controls.Chrome"
         x:DataType="controls:LayoutAnchorableFloatingWindowControl">
   <converters:LayoutItemFromLayoutModelConverter x:Key="AvalonDockItemFromModel" />
+  <!-- Windows needs Full native styles for GetSystemMenu, while the Dock
+       content already supplies its caption, buttons, border, and resize grips. -->
+  <ControlTheme x:Key="AvalonDockContentWindowDecorations" TargetType="chrome:WindowDrawnDecorations"
+                x:DataType="chrome:WindowDrawnDecorations">
+    <Setter Property="Template">
+      <WindowDrawnDecorationsTemplate>
+        <chrome:WindowDrawnDecorationsContent />
+      </WindowDrawnDecorationsTemplate>
+    </Setter>
+  </ControlTheme>
   <ControlTemplate x:Key="AvalonDockFloatingWindowTemplate" TargetType="controls:LayoutFloatingWindowControl"
                    x:DataType="controls:LayoutFloatingWindowControl">
     <Panel>

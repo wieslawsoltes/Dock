@@ -41,8 +41,12 @@ internal static class NativeWindowProbe
                 ICaptionProbe probe = (ICaptionProbe)host;
                 manager.ShowSystemMenu = true;
                 if (probe.RightClick()) throw new Exception("The packaged native caption consumed an enabled system fallback.");
+                probe.ConsumeMenu = true;
+                if (!probe.RightClick() || probe.MenuCalls != 2)
+                    throw new Exception("The packaged caption did not invoke the protected system-menu hook.");
                 manager.ShowSystemMenu = false;
-                if (!probe.RightClick()) throw new Exception("The packaged native caption ignored the disabled system fallback.");
+                if (!probe.RightClick() || probe.MenuCalls != 2)
+                    throw new Exception("The packaged native caption ignored the disabled system fallback.");
                 ContextMenu menu = new() { Items = { new MenuItem { Header = "Custom caption menu" } } };
                 if (content is LayoutDocument) manager.DocumentContextMenu = menu;
                 else manager.AnchorableContextMenu = menu;
@@ -67,13 +71,26 @@ internal static class NativeWindowProbe
         }
     }
 
-    private interface ICaptionProbe { bool RightClick(); }
+    private interface ICaptionProbe
+    {
+        bool RightClick();
+        bool ConsumeMenu { get; set; }
+        int MenuCalls { get; }
+    }
     private sealed class DocumentWindow(LayoutDocumentFloatingWindow model) : LayoutDocumentFloatingWindowControl(model), ICaptionProbe
     {
+        public bool ConsumeMenu { get; set; }
+        public int MenuCalls { get; private set; }
+        protected override bool ShowSystemMenu(PixelPoint position)
+        { MenuCalls++; return ConsumeMenu || base.ShowSystemMenu(position); }
         public bool RightClick() { bool handled = false; FilterMessage(IntPtr.Zero, 0xA5, (IntPtr)2, IntPtr.Zero, ref handled); return handled; }
     }
     private sealed class ToolWindow(LayoutAnchorableFloatingWindow model) : LayoutAnchorableFloatingWindowControl(model), ICaptionProbe
     {
+        public bool ConsumeMenu { get; set; }
+        public int MenuCalls { get; private set; }
+        protected override bool ShowSystemMenu(PixelPoint position)
+        { MenuCalls++; return ConsumeMenu || base.ShowSystemMenu(position); }
         public bool RightClick() { bool handled = false; FilterMessage(IntPtr.Zero, 0xA5, (IntPtr)2, IntPtr.Zero, ref handled); return handled; }
     }
     private sealed class ClosingOverlay(DockingManager manager, Control surface, Control adorner) : OverlayWindow(manager, surface, adorner)

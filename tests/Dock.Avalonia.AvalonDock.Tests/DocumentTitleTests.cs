@@ -52,7 +52,8 @@ public class DocumentTitleTests
         TextBlock title = Text(workspace.Host, "document-title");
         Assert.Equal("Window: First", title.Text);
         Assert.Same(workspace.Document, title.DataContext);
-        Assert.Equal(WindowDecorations.BorderOnly, workspace.Host.WindowDecorations);
+        Assert.Equal(OperatingSystem.IsWindows() ? WindowDecorations.Full : WindowDecorations.BorderOnly,
+            workspace.Host.WindowDecorations);
         Assert.True(workspace.Host.ExtendClientAreaToDecorationsHint);
         Assert.False(workspace.Host.IsToolWindow);
         Assert.DoesNotContain(workspace.Manager.GetVisualDescendants().OfType<TextBlock>(), text => text.Classes.Contains("document-title"));

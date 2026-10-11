@@ -7,7 +7,7 @@ using AvalonDock.Layout;
 namespace AvalonDock.Infrastructure;
 
 // Native caption policy only. Avalonia and Dock retain movement, resize, hit
-// testing, and the system-menu implementation for unhandled messages.
+// testing, and execution of the system-menu's native window commands.
 internal static class LayoutFloatingCaptionMessages
 {
     private const int NonClientLeftButtonDown = 0x00A1;
@@ -41,16 +41,17 @@ internal static class LayoutFloatingCaptionMessages
         };
         LayoutHeaderKind kind = window.Model is LayoutDocumentFloatingWindow ? LayoutHeaderKind.Document : LayoutHeaderKind.Anchorable;
         ContextMenu? menu = kind == LayoutHeaderKind.Document ? manager.DocumentContextMenu : manager.AnchorableContextMenu;
+        // LPARAM contains signed 16-bit physical screen coordinates.
+        long packed = position.ToInt64();
+        PixelPoint point = new(unchecked((short)packed), unchecked((short)(packed >> 16)));
         if (menu is not null && item is { IsAttached: true })
         {
-            // LPARAM contains signed 16-bit physical screen coordinates.
-            long packed = position.ToInt64();
-            PixelPoint point = new(unchecked((short)packed), unchecked((short)(packed >> 16)));
             manager.ShowContextMenu(window, item, kind, null, item.LayoutElement?.DockModel.Owner as Dock.Model.Core.IDock,
                 point);
             // A canceled custom menu still owns the request.
             handled = true;
         }
         else if (!manager.ShowSystemMenu) handled = true;
+        else handled = window.TryShowSystemMenu(point);
     }
 }

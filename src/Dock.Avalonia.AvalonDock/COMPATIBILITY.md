@@ -583,6 +583,14 @@ supported by corresponding implementation and test evidence.
   Signed native screen positions are preserved. Floating `FilterMessage`
   hooks register with Avalonia from the first opening until close; caption
   activation leaves movement and unhandled messages to the native host.
+  A composed Windows menu service uses source-generated interop, preserves
+  native menu ownership, and forwards selected commands to the existing host.
+  Windows-specific decorations retain system-menu styles without duplicate
+  caption buttons. `ShowSystemMenu(PixelPoint)` is an additional protected host
+  override. Windows 11 ARM64 desktop checks cover real callback results,
+  hide/show registration, custom/canceled menus, system-menu display, and native
+  closing/hiding cancellation. Native menu selection through real pointer/keyboard
+  input and broader desktop input/focus checks remain open.
 - Native destination validation matches the upstream floating-host rules:
   document floating windows reject incoming drops; tool floating windows accept
   tools from the same manager. `AllowMixedOrientation` restricts document split
@@ -592,7 +600,7 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1190 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1196 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -613,9 +621,9 @@ supported by corresponding implementation and test evidence.
   loading, translated localization resources, and the control adapter surface.
   Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,
-  remaining protected/platform hooks, and desktop validation of Windows
-  message delivery and system-menu fallback. Headless message-policy tests do
-  not exercise the Windows window procedure or its native system-menu UI.
+  remaining protected/platform hooks, and broader desktop input/focus validation.
+  The Windows 11 ARM64 native-message/menu checks supplement Headless policy
+  tests; they do not establish full platform or floating-window parity.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
   Additional selection edge cases and protected override ordering still require

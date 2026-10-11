@@ -159,6 +159,7 @@ public partial class DockingManager : TemplatedControl
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
     private readonly LayoutItemRegistry _layoutItems;
     private readonly LayoutContextMenus _contextMenus = new();
+    private readonly ILayoutSystemMenu _systemMenu = new LayoutWindowsSystemMenu();
     private readonly LayoutNavigatorPresenter _navigator = new();
     private readonly LayoutThemeCoordinator _themeResources;
     private IEnumerable? _documentsSource;
@@ -624,6 +625,7 @@ public partial class DockingManager : TemplatedControl
     internal void PresentFloatingWindow(LayoutFloatingWindow window) => _floatingWindows.Present(window);
     internal void AttachThemeResources(StyledElement window) => _themeResources.Attach(window);
     internal void RemoveFloatingWindow(LayoutFloatingWindowControl window) => _floatingControls.Remove(window);
+    internal bool TryShowSystemMenu(Window window, PixelPoint position, bool canClose) => _systemMenu.TryShow(window, position, canClose);
     internal void NotifyFloatingWindowControlsChanged(NotifyCollectionChangedEventArgs args) =>
         LayoutFloatingWindowControlCollectionChanged?.Invoke(this, new(args));
     internal void ShowContextMenu(Control target, LayoutItem item, LayoutHeaderKind kind, ContextRequestedEventArgs? request, IDock? pane = null, PixelPoint? screenPosition = null) =>

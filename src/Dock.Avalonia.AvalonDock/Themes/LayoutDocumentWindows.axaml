@@ -7,7 +7,8 @@
   <Style Selector=":is(dock|HostWindow).avalondock-document-window">
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
     <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
-    <Setter Property="WindowDecorations" Value="BorderOnly" />
+    <Setter Property="WindowDecorations" Value="{OnPlatform Windows={x:Static WindowDecorations.Full}, Default={x:Static WindowDecorations.BorderOnly}}" />
+    <Setter Property="WindowDecorationsTheme" Value="{OnPlatform Windows={StaticResource AvalonDockContentWindowDecorations}, Default={x:Null}}" />
     <Setter Property="ContentTemplate">
       <DataTemplate x:DataType="models:IRootDock">
         <Panel Margin="{Binding $parent[dock:HostWindow].OffScreenMargin}">

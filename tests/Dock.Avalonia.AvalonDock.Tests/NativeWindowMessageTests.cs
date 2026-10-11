@@ -54,6 +54,46 @@ public class NativeWindowMessageTests
     }
 
     [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Floating_Chrome_Retains_System_Menu_Styles_On_Windows(bool tool)
+    {
+        using Workspace workspace = new(tool);
+        Assert.True(workspace.Host.ExtendClientAreaToDecorationsHint);
+        Assert.Equal(OperatingSystem.IsWindows() ? WindowDecorations.Full : WindowDecorations.BorderOnly,
+            workspace.Host.WindowDecorations);
+        Assert.Equal(OperatingSystem.IsWindows(), workspace.Host.WindowDecorationsTheme is not null);
+        Assert.Equal(0, workspace.Host.ExtendClientAreaTitleBarHeightHint);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void The_System_Menu_Hook_Receives_Screen_Coordinates_Only_For_Enabled_Fallback(bool tool, bool consumed)
+    {
+        using Workspace workspace = new(tool);
+        IMessageProbe probe = (IMessageProbe)workspace.Host;
+        probe.MenuResponse = consumed;
+        workspace.Manager.ShowSystemMenu = false;
+        Assert.True(workspace.Send(0xA5));
+        Assert.Empty(probe.MenuPositions);
+        workspace.Manager.ShowSystemMenu = true;
+        PixelPoint point = new(-150, 90);
+        Assert.Equal(consumed, workspace.Send(0xA5, position: point));
+        Assert.Equal(point, Assert.Single(probe.MenuPositions));
+
+        ContextMenu menu = new() { Items = { new MenuItem { Header = "Canceled custom menu" } } };
+        menu.Opening += (_, args) => args.Cancel = true;
+        workspace.SetMenu(menu);
+        Assert.True(workspace.Send(0xA5));
+        Assert.Single(probe.MenuPositions);
+        Assert.False(workspace.Send(0xA5, hitTest: 1));
+        Assert.Single(probe.MenuPositions);
+    }
+
+    [AvaloniaTheory]
     [InlineData(false, false)]
     [InlineData(false, true)]
     [InlineData(true, false)]
@@ -200,15 +240,31 @@ public class NativeWindowMessageTests
     private interface IMessageProbe
     {
         IntPtr Send(int message, IntPtr hitTest, IntPtr position, ref bool handled);
+        bool? MenuResponse { get; set; }
+        List<PixelPoint> MenuPositions { get; }
     }
 
     private sealed class DocumentProbe(LayoutDocumentFloatingWindow model) : LayoutDocumentFloatingWindowControl(model), IMessageProbe
     {
+        public bool? MenuResponse { get; set; }
+        public List<PixelPoint> MenuPositions { get; } = new();
+        protected override bool ShowSystemMenu(PixelPoint position)
+        {
+            if (MenuResponse is not { } result) return base.ShowSystemMenu(position);
+            MenuPositions.Add(position); return result;
+        }
         public IntPtr Send(int message, IntPtr hitTest, IntPtr position, ref bool handled) => FilterMessage(IntPtr.Zero, message, hitTest, position, ref handled);
     }
 
     private sealed class ToolProbe(LayoutAnchorableFloatingWindow model) : LayoutAnchorableFloatingWindowControl(model), IMessageProbe
     {
+        public bool? MenuResponse { get; set; }
+        public List<PixelPoint> MenuPositions { get; } = new();
+        protected override bool ShowSystemMenu(PixelPoint position)
+        {
+            if (MenuResponse is not { } result) return base.ShowSystemMenu(position);
+            MenuPositions.Add(position); return result;
+        }
         public IntPtr Send(int message, IntPtr hitTest, IntPtr position, ref bool handled) => FilterMessage(IntPtr.Zero, message, hitTest, position, ref handled);
     }
 

@@ -1554,12 +1554,32 @@ Floating controls expose the protected upstream
 `FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)`
 hook through Avalonia's `Win32Properties` callback. Registration starts at the
 first opening, after derived constructor state is available, and ends on close.
-Call base to retain caption activation and menu routing. The adapter leaves
-unhandled movement, resizing, hit testing, and system menus to Avalonia and Dock.
+Call base to retain caption activation and menu routing. Avalonia and Dock
+retain movement, resizing, hit testing, and execution of native window commands.
 The managed caption templates and menus continue to work on other platforms;
-those platforms do not deliver Win32 messages. Headless tests exercise the
-message policy and overrides; native Windows delivery and system-menu display
-still need a desktop validation pass.
+those platforms do not deliver Win32 messages.
+
+For the Windows fallback, a composed service uses source-generated interop to
+retrieve the [window's system menu](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmenu)
+and display it with `TrackPopupMenu`. The operating system supplies its labels.
+The service updates state-dependent commands and enables Close when the current
+content can close or hide. Selected commands return through `WM_SYSCOMMAND` to
+the existing native host and its cancellation hooks. Windows-specific native
+styles retain the system-menu handle; a decoration theme keeps Dock's caption
+and resize controls as the visible chrome.
+
+Applications can override the additional protected
+`bool ShowSystemMenu(PixelPoint position)` hook to replace this fallback.
+The position uses physical screen coordinates. Return `true` for a consumed
+request, including dismissal; the base implementation returns `false` on a
+non-Windows or non-native host. Custom layout-item menus still take precedence.
+
+Headless tests cover message policy, coordinates, override dispatch, and closing
+lifecycle. Windows 11 ARM64 desktop checks exercise real window handles and
+callback results, registration across hide/show, custom/canceled menus, native
+system-menu display, close vetoes, document cleanup, and tool hiding/restoration.
+Selecting native menu items through real pointer/keyboard input and broader
+desktop dragging, resizing, and focus validation remain open.
 
 ## Inspect native floating-window controls
 
@@ -2170,6 +2190,9 @@ flowchart TB
     Hosts --> Controls
     Hosts --> Manager
     Hosts --> Items
+    Hosts --> Caption["Platform caption and closing hooks"]
+    Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
+    SystemMenu -->|Native window commands| Hosts
     Models --> Controls
     Xml <--> Layout
 ```

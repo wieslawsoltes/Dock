@@ -665,9 +665,21 @@ position. Canceling their opening consumes the request. The protected
 `FilterMessage(IntPtr, int, IntPtr, IntPtr, ref bool)` hooks use Avalonia's Win32
 callback from the first opening until close. Call base to retain caption
 activation and menu routing; Avalonia and Dock handle unconsumed native input.
-Other platforms keep their managed captions and menus. Headless coverage tests
-the message policy; native Windows message delivery and system-menu display
-remain subject to desktop validation.
+On Windows, the adapter opens the operating system's window menu through
+source-generated native interop. Its Close item follows the current close/hide
+command eligibility; selected commands use the native host's state and closing
+lifecycle. Windows-specific decorations preserve the system-menu handle while
+Dock supplies the visible caption and resize controls. Other platforms keep
+their managed captions and menus.
+
+The additional protected `ShowSystemMenu(PixelPoint)` hook lets a host override
+the native fallback. Return `true` when the request was consumed, including a
+menu dismissed without choosing a command. The default returns `false` without
+a Windows native handle. Headless tests cover routing, coordinates, and override
+behavior; Windows 11 ARM64 desktop checks cover native callback delivery,
+custom/canceled menus, system-menu display, and close/hide cancellation.
+Selecting native menu items through real pointer/keyboard input and broader
+desktop dragging, resizing, and focus validation remain open.
 
 When Dock's floating docking adorners are enabled with
 `.UseFloatingDockAdorner(true)` on the application builder, native dragging
@@ -965,6 +977,9 @@ flowchart TB
     Hosts --> View
     Hosts --> Api
     Hosts --> Items
+    Hosts --> Caption["Platform caption and closing hooks"]
+    Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
+    SystemMenu -->|Native window commands| Hosts
     Api --> View
     Items --> View
     View --> ContentControls

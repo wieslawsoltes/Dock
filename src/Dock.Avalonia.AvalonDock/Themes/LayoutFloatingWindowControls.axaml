@@ -11,6 +11,10 @@
   <Style Selector=":is(controls|LayoutFloatingWindowControl):custom-content">
     <Setter Property="ContentTemplate" Value="{x:Null}" />
   </Style>
+  <Style Selector=":is(controls|LayoutFloatingWindowControl):toolwindow:toolchromecontrolswindow">
+    <Setter Property="WindowDecorations" Value="{OnPlatform Windows={x:Static WindowDecorations.Full}, Default={x:Static WindowDecorations.BorderOnly}}" />
+    <Setter Property="WindowDecorationsTheme" Value="{OnPlatform Windows={StaticResource AvalonDockContentWindowDecorations}, Default={x:Null}}" />
+  </Style>
   <Style Selector="controls|LayoutAnchorableFloatingWindowControl">
     <Setter Property="SingleContentLayoutItem"
             Value="{Binding $self.((layout:LayoutAnchorableFloatingWindow)Model).((layout:ILayoutContentSelector)SinglePane).SelectedContent, Converter={StaticResource AvalonDockItemFromModel}}" />

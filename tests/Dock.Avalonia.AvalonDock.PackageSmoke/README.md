@@ -12,6 +12,10 @@ including an active tool in another pane.
 An external document overrides selection, activation, closing, and closed hooks.
 The consumer verifies completed state during activation, native activation of an
 already selected tab, cancellation, and detachment before the closed callback.
+Content controls compile in the default and historical XML namespaces, expose
+their existing model containers, and support an external model-change override
+and protected container setter. The consumer checks model enablement and verifies
+that native docked/floating document and tool controls display the same item view.
 It also verifies that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
 headers, render tool and floating document titles and select their templates, click

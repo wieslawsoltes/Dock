@@ -201,6 +201,21 @@ commands. Layout methods remain direct model operations. The full guide covers
 selectors, capabilities, and two-way metadata bindings.
 
 `LayoutItem.View` is the presenter displayed by the native Dock controls.
+`AvalonDock.Controls.LayoutDocumentControl` and `LayoutAnchorableControl` wrap
+that same presenter inside native panes. Their `Model` is the public layout
+node; their read-only `LayoutItem` resolves its manager's existing container.
+Tools hosted as documents use `LayoutDocumentControl`; ordinary tools and
+auto-hide previews use `LayoutAnchorableControl`. Both types are available in
+the default Avalonia XML namespace and the historical Xceed URI.
+
+The controls follow model enablement, select an enabled sibling when active
+content is disabled, and activate content from focus or document pointer input.
+Derived controls can override `OnModelChanged(AvaloniaPropertyChangedEventArgs)`,
+use protected `SetLayoutItem`, and override the keyboard/pointer hooks with
+Avalonia event arguments. The full guide explains the focus-routing difference
+from WPF and includes compiled template examples. Dock may recycle a generated
+control for another tab; track the model or container when identity matters.
+
 `DockingManager.LayoutItemTemplate` accepts an Avalonia `IDataTemplate` for
 application content. Alternatively, use `LayoutItemTemplateSelector` with an
 `AvalonDock.Controls.DataTemplateSelector` subclass overriding
@@ -478,6 +493,7 @@ flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
+    ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
     Commands["Compiled command bindings<br/>Native input routing"]
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
@@ -532,6 +548,9 @@ flowchart TB
     Hosts --> Items
     Api --> View
     Items --> View
+    View --> ContentControls
+    ContentControls --> Items
+    ContentControls --> Api
     View --> Commands
     Commands --> Items
     Api --> Menus

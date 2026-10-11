@@ -1,9 +1,16 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:PackageConsumer"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
     <ResourceInclude x:Key="GenericByUri" Source="avares://Dock.Avalonia.AvalonDock/Themes/Generic.axaml" />
+    <DataTemplate x:Key="DocumentContentControl" x:DataType="LayoutContent">
+      <LayoutDocumentControl Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolContentControl" x:DataType="LayoutAnchorable">
+      <ad:LayoutAnchorableControl Model="{Binding}" />
+    </DataTemplate>
     <Style x:Key="NavigatorLabels" Selector=":is(NavigatorWindow)" x:DataType="NavigatorWindow">
       <Setter Property="LayoutDocumentsLabel" Value="Packaged documents" />
       <Setter Property="LayoutAnchorablesLabel" Value="Packaged tools" />

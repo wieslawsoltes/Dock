@@ -345,6 +345,51 @@ tab double-clicks use the current container commands in docked and floating
 hosts. Menus on auto-hide strips use the same tool container. Command parameters
 are null, so parameterless `ReactiveCommand` properties work directly.
 
+`AvalonDock.Controls.LayoutDocumentControl` and `LayoutAnchorableControl` are
+the public content controls inside those native panes. Their `Model` is the
+layout node, and their read-only `LayoutItem` is the manager's existing container.
+The default compiled control themes display that container's same `View`.
+Documents and tools hosted in a document pane use `LayoutDocumentControl`;
+ordinary tool panes and auto-hide previews use `LayoutAnchorableControl`.
+Dock continues to own the tab strip, pane chrome, movement, and floating hosts.
+
+Both controls can be used without a namespace prefix in compiled templates:
+
+```xml
+<DataTemplate x:Key="DocumentContent" x:DataType="LayoutContent">
+  <LayoutDocumentControl Model="{Binding}" />
+</DataTemplate>
+<DataTemplate x:Key="ToolContent" x:DataType="LayoutAnchorable">
+  <LayoutAnchorableControl Model="{Binding}" />
+</DataTemplate>
+```
+
+The model must belong to a manager to resolve its `LayoutItem`. The same view
+can have only one visual parent; presenting it elsewhere transfers it from its
+previous host. Native presentation reuses controls when switching tabs, so a
+control's model can change. Keep the model or item identity when tracking a
+document, rather than retaining a particular generated control. Removed native
+controls clear their model and container when the item detaches; an explicitly
+assigned `Model` remains available after its container detaches.
+
+The controls follow the model's `IsEnabled`. Disabling active content selects
+the first enabled sibling, or clears pane selection if none remains. Document
+controls are focusable by default; tool controls receive focus through their
+editors. Focus and document left/right presses activate the owning content,
+while input inside a nested manager belongs to that inner manager. A native
+presenter's delayed focus restoration cannot override a newer tab selection.
+
+Derived controls can override `OnModelChanged(AvaloniaPropertyChangedEventArgs)`
+and use protected `SetLayoutItem(LayoutItem?)`. Call the base model hook to
+preserve subscriptions, enablement, and container lookup. Document input hooks
+are `OnPreviewGotKeyboardFocus(FocusChangedEventArgs)` and
+`OnPreviewMouseLeftButtonDown` / `OnPreviewMouseRightButtonDown`
+with `PointerPressedEventArgs`; tools expose
+`OnGotKeyboardFocus(FocusChangedEventArgs)`. These use Avalonia event arguments.
+The pointer hooks run on the tunnel route; the focus hooks run when Avalonia's
+bubbling `GotFocus` reaches the control, so WPF preview-focus routing is not
+reproduced exactly.
+
 Tool title-bar close buttons use `CloseCommand` when `CanClose` is true and
 `HideCommand` otherwise. A disabled command cannot fall through to the native
 factory's default action. Floating-tool close commands run before the host's
@@ -1188,6 +1233,7 @@ flowchart TB
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
+        ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
@@ -1226,6 +1272,9 @@ flowchart TB
     Items <--> Layout
     Items --> Factory
     Items --> Controls
+    Controls --> ContentControls
+    ContentControls --> Items
+    ContentControls --> Layout
     Controls --> Commands
     Commands --> Items
     Manager --> Menus
@@ -1317,8 +1366,12 @@ factory movement. The host prepares its native layout and geometry while
 deferring presentation until the application shows it. Floating Dock controls
 inherit the manager's host factory, including when a floating window is shown
 before the main view.
-The native content template obtains the corresponding `LayoutItem.View` from
-the factory. That presenter selects manager content templates and delegates
+The native content template creates or recycles a public document/tool content
+control through compiled XAML. Its model binding resolves the corresponding
+`LayoutItem` from the factory, and its theme presents the existing `LayoutItem.View`.
+Weak model subscriptions avoid retaining discarded controls. Item detachment
+clears generated controls while temporary native moves preserve the container.
+That presenter selects manager content templates and delegates
 inline controls and Dock template content to the native model's template path.
 The item registry keeps containers in the manager's logical scope and applies
 selected control themes. Compiled container bindings synchronize metadata and
@@ -1346,6 +1399,8 @@ the public layout source through Avalonia's event routing without reflection.
 The document list uses the native tab strip's right-content slot and Avalonia's
 `MenuFlyout`. Its sorted entries bind to public layout contents, and their header
 and icon presenters share the item container's template refresh and cleanup.
+An open document list closes before layout replacement even when Dock recycles
+its pane and menu button.
 Selection invokes the current container activation command, which delegates
 movement and active-content changes to the native factory.
 

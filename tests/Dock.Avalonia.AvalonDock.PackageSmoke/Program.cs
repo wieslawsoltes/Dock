@@ -40,6 +40,7 @@ AssertLayoutLifecycle();
 AssertLayoutParentPolicies();
 AssertPaneSelectionPolicies();
 AssertContentHooks();
+PackageConsumer.ContentControlProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
@@ -67,6 +68,7 @@ if (((TextBox)document.Content!).Text != "Package consumer") throw new Exception
 LayoutAnchorable tool = manager.Layout.LeftSide.Children.Single().Children.Single();
 if (!tool.IsAutoHidden || tool.ContentId != "agenda") throw new Exception("Auto-hide content was not preserved.");
 Dispatcher.UIThread.RunJobs();
+AssertContentControls(window, manager, document, tool);
 if (!window.GetVisualDescendants().OfType<TextBlock>().Any(text =>
         text.Classes.Contains("package-tool-header") && ReferenceEquals(text.DataContext, tool) && text.Text == "Tool: Agenda"))
     throw new Exception("The compiled auto-hide header did not receive the public anchorable model.");
@@ -82,6 +84,7 @@ if (tool.IsAutoHidden || toolMenu.DataContext is not null || toolMenu.PlacementT
 tool.IsActive = true;
 Dispatcher.UIThread.RunJobs();
 AssertToolTitle(manager, tool);
+AssertNativeContentControl(manager, tool);
 AssertDocumentMenu(manager);
 AssertConverters(window, manager, tool);
 AssertNavigator(window, manager, document);
@@ -94,6 +97,7 @@ AssertSplitters(manager);
 tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+AssertNativeContentControl(toolHost, tool);
 AssertActiveContent(manager, document, tool);
 AssertThemes(window, manager, toolHost);
 AssertFloatingResize(window, (LayoutFloatingWindowControl)toolHost);
@@ -151,6 +155,7 @@ if (!ReferenceEquals(sourceItem, manager.GetLayoutItemFromModel(fromSource)) || 
     throw new Exception("Floating did not preserve the item container and command state.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().DockWindow.Host!;
+AssertNativeContentControl(sourceHost, fromSource);
 // The compiled title is wider than the native 300-pixel default host. Keep the
 // close target inside the viewport before exercising actual pointer input.
 sourceHost.Width = 640;
@@ -296,6 +301,41 @@ if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML c
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
 AssertNavigatorLifetime(lifetime);
 Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container and command/value converters, navigator input and desktop lifetime cleanup, and close cancellation passed.");
+
+static void AssertContentControls(Window window, DockingManager manager, LayoutDocument document, LayoutAnchorable tool)
+{
+    LayoutDocumentControl documentControl = (LayoutDocumentControl)((IDataTemplate)window.Resources["DocumentContentControl"]!).Build(document)!;
+    documentControl.DataContext = document;
+    LayoutAnchorableControl toolControl = (LayoutAnchorableControl)((IDataTemplate)window.Resources["ToolContentControl"]!).Build(tool)!;
+    toolControl.DataContext = tool;
+    if (!ReferenceEquals(documentControl.Model, document) || !ReferenceEquals(documentControl.LayoutItem, manager.GetLayoutItemFromModel(document)) ||
+        !ReferenceEquals(toolControl.Model, tool) || !ReferenceEquals(toolControl.LayoutItem, manager.GetLayoutItemFromModel(tool)))
+        throw new Exception("Compiled packaged content controls did not resolve models and containers through both XML namespaces.");
+    documentControl.Model = null;
+    toolControl.Model = null;
+    AssertNativeContentControl(manager, document);
+}
+
+static void AssertNativeContentControl(Control scope, LayoutContent model)
+{
+    Control control;
+    LayoutItem? item;
+    if (model is LayoutDocument || model.Parent is LayoutDocumentPane)
+    {
+        LayoutDocumentControl document = scope.GetVisualDescendants().OfType<LayoutDocumentControl>().Single(value => ReferenceEquals(value.Model, model));
+        control = document;
+        item = document.LayoutItem;
+    }
+    else
+    {
+        LayoutAnchorableControl tool = scope.GetVisualDescendants().OfType<LayoutAnchorableControl>().Single(value => ReferenceEquals(value.Model, model));
+        control = tool;
+        item = tool.LayoutItem;
+    }
+    if (item is null || !ReferenceEquals(item, model.Root!.Manager!.GetLayoutItemFromModel(model)) ||
+        !control.GetVisualDescendants().Contains(item.View))
+        throw new Exception("A packaged native content control did not present its existing LayoutItem.View.");
+}
 
 static void AssertNavigatorLifetime(ClassicDesktopStyleApplicationLifetime lifetime)
 {

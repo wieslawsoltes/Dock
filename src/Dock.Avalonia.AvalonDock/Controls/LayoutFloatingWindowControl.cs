@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using AvalonDock.Layout;
 using AvalonDock.Infrastructure;
 using AvalonDock.Themes;
@@ -36,6 +37,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     static LayoutFloatingWindowControl()
     {
+        KeyDownEvent.AddClassHandler<LayoutFloatingWindowControl>(static (window, args) => window.OnPreviewKeyDown(args), RoutingStrategies.Tunnel);
         ContentProperty.OverrideMetadata<LayoutFloatingWindowControl>(new StyledPropertyMetadata<object?>(
             coerce: static (owner, value) => owner is LayoutFloatingWindowControl { IsLoaded: true, IsContentImmutable: true } window
                 ? window.Content : value));
@@ -169,6 +171,17 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         if (CanClose() && Model is LayoutFloatingWindow model)
             LayoutFloatingWindowOperations.Execute(model, hide: false, parameter: null);
         else if (CanHide()) DoHide();
+    }
+
+    /// <summary>Opens the owning manager's navigator on Ctrl+Tab from floating content.</summary>
+    protected virtual void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        if (e.Key == Key.Tab && (e.KeyModifiers & KeyModifiers.Control) != 0 &&
+            Model.Root?.Manager is { IsNavigatorWindowActive: false } manager)
+        {
+            manager.ShowNavigatorWindow();
+            e.Handled = true;
+        }
     }
 
     /// <summary>Moves the native window with arrow keys when enabled by its manager.</summary>

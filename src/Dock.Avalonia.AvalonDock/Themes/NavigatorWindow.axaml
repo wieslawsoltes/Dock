@@ -1,0 +1,58 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AvalonDock.Controls"
+        xmlns:converters="using:Avalonia.Data.Converters"
+        x:DataType="controls:NavigatorWindow">
+  <Styles.Resources>
+    <ControlTheme x:Key="{x:Type controls:NavigatorWindow}" TargetType="controls:NavigatorWindow"
+                  BasedOn="{StaticResource {x:Type Window}}" x:DataType="controls:NavigatorWindow">
+      <Setter Property="CanResize" Value="False" />
+      <Setter Property="Focusable" Value="True" />
+      <Setter Property="WindowDecorations" Value="None" />
+      <Setter Property="SizeToContent" Value="WidthAndHeight" />
+      <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" Padding="16" BorderThickness="1"
+                  BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}">
+            <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="280,280" RowSpacing="8" ColumnSpacing="16">
+              <Grid Grid.ColumnSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="8">
+                <Image Source="{Binding SelectedDocument.IconSource, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20" />
+                <TextBlock Grid.Column="1" Text="{Binding SelectedDocument.Title, RelativeSource={RelativeSource TemplatedParent}}" FontWeight="Bold" />
+                <TextBlock Grid.Column="1" Text="{Binding SelectedAnchorable.Title, RelativeSource={RelativeSource TemplatedParent}}" FontWeight="Bold"
+                           IsVisible="{Binding SelectedDocument, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static converters:ObjectConverters.IsNull}}" />
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding SelectedDocument.Description, RelativeSource={RelativeSource TemplatedParent}}" />
+              </Grid>
+              <TextBlock Grid.Row="1" Text="{TemplateBinding LayoutAnchorablesLabel}" FontWeight="SemiBold" />
+              <TextBlock Grid.Row="1" Grid.Column="1" Text="{TemplateBinding LayoutDocumentsLabel}" FontWeight="SemiBold" />
+              <ListBox x:Name="PART_AnchorableListBox" Grid.Row="2" MaxHeight="400" MinHeight="120" Focusable="True"
+                       ItemsSource="{TemplateBinding Anchorables}"
+                       SelectedItem="{Binding SelectedAnchorable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="controls:LayoutAnchorableItem">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <Image Source="{Binding IconSource}" Width="16" Height="16" />
+                      <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <ListBox x:Name="PART_DocumentListBox" Grid.Row="2" Grid.Column="1" MaxHeight="400" MinHeight="120" Focusable="True"
+                       ItemsSource="{TemplateBinding Documents}"
+                       SelectedItem="{Binding SelectedDocument, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="controls:LayoutDocumentItem">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <Image Source="{Binding IconSource}" Width="16" Height="16" />
+                      <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </ControlTheme>
+  </Styles.Resources>
+</Styles>

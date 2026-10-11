@@ -142,6 +142,7 @@ public class DockingManager : TemplatedControl
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
     private readonly LayoutItemRegistry _layoutItems;
     private readonly LayoutContextMenus _contextMenus = new();
+    private readonly LayoutNavigatorPresenter _navigator = new();
     private IEnumerable? _documentsSource;
     private IEnumerable? _anchorablesSource;
     private ILayoutUpdateStrategy? _layoutUpdateStrategy;
@@ -153,6 +154,7 @@ public class DockingManager : TemplatedControl
         FloatedEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
         PreviewDockEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
         DockedEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
+        KeyDownEvent.AddClassHandler<DockingManager>(static (manager, args) => manager.OnPreviewKeyDown(args), RoutingStrategies.Tunnel);
     }
 
     /// <summary>Creates a manager with an empty document layout.</summary>
@@ -187,6 +189,7 @@ public class DockingManager : TemplatedControl
                 throw new InvalidOperationException("A layout can belong to only one DockingManager.");
             LayoutChanging?.Invoke(this, EventArgs.Empty);
             _contextMenus.Close();
+            _navigator.Close();
             _floatingWindows.Detach();
             RootDock oldDock = DockLayout;
             LayoutRoot oldLayout = _layout;
@@ -211,6 +214,23 @@ public class DockingManager : TemplatedControl
     public IFactory DockFactory => Layout.DockFactory;
     /// <summary>Gets the native floating-window controls associated with this manager's layout.</summary>
     public IEnumerable<LayoutFloatingWindowControl> FloatingWindows => _floatingControls.Items;
+    /// <summary>Creates a navigator over the manager's current document and tool containers.</summary>
+    public virtual NavigatorWindow CreateNavigatorWindow() => new(this);
+
+    /// <summary>Presents one navigator, centered over the manager's window when available.</summary>
+    protected internal virtual void ShowNavigatorWindow() => _navigator.Show(this);
+
+    internal bool IsNavigatorWindowActive => _navigator.IsActive;
+
+    /// <summary>Opens the navigator on Ctrl+Tab before native child controls process the key.</summary>
+    protected virtual void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        if (e.Key == Key.Tab && (e.KeyModifiers & KeyModifiers.Control) != 0 && !IsNavigatorWindowActive)
+        {
+            ShowNavigatorWindow();
+            e.Handled = true;
+        }
+    }
     /// <summary>Moves content into a new native floating control without showing the window.</summary>
     /// <param name="contentModel">The document or anchorable to move into the new window.</param>
     /// <param name="isContentImmutable">Whether to prevent replacing the window's loaded content.</param>
@@ -527,6 +547,7 @@ public class DockingManager : TemplatedControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         _contextMenus.Close();
+        _navigator.Close();
         // Upstream unload closes hosts while preserving content, without
         // making an internal-close request as layout replacement does.
         _floatingWindows.Detach(internalClose: false);

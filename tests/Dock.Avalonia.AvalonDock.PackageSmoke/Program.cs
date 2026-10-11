@@ -37,6 +37,7 @@ using ReactiveUI.Reactive;
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
 AssertLayoutLifecycle();
+AssertLayoutParentPolicies();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
@@ -386,7 +387,13 @@ static void AssertLayoutLifecycle()
     if (removed != 1 || added != 1 || document.BeforeChanges != 2 || document.AfterChanges != 2 ||
         document.RootChanges != 2 || !ReferenceEquals(document.Parent, destination) || !ReferenceEquals(document.Root, second))
         throw new Exception("The packaged parent/root hooks and layout membership events did not follow the move.");
+}
 
+static void AssertLayoutParentPolicies()
+{
+    LayoutDocument document = new();
+    LayoutDocumentPane destination = new(document);
+    LayoutRoot root = new() { RootPanel = new LayoutPanel(destination) };
     LayoutDocument selected = new() { IsSelected = true };
     destination.Children.Add(selected);
     if (!ReferenceEquals(destination.SelectedContent, selected) || !selected.IsSelected || document.IsSelected)
@@ -402,6 +409,7 @@ static void AssertLayoutLifecycle()
     pane.SetVisibility(true);
     if (!panel.IsVisible || pane.VisibilityChanges != visibilityChanges + 2)
         throw new Exception("The external visibility override did not report both transitions.");
+    GC.KeepAlive(root);
 }
 
 static void AssertActiveContent(DockingManager manager, LayoutDocument document, LayoutAnchorable tool)

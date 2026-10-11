@@ -66,16 +66,7 @@ public abstract partial class FactoryBase
 
         if (wasActive)
         {
-            var indexActiveDockable = index > 0 ? index - 1 : 0;
-            if (dock.VisibleDockables.Count > 0)
-            {
-                var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
-                dock.ActiveDockable = nextActiveDockable is not ISplitter ? nextActiveDockable : null;
-            }
-            else
-            {
-                dock.ActiveDockable = null;
-            }
+            dock.ActiveDockable = GetActiveDockableAfterRemoval(dock, dockable, index);
         }
 
         if (FindRoot(dockable, x => x.IsFocusableRoot) is { } rootDock &&
@@ -91,6 +82,18 @@ public abstract partial class FactoryBase
         {
             CollapseDock(dock);
         }
+    }
+
+    /// <summary>Selects the replacement after an active dockable has been removed.</summary>
+    /// <param name="dock">The source dock, with the removed item already absent.</param>
+    /// <param name="removedDockable">The item that was removed.</param>
+    /// <param name="removedIndex">The item's index before removal.</param>
+    /// <returns>A remaining non-splitter child, or null to leave the dock unselected.</returns>
+    protected virtual IDockable? GetActiveDockableAfterRemoval(IDock dock, IDockable removedDockable, int removedIndex)
+    {
+        if (dock.VisibleDockables is not { Count: > 0 } children) return null;
+        IDockable next = children[removedIndex > 0 ? removedIndex - 1 : 0];
+        return next is ISplitter ? null : next;
     }
 
     /// <summary>

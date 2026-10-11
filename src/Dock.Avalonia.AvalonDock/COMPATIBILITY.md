@@ -172,6 +172,15 @@ supported by corresponding implementation and test evidence.
   requests, exception cleanup, reentrant collection changes, and protected
   constructor content immutability, and retained-empty-collection lifetime. Dock's optional `IDockWindowHostFactory`
   enables model-aware creation while preserving ordinary/native ID locators.
+- `CreateFloatingWindow` moves content through the native factory and returns a
+  new unshown typed host with per-request content immutability. Tests cover
+  document/tool geometry, loaded-content replacement and native-layout restoration,
+  standalone panes, unattached/auto-hidden tools, cross-manager transfer, creation
+  before the main view loads, native registration and explicit presentation,
+  nested creation/float options, capability checks after preview, return panes,
+  and exception/layout-replacement cleanup. Floating views inherit the manager's
+  native host factory even when shown before the main view. The package consumer
+  creates, shows, protects, and docks an explicit window.
 - Document and tool floating models expose native Dock windows through an
   observable `FloatingWindows` collection. Native single-document float/dock
   and tool floating operations preserve content wrappers and public ownership.
@@ -221,7 +230,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 353 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 367 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -234,8 +243,7 @@ supported by corresponding implementation and test evidence.
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
   templates/selectors, styles, themes, remaining converters, and the control
-  adapter surface. Floating controls still need `CreateFloatingWindow` and its
-  immutable-content path, window-wide commands and close hooks, resize-border
+  adapter surface. Floating controls still need window-wide commands and close hooks, resize-border
   customization, and remaining protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
@@ -254,8 +262,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 452
-matching type/member keys and 499 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 453
+matching type/member keys and 498 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

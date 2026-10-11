@@ -123,7 +123,7 @@ internal sealed class LayoutFloatingPlacement(LayoutRoot root) : ILayoutFloating
         return copy;
     }
 
-    private static void CopyPosition(ILayoutPositionableGroup source, ILayoutPositionableGroup target)
+    internal static void CopyPosition(ILayoutPositionableGroup source, ILayoutPositionableGroup target)
     {
         target.DockWidth = source.DockWidth;
         target.DockHeight = source.DockHeight;

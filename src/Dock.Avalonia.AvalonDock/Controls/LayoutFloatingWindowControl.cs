@@ -5,11 +5,13 @@ using Avalonia.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Themes;
 using Dock.Avalonia.Controls;
+using Dock.Model.Controls;
+using Dock.Model.Core;
 
 namespace AvalonDock.Controls;
 
 /// <summary>An AvalonDock floating control implemented by Dock's native host window.</summary>
-public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl
+public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, IHostWindow
 {
     /// <summary>Defines whether application content can be replaced after loading.</summary>
     public static readonly StyledProperty<bool> IsContentImmutableProperty =
@@ -23,6 +25,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl
 
     private bool _dragging;
     private bool _maximized;
+    private bool _notifyOpened;
 
     static LayoutFloatingWindowControl()
     {
@@ -58,6 +61,45 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl
     /// <summary>Gets whether the native window is maximized.</summary>
     public bool IsMaximized => _maximized;
     internal bool HasClosed { get; private set; }
+    internal bool DeferNativePresentation { get; set; }
+
+    void IHostWindow.Present(bool isDialog)
+    {
+        if (DeferNativePresentation)
+        {
+            _notifyOpened = true;
+            if (IsVisible)
+            {
+                // A collection-change handler may show the host before native
+                // initialization assigns its factory and registers the window.
+                if (Window?.Factory is { } factory && !factory.HostWindows.Contains(this))
+                    factory.HostWindows.Add(this);
+                NotifyOpened();
+            }
+        }
+        else Present(isDialog);
+    }
+
+    /// <summary>Presents this window through Dock's native owner and window-option handling.</summary>
+    public new void Present(bool isDialog)
+    {
+        _notifyOpened = false;
+        base.Present(isDialog);
+    }
+
+    /// <summary>Notifies the native factory when an explicitly created window is first shown.</summary>
+    protected override void OnOpened(EventArgs e)
+    {
+        NotifyOpened();
+        base.OnOpened(e);
+    }
+
+    private void NotifyOpened()
+    {
+        if (!_notifyOpened || Window?.Factory is not { } factory) return;
+        _notifyOpened = false;
+        factory.OnWindowOpened(Window);
+    }
 
     /// <summary>Updates the drag notification state used by derived window controls.</summary>
     protected void SetIsDragging(bool value) => SetAndRaise(IsDraggingProperty, ref _dragging, value);
@@ -72,6 +114,8 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl
             SetAndRaise(IsMaximizedProperty, ref _maximized, WindowState == WindowState.Maximized);
         else if (change.Property == IsDraggingProperty)
             OnIsDraggingChanged(change);
+        else if (change.Property == ContentProperty)
+            PseudoClasses.Set(":custom-content", change.NewValue is not IRootDock);
     }
 
     /// <summary>Removes a closed native host from its manager before native layout cleanup.</summary>

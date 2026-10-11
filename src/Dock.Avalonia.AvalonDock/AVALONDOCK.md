@@ -284,8 +284,24 @@ Subscribe to `LayoutFloatingWindowControlCollectionChanged` in a workspace
 service to observe added/removed host controls and their collection indices;
 unsubscribe when the service detaches. A canceled close preserves registration.
 Layout replacement and view reattachment replace host instances while retaining
-the appropriate model/application content. Window-wide commands, manager-created
-immutable windows, and remaining floating-control hooks are still open.
+the appropriate model/application content.
+
+Create an unshown native window when the workspace service needs to configure
+it before display:
+
+```csharp
+LayoutFloatingWindowControl? window =
+    manager.CreateFloatingWindow(document, isContentImmutable: true);
+window?.Show();
+```
+
+Creation moves the content into a new floating layout and raises the float
+notifications; showing the control raises native `WindowOpened`. Rejected
+floating returns null. The immutability option prevents replacement of loaded
+window `Content`; the layout and document remain editable. Standalone panes,
+unattached tools, cross-manager content, and creation before the main view loads
+are supported. Documents need a parent pane. Window-wide commands and remaining
+floating-control hooks are still open.
 
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as
@@ -305,7 +321,7 @@ flowchart TB
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Events["Operation notifications<br/>Public layout source and routed events"]
-    Hosts["Floating control API<br/>Typed native hosts and collection notifications"]
+    Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
     Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]

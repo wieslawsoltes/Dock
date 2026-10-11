@@ -300,6 +300,20 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
         if (manager.FloatingWindows.Contains(host) || hosts.Count != 2 ||
             hosts[1].Action != NotifyCollectionChangedAction.Remove || !ReferenceEquals(hosts[1].OldItems![0], host))
             throw new Exception("Native docking did not remove the same floating control from the manager.");
+        LayoutFloatingWindowControl created = manager.CreateFloatingWindow(document, true)
+            ?? throw new Exception("The packaged manager did not create a floating window.");
+        if (created.IsVisible || !created.IsContentImmutable || ReferenceEquals(created, host) ||
+            !ReferenceEquals(((LayoutFloatingWindow)created.Model).DockWindow.Host, created))
+            throw new Exception("The created window did not preserve deferred presentation and native host identity.");
+        created.Show();
+        Dispatcher.UIThread.RunJobs();
+        object? originalContent = created.Content;
+        created.Content = new TextBlock { Text = "Replacement content" };
+        if (!ReferenceEquals(originalContent, created.Content) || !manager.DockFactory.HostWindows.Contains(created))
+            throw new Exception("The explicitly shown window lost content protection or native registration.");
+        document.Dock();
+        if (manager.FloatingWindows.Contains(created))
+            throw new Exception("Docking did not remove the explicitly created window.");
     }
     finally
     {

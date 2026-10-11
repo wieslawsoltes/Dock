@@ -633,11 +633,36 @@ visible pane and becomes null when it has multiple panes. Its default binding
 is compiled and uses `LayoutItemFromLayoutModelConverter`, also available under
 `AvalonDock.Converters` and both supported XML namespaces. Application values
 and bindings can override this default through Avalonia property precedence.
-Derived floating controls can use the protected constructor's
-`isContentImmutable` option to prevent replacement of loaded `Content`.
+Use `CreateFloatingWindow` when you need to configure a window before displaying
+it. The method moves a document or tool into a new native floating layout and
+returns its **unshown** control. `PreviewFloat` and `Floated` describe the layout
+move; native `WindowOpened` fires when the window is shown.
 
-The floating-control surface is still being completed: manager-created immutable
-windows, window-wide commands, resize-border customization, and the remaining
+```csharp
+LayoutFloatingWindowControl? window =
+    manager.CreateFloatingWindow(document, isContentImmutable: true);
+if (window is not null)
+{
+    window.Title = "Document workspace";
+    window.Show();
+}
+```
+
+The method returns null when floating is rejected. Documents must belong to a
+pane; standalone panes and content from another manager can be transferred into
+this manager. An unattached or auto-hidden tool is first placed in a temporary
+pane. Unlike `LayoutContent.Float()`, creation always requests a new window.
+It works before the manager is loaded, and nested creation requests keep their
+own options. Set content floating bounds before calling it to choose the initial
+position and size.
+
+`isContentImmutable` prevents replacing the window's `Content` after it loads;
+it does not make the hosted layout or document read-only. With false, custom
+window content uses normal Avalonia content rendering. Derived floating controls
+can also use the protected constructor's immutability option.
+
+The floating-control surface is still being completed: window-wide commands,
+resize-border customization, and the remaining
 protected/platform hooks are tracked in the compatibility checklist.
 
 ## Restore application content from XML
@@ -695,7 +720,7 @@ flowchart TB
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
-        Hosts["Floating control API<br/>Typed native hosts and collection notifications"]
+        Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
     end
     subgraph Native["Existing Dock implementation"]
@@ -770,6 +795,11 @@ application locators while making that model available to the manager's host
 factory; nested requests and exceptions restore the previous request. A
 separate registry observes native host identities and floating-model membership
 to publish control additions and removals.
+`LayoutFloatingWindowCreation` scopes per-content creation options around native
+factory movement. The host prepares its native layout and geometry while
+deferring presentation until the application shows it. Floating Dock controls
+inherit the manager's host factory, including when a floating window is shown
+before the main view.
 The native content template obtains the corresponding `LayoutItem.View` from
 the factory. That presenter selects manager content templates and delegates
 inline controls and Dock template content to the native model's template path.

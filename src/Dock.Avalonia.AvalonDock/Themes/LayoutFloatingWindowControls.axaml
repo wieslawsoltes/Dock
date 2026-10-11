@@ -16,6 +16,9 @@
                   x:DataType="controls:LayoutAnchorableFloatingWindowControl"
                   BasedOn="{StaticResource {x:Type dock:HostWindow}}" />
   </Styles.Resources>
+  <Style Selector=":is(controls|LayoutFloatingWindowControl):custom-content">
+    <Setter Property="ContentTemplate" Value="{x:Null}" />
+  </Style>
   <Style Selector="controls|LayoutAnchorableFloatingWindowControl">
     <Setter Property="SingleContentLayoutItem"
             Value="{Binding $self.((layout:LayoutAnchorableFloatingWindow)Model).((layout:ILayoutContentSelector)SinglePane).SelectedContent, Converter={StaticResource AvalonDockItemFromModel}}" />

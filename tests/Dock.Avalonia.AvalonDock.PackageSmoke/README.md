@@ -10,7 +10,8 @@ native tabs and custom manager menus to execute container commands, activate
 documents through the list menu with compiled header and icon templates, resize
 native splitters through the manager properties, observe bubbling docking/floating
 notifications around native movement, inspect typed native floating controls and
-their collection changes, resolve a container with the unprefixed converter,
+their collection changes, create and explicitly show an immutable floating window,
+resolve a container with the unprefixed converter,
 and restore application content
 from XML using the packaged assemblies. Pack the native
 control, model, and proportional-panel packages too: they contain the tool-menu

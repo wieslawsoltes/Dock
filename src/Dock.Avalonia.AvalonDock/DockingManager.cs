@@ -132,6 +132,7 @@ public class DockingManager : TemplatedControl
     private LayoutRoot _layout;
     private object? _activeContent;
     internal LayoutSizingViews SizingViews { get; } = new();
+    internal LayoutFloatingWindowCreation FloatingWindowCreation { get; }
     private readonly LayoutFloatingWindowPresenter _floatingWindows = new();
     private readonly LayoutFloatingWindowControls _floatingControls;
     private readonly LayoutSourceBinding<LayoutDocument> _documents;
@@ -154,7 +155,9 @@ public class DockingManager : TemplatedControl
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
     {
-        DockHostWindowFactory = new LayoutHostWindowFactory(this).Create;
+        LayoutHostWindowFactory hosts = new(this);
+        DockHostWindowFactory = hosts.Create;
+        FloatingWindowCreation = new(this, hosts);
         _layout = new LayoutRoot { Manager = this };
         _layout.PropertyChanged += LayoutPropertyChanged;
         _layoutItems = new LayoutItemRegistry(this);
@@ -205,6 +208,14 @@ public class DockingManager : TemplatedControl
     public IFactory DockFactory => Layout.DockFactory;
     /// <summary>Gets the native floating-window controls associated with this manager's layout.</summary>
     public IEnumerable<LayoutFloatingWindowControl> FloatingWindows => _floatingControls.Items;
+    /// <summary>Moves content into a new native floating control without showing the window.</summary>
+    /// <param name="contentModel">The document or anchorable to move into the new window.</param>
+    /// <param name="isContentImmutable">Whether to prevent replacing the window's loaded content.</param>
+    /// <returns>The new control, or null if floating was rejected. Call Show to display it.</returns>
+    /// <exception cref="ArgumentNullException">The content model is null.</exception>
+    /// <exception cref="InvalidOperationException">The document has no parent pane, or the native locator returns an incompatible host.</exception>
+    public LayoutFloatingWindowControl? CreateFloatingWindow(LayoutContent contentModel, bool isContentImmutable) =>
+        FloatingWindowCreation.Create(contentModel, isContentImmutable);
     /// <summary>Gets or sets the horizontal split gap in device-independent pixels. The default is six.</summary>
     public double GridSplitterWidth { get => GetValue(GridSplitterWidthProperty); set => SetValue(GridSplitterWidthProperty, value); }
     /// <summary>Gets or sets the vertical split gap in device-independent pixels. The default is six.</summary>

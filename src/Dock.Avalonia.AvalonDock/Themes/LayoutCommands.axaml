@@ -215,6 +215,9 @@
     <Setter Property="infrastructure:LayoutCommandRouting.IsEnabled" Value="True" />
     <Setter Property="infrastructure:LayoutContextMenuRouting.IsEnabled" Value="True" />
   </Style>
+  <Style Selector=":is(dock|HostWindow).avalondock dock|DockControl">
+    <Setter Property="HostWindowFactory" Value="{Binding $self.(infrastructure:LayoutHostWindowFactory.Factory)}" />
+  </Style>
   <Style Selector="dock|DockControl.avalondock dock|DocumentControl, :is(dock|HostWindow).avalondock dock|DocumentControl">
     <Setter Property="CloseTemplate" Value="{StaticResource AvalonDockDocumentCloseTemplate}" />
   </Style>

@@ -259,6 +259,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             CancelEventArgs args = new();
             NotifyClosing(args);
             if (args.Cancel) return;
+            if (this is LayoutAnchorable { IsAutoHidden: true } tool) tool.ToggleAutoHide();
             Parent?.RemoveChild(this);
             root?.CollectGarbage();
             NotifyClosed();

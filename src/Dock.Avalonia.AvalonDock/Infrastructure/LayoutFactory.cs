@@ -1,6 +1,7 @@
 using System;
 using Dock.Model;
 using Dock.Model.Avalonia;
+using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using AvalonDock.Controls;
@@ -12,7 +13,7 @@ namespace AvalonDock.Infrastructure;
 // hide content before the native host can detach the floating layout.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement, IDockDropPolicy dropPolicy,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy
+    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy
 {
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
@@ -67,7 +68,7 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 
     protected override IDockable? GetActiveDockableAfterRemoval(IDock dock, IDockable removedDockable, int removedIndex)
     {
-        if (dock is IDocumentDock or IToolDock && getLayoutContainer(dock) is ILayoutContentSelector selector)
+        if (dock is IDocumentDock or IToolDock && getLayoutElement(dock) is ILayoutContentSelector selector)
         {
             (selector as ILayoutPaneSelection)?.ReconcileSelection();
             return selector.SelectedContent?.DockModel;
@@ -95,12 +96,27 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     }
 
     internal LayoutItem? GetLayoutItem(IDockable model) => getLayoutItem(model);
-    internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutContainer(model);
+    internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutElement(model) as ILayoutContainer;
 
     // AvalonDock's explicit model operations are independent of UI capability
     // flags. Keep their native lifecycle without changing policy for other calls.
     internal void CloseContent(IDockable model) => CloseDockableCore(model);
-    internal void ToggleAutoHideContent(IDockable model) => PinDockableCore(model);
+    internal void ToggleAutoHideContent(IDockable model, IRootDock root, IToolDock? destination)
+    {
+        IDock? previousOwner = _selectionOwner;
+        IDockable? previousTarget = _selectionTarget;
+        _selectionOwner = destination;
+        _selectionTarget = model;
+        try { PinDockableCore(model, root, destination); }
+        finally { _selectionOwner = previousOwner; _selectionTarget = previousTarget; }
+    }
+
+    public override void RemoveDockable(IDockable dockable, bool collapse)
+    {
+        if (dockable is Tool && getLayoutElement(dockable) is LayoutAnchorable { IsAutoHidden: true } tool)
+            LayoutAutoHideOperations.Toggle(tool);
+        base.RemoveDockable(dockable, collapse);
+    }
 
     public override IProportionalDockSplitter CreateProportionalDockSplitter()
     {

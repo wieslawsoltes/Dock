@@ -152,8 +152,8 @@ public class AutoHideTests
         LayoutAnchorablePane pane = new(first);
         pane.Children.Add(second);
         LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };
-        first.ToggleAutoHide();
-        second.ToggleAutoHide();
+        root.DockFactory.PinDockable(first.DockModel);
+        root.DockFactory.PinDockable(second.DockModel);
         LayoutAnchorGroup group = Assert.IsType<LayoutAnchorGroup>(first.Parent);
         Assert.Same(group, second.Parent);
         first.Hide();

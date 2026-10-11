@@ -283,7 +283,8 @@ public abstract class LayoutItem : Control
     protected virtual void InitDefaultCommands()
     {
         DefaultCommands.Add(CloseCommandProperty, Close, () => IsAttached && LayoutCommandCapabilities.CanClose(LayoutElement!));
-        DefaultCommands.Add(FloatCommandProperty, Float, () => IsAttached && LayoutElement is { CanFloat: true, IsFloating: false } content &&
+        DefaultCommands.Add(FloatCommandProperty, Float, () => IsAttached && LayoutElement is { CanFloat: true } content &&
+            content.FindParent<LayoutFloatingWindow>() is null &&
             LayoutCommandCapabilities.IsEnabled(content, DockCapability.Float));
         DefaultCommands.Add(DockAsDocumentCommandProperty, () => LayoutElement?.DockAsDocument(), CanExecuteDockAsDocumentCommand);
         DefaultCommands.Add(CloseAllButThisCommandProperty, () => LayoutItemOperations.CloseDocuments(this, true),

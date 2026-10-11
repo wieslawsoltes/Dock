@@ -445,6 +445,14 @@ supported by corresponding implementation and test evidence.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
+  Explicit pins create individual groups and preserve their strip position
+  across hide/show. Floating tools pin in the manager's root while retaining
+  their floating return pane through repeated previews and XML recovery;
+  commands inspect current ancestors instead of the retained floating flag.
+  Restoring selects without explicitly activating, creates missing edge panes
+  with upstream orientation/minimum rules, and redirects hidden return-group
+  references even while siblings remain. Closing redirects after cancellation;
+  hiding removes native pins/previews with the pin capability disabled.
 - Compiled Avalonia default and Xceed XML namespaces; headless pointer tab selection and text input.
   Pixel/Auto/star pane dimensions translate to Dock proportions using each nested
   or floating panel's actual available space. `GridSplitterWidth` and
@@ -575,7 +583,7 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1142 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1169 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -584,8 +592,7 @@ supported by corresponding implementation and test evidence.
 
 - Remaining auto-hide platform behavior: WPF `HwndHost`/Win32 hooks have no
   direct Avalonia equivalent; separate native pinned-window modes and desktop
-  focus behavior require validation. Explicit auto-hide from a floating tool pane
-  and redirection of hidden tools' return-group references need further parity work.
+  focus behavior require validation.
 - Complete native floating lifecycle/state synchronization, including native
   group redocking, generic panels, and grouped-document/mixed native windows.
   Floating the entire root panel through the extra native factory API can leave

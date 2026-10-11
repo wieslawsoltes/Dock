@@ -89,6 +89,7 @@ public class LayoutAnchorable : LayoutContent
         InitialContainerId = PreviousContainerId;
         ILayoutContainer? previous = Parent;
         LayoutAnchorSide? side = (previous as LayoutAnchorGroup)?.Parent as LayoutAnchorSide;
+        int groupIndex = previous is LayoutAnchorGroup previousGroup && side is not null ? side.Children.IndexOf(previousGroup) : -1;
         int index = (previous as ILayoutGroup)?.IndexOfChild(this) ?? -1;
         DockModel.Factory?.HideDockable(DockModel);
         if (!IsHidden) return;
@@ -97,7 +98,8 @@ public class LayoutAnchorable : LayoutContent
         PreviousContainerId = (previous as LayoutElement)?.DockModel.Id;
         // Dock unpins before hiding. Keep the AvalonDock group as the return
         // destination even when it no longer has a visible tool.
-        if (previous is LayoutAnchorGroup group && side is not null && group.Parent is null) side.Children.Add(group);
+        if (previous is LayoutAnchorGroup group && side is not null && group.Parent is null)
+            side.Children.Insert(groupIndex < 0 ? side.Children.Count : Math.Min(groupIndex, side.Children.Count), group);
         OnHidden();
     }
     /// <summary>Restores this tool to its previous pane.</summary>
@@ -144,26 +146,12 @@ public class LayoutAnchorable : LayoutContent
     /// <summary>Raises the hidden event.</summary>
     protected virtual void OnHidden() => Hidden?.Invoke(this, EventArgs.Empty);
     /// <summary>Toggles Dock's auto-hide state independently of <see cref="CanAutoHide"/>.</summary>
-    public void ToggleAutoHide()
-    {
-        if (!IsAutoHidden && Parent is not LayoutAnchorablePane) return;
-        if (!IsAutoHidden)
-        {
-            RememberDockedLocation();
-            if (DockModel.Owner is ToolDock pane)
-            {
-                pane.Alignment = (Parent?.GetSide() ?? AnchorSide.Right) switch
-                {
-                    AnchorSide.Left => Alignment.Left,
-                    AnchorSide.Top => Alignment.Top,
-                    AnchorSide.Right => Alignment.Right,
-                    _ => Alignment.Bottom
-                };
-            }
-        }
-        if (DockModel.Factory is LayoutFactory factory) factory.ToggleAutoHideContent(DockModel);
-        else DockModel.Factory?.PinDockable(DockModel);
-    }
+    /// <remarks>
+    /// Each pin creates an anchor group in the manager's root, including for a
+    /// floating tool. Restoring uses its previous pane or creates one on that
+    /// edge, redirects hidden return locations, and selects the restored tool.
+    /// </remarks>
+    public void ToggleAutoHide() => LayoutAutoHideOperations.Toggle(this);
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         base.OnModelPropertyChanged(sender, e);

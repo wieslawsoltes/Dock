@@ -474,7 +474,7 @@ some explicit model methods deliberately have different rules:
 | Explicit model call | Contract |
 | --- | --- |
 | `content.Close()` | Closes even when `CanClose` is false. Document-manager, content, and native closing cancellation still apply. |
-| `tool.ToggleAutoHide()` | Pins or restores a tool in a docked anchorable pane or auto-hide group even when `CanAutoHide` is false. Hidden tools and tools in document panes stay in place. |
+| `tool.ToggleAutoHide()` | Pins or restores a tool in an anchorable pane or auto-hide group even when `CanAutoHide` is false, including a floating tool. Hidden tools and tools in document panes stay in place. |
 | `tool.DockAsDocument()` | Moves to a document pane even when `CanDockAsTabbedDocument` is false, then selects and activates the tool. |
 | `content.Float()` | Reuses a previous floating pane regardless of `CanFloat`; creating a new window still requires the native float capability. Both paths select and activate the content. Floating an already floating item can create another window while keeping its original docked return pane. |
 
@@ -766,6 +766,30 @@ preserves normal pointer routing. Ordinary application layouts need only the
 compiled panel templates.
 
 ## Customize auto-hide strips
+
+An explicit `tool.ToggleAutoHide()` creates one `LayoutAnchorGroup` for that
+tool. Tools pinned from the same pane therefore have separate groups; hiding
+and showing a tool retains its group and strip position. Native factory pinning
+can still project multiple tools from a pane into one group.
+
+Floating tools pin into the manager's main strip and retain their floating
+return pane through preview open/close cycles and XML restoration. As upstream,
+`IsFloating` remains true during this state; use `IsAutoHidden` or the current
+layout ancestors to determine its current location. Float and auto-hide commands
+check those ancestors. Restoring the tool uses the existing floating pane.
+
+When a group has no return pane, restoring a tool creates a new pane on its
+edge. A panel with the matching orientation accepts it directly and applies
+`AutoHideMinWidth` or `AutoHideMinHeight`; a different orientation is wrapped
+in a new root panel, whose pane uses the default minimums. The operation selects
+the tool without explicitly activating it. Replacing the root panel clears
+active content through the normal root-removal contract. Showing an existing
+floating host can restore that native root's focused content.
+
+Restoring or closing an auto-hidden tool redirects hidden tools that remember
+its group to the return pane, even if other tools remain in the group. Closing
+performs that cleanup only after cancellation succeeds. Hiding a tool also
+removes its native pin and preview when `CanAutoHide` is false.
 
 The four side properties on `DockingManager` expose the controls displayed by
 Dock's native pinned strips: `LeftSidePanel`, `TopSidePanel`, `RightSidePanel`,

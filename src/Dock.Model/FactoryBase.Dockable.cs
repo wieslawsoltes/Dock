@@ -529,8 +529,18 @@ public abstract partial class FactoryBase
             {
                 restoreOwner = rootDock;
             }
-            dockable.Owner = restoreOwner;
-            dockable.OriginalOwner = null;
+            // A root may pin content from one of its floating layouts. Keep
+            // ownership in the root that contains the pin while remembering the
+            // other layout for a later unpin, including repeated previews.
+            if (IsDockablePinned(dockable, rootDock) && !ReferenceEquals(FindRoot(restoreOwner), rootDock))
+            {
+                dockable.Owner = rootDock;
+            }
+            else
+            {
+                dockable.Owner = restoreOwner;
+                dockable.OriginalOwner = null;
+            }
             RemoveVisibleDockable(rootDock.PinnedDock, dockable);
         }
 
@@ -699,11 +709,27 @@ public abstract partial class FactoryBase
             return;
         }
 
+        PinDockableCore(dockable, rootDock, null);
+    }
+
+    /// <summary>
+    /// Toggles pinning in a specified root, optionally restoring to a caller-selected tool dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to pin or unpin.</param>
+    /// <param name="rootDock">The root that owns the pinned collection.</param>
+    /// <param name="unpinDock">The destination when unpinning, or null to use native destination resolution.</param>
+    /// <remarks>
+    /// Capability policy is not evaluated. Pinning content from another root
+    /// transfers native ownership while retaining its original tool dock.
+    /// The caller is responsible for selecting an attached root and destination.
+    /// </remarks>
+    protected virtual void PinDockableCore(IDockable dockable, IRootDock rootDock, IToolDock? unpinDock)
+    {
         if (dockable.Owner is not IToolDock toolDock)
         {
             if (IsDockablePinned(dockable, rootDock))
             {
-                UnpinDockableInternal(dockable, rootDock, null, isVisible: false);
+                UnpinDockableInternal(dockable, rootDock, null, isVisible: false, unpinDock);
             }
             return;
         }
@@ -748,6 +774,12 @@ public abstract partial class FactoryBase
             {
                 RemoveVisibleDockable(toolDock, dockable);
                 OnDockableRemoved(dockable);
+            }
+
+            if (!ReferenceEquals(FindRoot(toolDock), rootDock))
+            {
+                dockable.OriginalOwner = toolDock;
+                InitDockable(dockable, rootDock);
             }
 
             switch (alignment)
@@ -804,7 +836,7 @@ public abstract partial class FactoryBase
         else if (isPinned)
         {
             // Unpin dockable.
-            UnpinDockableInternal(dockable, rootDock, toolDock, isVisible);
+            UnpinDockableInternal(dockable, rootDock, toolDock, isVisible, unpinDock);
 
             UpdateDockingWindowState(dockable);
 
@@ -818,7 +850,7 @@ public abstract partial class FactoryBase
         }
     }
 
-    private void UnpinDockableInternal(IDockable dockable, IRootDock rootDock, IToolDock? currentOwner, bool isVisible)
+    private void UnpinDockableInternal(IDockable dockable, IRootDock rootDock, IToolDock? currentOwner, bool isVisible, IToolDock? unpinDock)
     {
         var previewDock = rootDock.PinnedDock;
         var originalOwner = dockable.OriginalOwner as IToolDock;
@@ -836,8 +868,8 @@ public abstract partial class FactoryBase
             HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
         }
 
-        var targetOwner = originalOwner;
-        if (targetOwner is not null && (!IsOwnerAttached(rootDock, targetOwner) || !IsOwnerAligned(targetOwner, alignment)))
+        var targetOwner = unpinDock ?? originalOwner;
+        if (unpinDock is null && targetOwner is not null && (!IsOwnerAttached(rootDock, targetOwner) || !IsOwnerAligned(targetOwner, alignment)))
         {
             targetOwner = null;
         }
@@ -1590,7 +1622,8 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void HideDockable(IDockable dockable)
     {
-        UnpinDockable(dockable);
+        // As with removal, unpinning is cleanup rather than a pin command.
+        if (IsDockablePinned(dockable)) PinDockableCore(dockable);
 
         var rootDock = FindRoot(dockable, _ => true);
         if (rootDock is null)

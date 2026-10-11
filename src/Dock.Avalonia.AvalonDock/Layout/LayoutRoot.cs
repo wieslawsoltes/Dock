@@ -63,7 +63,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         {
             Factory factory = new LayoutFactory(window => LayoutWindowClosing.TryClose(this, window), new LayoutFloatingPlacement(this), new LayoutDropPolicy(this), Operations,
                 dockable => Context.Get(dockable) is LayoutContent content ? Manager?.GetLayoutItemForNativePresentation(content) : null,
-                dockable => Context.Get(dockable) as ILayoutContainer)
+                dockable => Context.Get(dockable))
                 { HideToolsOnClose = false, HideDocumentsOnClose = false };
             model.Factory = factory;
             factory.DockableClosing += (_, args) =>

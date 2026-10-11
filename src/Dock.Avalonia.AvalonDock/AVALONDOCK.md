@@ -421,6 +421,16 @@ source clears all layout items of that type.
 strips. The XML serializer preserves these groups, their content identities,
 and return panes alongside docked and hidden content.
 
+Each explicit `ToggleAutoHide()` creates a group for one tool, retaining its
+position across hide/show. Floating tools use the manager's main strip and keep
+their floating return pane through preview cycles and XML restoration. Their
+`IsFloating` flag remains true, as upstream; commands use current layout
+ancestors when deciding whether content is hosted in a floating window.
+Restoring selects the tool in its return pane, creating an edge pane when one
+is unavailable. Hidden tools that remember the group are redirected to that
+pane. Closing applies this cleanup after cancellation succeeds; hiding cleans
+up native pins and previews even when the auto-hide command is disabled.
+
 The strips present public `LayoutAnchorSideControl`, `LayoutAnchorGroupControl`,
 and `LayoutAnchorControl` instances from `AvalonDock.Controls`. The manager's
 `LeftSidePanel`, `TopSidePanel`, `RightSidePanel`, and `BottomSidePanel` expose the

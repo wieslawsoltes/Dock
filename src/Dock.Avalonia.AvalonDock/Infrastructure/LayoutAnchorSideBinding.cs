@@ -15,6 +15,8 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
     private readonly Dictionary<LayoutAnchorable, LayoutAnchorGroup> _projected = new();
     private IList<IDockable> _pinned = null!;
     private bool _busy;
+    private LayoutAnchorable? _pinContent;
+    private LayoutAnchorGroup? _pinGroup;
 
     internal LayoutAnchorSideBinding(LayoutRoot root, LayoutAnchorSide side)
     {
@@ -45,6 +47,16 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
             _busy = previous;
             if (!previous) Pull();
         }
+    }
+
+    internal void Pin(LayoutAnchorable tool, Action pin)
+    {
+        LayoutAnchorable? previousContent = _pinContent;
+        LayoutAnchorGroup? previousGroup = _pinGroup;
+        _pinContent = tool;
+        _pinGroup = new LayoutAnchorGroup { PreviousContainer = tool.Parent };
+        try { pin(); }
+        finally { _pinContent = previousContent; _pinGroup = previousGroup; }
     }
 
     private void ReconnectCore()
@@ -138,8 +150,9 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
                 LayoutAnchorable tool = (LayoutAnchorable)_root.Context.Get(model);
                 if (_projected.ContainsKey(tool)) continue;
                 tool.RememberDockedLocation();
-                LayoutAnchorGroup? group = null;
-                foreach (LayoutAnchorGroup candidate in _side.Children)
+                LayoutAnchorGroup? group = ReferenceEquals(tool, _pinContent) ? _pinGroup : null;
+                if (group is not null) _side.Children.Add(group);
+                else foreach (LayoutAnchorGroup candidate in _side.Children)
                     if (ReferenceEquals(candidate.PreviousContainer, tool.PreviousContainer)) { group = candidate; break; }
                 if (group is null)
                 {

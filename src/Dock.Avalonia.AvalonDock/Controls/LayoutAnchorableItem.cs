@@ -45,7 +45,8 @@ public class LayoutAnchorableItem : LayoutItem
         DefaultCommands.Add(HideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.Hide(),
             () => IsAttached && LayoutElement is LayoutAnchorable { CanHide: true });
         DefaultCommands.Add(AutoHideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.ToggleAutoHide(),
-            () => IsAttached && LayoutElement is LayoutAnchorable { CanAutoHide: true, IsFloating: false, IsHidden: false } tool &&
+            () => IsAttached && LayoutElement is LayoutAnchorable { CanAutoHide: true, IsHidden: false } tool &&
+                tool.FindParent<LayoutAnchorableFloatingWindow>() is null &&
                 LayoutCommandCapabilities.IsEnabled(tool, DockCapability.Pin));
         DefaultCommands.Add(DockCommandProperty, () => LayoutElement?.Dock(),
             () => IsAttached && LayoutElement?.FindParent<LayoutAnchorableFloatingWindow>() is not null);

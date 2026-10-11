@@ -58,4 +58,10 @@ public class LayoutAnchorSide : LayoutGroup<LayoutAnchorGroup>
         if (_binding is { } binding) binding.MovePinned(move);
         else move();
     }
+
+    internal void Pin(LayoutAnchorable tool, Action pin)
+    {
+        if (_binding is { } binding) binding.Pin(tool, pin);
+        else pin();
+    }
 }

@@ -8,6 +8,7 @@ using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
 using AvalonDock.Infrastructure;
+using AvalonDock.Controls;
 
 namespace AvalonDock.Layout;
 
@@ -62,13 +63,17 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
         SetProjectedParent(root);
     }
 
-    internal void CloseHost()
+    internal void CloseHost(bool internalClose = true)
     {
         // Removing a window from the public collection detaches its layout.
         // The native host must close without executing content-close commands.
         DockWindow.Save();
         DockWindow.Layout = null;
-        try { DockWindow.Exit(); }
+        try
+        {
+            if (DockWindow.Host is LayoutFloatingWindowControl control) control.ExitFromLayout(internalClose);
+            else DockWindow.Exit();
+        }
         finally { DockWindow.Layout = NativeRoot; }
     }
 

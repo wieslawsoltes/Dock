@@ -35,10 +35,10 @@ internal sealed class LayoutFloatingWindowPresenter
             window.DockWindow.Present(window.DockWindow.IsModal);
     }
 
-    internal void Detach()
+    internal void Detach(bool internalClose = true)
     {
         if (_layout is null) return;
-        foreach (LayoutFloatingWindow window in _layout.FloatingWindows) window.CloseHost();
+        foreach (LayoutFloatingWindow window in _layout.FloatingWindows) window.CloseHost(internalClose);
         _layout = null;
     }
 }

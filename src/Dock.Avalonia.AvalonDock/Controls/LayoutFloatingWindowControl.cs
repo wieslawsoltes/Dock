@@ -27,6 +27,8 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     private bool _dragging;
     private bool _maximized;
     private bool _notifyOpened;
+    private bool _internalCloseRequested;
+    private bool _preserveCloseOrigin;
 
     static LayoutFloatingWindowControl()
     {
@@ -61,9 +63,28 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     public bool IsDragging => _dragging;
     /// <summary>Gets whether the native window is maximized.</summary>
     public bool IsMaximized => _maximized;
+    /// <summary>Gets whether closing has not been requested by internal layout cleanup.</summary>
+    /// <remarks>Hiding and canceled user close requests do not change this value.
+    /// An internal close request keeps this value false, including if that request is canceled.</remarks>
+    protected bool CloseInitiatedByUser => !_internalCloseRequested;
     internal bool HasClosed { get; private set; }
     internal bool DeferNativePresentation { get; set; }
     internal bool IsHiddenByLayout { get; private set; }
+
+    void IHostWindow.Exit()
+    {
+        if (HasClosed) return;
+        if (!_preserveCloseOrigin) _internalCloseRequested = true;
+        base.Exit();
+    }
+
+    internal void ExitFromLayout(bool internalClose)
+    {
+        bool previous = _preserveCloseOrigin;
+        _preserveCloseOrigin = !internalClose;
+        try { Window?.Exit(); }
+        finally { _preserveCloseOrigin = previous; }
+    }
 
     internal void HideForLayout()
     {

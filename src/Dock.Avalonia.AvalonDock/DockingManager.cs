@@ -517,7 +517,9 @@ public class DockingManager : TemplatedControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         _contextMenus.Close();
-        _floatingWindows.Detach();
+        // Upstream unload closes hosts while preserving content, without
+        // making an internal-close request as layout replacement does.
+        _floatingWindows.Detach(internalClose: false);
         base.OnDetachedFromVisualTree(e);
     }
 

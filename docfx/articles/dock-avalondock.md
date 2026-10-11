@@ -713,8 +713,16 @@ keeps content in place keeps the native window open. The protected `CanClose`,
 `CanHide`, and `DoHide` hooks participate in this path. Closed hosts release their
 command subscriptions without disposing application commands.
 
+Derived floating controls can inspect the protected `CloseInitiatedByUser`
+property. It starts true and becomes false when internal model cleanup, layout
+replacement, or native window exit requests closure; cancellation does not reset
+an internal request. Hiding and ordinary view unload preserve its value. As in
+upstream, this records the internal-close request, not whether a human physically
+clicked a button. Inspect it in Avalonia's `OnClosing(WindowClosingEventArgs)` or
+`OnClosed(EventArgs)` overrides.
+
 The floating-control surface is still being completed: resize-border customization,
-user/internal-close distinctions, and remaining protected/platform hooks are
+exact close-event ordering, and remaining protected/platform hooks are
 tracked in the compatibility checklist.
 
 ## Restore application content from XML

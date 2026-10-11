@@ -319,7 +319,13 @@ Native window-close requests respect factory vetoes and use those item commands
 with a null parameter, falling back to hiding when closing is disabled. Content
 cancellation keeps the remaining tools open. Closing the host releases command
 subscriptions while preserving application command ownership. Resize borders,
-user/internal-close distinctions, and remaining floating-control hooks are still open.
+exact close-event ordering, and remaining floating-control hooks are still open.
+
+Derived floating controls can inspect `CloseInitiatedByUser` in their closing
+callbacks. It becomes false for internal model cleanup, layout replacement, or
+native window exit, even if the request is canceled. Hiding and ordinary view
+unload preserve its value; the property tracks internal-close requests rather
+than physical user input.
 
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as

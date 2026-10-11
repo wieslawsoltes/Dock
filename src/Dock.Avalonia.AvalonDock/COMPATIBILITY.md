@@ -199,6 +199,10 @@ supported by corresponding implementation and test evidence.
   duplicate factory registration when Avalonia raises `Opened` again after `Hide`.
   Native Headless tests also verify that retained hidden windows and external
   surfaces cannot become drop targets or receive bring-to-front activation.
+- Protected `CloseInitiatedByUser` records internal close requests independently
+  of native tracking/visibility. Derived-control tests cover initial state,
+  user cancellation, hiding/restoration, model cleanup, native exit, layout
+  replacement, view unload/reattachment, and a canceled internal request.
 - Document and tool floating models expose native Dock windows through an
   observable `FloatingWindows` collection. Native single-document float/dock
   and tool floating operations preserve content wrappers and public ownership.
@@ -248,7 +252,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 387 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 396 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -262,7 +266,7 @@ supported by corresponding implementation and test evidence.
 - Remaining manager APIs: additional update strategy invocation paths,
   templates/selectors, styles, themes, remaining converters, and the control
   adapter surface. Floating controls still need resize-border customization,
-  user/internal-close distinctions, and remaining
+  exact close-event ordering, and remaining
   protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
@@ -281,8 +285,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 463
-matching type/member keys and 488 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 464
+matching type/member keys and 487 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

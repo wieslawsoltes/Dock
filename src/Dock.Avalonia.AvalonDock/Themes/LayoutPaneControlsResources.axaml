@@ -24,7 +24,9 @@
                 x:DataType="models:IToolDock">
     <Setter Property="Template">
       <ControlTemplate>
+        <!-- The outer native pane applies the group minimum including title chrome. -->
         <ToolControl DataContext="{Binding Model, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockNativePane}}"
+                     MinWidth="0" MinHeight="0"
                      Template="{StaticResource AvalonDockToolContent}"
                      HeaderTemplate="{StaticResource AvalonDockAnchorableTabHeader}" />
       </ControlTemplate>

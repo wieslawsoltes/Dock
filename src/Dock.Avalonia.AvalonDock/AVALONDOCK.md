@@ -120,11 +120,11 @@ property-change arguments.
 Pane groups convert non-star child lengths to `1*` on their split axis when
 initially displayed or rebuilt, including after direct-child, visibility, or
 orientation changes. Existing star weights and cross-axis lengths are preserved.
-Pixel changes after layout remain until a rebuild. Plain layout panels apply no
+Pixel and `Auto` changes after layout remain until a rebuild. Plain layout panels apply no
 such conversion. The grids host compiled Dock items presenters; Dock retains
 measurement and splitter input. Their child/row/column collections consequently
 differ from WPF's direct pane/splitter tree. Fixed lengths preserve unused space
-or extend beyond a constrained viewport. Intrinsic `Auto` sizing remains open.
+or extend beyond a constrained viewport. `Auto` sizes to the pane's content and chrome.
 
 Derived documents and tools can override `OnIsSelectedChanged(bool, bool)` and
 `OnIsActiveChanged(bool, bool)`. They receive the old and new states before the
@@ -454,19 +454,48 @@ device-independent pixels and support styles and bindings:
 </DockingManager>
 ```
 
-Pane `DockWidth`/`DockHeight` pixel and star values use the actual space in each
+Pane `DockWidth`/`DockHeight` pixel, `Auto`, and star values use the actual space in each
 nested or floating native panel. Runtime splitter settings and window resizing
 preserve requested pixel lengths, including all-pixel splits. Fixed panes leave
 unused space in a larger host and can exceed a smaller viewport. Star panes
-share the remainder after fixed sizes and minimum constraints are reserved.
+share the remainder after fixed sizes, intrinsic `Auto` sizes, and minimum constraints are reserved.
 `DockMinWidth` and `DockMinHeight` default to 25, reject negative values, and
 update layout without overwriting the requested `DockWidth` or `DockHeight`.
+
+`Auto` measures the existing pane without constraining its split axis. Content
+changes and tab selection update its size; growing the host leaves that natural
+size unchanged. All-`Auto` layouts can leave unused space or extend beyond a small
+viewport. Nested panels also measure their contents intrinsically: stars inside
+an unconstrained split retain their natural minimums when arranging. Collapsed
+return panes consume neither an intrinsic extent nor a minimum. For example, a
+plain `LayoutPanel` preserves this tool pane's content-sized width:
+
+```xml
+<DockingManager>
+  <LayoutRoot>
+    <LayoutPanel Orientation="Horizontal">
+      <LayoutAnchorablePane DockWidth="Auto" DockMinWidth="180">
+        <LayoutAnchorable Title="Properties" ContentId="properties">
+          <Border Width="240" Height="160" />
+        </LayoutAnchorable>
+      </LayoutAnchorablePane>
+      <LayoutDocumentPane DockWidth="*">
+        <LayoutDocument Title="Editor" ContentId="editor">
+          <TextBox Text="Document content" />
+        </LayoutDocument>
+      </LayoutDocumentPane>
+    </LayoutPanel>
+  </LayoutRoot>
+</DockingManager>
+```
 
 Native splitters display a preview and commit public dimensions on release;
 losing pointer capture cancels the gesture. A resized star/star pair preserves
 its combined weight and leaves other star weights unchanged. Pixel lengths
 retain their units after resizing, XML restoration, and host resizing.
-The pane-group rebuild policy described above can convert pixel lengths to stars.
+Resizing an `Auto` pane converts its actual length plus the drag delta to pixels
+on commit; XML restoration otherwise preserves `Auto` and remeasures its content.
+The pane-group rebuild policy described above can convert pixel and `Auto` lengths to stars.
 Manager settings survive XML restoration and view reattachment and remain
 independent between managers. Replacing a resource theme restores generated
 presenter dimensions even when their model proportions have not changed.
@@ -653,7 +682,7 @@ flowchart TB
     TreeEvents["Parent and root hooks<br/>Layout membership events"]
     Events["Operation notifications<br/>Public layout source and routed events"]
     Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
-    Sizing["Pixel/star lengths and minimums<br/>Native proportional-panel sizing policies"]
+    Sizing["Pixel/Auto/star lengths and minimums<br/>Native panel measurement and resize policies"]
     SplitterInput["Native splitter input and preview<br/>Commit public lengths on release"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]

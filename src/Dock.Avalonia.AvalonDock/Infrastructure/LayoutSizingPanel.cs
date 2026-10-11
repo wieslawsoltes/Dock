@@ -13,15 +13,34 @@ namespace AvalonDock.Infrastructure;
 internal sealed class LayoutSizingPanel : ProportionalStackPanel
 {
     private readonly LayoutSizing _sizing = new();
+    private readonly LayoutIntrinsicSizing _intrinsic = new();
     private LayoutSizingViews? _views;
 
     static LayoutSizingPanel() => AffectsMeasure<LayoutSizingPanel>(DataContextProperty,
         LayoutSplitterSizing.WidthProperty, LayoutSplitterSizing.HeightProperty);
 
+    protected override Size GetMeasureConstraint(Size constraint, double splitterThickness)
+    {
+        if (GetContainer() is null) return base.GetMeasureConstraint(constraint, splitterThickness);
+        double natural = _intrinsic.Measure(Children, constraint, Orientation) + splitterThickness;
+        bool horizontal = Orientation == global::Avalonia.Layout.Orientation.Horizontal;
+        if (!double.IsPositiveInfinity(horizontal ? constraint.Width : constraint.Height)) return constraint;
+        return horizontal ? constraint.WithWidth(natural) : constraint.WithHeight(natural);
+    }
+
+    protected override Size GetChildMeasureConstraint(Control child, Size constraint)
+    {
+        if (child.DataContext is IDockable { Factory: LayoutFactory factory } native
+            && factory.GetLayoutContainer(native) is ILayoutPositionableGroup model && _intrinsic.IsIntrinsic(model))
+            return Orientation == global::Avalonia.Layout.Orientation.Horizontal
+                ? constraint.WithWidth(double.PositiveInfinity) : constraint.WithHeight(double.PositiveInfinity);
+        return constraint;
+    }
+
     protected override void OnAssignProportions(Size size, double splitterThickness)
     {
         double available = base.GetProportionalDimension(size, splitterThickness);
-        if (GetContainer() is not { } group || !_sizing.Apply(group, available, GetProportionalDimension(size, splitterThickness)))
+        if (GetContainer() is not { } group || !_sizing.Apply(group, available, GetProportionalDimension(size, splitterThickness), _intrinsic))
         {
             base.OnAssignProportions(size, splitterThickness);
             return;
@@ -56,6 +75,7 @@ internal sealed class LayoutSizingPanel : ProportionalStackPanel
     {
         _views?.Remove(this);
         _views = null;
+        _intrinsic.Clear();
         base.OnDetachedFromVisualTree(e);
     }
 

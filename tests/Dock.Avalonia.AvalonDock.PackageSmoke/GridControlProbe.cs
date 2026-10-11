@@ -63,6 +63,7 @@ internal static class GridControlProbe
             if (ReferenceEquals(root, manager.LayoutRootPanel) || !ReferenceEquals(manager.LayoutRootPanel?.Model, manager.Layout.RootPanel))
                 throw new Exception("Replacing the packaged layout did not replace its public grid.");
             PixelSizingProbe.Verify(window, manager);
+            AutoSizingProbe.Verify(window, manager);
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
 

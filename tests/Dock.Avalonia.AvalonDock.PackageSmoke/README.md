@@ -6,7 +6,10 @@ model identity, passive selection, empty selection, reordering, runtime themes,
 and existing content views across document floating and docking.
 Sizing probes retain all-pixel pane lengths across host resizing, commit native
 splitter previews only on release, apply minimums without replacing requested
-lengths, and restore those dimensions from XML on both axes. The external grid
+lengths, and restore those dimensions from XML on both axes. Auto probes verify
+content-driven sizing, minimums including chrome, nested intrinsic star sizing,
+XML/content identity, and preview conversion from Auto to pixels on release.
+The external grid
 probe also verifies that the packaged native create-button host does not parent
 the document model into the UI.
 

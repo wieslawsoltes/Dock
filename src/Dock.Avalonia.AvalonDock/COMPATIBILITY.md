@@ -400,7 +400,7 @@ supported by corresponding implementation and test evidence.
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
 - Compiled Avalonia default and Xceed XML namespaces; headless pointer tab selection and text input.
-  Pixel/star pane dimensions translate to Dock proportions using each nested
+  Pixel/Auto/star pane dimensions translate to Dock proportions using each nested
   or floating panel's actual available space. `GridSplitterWidth` and
   `GridSplitterHeight` default to six and update native splitters at runtime,
   including orientation changes. Collapsed return panes and their hidden
@@ -413,12 +413,18 @@ supported by corresponding implementation and test evidence.
   lengths. Native preview resizing commits on release, cancels on capture loss,
   and preserves the combined weight of a resized star pair. Mixed pixel/star
   resizing uses the upstream pair-weight rule. Both axes and floating panes are
-  covered. Intrinsic `Auto` measurement remains open.
+  covered. `Auto` uses the existing pane's intrinsic content/chrome size and reacts
+  to content changes, selection, minimums, and XML restoration. Nested plain panels
+  measure unconstrained stars intrinsically and retain their natural minimums when
+  arranging. All-auto splits preserve unused space and can exceed the viewport;
+  collapsed panes consume no space. Native preview commits turn auto lengths into
+  pixels. Both axes, floating groups, group rebuild normalization, reattachment,
+  and discarded sizing-view collection are covered.
   Replacing presenter styles or floating-window resource themes restores layout
   inputs from unchanged model proportions without waiting for another model event.
   Native Dock retains its default splitter thickness; its proportional panel
   refreshes splitter dimensions on thickness and orientation changes. Protected
-  assignment, dimension, and resize policies let the adapter reuse native layout
+  measurement, assignment, dimension, and resize policies let the adapter reuse native layout
   and pointer handling while ordinary Dock retains its normalization behavior.
   The native document create-button presenter no longer parents an Avalonia
   model into its logical tree, so retaining an old model releases discarded grids.
@@ -475,7 +481,7 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 884 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 907 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -498,8 +504,7 @@ supported by corresponding implementation and test evidence.
   and `IXmlSerializable` methods not yet represented in the adapter.
   Additional selection edge cases and protected override ordering still require
   the broader signature and behavior audit below.
-- Intrinsic auto sizing. Public grid child/row/column collections host a native
-  items presenter rather than
+- Public grid child/row/column collections host a native items presenter rather than
   reproducing WPF's direct pane/splitter visual tree.
 - Complete header visibility,
   repositioning policies, icons, tooltips, and enablement

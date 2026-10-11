@@ -4,6 +4,7 @@
         xmlns:docking="using:Dock.Settings"
         xmlns:core="using:Dock.Model.Core"
         xmlns:layout="using:AvalonDock.Layout"
+        xmlns:controls="using:AvalonDock.Controls"
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:DataType="core:IDockable">
@@ -15,6 +16,16 @@
                                        DefaultTemplate="{StaticResource AvalonDockDefaultHeader}" />
   <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockAnchorableHeader" Kind="Anchorable"
                                        DefaultTemplate="{StaticResource AvalonDockDefaultHeader}" />
+  <infrastructure:LayoutTabItemTemplate x:Key="AvalonDockDocumentTabHeader">
+    <infrastructure:LayoutTabItemTemplate.TabTemplate>
+      <DataTemplate x:DataType="layout:LayoutContent"><controls:LayoutDocumentTabItem /></DataTemplate>
+    </infrastructure:LayoutTabItemTemplate.TabTemplate>
+  </infrastructure:LayoutTabItemTemplate>
+  <infrastructure:LayoutTabItemTemplate x:Key="AvalonDockAnchorableTabHeader">
+    <infrastructure:LayoutTabItemTemplate.TabTemplate>
+      <DataTemplate x:DataType="layout:LayoutContent"><controls:LayoutAnchorableTabItem /></DataTemplate>
+    </infrastructure:LayoutTabItemTemplate.TabTemplate>
+  </infrastructure:LayoutTabItemTemplate>
   <ControlTemplate x:Key="AvalonDockAutoHideHeader" TargetType="dock:ToolPinItemControl">
     <dock:DockableControl TrackingMode="Pinned">
       <LayoutTransformControl x:Name="PART_LayoutTransformControl">

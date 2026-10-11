@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.TabControlFixture"
+        x:DataType="LayoutContent" Width="800" Height="450">
+  <Window.Resources>
+    <DataTemplate x:Key="DocumentTab" x:DataType="LayoutContent"><LayoutDocumentTabItem Model="{Binding}" /></DataTemplate>
+    <DataTemplate x:Key="LegacyDocumentTab" x:DataType="LayoutContent"><ad:LayoutDocumentTabItem Model="{Binding}" /></DataTemplate>
+    <DataTemplate x:Key="ToolTab" x:DataType="LayoutContent"><LayoutAnchorableTabItem Model="{Binding}" /></DataTemplate>
+    <DataTemplate x:Key="LegacyToolTab" x:DataType="LayoutContent"><ad:LayoutAnchorableTabItem Model="{Binding}" /></DataTemplate>
+    <DataTemplate x:Key="DocumentHeader" x:DataType="LayoutContent"><TextBlock Classes="custom-document-header" Text="{Binding Title, StringFormat='Document: {0}'}" /></DataTemplate>
+    <DataTemplate x:Key="ToolHeader" x:DataType="LayoutContent"><TextBlock Classes="custom-tool-header" Text="{Binding Title, StringFormat='Tool: {0}'}" /></DataTemplate>
+    <ControlTheme x:Key="InteractiveDocument" TargetType="LayoutDocumentTabItem" x:DataType="LayoutDocumentTabItem">
+      <Setter Property="Template">
+        <ControlTemplate><Button Content="Child action" /></ControlTemplate>
+      </Setter>
+    </ControlTheme>
+    <ControlTheme x:Key="InteractiveTool" TargetType="LayoutAnchorableTabItem" x:DataType="LayoutAnchorableTabItem">
+      <Setter Property="Template">
+        <ControlTemplate><Button Content="Child action" /></ControlTemplate>
+      </Setter>
+    </ControlTheme>
+  </Window.Resources>
+</Window>

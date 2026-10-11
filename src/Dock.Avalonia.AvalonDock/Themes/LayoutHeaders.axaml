@@ -9,16 +9,16 @@
         x:DataType="core:IDockable">
 
   <Style Selector="dock|DockControl.avalondock dock|DocumentControl">
-    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockDocumentHeader}" />
+    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockDocumentTabHeader}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolControl">
-    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableHeader}" />
+    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableTabHeader}" />
   </Style>
   <Style Selector=":is(dock|HostWindow).avalondock dock|DocumentControl">
-    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockDocumentHeader}" />
+    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockDocumentTabHeader}" />
   </Style>
   <Style Selector=":is(dock|HostWindow).avalondock dock|ToolControl">
-    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableHeader}" />
+    <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableTabHeader}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolPinItemControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockAutoHideHeader}" />

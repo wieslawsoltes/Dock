@@ -21,6 +21,23 @@ namespace Dock.Avalonia.HeadlessTests;
 public class TabItemDragPolicyTests
 {
     [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void A_Noninteractive_Target_Is_Excluded_During_Movement_And_Before_Release(bool tool, bool afterMove)
+    {
+        using Workspace workspace = new(tool, new Factory());
+        if (!afterMove) workspace.SuppressTarget();
+        workspace.PressAndMove();
+        Assert.Same(workspace.First, workspace.Pane.VisibleDockables![0]);
+        if (afterMove) workspace.SuppressTarget();
+        Assert.Same(workspace.First, workspace.Pane.VisibleDockables![0]);
+        workspace.Release();
+        Assert.Equal(new[] { workspace.First, workspace.Second }, workspace.Pane.VisibleDockables!);
+    }
+
+    [AvaloniaTheory]
     [InlineData(false, 0)]
     [InlineData(false, 1)]
     [InlineData(false, 2)]
@@ -115,6 +132,7 @@ public class TabItemDragPolicyTests
             _window.MouseMove(_end, RawInputModifiers.LeftMouseButton);
         }
         public void MoveAgain() => _window.MouseMove(_end + new Vector(1, 0), RawInputModifiers.LeftMouseButton);
+        public void SuppressTarget() => _second.IsHitTestVisible = false;
         public void Release() { _window.MouseUp(_end, MouseButton.Left); Dispatcher.UIThread.RunJobs(); }
         private Point PointFor(Control tab)
         {

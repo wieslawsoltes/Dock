@@ -247,8 +247,12 @@ internal class ItemDragHelper
             return;
         }
 
+        if (itemsControl.ContainerFromIndex(targetIndex) is not { IsVisible: true, IsHitTestVisible: true } target)
+        {
+            return;
+        }
+
         if (itemsControl.ContainerFromIndex(draggedIndex) is { } dragged &&
-            itemsControl.ContainerFromIndex(targetIndex) is { } target &&
             dragged.DataContext is IDockable draggedDockable &&
             target.DataContext is IDockable targetDockable &&
             draggedDockable.Owner is IDock { Factory: { } factory } dock)
@@ -560,7 +564,8 @@ internal class ItemDragHelper
             foreach (var _ in _itemsControl.Items)
             {
                 var targetContainer = _itemsControl.ContainerFromIndex(i);
-                if (targetContainer?.RenderTransform is null || ReferenceEquals(targetContainer, _draggedContainer))
+                if (targetContainer?.RenderTransform is null || !targetContainer.IsVisible || !targetContainer.IsHitTestVisible ||
+                    ReferenceEquals(targetContainer, _draggedContainer))
                 {
                     i++;
                     continue;

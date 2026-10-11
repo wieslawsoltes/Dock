@@ -1,5 +1,7 @@
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
+using Dock.Model.Avalonia;
+using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
 using Xunit;
 
@@ -7,6 +9,25 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class HostWindowMethodsTests
 {
+    [AvaloniaFact]
+    public void Reopening_A_Hidden_Host_Does_Not_Duplicate_The_Native_Registration()
+    {
+        Factory factory = new();
+        HostWindow host = new() { Window = new DockWindow { Factory = factory } };
+        try
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                host.Present(false);
+                Assert.Same(host, Assert.Single(factory.HostWindows));
+                host.Hide();
+                Assert.Same(host, Assert.Single(factory.HostWindows));
+            }
+        }
+        finally { host.Close(); }
+        Assert.Empty(factory.HostWindows);
+    }
+
     [AvaloniaFact]
     public void SetPosition_And_GetPosition_Work()
     {

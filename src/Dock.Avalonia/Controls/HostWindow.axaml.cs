@@ -465,7 +465,10 @@ public class HostWindow : Window, IHostWindow
     {
         base.OnOpened(e);
 
-        Window?.Factory?.HostWindows.Add(this);
+        if (Window?.Factory?.HostWindows is { } hosts && !hosts.Contains(this))
+        {
+            hosts.Add(this);
+        }
     }
 
     /// <inheritdoc/>

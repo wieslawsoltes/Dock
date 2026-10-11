@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
@@ -15,12 +16,13 @@ using Avalonia.VisualTree;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
+using Dock.Controls.DeferredContentControl;
 using ReactiveUI.Reactive;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
 
-public class NavigatorTests
+public partial class NavigatorTests
 {
     [AvaloniaFact]
     public void Snapshot_Uses_Live_Containers_And_Stable_Activation_Order_While_Filtering_Content()
@@ -125,6 +127,47 @@ public class NavigatorTests
         navigator.KeyReleaseQwerty(PhysicalKey.ControlLeft, RawInputModifiers.None);
         Dispatcher.UIThread.RunJobs();
         Assert.Same(editor, workspace.View.FocusManager!.GetFocusedElement());
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public async Task Focus_Waits_For_Delayed_Native_Content_Presentation(bool nested, bool floating)
+    {
+        using Workspace workspace = new();
+        TextBox editor = new() { Text = "Delayed editor" };
+        TopLevel owner = workspace.View;
+        AvaloniaObject schedulingScope = workspace.Manager;
+        if (floating)
+        {
+            workspace.Documents[1].Float();
+            owner = (TopLevel)workspace.Documents[1].FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+            schedulingScope = owner;
+        }
+        DeferredContentScheduling.SetTimeline(schedulingScope, new DeferredContentPresentationTimeline
+        {
+            InitialDelay = TimeSpan.FromMilliseconds(80),
+            MaxPresentationsPerPass = 1,
+            RevealDuration = TimeSpan.Zero
+        });
+        workspace.Documents[1].Content = nested ? new Border { Child = editor } : editor;
+        workspace.Documents[0].IsActive = true;
+        for (int index = 0; index < workspace.Documents.Length; index++)
+            workspace.Documents[index].LastActivationTimeStamp = new DateTime(2020, 1, 3 - index);
+        workspace.Manager.Open();
+        NavigatorWindow navigator = workspace.Manager.Last!;
+        navigator.KeyReleaseQwerty(PhysicalKey.ControlLeft, RawInputModifiers.None);
+        Dispatcher.UIThread.RunJobs();
+        Assert.True(workspace.Documents[1].IsActive);
+        for (int index = 0; index < 500 && TopLevel.GetTopLevel(editor) is null; index++)
+        {
+            await Task.Delay(10);
+            Dispatcher.UIThread.RunJobs();
+        }
+        Assert.Same(owner, TopLevel.GetTopLevel(editor));
+        Assert.Same(editor, owner.FocusManager!.GetFocusedElement());
     }
 
     [AvaloniaTheory]
@@ -435,14 +478,20 @@ public class NavigatorTests
             new LayoutDocument { Title = title, Content = new TextBox { Text = title } }).ToArray();
         internal LayoutAnchorable[] Tools { get; } = new[] { "One", "Two" }.Select(title =>
             new LayoutAnchorable { Title = title, Content = new TextBox { Text = title } }).ToArray();
-        internal Workspace()
+        internal Workspace(Control? leadingControl = null)
         {
             LayoutDocumentPane documents = new();
             foreach (LayoutDocument document in Documents) documents.Children.Add(document);
             LayoutAnchorablePane tools = new();
             foreach (LayoutAnchorable tool in Tools) tools.Children.Add(tool);
             Manager.Layout = new() { RootPanel = new() { Children = { documents, tools } } };
-            View = new() { Content = Manager, Width = 800, Height = 600 };
+            Control content = Manager;
+            if (leadingControl is not null)
+            {
+                Grid.SetRow(Manager, 1);
+                content = new Grid { RowDefinitions = new("Auto,*"), Children = { leadingControl, Manager } };
+            }
+            View = new() { Content = content, Width = 800, Height = 600 };
             View.Show();
             Dispatcher.UIThread.RunJobs();
             Documents[0].IsActive = true;

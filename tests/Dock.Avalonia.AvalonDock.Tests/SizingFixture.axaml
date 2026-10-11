@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.SizingFixture"
+        x:DataType="DockingManager" Width="1000" Height="720">
+  <DockingManager x:Name="Manager" GridSplitterWidth="12" GridSplitterHeight="8" Margin="16">
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutAnchorablePaneGroup Orientation="Vertical" DockWidth="420">
+          <LayoutAnchorablePane DockHeight="200" DockWidth="140">
+            <LayoutAnchorable ContentId="top" Title="Top">
+              <TextBlock Text="Top tool" />
+            </LayoutAnchorable>
+          </LayoutAnchorablePane>
+          <LayoutAnchorablePane>
+            <LayoutAnchorable ContentId="bottom" Title="Bottom">
+              <TextBlock Text="Bottom tool" />
+            </LayoutAnchorable>
+          </LayoutAnchorablePane>
+        </LayoutAnchorablePaneGroup>
+        <LayoutDocumentPane>
+          <LayoutDocument ContentId="document" Title="Document">
+            <TextBlock Text="Sizing document" />
+          </LayoutDocument>
+        </LayoutDocumentPane>
+      </LayoutPanel>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

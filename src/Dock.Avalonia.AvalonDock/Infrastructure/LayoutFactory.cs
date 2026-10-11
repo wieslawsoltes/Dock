@@ -2,17 +2,19 @@ using System;
 using Dock.Model.Avalonia;
 using Dock.Model.Core;
 using AvalonDock.Controls;
+using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
 
 // Keep native window vetoes first, then let the compatibility layer close or
 // hide content before the native host can detach the floating layout.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement,
-    Func<IDockable, LayoutItem?> getLayoutItem) : Factory
+    Func<IDockable, LayoutItem?> getLayoutItem, Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory
 {
     private IDockWindow? _evaluatingClose;
 
     internal LayoutItem? GetLayoutItem(IDockable model) => getLayoutItem(model);
+    internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutContainer(model);
 
     public override bool OnWindowClosing(IDockWindow? window)
     {

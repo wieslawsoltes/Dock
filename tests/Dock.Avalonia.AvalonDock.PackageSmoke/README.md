@@ -5,15 +5,18 @@ the solution: the package must be built before it can restore. It verifies
 that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
 headers, render docked/floating tool titles and select their templates, click
-native tabs and custom manager menus to execute container commands, and restore
+native tabs and custom manager menus to execute container commands, resize native
+splitters through the manager properties, and restore
 application content from XML using the packaged assemblies. Pack the native
-control package too: it contains the tool-menu lifetime fix. An isolated cache
+control and proportional-panel packages too: they contain the tool-menu lifetime
+and runtime splitter sizing fixes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.
 
 ```sh
 dotnet pack src/Dock.Avalonia.AvalonDock -c Release -o artifacts/nuget
 dotnet pack src/Dock.Avalonia -c Release --no-build -o artifacts/nuget
+dotnet pack src/Dock.Controls.ProportionalStackPanel -c Release --no-build -o artifacts/nuget
 dock_consumer_validation=$(mktemp -d)
 cat > "$dock_consumer_validation/NuGet.Config" <<EOF
 <configuration>
@@ -26,6 +29,7 @@ cat > "$dock_consumer_validation/NuGet.Config" <<EOF
     <packageSource key="local">
       <package pattern="Dock.Avalonia.AvalonDock" />
       <package pattern="Dock.Avalonia" />
+      <package pattern="Dock.Controls.ProportionalStackPanel" />
     </packageSource>
     <packageSource key="nuget.org"><package pattern="*" /></packageSource>
   </packageSourceMapping>

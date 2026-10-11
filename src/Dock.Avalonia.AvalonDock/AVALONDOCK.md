@@ -201,6 +201,23 @@ source clears all layout items of that type.
 strips. The XML serializer preserves these groups, their content identities,
 and return panes alongside docked and hidden content.
 
+Set `GridSplitterWidth` and `GridSplitterHeight` on `DockingManager` to control
+the gap between horizontally and vertically arranged panes. Both default to six
+device-independent pixels and support styles and bindings:
+
+```xml
+<DockingManager GridSplitterWidth="8" GridSplitterHeight="6">
+  <!-- Add a LayoutRoot or bind the content sources here. -->
+</DockingManager>
+```
+
+Pane `DockWidth`/`DockHeight` pixel and star values use the actual space in each
+nested or floating native panel. Runtime splitter settings and window resizing
+preserve pixel pane sizes where available space and native constraints permit;
+star panes share the remainder. Native dragging updates public pane dimensions.
+Manager settings survive XML restoration and view reattachment and remain
+independent between managers.
+
 `LayoutRoot.FloatingWindows` exposes `LayoutDocumentFloatingWindow` and
 `LayoutAnchorableFloatingWindow` over native Dock windows. Floating geometry
 and maximization synchronize with the content and pane models and persist in
@@ -222,6 +239,7 @@ flowchart TB
     Commands["Compiled command bindings<br/>Native input routing"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
+    Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
@@ -231,6 +249,9 @@ flowchart TB
     Items --> Factory
     Api <--> Bridge
     Bridge <--> Models
+    Api --> Sizing
+    Sizing --> Models
+    Sizing --> View
     Bridge --> Factory
     Factory --> Models
     Api --> View

@@ -152,9 +152,15 @@ supported by corresponding implementation and test evidence.
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
 - Compiled Avalonia default and Xceed XML namespaces; headless pointer tab selection and text input.
-  Pixel/star pane dimensions translate to Dock proportions, with headless
-  verification of runtime sizing, vertical sizing, and pointer splitter drag
-  persistence across window resizing.
+  Pixel/star pane dimensions translate to Dock proportions using each nested
+  or floating panel's actual available space. `GridSplitterWidth` and
+  `GridSplitterHeight` default to six and update native splitters at runtime,
+  including orientation changes. Collapsed return panes and their hidden
+  splitters do not consume space. Headless tests cover star ratios, pixel sizes,
+  pointer drag persistence across resizing, XML replacement, reattachment,
+  independent managers, and collection of replaced panels and closed hosts.
+  Native Dock retains its default splitter thickness; its proportional panel
+  now refreshes splitter dimensions on thickness and orientation changes.
 - XML for docked, floating, auto-hide and hidden layouts, callbacks, content identities,
   selected documents, basic metadata and constraints, file/stream/text APIs,
   malformed input rejection, and atomic manager layout replacement.
@@ -169,7 +175,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 266 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 285 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -185,7 +191,7 @@ supported by corresponding implementation and test evidence.
   events, converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
-- Complete auto sizing, themed splitter sizing, header visibility,
+- Complete auto sizing, header visibility,
   repositioning policies, icons, tooltips, and enablement
   in actual rendering and behavior. Several metadata properties currently
   round-trip without applying all upstream visual or behavioral effects.
@@ -199,8 +205,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 396
-matching type/member keys and 555 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 400
+matching type/member keys and 551 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

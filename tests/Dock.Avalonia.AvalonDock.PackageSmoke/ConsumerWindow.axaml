@@ -31,6 +31,7 @@
     <AvalonDockTheme />
   </Window.Styles>
   <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}"
+                  GridSplitterWidth="16" GridSplitterHeight="10"
                   DocumentHeaderTemplate="{StaticResource DocumentHeader}"
                   AnchorableHeaderTemplate="{StaticResource ToolHeader}"
                   AnchorableTitleTemplate="{StaticResource ToolTitle}">

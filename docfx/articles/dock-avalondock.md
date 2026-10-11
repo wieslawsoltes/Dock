@@ -388,6 +388,48 @@ selects the appropriate template for the new object. Recycling is limited to
 controls built by the same selected template. An explicit template can also
 display null content.
 
+## Size panes and splitters
+
+`DockWidth` and `DockHeight` accept Avalonia `GridLength` values, including pixel
+sizes such as `240` and star sizes such as `*` or `2*`. The manager exposes the
+split gap separately for each layout direction:
+
+| Manager property | Applies to | Default |
+| --- | --- | --- |
+| `GridSplitterWidth` | Width between horizontally arranged panes | 6 device-independent pixels |
+| `GridSplitterHeight` | Height between vertically arranged panes | 6 device-independent pixels |
+
+These properties can be set, bound, or styled. For example, with the default
+Avalonia XML namespace:
+
+```xml
+<DockingManager GridSplitterWidth="8" GridSplitterHeight="6">
+  <LayoutRoot>
+    <LayoutPanel>
+      <LayoutAnchorablePane DockWidth="240">
+        <LayoutAnchorable Title="Properties" />
+      </LayoutAnchorablePane>
+      <LayoutDocumentPane>
+        <LayoutDocument Title="Editor" />
+      </LayoutDocumentPane>
+    </LayoutPanel>
+  </LayoutRoot>
+</DockingManager>
+```
+
+Each nested or floating panel calculates pane proportions using its own available
+space and the configured splitter gap. Pixel panes keep their requested size
+when the host or gap changes, subject to available space and native constraints;
+star panes share the remainder. Collapsed return panes and adjacent hidden
+splitters do not consume this space. Native splitter dragging updates public
+pane dimensions, which survive subsequent window resizing. Changing the group
+orientation selects the corresponding manager setting.
+
+The settings belong to one manager and update its existing floating windows.
+XML restoration and view reattachment retain them as manager configuration;
+they are not serialized as layout metadata. Native Dock controls outside the
+adapter retain their default splitter size.
+
 ## Customize tab headers and tool titles
 
 Header templates receive the public layout node. Content templates receive the
@@ -493,7 +535,8 @@ flowchart TB
         Items["LayoutItem containers<br/>Content, headers, tool titles, styles, and commands"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
-        Bridge["Identity, collections, selection, sizing, and return history"]
+        Bridge["Identity, collections, selection, and return history"]
+        Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
     end
@@ -518,6 +561,9 @@ flowchart TB
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models
+    Manager --> Sizing
+    Sizing --> Models
+    Sizing --> Controls
     Layout --> Lifecycle
     Lifecycle --> Factory
     Lifecycle --> Controls
@@ -561,6 +607,14 @@ to their existing public wrappers before applying compiled templates. Their pres
 remain inside Dock's tab controls, auto-hide buttons, and tool chrome. Tool titles
 observe the native pane's selected model. Closed containers release their
 header bindings and native presentation parents.
+
+`LayoutSizingPanel` extends Dock's proportional panel at the measurement boundary.
+It translates public pane dimensions into native proportions using that panel's
+available size, then delegates measurement, arrangement, and dragging to Dock.
+Weak panel registrations invalidate both docked and floating views when an
+explicit pane dimension changes. Floating hosts receive scalar splitter settings
+through weak registrations, so discarded hosts do not stay alive through manager
+property notifications.
 
 `XmlLayoutSerializer` uses explicit codecs and content callbacks without
 runtime type discovery. It restores the facade and its native models together.

@@ -80,7 +80,27 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release -o artifacts/nuget
     - name: Restore AvalonDock package consumer
-      run: dotnet restore tests/Dock.Avalonia.AvalonDock.PackageSmoke -p:RestoreAdditionalProjectSources="$PWD/artifacts/nuget"
+      run: |
+        cat > "$RUNNER_TEMP/avalondock-consumer.config" <<EOF
+        <configuration>
+          <packageSources>
+            <clear />
+            <add key="local" value="$PWD/artifacts/nuget" />
+            <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+          </packageSources>
+          <packageSourceMapping>
+            <packageSource key="local">
+              <package pattern="Dock.Avalonia.AvalonDock" />
+              <package pattern="Dock.Avalonia" />
+              <package pattern="Dock.Controls.ProportionalStackPanel" />
+            </packageSource>
+            <packageSource key="nuget.org"><package pattern="*" /></packageSource>
+          </packageSourceMapping>
+        </configuration>
+        EOF
+        dotnet restore tests/Dock.Avalonia.AvalonDock.PackageSmoke \
+          --configfile "$RUNNER_TEMP/avalondock-consumer.config" \
+          --packages "$RUNNER_TEMP/avalondock-consumer-packages"
     - name: Build AvalonDock package consumer
       run: dotnet build tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release --no-restore
     - name: Run AvalonDock package consumer

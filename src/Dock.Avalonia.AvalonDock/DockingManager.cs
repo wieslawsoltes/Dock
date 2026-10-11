@@ -21,6 +21,12 @@ namespace AvalonDock;
 /// <summary>Hosts an AvalonDock-compatible layout using Dock's controls and models.</summary>
 public class DockingManager : TemplatedControl
 {
+    /// <summary>Identifies the width of splitters between horizontally arranged panes.</summary>
+    public static readonly StyledProperty<double> GridSplitterWidthProperty =
+        AvaloniaProperty.Register<DockingManager, double>(nameof(GridSplitterWidth), 6);
+    /// <summary>Identifies the height of splitters between vertically arranged panes.</summary>
+    public static readonly StyledProperty<double> GridSplitterHeightProperty =
+        AvaloniaProperty.Register<DockingManager, double>(nameof(GridSplitterHeight), 6);
     /// <summary>Identifies the document context menu.</summary>
     public static readonly StyledProperty<ContextMenu?> DocumentContextMenuProperty =
         AvaloniaProperty.Register<DockingManager, ContextMenu?>(nameof(DocumentContextMenu));
@@ -90,7 +96,7 @@ public class DockingManager : TemplatedControl
 
     private LayoutRoot _layout;
     private object? _activeContent;
-    private readonly LayoutSizing _sizing = new();
+    internal LayoutSizingViews SizingViews { get; } = new();
     private readonly LayoutFloatingWindowPresenter _floatingWindows = new();
     private readonly LayoutSourceBinding<LayoutDocument> _documents;
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
@@ -150,6 +156,10 @@ public class DockingManager : TemplatedControl
     public RootDock DockLayout => (RootDock)Layout.DockModel;
     /// <summary>Gets the factory operating the live layout.</summary>
     public IFactory DockFactory => Layout.DockFactory;
+    /// <summary>Gets or sets the horizontal split gap in device-independent pixels. The default is six.</summary>
+    public double GridSplitterWidth { get => GetValue(GridSplitterWidthProperty); set => SetValue(GridSplitterWidthProperty, value); }
+    /// <summary>Gets or sets the vertical split gap in device-independent pixels. The default is six.</summary>
+    public double GridSplitterHeight { get => GetValue(GridSplitterHeightProperty); set => SetValue(GridSplitterHeightProperty, value); }
     /// <summary>Gets or sets the document menu, whose data context is the requested item container.</summary>
     public ContextMenu? DocumentContextMenu { get => GetValue(DocumentContextMenuProperty); set => SetValue(DocumentContextMenuProperty, value); }
     /// <summary>Gets or sets the tool menu used by tabs, title bars, and auto-hide strips.</summary>
@@ -327,13 +337,6 @@ public class DockingManager : TemplatedControl
     public event EventHandler<DocumentClosedEventArgs>? DocumentClosed;
     /// <summary>Occurs when active content changes.</summary>
     public event EventHandler? ActiveContentChanged;
-
-    /// <summary>Applies AvalonDock pane dimensions to Dock before measuring.</summary>
-    protected override Size MeasureOverride(Size availableSize)
-    {
-        _sizing.Apply(Layout, availableSize);
-        return base.MeasureOverride(availableSize);
-    }
 
     /// <summary>Presents floating layouts after Dock has configured its host factory.</summary>
     protected override void OnLoaded(RoutedEventArgs e)

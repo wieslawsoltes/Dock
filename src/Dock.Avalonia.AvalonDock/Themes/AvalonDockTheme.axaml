@@ -29,6 +29,8 @@
                             Layout="{TemplateBinding DockLayout}"
                             Factory="{TemplateBinding DockFactory}"
                             HostWindowFactory="{TemplateBinding DockHostWindowFactory}"
+                            infrastructure:LayoutSplitterSizing.Width="{TemplateBinding GridSplitterWidth}"
+                            infrastructure:LayoutSplitterSizing.Height="{TemplateBinding GridSplitterHeight}"
                             InitializeFactory="True" />
         </ControlTemplate>
       </Setter>
@@ -36,6 +38,7 @@
   </Styles.Resources>
   <fluent:DockFluentTheme />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeaders.axaml" />
+  <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutSizing.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutCommands.axaml" />
   <Style Selector="dock|DockControl.avalondock dock|DocumentControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
     <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />

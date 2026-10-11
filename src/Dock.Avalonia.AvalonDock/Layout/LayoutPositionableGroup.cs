@@ -31,13 +31,13 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     public GridLength DockWidth
     {
         get => _dockWidth;
-        set { if (SetField(ref _dockWidth, value)) Root?.Manager?.InvalidateMeasure(); }
+        set { if (SetField(ref _dockWidth, value)) Root?.Manager?.SizingViews.Invalidate(); }
     }
     /// <summary>Gets or sets the preferred docked height.</summary>
     public GridLength DockHeight
     {
         get => _dockHeight;
-        set { if (SetField(ref _dockHeight, value)) Root?.Manager?.InvalidateMeasure(); }
+        set { if (SetField(ref _dockHeight, value)) Root?.Manager?.SizingViews.Invalidate(); }
     }
     /// <summary>Gets or sets whether duplicate content is allowed.</summary>
     public bool AllowDuplicateContent { get => _allowDuplicateContent; set => SetField(ref _allowDuplicateContent, value); }

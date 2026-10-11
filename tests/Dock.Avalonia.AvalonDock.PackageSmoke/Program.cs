@@ -15,6 +15,7 @@ using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Controls.ProportionalStackPanel;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
@@ -52,6 +53,12 @@ if (tool.IsAutoHidden || toolMenu.DataContext is not null || toolMenu.PlacementT
 tool.IsActive = true;
 Dispatcher.UIThread.RunJobs();
 AssertToolTitle(manager, tool);
+AssertSplitters(manager);
+manager.GridSplitterWidth = 28;
+manager.GridSplitterHeight = 18;
+Dispatcher.UIThread.RunJobs();
+window.UpdateLayout();
+AssertSplitters(manager);
 tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
@@ -218,7 +225,21 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, docked/floating tool titles and selectors, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, docked/floating tool titles and selectors, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+
+static void AssertSplitters(DockingManager manager)
+{
+    ProportionalStackPanelSplitter[] splitters = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().ToArray();
+    if (splitters.Length == 0) throw new Exception("The package consumer did not render a native splitter.");
+    foreach (ProportionalStackPanelSplitter splitter in splitters)
+    {
+        ProportionalStackPanel panel = splitter.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
+        bool horizontal = panel.Orientation == Avalonia.Layout.Orientation.Horizontal;
+        double expected = horizontal ? manager.GridSplitterWidth : manager.GridSplitterHeight;
+        if (splitter.Thickness != expected || (horizontal ? splitter.Bounds.Width : splitter.Bounds.Height) != expected)
+            throw new Exception("The packaged splitter did not apply the manager's size to its rendered bounds.");
+    }
+}
 
 static void AssertToolTitle(Control scope, LayoutAnchorable tool)
 {

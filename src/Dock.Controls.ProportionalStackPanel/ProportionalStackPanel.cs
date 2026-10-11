@@ -190,6 +190,30 @@ public class ProportionalStackPanel : Panel
     protected virtual double GetProportionalDimension(Size size, double splitterThickness) =>
         (Orientation == Orientation.Horizontal ? size.Width : size.Height) - splitterThickness;
 
+    /// <summary>Resolves the finite constraint used by proportional measurement.</summary>
+    /// <param name="constraint">The space offered by the parent.</param>
+    /// <param name="splitterThickness">The total thickness of visible splitters.</param>
+    /// <returns>The constraint used to assign proportions and measure children.</returns>
+    /// <remarks>The default rejects an infinite split-axis extent. A sizing policy
+    /// can measure intrinsic child lengths and return a finite extent instead.</remarks>
+    protected virtual Size GetMeasureConstraint(Size constraint, double splitterThickness)
+    {
+        bool horizontal = Orientation == Orientation.Horizontal;
+        if (constraint == Size.Infinity
+            || (horizontal && double.IsInfinity(constraint.Width))
+            || (!horizontal && double.IsInfinity(constraint.Height)))
+            throw new Exception("Proportional StackPanel cannot be inside a control that offers infinite space.");
+        return constraint;
+    }
+
+    /// <summary>Gets the constraint used to measure an individual pane.</summary>
+    /// <param name="child">The pane being measured.</param>
+    /// <param name="constraint">The pane's allocated proportional space.</param>
+    /// <returns>The child's measure constraint. The default returns the allocated space.</returns>
+    /// <remarks>An intrinsic sizing policy can leave its split axis unconstrained
+    /// while retaining finite pane allocation and native arrangement.</remarks>
+    protected virtual Size GetChildMeasureConstraint(Control child, Size constraint) => constraint;
+
     /// <summary>Resizes a pair of panes in response to native splitter input.</summary>
     /// <param name="target">The pane before the splitter.</param>
     /// <param name="neighbor">The pane after the splitter.</param>
@@ -206,20 +230,12 @@ public class ProportionalStackPanel : Panel
     /// <inheritdoc/>
     protected override Size MeasureOverride(Size constraint)
     {
-        var horizontal = Orientation == Orientation.Horizontal;
-
-        if (constraint == Size.Infinity
-            || (horizontal && double.IsInfinity(constraint.Width))
-            || (!horizontal && double.IsInfinity(constraint.Height)))
-        {
-            throw new Exception("Proportional StackPanel cannot be inside a control that offers infinite space.");
-        }
-
         var usedWidth = 0.0;
         var usedHeight = 0.0;
         var maximumWidth = 0.0;
         var maximumHeight = 0.0;
         var splitterThickness = SplitterCalculator.GetTotalSplitterThickness(Children, GetIsCollapsed);
+        constraint = GetMeasureConstraint(constraint, splitterThickness);
 
         AssignProportions(constraint, splitterThickness);
         double proportionalDimension = GetProportionalDimension(constraint, splitterThickness);
@@ -259,7 +275,7 @@ public class ProportionalStackPanel : Panel
                         var width = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, proportionalDimension, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithWidth(width);
-                        control.Measure(size);
+                        control.Measure(GetChildMeasureConstraint(control, size));
                         break;
                     }
                     case Orientation.Vertical:
@@ -267,7 +283,7 @@ public class ProportionalStackPanel : Panel
                         var height = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, proportionalDimension, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithHeight(height);
-                        control.Measure(size);
+                        control.Measure(GetChildMeasureConstraint(control, size));
                         break;
                     }
                 }

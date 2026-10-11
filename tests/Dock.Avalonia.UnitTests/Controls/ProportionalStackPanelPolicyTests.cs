@@ -18,6 +18,32 @@ public class ProportionalStackPanelPolicyTests
     [AvaloniaTheory]
     [InlineData(Orientation.Horizontal)]
     [InlineData(Orientation.Vertical)]
+    public void Measurement_Policies_Resolve_Infinite_Space_And_Preserve_Intrinsic_Child_Constraints(Orientation orientation)
+    {
+        MeasurementPanel panel = new() { Orientation = orientation };
+        MeasuringControl intrinsic = new(), proportional = new();
+        panel.Children.Add(intrinsic);
+        panel.Children.Add(new ProportionalStackPanelSplitter { Thickness = 10 });
+        panel.Children.Add(proportional);
+        Size offered = orientation == Orientation.Horizontal ? new Size(double.PositiveInfinity, 400) : new Size(400, double.PositiveInfinity);
+        panel.Measure(offered);
+        panel.Arrange(new Rect(panel.DesiredSize));
+        Assert.Equal(offered, panel.Offered);
+        Assert.Equal(10, panel.Gaps);
+        Assert.Equal(310, orientation == Orientation.Horizontal ? panel.DesiredSize.Width : panel.DesiredSize.Height);
+        Assert.Equal(double.PositiveInfinity, orientation == Orientation.Horizontal ? intrinsic.Constraint.Width : intrinsic.Constraint.Height);
+        Assert.Equal(150, orientation == Orientation.Horizontal ? proportional.Constraint.Width : proportional.Constraint.Height);
+        AssertExtent(intrinsic, orientation, 150);
+        AssertExtent(proportional, orientation, 150);
+
+        ProportionalStackPanel defaults = new() { Orientation = orientation };
+        defaults.Children.Add(new Border());
+        Assert.Throws<Exception>(() => defaults.Measure(offered));
+    }
+
+    [AvaloniaTheory]
+    [InlineData(Orientation.Horizontal)]
+    [InlineData(Orientation.Vertical)]
     public void Desired_Extent_Uses_The_Overridden_Dimension_When_Gaps_Exceed_The_Viewport(Orientation orientation)
     {
         PolicyPanel panel = Create(orientation);
@@ -123,5 +149,31 @@ public class ProportionalStackPanelPolicyTests
         {
             Resizes++; Target = target; Neighbor = neighbor; Delta = dragDelta; Minimum = minimumSize;
         }
+    }
+
+    private sealed class MeasuringControl : Control
+    {
+        public Size Constraint { get; private set; }
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            Constraint = availableSize;
+            return new Size(100, 100);
+        }
+    }
+
+    private sealed class MeasurementPanel : ProportionalStackPanel
+    {
+        public Size Offered { get; private set; }
+        public double Gaps { get; private set; }
+        protected override Size GetMeasureConstraint(Size constraint, double splitterThickness)
+        {
+            Offered = constraint;
+            Gaps = splitterThickness;
+            return Orientation == Orientation.Horizontal ? constraint.WithWidth(300 + splitterThickness) : constraint.WithHeight(300 + splitterThickness);
+        }
+        protected override Size GetChildMeasureConstraint(Control child, Size constraint) =>
+            ReferenceEquals(child, Children[0])
+                ? Orientation == Orientation.Horizontal ? constraint.WithWidth(double.PositiveInfinity) : constraint.WithHeight(double.PositiveInfinity)
+                : constraint;
     }
 }

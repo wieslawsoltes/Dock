@@ -187,6 +187,53 @@ index is a no-op. Tool panes also notify `CanClose`, `CanHide`, and
 `IsDirectlyHostedInFloatingWindow` when their collection changes. `CanClose` and
 `CanHide` are true for an empty tool pane, as no child disallows the operation.
 
+## Extend content state and closing behavior
+
+Derived documents and tools can override `OnIsSelectedChanged(bool oldValue,
+bool newValue)` and `OnIsActiveChanged(bool oldValue, bool newValue)`. The native
+model already holds the new state when the hook runs. The hooks precede the
+corresponding `PropertyChanged` notification; their base implementations raise
+`IsSelectedChanged` and `IsActiveChanged`. The active hook's base implementation
+also updates `LastActivationTimeStamp` on activation. Omitting the base call
+suppresses those effects while retaining the underlying state change.
+
+Activation hooks run after pane selection and root active content are synchronized.
+The adapter defers them while the native factory completes a focus operation,
+coalescing temporary state changes during that operation. An override can redirect
+activation to another content item. Throwing from a callback does not roll back
+completed model changes; pending callbacks release their references and later
+focus operations remain usable. Native floating hosts continue to bind their
+title to the focused native content.
+
+`OnClosing(CancelEventArgs)` and `OnClosed()` provide the corresponding close
+overrides. Call their base implementations to raise `Closing` and `Closed`.
+For example, an application model can veto a close until its workspace command
+has saved or discarded changes:
+
+```csharp
+using System.ComponentModel;
+using AvalonDock.Layout;
+
+public sealed class WorkspaceDocument : LayoutDocument
+{
+    public bool HasUnsavedChanges { get; set; }
+
+    protected override void OnClosing(CancelEventArgs args)
+    {
+        args.Cancel |= HasUnsavedChanges;
+        base.OnClosing(args);
+    }
+}
+```
+
+The manager's `DocumentClosing` event runs before the document hook; manager
+cancellation prevents that hook from running. The content can then cancel in its
+override or event. On success, removal and layout cleanup finish before `OnClosed`,
+so `Parent` and `Root` are null in the callback. The callback can insert the item
+into another layout without subsequent cleanup undoing that insertion. The
+originating manager raises `DocumentClosed` afterward. Public closes, item
+commands, native factory operations, and floating-host closes use these hooks.
+
 ## Observe layout membership and parent changes
 
 `LayoutRoot.ElementAdded` and `ElementRemoved` provide `LayoutElementEventArgs`.
@@ -1150,6 +1197,7 @@ flowchart TB
         Bridge["Identity, collections, selection, and return history"]
         Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
         Focus["Active content and document history<br/>Across native roots"]
+        ContentHooks["Content state and close overrides"]
         TreeEvents["Parent and root hooks<br/>Layout membership events"]
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
@@ -1203,6 +1251,9 @@ flowchart TB
     Factory --> Models
     Factory --> Focus
     Focus --> Layout
+    Focus --> ContentHooks
+    Factory --> ContentHooks
+    ContentHooks --> Layout
     Models --> TreeEvents
     TreeEvents --> Layout
     Factory --> Events

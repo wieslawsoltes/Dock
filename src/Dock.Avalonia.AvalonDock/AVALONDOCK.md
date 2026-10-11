@@ -83,6 +83,19 @@ Emptying a rooted document pane clears root activation, even if a tool in anothe
 pane was active. `MoveChild` retains the selected content, notifies its changed
 index, and invokes the protected `ChildMoved` hook after reordering.
 
+Derived documents and tools can override `OnIsSelectedChanged(bool, bool)` and
+`OnIsActiveChanged(bool, bool)`. They receive the old and new states before the
+corresponding property-changed notification. Native activation finishes selection
+and root focus before invoking the active hook. Call the base hooks to retain the
+public events and, on activation, the timestamp update.
+
+`OnClosing(CancelEventArgs)` can cancel a close; its base implementation raises
+`Closing`. For documents, the manager's `DocumentClosing` event runs first and
+can prevent the content hook from running. `OnClosed()` runs after detachment and
+layout cleanup, and its base implementation raises `Closed`. A closed override
+can reopen the content in another pane. These hooks also apply to item commands,
+native factory closes, and floating-window closure.
+
 `LayoutRoot.ElementAdded` and `ElementRemoved` identify the public element whose
 parent transition enters or leaves the layout. Attaching a subtree reports its
 topmost transitioning node. Derived layout types can override `OnParentChanging`,
@@ -474,6 +487,7 @@ flowchart TB
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
     Focus["Active content and document history<br/>Across native roots"]
+    ContentHooks["Content state and close overrides"]
     TreeEvents["Parent and root hooks<br/>Layout membership events"]
     Events["Operation notifications<br/>Public layout source and routed events"]
     Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
@@ -505,6 +519,9 @@ flowchart TB
     Factory --> Models
     Factory --> Focus
     Focus --> Bridge
+    Focus --> ContentHooks
+    Factory --> ContentHooks
+    ContentHooks --> Api
     Models --> TreeEvents
     TreeEvents --> Api
     Factory --> Events

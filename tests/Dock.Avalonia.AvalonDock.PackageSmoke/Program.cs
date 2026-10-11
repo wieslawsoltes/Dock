@@ -39,6 +39,7 @@ AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHead
 AssertLayoutLifecycle();
 AssertLayoutParentPolicies();
 AssertPaneSelectionPolicies();
+AssertContentHooks();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
@@ -462,6 +463,35 @@ static void AssertPaneSelectionPolicies()
     root.DockFactory.RemoveDockable(removed.DockModel, false);
     if (!ReferenceEquals(tools.SelectedContent, enabled) || !enabled.IsSelected || disabled.IsSelected)
         throw new Exception("Native removal did not choose the first enabled remaining tool.");
+}
+
+static void AssertContentHooks()
+{
+    LayoutDocument first = new();
+    PackageConsumer.ContentHookDocument document = new();
+    LayoutDocumentPane pane = new(first);
+    pane.Children.Add(document);
+    LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };
+    DockingManager manager = new() { Layout = root };
+    first.IsActive = true;
+    int selections = document.SelectionChanges;
+    int activations = document.Activations;
+    document.IsSelected = true;
+    if (document.SelectionChanges != selections + 1 || !ReferenceEquals(root.ActiveContent, first))
+        throw new Exception("The external selection override did not run independently of activation.");
+    root.DockFactory.SetActiveDockable(document.DockModel);
+    if (document.Activations != activations + 1 || !ReferenceEquals(root.ActiveContent, document) || document.LastActivationTimeStamp is null)
+        throw new Exception("The native factory did not activate the selected document through its external override.");
+    int managerCloses = 0;
+    manager.DocumentClosed += (_, _) => managerCloses++;
+    document.CancelClose = true;
+    document.Close();
+    if (document.ClosingRequests != 1 || document.CompletedCloses != 0 || !ReferenceEquals(document.Parent, pane))
+        throw new Exception("The external closing override did not cancel removal.");
+    document.CancelClose = false;
+    manager.GetLayoutItemFromModel(document)!.CloseCommand!.Execute(null);
+    if (document.ClosingRequests != 2 || document.CompletedCloses != 1 || document.Parent is not null || managerCloses != 1)
+        throw new Exception("The packaged item command did not close through the external hooks and manager event.");
 }
 
 static void AssertActiveContent(DockingManager manager, LayoutDocument document, LayoutAnchorable tool)

@@ -81,6 +81,16 @@ supported by corresponding implementation and test evidence.
   repair waits until item generators finish; the queued fallback uses weak
   ownership. Tests cover public/native removals, derived callbacks, reentrancy,
   native floating rendering, and collection of a removed pane with repair queued.
+- Protected content selection/activation and closing/closed hooks run through
+  public and native operations. State hooks receive old/new values before the
+  property-changed notification; activation hooks observe completed pane/root
+  state. Base hooks raise their public events and update activation timestamps.
+  Focus completion coalesces transient native flags, supports callback redirection
+  and exceptions, and releases pending content references after failures. Manager
+  document cancellation precedes content callbacks; closed callbacks see detached
+  content after layout cleanup and can reopen it elsewhere. Tests cover derived
+  document/tool overrides, native flags/factory operations, item commands,
+  floating hosts, absent base calls, exception recovery, and retained-root lifetime.
 - Document close cancellation, tool hide/restore, hidden collection, active
   content, and title/content/capability forwarding.
 - `LayoutRoot.ActiveContent` and manager active-content notifications span the
@@ -359,7 +369,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 594 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 633 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -396,8 +406,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 555
-matching type/member keys and 396 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 559
+matching type/member keys and 392 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

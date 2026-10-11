@@ -220,16 +220,32 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
         WindowDragDockScope = WindowDragDockScope.FullWindow;
     }
 
+    /// <summary>Starts a native window move while preserving Dock's drag tracking and drop targets.</summary>
+    /// <param name="e">The pointer press that initiated the drag.</param>
+    /// <param name="dockScope">The portion of the floating layout participating in docking.</param>
+    /// <returns>True when the factory accepted the drag; otherwise false.</returns>
+    public bool TryBeginMoveDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+        if (!TryBeginWindowDrag(e, dockScope, ownsPointerRelease: true)) return false;
+        try
+        {
+            BeginMoveDrag(e);
+            return true;
+        }
+        catch
+        {
+            CancelExternalWindowDrag();
+            throw;
+        }
+    }
+
     private void MoveDrag(PointerPressedEventArgs e)
     {
         if (!ToolChromeControlsWholeWindow)
             return;
 
-        if (!TryBeginWindowDrag(e, WindowDragDockScope.FullWindow, ownsPointerRelease: true))
-        {
-            return;
-        }
-        BeginMoveDrag(e);
+        TryBeginMoveDrag(e, WindowDragDockScope.FullWindow);
     }
 
     private void EndDrag(PointerEventArgs e)

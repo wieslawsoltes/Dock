@@ -25,6 +25,34 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class LayoutContentControlTests
 {
     [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void Model_Redirection_From_Container_Or_Enablement_Changes_Keeps_The_Final_Subscription(bool tool, bool fromContainer)
+    {
+        LayoutContent first = CreateModel(tool);
+        first.IsEnabled = false;
+        LayoutContent replacement = CreateModel(tool);
+        DockingManager manager = CreateManager(first, replacement);
+        TemplatedControl control = CreateControl(tool);
+        control.PropertyChanged += (_, change) =>
+        {
+            if (ReferenceEquals(Model(control), first) &&
+                (fromContainer ? change.Property.Name == nameof(LayoutDocumentControl.LayoutItem) : change.Property == InputElement.IsEnabledProperty))
+                SetModel(control, replacement);
+        };
+        SetModel(control, first);
+        Assert.Same(replacement, Model(control));
+        Assert.Same(manager.GetLayoutItemFromModel(replacement), Item(control));
+        Assert.True(control.IsEnabled);
+        replacement.IsEnabled = false;
+        Assert.False(control.IsEnabled);
+        first.IsEnabled = true;
+        Assert.False(control.IsEnabled);
+    }
+
+    [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
     public void Model_Replacement_Resolves_Existing_Containers_And_Stops_Observing_The_Old_Model(bool tool)

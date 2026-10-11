@@ -18,11 +18,13 @@
   <x:String x:Key="AvalonDockMoveToPreviousTabGroupString">Move to Previous Tab Group</x:String>
   <infrastructure:LayoutItemConverter x:Key="AvalonDockLayoutItem" />
   <infrastructure:LayoutToolCloseCommandConverter x:Key="AvalonDockToolCloseCommand" />
-  <DataTemplate x:Key="AvalonDockDefaultToolTitle" x:DataType="layout:LayoutContent">
-    <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
-  </DataTemplate>
-  <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockToolTitle" Kind="AnchorableTitle"
-                                       DefaultTemplate="{StaticResource AvalonDockDefaultToolTitle}" />
+  <infrastructure:LayoutAnchorableTitleTemplate x:Key="AvalonDockToolTitle">
+    <infrastructure:LayoutAnchorableTitleTemplate.TitleTemplate>
+      <DataTemplate x:DataType="layout:LayoutAnchorable">
+        <items:AnchorablePaneTitle />
+      </DataTemplate>
+    </infrastructure:LayoutAnchorableTitleTemplate.TitleTemplate>
+  </infrastructure:LayoutAnchorableTitleTemplate>
   <ControlTheme x:Key="AvalonDockAutoHideMenuItem" TargetType="MenuItem" x:DataType="items:LayoutAnchorableItem"
                 BasedOn="{StaticResource {x:Type MenuItem}}">
     <Setter Property="Header" Value="{DynamicResource ToolChromeControlAutoHideString}" />

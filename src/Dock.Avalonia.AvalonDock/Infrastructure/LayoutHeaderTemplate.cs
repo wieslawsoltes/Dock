@@ -16,12 +16,13 @@ internal sealed class LayoutHeaderTemplate : IRecyclingDataTemplate
     public IDataTemplate? DefaultTemplate { get; set; }
     internal AvaloniaObject? SelectionContainer { get; set; }
 
-    public bool Match(object? data) => data is IDockable or LayoutContent;
+    public bool Match(object? data) => data is IDockable or LayoutContent or LayoutItem;
     public Control? Build(object? data) => Build(data, null);
     public Control? Build(object? data, Control? existing)
     {
         LayoutItem? item = data switch
         {
+            LayoutItem container => container,
             IDockable { Factory: LayoutFactory factory } model => factory.GetLayoutItem(model),
             LayoutContent content => content.Root?.Manager?.GetLayoutItemFromModel(content),
             _ => null

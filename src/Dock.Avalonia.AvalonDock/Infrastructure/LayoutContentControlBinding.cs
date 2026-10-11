@@ -24,8 +24,9 @@ internal sealed class LayoutContentControlBinding
     internal bool IsNativePresentation { get => _model.IsNativePresentation; set => _model.IsNativePresentation = value; }
     internal void SetModel(LayoutContent? model)
     {
-        _control.SetCurrentValue(InputElement.IsEnabledProperty, model?.IsEnabled ?? true);
         _model.SetModel(model);
+        if (ReferenceEquals(_model.Model, model))
+            _control.SetCurrentValue(InputElement.IsEnabledProperty, model?.IsEnabled ?? true);
     }
     internal void RefreshItem() => _model.RefreshItem();
     internal void WatchItem(LayoutItem? item) => _model.WatchItem(item);

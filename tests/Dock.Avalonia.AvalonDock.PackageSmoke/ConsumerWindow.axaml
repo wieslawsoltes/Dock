@@ -3,6 +3,10 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <Style x:Key="NavigatorLabels" Selector=":is(NavigatorWindow)" x:DataType="NavigatorWindow">
+      <Setter Property="LayoutDocumentsLabel" Value="Packaged documents" />
+      <Setter Property="LayoutAnchorablesLabel" Value="Packaged tools" />
+    </Style>
     <Style x:Key="FloatingResizeStyle" Selector=":is(LayoutFloatingWindowControl)" x:DataType="LayoutFloatingWindowControl">
       <Setter Property="ResizeBorderThickness" Value="4,6,8,12" />
     </Style>

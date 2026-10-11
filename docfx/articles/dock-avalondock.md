@@ -827,6 +827,66 @@ The floating-control surface is still being completed: exact close-event orderin
 cancellation during manager layout replacement/view unload,
 and remaining protected/platform hooks are tracked in the compatibility checklist.
 
+## Navigate documents and tools with Ctrl+Tab
+
+Ctrl+Tab opens an `AvalonDock.Controls.NavigatorWindow` from docked content or
+either floating host type. The window uses the manager's live `LayoutDocumentItem`
+and `LayoutAnchorableItem` containers. Enabled documents are captured in descending
+`LastActivationTimeStamp` order, with layout order preserved for ties; tools must
+be visible and enabled and retain layout order. The lists are snapshots, while
+the containers' titles, icons, and activation commands remain live.
+
+The initial selection is the second document when there are at least two;
+otherwise it is the second tool when available. With smaller lists, neither
+item is initially selected. Up/Down wrap within the selected list, Left/Right
+cross to the other list at the same or nearest index, and Tab traverses both
+lists. These follow the pinned upstream behavior: Shift does not reverse Tab,
+and releasing any non-navigation key, including Control or Escape, closes the
+navigator and invokes the selected item's available `ActivateCommand` with null.
+For inline Avalonia controls, focus is restored after Dock's queued deferred
+presentation, either to the content itself or its next focusable child.
+
+Pointer or application selection of `SelectedDocument` hides the navigator and
+executes its available command; selecting `SelectedAnchorable` closes it and
+executes the tool command. Null or disabled commands prevent these immediate
+actions. Keyboard release still closes the navigator when activation is unavailable.
+
+Override `CreateNavigatorWindow()` to configure the window before the manager
+shows it:
+
+```csharp
+using AvalonDock;
+using AvalonDock.Controls;
+
+public sealed class EditorDockingManager : DockingManager
+{
+    public override NavigatorWindow CreateNavigatorWindow() => new(this)
+    {
+        LayoutDocumentsLabel = "Documents",
+        LayoutAnchorablesLabel = "Tools"
+    };
+}
+```
+
+The factory creates an unshown window. Ctrl+Tab uses the protected
+`ShowNavigatorWindow()` hook to present one modal navigator, centered over the
+manager's window. If the manager has no visible owner window, Avalonia presents
+the navigator without an owner. Closing or hiding permits the next request to
+create a fresh snapshot. Layout replacement and view detachment close the current
+navigator; a canceled close retains the current window until closure succeeds.
+
+`LayoutDocumentsLabel` and `LayoutAnchorablesLabel` also support unprefixed XAML
+styles with `x:DataType="NavigatorWindow"`. A custom control template can bind
+`Documents`, `Anchorables`, and the selected item properties; the default template
+uses compiled bindings and the parts `PART_DocumentListBox` and
+`PART_AnchorableListBox`. The public parameterless `OnApplyTemplate()` hook is
+called by Avalonia template application. Derived navigators can replace the lists
+through protected `SetDocuments`/`SetAnchorables` methods and override selection
+and preview-key hooks using Avalonia event arguments.
+
+Per-manager theme-resource integration and desktop modality/focus verification
+remain open work. The native Dock selector continues to handle its other gestures.
+
 ## Restore application content from XML
 
 The XML describes layout structure and metadata; it does not serialize controls
@@ -877,6 +937,7 @@ flowchart TB
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
+        Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
@@ -894,6 +955,8 @@ flowchart TB
     App --> Manager
     App --> Converters
     Converters --> Items
+    Manager --> Navigator
+    Navigator --> Items
     App --> Layout
     App --> Xml
     Manager --> Layout

@@ -289,7 +289,17 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 444 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- `NavigatorWindow` presents live document/tool containers in a compiled template.
+  Ctrl+Tab works from the manager and both native floating host types. Tests cover
+  stable activation ordering, filtering, snapshot and live metadata behavior,
+  upstream initial-selection and keyboard rules, pointer input, command overrides
+  and availability, nested editor focus after deferred presentation, labels in both
+  XML namespaces, public/protected template and selection hooks, empty/custom
+  lists, cancellation, reentrant/failing creation, layout replacement, view
+  detachment, and collection of closed navigators. The package consumer exercises
+  unprefixed label styles, the public template hook, keyboard list navigation,
+  native activation, and editor focus.
+- 472 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -319,21 +329,21 @@ supported by corresponding implementation and test evidence.
   behavior must be audited independently of the presence inventory, including
   menu selector null results and header-template default coercion edge cases.
 - Broader sample interaction and platform coverage for floating windows.
+- Navigator per-manager theme integration and desktop modality/focus validation.
 
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 498
-matching type/member keys and 453 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 519
+matching type/member keys and 432 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 
 Comparison maps the requested `AvalonDock.*` namespace and canonicalizes known
-`CultureInfo` qualifications and array rank spacing. Of the converter checkpoint's
-29 additional matching keys, 27 come from nine new converter classes/methods;
-two correct existing model-to-container methods previously missed due to
-`CultureInfo` qualification. No baseline entries are removed or WPF framework
-types equated to Avalonia types.
+`CultureInfo` qualifications and array rank spacing. No baseline entries are
+removed or WPF framework types equated to Avalonia types. For example, the
+navigator's preview-key and selection hooks exist with Avalonia event arguments,
+but their keys remain distinct from the upstream WPF argument types.
 
 ```sh
 dotnet run --project build/AvalonDockApiAudit -- snapshot \

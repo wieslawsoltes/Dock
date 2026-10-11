@@ -19,6 +19,9 @@ inspect the protected close-origin property from a derived consumer control,
 preserve host/model ownership during canceled cleanup and release it on retry,
 resolve a container and activate, hide, and auto-hide tools through unprefixed
 command converters, update converted visibility and preserve null binding targets,
+open the navigator with native Ctrl+Tab input, apply unprefixed label styles,
+cycle its document/tool lists, invoke its public template hook, and activate/focus
+the chosen document on Control release,
 and restore application content
 from XML using the packaged assemblies. Pack the native
 control, model, and proportional-panel packages too: they contain the tool-menu

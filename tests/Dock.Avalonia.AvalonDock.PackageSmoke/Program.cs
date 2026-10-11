@@ -68,6 +68,7 @@ Dispatcher.UIThread.RunJobs();
 AssertToolTitle(manager, tool);
 AssertDocumentMenu(manager);
 AssertConverters(window, manager, tool);
+AssertNavigator(window, manager, document);
 AssertSplitters(manager);
 manager.GridSplitterWidth = 28;
 manager.GridSplitterHeight = 18;
@@ -276,6 +277,55 @@ if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML c
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
 Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container and command/value converters, and close cancellation passed.");
+
+static void AssertNavigator(Window view, DockingManager manager, LayoutDocument document)
+{
+    TextBox editor = new() { Text = "Navigator package editor" };
+    LayoutDocument next = new() { Title = "Navigator package document", Content = editor };
+    ((LayoutDocumentPane)document.Parent!).Children.Add(next);
+    DateTime? activation = document.LastActivationTimeStamp;
+    NavigatorWindow? navigator = null;
+    try
+    {
+        document.IsActive = true;
+        document.LastActivationTimeStamp = DateTime.MaxValue;
+        next.LastActivationTimeStamp = DateTime.MinValue;
+        if (!((Control)document.Content!).Focus()) throw new Exception("The document did not receive focus before Ctrl+Tab.");
+        view.KeyPressQwerty(PhysicalKey.Tab, RawInputModifiers.Control);
+        navigator = view.OwnedWindows.OfType<NavigatorWindow>().Single();
+        navigator.OnApplyTemplate();
+        navigator.Styles.Add((Style)view.Resources["NavigatorLabels"]!);
+        navigator.MouseMove(default);
+        if (!ReferenceEquals(navigator.SelectedDocument?.LayoutElement, next) ||
+            !ReferenceEquals(navigator.SelectedDocument, manager.GetLayoutItemFromModel(next)))
+            throw new Exception("The packaged navigator did not select the second native-backed document container.");
+        if (navigator.LayoutDocumentsLabel != "Packaged documents" || navigator.LayoutAnchorablesLabel != "Packaged tools" ||
+            !navigator.GetVisualDescendants().OfType<TextBlock>().Any(text => text.Text == "Packaged documents") ||
+            !navigator.GetVisualDescendants().OfType<TextBlock>().Any(text => text.Text == next.Title))
+            throw new Exception("The unprefixed navigator style and compiled item template did not render.");
+        navigator.KeyPressQwerty(PhysicalKey.ArrowRight, RawInputModifiers.Control);
+        navigator.KeyReleaseQwerty(PhysicalKey.ArrowRight, RawInputModifiers.Control);
+        if (navigator.SelectedDocument is not null || navigator.SelectedAnchorable is null)
+            throw new Exception("The packaged navigator did not cross to its tool list.");
+        navigator.KeyPressQwerty(PhysicalKey.ArrowLeft, RawInputModifiers.Control);
+        navigator.KeyReleaseQwerty(PhysicalKey.ArrowLeft, RawInputModifiers.Control);
+        navigator.KeyPressQwerty(PhysicalKey.Tab, RawInputModifiers.Control);
+        navigator.KeyReleaseQwerty(PhysicalKey.Tab, RawInputModifiers.Control);
+        if (!ReferenceEquals(navigator.SelectedDocument?.LayoutElement, next))
+            throw new Exception("The packaged navigator did not cycle back to the second document.");
+        navigator.KeyReleaseQwerty(PhysicalKey.ControlLeft, RawInputModifiers.None);
+        if (navigator.IsVisible || !ReferenceEquals(manager.Layout.ActiveContent, next) ||
+            !ReferenceEquals(view.FocusManager!.GetFocusedElement(), editor))
+            throw new Exception("The packaged navigator did not activate and focus the selected native document.");
+    }
+    finally
+    {
+        navigator?.Close();
+        next.Close();
+        document.IsActive = true;
+        document.LastActivationTimeStamp = activation;
+    }
+}
 
 static void AssertConverters(Window resources, DockingManager manager, LayoutAnchorable tool)
 {

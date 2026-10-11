@@ -1564,6 +1564,7 @@ flowchart TB
         Controls["DockControl, HostWindow, and Fluent controls"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     end
+    Manager --> PaneControls
     PaneControls --> ContentControls
     PaneControls --> Tabs
     PaneControls --> Selection

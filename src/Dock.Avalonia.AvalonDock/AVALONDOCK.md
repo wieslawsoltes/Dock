@@ -627,6 +627,7 @@ flowchart TB
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
     Xml["XmlLayoutSerializer and explicit XML codec"]
+    Api --> PaneControls
     PaneControls --> ContentControls
     PaneControls --> Tabs
     PaneControls --> Selection

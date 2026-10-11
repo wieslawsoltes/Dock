@@ -107,6 +107,13 @@ public class ThemeTests
             using Workspace workspace = new(generic ? new GenericTheme() : null, localStyles: true);
             Assert.IsType<ControlTheme>(workspace.Manager.FindResource(typeof(DockingManager)));
             Assert.Single(workspace.Manager.GetVisualDescendants().OfType<DockControl>());
+            workspace.Tool.ToggleAutoHide();
+            Dispatcher.UIThread.RunJobs();
+            workspace.Owner.UpdateLayout();
+            LayoutAnchorControl anchor = Assert.Single(workspace.Manager.GetVisualDescendants().OfType<LayoutAnchorControl>());
+            Assert.Same(workspace.Tool, anchor.Model);
+            Assert.NotNull(anchor.Template);
+            workspace.Tool.ToggleAutoHide();
             workspace.Document.Float();
             workspace.Tool.Float();
             Dispatcher.UIThread.RunJobs();

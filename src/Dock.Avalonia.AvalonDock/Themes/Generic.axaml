@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/HostWindow.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/ToolPinItemControl.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/AvalonDockManagerResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContentResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutPaneControlsResources.axaml" />

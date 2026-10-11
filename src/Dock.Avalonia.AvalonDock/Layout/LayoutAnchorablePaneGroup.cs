@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
 using AvalonDock.Infrastructure;
@@ -17,6 +18,25 @@ public class LayoutAnchorablePaneGroup : LayoutPositionableGroup<ILayoutAnchorab
     {
         foreach (ILayoutAnchorablePane child in Children) if (child.IsVisible) return true;
         return false;
+    }
+    /// <summary>Propagates a changed pixel width to the group's only child.</summary>
+    protected override void OnDockWidthChanged()
+    {
+        UpdateSingleChildLength(DockWidth, horizontal: true);
+        base.OnDockWidthChanged();
+    }
+    /// <summary>Propagates a changed pixel height to the group's only child.</summary>
+    protected override void OnDockHeightChanged()
+    {
+        UpdateSingleChildLength(DockHeight, horizontal: false);
+        base.OnDockHeightChanged();
+    }
+
+    private void UpdateSingleChildLength(GridLength length, bool horizontal)
+    {
+        if (!length.IsAbsolute || Children.Count != 1 || Children[0] is not ILayoutPositionableGroup child) return;
+        if (horizontal) child.DockWidth = length;
+        else child.DockHeight = length;
     }
     /// <inheritdoc/>
     public Orientation Orientation

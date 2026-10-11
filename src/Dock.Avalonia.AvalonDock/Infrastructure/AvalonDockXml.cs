@@ -219,8 +219,9 @@ internal static class AvalonDockXml
         if (element is ILayoutPositionableGroup position)
         {
             if (xml.Attribute("Id") is { } id) element.DockModel.Id = id.Value;
-            if (xml.Attribute("DockWidth") is { } width) position.DockWidth = GridLength.Parse(width.Value);
-            if (xml.Attribute("DockHeight") is { } height) position.DockHeight = GridLength.Parse(height.Value);
+            position.RestoreDockLengths(
+                xml.Attribute("DockWidth") is { } width ? GridLength.Parse(width.Value) : position.DockWidth,
+                xml.Attribute("DockHeight") is { } height ? GridLength.Parse(height.Value) : position.DockHeight);
             position.DockMinWidth = Number(xml, "DockMinWidth", position.DockMinWidth);
             position.DockMinHeight = Number(xml, "DockMinHeight", position.DockMinHeight);
             position.AllowDuplicateContent = Boolean(xml, "AllowDuplicateContent", position.AllowDuplicateContent);

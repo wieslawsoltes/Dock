@@ -10,5 +10,6 @@ internal interface ILayoutPositionableGroup : ILayoutElementForFloatingWindow
     double DockMinHeight { get; set; }
     bool AllowDuplicateContent { get; set; }
     bool CanRepositionItems { get; set; }
+    void RestoreDockLengths(GridLength width, GridLength height);
     void ApplyDockProportion(double proportion, double availableExtent, bool horizontal);
 }

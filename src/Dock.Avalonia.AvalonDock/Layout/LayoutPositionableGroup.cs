@@ -37,14 +37,18 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     public GridLength DockWidth
     {
         get => _dockWidth;
-        set { if (SetField(ref _dockWidth, value)) Root?.Manager?.SizingViews.Invalidate(); }
+        set { if (ChangeDockWidth(value)) Root?.Manager?.SizingViews.Invalidate(); }
     }
     /// <summary>Gets or sets the preferred docked height.</summary>
     public GridLength DockHeight
     {
         get => _dockHeight;
-        set { if (SetField(ref _dockHeight, value)) Root?.Manager?.SizingViews.Invalidate(); }
+        set { if (ChangeDockHeight(value)) Root?.Manager?.SizingViews.Invalidate(); }
     }
+    /// <summary>Called after a changed docked width has raised its property notifications.</summary>
+    protected virtual void OnDockWidthChanged() { }
+    /// <summary>Called after a changed docked height has raised its property notifications.</summary>
+    protected virtual void OnDockHeightChanged() { }
     /// <summary>Gets or sets whether duplicate content is allowed.</summary>
     public bool AllowDuplicateContent { get => _allowDuplicateContent; set => SetField(ref _allowDuplicateContent, value); }
     /// <summary>Gets or sets whether items can be repositioned.</summary>
@@ -88,6 +92,15 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     /// <summary>Gets or sets whether the floating window is maximized.</summary>
     public bool IsMaximized { get => _isMaximized; set => SetField(ref _isMaximized, value); }
 
+    void ILayoutPositionableGroup.RestoreDockLengths(GridLength width, GridLength height)
+    {
+        VerifyAccess();
+        // XML restores backing values, as upstream; it must not propagate a
+        // parent's pixel length into an existing child's independently saved size.
+        _dockWidth = width;
+        _dockHeight = height;
+    }
+
     void ILayoutPositionableGroup.ApplyDockProportion(double proportion, double availableExtent, bool horizontal)
     {
         _availableExtent = availableExtent;
@@ -112,7 +125,23 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
         GridLength next = previous.IsAbsolute
             ? new GridLength(DockModel.Proportion * _availableExtent)
             : new GridLength(DockModel.Proportion, GridUnitType.Star);
-        if (_horizontal) SetField(ref _dockWidth, next, nameof(DockWidth));
-        else SetField(ref _dockHeight, next, nameof(DockHeight));
+        if (_horizontal) ChangeDockWidth(next);
+        else ChangeDockHeight(next);
+    }
+
+    private bool ChangeDockWidth(GridLength value)
+    {
+        VerifyAccess();
+        if (!SetField(ref _dockWidth, value, nameof(DockWidth))) return false;
+        OnDockWidthChanged();
+        return true;
+    }
+
+    private bool ChangeDockHeight(GridLength value)
+    {
+        VerifyAccess();
+        if (!SetField(ref _dockHeight, value, nameof(DockHeight))) return false;
+        OnDockHeightChanged();
+        return true;
     }
 }

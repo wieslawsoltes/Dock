@@ -11,9 +11,20 @@ namespace AvalonDock.Infrastructure;
 // hide content before the native host can detach the floating layout.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver
+    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver, IDockWindowHostFactory
 {
     private IDockWindow? _evaluatingClose;
+    internal IDockWindow? RequestedHostWindow { get; private set; }
+
+    public IHostWindow? CreateHostWindow(IDockWindow window)
+    {
+        // Preserve native ID-based and application-provided locators. The
+        // manager's locator can additionally choose a host for this model.
+        IDockWindow? previous = RequestedHostWindow;
+        RequestedHostWindow = window;
+        try { return GetHostWindow(window.Id); }
+        finally { RequestedHostWindow = previous; }
+    }
 
     internal LayoutItem? GetLayoutItem(IDockable model) => getLayoutItem(model);
     internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutContainer(model);

@@ -1,0 +1,23 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AvalonDock.Controls"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:layout="using:AvalonDock.Layout"
+        xmlns:converters="using:AvalonDock.Converters"
+        x:DataType="controls:LayoutAnchorableFloatingWindowControl">
+  <Styles.Resources>
+    <converters:LayoutItemFromLayoutModelConverter x:Key="AvalonDockItemFromModel" />
+    <ControlTheme x:Key="{x:Type controls:LayoutDocumentFloatingWindowControl}"
+                  TargetType="controls:LayoutDocumentFloatingWindowControl"
+                  x:DataType="controls:LayoutDocumentFloatingWindowControl"
+                  BasedOn="{StaticResource {x:Type dock:HostWindow}}" />
+    <ControlTheme x:Key="{x:Type controls:LayoutAnchorableFloatingWindowControl}"
+                  TargetType="controls:LayoutAnchorableFloatingWindowControl"
+                  x:DataType="controls:LayoutAnchorableFloatingWindowControl"
+                  BasedOn="{StaticResource {x:Type dock:HostWindow}}" />
+  </Styles.Resources>
+  <Style Selector="controls|LayoutAnchorableFloatingWindowControl">
+    <Setter Property="SingleContentLayoutItem"
+            Value="{Binding $self.((layout:LayoutAnchorableFloatingWindow)Model).((layout:ILayoutContentSelector)SinglePane).SelectedContent, Converter={StaticResource AvalonDockItemFromModel}}" />
+  </Style>
+</Styles>

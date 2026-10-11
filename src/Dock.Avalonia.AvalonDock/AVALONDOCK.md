@@ -272,6 +272,21 @@ independent between managers.
 and maximization synchronize with the content and pane models and persist in
 XML. Layout reloads and manager reattachment preserve the application content.
 
+`DockingManager.FloatingWindows` exposes the actual native hosts as
+`LayoutDocumentFloatingWindowControl` and `LayoutAnchorableFloatingWindowControl`.
+Their `Model` is the same public floating model, and `IsDragging`/`IsMaximized`
+follow native window state. Document hosts expose `RootDocumentLayoutItem`;
+tool hosts bind `SingleContentLayoutItem` to the selected item in their only
+visible pane, using compiled bindings and `LayoutItemFromLayoutModelConverter`.
+The converter is available in both XML namespaces without a required prefix.
+
+Subscribe to `LayoutFloatingWindowControlCollectionChanged` in a workspace
+service to observe added/removed host controls and their collection indices;
+unsubscribe when the service detaches. A canceled close preserves registration.
+Layout replacement and view reattachment replace host instances while retaining
+the appropriate model/application content. Window-wide commands, manager-created
+immutable windows, and remaining floating-control hooks are still open.
+
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as
 Avalonia controls. Framework type substitutions and any outstanding API or
@@ -290,6 +305,7 @@ flowchart TB
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Events["Operation notifications<br/>Public layout source and routed events"]
+    Hosts["Floating control API<br/>Typed native hosts and collection notifications"]
     Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
@@ -307,6 +323,9 @@ flowchart TB
     Factory --> Models
     Factory --> Events
     Events --> Api
+    Factory --> Hosts
+    Hosts --> View
+    Hosts --> Api
     Api --> View
     Items --> View
     View --> Commands
@@ -336,6 +355,10 @@ Dock's data contexts, preserving ownership during view reattachment.
 The optional native factory observation contract brackets executed drag
 operations before their first mutation. The adapter scopes notifications by
 content and clears them on completion or failure, including reentrant handlers.
+The optional `IDockWindowHostFactory` contract supplies the native window model
+when its host is initialized or recreated. The adapter preserves native and
+application locators, selects a typed `HostWindow`, and observes its lifetime
+separately from the persistent floating model.
 
 The [full guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/docfx/articles/dock-avalondock.md)
 includes complete usage examples, source bindings, content callbacks, and a

@@ -1,7 +1,12 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
         x:Class="Dock.Avalonia.AvalonDock.Tests.XamlFixture"
         x:DataType="DockingManager" Width="800" Height="500">
+  <Window.Resources>
+    <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
+    <ad:LayoutItemFromLayoutModelConverter x:Key="LegacyItemFromModel" />
+  </Window.Resources>
   <DockingManager x:Name="Manager">
     <LayoutRoot>
       <LayoutPanel Orientation="Horizontal">

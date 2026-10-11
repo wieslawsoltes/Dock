@@ -47,16 +47,16 @@
   <Style Selector="dock|DockControl.avalondock dock|ToolControl">
     <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableHeader}" />
   </Style>
-  <Style Selector="dock|HostWindow.avalondock dock|DocumentControl">
+  <Style Selector=":is(dock|HostWindow).avalondock dock|DocumentControl">
     <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockDocumentHeader}" />
   </Style>
-  <Style Selector="dock|HostWindow.avalondock dock|ToolControl">
+  <Style Selector=":is(dock|HostWindow).avalondock dock|ToolControl">
     <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableHeader}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolPinItemControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockAutoHideHeader}" />
   </Style>
-  <Style Selector="dock|HostWindow.avalondock dock|ToolPinItemControl">
+  <Style Selector=":is(dock|HostWindow).avalondock dock|ToolPinItemControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockAutoHideHeader}" />
   </Style>
 </Styles>

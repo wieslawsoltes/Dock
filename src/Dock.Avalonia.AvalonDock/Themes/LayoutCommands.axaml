@@ -211,23 +211,23 @@
     <Setter Property="DocumentContextMenu" Value="{StaticResource AvalonDockDocumentCommands}" />
     <Setter Property="AnchorableContextMenu" Value="{StaticResource AvalonDockToolCommands}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock, dock|HostWindow.avalondock dock|DockControl">
+  <Style Selector="dock|DockControl.avalondock, :is(dock|HostWindow).avalondock dock|DockControl">
     <Setter Property="infrastructure:LayoutCommandRouting.IsEnabled" Value="True" />
     <Setter Property="infrastructure:LayoutContextMenuRouting.IsEnabled" Value="True" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, dock|HostWindow.avalondock dock|DocumentControl">
+  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, :is(dock|HostWindow).avalondock dock|DocumentControl">
     <Setter Property="CloseTemplate" Value="{StaticResource AvalonDockDocumentCloseTemplate}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStripItem, dock|HostWindow.avalondock dock|DocumentTabStripItem">
+  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStripItem, :is(dock|HostWindow).avalondock dock|DocumentTabStripItem">
     <Setter Property="DocumentContextMenu" Value="{x:Null}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolTabStripItem, dock|HostWindow.avalondock dock|ToolTabStripItem">
+  <Style Selector="dock|DockControl.avalondock dock|ToolTabStripItem, :is(dock|HostWindow).avalondock dock|ToolTabStripItem">
     <Setter Property="TabContextMenu" Value="{x:Null}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolPinItemControl, dock|HostWindow.avalondock dock|ToolPinItemControl">
+  <Style Selector="dock|DockControl.avalondock dock|ToolPinItemControl, :is(dock|HostWindow).avalondock dock|ToolPinItemControl">
     <Setter Property="PinContextMenu" Value="{x:Null}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolChromeControl, dock|HostWindow.avalondock dock|ToolChromeControl">
+  <Style Selector="dock|DockControl.avalondock dock|ToolChromeControl, :is(dock|HostWindow).avalondock dock|ToolChromeControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockToolChrome}" />
     <Setter Property="ToolFlyout" Value="{x:Null}" />
     <Style Selector="^ /template/ ContentPresenter#PART_Title">

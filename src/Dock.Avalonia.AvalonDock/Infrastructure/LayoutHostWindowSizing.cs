@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Avalonia;
+using Dock.Avalonia.Controls;
 
 namespace AvalonDock.Infrastructure;
 
 // Propagate manager settings without keeping closed floating hosts alive.
 internal sealed class LayoutHostWindowSizing
 {
-    private readonly List<WeakReference<LayoutHostWindow>> _hosts = new();
+    private readonly List<WeakReference<HostWindow>> _hosts = new();
     private double _width;
     private double _height;
 
@@ -18,7 +19,7 @@ internal sealed class LayoutHostWindowSizing
         manager.PropertyChanged += OnManagerChanged;
     }
 
-    internal void Attach(LayoutHostWindow host)
+    internal void Attach(HostWindow host)
     {
         for (int i = _hosts.Count - 1; i >= 0; i--)
             if (!_hosts[i].TryGetTarget(out _)) _hosts.RemoveAt(i);
@@ -32,11 +33,11 @@ internal sealed class LayoutHostWindowSizing
         else if (change.Property == DockingManager.GridSplitterHeightProperty) _height = change.GetNewValue<double>();
         else return;
         for (int i = _hosts.Count - 1; i >= 0; i--)
-            if (_hosts[i].TryGetTarget(out LayoutHostWindow? host)) Apply(host);
+            if (_hosts[i].TryGetTarget(out HostWindow? host)) Apply(host);
             else _hosts.RemoveAt(i);
     }
 
-    private void Apply(LayoutHostWindow host)
+    private void Apply(HostWindow host)
     {
         LayoutSplitterSizing.SetWidth(host, _width);
         LayoutSplitterSizing.SetHeight(host, _height);

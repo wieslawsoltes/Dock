@@ -92,6 +92,8 @@ public class CompiledXamlTests
             Dispatcher.UIThread.RunJobs();
             DockingManager manager = window.FindControl<DockingManager>("Manager")!;
             DockControl dock = Assert.Single(manager.GetVisualDescendants().OfType<DockControl>());
+            Assert.IsType<global::AvalonDock.Converters.LayoutItemFromLayoutModelConverter>(window.Resources["ItemFromModel"]);
+            Assert.IsType<global::AvalonDock.Converters.LayoutItemFromLayoutModelConverter>(window.Resources["LegacyItemFromModel"]);
             Assert.Same(manager.DockLayout, dock.Layout);
             Assert.Same(manager.DockFactory, dock.Factory);
             Assert.Contains(window.GetVisualDescendants().OfType<TextBlock>(), x => x.Text == "First document");

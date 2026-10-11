@@ -3,6 +3,7 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
     <LayoutDocumentItem x:Key="Container" Description="Unprefixed packaged container" />
     <DataTemplate x:Key="ExplicitTemplate" x:DataType="x:Object">
       <TextBlock Classes="explicit-package-template" Text="Explicit package template" />

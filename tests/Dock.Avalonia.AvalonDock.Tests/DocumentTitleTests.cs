@@ -250,10 +250,12 @@ public class DocumentTitleTests
         workspace.Host.MouseMove(end, RawInputModifiers.LeftMouseButton);
         Assert.Equal(1, began);
         Assert.Equal(!cancel, workspace.Host.Classes.Contains(":dragging"));
+        Assert.Equal(!cancel, Assert.IsType<global::AvalonDock.Controls.LayoutDocumentFloatingWindowControl>(workspace.Host).IsDragging);
         workspace.Host.MouseUp(end, MouseButton.Left);
         Dispatcher.UIThread.RunJobs();
         Assert.Equal(cancel ? 0 : 1, ended);
         Assert.DoesNotContain(":dragging", workspace.Host.Classes);
+        Assert.False(((global::AvalonDock.Controls.LayoutFloatingWindowControl)workspace.Host).IsDragging);
     }
 
     [AvaloniaFact]

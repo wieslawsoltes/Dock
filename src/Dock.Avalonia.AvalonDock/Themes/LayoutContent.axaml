@@ -88,10 +88,10 @@
       </DockPanel>
     </ControlTemplate>
   </Styles.Resources>
-  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, dock|HostWindow.avalondock dock|DocumentControl">
+  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, :is(dock|HostWindow).avalondock dock|DocumentControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockDocumentContent}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolControl, dock|HostWindow.avalondock dock|ToolControl">
+  <Style Selector="dock|DockControl.avalondock dock|ToolControl, :is(dock|HostWindow).avalondock dock|ToolControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockToolContent}" />
   </Style>
 </Styles>

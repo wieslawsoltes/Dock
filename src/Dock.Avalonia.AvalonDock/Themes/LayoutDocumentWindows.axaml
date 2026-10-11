@@ -4,7 +4,7 @@
         xmlns:models="using:Dock.Model.Controls"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:DataType="models:IRootDock">
-  <Style Selector="dock|HostWindow.avalondock-document-window">
+  <Style Selector=":is(dock|HostWindow).avalondock-document-window">
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
     <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
     <Setter Property="WindowDecorations" Value="BorderOnly" />

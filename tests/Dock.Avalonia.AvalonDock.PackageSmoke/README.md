@@ -9,10 +9,12 @@ floating caption buttons to maximize/restore and execute the current close comma
 native tabs and custom manager menus to execute container commands, activate
 documents through the list menu with compiled header and icon templates, resize
 native splitters through the manager properties, observe bubbling docking/floating
-notifications around native movement, and restore application content
+notifications around native movement, inspect typed native floating controls and
+their collection changes, resolve a container with the unprefixed converter,
+and restore application content
 from XML using the packaged assemblies. Pack the native
 control, model, and proportional-panel packages too: they contain the tool-menu
-lifetime, window drag input, operation observation, and runtime splitter sizing
+lifetime, window drag input, operation observation, model-aware host creation, and runtime splitter sizing
 changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.

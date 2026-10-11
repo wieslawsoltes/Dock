@@ -10,7 +10,7 @@
       <infrastructure:LayoutDocumentMenu DataContext="{Binding Converter={StaticResource AvalonDockDocumentPane}}" />
     </DataTemplate>
   </Styles.Resources>
-  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStrip, dock|HostWindow.avalondock dock|DocumentTabStrip">
+  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStrip, :is(dock|HostWindow).avalondock dock|DocumentTabStrip">
     <Setter Property="RightContent" Value="{Binding}" />
     <Setter Property="RightContentTemplate" Value="{StaticResource AvalonDockDocumentMenu}" />
   </Style>

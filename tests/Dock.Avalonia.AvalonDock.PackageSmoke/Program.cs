@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Xml;
 using System.Reactive.Concurrency;
@@ -251,7 +252,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container conversion, and close cancellation passed.");
 
 static void AssertDockingNotifications(DockingManager manager, Window window)
 {
@@ -259,6 +260,12 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
     LayoutDocumentPane pane = manager.Layout.RootPanel.Descendents().OfType<LayoutDocumentPane>().First();
     pane.Children.Add(document);
     List<string> events = new();
+    List<NotifyCollectionChangedEventArgs> hosts = new();
+    void RecordHost(object? sender, LayoutFloatingWindowControlCollectionChangedEventArgs args)
+    {
+        if (!ReferenceEquals(sender, manager)) throw new Exception("Floating control notifications lost their manager.");
+        hosts.Add(args.CollectionChangedEventArgs);
+    }
     void Record(object? sender, RoutedEventArgs args)
     {
         if (!ReferenceEquals(sender, window) || !ReferenceEquals(args.Source, document))
@@ -269,9 +276,19 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
     window.AddHandler(DockingManager.FloatedEvent, Record);
     window.AddHandler(DockingManager.PreviewDockEvent, Record);
     window.AddHandler(DockingManager.DockedEvent, Record);
+    manager.LayoutFloatingWindowControlCollectionChanged += RecordHost;
     try
     {
         document.Float();
+        LayoutDocumentFloatingWindowControl host = manager.FloatingWindows.OfType<LayoutDocumentFloatingWindowControl>()
+            .Single(value => ReferenceEquals(((LayoutDocumentFloatingWindow)value.Model).RootDocument, document));
+        if (!ReferenceEquals(((LayoutFloatingWindow)host.Model).DockWindow.Host, host) ||
+            !ReferenceEquals(host.RootDocumentLayoutItem, manager.GetLayoutItemFromModel(document)) ||
+            hosts.Count != 1 || hosts[0].Action != NotifyCollectionChangedAction.Add || !ReferenceEquals(hosts[0].NewItems![0], host))
+            throw new Exception("Floating controls did not expose the actual native host, model, and container.");
+        if (window.Resources["ItemFromModel"] is not global::AvalonDock.Converters.LayoutItemFromLayoutModelConverter converter ||
+            !ReferenceEquals(converter.Convert(document, typeof(LayoutItem), null, System.Globalization.CultureInfo.InvariantCulture), host.RootDocumentLayoutItem))
+            throw new Exception("The unprefixed model-to-container converter did not resolve the packaged container.");
         Dock.Model.DockManager native = new(new Dock.Model.DockService());
         if (!native.ValidateDockable(document.DockModel, pane.DockModel, Dock.Model.Core.DragAction.Move,
                 Dock.Model.Core.DockOperation.Fill, false) || events.Count != 2)
@@ -280,6 +297,9 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
                 Dock.Model.Core.DockOperation.Fill, true) || document.IsFloating ||
             !events.SequenceEqual(new[] { "PreviewFloat", "Floated", "PreviewDock", "Docked" }))
             throw new Exception("The packaged native docking operation did not raise one ordered event pair.");
+        if (manager.FloatingWindows.Contains(host) || hosts.Count != 2 ||
+            hosts[1].Action != NotifyCollectionChangedAction.Remove || !ReferenceEquals(hosts[1].OldItems![0], host))
+            throw new Exception("Native docking did not remove the same floating control from the manager.");
     }
     finally
     {
@@ -287,6 +307,7 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
         window.RemoveHandler(DockingManager.FloatedEvent, Record);
         window.RemoveHandler(DockingManager.PreviewDockEvent, Record);
         window.RemoveHandler(DockingManager.DockedEvent, Record);
+        manager.LayoutFloatingWindowControlCollectionChanged -= RecordHost;
         document.Close();
     }
 }

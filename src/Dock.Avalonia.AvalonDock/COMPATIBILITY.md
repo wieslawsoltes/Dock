@@ -161,6 +161,17 @@ supported by corresponding implementation and test evidence.
   release removed models and managers.
 - Layout cleanup retains the last document pane and referenced return panes,
   clears detached active content, and collapses redundant typed pane groups.
+- Manager `FloatingWindows` and `LayoutFloatingWindowControlCollectionChanged`
+  expose the actual typed native hosts and collection indices. Document/tool
+  controls implement `ILayoutControl`, share their public floating models, and
+  report native drag/maximization state. Document controls resolve the current
+  `RootDocumentLayoutItem`; tool controls use compiled single-pane selection
+  with `LayoutItemFromLayoutModelConverter` and preserve application overrides.
+  Both XML namespaces resolve the converter. Tests cover native host identity,
+  cancellation, docking, XML replacement, detach/reattach, nested native locator
+  requests, exception cleanup, reentrant collection changes, and protected
+  constructor content immutability, and retained-empty-collection lifetime. Dock's optional `IDockWindowHostFactory`
+  enables model-aware creation while preserving ordinary/native ID locators.
 - Document and tool floating models expose native Dock windows through an
   observable `FloatingWindows` collection. Native single-document float/dock
   and tool floating operations preserve content wrappers and public ownership.
@@ -210,7 +221,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 341 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 353 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -222,8 +233,10 @@ supported by corresponding implementation and test evidence.
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
-  templates/selectors, styles, themes, floating-control collection events,
-  converters, and the control adapter surface.
+  templates/selectors, styles, themes, remaining converters, and the control
+  adapter surface. Floating controls still need `CreateFloatingWindow` and its
+  immutable-content path, window-wide commands and close hooks, resize-border
+  customization, and remaining protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
 - Complete auto sizing, header visibility,
@@ -241,8 +254,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 425
-matching type/member keys and 526 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 452
+matching type/member keys and 499 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

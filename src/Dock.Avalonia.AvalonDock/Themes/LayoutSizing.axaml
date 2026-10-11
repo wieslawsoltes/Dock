@@ -37,10 +37,10 @@
       </dock:DockableControl>
     </ControlTemplate>
   </Styles.Resources>
-  <Style Selector="dock|DockControl.avalondock dock|ProportionalDockControl, dock|HostWindow.avalondock dock|ProportionalDockControl">
+  <Style Selector="dock|DockControl.avalondock dock|ProportionalDockControl, :is(dock|HostWindow).avalondock dock|ProportionalDockControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockProportionalLayout}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock proportional|ProportionalStackPanelSplitter, dock|HostWindow.avalondock proportional|ProportionalStackPanelSplitter">
+  <Style Selector="dock|DockControl.avalondock proportional|ProportionalStackPanelSplitter, :is(dock|HostWindow).avalondock proportional|ProportionalStackPanelSplitter">
     <Setter Property="Thickness">
       <MultiBinding Converter="{StaticResource AvalonDockSplitterSize}">
         <Binding Path="(infrastructure:LayoutSplitterSizing.Width)" RelativeSource="{RelativeSource Self}" />

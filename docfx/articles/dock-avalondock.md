@@ -592,6 +592,54 @@ capabilities still apply, and a rejected floating attempt does not raise
 `Floated`. Exceptions release the operation scope, and changing the manager's
 layout during a preview prevents stale completion notifications.
 
+## Inspect native floating-window controls
+
+`DockingManager.FloatingWindows` enumerates `LayoutFloatingWindowControl`
+instances. These derive from Dock's `HostWindow` and are the actual Avalonia
+windows displaying the floating layouts. Documents use
+`LayoutDocumentFloatingWindowControl`; tool groups use
+`LayoutAnchorableFloatingWindowControl`. Their `ILayoutControl.Model` is the
+same public floating model found in `LayoutRoot.FloatingWindows`.
+
+```csharp
+using AvalonDock;
+using AvalonDock.Controls;
+
+foreach (LayoutFloatingWindowControl window in manager.FloatingWindows)
+    Console.WriteLine($"{window.Model}: maximized={window.IsMaximized}");
+
+manager.LayoutFloatingWindowControlCollectionChanged += OnFloatingWindowsChanged;
+
+void OnFloatingWindowsChanged(object? sender,
+    LayoutFloatingWindowControlCollectionChangedEventArgs args)
+{
+    Console.WriteLine(args.CollectionChangedEventArgs.Action);
+}
+
+// Unsubscribe when the workspace service detaches.
+manager.LayoutFloatingWindowControlCollectionChanged -= OnFloatingWindowsChanged;
+```
+
+The event wraps the collection action, indices, and actual added or removed
+controls. Canceling a close leaves the control registered. Docking, closing,
+layout replacement, and detaching the manager remove closed hosts. Reattachment
+can create new control instances for the same persistent floating models, so
+keep application state on the models. Native drag and window-state changes
+update `IsDragging` and `IsMaximized`.
+
+`RootDocumentLayoutItem` resolves a document host's current container.
+`SingleContentLayoutItem` follows the selected content when a tool host has one
+visible pane and becomes null when it has multiple panes. Its default binding
+is compiled and uses `LayoutItemFromLayoutModelConverter`, also available under
+`AvalonDock.Converters` and both supported XML namespaces. Application values
+and bindings can override this default through Avalonia property precedence.
+Derived floating controls can use the protected constructor's
+`isContentImmutable` option to prevent replacement of loaded `Content`.
+
+The floating-control surface is still being completed: manager-created immutable
+windows, window-wide commands, resize-border customization, and the remaining
+protected/platform hooks are tracked in the compatibility checklist.
+
 ## Restore application content from XML
 
 The XML describes layout structure and metadata; it does not serialize controls
@@ -647,6 +695,7 @@ flowchart TB
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
+        Hosts["Floating control API<br/>Typed native hosts and collection notifications"]
         Xml["XmlLayoutSerializer + explicit XML codec"]
     end
     subgraph Native["Existing Dock implementation"]
@@ -684,6 +733,9 @@ flowchart TB
     Factory --> Models
     Factory --> Events
     Events --> Manager
+    Factory --> Hosts
+    Hosts --> Controls
+    Hosts --> Manager
     Models --> Controls
     Xml <--> Layout
 ```
@@ -702,7 +754,8 @@ metadata, such as AvalonDock return-container references, remains in the adapter
 | `LayoutAnchorablePane` | `ToolDock` |
 | `LayoutDocument`, `LayoutAnchorable` | `Document`, `Tool` |
 | `LayoutAnchorSide`, `LayoutAnchorGroup` | Projections over native pinned lists |
-| Document/tool floating windows | `DockWindow`, a floating `RootDock`, and `HostWindow` |
+| Document/tool floating models | `DockWindow` and a floating `RootDock` |
+| `LayoutDocumentFloatingWindowControl`, `LayoutAnchorableFloatingWindowControl` | Typed subclasses of the actual native `HostWindow` |
 | `DockingManager` | A themed `DockControl` using the live root and factory |
 | `LayoutDocumentItem`, `LayoutAnchorableItem` | Container state and commands over the same `Document`/`Tool` |
 
@@ -711,6 +764,12 @@ batch-floating boundaries. It composes lifecycle helpers to honor AvalonDock
 capabilities and return positions, then delegates actual movement to Dock.
 `LayoutFloatingWindowPresenter`, the host factory, and scoped templates manage
 floating presentation and preserve the manager's template lookup scope.
+The optional `IDockWindowHostFactory` supplies the model at initialization and
+when a host is recreated. `LayoutFactory` preserves the native ID-based and
+application locators while making that model available to the manager's host
+factory; nested requests and exceptions restore the previous request. A
+separate registry observes native host identities and floating-model membership
+to publish control additions and removals.
 The native content template obtains the corresponding `LayoutItem.View` from
 the factory. That presenter selects manager content templates and delegates
 inline controls and Dock template content to the native model's template path.

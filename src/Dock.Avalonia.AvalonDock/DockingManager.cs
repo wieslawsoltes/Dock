@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
@@ -131,6 +133,7 @@ public class DockingManager : TemplatedControl
     private object? _activeContent;
     internal LayoutSizingViews SizingViews { get; } = new();
     private readonly LayoutFloatingWindowPresenter _floatingWindows = new();
+    private readonly LayoutFloatingWindowControls _floatingControls;
     private readonly LayoutSourceBinding<LayoutDocument> _documents;
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
     private readonly LayoutItemRegistry _layoutItems;
@@ -156,6 +159,8 @@ public class DockingManager : TemplatedControl
         _layout.PropertyChanged += LayoutPropertyChanged;
         _layoutItems = new LayoutItemRegistry(this);
         _layoutItems.SetLayout(_layout);
+        _floatingControls = new(this);
+        _floatingControls.SetLayout(_layout);
         _documents = new(this, static content => new LayoutDocument { Content = content }, LayoutSourcePlacement.InsertDocument);
         _anchorables = new(this, static content => new LayoutAnchorable { Content = content }, LayoutSourcePlacement.InsertAnchorable);
     }
@@ -186,6 +191,7 @@ public class DockingManager : TemplatedControl
             _layout.Manager = this;
             _layout.PropertyChanged += LayoutPropertyChanged;
             _layoutItems.SetLayout(_layout);
+            _floatingControls.SetLayout(_layout);
             RaisePropertyChanged(DockFactoryProperty, oldFactory, DockFactory);
             RaisePropertyChanged(DockLayoutProperty, oldDock, DockLayout);
             OnLayoutChanged(oldLayout, value);
@@ -197,6 +203,8 @@ public class DockingManager : TemplatedControl
     public RootDock DockLayout => (RootDock)Layout.DockModel;
     /// <summary>Gets the factory operating the live layout.</summary>
     public IFactory DockFactory => Layout.DockFactory;
+    /// <summary>Gets the native floating-window controls associated with this manager's layout.</summary>
+    public IEnumerable<LayoutFloatingWindowControl> FloatingWindows => _floatingControls.Items;
     /// <summary>Gets or sets the horizontal split gap in device-independent pixels. The default is six.</summary>
     public double GridSplitterWidth { get => GetValue(GridSplitterWidthProperty); set => SetValue(GridSplitterWidthProperty, value); }
     /// <summary>Gets or sets the vertical split gap in device-independent pixels. The default is six.</summary>
@@ -432,6 +440,8 @@ public class DockingManager : TemplatedControl
     public event EventHandler<DocumentClosedEventArgs>? DocumentClosed;
     /// <summary>Occurs when active content changes.</summary>
     public event EventHandler? ActiveContentChanged;
+    /// <summary>Occurs when a native floating-window control is added or removed.</summary>
+    public event EventHandler<LayoutFloatingWindowControlCollectionChangedEventArgs>? LayoutFloatingWindowControlCollectionChanged;
 
     /// <summary>Occurs before creating a floating window. Source is the public layout content; Handled does not cancel floating.</summary>
     public event EventHandler<RoutedEventArgs> PreviewFloat
@@ -501,6 +511,9 @@ public class DockingManager : TemplatedControl
     }
 
     internal void PresentFloatingWindow(LayoutFloatingWindow window) => _floatingWindows.Present(window);
+    internal void RemoveFloatingWindow(LayoutFloatingWindowControl window) => _floatingControls.Remove(window);
+    internal void NotifyFloatingWindowControlsChanged(NotifyCollectionChangedEventArgs args) =>
+        LayoutFloatingWindowControlCollectionChanged?.Invoke(this, new(args));
     internal void ShowContextMenu(Control target, LayoutItem item, LayoutHeaderKind kind, ContextRequestedEventArgs? request, IDock? pane = null) =>
         _contextMenus.Show(kind == LayoutHeaderKind.Document ? DocumentContextMenu : AnchorableContextMenu,
             target, item, request, pane);

@@ -38,6 +38,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private string? _previousContainerId;
     private int _previousContainerIndex = -1;
     private DateTime? _lastActivationTimeStamp;
+    private bool _synchronizingActive;
 
     internal LayoutContent(DockableBase model, LayoutModelContext? context = null) : base(model, context) => DockingHistory = new(this);
     internal LayoutDockingHistory DockingHistory { get; }
@@ -71,11 +72,21 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
                 if (value && index >= 0) { selector.SelectedContentIndex = index; return; }
                 if (!value && ReferenceEquals(selector.SelectedContent, this)) { selector.SelectedContentIndex = -1; return; }
             }
-            State.IsSelected = value;
+            SetSelectedFromPane(value);
         }
     }
     /// <summary>Gets or sets whether this item is active.</summary>
-    public bool IsActive { get => State.IsActive; set => State.IsActive = value; }
+    public bool IsActive
+    {
+        get => State.IsActive;
+        set
+        {
+            VerifyAccess();
+            if (State.IsActive == value) return;
+            RaisePropertyChanging();
+            State.IsActive = value;
+        }
+    }
     /// <summary>Gets whether this is the last focused document.</summary>
     public bool IsLastFocusedDocument => ReferenceEquals((Root as LayoutRoot)?.LastFocusedDocument, this);
     /// <summary>Gets or sets the previous container.</summary>
@@ -165,7 +176,13 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         base.OnParentChanged(oldValue, newValue);
     }
 
-    internal void SetSelectedFromPane(bool selected) => State.IsSelected = selected;
+    internal void SetSelectedFromPane(bool selected)
+    {
+        VerifyAccess();
+        if (State.IsSelected == selected) return;
+        RaisePropertyChanging(nameof(IsSelected));
+        State.IsSelected = selected;
+    }
     /// <summary>Occurs after the item is closed.</summary>
     public event EventHandler? Closed;
     /// <summary>Occurs before closing and permits cancellation.</summary>
@@ -175,8 +192,49 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// <summary>Occurs when active state changes.</summary>
     public event EventHandler? IsActiveChanged;
 
-    internal void NotifyClosing(CancelEventArgs args) => Closing?.Invoke(this, args);
-    internal void NotifyClosed() => Closed?.Invoke(this, EventArgs.Empty);
+    /// <summary>Raises the selection event after the item's selection changes.</summary>
+    /// <param name="oldValue">The previous selection state.</param>
+    /// <param name="newValue">The new selection state.</param>
+    protected virtual void OnIsSelectedChanged(bool oldValue, bool newValue) => IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+
+    /// <summary>Records activation time and raises the active-state event.</summary>
+    /// <param name="oldValue">The previous active state.</param>
+    /// <param name="newValue">The new active state.</param>
+    protected virtual void OnIsActiveChanged(bool oldValue, bool newValue)
+    {
+        if (newValue) LastActivationTimeStamp = DateTime.Now;
+        IsActiveChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>Raises the cancelable closing event.</summary>
+    /// <param name="args">The cancellation shared with the close operation.</param>
+    protected virtual void OnClosing(CancelEventArgs args) => Closing?.Invoke(this, args);
+
+    /// <summary>Raises the closed event after the item has left its layout.</summary>
+    protected virtual void OnClosed() => Closed?.Invoke(this, EventArgs.Empty);
+
+    internal void NotifyClosing(CancelEventArgs args) => OnClosing(args);
+    internal void NotifyClosed() => OnClosed();
+    internal void CompleteActivationNotification(bool previous)
+    {
+        if (previous == State.IsActive) return;
+        _synchronizingActive = true;
+        try
+        {
+            if (State.IsActive)
+            {
+                if (Root is LayoutRoot root) root.ActiveContent = this;
+                IsSelected = true;
+            }
+        }
+        finally { _synchronizingActive = false; }
+        // Selecting before native focus is assigned can transiently clear
+        // the active flag. Publish the completed public transition once.
+        bool current = State.IsActive;
+        if (previous == current) return;
+        OnIsActiveChanged(previous, current);
+        RaisePropertyChanged(nameof(IsActive));
+    }
     internal void NotifyLastFocusedDocumentChanging() => RaisePropertyChanging(nameof(IsLastFocusedDocument));
     internal void NotifyLastFocusedDocumentChanged() => RaisePropertyChanged(nameof(IsLastFocusedDocument));
     internal void RememberDockedLocation()
@@ -204,6 +262,16 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (e.Property == Document.IsSelectedProperty || e.Property == Tool.IsSelectedProperty)
+            OnIsSelectedChanged((bool)e.OldValue!, (bool)e.NewValue!);
+        else if (e.Property == Document.IsActiveProperty || e.Property == Tool.IsActiveProperty)
+        {
+            if (_synchronizingActive) return;
+            bool previous = (bool)e.OldValue!;
+            if ((Root as LayoutRoot)?.Focus.DeferActivationNotification(this, previous) != true)
+                CompleteActivationNotification(previous);
+            return;
+        }
         base.OnModelPropertyChanged(sender, e);
         if (e.Property == DockableBase.TitleProperty)
             RaisePropertyChanged(TitleProperty, (string)e.OldValue!, (string)e.NewValue!);
@@ -214,12 +282,6 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         }
         else if (e.Property == Document.ContentProperty || e.Property == Tool.ContentProperty)
             RaisePropertyChanged(ContentProperty, e.OldValue, e.NewValue);
-        else if (e.Property.Name == nameof(IsSelected)) IsSelectedChanged?.Invoke(this, EventArgs.Empty);
-        else if (e.Property.Name == nameof(IsActive))
-        {
-            if (IsActive) LastActivationTimeStamp = DateTime.Now;
-            IsActiveChanged?.Invoke(this, EventArgs.Empty);
-        }
         else if (e.Property == DockableBase.DockingStateProperty) RaisePropertyChanged(nameof(IsFloating));
     }
 }

@@ -70,17 +70,18 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
             {
                 if (args.Dockable is null || Context.Get(args.Dockable) is not LayoutContent content) return;
                 CancelEventArgs forwarded = new(args.Cancel);
-                content.NotifyClosing(forwarded);
                 if (content is LayoutDocument document) Manager?.NotifyDocumentClosing(document, forwarded);
+                if (!forwarded.Cancel) content.NotifyClosing(forwarded);
                 args.Cancel |= forwarded.Cancel;
             };
             factory.DockableClosed += (_, args) =>
             {
                 if (args.Dockable is null || Context.Get(args.Dockable) is not LayoutContent content) return;
-                content.NotifyClosed();
-                if (content is LayoutDocument document) Manager?.NotifyDocumentClosed(document);
+                DockingManager? manager = Manager;
                 content.DockModel.Owner = null;
                 CollectGarbage();
+                content.NotifyClosed();
+                if (content is LayoutDocument document) manager?.NotifyDocumentClosed(document);
             };
             factory.DockableDocked += (_, args) =>
             {

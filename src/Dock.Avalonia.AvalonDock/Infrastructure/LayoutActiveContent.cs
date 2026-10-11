@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -19,6 +20,7 @@ internal sealed class LayoutActiveContent
     private WeakReference<IRootDock>? _nativeRoot;
     private int _revision;
     private int _focusDepth;
+    private List<(LayoutContent Content, bool Previous)>? _pendingActivation;
 
     internal LayoutActiveContent(LayoutRoot root, Action<string> changing, Action<string> changed)
     {
@@ -82,10 +84,34 @@ internal sealed class LayoutActiveContent
 
     private void BeginFocus() => _focusDepth++;
 
+    internal bool DeferActivationNotification(LayoutContent content, bool previous)
+    {
+        if (_focusDepth == 0) return false;
+        _pendingActivation ??= new();
+        foreach ((LayoutContent pending, _) in _pendingActivation)
+            if (ReferenceEquals(pending, content)) return true;
+        _pendingActivation.Add((content, previous));
+        return true;
+    }
+
     private void EndFocus(IDock dock)
     {
-        if (--_focusDepth == 0 && _root.DockFactory.FindRoot(dock, static root => root.IsFocusableRoot) is { } nativeRoot)
-            NativeFocusChanged(nativeRoot);
+        if (--_focusDepth != 0) return;
+        try
+        {
+            if (_root.DockFactory.FindRoot(dock, static root => root.IsFocusableRoot) is { } nativeRoot)
+                NativeFocusChanged(nativeRoot);
+        }
+        finally
+        {
+            // Clear ownership before callbacks, including callbacks that start
+            // another focus operation or throw. No pending flag remains on content.
+            List<(LayoutContent Content, bool Previous)>? pending = _pendingActivation;
+            _pendingActivation = null;
+            if (pending is not null)
+                foreach ((LayoutContent content, bool previous) in pending)
+                    content.CompleteActivationNotification(previous);
+        }
     }
 
     private void Update(LayoutContent? content, IRootDock? nativeRoot)

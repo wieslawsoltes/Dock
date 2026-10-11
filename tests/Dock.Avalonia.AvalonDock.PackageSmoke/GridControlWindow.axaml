@@ -5,6 +5,7 @@
         x:Class="PackageConsumer.GridControlWindow"
         x:DataType="DockingManager" Width="1200" Height="720">
   <Window.Styles>
+    <AvalonDockTheme />
     <Style Selector="LayoutPanelControl" x:DataType="LayoutPanelControl">
       <Setter Property="Tag" Value="{Binding $self.Model}" />
     </Style>

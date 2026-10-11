@@ -8,7 +8,6 @@ using Avalonia.VisualTree;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
-using AvalonDock.Themes;
 
 namespace PackageConsumer;
 
@@ -27,7 +26,6 @@ internal static class GridControlProbe
     internal static void Verify()
     {
         GridControlWindow window = new();
-        window.Styles.Add(new AvalonDockTheme());
         GridManagerProbe manager = window.FindControl<GridManagerProbe>("Manager")!;
         try
         {
@@ -47,7 +45,7 @@ internal static class GridControlProbe
             Update();
             if (tools.Orientation != toolModel.Orientation || ((LayoutAnchorablePane)toolModel.Children[0]).DockWidth != GridLength.Star)
                 throw new Exception("The packaged group did not follow its live model orientation.");
-            LayoutDocument document = ((LayoutDocumentPane)documentModel.Children[0]).Children[0];
+            LayoutContent document = ((LayoutDocumentPane)documentModel.Children[0]).Children[0];
             Control view = manager.GetLayoutItemFromModel(document)!.View;
             int changes = manager.Changes;
             manager.SetValue(DockingManager.LayoutRootPanelProperty, null);

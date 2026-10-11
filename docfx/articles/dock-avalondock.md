@@ -565,6 +565,63 @@ provided. These controls also do not resolve the separately tracked grouped or
 mixed floating-layout gaps. Their default presentation continues to use Dock's
 content caching rather than creating an additional application view cache.
 
+## Inspect and style split containers
+
+`LayoutPanelControl`, `LayoutDocumentPaneGroupControl`, and
+`LayoutAnchorablePaneGroupControl` derive from the public Avalonia
+`LayoutGridControl<T>`. Each exposes the existing public layout node through
+`Model` and reads its current `Orientation`. Their constructors are internal,
+as upstream; use generated controls or target their types in styles. Both XML
+namespace forms work, including these unprefixed compiled bindings:
+
+```xml
+<Style Selector="LayoutDocumentPaneGroupControl"
+       x:DataType="LayoutDocumentPaneGroupControl">
+  <Setter Property="Background" Value="Transparent" />
+  <Setter Property="Tag" Value="{Binding $self.Model}" />
+</Style>
+```
+
+After the manager loads, `manager.LayoutRootPanel` is the actual
+`LayoutPanelControl` displayed for `manager.Layout.RootPanel`. For example:
+
+```csharp
+using AvalonDock.Controls;
+using AvalonDock.Layout;
+
+LayoutPanelControl? control = manager.LayoutRootPanel;
+if (control?.Model is LayoutPanel panel)
+{
+    panel.Orientation = Avalonia.Layout.Orientation.Vertical;
+    // control.Orientation now reads Vertical from the same model.
+}
+```
+
+The property starts as null. Replacing the root panel or deserializing a layout
+replaces its control. Setting the property to null removes the displayed root;
+restoring the previous control reuses the existing content views. Manager
+subclasses can override `OnLayoutRootPanelChanged` with
+`AvaloniaPropertyChangedEventArgs`. Detaching the manager releases the old
+presenter, and reattachment displays the current root control. Split-container
+controls set their local flow direction to left-to-right, matching upstream.
+
+Document and tool pane groups normalize non-star child lengths to `1*` on their
+split axis when initially displayed or rebuilt after direct-child, visibility,
+or orientation changes. Existing star weights and cross-axis lengths remain
+unchanged; hidden children also participate. A pixel length assigned after that
+layout is honored until the next such rebuild. `LayoutPanelControl` applies no
+star conversion. Mixed pixel/star layouts continue to use the native sizing
+bridge and splitter input described below.
+
+These public grids contain a compiled native items presenter. Dock's
+proportional panel still measures and arranges panes and handles splitter
+dragging, including floating tool groups. Their inherited `Children`, row, and
+column collections therefore do not reproduce WPF's direct pane/splitter visual
+tree. The existing grouped/mixed floating-document limitations remain tracked
+separately. Native proportional sizing also redistributes a split consisting
+entirely of pixel lengths and can write those resized lengths back; exact WPF
+all-pixel and auto-size behavior remains unfinished.
+
 ## Lay out tab headers and handle overflow
 
 `DocumentPaneTabPanel` and `AnchorablePaneTabPanel` are public Avalonia `Panel`
@@ -1034,6 +1091,10 @@ star panes share the remainder. Collapsed return panes and adjacent hidden
 splitters do not consume this space. Native splitter dragging updates public
 pane dimensions, which survive subsequent window resizing. Changing the group
 orientation selects the corresponding manager setting.
+
+The pane-group rebuild policy above can convert pixel lengths to stars. Set
+pixel dimensions after the first layout when exercising runtime splitter sizing;
+use a `LayoutPanel` with a star-sized sibling for a fixed-width tool region.
 
 The settings belong to one manager and update its existing floating windows.
 XML restoration and view reattachment retain them as manager configuration;
@@ -1535,6 +1596,7 @@ flowchart TB
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
+        GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
         PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
         TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
@@ -1564,6 +1626,9 @@ flowchart TB
         Controls["DockControl, HostWindow, and Fluent controls"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     end
+    Manager -->|LayoutRootPanel| GridControls
+    GridControls --> Sizing
+    GridControls --> Controls
     Manager --> PaneControls
     PaneControls --> ContentControls
     PaneControls --> Tabs

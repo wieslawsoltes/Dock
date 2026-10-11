@@ -40,6 +40,18 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- Public `LayoutGridControl<T>`, `LayoutPanelControl`,
+  `LayoutDocumentPaneGroupControl`, and `LayoutAnchorablePaneGroupControl` expose
+  live model/orientation state over Dock's existing proportional layouts.
+  Constructors remain internal; styles compile through both XML namespaces.
+  `DockingManager.LayoutRootPanel`, its Avalonia property field, and changed hook
+  expose/control the actual displayed root, including clear/restore, root/XML
+  replacement, and reattachment. Pane groups normalize non-star lengths along
+  their split axis on initial layout and structural/visibility/orientation
+  rebuilds; plain panels apply no conversion. Native measurement, splitter input,
+  pane selection, and existing content views remain in Dock. Tests cover live
+  length changes, initial weights, hidden children, floating tool groups, and
+  subscription lifetime with a retained old model and manager.
 - `DockingManager` template renders `DockControl` using the same live
   `Dock.Model.Avalonia.RootDock` and factory exposed by the compatibility model.
 - Panels, document/anchorable panes, typed pane groups, documents, and tools;
@@ -450,7 +462,7 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 838 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 852 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -471,7 +483,11 @@ supported by corresponding implementation and test evidence.
   and `IXmlSerializable` methods not yet represented in the adapter.
   Additional selection edge cases and protected override ordering still require
   the broader signature and behavior audit below.
-- Complete auto sizing, header visibility,
+- Exact all-pixel and auto sizing: the native proportional panel currently
+  redistributes an all-pixel split and can write resized lengths back. Public
+  grid child/row/column collections host a native items presenter rather than
+  reproducing WPF's direct pane/splitter visual tree.
+- Complete header visibility,
   repositioning policies, icons, tooltips, and enablement
   in actual rendering and behavior. Several metadata properties currently
   round-trip without applying all upstream visual or behavioral effects.
@@ -487,8 +503,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 635
-matching type/member keys and 316 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 649
+matching type/member keys and 302 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

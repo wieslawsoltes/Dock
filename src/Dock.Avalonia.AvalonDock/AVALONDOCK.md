@@ -106,6 +106,26 @@ The tool-pane constructor accepts an existing `LayoutAnchorablePane`; the
 document-pane constructor remains internal, as upstream. Avalonia uses its own
 logical-child collection instead of the WPF `LogicalChildren` enumerator hook.
 
+Public split containers are `LayoutPanelControl`,
+`LayoutDocumentPaneGroupControl`, and `LayoutAnchorablePaneGroupControl`, all
+derived from `LayoutGridControl<T>`. They expose the existing layout `Model`
+and its live `Orientation`, and can be targeted by styles in either XML
+namespace. Their constructors are internal, as upstream.
+`manager.LayoutRootPanel` exposes the actual displayed root control after load;
+root replacement and XML restoration update it. Clearing and restoring the
+property removes and restores the native presentation without replacing content
+views. Derived managers have an `OnLayoutRootPanelChanged` hook with Avalonia
+property-change arguments.
+
+Pane groups convert non-star child lengths to `1*` on their split axis when
+initially displayed or rebuilt, including after direct-child, visibility, or
+orientation changes. Existing star weights and cross-axis lengths are preserved.
+Pixel changes after layout remain until a rebuild. Plain layout panels apply no
+such conversion. The grids host compiled Dock items presenters; Dock retains
+measurement and splitter input. Their child/row/column collections consequently
+differ from WPF's direct pane/splitter tree. All-pixel splits still use native
+proportional redistribution; exact WPF all-pixel and auto sizing remain open.
+
 Derived documents and tools can override `OnIsSelectedChanged(bool, bool)` and
 `OnIsActiveChanged(bool, bool)`. They receive the old and new states before the
 corresponding property-changed notification. Native activation finishes selection
@@ -438,6 +458,7 @@ Pane `DockWidth`/`DockHeight` pixel and star values use the actual space in each
 nested or floating native panel. Runtime splitter settings and window resizing
 preserve pixel pane sizes where available space and native constraints permit;
 star panes share the remainder. Native dragging updates public pane dimensions.
+The pane-group rebuild policy described above can convert pixel lengths to stars.
 Manager settings survive XML restoration and view reattachment and remain
 independent between managers.
 
@@ -602,6 +623,7 @@ flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
+    GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
     PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
     ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
     TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
@@ -627,6 +649,9 @@ flowchart TB
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
     Xml["XmlLayoutSerializer and explicit XML codec"]
+    Api -->|LayoutRootPanel| GridControls
+    GridControls --> Sizing
+    GridControls --> View
     Api --> PaneControls
     PaneControls --> ContentControls
     PaneControls --> Tabs

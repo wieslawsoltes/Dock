@@ -63,6 +63,11 @@ public abstract partial class FactoryBase
         {
             var layout = window.Layout;
             window.Exit();
+            if (!ReferenceEquals(window.Owner, rootDock) ||
+                window.Host is IHostWindowCloseState { IsClosed: false })
+            {
+                return;
+            }
             rootDock.Windows?.Remove(window);
             OnWindowRemoved(window);
 

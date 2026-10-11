@@ -31,7 +31,7 @@ namespace Dock.Avalonia.Controls;
 #if AVALONIA_11
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 #endif
-public class HostWindow : Window, IHostWindow
+public class HostWindow : Window, IHostWindow, IHostWindowCloseState
 {
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
@@ -39,10 +39,13 @@ public class HostWindow : Window, IHostWindow
     private HostWindowTitleBar? _hostWindowTitleBar;
 #endif
     private bool _mouseDown, _draggingWindow;
+    private bool _isClosed;
     private double _normalX = double.NaN;
     private double _normalY = double.NaN;
     private double _normalWidth = double.NaN;
     private double _normalHeight = double.NaN;
+
+    bool IHostWindowCloseState.IsClosed => _isClosed;
 
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
@@ -474,6 +477,7 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
+        _isClosed = true;
         base.OnClosed(e);
 
         Window?.Factory?.HostWindows.Remove(this);
@@ -494,6 +498,10 @@ public class HostWindow : Window, IHostWindow
     protected override void OnClosing(WindowClosingEventArgs e)
     {
         base.OnClosing(e);
+        if (e.Cancel)
+        {
+            return;
+        }
 
         if (Window is { })
         {
@@ -716,17 +724,13 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     public void Exit()
     {
-        if (Window is { })
+        // A factory evaluates OnClose inside the cancelable closing pipeline.
+        // Calling it here too can mutate content before a window handler vetoes.
+        if (Window is { Factory: null } window && !window.OnClose())
         {
-            if (Window.OnClose())
-            {
-                Close();
-            }
+            return;
         }
-        else
-        {
-            Close();
-        }
+        Close();
     }
 
     /// <inheritdoc/>

@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Managed in-app host window implementation.
 /// </summary>
-public sealed class ManagedHostWindow : IHostWindow
+public sealed class ManagedHostWindow : IHostWindow, IHostWindowCloseState
 {
     private readonly ManagedHostWindowState _hostWindowState;
     private ManagedDockWindowDocument? _document;
@@ -33,6 +33,8 @@ public sealed class ManagedHostWindow : IHostWindow
     public int ManagedZIndex => _document?.MdiZIndex ?? 0;
 
     internal bool LastCloseCanceled => _lastCloseCanceled;
+
+    bool IHostWindowCloseState.IsClosed => _closed;
 
     /// <inheritdoc />
     public IHostWindowState HostWindowState => _hostWindowState;

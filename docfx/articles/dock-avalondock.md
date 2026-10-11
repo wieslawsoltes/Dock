@@ -827,6 +827,75 @@ The floating-control surface is still being completed: exact close-event orderin
 cancellation during manager layout replacement/view unload,
 and remaining protected/platform hooks are tracked in the compatibility checklist.
 
+## Apply AvalonDock resource themes
+
+`DockingManager.Theme` accepts `AvalonDock.Themes.Theme`. The default is null,
+which uses the resources installed by `AvalonDockTheme`. Select the compiled
+standard resource bundle with unprefixed XAML:
+
+```xml
+<DockingManager xmlns="https://github.com/avaloniaui">
+  <DockingManager.Theme>
+    <GenericTheme />
+  </DockingManager.Theme>
+</DockingManager>
+```
+
+For custom resources, derive from `DictionaryTheme` and supply an Avalonia
+`ResourceDictionary`:
+
+```csharp
+using Avalonia.Controls;
+using Avalonia.Media;
+using AvalonDock.Themes;
+
+public sealed class EditorTheme : DictionaryTheme
+{
+    public EditorTheme() : base(new ResourceDictionary
+    {
+        ["DockThemeBackgroundBrush"] = new SolidColorBrush(Color.Parse("#253345"))
+    }) { }
+}
+
+// In the application's docking composition code:
+manager.Theme = new EditorTheme();
+```
+
+A dictionary can be shared by multiple managers, including through separate
+`DictionaryTheme` instances. The adapter supplies each manager, floating host,
+and navigator with its own resource provider. The providers share values and
+forward resource notifications; they do not copy the dictionary or attach it
+to several Avalonia owners. Key and theme-variant changes update dynamic resources.
+An existing external dictionary owner is preserved, including transfers between
+owners. Resources remain available after hiding a navigator or canceling a close;
+completed window closure removes that window's provider. Clearing or replacing the
+manager's theme updates existing windows, and subsequently created windows receive
+the current theme. Unrelated local resources and merged dictionaries remain intact.
+
+`ThemeProperty` is an Avalonia styled property, and `OnThemeChanged` is a protected
+virtual hook using `AvaloniaPropertyChangedEventArgs`. Both XML namespaces support
+compiled theme bindings. The AvalonDock property hides Avalonia's inherited
+`StyledElement.Theme`; use `((StyledElement)manager).Theme` in C# when assigning an
+Avalonia `ControlTheme` to the manager itself.
+
+`GenericTheme.GetResourceUri()` identifies the compiled `Themes/Generic.axaml`
+dictionary. Applications can also include it directly in their merged resources:
+
+```xml
+<ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/Generic.axaml" />
+```
+
+At this checkpoint, theme URI resolution recognizes that built-in URI;
+other custom `Theme.GetResourceUri()` values raise `NotSupportedException`.
+General URI loading remains open. `DictionaryTheme.GetResourceUri()` returns null
+because its dictionary is supplied directly.
+
+A `DictionaryTheme` constructed without a dictionary cannot be applied, and a
+non-dictionary theme must return a URI. Applying either invalid configuration
+fails after removing the manager's previous theme resources, following the
+upstream ordering and WPF's rejection of [null merged dictionaries](https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/ResourceDictionaryCollection.cs)
+and [null resource URIs](https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/ResourceDictionary.cs).
+
 ## Navigate documents and tools with Ctrl+Tab
 
 Ctrl+Tab opens an `AvalonDock.Controls.NavigatorWindow` from docked content or
@@ -895,8 +964,8 @@ called by Avalonia template application. Derived navigators can replace the list
 through protected `SetDocuments`/`SetAnchorables` methods and override selection
 and preview-key hooks using Avalonia event arguments.
 
-Per-manager theme-resource integration and desktop modality/focus verification
-remain open work. The native Dock selector continues to handle its other gestures.
+General theme URI loading and desktop modality/focus verification remain open
+work. The native Dock selector continues to handle its other gestures.
 
 ## Restore application content from XML
 
@@ -949,6 +1018,7 @@ flowchart TB
         Commands["Compiled command bindings<br/>Native input routing"]
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
+        ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
@@ -966,6 +1036,10 @@ flowchart TB
     App --> Manager
     App --> Converters
     Converters --> Items
+    Manager --> ResourceThemes
+    ResourceThemes --> Navigator
+    ResourceThemes --> Hosts
+    ResourceThemes --> Controls
     Manager --> Navigator
     Navigator --> Items
     App --> Layout

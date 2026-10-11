@@ -302,7 +302,17 @@ supported by corresponding implementation and test evidence.
   unprefixed label styles, the public template hook, keyboard list navigation,
   native activation, editor focus, and desktop lifetime shutdown after multiple
   hidden navigators are cleaned up when their owner closes.
-- 477 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- `Themes.Theme`, `DictionaryTheme`, `GenericTheme`, and the manager's styled
+  `Theme` property/protected hook. Shared dictionaries support live resource and
+  theme-variant changes across managers, floating windows, and navigators, including
+  hidden windows, external dictionary ownership/transfer, reentrant updates,
+  replacement/removal, close cancellation, and collection while a theme is retained.
+  The compiled `Themes/Generic.axaml` dictionary separates resource keys
+  from selector styles and can be included by URI from consumer XAML. Tests verify
+  both XML namespaces, compiled bindings, the inherited Avalonia control-theme
+  property, invalid configurations, and the built-in URI. General URI loading is
+  still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
+- 493 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -314,8 +324,8 @@ supported by corresponding implementation and test evidence.
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
-  templates/selectors, styles, themes, the URI image and localized auto-hide header
-  converters, localization resources, and the control
+  templates/selectors, styles, general theme URI loading, the URI image and
+  localized auto-hide header converters, localization resources, and the control
   adapter surface. Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,
   and remaining protected/platform hooks.
@@ -332,13 +342,13 @@ supported by corresponding implementation and test evidence.
   behavior must be audited independently of the presence inventory, including
   menu selector null results and header-template default coercion edge cases.
 - Broader sample interaction and platform coverage for floating windows.
-- Navigator per-manager theme integration and desktop modality/focus validation.
+- Navigator desktop modality/focus validation and remaining theme/overlay integration.
 
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 519
-matching type/member keys and 432 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 531
+matching type/member keys and 420 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

@@ -28,6 +28,9 @@
     </Border>
 
     <DockingManager x:Name="DockManager" Grid.Row="1" Margin="8">
+      <DockingManager.Theme>
+        <GenericTheme />
+      </DockingManager.Theme>
       <LayoutRoot>
         <LayoutPanel Orientation="Horizontal">
           <LayoutAnchorablePane DockWidth="230" DockMinWidth="180">

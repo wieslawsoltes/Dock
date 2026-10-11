@@ -17,6 +17,8 @@ using Avalonia.Headless;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml.MarkupExtensions;
+using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
@@ -28,6 +30,7 @@ using AvalonDock.Controls;
 using AvalonDock.Converters;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
+using AvalonDock.Themes;
 using ReactiveUI.Reactive;
 
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
@@ -42,6 +45,12 @@ if (window.Resources["Container"] is not LayoutDocumentItem { Description: "Unpr
 window.Show();
 Dispatcher.UIThread.RunJobs();
 DockingManager manager = window.FindControl<DockingManager>("Manager")!;
+if (manager.Theme is not GenericTheme ||
+    !manager.Resources.TryGetResource(typeof(NavigatorWindow), null, out object? navigatorTheme) || navigatorTheme is not ControlTheme)
+    throw new Exception("The unprefixed GenericTheme did not expose the packaged compiled control resources.");
+if (window.Resources["GenericByUri"] is not ResourceDictionary genericResources ||
+    !genericResources.TryGetResource(typeof(NavigatorWindow), null, out _))
+    throw new Exception("A consumer ResourceInclude could not resolve the packaged generic theme URI.");
 if (!manager.AllowMovingFloatingWindowWithKeyboard)
     throw new Exception("The unprefixed keyboard-movement property did not compile from XAML.");
 XmlLayoutSerializer serializer = new(manager);
@@ -80,6 +89,7 @@ AssertSplitters(manager);
 tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+AssertThemes(window, manager, toolHost);
 AssertFloatingResize(window, (LayoutFloatingWindowControl)toolHost);
 AssertFloatingKeyboard(toolHost, (Control)tool.Content!);
 AssertFloatingWindowCommands(window, manager, tool, (LayoutAnchorableFloatingWindowControl)toolHost);
@@ -319,6 +329,35 @@ static void AssertNavigatorLifetime(ClassicDesktopStyleApplicationLifetime lifet
     owner.Close();
     if (closed != 2 || lifetime.Windows.Count != 0 || exits != 1)
         throw new Exception("Hidden navigators prevented the desktop lifetime from shutting down after the last owner closed.");
+}
+
+static void AssertThemes(Window owner, DockingManager manager, HostWindow host)
+{
+    AvalonDock.Themes.Theme? previous = manager.Theme;
+    ResourceDictionary dictionary = new() { ["PackagedThemeBrush"] = Brushes.Red };
+    NavigatorWindow? navigator = null;
+    using IDisposable hostBinding = host.Bind(Window.BackgroundProperty, new DynamicResourceExtension("PackagedThemeBrush"));
+    try
+    {
+        manager.Theme = new PackageConsumer.ConsumerDictionaryTheme(dictionary);
+        navigator = manager.CreateNavigatorWindow();
+        using IDisposable navigatorBinding = navigator.Bind(Window.BackgroundProperty, new DynamicResourceExtension("PackagedThemeBrush"));
+        _ = navigator.ShowDialog(owner);
+        navigator.MouseMove(default);
+        if (!ReferenceEquals(host.Background, Brushes.Red) || !ReferenceEquals(navigator.Background, Brushes.Red))
+            throw new Exception("A shared dictionary theme did not update native floating and navigator resources.");
+        dictionary["PackagedThemeBrush"] = Brushes.Blue;
+        if (!ReferenceEquals(host.Background, Brushes.Blue) || !ReferenceEquals(navigator.Background, Brushes.Blue))
+            throw new Exception("Live dictionary changes did not reach both packaged windows.");
+        manager.Theme = new PackageConsumer.ConsumerDictionaryTheme(new() { ["PackagedThemeBrush"] = Brushes.Green });
+        if (!ReferenceEquals(host.Background, Brushes.Green) || !ReferenceEquals(navigator.Background, Brushes.Green) || dictionary.Owner is not null)
+            throw new Exception("Replacing the theme did not refresh both windows and release the previous dictionary owner.");
+    }
+    finally
+    {
+        navigator?.Close();
+        manager.Theme = previous;
+    }
 }
 
 static void AssertNavigator(Window view, DockingManager manager, LayoutDocument document)
@@ -691,6 +730,7 @@ static void AssertFloatingSourceTemplate(DockingManager manager, string content)
 
 namespace PackageConsumer
 {
+    public sealed class ConsumerDictionaryTheme(ResourceDictionary resources) : DictionaryTheme(resources) { }
     public sealed class CloseOriginProbe(ILayoutElement model) : LayoutFloatingWindowControl(model)
     {
         public override ILayoutElement Model { get; } = model;

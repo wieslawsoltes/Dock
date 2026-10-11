@@ -385,6 +385,18 @@ Avalonia controls. Framework type substitutions and any outstanding API or
 behavior gaps are tracked in [COMPATIBILITY.md](COMPATIBILITY.md). Full API
 compatibility has not yet been established.
 
+`DockingManager.Theme` accepts AvalonDock resource themes independently of
+Avalonia's inherited `StyledElement.Theme` control-template property. Use
+`<DockingManager.Theme><GenericTheme /></DockingManager.Theme>` in unprefixed XAML,
+or derive from `AvalonDock.Themes.DictionaryTheme` and pass a resource dictionary.
+Shared dictionaries, dynamic resources, and theme variants reach the manager,
+floating hosts, and navigator, including runtime replacement. Closed windows
+release their resource providers. `GenericTheme.GetResourceUri()` identifies the
+compiled `Themes/Generic.axaml` bundle, which also supports compiled
+`ResourceInclude` from consumer XAML. General custom URI loading is
+still open; currently other URIs raise `NotSupportedException`. See the full guide
+for sharing, control-theme disambiguation, and invalid-theme behavior.
+
 Ctrl+Tab opens `AvalonDock.Controls.NavigatorWindow` from docked or floating
 content. Its document and tool lists expose the live item containers and execute
 their current activation commands. Documents are ordered by recent activation;
@@ -403,7 +415,7 @@ unprefixed XAML. `Documents`, `Anchorables`, `SelectedDocument`, and
 `SelectedAnchorable` support compiled templates. The parameterless public
 `OnApplyTemplate()` hook is invoked when Avalonia applies the template.
 The full guide covers list filtering, initial selection, command availability,
-protected extensibility, and modal lifetime. Per-manager theme integration and
+protected extensibility, and modal lifetime. General theme URI loading and
 desktop modality/focus verification remain open.
 
 ## Architecture
@@ -416,6 +428,7 @@ flowchart TB
     Commands["Compiled command bindings<br/>Native input routing"]
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
+    ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
@@ -429,6 +442,10 @@ flowchart TB
     App --> Api
     App --> Converters
     Converters --> Items
+    Api --> ResourceThemes
+    ResourceThemes --> Navigator
+    ResourceThemes --> Hosts
+    ResourceThemes --> View
     Api --> Navigator
     Navigator --> Items
     Api --> Items

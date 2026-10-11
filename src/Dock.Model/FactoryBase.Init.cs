@@ -240,7 +240,9 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void InitDockWindow(IDockWindow window, IDockable? owner)
     {
-        InitDockWindow(window, owner, GetHostWindow(window.Id));
+        InitDockWindow(window, owner, this is IDockWindowHostFactory hostFactory
+            ? hostFactory.CreateHostWindow(window)
+            : GetHostWindow(window.Id));
     }
 
     /// <inheritdoc/>

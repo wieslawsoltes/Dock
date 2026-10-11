@@ -6,6 +6,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
+using Dock.Model.Core;
 
 namespace AvalonDock.Infrastructure;
 
@@ -29,9 +30,12 @@ internal sealed class LayoutControlModelBinding(TemplatedControl control,
 
     internal void RefreshItem()
     {
-        LayoutItem? item = Model?.DockModel.Factory is LayoutFactory factory
-            ? factory.GetLayoutItem(Model.DockModel)
-            : Model?.Root?.Manager?.GetLayoutItemFromModel(Model);
+        // Public ownership changes before native factory initialization during
+        // a manager transfer. Prefer that new owner; retain the factory fallback
+        // for transiently unparented content moving between native hosts.
+        LayoutItem? item = Model?.Root?.Manager is { } manager
+            ? manager.GetLayoutItemFromModel(Model)
+            : Model?.DockModel.Factory is LayoutFactory factory ? factory.GetLayoutItem(Model.DockModel) : null;
         setItem(item);
     }
 
@@ -40,7 +44,7 @@ internal sealed class LayoutControlModelBinding(TemplatedControl control,
     private void ModelChanged(PropertyChangedEventArgs args)
     {
         if (Model is not { } model) return;
-        if (args.PropertyName is nameof(LayoutContent.Parent) or nameof(LayoutContent.Root)) RefreshItem();
+        if (args.PropertyName is nameof(LayoutContent.Parent) or nameof(LayoutContent.Root) or nameof(IDockable.Factory)) RefreshItem();
         modelChanged?.Invoke(model, args);
     }
 

@@ -12,7 +12,7 @@ namespace AvalonDock.Infrastructure;
 // hide content before the native host can detach the floating layout.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver, IDockWindowHostFactory
+    Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy
 {
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
@@ -66,6 +66,17 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 
     internal LayoutItem? GetLayoutItem(IDockable model) => getLayoutItem(model);
     internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutContainer(model);
+
+    bool IDockItemDragPolicy.CanDragItem(IDockable dockable) =>
+        getLayoutItem(dockable)?.LayoutElement is { IsEnabled: true } &&
+        DockCapabilityResolver.IsEnabled(dockable, DockCapability.Drag, DockCapabilityResolver.ResolveOperationDock(dockable));
+
+    bool IDockItemDragPolicy.CanReorderItem(IDockable dockable)
+    {
+        ILayoutContainer? parent = getLayoutItem(dockable)?.LayoutElement?.Parent;
+        return parent is not ILayoutPositionableGroup { CanRepositionItems: false } &&
+            parent?.Parent is not ILayoutPositionableGroup { CanRepositionItems: false };
+    }
 
     public override bool OnWindowClosing(IDockWindow? window)
     {

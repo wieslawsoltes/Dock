@@ -267,6 +267,8 @@ public partial class TabControlTests
             First = tool ? new LayoutAnchorable { CanClose = true } : new LayoutDocument();
             Second = tool ? new LayoutAnchorable { CanClose = true } : new LayoutDocument();
             First.Title = "First"; Second.Title = "Second";
+            First.ContentId = "first"; Second.ContentId = "second";
+            First.Content = "First content"; Second.Content = "Second content";
             LayoutPanel root = new();
             if (tool)
             {

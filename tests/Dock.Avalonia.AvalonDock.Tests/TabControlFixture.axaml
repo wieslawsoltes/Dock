@@ -3,6 +3,18 @@
         x:Class="Dock.Avalonia.AvalonDock.Tests.TabControlFixture"
         x:DataType="LayoutContent" Width="800" Height="450">
   <Window.Resources>
+    <DataTemplate x:Key="BoundDocumentTabs" x:DataType="LayoutDocumentPane">
+      <ItemsControl ItemsSource="{Binding Children}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate><DataTemplate x:DataType="LayoutContent"><LayoutDocumentTabItem Model="{Binding}" Width="180" Height="40" /></DataTemplate></ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </DataTemplate>
+    <DataTemplate x:Key="BoundToolTabs" x:DataType="LayoutAnchorablePane">
+      <ItemsControl ItemsSource="{Binding Children}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate><DataTemplate x:DataType="LayoutContent"><LayoutAnchorableTabItem Model="{Binding}" Width="180" Height="40" /></DataTemplate></ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </DataTemplate>
     <DataTemplate x:Key="DocumentTab" x:DataType="LayoutContent"><LayoutDocumentTabItem Model="{Binding}" /></DataTemplate>
     <DataTemplate x:Key="LegacyDocumentTab" x:DataType="LayoutContent"><ad:LayoutDocumentTabItem Model="{Binding}" /></DataTemplate>
     <DataTemplate x:Key="ToolTab" x:DataType="LayoutContent"><LayoutAnchorableTabItem Model="{Binding}" /></DataTemplate>

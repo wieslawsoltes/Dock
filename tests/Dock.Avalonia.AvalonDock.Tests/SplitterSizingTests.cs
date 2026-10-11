@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
@@ -218,11 +217,9 @@ public class SplitterSizingTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task Manager_Does_Not_Retain_Panels_From_A_Replaced_Layout(bool floating)
+    public void Manager_Does_Not_Retain_Panels_From_A_Replaced_Layout(bool floating)
     {
         var result = ReplaceLayout(floating);
-        // Finish queued UI teardown before checking whether the manager owns an old panel.
-        await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Background);
         Collect();
         Assert.False(result.Panel.TryGetTarget(out _));
         GC.KeepAlive(result.Manager);
@@ -236,6 +233,9 @@ public class SplitterSizingTests
             .Single(control => ReferenceEquals(control.DataContext, workspace.Group.DockModel));
         workspace.Manager.Layout = new LayoutRoot();
         workspace.Update();
+        // Closed windows stop rendering and can retain their last composition frame.
+        // Flush the replacement frame while the window is still open.
+        workspace.Window.CaptureRenderedFrame()?.Dispose();
         return (workspace.Manager, new(panel));
     }
 

@@ -59,8 +59,6 @@ internal static class LayoutGarbageCollector
                 }
             }
         } while (removed);
-        if (root.ActiveContent is { } active && !ReferenceEquals(active.Root, root)) root.ActiveContent = null;
-
         // A typed group around another group of the same type adds no split.
         foreach (ILayoutElement node in new List<ILayoutElement>(root.Descendents()))
         {

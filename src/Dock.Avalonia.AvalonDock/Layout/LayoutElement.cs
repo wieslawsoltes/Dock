@@ -50,8 +50,10 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     internal void SetProjectedParent(ILayoutContainer? parent)
     {
         if (ReferenceEquals(_projectedParent, parent)) return;
+        LayoutRoot? previousRoot = Root as LayoutRoot;
         RaisePropertyChanging(nameof(Parent));
         _projectedParent = parent;
+        previousRoot?.Focus?.Validate();
         RaisePropertyChanged(nameof(Parent));
         RaisePropertyChanged(nameof(Root));
     }
@@ -98,6 +100,8 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     {
         if (e.Property == DockableBase.OwnerProperty)
         {
+            if (e.OldValue is DockableBase previousOwner && Context.Get(previousOwner).Root is LayoutRoot previousRoot)
+                previousRoot.Focus?.Validate();
             RaisePropertyChanged(nameof(Parent));
             RaisePropertyChanged(nameof(Root));
         }

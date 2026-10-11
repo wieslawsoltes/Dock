@@ -147,6 +147,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
 
     internal void NotifyClosing(CancelEventArgs args) => Closing?.Invoke(this, args);
     internal void NotifyClosed() => Closed?.Invoke(this, EventArgs.Empty);
+    internal void NotifyLastFocusedDocumentChanging() => RaisePropertyChanging(nameof(IsLastFocusedDocument));
+    internal void NotifyLastFocusedDocumentChanged() => RaisePropertyChanged(nameof(IsLastFocusedDocument));
     internal void RememberDockedLocation()
     {
         if (Parent is not LayoutElement parent || parent is LayoutAnchorGroup or LayoutAnchorSide

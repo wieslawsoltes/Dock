@@ -119,8 +119,8 @@ public partial class NavigatorTests
         Assert.True(workspace.Documents[1].IsActive);
         Dispatcher.UIThread.RunJobs();
         Assert.True(workspace.Documents[1].IsActive);
-        if (workspace.Documents[1].FindParent<LayoutFloatingWindow>() is null)
-            Assert.Same(workspace.Documents[1], workspace.Manager.Layout.ActiveContent);
+        Assert.Same(workspace.Documents[1], workspace.Manager.Layout.ActiveContent);
+        Assert.Same(workspace.Documents[1], workspace.Manager.Layout.LastFocusedDocument);
         Assert.Null(TopLevel.GetTopLevel(content));
     }
 

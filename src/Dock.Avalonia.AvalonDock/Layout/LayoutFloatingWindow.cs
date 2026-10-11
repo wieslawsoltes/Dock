@@ -87,8 +87,8 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
     {
         base.OnModelPropertyChanged(sender, args);
-        if (args.Property == DockBase.FocusedDockableProperty && NativeRoot.FocusedDockable is { } focused && Root is LayoutRoot root)
-            root.ActiveContent = Context.Get(focused) as LayoutContent;
+        if (args.Property == DockBase.FocusedDockableProperty && Root is LayoutRoot root)
+            root.Focus.NativeFocusChanged(NativeRoot);
     }
 
     private static DockWindow CreateWindow()

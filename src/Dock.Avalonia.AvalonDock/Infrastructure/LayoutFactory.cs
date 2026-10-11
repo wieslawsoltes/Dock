@@ -15,6 +15,17 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 {
     private IDockWindow? _evaluatingClose;
     internal IDockWindow? RequestedHostWindow { get; private set; }
+    internal event Action? SettingFocus;
+    internal event Action<IDock>? FocusSet;
+
+    public override void SetFocusedDockable(IDock dock, IDockable? dockable)
+    {
+        // Native focus notifications precede activation/selection synchronization.
+        // Let the public layout report the completed operation to binding observers.
+        SettingFocus?.Invoke();
+        try { base.SetFocusedDockable(dock, dockable); }
+        finally { FocusSet?.Invoke(dock); }
+    }
 
     public IHostWindow? CreateHostWindow(IDockWindow window)
     {

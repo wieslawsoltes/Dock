@@ -30,7 +30,7 @@ public interface ILayoutRoot
     LayoutAnchorSide RightSide { get; }
     /// <summary>Gets the bottom auto-hide strip.</summary>
     LayoutAnchorSide BottomSide { get; }
-    /// <summary>Gets or sets the active content.</summary>
+    /// <summary>Gets or sets the active document or tool across docked and floating layouts.</summary>
     LayoutContent? ActiveContent { get; set; }
     /// <summary>Gets the hidden tools.</summary>
     ObservableCollection<LayoutAnchorable> Hidden { get; }
@@ -43,7 +43,6 @@ public interface ILayoutRoot
 /// <summary>A layout root backed by a Dock Avalonia root and factory.</summary>
 public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSerializable
 {
-    private LayoutContent? _lastFocusedDocument;
     private readonly LayoutChildren<LayoutAnchorable> _hidden;
     private readonly LayoutFloatingWindows _floatingWindows;
     private LayoutAnchorSide _leftSide = null!;
@@ -103,10 +102,12 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         RightSide = new LayoutAnchorSide();
         BottomSide = new LayoutAnchorSide();
         _floatingWindows = new LayoutFloatingWindows(this);
+        Focus = new LayoutActiveContent(this, RaisePropertyChanging, RaisePropertyChanged);
     }
     /// <summary>Gets the Dock factory which operates this layout.</summary>
     public IFactory DockFactory => DockModel.Factory!;
     internal ILayoutOperationEvents Operations { get; }
+    internal LayoutActiveContent Focus { get; }
     /// <summary>Gets or sets the root split panel.</summary>
     [Content]
     public LayoutPanel RootPanel
@@ -160,11 +161,11 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     /// <inheritdoc/>
     public LayoutContent? ActiveContent
     {
-        get => ((RootDock)DockModel).FocusedDockable is { } model ? Context.Get(model) as LayoutContent : null;
-        set => DockFactory.SetFocusedDockable((RootDock)DockModel, value?.DockModel);
+        get => Focus.Active;
+        set => Focus.Activate(value);
     }
-    /// <summary>Gets the most recently focused document.</summary>
-    public LayoutContent? LastFocusedDocument => _lastFocusedDocument;
+    /// <summary>Gets the most recently focused document or tool hosted in a document pane, including floating layouts.</summary>
+    public LayoutContent? LastFocusedDocument => Focus.LastDocument;
     /// <inheritdoc/>
     public ObservableCollection<LayoutAnchorable> Hidden => _hidden;
     /// <inheritdoc/>
@@ -210,7 +211,11 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
             FloatingWindows[windowIndex] = (LayoutFloatingWindow)newElement;
     }
     /// <inheritdoc/>
-    public void CollectGarbage() => LayoutGarbageCollector.Collect(this);
+    public void CollectGarbage()
+    {
+        LayoutGarbageCollector.Collect(this);
+        Focus.Validate();
+    }
     /// <summary>Returns no custom XML schema.</summary>
     public XmlSchema? GetSchema() => null;
     /// <summary>Reads the layout hierarchy while retaining this root's native model and factory.</summary>
@@ -220,8 +225,6 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         if (restored is null) return;
         LayoutContent? active = restored.ActiveContent;
         ActiveContent = null;
-        _lastFocusedDocument = null;
-        RaisePropertyChanged(nameof(LastFocusedDocument));
         FloatingWindows.Clear();
         Hidden.Clear();
         RootPanel = restored.RootPanel;
@@ -247,14 +250,6 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         if (e.Property == RootDock.RightPinnedDockablesProperty) _rightSide?.Reconnect();
         if (e.Property == RootDock.BottomPinnedDockablesProperty) _bottomSide?.Reconnect();
         if (e.Property == RootDock.WindowsProperty) _floatingWindows?.Reconnect();
-        if (e.Property == DockBase.FocusedDockableProperty)
-        {
-            if (ActiveContent is LayoutDocument document)
-            {
-                _lastFocusedDocument = document;
-                RaisePropertyChanged(nameof(LastFocusedDocument));
-            }
-            RaisePropertyChanged(nameof(ActiveContent));
-        }
+        if (e.Property == DockBase.FocusedDockableProperty) Focus?.NativeFocusChanged((RootDock)DockModel);
     }
 }

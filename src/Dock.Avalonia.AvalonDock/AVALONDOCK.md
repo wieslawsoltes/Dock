@@ -73,6 +73,16 @@ document panes, with `IsLastFocusedDocument` notifications on the affected nodes
 Window deactivation retains this history; clearing active content or removing
 the corresponding layout nodes clears it.
 
+Pane selection is separate from activation: `SelectedContentIndex` and a node's
+`IsSelected` update the selected tab without changing `LayoutRoot.ActiveContent`.
+Use `IsActive` or the activation command when focus should follow. Removing the
+selected document from a rooted pane selects and activates the remaining item
+with the latest `LastActivationTimeStamp`; ties use child order, including disabled
+items. Detached document panes and tool panes choose the first enabled child.
+Emptying a rooted document pane clears root activation, even if a tool in another
+pane was active. `MoveChild` retains the selected content, notifies its changed
+index, and invokes the protected `ChildMoved` hook after reordering.
+
 `LayoutRoot.ElementAdded` and `ElementRemoved` identify the public element whose
 parent transition enters or leaves the layout. Attaching a subtree reports its
 topmost transitioning node. Derived layout types can override `OnParentChanging`,
@@ -462,6 +472,7 @@ flowchart TB
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
+    Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
     Focus["Active content and document history<br/>Across native roots"]
     TreeEvents["Parent and root hooks<br/>Layout membership events"]
     Events["Operation notifications<br/>Public layout source and routed events"]
@@ -484,6 +495,9 @@ flowchart TB
     Items --> Factory
     Api <--> Bridge
     Bridge <--> Models
+    Api --> Selection
+    Selection --> Models
+    Selection --> Factory
     Api --> Sizing
     Sizing --> Models
     Sizing --> View

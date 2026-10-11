@@ -154,6 +154,39 @@ Window deactivation retains the active-content history. Explicitly setting
 `ActiveContent` to `null` clears the active node and document history; removing
 nodes or replacing their layout clears references to the removed nodes.
 
+## Select and reorder pane contents
+
+`LayoutDocumentPane` and `LayoutAnchorablePane` expose `SelectedContentIndex`
+and `SelectedContent`. Setting the index, or setting a child's `IsSelected`,
+updates the selected tab without changing `LayoutRoot.ActiveContent`. An invalid
+index clears selection. Use `IsActive` or the item's activation command to also
+activate it:
+
+```csharp
+pane.SelectedContentIndex = 1;
+LayoutContent? selected = pane.SelectedContent;
+if (selected is not null)
+    selected.IsActive = true;
+```
+
+Selection property notifications bracket the update: `PropertyChanging` exposes
+the old selected content and flags, and `PropertyChanged` exposes the new state.
+A changed observer can immediately select another item or explicitly activate it.
+
+When the selected item is removed, rooted document panes select and activate the
+remaining child with the latest `LastActivationTimeStamp`. Equal timestamps retain
+child order; this history rule includes disabled children. Detached document panes
+and tool panes select the first enabled child, or remain unselected when no child
+is enabled. Emptying a rooted document pane clears the root's active content and
+document history, including when a tool in another pane was active. These rules
+apply to public collections and removal through the native Dock factory.
+
+`MoveChild(oldIndex, newIndex)` preserves the selected content and notifies changes
+to its index. The protected `ChildMoved` hook runs after the move; an identical
+index is a no-op. Tool panes also notify `CanClose`, `CanHide`, and
+`IsDirectlyHostedInFloatingWindow` when their collection changes. `CanClose` and
+`CanHide` are true for an empty tool pane, as no child disallows the operation.
+
 ## Observe layout membership and parent changes
 
 `LayoutRoot.ElementAdded` and `ElementRemoved` provide `LayoutElementEventArgs`.
@@ -1115,6 +1148,7 @@ flowchart TB
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
+        Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
         Focus["Active content and document history<br/>Across native roots"]
         TreeEvents["Parent and root hooks<br/>Layout membership events"]
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
@@ -1156,6 +1190,9 @@ flowchart TB
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models
+    Layout --> Selection
+    Selection --> Models
+    Selection --> Factory
     Manager --> Sizing
     Sizing --> Models
     Sizing --> Controls
@@ -1183,6 +1220,16 @@ The facade wraps the same native objects that Dock renders and moves.
 native child lists as observable AvalonDock collections. Native changes flow
 back into public ownership, selection, and active-content state. Compatibility
 metadata, such as AvalonDock return-container references, remains in the adapter.
+
+`LayoutPaneSelection` composes the document/tool selection rules and notifications.
+The native factory's protected `ShouldFocusActiveDockable` policy lets the adapter
+select a tab without automatic activation while preserving Dock's selection
+synchronization. `GetActiveDockableAfterRemoval` supplies the pane's replacement
+after the native child collection has finished notifying. Default Dock behavior
+is unchanged. During native collection notifications, the adapter defers selection
+repair so item generators can finish before presentation changes. Factory
+completion or the next public read reconciles the state; a queued fallback uses a
+weak reference so it cannot retain a removed pane.
 
 | AvalonDock API | Native Dock implementation |
 | --- | --- |

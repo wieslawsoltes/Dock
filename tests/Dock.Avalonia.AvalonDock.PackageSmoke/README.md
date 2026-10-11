@@ -5,6 +5,10 @@ the solution: the package must be built before it can restore. It checks
 parent/root hooks from an external derived document and layout membership events,
 selection when attaching preselected content, and an external pane's protected
 visibility setter and hook with ancestor visibility propagation.
+Pane checks separate selection from activation, exercise an external `ChildMoved`
+override after reordering, and use the native factory to verify document-history
+and enabled-tool fallback. Emptying a rooted document pane clears root activation,
+including an active tool in another pane.
 It also verifies that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
 headers, render tool and floating document titles and select their templates, click
@@ -39,7 +43,8 @@ from XML using the packaged assemblies. Pack the native
 control, core model, Avalonia model, and proportional-panel packages too: they contain the tool-menu
 lifetime, window drag input, operation observation, model-aware host creation, unique
 host registration across hide/show, canceled-exit ownership preservation,
-hidden-window drop/activation guards, native ownership-changing notifications, and runtime splitter sizing
+hidden-window drop/activation guards, native ownership-changing notifications,
+replacement-selection and automatic-focus policies, and runtime splitter sizing
 changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.

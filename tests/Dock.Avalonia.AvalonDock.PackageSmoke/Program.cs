@@ -38,6 +38,7 @@ ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = Shutdow
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
 AssertLayoutLifecycle();
 AssertLayoutParentPolicies();
+AssertPaneSelectionPolicies();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
@@ -410,6 +411,57 @@ static void AssertLayoutParentPolicies()
     if (!panel.IsVisible || pane.VisibilityChanges != visibilityChanges + 2)
         throw new Exception("The external visibility override did not report both transitions.");
     GC.KeepAlive(root);
+}
+
+static void AssertPaneSelectionPolicies()
+{
+    LayoutDocument first = new();
+    LayoutDocument selected = new();
+    LayoutDocument recent = new();
+    PackageConsumer.SelectionPane documents = new();
+    documents.Children.Add(first);
+    documents.Children.Add(selected);
+    documents.Children.Add(recent);
+    LayoutAnchorable disabled = new() { IsEnabled = false };
+    LayoutAnchorable removed = new();
+    LayoutAnchorable enabled = new();
+    LayoutAnchorablePane tools = new(disabled);
+    if (tools.SelectedContent is not null) throw new Exception("A detached pane selected its disabled content.");
+    tools.Children.Add(removed);
+    tools.Children.Add(enabled);
+    LayoutPanel panel = new(documents);
+    panel.Children.Add(tools);
+    LayoutRoot root = new() { RootPanel = panel };
+    first.IsActive = true;
+
+    documents.SelectedContentIndex = 1;
+    if (!ReferenceEquals(documents.SelectedContent, selected) || !selected.IsSelected || first.IsSelected ||
+        !ReferenceEquals(root.ActiveContent, first))
+        throw new Exception("Public pane selection did not preserve the active content independently of selection.");
+    selected.IsSelected = false;
+    if (documents.SelectedContentIndex != -1 || !ReferenceEquals(root.ActiveContent, first))
+        throw new Exception("Clearing content selection changed activation.");
+    selected.IsSelected = true;
+    documents.MoveChild(1, 2);
+    documents.MoveChild(2, 2);
+    if (documents.MoveCount != 1 || documents.LastMove != (1, 2, 2) ||
+        !ReferenceEquals(documents.SelectedContent, selected))
+        throw new Exception("The external ChildMoved override did not receive the updated selected index.");
+
+    selected.IsActive = true;
+    first.LastActivationTimeStamp = new DateTime(2000, 1, 1);
+    recent.LastActivationTimeStamp = new DateTime(2001, 1, 1);
+    root.DockFactory.RemoveDockable(selected.DockModel, false);
+    if (!ReferenceEquals(documents.SelectedContent, recent) || !ReferenceEquals(root.ActiveContent, recent))
+        throw new Exception("Native removal did not select and activate the most recent remaining document.");
+    removed.IsActive = true;
+    documents.Children.Clear();
+    if (root.ActiveContent is not null || removed.IsActive)
+        throw new Exception("Emptying a rooted document pane did not clear root activation.");
+    tools.SelectedContentIndex = 1;
+    root.DockFactory.RemoveDockable(removed.DockModel, false);
+    if (!ReferenceEquals(tools.SelectedContent, enabled) || !enabled.IsSelected || disabled.IsSelected)
+        throw new Exception("Native removal did not choose the first enabled remaining tool.");
 }
 
 static void AssertActiveContent(DockingManager manager, LayoutDocument document, LayoutAnchorable tool)

@@ -294,6 +294,39 @@ to native rendering until ownership is reassigned and reconciliation completes,
 allowing its content presenter to transfer between hosts. The public
 `GetLayoutItemFromModel` API still returns null for an unattached node.
 
+## Traverse the UI trees
+
+`AvalonDock.Controls.Extentions` retains the spelling of the upstream helper
+class and works with `AvaloniaObject` in place of WPF `DependencyObject`.
+`FindVisualChildren<T>` and `FindLogicalChildren<T>` enumerate matching
+descendants in depth-first child order, excluding the starting object.
+`FindVisualAncestor<T>` finds the nearest matching visual ancestor;
+`FindLogicalAncestor<T>` prefers logical parents and falls back to visual
+parents at a template boundary. `FindLogicalAncestorsAndSelf` includes the
+starting object before following that same parent chain.
+
+```csharp
+using System.Linq;
+using AvalonDock;
+using AvalonDock.Controls;
+
+LayoutAnchorableControl? toolView = manager
+    .FindVisualChildren<LayoutAnchorableControl>().FirstOrDefault();
+DockingManager? owner = toolView?.FindLogicalAncestor<DockingManager>();
+```
+
+These methods query the current Avalonia UI trees, including Dock's native
+controls. Use the layout model's `Descendents()` extension to walk layout nodes.
+`FindVisualTreeRoot` walks to the topmost visual, using logical parents to reach
+the visual tree from nonvisual objects. In Avalonia, that root can be a hosting
+visual above a `Window`; use `FindVisualAncestor<Window>` to find the window.
+
+Null inputs produce empty descendant/ancestor-and-self sequences or a null
+root. The two nearest-ancestor methods reject null inputs. Visual searches
+reject nonvisual starting objects; logical ancestor fallback also rejects a
+nonvisual object without a logical parent. Searches are live and enumerations
+are deferred, so a new search reflects reparenting and layout replacement.
+
 ## Bind item containers and commands
 
 `DockingManager.GetLayoutItemFromModel` returns a `LayoutDocumentItem` or

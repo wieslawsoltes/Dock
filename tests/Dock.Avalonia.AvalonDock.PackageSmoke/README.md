@@ -146,3 +146,5 @@ The anchor probe also exercises `LayoutAutoHideWindowControl` through a
 window-scoped theme: compiled public model/background/content-theme styles,
 existing content identity, external manager hooks and preview replacement,
 XML cleanup, reattachment, idle closing, and negative-delay coercion.
+It also compiles and invokes all six `AvalonDock.Controls.Extentions` helpers
+against the rendered native preview and its manager/window hierarchy.

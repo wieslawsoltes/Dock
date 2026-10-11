@@ -40,6 +40,13 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- `AvalonDock.Controls.Extentions` exposes all six upstream tree helpers using
+  Avalonia objects and their current visual/logical trees. Tests cover ordered
+  descendants, type and interface matching, logical-to-visual parent fallback,
+  nonvisual logical nodes, null/error contracts, deferred enumeration,
+  reparenting, native previews, and layout replacement. The class name retains
+  the upstream spelling. Framework argument substitutions remain distinct in
+  the API presence audit.
 - `LayoutAutoHideWindowControl` presents the existing native preview and exposes
   its current public model, background, and anchorable content theme. The
   manager's readonly `AutoHideWindow` and protected hooks expose the generated
@@ -501,7 +508,7 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 954 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 961 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -545,8 +552,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 700
-matching type/member keys and 251 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 701
+matching type/member keys and 250 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

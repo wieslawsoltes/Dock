@@ -699,6 +699,16 @@ The full guide covers list filtering, initial selection, command availability,
 protected extensibility, and modal lifetime. General theme URI loading and
 desktop modality/focus verification remain open.
 
+`AvalonDock.Controls.Extentions` supplies the upstream tree helpers with
+`AvaloniaObject` parameters: `FindVisualChildren<T>`, `FindLogicalChildren<T>`,
+`FindVisualAncestor<T>`, `FindLogicalAncestor<T>`, `FindLogicalAncestorsAndSelf`,
+and `FindVisualTreeRoot`. Descendant searches preserve depth-first child order;
+ancestor searches exclude self except for the explicitly named self variant.
+Logical ancestor searches prefer logical parents and fall back to visual
+parents. These query current UI trees, including native Dock controls; layout
+nodes use `Descendents()`. The visual root may be Avalonia's host above a window.
+The full guide documents null/nonvisual inputs and includes a usage example.
+
 ## Architecture
 
 ```mermaid

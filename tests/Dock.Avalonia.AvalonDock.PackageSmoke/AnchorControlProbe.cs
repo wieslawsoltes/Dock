@@ -70,6 +70,13 @@ internal static class AnchorControlProbe
                 throw new Exception("The packaged anchor did not open a passive native preview for selection.");
             Control view = manager.GetLayoutItemFromModel(tool)!.View;
             LayoutAutoHideWindowControl preview = manager.AutoHideWindow!;
+            if (!ReferenceEquals(view.FindVisualAncestor<LayoutAutoHideWindowControl>(), preview) ||
+                !ReferenceEquals(view.FindLogicalAncestor<DockingManager>(), manager) ||
+                !ReferenceEquals(view.FindVisualTreeRoot(), window.GetVisualParent() ?? window) ||
+                !manager.FindVisualChildren<LayoutAutoHideWindowControl>().Contains(preview) ||
+                !manager.FindLogicalChildren<LayoutAutoHideWindowControl>().Contains(preview) ||
+                !view.FindLogicalAncestorsAndSelf().Contains(manager))
+                throw new Exception("The packaged AvalonDock tree helpers did not traverse the current native preview hierarchy.");
             if (manager.PreviewChanges != 1 || !ReferenceEquals(preview.Model, tool) || !ReferenceEquals(preview.Tag, tool) ||
                 !preview.GetVisualDescendants().Contains(view) || ((ISolidColorBrush)preview.Presenter!.Background!).Color != Colors.Coral ||
                 preview.GetVisualDescendants().OfType<LayoutAnchorableControl>().Single().Tag is not "Packaged preview")

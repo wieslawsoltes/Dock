@@ -10,6 +10,7 @@ using System.Xml;
 using System.Reactive.Concurrency;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
@@ -29,7 +30,8 @@ using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 using ReactiveUI.Reactive;
 
-AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithoutStarting();
+ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
@@ -276,7 +278,46 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container and command/value converters, and close cancellation passed.");
+AssertNavigatorLifetime(lifetime);
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container and command/value converters, navigator input and desktop lifetime cleanup, and close cancellation passed.");
+
+static void AssertNavigatorLifetime(ClassicDesktopStyleApplicationLifetime lifetime)
+{
+    if (lifetime.Windows.Count != 0) throw new Exception("The preceding package checks left desktop windows open.");
+    LayoutDocument first = new() { Title = "Lifetime first", Content = new TextBox() };
+    LayoutDocument second = new() { Title = "Lifetime second", Content = new TextBox() };
+    DockingManager manager = new() { Layout = new() { RootPanel = new(new LayoutDocumentPane { Children = { first, second } }) } };
+    Window owner = new() { Content = manager, Width = 600, Height = 400 };
+    owner.Show();
+    Dispatcher.UIThread.RunJobs();
+    int closed = 0;
+    for (int index = 0; index < 2; index++)
+    {
+        first.IsActive = true;
+        first.LastActivationTimeStamp = DateTime.MaxValue;
+        second.LastActivationTimeStamp = DateTime.MinValue;
+        ((Control)first.Content!).Focus();
+        owner.KeyPressQwerty(PhysicalKey.Tab, RawInputModifiers.Control);
+        NavigatorWindow navigator = owner.OwnedWindows.OfType<NavigatorWindow>().Single();
+        navigator.Closed += (_, _) => closed++;
+        navigator.Closing += (_, args) => args.Cancel = true;
+        navigator.SelectedDocument = navigator.Documents![0];
+        if (navigator.IsVisible || navigator.Owner is not null || !lifetime.Windows.Contains(navigator))
+            throw new Exception("Document selection did not keep the hidden navigator in the desktop lifetime until owner cleanup.");
+    }
+    EventHandler<WindowClosingEventArgs> cancel = (_, args) => args.Cancel = true;
+    owner.Closing += cancel;
+    owner.Close();
+    if (!owner.IsVisible || closed != 0 || lifetime.Windows.Count != 3)
+        throw new Exception("Canceling owner closure did not preserve its hidden navigators.");
+    owner.Closing -= cancel;
+    int exits = 0;
+    lifetime.Exit += (_, _) => exits++;
+    lifetime.ShutdownMode = ShutdownMode.OnLastWindowClose;
+    owner.Close();
+    if (closed != 2 || lifetime.Windows.Count != 0 || exits != 1)
+        throw new Exception("Hidden navigators prevented the desktop lifetime from shutting down after the last owner closed.");
+}
 
 static void AssertNavigator(Window view, DockingManager manager, LayoutDocument document)
 {

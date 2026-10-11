@@ -21,7 +21,9 @@ resolve a container and activate, hide, and auto-hide tools through unprefixed
 command converters, update converted visibility and preserve null binding targets,
 open the navigator with native Ctrl+Tab input, apply unprefixed label styles,
 cycle its document/tool lists, invoke its public template hook, and activate/focus
-the chosen document on Control release,
+the chosen document on Control release, and verify that canceling an owner's close
+preserves hidden navigators while completing it releases them and permits
+`OnLastWindowClose` desktop lifetime shutdown,
 and restore application content
 from XML using the packaged assemblies. Pack the native
 control, model, and proportional-panel packages too: they contain the tool-menu

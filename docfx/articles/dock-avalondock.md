@@ -875,6 +875,17 @@ the navigator without an owner. Closing or hiding permits the next request to
 create a fresh snapshot. Layout replacement and view detachment close the current
 navigator; a canceled close retains the current window until closure succeeds.
 
+Avalonia clears `Window.Owner` when a window is hidden. The adapter separately
+tracks the former owner's lifetime so document selection can keep the upstream
+hide behavior without leaving a hidden window in the desktop application's
+window list after its owner closes. Canceling the owner's close keeps the hidden
+navigator available. After the owner has closed, the adapter closes the hidden
+navigator programmatically and disregards cancellation from its `Closing` event
+handlers. Showing the same navigator again switches tracking to its new owner,
+or clears tracking when shown without one; explicitly closing it releases tracking.
+The package consumer verifies that multiple hidden navigators do not prevent
+`ShutdownMode.OnLastWindowClose` from shutting down a desktop lifetime.
+
 `LayoutDocumentsLabel` and `LayoutAnchorablesLabel` also support unprefixed XAML
 styles with `x:DataType="NavigatorWindow"`. A custom control template can bind
 `Documents`, `Anchorables`, and the selected item properties; the default template

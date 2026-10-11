@@ -296,10 +296,13 @@ supported by corresponding implementation and test evidence.
   and availability, nested editor focus after deferred presentation, labels in both
   XML namespaces, public/protected template and selection hooks, empty/custom
   lists, cancellation, reentrant/failing creation, layout replacement, view
-  detachment, and collection of closed navigators. The package consumer exercises
+  detachment, collection of closed navigators, and hidden-window owner cleanup,
+  including canceled owner closure and reassigning or clearing ownership on show.
+  The package consumer exercises
   unprefixed label styles, the public template hook, keyboard list navigation,
-  native activation, and editor focus.
-- 472 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+  native activation, editor focus, and desktop lifetime shutdown after multiple
+  hidden navigators are cleaned up when their owner closes.
+- 477 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

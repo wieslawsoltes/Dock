@@ -392,6 +392,10 @@ visible, enabled tools retain layout order. Arrow keys cycle within or across
 lists, and Tab traverses both. Releasing a non-navigation key commits the selected
 item, following upstream behavior, including Escape and forward-only Shift+Tab.
 Focus restoration follows Dock's queued deferred content presentation.
+Selecting a document hides the navigator. The hidden window remains reusable
+and follows its former owner's lifetime: a canceled owner close preserves it,
+and a completed owner close releases it from Avalonia's desktop window list.
+Showing it again replaces that owner connection.
 
 Override `DockingManager.CreateNavigatorWindow()` to customize the window before
 it is shown, or style `LayoutDocumentsLabel` and `LayoutAnchorablesLabel` in

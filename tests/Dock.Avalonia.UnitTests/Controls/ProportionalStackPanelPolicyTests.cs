@@ -18,6 +18,16 @@ public class ProportionalStackPanelPolicyTests
     [AvaloniaTheory]
     [InlineData(Orientation.Horizontal)]
     [InlineData(Orientation.Vertical)]
+    public void Desired_Extent_Uses_The_Overridden_Dimension_When_Gaps_Exceed_The_Viewport(Orientation orientation)
+    {
+        PolicyPanel panel = Create(orientation);
+        Size desired = panel.MeasureWithPolicy(new Size(4, 4));
+        Assert.Equal(300, orientation == Orientation.Horizontal ? desired.Width : desired.Height);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(Orientation.Horizontal)]
+    [InlineData(Orientation.Vertical)]
     public void Assignment_And_Dimension_Overrides_Preserve_Explicit_Space(Orientation orientation)
     {
         PolicyPanel panel = Create(orientation);
@@ -99,6 +109,7 @@ public class ProportionalStackPanelPolicyTests
         public Control? Neighbor { get; private set; }
         public double Delta { get; private set; }
         public double Minimum { get; private set; }
+        public Size MeasureWithPolicy(Size size) => base.MeasureOverride(size);
         protected override double GetProportionalDimension(Size size, double splitterThickness) =>
             Math.Max(1, base.GetProportionalDimension(size, splitterThickness));
         protected override void OnAssignProportions(Size size, double splitterThickness)

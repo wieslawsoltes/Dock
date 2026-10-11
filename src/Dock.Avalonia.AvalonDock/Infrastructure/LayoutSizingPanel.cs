@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Dock.Controls.ProportionalStackPanel;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
@@ -21,7 +22,16 @@ internal sealed class LayoutSizingPanel : ProportionalStackPanel
     {
         double available = base.GetProportionalDimension(size, splitterThickness);
         if (GetContainer() is not { } group || !_sizing.Apply(group, available, GetProportionalDimension(size, splitterThickness)))
+        {
             base.OnAssignProportions(size, splitterThickness);
+            return;
+        }
+        // Theme replacement can reset a generated presenter's attached value
+        // while its model keeps the same proportion and raises no notification.
+        // Assign the layout inputs directly, preserving any application binding.
+        for (int i = 0; i < Children.Count; i++)
+            if (Children[i].DataContext is IDockable model and not ISplitter)
+                Children[i].SetCurrentValue(ProportionProperty, model.Proportion);
     }
 
     // Fixed columns can exceed a constrained viewport, even when the splitter

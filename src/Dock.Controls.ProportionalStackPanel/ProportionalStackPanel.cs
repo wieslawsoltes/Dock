@@ -302,7 +302,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedWidth += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
+                        usedWidth += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, proportionalDimension, proportion,
                             ref sumOfFractions);
                     }
 
@@ -318,7 +318,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedHeight += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
+                        usedHeight += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, proportionalDimension, proportion,
                             ref sumOfFractions);
                     }
 

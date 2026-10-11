@@ -95,6 +95,34 @@ public class PixelSizingTests
     }
 
     [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void Reset_Presenter_Values_Are_Restored_From_Unchanged_Model_Lengths(bool vertical, bool floating)
+    {
+        using Workspace workspace = new(vertical, floating);
+        Control presenter = workspace.Panel.Children.Single(control => ReferenceEquals(control.DataContext, workspace.First.DockModel));
+        double proportion = workspace.First.DockModel.Proportion;
+        // A replaced theme can discard this value while the public length and
+        // native proportion are unchanged, so no model notification follows.
+        ItemsControl items = workspace.Panel.GetVisualAncestors().OfType<ItemsControl>().First();
+        var styles = items.Styles.ToArray();
+        items.Styles.Clear();
+        workspace.Update();
+        presenter.SetValue(ProportionalStackPanel.ProportionProperty, double.NaN);
+        Assert.True(double.IsNaN(ProportionalStackPanel.GetProportion(presenter)));
+        Assert.Equal(proportion, workspace.First.DockModel.Proportion);
+        workspace.Update();
+        AssertFixed(workspace, 200, 300);
+        Assert.Equal(proportion, ProportionalStackPanel.GetProportion(presenter));
+        items.Styles.AddRange(styles);
+        workspace.SetLength(workspace.First, new GridLength(220));
+        workspace.Update();
+        AssertFixed(workspace, 220, 300);
+    }
+
+    [AvaloniaTheory]
     [InlineData(false, 350)]
     [InlineData(true, 350)]
     [InlineData(false, 4)]

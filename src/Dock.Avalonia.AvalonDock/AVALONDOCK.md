@@ -468,7 +468,8 @@ its combined weight and leaves other star weights unchanged. Pixel lengths
 retain their units after resizing, XML restoration, and host resizing.
 The pane-group rebuild policy described above can convert pixel lengths to stars.
 Manager settings survive XML restoration and view reattachment and remain
-independent between managers.
+independent between managers. Replacing a resource theme restores generated
+presenter dimensions even when their model proportions have not changed.
 
 `LayoutRoot.FloatingWindows` exposes `LayoutDocumentFloatingWindow` and
 `LayoutAnchorableFloatingWindow` over native Dock windows. Floating geometry

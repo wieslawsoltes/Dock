@@ -414,6 +414,8 @@ supported by corresponding implementation and test evidence.
   and preserves the combined weight of a resized star pair. Mixed pixel/star
   resizing uses the upstream pair-weight rule. Both axes and floating panes are
   covered. Intrinsic `Auto` measurement remains open.
+  Replacing presenter styles or floating-window resource themes restores layout
+  inputs from unchanged model proportions without waiting for another model event.
   Native Dock retains its default splitter thickness; its proportional panel
   refreshes splitter dimensions on thickness and orientation changes. Protected
   assignment, dimension, and resize policies let the adapter reuse native layout
@@ -473,7 +475,7 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 880 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 884 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

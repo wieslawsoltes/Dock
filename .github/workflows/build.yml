@@ -95,6 +95,7 @@ jobs:
               <package pattern="Dock.Model" />
               <package pattern="Dock.Model.Avalonia" />
               <package pattern="Dock.Controls.ProportionalStackPanel" />
+              <package pattern="Dock.Avalonia.Themes.Fluent" />
             </packageSource>
             <packageSource key="nuget.org"><package pattern="*" /></packageSource>
           </packageSourceMapping>

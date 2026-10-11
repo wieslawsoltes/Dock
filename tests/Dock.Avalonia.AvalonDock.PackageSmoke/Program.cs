@@ -291,12 +291,14 @@ static void AssertToolTitle(Control scope, LayoutAnchorable tool)
 static void ClickNative(Control control, MouseButton button = MouseButton.Left)
 {
     TopLevel topLevel = TopLevel.GetTopLevel(control)!;
+    // Apply queued host size/state changes before computing pointer coordinates.
+    Dispatcher.UIThread.RunJobs();
     topLevel.UpdateLayout();
     Point point = control.TranslatePoint(new Point(control.Bounds.Width / 2, control.Bounds.Height / 2), topLevel)!.Value;
     topLevel.MouseMove(point);
     IInputElement? hit = topLevel.InputHitTest(point);
     if (!ReferenceEquals(hit, control) && (hit is not Visual visual || !visual.GetVisualAncestors().Contains(control)))
-        throw new Exception($"The {control.GetType().Name} menu target at {point} is not hit-testable.");
+        throw new Exception($"The {control.GetType().Name} target at {point} is not hit-testable: hit {hit?.GetType().Name}, control {control.Bounds}, host {topLevel.Bounds}.");
     topLevel.MouseDown(point, button);
     topLevel.MouseUp(point, button);
     Dispatcher.UIThread.RunJobs();

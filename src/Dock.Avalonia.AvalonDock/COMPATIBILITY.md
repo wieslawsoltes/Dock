@@ -55,6 +55,18 @@ supported by corresponding implementation and test evidence.
   transfer between native hosts during temporary detachment. Tests cover
   ordering, subtree notifications, overrides, rejected assignments, tool
   hide/auto-hide/float cycles, native factory moves, and package consumers.
+- Parent-change selection and visibility policies: content deselects while its
+  previous parent is still available; initially selected content selects its
+  destination pane. Pane and content selection synchronize before a factory is
+  attached. Public collection notifications follow ownership initialization,
+  and invalid-thread collection changes leave the hierarchy untouched.
+  Cached group visibility has a protected setter and `OnIsVisibleChanged` hook,
+  propagates through ancestors, and observes document/tool/auto-hide group rules.
+  Native-created nested subtrees compute visibility when their wrappers are
+  initialized. Tool visibility notifications precede parent notifications, even
+  when visibility stays true; auto-hide sides resolve their edge before those
+  notifications. Floating-pane detection counts visible panes in the public
+  tree, and parent collection subscriptions are released on reparenting.
 - Document close cancellation, tool hide/restore, hidden collection, active
   content, and title/content/capability forwarding.
 - `LayoutRoot.ActiveContent` and manager active-content notifications span the
@@ -333,7 +345,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 542 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 570 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -352,8 +364,9 @@ supported by corresponding implementation and test evidence.
   and remaining protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
-  Derived parent-change policies still need exact upstream selection and
-  visibility behavior beyond the base lifecycle hooks.
+  Remaining pane-selection fallback rules, including disabled content and
+  activation-history ordering, and child-move/protected override contracts still
+  need an exact upstream comparison.
 - Complete auto sizing, header visibility,
   repositioning policies, icons, tooltips, and enablement
   in actual rendering and behavior. Several metadata properties currently
@@ -370,8 +383,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 539
-matching type/member keys and 412 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 551
+matching type/member keys and 400 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

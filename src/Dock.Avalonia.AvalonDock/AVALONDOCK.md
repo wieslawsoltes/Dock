@@ -81,6 +81,16 @@ membership events. These hooks also observe native Dock owner changes, with the
 old parent available before assignment and the new parent afterward. Floating
 documents expose their public floating window throughout these callbacks.
 
+Content deselects before leaving a parent; content already selected when first
+inserted becomes its pane's selected item. This also works before a root supplies
+the native factory. Collection observers see initialized ownership and selection.
+Group visibility recomputes on parent/child changes and propagates to ancestors;
+derived groups can use the protected `IsVisible` setter and
+`OnIsVisibleChanged` hook. Empty main document panes remain visible, while empty
+panes inside document groups collapse. Tool panes and their groups require
+visible content. Tool visibility notifications run before the parent notification,
+and floating-pane state uses the public window's visible pane count.
+
 XML restores layout nodes and resolves application content by `ContentId`.
 Construct the serializer after the content exists, or provide
 `LayoutSerializationCallback` to resolve ViewModels from an application-owned

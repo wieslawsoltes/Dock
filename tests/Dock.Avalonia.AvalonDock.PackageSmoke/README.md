@@ -2,7 +2,9 @@
 
 This project intentionally uses package references only and is excluded from
 the solution: the package must be built before it can restore. It checks
-parent/root hooks from an external derived document and layout membership events.
+parent/root hooks from an external derived document and layout membership events,
+selection when attaching preselected content, and an external pane's protected
+visibility setter and hook with ancestor visibility propagation.
 It also verifies that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
 headers, render tool and floating document titles and select their templates, click

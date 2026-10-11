@@ -181,6 +181,31 @@ before observer callbacks or ownership projections change. A throwing changing
 hook prevents that owner assignment; it does not roll back collection mutations
 that a larger docking operation has already performed.
 
+The content hooks also maintain pane selection. A document or tool clears
+`IsSelected` before leaving its previous parent. An item that was already
+selected while detached selects its destination pane when inserted. Selection
+also synchronizes between panes and their native content flags before a layout
+root attaches its factory. Public collection notifications occur after ownership
+initialization, so observers can inspect the new parent and selected content.
+
+Groups cache `IsVisible` and recompute it after parent and child changes.
+The protected setter invokes `OnIsVisibleChanged`, whose base implementation
+propagates visibility to ancestors. Call the base hook from an override to
+preserve that propagation. Newly created empty, detached groups start visible
+until their first computation; wrappers of existing native subtrees initialize
+from the native hierarchy. An empty document pane stays visible outside a
+`LayoutDocumentPaneGroup`; inside one, it requires visible content. The document
+group itself remains visible. Tool panes and tool groups require a visible child,
+while auto-hide sides require a group, including an empty retained return group.
+
+Tool parent changes publish `IsVisible`, `IsVisibleChanged`, `IsHidden`, and
+`IsAutoHidden` before the `Parent` property notification, even when the Boolean
+values remain unchanged. Auto-hide sides resolve their edge before publishing
+their new parent. Tool panes determine floating membership from the public
+ancestor window; `IsDirectlyHostedInFloatingWindow` uses that window's visible
+pane count, including nested groups. Panes observe their current parent group's
+collection and release the old subscription when reparented.
+
 The bridge preserves existing wrappers when native ownership joins separate
 trees, without retaining an unrelated layout through its identity map. Floating
 documents expose their public floating window instead of the internal native

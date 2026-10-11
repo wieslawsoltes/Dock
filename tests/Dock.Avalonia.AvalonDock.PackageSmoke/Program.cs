@@ -386,6 +386,22 @@ static void AssertLayoutLifecycle()
     if (removed != 1 || added != 1 || document.BeforeChanges != 2 || document.AfterChanges != 2 ||
         document.RootChanges != 2 || !ReferenceEquals(document.Parent, destination) || !ReferenceEquals(document.Root, second))
         throw new Exception("The packaged parent/root hooks and layout membership events did not follow the move.");
+
+    LayoutDocument selected = new() { IsSelected = true };
+    destination.Children.Add(selected);
+    if (!ReferenceEquals(destination.SelectedContent, selected) || !selected.IsSelected || document.IsSelected)
+        throw new Exception("Attaching preselected content did not update the native pane's selection.");
+
+    PackageConsumer.VisibilityPane pane = new();
+    LayoutAnchorable tool = new();
+    pane.Children.Add(tool);
+    LayoutPanel panel = new(pane);
+    int visibilityChanges = pane.VisibilityChanges;
+    pane.SetVisibility(false);
+    if (panel.IsVisible) throw new Exception("The protected visibility setter did not update its parent panel.");
+    pane.SetVisibility(true);
+    if (!panel.IsVisible || pane.VisibilityChanges != visibilityChanges + 2)
+        throw new Exception("The external visibility override did not report both transitions.");
 }
 
 static void AssertActiveContent(DockingManager manager, LayoutDocument document, LayoutAnchorable tool)

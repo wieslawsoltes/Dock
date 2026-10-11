@@ -398,9 +398,24 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
         created.Content = new TextBlock { Text = "Replacement content" };
         if (!ReferenceEquals(originalContent, created.Content) || !manager.DockFactory.HostWindows.Contains(created))
             throw new Exception("The explicitly shown window lost content protection or native registration.");
-        document.Dock();
-        if (manager.FloatingWindows.Contains(created))
-            throw new Exception("Docking did not remove the explicitly created window.");
+        EventHandler<Dock.Model.Core.Events.WindowClosingEventArgs> veto = (_, args) => args.Cancel = true;
+        manager.DockFactory.WindowClosing += veto;
+        LayoutFloatingWindow createdModel = (LayoutFloatingWindow)created.Model;
+        try
+        {
+            document.Dock();
+            if (!created.IsVisible || !created.IsTracked || !ReferenceEquals(createdModel.DockWindow.Host, created) ||
+                !manager.FloatingWindows.Contains(created) || !manager.Layout.FloatingWindows.Contains(createdModel) ||
+                !manager.DockFactory.HostWindows.Contains(created) ||
+                ((Dock.Model.Core.IHostWindowCloseState)created).IsClosed)
+                throw new Exception("Canceled native cleanup lost the live host or its ownership.");
+        }
+        finally { manager.DockFactory.WindowClosing -= veto; }
+        manager.Layout.CollectGarbage();
+        if (manager.FloatingWindows.Contains(created) || createdModel.DockWindow.Host is not null ||
+            manager.Layout.FloatingWindows.Contains(createdModel) || manager.DockFactory.HostWindows.Contains(created) ||
+            !((Dock.Model.Core.IHostWindowCloseState)created).IsClosed)
+            throw new Exception("Retrying cleanup did not release the previously canceled floating window.");
     }
     finally
     {

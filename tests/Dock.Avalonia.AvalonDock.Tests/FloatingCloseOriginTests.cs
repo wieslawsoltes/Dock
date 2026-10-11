@@ -119,6 +119,7 @@ public class FloatingCloseOriginTests
     {
         using Workspace workspace = new();
         ProbeWindow host = workspace.Float();
+        LayoutFloatingWindow model = (LayoutFloatingWindow)host.Model;
         EventHandler<Dock.Model.Core.Events.WindowClosingEventArgs> veto = (_, args) => args.Cancel = true;
         workspace.Manager.DockFactory.WindowClosing += veto;
         workspace.Document.Dock();
@@ -126,11 +127,19 @@ public class FloatingCloseOriginTests
         Assert.False(host.UserOrigin);
         Assert.Null(host.ClosedOrigin);
         Assert.All(host.ClosingOrigins, Assert.False);
+        Assert.True(host.IsTracked);
+        Assert.Same(host, model.DockWindow.Host);
+        Assert.Same(model, Assert.Single(workspace.Manager.Layout.FloatingWindows));
+        Assert.Same(host, Assert.Single(workspace.Manager.FloatingWindows));
+        Assert.Same(host, Assert.Single(workspace.Manager.DockFactory.HostWindows));
         workspace.Manager.DockFactory.WindowClosing -= veto;
         host.Close();
         Assert.False(host.IsVisible);
         Assert.False(host.UserOrigin);
         Assert.False(host.ClosedOrigin);
+        Assert.Empty(workspace.Manager.Layout.FloatingWindows);
+        Assert.Empty(workspace.Manager.FloatingWindows);
+        Assert.Empty(workspace.Manager.DockFactory.HostWindows);
     }
 
     private sealed class ProbeWindow : LayoutFloatingWindowControl

@@ -15,12 +15,14 @@ bind unprefixed window-wide commands and invoke current item commands with param
 hide and restore a tool while retaining its floating host and native registration,
 enable unprefixed keyboard movement and move a floating host with Headless arrow-key input,
 inspect the protected close-origin property from a derived consumer control,
+preserve host/model ownership during canceled cleanup and release it on retry,
 resolve a container with the unprefixed converter,
 and restore application content
 from XML using the packaged assemblies. Pack the native
 control, model, and proportional-panel packages too: they contain the tool-menu
 lifetime, window drag input, operation observation, model-aware host creation, unique
-host registration across hide/show, hidden-window drop/activation guards, and runtime splitter sizing
+host registration across hide/show, canceled-exit ownership preservation,
+hidden-window drop/activation guards, and runtime splitter sizing
 changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.

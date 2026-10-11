@@ -47,13 +47,16 @@ internal static class LayoutGarbageCollector
             {
                 if (nodes[i] is not ILayoutContainer { ChildrenCount: 0 } empty || empty is LayoutAnchorSide ||
                     ReferenceEquals(empty, root.RootPanel) || referenced.Contains(empty)) continue;
-                if (empty is LayoutDocumentPane)
+                if (empty is LayoutDocumentPane && documentPanes == 1) continue;
+                if (empty.Parent is not { } parent) continue;
+                parent.RemoveChild(empty);
+                // A floating host can cancel removal. Retry only when this
+                // pass changed the hierarchy, otherwise collection never ends.
+                if (!ReferenceEquals(empty.Parent, parent))
                 {
-                    if (documentPanes == 1) continue;
-                    documentPanes--;
+                    if (empty is LayoutDocumentPane) documentPanes--;
+                    removed = true;
                 }
-                empty.Parent?.RemoveChild(empty);
-                removed = true;
             }
         } while (removed);
         if (root.ActiveContent is { } active && !ReferenceEquals(active.Root, root)) root.ActiveContent = null;

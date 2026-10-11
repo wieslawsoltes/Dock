@@ -319,8 +319,20 @@ Native window-close requests respect factory vetoes and use those item commands
 with a null parameter, falling back to hiding when closing is disabled. Content
 cancellation keeps the remaining tools open. Closing the host releases command
 subscriptions while preserving application command ownership. Resize borders,
-exact close-event ordering, native cleanup cancellation/registration, and remaining
-floating-control hooks are still open.
+exact close-event ordering, cancellation during manager layout replacement/view
+unload, and remaining floating-control hooks are still open.
+
+Canceling native window closing or the factory's `WindowClosing` event keeps a
+cleanup request's host tracked, registered, and linked to its floating model.
+Collection removal or replacement leaves the original entry when closing is
+canceled; a transfer to another manager throws `InvalidOperationException`
+instead of adopting a still-live host. Retry after the veto is lifted. If content
+has already closed or docked, that content operation stays applied, and
+`Layout.CollectGarbage()` can retry removing the remaining empty floating window.
+Dock's optional `IHostWindowCloseState` reports completed closure so its model
+adapter and factory preserve ownership while a host remains live. Native and
+managed Dock hosts implement it; existing custom hosts without the contract keep
+their synchronous, unconditional exit behavior.
 
 Derived floating controls can inspect `CloseInitiatedByUser` in their closing
 callbacks. It becomes false for internal model cleanup, layout replacement, or

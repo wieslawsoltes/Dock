@@ -713,6 +713,18 @@ keeps content in place keeps the native window open. The protected `CanClose`,
 `CanHide`, and `DoHide` hooks participate in this path. Closed hosts release their
 command subscriptions without disposing application commands.
 
+Native `Closing` and factory `WindowClosing` vetoes also preserve hosts during
+internal cleanup. The host keeps its native model link, tracking, and manager
+registrations. Removing or replacing a floating-model collection entry leaves
+the original entry if closing is canceled. Transferring that entry to another
+manager throws `InvalidOperationException` when its current host vetoes removal;
+the original manager retains ownership. Retry after the veto is lifted.
+
+Content already closed or docked stays in its resulting state. An empty floating
+window can therefore remain until closing is allowed. `Layout.CollectGarbage()`
+retries that cleanup and returns without looping when cancellation persists.
+Once the host closes, the model and control collections release it once.
+
 Derived floating controls can inspect the protected `CloseInitiatedByUser`
 property. It starts true and becomes false when internal model cleanup, layout
 replacement, or native window exit requests closure; cancellation does not reset
@@ -743,7 +755,7 @@ existing hosts. Native position saving and XML persistence retain the moved
 window's coordinates.
 
 The floating-control surface is still being completed: resize-border customization,
-exact close-event ordering, native cleanup cancellation and host registration,
+exact close-event ordering, cancellation during manager layout replacement/view unload,
 and remaining protected/platform hooks are tracked in the compatibility checklist.
 
 ## Restore application content from XML
@@ -879,6 +891,10 @@ application locators while making that model available to the manager's host
 factory; nested requests and exceptions restore the previous request. A
 separate registry observes native host identities and floating-model membership
 to publish control additions and removals.
+Dock's optional `IHostWindowCloseState` lets its model adapter and factory query
+completed closure before releasing host and ownership links. Native and managed
+hosts implement it; hidden or canceled hosts report that they are still live.
+Custom hosts without this interface keep the existing unconditional exit behavior.
 `LayoutFloatingWindowCreation` scopes per-content creation options around native
 factory movement. The host prepares its native layout and geometry while
 deferring presentation until the application shows it. Floating Dock controls

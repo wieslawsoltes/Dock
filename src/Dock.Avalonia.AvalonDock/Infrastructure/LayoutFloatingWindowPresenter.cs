@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 
@@ -12,7 +13,7 @@ internal sealed class LayoutFloatingWindowPresenter
     {
         if (!ReferenceEquals(_layout, layout)) Detach();
         _layout = layout;
-        foreach (LayoutFloatingWindow window in layout.FloatingWindows) Present(window);
+        foreach (LayoutFloatingWindow window in new List<LayoutFloatingWindow>(layout.FloatingWindows)) Present(window);
     }
 
     internal void Present(LayoutFloatingWindow window)
@@ -38,7 +39,7 @@ internal sealed class LayoutFloatingWindowPresenter
     internal void Detach(bool internalClose = true)
     {
         if (_layout is null) return;
-        foreach (LayoutFloatingWindow window in _layout.FloatingWindows) window.CloseHost(internalClose);
+        foreach (LayoutFloatingWindow window in new List<LayoutFloatingWindow>(_layout.FloatingWindows)) window.CloseHost(internalClose);
         _layout = null;
     }
 }

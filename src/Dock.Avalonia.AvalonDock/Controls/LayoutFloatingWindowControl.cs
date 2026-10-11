@@ -197,14 +197,19 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Removes a closed native host from its manager before native layout cleanup.</summary>
     protected override void OnClosed(EventArgs e)
     {
+        ILayoutRoot? root = Model.Root;
         HasClosed = true;
         ((INotifyCollectionChanged)Classes).CollectionChanged -= NativeDragChanged;
         try
         {
             SetIsDragging(false);
-            Model.Root?.Manager?.RemoveFloatingWindow(this);
+            root?.Manager?.RemoveFloatingWindow(this);
         }
-        finally { base.OnClosed(e); }
+        finally
+        {
+            try { base.OnClosed(e); }
+            finally { root?.CollectGarbage(); }
+        }
     }
 
     private void NativeDragChanged(object? sender, NotifyCollectionChangedEventArgs e) =>

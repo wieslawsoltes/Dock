@@ -54,6 +54,8 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         if (index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
         if (Contains(item)) throw new InvalidOperationException("A floating window cannot occur twice in a layout.");
         item.Parent?.RemoveChild(item);
+        if (item.Parent is not null)
+            throw new InvalidOperationException("The floating window's current host canceled removal from its layout.");
         item.Attach(_owner);
         _owner.DockFactory.InsertWindow((RootDock)_owner.DockModel, item.DockWindow, index);
         _owner.Manager?.PresentFloatingWindow(item);
@@ -61,20 +63,21 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     protected override void RemoveItem(int index)
     {
         LayoutFloatingWindow item = this[index];
-        item.CloseHost();
-        _owner.DockFactory.RemoveWindow(item.DockWindow);
+        if (item.CloseHost()) _owner.DockFactory.RemoveWindow(item.DockWindow);
     }
     protected override void SetItem(int index, LayoutFloatingWindow item)
     {
         ArgumentNullException.ThrowIfNull(item);
         if (ReferenceEquals(this[index], item)) return;
         if (Contains(item)) throw new InvalidOperationException("A floating window cannot occur twice in a layout.");
+        LayoutFloatingWindow previous = this[index];
         RemoveItem(index);
-        InsertItem(index, item);
+        if (!Contains(previous)) InsertItem(index, item);
     }
     protected override void ClearItems()
     {
-        for (int i = Count - 1; i >= 0; i--) RemoveItem(i);
+        List<LayoutFloatingWindow> windows = new(this);
+        for (int i = windows.Count - 1; i >= 0; i--) Remove(windows[i]);
     }
     protected override void MoveItem(int oldIndex, int newIndex)
     {

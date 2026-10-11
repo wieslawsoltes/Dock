@@ -63,7 +63,7 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
         SetProjectedParent(root);
     }
 
-    internal void CloseHost(bool internalClose = true)
+    internal bool CloseHost(bool internalClose = true)
     {
         // Removing a window from the public collection detaches its layout.
         // The native host must close without executing content-close commands.
@@ -75,6 +75,7 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
             else DockWindow.Exit();
         }
         finally { DockWindow.Layout = NativeRoot; }
+        return DockWindow.Host is null or IHostWindowCloseState { IsClosed: true };
     }
 
     private void WindowChanged(object? sender, AvaloniaPropertyChangedEventArgs args)

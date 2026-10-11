@@ -203,6 +203,15 @@ supported by corresponding implementation and test evidence.
   of native tracking/visibility. Derived-control tests cover initial state,
   user cancellation, hiding/restoration, model cleanup, native exit, layout
   replacement, view unload/reattachment, and a canceled internal request.
+- Canceled internal cleanup preserves the floating model, host reference, tracking,
+  and manager/native registrations. Collection removal, clearing, replacement,
+  and cross-manager transfer respect native/factory vetoes. Garbage collection
+  retains canceled empty hosts and can retry without looping indefinitely;
+  completed content close/dock operations are not rolled back. Tests cover
+  retries, nested closed-callback cleanup, native closing before content commands,
+  and one removal notification. Dock's optional `IHostWindowCloseState` also keeps
+  ownership intact for managed hosts. Model tests cover legacy hosts, previous
+  tracking state, reentrant or throwing exits, and host replacement in callbacks.
 - `AllowMovingFloatingWindowWithKeyboard` defaults to false and supports
   compiled XAML bindings and literal assignments from another assembly. Its
   public CLR setter is an explicit Avalonia adaptation: literal XAML calls the
@@ -261,7 +270,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 402 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 410 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -275,7 +284,7 @@ supported by corresponding implementation and test evidence.
 - Remaining manager APIs: additional update strategy invocation paths,
   templates/selectors, styles, themes, remaining converters, and the control
   adapter surface. Floating controls still need resize-border customization,
-  exact close-event ordering, native cleanup cancellation and host registration,
+  exact close-event ordering, cancellation during manager layout replacement/view unload,
   and remaining protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.

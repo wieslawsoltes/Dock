@@ -39,8 +39,13 @@ internal static class LayoutWindowClosing
         {
             foreach (LayoutContent content in contents) ((LayoutAnchorable)content).Hide();
         }
-        // Hiding and content cancellation cancel the native close. The hidden
-        // host stays tracked for restoration; closing all content detaches it.
-        return window.Host?.IsTracked != true;
+        // A nested cleanup request can leave the host tracked until this close
+        // finishes. Hiding and canceled content keep it alive; content that has
+        // closed or docked elsewhere no longer needs the floating host.
+        if (window.Host?.IsTracked != true) return true;
+        foreach (LayoutContent content in contents)
+            if (ReferenceEquals(content.FindParent<LayoutFloatingWindow>(), floating) ||
+                content is LayoutAnchorable { IsHidden: true }) return false;
+        return true;
     }
 }

@@ -728,8 +728,47 @@ property to null removes that side's presentation; restoring the control reuses
 it. A new side model or XML layout creates the corresponding new controls.
 Derived managers can override `OnLeftSidePanelChanged`, `OnTopSidePanelChanged`,
 `OnRightSidePanelChanged`, and `OnBottomSidePanelChanged` with
-`AvaloniaPropertyChangedEventArgs`. These controls do not yet supply the separate
-public `LayoutAutoHideWindowControl` API or its automatic closing timer.
+`AvaloniaPropertyChangedEventArgs`.
+
+The manager creates its readonly `AutoHideWindow` when loaded. This
+`LayoutAutoHideWindowControl` wraps Dock's existing preview; `Model` identifies
+the current `LayoutAnchorable` and becomes null when the preview closes. The
+native preview still owns content placement and splitter resizing. The public
+control hosts the existing `LayoutAnchorableControl` and `LayoutItem.View`.
+
+`AutoHideWindowClosingTimer` specifies the idle closing delay in milliseconds
+(1500 by default; negative values coerce to 1500). The preview checks for idle
+every 50 milliseconds, then waits for the configured delay. An active tool,
+pointer over the preview or its anchor, or a native splitter drag keeps it open.
+Interaction at the close deadline returns to idle monitoring. Changing the
+property updates an already pending deadline. Dock's `KeepPinnedDockableVisible`
+also keeps the native preview open. Closing, unpinning, hiding, floating, layout
+replacement, and manager detachment clear the public preview model.
+
+Style its `Background` and `AnchorableStyle` through ordinary Avalonia XAML;
+`AnchorableStyle` is a `ControlTheme` for the preview's content control. Both XML
+namespaces resolve this API. For example, in a window with `AvalonDockTheme`:
+
+```xml
+<Window.Resources>
+  <ControlTheme x:Key="PreviewContent" TargetType="LayoutAnchorableControl"
+                BasedOn="{StaticResource {x:Type LayoutAnchorableControl}}">
+    <Setter Property="Margin" Value="8" />
+  </ControlTheme>
+</Window.Resources>
+<Window.Styles>
+  <Style Selector="LayoutAutoHideWindowControl" x:DataType="LayoutAutoHideWindowControl">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="AnchorableStyle" Value="{StaticResource PreviewContent}" />
+  </Style>
+</Window.Styles>
+```
+
+Derived managers can use `SetAutoHideWindow` and override
+`OnAutoHideWindowChanged` or `OnAutoHideWindowClosingTimerChanged`, with
+`AvaloniaPropertyChangedEventArgs`. The control uses Avalonia's visual tree,
+rather than WPF's `HwndHost` and Win32 child-window hooks. Native separate pinned
+window modes and desktop focus behavior still require platform validation.
 
 ## Use converters in compiled bindings
 
@@ -1653,6 +1692,7 @@ flowchart TB
         GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
         PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
         Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]
+        AutoHide["LayoutAutoHideWindowControl<br/>Preview model, content theme, and idle closing"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
         TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
         Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
@@ -1688,6 +1728,9 @@ flowchart TB
     Manager -->|Side panels and anchor templates| Anchors
     Anchors --> Models
     Anchors -->|Pinned reorder and preview| Factory
+    Manager -->|AutoHideWindow and closing delay| AutoHide
+    AutoHide --> ContentControls
+    AutoHide -->|Observe preview and close through Dock| Factory
     Controls --> Anchors
     PaneControls --> ContentControls
     PaneControls --> Tabs

@@ -40,6 +40,16 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- `LayoutAutoHideWindowControl` presents the existing native preview and exposes
+  its current public model, background, and anchorable content theme. The
+  manager's readonly `AutoHideWindow` and protected hooks expose the generated
+  presentation. `AutoHideWindowClosingTimer` supports the upstream default,
+  negative-value coercion, idle monitoring, and deadline updates. Active tools,
+  pointer interaction, native resizing, and Dock's keep-visible policy hold the
+  preview open. Native Dock retains preview ownership, sizing, and content views.
+  The native Fluent layout host uses a deferred content presenter, preventing
+  Avalonia layout models from becoming template children that retain a replaced
+  manager. Deferred realization and retained-layout lifetime are covered.
 - Public `LayoutAnchorSideControl`, `LayoutAnchorGroupControl`, and
   `LayoutAnchorControl` expose the auto-hide hierarchy over native pinned tools.
   Manager side-panel properties and protected changed hooks control the actual
@@ -491,15 +501,16 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 930 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 954 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
 
 ## Open work (not release-complete)
 
-- Public `LayoutAutoHideWindowControl`, the auto-hide closing timer, and remaining
-  auto-hide window lifecycle/platform behavior.
+- Remaining auto-hide platform behavior: WPF `HwndHost`/Win32 hooks have no
+  direct Avalonia equivalent; separate native pinned-window modes and desktop
+  focus behavior require validation.
 - Complete native floating lifecycle/state synchronization, including native
   group redocking, generic panels, and grouped-document/mixed native windows.
   Floating the entire root panel through the extra native factory API can leave
@@ -534,8 +545,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 686
-matching type/member keys and 265 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 700
+matching type/member keys and 251 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

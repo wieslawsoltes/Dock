@@ -420,7 +420,25 @@ selection resets to false without changing the active document. Setting
 `IsActive` opens and activates it. The default group template keeps native pinned
 dragging. Replacing a manager template updates existing controls; clearing a side
 property removes that presentation until restored or its side model is replaced.
-The separate public auto-hide window API and its closing timer remain open work.
+
+`DockingManager.AutoHideWindow` exposes a `LayoutAutoHideWindowControl` around
+the existing native preview. Its readonly `Model` is the current tool, or null
+while closed. `Background` and `AnchorableStyle` (an Avalonia `ControlTheme` for
+the preview's `LayoutAnchorableControl`) update the existing presentation.
+`AutoHideWindowClosingTimer` defaults to 1500 milliseconds; negative values
+coerce to that default. Idle monitoring runs every 50 milliseconds before the
+closing delay. An active tool, pointer over the preview or anchor, or native
+splitter drag keeps it open; interaction at the deadline restarts monitoring.
+Dock's `KeepPinnedDockableVisible` is also respected. Changing the delay updates
+a pending deadline. Native close, unpin, hide, float, layout replacement, and
+manager detachment clear `Model`. Dock retains the content view and resizing.
+
+The preview is created when the manager loads. Derived managers can use
+`SetAutoHideWindow`, `OnAutoHideWindowChanged`, and
+`OnAutoHideWindowClosingTimerChanged`. Changed hooks use
+`AvaloniaPropertyChangedEventArgs`. The Avalonia control replaces WPF's
+`HwndHost`; Win32 child-window hooks, native separate pinned-window modes, and
+desktop focus behavior are not covered by the current compatibility claim.
 
 Floating document captions use `DocumentTitleTemplate` and its selector with the
 public `LayoutDocument` from `LayoutDocumentFloatingWindow.RootDocument`:
@@ -691,6 +709,7 @@ flowchart TB
     GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
     PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
     Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]
+    AutoHide["LayoutAutoHideWindowControl<br/>Preview model, content theme, and idle closing"]
     ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
     TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
     Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
@@ -723,6 +742,9 @@ flowchart TB
     Api -->|Side panels and anchor templates| Anchors
     Anchors --> Models
     Anchors -->|Pinned reorder and preview| Factory
+    Api -->|AutoHideWindow and closing delay| AutoHide
+    AutoHide --> ContentControls
+    AutoHide -->|Observe preview and close through Dock| Factory
     View --> Anchors
     PaneControls --> ContentControls
     PaneControls --> Tabs

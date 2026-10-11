@@ -141,3 +141,8 @@ activates the existing layout item command, and reopens their nested icon bindin
 ordinary Avalonia window disambiguates `ad:DropDownButton`. It also compiles and
 invokes the public menu, icon, and dropdown protected hooks from this external
 consumer assembly.
+
+The anchor probe also exercises `LayoutAutoHideWindowControl` through a
+window-scoped theme: compiled public model/background/content-theme styles,
+existing content identity, external manager hooks and preview replacement,
+XML cleanup, reattachment, idle closing, and negative-delay coercion.

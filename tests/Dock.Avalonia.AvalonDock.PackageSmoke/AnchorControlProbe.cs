@@ -7,6 +7,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using AvalonDock;
@@ -20,6 +21,11 @@ namespace PackageConsumer;
 public sealed class AnchorManagerProbe : DockingManager
 {
     public int[] SideChanges { get; } = new int[4];
+    public int PreviewChanges { get; private set; }
+    public int ClosingTimerChanges { get; private set; }
+    public void ReplacePreview(LayoutAutoHideWindowControl? value) => SetAutoHideWindow(value);
+    protected override void OnAutoHideWindowChanged(AvaloniaPropertyChangedEventArgs e) { PreviewChanges++; base.OnAutoHideWindowChanged(e); }
+    protected override void OnAutoHideWindowClosingTimerChanged(AvaloniaPropertyChangedEventArgs e) { ClosingTimerChanges++; base.OnAutoHideWindowClosingTimerChanged(e); }
     protected override void OnLeftSidePanelChanged(AvaloniaPropertyChangedEventArgs e) { SideChanges[0]++; base.OnLeftSidePanelChanged(e); }
     protected override void OnTopSidePanelChanged(AvaloniaPropertyChangedEventArgs e) { SideChanges[1]++; base.OnTopSidePanelChanged(e); }
     protected override void OnRightSidePanelChanged(AvaloniaPropertyChangedEventArgs e) { SideChanges[2]++; base.OnRightSidePanelChanged(e); }
@@ -63,6 +69,14 @@ internal static class AnchorControlProbe
                 !ReferenceEquals(((IRootDock)manager.DockLayout).PinnedDock?.ActiveDockable, tool.DockModel))
                 throw new Exception("The packaged anchor did not open a passive native preview for selection.");
             Control view = manager.GetLayoutItemFromModel(tool)!.View;
+            LayoutAutoHideWindowControl preview = manager.AutoHideWindow!;
+            if (manager.PreviewChanges != 1 || !ReferenceEquals(preview.Model, tool) || !ReferenceEquals(preview.Tag, tool) ||
+                !preview.GetVisualDescendants().Contains(view) || ((ISolidColorBrush)preview.Presenter!.Background!).Color != Colors.Coral ||
+                preview.GetVisualDescendants().OfType<LayoutAnchorableControl>().Single().Tag is not "Packaged preview")
+                throw new Exception("The packaged public auto-hide window did not wrap the native preview or apply its compiled styles.");
+            manager.ReplacePreview(null); Update(); manager.ReplacePreview(preview); Update();
+            if (manager.PreviewChanges != 3 || !ReferenceEquals(preview.Model, tool) || !preview.GetVisualDescendants().Contains(view))
+                throw new Exception("An external manager could not clear and restore its packaged preview presentation.");
             Point start = Center(first), target = Center(second);
             window.MouseMove(start); window.MouseDown(start, MouseButton.Left);
             window.MouseMove(target, RawInputModifiers.LeftMouseButton); window.MouseUp(target, MouseButton.Left); Update();
@@ -94,12 +108,23 @@ internal static class AnchorControlProbe
             using StringWriter xml = new();
             XmlLayoutSerializer serializer = new(manager);
             serializer.Serialize(xml); serializer.Deserialize(new StringReader(xml.ToString())); Update();
+            if (preview.Model is not null) throw new Exception("XML replacement retained the previous packaged auto-hide model.");
             LayoutAnchorControl restored = manager.LeftSidePanel!.Children.SelectMany(group => group.Children)
                 .Single(anchor => ((LayoutAnchorable)anchor.Model).ContentId == "left-a");
             if (ReferenceEquals(manager.LeftSidePanel, sides[0]) || !ReferenceEquals(((LayoutAnchorable)restored.Model).Content, content))
                 throw new Exception("Packaged XML replacement did not update public controls and preserve application content.");
             window.Content = null; Update(); window.Content = manager; Update();
             if (!manager.GetVisualDescendants().Contains(restored)) throw new Exception("The packaged anchor did not survive visual reattachment.");
+            manager.AutoHideWindowClosingTimer = 0;
+            ((LayoutAnchorable)restored.Model).IsSelected = true; Update();
+            window.MouseMove(new Point(895, 645));
+            System.Threading.Thread.Sleep(80); Update();
+            System.Threading.Thread.Sleep(20); Update();
+            if (preview.Model is not null || manager.DockLayout.PinnedDock is not null || manager.ClosingTimerChanges != 1)
+                throw new Exception("The packaged idle closing timer did not close the native preview.");
+            manager.AutoHideWindowClosingTimer = -1;
+            if (manager.AutoHideWindowClosingTimer != 1500 || manager.ClosingTimerChanges != 2)
+                throw new Exception("The packaged closing timer did not preserve its default coercion and external hook.");
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
 

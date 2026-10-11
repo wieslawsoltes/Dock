@@ -6,6 +6,25 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class ApiKeyTests
 {
     [Theory]
+    [InlineData("System.Xml.XmlReader", "XmlReader")]
+    [InlineData("System.Xml.XmlWriter", "XmlWriter")]
+    [InlineData("System.IO.Stream", "Stream")]
+    [InlineData("System.IO.TextReader", "TextReader")]
+    [InlineData("System.IO.TextWriter", "TextWriter")]
+    [InlineData("System.ComponentModel.CancelEventArgs", "CancelEventArgs")]
+    public void Known_Bcl_Parameter_Qualifications_Preserve_The_Same_Key(string qualified, string imported)
+    {
+        string key = $"AvalonDock.Probe|method:Run({imported},ref {imported},{imported}[])";
+        Assert.Equal(key, ApiKey.Normalize(key));
+        Assert.Equal(key, ApiKey.Normalize($"AvalonDock.Probe|method:Run({qualified},ref global::{qualified},{qualified}[])"));
+        foreach (string unrelated in new[] { "Other." + qualified, qualified + "Extra", qualified + ".Nested" })
+        {
+            string otherKey = $"AvalonDock.Probe|method:Run({unrelated})";
+            Assert.Equal(otherKey, ApiKey.Normalize(otherKey));
+        }
+    }
+
+    [Theory]
     [InlineData("object[]")]
     [InlineData("object []")]
     public void Array_Rank_Spacing_Does_Not_Change_The_Key(string type)

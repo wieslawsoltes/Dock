@@ -1431,6 +1431,33 @@ capabilities still apply, and a rejected floating attempt does not raise
 `Floated`. Exceptions release the operation scope, and changing the manager's
 layout during a preview prevents stale completion notifications.
 
+## Override control lifecycle hooks
+
+Derived `DockingManager` and `LayoutFloatingWindowControl` classes can override
+`OnInitialized(EventArgs)`. Avalonia invokes the hook once when native
+initialization completes, before the public `Initialized` event. A floating
+window may initialize while its constructor installs its styles. Hiding and showing
+a window or reattaching a manager does not initialize it again. Call the base hook
+to retain native initialization.
+
+`DockingManager.OnApplyTemplate()` is a public virtual hook invoked after each
+Avalonia template application. Its base implementation refreshes the public root,
+side, and auto-hide presentations. It reuses existing presentations while their
+models are unchanged; calling the hook again does not replace them.
+
+Floating controls expose both the AvalonDock `OnClosing(CancelEventArgs)` hook
+and Avalonia's `OnClosing(WindowClosingEventArgs)` overload. Native closure routes
+through the latter to the former, preserving the same argument object and native
+close reason. Set `Cancel` before calling base to veto the request before content
+mutations. The base hook raises Avalonia's `Closing` event, then lets Dock process
+factory and content cancellation. Internal cleanup also uses this path, so a
+canceled request preserves the registered host until closing is retried.
+Use `Cancel` for a veto; a thrown hook exception retains Avalonia's native
+close/cleanup semantics and can still complete window closure.
+
+These hooks belong to custom controls. Ordinary application close policy can
+continue using the model commands and cancelable closing notifications.
+
 ## Inspect native floating-window controls
 
 `DockingManager.FloatingWindows` enumerates `LayoutFloatingWindowControl`
@@ -1660,6 +1687,14 @@ Screen rectangles use physical pixels, matching Avalonia's `PointToScreen`;
 use `PointToClient` when comparing with a control-local pointer position.
 Transforms are included, and detached surfaces produce an empty rectangle.
 
+Snapshot targets come from the native template registrations used for hit testing.
+`DockTargetBase.GetSelector(DockOperation)` returns that registered control,
+including hidden selectors; it returns null for an absent operation. A custom
+template's attached `DockProperties.IndicatorDockOperation` determines the
+operation, independently of the part's name. Nested controls that merely reuse
+a selector name are excluded. Replacing or clearing the template discards the
+old selector and indicator registrations.
+
 Canceling window closure preserves its projection. Completed closure clears
 the native content and projection references and releases theme providers.
 Retaining the optional factory does not keep its manager alive.
@@ -1878,7 +1913,7 @@ flowchart TB
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
         ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
-        Overlays["OverlayWindow and geometry snapshots<br/>Native target hosting"]
+        Overlays["OverlayWindow and geometry snapshots<br/>Native selector registrations"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]

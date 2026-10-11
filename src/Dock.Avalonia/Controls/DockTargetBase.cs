@@ -151,6 +151,18 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// </summary>
     protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new();
 
+    /// <summary>Gets the selector registered for a docking operation in the current template.</summary>
+    /// <param name="operation">The operation assigned to the selector by the template.</param>
+    /// <returns>The registered selector, or null when the template has no selector for the operation.</returns>
+    /// <remarks>The selector may be hidden by docking policy. This method does not apply the template
+    /// or validate a drop. Template part names identify controls; their attached dock operations define
+    /// the mapping used by both this method and native hit testing.</remarks>
+    public Control? GetSelector(DockOperation operation)
+    {
+        VerifyAccess();
+        return SelectorsOperations.GetValueOrDefault(operation);
+    }
+
     private bool IsOperationEnabled(DockOperation operation)
     {
         return operation switch
@@ -166,6 +178,9 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         base.OnApplyTemplate(e);
 
+        IndicatorOperations.Clear();
+        SelectorsOperations.Clear();
+
         foreach (var indicator in s_indicators)
         {
             AddIndicator(indicator, e.NameScope);
@@ -175,6 +190,17 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         {
             AddSelector(selector, e.NameScope);
         }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        if (change.Property == TemplateProperty)
+        {
+            IndicatorOperations.Clear();
+            SelectorsOperations.Clear();
+        }
+        base.OnPropertyChanged(change);
     }
 
     /// <summary>

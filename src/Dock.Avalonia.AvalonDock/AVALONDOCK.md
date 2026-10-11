@@ -621,6 +621,19 @@ grid splitter.
 Derived floating controls can override `OnStateChanged(EventArgs)`; call the
 base hook to synchronize `IsMaximized` with the native window state.
 
+Derived managers and floating controls can override `OnInitialized(EventArgs)`;
+Avalonia invokes this once before its `Initialized` event. The manager's public
+`OnApplyTemplate()` runs after each applied Avalonia template and refreshes the
+public root, side, and auto-hide presentations, reusing unchanged models.
+Call the base hooks to preserve this behavior.
+
+Floating controls also expose `OnClosing(CancelEventArgs)`. Native closure passes
+the same `WindowClosingEventArgs` instance to this hook and Avalonia's `Closing`
+event. Set `Cancel` before calling base to veto the close before Dock factory or
+content commands run. Calling base preserves native event, factory, and content
+cancellation; the Avalonia `OnClosing(WindowClosingEventArgs)` overload remains
+available. These hooks also run during internal layout cleanup.
+
 When Dock's floating docking adorners are enabled with
 `.UseFloatingDockAdorner(true)` on the application builder, native dragging
 creates public `OverlayWindow` hosts. They contain the existing `DockTarget`
@@ -636,6 +649,10 @@ as snapshots for inspection. Rectangles use physical screen pixels; read again
 after layout or native target validation changes. Closing releases the window's
 projection and native content. `OnApplyTemplate()` applies the native target
 template. Both XML namespace forms support overlay control themes and enum values.
+Snapshots use the native target's registered selectors and attached docking
+operations, including custom templates. `DockTargetBase.GetSelector(operation)`
+exposes that same mapping. Nested controls with similar names are excluded, and
+replacing or clearing a template releases its previous part registrations.
 
 WPF's full overlay template-part arrangement and its separate tool-beside-document
 selector family are still tracked as compatibility gaps. Use Dock's selector
@@ -799,7 +816,7 @@ flowchart TB
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
     ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
-    Overlays["OverlayWindow and geometry snapshots<br/>Native target hosting"]
+    Overlays["OverlayWindow and geometry snapshots<br/>Native selector registrations"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]

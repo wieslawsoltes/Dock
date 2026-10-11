@@ -13,11 +13,11 @@ internal static partial class ApiKey
         // Removing a nullable element annotation from Roslyn's "object? []"
         // leaves a formatting-only space before the array rank specifier.
         key = key.Replace(" [", "[", StringComparison.Ordinal);
-        return QualifiedCultureInfo().Replace(key, "CultureInfo");
+        return QualifiedBclType().Replace(key, static match => match.Groups["type"].Value);
     }
 
-    // Canonicalize this known BCL type's imported and fully qualified spellings.
+    // Canonicalize only these known BCL types' imported and fully qualified spellings.
     // Do not erase arbitrary namespaces or map WPF framework types to Avalonia.
-    [GeneratedRegex(@"(?<![\w.:])(?:global::)?System\.Globalization\.CultureInfo(?![\w.:])", RegexOptions.CultureInvariant)]
-    private static partial Regex QualifiedCultureInfo();
+    [GeneratedRegex(@"(?<![\w.:])(?:global::)?System\.(?:Globalization\.(?<type>CultureInfo)|ComponentModel\.(?<type>CancelEventArgs)|Xml\.(?<type>XmlReader|XmlWriter)|IO\.(?<type>Stream|TextReader|TextWriter))(?![\w.:])", RegexOptions.CultureInvariant)]
+    private static partial Regex QualifiedBclType();
 }

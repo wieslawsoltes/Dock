@@ -152,6 +152,11 @@ dotnet run --project tests/Dock.Avalonia.AvalonDock.PackageSmoke \
 Override `DockCompatibilityPackageVersion` when testing a prerelease package.
 Both target frameworks are compiled; the executable smoke test uses .NET 10.
 
+The lifecycle probe derives a manager and floating window in this external
+consumer assembly. It invokes the initialization/template hooks and checks
+that the BCL closing hook shares Avalonia cancellation arguments and permits a
+later retry. The overlay probe reads native selector registrations directly.
+
 The menu probe opens compiled `DropDownButton` and `DropDownControlArea` menus,
 activates the existing layout item command, and reopens their nested icon bindings.
 `MenuButton.axaml` uses the historical URI as its root default namespace; the

@@ -17,7 +17,7 @@ public partial class DockingManager
     private LayoutAutoHideWindowControl? _autoHideWindow;
     private readonly LayoutAutoHideController _autoHide;
 
-    /// <summary>Gets the preview presentation created when the manager loads.</summary>
+    /// <summary>Gets the preview presentation created when the manager applies its template or loads.</summary>
     public LayoutAutoHideWindowControl? AutoHideWindow => _autoHideWindow;
     /// <summary>Gets or sets the idle closing delay in milliseconds; negative values coerce to the 1500-millisecond default.</summary>
     public int AutoHideWindowClosingTimer { get => GetValue(AutoHideWindowClosingTimerProperty); set => SetValue(AutoHideWindowClosingTimerProperty, value); }

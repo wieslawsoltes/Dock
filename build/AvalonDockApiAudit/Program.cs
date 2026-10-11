@@ -31,7 +31,7 @@ List<string> missing = expected.Where(line => !actualKeys.Contains(Key(line))).T
 foreach (string line in missing) Console.WriteLine("MISSING\t" + line);
 Console.WriteLine($"Presence audit: {expected.Count - missing.Count}/{expected.Count} declarations have a matching type/member key; {missing.Count} missing.");
 Console.WriteLine("Namespace mapping: upstream Xceed.Wpf.AvalonDock.* corresponds to AvalonDock.* in the adapter.");
-Console.WriteLine("Known BCL spelling normalization: CultureInfo and System.Globalization.CultureInfo share a key.");
+Console.WriteLine("Known BCL spelling normalization: CultureInfo, CancelEventArgs, XmlReader, XmlWriter, Stream, TextReader, and TextWriter share keys with their qualified System names.");
 Console.WriteLine("A matching key is not proof of signature or behavioral compatibility. Verify framework types, inheritance, defaults, bindings, templates, and behavior separately.");
 return missing.Count == 0 ? 0 : 1;
 

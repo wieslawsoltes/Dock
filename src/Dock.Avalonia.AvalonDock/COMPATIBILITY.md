@@ -539,7 +539,15 @@ supported by corresponding implementation and test evidence.
   drop-area/overlay-area/target types and enums describe the existing controls;
   additional accessors capture physical screen-pixel geometry on demand.
   Manager themes reach overlay windows and are released on close.
-- 1024 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+  Snapshots use native selector registrations and attached operations. Custom
+  templates with remapped parts or nested similarly named controls agree with
+  native hit testing; template replacement clears old selector/indicator maps.
+- Manager and floating `OnInitialized(EventArgs)` hooks bridge Avalonia's actual
+  initialization. The manager's public `OnApplyTemplate()` refreshes public
+  presentations while retaining unchanged models. Floating `OnClosing(CancelEventArgs)`
+  shares native arguments with the Avalonia overload and event, preserves native
+  factory/content vetoes, and supports canceled cleanup retries.
+- 1046 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -585,15 +593,18 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 797
-matching type/member keys and 154 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 811
+matching type/member keys and 140 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 
 Comparison maps the requested `AvalonDock.*` namespace and canonicalizes known
-`CultureInfo` qualifications and array rank spacing. No baseline entries are
+`CultureInfo`, `CancelEventArgs`, XML reader/writer and IO stream/reader/writer
+qualifications, and array rank spacing. This recognizes ten existing XML/IO
+declarations previously reported as missing; it does not add new implementation.
+No baseline entries are
 removed or WPF framework types equated to Avalonia types. For example, the
 navigator's preview-key and selection hooks exist with Avalonia event arguments,
 but their keys remain distinct from the upstream WPF argument types.

@@ -49,7 +49,8 @@ internal static class OverlayProbe
             if (overlay.DropArea is not DropArea<LayoutDocumentPaneControl> { Type: DropAreaType.DocumentPane } area ||
                 !ReferenceEquals(area.AreaElement, pane) || overlay.Area is not DocumentPaneControlOverlayArea)
                 throw new Exception("The packaged overlay did not project its existing native pane.");
-            Control center = target.GetVisualDescendants().OfType<Control>().Single(control => control.Name == "PART_CenterSelector");
+            Control center = target.GetSelector(DockOperation.Fill)
+                ?? throw new Exception("The native target did not expose its registered center selector.");
             PixelPoint point = center.PointToScreen(new Point(center.Bounds.Width / 2, center.Bounds.Height / 2));
             if (target.GetDockOperation(pane.PointToClient(point), pane, pane, DragAction.Move, (_, _, _, _) => true) != DockOperation.Fill ||
                 !overlay.DropTargets.Any(item => item.TargetType == DropTargetType.DocumentPaneDockInside &&

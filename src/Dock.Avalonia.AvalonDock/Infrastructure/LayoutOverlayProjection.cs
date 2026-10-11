@@ -58,19 +58,17 @@ internal sealed class LayoutOverlayProjection
     internal IReadOnlyList<OverlayWindowDropTarget> CaptureTargets()
     {
         List<OverlayWindowDropTarget> targets = new(5);
-        foreach (Visual visual in _adorner.GetVisualDescendants())
+        if (_adorner is not DockTargetBase target) return targets;
+        for (int index = 0; index < 5; index++)
         {
-            if (visual is not Control selector || !selector.IsEffectivelyVisible || selector.Opacity <= 0 ||
-                selector.Bounds.Width <= 0 || selector.Bounds.Height <= 0) continue;
-            DockOperation operation = selector.Name switch
+            DockOperation operation = index switch
             {
-                "PART_LeftSelector" => DockOperation.Left,
-                "PART_TopSelector" => DockOperation.Top,
-                "PART_RightSelector" => DockOperation.Right,
-                "PART_BottomSelector" => DockOperation.Bottom,
-                "PART_CenterSelector" => DockOperation.Fill,
-                _ => DockOperation.None
+                0 => DockOperation.Left, 1 => DockOperation.Top, 2 => DockOperation.Right,
+                3 => DockOperation.Bottom, _ => DockOperation.Fill
             };
+            Control? selector = target.GetSelector(operation);
+            if (selector is null || !selector.IsEffectivelyVisible || selector.Opacity <= 0 ||
+                selector.Bounds.Width <= 0 || selector.Bounds.Height <= 0) continue;
             if (Map(operation) is { } mapped)
                 targets.Add(new OverlayWindowDropTarget(mapped.Selector, mapped.Destination, selector));
         }

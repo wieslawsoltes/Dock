@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -142,6 +143,33 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         _notifyOpened = false;
         base.Present(isDialog);
+    }
+
+    /// <summary>Dispatches Avalonia initialization to the AvalonDock extensibility hook.</summary>
+    protected override void OnInitialized() => OnInitialized(EventArgs.Empty);
+
+    /// <summary>Called once when Avalonia completes floating-window initialization.</summary>
+    /// <remarks>Call the base hook to retain native initialization. The public Initialized event follows this hook.</remarks>
+    protected virtual void OnInitialized(EventArgs e) => base.OnInitialized();
+
+    /// <summary>Dispatches a native close request to the AvalonDock cancellation hook.</summary>
+    protected override void OnClosing(WindowClosingEventArgs e) => OnClosing((CancelEventArgs)e);
+
+    /// <summary>Routes a derived Avalonia closing override's base call to the AvalonDock cancellation hook.</summary>
+    /// <typeparam name="TEventArgs">The native window-closing argument type.</typeparam>
+    /// <param name="e">The native arguments supplied by Avalonia.</param>
+    /// <remarks>This overload preserves native argument overload resolution across multiple inheritance
+    /// levels. Application policy belongs in the virtual CancelEventArgs overload.</remarks>
+    protected void OnClosing<TEventArgs>(TEventArgs e) where TEventArgs : WindowClosingEventArgs =>
+        OnClosing((CancelEventArgs)e);
+
+    /// <summary>Processes a native close request using AvalonDock's framework-independent cancellation signature.</summary>
+    /// <remarks>The native lifecycle supplies a WindowClosingEventArgs instance. Calling the base hook
+    /// raises Avalonia's Closing event, then processes Dock factory and content cancellation. Set Cancel
+    /// before calling base to prevent content mutations. Overrides using Avalonia's overload remain supported.</remarks>
+    protected virtual void OnClosing(CancelEventArgs e)
+    {
+        if (e is WindowClosingEventArgs nativeArgs) base.OnClosing(nativeArgs);
     }
 
     /// <summary>Notifies the native factory when an explicitly created window is first shown.</summary>

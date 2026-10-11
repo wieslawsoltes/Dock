@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -14,12 +15,57 @@ using AvalonDock.Layout;
 using AvalonDock.Themes;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
 
 public class OverlayWindowTests
 {
+    [AvaloniaTheory]
+    [InlineData(DropAreaType.DocumentPane, DropTargetType.DocumentPaneDockRight)]
+    [InlineData(DropAreaType.AnchorablePane, DropTargetType.AnchorablePaneDockRight)]
+    [InlineData(DropAreaType.DockingManager, DropTargetType.DockingManagerDockRight)]
+    public void Custom_Template_Operations_And_Replacement_Match_Native_Hit_Testing(DropAreaType kind, DropTargetType expected)
+    {
+        using Workspace workspace = new(kind);
+        Border selector = new() { Width = 60, Height = 60 };
+        Panel indicator = new() { IsHitTestVisible = false };
+        DockProperties.SetIndicatorDockOperation(selector, DockOperation.Right);
+        DockProperties.SetIndicatorDockOperation(indicator, DockOperation.Right);
+        workspace.Target.Template = new FuncControlTemplate((_, scope) =>
+        {
+            scope.Register("PART_LeftSelector", selector);
+            scope.Register("PART_LeftIndicator", indicator);
+            return new StackPanel
+            {
+                Children =
+                {
+                    new Panel { Children = { indicator, selector } },
+                    // A nested namescope/template can reuse a familiar name without
+                    // registering a selector with the owning native dock target.
+                    new Border { Name = "PART_CenterSelector", Width = 60, Height = 60 }
+                }
+            };
+        });
+        workspace.Update();
+        Assert.Same(selector, workspace.Target.GetSelector(DockOperation.Right));
+        Assert.Null(workspace.Target.GetSelector(DockOperation.Left));
+        PixelPoint point = selector.PointToScreen(new Point(30, 30));
+        Assert.Equal(DockOperation.Right, workspace.Target.GetDockOperation(workspace.Surface.PointToClient(point),
+            workspace.Surface, workspace.Surface, DragAction.Move, (_, _, _, _) => true));
+        OverlayWindowDropTarget snapshot = Assert.Single(workspace.Overlay.DropTargets);
+        Assert.Equal(expected, snapshot.TargetType);
+        Assert.Equal(ScreenBounds(selector), snapshot.ScreenDetectionArea);
+
+        workspace.Target.Template = new FuncControlTemplate((_, _) => new Border());
+        workspace.Update();
+        Assert.Empty(workspace.Overlay.DropTargets);
+        Assert.Null(workspace.Target.GetSelector(DockOperation.Right));
+        Assert.Equal(expected, snapshot.TargetType);
+        Assert.Equal(new Size(60, 60), snapshot.ScreenDetectionArea.Size);
+    }
+
     [AvaloniaTheory]
     [InlineData(DropAreaType.DocumentPane)]
     [InlineData(DropAreaType.AnchorablePane)]

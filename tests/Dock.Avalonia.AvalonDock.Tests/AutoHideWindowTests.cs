@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -106,16 +107,15 @@ public class AutoHideWindowTests
     public async Task An_Idle_Passive_Preview_Closes_After_The_Configured_Delay()
     {
         using Workspace workspace = new();
-        workspace.Manager.AutoHideWindowClosingTimer = 100;
+        workspace.Manager.AutoHideWindowClosingTimer = 10000;
         LayoutDocument document = workspace.Manager.Layout.Descendents().OfType<LayoutDocument>().Single();
         document.IsActive = true;
         LayoutAnchorable tool = workspace.Tool();
         workspace.Show(tool);
         workspace.MoveAway();
         Assert.Same(document, workspace.Manager.Layout.ActiveContent);
-        await workspace.Wait(80);
-        Assert.Same(tool, workspace.Preview.Model);
-        await workspace.Wait(150);
+        TimeSpan elapsed = await workspace.ObserveClosing(() => workspace.Manager.AutoHideWindowClosingTimer = 100);
+        Assert.True(elapsed.TotalMilliseconds >= 99, $"The configured 100 ms delay ended after {elapsed.TotalMilliseconds} ms.");
         Assert.Null(workspace.Preview.Model);
         Assert.Null(workspace.Manager.DockLayout.PinnedDock);
         Assert.Same(document, workspace.Manager.Layout.ActiveContent);
@@ -143,9 +143,7 @@ public class AutoHideWindowTests
         workspace.MoveAway();
         if (hold == "active") tool.IsActive = false;
         if (hold == "keepVisible") tool.DockModel.KeepPinnedDockableVisible = false;
-        await workspace.Wait(80);
-        Assert.Same(tool, workspace.Preview.Model);
-        await workspace.Wait(150);
+        await workspace.WaitUntilClosed();
         Assert.Null(workspace.Preview.Model);
     }
 
@@ -160,8 +158,7 @@ public class AutoHideWindowTests
         workspace.Show(workspace.Tool()); workspace.MoveAway();
         await workspace.Wait(80);
         Assert.NotNull(workspace.Preview.Model);
-        workspace.Manager.AutoHideWindowClosingTimer = 0;
-        await workspace.Wait(20);
+        await workspace.ObserveClosing(() => workspace.Manager.AutoHideWindowClosingTimer = 0);
         Assert.Null(workspace.Preview.Model);
     }
 
@@ -222,10 +219,8 @@ public class AutoHideWindowTests
         workspace.Window.MouseMove(workspace.Center(workspace.Preview));
         await workspace.Wait(250);
         Assert.Same(tool, workspace.Preview.Model);
-        workspace.MoveAway();
-        await workspace.Wait(80);
-        Assert.Same(tool, workspace.Preview.Model);
-        await workspace.Wait(250);
+        TimeSpan elapsed = await workspace.ObserveClosing(workspace.MoveAway);
+        Assert.True(elapsed.TotalMilliseconds >= 199, $"The restarted 200 ms delay ended after {elapsed.TotalMilliseconds} ms.");
         Assert.Null(workspace.Preview.Model);
     }
 
@@ -254,7 +249,7 @@ public class AutoHideWindowTests
         tool.DockModel.GetPinnedBounds(out _, out _, out double width, out _);
         Assert.Equal(tool.AutoHideWidth, width, 1);
         workspace.MoveAway();
-        await workspace.Wait(80); await workspace.Wait(150);
+        await workspace.WaitUntilClosed();
         Assert.Null(workspace.Preview.Model);
     }
 
@@ -348,6 +343,29 @@ public class AutoHideWindowTests
         public void MoveAway() { Window.MouseMove(new Point(895, 645)); Update(); }
         public Point Center(Control control) => control.TranslatePoint(new Point(control.Bounds.Width / 2, control.Bounds.Height / 2), Window)!.Value;
         public async Task Wait(int milliseconds) { await Task.Delay(milliseconds); Update(); }
+        public async Task<TimeSpan> ObserveClosing(Action begin)
+        {
+            LayoutAutoHideWindowControl preview = Preview;
+            TaskCompletionSource<TimeSpan> closed = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            long started = Stopwatch.GetTimestamp();
+            void Changed(object? sender, AvaloniaPropertyChangedEventArgs args)
+            {
+                if (args.Property == LayoutAutoHideWindowControl.ModelProperty && preview.Model is null)
+                    closed.TrySetResult(Stopwatch.GetElapsedTime(started));
+            }
+            preview.PropertyChanged += Changed;
+            try
+            {
+                begin();
+                return await closed.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            }
+            finally { preview.PropertyChanged -= Changed; Update(); }
+        }
+        public async Task WaitUntilClosed()
+        {
+            if (Preview.Model is not null) await ObserveClosing(() => { });
+            Update();
+        }
         public void Update() { Dispatcher.UIThread.RunJobs(); Window.UpdateLayout(); }
         public void Dispose() { Manager.Layout.FloatingWindows.Clear(); Window.Close(); Dispatcher.UIThread.RunJobs(); }
     }

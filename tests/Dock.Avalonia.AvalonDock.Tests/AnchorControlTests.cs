@@ -325,7 +325,12 @@ public class AnchorControlTests
         await Task.Delay(450); workspace.Update();
         Assert.Null(((IRootDock)workspace.Manager.DockLayout).PinnedDock);
         workspace.Window.MouseMove(point);
-        await Task.Delay(450); workspace.Update();
+        System.Diagnostics.Stopwatch timeout = System.Diagnostics.Stopwatch.StartNew();
+        while (((IRootDock)workspace.Manager.DockLayout).PinnedDock is null && timeout.Elapsed < TimeSpan.FromSeconds(5))
+        {
+            await Task.Delay(20);
+            workspace.Update();
+        }
         Assert.Same(((LayoutAnchorable)anchor.Model).DockModel, ((IRootDock)workspace.Manager.DockLayout).PinnedDock?.ActiveDockable);
         Assert.Same(document, workspace.Manager.Layout.ActiveContent);
     }

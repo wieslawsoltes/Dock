@@ -45,13 +45,17 @@
     </DockableControl>
   </ControlTemplate>
   <ControlTemplate x:Key="AvalonDockToolPaneTemplate" TargetType="ToolDockControl" x:DataType="models:IToolDock">
-    <DockableControl x:Name="PART_DockableControl" TrackingMode="Visible"
-                     Background="{TemplateBinding Background}"
-                     DockProperties.IsDropArea="True" DockProperties.IsDockTarget="True">
-      <ToolChromeControl IsActive="{Binding IsActive}" IsVisible="{Binding !!VisibleDockables.Count}">
-        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AvalonDockPaneControl}"
-                          HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
-      </ToolChromeControl>
-    </DockableControl>
+    <infrastructure:LayoutAutoHidePresenter Background="{TemplateBinding Background}">
+      <infrastructure:LayoutAutoHidePresenter.Body>
+        <DockableControl x:Name="PART_DockableControl" TrackingMode="Visible"
+                         Background="Transparent"
+                         DockProperties.IsDropArea="True" DockProperties.IsDockTarget="True">
+          <ToolChromeControl IsActive="{Binding IsActive}" IsVisible="{Binding !!VisibleDockables.Count}">
+            <ContentPresenter Content="{TemplateBinding DataContext}" ContentTemplate="{StaticResource AvalonDockPaneControl}"
+                              HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+          </ToolChromeControl>
+        </DockableControl>
+      </infrastructure:LayoutAutoHidePresenter.Body>
+    </infrastructure:LayoutAutoHidePresenter>
   </ControlTemplate>
 </ResourceDictionary>

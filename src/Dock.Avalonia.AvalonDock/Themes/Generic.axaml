@@ -11,6 +11,7 @@
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutTabControlsResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeadersResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutAnchorsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutAutoHideResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDocumentMenusResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutFloatingWindowControlsResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutSizingResources.axaml" />

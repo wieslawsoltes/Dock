@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:AvalonDock.Controls">
+  <ControlTheme x:Key="{x:Type controls:LayoutAutoHideWindowControl}" TargetType="controls:LayoutAutoHideWindowControl"
+                x:DataType="controls:LayoutAutoHideWindowControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding Content}"
+                          Background="{TemplateBinding Background}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

@@ -4,6 +4,14 @@
         x:Class="Dock.Avalonia.AvalonDock.Tests.AnchorControlFixture"
         x:DataType="DockingManager" Width="900" Height="650">
   <Window.Resources>
+    <ControlTheme x:Key="AutoHideContent" TargetType="LayoutAnchorableControl"
+                  BasedOn="{StaticResource {x:Type LayoutAnchorableControl}}">
+      <Setter Property="Tag" Value="Styled preview" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyAutoHideContent" TargetType="ad:LayoutAnchorableControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutAnchorableControl}}">
+      <Setter Property="Tag" Value="Legacy styled preview" />
+    </ControlTheme>
     <ControlTemplate x:Key="CustomAnchor" TargetType="LayoutAnchorControl" x:DataType="LayoutAnchorControl">
       <Border Padding="10" Background="Transparent">
         <TextBlock x:Name="CustomAnchorHeader" Text="{Binding ((LayoutAnchorable)Model).Title, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -17,6 +25,12 @@
     </ControlTemplate>
   </Window.Resources>
   <Window.Styles>
+    <Style Selector="LayoutAutoHideWindowControl" x:DataType="LayoutAutoHideWindowControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+    <Style Selector="ad|LayoutAutoHideWindowControl" x:DataType="ad:LayoutAutoHideWindowControl">
+      <Setter Property="Background" Value="Coral" />
+    </Style>
     <Style Selector="LayoutAnchorSideControl" x:DataType="LayoutAnchorSideControl">
       <Setter Property="Tag" Value="{Binding $self.Model}" />
     </Style>
@@ -27,7 +41,7 @@
       <Setter Property="Tag" Value="{Binding $self.Model}" />
     </Style>
   </Window.Styles>
-  <DockingManager x:Name="Manager">
+  <DockingManager x:Name="Manager" AutoHideWindowClosingTimer="1500">
     <LayoutRoot>
       <LayoutPanel><LayoutDocumentPane><LayoutDocument ContentId="editor" Title="Editor" Content="Document" /></LayoutDocumentPane></LayoutPanel>
       <LayoutRoot.LeftSide>

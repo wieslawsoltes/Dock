@@ -1,0 +1,8 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AvalonDock.Controls">
+  <Style Selector="controls|LayoutAutoHideWindowControl controls|LayoutAnchorableControl"
+         x:DataType="controls:LayoutAnchorableControl">
+    <Setter Property="Theme" Value="{Binding $parent[controls:LayoutAutoHideWindowControl].AnchorableStyle}" />
+  </Style>
+</Styles>

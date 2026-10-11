@@ -175,6 +175,7 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
     {
+        _autoHide = new(this);
         _themeResources = new(this);
         LayoutHostWindowFactory hosts = new(this);
         DockHostWindowFactory = hosts.Create;
@@ -213,6 +214,7 @@ public partial class DockingManager : TemplatedControl
             _contextMenus.Close();
             _navigator.Close();
             _floatingWindows.Detach();
+            _autoHide.Detach(hide: true);
             RootDock oldDock = DockLayout;
             LayoutRoot oldLayout = _layout;
             IFactory oldFactory = DockFactory;
@@ -371,6 +373,7 @@ public partial class DockingManager : TemplatedControl
         _documents.SetLayout(newLayout);
         _anchorables.SetLayout(newLayout);
         if (IsLoaded) _floatingWindows.Attach(newLayout);
+        if (IsLoaded) _autoHide.Attach(newLayout);
     }
     /// <summary>Replaces the observed document source.</summary>
     protected virtual void OnDocumentsSourceChanged(AvaloniaPropertyChangedEventArgs e) => _documents.SetSource(DocumentsSource);
@@ -432,6 +435,8 @@ public partial class DockingManager : TemplatedControl
     {
         base.OnPropertyChanged(change);
         OnAnchorControlPropertyChanged(change);
+        if (change.Property == AutoHideWindowProperty) OnAutoHideWindowChanged(change);
+        if (change.Property == AutoHideWindowClosingTimerProperty) OnAutoHideWindowClosingTimerChanged(change);
         if (change.Property == ThemeProperty) OnThemeChanged(change);
         if (change.Property == DocumentPaneControlStyleProperty) OnDocumentPaneControlStyleChanged(change);
         if (change.Property == AnchorablePaneControlStyleProperty) OnAnchorablePaneControlStyleChanged(change);
@@ -584,6 +589,8 @@ public partial class DockingManager : TemplatedControl
         base.OnLoaded(e);
         EnsureLayoutRootPanel();
         EnsureAnchorSidePanels();
+        EnsureAutoHideWindow();
+        _autoHide.Attach(Layout);
         _floatingWindows.Attach(Layout);
     }
 
@@ -592,6 +599,7 @@ public partial class DockingManager : TemplatedControl
     {
         _contextMenus.Close();
         _navigator.Close();
+        _autoHide.Detach(hide: true);
         // Upstream unload closes hosts while preserving content, without
         // making an internal-close request as layout replacement does.
         _floatingWindows.Detach(internalClose: false);

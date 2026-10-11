@@ -22,10 +22,17 @@ public class LayoutAnchorSide : LayoutGroup<LayoutAnchorGroup>
         _ => Alignment.Bottom
     };
     /// <inheritdoc/>
-    protected override bool GetVisibility()
+    protected override bool GetVisibility() => Children.Count > 0;
+
+    /// <summary>Resolves the edge from the new root before publishing the parent change.</summary>
+    protected override void OnParentChanged(ILayoutContainer? oldValue, ILayoutContainer? newValue)
     {
-        foreach (LayoutAnchorGroup group in Children) if (group.IsVisible) return true;
-        return false;
+        base.OnParentChanged(oldValue, newValue);
+        if (Root is not { } root) return;
+        if (ReferenceEquals(root.LeftSide, this)) SetField(ref _side, AnchorSide.Left, nameof(Side));
+        else if (ReferenceEquals(root.TopSide, this)) SetField(ref _side, AnchorSide.Top, nameof(Side));
+        else if (ReferenceEquals(root.RightSide, this)) SetField(ref _side, AnchorSide.Right, nameof(Side));
+        else if (ReferenceEquals(root.BottomSide, this)) SetField(ref _side, AnchorSide.Bottom, nameof(Side));
     }
 
     internal void Attach(LayoutRoot root, AnchorSide side)

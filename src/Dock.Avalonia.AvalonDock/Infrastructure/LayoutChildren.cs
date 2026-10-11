@@ -20,6 +20,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
     private readonly bool _visible;
     private IList<IDockable> _source = null!;
     private bool _syncing;
+    private LayoutElement? _pendingAttachment;
 
     internal LayoutChildren(LayoutElement owner, DockBase model,
         Func<IList<IDockable>?>? getSource = null, Action<IList<IDockable>>? setSource = null)
@@ -85,6 +86,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
 
     private LayoutElement Prepare(T item)
     {
+        _owner.VerifyAccess();
         if (item is not LayoutElement element) throw new ArgumentException("Children must use Dock-backed layout elements.", nameof(item));
         for (ILayoutElement? ancestor = _owner; ancestor is not null; ancestor = ancestor.Parent)
             if (ReferenceEquals(ancestor, item)) throw new InvalidOperationException("A layout cannot contain itself or an ancestor.");
@@ -92,9 +94,13 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
         if (_owner is LayoutAnchorGroup && element is LayoutContent content) content.RememberDockedLocation();
         element.Parent?.RemoveChild(element);
         _owner.Context.Adopt(element.Context);
+        return element;
+    }
+
+    private void Attach(LayoutElement element)
+    {
         if (_model.Factory is { } factory) factory.InitDockable(element.DockModel, _model);
         else element.DockModel.Owner = _model;
-        return element;
     }
 
     protected override void InsertItem(int index, T item)
@@ -106,7 +112,9 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
         {
             int nativeIndex = index < Count ? _source.IndexOf(((LayoutElement)(ILayoutElement)this[index]).DockModel) : _source.Count;
             _source.Insert(nativeIndex, element.DockModel);
-            base.InsertItem(index, item);
+            _pendingAttachment = element;
+            try { base.InsertItem(index, item); }
+            finally { _pendingAttachment = null; }
         });
     }
 
@@ -129,9 +137,24 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
         Mutate(() =>
         {
             _source[_source.IndexOf(old.DockModel)] = replacement.DockModel;
-            base.SetItem(index, item);
-            old.DockModel.Owner = null;
+            _pendingAttachment = replacement;
+            try { base.SetItem(index, item); }
+            finally { _pendingAttachment = null; }
         });
+    }
+
+    protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+    {
+        // ObservableCollection has inserted the item at this point, so parent
+        // hooks can resolve its index. Publish only after native initialization.
+        if (_pendingAttachment is { } attachment)
+        {
+            _pendingAttachment = null;
+            if (e.Action == NotifyCollectionChangedAction.Replace && e.OldItems?[0] is LayoutElement previous &&
+                ReferenceEquals(previous.DockModel.Owner, _model)) previous.DockModel.Owner = null;
+            Attach(attachment);
+        }
+        base.OnCollectionChanged(e);
     }
 
     protected override void MoveItem(int oldIndex, int newIndex)
@@ -158,6 +181,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
 
     private void Mutate(Action action)
     {
+        _owner.VerifyAccess();
         _syncing = true;
         try
         {

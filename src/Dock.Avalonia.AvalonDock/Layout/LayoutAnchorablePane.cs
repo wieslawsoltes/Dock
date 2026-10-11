@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -22,9 +23,9 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     /// <summary>Gets whether every child can be closed.</summary>
     public bool CanClose { get { foreach (LayoutAnchorable child in Children) if (!child.CanClose) return false; return Children.Count > 0; } }
     /// <summary>Gets whether this pane is in a floating window.</summary>
-    public bool IsHostedInFloatingWindow => (DockModel.DockingState & Dock.Model.Core.DockingWindowState.Floating) != 0;
+    public bool IsHostedInFloatingWindow => this.FindParent<LayoutFloatingWindow>() is not null;
     /// <summary>Gets whether this pane is the only pane in its floating window.</summary>
-    public bool IsDirectlyHostedInFloatingWindow => IsHostedInFloatingWindow && Parent?.ChildrenCount == 1;
+    public bool IsDirectlyHostedInFloatingWindow => this.FindParent<LayoutAnchorableFloatingWindow>()?.IsSinglePane == true;
     /// <inheritdoc/>
     public int SelectedContentIndex
     {
@@ -35,11 +36,32 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     public LayoutContent? SelectedContent => ((ToolDock)DockModel).ActiveDockable is { } model ? Context.Get(model) as LayoutContent : null;
     /// <inheritdoc/>
     public int IndexOf(LayoutContent content) => content is LayoutAnchorable anchorable ? Children.IndexOf(anchorable) : -1;
+    /// <summary>Shows the pane while it contains a visible tool.</summary>
+    protected override bool GetVisibility()
+    {
+        foreach (LayoutAnchorable content in Children) if (content.IsVisible) return true;
+        return false;
+    }
+
+    /// <summary>Observes the new parent group's membership when reporting floating pane state.</summary>
+    protected override void OnParentChanged(ILayoutContainer? oldValue, ILayoutContainer? newValue)
+    {
+        if (oldValue is ILayoutGroup previous) previous.ChildrenCollectionChanged -= ParentChildrenChanged;
+        RaisePropertyChanged(nameof(IsHostedInFloatingWindow));
+        RaisePropertyChanged(nameof(IsDirectlyHostedInFloatingWindow));
+        if (newValue is ILayoutGroup next) next.ChildrenCollectionChanged += ParentChildrenChanged;
+        base.OnParentChanged(oldValue, newValue);
+    }
+
+    private void ParentChildrenChanged(object? sender, EventArgs args) =>
+        RaisePropertyChanged(nameof(IsDirectlyHostedInFloatingWindow));
+
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         base.OnModelPropertyChanged(sender, e);
         if (e.Property == DockBase.ActiveDockableProperty)
         {
+            LayoutSelection.SynchronizeWithoutFactory(this, ((ToolDock)DockModel).ActiveDockable);
             RaisePropertyChanged(nameof(SelectedContent));
             RaisePropertyChanged(nameof(SelectedContentIndex));
         }

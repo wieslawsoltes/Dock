@@ -10,6 +10,8 @@ public class LayoutDocumentPaneGroup : LayoutPositionableGroup<ILayoutDocumentPa
     public LayoutDocumentPaneGroup() { }
     /// <summary>Creates a group containing a document pane.</summary>
     public LayoutDocumentPaneGroup(LayoutDocumentPane documentPane) => Children.Add(documentPane);
+    /// <summary>Keeps the document region visible even when its individual panes are empty.</summary>
+    protected override bool GetVisibility() => true;
     /// <inheritdoc/>
     public Orientation Orientation
     {

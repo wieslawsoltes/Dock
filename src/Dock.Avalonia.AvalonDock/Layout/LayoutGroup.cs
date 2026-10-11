@@ -16,6 +16,7 @@ namespace AvalonDock.Layout;
 public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPane, ILayoutPanelElement, IXmlSerializable where T : class, ILayoutElement
 {
     private readonly LayoutChildren<T> _children;
+    private bool _isVisible = true;
 
     internal LayoutGroup(DockBase model, LayoutModelContext? context = null) : base(model, context)
     {
@@ -27,6 +28,9 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
             OnChildrenCollectionChanged();
             NotifyChildrenTreeChanged(ChildrenTreeChange.DirectChildrenChanged);
         };
+        // Native trees may already have parents and children when first wrapped.
+        // Empty, detached public groups retain AvalonDock's initial visible state.
+        if (model.Owner is not null || _children.Count > 0) ComputeVisibility();
     }
 
     /// <summary>Gets the mutable children, synchronized with Dock.</summary>
@@ -42,11 +46,38 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     /// <summary>Writes group metadata and children inside the caller's XML element.</summary>
     public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <inheritdoc/>
-    public bool IsVisible => GetVisibility();
+    public bool IsVisible
+    {
+        get => _isVisible;
+        protected set
+        {
+            VerifyAccess();
+            if (_isVisible == value) return;
+            RaisePropertyChanging();
+            _isVisible = value;
+            OnIsVisibleChanged();
+            RaisePropertyChanged();
+        }
+    }
     /// <summary>Determines whether the group has visible content.</summary>
     protected virtual bool GetVisibility() => Children.Count > 0;
     /// <inheritdoc/>
-    public void ComputeVisibility() => RaisePropertyChanged(nameof(IsVisible));
+    public void ComputeVisibility()
+    {
+        // Child wrappers can notify their registered parent while its own
+        // native children are still being wrapped by the constructor.
+        if (_children is not null) IsVisible = GetVisibility();
+    }
+
+    /// <summary>Updates ancestor visibility after this group's visible state changes.</summary>
+    protected virtual void OnIsVisibleChanged() => (Parent as ILayoutElementWithVisibility)?.ComputeVisibility();
+
+    /// <summary>Recomputes visibility using the new parent context.</summary>
+    protected override void OnParentChanged(ILayoutContainer? oldValue, ILayoutContainer? newValue)
+    {
+        base.OnParentChanged(oldValue, newValue);
+        ComputeVisibility();
+    }
     /// <inheritdoc/>
     public void MoveChild(int oldIndex, int newIndex) => Children.Move(oldIndex, newIndex);
     /// <inheritdoc/>

@@ -60,7 +60,19 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         }
     }
     /// <summary>Gets or sets whether this item is selected in its pane.</summary>
-    public bool IsSelected { get => State.IsSelected; set => State.IsSelected = value; }
+    public bool IsSelected
+    {
+        get => State.IsSelected;
+        set
+        {
+            State.IsSelected = value;
+            if (DockModel.Factory is null && Parent is ILayoutContentSelector selector)
+            {
+                if (value) selector.SelectedContentIndex = selector.IndexOf(this);
+                else if (ReferenceEquals(selector.SelectedContent, this)) selector.SelectedContentIndex = -1;
+            }
+        }
+    }
     /// <summary>Gets or sets whether this item is active.</summary>
     public bool IsActive { get => State.IsActive; set => State.IsActive = value; }
     /// <summary>Gets whether this is the last focused document.</summary>
@@ -136,6 +148,23 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     }
     /// <summary>Chooses a docking destination when no previous container is available.</summary>
     protected virtual void InternalDock() { }
+
+    /// <summary>Clears pane selection before leaving the previous parent.</summary>
+    protected override void OnParentChanging(ILayoutContainer? oldValue, ILayoutContainer? newValue)
+    {
+        if (oldValue is not null) IsSelected = false;
+        base.OnParentChanging(oldValue, newValue);
+    }
+
+    /// <summary>Applies an initially selected item's state to its new pane.</summary>
+    protected override void OnParentChanged(ILayoutContainer? oldValue, ILayoutContainer? newValue)
+    {
+        if (IsSelected && newValue is ILayoutContentSelector selector)
+            selector.SelectedContentIndex = selector.IndexOf(this);
+        base.OnParentChanged(oldValue, newValue);
+    }
+
+    internal void SetSelectedFromPane(bool selected) => State.IsSelected = selected;
     /// <summary>Occurs after the item is closed.</summary>
     public event EventHandler? Closed;
     /// <summary>Occurs before closing and permits cancellation.</summary>

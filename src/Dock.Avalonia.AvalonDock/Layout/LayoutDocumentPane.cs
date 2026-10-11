@@ -32,6 +32,14 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
     }
     /// <inheritdoc/>
     public int IndexOf(LayoutContent content) => Children.IndexOf(content);
+    /// <summary>Keeps the main document surface visible, hiding empty panes inside document groups.</summary>
+    protected override bool GetVisibility()
+    {
+        if (Parent is not LayoutDocumentPaneGroup) return true;
+        foreach (LayoutContent content in Children)
+            if (content is LayoutAnchorable || content is LayoutDocument { IsVisible: true }) return true;
+        return false;
+    }
     /// <summary>Notifies document list menus that the sorted contents changed.</summary>
     protected override void OnChildrenCollectionChanged()
     {
@@ -43,6 +51,7 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
         base.OnModelPropertyChanged(sender, e);
         if (e.Property == DockBase.ActiveDockableProperty)
         {
+            LayoutSelection.SynchronizeWithoutFactory(this, ((DocumentDock)DockModel).ActiveDockable);
             RaisePropertyChanged(nameof(SelectedContent));
             RaisePropertyChanged(nameof(SelectedContentIndex));
         }

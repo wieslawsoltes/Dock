@@ -23,13 +23,7 @@ public class LayoutAnchorable : LayoutContent
     private bool _lastAutoHidden;
     /// <summary>Creates an anchorable tool.</summary>
     public LayoutAnchorable() : this(new Tool { CanClose = false }) { }
-    internal LayoutAnchorable(Tool model, LayoutModelContext? context = null) : base(model, context)
-    {
-        PropertyChanged += (_, args) =>
-        {
-            if (args.PropertyName == nameof(Parent)) NotifyVisibility();
-        };
-    }
+    internal LayoutAnchorable(Tool model, LayoutModelContext? context = null) : base(model, context) { }
     /// <summary>Gets or sets the auto-hide popup width.</summary>
     public double AutoHideWidth
     {
@@ -70,6 +64,13 @@ public class LayoutAnchorable : LayoutContent
     public event EventHandler? Hidden;
     /// <inheritdoc/>
     public override void Close() => CloseCore();
+    /// <summary>Refreshes pane visibility and reports tool visibility before the parent notification.</summary>
+    protected override void OnParentChanged(ILayoutContainer? oldValue, ILayoutContainer? newValue)
+    {
+        (newValue as ILayoutElementWithVisibility)?.ComputeVisibility();
+        NotifyVisibility(true);
+        base.OnParentChanged(oldValue, newValue);
+    }
     /// <inheritdoc/>
     protected override void InternalDock()
     {
@@ -170,18 +171,25 @@ public class LayoutAnchorable : LayoutContent
             NotifyVisibility();
     }
 
-    private void NotifyVisibility()
+    private void NotifyVisibility(bool parentChanged = false)
     {
         bool visible = IsVisible;
         bool hidden = IsHidden;
         bool autoHidden = IsAutoHidden;
-        if (_lastHidden != hidden) { _lastHidden = hidden; RaisePropertyChanged(nameof(IsHidden)); }
-        if (_lastAutoHidden != autoHidden) { _lastAutoHidden = autoHidden; RaisePropertyChanged(nameof(IsAutoHidden)); }
-        if (_lastVisible == visible) return;
-        bool old = _lastVisible;
+        bool visibleChanged = _lastVisible != visible;
+        bool hiddenChanged = _lastHidden != hidden;
+        bool autoHiddenChanged = _lastAutoHidden != autoHidden;
+        bool previousVisible = _lastVisible;
         _lastVisible = visible;
-        RaisePropertyChanged(IsVisibleProperty, old, visible);
-        RaisePropertyChanged(nameof(IsVisible));
-        IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+        _lastHidden = hidden;
+        _lastAutoHidden = autoHidden;
+        if (visibleChanged) RaisePropertyChanged(IsVisibleProperty, previousVisible, visible);
+        if (visibleChanged || parentChanged)
+        {
+            RaisePropertyChanged(nameof(IsVisible));
+            IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+        }
+        if (hiddenChanged || parentChanged) RaisePropertyChanged(nameof(IsHidden));
+        if (autoHiddenChanged || parentChanged) RaisePropertyChanged(nameof(IsAutoHidden));
     }
 }

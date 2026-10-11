@@ -12,6 +12,12 @@ public class LayoutPanel : LayoutPositionableGroup<ILayoutPanelElement>, ILayout
     /// <summary>Creates a panel with its first child.</summary>
     public LayoutPanel(ILayoutPanelElement firstChild) : this() => Children.Add(firstChild);
     internal LayoutPanel(ProportionalDock model, LayoutModelContext? context = null) : base(model, context) { }
+    /// <summary>Shows the panel while at least one child is visible.</summary>
+    protected override bool GetVisibility()
+    {
+        foreach (ILayoutPanelElement child in Children) if (child.IsVisible) return true;
+        return false;
+    }
     /// <inheritdoc/>
     public Orientation Orientation
     {

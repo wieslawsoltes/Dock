@@ -18,6 +18,7 @@
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContent.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutPaneControls.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeaders.axaml" />
+  <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutAnchors.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutTabPanels.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDocumentMenus.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDocumentWindows.axaml" />

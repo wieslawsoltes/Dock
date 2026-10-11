@@ -22,7 +22,7 @@ using CompatibilityTheme = AvalonDock.Themes.Theme;
 namespace AvalonDock;
 
 /// <summary>Hosts an AvalonDock-compatible layout using Dock's controls and models.</summary>
-public class DockingManager : TemplatedControl
+public partial class DockingManager : TemplatedControl
 {
     /// <summary>Identifies the AvalonDock resource theme applied to this manager and its auxiliary windows.</summary>
     public new static readonly StyledProperty<CompatibilityTheme?> ThemeProperty =
@@ -367,6 +367,7 @@ public class DockingManager : TemplatedControl
     protected virtual void OnLayoutChanged(LayoutRoot oldLayout, LayoutRoot newLayout)
     {
         if (IsInitialized) EnsureLayoutRootPanel();
+        if (IsInitialized) EnsureAnchorSidePanels();
         _documents.SetLayout(newLayout);
         _anchorables.SetLayout(newLayout);
         if (IsLoaded) _floatingWindows.Attach(newLayout);
@@ -430,6 +431,7 @@ public class DockingManager : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        OnAnchorControlPropertyChanged(change);
         if (change.Property == ThemeProperty) OnThemeChanged(change);
         if (change.Property == DocumentPaneControlStyleProperty) OnDocumentPaneControlStyleChanged(change);
         if (change.Property == AnchorablePaneControlStyleProperty) OnAnchorablePaneControlStyleChanged(change);
@@ -581,6 +583,7 @@ public class DockingManager : TemplatedControl
     {
         base.OnLoaded(e);
         EnsureLayoutRootPanel();
+        EnsureAnchorSidePanels();
         _floatingWindows.Attach(Layout);
     }
 
@@ -616,6 +619,8 @@ public class DockingManager : TemplatedControl
     {
         if (e.PropertyName == nameof(LayoutRoot.ActiveContent)) SynchronizeActiveContent();
         if (e.PropertyName == nameof(LayoutRoot.RootPanel) && IsInitialized) EnsureLayoutRootPanel();
+        if (e.PropertyName is nameof(LayoutRoot.LeftSide) or nameof(LayoutRoot.TopSide) or nameof(LayoutRoot.RightSide) or nameof(LayoutRoot.BottomSide)
+            && IsInitialized) EnsureAnchorSidePanels();
     }
 
     internal void EnsureLayoutRootPanel()

@@ -32,6 +32,21 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
         Pull();
     }
 
+    internal void MovePinned(Action move)
+    {
+        // Native reordering removes and reinserts an item. Project the completed
+        // move so a preview owner cannot be mistaken for a new return pane and
+        // the existing public group/anchor survives that temporary removal.
+        bool previous = _busy;
+        _busy = true;
+        try { move(); }
+        finally
+        {
+            _busy = previous;
+            if (!previous) Pull();
+        }
+    }
+
     private void ReconnectCore()
     {
         if (_pinned is INotifyCollectionChanged old) old.CollectionChanged -= PinnedChanged;

@@ -1,3 +1,4 @@
+using System;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 using AvalonDock.Infrastructure;
@@ -51,4 +52,10 @@ public class LayoutAnchorSide : LayoutGroup<LayoutAnchorGroup>
     }
 
     internal void Reconnect() => _binding?.Reconnect();
+
+    internal void MovePinned(Action move)
+    {
+        if (_binding is { } binding) binding.MovePinned(move);
+        else move();
+    }
 }

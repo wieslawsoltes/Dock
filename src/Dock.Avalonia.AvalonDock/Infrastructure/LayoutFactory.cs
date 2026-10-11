@@ -17,6 +17,7 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
     private IDockable? _selectionTarget;
+    private bool _passivePreview;
     internal IDockWindow? RequestedHostWindow { get; private set; }
     internal event Action? SettingFocus;
     internal event Action<IDock>? FocusSet;
@@ -32,8 +33,34 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     }
 
     protected override bool ShouldFocusActiveDockable(IDockable dockable, IDock owner) =>
+        !_passivePreview &&
         (!ReferenceEquals(owner, _selectionOwner) || !ReferenceEquals(dockable, _selectionTarget)) &&
         base.ShouldFocusActiveDockable(dockable, owner);
+
+    protected override void OnDockingWindowStatePropertyChanged(IDockable dockable, DockingWindowStateProperty property)
+    {
+        // An auto-hide selection is a preview request. Its public flag is reset
+        // by the anchor, without clearing Dock's active preview content or
+        // selecting the pinned tool as the root's main layout.
+        if (property == DockingWindowStateProperty.IsSelected && IsDockablePinned(dockable)
+            && getLayoutItem(dockable)?.LayoutElement is LayoutAnchorable { IsAutoHidden: true }) return;
+        base.OnDockingWindowStatePropertyChanged(dockable, property);
+    }
+
+    internal void PreviewAnchor(IDockable model, bool activate)
+    {
+        bool previous = _passivePreview;
+        _passivePreview = !activate;
+        try { PreviewPinnedDockable(model); }
+        finally { _passivePreview = previous; }
+    }
+
+    public override void MovePinnedDockable(IDockable sourceDockable, IDockable targetDockable)
+    {
+        if (getLayoutItem(sourceDockable)?.LayoutElement is { } element && element.FindParent<LayoutAnchorSide>() is { } side)
+            side.MovePinned(() => base.MovePinnedDockable(sourceDockable, targetDockable));
+        else base.MovePinnedDockable(sourceDockable, targetDockable);
+    }
 
     protected override IDockable? GetActiveDockableAfterRemoval(IDock dock, IDockable removedDockable, int removedIndex)
     {

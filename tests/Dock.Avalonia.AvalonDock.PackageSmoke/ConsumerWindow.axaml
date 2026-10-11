@@ -4,6 +4,14 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <ControlTheme x:Key="Overlay" TargetType="OverlayWindow" x:DataType="OverlayWindow"
+                  BasedOn="{StaticResource {x:Type OverlayWindow}}">
+      <Setter Property="Tag" Value="{x:Static DropTargetType.DocumentPaneDockInside}" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyOverlay" TargetType="ad:OverlayWindow" x:DataType="ad:OverlayWindow"
+                  BasedOn="{StaticResource {x:Type ad:OverlayWindow}}">
+      <Setter Property="Tag" Value="{x:Static ad:OverlayWindowDropTargetType.DocumentPaneDockInside}" />
+    </ControlTheme>
     <AnchorableContextMenuAutoHideHeaderConverter x:Key="AutoHideHeaderConverter" />
     <ad:UriSourceToBitmapImageConverter x:Key="UriImageConverter" />
     <DataTemplate x:Key="Resizer" x:DataType="x:Object">

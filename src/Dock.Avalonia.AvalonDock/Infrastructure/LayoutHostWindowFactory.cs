@@ -45,6 +45,7 @@ internal sealed class LayoutHostWindowFactory(DockingManager manager)
     {
         owner.AttachThemeResources(window);
         SetFactory(window, owner.DockHostWindowFactory);
+        DockAdornerWindow.SetFactory(window, DockAdornerWindow.GetFactory(owner));
         window.DataTemplates.Add(new LayoutScopedDataTemplate(owner));
         _sizing.Attach(window);
     }

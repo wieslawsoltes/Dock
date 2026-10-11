@@ -621,6 +621,26 @@ grid splitter.
 Derived floating controls can override `OnStateChanged(EventArgs)`; call the
 base hook to synchronize `IsMaximized` with the native window state.
 
+When Dock's floating docking adorners are enabled with
+`.UseFloatingDockAdorner(true)` on the application builder, native dragging
+creates public `OverlayWindow` hosts. They contain the existing `DockTarget`
+and `GlobalDockTarget`; Dock still performs hit testing, capability validation,
+input capture, and docking. Inline adorners keep the native layer presentation.
+Manager resource themes also reach these overlay windows.
+
+`DropArea<T>`, `IDropArea`, `DropAreaType`, `OverlayArea`, the manager/document/tool
+overlay-area types, `OverlayWindowDropTarget`, and both target enums describe
+the existing controls. Their constructors remain internal, as upstream. The
+adapter additionally exposes `OverlayWindow.DropArea`, `Area`, and `DropTargets`
+as snapshots for inspection. Rectangles use physical screen pixels; read again
+after layout or native target validation changes. Closing releases the window's
+projection and native content. `OnApplyTemplate()` applies the native target
+template. Both XML namespace forms support overlay control themes and enum values.
+
+WPF's full overlay template-part arrangement and its separate tool-beside-document
+selector family are still tracked as compatibility gaps. Use Dock's selector
+templates for the current native presentation.
+
 Subscribe to `LayoutFloatingWindowControlCollectionChanged` in a workspace
 service to observe added/removed host controls and their collection indices;
 unsubscribe when the service detaches. A canceled close preserves registration.
@@ -779,6 +799,7 @@ flowchart TB
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
     ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
+    Overlays["OverlayWindow and geometry snapshots<br/>Native target hosting"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
@@ -816,6 +837,9 @@ flowchart TB
     ResourceThemes --> Navigator
     ResourceThemes --> Hosts
     ResourceThemes --> View
+    ResourceThemes --> Overlays
+    View --> Overlays
+    Overlays -->|Native target input| Factory
     Api --> Navigator
     Navigator --> Items
     Api --> Items

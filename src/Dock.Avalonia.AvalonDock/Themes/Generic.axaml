@@ -19,5 +19,6 @@
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutSizingResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutCommandsResources.axaml" />
     <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/NavigatorWindow.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/OverlayWindow.axaml" />
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

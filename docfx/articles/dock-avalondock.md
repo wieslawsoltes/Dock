@@ -1611,6 +1611,64 @@ The floating-control surface is still being completed: exact close-event orderin
 cancellation during manager layout replacement/view unload,
 and remaining protected/platform hooks are tracked in the compatibility checklist.
 
+## Inspect floating docking overlays
+
+Enable Dock's floating adorner mode during application setup:
+
+```csharp
+using Dock.Settings;
+
+AppBuilder.Configure<App>()
+    .UsePlatformDetect()
+    .UseFloatingDockAdorner(true);
+```
+
+The manager and its floating hosts install an inherited
+`IDockAdornerWindowFactory` through `DockAdornerWindow.Factory`. Native dragging
+then creates an `AvalonDock.Controls.OverlayWindow`, a `DockAdornerWindow`
+subclass. It hosts the same native `DockTarget` or `GlobalDockTarget` that Dock
+uses for hit testing, capability validation, indicators, and drop execution.
+The factory only changes the window host. Ordinary Dock without a factory keeps
+its standard window; inline and managed adorners keep their existing layer paths.
+
+The overlay receives the manager's resource theme, including live replacement
+and dynamic resources. Its compiled control theme is based on the native adorner
+window. It has no decorations, does not activate, and is absent from the taskbar.
+The public `OnApplyTemplate()` hook applies the hosted native target's template.
+Both XML namespaces support the window type and target enum values in themes:
+
+```xml
+<ControlTheme x:Key="OverlayAppearance" TargetType="OverlayWindow"
+              x:DataType="OverlayWindow"
+              BasedOn="{StaticResource {x:Type OverlayWindow}}">
+  <Setter Property="Tag" Value="{x:Static DropTargetType.DocumentPaneDockInside}" />
+</ControlTheme>
+```
+
+`DropArea<T>` implements `IDropArea` and retains the existing `AreaElement`, its
+`DropAreaType`, and captured `DetectionRect`. `OverlayArea` and its manager,
+document-pane, and tool-pane subclasses describe the corresponding surface.
+`OverlayWindowDropTarget` describes an arranged native selector. The enum values
+retain their upstream ordering, including document-group and dock-as-tool
+destinations in `DropTargetType`.
+
+Their constructors remain internal. The adapter adds public snapshot accessors
+`OverlayWindow.DropArea`, `Area`, and `DropTargets` for inspection and custom
+Avalonia presentation. Each read captures the current state; stored snapshots
+do not update. `DropTargets` excludes selectors hidden by native docking policy.
+Screen rectangles use physical pixels, matching Avalonia's `PointToScreen`;
+use `PointToClient` when comparing with a control-local pointer position.
+Transforms are included, and detached surfaces produce an empty rectangle.
+
+Canceling window closure preserves its projection. Completed closure clears
+the native content and projection references and releases theme providers.
+Retaining the optional factory does not keep its manager alive.
+
+WPF's full overlay template-part arrangement and the separate
+`DocumentPaneDockAsAnchorable*` selector family are not yet reproduced. The
+current overlay uses Dock's native selector templates and docking policies;
+declaring the enums does not imply parity for every WPF overlay template.
+
 ## Apply AvalonDock resource themes
 
 `DockingManager.Theme` accepts `AvalonDock.Themes.Theme`. The default is null,
@@ -1820,6 +1878,7 @@ flowchart TB
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
         ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
+        Overlays["OverlayWindow and geometry snapshots<br/>Native target hosting"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
@@ -1838,12 +1897,17 @@ flowchart TB
         Models["Dock.Model.Avalonia models"]
         Factory["Dock factory and docking operations"]
         Controls["DockControl, HostWindow, and Fluent controls"]
+        OverlayFactory["Optional IDockAdornerWindowFactory"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     end
     Manager -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
     GridControls --> Controls
     Manager --> PaneControls
+    Controls --> OverlayFactory
+    OverlayFactory --> Overlays
+    ResourceThemes --> Overlays
+    Overlays -->|Native selectors| Controls
     Manager -->|Side panels and anchor templates| Anchors
     Anchors --> Models
     Anchors -->|Pinned reorder and preview| Factory

@@ -77,15 +77,13 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         var width = visual.Bounds.Width;
         var height = visual.Bounds.Height;
 
-        _window = new DockAdornerWindow
-        {
-            Width = width,
-            Height = height,
-            Content = Adorner,
-            Position = new PixelPoint(position.X, position.Y),
-            SizeToContent = SizeToContent.Manual,
-            IsHitTestVisible = true
-        };
+        _window = DockAdornerWindow.GetFactory(visual)?.CreateWindow(visual, _adorner) ?? new DockAdornerWindow();
+        _window.Width = width;
+        _window.Height = height;
+        _window.Content = Adorner;
+        _window.Position = new PixelPoint(position.X, position.Y);
+        _window.SizeToContent = SizeToContent.Manual;
+        _window.IsHitTestVisible = true;
 
         if (Adorner is { } control)
         {

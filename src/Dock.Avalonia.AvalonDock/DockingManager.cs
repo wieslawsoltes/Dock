@@ -12,6 +12,7 @@ using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Metadata;
 using Avalonia.Styling;
+using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 using AvalonDock.Controls;
@@ -177,6 +178,7 @@ public partial class DockingManager : TemplatedControl
     {
         _autoHide = new(this);
         _themeResources = new(this);
+        DockAdornerWindow.SetFactory(this, new LayoutOverlayWindowFactory(this));
         LayoutHostWindowFactory hosts = new(this);
         DockHostWindowFactory = hosts.Create;
         FloatingWindowCreation = new(this, hosts);

@@ -533,7 +533,13 @@ supported by corresponding implementation and test evidence.
 - `DockingManager.LogicalChildrenPublic` exposes the current Avalonia logical
   collection. Floating `OnStateChanged` overrides synchronize maximization when
   they call the base hook.
-- 1010 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- `OverlayWindow` hosts the native selectors when floating docking adorners are
+  enabled. An optional inherited native window factory preserves the existing
+  hit-testing/drop engine and the inline/managed presentation paths. Public
+  drop-area/overlay-area/target types and enums describe the existing controls;
+  additional accessors capture physical screen-pixel geometry on demand.
+  Manager themes reach overlay windows and are released on close.
+- 1024 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -572,12 +578,17 @@ supported by corresponding implementation and test evidence.
   menu selector null results and header-template default coercion edge cases.
 - Broader sample interaction and platform coverage for floating windows.
 - Navigator desktop modality/focus validation and remaining theme/overlay integration.
+- The full WPF overlay template-part arrangement and separate
+  `DocumentPaneDockAsAnchorable*` selector family are still missing. Current
+  floating overlays use Dock's native target templates and docking policy.
 
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 742
-matching type/member keys and 209 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 797
+matching type/member keys and 154 missing declarations at this checkpoint.
+All 102 exported type keys are present; member signatures, inheritance, templates,
+and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

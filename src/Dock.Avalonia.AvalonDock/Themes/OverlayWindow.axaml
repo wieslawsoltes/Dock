@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dock="using:Dock.Avalonia.Controls"
+                    xmlns:controls="using:AvalonDock.Controls">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/DockAdornerWindow.axaml" />
+  </ResourceDictionary.MergedDictionaries>
+  <ControlTheme x:Key="{x:Type controls:OverlayWindow}" TargetType="controls:OverlayWindow"
+                x:DataType="controls:OverlayWindow"
+                BasedOn="{StaticResource {x:Type dock:DockAdornerWindow}}" />
+</ResourceDictionary>

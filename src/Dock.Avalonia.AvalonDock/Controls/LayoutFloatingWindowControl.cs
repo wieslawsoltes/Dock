@@ -58,7 +58,11 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
             Classes.Add("avalondock-document-window");
         }
         Styles.Add(new AvalonDockTheme());
-        model.Root?.Manager?.AttachThemeResources(this);
+        if (model.Root?.Manager is { } manager)
+        {
+            manager.AttachThemeResources(this);
+            DockAdornerWindow.SetFactory(this, DockAdornerWindow.GetFactory(manager));
+        }
         ((INotifyCollectionChanged)Classes).CollectionChanged += NativeDragChanged;
     }
 

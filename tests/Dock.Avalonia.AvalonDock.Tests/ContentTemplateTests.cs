@@ -274,8 +274,12 @@ public class ContentTemplateTests
             editor.Text = "Edited while floating";
             document.Dock();
             Dispatcher.UIThread.RunJobs();
+            Assert.Same(item, manager.GetLayoutItemFromModel(document));
             Assert.Same(editor, item.View.Child);
-            Assert.Contains(manager.GetVisualDescendants(), visual => ReferenceEquals(visual, editor));
+            Assert.True(manager.GetVisualDescendants().Any(visual => ReferenceEquals(visual, editor)),
+                $"Editor top-level: {TopLevel.GetTopLevel(editor)?.GetType().Name ?? "none"}; " +
+                $"presenter parent: {item.View.GetVisualParent()?.GetType().Name ?? "none"}; " +
+                $"selected: {document.IsSelected}; active: {document.IsActive}; floating: {manager.Layout.FloatingWindows.Count}.");
             manager.LayoutItemTemplate = (IDataTemplate)window.Resources["Inline"]!;
             Dispatcher.UIThread.RunJobs();
             AssertTemplate(item, "inline-template", "Edited while floating");

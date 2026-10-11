@@ -306,6 +306,7 @@ public class DockingManager : TemplatedControl
         ArgumentNullException.ThrowIfNull(content);
         return _layoutItems.Get(content);
     }
+    internal LayoutItem? GetLayoutItemForNativePresentation(LayoutContent content) => _layoutItems.GetForNativePresentation(content);
     /// <summary>Gets the native host factory that preserves this manager's template scope.</summary>
     public Func<IHostWindow?> DockHostWindowFactory { get; }
     /// <summary>Gets or sets the active document or tool content.</summary>

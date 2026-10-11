@@ -345,6 +345,7 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
         get => _owner;
         set
         {
+            VerifyAccess();
             if (ReferenceEquals(_owner, value)) return;
             OwnerChanging?.Invoke(this, new DockableOwnerChangingEventArgs(_owner, value));
             SetAndRaise(OwnerProperty, ref _owner, value);

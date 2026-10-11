@@ -32,6 +32,16 @@ internal sealed class LayoutItemRegistry
         return item;
     }
 
+    internal LayoutItem? GetForNativePresentation(LayoutContent content)
+    {
+        // Native moves can build the destination after removal from the source
+        // and before ownership is assigned. Reuse the container retained until
+        // reconciliation so its presenter can transfer between native hosts.
+        if (content.Root is null && ReferenceEquals(content.DockModel.Factory, _manager.DockFactory) &&
+            _byContent.TryGetValue(content, out LayoutItem? existing)) return existing;
+        return Get(content);
+    }
+
     private LayoutItem Create(LayoutContent content)
     {
         LayoutItem item = content switch

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -56,5 +57,20 @@ public class DockableOwnerTests
         content.OwnerChanging -= handler;
         content.Owner = null;
         Assert.Null(content.Owner);
+    }
+
+    [AvaloniaFact]
+    public async Task Invalid_Thread_Access_Is_Rejected_Before_Notifying_Owner_Observers()
+    {
+        DocumentDock parent = new();
+        Document content = new() { Owner = parent };
+        int changing = 0;
+        content.OwnerChanging += (_, _) => changing++;
+
+        Exception? exception = await Task.Run(() => Record.Exception(() => content.Owner = null));
+
+        Assert.IsType<InvalidOperationException>(exception);
+        Assert.Same(parent, content.Owner);
+        Assert.Equal(0, changing);
     }
 }

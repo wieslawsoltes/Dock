@@ -62,7 +62,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         if (model.Factory is null)
         {
             Factory factory = new LayoutFactory(window => LayoutWindowClosing.TryClose(this, window), new LayoutFloatingPlacement(this), Operations,
-                dockable => Context.Get(dockable) is LayoutContent content ? Manager?.GetLayoutItemFromModel(content) : null,
+                dockable => Context.Get(dockable) is LayoutContent content ? Manager?.GetLayoutItemForNativePresentation(content) : null,
                 dockable => Context.Get(dockable) as ILayoutContainer)
                 { HideToolsOnClose = false, HideDocumentsOnClose = false };
             model.Factory = factory;
@@ -240,6 +240,16 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     public void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <summary>Occurs when the layout tree changes.</summary>
     public event EventHandler? Updated;
+    /// <summary>Occurs when a parent transition attaches an element or subtree to this layout.</summary>
+    public event EventHandler<LayoutElementEventArgs>? ElementAdded;
+    /// <summary>Occurs when a parent transition removes an element or subtree from this layout.</summary>
+    public event EventHandler<LayoutElementEventArgs>? ElementRemoved;
+    internal void NotifyElementAdded(LayoutElement element) => ElementAdded?.Invoke(this, new LayoutElementEventArgs(element));
+    internal void NotifyElementRemoved(LayoutElement element)
+    {
+        Focus?.Validate();
+        ElementRemoved?.Invoke(this, new LayoutElementEventArgs(element));
+    }
     internal void NotifyUpdated() => Updated?.Invoke(this, EventArgs.Empty);
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {

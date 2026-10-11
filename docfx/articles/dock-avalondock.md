@@ -510,6 +510,61 @@ drag. Headless tests cover collection updates, capabilities, cancellation,
 manager transfer, XML replacement, and retained-control lifetime. Native desktop
 move behavior still needs platform integration validation.
 
+## Style document and tool panes
+
+`LayoutDocumentPaneControl` and `LayoutAnchorablePaneControl` derive from
+`LayoutCachePaneControl`, an Avalonia `TabControl`. Their read-only `Model`
+implements `ILayoutElement` and identifies the existing public pane;
+`ItemsSource` is that pane's live `Children` collection. The default templates
+host Dock's document/tool controls, retaining native tab input and the existing
+`LayoutItem.View`. Floating document and tool panes use the same control themes.
+
+Set `DockingManager.DocumentPaneControlStyle` and
+`DockingManager.AnchorablePaneControlStyle` to Avalonia `ControlTheme` resources.
+Use `BasedOn` to retain the default native presentation. Both the unprefixed
+types below and the historical `ad:` XML namespace compile:
+
+```xml
+<ControlTheme x:Key="DocumentPaneAppearance"
+              TargetType="LayoutDocumentPaneControl"
+              BasedOn="{StaticResource {x:Type LayoutDocumentPaneControl}}"
+              x:DataType="LayoutDocumentPaneControl">
+  <Setter Property="MinHeight" Value="100" />
+  <Setter Property="Tag" Value="{Binding $self.Model}" />
+</ControlTheme>
+```
+
+Apply it with `DocumentPaneControlStyle="{StaticResource DocumentPaneAppearance}"`
+on the manager. For tool panes, use `LayoutAnchorablePaneControl` as the target
+and set `AnchorablePaneControlStyle`. Replacing either property updates existing
+panes, including floating panes; clearing it restores their default theme.
+Panes follow their owning manager's flow direction and theme after transfer.
+
+Changing the model's `SelectedContentIndex` updates the control without
+activating another item. Setting a document control's `SelectedItem` or
+`SelectedIndex` explicitly selects and activates that document; the tool control
+selects without activation. Both support an empty selection. Tool-pane focus and
+unhandled left/right presses activate its selected tool; pane input inside a
+nested manager stays with that manager. Collection-driven selection is applied
+after item observers finish, and tab moves restore selection through the passive
+model API. Ordinary Dock strips keep their existing selection defaults.
+
+The upstream document-pane constructor is internal, so obtain its generated
+control from the visual tree or target its type in a theme. The tool-pane
+constructor is public: `new LayoutAnchorablePaneControl(existingPane)`. Its
+protected `OnGotKeyboardFocus`, `OnMouseLeftButtonDown`, and
+`OnMouseRightButtonDown` hooks use Avalonia focus/pointer arguments. Managers
+expose `OnDocumentPaneControlStyleChanged` and
+`OnAnchorablePaneControlStyleChanged` with `AvaloniaPropertyChangedEventArgs`.
+`LayoutCachePaneControl.OnSelectionChanged(SelectionChangedEventArgs)` marks
+empty-selection notifications handled before they bubble.
+
+Avalonia manages logical children through a different, nonvirtual collection;
+the WPF document pane's protected `IEnumerator LogicalChildren` override is not
+provided. These controls also do not resolve the separately tracked grouped or
+mixed floating-layout gaps. Their default presentation continues to use Dock's
+content caching rather than creating an additional application view cache.
+
 ## Lay out tab headers and handle overflow
 
 `DocumentPaneTabPanel` and `AnchorablePaneTabPanel` are public Avalonia `Panel`
@@ -1480,6 +1535,7 @@ flowchart TB
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
+        PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
         TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
         Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
@@ -1508,6 +1564,9 @@ flowchart TB
         Controls["DockControl, HostWindow, and Fluent controls"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     end
+    PaneControls --> ContentControls
+    PaneControls --> Tabs
+    PaneControls --> Selection
     App --> Manager
     App --> Converters
     Converters --> Items

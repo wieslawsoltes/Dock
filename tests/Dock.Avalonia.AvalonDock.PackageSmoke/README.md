@@ -1,5 +1,10 @@
 # NuGet consumer smoke test
 
+Pane-control probes compile themes for both public pane types through both XML
+namespaces, exercise external constructor/selection/manager hooks, and check live
+model identity, passive selection, empty selection, reordering, runtime themes,
+and existing content views across document floating and docking.
+
 This project intentionally uses package references only and is excluded from
 the solution: the package must be built before it can restore. It checks
 parent/root hooks from an external derived document and layout membership events,

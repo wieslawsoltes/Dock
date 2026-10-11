@@ -83,6 +83,29 @@ Emptying a rooted document pane clears root activation, even if a tool in anothe
 pane was active. `MoveChild` retains the selected content, notifies its changed
 index, and invokes the protected `ChildMoved` hook after reordering.
 
+Public `LayoutDocumentPaneControl` and `LayoutAnchorablePaneControl` wrap Dock's
+native panes and expose their existing public `Model` and live `ItemsSource`.
+Set `DocumentPaneControlStyle` or `AnchorablePaneControlStyle` on the manager to
+an Avalonia `ControlTheme`, including in floating hosts. For example:
+
+```xml
+<ControlTheme x:Key="DocumentPaneAppearance"
+              TargetType="LayoutDocumentPaneControl"
+              BasedOn="{StaticResource {x:Type LayoutDocumentPaneControl}}">
+  <Setter Property="MinHeight" Value="100" />
+</ControlTheme>
+```
+
+Use `DocumentPaneControlStyle="{StaticResource DocumentPaneAppearance}"` on
+the manager. Both XML namespace forms work. Runtime theme replacement and
+manager transfers update existing panes without allocating another layout or
+application view. Model-driven selection remains passive; explicit document
+control selection activates its document. Empty selection is supported, and
+`LayoutCachePaneControl` suppresses its bubbling selection notification.
+The tool-pane constructor accepts an existing `LayoutAnchorablePane`; the
+document-pane constructor remains internal, as upstream. Avalonia uses its own
+logical-child collection instead of the WPF `LogicalChildren` enumerator hook.
+
 Derived documents and tools can override `OnIsSelectedChanged(bool, bool)` and
 `OnIsActiveChanged(bool, bool)`. They receive the old and new states before the
 corresponding property-changed notification. Native activation finishes selection
@@ -579,6 +602,7 @@ flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
+    PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
     ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
     TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
     Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
@@ -603,6 +627,9 @@ flowchart TB
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
     Xml["XmlLayoutSerializer and explicit XML codec"]
+    PaneControls --> ContentControls
+    PaneControls --> Tabs
+    PaneControls --> Selection
     App --> Api
     App --> Converters
     Converters --> Items

@@ -4,6 +4,20 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <ControlTheme x:Key="DocumentPaneStyle" TargetType="LayoutDocumentPaneControl"
+                  BasedOn="{StaticResource {x:Type LayoutDocumentPaneControl}}" x:DataType="LayoutDocumentPaneControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyDocumentPaneStyle" TargetType="ad:LayoutDocumentPaneControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutDocumentPaneControl}}" />
+    <ControlTheme x:Key="ToolPaneStyle" TargetType="LayoutAnchorablePaneControl"
+                  BasedOn="{StaticResource {x:Type LayoutAnchorablePaneControl}}" x:DataType="LayoutAnchorablePaneControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyToolPaneStyle" TargetType="ad:LayoutAnchorablePaneControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutAnchorablePaneControl}}" />
+    <DataTemplate x:Key="CachePane" x:DataType="LayoutDocumentPane"><LayoutCachePaneControl ItemsSource="{Binding Children}" /></DataTemplate>
+    <DataTemplate x:Key="LegacyCachePane" x:DataType="LayoutDocumentPane"><ad:LayoutCachePaneControl ItemsSource="{Binding Children}" /></DataTemplate>
     <ItemsPanelTemplate x:Key="DocumentPanel"><DocumentPaneTabPanel /></ItemsPanelTemplate>
     <ItemsPanelTemplate x:Key="LegacyDocumentPanel"><ad:DocumentPaneTabPanel /></ItemsPanelTemplate>
     <ItemsPanelTemplate x:Key="ToolPanel"><AnchorablePaneTabPanel /></ItemsPanelTemplate>

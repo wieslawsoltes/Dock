@@ -192,8 +192,11 @@ public partial class DockingManager : TemplatedControl
         _layoutItems.SetLayout(_layout);
         _floatingControls = new(this);
         _floatingControls.SetLayout(_layout);
-        _documents = new(this, static content => new LayoutDocument { Content = content }, LayoutSourcePlacement.InsertDocument);
-        _anchorables = new(this, static content => new LayoutAnchorable { Content = content }, LayoutSourcePlacement.InsertAnchorable);
+        LayoutSourceSubscriptions subscriptions = new(this);
+        _documents = new(this, static content => new LayoutDocument { Content = content },
+            LayoutSourcePlacement.FindDocumentDestination, LayoutSourcePlacement.InsertDocument, subscriptions.SetDocuments);
+        _anchorables = new(this, static content => new LayoutAnchorable { Content = content },
+            LayoutSourcePlacement.FindAnchorableDestination, LayoutSourcePlacement.InsertAnchorable, subscriptions.SetAnchorables);
     }
 
     /// <summary>Preserves the default manager theme for derived controls.</summary>

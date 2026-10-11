@@ -40,6 +40,18 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- `DockingManager.OnReceiveWeakEvent(Type, object, EventArgs)` receives live
+  source notifications through Avalonia's weak collection event. Overrides can
+  observe, handle, or replace a source before default processing. Shared sources
+  deliver once with document precedence, and replacing either property preserves
+  the other subscription. The portable manager type is
+  `WeakEvent<INotifyCollectionChanged, NotifyCollectionChangedEventArgs>`;
+  `IWeakEventSubscriber<NotifyCollectionChangedEventArgs>` replaces WPF's listener
+  interface. An unhandled subscribed event raises `InvalidOperationException`.
+  Initial imports snapshot values before strategy callbacks, skip existing
+  layout values/nulls, and retain source duplicates. Initial/range batches keep
+  their destination despite callback focus changes and reuse a new fallback
+  tool pane. Headless regressions and the package consumer cover these contracts.
 - Positionable groups expose `OnDockWidthChanged` and `OnDockHeightChanged`
   after changed-value property notifications. Public assignments, native
   splitter commits, and external native proportion changes invoke these hooks;
@@ -600,7 +612,7 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1196 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1217 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -648,8 +660,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 817
-matching type/member keys and 134 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 818
+matching type/member keys and 133 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

@@ -986,6 +986,54 @@ all layout items of that type, including manually inserted items. Floating
 hosts resolve content templates from the manager's current scope, including
 ancestor templates.
 
+Initial source attachment skips null values and values equal to content already
+in the layout. Repeated values within a new source remain separate items.
+Later add/replace notifications import every new entry, including nulls and
+duplicates. Initial attachment snapshots the source before invoking application
+strategies. One destination pane is chosen for the entire initial import or
+collection notification; changing focus inside a strategy affects the next
+batch. A fallback tool pane created during insertion is reused for the rest of
+that batch.
+
+A derived manager can observe or handle source notifications through
+`OnReceiveWeakEvent(Type, object, EventArgs)`:
+
+```csharp
+using System;
+using System.Collections.Specialized;
+using Avalonia.Utilities;
+using AvalonDock;
+
+public sealed class SourceAwareManager : DockingManager
+{
+    protected override bool OnReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+    {
+        if (managerType == typeof(WeakEvent<INotifyCollectionChanged, NotifyCollectionChangedEventArgs>) &&
+            e is NotifyCollectionChangedEventArgs change)
+        {
+            System.Diagnostics.Debug.WriteLine(change.Action);
+        }
+        return base.OnReceiveWeakEvent(managerType, sender, e);
+    }
+}
+```
+
+The override runs before the layout update. Calling the base implementation
+updates the current source; returning `true` without calling base lets the
+override handle the event. The base returns `false` for an unknown manager type.
+Returning `false` from an actual collection callback raises
+`InvalidOperationException`, because that subscribed event was not handled.
+Replacing a source inside the override makes the base ignore its old event.
+When both source properties refer to one collection, each event is delivered
+once and the document source takes precedence.
+
+WPF's `CollectionChangedEventManager`/`IWeakEventListener` are replaced by
+Avalonia's `WeakEvents.CollectionChanged` and
+`IWeakEventSubscriber<NotifyCollectionChangedEventArgs>`. The `managerType`
+argument is the closed generic type shown above. Subscriptions use Avalonia's
+weak listener support, so a retained source does not retain an unused manager.
+See [Avalonia's weak collection event](https://github.com/AvaloniaUI/Avalonia/blob/8eeda4f6f546165b3f72e63c9f42247abb306905/src/Avalonia.Base/Utilities/WeakEvents.cs).
+
 ## Style item containers
 
 `LayoutItemContainerStyle` accepts an Avalonia `ControlTheme`. Its target is a

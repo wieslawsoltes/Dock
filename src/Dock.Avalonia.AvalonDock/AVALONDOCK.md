@@ -417,6 +417,23 @@ panes. Collection changes update the live Dock models. As in AvalonDock,
 moving source entries leaves the user's tab order intact, and resetting a
 source clears all layout items of that type.
 
+Initial attachment snapshots source values before invoking insertion strategies,
+skips nulls and values already present in the layout, and preserves duplicate
+values within the source. Add/replace notifications import all new entries.
+The default destination stays fixed for each import/notification batch; a new
+fallback tool pane is reused within that batch.
+
+Derived managers can override `OnReceiveWeakEvent(Type, object, EventArgs)` to
+observe source changes before the default update. Call base to update the layout,
+or return `true` to handle the event yourself. Returning `false` for a delivered
+collection event raises `InvalidOperationException`. The manager uses Avalonia's
+`IWeakEventSubscriber<NotifyCollectionChangedEventArgs>` and
+`WeakEvents.CollectionChanged`; `managerType` is
+`typeof(WeakEvent<INotifyCollectionChanged, NotifyCollectionChangedEventArgs>)`,
+replacing WPF's `CollectionChangedEventManager`. Replacing the source inside the
+hook makes base ignore the old event. A collection shared by both sources sends
+one notification to the hook, with documents taking precedence.
+
 `LayoutAnchorSide` and `LayoutAnchorGroup` expose the four native auto-hide
 strips. The XML serializer preserves these groups, their content identities,
 and return panes alongside docked and hidden content.

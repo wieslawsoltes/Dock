@@ -10,32 +10,33 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
 {
     private readonly DockingManager _manager;
     private readonly Func<object?, T> _create;
-    private readonly Action<LayoutRoot, T, ILayoutUpdateStrategy?> _insert;
+    private readonly Func<LayoutRoot, ILayoutContainer?> _findDestination;
+    private readonly Func<LayoutRoot, T, ILayoutContainer?, ILayoutUpdateStrategy?, ILayoutContainer?> _insert;
+    private readonly Action<IEnumerable?> _observe;
     private LayoutRoot _layout;
     private IEnumerable? _source;
-    private Subscription? _subscription;
 
     internal LayoutSourceBinding(DockingManager manager, Func<object?, T> create,
-        Action<LayoutRoot, T, ILayoutUpdateStrategy?> insert)
+        Func<LayoutRoot, ILayoutContainer?> findDestination,
+        Func<LayoutRoot, T, ILayoutContainer?, ILayoutUpdateStrategy?, ILayoutContainer?> insert,
+        Action<IEnumerable?> observe)
     {
         _manager = manager;
         _layout = manager.Layout;
         _create = create;
+        _findDestination = findDestination;
         _insert = insert;
+        _observe = observe;
     }
 
     internal void SetSource(IEnumerable? source)
     {
-        _subscription?.Dispose();
-        _subscription = null;
+        _observe(null);
         bool replacing = _source is not null;
         if (replacing) RemoveMatching(_source!, false);
         _source = source;
         try { ImportExistingSource(); }
-        finally
-        {
-            if (source is INotifyCollectionChanged changes) _subscription = new Subscription(changes, this);
-        }
+        finally { _observe(_source); }
         if (replacing) _layout.CollectGarbage();
     }
 
@@ -56,12 +57,22 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
         HashSet<object?> existing = new();
         foreach (ILayoutElement element in _layout.Descendents())
             if (element is T content) existing.Add(content.Content);
+        // Snapshot before invoking application strategies, which may edit the source.
+        // Repeated source values remain distinct unless already present in the layout.
+        List<object> pending = new();
         foreach (object? item in _source)
+            if (item is not null && !existing.Contains(item)) pending.Add(item);
+        InsertItems(pending, true);
+    }
+
+    private void InsertItems(IEnumerable items, bool assignContentIds)
+    {
+        ILayoutContainer? destination = _findDestination(_layout);
+        foreach (object? item in items)
         {
-            if (item is null || existing.Contains(item)) continue;
             T content = _create(item);
-            content.ContentId = Guid.NewGuid().ToString();
-            _insert(_layout, content, _manager.LayoutUpdateStrategy);
+            if (assignContentIds) content.ContentId = Guid.NewGuid().ToString();
+            destination = _insert(_layout, content, destination, _manager.LayoutUpdateStrategy);
         }
     }
 
@@ -79,13 +90,13 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
         }
     }
 
-    private void SourceChanged(NotifyCollectionChangedEventArgs args)
+    internal void SourceChanged(NotifyCollectionChangedEventArgs args)
     {
         if (_manager.AreSourceBindingsSuspended) return;
         if (args.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace && args.OldItems is { } removed)
             RemoveMatching(removed, true);
         if (args.Action is NotifyCollectionChangedAction.Add or NotifyCollectionChangedAction.Replace && args.NewItems is { } added)
-            foreach (object? item in added) _insert(_layout, _create(item), _manager.LayoutUpdateStrategy);
+            InsertItems(added, false);
         if (args.Action == NotifyCollectionChangedAction.Reset)
         {
             // AvalonDock resets every item of the source's layout type,
@@ -99,25 +110,5 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
             }
         }
         _layout.CollectGarbage();
-    }
-
-    // The application's collection may outlive its manager. Its subscription
-    // must not retain an otherwise unused manager or layout.
-    private sealed class Subscription : IDisposable
-    {
-        private readonly INotifyCollectionChanged _source;
-        private readonly WeakReference<LayoutSourceBinding<T>> _target;
-        internal Subscription(INotifyCollectionChanged source, LayoutSourceBinding<T> target)
-        {
-            _source = source;
-            _target = new(target);
-            source.CollectionChanged += Changed;
-        }
-        private void Changed(object? sender, NotifyCollectionChangedEventArgs args)
-        {
-            if (_target.TryGetTarget(out LayoutSourceBinding<T>? target)) target.SourceChanged(args);
-            else Dispose();
-        }
-        public void Dispose() => _source.CollectionChanged -= Changed;
     }
 }

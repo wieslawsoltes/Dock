@@ -42,6 +42,9 @@ internal static class LayoutSourcePlacement
     }
 
     internal static void InsertDocument(LayoutRoot root, LayoutDocument document, ILayoutUpdateStrategy? strategy)
+        => InsertDocument(root, document, FindDocumentDestination(root), strategy);
+
+    internal static LayoutDocumentPane? FindDocumentDestination(LayoutRoot root)
     {
         LayoutDocumentPane? destination = root.LastFocusedDocument?.Parent as LayoutDocumentPane;
         if (destination?.Root != root) destination = null;
@@ -50,15 +53,22 @@ internal static class LayoutSourcePlacement
             foreach (ILayoutElement element in root.Descendents())
                 if (element is LayoutDocumentPane pane) { destination = pane; break; }
         }
+        return destination;
+    }
+
+    internal static ILayoutContainer? InsertDocument(LayoutRoot root, LayoutDocument document,
+        ILayoutContainer? destination, ILayoutUpdateStrategy? strategy)
+    {
         if (strategy?.BeforeInsertDocument(root, document, destination) != true)
         {
             if (destination is null) throw new InvalidOperationException("The layout must contain a document pane to host source documents.");
-            destination.Children.Add(document);
+            ((LayoutDocumentPane)destination).Children.Add(document);
         }
         strategy?.AfterInsertDocument(root, document);
+        return destination;
     }
 
-    internal static void InsertAnchorable(LayoutRoot root, LayoutAnchorable tool, ILayoutUpdateStrategy? strategy)
+    internal static LayoutAnchorablePane? FindAnchorableDestination(LayoutRoot root)
     {
         LayoutAnchorablePane? destination = root.ActiveContent?.Parent as LayoutAnchorablePane;
         LayoutAnchorablePane? first = null;
@@ -72,6 +82,12 @@ internal static class LayoutSourcePlacement
             }
             destination ??= first;
         }
+        return destination;
+    }
+
+    internal static ILayoutContainer? InsertAnchorable(LayoutRoot root, LayoutAnchorable tool,
+        ILayoutContainer? destination, ILayoutUpdateStrategy? strategy)
+    {
         if (strategy?.BeforeInsertAnchorable(root, tool, destination) != true)
         {
             if (destination is null)
@@ -80,11 +96,13 @@ internal static class LayoutSourcePlacement
                 LayoutPanel outer = new() { Orientation = Orientation.Horizontal };
                 root.RootPanel = outer;
                 outer.Children.Add(original);
-                destination = new LayoutAnchorablePane { DockWidth = new GridLength(200) };
-                outer.Children.Add(destination);
+                LayoutAnchorablePane pane = new() { DockWidth = new GridLength(200) };
+                outer.Children.Add(pane);
+                destination = pane;
             }
-            destination.Children.Add(tool);
+            ((LayoutAnchorablePane)destination).Children.Add(tool);
         }
         strategy?.AfterInsertAnchorable(root, tool);
+        return destination;
     }
 }

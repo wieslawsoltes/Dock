@@ -105,7 +105,7 @@ public class CompatibilitySurfaceBatchTests
         Assert.Same(BindingOperations.DoNothing, converter.Convert(null, typeof(Image), null, CultureInfo.InvariantCulture));
         Assert.Throws<InvalidCastException>(() => converter.Convert("not a URI", typeof(Image), null, CultureInfo.InvariantCulture));
         Assert.Throws<NotImplementedException>(() => converter.ConvertBack(image, typeof(Uri), null, CultureInfo.InvariantCulture));
-        Assert.Throws<NotSupportedException>(() => converter.Convert(new Uri("https://example.invalid/image.png"), typeof(Image), null, CultureInfo.InvariantCulture));
+        Assert.Throws<NotSupportedException>(() => converter.Convert(new Uri("ftp://example.invalid/image.png"), typeof(Image), null, CultureInfo.InvariantCulture));
     }
 
     [AvaloniaFact]

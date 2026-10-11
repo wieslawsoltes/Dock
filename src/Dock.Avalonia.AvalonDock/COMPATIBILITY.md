@@ -40,6 +40,16 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- `UriSourceToBitmapImageConverter` loads HTTP/HTTPS images asynchronously,
+  follows redirects, and publishes decoded bitmaps on the UI thread. It supports
+  relative URI resolution, an application-owned HTTP client, request/body
+  timeouts, disposal, and cancellation on view detachment or source replacement.
+  Reattachment retries incomplete loads; completed bitmaps retain their identity.
+  Pending requests do not retain unused images. Failures leave an empty image
+  and log through Avalonia. A separate Headless xUnit project uses the real Skia
+  decoder to validate HTTP and HTTPS loopback responses, redirects, untrusted
+  certificates, invalid image bytes, cancellation, and lifetime behavior. WPF
+  bitmap download events are represented by Avalonia source updates and logging.
 - `DockingManager.OnReceiveWeakEvent(Type, object, EventArgs)` receives live
   source notifications through Avalonia's weak collection event. Overrides can
   observe, handle, or replace a source before default processing. Shared sources
@@ -613,6 +623,8 @@ supported by corresponding implementation and test evidence.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
 - 1217 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+  Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
+  for real image decoding and HTTP/HTTPS transport contracts (1235 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -629,8 +641,8 @@ supported by corresponding implementation and test evidence.
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
-  templates/selectors, styles, general theme URI loading, HTTP/HTTPS image URI
-  loading, translated localization resources, and the control adapter surface.
+  templates/selectors, styles, general theme URI loading, translated localization
+  resources, and the control adapter surface.
   Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,
   remaining protected/platform hooks, and broader desktop input/focus validation.

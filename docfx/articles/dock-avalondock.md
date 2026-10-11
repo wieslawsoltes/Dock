@@ -936,13 +936,11 @@ subsequent lookups without changing `CultureInfo.CurrentUICulture` or refreshing
 already-created static XAML values. English fallback resources are included;
 translated satellite resources remain open work.
 
-`UriSourceToBitmapImageConverter` creates an Avalonia `Image` from a file or
-compiled `avares` URI. Its optional converter parameter supplies the absolute
-base URI for a relative asset path. Null returns `BindingOperations.DoNothing`;
-reverse conversion is unsupported. The returned image uses a bitmap source,
-which its owner should dispose when no longer needed. HTTP/HTTPS URI loading is
-not implemented. Both converters support the default and historical XML
-namespaces:
+`UriSourceToBitmapImageConverter` creates an Avalonia `Image` from file, compiled
+`avares`, HTTP, and HTTPS URIs. Its optional converter parameter supplies the
+absolute base URI for a relative path. Null returns `BindingOperations.DoNothing`;
+reverse conversion is unsupported. Both converters support the default and
+historical XML namespaces:
 
 ```xml
 <Window.Resources>
@@ -950,6 +948,36 @@ namespaces:
   <AnchorableContextMenuAutoHideHeaderConverter x:Key="AutoHideHeader" />
 </Window.Resources>
 ```
+
+HTTP/HTTPS conversion returns the image immediately; its `Source` is populated
+on the UI thread after downloading and decoding. Detaching cancels a pending
+request, and reattaching retries it. A completed bitmap is retained across view
+reattachment. Replacing `Image.Source` yourself cancels the pending load, so a
+late response cannot overwrite your replacement. Pending downloads hold only a
+weak reference to their target image.
+
+The default client handles redirects and normal TLS certificate verification.
+Network, HTTP status, timeout, and decode failures leave the image empty and log
+a warning in Avalonia's `AvalonDock` log area. Request timeout covers the response
+body as well as the headers. Applications can supply a configured `HttpClient`
+for authentication, proxy settings, or a custom timeout:
+
+```csharp
+using System;
+using System.Net.Http;
+using AvalonDock.Converters;
+
+using HttpClient client = new() { Timeout = TimeSpan.FromSeconds(15) };
+using UriSourceToBitmapImageConverter converter = new(client);
+// Keep both objects alive while the views use this converter.
+```
+
+A converter reuses its client for multiple images. Disposing the converter
+cancels its requests and disposes a client it created; an application-supplied
+client remains owned by the application. Completed bitmap sources are not
+disposed by the converter. The image owner should dispose its bitmap source
+when it is no longer needed. These notifications use Avalonia's `Image.Source`
+and logging rather than WPF `BitmapImage` download events.
 
 ## Bind ViewModel content
 
@@ -2364,6 +2392,7 @@ From the repository root:
 ```sh
 dotnet run --project samples/DockAvalonDockSample
 dotnet test tests/Dock.Avalonia.AvalonDock.Tests -c Release
+dotnet test tests/Dock.Avalonia.AvalonDock.ImageTests -c Release
 ```
 
 The [sample](https://github.com/wieslawsoltes/Dock/tree/feature/avalondock-compatibility/samples/DockAvalonDockSample)
@@ -2372,8 +2401,10 @@ and save/load commands. Its XAML adapts Xceed Live Explorer 3.7.0 and includes
 the original Ms-PL license and attribution. The adapter implementation is new
 MIT-licensed code.
 
-The test project covers compiled default/Xceed namespaces, Headless input and
-rendering, native model synchronization, XML, and lifecycle behavior. The
+The main test project covers compiled default/Xceed namespaces, Headless input,
+native model synchronization, XML, and lifecycle behavior. The image test project
+uses Headless with Skia to verify actual decoding and loopback HTTP/HTTPS loading.
+The
 separate NuGet consumer builds against the packed assemblies. The
 [compatibility checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md)
 also describes the pinned API audit and the work still required before claiming

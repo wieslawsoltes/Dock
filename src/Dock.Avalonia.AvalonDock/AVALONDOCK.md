@@ -637,10 +637,18 @@ orientation, and `NullToDoNothingConverter` retains the target on a null input.
 `Resources.ResourceManager` exposes all command labels and hints; set
 `Resources.Culture` for subsequent lookups without changing the thread's UI
 culture. The package currently provides English fallback strings only.
-`UriSourceToBitmapImageConverter` returns an Avalonia `Image` for file and
-`avares` URIs, accepts a base URI as its converter parameter, and retains the
-binding target on null. Dispose the image's bitmap source when it is no longer
-needed. HTTP/HTTPS image loading is not implemented.
+`UriSourceToBitmapImageConverter` returns an Avalonia `Image` for file, `avares`,
+HTTP, and HTTPS URIs, accepts a base URI as its converter parameter, and retains
+the binding target on null. Network images load asynchronously and update
+`Image.Source` on the UI thread. Detaching cancels a pending request; reattaching
+retries it. Redirects and TLS verification use `HttpClient` defaults. Failures,
+including timeouts and invalid image data, leave the image empty and log a warning
+in Avalonia's `AvalonDock` log area. A replacement `Image.Source` is preserved.
+An optional `HttpClient` constructor allows application headers and transport
+settings; the caller retains ownership of that client. Dispose a programmatically
+owned converter to cancel its outstanding loads and release its default client.
+Completed bitmap sources remain owned by their images; dispose a bitmap when it
+is no longer needed.
 
 Native document/tool tabs and custom public tab controls bind `IsEnabled` and
 `ToolTip` to their public layout content. Default tool headers show `IconSource`
@@ -1060,6 +1068,7 @@ mapping of AvalonDock types to their native Dock models.
 
 ```sh
 dotnet test tests/Dock.Avalonia.AvalonDock.Tests -c Release
+dotnet test tests/Dock.Avalonia.AvalonDock.ImageTests -c Release
 dotnet run --project samples/DockAvalonDockSample
 dotnet pack src/Dock.Avalonia.AvalonDock -c Release -o artifacts/nuget
 ```

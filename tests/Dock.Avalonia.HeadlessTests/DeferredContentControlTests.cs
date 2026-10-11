@@ -1641,18 +1641,20 @@ public class DeferredContentControlTests
         };
 
         var window = ShowInWindow(control, new DockFluentTheme());
-        var presenterHost = GetDeferredHost(control, "PART_ContentControl");
+        var presenterHost = GetDeferredPresenterHost(control, "PART_ContentControl");
         presenterHost.DataTemplates.Add(CreateCountingTemplate<RootDock>("DockControl", () => buildCount++));
 
         try
         {
             Assert.Equal(0, buildCount);
-            Assert.Null(presenterHost.Presenter?.Child);
+            Assert.Null(presenterHost.Child);
+            Assert.Null(root.TemplatedParent);
+            Assert.Null(root.Parent);
 
             DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, buildCount);
-            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Child);
             Assert.Equal("DockControl", textBlock.Text);
         }
         finally

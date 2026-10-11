@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AvalonDock.Controls;
 using Dock.Model.Core;
 using AvalonDock.Layout;
 
@@ -26,7 +27,11 @@ internal static class LayoutWindowClosing
             canHide &= content is LayoutAnchorable { CanHide: true };
         }
         if (contents.Count == 0) return true;
-        if (canClose)
+        if (window.Host is LayoutFloatingWindowControl control)
+        {
+            control.CloseOrHideContents();
+        }
+        else if (canClose)
         {
             foreach (LayoutContent content in contents) content.Close();
         }

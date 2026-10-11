@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using AvalonDock.Layout;
+using AvalonDock.Infrastructure;
 using AvalonDock.Themes;
 using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
@@ -105,6 +106,20 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     protected void SetIsDragging(bool value) => SetAndRaise(IsDraggingProperty, ref _dragging, value);
     /// <summary>Called when the native drag state changes. Dock owns pointer capture and drag execution.</summary>
     protected virtual void OnIsDraggingChanged(AvaloniaPropertyChangedEventArgs e) { }
+
+    /// <summary>Checks whether the contents' current close commands permit closing this window.</summary>
+    protected virtual bool CanClose(object? parameter = null) => false;
+    /// <summary>Checks whether the contents' current hide commands permit hiding this window.</summary>
+    protected virtual bool CanHide(object? parameter = null) => false;
+    /// <summary>Hides the window's contents when a user close request cannot close them.</summary>
+    protected virtual void DoHide() { }
+
+    internal void CloseOrHideContents()
+    {
+        if (CanClose() && Model is LayoutFloatingWindow model)
+            LayoutFloatingWindowOperations.Execute(model, hide: false, parameter: null);
+        else if (CanHide()) DoHide();
+    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

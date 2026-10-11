@@ -661,8 +661,39 @@ it does not make the hosted layout or document read-only. With false, custom
 window content uses normal Avalonia content rendering. Derived floating controls
 can also use the protected constructor's immutability option.
 
-The floating-control surface is still being completed: window-wide commands,
-resize-border customization, and the remaining
+`LayoutAnchorableFloatingWindowControl.CloseWindowCommand` and
+`HideWindowCommand` operate on all tools in that window. They check each model's
+capability and its current container command, then forward the caller's parameter
+to the current commands. Check `CanExecute` before calling `Execute` directly:
+
+```csharp
+// toolWindow is a LayoutAnchorableFloatingWindowControl.
+if (toolWindow.HideWindowCommand.CanExecute(null))
+    toolWindow.HideWindowCommand.Execute(null);
+```
+
+They can also be used in compiled bindings with the floating control as the
+binding scope's data context:
+
+```xml
+<StackPanel x:DataType="LayoutAnchorableFloatingWindowControl">
+  <Button Content="Close tools" Command="{Binding CloseWindowCommand}" />
+  <Button Content="Hide tools" Command="{Binding HideWindowCommand}" />
+</StackPanel>
+```
+
+Enablement follows membership, capabilities, command replacement, and application
+`CanExecuteChanged` notifications. Execution snapshots the contents so a command
+can remove its own tool; subsequent tools still use their current commands.
+Content closing/hiding cancellation is preserved. Native window-close requests
+check the factory veto first, then use the current close commands with a null
+parameter, falling back to hide when the tool group cannot close. A command that
+keeps content in place keeps the native window open. The protected `CanClose`,
+`CanHide`, and `DoHide` hooks participate in this path. Closed hosts release their
+command subscriptions without disposing application commands.
+
+The floating-control surface is still being completed: resize-border customization,
+upstream hidden-host lifetime, user/internal-close distinctions, and remaining
 protected/platform hooks are tracked in the compatibility checklist.
 
 ## Restore application content from XML
@@ -761,6 +792,7 @@ flowchart TB
     Factory --> Hosts
     Hosts --> Controls
     Hosts --> Manager
+    Hosts --> Items
     Models --> Controls
     Xml <--> Layout
 ```
@@ -789,6 +821,8 @@ batch-floating boundaries. It composes lifecycle helpers to honor AvalonDock
 capabilities and return positions, then delegates actual movement to Dock.
 `LayoutFloatingWindowPresenter`, the host factory, and scoped templates manage
 floating presentation and preserve the manager's template lookup scope.
+Window command adapters observe the current item containers and delegate to
+their commands; native factory vetoes still precede content close/hide requests.
 The optional `IDockWindowHostFactory` supplies the model at initialization and
 when a host is recreated. `LayoutFactory` preserves the native ID-based and
 application locators while making that model available to the manager's host

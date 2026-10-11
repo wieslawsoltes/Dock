@@ -300,8 +300,18 @@ notifications; showing the control raises native `WindowOpened`. Rejected
 floating returns null. The immutability option prevents replacement of loaded
 window `Content`; the layout and document remain editable. Standalone panes,
 unattached tools, cross-manager content, and creation before the main view loads
-are supported. Documents need a parent pane. Window-wide commands and remaining
-floating-control hooks are still open.
+are supported. Documents need a parent pane.
+
+Tool hosts expose `CloseWindowCommand` and `HideWindowCommand` for all tools in
+their layout. Check `CanExecute(parameter)` before calling `Execute(parameter)`;
+the parameter is passed to each current item command. Compiled bindings can use
+`x:DataType="LayoutAnchorableFloatingWindowControl"` with the host as their data
+context. Enablement follows tool capabilities, membership, and command changes.
+Native window-close requests respect factory vetoes and use those item commands
+with a null parameter, falling back to hiding when closing is disabled. Content
+cancellation keeps the remaining tools open. Closing the host releases command
+subscriptions while preserving application command ownership. Resize borders,
+hidden-host lifetime, and remaining floating-control hooks are still open.
 
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as
@@ -342,6 +352,7 @@ flowchart TB
     Factory --> Hosts
     Hosts --> View
     Hosts --> Api
+    Hosts --> Items
     Api --> View
     Items --> View
     View --> Commands

@@ -66,6 +66,7 @@ AssertSplitters(manager);
 tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
+AssertFloatingWindowCommands(window, manager, tool, (LayoutAnchorableFloatingWindowControl)toolHost);
 AssertToolTitle(toolHost, tool);
 tool.Title = "Floating agenda";
 AssertToolTitle(toolHost, tool);
@@ -253,6 +254,54 @@ if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML c
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
 Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container conversion, and close cancellation passed.");
+
+static void AssertFloatingWindowCommands(Window resources, DockingManager manager, LayoutAnchorable tool, LayoutAnchorableFloatingWindowControl host)
+{
+    LayoutAnchorableItem item = (LayoutAnchorableItem)manager.GetLayoutItemFromModel(tool)!;
+    System.Windows.Input.ICommand? previousClose = item.CloseCommand;
+    System.Windows.Input.ICommand? previousHide = item.HideCommand;
+    bool previousCanClose = tool.CanClose;
+    Control controls = ((IDataTemplate)resources.Resources["FloatingWindowCommands"]!).Build(host)!;
+    controls.DataContext = host;
+    Window view = new() { Content = controls, Width = 300, Height = 150 };
+    int closed = 0;
+    int hidden = 0;
+    using var close = ReactiveCommand.Create<object?>(value =>
+    {
+        if (!ReferenceEquals(value, host.Model)) throw new Exception("The window close command lost its parameter.");
+        closed++;
+    }, outputScheduler: ImmediateScheduler.Instance);
+    using var hide = ReactiveCommand.Create<object?>(value =>
+    {
+        if (!ReferenceEquals(value, host.Model)) throw new Exception("The window hide command lost its parameter.");
+        hidden++;
+    }, outputScheduler: ImmediateScheduler.Instance);
+    try
+    {
+        tool.CanClose = true;
+        item.CloseCommand = close;
+        item.HideCommand = hide;
+        view.Show();
+        Dispatcher.UIThread.RunJobs();
+        Button closeButton = controls.GetVisualDescendants().OfType<Button>().Single(button => button.Classes.Contains("window-close"));
+        Button hideButton = controls.GetVisualDescendants().OfType<Button>().Single(button => button.Classes.Contains("window-hide"));
+        if (!ReferenceEquals(closeButton.Command, host.CloseWindowCommand) || !ReferenceEquals(hideButton.Command, host.HideWindowCommand))
+            throw new Exception("The unprefixed floating-window commands did not compile and bind.");
+        ClickNative(closeButton);
+        ClickNative(hideButton);
+        if (closed != 1 || hidden != 1 || !host.IsVisible)
+            throw new Exception("Window commands did not invoke the current item commands.");
+        tool.CanClose = false;
+        if (closeButton.IsEffectivelyEnabled) throw new Exception("The bound window command ignored tool capability changes.");
+    }
+    finally
+    {
+        item.CloseCommand = previousClose;
+        item.HideCommand = previousHide;
+        tool.CanClose = previousCanClose;
+        view.Close();
+    }
+}
 
 static void AssertDockingNotifications(DockingManager manager, Window window)
 {

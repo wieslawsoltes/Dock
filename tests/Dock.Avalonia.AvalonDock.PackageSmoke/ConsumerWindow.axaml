@@ -4,6 +4,12 @@
         Width="640" Height="480">
   <Window.Resources>
     <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
+    <DataTemplate x:Key="FloatingWindowCommands" x:DataType="LayoutAnchorableFloatingWindowControl">
+      <StackPanel>
+        <Button Classes="window-close" Content="Close tools" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding Model}" />
+        <Button Classes="window-hide" Content="Hide tools" Command="{Binding HideWindowCommand}" CommandParameter="{Binding Model}" />
+      </StackPanel>
+    </DataTemplate>
     <LayoutDocumentItem x:Key="Container" Description="Unprefixed packaged container" />
     <DataTemplate x:Key="ExplicitTemplate" x:DataType="x:Object">
       <TextBlock Classes="explicit-package-template" Text="Explicit package template" />

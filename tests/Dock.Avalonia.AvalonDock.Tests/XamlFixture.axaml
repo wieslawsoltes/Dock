@@ -6,6 +6,12 @@
   <Window.Resources>
     <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
     <ad:LayoutItemFromLayoutModelConverter x:Key="LegacyItemFromModel" />
+    <DataTemplate x:Key="FloatingWindowCommands" x:DataType="LayoutAnchorableFloatingWindowControl">
+      <StackPanel>
+        <Button Classes="window-close" Content="Close tools" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding Model}" />
+        <Button Classes="window-hide" Content="Hide tools" Command="{Binding HideWindowCommand}" CommandParameter="{Binding Model}" />
+      </StackPanel>
+    </DataTemplate>
   </Window.Resources>
   <DockingManager x:Name="Manager">
     <LayoutRoot>

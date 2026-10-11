@@ -4,6 +4,12 @@
         x:Class="Dock.Avalonia.AvalonDock.Tests.PaneControlFixture"
         x:DataType="DockingManager" Width="1100" Height="650">
   <Window.Resources>
+    <LayoutDocumentPane x:Key="HeaderlessDocuments" ShowHeader="False">
+      <LayoutDocument ContentId="headerless" Title="Headerless"><TextBox Text="Headerless editor" /></LayoutDocument>
+    </LayoutDocumentPane>
+    <ad:LayoutDocumentPane x:Key="LegacyHeaderlessDocuments" ShowHeader="False">
+      <ad:LayoutDocument ContentId="headerless" Title="Headerless"><TextBox Text="Headerless editor" /></ad:LayoutDocument>
+    </ad:LayoutDocumentPane>
     <ControlTheme x:Key="DocumentPane" TargetType="LayoutDocumentPaneControl"
                   BasedOn="{StaticResource {x:Type LayoutDocumentPaneControl}}" x:DataType="LayoutDocumentPaneControl">
       <Setter Property="Tag" Value="{Binding $self.Model}" />

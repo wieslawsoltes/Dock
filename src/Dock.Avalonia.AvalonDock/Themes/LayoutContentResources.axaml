@@ -2,6 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:controls="using:AvalonDock.Controls"
+        xmlns:layout="using:AvalonDock.Layout"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         xmlns:converters="using:Dock.Avalonia.Converters">
   <!-- Compose the native pane controls with persistent adapter content bindings.
@@ -17,6 +19,7 @@
                Background="Transparent"
                ZIndex="1">
       <infrastructure:LayoutDocumentTabStrip x:Name="PART_TabStrip"
+                        Classes.avalondock-header-hidden="{Binding !$parent[controls:LayoutDocumentPaneControl].((layout:LayoutDocumentPane)Model).ShowHeader}"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         CanCreateItem="{Binding CanCreateDocument}"
@@ -31,6 +34,10 @@
                         DockProperties.IsDropArea="True"
                         DockProperties.DockAdornerHost="{Binding #PART_DockPanel}">
         <DocumentTabStrip.Styles>
+          <!-- Keep Dock's dynamic visibility resource when the pane allows a header. -->
+          <Style Selector="DocumentTabStrip.avalondock-header-hidden">
+            <Setter Property="IsVisible" Value="False" />
+          </Style>
           <Style Selector="DocumentTabStripItem">
             <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
           </Style>

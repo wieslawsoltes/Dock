@@ -21,7 +21,7 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
         _selection = new(this, true, RaisePropertyChanging, RaisePropertyChanged);
         _selection.Initialize();
     }
-    /// <summary>Gets or sets whether document headers are shown.</summary>
+    /// <summary>Gets or sets whether the pane shows its document tabs and document list menu. The selected content remains visible.</summary>
     public bool ShowHeader { get => _showHeader; set => SetField(ref _showHeader, value); }
     /// <inheritdoc/>
     public int SelectedContentIndex

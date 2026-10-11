@@ -576,6 +576,27 @@ and set `AnchorablePaneControlStyle`. Replacing either property updates existing
 panes, including floating panes; clearing it restores their default theme.
 Panes follow their owning manager's flow direction and theme after transfer.
 
+Set `LayoutDocumentPane.ShowHeader="False"` to hide that pane's tabs, document
+list menu, and separator. The selected content fills the available space and
+keeps its view, selection, activation, and keyboard focus. For example, with the
+ordinary Avalonia default XML namespace:
+
+```xml
+<LayoutDocumentPane ShowHeader="False">
+  <LayoutDocument Title="Preview" ContentId="preview">
+    <TextBox Text="Preview content" />
+  </LayoutDocument>
+</LayoutDocumentPane>
+```
+
+`ShowHeader` defaults to `true` and updates the current pane immediately. It is
+saved in layout XML, works after restoring or reattaching the manager, and remains
+independent for each docked or floating pane. Floating a document creates a new
+pane with the default policy; docking back restores the original pane's policy.
+The adapter also respects Dock's dynamic `DockDocumentControlTabStripVisible`
+resource: either setting can hide the header. Custom pane templates can bind to
+`Model.ShowHeader` to apply the same policy to their own header controls.
+
 Changing the model's `SelectedContentIndex` updates the control without
 activating another item. Setting a document control's `SelectedItem` or
 `SelectedIndex` explicitly selects and activates that document; the tool control

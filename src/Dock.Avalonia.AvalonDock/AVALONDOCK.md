@@ -106,6 +106,21 @@ The tool-pane constructor accepts an existing `LayoutAnchorablePane`; the
 document-pane constructor remains internal, as upstream. Avalonia uses its own
 logical-child collection instead of the WPF `LogicalChildren` enumerator hook.
 
+Set `LayoutDocumentPane.ShowHeader="False"` to hide a pane's tabs, document list
+menu, and separator while retaining the selected content view, activation, and
+focus. This live setting defaults to `true`, round-trips in XML, and respects
+Dock's dynamic `DockDocumentControlTabStripVisible` resource. Each pane has its
+own policy, including newly created floating panes; docking back restores the
+original pane's policy. Both XML namespace forms support it:
+
+```xml
+<LayoutDocumentPane ShowHeader="False">
+  <LayoutDocument Title="Preview" ContentId="preview">
+    <TextBox Text="Preview content" />
+  </LayoutDocument>
+</LayoutDocumentPane>
+```
+
 Public split containers are `LayoutPanelControl`,
 `LayoutDocumentPaneGroupControl`, and `LayoutAnchorablePaneGroupControl`, all
 derived from `LayoutGridControl<T>`. They expose the existing layout `Model`

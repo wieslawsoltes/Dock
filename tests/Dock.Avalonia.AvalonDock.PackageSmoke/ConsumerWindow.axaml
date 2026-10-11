@@ -4,6 +4,8 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <LayoutDocumentPane x:Key="HeaderlessPane" ShowHeader="False" />
+    <ad:LayoutDocumentPane x:Key="LegacyHeaderlessPane" ShowHeader="False" />
     <ControlTheme x:Key="DocumentPaneStyle" TargetType="LayoutDocumentPaneControl"
                   BasedOn="{StaticResource {x:Type LayoutDocumentPaneControl}}" x:DataType="LayoutDocumentPaneControl">
       <Setter Property="Tag" Value="{Binding $self.Model}" />

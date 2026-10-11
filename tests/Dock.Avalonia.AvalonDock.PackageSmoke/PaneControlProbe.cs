@@ -11,6 +11,7 @@ using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Themes;
+using Dock.Avalonia.Controls;
 
 namespace PackageConsumer;
 
@@ -41,7 +42,10 @@ internal static class PaneControlProbe
     {
         ConsumerWindow resources = new();
         LayoutDocument first = new() { Title = "First", Content = new TextBox { Text = "Editor" } };
-        LayoutDocumentPane documents = new(first);
+        LayoutDocumentPane documents = (LayoutDocumentPane)resources.Resources["HeaderlessPane"]!;
+        documents.Children.Add(first);
+        if (documents.ShowHeader || ((LayoutDocumentPane)resources.Resources["LegacyHeaderlessPane"]!).ShowHeader)
+            throw new Exception("Headerless document panes did not compile in both XML namespaces.");
         documents.Children.Add(new LayoutDocument { Title = "Second" });
         LayoutAnchorablePane tools = new(new LayoutAnchorable { Title = "Tool" });
         tools.Children.Add(new() { Title = "Other tool" });
@@ -74,6 +78,22 @@ internal static class PaneControlProbe
             if (!ReferenceEquals(docControl.Model, documents) || !ReferenceEquals(toolControl.Model, tools) ||
                 !ReferenceEquals(docControl.Tag, documents) || !ReferenceEquals(toolControl.Tag, tools))
                 throw new Exception("Packaged pane themes did not bind the existing public models.");
+            DocumentTabStrip strip = docControl.GetVisualDescendants().OfType<DocumentTabStrip>().Single();
+            Control originalView = manager.GetLayoutItemFromModel(first)!.View;
+            if (strip.IsVisible || !originalView.IsEffectivelyVisible)
+                throw new Exception("The headerless pane did not hide its tabs while keeping its content visible.");
+            documents.ShowHeader = true;
+            Update();
+            if (!strip.IsVisible || !strip.GetVisualDescendants().OfType<Button>().Any(button =>
+                    button.Classes.Contains("avalondock-document-menu") && button.IsEffectivelyVisible))
+                throw new Exception("Showing the pane header did not restore its tabs and document menu.");
+            manager.Resources["DockDocumentControlTabStripVisible"] = false;
+            Update();
+            if (strip.IsVisible) throw new Exception("The pane ignored Dock's tab strip visibility resource.");
+            manager.Resources.Remove("DockDocumentControlTabStripVisible");
+            Update();
+            if (!strip.IsVisible || !ReferenceEquals(originalView, manager.GetLayoutItemFromModel(first)!.View))
+                throw new Exception("Restoring the header recreated the document view.");
             first.IsActive = true;
             documents.SelectedContentIndex = 1;
             if (docControl.SelectedIndex != 1 || !ReferenceEquals(manager.Layout.ActiveContent, first))

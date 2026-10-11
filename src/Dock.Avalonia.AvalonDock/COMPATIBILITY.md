@@ -516,7 +516,12 @@ supported by corresponding implementation and test evidence.
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
   floating layouts remain a separate compatibility gap.
-- 973 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- `LayoutDocumentPane.ShowHeader` controls the actual tabs, document menu, and
+  separator through compiled template bindings, retaining the selected content
+  view, focus, and activation. Pane policies remain independent through runtime
+  themes, floating/docking, XML restoration, and reattachment. Both XML namespace
+  forms and Dock's dynamic tab-strip visibility resource are tested.
+- 979 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -544,10 +549,9 @@ supported by corresponding implementation and test evidence.
   the broader signature and behavior audit below.
 - Public grid child/row/column collections host a native items presenter rather than
   reproducing WPF's direct pane/splitter visual tree.
-- Complete header visibility,
-  repositioning policies, icons, tooltips, and enablement
-  in actual rendering and behavior. Several metadata properties currently
-  round-trip without applying all upstream visual or behavioral effects.
+- Finish the rendering and behavior audit of icons, tooltips, repositioning
+  policies, and enablement. Document header visibility is implemented; additional
+  metadata edge cases still need comparison with upstream behavior.
 - Full native drag/float/redock and lifecycle coverage, including native-created
   nested groups, layout detachment and leak checks, and source-driven floating
   content and changes during deserialization.

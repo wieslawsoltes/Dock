@@ -10,6 +10,9 @@ Pane-control probes compile themes for both public pane types through both XML
 namespaces, exercise external constructor/selection/manager hooks, and check live
 model identity, passive selection, empty selection, reordering, runtime themes,
 and existing content views across document floating and docking.
+Headerless panes compile in both XML namespaces; their live `ShowHeader` setting
+hides the tabs and document menu while retaining the content view and respecting
+Dock's dynamic tab-strip visibility resource.
 Sizing probes retain all-pixel pane lengths across host resizing, commit native
 splitter previews only on release, apply minimums without replacing requested
 lengths, and restore those dimensions from XML on both axes. Auto probes verify

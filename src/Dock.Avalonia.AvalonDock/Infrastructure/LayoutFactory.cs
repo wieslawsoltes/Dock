@@ -1,6 +1,7 @@
 using System;
 using Dock.Model;
 using Dock.Model.Avalonia;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
@@ -14,9 +15,35 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     Func<IDockable, ILayoutContainer?> getLayoutContainer) : Factory, IDockOperationObserver, IDockWindowHostFactory
 {
     private IDockWindow? _evaluatingClose;
+    private IDock? _selectionOwner;
+    private IDockable? _selectionTarget;
     internal IDockWindow? RequestedHostWindow { get; private set; }
     internal event Action? SettingFocus;
     internal event Action<IDock>? FocusSet;
+
+    internal void SetPaneSelection(IDock owner, IDockable? selected)
+    {
+        IDock? previousOwner = _selectionOwner;
+        IDockable? previousTarget = _selectionTarget;
+        _selectionOwner = owner;
+        _selectionTarget = selected;
+        try { owner.ActiveDockable = selected; }
+        finally { _selectionOwner = previousOwner; _selectionTarget = previousTarget; }
+    }
+
+    protected override bool ShouldFocusActiveDockable(IDockable dockable, IDock owner) =>
+        (!ReferenceEquals(owner, _selectionOwner) || !ReferenceEquals(dockable, _selectionTarget)) &&
+        base.ShouldFocusActiveDockable(dockable, owner);
+
+    protected override IDockable? GetActiveDockableAfterRemoval(IDock dock, IDockable removedDockable, int removedIndex)
+    {
+        if (dock is IDocumentDock or IToolDock && getLayoutContainer(dock) is ILayoutContentSelector selector)
+        {
+            (selector as ILayoutPaneSelection)?.ReconcileSelection();
+            return selector.SelectedContent?.DockModel;
+        }
+        return base.GetActiveDockableAfterRemoval(dock, removedDockable, removedIndex);
+    }
 
     public override void SetFocusedDockable(IDock dock, IDockable? dockable)
     {

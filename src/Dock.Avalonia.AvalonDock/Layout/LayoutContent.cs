@@ -65,12 +65,13 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         get => State.IsSelected;
         set
         {
-            State.IsSelected = value;
-            if (DockModel.Factory is null && Parent is ILayoutContentSelector selector)
+            if (Parent is ILayoutContentSelector selector)
             {
-                if (value) selector.SelectedContentIndex = selector.IndexOf(this);
-                else if (ReferenceEquals(selector.SelectedContent, this)) selector.SelectedContentIndex = -1;
+                int index = selector.IndexOf(this);
+                if (value && index >= 0) { selector.SelectedContentIndex = index; return; }
+                if (!value && ReferenceEquals(selector.SelectedContent, this)) { selector.SelectedContentIndex = -1; return; }
             }
+            State.IsSelected = value;
         }
     }
     /// <summary>Gets or sets whether this item is active.</summary>

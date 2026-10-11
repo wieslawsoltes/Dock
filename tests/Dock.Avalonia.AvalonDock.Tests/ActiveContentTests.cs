@@ -150,7 +150,7 @@ public class ActiveContentTests
     }
 
     [AvaloniaFact]
-    public void Removing_The_Last_Document_Clears_Its_History_And_Preserves_An_Active_Tool()
+    public void Removing_The_Last_Document_Clears_Root_Activation_And_Document_History()
     {
         Workspace workspace = new();
         LayoutAnchorable tool = new();
@@ -158,7 +158,10 @@ public class ActiveContentTests
         tool.IsActive = true;
         ((LayoutDocumentPane)workspace.Docked.Parent!).Children.Remove(workspace.Docked);
 
-        Assert.Same(tool, workspace.Root.ActiveContent);
+        // AvalonDock's empty document pane clears the root's active content,
+        // including a tool that had focus when the last document was removed.
+        Assert.Null(workspace.Root.ActiveContent);
+        Assert.False(tool.IsActive);
         Assert.Null(workspace.Root.LastFocusedDocument);
         Assert.False(workspace.Docked.IsLastFocusedDocument);
     }

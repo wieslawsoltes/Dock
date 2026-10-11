@@ -79,7 +79,14 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
         ComputeVisibility();
     }
     /// <inheritdoc/>
-    public void MoveChild(int oldIndex, int newIndex) => Children.Move(oldIndex, newIndex);
+    public void MoveChild(int oldIndex, int newIndex)
+    {
+        if (oldIndex == newIndex) return;
+        Children.Move(oldIndex, newIndex);
+        ChildMoved(oldIndex, newIndex);
+    }
+    /// <summary>Called after a child has been moved to its new index.</summary>
+    protected virtual void ChildMoved(int oldIndex, int newIndex) { }
     /// <inheritdoc/>
     public void RemoveChildAt(int childIndex) => Children.RemoveAt(childIndex);
     /// <inheritdoc/>
@@ -102,6 +109,7 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
 
     internal void AddProjectedChild(T child) => _children.AddProjected(child);
     internal void RemoveProjectedChild(T child) => _children.RemoveProjected(child);
+    internal bool IsRefreshingNativeChildren => _children?.IsRefreshingSource == true;
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {

@@ -7,24 +7,31 @@ using AvalonDock.Infrastructure;
 namespace AvalonDock.Layout;
 
 /// <summary>A tabbed document pane backed by a Dock document dock.</summary>
-public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayoutDocumentPane, ILayoutContentSelector
+public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayoutDocumentPane, ILayoutContentSelector, ILayoutPaneSelection
 {
     private bool _showHeader = true;
+    private readonly LayoutPaneSelection<LayoutContent>? _selection;
     /// <summary>Creates an empty document pane.</summary>
     public LayoutDocumentPane() : this(new DocumentDock { IsCollapsable = false }) { }
     /// <summary>Creates a pane containing its first document.</summary>
     public LayoutDocumentPane(LayoutContent firstChild) : this() => Children.Add(firstChild);
-    internal LayoutDocumentPane(DocumentDock model, LayoutModelContext? context = null) : base(model, context) => model.IsCollapsable = false;
+    internal LayoutDocumentPane(DocumentDock model, LayoutModelContext? context = null) : base(model, context)
+    {
+        model.IsCollapsable = false;
+        _selection = new(this, true, RaisePropertyChanging, RaisePropertyChanged);
+        _selection.Initialize();
+    }
     /// <summary>Gets or sets whether document headers are shown.</summary>
     public bool ShowHeader { get => _showHeader; set => SetField(ref _showHeader, value); }
     /// <inheritdoc/>
     public int SelectedContentIndex
     {
-        get => SelectedContent is { } selected ? Children.IndexOf(selected) : -1;
-        set => ((DocumentDock)DockModel).ActiveDockable = value >= 0 && value < Children.Count ? Children[value].DockModel : null;
+        get => _selection?.Index ?? -1;
+        set => _selection?.Select(value);
     }
     /// <inheritdoc/>
-    public LayoutContent? SelectedContent => ((DocumentDock)DockModel).ActiveDockable is { } model ? Context.Get(model) as LayoutContent : null;
+    public LayoutContent? SelectedContent => _selection?.Selected;
+    void ILayoutPaneSelection.ReconcileSelection() => _selection?.ChildrenChanged();
     /// <summary>Gets the documents sorted by title.</summary>
     public IEnumerable<LayoutContent> ChildrenSorted
     {
@@ -43,17 +50,22 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
     /// <summary>Notifies document list menus that the sorted contents changed.</summary>
     protected override void OnChildrenCollectionChanged()
     {
+        _selection?.ChildrenChanged();
         base.OnChildrenCollectionChanged();
         RaisePropertyChanged(nameof(ChildrenSorted));
+    }
+    /// <summary>Refreshes the selected index after a child is reordered.</summary>
+    protected override void ChildMoved(int oldIndex, int newIndex)
+    {
+        _selection?.Refresh();
+        base.ChildMoved(oldIndex, newIndex);
     }
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         base.OnModelPropertyChanged(sender, e);
         if (e.Property == DockBase.ActiveDockableProperty)
         {
-            LayoutSelection.SynchronizeWithoutFactory(this, ((DocumentDock)DockModel).ActiveDockable);
-            RaisePropertyChanged(nameof(SelectedContent));
-            RaisePropertyChanged(nameof(SelectedContentIndex));
+            _selection?.Refresh();
         }
     }
 }

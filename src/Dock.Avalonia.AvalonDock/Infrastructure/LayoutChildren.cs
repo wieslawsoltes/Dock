@@ -21,6 +21,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
     private IList<IDockable> _source = null!;
     private bool _syncing;
     private LayoutElement? _pendingAttachment;
+    internal bool IsRefreshingSource { get; private set; }
 
     internal LayoutChildren(LayoutElement owner, DockBase model,
         Func<IList<IDockable>?>? getSource = null, Action<IList<IDockable>>? setSource = null)
@@ -66,6 +67,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
     private void Refresh()
     {
         _syncing = true;
+        IsRefreshingSource = true;
         try
         {
             int target = 0;
@@ -81,7 +83,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
             }
             while (Count > target) base.RemoveItem(Count - 1);
         }
-        finally { _syncing = false; }
+        finally { IsRefreshingSource = false; _syncing = false; }
     }
 
     private LayoutElement Prepare(T item)
@@ -189,7 +191,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T> where T : clas
             if (_visible)
             {
                 if (_model is ProportionalDock) NormalizeSplitters();
-                if (_model.ActiveDockable is null || !_source.Contains(_model.ActiveDockable))
+                if (_owner is not ILayoutContentSelector && (_model.ActiveDockable is null || !_source.Contains(_model.ActiveDockable)))
                     _model.ActiveDockable = Count > 0 ? ((LayoutElement)(ILayoutElement)this[0]).DockModel : null;
                 _model.DefaultDockable = _model.ActiveDockable;
                 _model.IsEmpty = Count == 0;

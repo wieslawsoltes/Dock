@@ -110,6 +110,24 @@ HostWindow sourceHost = (HostWindow)manager.Layout.FloatingWindows.Single().Dock
 // close target inside the viewport before exercising actual pointer input.
 sourceHost.Width = 640;
 sourceHost.UpdateLayout();
+TextBlock documentTitle = sourceHost.GetVisualDescendants().OfType<TextBlock>().Single(text => text.Classes.Contains("package-document-title"));
+if (!ReferenceEquals(documentTitle.DataContext, fromSource) || documentTitle.Text != "Window: " + fromSource.Title)
+    throw new Exception("The packaged floating title template did not receive the public root document.");
+Button maximize = sourceHost.GetVisualDescendants().OfType<Button>().Single(button => button.Classes.Contains("avalondock-document-maximize"));
+ClickNative(maximize);
+if (!fromSource.IsMaximized || sourceHost.WindowState != WindowState.Maximized)
+    throw new Exception("The packaged caption did not maximize the native document window.");
+ClickNative(maximize);
+if (fromSource.IsMaximized || sourceHost.WindowState != WindowState.Normal)
+    throw new Exception("The packaged caption did not restore the native document window.");
+IDataTemplate documentTitleTemplate = manager.DocumentTitleTemplate!;
+manager.DocumentTitleTemplateSelector = new DataTemplateSelector();
+Dispatcher.UIThread.RunJobs();
+if (manager.DocumentTitleTemplate is not null || sourceHost.GetVisualDescendants().Contains(documentTitle))
+    throw new Exception("The packaged document title selector did not take precedence.");
+manager.DocumentTitleTemplateSelector = null;
+manager.DocumentTitleTemplate = documentTitleTemplate;
+Dispatcher.UIThread.RunJobs();
 System.Windows.Input.ICommand defaultClose = sourceItem.CloseCommand!;
 int closeRequests = 0;
 using var applicationClose = ReactiveCommand.Create(() => closeRequests++, outputScheduler: ImmediateScheduler.Instance);
@@ -138,6 +156,10 @@ if (!documentMenu.IsOpen || !ReferenceEquals(documentMenu.DataContext, sourceIte
 ClickNative(menuClose);
 if (closeRequests != 2 || documentMenu.IsOpen || documentMenu.DataContext is not null || documentMenu.PlacementTarget is not null)
     throw new Exception("The custom document menu did not execute the application command and release its invocation.");
+Button captionClose = sourceHost.GetVisualDescendants().OfType<Button>().Single(button => button.Classes.Contains("avalondock-document-window-close"));
+ClickNative(captionClose);
+if (closeRequests != 3 || !sourceHost.IsVisible)
+    throw new Exception("The packaged floating caption did not use the current close command.");
 sourceItem.CloseCommand = defaultClose;
 if (!sourceHost.GetVisualDescendants().OfType<TextBlock>().Any(text =>
         text.Classes.Contains("package-document-header") && ReferenceEquals(text.DataContext, fromSource) && text.Text == "Tab: " + fromSource.Title))
@@ -226,7 +248,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, docked/floating tool titles and selectors, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
 
 static void AssertDocumentMenu(DockingManager manager)
 {

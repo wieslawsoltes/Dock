@@ -7,7 +7,7 @@ using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
 
-internal enum LayoutHeaderKind { Document, Anchorable, AnchorableTitle, DocumentMenu, MenuIcon }
+internal enum LayoutHeaderKind { Document, Anchorable, AnchorableTitle, DocumentTitle, DocumentMenu, MenuIcon }
 
 // Adapt native tab and title models without changing Dock's containers or input.
 internal sealed class LayoutHeaderTemplate : IRecyclingDataTemplate

@@ -470,7 +470,7 @@ XML restoration and view reattachment retain them as manager configuration;
 they are not serialized as layout metadata. Native Dock controls outside the
 adapter retain their default splitter size.
 
-## Customize tab headers and tool titles
+## Customize tab headers and window titles
 
 Header templates receive the public layout node. Content templates receive the
 application object stored in that node's `Content` property.
@@ -480,6 +480,7 @@ application object stored in that node's `Content` property.
 | `DocumentHeaderTemplate` | Document tabs, docked or floating | `LayoutContent` (documents and tools docked as documents) |
 | `AnchorableHeaderTemplate` | Tool tabs and auto-hide strips | `LayoutAnchorable` |
 | `AnchorableTitleTemplate` | Selected tool's title bar, including floating panes and auto-hide previews | `LayoutAnchorable` |
+| `DocumentTitleTemplate` | Floating document window caption | `LayoutDocument` |
 
 For example, add these properties to a manager declared in the default Avalonia
 XML namespace:
@@ -522,8 +523,31 @@ clearing both returns to the default title text. Runtime changes reach existing
 tool title bars, including floating panes and open auto-hide previews. Native
 context menus, title-bar buttons, and input handling remain available. Source
 removal and XML replacement release the old title's model and manager references.
-Floating document title templates (`DocumentTitleTemplate`) and document-menu
-header templates remain open compatibility work.
+
+Floating document captions use `DocumentTitleTemplate` independently of tab
+headers. For example:
+
+```xml
+<DockingManager.DocumentTitleTemplate>
+  <DataTemplate x:DataType="LayoutDocument">
+    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+  </DataTemplate>
+</DockingManager.DocumentTitleTemplate>
+```
+
+`DocumentTitleTemplateSelector` receives the window's public `RootDocument`
+and its actual presenter. Selector precedence and fallback follow the title
+rules above. Replacing the root document, loading XML, or changing templates
+updates the caption. The native window's text title also follows document
+metadata, independently of the caption template.
+
+Document hosts use a client caption with the manager's document context menu,
+the current item close command, and maximize/restore controls. Caption dragging
+uses Dock's native window drag helper and factory cancellation. Double-clicking
+the caption maximizes or restores the window; buttons and other focusable
+caption content retain their own input. Reattaching a manager recreates its
+floating hosts while retaining layout models and application content. Keep a
+stable data context for source bindings while the manager is detached.
 
 ## Restore application content from XML
 
@@ -572,7 +596,7 @@ flowchart TB
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]
-        Items["LayoutItem containers<br/>Content, headers, tool titles, styles, and commands"]
+        Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
@@ -652,6 +676,12 @@ to their existing public wrappers before applying compiled templates. Their pres
 remain inside Dock's tab controls, auto-hide buttons, and tool chrome. Tool titles
 observe the native pane's selected model. Closed containers release their
 header bindings and native presentation parents.
+
+Floating document captions bind to the public floating window's `RootDocument`
+and compose native `HostWindow` state and drag handling. Pane content templates
+pass public layout wrappers into their deferred presenters, then resolve the
+same native-backed `LayoutItem.View`. This keeps native models out of competing
+logical-parent relationships when tab and content hosts detach and reattach.
 
 The document list uses the native tab strip's right-content slot and Avalonia's
 `MenuFlyout`. Its sorted entries bind to public layout contents, and their header

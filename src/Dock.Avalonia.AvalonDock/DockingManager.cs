@@ -49,6 +49,13 @@ public class DockingManager : TemplatedControl
     public static readonly StyledProperty<IDataTemplate?> DocumentHeaderTemplateProperty =
         AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentHeaderTemplate),
             coerce: static (owner, value) => owner.GetValue(DocumentHeaderTemplateSelectorProperty) is null ? value : null);
+    /// <summary>Identifies the floating document window title template selector.</summary>
+    public static readonly StyledProperty<DataTemplateSelector?> DocumentTitleTemplateSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(DocumentTitleTemplateSelector));
+    /// <summary>Identifies the floating document window title template.</summary>
+    public static readonly StyledProperty<IDataTemplate?> DocumentTitleTemplateProperty =
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentTitleTemplate),
+            coerce: static (owner, value) => owner.GetValue(DocumentTitleTemplateSelectorProperty) is null ? value : null);
     /// <summary>Identifies the document list menu header template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> DocumentPaneMenuItemHeaderTemplateSelectorProperty =
         AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(DocumentPaneMenuItemHeaderTemplateSelector));
@@ -188,6 +195,10 @@ public class DockingManager : TemplatedControl
     public IDataTemplate? DocumentHeaderTemplate { get => GetValue(DocumentHeaderTemplateProperty); set => SetValue(DocumentHeaderTemplateProperty, value); }
     /// <summary>Gets or sets the selector that takes precedence over the document header template.</summary>
     public DataTemplateSelector? DocumentHeaderTemplateSelector { get => GetValue(DocumentHeaderTemplateSelectorProperty); set => SetValue(DocumentHeaderTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the floating window title template, receiving the public root document.</summary>
+    public IDataTemplate? DocumentTitleTemplate { get => GetValue(DocumentTitleTemplateProperty); set => SetValue(DocumentTitleTemplateProperty, value); }
+    /// <summary>Gets or sets the selector that takes precedence over the floating document title template.</summary>
+    public DataTemplateSelector? DocumentTitleTemplateSelector { get => GetValue(DocumentTitleTemplateSelectorProperty); set => SetValue(DocumentTitleTemplateSelectorProperty, value); }
     /// <summary>Gets or sets the document list menu header template, falling back to the document header template.</summary>
     public IDataTemplate? DocumentPaneMenuItemHeaderTemplate { get => GetValue(DocumentPaneMenuItemHeaderTemplateProperty); set => SetValue(DocumentPaneMenuItemHeaderTemplateProperty, value); }
     /// <summary>Gets or sets the selector that takes precedence over the document list menu header template.</summary>
@@ -278,6 +289,13 @@ public class DockingManager : TemplatedControl
         if (DocumentPaneMenuItemHeaderTemplateSelector is null)
             SetCurrentValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty, DocumentHeaderTemplateSelector);
     }
+    /// <summary>Called when the floating document title template changes.</summary>
+    protected virtual void OnDocumentTitleTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Clears an explicit floating document title template when a selector is supplied.</summary>
+    protected virtual void OnDocumentTitleTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not null) SetCurrentValue(DocumentTitleTemplateProperty, null);
+    }
     /// <summary>Called when the document list menu header template changes.</summary>
     protected virtual void OnDocumentPaneMenuItemHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Clears an explicit document list menu header template when a selector is supplied.</summary>
@@ -344,6 +362,17 @@ public class DockingManager : TemplatedControl
         }
         if (change.Property == IconContentTemplateProperty || change.Property == IconContentTemplateSelectorProperty)
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.MenuIcon);
+        if (change.Property == DocumentTitleTemplateProperty)
+        {
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle);
+            OnDocumentTitleTemplateChanged(change);
+        }
+        if (change.Property == DocumentTitleTemplateSelectorProperty)
+        {
+            OnDocumentTitleTemplateSelectorChanged(change);
+            CoerceValue(DocumentTitleTemplateProperty);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle);
+        }
         if (change.Property == AnchorableHeaderTemplateProperty)
         {
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);

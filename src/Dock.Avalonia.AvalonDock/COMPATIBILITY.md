@@ -105,6 +105,9 @@ supported by corresponding implementation and test evidence.
   `IDataTemplate` from `SelectTemplate(object?, AvaloniaObject)`. Inline controls
   retain native identity and handling. Retained empty presenters release closed
   models and managers; XML replacement releases old presenter content.
+  Pane templates pass public content wrappers to native deferred presenters,
+  preserving logical ownership when a source-bound manager is detached and
+  reattached with its data context retained, including floated content.
 - `DocumentHeaderTemplate` and `AnchorableHeaderTemplate`, plus their selector
   properties, apply compiled templates to native document/tool tabs and
   auto-hide strips. Templates and selectors receive public layout nodes;
@@ -124,6 +127,16 @@ supported by corresponding implementation and test evidence.
   replacement, native tab selection, metadata updates, context-menu input, and
   close commands are covered by Headless tests. Source removal and XML replacement
   detach old title presenters; retaining them does not retain a model or manager.
+- `DocumentTitleTemplate` and `DocumentTitleTemplateSelector` render the public
+  root document in a floating document window's client caption. Compiled
+  templates, selector precedence, null fallback, runtime replacement, and native
+  title metadata are covered. The native host retains its window state and drag
+  lifecycle; caption buttons use maximization and the current item close command.
+  Headless tests cover drag cancellation, button input, double-click maximization,
+  context menus, close capabilities and cancellation, XML/root replacement,
+  reattachment, and retained-caption lifetime. Dock's drag helper also clears a
+  pending press when the next move reports no left button, preventing a hover
+  after a click from starting a window drag.
 - Document tab strips expose a native document list menu in docked and floating
   panes. `DocumentPaneMenuItemHeaderTemplate`/selector and
   `IconContentTemplate`/selector receive the public layout content; icon selectors
@@ -185,7 +198,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 301 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 319 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -196,8 +209,8 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: floating document title templates, additional update
-  strategy invocation paths, templates/selectors, styles, themes, routed
+- Remaining manager APIs: additional update strategy invocation paths,
+  templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.
@@ -216,8 +229,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 409
-matching type/member keys and 542 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 413
+matching type/member keys and 538 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

@@ -4,13 +4,14 @@ This project intentionally uses package references only and is excluded from
 the solution: the package must be built before it can restore. It verifies
 that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
-headers, render docked/floating tool titles and select their templates, click
+headers, render tool and floating document titles and select their templates, click
+floating caption buttons to maximize/restore and execute the current close command,
 native tabs and custom manager menus to execute container commands, activate
 documents through the list menu with compiled header and icon templates, resize
 native splitters through the manager properties, and restore application content
 from XML using the packaged assemblies. Pack the native
-control and proportional-panel packages too: they contain the tool-menu lifetime
-and runtime splitter sizing fixes. An isolated cache
+control and proportional-panel packages too: they contain the tool-menu lifetime,
+window drag input, and runtime splitter sizing fixes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.
 

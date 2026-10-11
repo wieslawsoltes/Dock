@@ -2,6 +2,7 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Styling;
+using AvalonDock.Layout;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 
@@ -14,10 +15,11 @@ internal sealed class LayoutContentTemplate : IRecyclingDataTemplate
     public IDataTemplate? DocumentTemplate { get; set; }
     public IDataTemplate? ToolTemplate { get; set; }
 
-    public bool Match(object? data) => data is Document or Tool;
+    public bool Match(object? data) => data is Document or Tool or LayoutContent;
     public Control? Build(object? data) => Build(data, null);
     public Control? Build(object? data, Control? existing)
     {
+        if (data is LayoutContent layout) data = layout.DockModel;
         if (data is IDockable { Factory: LayoutFactory factory } model && factory.GetLayoutItem(model) is { } item)
             return LayoutItemViewTransfer.Prepare(item.View, existing);
         object? content = data switch { Document document => document.Content, Tool tool => tool.Content, _ => null };

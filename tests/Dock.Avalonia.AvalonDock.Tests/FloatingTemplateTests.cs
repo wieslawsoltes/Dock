@@ -18,6 +18,52 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 
 public class FloatingTemplateTests
 {
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Reattaching_A_Manager_Preserves_Source_Content_And_Native_Models(bool floating)
+    {
+        SourceViewModel source = new();
+        SourcesFixture view = new() { DataContext = source };
+        DockingManager manager = view.FindControl<DockingManager>("Manager")!;
+        // Retain source bindings while there is no logical parent.
+        manager.DataContext = source;
+        try
+        {
+            view.Show();
+            Dispatcher.UIThread.RunJobs();
+            LayoutDocument document = manager.Layout.Descendents().OfType<LayoutDocument>().Single();
+            LayoutAnchorable tool = manager.Layout.Descendents().OfType<LayoutAnchorable>().Single();
+            if (floating) { document.Float(); tool.Float(); }
+            Dispatcher.UIThread.RunJobs();
+            view.Content = null;
+            Dispatcher.UIThread.RunJobs();
+            view.Content = manager;
+            Dispatcher.UIThread.RunJobs();
+            view.UpdateLayout();
+            Assert.Same(document, manager.Layout.Descendents().OfType<LayoutDocument>().Single());
+            Assert.Same(tool, manager.Layout.Descendents().OfType<LayoutAnchorable>().Single());
+            Assert.Same(source.Documents[0], document.Content);
+            Assert.Same(source.Tools[0], tool.Content);
+            if (floating)
+            {
+                AssertRendered(manager, source.Documents[0], "manager-template");
+                AssertRendered(manager, source.Tools[0], "manager-template");
+            }
+            else
+            {
+                foreach (SourceContent content in new[] { source.Documents[0], source.Tools[0] })
+                    Assert.Contains(manager.GetVisualDescendants().OfType<TextBlock>(), text =>
+                        ReferenceEquals(text.DataContext, content) && text.Classes.Contains("manager-template") && text.Text == content.Text);
+            }
+        }
+        finally
+        {
+            manager.Layout.FloatingWindows.Clear();
+            view.Close();
+        }
+    }
+
     [AvaloniaFact]
     public void ViewModel_Content_Renders_In_Floating_Hosts_And_Survives_Xml_Restore()
     {

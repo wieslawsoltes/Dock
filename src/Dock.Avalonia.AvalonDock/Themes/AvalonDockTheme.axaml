@@ -3,12 +3,12 @@
         xmlns:ad="using:AvalonDock"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:fluent="using:Dock.Avalonia.Themes.Fluent"
-        xmlns:deferred="using:Dock.Controls.DeferredContentControl"
         xmlns:models="using:Dock.Model.Avalonia.Controls"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:Class="AvalonDock.Themes.AvalonDockTheme"
         x:DataType="ad:DockingManager">
   <Styles.Resources>
+    <infrastructure:LayoutContentConverter x:Key="AvalonDockLayoutContent" />
     <infrastructure:LayoutContentTemplate x:Key="AvalonDockContentTemplate">
       <infrastructure:LayoutContentTemplate.DocumentTemplate>
         <DataTemplate x:DataType="models:Document">
@@ -37,20 +37,10 @@
     </ControlTheme>
   </Styles.Resources>
   <fluent:DockFluentTheme />
+  <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContent.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeaders.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDocumentMenus.axaml" />
+  <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDocumentWindows.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutSizing.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutCommands.axaml" />
-  <Style Selector="dock|DockControl.avalondock dock|DocumentControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
-    <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
-  </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
-    <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
-  </Style>
-  <Style Selector="dock|HostWindow.avalondock dock|DocumentControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
-    <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
-  </Style>
-  <Style Selector="dock|HostWindow.avalondock dock|ToolControl /template/ deferred|DeferredContentControl#PART_ContentPresenter">
-    <Setter Property="ContentTemplate" Value="{StaticResource AvalonDockContentTemplate}" />
-  </Style>
 </Styles>

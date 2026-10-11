@@ -24,6 +24,7 @@ internal sealed class LayoutHeaderContentTemplate(DockingManager manager, Layout
             LayoutHeaderKind.Document => owner?.DocumentHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentHeaderTemplate,
             LayoutHeaderKind.Anchorable => owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableHeaderTemplate,
             LayoutHeaderKind.AnchorableTitle => owner?.AnchorableTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableTitleTemplate,
+            LayoutHeaderKind.DocumentTitle => owner?.DocumentTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentTitleTemplate,
             LayoutHeaderKind.DocumentMenu => owner?.DocumentPaneMenuItemHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentPaneMenuItemHeaderTemplate,
             LayoutHeaderKind.MenuIcon => owner?.IconContentTemplateSelector is { } selector
                 ? selector.SelectTemplate(data, selectionContainer ?? presenter) : owner?.IconContentTemplate,

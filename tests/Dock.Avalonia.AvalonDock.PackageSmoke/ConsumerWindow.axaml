@@ -35,6 +35,11 @@
                   DocumentHeaderTemplate="{StaticResource DocumentHeader}"
                   AnchorableHeaderTemplate="{StaticResource ToolHeader}"
                   AnchorableTitleTemplate="{StaticResource ToolTitle}">
+    <DockingManager.DocumentTitleTemplate>
+      <DataTemplate x:DataType="LayoutDocument">
+        <TextBlock Classes="package-document-title" Text="{Binding Title, StringFormat='Window: {0}'}" />
+      </DataTemplate>
+    </DockingManager.DocumentTitleTemplate>
     <DockingManager.DocumentPaneMenuItemHeaderTemplate>
       <DataTemplate x:DataType="LayoutContent">
         <TextBlock Classes="package-menu-header" Text="{Binding Title, StringFormat='Document: {0}'}" />

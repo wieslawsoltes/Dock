@@ -286,8 +286,9 @@ static void AssertNavigatorLifetime(ClassicDesktopStyleApplicationLifetime lifet
     if (lifetime.Windows.Count != 0) throw new Exception("The preceding package checks left desktop windows open.");
     LayoutDocument first = new() { Title = "Lifetime first", Content = new TextBox() };
     LayoutDocument second = new() { Title = "Lifetime second", Content = new TextBox() };
-    DockingManager manager = new() { Layout = new() { RootPanel = new(new LayoutDocumentPane { Children = { first, second } }) } };
-    Window owner = new() { Content = manager, Width = 600, Height = 400 };
+    PackageConsumer.ConsumerWindow owner = new();
+    DockingManager manager = owner.FindControl<DockingManager>("Manager")!;
+    manager.Layout = new() { RootPanel = new(new LayoutDocumentPane { Children = { first, second } }) };
     owner.Show();
     Dispatcher.UIThread.RunJobs();
     int closed = 0;
@@ -296,7 +297,8 @@ static void AssertNavigatorLifetime(ClassicDesktopStyleApplicationLifetime lifet
         first.IsActive = true;
         first.LastActivationTimeStamp = DateTime.MaxValue;
         second.LastActivationTimeStamp = DateTime.MinValue;
-        ((Control)first.Content!).Focus();
+        owner.MouseMove(default);
+        if (!((Control)first.Content!).Focus()) throw new Exception("The lifetime document did not receive focus before Ctrl+Tab.");
         owner.KeyPressQwerty(PhysicalKey.Tab, RawInputModifiers.Control);
         NavigatorWindow navigator = owner.OwnedWindows.OfType<NavigatorWindow>().Single();
         navigator.Closed += (_, _) => closed++;

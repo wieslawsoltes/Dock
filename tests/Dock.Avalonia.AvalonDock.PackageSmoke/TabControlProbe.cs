@@ -144,6 +144,12 @@ internal static class TabControlProbe
             Update();
             if (!first.IsFloating || second.IsFloating || began != 1 || manager.FloatingWindows.Single().IsDragging)
                 throw new Exception("A custom packaged tab did not float one item through native drag cancellation.");
+            // Native tool strips collapse when only one tool is present.
+            if (tool)
+            {
+                ((LayoutAnchorablePane)first.Parent!).Children.Add(new LayoutAnchorable { Title = "Floating sibling" });
+                Update();
+            }
             CheckNativeHeader(manager.FloatingWindows.Single());
             window.MouseUp(end, MouseButton.Left);
             if (tab is DocumentTabProbe { ModelChanges: > 0, Presses: > 0, Releases: > 0, Moves: > 0, Enters: > 0, Exits: > 0, Downs: > 0 }) return;
@@ -157,7 +163,12 @@ internal static class TabControlProbe
             Dispatcher.UIThread.RunJobs();
         }
 
-        void Update() { Dispatcher.UIThread.RunJobs(); window.UpdateLayout(); }
+        void Update()
+        {
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            foreach (LayoutFloatingWindowControl floating in manager.FloatingWindows) floating.UpdateLayout();
+        }
         Point Center(Control control) => control.TranslatePoint(new Point(control.Bounds.Width / 2, control.Bounds.Height / 2), window)!.Value;
         void SeparateGesture()
         {
@@ -186,7 +197,8 @@ internal static class TabControlProbe
             Update();
         }
         Control FindTab(Control scope, LayoutContent model) => scope.GetVisualDescendants().OfType<Control>()
-            .Single(control => (tool ? control is LayoutAnchorableTabItem : control is LayoutDocumentTabItem) && ReferenceEquals(Model(control), model));
+            .SingleOrDefault(control => (tool ? control is LayoutAnchorableTabItem : control is LayoutDocumentTabItem) && ReferenceEquals(Model(control), model))
+            ?? throw new Exception($"Missing packaged {(tool ? "tool" : "document")} tab for {model.Title} in {scope.GetType().Name}.");
         void CheckNativeHeader(Control scope)
         {
             Control header = FindTab(scope, first);

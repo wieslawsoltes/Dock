@@ -443,7 +443,8 @@ public headers inside Dock's native document and tool tab containers. Both
 accept a `LayoutContent` in `Model` and expose the manager's existing, read-only
 `LayoutItem`. A tool docked as a document uses `LayoutDocumentTabItem` and keeps
 its `LayoutAnchorableItem`. Auto-hide strips keep their separate native pin
-presentation.
+presentation. Dock's native theme hides the tab strip when a tool pane contains
+only one tool; the tool title remains visible.
 
 The default themes use `DocumentHeaderTemplate` or `AnchorableHeaderTemplate`
 and their selectors; their data remains the public layout node. Usually,

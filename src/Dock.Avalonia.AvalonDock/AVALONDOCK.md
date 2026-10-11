@@ -258,6 +258,7 @@ The full guide documents those signatures, lifetime rules, and platform limits.
 inside native document/tool tab containers. Both take a `LayoutContent` model,
 resolve the existing read-only `LayoutItem`, and use the manager's header
 templates and selectors. Tools docked as documents use the document tab control.
+Dock's native theme hides a tool pane's tab strip when it contains only one tool.
 Custom tab rows can bind them to a pane's `Children` in compiled templates:
 
 ```xml

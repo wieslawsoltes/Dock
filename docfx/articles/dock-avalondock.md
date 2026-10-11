@@ -390,6 +390,40 @@ The pointer hooks run on the tunnel route; the focus hooks run when Avalonia's
 bubbling `GotFocus` reaches the control, so WPF preview-focus routing is not
 reproduced exactly.
 
+`AvalonDock.Controls.AnchorablePaneTitle` presents the selected tool inside
+Dock's native title bar. Its `Model` is a `LayoutAnchorable`, and its read-only
+`LayoutItem` is the same container used by the tool's content and commands.
+The default theme applies the manager's `AnchorableTitleTemplate` or selector.
+It works in docked panes, floating panes, and auto-hide previews. A custom host
+can also use the public control directly:
+
+```xml
+<DataTemplate x:Key="ToolTitleControl" x:DataType="LayoutAnchorable">
+  <AnchorablePaneTitle Model="{Binding}" />
+</DataTemplate>
+```
+
+Titles are nonfocusable by default. A title release activates its tool; a press
+followed by leaving a custom title floats its tool pane through Dock's factory.
+An auto-hidden tool floats individually. A tool already in a single-pane
+floating window starts that existing window's move. Native tool chrome retains
+its own grip handling, so the title does not start a duplicate drag. Interactive
+title children retain their input, and a title hosted under another manager
+cannot activate or move its model through that manager.
+
+Custom title dragging uses `HostWindow.TryBeginMoveDrag` to preserve native
+`WindowMoveDragBegin` cancellation and drag completion. Canceling the window
+drag leaves any preceding pane float in place. Headless tests cover this
+lifecycle; platform window movement still needs desktop integration validation.
+
+Derived titles can override `OnModelChanged(AvaloniaPropertyChangedEventArgs)`
+and use `SetLayoutItem(LayoutItem?)`. The protected `OnMouseLeftButtonDown`,
+`OnMouseLeftButtonUp`, `OnMouseMove`, and `OnMouseLeave` hooks receive Avalonia
+`PointerPressedEventArgs`, `PointerReleasedEventArgs`, and `PointerEventArgs`.
+Call their base implementations to keep the default behavior. Titles share the
+content controls' weak model/container subscriptions, recycling, and generated
+control cleanup; tracking a tool should use its model or container identity.
+
 Tool title-bar close buttons use `CloseCommand` when `CanClose` is true and
 `HideCommand` otherwise. A disabled command cannot fall through to the native
 factory's default action. Floating-tool close commands run before the host's
@@ -1234,6 +1268,7 @@ flowchart TB
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
+        ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
@@ -1275,6 +1310,10 @@ flowchart TB
     Controls --> ContentControls
     ContentControls --> Items
     ContentControls --> Layout
+    Controls --> ToolTitle
+    ToolTitle --> Items
+    ToolTitle --> Factory
+    ToolTitle --> Controls
     Controls --> Commands
     Commands --> Items
     Manager --> Menus

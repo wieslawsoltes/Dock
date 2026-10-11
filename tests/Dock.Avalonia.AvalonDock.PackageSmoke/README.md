@@ -12,6 +12,11 @@ including an active tool in another pane.
 An external document overrides selection, activation, closing, and closed hooks.
 The consumer verifies completed state during activation, native activation of an
 already selected tab, cancellation, and detachment before the closed callback.
+Tool titles compile in both XML namespaces, expose their existing item container,
+and support external model/input overrides and the protected container setter.
+The consumer checks native title presentation and a custom title's whole-pane
+float through Dock's cancelable window-drag entry point.
+
 Content controls compile in the default and historical XML namespaces, expose
 their existing model containers, and support an external model-change override
 and protected container setter. The consumer checks model enablement and verifies

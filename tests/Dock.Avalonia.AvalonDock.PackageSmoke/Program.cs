@@ -41,6 +41,7 @@ AssertLayoutParentPolicies();
 AssertPaneSelectionPolicies();
 AssertContentHooks();
 PackageConsumer.ContentControlProbe.Verify();
+PackageConsumer.TitleControlProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
@@ -908,6 +909,10 @@ static void AssertSplitters(DockingManager manager)
 
 static void AssertToolTitle(Control scope, LayoutAnchorable tool)
 {
+    AnchorablePaneTitle title = scope.GetVisualDescendants().OfType<AnchorablePaneTitle>()
+        .Single(control => control.IsEffectivelyVisible && ReferenceEquals(control.Model, tool));
+    if (!ReferenceEquals(title.LayoutItem, tool.Root!.Manager!.GetLayoutItemFromModel(tool)))
+        throw new Exception("The native tool title did not expose the manager's existing item container.");
     if (!scope.GetVisualDescendants().OfType<TextBlock>().Any(text => text.IsEffectivelyVisible &&
         text.Classes.Contains("package-tool-title") && ReferenceEquals(text.DataContext, tool) && text.Text == "Title: " + tool.Title))
         throw new Exception("The packaged tool title template did not render the selected public model and its current title.");

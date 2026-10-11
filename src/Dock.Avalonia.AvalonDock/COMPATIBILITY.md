@@ -189,6 +189,21 @@ supported by corresponding implementation and test evidence.
   Weak model subscriptions allow unused controls to be collected. Detachment
   releases an unused generated control's native parent, including collapsed tool
   panes; retained closed controls do not keep their models or manager alive.
+- Public `AnchorablePaneTitle` exposes a tool `Model`, the existing read-only
+  `LayoutItem`, a protected setter, and model/input hooks with Avalonia event
+  arguments. Compiled default and historical XML namespaces and custom themes
+  work. Native tool chrome uses the control for selected docked/floating titles
+  and auto-hide previews, preserving manager template/selector behavior.
+  Custom title input activates the tool, floats its pane or auto-hidden tool
+  through the native factory, and starts the native host drag. Existing single-pane
+  floating windows are reused; native grips do not start duplicate drags.
+  Tests cover cancellation, restricted capabilities, refused multipane moves,
+  interrupted presses, interactive children, and manager ownership. Shared weak
+  model/container bindings handle reentrant model changes, XML replacement,
+  and collection of unused controls and retained closed titles. Native
+  `HostWindow.TryBeginMoveDrag` exposes the existing drag lifecycle with factory
+  cancellation and pointer-release completion. Platform movement remains an
+  integration-validation requirement.
 - `DocumentHeaderTemplate` and `AnchorableHeaderTemplate`, plus their selector
   properties, apply compiled templates to native document/tool tabs and
   auto-hide strips. Templates and selectors receive public layout nodes;
@@ -385,7 +400,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 672 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 706 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -422,8 +437,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 572
-matching type/member keys and 379 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 579
+matching type/member keys and 372 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

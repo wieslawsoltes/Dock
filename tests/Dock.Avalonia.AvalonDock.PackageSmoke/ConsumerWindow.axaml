@@ -5,6 +5,12 @@
         Width="640" Height="480">
   <Window.Resources>
     <ResourceInclude x:Key="GenericByUri" Source="avares://Dock.Avalonia.AvalonDock/Themes/Generic.axaml" />
+    <DataTemplate x:Key="AnchorableTitleControl" x:DataType="LayoutAnchorable">
+      <AnchorablePaneTitle Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyAnchorableTitleControl" x:DataType="LayoutAnchorable">
+      <ad:AnchorablePaneTitle Model="{Binding}" />
+    </DataTemplate>
     <DataTemplate x:Key="DocumentContentControl" x:DataType="LayoutContent">
       <LayoutDocumentControl Model="{Binding}" />
     </DataTemplate>

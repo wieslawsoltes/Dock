@@ -216,6 +216,21 @@ Avalonia event arguments. The full guide explains the focus-routing difference
 from WPF and includes compiled template examples. Dock may recycle a generated
 control for another tab; track the model or container when identity matters.
 
+`AvalonDock.Controls.AnchorablePaneTitle` is the public title inside native tool
+chrome for docked/floating panes and auto-hide previews. Its `Model` is the tool,
+and its read-only `LayoutItem` supplies the existing container and manager title
+templates. Custom hosts can use `<AnchorablePaneTitle Model="{Binding}" />` in
+a compiled template with `x:DataType="LayoutAnchorable"`.
+
+The nonfocusable title activates its tool on release. Leaving a pressed custom
+title floats its pane through Dock; auto-hidden tools float individually, and
+single-pane floating windows reuse their existing native drag. Native chrome
+keeps its grip handling. `HostWindow.TryBeginMoveDrag` preserves factory drag
+cancellation and completion; cancellation does not undo an earlier pane float.
+Interactive title children keep their input. Derived titles can override the
+model and mouse-named hooks using Avalonia property/pointer event arguments.
+The full guide documents those signatures, lifetime rules, and platform limits.
+
 `DockingManager.LayoutItemTemplate` accepts an Avalonia `IDataTemplate` for
 application content. Alternatively, use `LayoutItemTemplateSelector` with an
 `AvalonDock.Controls.DataTemplateSelector` subclass overriding
@@ -494,6 +509,7 @@ flowchart TB
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
     ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
+    ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
     Commands["Compiled command bindings<br/>Native input routing"]
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
@@ -551,6 +567,10 @@ flowchart TB
     View --> ContentControls
     ContentControls --> Items
     ContentControls --> Api
+    View --> ToolTitle
+    ToolTitle --> Items
+    ToolTitle --> Factory
+    ToolTitle --> View
     View --> Commands
     Commands --> Items
     Api --> Menus

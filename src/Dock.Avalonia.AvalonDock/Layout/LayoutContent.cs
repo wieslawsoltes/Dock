@@ -248,6 +248,17 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     }
     internal void CloseCore()
     {
+        if (Root is not LayoutRoot { Manager: not null })
+        {
+            ILayoutRoot? root = Root;
+            CancelEventArgs args = new();
+            NotifyClosing(args);
+            if (args.Cancel) return;
+            Parent?.RemoveChild(this);
+            root?.CollectGarbage();
+            NotifyClosed();
+            return;
+        }
         if (!CanClose) return;
         if (DockModel.Factory is { } factory) factory.CloseDockable(DockModel);
         else

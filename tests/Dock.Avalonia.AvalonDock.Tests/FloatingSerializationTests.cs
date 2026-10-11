@@ -116,7 +116,7 @@ public class FloatingSerializationTests
     }
 
     [AvaloniaFact]
-    public void Missing_And_Canceled_Floating_Content_Is_Cleaned_Up_And_Tools_Can_Be_Restored()
+    public void Missing_Floating_Content_Without_A_Callback_Is_Cleaned_Up_And_Tools_Can_Be_Restored()
     {
         const string xml = """
             <LayoutRoot>
@@ -135,7 +135,6 @@ public class FloatingSerializationTests
             """;
         DockingManager manager = new();
         XmlLayoutSerializer serializer = new(manager);
-        serializer.LayoutSerializationCallback += (_, args) => args.Cancel = args.Model.ContentId == "cancel";
         serializer.Deserialize(new StringReader(xml));
         LayoutAnchorable hidden = Assert.Single(manager.Layout.Hidden);
         LayoutAnchorableFloatingWindow window = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(manager.Layout.FloatingWindows));

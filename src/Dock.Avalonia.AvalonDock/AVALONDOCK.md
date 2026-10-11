@@ -813,6 +813,30 @@ nodes use `Descendents()`. The visual root may be Avalonia's host above a window
 Logical descendant queries do not cross visual-only template boundaries.
 The full guide documents null/nonvisual inputs and includes a usage example.
 
+## Serialization hooks and content recovery
+
+`XmlLayoutSerializer` captures existing document and tool models separately.
+Restoration looks up their current `ContentId`, content, and icon values; create
+the serializer after those models exist. Tool callbacks run before document
+callbacks, and already-populated models skip recovery.
+
+Supply content through `LayoutSerializationCallback`'s `args.Content`. Set
+`args.Cancel = true` to request closure, which raises content closing/closed
+events and permits a closing-event veto before the new layout has a manager.
+With a callback installed, leaving both content values null retains a placeholder.
+Assigning `args.Model.Content` while leaving `args.Content` null hides a tool or
+closes a document, matching upstream. Callback code owns icon restoration;
+without a callback, the matching previous model supplies its content and icon.
+Without either a callback or a matching model, tools hide and documents close.
+
+Nested virtual `WriteXml` overrides participate in complete layout saves, including
+hidden, pinned, and floating content. Write extra group attributes before calling
+base, because base writes the children. A shared writer prepares return-container
+IDs once, and a failing override leaves an existing save file untouched.
+Whole-layout XML still uses known base element names and constructs built-in
+models when reading. Automatic custom CLR subtype discovery remains open;
+custom instances can call their own `ReadXml` overrides directly.
+
 ## Architecture
 
 ```mermaid
@@ -850,7 +874,7 @@ flowchart TB
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
-    Xml["XmlLayoutSerializer and explicit XML codec"]
+    Xml["XmlLayoutSerializer and explicit XML codec<br/>Virtual write hooks and phased content recovery"]
     Api -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
     GridControls --> View

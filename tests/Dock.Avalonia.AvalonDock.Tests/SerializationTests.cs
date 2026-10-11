@@ -174,9 +174,12 @@ public class SerializationTests
             if (args.Model.ContentId == "agenda") args.Content = new object();
         };
         serializer.Deserialize(new StringReader(xml));
-        LayoutAnchorable tool = Assert.Single(Assert.Single(manager.Layout.LeftSide.Children).Children);
+        LayoutAnchorable tool = Assert.Single(Assert.Single(manager.Layout.LeftSide.Children).Children, item => item.ContentId == "agenda");
         Assert.Equal("agenda", tool.ContentId);
-        Assert.Equal("missing", Assert.Single(manager.Layout.Hidden).ContentId);
+        // A callback which leaves both Content values null retains a placeholder.
+        Assert.Equal("missing", manager.Layout.LeftSide.Children[0].Children[1].ContentId);
+        Assert.Null(manager.Layout.LeftSide.Children[0].Children[1].Content);
+        Assert.Empty(manager.Layout.Hidden);
         tool.ToggleAutoHide();
         Assert.Equal("Tools", Assert.IsType<LayoutAnchorablePane>(tool.Parent).Name);
     }

@@ -473,8 +473,16 @@ supported by corresponding implementation and test evidence.
   explicit codecs. Standalone readers consume one element, preserve existing
   native model identity and application content, and restore tab selection
   before a factory is attached. Root reads replace the hierarchy while retaining
-  the manager's native root and factory. Missing or
-  canceled content is cleaned up; hidden floating tools retain their return panes.
+  the manager's native root and factory. Without a callback, missing documents
+  close and tools hide while retaining their return panes. Callback cancellation
+  requests closure and preserves content closing-event vetoes. Unresolved null
+  placeholders remain when a callback leaves both content values null.
+  Recovery separates captured document/tool models, reads their live identifiers,
+  skips already-populated content, and runs tool callbacks before the document
+  snapshot. Callback code owns icon restoration; default recovery copies the
+  previous icon. Nested virtual `WriteXml` overrides run through a shared writer
+  across docked, hidden, pinned, and floating nodes. Failed overrides preserve an
+  existing save file. Automatic custom CLR subtype reconstruction remains open.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
 - `NavigatorWindow` presents live document/tool containers in a compiled template.
@@ -556,7 +564,7 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1085 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1111 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

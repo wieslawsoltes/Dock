@@ -162,6 +162,10 @@ target visibility and drop execution. It rejects a document drop into a floating
 tool window, accepts a tool split, verifies typed floating ownership, and saves
 and restores the resulting layout through XML.
 
+The serialization probe defines an external `WriteXml` override, verifies that
+the complete serializer invokes it, restores documents/tools sharing a content
+identifier, and checks callback ordering and content closing-event cancellation.
+
 The menu probe opens compiled `DropDownButton` and `DropDownControlArea` menus,
 activates the existing layout item command, and reopens their nested icon bindings.
 `MenuButton.axaml` uses the historical URI as its root default namespace; the

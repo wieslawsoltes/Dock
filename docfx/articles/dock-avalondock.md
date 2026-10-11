@@ -1875,7 +1875,11 @@ work. The native Dock selector continues to handle its other gestures.
 
 The XML describes layout structure and metadata; it does not serialize controls
 or arbitrary ViewModels. A newly constructed `XmlLayoutSerializer` captures
-existing content by `ContentId`. Construct it after the relevant content exists.
+the existing document and tool models separately. Restoration matches their
+current `ContentId` values, using the first matching model of the same kind.
+Construct it after the relevant content exists; later additions are not part
+of that serializer's snapshot. Changed identifiers and content remain visible
+through the captured model references.
 For a new application session, resolve IDs using a content registry:
 
 ```csharp
@@ -1891,11 +1895,32 @@ serializer.Deserialize("layout.xml");
 ```
 
 `contentById` is an application-owned dictionary of stable identifiers to
-ViewModels. Set `Cancel` to omit an unavailable item. Source collection
+ViewModels. Set `Cancel` to request closure of an unavailable item. The content's
+`Closing` event can veto that request, and successful closure raises `Closed`.
+Restoration occurs before the new layout has a manager; `CanClose` does not
+suppress this request. Source collection
 notifications are suspended while callbacks run, then resume even if loading
 fails. Parsing and content resolution finish before replacing the manager's
 layout. The runnable sample writes to a temporary file and replaces the saved
 file after a successful save.
+
+Only models with null `Content` enter content recovery. Tool callbacks run
+before the document phase, so they may supply document content before that
+phase takes its snapshot. The callback and fallback cases follow upstream:
+
+| Recovery case | Result |
+| --- | --- |
+| No callback, matching previous model | Copy its current content and icon, including null values. |
+| No callback, no previous model | Hide an unresolved tool; close an unresolved document. |
+| Callback sets `Cancel = true` | Request content closure, preserving closing-event cancellation. |
+| Callback supplies non-null `args.Content` | Assign it; the callback owns icon restoration. |
+| Callback leaves both `args.Content` and `args.Model.Content` null | Keep an unresolved placeholder in its current location. |
+| Callback assigns `args.Model.Content` but leaves `args.Content` null | Hide that tool or close that document. |
+
+Set `args.Content` to provide a view or ViewModel. A callback can set
+`args.Model.IconSource` explicitly; callback-driven restoration does not copy
+the previous icon over it. Already-populated models retain their content and
+icon without receiving a callback.
 
 Docked, hidden, auto-hide, and supported floating layouts retain return
 locations and floating geometry. Native grouped-document or mixed floating
@@ -1909,6 +1934,18 @@ preserve an existing `Content` object, group reads append children, and root
 reads replace the hierarchy while retaining the native root and factory.
 These methods do not resolve application content or return-container references;
 use `XmlLayoutSerializer` for complete layout restoration and content callbacks.
+
+Whole-layout writes dispatch each nested model's virtual `WriteXml`, including
+panes, groups, side/anchor nodes, hidden content, and floating models. Custom
+overrides can add attributes before calling base; content-only models may also
+add attributes after base. For groups, base writes children, so write attributes
+first. The traversal shares one XML writer and prepares return-container IDs
+once. A failing override is detected before a file overload opens its destination.
+
+The explicit codec uses known AvalonDock element names. Whole-layout reads
+still construct built-in nodes; automatic discovery and reconstruction of custom
+CLR subclasses remain open. An application's own instances can override and
+call `ReadXml` directly to consume their additional metadata.
 
 ## Implementation architecture
 
@@ -1944,7 +1981,7 @@ flowchart TB
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
         Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
-        Xml["XmlLayoutSerializer + explicit XML codec"]
+        Xml["XmlLayoutSerializer + explicit XML codec<br/>Virtual write hooks and phased content recovery"]
     end
     subgraph Native["Existing Dock implementation"]
         Models["Dock.Model.Avalonia models"]

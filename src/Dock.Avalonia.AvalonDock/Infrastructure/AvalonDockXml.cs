@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
@@ -15,21 +16,30 @@ internal static class AvalonDockXml
 {
     internal static XElement Write(LayoutRoot layout)
     {
+        XDocument document = new();
+        using (XmlWriter writer = document.CreateWriter())
+        {
+            writer.WriteStartElement("LayoutRoot");
+            layout.WriteXml(writer);
+            writer.WriteEndElement();
+        }
+        return document.Root!;
+    }
+
+    private static void WriteRootContents(LayoutRoot layout, XmlWriter writer)
+    {
         foreach (LayoutFloatingWindow window in layout.FloatingWindows) window.DockWindow.Save();
-        EnsureContainerIds(layout);
-        XElement root = new("LayoutRoot");
-        XElement panel = WriteElement(layout.RootPanel);
-        panel.Name = "RootPanel";
-        root.Add(panel);
-        root.Add(WriteSide(layout.TopSide, "TopSide"), WriteSide(layout.RightSide, "RightSide"),
-            WriteSide(layout.LeftSide, "LeftSide"), WriteSide(layout.BottomSide, "BottomSide"));
-        XElement floating = new("FloatingWindows");
-        foreach (LayoutFloatingWindow window in layout.FloatingWindows) floating.Add(WriteElement(window));
-        root.Add(floating);
-        XElement hidden = new("Hidden");
-        foreach (LayoutAnchorable content in layout.Hidden) hidden.Add(WriteElement(content));
-        root.Add(hidden);
-        return root;
+        WriteElement(layout.RootPanel, writer, "RootPanel");
+        WriteElement(layout.TopSide, writer, "TopSide");
+        WriteElement(layout.RightSide, writer, "RightSide");
+        WriteElement(layout.LeftSide, writer, "LeftSide");
+        WriteElement(layout.BottomSide, writer, "BottomSide");
+        writer.WriteStartElement("FloatingWindows");
+        foreach (LayoutFloatingWindow window in layout.FloatingWindows) WriteElement(window, writer);
+        writer.WriteEndElement();
+        writer.WriteStartElement("Hidden");
+        foreach (LayoutAnchorable content in layout.Hidden) WriteElement(content, writer);
+        writer.WriteEndElement();
     }
 
     private static void EnsureContainerIds(LayoutElement scope)
@@ -90,17 +100,10 @@ internal static class AvalonDockXml
         return root;
     }
 
-    private static XElement WriteSide(LayoutAnchorSide side, string name)
-    {
-        XElement xml = WriteElement(side);
-        xml.Name = name;
-        return xml;
-    }
-
-    private static XElement WriteElement(LayoutElement element)
+    private static void WriteElement(LayoutElement element, XmlWriter writer, string? name = null)
     {
         if (element is LayoutFloatingWindow window) ValidateFloatingWindow(window);
-        XElement xml = new(element switch
+        name ??= element switch
         {
             LayoutPanel => "LayoutPanel",
             LayoutDocumentPaneGroup => "LayoutDocumentPaneGroup",
@@ -114,74 +117,80 @@ internal static class AvalonDockXml
             LayoutDocumentFloatingWindow => "LayoutDocumentFloatingWindow",
             LayoutAnchorableFloatingWindow => "LayoutAnchorableFloatingWindow",
             _ => throw new NotSupportedException("Unsupported AvalonDock layout node.")
-        });
-        if (element is ILayoutOrientableGroup orientable) xml.SetAttributeValue("Orientation", orientable.Orientation);
+        };
+        writer.WriteStartElement(name);
+        ((IXmlSerializable)element).WriteXml(writer);
+        writer.WriteEndElement();
+    }
+
+    private static void WriteNodeContents(LayoutElement element, XmlWriter writer)
+    {
+        if (element is ILayoutOrientableGroup orientable) WriteAttribute(writer, "Orientation", orientable.Orientation.ToString());
         if (element is ILayoutPositionableGroup position)
         {
             if (string.IsNullOrEmpty(element.DockModel.Id)) element.DockModel.Id = Guid.NewGuid().ToString("N");
-            xml.SetAttributeValue("Id", element.DockModel.Id);
-            xml.SetAttributeValue("DockWidth", FormatLength(position.DockWidth));
-            xml.SetAttributeValue("DockHeight", FormatLength(position.DockHeight));
-            xml.SetAttributeValue("DockMinWidth", position.DockMinWidth);
-            xml.SetAttributeValue("DockMinHeight", position.DockMinHeight);
-            xml.SetAttributeValue("AllowDuplicateContent", position.AllowDuplicateContent);
-            xml.SetAttributeValue("CanRepositionItems", position.CanRepositionItems);
+            WriteAttribute(writer, "Id", element.DockModel.Id);
+            WriteAttribute(writer, "DockWidth", FormatLength(position.DockWidth));
+            WriteAttribute(writer, "DockHeight", FormatLength(position.DockHeight));
+            WriteAttribute(writer, "DockMinWidth", position.DockMinWidth);
+            WriteAttribute(writer, "DockMinHeight", position.DockMinHeight);
+            WriteAttribute(writer, "AllowDuplicateContent", position.AllowDuplicateContent);
+            WriteAttribute(writer, "CanRepositionItems", position.CanRepositionItems);
         }
         if (element is ILayoutElementForFloatingWindow floating)
         {
-            xml.SetAttributeValue("FloatingWidth", floating.FloatingWidth);
-            xml.SetAttributeValue("FloatingHeight", floating.FloatingHeight);
-            xml.SetAttributeValue("FloatingLeft", floating.FloatingLeft);
-            xml.SetAttributeValue("FloatingTop", floating.FloatingTop);
-            xml.SetAttributeValue("IsMaximized", floating.IsMaximized);
+            WriteAttribute(writer, "FloatingWidth", floating.FloatingWidth);
+            WriteAttribute(writer, "FloatingHeight", floating.FloatingHeight);
+            WriteAttribute(writer, "FloatingLeft", floating.FloatingLeft);
+            WriteAttribute(writer, "FloatingTop", floating.FloatingTop);
+            WriteAttribute(writer, "IsMaximized", floating.IsMaximized);
         }
         if (element is LayoutContent content)
         {
-            xml.SetAttributeValue("Title", content.Title);
-            xml.SetAttributeValue("ContentId", content.ContentId);
-            xml.SetAttributeValue("CanClose", content.CanClose);
-            xml.SetAttributeValue("CanFloat", content.CanFloat);
-            xml.SetAttributeValue("IsSelected", content.IsSelected);
-            xml.SetAttributeValue("IsLastFocusedDocument", content.IsLastFocusedDocument);
-            if (content.ToolTip is string tip) xml.SetAttributeValue("ToolTip", tip);
-            if (content.LastActivationTimeStamp is { } time) xml.SetAttributeValue("LastActivationTimeStamp", time.ToString(CultureInfo.InvariantCulture));
+            WriteAttribute(writer, "Title", content.Title);
+            WriteAttribute(writer, "ContentId", content.ContentId);
+            WriteAttribute(writer, "CanClose", content.CanClose);
+            WriteAttribute(writer, "CanFloat", content.CanFloat);
+            WriteAttribute(writer, "IsSelected", content.IsSelected);
+            WriteAttribute(writer, "IsLastFocusedDocument", content.IsLastFocusedDocument);
+            if (content.ToolTip is string tip) WriteAttribute(writer, "ToolTip", tip);
+            if (content.LastActivationTimeStamp is { } time) WriteAttribute(writer, "LastActivationTimeStamp", time.ToString(CultureInfo.InvariantCulture));
             var previous = (content.PreviousContainer as LayoutElement)?.DockModel ?? content.DockModel.OriginalOwner;
             if (previous is not null)
             {
-                xml.SetAttributeValue("PreviousContainerId", previous.Id);
-                xml.SetAttributeValue("PreviousContainerIndex", content.PreviousContainerIndex);
+                WriteAttribute(writer, "PreviousContainerId", previous.Id);
+                WriteAttribute(writer, "PreviousContainerIndex", content.PreviousContainerIndex);
             }
             if (content.InitialContainer is LayoutElement initial)
             {
-                xml.SetAttributeValue("InitialContainerId", initial.DockModel.Id);
-                xml.SetAttributeValue("InitialContainerIndex", content.InitialContainerIndex);
+                WriteAttribute(writer, "InitialContainerId", initial.DockModel.Id);
+                WriteAttribute(writer, "InitialContainerIndex", content.InitialContainerIndex);
             }
         }
         if (element is LayoutDocument document)
         {
-            xml.SetAttributeValue("Description", document.Description);
-            xml.SetAttributeValue("CanMove", document.CanMove);
+            WriteAttribute(writer, "Description", document.Description);
+            WriteAttribute(writer, "CanMove", document.CanMove);
         }
         if (element is LayoutAnchorable tool)
         {
-            xml.SetAttributeValue("CanHide", tool.CanHide);
-            xml.SetAttributeValue("CanAutoHide", tool.CanAutoHide);
-            xml.SetAttributeValue("CanDockAsTabbedDocument", tool.CanDockAsTabbedDocument);
-            xml.SetAttributeValue("AutoHideWidth", tool.AutoHideWidth);
-            xml.SetAttributeValue("AutoHideHeight", tool.AutoHideHeight);
-            xml.SetAttributeValue("AutoHideMinWidth", tool.AutoHideMinWidth);
-            xml.SetAttributeValue("AutoHideMinHeight", tool.AutoHideMinHeight);
+            WriteAttribute(writer, "CanHide", tool.CanHide);
+            WriteAttribute(writer, "CanAutoHide", tool.CanAutoHide);
+            WriteAttribute(writer, "CanDockAsTabbedDocument", tool.CanDockAsTabbedDocument);
+            WriteAttribute(writer, "AutoHideWidth", tool.AutoHideWidth);
+            WriteAttribute(writer, "AutoHideHeight", tool.AutoHideHeight);
+            WriteAttribute(writer, "AutoHideMinWidth", tool.AutoHideMinWidth);
+            WriteAttribute(writer, "AutoHideMinHeight", tool.AutoHideMinHeight);
         }
-        if (element is LayoutDocumentPane documents) xml.SetAttributeValue("ShowHeader", documents.ShowHeader);
-        if (element is LayoutAnchorablePane tools) xml.SetAttributeValue("Name", tools.Name);
+        if (element is LayoutDocumentPane documents) WriteAttribute(writer, "ShowHeader", documents.ShowHeader);
+        if (element is LayoutAnchorablePane tools) WriteAttribute(writer, "Name", tools.Name);
         if (element is LayoutAnchorGroup anchorGroup)
         {
-            xml.SetAttributeValue("Id", anchorGroup.DockModel.Id);
-            xml.SetAttributeValue("PreviousContainerId", (anchorGroup.PreviousContainer as LayoutElement)?.DockModel.Id);
+            WriteAttribute(writer, "Id", anchorGroup.DockModel.Id);
+            WriteAttribute(writer, "PreviousContainerId", (anchorGroup.PreviousContainer as LayoutElement)?.DockModel.Id);
         }
         if (element is ILayoutContainer container)
-            foreach (ILayoutElement child in container.Children) xml.Add(WriteElement((LayoutElement)child));
-        return xml;
+            foreach (ILayoutElement child in container.Children) WriteElement((LayoutElement)child, writer);
     }
 
     private static LayoutElement ReadElement(XElement xml, List<LayoutContent> selected, ref LayoutContent? active)
@@ -294,17 +303,29 @@ internal static class AvalonDockXml
 
     internal static void WriteContents(LayoutElement element, XmlWriter writer)
     {
-        ArgumentNullException.ThrowIfNull(writer);
-        XElement xml;
-        if (element is LayoutRoot root) xml = Write(root);
-        else
-        {
-            EnsureContainerIds(element.Root as LayoutElement ?? element);
-            xml = WriteElement(element);
-        }
-        foreach (XAttribute attribute in xml.Attributes()) writer.WriteAttributeString(attribute.Name.LocalName, attribute.Value);
-        foreach (XNode child in xml.Nodes()) child.WriteTo(writer);
+        writer = PrepareWriter(element, writer);
+        if (element is LayoutRoot root) WriteRootContents(root, writer);
+        else WriteNodeContents(element, writer);
     }
+
+    private static XmlWriter PrepareWriter(LayoutElement element, XmlWriter writer)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        if (writer is LayoutXmlWriter) return writer;
+        EnsureContainerIds(element.Root as LayoutElement ?? element);
+        return new LayoutXmlWriter(writer);
+    }
+
+    private static void WriteAttribute(XmlWriter writer, string name, string? value)
+    {
+        if (value is not null) writer.WriteAttributeString(name, value);
+    }
+    private static void WriteAttribute(XmlWriter writer, string name, bool value) =>
+        writer.WriteAttributeString(name, XmlConvert.ToString(value));
+    private static void WriteAttribute(XmlWriter writer, string name, int value) =>
+        writer.WriteAttributeString(name, XmlConvert.ToString(value));
+    private static void WriteAttribute(XmlWriter writer, string name, double value) =>
+        writer.WriteAttributeString(name, XmlConvert.ToString(value));
 
     internal static void ReadContents(LayoutElement element, XmlReader reader)
     {
@@ -334,10 +355,10 @@ internal static class AvalonDockXml
 
     internal static void WriteFloatingContents(LayoutFloatingWindow window, XmlWriter writer)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        writer = PrepareWriter(window, writer);
         window.DockWindow.Save();
-        XElement xml = WriteElement(window);
-        foreach (XElement child in xml.Elements()) child.WriteTo(writer);
+        ValidateFloatingWindow(window);
+        foreach (ILayoutElement child in window.Children) WriteElement((LayoutElement)child, writer);
     }
 
     internal static LayoutFloatingWindow ReadFloatingWindow(XmlReader reader, string expectedName)

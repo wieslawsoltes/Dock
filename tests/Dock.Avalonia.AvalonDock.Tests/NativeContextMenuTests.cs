@@ -258,6 +258,8 @@ public partial class NativeCommandTests
         for (int i = 0; i < 3; i++)
         {
             AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            // A render commit can enqueue cleanup after the tick returns.
+            Dispatcher.UIThread.RunJobs();
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }

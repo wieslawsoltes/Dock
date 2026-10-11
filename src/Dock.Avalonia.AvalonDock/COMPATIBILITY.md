@@ -309,10 +309,11 @@ supported by corresponding implementation and test evidence.
   replacement/removal, close cancellation, and collection while a theme is retained.
   The compiled `Themes/Generic.axaml` dictionary separates resource keys
   from selector styles and can be included by URI from consumer XAML. Tests verify
-  both XML namespaces, compiled bindings, the inherited Avalonia control-theme
+  both XML namespaces, compiled bindings, view-scoped adapter styles without
+  application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 493 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 495 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

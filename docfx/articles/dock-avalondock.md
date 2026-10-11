@@ -885,6 +885,9 @@ dictionary. Applications can also include it directly in their merged resources:
 <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/Generic.axaml" />
 ```
 
+The bundle includes Dock's base floating-window resources, so it also works when
+`AvalonDockTheme` is installed in a view's styles instead of application styles.
+
 At this checkpoint, theme URI resolution recognizes that built-in URI;
 other custom `Theme.GetResourceUri()` values raise `NotSupportedException`.
 General URI loading remains open. `DictionaryTheme.GetResourceUri()` returns null

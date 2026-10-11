@@ -93,6 +93,42 @@ public class ThemeTests
         Assert.Null(dictionary.Owner);
     }
 
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void View_Scoped_Styles_Can_Create_Floating_Windows_Without_Application_Dock_Resources(bool generic)
+    {
+        Styles styles = Application.Current!.Styles;
+        AvalonDockTheme applicationTheme = Assert.Single(styles.OfType<AvalonDockTheme>());
+        int index = styles.IndexOf(applicationTheme);
+        styles.RemoveAt(index);
+        try
+        {
+            using Workspace workspace = new(generic ? new GenericTheme() : null, localStyles: true);
+            Assert.IsType<ControlTheme>(workspace.Manager.FindResource(typeof(DockingManager)));
+            Assert.Single(workspace.Manager.GetVisualDescendants().OfType<DockControl>());
+            workspace.Document.Float();
+            workspace.Tool.Float();
+            Dispatcher.UIThread.RunJobs();
+            Assert.Equal(2, workspace.Manager.FloatingWindows.Count());
+            foreach (LayoutFloatingWindowControl host in workspace.Manager.FloatingWindows)
+            {
+                Assert.True(host.IsVisible);
+                Assert.Single(host.GetVisualDescendants().OfType<DockControl>());
+            }
+            NavigatorWindow navigator = workspace.Manager.CreateNavigatorWindow();
+            try
+            {
+                _ = navigator.ShowDialog(workspace.Owner);
+                Dispatcher.UIThread.RunJobs();
+                Assert.True(navigator.IsVisible);
+                Assert.Equal(2, navigator.GetVisualDescendants().OfType<ListBox>().Count());
+            }
+            finally { navigator.Close(); }
+        }
+        finally { styles.Insert(index, applicationTheme); }
+    }
+
     [AvaloniaFact]
     public void Replacement_Updates_Docked_Floating_And_Navigator_Resources_And_Preserves_Local_Resources()
     {
@@ -329,11 +365,13 @@ public class ThemeTests
         internal Window Owner { get; }
         internal LayoutDocument Document { get; } = new() { Title = "Document", Content = new TextBox() };
         internal LayoutAnchorable Tool { get; } = new() { Title = "Tool", Content = new TextBox() };
-        internal Workspace(Theme? theme = null)
+        internal Workspace(Theme? theme = null, bool localStyles = false)
         {
             Manager.Theme = theme;
             Manager.Layout = new() { RootPanel = new() { Children = { new LayoutDocumentPane(Document), new LayoutAnchorablePane(Tool) } } };
-            Owner = new() { Content = Manager, Width = 640, Height = 480 };
+            Owner = new() { Width = 640, Height = 480 };
+            if (localStyles) Owner.Styles.Add(new AvalonDockTheme());
+            Owner.Content = Manager;
             Owner.Show();
             Dispatcher.UIThread.RunJobs();
         }

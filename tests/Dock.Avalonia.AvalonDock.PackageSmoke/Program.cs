@@ -53,6 +53,7 @@ if (tool.IsAutoHidden || toolMenu.DataContext is not null || toolMenu.PlacementT
 tool.IsActive = true;
 Dispatcher.UIThread.RunJobs();
 AssertToolTitle(manager, tool);
+AssertDocumentMenu(manager);
 AssertSplitters(manager);
 manager.GridSplitterWidth = 28;
 manager.GridSplitterHeight = 18;
@@ -225,7 +226,24 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, docked/floating tool titles and selectors, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, docked/floating tool titles and selectors, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, docking, and close cancellation passed.");
+
+static void AssertDocumentMenu(DockingManager manager)
+{
+    Button button = manager.GetVisualDescendants().OfType<Button>().Single(value => value.Classes.Contains("avalondock-document-menu"));
+    ClickNative(button);
+    MenuFlyout menu = (MenuFlyout)button.Flyout!;
+    if (!menu.IsOpen) throw new Exception("The document list menu did not open.");
+    ItemsControl presenter = (ItemsControl)menu.Popup.Child!;
+    MenuItem entry = (MenuItem)presenter.ContainerFromIndex(0)!;
+    LayoutContent model = (LayoutContent)entry.DataContext!;
+    TextBlock header = entry.GetVisualDescendants().OfType<TextBlock>().Single(value => value.Classes.Contains("package-menu-header"));
+    TextBlock icon = entry.GetVisualDescendants().OfType<TextBlock>().Single(value => value.Classes.Contains("package-menu-icon"));
+    if (!ReferenceEquals(header.DataContext, model) || !ReferenceEquals(icon.DataContext, model) || icon.Text != model.ContentId)
+        throw new Exception("Packaged document menu templates did not receive the public layout content.");
+    ClickNative(entry);
+    if (!model.IsActive || menu.IsOpen) throw new Exception("The document list did not activate and dismiss through the native menu.");
+}
 
 static void AssertSplitters(DockingManager manager)
 {

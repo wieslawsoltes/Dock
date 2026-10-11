@@ -32,6 +32,12 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
     }
     /// <inheritdoc/>
     public int IndexOf(LayoutContent content) => Children.IndexOf(content);
+    /// <summary>Notifies document list menus that the sorted contents changed.</summary>
+    protected override void OnChildrenCollectionChanged()
+    {
+        base.OnChildrenCollectionChanged();
+        RaisePropertyChanged(nameof(ChildrenSorted));
+    }
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         base.OnModelPropertyChanged(sender, e);

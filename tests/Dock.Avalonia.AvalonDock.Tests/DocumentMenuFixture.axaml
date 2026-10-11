@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.DocumentMenuFixture"
+        x:DataType="DockingManager" Width="850" Height="550">
+  <Window.Resources>
+    <DataTemplate x:Key="MenuHeader" x:DataType="LayoutContent">
+      <TextBlock Classes="menu-header" Text="{Binding Title, StringFormat='Menu: {0}'}" />
+    </DataTemplate>
+    <DataTemplate x:Key="AlternateHeader" x:DataType="LayoutContent">
+      <TextBlock Classes="alternate-header" Text="{Binding ContentId, StringFormat='ID: {0}'}" />
+    </DataTemplate>
+    <DataTemplate x:Key="Icon" x:DataType="LayoutContent">
+      <TextBlock Classes="custom-icon" Text="{Binding ContentId, StringFormat='Icon: {0}'}" />
+    </DataTemplate>
+  </Window.Resources>
+  <DockingManager x:Name="Manager" DocumentPaneMenuItemHeaderTemplate="{StaticResource MenuHeader}">
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutAnchorablePane DockWidth="180">
+          <LayoutAnchorable Title="Tool" ContentId="tool"><TextBlock Text="Tool content" /></LayoutAnchorable>
+        </LayoutAnchorablePane>
+        <LayoutDocumentPane>
+          <LayoutDocument Title="Zulu" ContentId="last"><TextBlock Text="Last document" /></LayoutDocument>
+          <LayoutDocument Title="Alpha" ContentId="first"><TextBlock Text="First document" /></LayoutDocument>
+        </LayoutDocumentPane>
+      </LayoutPanel>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

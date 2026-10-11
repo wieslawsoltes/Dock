@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:layout="using:AvalonDock.Layout"
+             xmlns:items="using:AvalonDock.Controls"
+             xmlns:infrastructure="using:AvalonDock.Infrastructure"
+             x:Class="AvalonDock.Infrastructure.LayoutDocumentMenu"
+             x:DataType="layout:LayoutDocumentPane">
+  <UserControl.Resources>
+    <infrastructure:LayoutItemConverter x:Key="LayoutItem" />
+    <DataTemplate x:Key="DefaultHeader" x:DataType="layout:LayoutContent">
+      <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+    </DataTemplate>
+    <DataTemplate x:Key="DefaultIcon" x:DataType="layout:LayoutContent">
+      <Image Classes="avalondock-menu-icon" Source="{Binding IconSource}" Stretch="Uniform" Width="16" Height="16"
+             IsVisible="{Binding IconSource, Converter={x:Static ObjectConverters.IsNotNull}}" />
+    </DataTemplate>
+    <infrastructure:LayoutHeaderTemplate x:Key="MenuHeader" Kind="DocumentMenu" DefaultTemplate="{StaticResource DefaultHeader}" />
+    <infrastructure:LayoutMenuIcon x:Key="MenuIcon" DefaultTemplate="{StaticResource DefaultIcon}" />
+    <ControlTheme x:Key="MenuItemTheme" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}"
+                  x:DataType="layout:LayoutContent">
+      <Setter Property="Tag" Value="{Binding DockModel, Converter={StaticResource LayoutItem}}" />
+      <Setter Property="HeaderTemplate" Value="{StaticResource MenuHeader}" />
+      <Setter Property="Command" Value="{Binding $self.((items:LayoutItem)Tag).ActivateCommand}" />
+      <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
+      <Setter Property="Icon" Value="{Binding}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border x:Name="PART_LayoutRoot" Padding="{TemplateBinding Padding}"
+                  Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}">
+            <Grid ColumnDefinitions="Auto,*">
+              <Viewbox Width="16" Height="16" StretchDirection="DownOnly" VerticalAlignment="Center"
+                       Margin="{DynamicResource MenuIconPresenterMargin}">
+                <ContentPresenter x:Name="PART_IconPresenter" Content="{TemplateBinding Icon}"
+                                  ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MenuIcon}}" />
+              </Viewbox>
+              <ContentPresenter x:Name="PART_HeaderPresenter" Grid.Column="1"
+                                Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </ControlTheme>
+  </UserControl.Resources>
+  <Button Classes="avalondock-document-menu" Padding="5" Margin="2,0" Background="Transparent"
+          BorderThickness="0" VerticalAlignment="Stretch" Focusable="False"
+          AutomationProperties.Name="Open documents" ToolTip.Tip="Open documents">
+    <Button.Flyout>
+      <infrastructure:LayoutDocumentMenuFlyout ItemsSource="{Binding ChildrenSorted}"
+                                               ItemContainerTheme="{StaticResource MenuItemTheme}" />
+    </Button.Flyout>
+    <Path Width="10" Height="6" Stretch="Uniform" Fill="{DynamicResource DockTabForegroundBrush}"
+          Data="{DynamicResource DockIconMenuGeometry}" />
+  </Button>
+</UserControl>

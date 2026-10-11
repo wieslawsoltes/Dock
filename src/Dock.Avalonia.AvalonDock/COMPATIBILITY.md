@@ -124,6 +124,16 @@ supported by corresponding implementation and test evidence.
   replacement, native tab selection, metadata updates, context-menu input, and
   close commands are covered by Headless tests. Source removal and XML replacement
   detach old title presenters; retaining them does not retain a model or manager.
+- Document tab strips expose a native document list menu in docked and floating
+  panes. `DocumentPaneMenuItemHeaderTemplate`/selector and
+  `IconContentTemplate`/selector receive the public layout content; icon selectors
+  also receive the owning `MenuItem`. Header fallback, selector precedence,
+  runtime replacement, default `IconSource`, and metadata changes are covered.
+  Collection changes refresh `ChildrenSorted` without rearranging native tabs.
+  Entries invoke the current item activation command and follow its enablement.
+  Tools docked as documents retain their public tool wrapper. XML replacement
+  and view detachment close old menus; retained generated headers and icons
+  release removed models and managers.
 - Layout cleanup retains the last document pane and referenced return panes,
   clears detached active content, and collapses redundant typed pane groups.
 - Document and tool floating models expose native Dock windows through an
@@ -175,7 +185,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 285 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 301 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -186,7 +196,7 @@ supported by corresponding implementation and test evidence.
   group redocking, generic panels, and grouped-document/mixed native windows. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: floating document title/menu/icon templates, additional update
+- Remaining manager APIs: floating document title templates, additional update
   strategy invocation paths, templates/selectors, styles, themes, routed
   events, converters, and the control adapter surface.
 - All upstream interfaces, extension methods, protected extensibility points,
@@ -199,14 +209,15 @@ supported by corresponding implementation and test evidence.
   nested groups, layout detachment and leak checks, and source-driven floating
   content and changes during deserialization.
 - Exact signatures, framework substitutions, inheritance, defaults, and member
-  behavior must be audited independently of the presence inventory.
+  behavior must be audited independently of the presence inventory, including
+  menu selector null results and header-template default coercion edge cases.
 - Broader sample interaction and platform coverage for floating windows.
 
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 400
-matching type/member keys and 551 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 409
+matching type/member keys and 542 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

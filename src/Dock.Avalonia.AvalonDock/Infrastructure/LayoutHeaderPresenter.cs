@@ -13,4 +13,5 @@ internal sealed partial class LayoutHeaderPresenter
     public LayoutItem? Item { get => _item; set => SetAndRaise(ItemProperty, ref _item, value); }
     internal LayoutHeaderKind Kind { get; set; }
     internal IDataTemplate? DefaultTemplate { get; set; }
+    internal AvaloniaObject? SelectionContainer { get; set; }
 }

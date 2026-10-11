@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:models="using:Dock.Model.Controls"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="models:IDocumentDock">
+  <Styles.Resources>
+    <infrastructure:LayoutDocumentPaneConverter x:Key="AvalonDockDocumentPane" />
+    <DataTemplate x:Key="AvalonDockDocumentMenu" x:DataType="models:IDocumentDock">
+      <infrastructure:LayoutDocumentMenu DataContext="{Binding Converter={StaticResource AvalonDockDocumentPane}}" />
+    </DataTemplate>
+  </Styles.Resources>
+  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStrip, dock|HostWindow.avalondock dock|DocumentTabStrip">
+    <Setter Property="RightContent" Value="{Binding}" />
+    <Setter Property="RightContentTemplate" Value="{StaticResource AvalonDockDocumentMenu}" />
+  </Style>
+</Styles>

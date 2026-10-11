@@ -8,7 +8,7 @@ using AvalonDock.Layout;
 namespace AvalonDock.Infrastructure;
 
 internal sealed class LayoutHeaderContentTemplate(DockingManager manager, LayoutHeaderKind kind,
-    IDataTemplate? fallback, ContentPresenter presenter) : IRecyclingDataTemplate
+    IDataTemplate? fallback, ContentPresenter presenter, Avalonia.AvaloniaObject? selectionContainer = null) : IRecyclingDataTemplate
 {
     private readonly WeakReference<DockingManager> _manager = new(manager);
     private readonly ConditionalWeakTable<Control, IDataTemplate> _builtTemplates = new();
@@ -24,9 +24,12 @@ internal sealed class LayoutHeaderContentTemplate(DockingManager manager, Layout
             LayoutHeaderKind.Document => owner?.DocumentHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentHeaderTemplate,
             LayoutHeaderKind.Anchorable => owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableHeaderTemplate,
             LayoutHeaderKind.AnchorableTitle => owner?.AnchorableTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableTitleTemplate,
+            LayoutHeaderKind.DocumentMenu => owner?.DocumentPaneMenuItemHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentPaneMenuItemHeaderTemplate,
+            LayoutHeaderKind.MenuIcon => owner?.IconContentTemplateSelector is { } selector
+                ? selector.SelectTemplate(data, selectionContainer ?? presenter) : owner?.IconContentTemplate,
             _ => null
         };
-        template ??= fallback;
+        if (kind != LayoutHeaderKind.MenuIcon || owner?.IconContentTemplateSelector is null) template ??= fallback;
         if (template is null) return null;
         if (existing is not null && (!_builtTemplates.TryGetValue(existing, out IDataTemplate? previous) ||
             !ReferenceEquals(previous, template))) existing = null;

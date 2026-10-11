@@ -5,9 +5,10 @@ the solution: the package must be built before it can restore. It verifies
 that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
 headers, render docked/floating tool titles and select their templates, click
-native tabs and custom manager menus to execute container commands, resize native
-splitters through the manager properties, and restore
-application content from XML using the packaged assemblies. Pack the native
+native tabs and custom manager menus to execute container commands, activate
+documents through the list menu with compiled header and icon templates, resize
+native splitters through the manager properties, and restore application content
+from XML using the packaged assemblies. Pack the native
 control and proportional-panel packages too: they contain the tool-menu lifetime
 and runtime splitter sizing fixes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the

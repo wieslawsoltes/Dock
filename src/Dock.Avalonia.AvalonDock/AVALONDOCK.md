@@ -201,6 +201,27 @@ source clears all layout items of that type.
 strips. The XML serializer preserves these groups, their content identities,
 and return panes alongside docked and hidden content.
 
+The document tab strip's **Open documents** button lists the pane's
+`ChildrenSorted` and invokes the selected item's current `ActivateCommand`.
+`DocumentPaneMenuItemHeaderTemplate` and its selector customize the entry header;
+`IconContentTemplate` and its selector customize the icon. Their data is the
+public `LayoutContent`, including tools docked as documents:
+
+```xml
+<DockingManager.DocumentPaneMenuItemHeaderTemplate>
+  <DataTemplate x:DataType="LayoutContent">
+    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+  </DataTemplate>
+</DockingManager.DocumentPaneMenuItemHeaderTemplate>
+```
+
+Menu headers fall back to the document header template. Header selectors take
+precedence; assigning a document header selector supplies the menu selector when
+unset. Icon selectors receive the node and its `MenuItem`, take precedence, and
+preserve the explicit icon template for use after the selector is cleared.
+Default menu icons display the node's Avalonia `IImage` in `IconSource`. Open
+menus follow collection and template changes in docked and floating panes.
+
 Set `GridSplitterWidth` and `GridSplitterHeight` on `DockingManager` to control
 the gap between horizontally and vertically arranged panes. Both default to six
 device-independent pixels and support styles and bindings:
@@ -238,6 +259,7 @@ flowchart TB
     Items["LayoutItem containers<br/>Content, headers, tool titles, styles, and commands"]
     Commands["Compiled command bindings<br/>Native input routing"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
+    DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
     Models["Live Dock.Model.Avalonia models"]
@@ -261,6 +283,10 @@ flowchart TB
     Api --> Menus
     View --> Menus
     Menus --> Items
+    Api --> DocumentList
+    View --> DocumentList
+    DocumentList --> Api
+    DocumentList --> Items
     Models --> View
     View --> Factory
     Xml <--> Api
@@ -269,7 +295,10 @@ flowchart TB
 The compatibility layer wraps Dock's live models and delegates movement and
 rendering to Dock. It supplies AvalonDock ownership projections, return history,
 content-template scope, and close/hide semantics. The explicit XML codec needs
-no runtime type discovery.
+no runtime type discovery. The document list occupies the native tab strip's
+right-content slot, uses Avalonia menu input, and invokes the current item
+activation command. Its public-model header and icon templates share the item
+container's presentation lifecycle.
 
 The [full guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/docfx/articles/dock-avalondock.md)
 includes complete usage examples, source bindings, content callbacks, and a

@@ -388,6 +388,46 @@ selects the appropriate template for the new object. Recycling is limited to
 controls built by the same selected template. An explicit template can also
 display null content.
 
+## Customize the document list menu
+
+Each native document tab strip has an **Open documents** button. Its menu lists
+that pane's `ChildrenSorted`, including tools docked as documents. Collection
+changes refresh an open menu without rearranging the tabs. Selecting an entry
+uses its current `LayoutItem.ActivateCommand`; command enablement and the layout
+node's `IsEnabled` apply to the entry.
+
+The manager exposes separate templates for the entry header and icon. Both
+receive the public `LayoutContent`, not the application object in `Content`.
+For example, these properties go inside a `DockingManager` using Avalonia's
+default XML namespace:
+
+```xml
+<DockingManager.DocumentPaneMenuItemHeaderTemplate>
+  <DataTemplate x:DataType="LayoutContent">
+    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+  </DataTemplate>
+</DockingManager.DocumentPaneMenuItemHeaderTemplate>
+<DockingManager.IconContentTemplate>
+  <DataTemplate x:DataType="LayoutContent">
+    <Image Source="{Binding IconSource}" Width="16" Height="16" />
+  </DataTemplate>
+</DockingManager.IconContentTemplate>
+```
+
+`DocumentPaneMenuItemHeaderTemplateSelector` takes precedence over the explicit
+menu header template. With no menu header template or selector, the menu uses
+`DocumentHeaderTemplate`, then the default title text. Assigning a document
+header selector also supplies the menu selector if the latter is unset.
+
+`IconContentTemplateSelector` receives the public layout node and the owning
+Avalonia `MenuItem`. It takes precedence while preserving the explicit
+`IconContentTemplate` value, so clearing the selector restores that template.
+Without a custom icon template or selector, the menu displays `IconSource`.
+`LayoutContent.IconSource` and `LayoutItem.IconSource` use Avalonia `IImage`.
+Changes to templates and model metadata update an open menu. The same menu
+behavior applies in native floating document windows, and layout replacement
+closes the old invocation and releases its generated presentation.
+
 ## Size panes and splitters
 
 `DockWidth` and `DockHeight` accept Avalonia `GridLength` values, including pixel
@@ -535,6 +575,7 @@ flowchart TB
         Items["LayoutItem containers<br/>Content, headers, tool titles, styles, and commands"]
         Commands["Compiled command bindings<br/>Native input routing"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
+        DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
@@ -558,6 +599,10 @@ flowchart TB
     Manager --> Menus
     Controls --> Menus
     Menus --> Items
+    Manager --> DocumentList
+    Controls --> DocumentList
+    DocumentList --> Layout
+    DocumentList --> Items
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models
@@ -607,6 +652,12 @@ to their existing public wrappers before applying compiled templates. Their pres
 remain inside Dock's tab controls, auto-hide buttons, and tool chrome. Tool titles
 observe the native pane's selected model. Closed containers release their
 header bindings and native presentation parents.
+
+The document list uses the native tab strip's right-content slot and Avalonia's
+`MenuFlyout`. Its sorted entries bind to public layout contents, and their header
+and icon presenters share the item container's template refresh and cleanup.
+Selection invokes the current container activation command, which delegates
+movement and active-content changes to the native factory.
 
 `LayoutSizingPanel` extends Dock's proportional panel at the measurement boundary.
 It translates public pane dimensions into native proportions using that panel's

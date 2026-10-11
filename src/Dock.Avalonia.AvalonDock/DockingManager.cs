@@ -49,6 +49,20 @@ public class DockingManager : TemplatedControl
     public static readonly StyledProperty<IDataTemplate?> DocumentHeaderTemplateProperty =
         AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentHeaderTemplate),
             coerce: static (owner, value) => owner.GetValue(DocumentHeaderTemplateSelectorProperty) is null ? value : null);
+    /// <summary>Identifies the document list menu header template selector.</summary>
+    public static readonly StyledProperty<DataTemplateSelector?> DocumentPaneMenuItemHeaderTemplateSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(DocumentPaneMenuItemHeaderTemplateSelector));
+    /// <summary>Identifies the document list menu header template.</summary>
+    public static readonly StyledProperty<IDataTemplate?> DocumentPaneMenuItemHeaderTemplateProperty =
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentPaneMenuItemHeaderTemplate),
+            coerce: static (owner, value) => owner.GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty) is null
+                ? value ?? owner.GetValue(DocumentHeaderTemplateProperty) : null);
+    /// <summary>Identifies the document list menu icon template.</summary>
+    public static readonly StyledProperty<IDataTemplate?> IconContentTemplateProperty =
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(IconContentTemplate));
+    /// <summary>Identifies the document list menu icon template selector.</summary>
+    public static readonly StyledProperty<DataTemplateSelector?> IconContentTemplateSelectorProperty =
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(IconContentTemplateSelector));
     /// <summary>Identifies the tool tab and auto-hide header template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> AnchorableHeaderTemplateSelectorProperty =
         AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(AnchorableHeaderTemplateSelector));
@@ -174,6 +188,14 @@ public class DockingManager : TemplatedControl
     public IDataTemplate? DocumentHeaderTemplate { get => GetValue(DocumentHeaderTemplateProperty); set => SetValue(DocumentHeaderTemplateProperty, value); }
     /// <summary>Gets or sets the selector that takes precedence over the document header template.</summary>
     public DataTemplateSelector? DocumentHeaderTemplateSelector { get => GetValue(DocumentHeaderTemplateSelectorProperty); set => SetValue(DocumentHeaderTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the document list menu header template, falling back to the document header template.</summary>
+    public IDataTemplate? DocumentPaneMenuItemHeaderTemplate { get => GetValue(DocumentPaneMenuItemHeaderTemplateProperty); set => SetValue(DocumentPaneMenuItemHeaderTemplateProperty, value); }
+    /// <summary>Gets or sets the selector that takes precedence over the document list menu header template.</summary>
+    public DataTemplateSelector? DocumentPaneMenuItemHeaderTemplateSelector { get => GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty); set => SetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty, value); }
+    /// <summary>Gets or sets the document list menu icon template, receiving the public layout content.</summary>
+    public IDataTemplate? IconContentTemplate { get => GetValue(IconContentTemplateProperty); set => SetValue(IconContentTemplateProperty, value); }
+    /// <summary>Gets or sets the icon selector, receiving the public layout content and its menu item.</summary>
+    public DataTemplateSelector? IconContentTemplateSelector { get => GetValue(IconContentTemplateSelectorProperty); set => SetValue(IconContentTemplateSelectorProperty, value); }
     /// <summary>Gets or sets the template for tool tab and auto-hide headers, receiving the layout content.</summary>
     public IDataTemplate? AnchorableHeaderTemplate { get => GetValue(AnchorableHeaderTemplateProperty); set => SetValue(AnchorableHeaderTemplateProperty, value); }
     /// <summary>Gets or sets the selector that takes precedence over the tool header template.</summary>
@@ -253,6 +275,15 @@ public class DockingManager : TemplatedControl
     protected virtual void OnDocumentHeaderTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
     {
         if (e.NewValue is not null) SetCurrentValue(DocumentHeaderTemplateProperty, null);
+        if (DocumentPaneMenuItemHeaderTemplateSelector is null)
+            SetCurrentValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty, DocumentHeaderTemplateSelector);
+    }
+    /// <summary>Called when the document list menu header template changes.</summary>
+    protected virtual void OnDocumentPaneMenuItemHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Clears an explicit document list menu header template when a selector is supplied.</summary>
+    protected virtual void OnDocumentPaneMenuItemHeaderTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not null) SetCurrentValue(DocumentPaneMenuItemHeaderTemplateProperty, null);
     }
     /// <summary>Called when the tool tab and auto-hide header template changes.</summary>
     protected virtual void OnAnchorableHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
@@ -295,9 +326,24 @@ public class DockingManager : TemplatedControl
         if (change.Property == LayoutItemContainerStyleSelectorProperty) OnLayoutItemContainerStyleSelectorChanged(change);
         if (change.Property == DocumentHeaderTemplateProperty)
         {
+            CoerceValue(DocumentPaneMenuItemHeaderTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
             OnDocumentHeaderTemplateChanged(change);
         }
+        if (change.Property == DocumentPaneMenuItemHeaderTemplateProperty)
+        {
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
+            OnDocumentPaneMenuItemHeaderTemplateChanged(change);
+        }
+        if (change.Property == DocumentPaneMenuItemHeaderTemplateSelectorProperty)
+        {
+            OnDocumentPaneMenuItemHeaderTemplateSelectorChanged(change);
+            CoerceValue(DocumentPaneMenuItemHeaderTemplateProperty);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
+        }
+        if (change.Property == IconContentTemplateProperty || change.Property == IconContentTemplateSelectorProperty)
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.MenuIcon);
         if (change.Property == AnchorableHeaderTemplateProperty)
         {
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);

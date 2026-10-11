@@ -35,6 +35,16 @@
                   DocumentHeaderTemplate="{StaticResource DocumentHeader}"
                   AnchorableHeaderTemplate="{StaticResource ToolHeader}"
                   AnchorableTitleTemplate="{StaticResource ToolTitle}">
+    <DockingManager.DocumentPaneMenuItemHeaderTemplate>
+      <DataTemplate x:DataType="LayoutContent">
+        <TextBlock Classes="package-menu-header" Text="{Binding Title, StringFormat='Document: {0}'}" />
+      </DataTemplate>
+    </DockingManager.DocumentPaneMenuItemHeaderTemplate>
+    <DockingManager.IconContentTemplate>
+      <DataTemplate x:DataType="LayoutContent">
+        <TextBlock Classes="package-menu-icon" Text="{Binding ContentId}" />
+      </DataTemplate>
+    </DockingManager.IconContentTemplate>
     <DockingManager.DocumentContextMenu>
       <ContextMenu x:DataType="LayoutItem">
         <MenuItem Header="Close package document" Command="{Binding CloseCommand}" />

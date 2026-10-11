@@ -11,6 +11,7 @@ using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Converters;
 using AvalonDock.Layout;
+using AvalonDock.Themes;
 using Dock.Avalonia.Controls;
 using Labels = AvalonDock.Properties.Resources;
 
@@ -57,7 +58,9 @@ internal static class MetadataAndUtilityProbe
                 }
             }
         };
-        Window window = new() { Width = 700, Height = 500, Content = manager };
+        Window window = new() { Width = 700, Height = 500 };
+        window.Styles.Add(new AvalonDockTheme());
+        window.Content = manager;
         try
         {
             window.Show(); Update();

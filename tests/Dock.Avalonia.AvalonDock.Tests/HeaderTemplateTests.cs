@@ -78,7 +78,8 @@ public class HeaderTemplateTests
             Assert.True(second.IsSelected);
             Assert.Same(second.DockModel, manager.DockLayout.FocusedDockable);
             LayoutAnchorable tool = manager.Layout.Descendents().OfType<LayoutAnchorable>().First();
-            Click(window, Header(manager, "tool-header", tool));
+            // Custom tool text can extend beyond its compressed, clipped tab slot.
+            Click(window, Header(manager, "tool-header", tool).FindAncestorOfType<ToolTabStripItem>()!);
             Assert.True(tool.IsActive);
             Assert.True(tool.IsSelected);
             Assert.Same(tool.DockModel, manager.DockLayout.FocusedDockable);

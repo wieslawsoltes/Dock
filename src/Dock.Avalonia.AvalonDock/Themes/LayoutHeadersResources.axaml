@@ -8,6 +8,8 @@
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:DataType="core:IDockable">
+  <ItemsPanelTemplate x:Key="AvalonDockDocumentTabPanel"><controls:DocumentPaneTabPanel /></ItemsPanelTemplate>
+  <ItemsPanelTemplate x:Key="AvalonDockAnchorableTabPanel"><controls:AnchorablePaneTabPanel /></ItemsPanelTemplate>
   <DataTemplate x:Key="AvalonDockDefaultHeader" x:DataType="layout:LayoutContent">
     <TextBlock Text="{Binding Title}" VerticalAlignment="Center"
                Padding="{DynamicResource DockHeaderContentPadding}" />

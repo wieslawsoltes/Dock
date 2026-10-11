@@ -110,7 +110,8 @@ public class CompiledXamlTests
     [AvaloniaFact]
     public void Document_Tab_Can_Be_Selected_With_Headless_Pointer_Input()
     {
-        XamlFixture window = new();
+        // Both natural-width headers must fit for a direct header click.
+        XamlFixture window = new() { Width = 1200 };
         try
         {
             window.Show();

@@ -63,11 +63,31 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     public bool IsMaximized => _maximized;
     internal bool HasClosed { get; private set; }
     internal bool DeferNativePresentation { get; set; }
+    internal bool IsHiddenByLayout { get; private set; }
+
+    internal void HideForLayout()
+    {
+        // An explicitly created, unshown host remains under the caller's
+        // control until its first Show. Only restore windows we have hidden.
+        if (HasClosed || !IsVisible) return;
+        IsHiddenByLayout = true;
+        Window?.Save();
+        Hide();
+    }
+
+    internal void RestoreForLayout()
+    {
+        if (HasClosed || !IsHiddenByLayout) return;
+        IsHiddenByLayout = false;
+        Window?.Present(Window.IsModal);
+    }
 
     void IHostWindow.Present(bool isDialog)
     {
-        if (DeferNativePresentation)
+        bool hiddenLayout = Model is LayoutAnchorableFloatingWindow { IsVisible: false };
+        if (DeferNativePresentation || hiddenLayout)
         {
+            if (hiddenLayout && !DeferNativePresentation) IsHiddenByLayout = true;
             _notifyOpened = true;
             if (IsVisible)
             {
@@ -93,6 +113,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         NotifyOpened();
         base.OnOpened(e);
+        if (Model is LayoutAnchorableFloatingWindow { IsVisible: false }) HideForLayout();
     }
 
     private void NotifyOpened()

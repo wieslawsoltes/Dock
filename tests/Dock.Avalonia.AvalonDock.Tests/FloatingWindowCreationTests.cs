@@ -201,7 +201,8 @@ public class FloatingWindowCreationTests
         Assert.False(created.IsVisible);
         workspace.Tool.Dock();
         Assert.Same(previousPane, workspace.Tool.Parent);
-        Assert.DoesNotContain(created, workspace.Manager.FloatingWindows);
+        Assert.Contains(created, workspace.Manager.FloatingWindows);
+        Assert.False(created.IsVisible);
     }
 
     [AvaloniaFact]

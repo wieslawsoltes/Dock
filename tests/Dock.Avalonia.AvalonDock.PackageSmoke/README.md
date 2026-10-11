@@ -12,11 +12,13 @@ native splitters through the manager properties, observe bubbling docking/floati
 notifications around native movement, inspect typed native floating controls and
 their collection changes, create and explicitly show an immutable floating window,
 bind unprefixed window-wide commands and invoke current item commands with parameters,
+hide and restore a tool while retaining its floating host and native registration,
 resolve a container with the unprefixed converter,
 and restore application content
 from XML using the packaged assemblies. Pack the native
 control, model, and proportional-panel packages too: they contain the tool-menu
-lifetime, window drag input, operation observation, model-aware host creation, and runtime splitter sizing
+lifetime, window drag input, operation observation, model-aware host creation, unique
+host registration across hide/show, hidden-window drop/activation guards, and runtime splitter sizing
 changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.

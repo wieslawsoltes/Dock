@@ -67,6 +67,15 @@ tool.Float();
 Dispatcher.UIThread.RunJobs();
 HostWindow toolHost = (HostWindow)tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host!;
 AssertFloatingWindowCommands(window, manager, tool, (LayoutAnchorableFloatingWindowControl)toolHost);
+tool.Hide();
+Dispatcher.UIThread.RunJobs();
+if (toolHost.IsVisible || !manager.FloatingWindows.Contains((LayoutFloatingWindowControl)toolHost))
+    throw new Exception("Hiding a floating tool did not retain its native control registration.");
+tool.Show();
+Dispatcher.UIThread.RunJobs();
+if (!toolHost.IsVisible || !ReferenceEquals(tool.FindParent<LayoutFloatingWindow>()!.DockWindow.Host, toolHost) ||
+    manager.DockFactory.HostWindows.Count(value => ReferenceEquals(value, toolHost)) != 1)
+    throw new Exception("Restoring a hidden tool did not reuse its host with exactly one native registration.");
 AssertToolTitle(toolHost, tool);
 tool.Title = "Floating agenda";
 AssertToolTitle(toolHost, tool);

@@ -74,7 +74,7 @@ public class FloatingCloseTests
             Assert.Same(window, Assert.Single(fixture.Manager.Layout.FloatingWindows));
             tool.Show();
             HostWindow restored = fixture.GetHost();
-            Assert.NotSame(host, restored);
+            Assert.Same(host, restored);
             Assert.True(restored.IsVisible);
             Assert.Same(window, tool.FindParent<LayoutFloatingWindow>());
         }

@@ -224,7 +224,7 @@ public class FloatingSerializationTests
     }
 
     [AvaloniaFact]
-    public void Hiding_The_Last_Floating_Tool_Closes_The_Host_And_Show_Reopens_It()
+    public void Hiding_The_Last_Floating_Tool_Retains_The_Host_And_Show_Reuses_It()
     {
         FloatingFixture view = new();
         DockingManager manager = view.FindControl<DockingManager>("Manager")!;
@@ -239,14 +239,14 @@ public class FloatingSerializationTests
             tool.Hide();
             Dispatcher.UIThread.RunJobs();
             Assert.False(oldHost.IsVisible);
-            Assert.Null(window.DockWindow.Host);
+            Assert.Same(oldHost, window.DockWindow.Host);
             Assert.True(tool.IsHidden);
             Assert.Same(tool, Assert.Single(manager.Layout.Hidden));
             tool.Show();
             Dispatcher.UIThread.RunJobs();
             HostWindow newHost = Assert.IsAssignableFrom<HostWindow>(window.DockWindow.Host);
             Assert.True(newHost.IsVisible);
-            Assert.NotSame(oldHost, newHost);
+            Assert.Same(oldHost, newHost);
             Assert.True(tool.IsFloating);
             Assert.Contains(newHost.GetVisualDescendants().OfType<TextBlock>(), text => text.Text == "Floating tool" && text.Bounds.Width > 0);
         }

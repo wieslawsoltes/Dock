@@ -86,6 +86,15 @@ The Xceed XML namespace is also supported:
 `ad` is an arbitrary alias. Using a prefix can make the library boundary
 explicit in a mixed XAML file; it does not change the layout's behavior.
 
+The original WPF library maps its types to the Xceed URI and suggests `xcad`
+in its [assembly namespace declarations](https://github.com/xceedsoftware/wpftoolkit/blob/2c71faba5eecc1b6ae6cd3d269408e0df37715d8/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Properties/AssemblyInfo.cs).
+A prefix lets a WPF view keep the usual WPF presentation namespace as its
+default. Unprefixed AvalonDock elements are also possible by making the Xceed
+URI the default on that subtree; WPF controls inside it then need their own
+prefix or a reset default namespace. This adapter additionally maps to
+Avalonia's default namespace, so the first example can mix unprefixed
+AvalonDock and Avalonia elements directly.
+
 ## Use the C# layout API
 
 The following code belongs in a workspace service called by ViewModel commands.
@@ -621,11 +630,23 @@ manager.LayoutFloatingWindowControlCollectionChanged -= OnFloatingWindowsChanged
 ```
 
 The event wraps the collection action, indices, and actual added or removed
-controls. Canceling a close leaves the control registered. Docking, closing,
-layout replacement, and detaching the manager remove closed hosts. Reattachment
+controls. Canceling a close leaves the control registered. Removing a floating
+model, closing its host, layout replacement, and detaching the manager remove
+closed hosts. Reattachment
 can create new control instances for the same persistent floating models, so
 keep application state on the models. Native drag and window-state changes
 update `IsDragging` and `IsMaximized`.
+
+Hiding all tools hides their floating window while retaining the same control,
+resources, geometry, item commands, and model. `LayoutAnchorable.Show()` restores
+that host. A floating return pane retained after docking also keeps its hidden
+host for reuse. These visibility changes do not add or remove manager controls
+or duplicate native host registration. Hidden models loaded from XML or a
+reattached view receive new unshown controls and become visible when restored.
+Hidden windows are excluded from native docking hit tests and the optional
+bring-windows-forward behavior during dragging.
+An explicitly created window that has never been shown remains under the
+caller's control until `Show()` is requested.
 
 `RootDocumentLayoutItem` resolves a document host's current container.
 `SingleContentLayoutItem` follows the selected content when a tool host has one
@@ -693,8 +714,8 @@ keeps content in place keeps the native window open. The protected `CanClose`,
 command subscriptions without disposing application commands.
 
 The floating-control surface is still being completed: resize-border customization,
-upstream hidden-host lifetime, user/internal-close distinctions, and remaining
-protected/platform hooks are tracked in the compatibility checklist.
+user/internal-close distinctions, and remaining protected/platform hooks are
+tracked in the compatibility checklist.
 
 ## Restore application content from XML
 

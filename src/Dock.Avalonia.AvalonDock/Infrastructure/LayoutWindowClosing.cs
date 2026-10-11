@@ -39,8 +39,8 @@ internal static class LayoutWindowClosing
         {
             foreach (LayoutContent content in contents) ((LayoutAnchorable)content).Hide();
         }
-        // Content cancellation keeps the host open. Closing/hiding the last
-        // item has already detached its host through normal model cleanup.
+        // Hiding and content cancellation cancel the native close. The hidden
+        // host stays tracked for restoration; closing all content detaches it.
         return window.Host?.IsTracked != true;
     }
 }

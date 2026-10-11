@@ -286,6 +286,14 @@ unsubscribe when the service detaches. A canceled close preserves registration.
 Layout replacement and view reattachment replace host instances while retaining
 the appropriate model/application content.
 
+Hiding a tool group retains its floating host in `manager.FloatingWindows`.
+Restoring a tool reuses that same control, including its resources and geometry.
+Retained floating return panes also keep their hidden hosts after docking.
+Hide/show cycles preserve a single native factory registration. XML reload and
+view reattachment replace hosts while preserving the models' hidden state.
+Hidden windows do not become docking drop targets or activate when Dock brings
+the visible workspace windows forward during dragging.
+
 Create an unshown native window when the workspace service needs to configure
 it before display:
 
@@ -311,7 +319,7 @@ Native window-close requests respect factory vetoes and use those item commands
 with a null parameter, falling back to hiding when closing is disabled. Content
 cancellation keeps the remaining tools open. Closing the host releases command
 subscriptions while preserving application command ownership. Resize borders,
-hidden-host lifetime, and remaining floating-control hooks are still open.
+user/internal-close distinctions, and remaining floating-control hooks are still open.
 
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as

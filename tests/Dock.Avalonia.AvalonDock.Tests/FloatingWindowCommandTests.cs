@@ -224,7 +224,8 @@ public class FloatingWindowCommandTests
         Assert.Equal(2, hidden);
         Assert.False(host.IsVisible);
         Assert.Equal(new[] { workspace.First, workspace.Second }, workspace.Manager.Layout.Hidden);
-        Assert.False(host.HideWindowCommand.CanExecute(null));
+        Assert.Same(host, Assert.Single(workspace.Manager.FloatingWindows));
+        Assert.True(host.HideWindowCommand.CanExecute(null));
     }
 
     [AvaloniaTheory]

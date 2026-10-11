@@ -167,12 +167,12 @@ public class FloatingReturnTests
             tool.Dock();
             Dispatcher.UIThread.RunJobs();
             Assert.False(firstHost.IsVisible);
-            Assert.Null(window.DockWindow.Host);
+            Assert.Same(firstHost, window.DockWindow.Host);
             tool.Float();
             Dispatcher.UIThread.RunJobs();
             Assert.Same(window, Assert.Single(manager.Layout.FloatingWindows));
             HostWindow secondHost = Assert.IsAssignableFrom<HostWindow>(window.DockWindow.Host);
-            Assert.NotSame(firstHost, secondHost);
+            Assert.Same(firstHost, secondHost);
             Assert.True(secondHost.IsVisible);
 
             int closed = 0;

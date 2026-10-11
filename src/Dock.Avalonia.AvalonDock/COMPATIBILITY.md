@@ -189,6 +189,16 @@ supported by corresponding implementation and test evidence.
   unprefixed compiled bindings with Headless input, and subscription/lifetime
   cleanup without disposing application commands. Direct `Execute` delegates
   to the item commands as upstream does; callers first query `CanExecute`.
+- Hiding tool groups and retaining floating return panes preserve the actual
+  host instead of closing/recreating it. Visibility restoration keeps its
+  resources, content, geometry, container identity, and native registration.
+  Tests cover direct hiding, window-wide commands, native-close hide fallback,
+  partial cancellation, never-shown explicit creation, XML replacement, view
+  detach/reattach, and collection/command lifetimes after disposing hidden hosts.
+  Initially hidden layouts receive unshown controls. Dock's native host avoids
+  duplicate factory registration when Avalonia raises `Opened` again after `Hide`.
+  Native Headless tests also verify that retained hidden windows and external
+  surfaces cannot become drop targets or receive bring-to-front activation.
 - Document and tool floating models expose native Dock windows through an
   observable `FloatingWindows` collection. Native single-document float/dock
   and tool floating operations preserve content wrappers and public ownership.
@@ -238,7 +248,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 378 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 387 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -252,7 +262,7 @@ supported by corresponding implementation and test evidence.
 - Remaining manager APIs: additional update strategy invocation paths,
   templates/selectors, styles, themes, remaining converters, and the control
   adapter surface. Floating controls still need resize-border customization,
-  upstream hidden-host lifetime, user/internal-close distinctions, and remaining
+  user/internal-close distinctions, and remaining
   protected/platform hooks.
 - All upstream interfaces, extension methods, protected extensibility points,
   and `IXmlSerializable` methods not yet represented in the adapter.

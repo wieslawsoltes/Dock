@@ -154,6 +154,40 @@ Window deactivation retains the active-content history. Explicitly setting
 `ActiveContent` to `null` clears the active node and document history; removing
 nodes or replacing their layout clears references to the removed nodes.
 
+## Observe layout membership and parent changes
+
+`LayoutRoot.ElementAdded` and `ElementRemoved` provide `LayoutElementEventArgs`.
+Its `Element` is the public layout node whose parent transition entered or left
+that layout. Attaching or removing a subtree reports its topmost transitioning
+node; the events do not enumerate all descendants. Moving directly between panes
+in the same root does not change root membership. A move that first detaches a
+node and then reattaches it produces removal and addition notifications.
+
+Derived documents, tools, and other layout types can override
+`OnParentChanging(ILayoutContainer?, ILayoutContainer?)`,
+`OnParentChanged(ILayoutContainer?, ILayoutContainer?)`, and
+`OnRootChanged(ILayoutRoot?, ILayoutRoot?)`. `Parent` still identifies the old
+container during the changing hook and the new container during the changed
+hook. The base root hook raises the membership events; call it when overriding
+to retain that behavior. `RaisePropertyChanging` and `RaisePropertyChanged` are
+also virtual. Parent property notifications bracket these hooks, and `Updated`
+notifies the destination root afterward.
+
+Native factory moves use the same callbacks. `Dock.Model.Avalonia.Core.DockableBase`
+provides `OwnerChanging`, with `DockableOwnerChangingEventArgs` from
+`Dock.Model.Core.Events`, so the adapter can notify before the native assignment.
+Native thread-affinity checks run before observer callbacks. A throwing changing
+hook prevents that owner assignment; it does not roll back collection mutations
+that a larger docking operation has already performed.
+
+The bridge preserves existing wrappers when native ownership joins separate
+trees, without retaining an unrelated layout through its identity map. Floating
+documents expose their public floating window instead of the internal native
+document pane. During native moves, an existing item container remains available
+to native rendering until ownership is reassigned and reconciliation completes,
+allowing its content presenter to transfer between hosts. The public
+`GetLayoutItemFromModel` API still returns null for an unattached node.
+
 ## Bind item containers and commands
 
 `DockingManager.GetLayoutItemFromModel` returns a `LayoutDocumentItem` or
@@ -1056,6 +1090,7 @@ flowchart TB
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
         Focus["Active content and document history<br/>Across native roots"]
+        TreeEvents["Parent and root hooks<br/>Layout membership events"]
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
@@ -1105,6 +1140,8 @@ flowchart TB
     Factory --> Models
     Factory --> Focus
     Focus --> Layout
+    Models --> TreeEvents
+    TreeEvents --> Layout
     Factory --> Events
     Events --> Manager
     Factory --> Hosts

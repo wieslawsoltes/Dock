@@ -36,6 +36,7 @@ using ReactiveUI.Reactive;
 
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
+AssertLayoutLifecycle();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());
 if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not expose user close origin.");
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
@@ -360,6 +361,31 @@ static void AssertThemes(Window owner, DockingManager manager, HostWindow host)
         navigator?.Close();
         manager.Theme = previous;
     }
+}
+
+static void AssertLayoutLifecycle()
+{
+    PackageConsumer.LifecycleDocument document = new();
+    LayoutRoot first = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(document)) };
+    LayoutDocumentPane destination = new();
+    LayoutRoot second = new() { RootPanel = new LayoutPanel(destination) };
+    int removed = 0;
+    int added = 0;
+    first.ElementRemoved += (_, args) =>
+    {
+        if (!ReferenceEquals(args.Element, document)) throw new Exception("The removed event did not identify the public document.");
+        removed++;
+    };
+    second.ElementAdded += (_, args) =>
+    {
+        if (!ReferenceEquals(args.Element, document)) throw new Exception("The added event did not identify the public document.");
+        added++;
+    };
+    document.ResetNotifications();
+    destination.Children.Add(document);
+    if (removed != 1 || added != 1 || document.BeforeChanges != 2 || document.AfterChanges != 2 ||
+        document.RootChanges != 2 || !ReferenceEquals(document.Parent, destination) || !ReferenceEquals(document.Root, second))
+        throw new Exception("The packaged parent/root hooks and layout membership events did not follow the move.");
 }
 
 static void AssertActiveContent(DockingManager manager, LayoutDocument document, LayoutAnchorable tool)

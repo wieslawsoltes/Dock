@@ -73,6 +73,14 @@ document panes, with `IsLastFocusedDocument` notifications on the affected nodes
 Window deactivation retains this history; clearing active content or removing
 the corresponding layout nodes clears it.
 
+`LayoutRoot.ElementAdded` and `ElementRemoved` identify the public element whose
+parent transition enters or leaves the layout. Attaching a subtree reports its
+topmost transitioning node. Derived layout types can override `OnParentChanging`,
+`OnParentChanged`, and `OnRootChanged`; call the base root hook to preserve the
+membership events. These hooks also observe native Dock owner changes, with the
+old parent available before assignment and the new parent afterward. Floating
+documents expose their public floating window throughout these callbacks.
+
 XML restores layout nodes and resolves application content by `ContentId`.
 Construct the serializer after the content exists, or provide
 `LayoutSerializationCallback` to resolve ViewModels from an application-owned
@@ -445,6 +453,7 @@ flowchart TB
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
     Focus["Active content and document history<br/>Across native roots"]
+    TreeEvents["Parent and root hooks<br/>Layout membership events"]
     Events["Operation notifications<br/>Public layout source and routed events"]
     Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
     Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
@@ -472,6 +481,8 @@ flowchart TB
     Factory --> Models
     Factory --> Focus
     Focus --> Bridge
+    Models --> TreeEvents
+    TreeEvents --> Api
     Factory --> Events
     Events --> Api
     Factory --> Hosts

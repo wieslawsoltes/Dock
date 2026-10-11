@@ -93,6 +93,7 @@ jobs:
               <package pattern="Dock.Avalonia.AvalonDock" />
               <package pattern="Dock.Avalonia" />
               <package pattern="Dock.Model" />
+              <package pattern="Dock.Model.Avalonia" />
               <package pattern="Dock.Controls.ProportionalStackPanel" />
             </packageSource>
             <packageSource key="nuget.org"><package pattern="*" /></packageSource>

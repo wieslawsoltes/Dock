@@ -1,8 +1,9 @@
 # NuGet consumer smoke test
 
 This project intentionally uses package references only and is excluded from
-the solution: the package must be built before it can restore. It verifies
-that a real consumer can compile the default Avalonia XML namespace, render
+the solution: the package must be built before it can restore. It checks
+parent/root hooks from an external derived document and layout membership events.
+It also verifies that a real consumer can compile the default Avalonia XML namespace, render
 Dock, apply compiled container styles, content templates and tab/auto-hide
 headers, render tool and floating document titles and select their templates, click
 floating caption buttons to maximize/restore and execute the current close command,
@@ -33,10 +34,10 @@ preserves hidden navigators while completing it releases them and permits
 `OnLastWindowClose` desktop lifetime shutdown,
 and restore application content
 from XML using the packaged assemblies. Pack the native
-control, model, and proportional-panel packages too: they contain the tool-menu
+control, core model, Avalonia model, and proportional-panel packages too: they contain the tool-menu
 lifetime, window drag input, operation observation, model-aware host creation, unique
 host registration across hide/show, canceled-exit ownership preservation,
-hidden-window drop/activation guards, and runtime splitter sizing
+hidden-window drop/activation guards, native ownership-changing notifications, and runtime splitter sizing
 changes. An isolated cache
 and package-source mapping ensure these local packages are tested even when the
 same version exists on nuget.org or in the normal package cache.
@@ -45,6 +46,7 @@ same version exists on nuget.org or in the normal package cache.
 dotnet pack src/Dock.Avalonia.AvalonDock -c Release -o artifacts/nuget
 dotnet pack src/Dock.Avalonia -c Release --no-build -o artifacts/nuget
 dotnet pack src/Dock.Model -c Release -o artifacts/nuget
+dotnet pack src/Dock.Model.Avalonia -c Release --no-build -o artifacts/nuget
 dotnet pack src/Dock.Controls.ProportionalStackPanel -c Release --no-build -o artifacts/nuget
 dock_consumer_validation=$(mktemp -d)
 cat > "$dock_consumer_validation/NuGet.Config" <<EOF
@@ -59,6 +61,7 @@ cat > "$dock_consumer_validation/NuGet.Config" <<EOF
       <package pattern="Dock.Avalonia.AvalonDock" />
       <package pattern="Dock.Avalonia" />
       <package pattern="Dock.Model" />
+      <package pattern="Dock.Model.Avalonia" />
       <package pattern="Dock.Controls.ProportionalStackPanel" />
     </packageSource>
     <packageSource key="nuget.org"><package pattern="*" /></packageSource>

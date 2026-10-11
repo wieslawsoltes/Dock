@@ -283,6 +283,25 @@ on removal or XML replacement. Custom tabs preserve an explicitly assigned model
 and cancel pending input on replacement/detachment. The full guide includes a
 bound tab row, hook signatures, and lifetime and platform limits.
 
+`DocumentPaneTabPanel` and `AnchorablePaneTabPanel` provide the public tab layout
+inside native horizontal strips, including floating windows. Document headers
+keep their natural widths and suppress overflow. Selecting a hidden document
+moves it to the front of the live pane; the native document-list menu can activate
+it there. Tool headers use natural widths when space permits and share constrained
+space, with native containers clipping each header to its own slot.
+
+Both panels work as `ItemsPanelTemplate` content in either XML namespace. Keep
+custom rows bound to the pane's `Children` so selection-driven moves update their
+visual order. The panels start with left-to-right flow. Derived panels can override
+measure/arrange; document panels additionally expose
+`OnMouseLeave(PointerEventArgs)`.
+
+Avalonia has no WPF `Visibility.Hidden`: overflow keeps each header measured and
+preserves its application `IsVisible`, while temporary opacity/input layers hide
+it and prevent focus. Expansion, removal, or detachment restores underlying
+property values and bindings. The native drag helper excludes noninteractive
+targets. The full guide describes overwide headers and the sizing rules.
+
 `DockingManager.LayoutItemTemplate` accepts an Avalonia `IDataTemplate` for
 application content. Alternatively, use `LayoutItemTemplateSelector` with an
 `AvalonDock.Controls.DataTemplateSelector` subclass overriding
@@ -561,6 +580,7 @@ flowchart TB
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
     ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
+    TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
     Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
     DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
@@ -622,6 +642,9 @@ flowchart TB
     View --> ContentControls
     ContentControls --> Items
     ContentControls --> Api
+    View --> TabPanels
+    TabPanels --> Api
+    TabPanels --> View
     View --> Tabs
     Tabs --> Items
     Tabs --> Api

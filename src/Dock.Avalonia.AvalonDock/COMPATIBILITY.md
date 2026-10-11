@@ -231,6 +231,17 @@ supported by corresponding implementation and test evidence.
   Tests cover protected model/container and Avalonia pointer hooks, focusable
   children, bound collection reordering, interrupted drags, XML replacement,
   manager transfers, and collection of unused and retained closed tabs.
+- Public `DocumentPaneTabPanel` and `AnchorablePaneTabPanel` lay out native
+  horizontal tabs and custom bound rows in either XML namespace. Document tabs
+  retain natural widths, suppress overflow, and move a selected hidden node to
+  the front through the live pane. Native document-list activation reveals it.
+  Tool headers compress with equal measurement caps and clip to their slots.
+  Tests cover measured/arranged widths, collapsed/empty panels, floating hosts,
+  selection without activation, model replacement, protected sizing/input hooks,
+  binding restoration, reentrant removal/detachment, and weak subscriptions.
+  Since Avalonia lacks WPF Hidden, overflow preserves measurement and `IsVisible`
+  while temporary opacity and input layers suppress rendering and focus.
+  Native drag input excludes noninteractive targets during movement and release.
 - `DocumentHeaderTemplate` and `AnchorableHeaderTemplate`, plus their selector
   properties, apply compiled templates to native document/tool tabs and
   auto-hide strips. Templates and selectors receive public layout nodes;
@@ -427,7 +438,7 @@ supported by corresponding implementation and test evidence.
   application-wide Dock resources, the inherited Avalonia control-theme
   property, invalid configurations, and the built-in URI. General URI loading is
   still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
-- 790 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 822 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -464,8 +475,8 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 615
-matching type/member keys and 336 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 623
+matching type/member keys and 328 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

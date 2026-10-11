@@ -4,6 +4,17 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <ItemsPanelTemplate x:Key="DocumentPanel"><DocumentPaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="LegacyDocumentPanel"><ad:DocumentPaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="ToolPanel"><AnchorablePaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="LegacyToolPanel"><ad:AnchorablePaneTabPanel /></ItemsPanelTemplate>
+    <DataTemplate x:Key="OverflowDocumentTabs" x:DataType="LayoutDocumentPane">
+      <ItemsControl ItemsSource="{Binding Children}" ItemsPanel="{StaticResource DocumentPanel}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="LayoutContent"><LayoutDocumentTabItem Model="{Binding}" Width="100" Height="30" /></DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </DataTemplate>
     <DataTemplate x:Key="DocumentTabControl" x:DataType="LayoutContent">
       <LayoutDocumentTabItem Model="{Binding}" />
     </DataTemplate>

@@ -24,6 +24,14 @@ the packaged optional native drag policy, restrictions on native and custom tab
 reordering, custom-row movement, and floating one tab through canceled native
 window dragging.
 
+Public document/tool tab panels compile in both XML namespaces. External probes
+override measure/arrange and the document mouse-exit hook, verify compressed tool
+widths, restore application bindings after document overflow, and select a hidden
+document through a compiled pane-bound row without changing activation. Native
+docked/floating tabs also verify that their public panels are in use. The native
+drag helper excludes noninteractive targets before both factory and collection
+moves.
+
 Content controls compile in the default and historical XML namespaces, expose
 their existing model containers, and support an external model-change override
 and protected container setter. The consumer checks model enablement and verifies

@@ -510,6 +510,61 @@ drag. Headless tests cover collection updates, capabilities, cancellation,
 manager transfer, XML replacement, and retained-control lifetime. Native desktop
 move behavior still needs platform integration validation.
 
+## Lay out tab headers and handle overflow
+
+`DocumentPaneTabPanel` and `AnchorablePaneTabPanel` are public Avalonia `Panel`
+controls. The compatibility theme installs them in Dock's existing horizontal
+document and tool tab strips, including floating windows. Both start with
+`FlowDirection="LeftToRight"` and also compile through the historical XML URI.
+Vertical native document strips keep their existing layout.
+
+Document headers measure at their natural width. The panel displays the leading
+headers that fit; once one overflows, the remaining headers are suppressed. A
+newly selected hidden document moves to index zero through the live pane's
+`MoveChild`, and its selected index follows. This changes the public collection
+and its native Dock collection together; it is distinct from activating content.
+The native document-list menu can activate an overflowed document and bring its
+tab into view. A first header wider than the entire available area remains
+suppressed until sufficient space is available.
+
+Avalonia has no separate WPF `Visibility.Hidden` value. Overflowed headers retain
+their measurement and application `IsVisible` value while temporary property
+layers set opacity to zero and disable input/focus. Resizing restores the
+underlying `Opacity`, `IsHitTestVisible`, and `IsEnabled` values and bindings.
+Removing a header or detaching the panel releases those layers and subscriptions,
+including removal during a property notification. Native drag reordering ignores
+noninteractive targets, including headers suppressed by overflow.
+
+Tool headers measure naturally when space permits. Under constraint, they are
+remeasured with an equal width cap. Arrangement uses their desired widths when
+there is spare room, or equal shares when the measured total fills or exceeds the
+available width. Collapsed children do not consume a share. Native tool containers
+clip custom header content to their allocated tab slots. Tool strips still hide
+when they contain only one tool.
+
+Custom rows can use either public panel as an `ItemsControl.ItemsPanel`:
+
+```xml
+<ItemsPanelTemplate x:Key="DocumentTabLayout">
+  <DocumentPaneTabPanel />
+</ItemsPanelTemplate>
+<ItemsPanelTemplate x:Key="ToolTabLayout">
+  <AnchorablePaneTabPanel />
+</ItemsPanelTemplate>
+```
+
+Bind the row's `ItemsSource` to the live pane's `Children`, as in the public-tab
+example above. Model-aware overflow accepts public tab controls, `TabItem`
+containers with a `LayoutContent` in `Content`, and generated containers whose
+data context is a public content node or its native Dock model. Keep the collection
+binding so programmatic selection can update the visual order.
+
+Both panels expose protected `MeasureOverride(Size)` and `ArrangeOverride(Size)`
+for derived controls. `DocumentPaneTabPanel.OnMouseLeave(PointerEventArgs)` is the
+Avalonia counterpart of the upstream mouse-exit hook; its base implementation
+preserves normal pointer routing. Ordinary application layouts need only the
+compiled panel templates.
+
 ## Use converters in compiled bindings
 
 Converters live in `AvalonDock.Converters` and resolve through both XML namespaces.
@@ -1426,6 +1481,7 @@ flowchart TB
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
+        TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
         Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
         ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
         Commands["Compiled command bindings<br/>Native input routing"]
@@ -1471,6 +1527,9 @@ flowchart TB
     Controls --> ContentControls
     ContentControls --> Items
     ContentControls --> Layout
+    Controls --> TabPanels
+    TabPanels --> Layout
+    TabPanels --> Controls
     Controls --> Tabs
     Tabs --> Items
     Tabs --> Layout

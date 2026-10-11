@@ -203,6 +203,8 @@ internal static class TabControlProbe
         {
             Control header = FindTab(scope, first);
             if (!ReferenceEquals(Item(header), item)) throw new Exception("The native packaged tab did not retain its existing item.");
+            if (tool ? header.FindAncestorOfType<AnchorablePaneTabPanel>() is null : header.FindAncestorOfType<DocumentPaneTabPanel>() is null)
+                throw new Exception("The packaged native tab strip did not use its public compatibility panel.");
         }
     }
 

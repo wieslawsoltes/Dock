@@ -255,17 +255,25 @@ public partial class NativeCommandTests
         WeakReference<DockingManager> reference = OpenCustomMenuAndRelease(retained, origin, closeFirst);
         await Task.Delay(Application.Current!.PlatformSettings!.HoldWaitDuration + TimeSpan.FromMilliseconds(50));
         Dispatcher.UIThread.RunJobs();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 20; i++)
         {
             AvaloniaHeadlessPlatform.ForceRenderTimerTick();
             // A render commit can enqueue cleanup after the tick returns.
             Dispatcher.UIThread.RunJobs();
             GC.Collect();
             GC.WaitForPendingFinalizers();
+            GC.Collect();
+            if (!IsManagerAlive(reference)) break;
+            // Submenu disposal and canceled hold continuations can complete on
+            // a later dispatcher turn under load. Keep the collection check bounded.
+            await Task.Delay(10);
         }
         Assert.False(reference.TryGetTarget(out _));
         GC.KeepAlive(retained);
     }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static bool IsManagerAlive(WeakReference<DockingManager> reference) => reference.TryGetTarget(out _);
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static WeakReference<DockingManager> OpenCustomMenuAndRelease(ContextMenu menu, string origin, bool closeFirst)

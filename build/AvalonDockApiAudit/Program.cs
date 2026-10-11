@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AvalonDockApiAudit;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -30,15 +31,11 @@ List<string> missing = expected.Where(line => !actualKeys.Contains(Key(line))).T
 foreach (string line in missing) Console.WriteLine("MISSING\t" + line);
 Console.WriteLine($"Presence audit: {expected.Count - missing.Count}/{expected.Count} declarations have a matching type/member key; {missing.Count} missing.");
 Console.WriteLine("Namespace mapping: upstream Xceed.Wpf.AvalonDock.* corresponds to AvalonDock.* in the adapter.");
+Console.WriteLine("Known BCL spelling normalization: CultureInfo and System.Globalization.CultureInfo share a key.");
 Console.WriteLine("A matching key is not proof of signature or behavioral compatibility. Verify framework types, inheritance, defaults, bindings, templates, and behavior separately.");
 return missing.Count == 0 ? 0 : 1;
 
-static string Key(string declaration)
-{
-    int separator = declaration.IndexOf('\t');
-    string key = separator < 0 ? declaration : declaration[..separator];
-    return key.Replace("Xceed.Wpf.AvalonDock.", "AvalonDock.", StringComparison.Ordinal);
-}
+static string Key(string declaration) => ApiKey.Normalize(declaration);
 
 static SortedSet<string> ReadInventory(string directory)
 {

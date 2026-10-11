@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.Xml;
 using System.Reactive.Concurrency;
 using Avalonia;
@@ -23,6 +24,7 @@ using Dock.Avalonia.Controls;
 using Dock.Controls.ProportionalStackPanel;
 using AvalonDock;
 using AvalonDock.Controls;
+using AvalonDock.Converters;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 using ReactiveUI.Reactive;
@@ -65,6 +67,7 @@ tool.IsActive = true;
 Dispatcher.UIThread.RunJobs();
 AssertToolTitle(manager, tool);
 AssertDocumentMenu(manager);
+AssertConverters(window, manager, tool);
 AssertSplitters(manager);
 manager.GridSplitterWidth = 28;
 manager.GridSplitterHeight = 18;
@@ -273,6 +276,59 @@ if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML c
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
 Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container conversion, and close cancellation passed.");
+
+static void AssertConverters(Window resources, DockingManager manager, LayoutAnchorable tool)
+{
+    Control controls = ((IDataTemplate)resources.Resources["ConvertedCommands"]!).Build(tool)!;
+    controls.DataContext = tool;
+    Window view = new() { Content = controls, Width = 300, Height = 260 };
+    bool canClose = tool.CanClose;
+    string? title = tool.Title;
+    try
+    {
+        view.Show();
+        Dispatcher.UIThread.RunJobs();
+        LayoutAnchorableItem item = (LayoutAnchorableItem)manager.GetLayoutItemFromModel(tool)!;
+        Button activate = controls.GetVisualDescendants().OfType<Button>().Single(value => value.Classes.Contains("converted-activate"));
+        Button hide = controls.GetVisualDescendants().OfType<Button>().Single(value => value.Classes.Contains("converted-hide"));
+        Button autoHide = controls.GetVisualDescendants().OfType<Button>().Single(value => value.Classes.Contains("converted-auto-hide"));
+        if (!ReferenceEquals(activate.Command, item.ActivateCommand) || !ReferenceEquals(hide.Command, item.HideCommand) ||
+            !ReferenceEquals(autoHide.Command, item.AutoHideCommand))
+            throw new Exception("Compiled converter bindings did not resolve the current packaged item commands.");
+        ClickNative(activate);
+        if (!ReferenceEquals(manager.Layout.ActiveContent, tool)) throw new Exception("Converted activation did not select the native tool.");
+        ClickNative(autoHide);
+        if (!tool.IsAutoHidden) throw new Exception("Converted auto-hide did not pin the native tool.");
+        ClickNative(autoHide);
+        if (tool.IsAutoHidden) throw new Exception("Converted auto-hide did not restore the native tool.");
+        ClickNative(hide);
+        if (!tool.IsHidden) throw new Exception("Converted hiding did not hide the native tool.");
+        tool.Show();
+        TextBlock visible = controls.GetVisualDescendants().OfType<TextBlock>().Single(value => value.Classes.Contains("converted-visible"));
+        TextBlock inverse = controls.GetVisualDescendants().OfType<TextBlock>().Single(value => value.Classes.Contains("converted-inverse"));
+        TextBlock hideEntry = controls.GetVisualDescendants().OfType<TextBlock>().Single(value => value.Classes.Contains("converted-hide-visible"));
+        tool.CanClose = true;
+        if (!visible.IsVisible || inverse.IsVisible || hideEntry.IsVisible)
+            throw new Exception("Packaged converters did not adapt visibility to Boolean values.");
+        tool.CanClose = false;
+        if (visible.IsVisible || !inverse.IsVisible || !hideEntry.IsVisible)
+            throw new Exception("Packaged visibility converters did not react to capability changes.");
+        tool.Title = "Retained converter title";
+        tool.Title = null;
+        if (visible.Text != "Retained converter title") throw new Exception("The packaged null converter did not preserve the target text.");
+        var angle = (AnchorSideToAngleConverter)resources.Resources["SideAngle"]!;
+        var orientation = (AnchorSideToOrientationConverter)resources.Resources["SideOrientation"]!;
+        if (!Equals(angle.Convert(AnchorSide.Left, typeof(double), null, CultureInfo.InvariantCulture), 90d) ||
+            !Equals(orientation.Convert(AnchorSide.Left, typeof(Avalonia.Layout.Orientation), null, CultureInfo.InvariantCulture), Avalonia.Layout.Orientation.Vertical))
+            throw new Exception("Unprefixed packaged side converters did not resolve and convert.");
+    }
+    finally
+    {
+        tool.CanClose = canClose;
+        tool.Title = title;
+        view.Close();
+    }
+}
 
 static void AssertFloatingResize(Window view, LayoutFloatingWindowControl host)
 {

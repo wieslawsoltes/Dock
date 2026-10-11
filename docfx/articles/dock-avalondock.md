@@ -193,6 +193,56 @@ or `Float` directly invokes model operations, independently of UI commands.
 pane. Without a previous document pane, docking chooses the last focused main
 document pane or another main document pane, creating one when necessary.
 
+## Use converters in compiled bindings
+
+Converters live in `AvalonDock.Converters` and resolve through both XML namespaces.
+For a template whose data is a public `LayoutAnchorable`, the command converters
+use the live manager-owned container:
+
+```xml
+<DataTemplate x:DataType="LayoutAnchorable">
+  <StackPanel>
+    <StackPanel.Resources>
+      <ActivateCommandLayoutItemFromLayoutModelConverter x:Key="ActivateFromModel" />
+      <HideCommandLayoutItemFromLayoutModelConverter x:Key="HideFromModel" />
+      <AutoHideCommandLayoutItemFromLayoutModelConverter x:Key="AutoHideFromModel" />
+    </StackPanel.Resources>
+    <Button Content="Activate" Command="{Binding ., Converter={StaticResource ActivateFromModel}}" />
+    <Button Content="Hide" Command="{Binding ., Converter={StaticResource HideFromModel}}" />
+    <Button Content="Auto Hide" Command="{Binding ., Converter={StaticResource AutoHideFromModel}}" />
+  </StackPanel>
+</DataTemplate>
+```
+
+Activation supports documents and tools. Hide and auto-hide return the tool
+container's command, or `BindingOperations.DoNothing` for a document container.
+Inputs without a manager return null. Conversion resolves the current container
+and its current command, including application overrides; replacing a command
+alone does not cause the converter's source binding to reevaluate. Binding
+directly to the container's command property observes such replacements.
+
+| Converter | Avalonia result |
+| --- | --- |
+| `LayoutItemFromLayoutModelConverter` | Current `LayoutItem` container. |
+| `BoolToVisibilityConverter` | Boolean for `IsVisible`; null defaults to false. |
+| `InverseBoolToVisibilityConverter` | Inverted Boolean for `IsVisible`; requires Boolean input. |
+| `AnchorableContextMenuHideVisibilityConverter` | `MultiBinding` of existing `IsVisible` and `CanClose`; returns false when closing is available, otherwise preserves the first input. |
+| `AnchorSideToAngleConverter` | `90d` for left/right; `BindingOperations.DoNothing` for other sides. |
+| `AnchorSideToOrientationConverter` | Vertical for left/right; horizontal for other sides. |
+| `NullToDoNothingConverter` | `BindingOperations.DoNothing` for null; otherwise the original value. |
+
+WPF's `Visibility` values are adapted to Avalonia's Boolean `IsVisible`.
+Both Hidden and Collapsed correspond to false. The two Boolean converters accept
+a Boolean parameter as their non-visible result; they also support conversion
+back to Boolean. Other converters in this group throw `NotImplementedException`
+for reverse conversion. The hide-menu converter retains its public array-based
+`Convert`/`ConvertBack` methods and implements Avalonia's list-based
+`IMultiValueConverter` for XAML bindings.
+
+`UriSourceToBitmapImageConverter`, localized
+`AnchorableContextMenuAutoHideHeaderConverter`, and the public localization
+resource API are still missing.
+
 ## Bind ViewModel content
 
 `DocumentsSource` and `AnchorablesSource` accept observable collections of
@@ -826,6 +876,7 @@ flowchart TB
         Layout["AvalonDock.Layout API"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
         Commands["Compiled command bindings<br/>Native input routing"]
+        Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
         Bridge["Identity, collections, selection, and return history"]
@@ -841,6 +892,8 @@ flowchart TB
         Controls["DockControl, HostWindow, and Fluent controls"]
     end
     App --> Manager
+    App --> Converters
+    Converters --> Items
     App --> Layout
     App --> Xml
     Manager --> Layout

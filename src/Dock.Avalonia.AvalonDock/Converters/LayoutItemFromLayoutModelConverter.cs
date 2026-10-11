@@ -10,7 +10,9 @@ namespace AvalonDock.Converters;
 public class LayoutItemFromLayoutModelConverter : IValueConverter
 {
     /// <inheritdoc/>
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => Resolve(value);
+
+    internal static object? Resolve(object? value)
     {
         if (value is not LayoutContent { Root.Manager: { } manager } content) return null;
         return (object?)manager.GetLayoutItemFromModel(content) ?? BindingOperations.DoNothing;

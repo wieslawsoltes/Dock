@@ -17,7 +17,8 @@ enable unprefixed keyboard movement and move a floating host with Headless arrow
 style unprefixed resize borders and verify native resize roles and pointer handling,
 inspect the protected close-origin property from a derived consumer control,
 preserve host/model ownership during canceled cleanup and release it on retry,
-resolve a container with the unprefixed converter,
+resolve a container and activate, hide, and auto-hide tools through unprefixed
+command converters, update converted visibility and preserve null binding targets,
 and restore application content
 from XML using the packaged assemblies. Pack the native
 control, model, and proportional-panel packages too: they contain the tool-menu

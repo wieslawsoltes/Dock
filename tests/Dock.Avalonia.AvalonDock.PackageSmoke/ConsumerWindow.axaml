@@ -7,6 +7,33 @@
       <Setter Property="ResizeBorderThickness" Value="4,6,8,12" />
     </Style>
     <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
+    <ActivateCommandLayoutItemFromLayoutModelConverter x:Key="ActivateFromModel" />
+    <HideCommandLayoutItemFromLayoutModelConverter x:Key="HideFromModel" />
+    <AutoHideCommandLayoutItemFromLayoutModelConverter x:Key="AutoHideFromModel" />
+    <AnchorSideToAngleConverter x:Key="SideAngle" />
+    <AnchorSideToOrientationConverter x:Key="SideOrientation" />
+    <BoolToVisibilityConverter x:Key="BoolVisible" />
+    <InverseBoolToVisibilityConverter x:Key="InverseVisible" />
+    <NullToDoNothingConverter x:Key="PreserveNull" />
+    <AnchorableContextMenuHideVisibilityConverter x:Key="HideVisible" />
+    <DataTemplate x:Key="ConvertedCommands" x:DataType="LayoutAnchorable">
+      <StackPanel>
+        <Button Classes="converted-activate" Content="Activate" Command="{Binding ., Converter={StaticResource ActivateFromModel}}" />
+        <Button Classes="converted-hide" Content="Hide" Command="{Binding ., Converter={StaticResource HideFromModel}}" />
+        <Button Classes="converted-auto-hide" Content="Auto Hide" Command="{Binding ., Converter={StaticResource AutoHideFromModel}}" />
+        <TextBlock Classes="converted-visible" Text="{Binding Title, Converter={StaticResource PreserveNull}}"
+                   IsVisible="{Binding CanClose, Converter={StaticResource BoolVisible}}" />
+        <TextBlock Classes="converted-inverse" Text="Close unavailable" IsVisible="{Binding CanClose, Converter={StaticResource InverseVisible}}" />
+        <TextBlock Classes="converted-hide-visible" Text="Hide entry">
+          <TextBlock.IsVisible>
+            <MultiBinding Converter="{StaticResource HideVisible}">
+              <Binding Path="IsVisible" />
+              <Binding Path="CanClose" />
+            </MultiBinding>
+          </TextBlock.IsVisible>
+        </TextBlock>
+      </StackPanel>
+    </DataTemplate>
     <DataTemplate x:Key="FloatingWindowCommands" x:DataType="LayoutAnchorableFloatingWindowControl">
       <StackPanel>
         <Button Classes="window-close" Content="Close tools" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding Model}" />

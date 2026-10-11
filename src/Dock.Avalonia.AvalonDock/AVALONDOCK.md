@@ -187,7 +187,7 @@ presenter. As with header selectors, it takes precedence and coerces the explici
 template to null; a null selection uses the default title text. Template changes,
 tab selection, and metadata changes update the visible title. Native context
 menus and title-bar buttons keep their command behavior. Floating document title
-and document-menu header templates remain open work.
+and document-menu header templates are described below.
 
 `DocumentsSource` and `AnchorablesSource` accept observable content collections.
 Bind them within a view with an explicit `x:DataType`, and supply compiled
@@ -279,6 +279,20 @@ follow native window state. Document hosts expose `RootDocumentLayoutItem`;
 tool hosts bind `SingleContentLayoutItem` to the selected item in their only
 visible pane, using compiled bindings and `LayoutItemFromLayoutModelConverter`.
 The converter is available in both XML namespaces without a required prefix.
+
+`ActivateCommandLayoutItemFromLayoutModelConverter`,
+`HideCommandLayoutItemFromLayoutModelConverter`, and
+`AutoHideCommandLayoutItemFromLayoutModelConverter` resolve a public content
+model to its current container command. The hide converters accept tools;
+command overrides are observed when conversion runs. All converters are in
+`AvalonDock.Converters` and can be declared unprefixed in Avalonia XAML.
+`BoolToVisibilityConverter` and `InverseBoolToVisibilityConverter` return Boolean
+values for `IsVisible`; use a Boolean converter parameter for the non-visible
+result. `AnchorableContextMenuHideVisibilityConverter` combines `IsVisible` and
+`CanClose` in a `MultiBinding`. The side converters expose header angle and
+orientation, and `NullToDoNothingConverter` retains the target on a null input.
+The full guide includes compiled converter bindings. URI image loading and the
+localized auto-hide header converter remain open work.
 
 Subscribe to `LayoutFloatingWindowControlCollectionChanged` in a workspace
 service to observe added/removed host controls and their collection indices;
@@ -379,6 +393,7 @@ flowchart TB
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
     Commands["Compiled command bindings<br/>Native input routing"]
+    Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
     Bridge["Identity, collection, state, and lifecycle adapters"]
@@ -390,6 +405,8 @@ flowchart TB
     View["DockControl and floating HostWindow"]
     Xml["XmlLayoutSerializer and explicit XML codec"]
     App --> Api
+    App --> Converters
+    Converters --> Items
     Api --> Items
     Items --> Factory
     Api <--> Bridge

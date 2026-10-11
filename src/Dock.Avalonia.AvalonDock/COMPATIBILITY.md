@@ -181,6 +181,16 @@ supported by corresponding implementation and test evidence.
   and exception/layout-replacement cleanup. Floating views inherit the manager's
   native host factory even when shown before the main view. The package consumer
   creates, shows, protects, and docks an explicit window.
+- Command converters resolve the current manager-owned item and its activation,
+  hide, or auto-hide command. Headless pointer tests execute those commands
+  through compiled unprefixed XAML, including floating/hidden tools. Converter
+  tests cover command overrides, detached/replaced layouts, wrong input types,
+  document/tool distinctions, side angles/orientation, null-to-do-nothing,
+  visibility and its inverse, multi-value hide visibility, and reverse methods.
+  Visibility converters use Boolean `IsVisible` and Boolean parameters in
+  Avalonia; the multi-value converter also preserves the public array API.
+  The separate NuGet consumer compiles all nine additions and exercises command
+  input, visibility updates, and target retention through package references.
 - Tool hosts expose `CloseWindowCommand` and `HideWindowCommand`, with current
   per-item commands and parameter forwarding. Protected `CanClose`, `CanHide`,
   and `DoHide` participate in native closing after the factory veto. Tests cover
@@ -279,7 +289,7 @@ supported by corresponding implementation and test evidence.
   canceled content is cleaned up; hidden floating tools retain their return panes.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
-- 417 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 444 passing tests in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -291,7 +301,8 @@ supported by corresponding implementation and test evidence.
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
 - Remaining manager APIs: additional update strategy invocation paths,
-  templates/selectors, styles, themes, remaining converters, and the control
+  templates/selectors, styles, themes, the URI image and localized auto-hide header
+  converters, localization resources, and the control
   adapter surface. Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,
   and remaining protected/platform hooks.
@@ -312,10 +323,17 @@ supported by corresponding implementation and test evidence.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 469
-matching type/member keys and 482 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 498
+matching type/member keys and 453 missing declarations at this checkpoint.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
+
+Comparison maps the requested `AvalonDock.*` namespace and canonicalizes known
+`CultureInfo` qualifications and array rank spacing. Of the converter checkpoint's
+29 additional matching keys, 27 come from nine new converter classes/methods;
+two correct existing model-to-container methods previously missed due to
+`CultureInfo` qualification. No baseline entries are removed or WPF framework
+types equated to Avalonia types.
 
 ```sh
 dotnet run --project build/AvalonDockApiAudit -- snapshot \

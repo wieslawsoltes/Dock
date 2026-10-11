@@ -11,6 +11,7 @@ using Avalonia.Threading;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
+using AvalonDock.Themes;
 
 namespace PackageConsumer;
 
@@ -60,17 +61,22 @@ public sealed class TitleControlProbe : AnchorablePaneTitle
         DockPanel.SetDock(title, global::Avalonia.Controls.Dock.Top);
         panel.Children.Add(title);
         panel.Children.Add(manager);
-        Window window = new() { Content = panel, Width = 700, Height = 400 };
+        Window window = new() { Width = 700, Height = 400 };
+        window.Styles.Add(new AvalonDockTheme());
+        window.Content = panel;
         try
         {
             window.Show();
             Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            if (!window.Styles.TryGetResource(typeof(AnchorablePaneTitle), null, out _))
+                throw new Exception("The packaged scoped theme did not contain the public tool title theme.");
             Point start = title.TranslatePoint(new Point(title.Bounds.Width / 2, title.Bounds.Height / 2), window)!.Value;
             window.MouseMove(start);
             window.MouseDown(start, MouseButton.Left);
             window.MouseUp(start, MouseButton.Left);
             if (title.Presses != 1 || title.Releases != 1 || !ReferenceEquals(manager.Layout.ActiveContent, first))
-                throw new Exception("The public title hooks did not activate the represented tool.");
+                throw new Exception($"The public title hooks did not activate the represented tool: presses={title.Presses}, releases={title.Releases}, active={manager.Layout.ActiveContent?.Title}.");
             int began = 0;
             manager.DockFactory.WindowMoveDragBegin += (_, args) => { began++; args.Cancel = true; };
             window.MouseDown(start, MouseButton.Left);

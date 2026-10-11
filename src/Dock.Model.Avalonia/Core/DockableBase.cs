@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Avalonia;
@@ -7,6 +8,7 @@ using Avalonia.Controls;
 using Dock.Model.Adapters;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Model.Core.Events;
 
 namespace Dock.Model.Avalonia.Core;
 
@@ -341,8 +343,16 @@ public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo,
     public IDockable? Owner
     {
         get => _owner;
-        set => SetAndRaise(OwnerProperty, ref _owner, value);
+        set
+        {
+            if (ReferenceEquals(_owner, value)) return;
+            OwnerChanging?.Invoke(this, new DockableOwnerChangingEventArgs(_owner, value));
+            SetAndRaise(OwnerProperty, ref _owner, value);
+        }
     }
+
+    /// <summary>Occurs before an ownership change, while <see cref="Owner"/> still identifies the previous owner.</summary>
+    public event EventHandler<DockableOwnerChangingEventArgs>? OwnerChanging;
 
     /// <inheritdoc/>
     [IgnoreDataMember]

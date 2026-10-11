@@ -21,7 +21,7 @@
         <Button Classes="converted-activate" Content="Activate" Command="{Binding ., Converter={StaticResource ActivateFromModel}}" />
         <Button Classes="converted-hide" Content="Hide" Command="{Binding ., Converter={StaticResource HideFromModel}}" />
         <Button Classes="converted-auto-hide" Content="Auto Hide" Command="{Binding ., Converter={StaticResource AutoHideFromModel}}" />
-        <TextBlock Classes="converted-visible" Text="{Binding Title, Converter={StaticResource PreserveNull}}"
+        <TextBlock Classes="converted-visible" Text="{Binding ToolTip, Converter={StaticResource PreserveNull}}"
                    IsVisible="{Binding CanClose, Converter={StaticResource BoolVisible}}" />
         <TextBlock Classes="converted-inverse" Text="Close unavailable" IsVisible="{Binding CanClose, Converter={StaticResource InverseVisible}}" />
         <TextBlock Classes="converted-hide-visible" Text="Hide entry">

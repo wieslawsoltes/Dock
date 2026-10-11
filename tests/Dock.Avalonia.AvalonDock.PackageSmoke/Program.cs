@@ -275,7 +275,7 @@ using (XmlReader xml = XmlReader.Create(new StringReader(metadataWriter.ToString
 if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML contract" ||
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container conversion, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container and command/value converters, and close cancellation passed.");
 
 static void AssertConverters(Window resources, DockingManager manager, LayoutAnchorable tool)
 {
@@ -283,7 +283,7 @@ static void AssertConverters(Window resources, DockingManager manager, LayoutAnc
     controls.DataContext = tool;
     Window view = new() { Content = controls, Width = 300, Height = 260 };
     bool canClose = tool.CanClose;
-    string? title = tool.Title;
+    object? tooltip = tool.ToolTip;
     try
     {
         view.Show();
@@ -313,11 +313,11 @@ static void AssertConverters(Window resources, DockingManager manager, LayoutAnc
         tool.CanClose = false;
         if (visible.IsVisible || !inverse.IsVisible || !hideEntry.IsVisible)
             throw new Exception("Packaged visibility converters did not react to capability changes.");
-        tool.Title = "Retained converter title";
-        tool.Title = null;
-        if (visible.Text != "Retained converter title") throw new Exception("The packaged null converter did not preserve the target text.");
-        var angle = (AnchorSideToAngleConverter)resources.Resources["SideAngle"]!;
-        var orientation = (AnchorSideToOrientationConverter)resources.Resources["SideOrientation"]!;
+        tool.ToolTip = "Retained converter text";
+        tool.ToolTip = null;
+        if (visible.Text != "Retained converter text") throw new Exception("The packaged null converter did not preserve the target text.");
+        AnchorSideToAngleConverter angle = (AnchorSideToAngleConverter)resources.Resources["SideAngle"]!;
+        AnchorSideToOrientationConverter orientation = (AnchorSideToOrientationConverter)resources.Resources["SideOrientation"]!;
         if (!Equals(angle.Convert(AnchorSide.Left, typeof(double), null, CultureInfo.InvariantCulture), 90d) ||
             !Equals(orientation.Convert(AnchorSide.Left, typeof(Avalonia.Layout.Orientation), null, CultureInfo.InvariantCulture), Avalonia.Layout.Orientation.Vertical))
             throw new Exception("Unprefixed packaged side converters did not resolve and convert.");
@@ -325,7 +325,7 @@ static void AssertConverters(Window resources, DockingManager manager, LayoutAnc
     finally
     {
         tool.CanClose = canClose;
-        tool.Title = title;
+        tool.ToolTip = tooltip;
         view.Close();
     }
 }

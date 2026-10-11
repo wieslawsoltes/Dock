@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.ContentControlFixture"
+        x:DataType="LayoutContent" Width="600" Height="400">
+  <Window.Resources>
+    <DataTemplate x:Key="Document" x:DataType="LayoutContent">
+      <LayoutDocumentControl Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyDocument" x:DataType="LayoutContent">
+      <ad:LayoutDocumentControl Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="Tool" x:DataType="LayoutAnchorable">
+      <LayoutAnchorableControl Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyTool" x:DataType="LayoutAnchorable">
+      <ad:LayoutAnchorableControl Model="{Binding}" />
+    </DataTemplate>
+    <ControlTheme x:Key="DocumentTheme" TargetType="LayoutDocumentControl" x:DataType="LayoutDocumentControl">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Classes="container-title"
+                       Text="{Binding LayoutItem.Title, RelativeSource={RelativeSource TemplatedParent}}" />
+            <ContentPresenter Content="{Binding LayoutItem.View, RelativeSource={RelativeSource TemplatedParent}}" />
+          </DockPanel>
+        </ControlTemplate>
+      </Setter>
+    </ControlTheme>
+    <ControlTheme x:Key="ToolTheme" TargetType="LayoutAnchorableControl" x:DataType="LayoutAnchorableControl">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Classes="container-title"
+                       Text="{Binding LayoutItem.Title, RelativeSource={RelativeSource TemplatedParent}}" />
+            <ContentPresenter Content="{Binding LayoutItem.View, RelativeSource={RelativeSource TemplatedParent}}" />
+          </DockPanel>
+        </ControlTemplate>
+      </Setter>
+    </ControlTheme>
+  </Window.Resources>
+</Window>

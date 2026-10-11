@@ -47,7 +47,7 @@
           BorderThickness="0" VerticalAlignment="Stretch" Focusable="False"
           AutomationProperties.Name="Open documents" ToolTip.Tip="Open documents">
     <Button.Flyout>
-      <infrastructure:LayoutDocumentMenuFlyout ItemsSource="{Binding ChildrenSorted}"
+      <infrastructure:LayoutDocumentMenuFlyout Pane="{Binding}" ItemsSource="{Binding ChildrenSorted}"
                                                ItemContainerTheme="{StaticResource MenuItemTheme}" />
     </Button.Flyout>
     <Path Width="10" Height="6" Stretch="Uniform" Fill="{DynamicResource DockTabForegroundBrush}"

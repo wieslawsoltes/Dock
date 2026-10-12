@@ -52,7 +52,7 @@ internal static class FloatingModelProbe
             if (((IHostWindowCloseState)host).IsClosed != closes || (child.Root is null) != closes)
                 throw new Exception("Floating hosts did not observe their documented model close notifications.");
 
-            LayoutElement destination = tools ? manager.Layout.RootPanel : (LayoutDocumentPane)manager.Layout.RootPanel.Children[0];
+            LayoutElement destination = tools ? manager.Layout.RootPanel : manager.Layout.Descendents().OfType<LayoutDocumentPane>().Single();
             manager.DockFactory.AddDockable((IDock)destination.DockModel, child.DockModel);
             if (!ReferenceEquals(child.Parent, destination) || !ReferenceEquals(child.Root, manager.Layout) ||
                 !ReferenceEquals(child.DockModel.Owner, destination.DockModel))

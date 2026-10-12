@@ -948,6 +948,25 @@ until another container adopts it; the native owner detaches immediately.
 All 180 WPF floating-model observations are compared, including notification
 overrides, replacement, cancellation, and retained parent/root values.
 
+Another 300 WPF observations compare floating-model notifications and values
+inside model and child-parent callbacks. Root document changes raise
+`PropertyChanging`, `PropertyChanged`, then `RootDocumentChanged`. Tool root
+changes notify `RootPanel`, `IsSinglePane`, `SinglePane`, `Children`, and
+`ChildrenCount`, with visibility changes occurring when the new group acquires
+its parent. Empty tool windows start visible until visibility is computed;
+explicit recomputation only notifies a changed visibility value. Visible nested
+anchorable groups count toward `IsSinglePane`. Reading `SinglePane` refreshes
+the returned pane's directly-hosted notification.
+
+Empty floating XML preserves the existing child and native window bounds. A
+self-closing tool element recomputes visibility; an explicit empty opening and
+closing pair leaves it unchanged. Floating `RemoveChild` and `ReplaceChild`
+operate on their single root slot, matching WPF Release behavior even if the
+old-child argument differs. An incompatible replacement clears the slot.
+Callers should pass the current child. Native adoption checks membership so
+moving a retained former child preserves the source's replacement. The caption
+binds visibility separately to reconnect selection after hidden-tool restoration.
+
 On successful host closure, native Dock releases the layout models' logical
 parents and deferred presentation, including presenters from replaced templates,
 before `Closed`. Retaining a floating model therefore does not retain its closed

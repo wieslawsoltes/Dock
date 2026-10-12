@@ -563,6 +563,17 @@ cancellation, replacement hosts, and explicit deferred-presentation cleanup.
   Native floating host close requests honor window/factory cancellation and
   close capabilities. Tool groups hide when they cannot close but can hide,
   retaining their floating return pane for `Show()`.
+- Floating defaults, property order, callback-visible root/parent state, child
+  replacement/removal/restoration, visibility, nested pane counting, and XML reads
+  match 300 WPF observations across 150 scenarios. The same probe runs against
+  the package consumer. Subclasses can suppress changing or changed notifications
+  independently of explicit document/visibility events. Empty floating XML keeps
+  existing children and bounds; empty tool element forms preserve WPF's distinct
+  visibility behavior. Single-slot container operations match upstream Release
+  behavior for mismatched old children and incompatible replacements. Adoption
+  checks actual membership before removing a retained former child. Floating
+  captions observe visibility separately, preserving hidden-tool item bindings
+  without adding public model notifications.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
   public group ownership through pin, preview, unpin, collection replacement,
   and reordering. Headless pointer input opens the sample's Agenda strip.
@@ -780,9 +791,9 @@ cancellation, replacement hosts, and explicit deferred-presentation cleanup.
   while detaching their native owner, and both public/native adoption replace the
   retained parent across layouts. Closed hosts unsubscribe from retained models.
   These rules use the existing native owner-change and host-lifetime contracts.
-- 1842 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 2000 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1860 total).
+  for real image decoding and HTTP/HTTPS transport contracts (2018 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

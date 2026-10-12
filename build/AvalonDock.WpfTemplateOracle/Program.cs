@@ -9,6 +9,11 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        if (args is ["--closing", string output])
+        {
+            FloatingCloseProbe.Run(output);
+            return;
+        }
         List<string> rows = new() { "property\tscenario\tstage\ttemplate\tselector\tbound\tevents" };
         Spec[] specs =
         {

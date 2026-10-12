@@ -1,4 +1,4 @@
-# WPF template-property reference probe
+# WPF compatibility reference probes
 
 This Windows-only developer tool records public values, binding ownership, and
 protected callback ordering from the original WPF AvalonDock. It is separate
@@ -29,3 +29,26 @@ Avalonia's inherited `SetValue` retains bindings. The preceding selector stage
 checks the adapter callback's own binding disposal without that adaptation.
 The probe uses typed dependency-property references and
 bindings without property paths; it does not inspect private framework state.
+
+The floating-close probe uses the same build and records protected hooks plus
+actual floating windows:
+
+```powershell
+dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock.WpfTemplateOracle.dll --closing wpf-closing.tsv
+```
+
+`tests/Dock.Avalonia.AvalonDock.Tests/Assets/WpfFloatingClose.tsv` contains all
+168 observations: 48 protected-hook combinations and before/synchronous/dispatched
+states for 40 document/tool scenarios. These distinguish `Window.Close()`, model
+closure, item commands, layout replacement, and view unload, including cancellation.
+`FloatingCloseReferenceTests` compares all 48 hook results and both the initial and
+dispatched state of 16 host-close/successful-detachment scenarios (80 recorded rows).
+Avalonia's closing arguments have an internal constructor, so the hook comparison
+enters through `Window.Close()` and holds the host open after recording the result.
+
+The remaining rows preserve evidence for further lifecycle work. In particular,
+upstream defers internal closure to its dispatcher, a canceled document close can
+retain its original root after `Closed`, and tool closure can leave a closed host
+in the manager's collection. The adapter's current synchronous cleanup and retained
+registration on canceled removal are tested separately; they are not claimed as
+equivalent to those observations. Do not delete reference rows to narrow that scope.

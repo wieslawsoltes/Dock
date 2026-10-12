@@ -1,0 +1,169 @@
+case	stage	cancel	host-visible	host-closed	content-root	content-hidden	model-count	host-count	events
+hook-close0-hide0-initial0-keep-suppress0	after	1	-	-	-	-	-	-	override-enter:0>can-close>can-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide0-initial0-keep-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close0-hide0-initial0-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:0>can-close>can-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide0-initial0-cancel-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close0-hide0-initial0-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:0>can-close>can-hide>event-enter:1>event-exit:0>override-exit:0
+hook-close0-hide0-initial0-clear-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close0-hide0-initial1-keep-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>can-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide0-initial1-keep-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close0-hide0-initial1-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>can-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide0-initial1-cancel-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close0-hide0-initial1-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:1>can-close>can-hide>event-enter:1>event-exit:0>override-exit:0
+hook-close0-hide0-initial1-clear-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close0-hide1-initial0-keep-suppress0	after	1	-	-	-	-	-	-	override-enter:0>can-close>can-hide>do-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide1-initial0-keep-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close0-hide1-initial0-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:0>can-close>can-hide>do-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide1-initial0-cancel-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close0-hide1-initial0-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:0>can-close>can-hide>do-hide>event-enter:1>event-exit:0>override-exit:0
+hook-close0-hide1-initial0-clear-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close0-hide1-initial1-keep-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>can-hide>do-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide1-initial1-keep-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close0-hide1-initial1-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>can-hide>do-hide>event-enter:1>event-exit:1>override-exit:1
+hook-close0-hide1-initial1-cancel-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close0-hide1-initial1-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:1>can-close>can-hide>do-hide>event-enter:1>event-exit:0>override-exit:0
+hook-close0-hide1-initial1-clear-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close1-hide0-initial0-keep-suppress0	after	0	-	-	-	-	-	-	override-enter:0>can-close>event-enter:0>event-exit:0>override-exit:0
+hook-close1-hide0-initial0-keep-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close1-hide0-initial0-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:0>can-close>event-enter:0>event-exit:1>override-exit:1
+hook-close1-hide0-initial0-cancel-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close1-hide0-initial0-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:0>can-close>event-enter:0>event-exit:0>override-exit:0
+hook-close1-hide0-initial0-clear-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close1-hide0-initial1-keep-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>event-enter:1>event-exit:1>override-exit:1
+hook-close1-hide0-initial1-keep-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close1-hide0-initial1-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>event-enter:1>event-exit:1>override-exit:1
+hook-close1-hide0-initial1-cancel-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close1-hide0-initial1-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:1>can-close>event-enter:1>event-exit:0>override-exit:0
+hook-close1-hide0-initial1-clear-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close1-hide1-initial0-keep-suppress0	after	0	-	-	-	-	-	-	override-enter:0>can-close>event-enter:0>event-exit:0>override-exit:0
+hook-close1-hide1-initial0-keep-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close1-hide1-initial0-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:0>can-close>event-enter:0>event-exit:1>override-exit:1
+hook-close1-hide1-initial0-cancel-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close1-hide1-initial0-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:0>can-close>event-enter:0>event-exit:0>override-exit:0
+hook-close1-hide1-initial0-clear-suppress1	after	0	-	-	-	-	-	-	override-enter:0>override-exit:0
+hook-close1-hide1-initial1-keep-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>event-enter:1>event-exit:1>override-exit:1
+hook-close1-hide1-initial1-keep-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close1-hide1-initial1-cancel-suppress0	after	1	-	-	-	-	-	-	override-enter:1>can-close>event-enter:1>event-exit:1>override-exit:1
+hook-close1-hide1-initial1-cancel-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+hook-close1-hide1-initial1-clear-suppress0	after	0	-	-	-	-	-	-	override-enter:1>can-close>event-enter:1>event-exit:0>override-exit:0
+hook-close1-hide1-initial1-clear-suppress1	after	1	-	-	-	-	-	-	override-enter:1>override-exit:1
+document-close0-cancel0-window	before	0	1	0	original	-	1	1	
+document-close0-cancel0-window	synchronous	1	1	0	original	-	1	1	window-closing-enter:1>window-closing-exit:1
+document-close0-cancel0-window	dispatched	1	1	0	original	-	1	1	window-closing-enter:1>window-closing-exit:1
+document-close0-cancel0-model	before	0	1	0	original	-	1	1	
+document-close0-cancel0-model	synchronous	0	1	0	original	-	1	1	content-closing>content-closed
+document-close0-cancel0-model	dispatched	0	0	1	none	-	0	0	content-closing>content-closed>window-closing-enter:0>window-closing-exit:0>window-closed
+document-close0-cancel0-command	before	0	1	0	original	-	1	1	
+document-close0-cancel0-command	synchronous	0	1	0	original	-	1	1	command-disabled
+document-close0-cancel0-command	dispatched	0	1	0	original	-	1	1	command-disabled
+document-close0-cancel0-replace	before	0	1	0	original	-	1	1	
+document-close0-cancel0-replace	synchronous	0	1	0	original	-	1	0	
+document-close0-cancel0-replace	dispatched	0	0	1	none	-	0	0	window-closing-enter:0>window-closing-exit:0>window-closed
+document-close0-cancel0-unload	before	0	1	0	original	-	1	1	
+document-close0-cancel0-unload	synchronous	0	1	0	original	-	1	1	
+document-close0-cancel0-unload	dispatched	0	0	1	original	-	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+document-close0-cancel1-window	before	0	1	0	original	-	1	1	
+document-close0-cancel1-window	synchronous	1	1	0	original	-	1	1	window-closing-enter:1>window-closing-exit:1
+document-close0-cancel1-window	dispatched	1	1	0	original	-	1	1	window-closing-enter:1>window-closing-exit:1
+document-close0-cancel1-model	before	0	1	0	original	-	1	1	
+document-close0-cancel1-model	synchronous	0	1	0	original	-	1	1	content-closing>content-closed
+document-close0-cancel1-model	dispatched	1	1	0	original	-	1	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:1
+document-close0-cancel1-command	before	0	1	0	original	-	1	1	
+document-close0-cancel1-command	synchronous	0	1	0	original	-	1	1	command-disabled
+document-close0-cancel1-command	dispatched	0	1	0	original	-	1	1	command-disabled
+document-close0-cancel1-replace	before	0	1	0	original	-	1	1	
+document-close0-cancel1-replace	synchronous	0	1	0	original	-	1	0	
+document-close0-cancel1-replace	dispatched	1	1	0	original	-	1	0	window-closing-enter:0>window-closing-exit:1
+document-close0-cancel1-unload	before	0	1	0	original	-	1	1	
+document-close0-cancel1-unload	synchronous	0	1	0	original	-	1	1	
+document-close0-cancel1-unload	dispatched	1	1	0	original	-	1	0	window-closing-enter:0>window-closing-exit:1
+document-close1-cancel0-window	before	0	1	0	original	-	1	1	
+document-close1-cancel0-window	synchronous	0	0	1	original	-	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+document-close1-cancel0-window	dispatched	0	0	1	original	-	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+document-close1-cancel0-model	before	0	1	0	original	-	1	1	
+document-close1-cancel0-model	synchronous	0	1	0	original	-	1	1	content-closing>content-closed
+document-close1-cancel0-model	dispatched	0	0	1	none	-	0	0	content-closing>content-closed>window-closing-enter:0>window-closing-exit:0>window-closed
+document-close1-cancel0-command	before	0	1	0	original	-	1	1	
+document-close1-cancel0-command	synchronous	0	1	0	original	-	1	1	content-closing>content-closed
+document-close1-cancel0-command	dispatched	0	0	1	none	-	0	0	content-closing>content-closed>window-closing-enter:0>window-closing-exit:0>window-closed
+document-close1-cancel0-replace	before	0	1	0	original	-	1	1	
+document-close1-cancel0-replace	synchronous	0	1	0	original	-	1	0	
+document-close1-cancel0-replace	dispatched	0	0	1	none	-	0	0	window-closing-enter:0>window-closing-exit:0>window-closed
+document-close1-cancel0-unload	before	0	1	0	original	-	1	1	
+document-close1-cancel0-unload	synchronous	0	1	0	original	-	1	1	
+document-close1-cancel0-unload	dispatched	0	0	1	original	-	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+document-close1-cancel1-window	before	0	1	0	original	-	1	1	
+document-close1-cancel1-window	synchronous	1	1	0	original	-	1	1	window-closing-enter:0>window-closing-exit:1
+document-close1-cancel1-window	dispatched	1	1	0	original	-	1	1	window-closing-enter:0>window-closing-exit:1
+document-close1-cancel1-model	before	0	1	0	original	-	1	1	
+document-close1-cancel1-model	synchronous	0	1	0	original	-	1	1	content-closing>content-closed
+document-close1-cancel1-model	dispatched	1	1	0	original	-	1	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:1
+document-close1-cancel1-command	before	0	1	0	original	-	1	1	
+document-close1-cancel1-command	synchronous	0	1	0	original	-	1	1	content-closing>content-closed
+document-close1-cancel1-command	dispatched	1	1	0	original	-	1	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:1
+document-close1-cancel1-replace	before	0	1	0	original	-	1	1	
+document-close1-cancel1-replace	synchronous	0	1	0	original	-	1	0	
+document-close1-cancel1-replace	dispatched	1	1	0	original	-	1	0	window-closing-enter:0>window-closing-exit:1
+document-close1-cancel1-unload	before	0	1	0	original	-	1	1	
+document-close1-cancel1-unload	synchronous	0	1	0	original	-	1	1	
+document-close1-cancel1-unload	dispatched	1	1	0	original	-	1	0	window-closing-enter:0>window-closing-exit:1
+tool-close0-cancel0-window	before	0	1	0	original	0	1	1	
+tool-close0-cancel0-window	synchronous	1	0	0	original	1	1	1	content-hiding>window-closing-enter:1>window-closing-exit:1
+tool-close0-cancel0-window	dispatched	1	0	0	original	1	1	1	content-hiding>window-closing-enter:1>window-closing-exit:1
+tool-close0-cancel0-model	before	0	1	0	original	0	1	1	
+tool-close0-cancel0-model	synchronous	0	0	0	none	0	0	1	content-closing>content-closed
+tool-close0-cancel0-model	dispatched	0	0	1	none	0	0	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close0-cancel0-command	before	0	1	0	original	0	1	1	
+tool-close0-cancel0-command	synchronous	0	1	0	original	0	1	1	command-disabled
+tool-close0-cancel0-command	dispatched	0	1	0	original	0	1	1	command-disabled
+tool-close0-cancel0-replace	before	0	1	0	original	0	1	1	
+tool-close0-cancel0-replace	synchronous	0	1	0	original	0	1	0	
+tool-close0-cancel0-replace	dispatched	0	0	1	none	0	0	0	window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close0-cancel0-unload	before	0	1	0	original	0	1	1	
+tool-close0-cancel0-unload	synchronous	0	1	0	original	0	1	1	
+tool-close0-cancel0-unload	dispatched	0	0	1	original	0	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close0-cancel1-window	before	0	1	0	original	0	1	1	
+tool-close0-cancel1-window	synchronous	1	0	0	original	1	1	1	content-hiding>window-closing-enter:1>window-closing-exit:1
+tool-close0-cancel1-window	dispatched	1	0	0	original	1	1	1	content-hiding>window-closing-enter:1>window-closing-exit:1
+tool-close0-cancel1-model	before	0	1	0	original	0	1	1	
+tool-close0-cancel1-model	synchronous	0	0	0	none	0	0	1	content-closing>content-closed
+tool-close0-cancel1-model	dispatched	1	0	0	none	0	0	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:1
+tool-close0-cancel1-command	before	0	1	0	original	0	1	1	
+tool-close0-cancel1-command	synchronous	0	1	0	original	0	1	1	command-disabled
+tool-close0-cancel1-command	dispatched	0	1	0	original	0	1	1	command-disabled
+tool-close0-cancel1-replace	before	0	1	0	original	0	1	1	
+tool-close0-cancel1-replace	synchronous	0	1	0	original	0	1	0	
+tool-close0-cancel1-replace	dispatched	1	1	0	original	0	1	0	window-closing-enter:0>window-closing-exit:1
+tool-close0-cancel1-unload	before	0	1	0	original	0	1	1	
+tool-close0-cancel1-unload	synchronous	0	1	0	original	0	1	1	
+tool-close0-cancel1-unload	dispatched	1	1	0	original	0	1	0	window-closing-enter:0>window-closing-exit:1
+tool-close1-cancel0-window	before	0	1	0	original	0	1	1	
+tool-close1-cancel0-window	synchronous	0	0	1	original	0	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close1-cancel0-window	dispatched	0	0	1	original	0	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close1-cancel0-model	before	0	1	0	original	0	1	1	
+tool-close1-cancel0-model	synchronous	0	0	0	none	0	0	1	content-closing>content-closed
+tool-close1-cancel0-model	dispatched	0	0	1	none	0	0	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close1-cancel0-command	before	0	1	0	original	0	1	1	
+tool-close1-cancel0-command	synchronous	0	0	0	none	0	0	1	content-closing>content-closed
+tool-close1-cancel0-command	dispatched	0	0	1	none	0	0	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close1-cancel0-replace	before	0	1	0	original	0	1	1	
+tool-close1-cancel0-replace	synchronous	0	1	0	original	0	1	0	
+tool-close1-cancel0-replace	dispatched	0	0	1	none	0	0	0	window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close1-cancel0-unload	before	0	1	0	original	0	1	1	
+tool-close1-cancel0-unload	synchronous	0	1	0	original	0	1	1	
+tool-close1-cancel0-unload	dispatched	0	0	1	original	0	1	0	window-closing-enter:0>window-closing-exit:0>window-closed
+tool-close1-cancel1-window	before	0	1	0	original	0	1	1	
+tool-close1-cancel1-window	synchronous	1	1	0	original	0	1	1	window-closing-enter:0>window-closing-exit:1
+tool-close1-cancel1-window	dispatched	1	1	0	original	0	1	1	window-closing-enter:0>window-closing-exit:1
+tool-close1-cancel1-model	before	0	1	0	original	0	1	1	
+tool-close1-cancel1-model	synchronous	0	0	0	none	0	0	1	content-closing>content-closed
+tool-close1-cancel1-model	dispatched	1	0	0	none	0	0	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:1
+tool-close1-cancel1-command	before	0	1	0	original	0	1	1	
+tool-close1-cancel1-command	synchronous	0	0	0	none	0	0	1	content-closing>content-closed
+tool-close1-cancel1-command	dispatched	1	0	0	none	0	0	1	content-closing>content-closed>window-closing-enter:0>window-closing-exit:1
+tool-close1-cancel1-replace	before	0	1	0	original	0	1	1	
+tool-close1-cancel1-replace	synchronous	0	1	0	original	0	1	0	
+tool-close1-cancel1-replace	dispatched	1	1	0	original	0	1	0	window-closing-enter:0>window-closing-exit:1
+tool-close1-cancel1-unload	before	0	1	0	original	0	1	1	
+tool-close1-cancel1-unload	synchronous	0	1	0	original	0	1	1	
+tool-close1-cancel1-unload	dispatched	1	1	0	original	0	1	0	window-closing-enter:0>window-closing-exit:1

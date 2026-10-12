@@ -97,7 +97,10 @@ When `IDockWindowClosePolicy.PreserveLayoutOnHostClose` returns true, the native
 host still runs cancelable window notifications and saves its geometry. A
 successful close releases host registration and the model's host reference,
 while preserving the floating model, its ownership, and its contents for later
-presentation. The integration owns any subsequent content/model cleanup.
+presentation. Both `HostWindow` and `ManagedHostWindow` honor this policy. Managed
+presentation is released before the factory's closed notification, so a callback
+can present the retained model immediately. The integration owns any subsequent
+content/model cleanup.
 
 Factory subclasses can override `ShouldFocusActiveDockable` to distinguish pane
 selection from focus and `GetActiveDockableAfterRemoval` to choose a replacement

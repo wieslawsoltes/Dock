@@ -446,6 +446,7 @@ public class PinnedDockControl : TemplatedControl
                         DataContext = root.PinnedDock
                     }
                 };
+                _window.Deactivated += OwnerWindow_Deactivated;
 
                 if (this.GetVisualRoot() is Window owner)
                 {
@@ -489,6 +490,7 @@ public class PinnedDockControl : TemplatedControl
 
         if (_window is not null)
         {
+            _window.Deactivated -= OwnerWindow_Deactivated;
             _window.Close();
             _window = null;
         }
@@ -1011,11 +1013,19 @@ public class PinnedDockControl : TemplatedControl
 
     private void OwnerWindow_Deactivated(object? sender, EventArgs e)
     {
-        if (ShouldKeepPinnedDockableVisible())
+        if (ShouldKeepPinnedDockableVisible() || _ownerWindow is not { } owner || _window is not { } window)
         {
             return;
         }
 
-        CloseWindow();
+        // Native deactivation precedes activation of the destination window.
+        // Clicking the preview must not close it before its editor gets focus.
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (!ReferenceEquals(_ownerWindow, owner) || !ReferenceEquals(_window, window) ||
+                owner.IsActive || window.IsActive || ShouldKeepPinnedDockableVisible()) return;
+            if (DataContext is IRootDock root) root.Factory?.HidePreviewingDockables(root);
+            CloseWindow();
+        }, DispatcherPriority.Background);
     }
 }

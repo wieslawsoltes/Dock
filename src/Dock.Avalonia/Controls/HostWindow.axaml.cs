@@ -755,8 +755,8 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
                 {
                     if (copyOwnerChrome)
                     {
-                        Title = ownerWindow.Title;
-                        Icon = ownerWindow.Icon;
+                        if (!IsSet(TitleProperty)) SetCurrentValue(TitleProperty, ownerWindow.Title);
+                        if (!IsSet(IconProperty)) SetCurrentValue(IconProperty, ownerWindow.Icon);
                     }
 
                     Show(ownerWindow);

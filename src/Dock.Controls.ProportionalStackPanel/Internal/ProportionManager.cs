@@ -34,6 +34,7 @@ internal class ProportionManager
         HandleCollapsedChildren();
         AssignUnassignedProportions();
         NormalizeProportions();
+        RedistributeConstrainedProportions();
         ApplyProportions();
     }
 
@@ -56,7 +57,7 @@ internal class ProportionManager
                 // Store current proportion before collapsing
                 if (ProportionUtils.IsValidProportion(info.CurrentProportion) && info.CurrentProportion > 0)
                 {
-                    ProportionalStackPanel.SetCollapsedProportion(info.Control, info.CurrentProportion);
+                    info.Control.SetCurrentValue(ProportionalStackPanel.CollapsedProportionProperty, info.CurrentProportion);
                 }
                 info.TargetProportion = 0.0;
             }
@@ -108,18 +109,64 @@ internal class ProportionManager
         }
     }
 
+    private void RedistributeConstrainedProportions()
+    {
+        const double tolerance = 1e-10;
+        foreach (var info in _childInfos)
+        {
+            if (!info.IsCollapsed)
+                info.TargetProportion = _constraintHandler.ClampProportion(info.Control, info.TargetProportion);
+        }
+
+        // Clamping alone changes the total. Re-normalizing on the next layout pass
+        // then changes it again, making preview geometry depend on the pass count.
+        // Share the excess/deficit among panes that can still shrink/grow. Each
+        // iteration either finishes or reaches another bound, so at most N are needed.
+        for (var pass = 0; pass <= _childInfos.Count; pass++)
+        {
+            var total = 0.0;
+            foreach (var info in _childInfos)
+                if (!info.IsCollapsed) total += info.TargetProportion;
+            var remaining = 1.0 - total;
+            if (Math.Abs(remaining) < tolerance) return;
+
+            var weight = 0.0;
+            var eligible = 0;
+            foreach (var info in _childInfos)
+            {
+                if (info.IsCollapsed) continue;
+                var candidate = _constraintHandler.ClampProportion(info.Control, info.TargetProportion + remaining);
+                if (Math.Abs(candidate - info.TargetProportion) < tolerance) continue;
+                weight += info.TargetProportion;
+                eligible++;
+            }
+            // Infeasible minimums overflow; exhausted maximums leave unused space.
+            // Preserve those constraints instead of repeatedly normalizing them away.
+            if (eligible == 0) return;
+            foreach (var info in _childInfos)
+            {
+                if (info.IsCollapsed) continue;
+                var candidate = _constraintHandler.ClampProportion(info.Control, info.TargetProportion + remaining);
+                if (Math.Abs(candidate - info.TargetProportion) < tolerance) continue;
+                var share = weight > tolerance ? info.TargetProportion / weight : 1.0 / eligible;
+                info.TargetProportion = _constraintHandler.ClampProportion(info.Control, info.TargetProportion + remaining * share);
+            }
+        }
+    }
+
     private void ApplyProportions()
     {
         var hasCollapsedChildren = _childInfos.Any(info => info.IsCollapsed);
 
         foreach (var info in _childInfos)
         {
-            var clampedProportion = _constraintHandler.ClampProportion(info.Control, info.TargetProportion);
-            ProportionalStackPanel.SetProportion(info.Control, clampedProportion);
+            var clampedProportion = info.TargetProportion;
+            // Layout writes must preserve model bindings so later splits/resizes can update the pane.
+            info.Control.SetCurrentValue(ProportionalStackPanel.ProportionProperty, clampedProportion);
             
             if (!info.IsCollapsed && !hasCollapsedChildren)
             {
-                ProportionalStackPanel.SetCollapsedProportion(info.Control, clampedProportion);
+                info.Control.SetCurrentValue(ProportionalStackPanel.CollapsedProportionProperty, clampedProportion);
             }
         }
     }

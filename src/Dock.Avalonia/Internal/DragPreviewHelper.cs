@@ -212,15 +212,24 @@ internal class DragPreviewHelper
         }
     }
 
-    private static double GetWindowScaling(Window window)
+    private static double GetScreenCoordinateScaling(Window window)
     {
+        // Cocoa positions and sizes windows in logical points, even when their
+        // backing scale changes between Retina and non-Retina displays. Keeping
+        // a fixed pixel size here would halve/double the preview at that boundary
+        // and can repeatedly change which screen owns the straddling window.
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            return 1.0;
+        }
+
         var scaling = window.RenderScaling;
         return scaling > 0 ? scaling : 1.0;
     }
 
     private static void MaintainFrozenWindowSize(DragPreviewWindow window, DragPreviewControl control)
     {
-        var scaling = GetWindowScaling(window);
+        var scaling = GetScreenCoordinateScaling(window);
         if (Math.Abs(scaling - s_lastFrozenWindowScaling) < 0.0001)
         {
             return;
@@ -293,7 +302,7 @@ internal class DragPreviewHelper
 
             s_windowSizeFreezeRetryCount = 0;
             s_windowSizeFreezeAbandoned = false;
-            var scaling = GetWindowScaling(s_window);
+            var scaling = GetScreenCoordinateScaling(s_window);
             s_lastFrozenWindowScaling = scaling;
             s_frozenWindowWidthPixels = bounds.Width * scaling;
             s_frozenWindowHeightPixels = bounds.Height * scaling;

@@ -124,6 +124,7 @@
     <Project Path="src/Dock.Settings.v11/Dock.Settings.v11.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Dock.Avalonia.v11.PreviewTests/Dock.Avalonia.v11.PreviewTests.csproj" />
     <Project Path="tests/Dock.Avalonia.v11.HeadlessTests/Dock.Avalonia.v11.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Avalonia.Diagnostics.UnitTests/Dock.Avalonia.Diagnostics.UnitTests.csproj" />
     <Project Path="tests/Dock.Avalonia.LeakTests/Dock.Avalonia.LeakTests.csproj" />

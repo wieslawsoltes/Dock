@@ -95,6 +95,7 @@ public sealed class DockableControlTracker : IDisposable
         {
             _currentDockable = dockableChanged;
             Register(dockableChanged);
+            SetBoundsTracking(_control.Bounds);
         }
     }
 
@@ -190,7 +191,9 @@ public sealed class DockableControlTracker : IDisposable
 
         if (_control.GetVisualRoot() is Visual relativeTo)
         {
-            var translatedPosition = _control.TranslatePoint(bounds.Position, relativeTo);
+            // Bounds.Position is already expressed in the parent's coordinates.
+            // Translate the control's local origin to avoid applying that offset twice.
+            var translatedPosition = _control.TranslatePoint(default, relativeTo);
             if (translatedPosition.HasValue)
             {
                 x = translatedPosition.Value.X;

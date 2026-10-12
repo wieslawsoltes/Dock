@@ -1977,6 +1977,15 @@ Canceling window closure preserves its projection. Completed closure clears
 the native content and projection references and releases theme providers.
 Retaining the optional factory does not keep its manager alive.
 
+Dropping documents or tools on a document pane's split targets creates another
+`LayoutDocumentPane` inside a `LayoutDocumentPaneGroup`. Mixed orientation creates
+a nested document group; an existing group with the matching axis is reused.
+A tool-pane drop keeps its tab order and existing layout item containers. Later
+rendering may bring an overflowing selected tab to the front, as in WPF.
+The compatibility factory supplies Dock's optional `IDockSplitPolicy` to select
+the document destination; Dock creates the pane and moves the content. Ordinary
+Dock factories keep their tool-pane split default.
+
 WPF's full overlay template-part arrangement and the separate
 `DocumentPaneDockAsAnchorable*` selector family are not yet reproduced. The
 current overlay uses Dock's native selector templates and docking policies;
@@ -2251,6 +2260,7 @@ flowchart TB
         OverlayFactory["Optional IDockAdornerWindowFactory"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
         DropPolicy["Optional IDockDropPolicy<br/>Target visibility and drop validation"]
+        SplitPolicy["Optional IDockSplitPolicy<br/>Tool drops into typed document groups"]
     end
     Manager -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
@@ -2259,6 +2269,8 @@ flowchart TB
     Controls --> OverlayFactory
     OverlayFactory --> Overlays
     ResourceThemes --> Overlays
+    Factory --> SplitPolicy
+    SplitPolicy --> Models
     Overlays -->|Native selectors| Controls
     Manager -->|Side panels and anchor templates| Anchors
     Anchors --> Models

@@ -13,7 +13,7 @@ namespace AvalonDock.Infrastructure;
 // hide content before the native host can detach the floating layout.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement, IDockDropPolicy dropPolicy,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy
+    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy, IDockSplitPolicy
 {
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
@@ -25,6 +25,9 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 
     bool IDockDropPolicy.CanDrop(IDockable source, IDockable target, DockOperation operation) =>
         dropPolicy.CanDrop(source, target, operation);
+
+    bool IDockSplitPolicy.UseDocumentDock(IDockable source, IDock target, DockOperation operation) =>
+        target is IDocumentDock;
 
     internal void SetPaneSelection(IDock owner, IDockable? selected)
     {
@@ -199,6 +202,8 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     public override void SplitToDock(IDock dock, IDockable dockable, DockOperation operation)
     {
         using IDockOperationScope? scope = operations.Begin(dockable, LayoutOperation.Dock);
+        if (dock is IDocumentDock && dockable is IDocumentDock && getLayoutElement(dock) is LayoutDocumentPane pane)
+            LayoutDocumentSplit.Prepare(pane, operation);
         base.SplitToDock(dock, dockable, operation);
         scope?.Complete();
     }

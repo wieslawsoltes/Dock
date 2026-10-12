@@ -170,6 +170,10 @@ target visibility and drop execution. It rejects a document drop into a floating
 tool window, accepts a tool split, verifies typed floating ownership, and saves
 and restores the resulting layout through XML.
 
+The document-split probe drops a three-tool pane on all four document edges.
+It checks the packaged split policy, typed document pane/group, source tab order,
+and XML restoration using only NuGet references.
+
 The serialization probe defines an external `WriteXml` override, verifies that
 the complete serializer invokes it, restores documents/tools sharing a content
 identifier, and checks callback ordering and content closing-event cancellation.

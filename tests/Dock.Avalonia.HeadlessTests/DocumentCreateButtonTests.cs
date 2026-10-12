@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -73,17 +74,25 @@ public class DocumentCreateButtonTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Retaining_The_Model_Does_Not_Retain_A_Removed_Create_Button_Host(bool visible)
+    public async Task Retaining_The_Model_Does_Not_Retain_A_Removed_Create_Button_Host(bool visible)
     {
         var result = Detach(visible);
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 20; i++)
         {
             Dispatcher.UIThread.RunJobs(); AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            // A render commit can enqueue cleanup after the timer tick. Allow
+            // the render thread and its dispatcher continuation to finish.
+            Dispatcher.UIThread.RunJobs();
             GC.Collect(); GC.WaitForPendingFinalizers();
+            if (!IsAlive(result.Strip)) break;
+            await Task.Delay(10);
         }
         Assert.False(result.Strip.TryGetTarget(out _));
         GC.KeepAlive(result.Model);
     }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static bool IsAlive(WeakReference<Control> reference) => reference.TryGetTarget(out _);
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static (DocumentDock Model, WeakReference<Control> Strip) Detach(bool visible)

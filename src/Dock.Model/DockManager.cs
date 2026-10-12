@@ -210,29 +210,17 @@ public class DockManager : IDockManager
             return true;
         }
             
-        if (visible.Count == 1)
+        if (visible.Count == 0 || DockDockableIntoDock(visible[0], targetDock, action, operation, bExecute) == false)
         {
-            var sourceDockable = visible.FirstOrDefault();
-            if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
-            {
-                return false;
-            }
+            return false;
         }
-        else
+
+        for (int i = 1; i < visible.Count; i++)
         {
-            var sourceDockable = visible.FirstOrDefault();
-            if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
+            // Insert after the preceding item so a pane drag retains tab order.
+            if (_dockService.DockDockableIntoDockable(visible[i], visible[i - 1], action, bExecute) == false)
             {
                 return false;
-            }
-                
-            foreach (var dockable in visible.Skip(1))
-            {
-                var targetDockable = visible.FirstOrDefault();
-                if (targetDockable is null || _dockService.DockDockableIntoDockable(dockable, targetDockable, action, bExecute) == false)
-                {
-                    return false;
-                }
             }
         }
         return true;

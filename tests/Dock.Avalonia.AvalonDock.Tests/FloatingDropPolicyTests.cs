@@ -191,6 +191,73 @@ public class FloatingDropPolicyTests
         workspace.Save();
     }
 
+    public static System.Collections.Generic.IEnumerable<object[]> DocumentSplitCases()
+    {
+        foreach (DockOperation operation in new[] { DockOperation.Left, DockOperation.Top, DockOperation.Right, DockOperation.Bottom })
+            foreach (bool floating in new[] { false, true })
+                foreach (bool group in new[] { false, true })
+                    foreach (bool nested in new[] { false, true })
+                        foreach (bool tool in new[] { false, true })
+                            if (tool || !group) yield return new object[] { operation, floating, group, nested, tool };
+    }
+
+    [AvaloniaTheory]
+    [MemberData(nameof(DocumentSplitCases))]
+    public void Content_Drops_On_Document_Split_Targets_Create_Document_Panes(
+        DockOperation operation, bool floating, bool group, bool nested, bool tool)
+    {
+        using Workspace workspace = new();
+        workspace.Manager.AllowMixedOrientation = true;
+        LayoutDocumentPane destination = (LayoutDocumentPane)workspace.TargetDocument.Parent!;
+        if (nested)
+        {
+            LayoutDocumentPaneGroup documents = new(destination);
+            documents.Children.Add(new LayoutDocumentPane(new LayoutDocument { ContentId = "sibling", Content = "Sibling" }));
+            workspace.Manager.Layout.RootPanel.Children.Add(documents);
+        }
+        LayoutContent content = tool ? workspace.SourceTool : workspace.SourceDocument;
+        if (floating) content.Float();
+        LayoutAnchorablePane? sourcePane = content.Parent as LayoutAnchorablePane;
+        LayoutAnchorable companion = new() { ContentId = "companion", Content = "Companion content" };
+        LayoutAnchorable last = new() { ContentId = "last", Content = "Last content" };
+        if (group) { sourcePane!.Children.Add(companion); sourcePane.Children.Add(last); }
+        workspace.Update();
+        object sourceItem = workspace.Manager.GetLayoutItemFromModel(content)!;
+        object? companionItem = group ? workspace.Manager.GetLayoutItemFromModel(companion) : null;
+        IDockable source = group ? sourcePane!.DockModel : content.DockModel;
+        DockManager engine = new(new DockService());
+        string before = workspace.Save();
+        Assert.True(engine.ValidateDockable(source, destination.DockModel, DragAction.Move, operation, false));
+        Assert.Equal(before, workspace.Save());
+        Assert.True(engine.ValidateDockable(source, destination.DockModel, DragAction.Move, operation, true));
+        LayoutDocumentPane created = Assert.IsType<LayoutDocumentPane>(content.Parent);
+        Assert.NotSame(destination, created);
+        LayoutDocumentPaneGroup split = Assert.IsType<LayoutDocumentPaneGroup>(created.Parent);
+        Assert.Same(destination.Parent, split);
+        Assert.Equal(operation is DockOperation.Left or DockOperation.Right
+            ? global::Avalonia.Layout.Orientation.Horizontal : global::Avalonia.Layout.Orientation.Vertical, split.Orientation);
+        int destinationIndex = split.Children.IndexOf(destination);
+        Assert.Equal(destinationIndex + (operation is DockOperation.Left or DockOperation.Top ? -1 : 1), split.Children.IndexOf(created));
+        Assert.Same(sourceItem, workspace.Manager.GetLayoutItemFromModel(content));
+        Assert.False(content.IsFloating);
+        Assert.Equal(group ? 3 : 1, created.Children.Count);
+        Assert.Same(content, created.Children[0]);
+        if (group)
+        {
+            Assert.Same(companion, created.Children[1]);
+            Assert.Same(last, created.Children[2]);
+            Assert.Same(companionItem, workspace.Manager.GetLayoutItemFromModel(companion));
+        }
+        // Rendering may move an overflowing selected tab to the front, as in WPF.
+        workspace.Update();
+        workspace.Reload(workspace.Save());
+        LayoutContent restored = workspace.Manager.Layout.Descendents().OfType<LayoutContent>()
+            .Single(item => item.ContentId == content.ContentId);
+        Assert.Equal(content.GetType(), restored.GetType());
+        Assert.IsType<LayoutDocumentPane>(restored.Parent);
+        Assert.Equal(content.Content, restored.Content);
+    }
+
     private sealed class Workspace : IDisposable
     {
         public DockingManager Manager { get; } = new();

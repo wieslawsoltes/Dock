@@ -810,6 +810,15 @@ operations, including custom templates. `DockTargetBase.GetSelector(operation)`
 exposes that same mapping. Nested controls with similar names are excluded, and
 replacing or clearing a template releases its previous part registrations.
 
+Dropping documents or tools on a document pane's split targets creates another
+`LayoutDocumentPane` inside a `LayoutDocumentPaneGroup`. Mixed orientation creates
+a nested document group; an existing group with the matching axis is reused.
+A tool-pane drop keeps its tab order and existing layout item containers. Later
+rendering may bring an overflowing selected tab to the front, as in WPF.
+The compatibility factory supplies Dock's optional `IDockSplitPolicy` to select
+the document destination; Dock creates the pane and moves the content. Ordinary
+Dock factories keep their tool-pane split default.
+
 WPF's full overlay template-part arrangement and its separate tool-beside-document
 selector family are still tracked as compatibility gaps. Use Dock's selector
 templates for the current native presentation.
@@ -995,6 +1004,7 @@ flowchart TB
     Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
     DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
     DropPolicy["Optional IDockDropPolicy<br/>Floating destinations and mixed-orientation splits"]
+    SplitPolicy["Optional IDockSplitPolicy<br/>Tool drops into typed document groups"]
     ToolTitle["AnchorablePaneTitle<br/>Current item, title templates, and custom grip input"]
     Commands["Compiled command bindings<br/>Native input routing"]
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
@@ -1040,6 +1050,8 @@ flowchart TB
     ResourceThemes --> View
     ResourceThemes --> Overlays
     View --> Overlays
+    Factory --> SplitPolicy
+    SplitPolicy --> Models
     Overlays -->|Native target input| Factory
     Api --> Navigator
     Navigator --> Items

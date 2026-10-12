@@ -40,6 +40,18 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- Native document split targets create `LayoutDocumentPane` for documents and
+  tools, within a `LayoutDocumentPaneGroup`. Existing groups retain their axis
+  or nest an orthogonal split when mixed orientation is enabled. Tool-pane drops
+  preserve content/container identity and source tab order, including groups of
+  three or more tools. `IDockSplitPolicy` lets the compatibility factory select a
+  document destination while Dock owns pane creation and movement; ordinary
+  factories retain their tool-pane default. Headless tests cover four edges,
+  docked/floating content, nested groups, validation without mutation and XML
+  restoration. Native unit tests and the package consumer cover the policy and
+  multi-tab order. This does not implement the separate tool-beside-document
+  overlay selector family.
+
 - Document-list entries use public `MenuItemEx` containers while retaining native
   flyout input and activation. Icon selectors receive the current icon and its
   container; null results preserve the icon, and generated templates inherit the
@@ -667,9 +679,9 @@ supported by corresponding implementation and test evidence.
   bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
 - Retired menu template roots are disconnected from their composition parent,
   preventing retained icon presenters from keeping removed documents alive.
-- 1373 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1421 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1391 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1439 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

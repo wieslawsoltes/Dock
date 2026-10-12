@@ -54,6 +54,7 @@ PackageConsumer.LifecycleProbe.Verify();
 PackageConsumer.DestinationProbe.Verify();
 PackageConsumer.SerializationProbe.Verify();
 PackageConsumer.OperationProbe.Verify();
+PackageConsumer.DocumentSplitProbe.Verify();
 PackageConsumer.AutoHideReturnProbe.Verify();
 PackageConsumer.NativeWindowProbe.Verify();
 PackageConsumer.SourceCollectionProbe.Verify();

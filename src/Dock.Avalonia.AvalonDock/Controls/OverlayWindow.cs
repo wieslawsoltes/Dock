@@ -122,6 +122,13 @@ public class OverlayWindow : DockAdornerWindow
         base.OnClosed(e);
     }
 
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_nativePresenter is not null) LayoutCompositionCleanup.ReleaseChildren(_nativePresenter);
+        base.OnDetachedFromVisualTree(e);
+    }
+
     private void DetachNativeContent()
     {
         // A retired template may assign local Content instead of a template
@@ -129,6 +136,7 @@ public class OverlayWindow : DockAdornerWindow
         if (_nativePresenter is { } presenter && _projection is { } projection &&
             ReferenceEquals(presenter.Content, projection.Adorner))
         {
+            LayoutCompositionCleanup.ReleaseChildren(presenter);
             presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
             presenter.UpdateChild();
         }

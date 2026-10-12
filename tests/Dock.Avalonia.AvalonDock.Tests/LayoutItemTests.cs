@@ -12,6 +12,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using AvalonDock;
@@ -418,6 +419,35 @@ public class LayoutItemTests
             manager.Layout.FloatingWindows.Clear();
             view.Close();
         }
+    }
+
+    [AvaloniaFact]
+    public void Detaching_An_Item_View_Releases_Its_Rendered_Children_And_Reattachment_Renders_The_Editor()
+    {
+        TextBox editor = new() { Text = "Retained editor" };
+        LayoutDocument document = new() { Content = editor };
+        DockingManager manager = CreateManager(document);
+        LayoutItem item = manager.GetLayoutItemFromModel(document)!;
+        Window window = new() { Width = 700, Height = 500, Content = manager };
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            window.CaptureRenderedFrame()?.Dispose();
+            CompositionContainerVisual original = Assert.IsAssignableFrom<CompositionContainerVisual>(ElementComposition.GetElementVisual(item.View));
+            Assert.NotEmpty(original.Children);
+            window.Content = null;
+            Assert.Empty(original.Children);
+            Assert.Same(editor, item.View.Content);
+            window.Content = manager;
+            Dispatcher.UIThread.RunJobs();
+            window.CaptureRenderedFrame()?.Dispose();
+            CompositionContainerVisual current = Assert.IsAssignableFrom<CompositionContainerVisual>(ElementComposition.GetElementVisual(item.View));
+            Assert.NotSame(original, current);
+            Assert.NotEmpty(current.Children);
+            Assert.Contains(editor, item.View.GetVisualDescendants());
+        }
+        finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
     }
 
     private static DockingManager CreateManager(LayoutDocument document, LayoutAnchorable? tool = null)

@@ -729,6 +729,12 @@ if (control?.Model is LayoutPanel panel)
 }
 ```
 
+Compatibility grid styles disable layout rounding, matching WPF's default, so
+fixed pixel requests and splitter limits remain exact when panes leave unused
+space. Model minimums belong to the row/column definitions, allowing public pane
+themes to set independent control minimums. Empty panes retain zero-length slots;
+one splitter remains between visible panes separated by an empty pane.
+
 The property starts as null. Replacing the root panel or deserializing a layout
 replaces its control. Setting the property to null removes the displayed root;
 restoring the previous control reuses the existing content views. Manager

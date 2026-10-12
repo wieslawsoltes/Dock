@@ -77,6 +77,13 @@ internal static class GridControlProbe
     {
         if (!ReferenceEquals(control.Model, model) || !ReferenceEquals(control.Tag, model) || !Equals(control.Background, Brushes.Transparent))
             throw new Exception("The packaged grid types or compiled styles did not resolve in both XML namespaces.");
+        if (control.Children.Count != 3 || control.Children[0] is not ILayoutControl ||
+            control.Children[1] is not LayoutGridResizerControl || control.Children[2] is not ILayoutControl ||
+            control.Children.Any(child => !ReferenceEquals(child.GetVisualParent(), control)))
+            throw new Exception("The packaged grid did not expose direct public panes and a native splitter.");
+        bool horizontal = control.Orientation == global::Avalonia.Layout.Orientation.Horizontal;
+        if (control.ColumnDefinitions.Count != (horizontal ? 3 : 0) || control.RowDefinitions.Count != (horizontal ? 0 : 3))
+            throw new Exception("The packaged grid definitions do not match its pane and splitter slots.");
     }
 
     private static void VerifyLengthHooks()

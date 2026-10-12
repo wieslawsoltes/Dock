@@ -13,4 +13,14 @@ internal sealed partial class LayoutItemPresenter
 
     private LayoutItem? _item;
     public LayoutItem? Item { get => _item; set => SetAndRaise(ItemProperty, ref _item, value); }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        // The application can retain an editor after its layout is discarded.
+        // Detach its composition subtree at our presentation boundary while it
+        // is still available: a closing native window will not render another
+        // frame to reconcile these children. Avalonia recreates it on reattach.
+        LayoutCompositionCleanup.ReleaseChildren(this);
+        base.OnDetachedFromVisualTree(e);
+    }
 }

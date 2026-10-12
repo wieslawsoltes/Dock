@@ -127,6 +127,7 @@ coordinates for controls with a nonzero parent offset and initializes bounds
 when a presentation changes models without another layout pass. The native
 tracker uses the control's local origin; 13 focused cases passed before the
 separate PR was merged through `master` and reintegrated here.
+All nine GitHub checks also passed for this PR.
 
 The direct-grid integration scopes its native body templates to prevent a second
 public pane from being generated inside each pane. Model minimums belong to the
@@ -134,8 +135,18 @@ grid definitions, leaving public pane themes free to set their own control
 minimums. Compatibility grid styles disable layout rounding, matching WPF's
 default and preserving exact pixel resize limits when fixed panes leave spare
 space. An empty middle pane leaves one splitter between the visible siblings,
-as in the upstream grid. Focused integration validation passed 130 of 131 cases;
-the closed native pinned-window lifetime case remains under investigation.
+as in the upstream grid. The consolidated adapter suite passes all 2,349 cases,
+including the direct-grid, overlay, retained-content and reattachment cases.
+
+The lifetime investigation identified a retained editor's cached Avalonia
+composition visuals as a path to a closed pinned window after the manager had
+already been released. Item presenters now release their composition children
+on detachment, and rebuild them on reattachment. Overlay presenters do the same
+for cached native targets and replaced templates. This uses public composition
+APIs without reflection and preserves the application editor and its bindings.
+Overlay geometry retains fractional local coordinates across window origins,
+DPI scales and visual transforms; screen-coordinate snapshots remain physical
+pixels. Package and desktop validation of this source checkpoint remain open.
 
 ### Recent native drag and preview changes
 
@@ -834,7 +845,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   presentation. Explicit native templates and custom target themes retain
   precedence, and native-only window templates retain their fallback path.
   Template replacement detaches retired presenters; successful closure also
-  releases the window-owned default theme so a cached native target does not
+  releases composition children and the window-owned default theme so a cached native target does not
   retain the closed overlay. Canceling closure preserves the presentation.
 - Outer previews cover one third of the highest document group, or the parent
   layout panel for an ungrouped document pane. Ordinary split and center previews
@@ -950,8 +961,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   and inherited XML methods. The individual declaration review maps the existing
   counterparts; it does not establish full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
-- The direct public pane/splitter Grid structure is implemented. Consolidated
-  validation of sizing, native drag, floating hosts, themes and lifetime is pending.
+- The direct public pane/splitter Grid structure passes consolidated Headless
+  validation of sizing, native drag, floating hosts, themes and lifetime. Package
+  and desktop validation of this implementation remain open.
 - Finish the rendering and behavior audit of repositioning policies and remaining
   metadata edge cases. Tab icons, tooltips, enablement, and document header
   visibility and public auto-hide resizers are implemented. Auto-hide content

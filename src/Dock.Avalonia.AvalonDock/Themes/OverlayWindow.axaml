@@ -9,6 +9,7 @@
   <ControlTheme x:Key="{x:Type controls:OverlayWindow}" TargetType="controls:OverlayWindow"
                 x:DataType="controls:OverlayWindow"
                 BasedOn="{StaticResource {x:Type dock:DockAdornerWindow}}">
+    <Setter Property="UseLayoutRounding" Value="False" />
     <Setter Property="Template">
       <ControlTemplate x:DataType="controls:OverlayWindow">
         <Grid>

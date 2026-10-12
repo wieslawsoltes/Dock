@@ -11,9 +11,20 @@ internal static class LayoutOverlayGeometry
         TopLevel? sourceRoot = TopLevel.GetTopLevel(source);
         TopLevel? destinationRoot = TopLevel.GetTopLevel(destination);
         if (sourceRoot is null || destinationRoot is null) return default;
-        Point? Map(Point point) => ReferenceEquals(sourceRoot, destinationRoot)
-            ? source.TranslatePoint(point, destination)
-            : destination.PointToClient(source.PointToScreen(point));
+        bool sameRoot = ReferenceEquals(sourceRoot, destinationRoot);
+        PixelPoint sourceOrigin = sameRoot ? default : sourceRoot.PointToScreen(default);
+        PixelPoint destinationOrigin = sameRoot ? default : destinationRoot.PointToScreen(default);
+        Point? Map(Point point)
+        {
+            if (sameRoot) return source.TranslatePoint(point, destination);
+            if (source.TranslatePoint(point, sourceRoot) is not { } local) return null;
+            // Only window origins are integral screen pixels. Keep the local
+            // coordinates fractional across DPI scales and visual transforms.
+            Point translated = new(
+                (sourceOrigin.X - destinationOrigin.X + local.X * sourceRoot.RenderScaling) / destinationRoot.RenderScaling,
+                (sourceOrigin.Y - destinationOrigin.Y + local.Y * sourceRoot.RenderScaling) / destinationRoot.RenderScaling);
+            return destinationRoot.TranslatePoint(translated, destination);
+        }
         if (Map(bounds.TopLeft) is not { } a || Map(bounds.TopRight) is not { } b ||
             Map(bounds.BottomLeft) is not { } c || Map(bounds.BottomRight) is not { } d) return default;
         double left = Math.Min(Math.Min(a.X, b.X), Math.Min(c.X, d.X));

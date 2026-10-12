@@ -177,6 +177,12 @@ unused splitter gaps collapse. Lengths, minimums, orientation and manager splitt
 sizes update those definitions. Application edits to a definition participate in
 actual Grid layout until the corresponding model metadata changes.
 
+The compatibility grid styles disable layout rounding, matching WPF's default
+and preserving exact pixel lengths when fixed panes leave unused space. Model
+minimums constrain grid definitions; public pane themes can independently set
+the pane control's own minimums. An empty middle pane leaves a single splitter
+between the visible panes on either side.
+
 Dock retains model ownership, docking operations, tracking and splitter input.
 `DockableControlTracker` registers each public grid with the native factory;
 `IProportionalSplitterHost` routes native preview and resize gestures back to the

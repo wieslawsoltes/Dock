@@ -189,6 +189,12 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
+- Eight deserialization reentrancy cases cover actual nested XML restores using
+  the same or separate serializers, inner callback failures, replacing both
+  sources during recovery, and restoration from `LayoutChanged`. Source
+  subscriptions resume after failures, retired roots release their manager, and
+  committed callback side effects remain observable. The focused serialization
+  suite passes all 97 cases.
 - Native document split targets create `LayoutDocumentPane` for documents and
   tools, within a `LayoutDocumentPaneGroup`. Existing groups retain their axis
   or nest an orthogonal split when mixed orientation is enabled. Tool-pane drops

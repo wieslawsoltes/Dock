@@ -2485,6 +2485,15 @@ fails. Parsing and content resolution finish before replacing the manager's
 layout. The runnable sample writes to a temporary file and replaces the saved
 file after a successful save.
 
+Nested restores on the same manager keep source notifications suspended until
+the outer restore exits, including when an inner callback throws. Assigning a
+new `DocumentsSource` or `AnchorablesSource` inside a callback immediately
+replaces that source; later collection notifications come from the replacement.
+Source assignment and layouts committed by callbacks are application side
+effects and survive a later callback exception. In particular, `LayoutChanged`
+runs after replacement: an exception from that event does not restore the old
+layout. A nested restore from that event leaves its own layout installed.
+
 Only models with null `Content` enter content recovery. Tool callbacks run
 before the document phase, so they may supply document content before that
 phase takes its snapshot. The callback and fallback cases follow upstream:

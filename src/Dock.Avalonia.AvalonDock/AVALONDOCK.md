@@ -1180,6 +1180,13 @@ closes a document, matching upstream. Callback code owns icon restoration;
 without a callback, the matching previous model supplies its content and icon.
 Without either a callback or a matching model, tools hide and documents close.
 
+Nested restores on one manager suspend source notifications until the outer
+restore exits, including inner failures. Replacing a source inside a callback
+immediately changes which collection is observed. That assignment and any
+layout committed by callback code survive a later exception. `LayoutChanged`
+runs after replacement; throwing from it does not restore the old layout, and
+a nested restore from that event leaves its own layout installed.
+
 Nested virtual `WriteXml` overrides participate in complete layout saves, including
 hidden, pinned, and floating content. Write extra group attributes before calling
 base, because base writes the children. A shared writer prepares return-container

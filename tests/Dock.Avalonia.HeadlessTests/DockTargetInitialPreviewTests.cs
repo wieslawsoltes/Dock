@@ -17,10 +17,12 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class DockTargetInitialPreviewTests
 {
-    [AvaloniaFact]
-    public void Newly_applied_template_keeps_targets_hidden_until_input_validation()
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Newly_applied_template_keeps_targets_hidden_until_input_validation(bool global)
     {
-        var target = new DockTarget();
+        DockTargetBase target = global ? new GlobalDockTarget() : new DockTarget();
         var window = new Window { Width = 500, Height = 300, Content = target };
         try
         {
@@ -30,8 +32,8 @@ public class DockTargetInitialPreviewTests
             Assert.NotEmpty(selectors);
             Assert.All(selectors, x => Assert.Equal(0, x.Opacity));
             target.GetDockOperation(new Point(10, 10), target, target, DragAction.Move,
-                (_, _, _, _) => true, (_, operation, _, _) => operation == DockOperation.Fill);
-            Assert.Equal(1, target.GetSelector(DockOperation.Fill)!.Opacity);
+                (_, _, _, _) => true, (_, operation, _, _) => operation == DockOperation.Left);
+            Assert.Equal(1, target.GetSelector(DockOperation.Left)!.Opacity);
         }
         finally { window.Close(); }
     }
@@ -69,7 +71,7 @@ public class DockTargetInitialPreviewTests
                         var panel = new Panel();
                         foreach (var name in new[] { "PART_LeftSelector", "PART_LeftIndicator", "PART_CenterSelector", "PART_CenterIndicator" })
                         {
-                            var part = new Border { Name = name, Width = 40, Height = 40 };
+                            var part = new Border { Name = name, Width = 40, Height = 40, Opacity = 0 };
                             DockProperties.SetIndicatorDockOperation(part, name.Contains("Left") ? DockOperation.Left : DockOperation.Fill);
                             scope.Register(name, part); panel.Children.Add(part);
                         }

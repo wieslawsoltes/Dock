@@ -255,11 +255,6 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         _appliedTemplate = Template is { } template ? new(template) : null;
         RegisterTemplateParts(e.NameScope);
-        // New parts have not been checked against the current drag's restrictions.
-        // A native show or a deferred template application can render them before
-        // the next pointer move, so never expose unvalidated targets.
-        foreach (var indicator in IndicatorOperations.Values) indicator.Opacity = 0;
-        foreach (var selector in SelectorsOperations.Values) selector.Opacity = 0;
         _appliedIndicators = RememberParts(IndicatorOperations);
         _appliedSelectors = RememberParts(SelectorsOperations);
     }
@@ -643,7 +638,9 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             return false;
         }
 
-        var selectorPoint = GetSelectorPoint(point, relativeTo, selector);
+        // Indicator-only mode uses the original drop surface, which can be in a
+        // different native window from this adorner. Translate directly to it.
+        var selectorPoint = TranslateToSelector(relativeTo, point, selector);
 
         if (selectorPoint is not null)
         {

@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 
@@ -32,6 +33,13 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         ClearGeometry();
         if (_adorner is DockTarget target)
         {
+            // Floating and managed hosts need not share the surface's resource scope.
+            // Carry its implicit theme before attachment can build a fallback template;
+            // leave Theme setters free to override it using normal style precedence.
+            target.Resources.Remove(typeof(DockTarget));
+            if (visual is Control resourceHost &&
+                resourceHost.TryFindResource(typeof(DockTarget), out var resource) && resource is ControlTheme)
+                target.Resources[typeof(DockTarget)] = resource;
             if (DockTarget.GetTargetTheme(visual) is { } theme) target.Theme = theme;
             else target.ClearValue(TemplatedControl.ThemeProperty);
             if (DockTarget.GetAdornerHostProvider(visual)?.GetAdornerHost(visual) is { } host &&
@@ -204,7 +212,11 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         {
             RemoveRegularAdorner();
         }
-        if (_adorner is DockTarget target) target.ClearValue(TemplatedControl.ThemeProperty);
+        if (_adorner is DockTarget target)
+        {
+            target.ClearValue(TemplatedControl.ThemeProperty);
+            target.Resources.Remove(typeof(DockTarget));
+        }
     }
 
     private void RemoveFloatingAdorner()

@@ -124,10 +124,9 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     private void AddRegularAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
     {
-        if (_window is not null)
-        {
-            RemoveRegularAdorner();
-        }
+        // Drag entry can reuse this target before a matching leave has removed it.
+        // Detach both parents before attaching the cached adorner again.
+        RemoveRegularAdorner();
 
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
@@ -186,7 +185,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
     }
 
-    public void RemoveAdorner(Visual visual)
+    public void RemoveAdorner(Visual? visual = null)
     {
         ClearGeometry();
         if (useFloatingDockAdorner)
@@ -291,6 +290,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             ((ISetLogicalParent)Adorner).SetParent(null);
             AdornerLayer.SetAdornedElement(Adorner, null);
         }
+
+        AdornerLayer.SetAdornedElement(_adorner, null);
         
         Adorner = null;
         _layer = null;

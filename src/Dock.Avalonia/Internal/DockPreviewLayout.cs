@@ -28,7 +28,7 @@ internal static class DockPreviewLayout
             if (visual is DockControl) break;
             // A derived panel can use the sizing extension points to allocate a
             // different layout. The stock detached panel cannot reproduce it.
-            if (visual is ProportionalStackPanel panel && panel.GetType() != typeof(ProportionalStackPanel))
+            if (visual is IProportionalSplitterHost && visual.GetType() != typeof(ProportionalStackPanel))
                 return false;
             if (visual is not (ToolDockControl or DocumentDockControl)) continue;
             var pane = (Control)visual;

@@ -31,14 +31,14 @@ public class LayoutDocumentFloatingWindowControl : LayoutFloatingWindowControl
         ObserveLayoutModel(closeEmptyDocument: true);
     }
 
-    /// <inheritdoc/>
+    /// <summary>Checks document descendants of the current Model, including a model supplied by an override.</summary>
     protected override bool CanClose(object? parameter = null) =>
-        LayoutFloatingWindowOperations.CanExecute(_model, hide: false, parameter);
+        LayoutFloatingWindowOperations.CanExecute<LayoutDocument>(Model, hide: false, parameter);
 
     /// <summary>Activates a clicked native caption and routes its context menu before native fallback.</summary>
     protected override IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        LayoutFloatingCaptionMessages.Process(this, msg, wParam, lParam, ref handled);
+        LayoutFloatingCaptionMessages.Process(this, _model, msg, wParam, lParam, ref handled);
         return base.FilterMessage(hwnd, msg, wParam, lParam, ref handled);
     }
 }

@@ -20,6 +20,12 @@ requested CLR namespace mapping, known BCL qualification, whitespace, nullable
 annotations, and the `partial` implementation modifier. It does not silently
 equate WPF and Avalonia framework types.
 
+The floating-control behavior audit also corrected `IsMaximizedProperty` to a
+writable `StyledProperty<bool>`. Its CLR getter remains read-only, but the upstream
+dependency property permits assignment, styles, and bindings. A read-only direct
+property rejected those supported uses. The separate `IsDraggingProperty` remains
+read-only, corresponding to upstream's dependency-property key.
+
 | Difference | Declaration contract |
 | --- | --- |
 | Dependency properties and routed events | Typed Avalonia styled/direct properties and routed events replace WPF metadata objects. Defaults, binding behavior, and callback order need their separate behavioral checks. |

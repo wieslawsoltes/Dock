@@ -68,6 +68,7 @@ PackageConsumer.OuterSplitProbe.Verify();
 PackageConsumer.OuterPreviewProbe.Verify();
 PackageConsumer.AutoHideReturnProbe.Verify();
 PackageConsumer.NativeWindowProbe.Verify();
+PackageConsumer.FloatingOverrideProbe.Verify();
 PackageConsumer.SourceCollectionProbe.Verify();
 PackageConsumer.UpdateStrategyProbe.Verify();
 PackageConsumer.HttpImageProbe.Verify();

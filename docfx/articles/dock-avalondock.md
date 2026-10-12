@@ -2003,11 +2003,20 @@ binding scope's data context:
 Enablement follows membership, capabilities, command replacement, and application
 `CanExecuteChanged` notifications. Execution snapshots the contents so a command
 can remove its own tool; subsequent tools still use their current commands.
+Protected `CanClose`, `CanHide`, `DoHide`, and the tool-window commands read the
+current virtual `Model` property. A document host filters document descendants;
+a tool host filters tool descendants, including when an override supplies a
+root or pane. Command queries and execution update subscriptions when that
+model changes, releasing the previous model's items and commands. A command
+callback can replace `Model` without redirecting an execution already in progress.
+Typed caption activation and `RootDocumentLayoutItem` continue to use the
+constructor's floating model, as upstream does.
 Content closing/hiding cancellation is preserved by those commands.
 `Window.Close()` follows a separate WPF contract: it checks the protected
 `CanClose` hook, which consults current commands without executing them. If close
-is unavailable, it checks `CanHide`, calls `DoHide` when allowed, and marks the
-window close canceled. Hiding therefore precedes the public `Closing` event;
+is unavailable, it marks the close canceled before checking `CanHide` and calling
+`DoHide` when allowed. These hooks observe the canceled arguments, and their
+changes to cancellation are preserved. Hiding therefore precedes the public `Closing` event;
 cancel hiding through the content's `Hiding` event. A `Closing` subscriber can
 change the cancellation result before Dock's factory veto is evaluated.
 
@@ -2051,7 +2060,11 @@ clicked a button. Inspect it in Avalonia's `OnClosing(WindowClosingEventArgs)` o
 
 The protected `OnStateChanged(EventArgs)` hook runs when the native window state
 changes. Call the base implementation to update the public `IsMaximized` value
-before observing it in a derived control.
+before observing it in a derived control. `IsMaximizedProperty` is writable
+through Avalonia properties, styles, and bindings despite its getter-only CLR
+wrapper, matching the upstream dependency property's access. Setting that flag
+alone does not resize the native window; use `WindowState` or window commands
+to change the window state.
 
 To enable arrow-key movement of floating windows, set the manager property:
 

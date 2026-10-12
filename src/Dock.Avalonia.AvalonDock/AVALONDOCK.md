@@ -842,6 +842,8 @@ grid splitter.
 
 Derived floating controls can override `OnStateChanged(EventArgs)`; call the
 base hook to synchronize `IsMaximized` with the native window state.
+`IsMaximizedProperty` supports assignment, styles, and bindings despite the
+getter-only CLR wrapper. Setting the flag alone does not change `WindowState`.
 
 Derived managers and floating controls can override `OnInitialized(EventArgs)`;
 Avalonia invokes this once before its `Initialized` event. The manager's public
@@ -1012,11 +1014,17 @@ their layout. Check `CanExecute(parameter)` before calling `Execute(parameter)`;
 the parameter is passed to each current item command. Compiled bindings can use
 `x:DataType="LayoutAnchorableFloatingWindowControl"` with the host as their data
 context. Enablement follows tool capabilities, membership, and command changes.
+The capability hooks and tool commands use the current virtual `Model`, filtering
+document/tool descendants according to the host type. Queries and execution
+refresh subscriptions after an override changes that model; an execution already
+in progress keeps its original content snapshot and resolves each command live.
+Typed caption activation and `RootDocumentLayoutItem` use the constructor model.
 Those commands honor content cancellation. `Window.Close()` checks current close
 commands without executing them: an eligible host closes while its floating model
 and content remain in the layout, without content `Closing`/`Closed` events.
 Use `LayoutContent.Close()` or the item/window commands to remove content.
-For nonclosable tools, `CanHide`/`DoHide` run before the canceled window `Closing`
+For nonclosable tools, the close is marked canceled before `CanHide`/`DoHide` run;
+changes made by those hooks are preserved. Both run before the window `Closing`
 event; cancel the content's `Hiding` event to prevent hiding. A window subscriber
 can change the cancellation result before the factory veto runs.
 

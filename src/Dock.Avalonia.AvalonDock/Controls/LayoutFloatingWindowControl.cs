@@ -27,12 +27,11 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Defines the current native window drag state.</summary>
     public static readonly DirectProperty<LayoutFloatingWindowControl, bool> IsDraggingProperty =
         AvaloniaProperty.RegisterDirect<LayoutFloatingWindowControl, bool>(nameof(IsDragging), window => window.IsDragging);
-    /// <summary>Defines whether the native window is maximized.</summary>
-    public static readonly DirectProperty<LayoutFloatingWindowControl, bool> IsMaximizedProperty =
-        AvaloniaProperty.RegisterDirect<LayoutFloatingWindowControl, bool>(nameof(IsMaximized), window => window.IsMaximized);
+    /// <summary>Defines the maximized-state flag used by floating-window bindings and styles.</summary>
+    public static readonly StyledProperty<bool> IsMaximizedProperty =
+        AvaloniaProperty.Register<LayoutFloatingWindowControl, bool>(nameof(IsMaximized));
 
     private bool _dragging;
-    private bool _maximized;
     private bool _notifyOpened;
     private bool _internalCloseRequested;
     private bool _preserveCloseOrigin;
@@ -85,8 +84,9 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     public bool IsContentImmutable { get => GetValue(IsContentImmutableProperty); private set => SetValue(IsContentImmutableProperty, value); }
     /// <summary>Gets whether Dock is dragging this native window.</summary>
     public bool IsDragging => _dragging;
-    /// <summary>Gets whether the native window is maximized.</summary>
-    public bool IsMaximized => _maximized;
+    /// <summary>Gets the maximized-state flag synchronized by native window state changes.</summary>
+    /// <remarks>The property supports bindings and styles. Setting its value does not change WindowState.</remarks>
+    public bool IsMaximized => GetValue(IsMaximizedProperty);
     /// <summary>Gets whether closing has not been requested by internal layout cleanup.</summary>
     /// <remarks>Hiding and canceled user close requests do not change this value.
     /// An internal close request keeps this value false, including if that request is canceled.</remarks>
@@ -277,8 +277,8 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         // Internal removal and view unloading bypass user capabilities.
         if (CloseInitiatedByUser && !_preserveCloseOrigin && !CanClose())
         {
-            if (CanHide()) DoHide();
             e.Cancel = true;
+            if (CanHide()) DoHide();
         }
         if (e is WindowClosingEventArgs nativeArgs) base.OnClosing(nativeArgs);
     }
@@ -313,7 +313,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     /// <summary>Synchronizes the public maximized state after the native window state changes.</summary>
     protected virtual void OnStateChanged(EventArgs e) =>
-        SetAndRaise(IsMaximizedProperty, ref _maximized, WindowState == WindowState.Maximized);
+        SetCurrentValue(IsMaximizedProperty, WindowState == WindowState.Maximized);
 
     /// <summary>Checks whether the contents' current close commands permit closing this window.</summary>
     protected virtual bool CanClose(object? parameter = null) => false;
@@ -366,7 +366,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Removes a closed native host from its manager before native layout cleanup.</summary>
     protected override void OnClosed(EventArgs e)
     {
-        ILayoutRoot? root = Model.Root;
+        ILayoutRoot? root = Model?.Root;
         HasClosed = true;
         _observingModel = false;
         if (_floatingModel is LayoutDocumentFloatingWindow documentModel)

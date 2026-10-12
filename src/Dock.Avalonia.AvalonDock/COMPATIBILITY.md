@@ -199,7 +199,10 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,512 cases. Dropdown input,
+- The consolidated adapter suite passes all 2,541 cases, including 29 new
+  floating-control override, command-subscription, closing-order, null-model,
+  and writable-property cases. Twenty-seven of those cases reproduced failures
+  before correction. Dropdown input,
   command ordering, nested/child menus, resource updates, and menu lifetime
   pass all 41 focused cases; 14 cases failed before correction. All 30
   rendered-preview/image cases also pass. Tab/title activation, middle-click
@@ -668,6 +671,14 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   unprefixed compiled bindings with Headless input, and subscription/lifetime
   cleanup without disposing application commands. Direct `Execute` delegates
   to the item commands as upstream does; callers first query `CanExecute`.
+  The hooks and tool commands use the current virtual `Model`, selecting the
+  appropriate descendant type even when it is a root, pane, or leaf. Detached,
+  managerless, and null overrides return false from capability queries.
+  Model changes refresh command subscriptions; reentrant execution retains its
+  starting snapshot and resolves each command live. Typed captions and document
+  container lookup retain the constructor model. Closing marks cancellation
+  before hide hooks and preserves their changes, including when a hook throws.
+  Internal closure also tolerates a null overridden model.
 - Hiding tool groups and retaining floating return panes preserve the actual
   host instead of closing/recreating it. Visibility restoration keeps its
   resources, content, geometry, container identity, and native registration.
@@ -895,7 +906,10 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   Ordinary native splitter defaults remain unchanged.
 - `DockingManager.LogicalChildrenPublic` exposes the current Avalonia logical
   collection. Floating `OnStateChanged` overrides synchronize maximization when
-  they call the base hook.
+  they call the base hook. `IsMaximizedProperty` retains the upstream writable
+  property contract through an Avalonia styled property; assignment and binding
+  do not themselves change the native window state. `IsDraggingProperty`
+  remains read-only, matching upstream's dependency-property key.
 - `OverlayWindow` hosts the native selectors when floating docking adorners are
   enabled. An optional inherited native window factory preserves the existing
   hit-testing/drop engine and the inline/managed presentation paths. Public
@@ -1012,6 +1026,25 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
 
+## Floating control contract audit
+
+The three upstream floating control classes were reviewed against the pinned
+source, separately from the declaration inventory. The table identifies evidence
+and platform boundaries; it does not claim all inherited WPF window behavior.
+
+| Surface | Implemented contract and evidence |
+| --- | --- |
+| `Model`, `CanClose`, `CanHide`, `DoHide`, tool-window commands | Current virtual model, typed descendant snapshots, live command lookup, parameter forwarding, redirected-model subscriptions, and null/managerless queries are covered by `FloatingOverrideContractTests` and `FloatingWindowCommandTests`. |
+| Typed caption hooks and `RootDocumentLayoutItem` | Constructor-model activation and item lookup are covered by override tests; `NativeWindowMessageTests` covers caption/menu routing. |
+| `OnClosing`, `CloseInitiatedByUser` | Cancellation precedes hide hooks and preserves callback changes/failures. The new override tests supplement the recorded WPF close scenarios and owner/close-origin tests. |
+| `OnClosed` | Current model can be null during internal closure. Existing close/model reference tests cover registry changes, model retention, cancellation, subscriptions, and reentrant closure. |
+| `IsContentImmutable` | Loaded-only content coercion is covered by `FloatingControlTests` and external consumer construction. |
+| `IsMaximizedProperty`, `OnStateChanged` | Writable property metadata, bindings, native state synchronization, and persisted bounds are covered by override/control/bounds tests. Avalonia reports native state changes; WPF's internal Win32 state-loop ordering is not reproduced. |
+| `SetIsDragging`, `OnIsDraggingChanged` | Public state and override notifications follow native Dock drag state. Native Dock owns capture and drag execution; setting a Boolean does not perform WPF's global mouse capture. |
+| `OnInitialized` | Typed subscription suppression and empty-document closure are covered by `FloatingInitializationTests`. Avalonia can initialize during base construction, so model-dependent work is deferred; WPF initialization timing is not reproduced. |
+| Keyboard hooks | Per-manager enablement, routed editor handling, desktop scaling, persistence, and floating navigator input are covered by keyboard/navigator tests. |
+| `FilterMessage`, resize borders, native focus | Windows caption policy and resize hit tests have Headless coverage plus the previously recorded desktop checks. WPF client-area rewriting and its activation message loop remain native Avalonia/Dock responsibilities; current-package desktop checks are deferred. |
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering
@@ -1026,8 +1059,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   windows are still rejected before overwriting a saved file.
 - Remaining manager API audit: templates/selectors, styles,
   and the control adapter surface.
-  Floating controls still need the broader protected/platform hook audit and
-  desktop input/focus validation beyond the recorded close lifecycle scenarios.
+  The floating-control audit above records the completed hook corrections and
+  remaining framework/platform differences. Desktop input/focus validation
+  beyond the recorded close lifecycle scenarios remains open.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy
   tests; they do not establish full platform or floating-window parity.
 - Complete the semantic audit of interfaces, extension methods, protected hooks,

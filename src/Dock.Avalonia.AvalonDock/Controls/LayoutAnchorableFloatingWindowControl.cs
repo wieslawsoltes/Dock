@@ -25,8 +25,8 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
         : base(model, isContentImmutable)
     {
         _model = model;
-        _commands = new(model, CanClose, CanHide,
-            parameter => LayoutFloatingWindowOperations.Execute(model, hide: false, parameter), HideContents);
+        _commands = new(model, () => Model, CanClose, CanHide,
+            parameter => LayoutFloatingWindowOperations.Execute<LayoutAnchorable>(Model, hide: false, parameter), HideContents);
     }
 
     /// <inheritdoc/>
@@ -54,28 +54,27 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
         ObserveLayoutModel();
     }
 
-    /// <inheritdoc/>
+    /// <summary>Checks tool descendants of the current Model, including a model supplied by an override.</summary>
     protected override bool CanClose(object? parameter = null) =>
-        LayoutFloatingWindowOperations.CanExecute(_model, hide: false, parameter);
-    /// <inheritdoc/>
+        LayoutFloatingWindowOperations.CanExecute<LayoutAnchorable>(Model, hide: false, parameter);
+    /// <summary>Checks tool hide commands under the current Model, including a model supplied by an override.</summary>
     protected override bool CanHide(object? parameter = null) =>
-        LayoutFloatingWindowOperations.CanExecute(_model, hide: true, parameter);
+        LayoutFloatingWindowOperations.CanExecute<LayoutAnchorable>(Model, hide: true, parameter);
     /// <inheritdoc/>
     protected override void DoHide() => HideContents(null);
 
     /// <summary>Activates a clicked native caption and routes a single-pane menu before native fallback.</summary>
     protected override IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        LayoutFloatingCaptionMessages.Process(this, msg, wParam, lParam, ref handled);
+        LayoutFloatingCaptionMessages.Process(this, _model, msg, wParam, lParam, ref handled);
         return base.FilterMessage(hwnd, msg, wParam, lParam, ref handled);
     }
 
     private void HideContents(object? parameter)
     {
-        DockingManager? manager = _model.Root?.Manager;
-        LayoutFloatingWindowOperations.Execute(_model, hide: true, parameter);
+        LayoutFloatingWindowOperations.Execute<LayoutAnchorable>(Model, hide: true, parameter);
         if (Owner is { } owner) owner.Focus();
-        else if (manager is not null)
+        else if (Model?.Root?.Manager is { } manager)
             foreach (Visual visual in manager.GetVisualDescendants())
                 if (visual is Control { Focusable: true, IsEffectivelyVisible: true, IsEffectivelyEnabled: true } control && control.Focus()) break;
     }

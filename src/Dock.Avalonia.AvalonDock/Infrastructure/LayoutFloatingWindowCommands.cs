@@ -14,7 +14,8 @@ namespace AvalonDock.Infrastructure;
 // Own window commands and their subscriptions, never the application commands.
 internal sealed class LayoutFloatingWindowCommands : IDisposable
 {
-    private LayoutAnchorableFloatingWindow? _model;
+    private ILayoutElement? _model;
+    private Func<ILayoutElement?>? _getModel;
     private LayoutRoot? _root;
     private readonly List<LayoutItem> _items = new();
     private readonly HashSet<ICommand> _observed = new();
@@ -23,15 +24,17 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
     private bool _refreshing;
     private bool _pending;
 
-    internal LayoutFloatingWindowCommands(LayoutAnchorableFloatingWindow model,
+    internal LayoutFloatingWindowCommands(LayoutAnchorableFloatingWindow model, Func<ILayoutElement?> getModel,
         Func<object?, bool> canClose, Func<object?, bool> canHide,
         Action<object?> close, Action<object?> hide)
     {
         _model = model;
-        _close = new(canClose, close);
-        _hide = new(canHide, hide);
+        _getModel = getModel;
+        _close = new(canClose, close, EnsureCurrentModel);
+        _hide = new(canHide, hide, EnsureCurrentModel);
         model.PropertyChanged += ModelChanged;
-        Refresh();
+        // A subclass's Model getter may depend on its unfinished constructor.
+        Refresh(useCurrentModel: false);
     }
 
     internal ICommand Close => _close;
@@ -50,9 +53,22 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
         _hide.Refresh();
     }
 
-    private void Refresh()
+    private void EnsureCurrentModel()
     {
-        if (_model is null) return;
+        if (_getModel is { } getModel && !ReferenceEquals(_model, getModel())) Refresh();
+    }
+
+    private void ObserveModel(ILayoutElement? model)
+    {
+        if (ReferenceEquals(_model, model)) return;
+        if (_model is INotifyPropertyChanged previous) previous.PropertyChanged -= ModelChanged;
+        _model = model;
+        if (model is INotifyPropertyChanged current) current.PropertyChanged += ModelChanged;
+    }
+
+    private void Refresh(bool useCurrentModel = true)
+    {
+        if (_getModel is null) return;
         if (_refreshing) { _pending = true; return; }
         _refreshing = true;
         try
@@ -60,8 +76,9 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
             do
             {
                 _pending = false;
+                if (useCurrentModel) ObserveModel(_getModel());
                 UpdateSubscriptions();
-            } while (_pending && _model is not null);
+            } while (_pending && _getModel is not null);
         }
         finally { _refreshing = false; }
         CommandChanged(this, EventArgs.Empty);
@@ -78,7 +95,7 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
         }
         UnsubscribeItems();
         if (_model is null || root?.Manager is not { } manager) return;
-        foreach (LayoutContent content in LayoutFloatingWindowOperations.Snapshot(_model))
+        foreach (LayoutContent content in LayoutFloatingWindowOperations.Snapshot<LayoutAnchorable>(_model))
         {
             if (manager.GetLayoutItemFromModel(content) is not { } item) continue;
             _items.Add(item);
@@ -103,8 +120,9 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
 
     public void Dispose()
     {
-        if (_model is null) return;
-        _model.PropertyChanged -= ModelChanged;
+        if (_getModel is null) return;
+        _getModel = null;
+        if (_model is INotifyPropertyChanged observable) observable.PropertyChanged -= ModelChanged;
         _model = null;
         if (_root is not null) _root.Updated -= RootUpdated;
         _root = null;
@@ -119,20 +137,27 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
     {
         private Func<object?, bool>? _canExecute;
         private Action<object?>? _execute;
+        private Action? _prepare;
         private readonly ReactiveCommand<object?, Unit> _command;
 
-        internal Command(Func<object?, bool> canExecute, Action<object?> execute)
+        internal Command(Func<object?, bool> canExecute, Action<object?> execute, Action prepare)
         {
             _canExecute = canExecute;
             _execute = execute;
+            _prepare = prepare;
             _command = ReactiveCommand.Create<object?>(parameter => _execute?.Invoke(parameter),
                 outputScheduler: ImmediateScheduler.Instance);
         }
 
         public event EventHandler? CanExecuteChanged;
-        public bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) == true;
+        public bool CanExecute(object? parameter)
+        {
+            _prepare?.Invoke();
+            return _canExecute?.Invoke(parameter) == true;
+        }
         public void Execute(object? parameter)
         {
+            _prepare?.Invoke();
             // Like upstream, direct execution delegates to item commands;
             // command sources query CanExecute before invoking this method.
             if (_execute is not null) ((ICommand)_command).Execute(parameter);
@@ -143,6 +168,7 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
         {
             _canExecute = null;
             _execute = null;
+            _prepare = null;
             try { Refresh(); }
             finally
             {

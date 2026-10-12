@@ -9,10 +9,10 @@ namespace AvalonDock.Infrastructure;
 // while a window is open, including from another content's command handler.
 internal static class LayoutFloatingWindowOperations
 {
-    internal static bool CanExecute(LayoutFloatingWindow model, bool hide, object? parameter)
+    internal static bool CanExecute<TContent>(ILayoutElement? model, bool hide, object? parameter) where TContent : LayoutContent
     {
-        if (model.Root?.Manager is not { } manager || hide && model is not LayoutAnchorableFloatingWindow) return false;
-        foreach (LayoutContent content in Snapshot(model))
+        if (model?.Root?.Manager is not { } manager) return false;
+        foreach (TContent content in Snapshot<TContent>(model))
         {
             if (hide ? content is not LayoutAnchorable { CanHide: true } : !content.CanClose) return false;
             if (GetCommand(manager.GetLayoutItemFromModel(content), hide)?.CanExecute(parameter) != true) return false;
@@ -20,19 +20,18 @@ internal static class LayoutFloatingWindowOperations
         return true;
     }
 
-    internal static void Execute(LayoutFloatingWindow model, bool hide, object? parameter)
+    internal static void Execute<TContent>(ILayoutElement? model, bool hide, object? parameter) where TContent : LayoutContent
     {
-        if (model.Root?.Manager is not { } manager) return;
-        foreach (LayoutContent content in Snapshot(model))
+        if (model?.Root?.Manager is not { } manager) return;
+        foreach (TContent content in Snapshot<TContent>(model))
             GetCommand(manager.GetLayoutItemFromModel(content), hide)?.Execute(parameter);
     }
 
-    internal static List<LayoutContent> Snapshot(LayoutFloatingWindow model)
+    internal static List<TContent> Snapshot<TContent>(ILayoutElement model) where TContent : LayoutContent
     {
-        List<LayoutContent> contents = new();
+        List<TContent> contents = new();
         foreach (ILayoutElement element in model.Descendents())
-            if (element is LayoutContent content && (model is LayoutGroupFloatingWindow ||
-                (model is LayoutAnchorableFloatingWindow ? content is LayoutAnchorable : content is LayoutDocument))) contents.Add(content);
+            if (element is TContent content) contents.Add(content);
         return contents;
     }
 

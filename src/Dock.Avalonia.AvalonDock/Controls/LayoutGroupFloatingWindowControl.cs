@@ -16,7 +16,7 @@ public class LayoutGroupFloatingWindowControl : LayoutFloatingWindowControl
     /// <inheritdoc/>
     public override ILayoutElement Model => _model;
     /// <inheritdoc/>
-    protected override bool CanClose(object? parameter = null) => LayoutFloatingWindowOperations.CanExecute(_model, false, parameter);
+    protected override bool CanClose(object? parameter = null) => LayoutFloatingWindowOperations.CanExecute<LayoutContent>(Model, false, parameter);
     /// <inheritdoc/>
     protected override void OnInitialized(EventArgs e)
     {
@@ -27,7 +27,7 @@ public class LayoutGroupFloatingWindowControl : LayoutFloatingWindowControl
     /// <summary>Routes native caption activation and system-menu requests through the owning manager.</summary>
     protected override IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        LayoutFloatingCaptionMessages.Process(this, msg, wParam, lParam, ref handled);
+        LayoutFloatingCaptionMessages.Process(this, _model, msg, wParam, lParam, ref handled);
         return base.FilterMessage(hwnd, msg, wParam, lParam, ref handled);
     }
 }

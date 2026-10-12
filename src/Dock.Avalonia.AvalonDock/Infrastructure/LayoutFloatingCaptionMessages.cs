@@ -14,16 +14,16 @@ internal static class LayoutFloatingCaptionMessages
     private const int NonClientRightButtonUp = 0x00A5;
     private const int Caption = 2;
 
-    internal static void Process(LayoutFloatingWindowControl window, int message,
+    internal static void Process(LayoutFloatingWindowControl window, LayoutFloatingWindow model, int message,
         IntPtr hitTest, IntPtr position, ref bool handled)
     {
         if (handled || message is not (NonClientLeftButtonDown or NonClientRightButtonUp) ||
-            hitTest != (IntPtr)Caption || window.Model.Root?.Manager is not { } manager) return;
+            hitTest != (IntPtr)Caption || model.Root?.Manager is not { } manager) return;
         if (message == NonClientLeftButtonDown)
         {
-            if (window.Model is LayoutDocumentFloatingWindow { RootDocument: { } document }) document.IsActive = true;
+            if (model is LayoutDocumentFloatingWindow { RootDocument: { } document }) document.IsActive = true;
             else
-                foreach (ILayoutElement element in window.Model.Descendents())
+                foreach (ILayoutElement element in model.Descendents())
                     if (element is ILayoutContentSelector { SelectedContent: { } selected })
                     {
                         selected.IsActive = true;
@@ -39,7 +39,7 @@ internal static class LayoutFloatingCaptionMessages
             LayoutAnchorableFloatingWindowControl tool => tool.SingleContentLayoutItem,
             _ => null
         };
-        LayoutHeaderKind kind = window.Model is LayoutDocumentFloatingWindow ? LayoutHeaderKind.Document : LayoutHeaderKind.Anchorable;
+        LayoutHeaderKind kind = model is LayoutDocumentFloatingWindow ? LayoutHeaderKind.Document : LayoutHeaderKind.Anchorable;
         ContextMenu? menu = kind == LayoutHeaderKind.Document ? manager.DocumentContextMenu : manager.AnchorableContextMenu;
         // LPARAM contains signed 16-bit physical screen coordinates.
         long packed = position.ToInt64();

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Building the documentation | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Building the documentation | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="building-the-documentation">Building the documentation</h1>
+
+<p>Run <code>./build-docs.sh</code> from a checkout with the SDKs listed in <code>global.json</code> and
+the project target frameworks installed. The script restores the pinned DocFX
+tool, builds the primary libraries for net8.0, and generates the complete site
+under <code>_site</code>. It stops if restoring, compilation, metadata extraction, or site
+generation fails.</p>
+<p><code>build/Documentation.proj</code> stages each library's own DLL, XML comments, portable
+PDB, and dependency manifest under <code>artifacts/documentation/api</code>. DocFX reads
+the compiled metadata, including properties and commands produced by source
+generators. It uses the PDB's Source Link information for source links. This
+avoids running project source generators with DocFX's embedded Roslyn version.
+No generated source files are added to project source directories.</p>
+<p>The primary Avalonia 12 and ReactiveUI packages supply the shared API reference.
+The <code>.v11</code> and <code>.Reactive</code> package variants reuse those type and member names,
+so they are not loaded a second time into the same reference catalog. The
+System.Text.Json generator project remains a source input because its public
+generator API refers to Roslyn itself.</p>
+<p>After a successful full build, <code>dotnet docfx build docfx/docfx.json</code> refreshes
+articles and rendered pages using the existing API metadata. That command alone
+does not verify or update API metadata. A full build replaces the staging
+directory, generated <code>docfx/api/*.yml</code> and <code>*.manifest</code> files, and <code>_site</code> so
+retired APIs cannot remain in the output. It preserves <code>docfx/api/index.md</code>.</p>
+<p>See <a href="https://dotnet.github.io/docfx/docs/dotnet-api-docs.html#generate-from-assemblies">DocFX's assembly-input documentation</a>
+for metadata and Source Link behavior.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -689,8 +689,8 @@ empty-selection notifications handled before they bubble.
 
 Avalonia manages logical children through a different, nonvirtual collection;
 the WPF document pane's protected `IEnumerator LogicalChildren` override is not
-provided. These controls also do not resolve the separately tracked grouped or
-mixed floating-layout gaps. Their default presentation continues to use Dock's
+provided. Grouped and mixed native windows use the additional
+`LayoutGroupFloatingWindow` adapter. Pane presentation continues to use Dock's
 content caching rather than creating an additional application view cache.
 
 `DockingManager.LogicalChildrenPublic` exposes an enumerator over its current
@@ -1675,8 +1675,12 @@ document group retain `LayoutDocumentPaneGroup` wrappers for new groups.
 
 These checks run before layout mutation through the native factory's optional
 `IDockDropPolicy` contract. Direct factory edits bypass drag validation; native
-generic, grouped-document, or mixed floating shapes still have the limitations
-listed in the compatibility checklist.
+grouped documents and generic or mixed panels are projected as
+`LayoutGroupFloatingWindow`. Its `RootPanels` collection contains the original
+native-backed pane and group adapters. Native group floating records return
+panes for documents and tools; floating the entire root first installs a valid
+replacement main panel. These additional shapes use a Dock XML extension,
+described under serialization below.
 
 `DockingManager` exposes four bubbling routed events: `PreviewFloat`, `Floated`,
 `PreviewDock`, and `Docked`. Their `Source` is the public `LayoutContent`, while
@@ -2220,10 +2224,32 @@ dictionary. Applications can also include it directly in their merged resources:
 The bundle includes Dock's base floating-window resources, so it also works when
 `AvalonDockTheme` is installed in a view's styles instead of application styles.
 
-At this checkpoint, theme URI resolution recognizes that built-in URI;
-other custom `Theme.GetResourceUri()` values raise `NotSupportedException`.
-General URI loading remains open. `DictionaryTheme.GetResourceUri()` returns null
-because its dictionary is supplied directly.
+Custom URI themes use a typed factory on each manager. For an application's
+compiled `ResourceDictionary` with `x:Class="Editor.EditorThemeResources"`:
+
+```csharp
+Uri themeUri = new("avares://Editor/Themes/EditorThemeResources.axaml");
+manager.ThemeResources.Register(themeUri, static () => new EditorThemeResources());
+manager.Theme = new EditorTheme(themeUri);
+
+sealed class EditorTheme(Uri uri) : AvalonDock.Themes.Theme
+{
+    public override Uri GetResourceUri() => uri;
+}
+```
+
+The dictionary's constructor loads its compiled XAML using the usual
+`AvaloniaXamlLoader.Load(this)` pattern. Register before assigning the theme.
+Each manager has its own registry, which is also used by floating hosts,
+navigators, and overlays. Factories can create independent dictionaries or
+return an existing shared dictionary; dynamic resource updates and ownership
+follow the same rules as `DictionaryTheme`. URI keys may be absolute or relative
+because lookup uses the supplied factory, without reading URI content.
+
+Unknown URIs fail with `NotSupportedException`; null factory results and cyclic
+resource ownership are rejected. The built-in generic URI is reserved.
+`DictionaryTheme.GetResourceUri()` returns null because it supplies its dictionary
+directly. There is no runtime assembly scan or reflection-based XAML loader.
 
 A `DictionaryTheme` constructed without a dictionary cannot be applied, and a
 non-dictionary theme must return a URI. Applying either invalid configuration
@@ -2305,8 +2331,7 @@ called by Avalonia template application. Derived navigators can replace the list
 through protected `SetDocuments`/`SetAnchorables` methods and override selection
 and preview-key hooks using Avalonia event arguments.
 
-General theme URI loading and desktop modality/focus verification remain open
-work. The native Dock selector continues to handle its other gestures.
+Broader desktop modality/focus verification remains open work. The native Dock selector continues to handle its other gestures.
 
 ## Restore application content from XML
 
@@ -2360,8 +2385,12 @@ the previous icon over it. Already-populated models retain their content and
 icon without receiving a callback.
 
 Docked, hidden, auto-hide, and supported floating layouts retain return
-locations and floating geometry. Native grouped-document or mixed floating
-shapes that the current AvalonDock hierarchy cannot represent are rejected
+locations and floating geometry. Native grouped documents, generic panels, and
+mixed document/tool panels use `LayoutGroupFloatingWindow`, with their original
+panes under `RootPanels`. This is an additional Dock model and XML element, not
+part of the upstream WPF schema. Original single-document and tool-only window
+models continue to serialize with their original element names. Floating native
+roots with hidden/pinned contents or nested window collections remain rejected
 before an existing save file is overwritten.
 
 Individual content, pane/group, root, and floating models also implement
@@ -2379,10 +2408,33 @@ add attributes after base. For groups, base writes children, so write attributes
 first. The traversal shares one XML writer and prepares return-container IDs
 once. A failing override is detected before a file overload opens its destination.
 
-The explicit codec uses known AvalonDock element names. Whole-layout reads
-still construct built-in nodes; automatic discovery and reconstruction of custom
-CLR subclasses remain open. An application's own instances can override and
-call `ReadXml` directly to consume their additional metadata.
+The explicit codec can reconstruct custom nodes through typed registrations:
+
+```csharp
+var serializer = new AvalonDock.Layout.Serialization.XmlLayoutSerializer(manager);
+serializer.KnownTypes.Register("EditorDocument", static () => new EditorDocument());
+serializer.KnownTypes.Register("EditorPane", static () => new EditorPane());
+serializer.Serialize(path);
+serializer.Deserialize(path);
+```
+
+`EditorDocument` and `EditorPane` derive from the corresponding public layout
+models. Their virtual `WriteXml` and `ReadXml` methods can write and read additional
+attributes around their base call. Registrations also work for hidden tools and
+floating-window subclasses. Content recovery, selection, activation, and return
+locations use the same restoration pipeline as built-in types.
+
+Register each XML name and exact CLR type once on both saving and restoring
+serializers. Factories must return a fresh detached instance; null, attached,
+or differently typed results are rejected. Built-in XML element names are
+reserved. Operations snapshot the registrations so callbacks can configure a
+subsequent operation without changing the current traversal. Factory or reader
+failures leave the current manager layout in place.
+
+Unregistered subclasses retain the built-in element name when saved. Unknown
+input elements fail rather than trigger assembly scanning. This typed factory
+path keeps custom type restoration reflection-free; direct standalone `ReadXml`
+continues to operate on the instance supplied by the application.
 
 ## Implementation architecture
 
@@ -2423,7 +2475,7 @@ flowchart TB
         Commands["Compiled command bindings<br/>Native input routing"]
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
-        ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
+        ResourceThemes["Themes.Theme<br/>Shared dictionaries and typed compiled URI factories"]
         Overlays["OverlayWindow and geometry snapshots<br/>Native selector registrations"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
@@ -2436,8 +2488,8 @@ flowchart TB
         Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
-        Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
-        Xml["XmlLayoutSerializer + explicit XML codec<br/>Virtual write hooks and phased content recovery"]
+        Hosts["Floating control API<br/>Typed and grouped hosts, deferred creation, and notifications"]
+        Xml["XmlLayoutSerializer + explicit XML codec<br/>Typed custom XML factories, virtual hooks, and content recovery"]
     end
     subgraph Native["Existing Dock implementation"]
         Models["Dock.Model.Avalonia models"]

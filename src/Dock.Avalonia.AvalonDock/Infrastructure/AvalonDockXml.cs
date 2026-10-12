@@ -8,19 +8,21 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
 using AvalonDock.Layout;
+using AvalonDock.Layout.Serialization;
 
 namespace AvalonDock.Infrastructure;
 
 // Explicit codecs keep persistence independent of reflection and CLR type names.
 internal static class AvalonDockXml
 {
-    internal static XElement Write(LayoutRoot layout)
+    internal static XElement Write(LayoutRoot layout, LayoutSerializationTypes? types = null)
     {
         XDocument document = new();
         using (XmlWriter writer = document.CreateWriter())
         {
             writer.WriteStartElement("LayoutRoot");
-            layout.WriteXml(writer);
+            EnsureContainerIds(layout);
+            layout.WriteXml(new LayoutXmlWriter(writer, types));
             writer.WriteEndElement();
         }
         return document.Root!;
@@ -60,33 +62,32 @@ internal static class AvalonDockXml
         }
     }
 
-    internal static LayoutRoot Read(XElement xml)
+    internal static LayoutRoot Read(XElement xml, LayoutSerializationTypes? types = null)
     {
         if (xml.Name != "LayoutRoot") throw new XmlException("Expected an AvalonDock LayoutRoot element.");
         LayoutRoot root = new();
         bool hasPanel = false;
-        List<LayoutContent> selected = new();
-        LayoutContent? active = null;
+        LayoutXmlReadContext context = new(types);
         foreach (XElement child in xml.Elements())
         {
             switch (child.Name.LocalName)
             {
                 case "RootPanel":
                     if (hasPanel) throw new XmlException("A layout can contain only one RootPanel.");
-                    root.RootPanel = (LayoutPanel)ReadElement(child, selected, ref active);
+                    root.RootPanel = (LayoutPanel)ReadElement(child, context);
                     hasPanel = true;
                     break;
                 case "Hidden":
-                    foreach (XElement hidden in child.Elements()) root.Hidden.Add((LayoutAnchorable)ReadElement(hidden, selected, ref active));
+                    foreach (XElement hidden in child.Elements()) root.Hidden.Add((LayoutAnchorable)ReadElement(hidden, context));
                     break;
-                case "TopSide": root.TopSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
-                case "RightSide": root.RightSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
-                case "LeftSide": root.LeftSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
-                case "BottomSide": root.BottomSide = (LayoutAnchorSide)ReadElement(child, selected, ref active); break;
+                case "TopSide": root.TopSide = (LayoutAnchorSide)ReadElement(child, context); break;
+                case "RightSide": root.RightSide = (LayoutAnchorSide)ReadElement(child, context); break;
+                case "LeftSide": root.LeftSide = (LayoutAnchorSide)ReadElement(child, context); break;
+                case "BottomSide": root.BottomSide = (LayoutAnchorSide)ReadElement(child, context); break;
                 case "FloatingWindows":
                     foreach (XElement window in child.Elements())
                     {
-                        if (ReadElement(window, selected, ref active) is not LayoutFloatingWindow floating)
+                        if (ReadElement(window, context) is not LayoutFloatingWindow floating)
                             throw new XmlException("FloatingWindows can contain only floating layouts.");
                         root.FloatingWindows.Add(floating);
                     }
@@ -95,14 +96,15 @@ internal static class AvalonDockXml
             }
         }
         if (!hasPanel) throw new XmlException("A layout must contain a RootPanel.");
-        RestoreSelection(selected);
-        if (active is not null) root.ActiveContent = active;
+        RestoreSelection(context.Selected);
+        if (context.Active is not null) root.ActiveContent = context.Active;
         return root;
     }
 
     private static void WriteElement(LayoutElement element, XmlWriter writer, string? name = null)
     {
         if (element is LayoutFloatingWindow window) ValidateFloatingWindow(window);
+        name ??= (writer as LayoutXmlWriter)?.Types?.GetName(element);
         name ??= element switch
         {
             LayoutPanel => "LayoutPanel",
@@ -116,6 +118,7 @@ internal static class AvalonDockXml
             LayoutAnchorSide => "LayoutAnchorSide",
             LayoutDocumentFloatingWindow => "LayoutDocumentFloatingWindow",
             LayoutAnchorableFloatingWindow => "LayoutAnchorableFloatingWindow",
+            LayoutGroupFloatingWindow => "LayoutGroupFloatingWindow",
             _ => throw new NotSupportedException("Unsupported AvalonDock layout node.")
         };
         writer.WriteStartElement(name);
@@ -193,8 +196,16 @@ internal static class AvalonDockXml
             foreach (ILayoutElement child in container.Children) WriteElement((LayoutElement)child, writer);
     }
 
-    private static LayoutElement ReadElement(XElement xml, List<LayoutContent> selected, ref LayoutContent? active)
+    private static LayoutElement ReadElement(XElement xml, LayoutXmlReadContext context)
     {
+        if (context.Types?.TryCreate(xml.Name.LocalName, out LayoutElement? custom) == true)
+        {
+            using XmlReader source = xml.CreateReader();
+            using LayoutXmlReader reader = new(source, context);
+            reader.MoveToContent();
+            ((IXmlSerializable)custom!).ReadXml(reader);
+            return custom!;
+        }
         LayoutElement element = xml.Name.LocalName switch
         {
             "RootPanel" or "LayoutPanel" => new LayoutPanel(),
@@ -207,16 +218,17 @@ internal static class AvalonDockXml
             "LayoutAnchorGroup" => new LayoutAnchorGroup(),
             "LayoutDocumentFloatingWindow" => new LayoutDocumentFloatingWindow(),
             "LayoutAnchorableFloatingWindow" => new LayoutAnchorableFloatingWindow(),
+            "LayoutGroupFloatingWindow" => new LayoutGroupFloatingWindow(),
             "LayoutAnchorSide" or "TopSide" or "RightSide" or "LeftSide" or "BottomSide" => new LayoutAnchorSide(),
             _ => throw new XmlException($"Unknown AvalonDock element '{xml.Name}'.")
         };
-        ReadInto(element, xml, selected, ref active);
+        ReadInto(element, xml, context);
         if (xml.IsEmpty && element is LayoutAnchorableFloatingWindow floating)
             ((ILayoutElementWithVisibility)floating).ComputeVisibility();
         return element;
     }
 
-    private static void ReadInto(LayoutElement element, XElement xml, List<LayoutContent> selected, ref LayoutContent? active)
+    private static void ReadInto(LayoutElement element, XElement xml, LayoutXmlReadContext context)
     {
         if (element is ILayoutOrientableGroup orientable && xml.Attribute("Orientation") is { } direction)
         {
@@ -258,9 +270,9 @@ internal static class AvalonDockXml
             if (xml.Attribute("InitialContainerId") is { } initialId) content.InitialContainerId = initialId.Value;
             if (xml.Attribute("InitialContainerIndex") is { } initialIndex) content.InitialContainerIndex = (int)initialIndex;
             if (xml.Attribute("LastActivationTimeStamp") is { } time) content.LastActivationTimeStamp = DateTime.Parse(time.Value, CultureInfo.InvariantCulture);
-            if (Boolean(xml, "IsSelected", false)) selected.Add(content);
+            if (Boolean(xml, "IsSelected", false)) context.Selected.Add(content);
             else if (xml.Attribute("IsSelected") is not null) content.IsSelected = false;
-            if (Boolean(xml, "IsLastFocusedDocument", false)) active = content;
+            if (Boolean(xml, "IsLastFocusedDocument", false)) context.Active = content;
         }
         if (element is LayoutDocument document)
         {
@@ -286,7 +298,7 @@ internal static class AvalonDockXml
         }
         foreach (XElement child in xml.Elements())
         {
-            LayoutElement childElement = ReadElement(child, selected, ref active);
+            LayoutElement childElement = ReadElement(child, context);
             switch (element)
             {
                 case LayoutDocumentFloatingWindow { RootDocument: null } documentWindow when childElement is LayoutDocument rootDocument:
@@ -332,11 +344,13 @@ internal static class AvalonDockXml
     internal static void ReadContents(LayoutElement element, XmlReader reader)
     {
         XElement xml = ReadNode(reader);
-        List<LayoutContent> selected = new();
-        LayoutContent? active = null;
-        ReadInto(element, xml, selected, ref active);
-        RestoreSelection(selected);
-        if (active is not null && element.Root is { } root) root.ActiveContent = active;
+        LayoutXmlReadContext context = (reader as LayoutXmlReader)?.Context ?? new();
+        ReadInto(element, xml, context);
+        if (reader is not LayoutXmlReader)
+        {
+            RestoreSelection(context.Selected);
+            if (context.Active is not null && element.Root is { } root) root.ActiveContent = context.Active;
+        }
     }
 
     internal static LayoutRoot? ReadRoot(XmlReader reader)
@@ -345,7 +359,7 @@ internal static class AvalonDockXml
         if (xml.IsEmpty) return null;
         // IXmlSerializable callers own the surrounding element name.
         xml.Name = "LayoutRoot";
-        return Read(xml);
+        return Read(xml, (reader as LayoutXmlReader)?.Context.Types);
     }
 
     private static XElement ReadNode(XmlReader reader)
@@ -366,13 +380,16 @@ internal static class AvalonDockXml
     internal static LayoutFloatingWindow ReadFloatingWindow(XmlReader reader, string expectedName)
     {
         ArgumentNullException.ThrowIfNull(reader);
-        if (reader.MoveToContent() != XmlNodeType.Element || reader.LocalName != expectedName)
+        if (reader.MoveToContent() != XmlNodeType.Element || (reader is not LayoutXmlReader && reader.LocalName != expectedName))
             throw new XmlException($"Expected a {expectedName} element.");
         XElement xml = (XElement)XNode.ReadFrom(reader);
-        List<LayoutContent> selected = new();
-        LayoutContent? active = null;
-        LayoutFloatingWindow window = (LayoutFloatingWindow)ReadElement(xml, selected, ref active);
-        RestoreSelection(selected);
+        LayoutXmlReadContext context = (reader as LayoutXmlReader)?.Context ?? new();
+        LayoutFloatingWindow window = expectedName == nameof(LayoutDocumentFloatingWindow)
+            ? new LayoutDocumentFloatingWindow() : new LayoutAnchorableFloatingWindow();
+        ReadInto(window, xml, context);
+        if (xml.IsEmpty && window is LayoutAnchorableFloatingWindow floating)
+            ((ILayoutElementWithVisibility)floating).ComputeVisibility();
+        if (reader is not LayoutXmlReader) RestoreSelection(context.Selected);
         return window;
     }
 

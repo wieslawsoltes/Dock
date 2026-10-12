@@ -72,8 +72,14 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
 
     // Single-document floating windows expose the document directly. Their
     // native DocumentDock is an implementation detail, including during moves.
-    private bool IsHiddenNativeParent(IDockable? owner) =>
-        this is LayoutDocument && owner is DocumentDock { Owner: RootDock { Window: not null } };
+    private bool IsHiddenNativeParent(IDockable? owner)
+    {
+        if (this is not LayoutDocument || owner is not DocumentDock { Owner: RootDock { Window: not null } root } pane)
+            return false;
+        if (Context.FindExisting(root) is LayoutFloatingWindow window) return window is LayoutDocumentFloatingWindow;
+        return root.VisibleDockables is { Count: 1 } children && ReferenceEquals(children[0], pane) &&
+            pane.VisibleDockables is { Count: 1 } contents && contents[0] is Document;
+    }
 
     private ILayoutContainer? GetNativeParent(IDockable? owner) =>
         owner is null || IsHiddenNativeParent(owner) ? null : Context.Get(owner) as ILayoutContainer;

@@ -46,6 +46,14 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
     /// <summary>Called when the selected single-pane container changes.</summary>
     protected virtual void OnSingleContentLayoutItemChanged(AvaloniaPropertyChangedEventArgs e) { }
 
+    /// <summary>Starts observing tool-panel visibility and removal after native initialization.</summary>
+    /// <remarks>Call the base hook to retain model-driven hiding, restoration, and closure.</remarks>
+    protected override void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized(e);
+        ObserveLayoutModel();
+    }
+
     /// <inheritdoc/>
     protected override bool CanClose(object? parameter = null) =>
         LayoutFloatingWindowOperations.CanExecute(_model, hide: false, parameter);

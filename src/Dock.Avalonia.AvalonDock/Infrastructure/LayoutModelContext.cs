@@ -100,8 +100,25 @@ internal sealed class LayoutModelContext
         if (window is not DockWindow native || window.Layout is not RootDock root)
             throw new NotSupportedException("Floating layouts require a Dock Avalonia window and root.");
         if (FindExisting(root) is LayoutFloatingWindow floating) return floating;
-        if (root.VisibleDockables is { Count: > 0 } children && children[0] is DocumentDock)
-            return new LayoutDocumentFloatingWindow(native, current);
-        return new LayoutAnchorableFloatingWindow(native, current);
+        if (root.VisibleDockables is { Count: 1 } children)
+        {
+            if (children[0] is DocumentDock { VisibleDockables: { Count: 1 } documents } && documents[0] is Document)
+                return new LayoutDocumentFloatingWindow(native, current);
+            if (children[0] is ToolDock || children[0] is ProportionalDock panel && IsAnchorableTree(panel))
+                return new LayoutAnchorableFloatingWindow(native, current);
+        }
+        return new LayoutGroupFloatingWindow(native, current);
+    }
+
+    private bool IsAnchorableTree(ProportionalDock panel)
+    {
+        if (FindExisting(panel) is { } existing && existing is not LayoutAnchorablePaneGroup) return false;
+        if (panel.VisibleDockables is { } children)
+            foreach (IDockable child in children)
+            {
+                if (child is Dock.Model.Controls.IProportionalDockSplitter or ToolDock) continue;
+                if (child is not ProportionalDock nested || !IsAnchorableTree(nested)) return false;
+            }
+        return true;
     }
 }

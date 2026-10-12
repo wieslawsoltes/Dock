@@ -58,6 +58,7 @@ PackageConsumer.FloatingModelProbe.Verify();
 PackageConsumer.FloatingNotificationReferenceProbe.Verify();
 PackageConsumer.ActiveContentReferenceProbe.Verify();
 PackageConsumer.ContentStateReferenceProbe.Verify();
+PackageConsumer.RegisteredExtensionsProbe.Verify();
 PackageConsumer.DestinationProbe.Verify();
 PackageConsumer.SerializationProbe.Verify();
 PackageConsumer.OperationProbe.Verify();
@@ -74,6 +75,9 @@ if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not 
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
 if (closeOrigin.UserOrigin) throw new Exception("Native host exit did not expose internal close origin.");
 PackageConsumer.ConsumerWindow window = new();
+foreach (string key in new[] { "GroupedFloatingModel", "LegacyGroupedFloatingModel" })
+    if (window.Resources[key] is not LayoutGroupFloatingWindow { ChildrenCount: 2, IsVisible: true })
+        throw new Exception("The grouped floating extension did not compile in both XML namespaces.");
 if (window.Resources["SystemMenuOption"] is not DockingManager { ShowSystemMenu: false } ||
     window.Resources["LegacySystemMenuOption"] is not DockingManager { ShowSystemMenu: false })
     throw new Exception("The packaged system-menu property did not compile in both XML namespaces.");

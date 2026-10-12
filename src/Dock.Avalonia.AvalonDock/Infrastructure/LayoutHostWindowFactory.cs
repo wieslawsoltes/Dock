@@ -32,9 +32,13 @@ internal sealed class LayoutHostWindowFactory(DockingManager manager)
     internal LayoutFloatingWindowControl Create(LayoutFloatingWindow model)
     {
         if (!_manager.TryGetTarget(out DockingManager? owner)) throw new InvalidOperationException("The manager is no longer available.");
-        LayoutFloatingWindowControl window = model is LayoutDocumentFloatingWindow document
-            ? new LayoutDocumentFloatingWindowControl(document)
-            : new LayoutAnchorableFloatingWindowControl((LayoutAnchorableFloatingWindow)model);
+        LayoutFloatingWindowControl window = model switch
+        {
+            LayoutDocumentFloatingWindow document => new LayoutDocumentFloatingWindowControl(document),
+            LayoutAnchorableFloatingWindow tools => new LayoutAnchorableFloatingWindowControl(tools),
+            LayoutGroupFloatingWindow group => new LayoutGroupFloatingWindowControl(group),
+            _ => throw new NotSupportedException("The floating model has no compatible host.")
+        };
         window.Window = model.DockWindow;
         owner.FloatingWindowCreation.Configure(model, window);
         Configure(owner, window);

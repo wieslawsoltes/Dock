@@ -37,6 +37,9 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     private bool _internalCloseRequested;
     private bool _preserveCloseOrigin;
     private bool _messageHookAttached;
+    private bool _observingModel;
+    private bool _observeModelRequested;
+    private bool _closeEmptyDocument;
     private readonly LayoutFloatingWindow? _floatingModel;
 
     static LayoutFloatingWindowControl()
@@ -55,9 +58,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         ArgumentNullException.ThrowIfNull(model);
         _floatingModel = model as LayoutFloatingWindow;
-        if (_floatingModel is LayoutDocumentFloatingWindow documentModel)
-            documentModel.RootDocumentChanged += FloatingDocumentChanged;
-        else if (_floatingModel is not null) _floatingModel.PropertyChanged += FloatingModelChanged;
+        if (_observeModelRequested) ObserveLayoutModel();
         IsContentImmutable = isContentImmutable;
         Classes.Add("avalondock");
         if (model is LayoutDocumentFloatingWindow document)
@@ -135,6 +136,11 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
                 else HideForLayout();
             }
         }
+        else if (_floatingModel is LayoutGroupFloatingWindow group && args.PropertyName == nameof(LayoutGroupFloatingWindow.IsVisible))
+        {
+            if (group.IsVisible) RestoreForLayout();
+            else HideForLayout();
+        }
         else if (args.PropertyName == nameof(LayoutFloatingWindow.IsValid) && _floatingModel is { IsValid: false })
             RequestCloseFromLayout();
     }
@@ -163,7 +169,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     void IHostWindow.Present(bool isDialog)
     {
-        bool hiddenLayout = Model is LayoutAnchorableFloatingWindow { IsVisible: false };
+        bool hiddenLayout = Model is LayoutAnchorableFloatingWindow { IsVisible: false } or LayoutGroupFloatingWindow { IsVisible: false };
         if (DeferNativePresentation || hiddenLayout)
         {
             if (hiddenLayout && !DeferNativePresentation) IsHiddenByLayout = true;
@@ -192,7 +198,31 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     /// <summary>Called once when Avalonia completes floating-window initialization.</summary>
     /// <remarks>Call the base hook to retain native initialization. The public Initialized event follows this hook.</remarks>
-    protected virtual void OnInitialized(EventArgs e) => base.OnInitialized();
+    protected virtual void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized();
+        ObserveLayoutModel();
+    }
+
+    // Avalonia may initialize in the Window base constructor. Remember the
+    // request until our constructor receives the model, without invoking an
+    // abstract Model getter while the derived host is still being constructed.
+    private protected void ObserveLayoutModel(bool closeEmptyDocument = false)
+    {
+        _observeModelRequested = true;
+        _closeEmptyDocument |= closeEmptyDocument;
+        if (_floatingModel is null || HasClosed) return;
+        if (_closeEmptyDocument && _floatingModel is LayoutDocumentFloatingWindow { RootDocument: null })
+        {
+            RequestCloseFromLayout();
+            return;
+        }
+        if (_observingModel || HasClosed) return;
+        _observingModel = true;
+        if (_floatingModel is LayoutDocumentFloatingWindow document)
+            document.RootDocumentChanged += FloatingDocumentChanged;
+        else if (_floatingModel is not null) _floatingModel.PropertyChanged += FloatingModelChanged;
+    }
 
     /// <summary>Filters native Windows messages before Avalonia processes them.</summary>
     /// <remarks>Invoked through Avalonia's Win32 callback after the first opening until the window closes.
@@ -255,7 +285,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         Model.Root?.Manager?.AttachThemeResources(this);
         NotifyOpened();
         base.OnOpened(e);
-        if (Model is LayoutAnchorableFloatingWindow { IsVisible: false }) HideForLayout();
+        if (Model is LayoutAnchorableFloatingWindow { IsVisible: false } or LayoutGroupFloatingWindow { IsVisible: false }) HideForLayout();
     }
 
     private void NotifyOpened()
@@ -327,6 +357,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         ILayoutRoot? root = Model.Root;
         HasClosed = true;
+        _observingModel = false;
         if (_floatingModel is LayoutDocumentFloatingWindow documentModel)
             documentModel.RootDocumentChanged -= FloatingDocumentChanged;
         else if (_floatingModel is not null) _floatingModel.PropertyChanged -= FloatingModelChanged;

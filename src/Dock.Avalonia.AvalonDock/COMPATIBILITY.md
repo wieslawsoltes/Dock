@@ -120,7 +120,7 @@ The incoming Avalonia 11 preview suite validates native shared controls. It does
 not add an Avalonia 11 target to this adapter. The source-generator changes select
 the appropriate System.Text.Json generator in shared compiler processes; the
 AvalonDock XML codec remains separate. None of these changes implements the
-remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
+remaining manager callbacks, platform behavior, or automatic custom CLR type discovery.
 
 
 ## Verified implementation
@@ -689,7 +689,9 @@ remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
   snapshot. Callback code owns icon restoration; default recovery copies the
   previous icon. Nested virtual `WriteXml` overrides run through a shared writer
   across docked, hidden, pinned, and floating nodes. Failed overrides preserve an
-  existing save file. Automatic custom CLR subtype reconstruction remains open.
+  existing save file. `XmlLayoutSerializer.KnownTypes` registers custom XML names
+  and typed factories, preserving nested read/write overrides without reflection.
+  Registrations are snapshotted per operation; implicit assembly scanning is absent.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
 - `NavigatorWindow` presents live document/tool containers in a compiled template.
@@ -720,8 +722,10 @@ remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
   from selector styles and can be included by URI from consumer XAML. Tests verify
   both XML namespaces, compiled bindings, view-scoped adapter styles without
   application-wide Dock resources, the inherited Avalonia control-theme
-  property, invalid configurations, and the built-in URI. General URI loading is
-  still missing; custom URIs outside the built-in bundle throw `NotSupportedException`.
+  property, invalid configurations, and the built-in URI.
+  `DockingManager.ThemeResources` resolves custom URIs through registered compiled
+  dictionary factories for the manager and its auxiliary windows. Unknown URIs
+  fail explicitly; runtime type discovery and XAML text loading are not used.
 - Public `LayoutCachePaneControl`, `LayoutDocumentPaneControl`, and
   `LayoutAnchorablePaneControl` expose the live pane and child collection while
   their default themes retain native Dock presenters and cached item views.
@@ -847,9 +851,19 @@ remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
   while detaching their native owner, and both public/native adoption replace the
   retained parent across layouts. Closed hosts unsubscribe from retained models.
   These rules use the existing native owner-change and host-lifetime contracts.
-- 2278 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- Native grouped documents and generic/mixed panels preserve their public wrappers
+  through `LayoutGroupFloatingWindow` and `LayoutGroupFloatingWindowControl`.
+  Group floating and float-all record document/tool return panes, including an
+  entire root panel. Empty return groups retain their model while their host is
+  hidden. Their XML element is a Dock extension outside the upstream WPF schema.
+- Typed floating initialization hooks request model subscriptions after their
+  base call. Avalonia can initialize in its Window constructor; model-dependent
+  work waits until the adapter receives the model. Suppressing the base hook
+  suppresses those subscriptions. This does not change Avalonia's Initialized
+  event timing into WPF's timing.
+- 2322 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (2296 total).
+  for real image decoding and HTTP/HTTPS transport contracts (2340 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -859,13 +873,13 @@ remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
 - Remaining auto-hide platform behavior: WPF `HwndHost`/Win32 hooks have no
   direct Avalonia equivalent; separate native pinned-window modes and desktop
   focus behavior require validation.
-- Complete native floating lifecycle/state synchronization, including native
-  group redocking, generic panels, and grouped-document/mixed native windows.
-  Floating the entire root panel through the extra native factory API can leave
-  the public root without a panel and is not yet supported. XML rejects
-  native floating shapes that cannot be represented by the AvalonDock hierarchy
-  before overwriting a saved file.
-- Remaining manager APIs: templates/selectors, styles, general theme URI loading,
+- Validate the broader native floating lifecycle and group redocking on desktop
+  platforms. Grouped documents and generic/mixed panels now use the additional
+  `LayoutGroupFloatingWindow` model, host, and XML element; whole-root floating
+  retains a replacement main panel and return panes. That XML extension is not
+  understood by upstream WPF. Floating roots with hidden/pinned contents or nested
+  windows are still rejected before overwriting a saved file.
+- Remaining manager API audit: templates/selectors, styles,
   and the control adapter surface.
   Floating controls still need the broader protected/platform hook audit and
   desktop input/focus validation beyond the recorded close lifecycle scenarios.
@@ -895,8 +909,8 @@ remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 818
-matching type/member keys and 133 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 820
+matching type/member keys and 131 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

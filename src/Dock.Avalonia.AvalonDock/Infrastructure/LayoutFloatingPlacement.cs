@@ -19,25 +19,28 @@ internal sealed class LayoutFloatingPlacement(LayoutRoot root) : ILayoutFloating
 {
     public void FloatAll(IDockable dockable, Action operation)
     {
-        if (dockable.Owner is not ToolDock model || root.Context.Get(model) is not LayoutAnchorablePane pane)
+        if (dockable.Owner is not (ToolDock or DocumentDock) ||
+            root.Context.Get(dockable.Owner) is not ILayoutGroup pane || pane is not ILayoutContentSelector selector)
         {
             operation();
             return;
         }
         List<ReturnPosition> positions = new(pane.ChildrenCount);
-        for (int i = 0; i < pane.ChildrenCount; i++)
+        foreach (ILayoutElement child in pane.Children)
         {
-            if (!pane.Children[i].CanFloat) return;
-            positions.Add(new(pane.Children[i], pane, i));
+            if (child is not LayoutContent content) continue;
+            if (!content.CanFloat) return;
+            positions.Add(new(content, pane, pane.IndexOfChild(content)));
         }
         bool remember = !LayoutDockingHistory.IsFloatingContainer(pane);
-        LayoutContent? selected = pane.SelectedContent;
+        LayoutContent? selected = selector.SelectedContent;
         try { operation(); }
         finally
         {
             if (Complete(positions, remember, selected))
             {
-                if (positions[0].Content.Parent is ILayoutPositionableGroup target) CopyPosition(pane, target);
+                if (pane is ILayoutPositionableGroup source && positions[0].Content.Parent is ILayoutPositionableGroup target)
+                    CopyPosition(source, target);
                 root.CollectGarbage();
             }
         }
@@ -45,8 +48,8 @@ internal sealed class LayoutFloatingPlacement(LayoutRoot root) : ILayoutFloating
 
     public void FloatContainer(IDockable dockable, Action operation)
     {
-        if (dockable is not ToolDock and not ProportionalDock ||
-            root.Context.Get(dockable) is not ILayoutAnchorablePane source || source is not ILayoutGroup sourceGroup)
+        if (dockable is not ToolDock and not DocumentDock and not ProportionalDock ||
+            root.Context.Get(dockable) is not ILayoutPanelElement source || source is not ILayoutGroup sourceGroup)
         {
             operation();
             return;
@@ -56,27 +59,39 @@ internal sealed class LayoutFloatingPlacement(LayoutRoot root) : ILayoutFloating
 
         bool remember = !LayoutDockingHistory.IsFloatingContainer(source);
         ILayoutGroup? parent = source.Parent as ILayoutGroup;
-        if (remember && parent is null)
+        bool entireRoot = source is LayoutPanel && ReferenceEquals(source.Parent, root);
+        if (remember && parent is null && !entireRoot)
         {
             operation();
             return;
         }
         List<ReturnPosition> positions = new();
-        ILayoutAnchorablePane? destination = null;
+        ILayoutPanelElement? destination = null;
         if (remember) destination = CloneReturnTree(source, positions);
         else
             foreach (ILayoutElement element in source.Descendents())
-                if (element is LayoutAnchorable tool && tool.Parent is LayoutAnchorablePane previous)
-                    positions.Add(new(tool, previous, previous.IndexOfChild(tool)));
-        LayoutContent? selected = source is LayoutAnchorablePane pane ? pane.SelectedContent : root.ActiveContent;
+                if (element is LayoutContent content && content.Parent is ILayoutGroup previous)
+                    positions.Add(new(content, previous, previous.IndexOfChild(content)));
+        LayoutContent? selected = source is ILayoutContentSelector pane ? pane.SelectedContent : root.ActiveContent;
         if (selected is null || !positions.Exists(item => ReferenceEquals(item.Content, selected)))
             selected = FindSelected(positions);
 
-        if (destination is not null) parent!.InsertChildAt(parent.IndexOfChild(sourceGroup), destination);
+        if (entireRoot)
+        {
+            // Keep a valid public root throughout native removal notifications.
+            // SplitToWindow resolves the original root, then removes the source
+            // from this replacement panel using its current native owner.
+            LayoutPanel replacement = new();
+            root.RootPanel = replacement;
+            replacement.Children.Add(destination!);
+            replacement.Children.Add(source);
+        }
+        else if (destination is not null) parent!.InsertChildAt(parent.IndexOfChild(sourceGroup), destination);
         try { operation(); }
         finally
         {
             if (Complete(positions, remember, selected)) root.CollectGarbage();
+            else if (entireRoot && source.Parent is LayoutPanel) root.RootPanel = (LayoutPanel)source;
             else destination?.Parent?.RemoveChild(destination);
         }
     }
@@ -104,22 +119,32 @@ internal sealed class LayoutFloatingPlacement(LayoutRoot root) : ILayoutFloating
         return positions.Count > 0 ? positions[0].Content : null;
     }
 
-    private static ILayoutAnchorablePane CloneReturnTree(ILayoutAnchorablePane source, List<ReturnPosition> positions)
+    private static ILayoutPanelElement CloneReturnTree(ILayoutPanelElement source, List<ReturnPosition> positions)
     {
-        if (source is LayoutAnchorablePane pane)
+        ILayoutPanelElement copy;
+        if (source is LayoutAnchorablePane tools)
         {
-            LayoutAnchorablePane result = new() { Name = pane.Name };
-            CopyPosition(pane, result);
-            ((ToolDock)result.DockModel).Alignment = ((ToolDock)pane.DockModel).Alignment;
-            result.DockModel.Proportion = pane.DockModel.Proportion;
-            for (int i = 0; i < pane.Children.Count; i++) positions.Add(new(pane.Children[i], result, i));
-            return result;
+            LayoutAnchorablePane pane = new() { Name = tools.Name };
+            ((ToolDock)pane.DockModel).Alignment = ((ToolDock)tools.DockModel).Alignment;
+            copy = pane;
         }
-        LayoutAnchorablePaneGroup group = (LayoutAnchorablePaneGroup)source;
-        LayoutAnchorablePaneGroup copy = new() { Orientation = group.Orientation };
-        CopyPosition(group, copy);
-        copy.DockModel.Proportion = group.DockModel.Proportion;
-        foreach (ILayoutAnchorablePane child in group.Children) copy.Children.Add(CloneReturnTree(child, positions));
+        else copy = source switch
+        {
+            LayoutDocumentPane pane => new LayoutDocumentPane { ShowHeader = pane.ShowHeader },
+            LayoutDocumentPaneGroup group => new LayoutDocumentPaneGroup { Orientation = group.Orientation },
+            LayoutAnchorablePaneGroup group => new LayoutAnchorablePaneGroup { Orientation = group.Orientation },
+            LayoutPanel panel => new LayoutPanel { Orientation = panel.Orientation },
+            _ => throw new NotSupportedException("The floating group has no return-layout projection.")
+        };
+        CopyPosition((ILayoutPositionableGroup)source, (ILayoutPositionableGroup)copy);
+        ((LayoutElement)copy).DockModel.Proportion = ((LayoutElement)source).DockModel.Proportion;
+        ILayoutGroup target = (ILayoutGroup)copy;
+        foreach (ILayoutElement child in ((ILayoutGroup)source).Children)
+        {
+            if (child is LayoutContent content)
+                positions.Add(new(content, target, ((ILayoutGroup)source).IndexOfChild(content)));
+            else target.InsertChildAt(target.ChildrenCount, CloneReturnTree((ILayoutPanelElement)child, positions));
+        }
         return copy;
     }
 
@@ -133,5 +158,5 @@ internal sealed class LayoutFloatingPlacement(LayoutRoot root) : ILayoutFloating
         target.CanRepositionItems = source.CanRepositionItems;
     }
 
-    private readonly record struct ReturnPosition(LayoutContent Content, LayoutAnchorablePane Pane, int Index);
+    private readonly record struct ReturnPosition(LayoutContent Content, ILayoutGroup Pane, int Index);
 }

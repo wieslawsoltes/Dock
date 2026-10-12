@@ -23,6 +23,14 @@ public class LayoutDocumentFloatingWindowControl : LayoutFloatingWindowControl
     public LayoutItem? RootDocumentLayoutItem => _model.RootDocument is { } document
         ? _model.Root?.Manager?.GetLayoutItemFromModel(document) : null;
 
+    /// <summary>Starts observing root-document changes after native initialization.</summary>
+    /// <remarks>Call the base hook to retain automatic closure when the root document is removed.</remarks>
+    protected override void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized(e);
+        ObserveLayoutModel(closeEmptyDocument: true);
+    }
+
     /// <inheritdoc/>
     protected override bool CanClose(object? parameter = null) =>
         LayoutFloatingWindowOperations.CanExecute(_model, hide: false, parameter);

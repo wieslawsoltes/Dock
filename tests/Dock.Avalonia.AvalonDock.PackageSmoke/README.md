@@ -231,3 +231,7 @@ Avalonia binding/style lifetime differences using the shared public operations.
 It covers callback state, source update triggers, alias lookup, empty and duplicate
 content, layout replacement, and reentrant activation/history. The two fixture
 files keep the WPF reference and the Avalonia-specific expectations separate.
+
+The external consumer also restores registered custom XML document types, loads
+a compiled dictionary through `ThemeResources`, and floats, serializes, restores,
+and redocks a mixed native panel through `LayoutGroupFloatingWindow`.

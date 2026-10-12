@@ -24,7 +24,7 @@ internal static class LayoutFloatingCaptionMessages
             if (window.Model is LayoutDocumentFloatingWindow { RootDocument: { } document }) document.IsActive = true;
             else
                 foreach (ILayoutElement element in window.Model.Descendents())
-                    if (element is LayoutAnchorablePane { SelectedContent: { } selected })
+                    if (element is ILayoutContentSelector { SelectedContent: { } selected })
                     {
                         selected.IsActive = true;
                         break;

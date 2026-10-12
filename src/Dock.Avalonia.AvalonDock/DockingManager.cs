@@ -203,6 +203,11 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Gets or sets AvalonDock resource themes. Avalonia's control template theme remains available through StyledElement.Theme.</summary>
     public new CompatibilityTheme? Theme { get => GetValue(ThemeProperty); set => SetValue(ThemeProperty, value); }
 
+    /// <summary>Gets the typed resource factories for application theme URIs.</summary>
+    /// <remarks>Register compiled resource dictionaries before assigning <see cref="Theme"/>.
+    /// Registrations belong to this manager and are also used by its floating, overlay, and navigator windows.</remarks>
+    public AvalonDock.Themes.ThemeResourceRegistry ThemeResources { get; } = new();
+
     /// <summary>Updates theme resources on this manager and its existing floating and navigator windows.</summary>
     protected virtual void OnThemeChanged(AvaloniaPropertyChangedEventArgs e) => _themeResources.Apply(Theme);
 

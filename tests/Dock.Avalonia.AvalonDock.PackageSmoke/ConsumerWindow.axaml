@@ -4,6 +4,14 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <LayoutGroupFloatingWindow x:Key="GroupedFloatingModel">
+      <LayoutDocumentPane><LayoutDocument ContentId="grouped-document" /></LayoutDocumentPane>
+      <LayoutAnchorablePane><LayoutAnchorable ContentId="grouped-tool" /></LayoutAnchorablePane>
+    </LayoutGroupFloatingWindow>
+    <ad:LayoutGroupFloatingWindow x:Key="LegacyGroupedFloatingModel">
+      <ad:LayoutDocumentPane><ad:LayoutDocument ContentId="legacy-grouped-document" /></ad:LayoutDocumentPane>
+      <ad:LayoutAnchorablePane><ad:LayoutAnchorable ContentId="legacy-grouped-tool" /></ad:LayoutAnchorablePane>
+    </ad:LayoutGroupFloatingWindow>
     <DockingManager x:Key="SystemMenuOption" ShowSystemMenu="False" />
     <ad:DockingManager x:Key="LegacySystemMenuOption" ShowSystemMenu="False" />
     <ControlTheme x:Key="Overlay" TargetType="OverlayWindow" x:DataType="OverlayWindow"

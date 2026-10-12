@@ -33,9 +33,8 @@ internal sealed class LayoutThemeScope : IDisposable
         if (previous is not null) _owner.Resources.MergedDictionaries.Remove(previous);
         // Resource notifications can close an auxiliary window synchronously.
         if (_disposed) return;
-        if (theme is DictionaryTheme dictionary && ReferenceEquals(dictionary.ThemeResourceDictionary, _owner.Resources))
-            throw new InvalidOperationException("A theme dictionary cannot contain the resource scope that consumes it.");
-        IResourceProvider? next = LayoutThemeResources.Create(theme);
+        if (!_coordinator.TryGetTarget(out LayoutThemeCoordinator? coordinator)) return;
+        IResourceProvider? next = coordinator.CreateResources(theme, _owner.Resources);
         // A custom Theme.GetResourceUri override can also close the window.
         if (_disposed) return;
         _resources = next;

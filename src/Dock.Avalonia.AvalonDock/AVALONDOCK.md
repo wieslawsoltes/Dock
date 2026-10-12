@@ -841,8 +841,13 @@ document group create `LayoutDocumentPaneGroup` wrappers for new split groups.
 
 The native factory exposes optional `IDockDropPolicy` validation, implemented
 by the adapter's `LayoutDropPolicy`. Direct native factory edits bypass this
-drag policy; generic, grouped-document, or mixed floating shapes remain outside
-the supported public hierarchy and are rejected by XML serialization.
+drag policy. Native grouped documents and generic or mixed panels use the
+additional `LayoutGroupFloatingWindow` model and its native host. This extension
+preserves the original pane wrappers, selection, geometry, and return panes.
+Floating the entire root installs a replacement main panel before native removal.
+Its `LayoutGroupFloatingWindow` XML element is a Dock extension; upstream WPF
+readers cannot consume that element. Standard document/tool windows retain the
+original AvalonDock XML format.
 
 `DropArea<T>`, `IDropArea`, `DropAreaType`, `OverlayArea`, the manager/document/tool
 overlay-area types, `OverlayWindowDropTarget`, and both target enums describe
@@ -1058,9 +1063,12 @@ or `GetResourceUri()` override closes a window during theme replacement. A
 canceled close keeps the window connected to the replacement and subsequent
 themes. `GenericTheme.GetResourceUri()` identifies the
 compiled `Themes/Generic.axaml` bundle, which also supports compiled
-`ResourceInclude` from consumer XAML. General custom URI loading is
-still open; currently other URIs raise `NotSupportedException`. See the full guide
-for sharing, control-theme disambiguation, and invalid-theme behavior.
+`ResourceInclude` from consumer XAML. Register additional compiled dictionaries
+with `manager.ThemeResources.Register(uri, static () => new EditorThemeResources())`
+before assigning a theme whose `GetResourceUri()` returns that URI. The factory
+is used for the manager and each auxiliary window and may return a shared
+dictionary. Unregistered URIs raise `NotSupportedException`; no assembly discovery
+or runtime XAML loading is used. See the full guide for a complete example.
 
 Ctrl+Tab opens `AvalonDock.Controls.NavigatorWindow` from docked or floating
 content. Its document and tool lists expose the live item containers and execute
@@ -1083,8 +1091,8 @@ unprefixed XAML. `Documents`, `Anchorables`, `SelectedDocument`, and
 `SelectedAnchorable` support compiled templates. The parameterless public
 `OnApplyTemplate()` hook is invoked when Avalonia applies the template.
 The full guide covers list filtering, initial selection, command availability,
-protected extensibility, and modal lifetime. General theme URI loading and
-desktop modality/focus verification remain open.
+protected extensibility, typed theme resource registration, and modal lifetime.
+Broader desktop modality/focus verification remains open.
 
 `AvalonDock.Controls.Extentions` supplies the upstream tree helpers with
 `AvaloniaObject` parameters: `FindVisualChildren<T>`, `FindLogicalChildren<T>`,
@@ -1117,9 +1125,21 @@ Nested virtual `WriteXml` overrides participate in complete layout saves, includ
 hidden, pinned, and floating content. Write extra group attributes before calling
 base, because base writes the children. A shared writer prepares return-container
 IDs once, and a failing override leaves an existing save file untouched.
-Whole-layout XML still uses known base element names and constructs built-in
-models when reading. Automatic custom CLR subtype discovery remains open;
-custom instances can call their own `ReadXml` overrides directly.
+Register custom models on the serializer to preserve their concrete types and
+invoke their `ReadXml` overrides during whole-layout restoration:
+
+```csharp
+var serializer = new AvalonDock.Layout.Serialization.XmlLayoutSerializer(manager);
+serializer.KnownTypes.Register("EditorDocument", static () => new EditorDocument());
+serializer.KnownTypes.Register("EditorPane", static () => new EditorPane());
+```
+
+Use the same registrations when saving and restoring. Each operation snapshots
+the registry, including nested panes and floating windows. Factories must return
+fresh detached instances of the exact registered type. Built-in XML names are
+reserved. Unregistered subclasses retain their built-in element name on save;
+unknown input names fail before replacing the manager's layout. Automatic CLR
+assembly scanning is intentionally absent from this reflection-free path.
 
 ## Architecture
 
@@ -1161,7 +1181,7 @@ flowchart TB
     Commands["Compiled command bindings<br/>Native input routing"]
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
-    ResourceThemes["Themes.Theme<br/>Shared dictionaries and compiled generic resources"]
+    ResourceThemes["Themes.Theme<br/>Shared dictionaries and typed compiled URI factories"]
     Overlays["OverlayWindow and geometry snapshots<br/>Native selector registrations"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
@@ -1172,13 +1192,13 @@ flowchart TB
     ContentHooks["Content state and close overrides"]
     TreeEvents["Parent and root hooks<br/>Layout membership events"]
     Events["Operation notifications<br/>Public layout source and routed events"]
-    Hosts["Floating control API<br/>Typed hosts, deferred creation, and collection notifications"]
+    Hosts["Floating control API<br/>Typed and grouped hosts, deferred creation, and notifications"]
     Sizing["Pixel/Auto/star lengths and minimums<br/>Native panel measurement and resize policies"]
     SplitterInput["Native splitter input and preview<br/>Commit public lengths on release"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
-    Xml["XmlLayoutSerializer and explicit XML codec<br/>Virtual write hooks and phased content recovery"]
+    Xml["XmlLayoutSerializer and explicit XML codec<br/>Typed custom XML factories, virtual hooks, and content recovery"]
     Api -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
     GridControls --> View

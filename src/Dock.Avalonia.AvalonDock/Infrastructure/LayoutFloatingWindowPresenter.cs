@@ -25,7 +25,7 @@ internal sealed class LayoutFloatingWindowPresenter
             // A model override may intentionally suppress those notifications.
             if (window.DockWindow.Host is not LayoutFloatingWindowControl) window.CloseHost();
         }
-        else if (window is LayoutAnchorableFloatingWindow { IsVisible: false })
+        else if (window is LayoutAnchorableFloatingWindow { IsVisible: false } or LayoutGroupFloatingWindow { IsVisible: false })
         {
             if (window.DockWindow.Host is null)
                 window.DockWindow.Factory?.InitDockWindow(window.DockWindow, window.DockWindow.Owner);

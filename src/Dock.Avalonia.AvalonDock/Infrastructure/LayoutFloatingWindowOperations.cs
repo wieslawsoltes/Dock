@@ -31,8 +31,8 @@ internal static class LayoutFloatingWindowOperations
     {
         List<LayoutContent> contents = new();
         foreach (ILayoutElement element in model.Descendents())
-            if (element is LayoutContent content && (model is LayoutAnchorableFloatingWindow
-                    ? content is LayoutAnchorable : content is LayoutDocument)) contents.Add(content);
+            if (element is LayoutContent content && (model is LayoutGroupFloatingWindow ||
+                (model is LayoutAnchorableFloatingWindow ? content is LayoutAnchorable : content is LayoutDocument))) contents.Add(content);
         return contents;
     }
 

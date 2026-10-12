@@ -17,6 +17,7 @@ internal sealed class LayoutDropPolicy(LayoutRoot layout) : IDockDropPolicy
         {
             if (current is not IRootDock { Window: not null } root) continue;
             if (ReferenceEquals(root, layout.DockModel)) return true;
+            if (layout.Context.GetWindow(root.Window) is LayoutGroupFloatingWindow) return true;
             if (root.VisibleDockables is { Count: > 0 } children && children[0] is IDocumentDock) return false;
             return !ContainsDocument(source);
         }

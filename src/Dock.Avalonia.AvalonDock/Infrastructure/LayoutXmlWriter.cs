@@ -1,12 +1,14 @@
 using System.Xml;
+using AvalonDock.Layout.Serialization;
 
 namespace AvalonDock.Infrastructure;
 
 // Marks a traversal whose return-container IDs have already been prepared.
 // Virtual WriteXml hooks receive the same writer, avoiding another whole-tree
 // identity scan for each base call. All XML operations remain caller-owned.
-internal sealed class LayoutXmlWriter(XmlWriter writer) : XmlWriter
+internal sealed class LayoutXmlWriter(XmlWriter writer, LayoutSerializationTypes? types = null) : XmlWriter
 {
+    internal LayoutSerializationTypes? Types { get; } = types;
     public override XmlWriterSettings? Settings => writer.Settings;
     public override WriteState WriteState => writer.WriteState;
     public override string? XmlLang => writer.XmlLang;

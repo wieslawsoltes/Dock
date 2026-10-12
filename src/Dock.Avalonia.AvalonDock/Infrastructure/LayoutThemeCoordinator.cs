@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Avalonia;
+using Avalonia.Controls;
 using AvalonDock.Themes;
 
 namespace AvalonDock.Infrastructure;
@@ -8,12 +9,20 @@ namespace AvalonDock.Infrastructure;
 internal sealed class LayoutThemeCoordinator
 {
     private readonly LayoutThemeScope _manager;
+    private readonly ThemeResourceRegistry _registry;
     private readonly List<WeakReference<LayoutThemeScope>> _windows = new();
     private Theme? _theme;
     private bool _updating;
     private bool _pending;
 
-    internal LayoutThemeCoordinator(DockingManager manager) => _manager = new(manager, this);
+    internal LayoutThemeCoordinator(DockingManager manager)
+    {
+        _registry = manager.ThemeResources;
+        _manager = new(manager, this);
+    }
+
+    internal IResourceProvider? CreateResources(Theme? theme, IResourceDictionary ownerResources) =>
+        LayoutThemeResources.Create(theme, _registry, ownerResources);
 
     internal void Apply(Theme? theme)
     {

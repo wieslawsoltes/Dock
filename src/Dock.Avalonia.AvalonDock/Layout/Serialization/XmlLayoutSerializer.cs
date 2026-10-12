@@ -11,11 +11,15 @@ public class XmlLayoutSerializer : LayoutSerializer
 {
     /// <summary>Creates a serializer for the manager.</summary>
     public XmlLayoutSerializer(DockingManager manager) : base(manager) { }
+    /// <summary>Gets the application type factories used to restore custom XML nodes without reflection.</summary>
+    /// <remarks>Unregistered subclasses retain the built-in XML node name. Register a subclass on both
+    /// saving and restoring serializers to preserve its concrete type and virtual XML hooks.</remarks>
+    public LayoutSerializationTypes KnownTypes { get; } = new();
     /// <summary>Writes to a caller-owned XML writer.</summary>
     public void Serialize(XmlWriter writer)
     {
         ArgumentNullException.ThrowIfNull(writer);
-        AvalonDockXml.Write(Manager.Layout).WriteTo(writer);
+        AvalonDockXml.Write(Manager.Layout, KnownTypes.Snapshot()).WriteTo(writer);
     }
     /// <summary>Writes to a caller-owned text writer.</summary>
     public void Serialize(TextWriter writer)
@@ -34,7 +38,7 @@ public class XmlLayoutSerializer : LayoutSerializer
     /// <summary>Writes to a file.</summary>
     public void Serialize(string filepath)
     {
-        XElement layout = AvalonDockXml.Write(Manager.Layout);
+        XElement layout = AvalonDockXml.Write(Manager.Layout, KnownTypes.Snapshot());
         using FileStream stream = File.Create(filepath);
         using XmlWriter writer = XmlWriter.Create(stream, WriterSettings());
         layout.WriteTo(writer);
@@ -61,7 +65,7 @@ public class XmlLayoutSerializer : LayoutSerializer
         try
         {
             XElement xml = XElement.Load(reader);
-            LayoutRoot layout = AvalonDockXml.Read(xml);
+            LayoutRoot layout = AvalonDockXml.Read(xml, KnownTypes.Snapshot());
             FixupLayout(layout);
             Manager.Layout = layout;
         }

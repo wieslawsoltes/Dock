@@ -265,6 +265,7 @@ if (!sourceHost.IsVisible || !ReferenceEquals(fromSource.Root, manager.Layout))
     throw new Exception("The packaged item command ignored content closing cancellation.");
 fromSource.Closing -= cancelClose;
 sourceItem.DockAsDocumentCommand!.Execute(null);
+Dispatcher.UIThread.RunJobs();
 if (fromSource.IsFloating || manager.Layout.FloatingWindows.Count != 0)
     throw new Exception("The source document did not return to its original pane.");
 fromSource.Float();
@@ -277,6 +278,7 @@ if (sourceItem.LayoutElement is not null || sourceItem.Model is not null)
     throw new Exception("XML restoration did not detach the old item container.");
 AssertFloatingSourceTemplate(manager, documents[0]);
 documents.RemoveAt(0);
+Dispatcher.UIThread.RunJobs();
 if (manager.Layout.Descendents().OfType<LayoutDocument>().Count() != 1) throw new Exception("Source changes were not observed.");
 if (manager.Layout.FloatingWindows.Count != 0) throw new Exception("The removed source left an empty floating window.");
 AssertDockingNotifications(manager, window);
@@ -859,6 +861,7 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
                 Dock.Model.Core.DockOperation.Fill, true) || document.IsFloating ||
             !events.SequenceEqual(new[] { "PreviewFloat", "Floated", "PreviewDock", "Docked" }))
             throw new Exception("The packaged native docking operation did not raise one ordered event pair.");
+        Dispatcher.UIThread.RunJobs();
         if (manager.FloatingWindows.Contains(host) || hosts.Count != 2 ||
             hosts[1].Action != NotifyCollectionChangedAction.Remove || !ReferenceEquals(hosts[1].OldItems![0], host))
             throw new Exception("Native docking did not remove the same floating control from the manager.");
@@ -879,6 +882,7 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
         try
         {
             document.Dock();
+            Dispatcher.UIThread.RunJobs();
             if (!created.IsVisible || !created.IsTracked || !ReferenceEquals(createdModel.DockWindow.Host, created) ||
                 !manager.FloatingWindows.Contains(created) || !manager.Layout.FloatingWindows.Contains(createdModel) ||
                 !manager.DockFactory.HostWindows.Contains(created) ||
@@ -886,7 +890,7 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
                 throw new Exception("Canceled native cleanup lost the live host or its ownership.");
         }
         finally { manager.DockFactory.WindowClosing -= veto; }
-        manager.Layout.CollectGarbage();
+        created.Close();
         if (manager.FloatingWindows.Contains(created) || createdModel.DockWindow.Host is not null ||
             manager.Layout.FloatingWindows.Contains(createdModel) || manager.DockFactory.HostWindows.Contains(created) ||
             !((Dock.Model.Core.IHostWindowCloseState)created).IsClosed)

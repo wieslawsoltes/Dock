@@ -199,7 +199,10 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,587 cases, including 30 theme
+- The consolidated adapter suite passes all 2,616 cases, including 29 source
+  callback, registration, layout-transition, and lifetime cases. All 30 rendered
+  preview/image cases pass. The source callback audit below records argument
+  handling and weak delivery semantics. Coverage also includes 30 theme
   and auto-hide timer callback cases; 24 reproduced failures before correction.
   The focused callback run passed 127 cases before the final initialization
   case was added. The 16 manager property/style/default/hook cases remain
@@ -282,8 +285,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 - `DockingManager.OnReceiveWeakEvent(Type, object, EventArgs)` receives live
   source notifications through Avalonia's weak collection event. Overrides can
   observe, handle, or replace a source before default processing. Shared sources
-  deliver once with document precedence, and replacing either property preserves
-  the other subscription. The portable manager type is
+  deliver per attachment with document precedence, and replacing either property
+  removes one registration while preserving the other. The portable manager type is
   `WeakEvent<INotifyCollectionChanged, NotifyCollectionChangedEventArgs>`;
   `IWeakEventSubscriber<NotifyCollectionChangedEventArgs>` replaces WPF's listener
   interface. An unhandled subscribed event raises `InvalidOperationException`.
@@ -1029,6 +1032,33 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
+
+## Source callback and weak registration audit
+
+The source hooks detach `e.OldValue` and import `e.NewValue` using the manager's
+current layout. They no longer substitute the last applied source or reread the
+current property as the new argument. Twenty-nine Headless cases cover
+before/after-base redirection, suppression, exceptions, captured callback replay,
+layout replacement, suppressed layout transitions, failed initial imports,
+replacement during an import batch, repeated registrations, in-flight shared
+source delivery, and both manager and collection lifetime. Existing shared-source
+expectations were corrected against WPF's listener implementation: each
+attachment delivers independently, with documents taking precedence when the
+source properties refer to the same collection.
+
+Layout transitions disconnect the old root's notifications before removing its
+source contents, preventing premature active-content updates. Two regressions
+reproduced the incorrect ordering before its correction. Transitions detach the
+current sources from the supplied old root and
+attach them to the supplied new root. Initial batches retain their root and
+register their supplied collection only after completion; live changes use the
+current manager layout. Weak identity keys and distinct weak subscribers preserve
+independent registrations without retaining either endpoint. The initial focused
+run exposed a strong listener reference; after correction, all 246 focused cases
+passed before the two additional repeated-registration lifetime cases were added.
+The external package consumer exercises reentrant source callbacks, shared
+collections, and repeated attachment/removal on both supported runtimes.
+These are source-derived contracts; desktop checks remain deferred.
 
 ## Manager resource and timer callback audit
 

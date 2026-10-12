@@ -15,7 +15,8 @@ public partial class DockingManager : IWeakEventSubscriber<NotifyCollectionChang
     /// <returns>Whether the event manager type is recognized.</returns>
     /// <remarks>Call the base implementation to update the current source's layout,
     /// or return true to handle the event without the default update. When both
-    /// sources are the same collection, documents take precedence. Returning false
+    /// sources are the same collection, each attachment delivers separately and
+    /// documents take precedence on each delivery. Returning false
     /// for a delivered collection notification causes an <see cref="InvalidOperationException"/>.</remarks>
     protected virtual bool OnReceiveWeakEvent(Type managerType, object sender, EventArgs e)
     {

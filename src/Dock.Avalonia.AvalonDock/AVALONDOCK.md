@@ -560,6 +560,22 @@ commands already respect the detached model state. A callback exception releases
 the source-creation suspension and propagates to the caller without rolling back
 model changes.
 
+`OnDocumentsSourceChanged` and `OnAnchorablesSourceChanged` detach the source in
+the callback's old value and import its new value. They do not reread the current
+source property. An override which replaces the source before calling base can
+therefore import both the redirected source and the original callback's source.
+Suppressing or throwing before base leaves existing contents and subscriptions
+in place. A later callback detaches its own old argument, not the last source
+which was successfully imported. Replaying a captured callback also uses its
+arguments. Call base once for each property change that should be applied.
+
+Layout replacement detaches and imports the current source properties. Live
+collection notifications use the manager's current layout, even if an override
+suppressed its layout transition. Initial imports keep their supplied root and
+subscribe to their supplied source only after the batch completes; a failed
+initial import does not add a subscription. Callback exceptions preserve model
+changes already made and release the source-creation suspension.
+
 Derived managers can override `OnReceiveWeakEvent(Type, object, EventArgs)` to
 observe source changes before the default update. Call base to update the layout,
 or return `true` to handle the event yourself. Returning `false` for a delivered
@@ -568,8 +584,13 @@ collection event raises `InvalidOperationException`. The manager uses Avalonia's
 `WeakEvents.CollectionChanged`; `managerType` is
 `typeof(WeakEvent<INotifyCollectionChanged, NotifyCollectionChangedEventArgs>)`,
 replacing WPF's `CollectionChangedEventManager`. Replacing the source inside the
-hook makes base ignore the old event. A collection shared by both sources sends
-one notification to the hook, with documents taking precedence.
+hook makes base ignore the old event. Each completed attachment adds a distinct
+weak registration, and detachment removes one registration. A collection shared
+by both sources delivers twice, with documents taking precedence on each
+delivery, as in WPF. Repeated callback attachments likewise deliver separately;
+in-flight deliveries finish even if an earlier delivery detaches a source.
+Use separate document and tool collections when each change should be processed
+once. Subscriptions retain neither an unused manager nor an obsolete collection.
 
 `LayoutAnchorSide` and `LayoutAnchorGroup` expose the four native auto-hide
 strips. The XML serializer preserves these groups, their content identities,

@@ -86,27 +86,47 @@ public class SourceWeakEventTests
     [AvaloniaTheory]
     [InlineData(true)]
     [InlineData(false)]
-    public void Shared_Sources_Deliver_Once_And_Keep_The_Remaining_Subscription(bool detachDocuments)
+    public void Shared_Sources_Deliver_Per_Attachment_And_Keep_The_Remaining_Subscription(bool detachDocuments)
     {
         ObservableCollection<object> source = new() { new object() };
         RecordingManager manager = new() { DocumentsSource = source, AnchorablesSource = source };
 
         source.Add(new object());
-        Assert.Single(manager.Calls);
-        Assert.Equal(2, manager.Layout.Descendents().OfType<LayoutDocument>().Count());
+        Assert.Equal(2, manager.Calls.Count);
+        Assert.Equal(3, manager.Layout.Descendents().OfType<LayoutDocument>().Count());
         Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorable>());
 
         SetSource(manager, null, detachDocuments);
         object remaining = new();
         source.Add(remaining);
-        Assert.Equal(2, manager.Calls.Count);
+        Assert.Equal(3, manager.Calls.Count);
         Assert.Contains(manager.Layout.Descendents().OfType<LayoutContent>(), content => ReferenceEquals(content.Content, remaining));
         Assert.All(manager.Layout.Descendents().OfType<LayoutContent>(), content => Assert.Equal(!detachDocuments, content is LayoutDocument));
 
         SetSource(manager, null, !detachDocuments);
         source.Add(new object());
-        Assert.Equal(2, manager.Calls.Count);
+        Assert.Equal(3, manager.Calls.Count);
         Assert.Empty(manager.Layout.Descendents().OfType<LayoutContent>());
+    }
+
+    [AvaloniaFact]
+    public void Shared_Registrations_Already_In_Flight_Observe_Reentrant_Source_Replacement()
+    {
+        ObservableCollection<object> source = new() { new object() };
+        RecordingManager manager = new() { DocumentsSource = source, AnchorablesSource = source };
+        manager.BeforeReceive = () =>
+        {
+            manager.BeforeReceive = null;
+            manager.DocumentsSource = null;
+        };
+
+        source.Add(new object());
+        Assert.Equal(2, manager.Calls.Count);
+        Assert.Empty(manager.Layout.Descendents().OfType<LayoutDocument>());
+        Assert.Equal(3, manager.Layout.Descendents().OfType<LayoutAnchorable>().Count());
+        source.Add(new object());
+        Assert.Equal(3, manager.Calls.Count);
+        Assert.Equal(4, manager.Layout.Descendents().OfType<LayoutAnchorable>().Count());
     }
 
     [AvaloniaFact]

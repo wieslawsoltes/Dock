@@ -1284,8 +1284,13 @@ override handle the event. The base returns `false` for an unknown manager type.
 Returning `false` from an actual collection callback raises
 `InvalidOperationException`, because that subscribed event was not handled.
 Replacing a source inside the override makes the base ignore its old event.
-When both source properties refer to one collection, each event is delivered
-once and the document source takes precedence.
+Each completed source attachment adds a distinct weak registration, and each
+detachment removes one. When both source properties refer to one collection,
+each event is delivered twice and the document source takes precedence on both
+deliveries, as in WPF. Repeated callback attachments also deliver separately.
+Deliveries already in flight finish if an earlier callback detaches a source.
+Use separate document and tool collections when each change should be processed
+once.
 
 WPF's `CollectionChangedEventManager`/`IWeakEventListener` are replaced by
 Avalonia's `WeakEvents.CollectionChanged` and
@@ -1293,6 +1298,26 @@ Avalonia's `WeakEvents.CollectionChanged` and
 argument is the closed generic type shown above. Subscriptions use Avalonia's
 weak listener support, so a retained source does not retain an unused manager.
 See [Avalonia's weak collection event](https://github.com/AvaloniaUI/Avalonia/blob/8eeda4f6f546165b3f72e63c9f42247abb306905/src/Avalonia.Base/Utilities/WeakEvents.cs).
+
+`OnDocumentsSourceChanged` and `OnAnchorablesSourceChanged` detach the callback's
+old source and import its new source. The supplied arguments govern these
+operations, even when a derived manager replaces the property before calling
+base. Such an override can import both the redirected source and the source in
+the original callback. Suppressing or throwing before base leaves the previous
+contents and subscriptions in place; a later callback detaches its own old
+argument, not the last source that was successfully imported. Replaying a saved
+callback likewise applies its arguments. Call base once for each property change
+that should be applied.
+
+Layout replacement uses the current source properties for detachment from the
+old root and import into the new root. Live collection changes consult the
+manager's current layout, including after a suppressed layout transition.
+Initial imports keep their supplied root and add their supplied source's
+subscription only after a successful batch. An exception during initial import
+preserves changes already made, releases the container-creation suspension, and
+does not add a listener. Distinct weak registrations preserve WPF's repeated
+attachment semantics without retaining obsolete collections or unused managers.
+See [WPF's listener registration and delivery](https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/WindowsBase/System/Windows/WeakEventManager.cs).
 
 ## Style item containers
 

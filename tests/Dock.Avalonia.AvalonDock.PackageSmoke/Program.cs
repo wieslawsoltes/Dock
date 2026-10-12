@@ -71,6 +71,7 @@ PackageConsumer.AutoHideReturnProbe.Verify();
 PackageConsumer.NativeWindowProbe.Verify();
 PackageConsumer.FloatingOverrideProbe.Verify();
 PackageConsumer.SourceCollectionProbe.Verify();
+PackageConsumer.SourceCallbackProbe.Verify();
 PackageConsumer.UpdateStrategyProbe.Verify();
 PackageConsumer.HttpImageProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());

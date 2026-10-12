@@ -235,3 +235,9 @@ files keep the WPF reference and the Avalonia-specific expectations separate.
 The external consumer also restores registered custom XML document types, loads
 a compiled dictionary through `ThemeResources`, and floats, serializes, restores,
 and redocks a mixed native panel through `LayoutGroupFloatingWindow`.
+
+The source callback probe invokes the protected document/tool hooks from this
+external assembly. It verifies callback arguments after reentrant replacement,
+separate delivery for shared collections, eleven repeated attachments, and
+removal of one registration per detachment. Both .NET 8 and .NET 10 execute
+these checks against the restored package.

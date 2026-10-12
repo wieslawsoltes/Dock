@@ -188,9 +188,9 @@ public partial class DockingManager : TemplatedControl
         _floatingControls = new(this);
         LayoutSourceSubscriptions subscriptions = new(this);
         _documents = new(this, _layoutItems, static content => new LayoutDocument { Content = content },
-            LayoutSourcePlacement.FindDocumentDestination, LayoutSourcePlacement.InsertDocument, subscriptions.SetDocuments);
+            LayoutSourcePlacement.FindDocumentDestination, LayoutSourcePlacement.InsertDocument, subscriptions);
         _anchorables = new(this, _layoutItems, static content => new LayoutAnchorable { Content = content },
-            LayoutSourcePlacement.FindAnchorableDestination, LayoutSourcePlacement.InsertAnchorable, subscriptions.SetAnchorables);
+            LayoutSourcePlacement.FindAnchorableDestination, LayoutSourcePlacement.InsertAnchorable, subscriptions);
         OnLayoutChanged(null!, layout);
     }
 
@@ -363,11 +363,10 @@ public partial class DockingManager : TemplatedControl
         _navigator.Close();
         _floatingWindows.Detach(registeredHosts: _floatingControls.Items);
         _autoHide.Detach(hide: true);
-        if (oldLayout is not null)
-        {
-            oldLayout.PropertyChanged -= LayoutPropertyChanged;
-            if (ReferenceEquals(oldLayout.Manager, this)) oldLayout.Manager = null;
-        }
+        if (oldLayout is not null) oldLayout.PropertyChanged -= LayoutPropertyChanged;
+        _documents.Detach(oldLayout, DocumentsSource);
+        _anchorables.Detach(oldLayout, AnchorablesSource);
+        if (oldLayout is not null && ReferenceEquals(oldLayout.Manager, this)) oldLayout.Manager = null;
         newLayout.Manager = this;
         newLayout.PropertyChanged += LayoutPropertyChanged;
         _layoutItems.SetLayout(newLayout);
@@ -376,16 +375,22 @@ public partial class DockingManager : TemplatedControl
         RaisePropertyChanged(DockLayoutProperty, (RootDock?)oldLayout?.DockModel!, DockLayout);
         if (IsInitialized) EnsureLayoutRootPanel();
         if (IsInitialized) EnsureAnchorSidePanels();
-        _documents.SetLayout(newLayout);
-        _anchorables.SetLayout(newLayout);
+        _documents.Attach(newLayout, DocumentsSource);
+        _anchorables.Attach(newLayout, AnchorablesSource);
         if (IsLoaded) _floatingWindows.Attach(newLayout);
         if (IsLoaded) _autoHide.Attach(newLayout);
         LayoutChanged?.Invoke(this, EventArgs.Empty);
     }
-    /// <summary>Replaces the observed document source.</summary>
-    protected virtual void OnDocumentsSourceChanged(AvaloniaPropertyChangedEventArgs e) => _documents.SetSource(DocumentsSource);
-    /// <summary>Replaces the observed tool source.</summary>
-    protected virtual void OnAnchorablesSourceChanged(AvaloniaPropertyChangedEventArgs e) => _anchorables.SetSource(AnchorablesSource);
+    /// <summary>Detaches the document source in <paramref name="e"/>'s old value and imports its new value.</summary>
+    /// <remarks>The arguments control attachment even when an override changes the current source before calling base.
+    /// Collection notifications update the layout only while their sender is a current source.</remarks>
+    protected virtual void OnDocumentsSourceChanged(AvaloniaPropertyChangedEventArgs e)
+        => _documents.ChangeSource(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
+    /// <summary>Detaches the tool source in <paramref name="e"/>'s old value and imports its new value.</summary>
+    /// <remarks>The arguments control attachment even when an override changes the current source before calling base.
+    /// Collection notifications update the layout only while their sender is a current source.</remarks>
+    protected virtual void OnAnchorablesSourceChanged(AvaloniaPropertyChangedEventArgs e)
+        => _anchorables.ChangeSource(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
     /// <summary>Called when the application content template changes.</summary>
     protected virtual void OnLayoutItemTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the application content template selector changes.</summary>

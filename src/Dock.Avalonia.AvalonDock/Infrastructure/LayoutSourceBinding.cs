@@ -13,64 +13,55 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
     private readonly Func<object?, T> _create;
     private readonly Func<LayoutRoot, ILayoutContainer?> _findDestination;
     private readonly Func<LayoutRoot?, T, ILayoutContainer?, DockingManager?, ILayoutContainer?> _insert;
-    private readonly Action<IEnumerable?> _observe;
-    private LayoutRoot _layout;
-    private IEnumerable? _source;
+    private readonly LayoutSourceSubscriptions _subscriptions;
 
     internal LayoutSourceBinding(DockingManager manager, LayoutItemRegistry items, Func<object?, T> create,
         Func<LayoutRoot, ILayoutContainer?> findDestination,
         Func<LayoutRoot?, T, ILayoutContainer?, DockingManager?, ILayoutContainer?> insert,
-        Action<IEnumerable?> observe)
+        LayoutSourceSubscriptions subscriptions)
     {
         _manager = manager;
         _items = items;
-        _layout = manager.Layout;
         _create = create;
         _findDestination = findDestination;
         _insert = insert;
-        _observe = observe;
+        _subscriptions = subscriptions;
     }
 
-    internal void SetSource(IEnumerable? source)
+    internal void ChangeSource(IEnumerable? oldSource, IEnumerable? newSource)
     {
-        _observe(null);
-        bool replacing = _source is not null;
-        if (replacing) RemoveMatching(_source!, false);
-        _source = source;
-        try { ImportExistingSource(); }
-        finally { _observe(_source); }
-        if (replacing) _layout.CollectGarbage();
+        Detach(_manager.Layout, oldSource);
+        Attach(_manager.Layout, newSource);
     }
 
-    internal void SetLayout(LayoutRoot layout)
+    internal void Detach(LayoutRoot? layout, IEnumerable? source)
     {
-        if (_source is not null)
-        {
-            RemoveMatching(_source, false);
-            _layout.CollectGarbage();
-        }
-        _layout = layout;
-        ImportExistingSource();
+        if (layout is null || source is null) return;
+        RemoveMatching(layout, source, false);
+        _subscriptions.Detach(source);
+        _manager.Layout.CollectGarbage();
     }
 
-    private void ImportExistingSource()
+    internal void Attach(LayoutRoot? layout, IEnumerable? source)
     {
-        if (_source is null) return;
+        if (layout is null || source is null) return;
         HashSet<object?> existing = new();
-        foreach (ILayoutElement element in _layout.Descendents())
+        foreach (ILayoutElement element in layout.Descendents())
             if (element is T content) existing.Add(content.Content);
         // Snapshot before invoking application strategies, which may edit the source.
         // Repeated source values remain distinct unless already present in the layout.
         List<object> pending = new();
-        foreach (object? item in _source)
+        foreach (object? item in source)
             if (item is not null && !existing.Contains(item)) pending.Add(item);
-        InsertItems(pending, true);
+        InsertItems(layout, pending, true);
+        // Only a completed import attaches its supplied source. A strategy may
+        // have changed the manager's current source while this batch ran.
+        _subscriptions.Attach(source);
     }
 
-    private void InsertItems(IEnumerable items, bool assignContentIds)
+    private void InsertItems(LayoutRoot layout, IEnumerable items, bool assignContentIds)
     {
-        LayoutRoot importedLayout = _layout;
-        ILayoutContainer? destination = _findDestination(_layout);
+        ILayoutContainer? destination = _findDestination(layout);
         _items.BeginSourceBatch();
         try
         {
@@ -80,19 +71,19 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
                 if (assignContentIds) content.ContentId = Guid.NewGuid().ToString();
                 // Initial attachment imports into its supplied root, while live
                 // collection notifications consult the manager's current layout.
-                destination = _insert(assignContentIds ? importedLayout : null, content, destination, _manager);
+                destination = _insert(assignContentIds ? layout : null, content, destination, _manager);
                 _items.CompleteSourceInsertion(content, assignContentIds);
             }
         }
         finally { _items.EndSourceBatch(); }
     }
 
-    private void RemoveMatching(IEnumerable items, bool clearContent)
+    private static void RemoveMatching(LayoutRoot layout, IEnumerable items, bool clearContent)
     {
         HashSet<object?> removed = new();
         foreach (object? item in items) removed.Add(item);
         List<T> contents = new();
-        foreach (ILayoutElement element in _layout.Descendents())
+        foreach (ILayoutElement element in layout.Descendents())
             if (element is T content && removed.Contains(content.Content)) contents.Add(content);
         foreach (T content in contents)
         {
@@ -105,21 +96,21 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
     {
         if (_manager.AreSourceBindingsSuspended) return;
         if (args.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace && args.OldItems is { } removed)
-            RemoveMatching(removed, true);
+            RemoveMatching(_manager.Layout, removed, true);
         if (args.Action is NotifyCollectionChangedAction.Add or NotifyCollectionChangedAction.Replace && args.NewItems is { } added)
-            InsertItems(added, false);
+            InsertItems(_manager.Layout, added, false);
         if (args.Action == NotifyCollectionChangedAction.Reset)
         {
             // AvalonDock resets every item of the source's layout type,
             // including items inserted directly into the layout.
             List<T> contents = new();
-            foreach (ILayoutElement element in _layout.Descendents()) if (element is T content) contents.Add(content);
+            foreach (ILayoutElement element in _manager.Layout.Descendents()) if (element is T content) contents.Add(content);
             foreach (T content in contents)
             {
                 content.Parent?.RemoveChild(content);
                 if (content is LayoutDocument) content.Content = null;
             }
         }
-        _layout.CollectGarbage();
+        _manager.Layout.CollectGarbage();
     }
 }

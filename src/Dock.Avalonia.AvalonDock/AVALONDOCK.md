@@ -565,8 +565,9 @@ set to `true`, native Overlay previews host the same public preview and cached
 editor in an owned `PinnedDockWindow`. Manager themes, content styles, context
 menus, close commands, and Ctrl+Tab navigation also apply there. Switching a
 tool to Inline mode returns its editor to the manager. The resizer remains in
-the manager's pinned host. The Avalonia control does not provide WPF's `HwndHost`
-or its Win32 child-window hooks.
+the manager's pinned host. Windows 11 ARM64 desktop validation covers native
+pointer resizing and editor focus on all four edges. The Avalonia control does
+not provide WPF's `HwndHost` or its Win32 child-window hooks.
 
 Floating document captions use `DocumentTitleTemplate` and its selector with the
 public `LayoutDocument` from `LayoutDocumentFloatingWindow.RootDocument`:

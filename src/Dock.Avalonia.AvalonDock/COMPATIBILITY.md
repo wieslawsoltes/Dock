@@ -877,19 +877,20 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   work waits until the adapter receives the model. Suppressing the base hook
   suppresses those subscriptions. This does not change Avalonia's Initialized
   event timing into WPF's timing.
-- 2322 passing cases in `Dock.Avalonia.AvalonDock.Tests` at the `7919caeb1`
-  validation checkpoint, before the native pinned-window integration.
+- 2336 passing cases in `Dock.Avalonia.AvalonDock.Tests` after the native
+  pinned-window, ownership, and focus integration.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (2340 total).
+  for real image decoding and HTTP/HTTPS transport contracts (2354 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
 
 ## Open work (not release-complete)
 
-- Remaining auto-hide platform behavior: WPF `HwndHost`/Win32 hooks have no
-  direct Avalonia equivalent; separate native pinned-window modes and desktop
-  focus behavior require validation.
+- Windows 11 ARM64 native pinned-window validation passes 37 checks covering
+  editor attachment, native pointer resizing and release, and editor focus on
+  all four edges. Broader platform coverage remains open. WPF `HwndHost`/Win32
+  hooks have no direct Avalonia equivalent.
 - Validate the broader native floating lifecycle and group redocking on desktop
   platforms. Grouped documents and generic/mixed panels now use the additional
   `LayoutGroupFloatingWindow` model, host, and XML element; whole-root floating

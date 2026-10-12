@@ -951,7 +951,8 @@ the same `AutoHideWindow`, content style, and cached editor. Manager context
 menus, close commands, and Ctrl+Tab navigation work inside it. Changing a tool's
 `PinnedDockDisplayModeOverride` to Inline returns its editor to the manager;
 changing back creates a new native preview. The resizer stays beside the pinned
-area in the manager. The control does not provide WPF's `HwndHost` or Win32
+area in the manager. Windows 11 ARM64 desktop checks cover native pointer
+resizing and editor focus on all four edges. The control does not provide WPF's `HwndHost` or Win32
 child-window hooks.
 
 ## Use converters in compiled bindings

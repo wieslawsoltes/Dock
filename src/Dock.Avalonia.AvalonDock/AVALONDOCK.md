@@ -922,6 +922,10 @@ is canceled. Reattachment creates fresh hosts or registers surviving hosts again
 Dock's optional `IDockWindowClosePolicy` separates host closure from native layout
 cleanup for compatible hosts; ordinary Dock factories keep their existing behavior.
 Closed hosts release command subscriptions without disposing application commands.
+Dock's native host also detaches Avalonia layout content from its logical children
+before `Closed` callbacks. Retaining a layout therefore does not retain the closed
+window through `StyledElement.Parent`; its content value and preserved model stay
+available. A canceled close keeps the logical parent until a later successful close.
 All 168 recorded WPF close observations are compared: 48 protected-hook cases and
 before/synchronous/dispatched states for 40 document/tool scenarios. Closing
 content raises its events before the deferred host close. A document retains its

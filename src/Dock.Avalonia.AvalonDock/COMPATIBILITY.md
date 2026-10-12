@@ -74,6 +74,14 @@ virtual factory and host contracts; its public registration timing belongs to th
 facade. Any additional native capability required by the remaining work
 must follow the same separate-PR, merge-to-`master`, then reintegrate workflow.
 
+The floating-model lifetime audit found another native issue: a retained Avalonia
+layout remained a logical child of its closed `HostWindow`. The isolated fix in
+[PR #1161](https://github.com/wieslawsoltes/Dock/pull/1161) detaches model content
+before `Closed` callbacks while preserving content values, cancellation, and
+layout-preserving close policies. Its seven new native Headless cases cover model
+retention, successful/canceled closure, and application control content; existing
+replacement-host cases also verify the model can attach to its new host.
+
 
 ## Verified implementation
 

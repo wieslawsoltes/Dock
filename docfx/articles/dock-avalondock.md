@@ -1980,6 +1980,10 @@ floating parent until adopted by another container. Their native Dock owners
 detach immediately, and both public and native collection insertion replace
 the retained parent, including a move to another layout. Retaining a model
 after its host closes does not retain that host through notification handlers.
+The native `HostWindow` also detaches an Avalonia layout model's logical parent
+before `Closed` callbacks, while preserving its `Content` value and the close
+policy's retained layout. Cancellation leaves the parent intact. This native
+lifetime fix is isolated in [PR #1161](https://github.com/wieslawsoltes/Dock/pull/1161).
 
 ## Inspect floating docking overlays
 

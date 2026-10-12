@@ -329,6 +329,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         Visual relativeTo,
         bool updateAdornerState)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
         var hasLocalAdorner = false;

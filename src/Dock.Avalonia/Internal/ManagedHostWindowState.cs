@@ -305,6 +305,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private void Over(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
@@ -335,6 +336,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private bool Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Window;
         var globalOperation = DockOperation.None;
 

@@ -16,6 +16,10 @@ The overlay probe compiles themes and target enums through both XML namespaces,
 creates an overlay through the inherited native factory, checks the public area
 against its existing pane, compares selector geometry with native hit testing,
 and verifies that closure releases the projection and hosted control.
+The outer-preview probe drags a native tool tab through a scaled layout, checks
+the inherited `IDockAdornerHostProvider`, and compares the active highlight with
+one third of its enclosing document group. It also resizes and moves the window,
+completes the outer drop, and checks that the adorner releases its inset.
 
 Anchor probes compile side/group/anchor controls and manager templates through
 both XML namespaces, invoke external side-panel change hooks, and inspect the

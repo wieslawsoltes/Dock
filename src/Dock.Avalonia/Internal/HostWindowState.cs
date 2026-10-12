@@ -73,6 +73,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private void Over(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
@@ -103,6 +104,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private bool Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Window;
         var globalOperation = DockOperation.None;
 

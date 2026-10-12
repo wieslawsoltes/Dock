@@ -2000,9 +2000,19 @@ They use native `OuterLeft`, `OuterTop`, `OuterRight` and `OuterBottom` operatio
 and the existing directional restrictions. The public overlay projection reports
 the corresponding `DropTargetType.DocumentPaneDockAsAnchorable*` values.
 
-WPF's full overlay template-part arrangement and exact preview geometry remain
-open. The outer drop currently previews one third of the hovered pane; WPF
-previews the enclosing document region. The final placement uses that region.
+Outer highlights span one third of the highest containing `LayoutDocumentPaneGroup`,
+or the parent `LayoutPanel` when the pane has no document group. Ordinary document
+splits still highlight half of the hovered pane, and a center drop highlights the
+whole pane. Selectors remain centered over the hovered pane in all three cases.
+
+The adapter supplies an inherited `DockTarget.AdornerHostProvider`. Its
+`IDockAdornerHostProvider` resolves the enclosing control without changing the
+docking destination. Dock updates the adorner bounds and read-only `TargetMargin`
+when the layout or window changes; the target theme applies that inset to its
+local selectors and indicators. Inline, native-window, and managed-window hosts
+support the same geometry, including scaled layouts. Removal or surface detachment
+releases geometry subscriptions and clears the inset. WPF's full overlay
+template-part arrangement remains open.
 
 ## Apply AvalonDock resource themes
 
@@ -2286,6 +2296,9 @@ flowchart TB
     SplitPolicy --> Models
     Factory --> OuterSplitPolicy["Optional IDockOuterSplitPolicy<br/>Tool panes and groups beside document regions"]
     OuterSplitPolicy --> Models
+    View --> PreviewHost["Optional IDockAdornerHostProvider<br/>Enclosing document region and local selector inset"]
+    PreviewHost --> PreviewTarget["DockTarget geometry<br/>Inline, native-window and managed layers"]
+    PreviewTarget --> Overlays
     Overlays -->|Native selectors| Controls
     Manager -->|Side panels and anchor templates| Anchors
     Anchors --> Models

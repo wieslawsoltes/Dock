@@ -448,6 +448,26 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         return new Rect(selector.Bounds.Size).Contains(selectorPoint);
     }
 
+    private static Point? TranslateToSelector(Visual relativeTo, Point point, Control selector)
+    {
+        // Translate each side through its root so nested render transforms are
+        // composed consistently for inline and separately hosted adorners.
+        TopLevel? sourceRoot = TopLevel.GetTopLevel(relativeTo);
+        TopLevel? targetRoot = TopLevel.GetTopLevel(selector);
+        if (sourceRoot is not null && targetRoot is not null)
+        {
+            if (ReferenceEquals(sourceRoot, targetRoot))
+            {
+                Point? rootPoint = relativeTo.TranslatePoint(point, sourceRoot);
+                return rootPoint is { } position ? sourceRoot.TranslatePoint(position, selector) : null;
+            }
+
+            return selector.PointToClient(relativeTo.PointToScreen(point));
+        }
+
+        return relativeTo.TranslatePoint(point, selector);
+    }
+
     /// <summary>
     /// Invalidates the indicator based on the provided parameters.
     /// </summary>
@@ -494,13 +514,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             selector.Opacity = 1;
         }
 
-        var selectorPoint = relativeTo.TranslatePoint(point, selector);
-        if (selectorPoint is null)
-        {
-            var screenPoint = relativeTo.PointToScreen(point);
-            var localPoint = this.PointToClient(screenPoint);
-            selectorPoint = this.TranslatePoint(localPoint, selector);
-        }
+        var selectorPoint = TranslateToSelector(relativeTo, point, selector);
 
         if (selectorPoint is not null)
         {
@@ -549,13 +563,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             return false;
         }
 
-        var selectorPoint = relativeTo.TranslatePoint(point, selector);
-        if (selectorPoint is null)
-        {
-            var screenPoint = relativeTo.PointToScreen(point);
-            var localPoint = this.PointToClient(screenPoint);
-            selectorPoint = this.TranslatePoint(localPoint, selector);
-        }
+        var selectorPoint = TranslateToSelector(relativeTo, point, selector);
 
         if (selectorPoint is not null)
         {

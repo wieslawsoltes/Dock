@@ -645,6 +645,14 @@ supported by corresponding implementation and test evidence.
   Snapshots use native selector registrations and attached operations. Custom
   templates with remapped parts or nested similarly named controls agree with
   native hit testing; template replacement clears old selector/indicator maps.
+- Outer previews cover one third of the highest document group, or the parent
+  layout panel for an ungrouped document pane. Ordinary split and center previews
+  remain confined to the hovered pane. The optional native `IDockAdornerHostProvider`
+  and read-only `DockTarget.TargetMargin` keep selectors over that pane while
+  expanding the surrounding preview. Inline, native-window, and managed-window
+  paths track layout/window changes and scaled controls; local/global managed
+  overlays keep separate entries. Detachment/removal clears geometry subscriptions,
+  the adorned-element reference, theme and inset, and the helper can be reused.
 - Manager and floating `OnInitialized(EventArgs)` hooks bridge Avalonia's actual
   initialization. The manager's public `OnApplyTemplate()` refreshes public
   presentations while retaining unchanged models. Floating `OnClosing(CancelEventArgs)`
@@ -687,9 +695,9 @@ supported by corresponding implementation and test evidence.
   bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
 - Retired menu template roots are disconnected from their composition parent,
   preventing retained icon presenters from keeping removed documents alive.
-- 1499 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1607 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1517 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1625 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -731,10 +739,7 @@ supported by corresponding implementation and test evidence.
   remaining property-default, callback, and framework-substitution edge cases.
 - Broader sample interaction and platform coverage for floating windows.
 - Navigator desktop modality/focus validation and remaining theme/overlay integration.
-- The full WPF overlay template-part arrangement and exact outer preview geometry
-  remain open. Outer selectors execute against the highest document region, but
-  their highlight currently spans one third of the hovered pane. WPF previews
-  the enclosing document region.
+- The full WPF overlay template-part arrangement remains open.
 
 ## Reproducible API inventory
 

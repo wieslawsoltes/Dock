@@ -69,6 +69,8 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockingService.ResolveGlobalTargetDock(dropControl);
 
+    protected void UpdateAdornerGeometry() => LocalAdornerHelper.UpdateGeometry();
+
     protected bool IsLocalTargetAvailable(Point point, DragAction action, Visual relativeTo, DockOperationHandler validate)
     {
         if (validate(point, DockOperation.Fill, action, relativeTo)) return true;

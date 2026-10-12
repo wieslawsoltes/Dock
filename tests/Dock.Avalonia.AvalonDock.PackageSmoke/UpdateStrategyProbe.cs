@@ -6,6 +6,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using AvalonDock;
 using AvalonDock.Layout;
+using AvalonDock.Themes;
 
 namespace PackageConsumer;
 
@@ -67,10 +68,14 @@ internal static class UpdateStrategyProbe
     {
         DockingManager manager = new();
         TextBox editor = new() { Text = "Container registered after callback" };
-        Window window = new() { Content = manager, Width = 640, Height = 480 };
+        Window window = new() { Width = 640, Height = 480 };
+        window.Styles.Add(new AvalonDockTheme());
+        window.Content = manager;
         try
         {
             window.Show();
+            window.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
             manager.LayoutUpdateStrategy = new Strategy
             {
                 After = content =>
@@ -87,8 +92,11 @@ internal static class UpdateStrategyProbe
             window.UpdateLayout();
             if (!manager.GetVisualDescendants().Contains(editor))
                 throw new Exception("The packaged content did not update after container registration.");
-            Button close = manager.GetVisualDescendants().OfType<Button>().Single(button => button.Classes.Contains("avalondock-close"));
-            if (close.Command?.CanExecute(close.CommandParameter) != true)
+            LayoutDocument document = manager.Layout.Descendents().OfType<LayoutDocument>().Single();
+            Button close = manager.GetVisualDescendants().OfType<Button>().First(button =>
+                button.Classes.Contains("avalondock-close") && button.IsEffectivelyVisible);
+            if (!ReferenceEquals(close.Command, manager.GetLayoutItemFromModel(document)!.CloseCommand) ||
+                close.Command?.CanExecute(close.CommandParameter) != true)
                 throw new Exception("The packaged close button missed deferred container registration.");
             close.Command.Execute(close.CommandParameter);
             Dispatcher.UIThread.RunJobs();

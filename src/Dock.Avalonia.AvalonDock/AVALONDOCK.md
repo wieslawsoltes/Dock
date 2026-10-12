@@ -170,10 +170,20 @@ Pane groups convert non-star child lengths to `1*` on their split axis when
 initially displayed or rebuilt, including after direct-child, visibility, or
 orientation changes. Existing star weights and cross-axis lengths are preserved.
 Pixel and `Auto` changes after layout remain until a rebuild. Plain layout panels apply no
-such conversion. The grids host compiled Dock items presenters; Dock retains
-measurement and splitter input. Their child/row/column collections consequently
-differ from WPF's direct pane/splitter tree. Fixed lengths preserve unused space
-or extend beyond a constrained viewport. `Auto` sizes to the pane's content and chrome.
+such conversion. `Children` contains the actual public pane/group controls and
+`LayoutGridResizerControl` instances in split order. The active axis has one real
+row or column definition per child; hidden panes retain zero-length slots and
+unused splitter gaps collapse. Lengths, minimums, orientation and manager splitter
+sizes update those definitions. Application edits to a definition participate in
+actual Grid layout until the corresponding model metadata changes.
+
+Dock retains model ownership, docking operations, tracking and splitter input.
+`DockableControlTracker` registers each public grid with the native factory;
+`IProportionalSplitterHost` routes native preview and resize gestures back to the
+public lengths. Pane visuals remain compiled templates containing Dock controls.
+Reordering children reuses their public controls and content views. Fixed lengths
+preserve unused space or extend beyond a constrained viewport; `Auto` measures
+content and chrome through Avalonia Grid.
 
 Derived documents and tools can override `OnIsSelectedChanged(bool, bool)` and
 `OnIsActiveChanged(bool, bool)`. They receive the old and new states before the
@@ -690,8 +700,8 @@ Resizing an `Auto` pane converts its actual length plus the drag delta to pixels
 on commit; XML restoration otherwise preserves `Auto` and remeasures its content.
 The pane-group rebuild policy described above can convert pixel and `Auto` lengths to stars.
 Manager settings survive XML restoration and view reattachment and remain
-independent between managers. Replacing a resource theme restores generated
-presenter dimensions even when their model proportions have not changed.
+independent between managers. Public Grid definitions retain the requested
+dimensions when resource themes are replaced.
 
 Derived positionable groups can override `OnDockWidthChanged()` and
 `OnDockHeightChanged()`. A changed value raises property notifications before
@@ -1177,7 +1187,7 @@ for policy defaults, sizing and host contracts, examples, and regression coverag
 The merged native drag fixes improve adorner reuse, cancellation, selector
 coordinates, global split proportions, and drag-window display scaling. Exact
 projected layout previews remain disabled for the compatibility factory and its
-custom grid-length sizing panel. Existing local and outer indicators retain
+public grid-length layout. Existing local and outer indicators retain
 their documented geometry. See the
 [integration analysis](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md#recent-native-drag-and-preview-changes)
 for the isolated factory, sizing, and template requirements for future projection
@@ -1191,7 +1201,7 @@ flowchart TB
     Registration["Container registration<br/>After source callbacks; eager layout attachment"]
     Api --> Registration
     Registration --> Items
-    GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
+    GridControls["Public grids<br/>Direct panes, splitters, rows and columns"]
     PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
     Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]
     AutoHide["LayoutAutoHideWindowControl<br/>Preview model, content theme, and idle closing"]
@@ -1217,14 +1227,18 @@ flowchart TB
     TreeEvents["Parent and root hooks<br/>Layout membership events"]
     Events["Operation notifications<br/>Public layout source and routed events"]
     Hosts["Floating control API<br/>Typed and grouped hosts, deferred creation, and notifications"]
-    Sizing["Pixel/Auto/star lengths and minimums<br/>Native panel measurement and resize policies"]
-    SplitterInput["Native splitter input and preview<br/>Commit public lengths on release"]
+    Sizing["Pixel/Auto/star lengths and minimums<br/>Grid definitions and native proportions"]
+    SplitterInput["Native IProportionalSplitterHost input and preview<br/>Commit public lengths on release"]
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
     Xml["XmlLayoutSerializer and explicit XML codec<br/>Typed custom XML factories, virtual hooks, and content recovery"]
     Api -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
+    GridControls --> PaneControls
+    Tracking["Native DockableControlTracker"]
+    GridControls --> Tracking
+    Tracking --> Models
     GridControls --> View
     Api --> PaneControls
     Api -->|Side panels and anchor templates| Anchors

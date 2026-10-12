@@ -1,24 +1,23 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dock="using:Dock.Avalonia.Controls"
-        xmlns:models="using:Dock.Model.Controls"
+        xmlns:models="using:Dock.Model.Core"
         xmlns:docking="using:Dock.Settings"
         xmlns:proportional="using:Dock.Controls.ProportionalStackPanel"
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
-        x:DataType="models:IProportionalDock">
+        x:DataType="models:IDockable">
 
   <Style Selector="dock|DockControl.avalondock dock|ProportionalDockControl, :is(Window).avalondock dock|ProportionalDockControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockProportionalLayout}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock :is(proportional|ProportionalStackPanelSplitter), :is(Window).avalondock :is(proportional|ProportionalStackPanelSplitter)">
     <Setter Property="(proportional:ProportionalStackPanelSplitter.MinimumProportionSize)" Value="0" />
-    <Setter Property="Thickness">
-      <MultiBinding Converter="{StaticResource AvalonDockSplitterSize}">
-        <Binding Path="(infrastructure:LayoutSplitterSizing.Width)" RelativeSource="{RelativeSource Self}" />
-        <Binding Path="(infrastructure:LayoutSplitterSizing.Height)" RelativeSource="{RelativeSource Self}" />
-        <Binding Path="Orientation" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type proportional:ProportionalStackPanel}, Tree=Visual}" />
-      </MultiBinding>
-    </Setter>
+  </Style>
+  <Style Selector=":is(Control).avalondock-grid-child" x:DataType="models:IDockable">
+    <Setter Property="MinWidth" Value="{Binding MinWidth}" />
+    <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
+    <Setter Property="MinHeight" Value="{Binding MinHeight}" />
+    <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
   </Style>
 </Styles>

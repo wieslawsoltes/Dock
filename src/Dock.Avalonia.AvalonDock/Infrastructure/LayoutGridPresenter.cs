@@ -12,8 +12,6 @@ namespace AvalonDock.Infrastructure;
 // internal, as upstream; all native layout visuals come from a compiled template.
 internal sealed class LayoutGridPresenter : ContentControl
 {
-    public static readonly StyledProperty<Control?> BodyProperty =
-        AvaloniaProperty.Register<LayoutGridPresenter, Control?>(nameof(Body));
     private IDisposable? _rootBinding;
     private ILayoutContainer? _model;
 
@@ -23,7 +21,6 @@ internal sealed class LayoutGridPresenter : ContentControl
         VerticalContentAlignment = VerticalAlignment.Stretch;
     }
 
-    public Control? Body { get => GetValue(BodyProperty); set => SetValue(BodyProperty, value); }
     protected override Type StyleKeyOverride => typeof(ContentControl);
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -31,13 +28,7 @@ internal sealed class LayoutGridPresenter : ContentControl
         base.OnPropertyChanged(change);
         if (change.Property == DataContextProperty) SetModel();
         if (change.Property == ContentProperty && change.OldValue is ILayoutGridView previous)
-            previous.SetContent(null);
-        if (change.Property == ContentProperty || change.Property == BodyProperty)
-            (Content as ILayoutGridView)?.SetContent(Body);
-        // The compiled ItemsPresenter must be a logical child while Avalonia
-        // stamps the template's ItemsControl parent, before a model is attached.
-        if (change.Property == BodyProperty && Content is not ILayoutGridView)
-            SetCurrentValue(ContentProperty, Body);
+            previous.ReleaseChildren();
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -75,7 +66,7 @@ internal sealed class LayoutGridPresenter : ContentControl
             LayoutPanel panelModel => new LayoutPanelControl(panelModel),
             LayoutDocumentPaneGroup group => new LayoutDocumentPaneGroupControl(group),
             LayoutAnchorablePaneGroup group => new LayoutAnchorablePaneGroupControl(group),
-            _ => Body
+            _ => null
         });
     }
 

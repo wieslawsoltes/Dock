@@ -7,7 +7,7 @@ namespace AvalonDock.Infrastructure;
 
 // Length policies run during layout, after model collection observers finish.
 // Neither a retained model nor an individual child can retain a discarded grid.
-internal sealed class LayoutGridControlBinding(LayoutGroupBase model, Action invalidate)
+internal sealed class LayoutGridControlBinding(LayoutGroupBase model, Action invalidate, Action resize)
 {
     private Subscription? _subscription;
 
@@ -28,6 +28,8 @@ internal sealed class LayoutGridControlBinding(LayoutGroupBase model, Action inv
     {
         invalidate();
     }
+
+    private void Resize() => resize();
 
     private sealed class Subscription : IDisposable
     {
@@ -66,6 +68,7 @@ internal sealed class LayoutGridControlBinding(LayoutGroupBase model, Action inv
         {
             if (!_owner.TryGetTarget(out LayoutGridControlBinding? owner)) { Dispose(); return; }
             if (args.PropertyName == nameof(ILayoutPanelElement.IsVisible)) owner.Refresh();
+            else if (args.PropertyName is "DockWidth" or "DockHeight" or "DockMinWidth" or "DockMinHeight") owner.Resize();
         }
 
         private void ChildrenChanged(object? sender, ChildrenTreeChangedEventArgs args)

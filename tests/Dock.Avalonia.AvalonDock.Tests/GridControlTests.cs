@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
@@ -39,12 +38,96 @@ public class GridControlTests
             Assert.Same(model, grid.Tag);
             Assert.Same(model.DockModel, grid.DataContext);
             Assert.Equal(Brushes.Transparent, grid.Background);
-            ItemsPresenter presenter = Assert.IsType<ItemsPresenter>(Assert.Single(grid.Children));
-            Assert.IsType<ItemsControl>(presenter.TemplatedParent);
-            Assert.IsAssignableFrom<ProportionalStackPanel>(presenter.Panel);
+            Assert.Equal(3, grid.Children.Count);
+            Assert.IsAssignableFrom<ILayoutControl>(grid.Children[0]);
+            Assert.IsType<LayoutGridResizerControl>(grid.Children[1]);
+            Assert.IsAssignableFrom<ILayoutControl>(grid.Children[2]);
+            Assert.All(grid.Children, child => Assert.Same(grid, child.GetVisualParent()));
+            bool horizontal = ((ILayoutOrientableGroup)model).Orientation == Orientation.Horizontal;
+            Assert.Equal(horizontal ? 3 : 0, grid.ColumnDefinitions.Count);
+            Assert.Equal(horizontal ? 0 : 3, grid.RowDefinitions.Count);
         }
         Assert.Equal(2, root.GetVisualDescendants().OfType<LayoutDocumentPaneControl>().Count());
         Assert.Equal(2, root.GetVisualDescendants().OfType<LayoutAnchorablePaneControl>().Count());
+    }
+
+    [AvaloniaFact]
+    public void Public_Definitions_Use_Live_Lengths_Minima_And_Splitter_Thickness()
+    {
+        using Workspace workspace = new();
+        LayoutPanelControl root = workspace.Manager.LayoutRootPanel!;
+        Assert.Same(workspace.DocumentGrid, root.Children[0]);
+        Assert.Same(workspace.ToolGrid, root.Children[2]);
+        Assert.Equal(new GridLength(400), root.ColumnDefinitions[2].Width);
+        workspace.Tools.DockWidth = new GridLength(350);
+        workspace.Tools.DockMinWidth = 140;
+        workspace.Manager.GridSplitterWidth = 12;
+        workspace.Update();
+        Assert.Equal(new GridLength(350), root.ColumnDefinitions[2].Width);
+        Assert.Equal(140, root.ColumnDefinitions[2].MinWidth);
+        Assert.Equal(new GridLength(12), root.ColumnDefinitions[1].Width);
+        Assert.Equal(12, Assert.IsType<LayoutGridResizerControl>(root.Children[1]).Thickness);
+        Assert.All(root.Children.Select((child, index) => (child, index)), pair => Assert.Equal(pair.index, Grid.GetColumn(pair.child)));
+        Assert.Same(root, workspace.Manager.DockFactory.VisibleDockableControls[workspace.Manager.Layout.RootPanel.DockModel]);
+        Assert.Same(workspace.ToolGrid, workspace.Manager.DockFactory.VisibleDockableControls[workspace.Tools.DockModel]);
+    }
+
+    [AvaloniaFact]
+    public void Hidden_Children_Keep_Zero_Length_Slots_And_Only_The_Visible_Splitter_Gap()
+    {
+        using Workspace workspace = new();
+        LayoutAnchorablePane empty = new();
+        workspace.Tools.Children.Insert(1, empty);
+        workspace.Update();
+        LayoutAnchorablePaneGroupControl grid = workspace.ToolGrid;
+        Assert.Equal(5, grid.Children.Count);
+        Assert.Equal(5, grid.RowDefinitions.Count);
+        Assert.Same(empty, Assert.IsType<LayoutAnchorablePaneControl>(grid.Children[2]).Model);
+        Assert.Equal(new GridLength(6), grid.RowDefinitions[1].Height);
+        Assert.Equal(new GridLength(0), grid.RowDefinitions[2].Height);
+        Assert.Equal(0, grid.RowDefinitions[2].MinHeight);
+        Assert.Equal(new GridLength(0), grid.RowDefinitions[3].Height);
+        Assert.False(grid.Children[2].IsVisible);
+        Assert.False(grid.Children[3].IsVisible);
+        empty.Children.Add(new LayoutAnchorable { Title = "Shown" });
+        workspace.Update();
+        Assert.True(grid.Children[2].IsVisible);
+        Assert.Equal(GridLength.Star, grid.RowDefinitions[2].Height);
+        Assert.Equal(new GridLength(6), grid.RowDefinitions[3].Height);
+    }
+
+    [AvaloniaFact]
+    public void Reordering_And_Changing_Axis_Preserve_The_Public_Pane_Controls()
+    {
+        using Workspace workspace = new();
+        LayoutDocumentPaneGroupControl grid = workspace.DocumentGrid;
+        Control first = grid.Children[0], second = grid.Children[2];
+        workspace.Documents.Children.Move(0, 1);
+        workspace.Update();
+        Assert.Same(second, grid.Children[0]);
+        Assert.Same(first, grid.Children[2]);
+        workspace.Documents.Orientation = Orientation.Vertical;
+        workspace.Update();
+        Assert.Same(second, grid.Children[0]);
+        Assert.Same(first, grid.Children[2]);
+        Assert.Empty(grid.ColumnDefinitions);
+        Assert.Equal(3, grid.RowDefinitions.Count);
+        Assert.Equal(2, Grid.GetRow(first));
+        Assert.Equal(0, Grid.GetColumn(first));
+    }
+
+    [AvaloniaFact]
+    public void Caller_Edits_To_Public_Definitions_Participate_In_Actual_Grid_Layout()
+    {
+        using Workspace workspace = new();
+        LayoutPanelControl root = workspace.Manager.LayoutRootPanel!;
+        root.ColumnDefinitions[2].Width = new GridLength(280);
+        workspace.Update();
+        Assert.InRange(workspace.ToolGrid.Bounds.Width, 279, 281);
+        Assert.Equal(new GridLength(400), workspace.Tools.DockWidth);
+        workspace.Tools.DockWidth = new GridLength(310);
+        workspace.Update();
+        Assert.InRange(workspace.ToolGrid.Bounds.Width, 309, 311);
     }
 
     [AvaloniaFact]

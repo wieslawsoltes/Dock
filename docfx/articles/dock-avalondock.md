@@ -742,16 +742,23 @@ split axis when initially displayed or rebuilt after direct-child, visibility,
 or orientation changes. Existing star weights and cross-axis lengths remain
 unchanged; hidden children also participate. A pixel length assigned after that
 layout is honored until the next such rebuild. `LayoutPanelControl` applies no
-star conversion. Mixed pixel/star layouts continue to use the native sizing
-bridge and splitter input described below.
+star conversion. Mixed pixel/star layouts use actual Grid definitions and the
+native splitter input described below.
 
-These public grids contain a compiled native items presenter. Dock's
-proportional panel still measures and arranges panes and handles splitter
-dragging, including floating tool groups. Their inherited `Children`, row, and
-column collections therefore do not reproduce WPF's direct pane/splitter visual
-tree. The existing grouped/mixed floating-document limitations remain tracked
-separately. The adapter preserves all-pixel requests and measures `Auto` from
-content and chrome through Dock's native proportional panel.
+The inherited `Children` collection contains public panes, nested public grids,
+and `LayoutGridResizerControl` instances directly. The active axis exposes one
+real definition per child. Hidden panes keep a zero-length definition, and only
+gaps between visible panes consume splitter space. Reordering reuses pane controls.
+Changes to model lengths, minimums, visibility, orientation and manager splitter
+sizes update the definitions. Caller edits to those definitions affect layout
+until model metadata updates them.
+
+`DockableControlTracker` connects each grid to the native factory's bounds and
+pointer tracking; `IProportionalSplitterHost` reuses native splitter input,
+previews and cancellation. Pane content remains in compiled Dock templates.
+After arrangement, pane sizes update native proportions without rewriting public
+length units. Avalonia Grid preserves fixed lengths and measures `Auto` from
+content and chrome. These controls also render floating tool groups.
 
 ## Lay out tab headers and handle overflow
 
@@ -2536,7 +2543,7 @@ flowchart TB
         Layout["AvalonDock.Layout API"]
         ModelOperations["Explicit model operation contracts<br/>Close, auto-hide, document placement, and float history"]
         Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
-        GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
+        GridControls["Public grids<br/>Direct panes, splitters, rows and columns"]
         PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
         Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]
         AutoHide["LayoutAutoHideWindowControl and LayoutGridResizerControl<br/>Preview, constrained resizing, and idle closing"]
@@ -2557,7 +2564,7 @@ flowchart TB
         Focus["Active content and document history<br/>Across native roots"]
         ContentHooks["Content state and close overrides"]
         TreeEvents["Parent and root hooks<br/>Layout membership events"]
-        Sizing["Pane dimensions and splitter settings<br/>Native proportional-panel measurement"]
+        Sizing["Pane dimensions and splitter settings<br/>Grid definitions and native proportions"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
         Hosts["Floating control API<br/>Typed and grouped hosts, deferred creation, and notifications"]
@@ -2575,6 +2582,8 @@ flowchart TB
     end
     Manager -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
+    GridControls --> PaneControls
+    GridControls -->|DockableControlTracker and IProportionalSplitterHost| Controls
     GridControls --> Controls
     Manager --> PaneControls
     Controls --> OverlayFactory
@@ -2793,11 +2802,12 @@ its pane and menu button.
 Selection invokes the current container activation command, which delegates
 movement and active-content changes to the native factory.
 
-`LayoutSizingPanel` extends Dock's proportional panel at the measurement boundary.
-It translates public pane dimensions into native proportions using that panel's
-available size, then delegates measurement, arrangement, and dragging to Dock.
-Weak panel registrations invalidate both docked and floating views when an
-explicit pane dimension changes. Floating hosts receive scalar splitter settings
+`LayoutGridControl<T>` exposes direct public panes and native splitters. Real
+Avalonia Grid definitions apply public pane lengths and minimums; arranged bounds
+update the existing native proportions. `IProportionalSplitterHost` routes Dock's
+splitter input and previews to the public length policy, and
+`DockableControlTracker` supplies native bounds and pointer tracking. Weak grid
+registrations invalidate docked and floating views when pane dimensions change. Floating hosts receive scalar splitter settings
 through weak registrations, so discarded hosts do not stay alive through manager
 property notifications.
 

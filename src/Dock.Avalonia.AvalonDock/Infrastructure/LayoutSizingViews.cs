@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Avalonia.Controls;
 
 namespace AvalonDock.Infrastructure;
 
@@ -7,24 +8,24 @@ namespace AvalonDock.Infrastructure;
 // Keep only weak registrations, including panels in separate floating hosts.
 internal sealed class LayoutSizingViews
 {
-    private readonly List<WeakReference<LayoutSizingPanel>> _views = new();
+    private readonly List<WeakReference<Control>> _views = new();
 
-    internal void Add(LayoutSizingPanel panel)
+    internal void Add(Control panel)
     {
         Remove(panel);
         _views.Add(new(panel));
     }
 
-    internal void Remove(LayoutSizingPanel panel)
+    internal void Remove(Control panel)
     {
         for (int i = _views.Count - 1; i >= 0; i--)
-            if (!_views[i].TryGetTarget(out LayoutSizingPanel? view) || ReferenceEquals(view, panel)) _views.RemoveAt(i);
+            if (!_views[i].TryGetTarget(out Control? view) || ReferenceEquals(view, panel)) _views.RemoveAt(i);
     }
 
     internal void Invalidate()
     {
         for (int i = _views.Count - 1; i >= 0; i--)
-            if (_views[i].TryGetTarget(out LayoutSizingPanel? view)) view.InvalidateMeasure();
+            if (_views[i].TryGetTarget(out Control? view)) view.InvalidateMeasure();
             else _views.RemoveAt(i);
     }
 }

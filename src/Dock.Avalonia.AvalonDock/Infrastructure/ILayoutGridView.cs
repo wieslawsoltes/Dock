@@ -4,5 +4,5 @@ namespace AvalonDock.Infrastructure;
 
 internal interface ILayoutGridView
 {
-    void SetContent(Control? content);
+    void ReleaseChildren();
 }

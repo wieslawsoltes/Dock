@@ -57,7 +57,7 @@ The native projects have no reference to the AvalonDock assembly or namespaces.
 | Model-aware floating hosts and canceled closure | `IDockWindowHostFactory`, `IHostWindowCloseState`, and `IDockWindowClosePolicy` | Typed public hosts and public manager registration |
 | Close a host while retaining its layout | Desktop and managed host policy implementations; managed reentrancy and replacement-host handling | Deferred WPF ordering and public collection semantics |
 | Custom docking overlays | Scoped window factories/themes, enclosing preview hosts, selector registrations, `IDockTargetPresentation` and geometry | AvalonDock named window parts, preview path, selector mapping, and public snapshots |
-| Pixel/auto/star sizing and resize previews | Proportional panel hooks, native splitter input, preview properties, pinned minima and custom thumb support | Public grid lengths, normalization, and size notifications |
+| Pixel/auto/star sizing and resize previews | Custom splitter host, native tracker/input, preview properties, pinned minima and custom thumb support | Public grid lengths, normalization, and size notifications |
 | Stable presentation and cleanup | Deferred root presentation, create-button coexistence, hidden-window filtering and tool-menu lifetime fixes | Public templates, layout items, themes, and retained-model subscriptions |
 
 The [native extension guide](https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md)
@@ -114,6 +114,14 @@ All 1,770 affected native cases and all nine GitHub checks passed before merging
 once; the failed CI job passed unchanged on retry. The native code continues to
 own hit testing and docking policy; the adapter supplies only the presentation.
 
+[PR #1168](https://github.com/wieslawsoltes/Dock/pull/1168) adds
+`IProportionalSplitterHost` and `DockableControlTracker`. Public grids use these
+native services while exposing direct pane/splitter children and real Grid
+definitions. Local validation passed 105 unit, 1,552 Headless and 128 leak cases;
+the final registration-ownership guard passed seven tracker cases, including
+three new replacement cases. The PR is merged through `master`; cross-platform
+CI and consolidated adapter validation remain pending for this batch.
+
 ### Recent native drag and preview changes
 
 The earlier `master` integration at `805fdb68a` included
@@ -134,8 +142,8 @@ Exact projection has two independent limitations here. `LayoutFactory` derives
 from the Avalonia factory and deliberately retains its default null preview
 factory: a stock clone would lose the adapter's typed document splits, outer
 region policy, mixed-orientation rules, and removal selection. In addition,
-`LayoutSizingPanel` specializes proportional sizing for AvalonDock grid lengths;
-native projection conservatively falls back for derived panels. The custom local
+the public grids use Avalonia Grid definitions for AvalonDock lengths;
+native projection conservatively falls back for custom splitter hosts. The custom local
 target template currently uses its existing half-pane and third-region indicators.
 Enabling exact projection requires isolated policies, a matching sizing contract,
 and corresponding template/geometry tests together. Simply returning a stock
@@ -256,13 +264,14 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   pin/unpin, side replacement, XML, detachment, and retained-model lifetime.
 - Public `LayoutGridControl<T>`, `LayoutPanelControl`,
   `LayoutDocumentPaneGroupControl`, and `LayoutAnchorablePaneGroupControl` expose
-  live model/orientation state over Dock's existing proportional layouts.
+  live model/orientation state over Dock's existing proportional models, with
+  direct public pane/splitter children and real Grid definitions.
   Constructors remain internal; styles compile through both XML namespaces.
   `DockingManager.LayoutRootPanel`, its Avalonia property field, and changed hook
   expose/control the actual displayed root, including clear/restore, root/XML
   replacement, and reattachment. Pane groups normalize non-star lengths along
   their split axis on initial layout and structural/visibility/orientation
-  rebuilds; plain panels apply no conversion. Native measurement, splitter input,
+  rebuilds; plain panels apply no conversion. Grid measurement, native tracking and splitter input,
   pane selection, and existing content views remain in Dock. Tests cover live
   length changes, initial weights, hidden children, floating tool groups, and
   subscription lifetime with a retained old model and manager.
@@ -926,8 +935,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   and inherited XML methods. The individual declaration review maps the existing
   counterparts; it does not establish full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
-- Public grid child/row/column collections host a native items presenter rather than
-  reproducing WPF's direct pane/splitter visual tree.
+- The direct public pane/splitter Grid structure is implemented. Consolidated
+  validation of sizing, native drag, floating hosts, themes and lifetime is pending.
 - Finish the rendering and behavior audit of repositioning policies and remaining
   metadata edge cases. Tab icons, tooltips, enablement, and document header
   visibility and public auto-hide resizers are implemented. Auto-hide content

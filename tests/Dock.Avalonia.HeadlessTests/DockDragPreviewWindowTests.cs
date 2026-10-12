@@ -15,13 +15,19 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class DockDragPreviewWindowTests
 {
+    [AvaloniaTheory]
+    [InlineData(1.0, 1.0, true)]
+    [InlineData(1.0, 1.0, false)]
     // Avalonia 12 exposes headless scale changes; v11 does not.
 #if !AVALONIA_11
-    [AvaloniaTheory]
-    [InlineData(1.0, 2.0)]
-    [InlineData(2.0, 1.0)]
-    [InlineData(2.0, 2.0)]
-    public void Native_preview_keeps_screen_geometry_across_scaling_changes(double initialScale, double nextScale)
+    [InlineData(1.0, 2.0, true)]
+    [InlineData(2.0, 1.0, true)]
+    [InlineData(2.0, 2.0, true)]
+    [InlineData(1.0, 2.0, false)]
+    [InlineData(2.0, 1.0, false)]
+    [InlineData(2.0, 2.0, false)]
+#endif
+    public void Native_preview_keeps_screen_geometry_across_scaling_changes(double initialScale, double nextScale, bool showContent)
     {
         var helper = new DragPreviewHelper();
         var originalManaged = DockSettings.UseManagedWindows;
@@ -33,18 +39,22 @@ public class DockDragPreviewWindowTests
         try
         {
             DockSettings.UseManagedWindows = false;
-            DockSettings.ShowDockablePreviewOnDrag = true;
+            DockSettings.ShowDockablePreviewOnDrag = showContent;
             var size = new Size(208, 143);
             var offset = new PixelPoint(-20, -10);
-            helper.Show(new Document { Title = "Preview" }, new PixelPoint(1800, 300), offset, preferredSize: size);
+            helper.Show(new Document { Title = "Preview" }, new PixelPoint(1800, 300), offset, preferredSize: showContent ? size : null);
             Assert.NotNull(window);
-            window.SetRenderScaling(initialScale);
+            SetRenderScaling(window, initialScale);
             window.UpdateLayout();
             helper.Move(new PixelPoint(1810, 300), offset, "Float");
             Dispatcher.UIThread.RunJobs();
             var content = Assert.IsType<DragPreviewControl>(window.Content);
             var originalSize = new Size(window.Width, window.Height);
-            Assert.Equal(size, originalSize);
+            Assert.True(originalSize.Width > 0 && originalSize.Height > 0);
+            if (showContent)
+            {
+                Assert.Equal(size, originalSize);
+            }
 
             // Cross the same monitor boundary repeatedly. macOS screen coordinates
             // are points, independent of the backing pixel scale; other backends
@@ -52,7 +62,7 @@ public class DockDragPreviewWindowTests
             for (var i = 0; i < 6; i++)
             {
                 var scale = i % 2 == 0 ? nextScale : initialScale;
-                window.SetRenderScaling(scale);
+                SetRenderScaling(window, scale);
                 var pointer = new PixelPoint(1910 + i, 300);
                 helper.Move(pointer, offset, "Float");
                 Dispatcher.UIThread.RunJobs();
@@ -61,8 +71,16 @@ public class DockDragPreviewWindowTests
                 var ratio = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 1 : initialScale / scale;
                 Assert.Equal(originalSize.Width * ratio, window.Width, 5);
                 Assert.Equal(originalSize.Height * ratio, window.Height, 5);
-                Assert.Equal(size.Width * ratio, content.PreviewContentWidth, 5);
-                Assert.Equal(size.Height * ratio, content.PreviewContentHeight, 5);
+                if (showContent)
+                {
+                    Assert.Equal(size.Width * ratio, content.PreviewContentWidth, 5);
+                    Assert.Equal(size.Height * ratio, content.PreviewContentHeight, 5);
+                }
+                else
+                {
+                    Assert.True(double.IsNaN(content.PreviewContentWidth));
+                    Assert.True(double.IsNaN(content.PreviewContentHeight));
+                }
                 Assert.Equal(pointer + offset, window.Position);
             }
         }
@@ -74,5 +92,13 @@ public class DockDragPreviewWindowTests
             DockSettings.ShowDockablePreviewOnDrag = originalPreview;
         }
     }
+
+    private static void SetRenderScaling(Window window, double scale)
+    {
+#if AVALONIA_11
+        Assert.Equal(1.0, scale);
+#else
+        window.SetRenderScaling(scale);
 #endif
+    }
 }

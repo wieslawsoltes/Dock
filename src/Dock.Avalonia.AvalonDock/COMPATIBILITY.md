@@ -199,6 +199,12 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
+- The pane/content input contract correction passes all 97 focused cases and
+  all 2,468 consolidated adapter cases. All 30 rendered-preview/image cases
+  also pass. The native create-button lifetime case that failed in the prior
+  Linux CI run passes with all six focused native create-button cases locally;
+  a new CI run must confirm the integrated result. Desktop checks remain
+  deferred at the user's request.
 - Eight deserialization reentrancy cases cover actual nested XML restores using
   the same or separate serializers, inner callback failures, replacing both
   sources during recovery, and restoration from `LayoutChanged`. Source
@@ -510,7 +516,17 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   disabling active content selects the first enabled sibling or clears selection.
   Protected model/container hooks and actual focus/left/right pointer routes are
   covered, including derived themes, nested managers, delayed navigator focus,
-  and the floating-host focus exception. The keyboard hooks use Avalonia's
+  and the floating-host focus exception. Pointer ownership uses the source's
+  nearest parent manager, rejecting standalone, foreign, nonvisual and unrooted
+  presentations. Content preview hooks accept handled events; pane press hooks
+  require unhandled events. Focus hooks activate their model or pane selection
+  without pointer ownership or explicit-call enablement filtering, matching
+  upstream. Six pane cases failed before this correction; the broader input
+  matrix also exercises real nested-manager focus and document preview hooks.
+  Base input hooks read the current public model even when an application
+  suppresses the base model-change hook; replacement and null assignments are
+  covered independently of the retained item binding.
+  The keyboard hooks use Avalonia's
   bubbling `FocusChangedEventArgs`, not WPF preview-focus routing; pointer hooks
   use tunneling `PointerPressedEventArgs`. Native control recycling preserves
   content views. Layout replacement closes document lists even when their native

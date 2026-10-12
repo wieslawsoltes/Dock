@@ -1,9 +1,7 @@
 using System;
 using System.ComponentModel;
-using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.VisualTree;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 
@@ -34,31 +32,19 @@ internal sealed class LayoutContentControlBinding
     internal void RefreshItem() => _model.RefreshItem();
     internal void WatchItem(LayoutItem? item) => _model.WatchItem(item);
 
-    internal void ActivateFromFocus(FocusChangedEventArgs args)
+    internal void ActivateFromFocus(LayoutContent? model, FocusChangedEventArgs args)
     {
         if (args.NewFocusedElement is not null && args.OldFocusedElement is LayoutFloatingWindowControl) return;
         // The native deferred presenter can still show the previous selection
         // while a modal owner restores focus. Do not undo the new selection.
-        if (IsNativePresentation && _model.Model?.IsSelected != true && args.NavigationMethod == NavigationMethod.Unspecified) return;
-        Activate(args.Source);
+        if (IsNativePresentation && model?.IsSelected != true && args.NavigationMethod == NavigationMethod.Unspecified) return;
+        if (model is not null) model.IsActive = true;
     }
 
-    internal void Activate(object? source)
+    internal void ActivateFromPointer(LayoutContent? model, object? source)
     {
-        if (_model.Model is not { } model || !_control.IsEffectivelyEnabled) return;
-        for (Visual? current = source as Visual; current is not null; current = current.GetVisualParent())
-        {
-            DockingManager? manager = current switch
-            {
-                DockingManager owner => owner,
-                LayoutFloatingWindowControl floating => floating.Model.Root?.Manager,
-                _ => null
-            };
-            if (manager is null) continue;
-            if (!ReferenceEquals(manager, model.Root?.Manager)) return;
-            break;
-        }
-        model.IsActive = true;
+        if (model is not null && LayoutInputOwnership.IsWithinManager(source, model.Root?.Manager))
+            model.IsActive = true;
     }
 
     private void ModelChanged(LayoutContent model, PropertyChangedEventArgs args)

@@ -360,10 +360,17 @@ the default Avalonia XML namespace and the historical Xceed URI.
 
 The controls follow model enablement, select an enabled sibling when active
 content is disabled, and activate content from focus or document pointer input.
+Pointer-preview activation requires the source visual's nearest parent manager
+to own the model, including when the event is handled. Focus activates the model
+without this pointer ownership test, including outer content around a nested
+manager, while preserving the floating-window focus exception. Tool-pane focus
+similarly activates its selection; pane pointer hooks require an unhandled
+event and the owning manager.
 Derived controls can override `OnModelChanged(AvaloniaPropertyChangedEventArgs)`,
 use protected `SetLayoutItem`, and override the keyboard/pointer hooks with
-Avalonia event arguments. The full guide explains the focus-routing difference
-from WPF and includes compiled template examples. Dock may recycle a generated
+Avalonia event arguments. Base input hooks read the current public `Model` even
+when an overridden model-change hook omits its base call. The full guide explains
+the focus-routing difference from WPF and includes compiled template examples. Dock may recycle a generated
 control for another tab; track the model or container when identity matters.
 
 `AvalonDock.Controls.AnchorablePaneTitle` is the public title inside native tool

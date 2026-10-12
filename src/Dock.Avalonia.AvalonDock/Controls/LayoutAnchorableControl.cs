@@ -37,7 +37,7 @@ public class LayoutAnchorableControl : TemplatedControl
         _binding?.WatchItem(_layoutItem);
     }
     /// <summary>Activates this tool when keyboard focus enters its content.</summary>
-    protected virtual void OnGotKeyboardFocus(FocusChangedEventArgs e) => _binding.ActivateFromFocus(e);
+    protected virtual void OnGotKeyboardFocus(FocusChangedEventArgs e) => _binding.ActivateFromFocus(Model, e);
 
     internal void SetNativeModel(LayoutAnchorable model)
     {

@@ -37,11 +37,11 @@ public class LayoutAnchorablePaneControl : LayoutCachePaneControl, ILayoutContro
     }
 
     /// <summary>Activates the selected tool when keyboard focus enters this pane.</summary>
-    protected virtual void OnGotKeyboardFocus(FocusChangedEventArgs e) => _binding.Activate(e.Source, false);
-    /// <summary>Activates the selected tool on an unhandled left-button press in this pane.</summary>
-    protected virtual void OnMouseLeftButtonDown(PointerPressedEventArgs e) => _binding.Activate(e.Source, e.Handled);
-    /// <summary>Activates the selected tool on an unhandled right-button press in this pane.</summary>
-    protected virtual void OnMouseRightButtonDown(PointerPressedEventArgs e) => _binding.Activate(e.Source, e.Handled);
+    protected virtual void OnGotKeyboardFocus(FocusChangedEventArgs e) => _binding.ActivateSelectedContent();
+    /// <summary>Activates the selected tool on an unhandled left-button press within its owning manager.</summary>
+    protected virtual void OnMouseLeftButtonDown(PointerPressedEventArgs e) => _binding.ActivateFromPointer(e.Source, e.Handled);
+    /// <summary>Activates the selected tool on an unhandled right-button press within its owning manager.</summary>
+    protected virtual void OnMouseRightButtonDown(PointerPressedEventArgs e) => _binding.ActivateFromPointer(e.Source, e.Handled);
 
     /// <inheritdoc/>
     protected override void OnGotFocus(FocusChangedEventArgs e)

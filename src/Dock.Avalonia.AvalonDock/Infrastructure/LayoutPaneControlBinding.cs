@@ -4,7 +4,6 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.VisualTree;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 
@@ -69,22 +68,17 @@ internal sealed class LayoutPaneControlBinding(LayoutCachePaneControl control, L
         if (activate && ReferenceEquals(selection.SelectedContent, content)) content.IsActive = true;
     }
 
-    internal void Activate(object? source, bool handled)
+    internal void ActivateSelectedContent()
     {
-        if (handled || !control.IsEffectivelyEnabled || selection.SelectedContent is not { IsEnabled: true } content) return;
-        for (Visual? current = source as Visual; current is not null; current = current.GetVisualParent())
-        {
-            DockingManager? manager = current switch
-            {
-                DockingManager owner => owner,
-                LayoutFloatingWindowControl floating => floating.Model.Root?.Manager,
-                _ => null
-            };
-            if (manager is null) continue;
-            if (!ReferenceEquals(manager, model.Root?.Manager)) return;
-            break;
-        }
-        content.IsActive = true;
+        if (selection.SelectedContent is { } content) content.IsActive = true;
+    }
+
+    internal void ActivateFromPointer(object? source, bool handled)
+    {
+        // Pointer hooks belong to the manager containing the source visual.
+        // Keyboard focus has a separate, selection-only contract.
+        if (!handled && LayoutInputOwnership.IsWithinManager(source, model.Root?.Manager))
+            ActivateSelectedContent();
     }
 
     private void RefreshManager()

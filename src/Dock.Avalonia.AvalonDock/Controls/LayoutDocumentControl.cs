@@ -45,11 +45,11 @@ public class LayoutDocumentControl : TemplatedControl
         _binding?.WatchItem(_layoutItem);
     }
     /// <summary>Activates this content when keyboard focus enters it.</summary>
-    protected virtual void OnPreviewGotKeyboardFocus(FocusChangedEventArgs e) => _binding.ActivateFromFocus(e);
-    /// <summary>Activates this content before a left-button press reaches its editor.</summary>
-    protected virtual void OnPreviewMouseLeftButtonDown(PointerPressedEventArgs e) => _binding.Activate(e.Source);
-    /// <summary>Activates this content before a right-button press reaches its editor.</summary>
-    protected virtual void OnPreviewMouseRightButtonDown(PointerPressedEventArgs e) => _binding.Activate(e.Source);
+    protected virtual void OnPreviewGotKeyboardFocus(FocusChangedEventArgs e) => _binding.ActivateFromFocus(Model, e);
+    /// <summary>Activates this content before a left-button press within its owning manager reaches its editor.</summary>
+    protected virtual void OnPreviewMouseLeftButtonDown(PointerPressedEventArgs e) => _binding.ActivateFromPointer(Model, e.Source);
+    /// <summary>Activates this content before a right-button press within its owning manager reaches its editor.</summary>
+    protected virtual void OnPreviewMouseRightButtonDown(PointerPressedEventArgs e) => _binding.ActivateFromPointer(Model, e.Source);
 
     internal void SetNativeModel(LayoutContent model)
     {

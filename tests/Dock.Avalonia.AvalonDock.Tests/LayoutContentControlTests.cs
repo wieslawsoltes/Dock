@@ -412,27 +412,26 @@ public class LayoutContentControlTests
     }
 
     [AvaloniaTheory]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(2)]
-    public void Input_Inside_A_Nested_Manager_Does_Not_Activate_The_Outer_Model(int input)
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Keyboard_Focus_Inside_A_Nested_Manager_Activates_Both_Content_Models(bool tool)
     {
         TextBox editor = new() { Text = "Nested editor" };
         LayoutDocument inner = new() { Content = editor };
         DockingManager innerManager = CreateManager(inner);
-        LayoutDocument outer = new() { Content = innerManager };
+        LayoutContent outer = CreateModel(tool);
+        outer.Content = innerManager;
         DockingManager outerManager = CreateManager(outer);
-        DocumentProbe control = new() { Model = outer };
+        Control control = tool ? new AnchorableProbe { Model = (LayoutAnchorable)outer } : new DocumentProbe { Model = outer };
         Window window = new() { Content = control, Width = 600, Height = 400 };
         try
         {
             window.Show();
             Dispatcher.UIThread.RunJobs();
             outerManager.Layout.ActiveContent = null;
-            if (input == 0) Assert.True(editor.Focus(NavigationMethod.Tab));
-            else Click(editor, input == 1 ? MouseButton.Left : MouseButton.Right);
-            Assert.False(outer.IsActive);
-            Assert.Null(outerManager.Layout.ActiveContent);
+            Assert.True(editor.Focus(NavigationMethod.Tab));
+            Assert.True(outer.IsActive);
+            Assert.Same(outer, outerManager.Layout.ActiveContent);
             Assert.True(inner.IsActive);
         }
         finally { window.Close(); }
@@ -441,7 +440,7 @@ public class LayoutContentControlTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void A_Disabled_Control_Does_Not_Activate_Its_Model_From_Focus(bool tool)
+    public void An_Explicit_Focus_Hook_Call_Activates_The_Model_Even_When_The_Control_Is_Disabled(bool tool)
     {
         LayoutContent model = CreateModel(tool);
         DockingManager manager = CreateManager(model);
@@ -451,8 +450,42 @@ public class LayoutContentControlTests
         FocusChangedEventArgs args = new(InputElement.GotFocusEvent) { NewFocusedElement = editor, Source = editor };
         if (tool) new AnchorableProbe { Model = (LayoutAnchorable)model }.FocusHook(args);
         else new DocumentProbe { Model = model }.FocusHook(args);
-        Assert.False(model.IsActive);
-        Assert.Null(manager.Layout.ActiveContent);
+        Assert.True(model.IsActive);
+        Assert.Same(model, manager.Layout.ActiveContent);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Focus_Hooks_Read_The_Current_Model_When_A_Derived_Model_Hook_Suppresses_Base(bool tool, bool clearModel)
+    {
+        LayoutContent original = CreateModel(tool);
+        LayoutContent replacement = CreateModel(tool);
+        DockingManager manager = CreateManager(original, replacement);
+        LayoutItem originalItem = manager.GetLayoutItemFromModel(original)!;
+        manager.Layout.ActiveContent = null;
+        FocusChangedEventArgs args = new(InputElement.GotFocusEvent);
+        if (tool)
+        {
+            AnchorableProbe control = new() { Model = (LayoutAnchorable)original };
+            control.SuppressModelHook = true;
+            control.Model = clearModel ? null : (LayoutAnchorable)replacement;
+            Assert.Same(originalItem, control.LayoutItem);
+            control.FocusHook(args);
+        }
+        else
+        {
+            DocumentProbe control = new() { Model = original };
+            control.SuppressModelHook = true;
+            control.Model = clearModel ? null : replacement;
+            Assert.Same(originalItem, control.LayoutItem);
+            control.FocusHook(args);
+        }
+        Assert.False(original.IsActive);
+        Assert.Equal(!clearModel, replacement.IsActive);
+        Assert.Same(clearModel ? null : replacement, manager.Layout.ActiveContent);
     }
 
     [AvaloniaFact]
@@ -570,7 +603,7 @@ public class LayoutContentControlTests
     private sealed class DocumentProbe : LayoutDocumentControl
     {
         public List<AvaloniaPropertyChangedEventArgs> Changes { get; } = new();
-        public bool SuppressModelHook { get; init; }
+        public bool SuppressModelHook { get; set; }
         public int LeftPresses { get; private set; }
         public int RightPresses { get; private set; }
         public int FocusChanges { get; private set; }
@@ -589,7 +622,7 @@ public class LayoutContentControlTests
     private sealed class AnchorableProbe : LayoutAnchorableControl
     {
         public List<AvaloniaPropertyChangedEventArgs> Changes { get; } = new();
-        public bool SuppressModelHook { get; init; }
+        public bool SuppressModelHook { get; set; }
         public int FocusChanges { get; private set; }
         public void SetContainer(LayoutItem? item) => SetLayoutItem(item);
         public void FocusHook(FocusChangedEventArgs args) => OnGotKeyboardFocus(args);

@@ -216,7 +216,8 @@ public class PaneControlTests
         TextBox editor = new() { Width = 120, Height = 30 };
         control.Template = new FuncControlTemplate<LayoutAnchorablePaneControl>((_, _) =>
             new Border { Background = Brushes.Transparent, Child = editor });
-        Window window = new() { Content = control, Width = 240, Height = 160 };
+        workspace.Manager.Template = new FuncControlTemplate<DockingManager>((_, _) => control);
+        Window window = workspace.Window;
         try
         {
             window.Show(); Dispatcher.UIThread.RunJobs(); window.UpdateLayout();

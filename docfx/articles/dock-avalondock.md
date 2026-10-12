@@ -488,13 +488,24 @@ assigned `Model` remains available after its container detaches.
 The controls follow the model's `IsEnabled`. Disabling active content selects
 the first enabled sibling, or clears pane selection if none remains. Document
 controls are focusable by default; tool controls receive focus through their
-editors. Focus and document left/right presses activate the owning content,
-while input inside a nested manager belongs to that inner manager. A native
-presenter's delayed focus restoration cannot override a newer tab selection.
+editors. Keyboard focus activates the model, including an outer content model
+when focus enters a nested manager. Focus returning from a floating-window
+control retains the upstream activation exception. A native presenter's delayed
+focus restoration cannot override a newer tab selection.
+
+Document pointer-preview hooks activate only when the source is a visual whose
+nearest parent `DockingManager` owns the model. Standalone presentations, foreign
+managers, nonvisual sources, and unrooted models do not pass that ownership check.
+The preview hooks still run for handled pointer events, as upstream. The focus
+hooks have a separate contract: an explicit call from a derived control activates
+its model even when the control is disabled; Avalonia controls normal focus
+delivery.
 
 Derived controls can override `OnModelChanged(AvaloniaPropertyChangedEventArgs)`
 and use protected `SetLayoutItem(LayoutItem?)`. Call the base model hook to
-preserve subscriptions, enablement, and container lookup. Document input hooks
+preserve subscriptions, enablement, and container lookup. Base input hooks read
+the current public `Model`, including a replacement or null model assigned while
+a derived `OnModelChanged` override omits its base call. Document input hooks
 are `OnPreviewGotKeyboardFocus(FocusChangedEventArgs)` and
 `OnPreviewMouseLeftButtonDown` / `OnPreviewMouseRightButtonDown`
 with `PointerPressedEventArgs`; tools expose
@@ -705,9 +716,12 @@ resource: either setting can hide the header. Custom pane templates can bind to
 Changing the model's `SelectedContentIndex` updates the control without
 activating another item. Setting a document control's `SelectedItem` or
 `SelectedIndex` explicitly selects and activates that document; the tool control
-selects without activation. Both support an empty selection. Tool-pane focus and
-unhandled left/right presses activate its selected tool; pane input inside a
-nested manager stays with that manager. Collection-driven selection is applied
+selects without activation. Both support an empty selection. Tool-pane focus
+activates its selected tool. Pane left/right presses require an unhandled event
+and a source visual whose nearest parent manager owns the pane; a standalone
+pane or pointer input inside a foreign or nested manager does not activate it.
+Tool-pane focus hooks operate on selection without that pointer ownership test.
+Collection-driven selection is applied
 after item observers finish, and tab moves restore selection through the passive
 model API. Ordinary Dock strips keep their existing selection defaults.
 

@@ -255,6 +255,11 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         _appliedTemplate = Template is { } template ? new(template) : null;
         RegisterTemplateParts(e.NameScope);
+        // New parts have not been checked against the current drag's restrictions.
+        // A native show or a deferred template application can render them before
+        // the next pointer move, so never expose unvalidated targets.
+        foreach (var indicator in IndicatorOperations.Values) indicator.Opacity = 0;
+        foreach (var selector in SelectorsOperations.Values) selector.Opacity = 0;
         _appliedIndicators = RememberParts(IndicatorOperations);
         _appliedSelectors = RememberParts(SelectorsOperations);
     }
@@ -379,6 +384,9 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
+        // The first hover can arrive before layout creates the template parts.
+        // Register them now so this hover filters the first rendered frame too.
+        ApplyTemplate();
         EnsureTemplateRegistrations();
         return ShowIndicatorsOnly 
             ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 

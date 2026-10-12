@@ -37,10 +37,13 @@ public class DockTargetInitialPreviewTests
     }
 
     [AvaloniaTheory]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(2)]
-    public void First_render_and_retemplate_filter_selectors_before_the_next_pointer_move(int hosting)
+    [InlineData(0, false)]
+    [InlineData(0, true)]
+    [InlineData(1, false)]
+    [InlineData(1, true)]
+    [InlineData(2, false)]
+    [InlineData(2, true)]
+    public void First_render_and_retemplate_filter_selectors_before_the_next_pointer_move(int hosting, bool allowFill)
     {
         var previousManaged = DockSettings.UseManagedWindows;
         DockSettings.UseManagedWindows = hosting == 2;
@@ -77,12 +80,12 @@ public class DockTargetInitialPreviewTests
                 helper.AddAdorner(surface, false);
                 var target = Assert.IsType<DockTarget>(helper.Adorner);
                 target.GetDockOperation(new Point(10, 10), surface, surface, DragAction.Move,
-                    (_, _, _, _) => false, (_, _, _, _) => false);
+                    (_, _, _, _) => true, (_, operation, _, _) => allowFill && operation == DockOperation.Fill);
                 Settle();
                 var selectors = target.GetVisualDescendants().OfType<Control>()
                     .Where(x => x.Name?.EndsWith("Selector") == true).ToArray();
                 Assert.NotEmpty(selectors);
-                Assert.All(selectors, selector => Assert.Equal(0, selector.Opacity));
+                Assert.All(selectors, selector => Assert.Equal(allowFill && selector.Name == "PART_CenterSelector" ? 1 : 0, selector.Opacity));
                 target.GetDockOperation(new Point(10, 10), surface, surface, DragAction.Move,
                     (_, _, _, _) => true, (_, operation, _, _) => operation == DockOperation.Fill);
                 Settle();

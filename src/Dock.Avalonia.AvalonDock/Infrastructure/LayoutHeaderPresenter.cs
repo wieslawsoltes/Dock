@@ -15,7 +15,6 @@ internal sealed partial class LayoutHeaderPresenter
     public LayoutItem? Item { get => _item; set => SetAndRaise(ItemProperty, ref _item, value); }
     internal LayoutHeaderKind Kind { get; set; }
     internal IDataTemplate? DefaultTemplate { get; set; }
-    internal AvaloniaObject? SelectionContainer { get; set; }
 
     internal void WaitForItem(LayoutContent model)
     {
@@ -31,7 +30,6 @@ internal sealed partial class LayoutHeaderPresenter
                 if (previous is not null)
                 {
                     DefaultTemplate = null;
-                    SelectionContainer = null;
                     DataTemplates.Clear();
                     UpdateChild();
                     LayoutItemViewTransfer.Prepare(this, null);

@@ -87,8 +87,8 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Identifies the document list menu header template.</summary>
     public static readonly StyledProperty<IDataTemplate?> DocumentPaneMenuItemHeaderTemplateProperty =
         AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentPaneMenuItemHeaderTemplate),
-            coerce: static (owner, value) => owner.GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty) is null
-                ? value ?? owner.GetValue(DocumentHeaderTemplateProperty) : null);
+            coerce: static (owner, value) => value is null ? owner.GetValue(DocumentHeaderTemplateProperty)
+                : owner.GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty) is null ? value : null);
     /// <summary>Identifies the document list menu icon template.</summary>
     public static readonly StyledProperty<IDataTemplate?> IconContentTemplateProperty =
         AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(IconContentTemplate));
@@ -307,11 +307,11 @@ public partial class DockingManager : TemplatedControl
     public DataTemplateSelector? DocumentTitleTemplateSelector { get => GetValue(DocumentTitleTemplateSelectorProperty); set => SetValue(DocumentTitleTemplateSelectorProperty, value); }
     /// <summary>Gets or sets the document list menu header template, falling back to the document header template.</summary>
     public IDataTemplate? DocumentPaneMenuItemHeaderTemplate { get => GetValue(DocumentPaneMenuItemHeaderTemplateProperty); set => SetValue(DocumentPaneMenuItemHeaderTemplateProperty, value); }
-    /// <summary>Gets or sets the selector that takes precedence over the document list menu header template.</summary>
+    /// <summary>Gets or sets the document menu header selector. Explicit templates are suppressed; a null assignment may still inherit the document header template.</summary>
     public DataTemplateSelector? DocumentPaneMenuItemHeaderTemplateSelector { get => GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty); set => SetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty, value); }
     /// <summary>Gets or sets the document list menu icon template, receiving the public layout content.</summary>
     public IDataTemplate? IconContentTemplate { get => GetValue(IconContentTemplateProperty); set => SetValue(IconContentTemplateProperty, value); }
-    /// <summary>Gets or sets the icon selector, receiving the public layout content and its menu item.</summary>
+    /// <summary>Gets or sets the icon selector, receiving the current icon and its MenuItemEx container. A null result preserves that icon.</summary>
     public DataTemplateSelector? IconContentTemplateSelector { get => GetValue(IconContentTemplateSelectorProperty); set => SetValue(IconContentTemplateSelectorProperty, value); }
     /// <summary>Gets or sets the template for tool tab and auto-hide headers, receiving the layout content.</summary>
     public IDataTemplate? AnchorableHeaderTemplate { get => GetValue(AnchorableHeaderTemplateProperty); set => SetValue(AnchorableHeaderTemplateProperty, value); }
@@ -495,8 +495,6 @@ public partial class DockingManager : TemplatedControl
             CoerceValue(DocumentPaneMenuItemHeaderTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
         }
-        if (change.Property == IconContentTemplateProperty || change.Property == IconContentTemplateSelectorProperty)
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.MenuIcon);
         if (change.Property == DocumentTitleTemplateProperty)
         {
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle);

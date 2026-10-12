@@ -909,6 +909,18 @@ static void AssertDocumentMenu(DockingManager manager)
     TextBlock icon = entry.GetVisualDescendants().OfType<TextBlock>().Single(value => value.Classes.Contains("package-menu-icon"));
     if (!ReferenceEquals(header.DataContext, model) || !ReferenceEquals(icon.DataContext, model) || icon.Text != model.ContentId)
         throw new Exception("Packaged document menu templates did not receive the public layout content.");
+    if (entry is not MenuItemEx iconEntry)
+        throw new Exception("The packaged document list did not create a public MenuItemEx container.");
+    object? previousIcon = iconEntry.Icon;
+    IDataTemplate? previousTemplate = manager.IconContentTemplate;
+    manager.IconContentTemplateSelector = new DataTemplateSelector();
+    manager.IconContentTemplate = manager.DocumentPaneMenuItemHeaderTemplate;
+    Dispatcher.UIThread.RunJobs();
+    if (!ReferenceEquals(previousIcon, iconEntry.Icon))
+        throw new Exception("A null packaged icon selector result replaced the existing icon.");
+    manager.IconContentTemplateSelector = null;
+    manager.IconContentTemplate = previousTemplate;
+    Dispatcher.UIThread.RunJobs();
     ClickNative(entry);
     if (!model.IsActive || menu.IsOpen) throw new Exception("The document list did not activate and dismiss through the native menu.");
 }

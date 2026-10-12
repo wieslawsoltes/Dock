@@ -43,7 +43,7 @@ internal sealed class LayoutMenuPresentation
             if (container is MenuItem item && !control.ItemsView.Contains(item)) Capture(item);
     }
 
-    public void Release(ContextMenu menu)
+    public void Release(ItemsControl menu)
     {
         // Detach persistent content while its old presenter is still reachable;
         // disposing template bindings first can clear that visual-parent link.

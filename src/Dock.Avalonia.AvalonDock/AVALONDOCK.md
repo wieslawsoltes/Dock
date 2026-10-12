@@ -569,8 +569,8 @@ corresponding `Raise…Event(LayoutContent)` methods.
 The document tab strip's **Open documents** button lists the pane's
 `ChildrenSorted` and invokes the selected item's current `ActivateCommand`.
 `DocumentPaneMenuItemHeaderTemplate` and its selector customize the entry header;
-`IconContentTemplate` and its selector customize the icon. Their data is the
-public `LayoutContent`, including tools docked as documents:
+`IconContentTemplate` and its selector customize the icon. Generated templates
+inherit the public `LayoutContent`, including tools docked as documents:
 
 ```xml
 <DockingManager.DocumentPaneMenuItemHeaderTemplate>
@@ -580,10 +580,17 @@ public `LayoutContent`, including tools docked as documents:
 </DockingManager.DocumentPaneMenuItemHeaderTemplate>
 ```
 
-Menu headers fall back to the document header template. Header selectors take
-precedence; assigning a document header selector supplies the menu selector when
-unset. Icon selectors receive the node and its `MenuItem`, take precedence, and
-preserve the explicit icon template for use after the selector is cleared.
+A null menu header template falls back to `DocumentHeaderTemplate`, even when a
+menu selector is present; that non-null fallback takes precedence when rendered.
+An explicit non-null menu template is coerced to null while a selector is set.
+Assigning a document header selector supplies the menu selector when unset.
+
+Document entries use public `MenuItemEx` containers. Icon selectors receive the
+current `Icon` (possibly null or an already-created control) and that container;
+read its `DataContext` for the public layout model. A null selector result keeps
+the existing icon. The explicit icon template remains available when the selector
+is cleared. The default manager theme supplies an icon template bound to
+`IconSource`; template-generated controls inherit the entry's data context.
 Default menu icons display the node's Avalonia `IImage` in `IconSource`. Open
 menus follow collection and template changes in docked and floating panes.
 
@@ -1085,6 +1092,7 @@ flowchart TB
     View --> DocumentList
     DocumentList --> Api
     DocumentList --> Items
+    DocumentList -->|MenuItemEx containers| MenuControls
     Models --> View
     View --> Factory
     Xml <--> Api

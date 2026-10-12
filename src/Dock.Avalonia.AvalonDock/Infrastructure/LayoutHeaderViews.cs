@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
@@ -14,11 +13,11 @@ internal sealed class LayoutHeaderViews(LayoutItem item)
 {
     private readonly List<WeakReference<LayoutHeaderPresenter>> _views = new();
 
-    public Control Build(LayoutHeaderKind kind, IDataTemplate? fallback, Control? existing, AvaloniaObject? selectionContainer = null)
+    public Control Build(LayoutHeaderKind kind, IDataTemplate? fallback, Control? existing)
     {
         if (existing is LayoutHeaderPresenter view && ReferenceEquals(view.Item, item) && view.Kind == kind)
             return view;
-        view = new LayoutHeaderPresenter { Item = item, Kind = kind, DefaultTemplate = fallback, SelectionContainer = selectionContainer };
+        view = new LayoutHeaderPresenter { Item = item, Kind = kind, DefaultTemplate = fallback };
         Attach(view);
         return view;
     }
@@ -52,7 +51,6 @@ internal sealed class LayoutHeaderViews(LayoutItem item)
                 view.Item = null;
                 view.ContentTemplate = null;
                 view.DefaultTemplate = null;
-                view.SelectionContainer = null;
                 view.DataTemplates.Clear();
                 view.UpdateChild();
                 LayoutItemViewTransfer.Prepare(view, null);
@@ -64,6 +62,6 @@ internal sealed class LayoutHeaderViews(LayoutItem item)
     {
         if (item.Manager is { } manager)
             view.SetCurrentValue(ContentPresenter.ContentTemplateProperty,
-                new LayoutHeaderContentTemplate(manager, view.Kind, view.DefaultTemplate, view, view.SelectionContainer));
+                new LayoutHeaderContentTemplate(manager, view.Kind, view.DefaultTemplate, view));
     }
 }

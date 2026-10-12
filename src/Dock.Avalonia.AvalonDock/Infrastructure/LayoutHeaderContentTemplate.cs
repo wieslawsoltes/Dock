@@ -8,7 +8,7 @@ using AvalonDock.Layout;
 namespace AvalonDock.Infrastructure;
 
 internal sealed class LayoutHeaderContentTemplate(DockingManager manager, LayoutHeaderKind kind,
-    IDataTemplate? fallback, ContentPresenter presenter, Avalonia.AvaloniaObject? selectionContainer = null) : IRecyclingDataTemplate
+    IDataTemplate? fallback, ContentPresenter presenter) : IRecyclingDataTemplate
 {
     private readonly WeakReference<DockingManager> _manager = new(manager);
     private readonly ConditionalWeakTable<Control, IDataTemplate> _builtTemplates = new();
@@ -25,12 +25,10 @@ internal sealed class LayoutHeaderContentTemplate(DockingManager manager, Layout
             LayoutHeaderKind.Anchorable => owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableHeaderTemplate,
             LayoutHeaderKind.AnchorableTitle => owner?.AnchorableTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableTitleTemplate,
             LayoutHeaderKind.DocumentTitle => owner?.DocumentTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentTitleTemplate,
-            LayoutHeaderKind.DocumentMenu => owner?.DocumentPaneMenuItemHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentPaneMenuItemHeaderTemplate,
-            LayoutHeaderKind.MenuIcon => owner?.IconContentTemplateSelector is { } selector
-                ? selector.SelectTemplate(data, selectionContainer ?? presenter) : owner?.IconContentTemplate,
+            LayoutHeaderKind.DocumentMenu => owner?.DocumentPaneMenuItemHeaderTemplate ?? owner?.DocumentPaneMenuItemHeaderTemplateSelector?.SelectTemplate(data, presenter),
             _ => null
         };
-        if (kind != LayoutHeaderKind.MenuIcon || owner?.IconContentTemplateSelector is null) template ??= fallback;
+        template ??= fallback;
         if (template is null) return null;
         if (existing is not null && (!_builtTemplates.TryGetValue(existing, out IDataTemplate? previous) ||
             !ReferenceEquals(previous, template))) existing = null;

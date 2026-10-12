@@ -9,12 +9,7 @@
     <DataTemplate x:Key="DefaultHeader" x:DataType="layout:LayoutContent">
       <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
     </DataTemplate>
-    <DataTemplate x:Key="DefaultIcon" x:DataType="layout:LayoutContent">
-      <Image Classes="avalondock-menu-icon" Source="{Binding IconSource}" Stretch="Uniform" Width="16" Height="16"
-             IsVisible="{Binding IconSource, Converter={x:Static ObjectConverters.IsNotNull}}" />
-    </DataTemplate>
     <infrastructure:LayoutHeaderTemplate x:Key="MenuHeader" Kind="DocumentMenu" DefaultTemplate="{StaticResource DefaultHeader}" />
-    <infrastructure:LayoutMenuIcon x:Key="MenuIcon" DefaultTemplate="{StaticResource DefaultIcon}" />
     <ControlTheme x:Key="MenuItemTheme" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}"
                   x:DataType="layout:LayoutContent">
       <Setter Property="infrastructure:LayoutItemBinding.Model" Value="{Binding}" />
@@ -22,7 +17,8 @@
       <Setter Property="HeaderTemplate" Value="{StaticResource MenuHeader}" />
       <Setter Property="Command" Value="{Binding $self.((items:LayoutItem)Tag).ActivateCommand}" />
       <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
-      <Setter Property="Icon" Value="{Binding}" />
+      <Setter Property="items:MenuItemEx.IconTemplate" Value="{Binding Root.Manager.IconContentTemplate}" />
+      <Setter Property="items:MenuItemEx.IconTemplateSelector" Value="{Binding Root.Manager.IconContentTemplateSelector}" />
       <Setter Property="Template">
         <ControlTemplate>
           <Border x:Name="PART_LayoutRoot" Padding="{TemplateBinding Padding}"
@@ -31,8 +27,7 @@
             <Grid ColumnDefinitions="Auto,*">
               <Viewbox Width="16" Height="16" StretchDirection="DownOnly" VerticalAlignment="Center"
                        Margin="{DynamicResource MenuIconPresenterMargin}">
-                <ContentPresenter x:Name="PART_IconPresenter" Content="{TemplateBinding Icon}"
-                                  ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MenuIcon}}" />
+                <ContentPresenter x:Name="PART_IconPresenter" Content="{TemplateBinding Icon}" />
               </Viewbox>
               <ContentPresenter x:Name="PART_HeaderPresenter" Grid.Column="1"
                                 Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"

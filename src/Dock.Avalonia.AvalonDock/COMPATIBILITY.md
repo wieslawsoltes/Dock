@@ -40,6 +40,15 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- Document-list entries use public `MenuItemEx` containers while retaining native
+  flyout input and activation. Icon selectors receive the current icon and its
+  container; null results preserve the icon, and generated templates inherit the
+  public layout model from the entry. The manager theme supplies the default icon
+  template. Retiring an entry releases its generated menu presentation and model
+  references. A null menu-header assignment inherits the document header even
+  with a menu selector, and a non-null inherited template is rendered first.
+  Docked/floating tests cover live template changes, selector arguments, reopen,
+  default icon metadata, and retained-presentation lifetime.
 - `GetLayoutItemFromModel` is a passive lookup, including a null input. Ordinary
   layout attachment registers containers eagerly; source batches defer each
   container and its style until its after callback finishes. Styles see completed
@@ -370,9 +379,9 @@ supported by corresponding implementation and test evidence.
   pending press when the next move reports no left button, preventing a hover
   after a click from starting a window drag.
 - Document tab strips expose a native document list menu in docked and floating
-  panes. `DocumentPaneMenuItemHeaderTemplate`/selector and
-  `IconContentTemplate`/selector receive the public layout content; icon selectors
-  also receive the owning `MenuItem`. Header fallback, selector precedence,
+  panes. Header templates/selectors and generated icon controls use the public
+  layout content. Icon selectors receive the current icon and owning `MenuItemEx`.
+  Header fallback, selector precedence,
   runtime replacement, default `IconSource`, and metadata changes are covered.
   Collection changes refresh `ChildrenSorted` without rearranging native tabs.
   Entries invoke the current item activation command and follow its enablement.
@@ -647,9 +656,9 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1324 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1331 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1342 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1349 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -688,7 +697,7 @@ supported by corresponding implementation and test evidence.
   content and changes during deserialization.
 - Exact signatures, framework substitutions, inheritance, defaults, and member
   behavior must be audited independently of the presence inventory, including
-  menu selector null results and header-template default coercion edge cases.
+  remaining header/title selector callback and property-coercion ordering.
 - Broader sample interaction and platform coverage for floating windows.
 - Navigator desktop modality/focus validation and remaining theme/overlay integration.
 - The full WPF overlay template-part arrangement and separate

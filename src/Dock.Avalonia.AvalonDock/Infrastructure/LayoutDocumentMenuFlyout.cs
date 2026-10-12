@@ -44,8 +44,10 @@ internal sealed class LayoutDocumentMenuFlyout : MenuFlyout
 
     protected override Control CreatePresenter()
     {
-        Control presenter = base.CreatePresenter();
+        LayoutDocumentMenuPresenter presenter = new();
         presenter.Bind(ItemsControl.ItemsSourceProperty, this.GetObservable(ItemsSourceProperty));
+        presenter.Bind(ItemsControl.ItemTemplateProperty, this.GetObservable(ItemTemplateProperty));
+        presenter.Bind(ItemsControl.ItemContainerThemeProperty, this.GetObservable(ItemContainerThemeProperty));
         return presenter;
     }
 }

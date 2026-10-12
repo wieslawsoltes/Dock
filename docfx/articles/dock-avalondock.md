@@ -1384,8 +1384,9 @@ changes refresh an open menu without rearranging the tabs. Selecting an entry
 uses its current `LayoutItem.ActivateCommand`; command enablement and the layout
 node's `IsEnabled` apply to the entry.
 
-The manager exposes separate templates for the entry header and icon. Both
-receive the public `LayoutContent`, not the application object in `Content`.
+The manager exposes separate templates for the entry header and icon. Their
+generated controls use the public `LayoutContent` as the data context, including
+tools docked as documents.
 For example, these properties go inside a `DockingManager` using Avalonia's
 default XML namespace:
 
@@ -1402,15 +1403,21 @@ default XML namespace:
 </DockingManager.IconContentTemplate>
 ```
 
-`DocumentPaneMenuItemHeaderTemplateSelector` takes precedence over the explicit
-menu header template. With no menu header template or selector, the menu uses
-`DocumentHeaderTemplate`, then the default title text. Assigning a document
-header selector also supplies the menu selector if the latter is unset.
+`DocumentPaneMenuItemHeaderTemplateSelector` coerces an explicit non-null menu
+header template to null. A null assignment instead falls back to
+`DocumentHeaderTemplate`, including when a menu selector exists. That non-null
+fallback is rendered before consulting the selector. If neither provides a
+template, the menu shows the default title text. Assigning a document header
+selector also supplies the menu selector if the latter is unset.
 
-`IconContentTemplateSelector` receives the public layout node and the owning
-Avalonia `MenuItem`. It takes precedence while preserving the explicit
-`IconContentTemplate` value, so clearing the selector restores that template.
-Without a custom icon template or selector, the menu displays `IconSource`.
+Document entries are public `MenuItemEx` controls. `IconContentTemplateSelector`
+receives the entry's current `Icon` and the owning `MenuItemEx`. The current icon
+can be null or a previously generated control; use the container's `DataContext`
+for the public layout model. Returning null preserves the icon, including when
+the explicit template changes. The selector leaves `IconContentTemplate` intact,
+so clearing the selector applies that template. Icon templates create controls
+with an inherited entry data context. The default manager theme provides an
+`IconSource` template, also exposed through `IconContentTemplate`.
 `LayoutContent.IconSource` and `LayoutItem.IconSource` use Avalonia `IImage`.
 Changes to templates and model metadata update an open menu. The same menu
 behavior applies in native floating document windows, and layout replacement
@@ -2302,6 +2309,7 @@ flowchart TB
     Controls --> DocumentList
     DocumentList --> Layout
     DocumentList --> Items
+    DocumentList -->|MenuItemEx containers| MenuControls
     Manager --> Controls
     Layout <--> Bridge
     Bridge <--> Models

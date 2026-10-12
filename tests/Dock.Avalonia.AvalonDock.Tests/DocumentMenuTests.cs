@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -107,21 +108,128 @@ public class DocumentMenuTests
     }
 
     [AvaloniaFact]
-    public void Icon_Selector_Receives_The_Public_Model_And_Menu_Item_Without_Clearing_Explicit_Template()
+    public void Icon_Selector_Receives_The_Current_Icon_And_Menu_Item_Without_Clearing_Explicit_Template()
     {
         using Workspace workspace = new();
         workspace.Manager.IconContentTemplate = workspace.Template("Icon");
         MenuItem entry = workspace.Open()[0];
         Assert.Equal("Icon: first", Text(entry, "custom-icon").Text);
-        HeaderKindSelector selector = new() { DocumentTemplate = workspace.Template("AlternateHeader") };
+        object previous = Assert.IsType<MenuItemEx>(entry).Icon!;
+        IconSelector selector = new() { Template = workspace.Template("AlternateHeader") };
         workspace.Manager.IconContentTemplateSelector = selector;
         workspace.Update();
-        Assert.Contains(selector.Calls, call => ReferenceEquals(call.Item, workspace.First) && ReferenceEquals(call.Container, entry));
+        Assert.Contains(selector.Calls, call => ReferenceEquals(call.Item, previous) && ReferenceEquals(call.Container, entry));
         Assert.Same(workspace.Template("Icon"), workspace.Manager.IconContentTemplate);
         Assert.Equal("ID: first", Text(entry, "alternate-header").Text);
         workspace.Manager.IconContentTemplateSelector = null;
         workspace.Update();
         Assert.Equal("Icon: first", Text(entry, "custom-icon").Text);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void A_Null_Icon_Selector_Result_Preserves_The_Current_Icon_Across_Template_Changes(bool floating)
+    {
+        using Workspace workspace = new(floating);
+        workspace.Manager.IconContentTemplate = workspace.Template("Icon");
+        MenuItemEx entry = Assert.IsType<MenuItemEx>(workspace.Open()[0]);
+        Control icon = Assert.IsAssignableFrom<Control>(entry.Icon);
+        IconSelector selector = new();
+        workspace.Manager.IconContentTemplateSelector = selector;
+        workspace.Update();
+        Assert.Same(icon, entry.Icon);
+        Assert.Same(workspace.First, icon.DataContext);
+        Assert.Contains(selector.Calls, call => ReferenceEquals(call.Item, icon) && ReferenceEquals(call.Container, entry));
+        workspace.Manager.IconContentTemplate = workspace.Template("AlternateHeader");
+        workspace.Update();
+        Assert.Same(icon, entry.Icon);
+        Assert.Equal("Icon: first", Text(entry, "custom-icon").Text);
+        workspace.Menu.Hide();
+        workspace.Open();
+        Assert.Same(icon, workspace.Entries[0].Icon);
+        workspace.Manager.IconContentTemplateSelector = null;
+        workspace.Update();
+        Assert.NotSame(icon, entry.Icon);
+        Assert.Equal("ID: first", Text(entry, "alternate-header").Text);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void An_Initially_Empty_Icon_Is_Passed_To_The_Selector_And_Template_Data_Is_Inherited(bool floating)
+    {
+        using Workspace workspace = new(floating);
+        workspace.Manager.IconContentTemplate = null;
+        IconSelector selector = new() { Template = workspace.Template("Icon") };
+        workspace.Manager.IconContentTemplateSelector = selector;
+        MenuItemEx entry = Assert.IsType<MenuItemEx>(workspace.Open()[0]);
+        Assert.Contains(selector.Calls, call => call.Item is null && ReferenceEquals(call.Container, entry));
+        Assert.Equal("Icon: first", Text(entry, "custom-icon").Text);
+        Assert.Same(workspace.First, Text(entry, "custom-icon").DataContext);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void A_Null_Menu_Header_Falls_Back_To_The_Document_Header_Even_With_A_Menu_Selector(bool floating)
+    {
+        using Workspace workspace = new(floating);
+        workspace.Manager.DocumentHeaderTemplate = workspace.Template("AlternateHeader");
+        HeaderKindSelector selector = new() { DocumentTemplate = workspace.Template("MenuHeader") };
+        workspace.Manager.DocumentPaneMenuItemHeaderTemplateSelector = selector;
+        Assert.Same(workspace.Manager.DocumentHeaderTemplate, workspace.Manager.DocumentPaneMenuItemHeaderTemplate);
+        MenuItem entry = workspace.Open()[0];
+        Assert.Equal("ID: first", Text(entry, "alternate-header").Text);
+        Assert.Empty(selector.Calls);
+        workspace.Manager.DocumentPaneMenuItemHeaderTemplate = workspace.Template("MenuHeader");
+        workspace.Update();
+        Assert.Null(workspace.Manager.DocumentPaneMenuItemHeaderTemplate);
+        Assert.Equal("Menu: Alpha", Text(entry, "menu-header").Text);
+        workspace.Manager.DocumentPaneMenuItemHeaderTemplate = null;
+        workspace.Update();
+        Assert.Same(workspace.Manager.DocumentHeaderTemplate, workspace.Manager.DocumentPaneMenuItemHeaderTemplate);
+        Assert.Equal("ID: first", Text(entry, "alternate-header").Text);
+        workspace.Manager.DocumentHeaderTemplate = null;
+        workspace.Update();
+        Assert.Equal("Menu: Alpha", Text(entry, "menu-header").Text);
+    }
+
+    private sealed class IconSelector : DataTemplateSelector
+    {
+        internal IDataTemplate? Template { get; init; }
+        internal List<(object? Item, AvaloniaObject Container)> Calls { get; } = new();
+        public override IDataTemplate? SelectTemplate(object? item, AvaloniaObject container)
+        {
+            Calls.Add((item, container));
+            return Template;
+        }
+    }
+
+    [AvaloniaFact]
+    public void Generated_Icons_Follow_Entries_After_The_Open_Menu_Rebuilds_Its_Containers()
+    {
+        using Workspace workspace = new();
+        workspace.Manager.IconContentTemplate = workspace.Template("Icon");
+        workspace.Open();
+        LayoutDocumentPane pane = Assert.IsType<LayoutDocumentPane>(workspace.First.Parent);
+        LayoutDocument added = new() { ContentId = "added", Title = "A new document", Content = new TextBlock() };
+        pane.Children.Add(added);
+        workspace.Update();
+        foreach (MenuItem entry in workspace.Entries)
+        {
+            Assert.IsType<MenuItemEx>(entry);
+            Assert.Equal("Icon: " + Model(entry).ContentId, Text(entry, "custom-icon").Text);
+            Assert.Same(Model(entry), Text(entry, "custom-icon").DataContext);
+        }
+        pane.Children.Remove(added);
+        workspace.Update();
+        foreach (MenuItem entry in workspace.Entries)
+            Assert.Equal("Icon: " + Model(entry).ContentId, Text(entry, "custom-icon").Text);
+        workspace.Menu.Hide();
+        workspace.Open();
+        foreach (MenuItem entry in workspace.Entries)
+            Assert.Equal("Icon: " + Model(entry).ContentId, Text(entry, "custom-icon").Text);
     }
 
     [AvaloniaFact]
@@ -245,7 +353,7 @@ public class DocumentMenuTests
             Assert.Null(view.DataContext);
             Assert.Null(view.Parent);
             Assert.Null(view.TemplatedParent);
-            Assert.Null(view.GetVisualParent());
+            Assert.Null(TopLevel.GetTopLevel(view));
         }
         Assert.False(result.Model.TryGetTarget(out _));
         Assert.False(result.Manager.TryGetTarget(out _));

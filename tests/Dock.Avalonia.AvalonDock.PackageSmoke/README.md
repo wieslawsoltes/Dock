@@ -83,7 +83,9 @@ Dock, apply compiled container styles, content templates and tab/auto-hide
 headers, render tool and floating document titles and select their templates, click
 floating caption buttons to maximize/restore and execute the current close command,
 native tabs and custom manager menus to execute container commands, activate
-documents through the list menu with compiled header and icon templates, resize
+documents through the list menu with compiled header and icon templates, verify
+its public `MenuItemEx` containers and preservation of an icon when a selector
+returns null while its template changes, resize
 native splitters through the manager properties, observe bubbling docking/floating
 notifications around native movement, inspect typed native floating controls and
 their collection changes, create and explicitly show an immutable floating window,

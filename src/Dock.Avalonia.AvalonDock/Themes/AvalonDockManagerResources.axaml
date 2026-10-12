@@ -33,6 +33,7 @@
   </infrastructure:LayoutContentTemplate>
   <ControlTheme x:Key="{x:Type ad:DockingManager}" TargetType="ad:DockingManager"
                 x:DataType="ad:DockingManager">
+    <Setter Property="IconContentTemplate" Value="{StaticResource AvalonDockDefaultMenuIcon}" />
     <Setter Property="Template">
       <ControlTemplate>
         <dock:DockControl x:Name="PART_DockControl" Classes="avalondock"

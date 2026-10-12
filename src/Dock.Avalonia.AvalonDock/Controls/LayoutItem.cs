@@ -193,8 +193,8 @@ public abstract class LayoutItem : Control
         route.RaiseEvent(target, request);
     }
 
-    internal Control BuildHeader(LayoutHeaderKind kind, IDataTemplate? fallback, Control? existing, AvaloniaObject? selectionContainer = null) =>
-        (_headers ??= new LayoutHeaderViews(this)).Build(kind, fallback, existing, selectionContainer);
+    internal Control BuildHeader(LayoutHeaderKind kind, IDataTemplate? fallback, Control? existing) =>
+        (_headers ??= new LayoutHeaderViews(this)).Build(kind, fallback, existing);
 
     internal void RefreshHeaders(LayoutHeaderKind kind) => _headers?.Refresh(kind);
     internal void AttachHeader(LayoutHeaderPresenter view) => (_headers ??= new LayoutHeaderViews(this)).Attach(view);

@@ -86,7 +86,9 @@ internal static class TabPanelProbe
 
     private static void VerifySelection(ConsumerWindow resources)
     {
-        LayoutDocument first = new() { Title = "First" }, second = new() { Title = "Second" }, last = new() { Title = "Last" };
+        LayoutDocument first = new() { ContentId = "first", Title = "First" };
+        LayoutDocument second = new() { ContentId = "second", Title = "Second" };
+        LayoutDocument last = new() { ContentId = "last", Title = "Last" };
         LayoutDocumentPane pane = new(first);
         pane.Children.Add(second); pane.Children.Add(last);
         DockingManager manager = new() { Layout = new() { RootPanel = new LayoutPanel(pane) } };

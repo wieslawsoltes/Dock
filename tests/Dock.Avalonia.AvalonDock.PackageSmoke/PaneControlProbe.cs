@@ -46,9 +46,9 @@ internal static class PaneControlProbe
         documents.Children.Add(first);
         if (documents.ShowHeader || ((LayoutDocumentPane)resources.Resources["LegacyHeaderlessPane"]!).ShowHeader)
             throw new Exception("Headerless document panes did not compile in both XML namespaces.");
-        documents.Children.Add(new LayoutDocument { Title = "Second" });
-        LayoutAnchorablePane tools = new(new LayoutAnchorable { Title = "Tool" });
-        tools.Children.Add(new() { Title = "Other tool" });
+        documents.Children.Add(new LayoutDocument { ContentId = "second", Title = "Second" });
+        LayoutAnchorablePane tools = new(new LayoutAnchorable { ContentId = "tool", Title = "Tool" });
+        tools.Children.Add(new() { ContentId = "other-tool", Title = "Other tool" });
         PaneManagerProbe manager = new()
         {
             Layout = new() { RootPanel = new LayoutPanel { Children = { documents, tools } } },

@@ -36,8 +36,8 @@ public sealed class TitleControlProbe : AnchorablePaneTitle
 
     internal static void Verify()
     {
-        LayoutAnchorable first = new() { Title = "First", CanClose = true };
-        LayoutAnchorable second = new() { Title = "Second", CanClose = true };
+        LayoutAnchorable first = new() { ContentId = "first", Title = "First", CanClose = true };
+        LayoutAnchorable second = new() { ContentId = "second", Title = "Second", CanClose = true };
         LayoutAnchorablePane pane = new(first);
         pane.Children.Add(second);
         DockingManager manager = new() { Layout = new() { RootPanel = new LayoutPanel(pane) } };

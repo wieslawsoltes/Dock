@@ -540,8 +540,8 @@ static void AssertPaneSelectionPolicies()
 
 static void AssertContentHooks()
 {
-    LayoutDocument first = new();
-    PackageConsumer.ContentHookDocument document = new();
+    LayoutDocument first = new() { ContentId = "first" };
+    PackageConsumer.ContentHookDocument document = new() { ContentId = "hook-document" };
     LayoutDocumentPane pane = new(first);
     pane.Children.Add(document);
     LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };

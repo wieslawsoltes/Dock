@@ -25,7 +25,7 @@ internal static class ThemeCallbackProbe
             manager.Theme = CreateTheme("current");
             later = manager.CreateNavigatorWindow();
             manager.Layout.FloatingWindows.Add(model);
-            floating = new(model);
+            floating = new ThemeDocumentWindow(model);
             Check(manager, "initial");
             Check(existing, "initial");
             Check(later, "current");
@@ -64,6 +64,7 @@ internal static class ThemeCallbackProbe
     }
 
     private sealed class ProbeTheme(global::Avalonia.Controls.ResourceDictionary resources) : DictionaryTheme(resources) { }
+    private sealed class ThemeDocumentWindow(LayoutDocumentFloatingWindow model) : LayoutDocumentFloatingWindowControl(model) { }
 
     private sealed class CallbackManager : DockingManager
     {

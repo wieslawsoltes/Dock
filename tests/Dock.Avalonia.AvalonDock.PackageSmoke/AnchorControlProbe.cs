@@ -176,9 +176,20 @@ internal static class AnchorControlProbe
                 throw new Exception("A suppressed packaged delay callback changed the initialized timer.");
             manager.AutoHideWindowClosingTimer = int.MaxValue;
             manager.ApplyTimerChange(zeroDelay);
-            System.Threading.Thread.Sleep(20); Update();
+            DispatcherFrame closingFrame = new();
+            void PreviewChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
+            {
+                if (preview.Model is null) closingFrame.Continue = false;
+            }
+            preview.PropertyChanged += PreviewChanged;
+            try
+            {
+                using IDisposable deadline = DispatcherTimer.RunOnce(() => closingFrame.Continue = false, TimeSpan.FromSeconds(5));
+                if (preview.Model is not null) Dispatcher.UIThread.PushFrame(closingFrame);
+            }
+            finally { preview.PropertyChanged -= PreviewChanged; Update(); }
             if (preview.Model is not null || manager.AutoHideWindowClosingTimer != int.MaxValue)
-                throw new Exception("A replayed packaged delay callback ignored its argument or replaced the property.");
+                throw new Exception($"A replayed packaged delay callback did not close: argument={zeroDelay.NewValue}, current={manager.AutoHideWindowClosingTimer}, active={(preview.Model as LayoutAnchorable)?.IsActive}, pointer={preview.IsPointerOver}, keep={(preview.Model as LayoutAnchorable)?.DockModel.KeepPinnedDockableVisible}.");
             manager.SuppressTimerCallback = false;
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }

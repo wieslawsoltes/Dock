@@ -130,7 +130,7 @@ public partial class MenuControlTests
     }
 
     [AvaloniaFact]
-    public void Area_Hooks_Use_Press_Bubbling_And_Release_Tunneling_And_Respect_Child_Menus()
+    public void Area_Hooks_Use_Press_Bubbling_And_Release_Tunneling_Before_A_Child_Menu()
     {
         AreaProbe area = new() { Width = 200, Height = 50, Content = new Border { Background = Brushes.Transparent } };
         ContextMenuEx own = new();
@@ -150,9 +150,12 @@ public partial class MenuControlTests
             ContextMenu childMenu = new();
             childMenu.Items.Add(new MenuItem { Header = "Child" });
             child.ContextMenu = childMenu;
+            List<string> openingOrder = new();
+            own.Opening += (_, _) => openingOrder.Add("area");
+            childMenu.Opening += (_, _) => openingOrder.Add("child");
             Click(child, MouseButton.Right);
+            Assert.Equal(new[] { "area", "child" }, openingOrder);
             Assert.True(childMenu.IsOpen);
-            Assert.False(own.IsOpen);
             childMenu.Close();
         }
         finally { window.Close(); }
@@ -203,6 +206,7 @@ public partial class MenuControlTests
     {
         public int Presses { get; private set; }
         public int Releases { get; private set; }
+        public void ReleaseHook(PointerReleasedEventArgs e) => OnPreviewMouseRightButtonUp(e);
         protected override void OnMouseRightButtonDown(PointerPressedEventArgs e) { Presses++; base.OnMouseRightButtonDown(e); }
         protected override void OnPreviewMouseRightButtonUp(PointerReleasedEventArgs e) { Releases++; base.OnPreviewMouseRightButtonUp(e); }
     }

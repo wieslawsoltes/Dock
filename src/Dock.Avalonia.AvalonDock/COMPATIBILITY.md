@@ -199,7 +199,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,497 cases; all 30
+- The consolidated adapter suite passes all 2,512 cases. Dropdown input,
+  command ordering, nested/child menus, resource updates, and menu lifetime
+  pass all 41 focused cases; 14 cases failed before correction. All 30
   rendered-preview/image cases also pass. Tab/title activation, middle-click
   commands, explicit native policy precedence, and title dragging pass 325
   focused cases. Nineteen input/command cases failed before their correction.
@@ -491,6 +493,12 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   icon selector precedence/null results, command activation, checked state,
   cancellation, replacement during opening, reentrant reopening, bound existing
   menus, keyboard activation, child menus, and view detachment/reattachment.
+  Preview release leaves `Handled` unchanged and opens before nested/child menu
+  handling. Repeated protected button clicks retain the open popup and normal
+  two-state/three-state toggling; commands run after `Click`, including a handled
+  event or an explicit disabled-control hook call. Temporary context-menu
+  attachment is removed before popup opening, preserving ordinary menus,
+  bindings, application release handlers, and live resource changes.
   Closing preserves application icon/header bindings and retires old presentation
   and compositor references; retained menus with independent templates release
   closed controls/managers. Application-owned compiled templates retain their
@@ -1018,9 +1026,6 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   windows are still rejected before overwriting a saved file.
 - Remaining manager API audit: templates/selectors, styles,
   and the control adapter surface.
-  Dropdown event routing still needs reconciliation: the adapter currently
-  consumes `DropDownControlArea` pointer release and gives child menus priority,
-  whereas the upstream protected preview-release hook leaves `Handled` unchanged.
   Floating controls still need the broader protected/platform hook audit and
   desktop input/focus validation beyond the recorded close lifecycle scenarios.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy

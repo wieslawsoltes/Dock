@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using AvalonDock.Infrastructure;
 
 namespace AvalonDock.Controls;
@@ -31,14 +32,18 @@ public class DropDownButton : ToggleButton
     /// <summary>Releases an open menu when the menu property is replaced.</summary>
     protected virtual void OnDropDownContextMenuChanged(AvaloniaPropertyChangedEventArgs e) => _menu.Close();
 
-    /// <summary>Opens the configured menu, then invokes the normal toggle-button click and command.</summary>
+    /// <summary>Opens the configured menu, toggles the button, raises Click, and invokes the current command when it can execute.</summary>
     protected override void OnClick()
     {
-        if (!IsEffectivelyEnabled) return;
         ContextMenu? menu = DropDownContextMenu;
         if (menu is not null) _menu.Show(menu, DropDownContextMenuDataContext);
-        base.OnClick();
-        if (menu is not null) SetCurrentValue(IsCheckedProperty, _menu.IsOpen);
+        // WPF's protected hook also runs when explicitly called while disabled,
+        // and a handled Click event does not suppress its command.
+        Toggle();
+        RaiseEvent(new RoutedEventArgs(ClickEvent));
+        object? parameter = CommandParameter;
+        if (Command is { } command && command.CanExecute(parameter)) command.Execute(parameter);
+        if (menu is not null && !_menu.IsOpen) SetCurrentValue(IsCheckedProperty, false);
     }
 
     /// <inheritdoc/>

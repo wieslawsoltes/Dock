@@ -76,6 +76,9 @@ internal static class MenuControlProbe
             generated.IconTemplateSelector = new DataTemplateSelector();
             if (generated.Templates != 1 || generated.Selectors != 1 || !ReferenceEquals(icon, generated.Icon))
                 throw new Exception("Packaged icon overrides or null selector precedence were not preserved.");
+            button.InvokeClick();
+            if (button.IsChecked != false || !menu.IsOpen || menu.Openings != 1)
+                throw new Exception("The packaged button did not preserve toggle behavior on a repeated protected click.");
             menu.Close();
             AreaProbe area = new()
             {
@@ -83,9 +86,15 @@ internal static class MenuControlProbe
                 DropDownContextMenu = menu, DropDownContextMenuDataContext = item
             };
             window.Content = area;
+            int bubbleReleases = 0;
+            area.AddHandler(InputElement.PointerReleasedEvent, (_, args) =>
+            {
+                if (args.Handled) throw new Exception("The packaged area consumed its pointer release.");
+                bubbleReleases++;
+            }, RoutingStrategies.Bubble);
             Dispatcher.UIThread.RunJobs();
             Click(area, MouseButton.Right);
-            if (area.Presses != 1 || area.Releases != 1 || menu.Openings != 2 || !menu.IsOpen)
+            if (area.Presses != 1 || area.Releases != 1 || bubbleReleases != 1 || menu.Openings != 2 || !menu.IsOpen)
                 throw new Exception("Packaged area protected pointer hooks did not open the menu.");
             menu.Close();
         }
@@ -105,6 +114,7 @@ internal static class MenuControlProbe
     private sealed class ButtonProbe : DropDownButton
     {
         public int MenuChanges { get; private set; }
+        public void InvokeClick() => OnClick();
         protected override void OnDropDownContextMenuChanged(AvaloniaPropertyChangedEventArgs e) { MenuChanges++; base.OnDropDownContextMenuChanged(e); }
     }
     private sealed class AreaProbe : DropDownControlArea

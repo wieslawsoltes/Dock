@@ -3,7 +3,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 using AvalonDock.Infrastructure;
 
 namespace AvalonDock.Controls;
@@ -36,16 +35,11 @@ public class DropDownControlArea : UserControl
 
     /// <summary>Receives right-button presses routed through this area.</summary>
     protected virtual void OnMouseRightButtonDown(PointerPressedEventArgs e) { }
-    /// <summary>Opens the configured menu on the pointer-release tunnel route.</summary>
+    /// <summary>Opens the configured menu on an unhandled pointer-release tunnel route without consuming the event.</summary>
     protected virtual void OnPreviewMouseRightButtonUp(PointerReleasedEventArgs e)
     {
-        if (e.Handled || !IsEffectivelyEnabled || DropDownContextMenu is not { } menu) return;
-        for (Visual? current = e.Source as Visual; current is not null && !ReferenceEquals(current, this); current = current.GetVisualParent())
-            if (current is Control control && (control.ContextMenu is not null || control.ContextFlyout is not null ||
-                control is DropDownControlArea { DropDownContextMenu: not null })) return;
+        if (e.Handled || DropDownContextMenu is not { } menu) return;
         _menu.Show(menu, DropDownContextMenuDataContext, e);
-        // Prevent Avalonia's subsequent gesture from opening a second menu.
-        e.Handled = true;
     }
 
     /// <inheritdoc/>

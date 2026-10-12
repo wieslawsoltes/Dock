@@ -30,7 +30,7 @@ public partial class MenuControlTests
         Window source = new() { ContextMenu = original };
         using IDisposable binding = workspace.Control.Bind(Control.ContextMenuProperty, source.GetObservable(Control.ContextMenuProperty));
         workspace.Open();
-        Assert.Same(workspace.Menu, workspace.Control.ContextMenu);
+        Assert.Same(original, workspace.Control.ContextMenu);
         source.ContextMenu = replacement;
         workspace.Menu.Close();
         Assert.Same(replacement, workspace.Control.ContextMenu);
@@ -78,7 +78,7 @@ public partial class MenuControlTests
         first.Close();
         Assert.True(second.IsOpen);
         Assert.Same(data, second.DataContext);
-        Assert.Same(second, button.ContextMenu);
+        Assert.Null(button.ContextMenu);
         Assert.True(button.IsChecked);
         second.Close();
         Assert.Null(button.ContextMenu);
@@ -116,7 +116,7 @@ public partial class MenuControlTests
         Assert.Equal(1, button.MenuChanges);
         using MenuWindow window = new(button);
         button.IsEnabled = false;
-        button.InvokeClick();
+        Click(button);
         Assert.False(button.DropDownContextMenu.IsOpen);
         Assert.False(button.IsChecked);
         button.IsEnabled = true;

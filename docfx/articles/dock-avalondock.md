@@ -1401,9 +1401,14 @@ Explicitly clearing `Icon` leaves it null; clearing the template keeps the icon
 already created. Use compiled templates with the appropriate `x:DataType`.
 
 `DropDownButton` opens `DropDownContextMenu` below the button on click or keyboard
-activation. Its checked state follows the open menu. `DropDownControlArea` opens
-the same property at the pointer on a right-button release, respecting child
-menus and flyouts. Both controls copy `DropDownContextMenuDataContext` into the
+activation, then toggles `IsChecked`, raises `Click`, and executes the current
+command when `CanExecute` allows it. Repeated protected clicks keep the existing
+menu open and retain normal two-state or three-state toggling; closing the menu
+resets `IsChecked` to false. A handled `Click` does not suppress the command.
+`DropDownControlArea` opens the same property during an unhandled right-button
+release's tunnel route and leaves `Handled` unchanged. Nested areas and child
+menus/flyouts can therefore run their own input handling afterward. Both controls
+copy `DropDownContextMenuDataContext` into the
 menu when opening it. For example, with a `LayoutItem` as the view's data context:
 
 ```xml
@@ -1452,9 +1457,13 @@ default-namespace override cannot resolve this collision. In C#, when importing
 both control namespaces, use `using DropDownButton = AvalonDock.Controls.DropDownButton;`.
 
 Closing, replacing, canceling, or detaching a dropdown clears its invocation
-data and placement references, restores an existing `ContextMenu` binding, and
+data and placement references and
 preserves application items, commands, icon/header content, and templates for
-reopening. Application templates retain their normal Avalonia resource scope:
+reopening. The ordinary `ContextMenu` and its binding are restored before the
+dropdown popup opens, so the preview hook does not cause Avalonia to request the
+same dropdown again during release bubbling. Cancelable `Opening`, resource
+updates, and reentrant reopening remain supported. A canceled opening leaves
+the button unchecked. Application templates retain their normal Avalonia resource scope:
 retaining a compiled template can retain its declaring XAML root. Prefer shared
 resource dictionaries for templates that must outlive a view.
 
@@ -1465,7 +1474,12 @@ The property hooks receive `AvaloniaPropertyChangedEventArgs`.
 `DropDownControlArea` exposes `OnMouseRightButtonDown(PointerPressedEventArgs)`
 and `OnPreviewMouseRightButtonUp(PointerReleasedEventArgs)` over Avalonia's
 bubbling press and tunneling release routes. Call the base implementation to
-retain the default behavior.
+retain the default behavior. Explicit protected-hook calls are not filtered by
+control enablement or descendant menu ownership; normal pointer delivery still
+uses Avalonia's enabled-control rules. The click ordering follows WPF's
+[ToggleButton](https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Primitives/ToggleButton.cs)
+and [ButtonBase](https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Primitives/ButtonBase.cs)
+contracts using Avalonia events, properties, and commands.
 
 ## Select content templates
 

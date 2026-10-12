@@ -300,12 +300,20 @@ menus. `ContextMenuEx` refreshes its bound item source on opening and generates
 data context; `IconTemplateSelector` receives the current icon and item and
 takes precedence, including a null result that keeps the current icon.
 
-`AvalonDock.Controls.DropDownButton` opens `DropDownContextMenu` below itself and
-tracks its checked state. `DropDownControlArea` opens it on right-button release,
-respecting child menus. Both copy `DropDownContextMenuDataContext` when opening
+`AvalonDock.Controls.DropDownButton` opens `DropDownContextMenu` below itself,
+toggles, raises `Click`, and executes the current command when `CanExecute`
+allows it, including when `Click` is handled. Repeated protected clicks preserve
+the open popup and normal two-state/three-state toggling; closing resets the
+checked state. `DropDownControlArea` opens during unhandled right-button release
+tunneling without changing `Handled`, before nested areas and child menus run.
+Both copy `DropDownContextMenuDataContext` when opening
 and clear invocation references on closing, cancellation, replacement, or view
-detachment. Existing context-menu bindings and application menu content remain
-usable on reopening. A retained compiled template keeps its normal XAML resource
+detachment. An ordinary `ContextMenu` binding is restored before popup opening,
+avoiding duplicate dropdown requests while preserving application release
+handlers, cancelable opening, resource updates, and reentrant menu callbacks.
+Explicit protected calls also run on disabled controls; ordinary pointer input
+retains Avalonia's enablement rules. Canceled opening leaves a button unchecked.
+Application menu content remains usable on reopening. A retained compiled template keeps its normal XAML resource
 scope, which can retain the declaring view.
 
 Avalonia has its own `DropDownButton`, so use `ad:DropDownButton` in an ordinary

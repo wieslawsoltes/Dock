@@ -25,9 +25,12 @@ internal static class RegisteredExtensionsProbe
         manager.ThemeResources.Register(uri, static () => new RegisteredResources());
         manager.Theme = new ResourceTheme(uri);
         Window owner = new() { Content = manager, Width = 640, Height = 480 };
+        owner.Styles.Add(new AvalonDockTheme());
         try
         {
             owner.Show();
+            Dispatcher.UIThread.RunJobs();
+            owner.UpdateLayout();
             manager.DockFactory.FloatDockable(panel.DockModel);
             Dispatcher.UIThread.RunJobs();
             if (manager.Layout.FloatingWindows.Single() is not LayoutGroupFloatingWindow group ||

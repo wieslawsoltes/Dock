@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             xmlns:properties="using:AvalonDock.Properties"
+             x:Class="Dock.Avalonia.AvalonDock.Tests.LocalizedResourcesFixture"
+             x:DataType="UserControl">
+  <UserControl.Resources>
+    <AnchorableContextMenuAutoHideHeaderConverter x:Key="DefaultConverter" />
+    <ad:AnchorableContextMenuAutoHideHeaderConverter x:Key="LegacyConverter" />
+  </UserControl.Resources>
+  <TextBlock x:Name="CloseLabel" Text="{x:Static properties:Resources.Document_Close}" />
+</UserControl>

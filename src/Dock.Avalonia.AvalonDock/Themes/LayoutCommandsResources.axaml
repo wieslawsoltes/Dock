@@ -126,7 +126,18 @@
               </Button>
               <Button x:Name="PART_MaximizeRestoreButton"
                       IsVisible="{TemplateBinding IsFloating}"
+                      Classes.maximized="{Binding $parent[dock:ToolChromeControl].IsMaximized}"
                       Theme="{TemplateBinding MaximizeButtonTheme}">
+                <Button.Styles>
+                  <Style Selector="Button">
+                    <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Maximize}" />
+                    <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Maximize}" />
+                  </Style>
+                  <Style Selector="Button.maximized">
+                    <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Restore}" />
+                    <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Restore}" />
+                  </Style>
+                </Button.Styles>
                 <Viewbox>
                   <Path x:Name="PART_MaximizeRestorePath" />
                 </Viewbox>

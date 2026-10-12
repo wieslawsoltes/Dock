@@ -703,7 +703,30 @@ orientation, and `NullToDoNothingConverter` retains the target on a null input.
 `AvalonDock.Properties.Resources` strings for Auto Hide and Restore.
 `Resources.ResourceManager` exposes all command labels and hints; set
 `Resources.Culture` for subsequent lookups without changing the thread's UI
-culture. The package currently provides English fallback strings only.
+culture. The package includes all 21 keys in English and in these satellite
+cultures: `cs-CZ`, `de`, `es`, `fr`, `hu`, `it`, `ja-JP`, `nl-BE`, `pt-BR`, `ro`,
+`ru`, `sv`, and `zh-Hans`. These translations were written for Dock.
+
+Set the culture before creating the theme and controls:
+
+```csharp
+AvalonDock.Properties.Resources.Culture =
+    System.Globalization.CultureInfo.GetCultureInfo("fr-CA");
+```
+
+The normal .NET culture chain applies: `fr-CA` uses `fr`, while an unavailable
+locale falls back to English. Region-specific resources do not serve sibling
+cultures; for example, `pt-PT` does not select `pt-BR`. Null uses
+`CultureInfo.CurrentUICulture`. An explicit culture passed to
+`Resources.ResourceManager.GetString` takes precedence for that call.
+Changing `Resources.Culture` affects subsequent lookups and newly constructed
+XAML values; it does not refresh existing static XAML values or dictionaries.
+Compatibility menus retain their dynamic resource keys for application overrides.
+An open menu follows changes to its manager or window resources; closing the menu
+releases the resource-change subscription.
+Floating document/tool buttons use localized maximize/restore hints and accessible
+names, with the label following the current window state.
+
 `UriSourceToBitmapImageConverter` returns an Avalonia `Image` for file, `avares`,
 HTTP, and HTTPS URIs, accepts a base URI as its converter parameter, and retains
 the binding target on null. Network images load asynchronously and update
@@ -1067,6 +1090,8 @@ flowchart TB
     PaneControls --> Selection
     App --> Api
     App --> Converters
+    ResourceCultures["21 command resource keys<br/>English and 13 satellite cultures"] --> Converters
+    ResourceCultures --> ResourceThemes
     Converters --> Items
     Api --> ResourceThemes
     ResourceThemes --> Navigator

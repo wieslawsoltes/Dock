@@ -42,6 +42,7 @@ internal sealed class LayoutContextMenus
         menu.AddHandler(MenuItem.SubmenuOpenedEvent, SubmenuOpened);
         target.DetachedFromVisualTree += TargetDetached;
         item.PropertyChanged += ItemChanged;
+        item.ResourcesChanged += OwnerResourcesChanged;
         if (pane is AvaloniaObject observable) observable.PropertyChanged += PaneChanged;
         menu.SetCurrentValue(StyledElement.DataContextProperty, item);
         menu.SetCurrentValue(ContextMenu.PlacementProperty, request?.TryGetPosition(null, out _) == true ? PlacementMode.Pointer : PlacementMode.Bottom);
@@ -96,6 +97,7 @@ internal sealed class LayoutContextMenus
         }
         if (_owner is { } owner)
         {
+            owner.ResourcesChanged -= OwnerResourcesChanged;
             if (ReferenceEquals(owner.ContextMenu, menu))
             {
                 if (BindingOperations.GetBindingExpressionBase(owner, Control.ContextMenuProperty) is { } binding) binding.UpdateTarget();
@@ -136,6 +138,13 @@ internal sealed class LayoutContextMenus
         if (ReferenceEquals(sender, _menu)) Close();
     }
     private void TargetDetached(object? sender, VisualTreeAttachmentEventArgs e) => Close();
+    private void OwnerResourcesChanged(object? sender, ResourcesChangedEventArgs e)
+    {
+        // ContextMenu's popup inherits from its owner without joining the owner's
+        // logical children, so forward resource changes for the active invocation.
+        if (_menu is IResourceHost menu) menu.NotifyHostedResourcesChanged(e);
+    }
+
     private void ItemChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (_item?.IsAttached != true) Close();

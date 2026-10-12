@@ -620,9 +620,15 @@ supported by corresponding implementation and test evidence.
 - Native and custom public tab headers apply live `IsEnabled` and `ToolTip`;
   default tool headers include `IconSource` in docked, floating, and auto-hide
   locations. Custom header templates replace the default icon/title content.
-- Public command resources provide an English fallback, `ResourceManager`, and
-  `Culture`. The auto-hide header converter uses those labels; the URI image
-  converter loads local files and compiled assets, including relative base URIs.
+- Public command resources provide `ResourceManager`, `Culture`, and all 21 keys
+  in English plus 13 satellite cultures: `cs-CZ`, `de`, `es`, `fr`, `hu`, `it`,
+  `ja-JP`, `nl-BE`, `pt-BR`, `ro`, `ru`, `sv`, and `zh-Hans`. Parent-culture and
+  English fallback follow .NET's resource rules. The translations are authored
+  for Dock. Compatibility menu labels, tool/document hints, auto-hide header
+  conversion and floating maximize/restore hints use these resources. Dynamic
+  resource overrides remain supported. Existing static XAML values are not
+  refreshed by changing the culture override. The URI image converter loads
+  local files and compiled assets, including relative base URIs.
 - `LayoutGridResizerControl` uses native proportional splitter input and preview
   commit/cancel behavior. Its brush and opacity settings update an active preview.
   Auto-hide templates expose the same public control over native pinned bounds:
@@ -695,9 +701,9 @@ supported by corresponding implementation and test evidence.
   bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
 - Retired menu template roots are disconnected from their composition parent,
   preventing retained icon presenters from keeping removed documents alive.
-- 1607 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1647 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1625 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1665 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -713,8 +719,8 @@ supported by corresponding implementation and test evidence.
   the public root without a panel and is not yet supported. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: templates/selectors, styles, general theme URI loading, translated localization
-  resources, and the control adapter surface.
+- Remaining manager APIs: templates/selectors, styles, general theme URI loading,
+  and the control adapter surface.
   Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,
   remaining protected/platform hooks, and broader desktop input/focus validation.

@@ -956,8 +956,28 @@ Restore resource string from a Boolean auto-hide state. The command labels and
 hints are exposed by `AvalonDock.Properties.Resources`, including its
 `ResourceManager` and optional `Culture` override. Setting `Culture` affects
 subsequent lookups without changing `CultureInfo.CurrentUICulture` or refreshing
-already-created static XAML values. English fallback resources are included;
-translated satellite resources remain open work.
+already-created static XAML values or resource dictionaries. All 21 resource keys
+are included in English and in `cs-CZ`, `de`, `es`, `fr`, `hu`, `it`, `ja-JP`,
+`nl-BE`, `pt-BR`, `ro`, `ru`, `sv`, and `zh-Hans` satellite assemblies. The
+translations were written for Dock.
+
+```csharp
+// Configure this before constructing the theme and controls.
+AvalonDock.Properties.Resources.Culture =
+    System.Globalization.CultureInfo.GetCultureInfo("fr-CA");
+```
+
+Lookup follows .NET's culture-parent chain: `fr-CA` resolves to `fr`, and a
+missing locale falls back to English. A regional resource such as `pt-BR` does
+not replace a sibling culture such as `pt-PT`. Null restores lookup through
+`CultureInfo.CurrentUICulture`. `ResourceManager.GetString(key, culture)` uses
+its explicit culture independently of the typed properties' override.
+
+Compatibility menus use these labels while retaining their dynamic resource
+keys for application overrides. Floating document/tool maximize buttons update
+their localized tooltip and accessible name when the window changes between
+normal and maximized state. Existing controls must be recreated to refresh
+static XAML labels after changing the culture.
 
 `UriSourceToBitmapImageConverter` creates an Avalonia `Image` from file, compiled
 `avares`, HTTP, and HTTPS URIs. Its optional converter parameter supplies the
@@ -2312,6 +2332,8 @@ flowchart TB
     PaneControls --> Selection
     App --> Manager
     App --> Converters
+    ResourceCultures["21 command resource keys<br/>English and 13 satellite cultures"] --> Converters
+    ResourceCultures --> ResourceThemes
     Converters --> Items
     Manager --> ResourceThemes
     ResourceThemes --> Navigator

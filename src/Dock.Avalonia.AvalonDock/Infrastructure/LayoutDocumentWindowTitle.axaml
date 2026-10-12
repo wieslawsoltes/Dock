@@ -6,6 +6,7 @@
              xmlns:dock="using:Dock.Avalonia.Controls"
              xmlns:converters="using:Dock.Avalonia.Converters"
              xmlns:infrastructure="using:AvalonDock.Infrastructure"
+             xmlns:properties="using:AvalonDock.Properties"
              x:Class="AvalonDock.Infrastructure.LayoutDocumentWindowTitle"
              x:DataType="layout:LayoutDocumentFloatingWindow"
              infrastructure:LayoutDocumentTitleBehavior.IsEnabled="True">
@@ -21,8 +22,18 @@
                         Content="{Binding $parent[infrastructure:LayoutDocumentWindowTitle].((layout:LayoutDocumentFloatingWindow)DataContext).RootDocument}"
                         ContentTemplate="{StaticResource TitleTemplate}" />
       <Button Grid.Column="1" Classes="avalondock-document-maximize" Theme="{DynamicResource ChromeButton}"
-              AutomationProperties.Name="Maximize or restore" ToolTip.Tip="Maximize or restore"
+              Classes.maximized="{Binding $parent[dock:HostWindow].WindowState, Converter={x:Static converters:IsMaximizedConverter.Instance}}"
               Command="{Binding $parent[infrastructure:LayoutDocumentWindowTitle].(infrastructure:LayoutDocumentTitleBehavior.MaximizeCommand)}">
+        <Button.Styles>
+          <Style Selector="Button">
+            <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Maximize}" />
+            <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Maximize}" />
+          </Style>
+          <Style Selector="Button.maximized">
+            <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Restore}" />
+            <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Restore}" />
+          </Style>
+        </Button.Styles>
         <Path Width="10" Height="10" Stretch="Uniform" Fill="{DynamicResource DockTabForegroundBrush}"
               Classes.maximized="{Binding $parent[dock:HostWindow].WindowState, Converter={x:Static converters:IsMaximizedConverter.Instance}}">
           <Path.Styles>
@@ -36,7 +47,8 @@
               infrastructure:LayoutItemBinding.Model="{Binding $parent[infrastructure:LayoutDocumentWindowTitle].((layout:LayoutDocumentFloatingWindow)DataContext).RootDocument}"
               DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
               Command="{Binding CloseCommand}"
-              AutomationProperties.Name="Close document" ToolTip.Tip="Close document">
+              AutomationProperties.Name="{x:Static properties:Resources.Document_Close}"
+              ToolTip.Tip="{x:Static properties:Resources.Document_Close}">
         <Button.IsVisible>
           <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
             <Binding Path="LayoutElement.DockModel" />

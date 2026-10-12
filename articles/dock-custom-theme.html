@@ -188,6 +188,18 @@ legacy indicator matches the final pane. To enable projected bounds, move those
 constraints into the models. Arbitrary custom template geometry and per-position
 styles are outside the projection contract. Derived factories also need the
 explicit opt-in described in <a href="dock-custom-model.html#isolated-docking-preview-factories">Custom Dock Models</a>.</p>
+<h3 id="selecting-a-local-preview-theme">Selecting a local preview theme</h3>
+<p>Define a <code>ControlTheme</code> keyed by <code>{x:Type DockTarget}</code> in the docking surface's
+resource scope, or set the inherited <code>DockTarget.TargetTheme</code> attached property
+for an explicitly named theme. The attached property takes precedence. Dock
+resolves the theme from the adorned surface before attaching or showing the
+preview, including native floating windows and managed overlays. It does not
+first construct the application's default target and then replace its template.
+Removing a preview releases that theme; the next surface is resolved afresh.</p>
+<p>A custom template owns its initial paint state. Declare indicator opacity zero
+in XAML, and do the same for visible selector artwork that must wait for docking
+validation. Transparent hit regions need no artwork. Dock no longer overwrites
+all custom template parts' opacity during <code>OnApplyTemplate</code>.</p>
 
 </article>
 

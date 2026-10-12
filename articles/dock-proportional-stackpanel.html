@@ -105,6 +105,22 @@
 <h2 id="notes">Notes</h2>
 <p>The control is used internally by Dock to implement <code>ProportionalDock</code> but can also be used in regular Avalonia views. See the unit tests under <code>tests/Dock.Avalonia.UnitTests</code> for additional examples.</p>
 <p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+<h2 id="custom-layout-hosts">Custom layout hosts</h2>
+<p>A panel that implements <code>IProportionalSplitterHost</code> can contain native
+<code>ProportionalStackPanelSplitter</code> controls while retaining its own layout policy.
+Return the containing panel from <code>Panel</code>, expose its <code>Orientation</code>, and raise
+<code>OrientationChanged</code> when the axis changes. Implement <code>Resize</code> to apply the
+requested delta and minimum size to the two neighboring panes. Dock retains
+pointer handling, capture cancellation, preview adorners, cursor updates and
+collapsed-pane navigation. A splitter may also be inside a child content presenter.
+Changing the axis or removing the splitter cancels an unfinished preview.</p>
+<p>For native docking bounds and pointer tracking, a custom control can implement
+<code>IDockableControl</code> and own a <code>DockableControlTracker(control, trackingMode)</code>.
+The tracker registers the current <code>IDockable</code> data context while attached,
+unregisters it on detachment or replacement, and supports later reattachment.
+Dispose the tracker when replacing it. <code>DockableControl</code> uses this same service.
+Custom splitter hosts retain legacy drop indicators when the detached native
+preview cannot reproduce their sizing policy.</p>
 
 </article>
 

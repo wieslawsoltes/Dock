@@ -335,6 +335,23 @@ public class DeferredContentControl : ContentControl, IDeferredContentPresentati
 
     bool IDeferredContentPresentationTarget.RetainPendingPresentationOnFailure => false;
 
+    /// <summary>
+    /// Releases the materialized content and cancels its pending presentation.
+    /// </summary>
+    /// <remarks>
+    /// Preserves <see cref="ContentControl.Content"/> and <see cref="ContentControl.ContentTemplate"/>.
+    /// Content is materialized again when either property changes or the control is reattached.
+    /// </remarks>
+    public void ClearPresentation()
+    {
+        RemoveQueuedPresentation();
+        if (_presenter is not null)
+            ApplyDeferredState(_presenter, null, null, TimeSpan.Zero);
+        _appliedContent = null;
+        _appliedContentTemplate = null;
+        _appliedVersion = -1;
+    }
+
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {

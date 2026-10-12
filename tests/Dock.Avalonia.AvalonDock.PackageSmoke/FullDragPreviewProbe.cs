@@ -11,6 +11,7 @@ using Avalonia.VisualTree;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
+using AvalonDock.Themes;
 using Dock.Avalonia.Controls;
 using Dock.Settings;
 
@@ -27,6 +28,8 @@ internal static class FullDragPreviewProbe
 
         bool oldManaged = DockSettings.UseManagedWindows;
         bool oldPreview = DockSettings.ShowDockablePreviewOnDrag;
+        AvalonDockTheme theme = new();
+        Application.Current!.Styles.Add(theme);
         try
         {
             DockSettings.ShowDockablePreviewOnDrag = false;
@@ -38,6 +41,7 @@ internal static class FullDragPreviewProbe
         {
             DockSettings.UseManagedWindows = oldManaged;
             DockSettings.ShowDockablePreviewOnDrag = oldPreview;
+            Application.Current!.Styles.Remove(theme);
         }
     }
 

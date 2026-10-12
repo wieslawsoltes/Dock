@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Themes.Fluent;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
@@ -172,9 +173,9 @@ public class ThemeCommandInteractionLeakTests
             tabStrip.UpdateLayout();
             DrainDispatcher();
 
-            var createButtonHost = FindVisualDescendant<ContentControl>(
+            var createButtonHost = FindVisualDescendant<ContentPresenter>(
                 tabStrip,
-                contentControl => string.Equals(contentControl.Name, "PART_CreateButtonHost", StringComparison.Ordinal));
+                presenter => string.Equals(presenter.Name, "PART_CreateButtonHost", StringComparison.Ordinal));
             Assert.NotNull(createButtonHost);
 
             var createButton = FindVisualDescendant<Button>(createButtonHost!);

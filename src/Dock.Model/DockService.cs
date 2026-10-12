@@ -261,7 +261,11 @@ public class DockService : IDockService
 
                 if (bExecute)
                 {
-                    SplitToolDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
+                    if (targetDock.Factory is IDockSplitPolicy policy &&
+                        policy.UseDocumentDock(sourceDockable, targetDock, operation))
+                        SplitDocumentDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
+                    else
+                        SplitToolDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
                 }
 
                 return true;

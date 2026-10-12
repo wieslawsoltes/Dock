@@ -1,7 +1,11 @@
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
+using Avalonia.Media;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
+using Dock.Settings;
 using Xunit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -10,6 +14,32 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class DockHelpersTests
 {
+    [AvaloniaFact]
+    public void Hidden_Window_Does_Not_Expose_Its_Retained_Drop_Area()
+    {
+        Border dropArea = new() { Background = Brushes.Transparent };
+        DockProperties.SetIsDropArea(dropArea, true);
+        Window window = new() { Width = 400, Height = 300, Content = dropArea };
+        try
+        {
+            window.Show();
+            window.UpdateLayout();
+            Point point = new(20, 20);
+            window.MouseMove(point);
+            Assert.Same(dropArea, DockHelpers.GetControl(dropArea, point, DockProperties.IsDropAreaProperty));
+
+            window.Hide();
+            Assert.True(dropArea.IsVisible);
+            Assert.False(dropArea.IsEffectivelyVisible);
+            Assert.Null(DockHelpers.GetControl(dropArea, point, DockProperties.IsDropAreaProperty));
+
+            window.Show();
+            window.MouseMove(point);
+            Assert.Same(dropArea, DockHelpers.GetControl(dropArea, point, DockProperties.IsDropAreaProperty));
+        }
+        finally { window.Close(); }
+    }
+
     [AvaloniaFact]
     public void ToDockPoint_Returns_Correct_Point()
     {

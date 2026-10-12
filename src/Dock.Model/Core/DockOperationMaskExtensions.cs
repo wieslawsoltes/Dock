@@ -18,10 +18,10 @@ public static class DockOperationMaskExtensions
         return operation switch
         {
             DockOperation.Fill => mask.HasFlag(DockOperationMask.Fill),
-            DockOperation.Left => mask.HasFlag(DockOperationMask.Left),
-            DockOperation.Right => mask.HasFlag(DockOperationMask.Right),
-            DockOperation.Top => mask.HasFlag(DockOperationMask.Top),
-            DockOperation.Bottom => mask.HasFlag(DockOperationMask.Bottom),
+            DockOperation.Left or DockOperation.OuterLeft => mask.HasFlag(DockOperationMask.Left),
+            DockOperation.Right or DockOperation.OuterRight => mask.HasFlag(DockOperationMask.Right),
+            DockOperation.Top or DockOperation.OuterTop => mask.HasFlag(DockOperationMask.Top),
+            DockOperation.Bottom or DockOperation.OuterBottom => mask.HasFlag(DockOperationMask.Bottom),
             DockOperation.Window => mask.HasFlag(DockOperationMask.Window),
             _ => false
         };

@@ -79,10 +79,16 @@ internal class ItemDragHelper
         StopAutoScroll();
     }
 
+    private bool CanDragItem() => _owner.DataContext is not IDockable { Factory: IDockItemDragPolicy policy } dockable ||
+        policy.CanDragItem(dockable);
+
+    private bool CanReorderItem() => _owner.DataContext is not IDockable { Factory: IDockItemDragPolicy policy } dockable ||
+        policy.CanReorderItem(dockable);
+
     private void PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var properties = e.GetCurrentPoint(_owner).Properties;
-        if (properties.IsLeftButtonPressed && _getItemsControl() is { } itemsControl)
+        if (properties.IsLeftButtonPressed && CanDragItem() && _getItemsControl() is { } itemsControl)
         {
             _enableDrag = true;
             _dragStarted = false;
@@ -236,13 +242,17 @@ internal class ItemDragHelper
 
     private void MoveDraggedItem(ItemsControl? itemsControl, int draggedIndex, int targetIndex)
     {
-        if (itemsControl is null || draggedIndex == targetIndex)
+        if (itemsControl is null || draggedIndex == targetIndex || !CanDragItem() || !CanReorderItem())
+        {
+            return;
+        }
+
+        if (itemsControl.ContainerFromIndex(targetIndex) is not { IsVisible: true, IsHitTestVisible: true } target)
         {
             return;
         }
 
         if (itemsControl.ContainerFromIndex(draggedIndex) is { } dragged &&
-            itemsControl.ContainerFromIndex(targetIndex) is { } target &&
             dragged.DataContext is IDockable draggedDockable &&
             target.DataContext is IDockable targetDockable &&
             draggedDockable.Owner is IDock { Factory: { } factory } dock)
@@ -459,6 +469,14 @@ internal class ItemDragHelper
     private void PointerMoved(object? sender, PointerEventArgs e)
     {
         var properties = e.GetCurrentPoint(_owner).Properties;
+        if (_captured && !CanDragItem())
+        {
+            _dragStarted = false;
+            Released();
+            _captured = false;
+            _pressedArgs = null;
+            return;
+        }
         if (_captured && properties.IsLeftButtonPressed && _pressedArgs != null)
         {
             if (_itemsControl?.Items is null || _draggedContainer?.RenderTransform is null || !_enableDrag)
@@ -475,6 +493,14 @@ internal class ItemDragHelper
                 _captured = false;
                 _dragOutside?.Invoke(_pressedArgs, e);
                 _pressedArgs = null;
+                return;
+            }
+
+            if (!CanReorderItem())
+            {
+                _dragStarted = false;
+                _targetIndex = -1;
+                RemoveTransforms(_itemsControl);
                 return;
             }
 
@@ -538,7 +564,8 @@ internal class ItemDragHelper
             foreach (var _ in _itemsControl.Items)
             {
                 var targetContainer = _itemsControl.ContainerFromIndex(i);
-                if (targetContainer?.RenderTransform is null || ReferenceEquals(targetContainer, _draggedContainer))
+                if (targetContainer?.RenderTransform is null || !targetContainer.IsVisible || !targetContainer.IsHitTestVisible ||
+                    ReferenceEquals(targetContainer, _draggedContainer))
                 {
                     i++;
                     continue;

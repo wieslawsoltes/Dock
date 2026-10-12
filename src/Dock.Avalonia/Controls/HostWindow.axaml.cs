@@ -31,7 +31,7 @@ namespace Dock.Avalonia.Controls;
 #if AVALONIA_11
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 #endif
-public class HostWindow : Window, IHostWindow
+public class HostWindow : Window, IHostWindow, IHostWindowCloseState
 {
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
@@ -39,10 +39,13 @@ public class HostWindow : Window, IHostWindow
     private HostWindowTitleBar? _hostWindowTitleBar;
 #endif
     private bool _mouseDown, _draggingWindow;
+    private bool _isClosed;
     private double _normalX = double.NaN;
     private double _normalY = double.NaN;
     private double _normalWidth = double.NaN;
     private double _normalHeight = double.NaN;
+
+    bool IHostWindowCloseState.IsClosed => _isClosed;
 
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
@@ -217,16 +220,32 @@ public class HostWindow : Window, IHostWindow
         WindowDragDockScope = WindowDragDockScope.FullWindow;
     }
 
+    /// <summary>Starts a native window move while preserving Dock's drag tracking and drop targets.</summary>
+    /// <param name="e">The pointer press that initiated the drag.</param>
+    /// <param name="dockScope">The portion of the floating layout participating in docking.</param>
+    /// <returns>True when the factory accepted the drag; otherwise false.</returns>
+    public bool TryBeginMoveDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+        if (!TryBeginWindowDrag(e, dockScope, ownsPointerRelease: true)) return false;
+        try
+        {
+            BeginMoveDrag(e);
+            return true;
+        }
+        catch
+        {
+            CancelExternalWindowDrag();
+            throw;
+        }
+    }
+
     private void MoveDrag(PointerPressedEventArgs e)
     {
         if (!ToolChromeControlsWholeWindow)
             return;
 
-        if (!TryBeginWindowDrag(e, WindowDragDockScope.FullWindow, ownsPointerRelease: true))
-        {
-            return;
-        }
-        BeginMoveDrag(e);
+        TryBeginMoveDrag(e, WindowDragDockScope.FullWindow);
     }
 
     private void EndDrag(PointerEventArgs e)
@@ -465,13 +484,31 @@ public class HostWindow : Window, IHostWindow
     {
         base.OnOpened(e);
 
-        Window?.Factory?.HostWindows.Add(this);
+        if (Window?.Factory?.HostWindows is { } hosts && !hosts.Contains(this))
+        {
+            hosts.Add(this);
+        }
     }
 
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
+        IDockWindow? closingWindow = Window;
+        IFactory? closingFactory = closingWindow?.Factory;
+        bool preserveLayout = closingWindow is not null && closingFactory is IDockWindowClosePolicy policy &&
+            policy.PreserveLayoutOnHostClose(closingWindow);
+        _isClosed = true;
         base.OnClosed(e);
+
+        if (preserveLayout)
+        {
+            closingFactory!.HostWindows.Remove(this);
+            IsTracked = false;
+            // A Closed subscriber can already have installed another host.
+            if (ReferenceEquals(closingWindow!.Host, this)) closingWindow.Host = null;
+            closingFactory.OnWindowClosed(closingWindow);
+            return;
+        }
 
         Window?.Factory?.HostWindows.Remove(this);
 
@@ -491,6 +528,10 @@ public class HostWindow : Window, IHostWindow
     protected override void OnClosing(WindowClosingEventArgs e)
     {
         base.OnClosing(e);
+        if (e.Cancel)
+        {
+            return;
+        }
 
         if (Window is { })
         {
@@ -505,7 +546,8 @@ public class HostWindow : Window, IHostWindow
         {
             Window.Save();
 
-            if (Window.Layout is IDock root)
+            if (!(Window.Factory is IDockWindowClosePolicy policy && policy.PreserveLayoutOnHostClose(Window)) &&
+                Window.Layout is IDock root)
             {
                 if (root.Close.CanExecute(null))
                 {
@@ -713,17 +755,13 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     public void Exit()
     {
-        if (Window is { })
+        // A factory evaluates OnClose inside the cancelable closing pipeline.
+        // Calling it here too can mutate content before a window handler vetoes.
+        if (Window is { Factory: null } window && !window.OnClose())
         {
-            if (Window.OnClose())
-            {
-                Close();
-            }
+            return;
         }
-        else
-        {
-            Close();
-        }
+        Close();
     }
 
     /// <inheritdoc/>

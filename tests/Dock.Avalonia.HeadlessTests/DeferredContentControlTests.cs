@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Data;
 using Avalonia.Styling;
@@ -421,7 +422,7 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
-    public void DeferredContentControl_Reveals_When_Replacing_Already_Presented_Content()
+    public async Task DeferredContentControl_Reveals_When_Replacing_Already_Presented_Content()
     {
         using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
         var template = new CountingTemplate(() => new TextBlock());
@@ -464,6 +465,7 @@ public class DeferredContentControlTests
 
             var secondTextBlock = Assert.IsType<TextBlock>(control.Presenter.Child);
             Assert.Equal("Second", secondTextBlock.DataContext);
+            await CompleteRevealAsync(window, control.Presenter);
             Assert.Equal(1D, control.Presenter.Opacity);
         }
         finally
@@ -473,7 +475,7 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
-    public void ToolControl_Switching_Active_Tool_Keeps_New_Content_Visible_During_Reveal()
+    public async Task ToolControl_Switching_Active_Tool_Keeps_New_Content_Visible_During_Reveal()
     {
         using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
         var factory = new Factory();
@@ -529,6 +531,7 @@ public class DeferredContentControlTests
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
+            await CompleteRevealAsync(window, presenterHost.Presenter);
             Assert.Equal(1D, presenterHost.Presenter.Opacity);
         }
         finally
@@ -538,7 +541,7 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
-    public void DeferredContentControl_Reveal_Does_Not_Replace_Existing_Opacity_Transition()
+    public async Task DeferredContentControl_Reveal_Does_Not_Replace_Existing_Opacity_Transition()
     {
         using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
         var template = new CountingTemplate(() => new TextBlock { Text = "ExistingTransition" });
@@ -586,6 +589,7 @@ public class DeferredContentControlTests
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
+            await CompleteRevealAsync(window, control.Presenter);
             Assert.Equal(1D, control.Presenter.Opacity);
         }
         finally
@@ -1641,18 +1645,20 @@ public class DeferredContentControlTests
         };
 
         var window = ShowInWindow(control, new DockFluentTheme());
-        var presenterHost = GetDeferredHost(control, "PART_ContentControl");
+        var presenterHost = GetDeferredPresenterHost(control, "PART_ContentControl");
         presenterHost.DataTemplates.Add(CreateCountingTemplate<RootDock>("DockControl", () => buildCount++));
 
         try
         {
             Assert.Equal(0, buildCount);
-            Assert.Null(presenterHost.Presenter?.Child);
+            Assert.Null(presenterHost.Child);
+            Assert.Null(root.TemplatedParent);
+            Assert.Null(root.Parent);
 
             DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, buildCount);
-            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Child);
             Assert.Equal("DockControl", textBlock.Text);
         }
         finally
@@ -1881,6 +1887,17 @@ public class DeferredContentControlTests
         timeline.FlushPendingBatchForTesting();
         Dispatcher.UIThread.RunJobs();
         window.UpdateLayout();
+    }
+
+    private static Task CompleteRevealAsync(Window window, Control presenter)
+    {
+        // Dispatcher jobs set the target value; render ticks advance its transition.
+        // A previous input test may already have started the render clock.
+        return PumpDispatcherUntilAsync(window, () =>
+        {
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            return presenter.Opacity == 1D;
+        }, TimeSpan.FromSeconds(2));
     }
 
     private static async Task PumpDispatcherUntilAsync(Window window, Func<bool> condition, TimeSpan timeout)

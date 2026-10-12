@@ -240,7 +240,9 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void InitDockWindow(IDockWindow window, IDockable? owner)
     {
-        InitDockWindow(window, owner, GetHostWindow(window.Id));
+        InitDockWindow(window, owner, this is IDockWindowHostFactory hostFactory
+            ? hostFactory.CreateHostWindow(window)
+            : GetHostWindow(window.Id));
     }
 
     /// <inheritdoc/>
@@ -273,13 +275,19 @@ public abstract partial class FactoryBase
             dockable.OnSelected();
         }
 
-        if (dockable is { })
+        if (dockable is { } && ShouldFocusActiveDockable(dockable, owner))
         {
             SetFocusedDockable(owner, dockable);
         }
 
         SynchronizeDockingWindowSelection(owner);
     }
+
+    /// <summary>Determines whether initializing pane selection should also request focus.</summary>
+    /// <param name="dockable">The selected dockable.</param>
+    /// <param name="owner">The pane whose active dockable changed.</param>
+    /// <returns>True to focus the selected item; false to synchronize selection without changing focus.</returns>
+    protected virtual bool ShouldFocusActiveDockable(IDockable dockable, IDock owner) => true;
 
     /// <inheritdoc/>
     public void ActivateWindow(IDockable dockable)

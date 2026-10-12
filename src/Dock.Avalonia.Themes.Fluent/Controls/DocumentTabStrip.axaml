@@ -177,7 +177,7 @@
                 </Border.Margin>
               </Border>
             </Panel>
-            <ContentControl x:Name="PART_CreateButtonHost"
+            <ContentPresenter x:Name="PART_CreateButtonHost"
                             Content="{Binding}"
                             IsVisible="{Binding CanCreateDocument}" />
             <Panel Name="PART_TrailingFill" />
@@ -186,7 +186,7 @@
       </ControlTemplate>
     </Setter>
 
-    <Style Selector="^/template/ ContentControl#PART_CreateButtonHost">
+    <Style Selector="^/template/ ContentPresenter#PART_CreateButtonHost">
       <Setter Property="ContentTemplate">
         <Binding Path="CreateButtonTemplate"
                  RelativeSource="{RelativeSource TemplatedParent}" />
@@ -211,13 +211,13 @@
       <Setter Property="(DockPanel.Dock)" Value="Left" />
     </Style>
     
-    <Style Selector="^[Orientation=Vertical]/template/ ContentControl#PART_CreateButtonHost">
+    <Style Selector="^[Orientation=Vertical]/template/ ContentPresenter#PART_CreateButtonHost">
       <Setter Property="(DockPanel.Dock)" Value="Bottom" />
       <Setter Property="Width" Value="NaN" />
       <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
-    <Style Selector="^[Orientation=Horizontal]/template/ ContentControl#PART_CreateButtonHost">
+    <Style Selector="^[Orientation=Horizontal]/template/ ContentPresenter#PART_CreateButtonHost">
       <Setter Property="(DockPanel.Dock)" Value="{DynamicResource DockDocumentTabStripHorizontalCreateButtonDock}" />
       <Setter Property="HorizontalAlignment" Value="{DynamicResource DockDocumentTabStripHorizontalCreateButtonAlignment}" />
       <Setter Property="VerticalAlignment" Value="Center" />

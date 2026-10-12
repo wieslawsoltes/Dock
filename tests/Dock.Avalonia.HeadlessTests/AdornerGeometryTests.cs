@@ -154,7 +154,11 @@ public class AdornerGeometryTests
             DockTarget target = Assert.IsType<DockTarget>(helper.Adorner);
             target.UpdateLayout();
             Control selector = Assert.IsAssignableFrom<Control>(target.GetSelector(DockOperation.Left));
-            PixelPoint screenPoint = selector.PointToScreen(new Point(selector.Bounds.Width / 2, selector.Bounds.Height / 2));
+            Point center = new(selector.Bounds.Width / 2, selector.Bounds.Height / 2);
+            // Native-window input uses the headless backend's own screen mapping.
+            // Only inline compositor placement needs the geometry correction.
+            PixelPoint screenPoint = target.GetVisualParent() is AdornerLayer
+                ? ScreenPoint(selector, center) : selector.PointToScreen(center);
             Point point = host.PointToClient(screenPoint);
             Assert.Equal(DockOperation.Left, target.GetDockOperation(point, surface, host, DragAction.Move,
                 (actual, _, _, relative) => { Assert.Equal(point, actual); Assert.Same(host, relative); return true; }));
@@ -166,9 +170,30 @@ public class AdornerGeometryTests
 
     private static void AssertSameScreenBounds(Control expected, Control actual)
     {
-        Assert.Equal(expected.PointToScreen(default), actual.PointToScreen(default));
+        Assert.Equal(expected.PointToScreen(default), ScreenPoint(actual, default));
         Assert.Equal(expected.PointToScreen(new Point(expected.Bounds.Width, expected.Bounds.Height)),
-            actual.PointToScreen(new Point(actual.Bounds.Width, actual.Bounds.Height)));
+            ScreenPoint(actual, new Point(actual.Bounds.Width, actual.Bounds.Height)));
+    }
+
+    private static PixelPoint ScreenPoint(Control control, Point point)
+    {
+#if AVALONIA_11
+        // v11 headless omits native window positions and the compositor transform
+        // of inline adorners from PointToScreen. Account for those two hosting
+        // mechanisms here; rendered preview tests separately check actual pixels.
+        if (TopLevel.GetTopLevel(control) is DockAdornerWindow window)
+        {
+            var local = control.PointToScreen(point);
+            return window.Position + new PixelPoint(local.X, local.Y);
+        }
+        var target = control as DockTargetBase ?? control.FindAncestorOfType<DockTargetBase>();
+        if (target?.GetVisualParent() is AdornerLayer && AdornerLayer.GetAdornedElement(target) is { } adorned)
+        {
+            var local = control.TranslatePoint(point, target)!.Value;
+            return adorned.PointToScreen(local);
+        }
+#endif
+        return control.PointToScreen(point);
     }
 
     private sealed class FixedHost(Control? host) : IDockAdornerHostProvider

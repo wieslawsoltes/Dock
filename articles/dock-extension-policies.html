@@ -204,6 +204,12 @@ presentation. Both <code>HostWindow</code> and <code>ManagedHostWindow</code> ho
 presentation is released before the factory's closed notification, so a callback
 can present the retained model immediately. The integration owns any subsequent
 content/model cleanup.</p>
+<p>On successful desktop host closure, Dock also releases nested model presenters,
+including presenters from a replaced template, before the <code>Closed</code> event. A
+retained Avalonia layout therefore does not retain its closed native window.
+The host's <code>Content</code> value and the layout's ownership remain available; canceled
+closure keeps the current presentation. A <code>Closed</code> callback can present the
+preserved layout in another host immediately.</p>
 <p>Factory subclasses can override <code>ShouldFocusActiveDockable</code> to distinguish pane
 selection from focus and <code>GetActiveDockableAfterRemoval</code> to choose a replacement
 selection. Defaults preserve native focus and selection behavior.

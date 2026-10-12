@@ -122,6 +122,12 @@
 &lt;/ResourceDictionary&gt;
 </code></pre>
 <p>The host keeps the latest <code>Content</code> and <code>ContentTemplate</code>, then forwards them to its inner presenter when the deferred queue grants that target a turn.</p>
+<p><code>DeferredContentControl.ClearPresentation()</code> releases the materialized child and
+cancels pending presentation without changing <code>Content</code> or <code>ContentTemplate</code>.
+It is safe before template application and can be called more than once. A
+content/template change or reattachment materializes the content again. Dock
+uses this during successful floating-window teardown, after releasing the
+presenter's layout binding, so a preserved model can be presented in a new host.</p>
 <h2 id="use-deferredcontentpresenter">Use DeferredContentPresenter</h2>
 <p>Some templates must keep a <code>ContentPresenter</code> contract. In that case, use <code>DeferredContentPresenter</code> directly:</p>
 <pre><code class="lang-xaml">&lt;dcc:DeferredContentPresenter x:Name=&quot;PART_ContentPresenter&quot;

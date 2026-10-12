@@ -88,6 +88,7 @@ public class HostWindowClosePolicyTests
             Assert.Same(model, args.Window);
             Assert.True(((IHostWindowCloseState)host).IsClosed);
             Assert.Null(model.Host);
+            Assert.Null(layout.Parent);
             Assert.DoesNotContain(host, factory.HostWindows);
             if (managed) Assert.Empty(ManagedWindowRegistry.GetOrCreateDock(factory).VisibleDockables!);
             factory.DefaultHostWindowLocator = () => replacement;
@@ -102,6 +103,7 @@ public class HostWindowClosePolicyTests
             Assert.True(replacement.IsTracked);
             Assert.Same(layout, model.Layout);
             Assert.Same(model, Assert.Single(owner.Windows!));
+            if (!managed) Assert.Same(replacement, layout.Parent);
             if (managed) Assert.Single(ManagedWindowRegistry.GetOrCreateDock(factory).VisibleDockables!);
         }
         finally { recreate = false; model.Exit(); factory.RemoveWindow(model); }

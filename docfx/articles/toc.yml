@@ -178,6 +178,8 @@
     href: dock-architecture.md
   - name: Deep dive
     href: dock-deep-dive.md
+  - name: Extending docking operations and hosts
+    href: dock-extension-policies.md
   - name: Fluent API extensions
     href: dock-fluent-extensions.md
   - name: Advanced guide

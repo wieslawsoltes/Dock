@@ -1,5 +1,7 @@
+using System;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Internal;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -11,16 +13,18 @@ namespace Dock.Avalonia.HeadlessTests;
 public class HostWindowClosePolicyTests
 {
     [AvaloniaTheory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void Preserved_Layout_Retains_Its_Model_And_Can_Be_Presented_Again(bool cancelFirst)
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Preserved_Layout_Retains_Its_Model_And_Can_Be_Presented_Again(bool cancelFirst, bool managed)
     {
         PolicyFactory factory = new();
         RootDock owner = new() { Factory = factory, Windows = factory.CreateList<IDockWindow>() };
         Document document = new();
         RootDock layout = new() { Factory = factory, VisibleDockables = factory.CreateList<IDockable>(document) };
         DockWindow model = new() { Layout = layout };
-        HostWindow host = new();
+        IHostWindow host = CreateHost(managed);
         layout.Window = model;
         document.Owner = layout;
         document.Factory = factory;
@@ -33,15 +37,15 @@ public class HostWindowClosePolicyTests
         model.Present(false);
         try
         {
-            host.Close();
+            host.Exit();
             if (cancelFirst)
             {
-                Assert.True(host.IsVisible);
+                if (host is HostWindow native) Assert.True(native.IsVisible);
                 Assert.True(host.IsTracked);
                 Assert.Same(host, model.Host);
                 Assert.Equal(0, closed);
                 cancel = false;
-                host.Close();
+                host.Exit();
             }
             Assert.True(((IHostWindowCloseState)host).IsClosed);
             Assert.False(host.IsTracked);
@@ -53,12 +57,95 @@ public class HostWindowClosePolicyTests
             Assert.Same(layout, document.Owner);
             Assert.Equal(0, factory.ContentCloseCalls);
             Assert.Equal(1, closed);
-            factory.DefaultHostWindowLocator = () => new HostWindow();
+            if (managed) Assert.Empty(ManagedWindowRegistry.GetOrCreateDock(factory).VisibleDockables!);
+            factory.DefaultHostWindowLocator = () => CreateHost(managed);
             model.Present(false);
             Assert.NotSame(host, model.Host);
             Assert.True(model.Host!.IsTracked);
         }
         finally { cancel = false; model.Exit(); factory.RemoveWindow(model); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void A_Preserved_Host_Is_Released_Before_The_Factory_Closed_Callback(bool managed)
+    {
+        PolicyFactory factory = new();
+        RootDock owner = new() { Factory = factory };
+        RootDock layout = new() { Factory = factory };
+        DockWindow model = new() { Layout = layout };
+        IHostWindow host = CreateHost(managed);
+        IHostWindow replacement = CreateHost(managed);
+        factory.DefaultHostWindowLocator = () => host;
+        factory.AddWindow(owner, model);
+        model.Present(false);
+        bool recreate = true;
+        factory.WindowClosed += (_, args) =>
+        {
+            if (!recreate) return;
+            recreate = false;
+            Assert.Same(model, args.Window);
+            Assert.True(((IHostWindowCloseState)host).IsClosed);
+            Assert.Null(model.Host);
+            Assert.DoesNotContain(host, factory.HostWindows);
+            if (managed) Assert.Empty(ManagedWindowRegistry.GetOrCreateDock(factory).VisibleDockables!);
+            factory.DefaultHostWindowLocator = () => replacement;
+            model.Present(false);
+        };
+        try
+        {
+            host.Exit();
+            Assert.False(recreate);
+            Assert.Same(replacement, model.Host);
+            Assert.Same(replacement, Assert.Single(factory.HostWindows));
+            Assert.True(replacement.IsTracked);
+            Assert.Same(layout, model.Layout);
+            Assert.Same(model, Assert.Single(owner.Windows!));
+            if (managed) Assert.Single(ManagedWindowRegistry.GetOrCreateDock(factory).VisibleDockables!);
+        }
+        finally { recreate = false; model.Exit(); factory.RemoveWindow(model); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Managed_Exit_Rejects_Reentrant_Close_And_Allows_Retry_After_Cancellation_Or_Exception(bool throwFirst)
+    {
+        PolicyFactory factory = new();
+        RootDock owner = new() { Factory = factory };
+        DockWindow model = new() { Layout = new RootDock { Factory = factory } };
+        ManagedHostWindow host = new();
+        factory.DefaultHostWindowLocator = () => host;
+        factory.AddWindow(owner, model);
+        model.Present(false);
+        bool reject = true;
+        int closing = 0;
+        factory.WindowClosing += (_, args) =>
+        {
+            closing++;
+            host.Exit();
+            if (reject && throwFirst) throw new InvalidOperationException("close rejected");
+            args.Cancel = reject;
+        };
+        try
+        {
+            if (throwFirst) Assert.Throws<InvalidOperationException>(host.Exit);
+            else host.Exit();
+            Assert.Equal(1, closing);
+            Assert.False(((IHostWindowCloseState)host).IsClosed);
+            Assert.Same(host, model.Host);
+            Assert.True(host.IsTracked);
+            Assert.Single(ManagedWindowRegistry.GetOrCreateDock(factory).VisibleDockables!);
+            reject = false;
+            host.Exit();
+            Assert.Equal(2, closing);
+            Assert.True(((IHostWindowCloseState)host).IsClosed);
+            Assert.Null(model.Host);
+            Assert.Empty(ManagedWindowRegistry.GetOrCreateDock(factory).VisibleDockables!);
+            Assert.Same(model, Assert.Single(owner.Windows!));
+        }
+        finally { reject = false; model.Exit(); factory.RemoveWindow(model); }
     }
 
     [AvaloniaFact]
@@ -83,4 +170,6 @@ public class HostWindowClosePolicyTests
         public bool PreserveLayoutOnHostClose(IDockWindow window) => true;
         public override void CloseWindow(IDockWindow window) { ContentCloseCalls++; base.CloseWindow(window); }
     }
+
+    private static IHostWindow CreateHost(bool managed) => managed ? new ManagedHostWindow() : new HostWindow();
 }

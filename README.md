@@ -146,6 +146,7 @@ Install-Package Dock.Avalonia.Themes.Browser -Pre
 ## Resources
 * [Documentation index](https://wieslawsoltes.github.io/Dock/)
 * [AvalonDock compatibility guide](docfx/articles/dock-avalondock.md) — usage, architecture, and current scope
+* [Extending docking operations and hosts](docfx/articles/dock-extension-policies.md)
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project:
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples

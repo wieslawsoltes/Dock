@@ -116,8 +116,8 @@ public class DockDragPreviewPolicyTests
             Assert.Equal(!enabled, DockSettings.ShowDockablePreviewOnDrag);
             if (enabled)
             {
-                Border proxy = Assert.IsType<Border>(preview.PreviewContent);
-                Assert.Same(live, Assert.IsType<VisualBrush>(proxy.Background).Visual);
+                DragPreviewSnapshot snapshot = Assert.IsType<DragPreviewSnapshot>(preview.PreviewContent);
+                Assert.NotNull(snapshot.Source);
             }
             else Assert.Null(preview.PreviewContent);
             Assert.Same(owner, TopLevel.GetTopLevel(live));
@@ -183,8 +183,9 @@ public class DockDragPreviewPolicyTests
         try
         {
             factory.VisibleDockableControls[pane] = live;
-            Border preview = Assert.IsType<Border>(DragPreviewHelper.BuildDockablePreviewContent(pane, true));
-            Assert.Same(live, Assert.IsType<VisualBrush>(preview.Background).Visual);
+            owner.UpdateLayout();
+            using DragPreviewSnapshot preview = Assert.IsType<DragPreviewSnapshot>(DragPreviewHelper.BuildDockablePreviewContent(pane, true));
+            Assert.NotNull(preview.Source);
             Assert.Same(owner, TopLevel.GetTopLevel(live));
             Assert.Same(live, factory.VisibleDockableControls[pane]);
             Assert.Same(item, pane.ActiveDockable);

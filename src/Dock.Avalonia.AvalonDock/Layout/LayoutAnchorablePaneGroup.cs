@@ -11,7 +11,7 @@ public class LayoutAnchorablePaneGroup : LayoutPositionableGroup<ILayoutAnchorab
     /// <summary>Creates an empty anchorable pane group.</summary>
     public LayoutAnchorablePaneGroup() { }
     /// <summary>Creates a group containing an anchorable pane.</summary>
-    public LayoutAnchorablePaneGroup(LayoutAnchorablePane anchorablePane) => Children.Add(anchorablePane);
+    public LayoutAnchorablePaneGroup(LayoutAnchorablePane firstChild) => Children.Add(firstChild);
     internal LayoutAnchorablePaneGroup(ProportionalDock model, LayoutModelContext context) : base(model, context) { }
     /// <summary>Shows the split group while it contains a visible tool pane or group.</summary>
     protected override bool GetVisibility()

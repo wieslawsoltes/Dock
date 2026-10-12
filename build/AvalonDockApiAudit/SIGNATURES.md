@@ -1,0 +1,57 @@
+# Declaration-shape review
+
+The pinned 951-declaration inventory and the strict presence comparison remain
+unchanged. A separate review compared the signature text of the 820 matching
+keys, then inspected accessibility, virtual/static modifiers, generic constraints,
+and the differing base/interface declarations in source. This is a declaration
+review, not evidence that every default, callback, visual tree, or operation is
+behaviorally equivalent.
+
+The review found three source compatibility defects hidden by a matching key:
+`ILayoutUpdateStrategy.BeforeInsertDocument` must name its document argument
+`documentToShow`, `AfterInsertDocument` must use `documentShown`, and the
+`LayoutAnchorablePaneGroup` constructor must use `firstChild`. The adapter now
+preserves these names. `UpdateStrategyTests` compiles calls using all three
+upstream named arguments and checks their supplied values.
+
+The remaining 186 textual signature differences are recorded individually in
+[`signature-review.tsv`](signature-review.tsv). The comparison normalizes the
+requested CLR namespace mapping, known BCL qualification, whitespace, nullable
+annotations, and the `partial` implementation modifier. It does not silently
+equate WPF and Avalonia framework types.
+
+| Difference | Declaration contract |
+| --- | --- |
+| Dependency properties and routed events | Typed Avalonia styled/direct properties and routed events replace WPF metadata objects. Defaults, binding behavior, and callback order need their separate behavioral checks. |
+| Templates, styles, images, brushes and event delegates | Avalonia interfaces, control themes and routed-event delegates are explicit framework counterparts. |
+| Non-public setters absent from getter-only properties | The public getter remains; private/internal setters were not callable by consumers. |
+| Additional public setters | `PreviousContainer` and `PreviousContainerId` expose the existing protected setter contract more broadly. `AllowMovingFloatingWindowWithKeyboard` permits compiled Avalonia XAML assignments. |
+| Notification arguments | The existing string arguments also accept the optional `CallerMemberName` form. Explicit upstream calls remain valid. |
+| Qualified BCL types and the `CompatibilityTheme` alias | These resolve to the same BCL types or `AvalonDock.Themes.Theme`. |
+| Hexadecimal enum spellings | The five `AnchorableShowStrategy` values are unchanged. |
+
+The 28 differing base lists fall into these groups:
+
+- WPF `Control`, `FrameworkElement`, `DependencyObject`, `Window`, and `HwndHost`
+  require Avalonia control/object/host counterparts. `LayoutGridResizerControl`
+  still derives from Avalonia `Thumb` through the native splitter. Native pin and
+  floating hosts similarly retain their Avalonia control/window ancestry.
+- Public layout interfaces remain reachable through adapter base classes.
+  `ILayoutContainer` comes through `ILayoutGroup`; visibility comes through
+  `ILayoutPane`. Upstream positionable, initial/previous-container, pane-XML and
+  overlay-host helper interfaces are internal implementation contracts.
+- The adapter adds internal presentation interfaces and `IDisposable` on the
+  bitmap converter. WPF's `IWeakEventListener` is framework-specific; source
+  subscriptions use the adapter's weak-event services rather than that interface.
+
+All shared generic class and method constraints agree except `DropArea<T>`:
+Avalonia `Control` replaces WPF `FrameworkElement`. The modifier review found
+14 WPF framework overrides exposed as virtual compatibility hooks,
+five `new` declarations needed to hide different Avalonia base members, and a
+virtual default for the upstream abstract `LayoutGroup<T>.GetVisibility` hook.
+Existing subclasses can still override that hook; the adapter additionally
+allows its inherited default. Hook routing and ordering are validated separately.
+
+The 131 keys without exact source matches remain in
+[`portability-review.tsv`](portability-review.tsv). Neither review closes the
+remaining semantic and platform work in the compatibility checklist.

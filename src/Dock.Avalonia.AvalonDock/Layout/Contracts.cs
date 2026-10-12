@@ -102,7 +102,7 @@ public interface ILayoutUpdateStrategy
     /// <summary>Called after inserting an anchorable.</summary>
     void AfterInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableShown);
     /// <summary>Returns true if the strategy inserted the document.</summary>
-    bool BeforeInsertDocument(LayoutRoot layout, LayoutDocument anchorableToShow, ILayoutContainer? destinationContainer);
+    bool BeforeInsertDocument(LayoutRoot layout, LayoutDocument documentToShow, ILayoutContainer? destinationContainer);
     /// <summary>Called after inserting a document.</summary>
-    void AfterInsertDocument(LayoutRoot layout, LayoutDocument anchorableShown);
+    void AfterInsertDocument(LayoutRoot layout, LayoutDocument documentShown);
 }

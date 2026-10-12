@@ -13,6 +13,26 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 
 public class UpdateStrategyTests
 {
+    [AvaloniaFact]
+    public void Named_Arguments_Match_The_Upstream_Document_Strategy_And_Group_Constructor()
+    {
+        LayoutRoot root = new();
+        LayoutDocument document = new();
+        LayoutDocumentPane destination = new();
+        bool afterCalled = false;
+        ILayoutUpdateStrategy strategy = new Strategy
+        {
+            Before = (layout, content, target) => ReferenceEquals(layout, root) &&
+                ReferenceEquals(content, document) && ReferenceEquals(target, destination),
+            After = (layout, content) => afterCalled = ReferenceEquals(layout, root) && ReferenceEquals(content, document)
+        };
+        Assert.True(strategy.BeforeInsertDocument(layout: root, documentToShow: document, destinationContainer: destination));
+        strategy.AfterInsertDocument(layout: root, documentShown: document);
+        Assert.True(afterCalled);
+        LayoutAnchorablePane pane = new();
+        Assert.Same(pane, Assert.Single(new LayoutAnchorablePaneGroup(firstChild: pane).Children));
+    }
+
     public static IEnumerable<object[]> InsertionCases()
     {
         foreach (string operation in new[] { "initial-document", "initial-tool", "live-document", "live-tool", "dock-document", "dock-tool", "show" })

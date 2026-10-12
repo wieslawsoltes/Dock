@@ -57,6 +57,36 @@ public class DockableControlTrackerTests
         finally { window.Close(); }
     }
 
+    [AvaloniaTheory]
+    [InlineData(TrackingMode.Visible)]
+    [InlineData(TrackingMode.Pinned)]
+    [InlineData(TrackingMode.Tab)]
+    public void Detaching_A_Previous_Presentation_Preserves_The_Current_Registration(TrackingMode mode)
+    {
+        Factory factory = new();
+        Tool model = new() { Factory = factory };
+        TrackingGrid previous = new() { DataContext = model }, current = new() { DataContext = model };
+        using DockableControlTracker oldTracker = new(previous, mode), newTracker = new(current, mode);
+        Panel host = new() { Children = { previous, current } };
+        Window window = new() { Content = host, Width = 300, Height = 200 };
+        IDictionary<IDockable, IDockableControl> registry = mode switch
+        {
+            TrackingMode.Pinned => factory.PinnedDockableControls,
+            TrackingMode.Tab => factory.TabDockableControls,
+            _ => factory.VisibleDockableControls
+        };
+        try
+        {
+            window.Show(); Update(window);
+            Assert.Same(current, registry[model]);
+            host.Children.Remove(previous);
+            Assert.Same(current, registry[model]);
+            host.Children.Remove(current);
+            Assert.Empty(registry);
+        }
+        finally { window.Close(); }
+    }
+
     [AvaloniaFact]
     public void Tracker_Requires_The_Native_Control_Contract()
     {

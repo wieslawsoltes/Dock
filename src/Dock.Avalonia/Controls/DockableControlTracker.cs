@@ -132,21 +132,27 @@ public sealed class DockableControlTracker : IDisposable
         switch (TrackingMode)
         {
             case TrackingMode.Visible:
-                if (dockable.Factory is not null)
+                if (dockable.Factory is { } factory
+                    && factory.VisibleDockableControls.TryGetValue(dockable, out IDockableControl? current)
+                    && ReferenceEquals(current, _dockableControl))
                 {
                     dockable.Factory.VisibleDockableControls.Remove(dockable);
                     dockable.Factory.VisibleRootControls.Remove(dockable);
                 }
                 break;
             case TrackingMode.Pinned:
-                if (dockable.Factory is not null)
+                if (dockable.Factory is { } pinnedFactory
+                    && pinnedFactory.PinnedDockableControls.TryGetValue(dockable, out IDockableControl? pinnedCurrent)
+                    && ReferenceEquals(pinnedCurrent, _dockableControl))
                 {
                     dockable.Factory.PinnedDockableControls.Remove(dockable);
                     dockable.Factory.PinnedRootControls.Remove(dockable);
                 }
                 break;
             case TrackingMode.Tab:
-                if (dockable.Factory is not null)
+                if (dockable.Factory is { } tabFactory
+                    && tabFactory.TabDockableControls.TryGetValue(dockable, out IDockableControl? tabCurrent)
+                    && ReferenceEquals(tabCurrent, _dockableControl))
                 {
                     dockable.Factory.TabDockableControls.Remove(dockable);
                     dockable.Factory.TabRootControls.Remove(dockable);

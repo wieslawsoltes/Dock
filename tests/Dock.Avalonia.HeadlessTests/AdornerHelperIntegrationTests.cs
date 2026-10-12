@@ -41,6 +41,7 @@ public class AdornerHelperIntegrationTests
             var adornerWindow = Assert.IsType<DockAdornerWindow>(windowField!.GetValue(helper));
             Assert.True(adornerWindow.IsVisible);
             Assert.Same(helper.Adorner, adornerWindow.Content);
+            Assert.Equal(dockControl.Bounds.Size, adornerWindow.Bounds.Size);
         }
         finally
         {

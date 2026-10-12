@@ -1188,18 +1188,21 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
         private static ISourceGenerator? CreateGenerator(Compilation compilation)
         {
-            Assembly? assembly = AppDomain.CurrentDomain.GetAssemblies()
-                .FirstOrDefault(static x => string.Equals(x.GetName().Name, "System.Text.Json.SourceGeneration", StringComparison.Ordinal));
-
+            // Compiler servers can host several STJ generator versions. Prefer the
+            // generator shipped with this compilation's package, not one loaded by
+            // an unrelated project (or the package's oldest Roslyn implementation).
+            string? assemblyPath = TryGetAssemblyPath(compilation);
+            Assembly? assembly = assemblyPath is not null
+                // LoadFile isolates the selected package from same-name generators
+                // already loaded by the shared compiler for another target/package.
+                ? Assembly.LoadFile(assemblyPath)
+                : AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(static x => string.Equals(x.GetName().Name, "System.Text.Json.SourceGeneration", StringComparison.Ordinal))
+                    .OrderByDescending(static x => x.GetName().Version)
+                    .FirstOrDefault();
             if (assembly is null)
             {
-                string? assemblyPath = TryGetAssemblyPath(compilation);
-                if (assemblyPath is null)
-                {
-                    return null;
-                }
-
-                assembly = Assembly.LoadFrom(assemblyPath);
+                return null;
             }
 
             Type? generatorType = assembly.GetTypes()
@@ -1250,12 +1253,24 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 return null;
             }
 
+            Version compilerVersion = typeof(Compilation).Assembly.GetName().Version!;
             return Directory.EnumerateFiles(
                     analyzersDirectory,
                     "System.Text.Json.SourceGeneration.dll",
                     SearchOption.AllDirectories)
-                .OrderBy(static x => x, StringComparer.Ordinal)
+                .Select(static path => (Path: path, Version: GetRoslynVersion(path)))
+                .Where(candidate => candidate.Version <= compilerVersion)
+                .OrderByDescending(static candidate => candidate.Version)
+                .Select(static candidate => candidate.Path)
                 .FirstOrDefault();
+        }
+
+        private static Version GetRoslynVersion(string path)
+        {
+            string? directory = Directory.GetParent(path)?.Parent?.Name;
+            return directory is not null && directory.StartsWith("roslyn", StringComparison.Ordinal)
+                && Version.TryParse(directory.Substring("roslyn".Length), out Version? version)
+                ? version : new Version(0, 0);
         }
     }
 

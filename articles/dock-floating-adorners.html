@@ -97,6 +97,21 @@ AppBuilder.Configure&lt;App&gt;()
 <p>When enabled <code>AdornerHelper</code> creates a lightweight <code>DockAdornerWindow</code> positioned above the drag source. The window is transparent and not topmost, so the drag preview window still appears above the adorner because only the preview is marked as <code>Topmost</code>.</p>
 <p>Use this option if dock targets fail to appear when dragging over native controls or popups. The default value is <code>false</code> which uses an <code>AdornerLayer</code> inside the same window.</p>
 <p>In managed window mode (<code>DockSettings.UseManagedWindows = true</code>), the floating adorner is rendered inside <code>ManagedWindowLayer</code> instead of a native window.</p>
+<h2 id="selectors-in-a-custom-overlay-template">Selectors in a custom overlay template</h2>
+<p>An overlay can keep its selectors outside the native <code>DockTarget</code> template by
+assigning <code>DockTargetBase.Presentation</code> to an <code>IDockTargetPresentation</code>.
+<code>GetSelector</code> supplies the control for each operation; returning null omits that
+operation. Dock translates pointer coordinates, applies direction and edge
+limits, and calls the existing visibility and drop-validation policies.
+<code>SetOperationState</code> receives the resulting selector visibility and active preview
+state. The controls can belong to another window and can have render transforms.</p>
+<p>The presentation owns the custom visuals. Use opacity for policy-driven selector
+visibility so the controls retain their layout; an explicitly invisible selector
+cannot be activated. Indicator-only mode hides selectors while keeping the
+chosen preview active. Reset clears all reported states, and replacing the
+presentation clears the previous presentation before another hover is evaluated.
+Clear <code>Presentation</code> when its template or window is discarded. A null value
+restores the ordinary native template and its registered selectors.</p>
 
 </article>
 

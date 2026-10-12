@@ -27,7 +27,7 @@
       </Grid>
     </Border>
 
-    <DockingManager x:Name="DockManager" Grid.Row="1" Margin="8">
+    <DockingManager x:Name="DockManager" Grid.Row="1" Margin="8" ShowDockablePreviewOnDrag="True">
       <DockingManager.Theme>
         <GenericTheme />
       </DockingManager.Theme>

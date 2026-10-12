@@ -14,6 +14,8 @@
     </ad:LayoutGroupFloatingWindow>
     <DockingManager x:Key="SystemMenuOption" ShowSystemMenu="False" />
     <ad:DockingManager x:Key="LegacySystemMenuOption" ShowSystemMenu="False" />
+    <DockingManager x:Key="CaptionPreview" ShowDockablePreviewOnDrag="False" />
+    <ad:DockingManager x:Key="LegacyCaptionPreview" ShowDockablePreviewOnDrag="False" />
     <ControlTheme x:Key="Overlay" TargetType="OverlayWindow" x:DataType="OverlayWindow"
                   BasedOn="{StaticResource {x:Type OverlayWindow}}">
       <Setter Property="Tag" Value="{x:Static DropTargetType.DocumentPaneDockInside}" />

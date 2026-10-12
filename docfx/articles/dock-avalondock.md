@@ -103,6 +103,32 @@ prefix or a reset default namespace. This adapter additionally maps to
 Avalonia's default namespace, so the first example can mix unprefixed
 AvalonDock and Avalonia elements directly.
 
+## Drag previews
+
+Full-content drag previews are enabled by default. Dragging a document, tool, or
+tool pane uses Dock's existing preview window or managed overlay and a snapshot of
+its registered content visual, including application templates. Capturing before
+the source switches tabs keeps the dragged editor visible; native code releases
+the image when dragging ends. Document previews use the editor's
+dimensions. To use a compact caption/status preview, set the Avalonia extension
+`ShowDockablePreviewOnDrag="False"` on the manager. The setting applies to docked
+and floating content at the start of each drag; other managers and Dock's global
+`DockSettings.ShowDockablePreviewOnDrag` setting remain independent.
+
+```xml
+<DockingManager ShowDockablePreviewOnDrag="True">
+  <LayoutRoot>
+    <LayoutPanel>
+      <LayoutDocumentPane>
+        <LayoutDocument Title="Preview this editor">
+          <TextBox Text="Drag the tab to see the full editor" />
+        </LayoutDocument>
+      </LayoutDocumentPane>
+    </LayoutPanel>
+  </LayoutRoot>
+</DockingManager>
+```
+
 ## Use the C# layout API
 
 The following code belongs in a workspace service called by ViewModel commands.
@@ -2591,6 +2617,7 @@ flowchart TB
         OverlayFactory["Optional IDockAdornerWindowFactory"]
         TargetPresentation["Optional IDockTargetPresentation<br/>External selectors and preview state"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
+        DragPreview["Full-content drag previews<br/>IDockDragPreviewPolicy and content snapshots"]
         DropPolicy["Optional IDockDropPolicy<br/>Target visibility and drop validation"]
         SplitPolicy["Optional IDockSplitPolicy<br/>Tool drops into typed document groups"]
     end
@@ -2600,6 +2627,8 @@ flowchart TB
     GridControls -->|DockableControlTracker and IProportionalSplitterHost| Controls
     GridControls --> Controls
     Manager --> PaneControls
+    Manager -->|ShowDockablePreviewOnDrag| DragPreview
+    Controls --> DragPreview
     Controls --> OverlayFactory
     OverlayFactory --> Overlays
     ResourceThemes --> Overlays

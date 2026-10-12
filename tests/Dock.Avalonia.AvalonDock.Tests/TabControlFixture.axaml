@@ -3,6 +3,8 @@
         x:Class="Dock.Avalonia.AvalonDock.Tests.TabControlFixture"
         x:DataType="LayoutContent" Width="800" Height="450">
   <Window.Resources>
+    <DockingManager x:Key="CaptionPreview" ShowDockablePreviewOnDrag="False" />
+    <ad:DockingManager x:Key="LegacyCaptionPreview" ShowDockablePreviewOnDrag="False" />
     <DataTemplate x:Key="BoundDocumentTabs" x:DataType="LayoutDocumentPane">
       <ItemsControl ItemsSource="{Binding Children}">
         <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>

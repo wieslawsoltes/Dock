@@ -12,6 +12,10 @@ and open Agenda or Contacts from the left auto-hide strip,
 then save/load the layout. XML is stored under the current user's local
 application-data directory in `DockAvalonDockSample/layout.xml`.
 
+Dragging a tab or a tool pane title shows its full content. The manager's
+`ShowDockablePreviewOnDrag` option is enabled by default and set explicitly in
+the sample XAML. Set it to `False` to try the compact caption/status preview.
+
 The ViewModel uses ReactiveUI commands and a framework-independent workspace
 interface. The application startup composes the Dock-backed service and view.
 The view's code-behind only initializes its XAML.

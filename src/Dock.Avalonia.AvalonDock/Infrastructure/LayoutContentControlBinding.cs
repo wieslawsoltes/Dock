@@ -14,10 +14,12 @@ internal sealed class LayoutContentControlBinding
 {
     private readonly TemplatedControl _control;
     private readonly LayoutControlModelBinding _model;
+    private readonly LayoutContentPreviewRegistration _preview;
 
     internal LayoutContentControlBinding(TemplatedControl control, Action<LayoutItem?> setItem, Action clearModel)
     {
         _control = control;
+        _preview = new(control);
         _model = new(control, setItem, clearModel, ModelChanged);
     }
 
@@ -25,6 +27,7 @@ internal sealed class LayoutContentControlBinding
     internal void SetModel(LayoutContent? model)
     {
         _model.SetModel(model);
+        _preview.Refresh(_model.Model, IsNativePresentation);
         if (ReferenceEquals(_model.Model, model))
             _control.SetCurrentValue(InputElement.IsEnabledProperty, model?.IsEnabled ?? true);
     }
@@ -60,6 +63,8 @@ internal sealed class LayoutContentControlBinding
 
     private void ModelChanged(LayoutContent model, PropertyChangedEventArgs args)
     {
+        if (args.PropertyName is nameof(LayoutContent.Root) or nameof(LayoutContent.Parent) or nameof(Dock.Model.Core.IDockable.Factory))
+            _preview.Refresh(model, IsNativePresentation);
         if (args.PropertyName != nameof(LayoutContent.IsEnabled)) return;
         _control.SetCurrentValue(InputElement.IsEnabledProperty, model.IsEnabled);
         if (model.IsEnabled || !model.IsActive || model.Parent is not ILayoutContentSelector selector ||

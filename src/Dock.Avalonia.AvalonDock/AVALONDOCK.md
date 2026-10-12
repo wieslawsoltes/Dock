@@ -46,6 +46,16 @@ declaration and prefixed types such as `ad:DockingManager` remain supported.
 The runnable `samples/DockAvalonDockSample` contains a licensed adaptation of
 the Xceed Live Explorer 3.7.0 sample.
 
+Dragging a document, tool, or tool pane shows its full content by default through
+Dock's native drag preview. The preview captures the registered visual, including
+custom content and pane templates, before the source selects another tab. It
+retains those pixels until the drag ends without moving the live control into
+another parent. Native windows and managed overlays use the same per-manager setting.
+For a compact caption/status preview, set the Avalonia extension
+`ShowDockablePreviewOnDrag="False"` on `DockingManager`. Changes apply to the next
+drag and do not modify `DockSettings.ShowDockablePreviewOnDrag` for other Dock
+workspaces. Floating layouts follow their owning manager's setting.
+
 The familiar C# operations are available to a workspace service called by
 ViewModel commands. Given a manager and content nodes from its layout:
 
@@ -1247,6 +1257,7 @@ flowchart TB
     Models["Live Dock.Model.Avalonia models"]
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
+    DragPreview["Native full-content drag preview<br/>Factory policy and content snapshots"]
     Xml["XmlLayoutSerializer and explicit XML codec<br/>Typed custom XML factories, virtual hooks, and content recovery"]
     Api -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
@@ -1256,6 +1267,9 @@ flowchart TB
     Tracking --> Models
     GridControls --> View
     Api --> PaneControls
+    Api -->|ShowDockablePreviewOnDrag| DragPreview
+    Factory --> DragPreview
+    View -->|Existing document, tool, and pane visuals| DragPreview
     Api -->|Side panels and anchor templates| Anchors
     Anchors --> Models
     Anchors -->|Pinned reorder and preview| Factory

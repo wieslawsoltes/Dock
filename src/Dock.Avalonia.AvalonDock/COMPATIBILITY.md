@@ -135,7 +135,7 @@ grid definitions, leaving public pane themes free to set their own control
 minimums. Compatibility grid styles disable layout rounding, matching WPF's
 default and preserving exact pixel resize limits when fixed panes leave spare
 space. An empty middle pane leaves one splitter between the visible siblings,
-as in the upstream grid. The consolidated adapter suite passes all 2,405 cases,
+as in the upstream grid. The consolidated adapter suite passes all 2,422 cases,
 including direct-grid, overlay, retained-content, reattachment, return-container,
 metadata notification, and content-comparison cases.
 
@@ -163,6 +163,7 @@ adapter is:
 | Escape cancellation and tab-source previews | Native input cancels across focus/capture changes. Dragging a tab can temporarily select another tab; cancellation restores the prior selection unless the application changed it. Public selection notifications still apply. |
 | Global split distribution | Native docking rescales retained siblings and sizes the resulting pane, including whole-pane moves. |
 | Scrollable-source and mixed-display preview sizing | The adapter's native drag preview benefits from finite measurement and macOS logical-coordinate handling across Retina boundaries. |
+| Full-content drag previews ([PR #1170](https://github.com/wieslawsoltes/Dock/pull/1170), [PR #1171](https://github.com/wieslawsoltes/Dock/pull/1171)) | The manager enables full content by default through `IDockDragPreviewPolicy`; native and managed hosts capture registered visuals before tab selection changes, and document previews use content dimensions. `ShowDockablePreviewOnDrag` can select compact previews per manager. |
 | Isolated projected layouts | `IDockPreviewFactoryProvider` and `DockSplitPreview` provide a future integration point; exact projections are not enabled for the compatibility layout. |
 
 Exact projection has two independent limitations here. `LayoutFactory` derives
@@ -175,6 +176,9 @@ target template currently uses its existing half-pane and third-region indicator
 Enabling exact projection requires isolated policies, a matching sizing contract,
 and corresponding template/geometry tests together. Simply returning a stock
 factory would not establish compatibility.
+
+The exact-projection limitation concerns predicting the destination pane's
+bounds. It does not disable full-content previews that follow the pointer.
 
 The incoming Avalonia 11 preview suite validates native shared controls. It does
 not add an Avalonia 11 target to this adapter. The source-generator changes select
@@ -950,11 +954,13 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   work waits until the adapter receives the model. Suppressing the base hook
   suppresses those subscriptions. This does not change Avalonia's Initialized
   event timing into WPF's timing.
-- 2,405 passing cases in `Dock.Avalonia.AvalonDock.Tests` after the return-container
-  and metadata batch, including 53 additional regression cases.
-  The preceding package checkpoint also passed 18 cases in
-  `Dock.Avalonia.AvalonDock.ImageTests`, using Skia with Headless for real image
-  decoding and HTTP/HTTPS transport contracts.
+- 2,422 passing cases in `Dock.Avalonia.AvalonDock.Tests`, including 17 new
+  full-preview cases for docked/floating tabs, per-manager settings, both XML
+  namespaces, native/managed hosting, cancellation, and content registration.
+  All 30 cases in `Dock.Avalonia.AvalonDock.ImageTests` pass using Skia with
+  Headless. Twelve rendered-image cases verify original editor pixels through
+  tab selection changes and whole-pane drags at 1×/2× scale, together with
+  snapshot release; the other cases cover image decoding and HTTP/HTTPS transport.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

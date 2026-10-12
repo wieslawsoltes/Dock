@@ -52,6 +52,7 @@ PackageConsumer.MetadataAndUtilityProbe.Verify();
 PackageConsumer.LocalizationProbe.Verify();
 PackageConsumer.ThemeLifetimeProbe.Verify();
 PackageConsumer.OverlayProbe.Verify();
+PackageConsumer.FullDragPreviewProbe.Verify();
 PackageConsumer.LifecycleProbe.Verify();
 PackageConsumer.FloatingCloseProbe.Verify();
 PackageConsumer.FloatingModelProbe.Verify();

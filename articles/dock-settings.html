@@ -214,6 +214,9 @@ DockSettings.GlobalDockingProportion = 0.33;
 <p>Set these before docking interactions start (typically during app startup).</p>
 <h2 id="floating-window-owner">Floating window owner</h2>
 <p><code>DockSettings.UseOwnerForFloatingWindows</code> keeps floating windows above the main window by setting it as their owner. This is applied when <code>IDockWindow.OwnerMode</code> is <code>DockWindowOwnerMode.Default</code> and can be overridden per window.</p>
+<p>The default owner lookup supplies a title and icon only when the floating host
+has no value for those properties. Explicit values, styles and live bindings
+remain in control of the floating window's title and icon.</p>
 <p><code>DockSettings.FloatingWindowOwnerPolicy</code> provides an explicit global owner policy (<code>Default</code>, <code>AlwaysOwned</code>, <code>NeverOwned</code>). When set to <code>Default</code>, Dock falls back to <code>UseOwnerForFloatingWindows</code> to preserve compatibility.</p>
 <p><code>DockSettings.DefaultFloatingWindowOwnerMode</code> defines which owner strategy to use when a floating window has <code>IDockWindow.OwnerMode = DockWindowOwnerMode.Default</code>.</p>
 <p>Example:</p>

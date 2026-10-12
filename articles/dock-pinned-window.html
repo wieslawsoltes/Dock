@@ -88,6 +88,10 @@
 DockSettings.UsePinnedDockWindow = true;
 </code></pre>
 <p>When enabled the <code>PinnedDockControl</code> places the preview content inside a lightweight <code>PinnedDockWindow</code>. The window follows the host layout and closes automatically when the tool is hidden.</p>
+<p>Activation can move between the owner and preview without closing the preview,
+so its editors can receive keyboard focus. Leaving both windows closes the
+preview through the factory. <code>KeepPinnedDockableVisible</code> preserves it across
+those activation changes.</p>
 <p>In managed window mode (<code>DockSettings.UseManagedWindows = true</code>), pinned windows render inside <code>ManagedWindowLayer</code> instead of a native window.</p>
 <h2 id="pinned-preview-layout">Pinned preview layout</h2>
 <p>Pinned previews can either overlay the main content or take real layout space. Configure the root dock with <code>PinnedDockDisplayMode</code> (<code>Overlay</code> or <code>Inline</code>) to pick the default behavior. Individual dockables can override this by setting <code>PinnedDockDisplayModeOverride</code> to force a specific mode for that tool or document.</p>

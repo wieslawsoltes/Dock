@@ -22,7 +22,7 @@ public class LayoutAnchorable : LayoutContent
     private bool _lastHidden;
     private bool _lastAutoHidden;
     /// <summary>Creates an anchorable tool.</summary>
-    public LayoutAnchorable() : this(new Tool { Id = null!, CanClose = false }) { }
+    public LayoutAnchorable() : this(new Tool { Id = null!, Title = null!, CanClose = false }) { }
     internal LayoutAnchorable(Tool model, LayoutModelContext? context = null) : base(model, context) { }
     /// <summary>Gets or sets the auto-hide popup width, clamped to <see cref="AutoHideMinWidth"/> when assigned.</summary>
     public double AutoHideWidth
@@ -85,7 +85,7 @@ public class LayoutAnchorable : LayoutContent
             ? (0, 0) : (width, height);
     }
     /// <summary>Gets or sets whether the tool can be hidden.</summary>
-    public bool CanHide { get => _canHide; set => SetField(ref _canHide, value); }
+    public bool CanHide { get => _canHide; set => SetFieldChanged(ref _canHide, value); }
     /// <summary>Gets or sets whether the tool can be auto-hidden.</summary>
     public bool CanAutoHide { get => DockModel.CanPin; set => DockModel.CanPin = value; }
     /// <summary>Gets or sets whether the tool can become a document tab.</summary>
@@ -210,6 +210,16 @@ public class LayoutAnchorable : LayoutContent
     public void ToggleAutoHide() => LayoutAutoHideOperations.Toggle(this);
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (e.Property == DockableBase.CanPinProperty)
+        {
+            RaisePropertyChanged(nameof(CanAutoHide));
+            return;
+        }
+        if (e.Property == DockableBase.CanDockAsDocumentProperty)
+        {
+            RaisePropertyChanged(nameof(CanDockAsTabbedDocument));
+            return;
+        }
         base.OnModelPropertyChanged(sender, e);
         if (e.Property == DockableBase.DockingStateProperty)
             NotifyVisibility();

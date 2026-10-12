@@ -90,7 +90,7 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     /// <summary>Gets or sets the floating vertical position.</summary>
     public double FloatingTop { get => _floatingTop; set => SetField(ref _floatingTop, value); }
     /// <summary>Gets or sets whether the floating window is maximized.</summary>
-    public bool IsMaximized { get => _isMaximized; set => SetField(ref _isMaximized, value); }
+    public bool IsMaximized { get => _isMaximized; set => SetFieldChanged(ref _isMaximized, value); }
 
     void ILayoutPositionableGroup.RestoreDockLengths(GridLength width, GridLength height)
     {

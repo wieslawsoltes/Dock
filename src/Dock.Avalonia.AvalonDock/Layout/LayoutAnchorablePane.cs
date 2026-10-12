@@ -22,8 +22,8 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
         _selection = new(this, false, RaisePropertyChanging, RaisePropertyChanged);
         _selection.Initialize();
     }
-    /// <summary>Gets or sets the pane's name.</summary>
-    public string Name { get => DockModel.Name ?? string.Empty; set => DockModel.Name = value; }
+    /// <summary>Gets or sets the pane's name; initially null.</summary>
+    public string Name { get => DockModel.Name!; set => DockModel.Name = value; }
     /// <summary>Gets whether every child can be hidden.</summary>
     public bool CanHide { get { foreach (LayoutAnchorable child in Children) if (!child.CanHide) return false; return true; } }
     /// <summary>Gets whether every child can be closed.</summary>

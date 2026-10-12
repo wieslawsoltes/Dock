@@ -22,7 +22,7 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
         _selection.Initialize();
     }
     /// <summary>Gets or sets whether the pane shows its document tabs and document list menu. The selected content remains visible.</summary>
-    public bool ShowHeader { get => _showHeader; set => SetField(ref _showHeader, value); }
+    public bool ShowHeader { get => _showHeader; set => SetFieldChanged(ref _showHeader, value); }
     /// <inheritdoc/>
     public int SelectedContentIndex
     {
@@ -32,7 +32,7 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
     /// <inheritdoc/>
     public LayoutContent? SelectedContent => _selection?.Selected;
     void ILayoutPaneSelection.ReconcileSelection() => _selection?.ChildrenChanged();
-    /// <summary>Gets the documents sorted by title.</summary>
+    /// <summary>Gets the documents sorted by comparable application content, falling back to titles.</summary>
     public IEnumerable<LayoutContent> ChildrenSorted
     {
         get { List<LayoutContent> sorted = new(Children); sorted.Sort(); return sorted; }

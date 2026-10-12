@@ -30,8 +30,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     public static readonly DirectProperty<LayoutContent, object?> ContentProperty =
         AvaloniaProperty.RegisterDirect<LayoutContent, object?>(nameof(Content), x => x.Content, (x, v) => x.Content = v);
 
-    private double _floatingWidth = 300;
-    private double _floatingHeight = 400;
+    private double _floatingWidth;
+    private double _floatingHeight;
     private double _floatingLeft;
     private double _floatingTop;
     private bool _isMaximized;
@@ -41,6 +41,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private ILayoutContainer? _previousContainer;
     private string? _previousContainerId;
     private int _previousContainerIndex = -1;
+    private ILayoutContainer? _initialContainer;
+    private int _initialContainerIndex = -1;
     private DateTime? _lastActivationTimeStamp;
     private bool _synchronizingActive;
     private int _writingActive;
@@ -51,8 +53,18 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     internal LayoutDockingHistory DockingHistory { get; }
     private IDockingWindowState State => (IDockingWindowState)DockModel;
 
-    /// <summary>Gets or sets the tab title.</summary>
-    public string Title { get => DockModel.Title; set { RaisePropertyChanging(); DockModel.Title = value; } }
+    /// <summary>Gets or sets the tab title; initially null.</summary>
+    public string Title
+    {
+        get => DockModel.Title;
+        set
+        {
+            VerifyAccess();
+            if (DockModel.Title == value) return;
+            RaisePropertyChanging();
+            DockModel.Title = value;
+        }
+    }
     /// <summary>Gets or sets the identifier used for persistence and active-content lookup; initially null.</summary>
     /// <remarks>A named control assigned to <see cref="Content"/> supplies an identifier when this value is null.</remarks>
     public string? ContentId { get => DockModel.Id; set => DockModel.Id = value!; }
@@ -122,20 +134,33 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     }
     /// <summary>Gets whether this is the last focused document.</summary>
     public bool IsLastFocusedDocument => _isLastFocusedDocument;
-    /// <summary>Gets or sets the previous container.</summary>
-    public ILayoutContainer? PreviousContainer { get => _previousContainer; set => SetField(ref _previousContainer, value); }
+    /// <summary>Gets or sets the previous container, initializing its persistence identifier after change notification.</summary>
+    public ILayoutContainer? PreviousContainer { get => _previousContainer; set => SetContainer(ref _previousContainer, value, nameof(PreviousContainer)); }
     /// <summary>Gets or sets the previous container's persistence identifier.</summary>
-    public string? PreviousContainerId { get => _previousContainerId; set => SetField(ref _previousContainerId, value); }
+    /// <remarks>This serialization metadata does not raise property notifications or change <see cref="PreviousContainer"/>.</remarks>
+    public string? PreviousContainerId { get => _previousContainerId; set { VerifyAccess(); _previousContainerId = value; } }
     /// <summary>Gets or sets the previous index in a container.</summary>
-    public int PreviousContainerIndex { get => _previousContainerIndex; set => SetField(ref _previousContainerIndex, value); }
-    internal ILayoutContainer? InitialContainer { get; set; }
+    public int PreviousContainerIndex { get => _previousContainerIndex; set => SetFieldChanged(ref _previousContainerIndex, value); }
+    internal ILayoutContainer? InitialContainer { get => _initialContainer; set => SetContainer(ref _initialContainer, value, nameof(InitialContainer)); }
     internal string? InitialContainerId { get; set; }
-    internal int InitialContainerIndex { get; set; } = -1;
+    internal int InitialContainerIndex { get => _initialContainerIndex; set => SetFieldChanged(ref _initialContainerIndex, value); }
+
+    private void SetContainer(ref ILayoutContainer? field, ILayoutContainer? value, string name)
+    {
+        VerifyAccess();
+        if (ReferenceEquals(field, value)) return;
+        field = value;
+        RaisePropertyChanged(name);
+        // Application callbacks may redirect the reference before its pane ID
+        // is initialized. Always use the reference that remains after them.
+        LayoutContainerIdentity.EnsureReferencedId(field);
+    }
+
     /// <summary>Gets or sets the last activation time.</summary>
-    public DateTime? LastActivationTimeStamp { get => _lastActivationTimeStamp; set => SetField(ref _lastActivationTimeStamp, value); }
-    /// <summary>Gets or sets the floating width.</summary>
+    public DateTime? LastActivationTimeStamp { get => _lastActivationTimeStamp; set => SetFieldChanged(ref _lastActivationTimeStamp, value); }
+    /// <summary>Gets or sets the floating width; zero requests the native fallback size.</summary>
     public double FloatingWidth { get => _floatingWidth; set => SetField(ref _floatingWidth, value); }
-    /// <summary>Gets or sets the floating height.</summary>
+    /// <summary>Gets or sets the floating height; zero requests the native fallback size.</summary>
     public double FloatingHeight { get => _floatingHeight; set => SetField(ref _floatingHeight, value); }
     /// <summary>Gets or sets the floating horizontal position.</summary>
     public double FloatingLeft { get => _floatingLeft; set => SetField(ref _floatingLeft, value); }
@@ -144,9 +169,9 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// <summary>Gets or sets the floating maximized state.</summary>
     public bool IsMaximized { get => _isMaximized; set => SetField(ref _isMaximized, value); }
     /// <summary>Gets or sets tooltip content.</summary>
-    public object? ToolTip { get => _toolTip; set => SetField(ref _toolTip, value); }
+    public object? ToolTip { get => _toolTip; set => SetReferenceChanged(ref _toolTip, value); }
     /// <summary>Gets or sets the tab icon.</summary>
-    public IImage? IconSource { get => _iconSource; set => SetField(ref _iconSource, value); }
+    public IImage? IconSource { get => _iconSource; set => SetReferenceChanged(ref _iconSource, value); }
     /// <summary>Gets whether this item is in a floating window.</summary>
     public bool IsFloating => (DockModel.DockingState & DockingWindowState.Floating) != 0;
     /// <summary>Gets or sets whether UI commands can close this item.</summary>
@@ -154,7 +179,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// <summary>Gets or sets whether this item can be floated.</summary>
     public bool CanFloat { get => DockModel.CanFloat; set => DockModel.CanFloat = value; }
     /// <summary>Gets or sets whether the content is enabled.</summary>
-    public bool IsEnabled { get => _isEnabled; set => SetField(ref _isEnabled, value); }
+    public bool IsEnabled { get => _isEnabled; set => SetFieldChanged(ref _isEnabled, value); }
     /// <summary>Closes the item, honoring cancellation independently of <see cref="CanClose"/>.</summary>
     public abstract void Close();
     /// <summary>Returns no custom XML schema.</summary>
@@ -163,8 +188,11 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     public virtual void ReadXml(XmlReader reader) => AvalonDockXml.ReadContents(this, reader);
     /// <summary>Writes content metadata inside the caller's XML element.</summary>
     public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
-    /// <summary>Compares titles using the current culture.</summary>
-    public int CompareTo(LayoutContent? other) => other is null ? 1 : string.Compare(Title, other.Title, StringComparison.CurrentCulture);
+    /// <summary>Compares application content when it implements <see cref="IComparable"/>, otherwise titles using the current culture.</summary>
+    /// <exception cref="NullReferenceException">The other layout content is null.</exception>
+    public int CompareTo(LayoutContent? other) => Content is IComparable comparable
+        ? comparable.CompareTo(other!.Content)
+        : string.Compare(Title, other!.Title, StringComparison.CurrentCulture);
     /// <summary>Floats this item through Dock's window implementation.</summary>
     /// <remarks>
     /// Restoring a previous floating pane is independent of <see cref="CanFloat"/>.

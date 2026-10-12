@@ -135,8 +135,9 @@ grid definitions, leaving public pane themes free to set their own control
 minimums. Compatibility grid styles disable layout rounding, matching WPF's
 default and preserving exact pixel resize limits when fixed panes leave spare
 space. An empty middle pane leaves one splitter between the visible siblings,
-as in the upstream grid. The consolidated adapter suite passes all 2,349 cases,
-including the direct-grid, overlay, retained-content and reattachment cases.
+as in the upstream grid. The consolidated adapter suite passes all 2,402 cases,
+including direct-grid, overlay, retained-content, reattachment, return-container,
+metadata notification, and content-comparison cases.
 
 The lifetime investigation identified a retained editor's cached Avalonia
 composition visuals as a path to a closed pinned window after the manager had
@@ -752,6 +753,22 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   existing save file. `XmlLayoutSerializer.KnownTypes` registers custom XML names
   and typed factories, preserving nested read/write overrides without reflection.
   Registrations are snapshotted per operation; implicit assembly scanning is absent.
+  Return-container restoration distinguishes an explicit empty pane ID from an
+  unset ID, resolves all previous references before initial references, and rejects
+  missing references before content callbacks or manager replacement. Pane IDs
+  take precedence over native group-extension IDs and survive repeated saves.
+  Assigning a return container raises only its changed notification, then initializes
+  an unset pane ID using the reference left by application callbacks. Identifier
+  metadata is quiet; changed return indices raise only changed notifications.
+- Content floating dimensions initially use zero, allowing Dock to choose a valid
+  native size when a window is created. Titles and tool-pane names initially use
+  null. Equal title assignments are quiet, and tooltip/icon changes use reference
+  identity. Changed-only content metadata, pane maximization, and header flags
+  use upstream notification contracts;
+  native capability changes publish `CanMove`, `CanAutoHide`, and
+  `CanDockAsTabbedDocument` through the public models. `LayoutContent.CompareTo`
+  and `LayoutDocumentPane.ChildrenSorted` use application `IComparable` content
+  before falling back to titles, preserving application comparison exceptions.
 - Xceed Live Explorer 3.7.0 sample adaptation with its Ms-PL license, source
   notice, passive views, ReactiveUI commands, and save/load integration tests.
 - `NavigatorWindow` presents live document/tool containers in a compiled template.
@@ -931,10 +948,11 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   work waits until the adapter receives the model. Suppressing the base hook
   suppresses those subscriptions. This does not change Avalonia's Initialized
   event timing into WPF's timing.
-- 2336 passing cases in `Dock.Avalonia.AvalonDock.Tests` after the native
-  pinned-window, ownership, and focus integration.
-  Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (2354 total).
+- 2,402 passing cases in `Dock.Avalonia.AvalonDock.Tests` after the return-container
+  and metadata batch, including 53 additional regression cases.
+  The preceding package checkpoint also passed 18 cases in
+  `Dock.Avalonia.AvalonDock.ImageTests`, using Skia with Headless for real image
+  decoding and HTTP/HTTPS transport contracts.
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

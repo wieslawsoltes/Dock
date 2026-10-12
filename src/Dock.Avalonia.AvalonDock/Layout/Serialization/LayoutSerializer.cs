@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AvalonDock.Infrastructure;
 
 namespace AvalonDock.Layout.Serialization;
 
@@ -44,47 +45,62 @@ public abstract class LayoutSerializer
     protected virtual void FixupLayout(LayoutRoot layout)
     {
         List<LayoutContent> contents = new();
-        List<LayoutAnchorGroup> anchorGroups = new();
+        List<LayoutElement> returnLocations = new();
         Dictionary<string, LayoutElement> containers = new(StringComparer.Ordinal);
         foreach (ILayoutElement element in layout.Descendents())
         {
-            if (element is LayoutAnchorGroup anchorGroup) anchorGroups.Add(anchorGroup);
+            if (element is LayoutContent or LayoutAnchorGroup) returnLocations.Add((LayoutElement)element);
             if (element is LayoutContent content) contents.Add(content);
-            else if (element is LayoutElement node && !string.IsNullOrEmpty(node.DockModel.Id)) containers.TryAdd(node.DockModel.Id, node);
+            else if (element is LayoutElement { XmlId: { } id } node)
+            {
+                // Native group windows also use group IDs. Prefer actual pane
+                // IDs when both the extension and an upstream pane share a key.
+                bool pane = LayoutContainerIdentity.IsPane(node);
+                if (id.Length == 0 && !pane) continue;
+                if (pane && containers.TryGetValue(id, out LayoutElement? existing) && !LayoutContainerIdentity.IsPane(existing))
+                    containers[id] = node;
+                else containers.TryAdd(id, node);
+            }
         }
-        foreach (LayoutAnchorGroup group in anchorGroups)
+        foreach (LayoutElement element in returnLocations)
         {
-            if (group.PreviousContainerId is not { Length: > 0 } id) continue;
+            string? id = element is LayoutContent content ? content.PreviousContainerId : ((LayoutAnchorGroup)element).PreviousContainerId;
+            if (id is null) continue;
             if (!containers.TryGetValue(id, out LayoutElement? previous) || previous is not ILayoutContainer parent)
                 throw new ArgumentException($"Unable to find a pane with id '{id}'.");
-            group.PreviousContainer = parent;
-            foreach (LayoutAnchorable tool in group.Children)
+            if (element is LayoutContent item)
             {
-                tool.PreviousContainer = parent;
-                tool.DockModel.OriginalOwner = previous.DockModel;
+                item.PreviousContainer = parent;
+                // Dock uses OriginalOwner to determine the location of hidden
+                // and pinned items. Visible contents may remember a floating
+                // return pane without currently belonging to that window.
+                if (item.Parent is LayoutRoot or LayoutAnchorGroup)
+                    item.DockModel.OriginalOwner = (item.PreviousContainer as LayoutElement)?.DockModel;
             }
-            if (previous.DockModel is Dock.Model.Avalonia.Controls.ToolDock pane && group.Parent is LayoutAnchorSide side)
-                pane.Alignment = side.DockAlignment;
+            else ((LayoutAnchorGroup)element).PreviousContainer = parent;
         }
         foreach (LayoutContent content in contents)
         {
-            if (content.InitialContainerId is { Length: > 0 } initialId)
+            if (content.InitialContainerId is { } initialId)
             {
                 if (!containers.TryGetValue(initialId, out LayoutElement? initial) || initial is not ILayoutContainer initialParent)
                     throw new ArgumentException($"Unable to find a pane with id '{initialId}'.");
                 content.InitialContainer = initialParent;
             }
-            if (content.PreviousContainerId is { Length: > 0 } id)
+        }
+        foreach (LayoutElement element in returnLocations)
+        {
+            if (element is not LayoutAnchorGroup { PreviousContainer: LayoutElement previous } group) continue;
+            foreach (LayoutAnchorable tool in group.Children)
             {
-                if (!containers.TryGetValue(id, out LayoutElement? previous) || previous is not ILayoutContainer parent)
-                    throw new ArgumentException($"Unable to find a pane with id '{id}'.");
-                content.PreviousContainer = parent;
-                // Dock uses OriginalOwner to determine the location of hidden
-                // and pinned items. Visible contents may remember a floating
-                // return pane without currently belonging to that window.
-                if (content.Parent is LayoutRoot or LayoutAnchorGroup)
-                    content.DockModel.OriginalOwner = previous.DockModel;
+                // Older saved auto-hide groups may omit each tool's return
+                // reference. Project their shared destination into native Dock.
+                if (tool.PreviousContainerId is not null) continue;
+                tool.PreviousContainer = (ILayoutContainer)previous;
+                tool.DockModel.OriginalOwner = (tool.PreviousContainer as LayoutElement)?.DockModel;
             }
+            if (previous.DockModel is Dock.Model.Avalonia.Controls.ToolDock pane && group.Parent is LayoutAnchorSide side)
+                pane.Alignment = side.DockAlignment;
         }
 
         // Each phase snapshots unresolved content before invoking application code.

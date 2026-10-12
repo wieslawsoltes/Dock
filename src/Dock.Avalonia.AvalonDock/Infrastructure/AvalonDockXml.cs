@@ -47,15 +47,21 @@ internal static class AvalonDockXml
     private static void EnsureContainerIds(LayoutElement scope)
     {
         HashSet<string> containerIds = new(StringComparer.Ordinal);
-        EnsureId(scope);
-        foreach (ILayoutElement child in scope.Descendents()) EnsureId(child);
+        // Preserve pane IDs before assigning identifiers to native group
+        // extensions, matching the precedence used while restoring references.
+        if (LayoutContainerIdentity.IsPane(scope)) EnsureId(scope);
+        foreach (ILayoutElement child in scope.Descendents())
+            if (LayoutContainerIdentity.IsPane(child)) EnsureId(child);
+        if (!LayoutContainerIdentity.IsPane(scope)) EnsureId(scope);
+        foreach (ILayoutElement child in scope.Descendents())
+            if (!LayoutContainerIdentity.IsPane(child)) EnsureId(child);
 
         void EnsureId(ILayoutElement child)
         {
             if (child is not LayoutElement element || child is not (ILayoutPositionableGroup or LayoutAnchorGroup)) return;
             // Native pane copies may share an Id. References in AvalonDock XML
             // must identify one return container, including across repeat saves.
-            if (!string.IsNullOrEmpty(element.DockModel.Id) && containerIds.Add(element.DockModel.Id)) return;
+            if (element.XmlId is { } current && containerIds.Add(current)) return;
             string id;
             do { id = Guid.NewGuid().ToString("N"); } while (!containerIds.Add(id));
             element.DockModel.Id = id;
@@ -131,7 +137,7 @@ internal static class AvalonDockXml
         if (element is ILayoutOrientableGroup orientable) WriteAttribute(writer, "Orientation", orientable.Orientation.ToString());
         if (element is ILayoutPositionableGroup position)
         {
-            if (string.IsNullOrEmpty(element.DockModel.Id)) element.DockModel.Id = Guid.NewGuid().ToString("N");
+            if (element.XmlId is null) element.DockModel.Id = Guid.NewGuid().ToString("N");
             WriteAttribute(writer, "Id", element.DockModel.Id);
             WriteAttribute(writer, "DockWidth", FormatLength(position.DockWidth));
             WriteAttribute(writer, "DockHeight", FormatLength(position.DockHeight));
@@ -189,7 +195,7 @@ internal static class AvalonDockXml
         if (element is LayoutAnchorablePane tools) WriteAttribute(writer, "Name", tools.Name);
         if (element is LayoutAnchorGroup anchorGroup)
         {
-            WriteAttribute(writer, "Id", anchorGroup.DockModel.Id);
+            WriteAttribute(writer, "Id", anchorGroup.XmlId);
             WriteAttribute(writer, "PreviousContainerId", (anchorGroup.PreviousContainer as LayoutElement)?.DockModel.Id);
         }
         if (element is ILayoutContainer container)
@@ -241,7 +247,11 @@ internal static class AvalonDockXml
         }
         if (element is ILayoutPositionableGroup position)
         {
-            if (xml.Attribute("Id") is { } id) element.DockModel.Id = id.Value;
+            if (xml.Attribute("Id") is { } id)
+            {
+                element.HasExplicitXmlId = true;
+                element.DockModel.Id = id.Value;
+            }
             position.RestoreDockLengths(
                 xml.Attribute("DockWidth") is { } width ? GridLength.Parse(width.Value) : position.DockWidth,
                 xml.Attribute("DockHeight") is { } height ? GridLength.Parse(height.Value) : position.DockHeight);
@@ -293,7 +303,11 @@ internal static class AvalonDockXml
         if (element is LayoutAnchorablePane tools && xml.Attribute("Name") is { } name) tools.Name = name.Value;
         if (element is LayoutAnchorGroup anchorGroup)
         {
-            if (xml.Attribute("Id") is { } groupId) anchorGroup.DockModel.Id = groupId.Value;
+            if (xml.Attribute("Id") is { } groupId)
+            {
+                anchorGroup.HasExplicitXmlId = true;
+                anchorGroup.DockModel.Id = groupId.Value;
+            }
             if (xml.Attribute("PreviousContainerId") is { } previousId) anchorGroup.PreviousContainerId = previousId.Value;
         }
         foreach (XElement child in xml.Elements())

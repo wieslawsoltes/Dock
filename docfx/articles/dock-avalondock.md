@@ -12,6 +12,14 @@ The CLR namespaces are `AvalonDock.*`; update using directives and any explicit
 CLR namespace declarations when porting source from the WPF library. The
 assembly/package name remains `Dock.Avalonia.AvalonDock`.
 
+Layout content starts with zero floating dimensions, letting Dock choose the
+native window size unless an application supplies one. Document-list sorting
+uses comparable application content when available and falls back to titles.
+XML return destinations preserve explicit empty pane identifiers and are resolved
+before content-recovery callbacks; an unset identifier is distinct from an empty
+one. Return-container assignments notify before initializing an unset pane ID,
+while identifier metadata itself does not raise property notifications.
+
 ## Reference the package and theme
 
 The project builds NuGet packages for .NET 8 and .NET 10. To try the package from

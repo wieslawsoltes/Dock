@@ -30,6 +30,11 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
 
     internal LayoutModelContext Context { get; }
 
+    // Dock's unset Id is empty; WPF's serialized pane Id starts at null.
+    // Preserve an explicitly read empty attribute without changing native Ids.
+    internal bool HasExplicitXmlId { get; set; }
+    internal string? XmlId => HasExplicitXmlId || !string.IsNullOrEmpty(DockModel.Id) ? DockModel.Id : null;
+
     /// <summary>Gets the live Dock model used to render and operate this element.</summary>
     public DockableBase DockModel { get; }
 
@@ -178,6 +183,32 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         field = value;
         RaisePropertyChanged(name);
         return true;
+    }
+
+    internal bool SetField(ref double field, double value, [CallerMemberName] string? name = null)
+    {
+        if (field == value) return false;
+        RaisePropertyChanging(name);
+        field = value;
+        RaisePropertyChanged(name);
+        return true;
+    }
+
+    internal bool SetFieldChanged<T>(ref T field, T value, [CallerMemberName] string? name = null)
+    {
+        VerifyAccess();
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        RaisePropertyChanged(name);
+        return true;
+    }
+
+    internal void SetReferenceChanged<T>(ref T? field, T? value, [CallerMemberName] string? name = null) where T : class
+    {
+        VerifyAccess();
+        if (ReferenceEquals(field, value)) return;
+        field = value;
+        RaisePropertyChanged(name);
     }
 
     internal virtual void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

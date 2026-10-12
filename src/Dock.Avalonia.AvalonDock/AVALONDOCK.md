@@ -73,6 +73,15 @@ observe replacement native policies and last-child close restrictions.
 creating a new window still requires the native float capability. The call
 selects and activates the content in either case.
 
+Floating widths and heights initially use zero; Dock supplies a valid window
+size when content is floated without explicit dimensions. Document-list sorting
+uses the content object's `IComparable` implementation when available, otherwise
+the layout title. Set `PreviousContainer` to retain a return destination; its
+change notification runs before an unset pane identifier is initialized. The
+separate `PreviousContainerId` property is quiet serialization metadata. XML
+restoration accepts explicit empty pane identifiers and resolves previous and
+initial destinations before invoking application content callbacks.
+
 `manager.Layout.ActiveContent` identifies the active layout node across docked
 and floating windows. `manager.ActiveContent` retains explicit assignments;
 layout-driven activation publishes the layout node. Read

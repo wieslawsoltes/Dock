@@ -50,7 +50,7 @@ public class LayoutItemTests
         DockingManager manager = CreateManager(document);
         LayoutDocumentItem item = Assert.IsType<LayoutDocumentItem>(manager.GetLayoutItemFromModel(document));
         Assert.Equal("Before", item.Title);
-        Assert.Equal("before", item.ContentId);
+        Assert.Null(item.ContentId);
         Assert.Equal("Details", item.Description);
         Assert.Same(content, item.Model);
         Assert.Same(item, item.DataContext);
@@ -378,7 +378,8 @@ public class LayoutItemTests
         Assert.NotSame(old, current);
         Assert.Null(old.LayoutElement);
         Assert.Same(content, current.Model);
-        Assert.Equal("document", current.ContentId);
+        Assert.Null(current.ContentId);
+        Assert.Equal("document", restored.ContentId);
     }
 
     [AvaloniaFact]

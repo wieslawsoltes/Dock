@@ -4,6 +4,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Metadata;
 using Dock.Model.Avalonia.Controls;
@@ -42,7 +43,9 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private int _previousContainerIndex = -1;
     private DateTime? _lastActivationTimeStamp;
     private bool _synchronizingActive;
+    private int _writingActive;
     private bool _isLastFocusedDocument;
+    private int _contentRevision;
 
     internal LayoutContent(DockableBase model, LayoutModelContext? context = null) : base(model, context) => DockingHistory = new(this);
     internal LayoutDockingHistory DockingHistory { get; }
@@ -51,7 +54,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// <summary>Gets or sets the tab title.</summary>
     public string Title { get => DockModel.Title; set { RaisePropertyChanging(); DockModel.Title = value; } }
     /// <summary>Gets or sets the identifier used for persistence and active-content lookup; initially null.</summary>
-    public string? ContentId { get => DockModel.Id; set { RaisePropertyChanging(); DockModel.Id = value!; } }
+    /// <remarks>A named control assigned to <see cref="Content"/> supplies an identifier when this value is null.</remarks>
+    public string? ContentId { get => DockModel.Id; set => DockModel.Id = value!; }
     /// <summary>Gets or sets the document or tool content.</summary>
     [Content]
     public object? Content
@@ -59,9 +63,15 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         get => DockModel is Document document ? document.Content : ((Tool)DockModel).Content;
         set
         {
+            if (ReferenceEquals(Content, value)) return;
             RaisePropertyChanging();
+            object? previous = Content;
+            int revision = _contentRevision;
             if (DockModel is Document document) document.Content = value;
             else ((Tool)DockModel).Content = value;
+            // Avalonia stores an equal replacement without raising its styled
+            // property notification. AvalonDock's Content contract uses identity.
+            if (revision == _contentRevision) NotifyContentChanged(previous, Content);
         }
     }
     /// <summary>Gets or sets whether this item is selected in its pane.</summary>
@@ -80,6 +90,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         }
     }
     /// <summary>Gets or sets whether this item is active.</summary>
+    /// <remarks>Clearing the flag retains the root's active-content reference and pane selection.</remarks>
     public bool IsActive
     {
         get => State.IsActive;
@@ -88,7 +99,25 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             VerifyAccess();
             if (State.IsActive == value) return;
             RaisePropertyChanging();
-            State.IsActive = value;
+            bool previous = State.IsActive;
+            _writingActive++;
+            try
+            {
+                if (DockModel.Factory is LayoutFactory factory) factory.SetContentActiveFlag(DockModel, value);
+                else State.IsActive = value;
+            }
+            finally { _writingActive--; }
+            if (State.IsActive)
+            {
+                if (Root is LayoutRoot root)
+                {
+                    root.ActiveContent = this;
+                    if (State.IsActive) root.Focus.ProjectNativeFocus(this);
+                }
+                if (State.IsActive) IsSelected = true;
+            }
+            OnIsActiveChanged(previous, value);
+            RaisePropertyChanged(nameof(IsActive));
         }
     }
     /// <summary>Gets whether this is the last focused document.</summary>
@@ -208,7 +237,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
 
     /// <summary>Records activation time and raises the active-state event.</summary>
     /// <param name="oldValue">The previous active state.</param>
-    /// <param name="newValue">The new active state.</param>
+    /// <param name="newValue">The requested active state, even if a callback has redirected activation.</param>
     protected virtual void OnIsActiveChanged(bool oldValue, bool newValue)
     {
         if (newValue) LastActivationTimeStamp = DateTime.Now;
@@ -224,9 +253,19 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
 
     internal void NotifyClosing(CancelEventArgs args) => OnClosing(args);
     internal void NotifyClosed() => OnClosed();
+    private void NotifyContentChanged(object? previous, object? current)
+    {
+        _contentRevision++;
+        RaisePropertyChanged(nameof(Content));
+        RaisePropertyChanged(ContentProperty, previous, current);
+        if (ContentId is null && Content is Control { Name: { } name } && !string.IsNullOrWhiteSpace(name))
+            SetCurrentValue(ContentIdProperty, name);
+    }
+
     internal void CompleteActivationNotification(bool previous)
     {
-        if (previous == State.IsActive) return;
+        bool requested = State.IsActive;
+        if (previous == requested) return;
         _synchronizingActive = true;
         try
         {
@@ -237,11 +276,9 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             }
         }
         finally { _synchronizingActive = false; }
-        // Selecting before native focus is assigned can transiently clear
-        // the active flag. Publish the completed public transition once.
-        bool current = State.IsActive;
-        if (previous == current) return;
-        OnIsActiveChanged(previous, current);
+        // Native focus can transiently clear the flag. Preserve the requested
+        // transition while explicit nested assignments publish their own hooks.
+        OnIsActiveChanged(previous, requested);
         RaisePropertyChanged(nameof(IsActive));
     }
     internal void SetLastFocusedDocument(bool value) => SetField(ref _isLastFocusedDocument, value, nameof(IsLastFocusedDocument));
@@ -286,22 +323,26 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             OnIsSelectedChanged((bool)e.OldValue!, (bool)e.NewValue!);
         else if (e.Property == Document.IsActiveProperty || e.Property == Tool.IsActiveProperty)
         {
-            if (_synchronizingActive) return;
+            if (_synchronizingActive || _writingActive != 0) return;
             bool previous = (bool)e.OldValue!;
             if ((Root as LayoutRoot)?.Focus.DeferActivationNotification(this, previous) != true)
                 CompleteActivationNotification(previous);
             return;
         }
-        base.OnModelPropertyChanged(sender, e);
-        if (e.Property == DockableBase.TitleProperty)
-            RaisePropertyChanged(TitleProperty, (string)e.OldValue!, (string)e.NewValue!);
-        else if (e.Property == DockableBase.IdProperty)
+        if (e.Property == DockableBase.IdProperty)
         {
             RaisePropertyChanged(ContentIdProperty, (string?)e.OldValue, (string?)e.NewValue);
             RaisePropertyChanged(nameof(ContentId));
+            return;
         }
-        else if (e.Property == Document.ContentProperty || e.Property == Tool.ContentProperty)
-            RaisePropertyChanged(ContentProperty, e.OldValue, e.NewValue);
+        if (e.Property == Document.ContentProperty || e.Property == Tool.ContentProperty)
+        {
+            NotifyContentChanged(e.OldValue, e.NewValue);
+            return;
+        }
+        base.OnModelPropertyChanged(sender, e);
+        if (e.Property == DockableBase.TitleProperty)
+            RaisePropertyChanged(TitleProperty, (string)e.OldValue!, (string)e.NewValue!);
         else if (e.Property == DockableBase.DockingStateProperty) RaisePropertyChanged(nameof(IsFloating));
     }
 }

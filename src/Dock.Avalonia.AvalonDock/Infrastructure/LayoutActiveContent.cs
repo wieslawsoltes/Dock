@@ -20,6 +20,7 @@ internal sealed class LayoutActiveContent
     private WeakReference<IRootDock>? _nativeRoot;
     private int _revision;
     private int _focusDepth;
+    private int _projectionDepth;
     private List<(LayoutContent Content, bool Previous)>? _pendingActivation;
 
     internal LayoutActiveContent(LayoutRoot root, Action<string> changing, Action<string> changed)
@@ -42,21 +43,42 @@ internal sealed class LayoutActiveContent
     internal void Activate(LayoutContent? content)
     {
         if (ReferenceEquals(Active, content)) return;
+        LayoutContent? previous = Active;
+        IRootDock? previousRoot = Target(_nativeRoot);
+        IRootDock nativeRoot = content is not null
+            ? _root.DockFactory.FindRoot(content.DockModel, static root => root.IsFocusableRoot) ?? (RootDock)_root.DockModel
+            : previousRoot ?? (RootDock)_root.DockModel;
+        _revision++;
+        _changing(nameof(LayoutRoot.ActiveContent));
+        if (previous is not null) previous.IsActive = false;
+        if (content is not null && !ReferenceEquals(previousRoot, nativeRoot) && previous?.DockModel.Owner is IDock { IsActive: true } owner)
+        {
+            owner.IsActive = false;
+            _root.DockFactory.OnDockableDeactivated(previous.DockModel);
+        }
+        SetTarget(ref _active, content);
+        SetTarget(ref _nativeRoot, nativeRoot);
+        if (content is { IsActive: false }) content.IsActive = true;
+        else ProjectNativeFocus(content);
+        _changed(nameof(LayoutRoot.ActiveContent));
+        if (content is null or LayoutDocument || content.Parent is LayoutDocumentPane) SetLastDocument(content);
+    }
+
+    internal void ProjectNativeFocus(LayoutContent? content)
+    {
         IRootDock nativeRoot = content is not null
             ? _root.DockFactory.FindRoot(content.DockModel, static root => root.IsFocusableRoot) ?? (RootDock)_root.DockModel
             : Target(_nativeRoot) ?? (RootDock)_root.DockModel;
-        int revision = _revision;
-        // Direct content activation selects after its root notification. A root
-        // assignment activates an inactive item and selects before publishing.
-        if (content is { IsActive: false }) content.IsSelected = true;
-        if (revision != _revision) return;
-        _root.DockFactory.SetFocusedDockable(nativeRoot, content?.DockModel);
-        if (revision == _revision) Update(content, nativeRoot);
+        if (ReferenceEquals(nativeRoot.FocusedDockable, content?.DockModel) &&
+            (content?.DockModel.Owner is not IDock owner || owner.IsActive)) return;
+        _projectionDepth++;
+        try { _root.DockFactory.SetFocusedDockable(nativeRoot, content?.DockModel); }
+        finally { _projectionDepth--; }
     }
 
     internal void NativeFocusChanged(IRootDock nativeRoot)
     {
-        if (_focusDepth != 0 || (!ReferenceEquals(nativeRoot, _root.DockModel) &&
+        if (_focusDepth != 0 || _projectionDepth != 0 || (!ReferenceEquals(nativeRoot, _root.DockModel) &&
             !ReferenceEquals(nativeRoot.Window?.Owner, _root.DockModel))) return;
         if (nativeRoot.FocusedDockable is Document or Tool)
             ContentActivated((LayoutContent)_root.Context.Get(nativeRoot.FocusedDockable));

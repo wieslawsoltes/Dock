@@ -105,3 +105,20 @@ replacement, clearing a bound value, and style removal after a current override.
 and compares their shared preceding stages with WPF; they are not WPF parity tests.
 The package consumer checks both contracts. These tests use public property APIs
 and compiled Avalonia bindings, with no binding-mode reflection or input adaptation.
+
+Content identifiers and protected activation hooks have separate probes:
+
+```powershell
+dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock.WpfTemplateOracle.dll --content-identifiers wpf-content-identifiers.tsv
+dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock.WpfTemplateOracle.dll --content-activation-hooks wpf-content-activation-hooks.tsv
+```
+
+`Assets/WpfContentIdentifiers.tsv` records 208 observations across 68 scenarios:
+document/tool defaults, named controls, explicit/empty identifiers, repeated and
+equal-content assignments, notification callbacks, binding source updates, and
+container identifier forwarding. `Assets/WpfContentActivationHooks.tsv` records
+176 observations across 88 scenarios, with base calls and suppressed overrides:
+direct/root/manager activation, deactivation, nested transitions, callback
+redirection, repeated assignments and exceptions. Hook arguments record the
+requested transition even when its callbacks change the current state. Unit
+tests and package consumers compile these same probes and compare every row.

@@ -219,19 +219,34 @@ index is a no-op. Tool panes also notify `CanClose`, `CanHide`, and
 
 Derived documents and tools can override `OnIsSelectedChanged(bool oldValue,
 bool newValue)` and `OnIsActiveChanged(bool oldValue, bool newValue)`. The native
-model already holds the new state when the hook runs. The hooks precede the
+model holds the state; reentrant callbacks can change it before an outer hook
+runs. Activation arguments retain the previous and requested values. The hooks precede the
 corresponding `PropertyChanged` notification; their base implementations raise
 `IsSelectedChanged` and `IsActiveChanged`. The active hook's base implementation
 also updates `LastActivationTimeStamp` on activation. Omitting the base call
 suppresses those effects while retaining the underlying state change.
 
-Activation hooks run after pane selection and root active content are synchronized.
-The adapter defers them while the native factory completes a focus operation,
-coalescing temporary state changes during that operation. An override can redirect
-activation to another content item. Throwing from a callback does not roll back
+Ordinary activation hooks run after pane selection and root active content are
+synchronized. Explicit nested assignments publish their hooks immediately, before
+the outer assignment resumes. Native focus operations still coalesce temporary
+native flag changes. Setting `IsActive=false` retains the root's active-content
+reference and selected tab. An override can redirect activation to another content
+item; the outer hook still reports its requested value. Throwing from a callback does not roll back
 completed model changes; pending callbacks release their references and later
 focus operations remain usable. Native floating hosts continue to bind their
 title to the focused native content.
+
+New documents and tools start with a null `ContentId`. When `Content` changes to
+a named control, its name supplies a still-null identifier after content
+notifications finish. Explicit identifiers and empty strings are retained. The
+same content reference produces no notifications or identifier fallback; a
+distinct object that compares equal still produces the content notifications.
+Renaming a control does not change an existing identifier.
+
+`LayoutItem.ContentId` is an independent, initially null container input. Setting
+it forwards the value, including null, to the layout content. Model changes do
+not overwrite it. Applications can bind the property explicitly in their
+container theme when it should track a ViewModel identifier.
 
 `OnClosing(CancelEventArgs)` and `OnClosed()` provide the corresponding close
 overrides. Call their base implementations to raise `Closing` and `Closed`.

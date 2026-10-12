@@ -18,6 +18,7 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
     private IDockable? _selectionTarget;
+    private IDockable? _writingActiveFlag;
     private bool _passivePreview;
     internal IDockWindow? RequestedHostWindow { get; private set; }
     internal event Action? SettingFocus;
@@ -51,12 +52,21 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 
     protected override void OnDockingWindowStatePropertyChanged(IDockable dockable, DockingWindowStateProperty property)
     {
+        if (property == DockingWindowStateProperty.IsActive && ReferenceEquals(dockable, _writingActiveFlag)) return;
         // An auto-hide selection is a preview request. Its public flag is reset
         // by the anchor, without clearing Dock's active preview content or
         // selecting the pinned tool as the root's main layout.
         if (property == DockingWindowStateProperty.IsSelected && IsDockablePinned(dockable)
             && getLayoutElement(dockable) is LayoutAnchorable { IsAutoHidden: true }) return;
         base.OnDockingWindowStatePropertyChanged(dockable, property);
+    }
+
+    internal void SetContentActiveFlag(IDockable model, bool active)
+    {
+        IDockable? previous = _writingActiveFlag;
+        _writingActiveFlag = model;
+        try { ((IDockingWindowState)model).IsActive = active; }
+        finally { _writingActiveFlag = previous; }
     }
 
     internal void PreviewAnchor(IDockable model, bool activate)

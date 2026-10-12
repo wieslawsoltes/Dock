@@ -83,6 +83,21 @@ activate the first empty item. Layout replacement does not republish the manager
 value. `LastFocusedDocument` and its item flags follow WPF notification ordering,
 including history left by reentrant activation.
 
+New documents and tools have a null `ContentId`. Assigning a named control to
+`Content` supplies its name only when the identifier is still null, after content
+notifications finish. Empty and explicit identifiers are preserved. Renaming the
+control or assigning the same content again does not recompute the identifier.
+`LayoutItem.ContentId` is an independent container input, initially null; setting
+it forwards the value, including null, to the model. Bind that property explicitly
+when the container should track an application identifier.
+
+Setting `IsActive=false` retains the root's active-content reference and pane
+selection. Activation hooks receive the previous and requested values even when
+a callback redirects activation or clears the flag. Nested assignments publish
+their own hooks before the outer assignment resumes. The base active hook records
+the activation timestamp for a requested true value; suppressing the base call
+suppresses that timestamp update and the public active-state event.
+
 `ActiveContentProperty` supports styles and defaults to one-way binding. Use
 `Mode=TwoWay` to write activation back to the ViewModel. The adapter stays
 reflection-free: assignments and `ClearValue` retain Avalonia bindings, and style

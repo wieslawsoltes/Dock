@@ -294,6 +294,14 @@ remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
   floating hosts, absent base calls, exception recovery, and retained-root lifetime.
 - Document close cancellation, tool hide/restore, hidden collection, active
   content, and title/content/capability forwarding.
+- Content identifiers and callbacks match 208 WPF observations across 68 document/tool
+  scenarios: null defaults, named-control fallback after notifications, explicit and
+  empty identifiers, content identity, callback redirection and exceptions, bound
+  identifiers, and independent container inputs that forward null without conversion.
+  Native content changes use the same name fallback. Activation hooks match 176
+  observations across 88 scenarios, including requested values after redirection,
+  nested callbacks, suppressed base calls, exceptions, and deactivation that retains
+  root activation and selection. Shared probes run in unit tests and package consumers.
 - `LayoutRoot.ActiveContent` and manager active-content notifications span the
   primary and floating native roots while retaining each root's own focused
   item. Model-only activation also deactivates the preceding pane before its

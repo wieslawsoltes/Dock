@@ -9,6 +9,16 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        if (args is ["--content-activation-hooks", string contentHooksOutput])
+        {
+            AvalonDock.ReferenceProbes.ContentActivationHookProbe.Run(contentHooksOutput);
+            return;
+        }
+        if (args is ["--content-identifiers", string identifiersOutput])
+        {
+            AvalonDock.ReferenceProbes.ContentIdentifierProbe.Run(identifiersOutput);
+            return;
+        }
         if (args is ["--active-content", string activeContentOutput])
         {
             AvalonDock.ReferenceProbes.ActiveContentProbe.Run(activeContentOutput);

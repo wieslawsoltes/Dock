@@ -110,7 +110,8 @@ public abstract class LayoutItem : Control
     }
     /// <summary>Gets or sets the tab title.</summary>
     public string? Title { get => GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
-    /// <summary>Gets or sets the persistence identifier.</summary>
+    /// <summary>Gets or sets the persistence identifier forwarded to the attached layout content.</summary>
+    /// <remarks>The default is null. Model changes do not replace this value; applications can bind it explicitly.</remarks>
     public string? ContentId { get => GetValue(ContentIdProperty); set => SetValue(ContentIdProperty, value); }
     /// <summary>Gets or sets the tab icon.</summary>
     public IImage? IconSource { get => GetValue(IconSourceProperty); set => SetValue(IconSourceProperty, value); }
@@ -262,7 +263,6 @@ public abstract class LayoutItem : Control
     {
         if (LayoutElement is not { } content) return;
         if (propertyName is null or nameof(Title)) SetCurrentValue(TitleProperty, content.Title);
-        if (propertyName is null or nameof(ContentId) or "Id") SetCurrentValue(ContentIdProperty, content.ContentId);
         if (propertyName is null or nameof(IconSource)) SetCurrentValue(IconSourceProperty, content.IconSource);
         if (propertyName is null or nameof(IsSelected)) SetCurrentValue(IsSelectedProperty, content.IsSelected);
         if (propertyName is null or nameof(IsActive)) SetCurrentValue(IsActiveProperty, content.IsActive);
@@ -330,7 +330,7 @@ public abstract class LayoutItem : Control
     /// <summary>Forwards a change to the persistence identifier.</summary>
     protected virtual void OnContentIdChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!_synchronizing && LayoutElement is { } content) content.ContentId = ContentId ?? string.Empty;
+        if (!_synchronizing && LayoutElement is { } content) content.ContentId = ContentId;
     }
     /// <summary>Forwards a change to the tab icon.</summary>
     protected virtual void OnIconSourceChanged(AvaloniaPropertyChangedEventArgs e)

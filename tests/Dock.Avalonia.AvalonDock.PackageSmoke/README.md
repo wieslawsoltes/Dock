@@ -1,5 +1,11 @@
 # NuGet consumer smoke test
 
+Content-state probes compare 68 identifier and 88 activation-hook scenarios with
+the original WPF observations. They cover named-control identifiers, null/empty
+values, equal replacement objects, container inputs, bound identifiers, nested
+activation, callback suppression and exceptions, and retained activation history.
+Both consumer frameworks compile the shared public-operation probes.
+
 The update-strategy probe replaces a strategy during a source batch, verifies
 that the replacement receives the after callbacks, and redirects a hidden tool
 to a different pane and tab index through `Show()` using the packaged models.

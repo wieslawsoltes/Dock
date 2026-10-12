@@ -23,7 +23,7 @@ public class SampleTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Sample_Persistence_Recovers_Identified_Content_And_Skips_Unidentified_Items(bool tool)
+    public void Sample_Persistence_Recovers_Identified_Content_And_Tolerates_Unidentified_Items(bool tool)
     {
         object content = new();
         LayoutDocument identified = new() { ContentId = "editor", Content = content };
@@ -38,9 +38,14 @@ public class SampleTests
             AvalonDockWorkspace service = new(manager, path);
             Assert.Contains("Saved layout", service.Save());
             Assert.Contains("Layout restored", service.Load());
-            LayoutContent restored = Assert.Single(manager.Layout.Descendents().OfType<LayoutContent>());
+            LayoutContent[] restoredItems = manager.Layout.Descendents().OfType<LayoutContent>().ToArray();
+            Assert.Equal(2, restoredItems.Length);
+            LayoutContent restored = Assert.Single(restoredItems, item => item.ContentId == "editor");
             Assert.Equal("editor", restored.ContentId);
             Assert.Same(content, restored.Content);
+            LayoutContent unidentified = Assert.Single(restoredItems, item => item.ContentId is null);
+            Assert.Null(unidentified.Content);
+            Assert.Equal(tool, unidentified is LayoutAnchorable);
         }
         finally
         {

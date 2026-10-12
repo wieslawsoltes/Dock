@@ -1,8 +1,7 @@
 #!/bin/bash
-export IsDocFx=true
-dotnet build -c Release 
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 dotnet tool restore
+dotnet msbuild build/Documentation.proj -m -nologo
 dotnet docfx docfx/docfx.json
-rm -rf src/Dock.Model.ReactiveUI/Generated
-rm -rf src/Dock.Model.ReactiveUI.Services/Generated
-rm -rf src/Dock.Model.ReactiveUI.Services.Avalonia/Generated

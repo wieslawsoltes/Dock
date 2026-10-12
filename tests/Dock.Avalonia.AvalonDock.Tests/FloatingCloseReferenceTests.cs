@@ -52,11 +52,9 @@ public class FloatingCloseReferenceTests
     {
         foreach (bool tool in new[] { false, true })
         foreach (bool close in new[] { false, true })
-        foreach (string route in new[] { "window", "replace", "unload" })
-        {
-            yield return new object[] { tool, close, false, route };
-            if (route == "window") yield return new object[] { tool, close, true, route };
-        }
+        foreach (bool cancel in new[] { false, true })
+        foreach (string route in new[] { "window", "model", "command", "replace", "unload" })
+            yield return new object[] { tool, close, cancel, route };
     }
 
     [AvaloniaTheory]
@@ -98,8 +96,16 @@ public class FloatingCloseReferenceTests
             host.Closed += (_, _) => { closed = true; events.Add("window-closed"); };
             Assert.Equal(Observation(id, "before"), Take("before"));
             if (route == "window") host.Close();
+            else if (route == "model") content.Close();
+            else if (route == "command")
+            {
+                var command = manager.GetLayoutItemFromModel(content)!.CloseCommand!;
+                if (command.CanExecute(null)) command.Execute(null);
+                else events.Add("command-disabled");
+            }
             else if (route == "replace") manager.Layout = new LayoutRoot();
             else owner.Content = null;
+            Assert.Equal(Observation(id, "synchronous"), Take("synchronous"));
             Pump();
             Assert.Equal(Observation(id, "dispatched"), Take("dispatched"));
         }

@@ -127,6 +127,7 @@ public class DocumentTitleTests
     public void Caption_Close_Uses_Current_Command_And_Honors_Enablement_And_Cancellation()
     {
         using Workspace workspace = new();
+        LayoutDocumentFloatingWindow floating = Assert.IsType<LayoutDocumentFloatingWindow>(workspace.Document.Parent);
         LayoutItem item = workspace.Manager.GetLayoutItemFromModel(workspace.Document)!;
         ICommand original = item.CloseCommand!;
         int calls = 0;
@@ -156,7 +157,8 @@ public class DocumentTitleTests
         cancel = false;
         Click(button);
         Assert.False(workspace.Host.IsVisible);
-        Assert.Null(workspace.Document.Parent);
+        Assert.Same(floating, workspace.Document.Parent);
+        Assert.Null(workspace.Document.Root);
     }
 
     [AvaloniaFact]

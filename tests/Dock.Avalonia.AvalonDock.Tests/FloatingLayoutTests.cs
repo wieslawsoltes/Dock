@@ -59,7 +59,8 @@ public class FloatingLayoutTests
         window.PropertyChanged += (_, args) => properties.Add(args.PropertyName);
 
         window.ReplaceChild(first, second);
-        Assert.Null(first.Parent);
+        Assert.Same(window, first.Parent);
+        Assert.DoesNotContain(first, window.Children);
         Assert.Same(window, second.Parent);
         Assert.Equal(1, changed);
         Assert.Contains(nameof(LayoutDocumentFloatingWindow.RootDocument), properties);

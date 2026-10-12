@@ -260,11 +260,13 @@ public class LayoutOperationContractTests
         LayoutFloatingWindow first = content.FindParent<LayoutFloatingWindow>()!;
         content.Float();
         LayoutFloatingWindow second = content.FindParent<LayoutFloatingWindow>()!;
+        Dispatcher.UIThread.RunJobs();
 
         Assert.NotSame(first, second);
         Assert.Same(dockedPane, content.PreviousContainer);
         Assert.Same(second, Assert.Single(workspace.Manager.Layout.FloatingWindows));
         content.Dock();
+        Dispatcher.UIThread.RunJobs();
         Assert.Same(dockedPane, content.Parent);
         if (tools)
         {

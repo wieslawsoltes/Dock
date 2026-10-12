@@ -19,6 +19,7 @@ internal sealed class LayoutFloatingWindowControls
     private LayoutRoot? _layout;
     private bool _refreshing;
     private bool _pending;
+    private bool _observing = true;
 
     internal LayoutFloatingWindowControls(DockingManager manager)
     {
@@ -31,12 +32,32 @@ internal sealed class LayoutFloatingWindowControls
     internal void SetLayout(LayoutRoot layout)
     {
         if (ReferenceEquals(_layout, layout)) return;
+        _observing = false;
         if (_layout is not null) _layout.FloatingWindows.CollectionChanged -= ModelsChanged;
         foreach (DockWindow window in _windows) window.PropertyChanged -= HostChanged;
         _windows.Clear();
+        Clear();
+        _observing = true;
         _layout = layout;
         layout.FloatingWindows.CollectionChanged += ModelsChanged;
         Refresh();
+    }
+
+    internal void Suspend()
+    {
+        _observing = false;
+        Clear();
+    }
+
+    internal void Resume()
+    {
+        _observing = true;
+        Refresh();
+    }
+
+    private void Clear()
+    {
+        foreach (LayoutFloatingWindowControl host in new List<LayoutFloatingWindowControl>(_items)) Remove(host);
     }
 
     internal void Remove(LayoutFloatingWindowControl host)
@@ -70,7 +91,7 @@ internal sealed class LayoutFloatingWindowControls
 
     private void Synchronize()
     {
-        if (_layout is null) return;
+        if (_layout is null || !_observing) return;
         List<DockWindow> current = new(_layout.FloatingWindows.Count);
         List<LayoutFloatingWindowControl> hosts = new(current.Capacity);
         foreach (LayoutFloatingWindow model in _layout.FloatingWindows)
@@ -90,12 +111,8 @@ internal sealed class LayoutFloatingWindowControls
             _windows.Add(window);
             window.PropertyChanged += HostChanged;
         }
-        for (int i = _items.Count - 1; i >= 0; i--)
-        {
-            if (hosts.Contains(_items[i])) continue;
-            Remove(_items[i]);
-            if (_pending) return;
-        }
+        // Registration follows the host lifecycle. Removing a tool model can
+        // precede its deferred host close and must not remove this public entry.
         foreach (LayoutFloatingWindowControl host in hosts)
         {
             if (_items.Contains(host)) continue;

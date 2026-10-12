@@ -41,14 +41,14 @@ dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock
 168 observations: 48 protected-hook combinations and before/synchronous/dispatched
 states for 40 document/tool scenarios. These distinguish `Window.Close()`, model
 closure, item commands, layout replacement, and view unload, including cancellation.
-`FloatingCloseReferenceTests` compares all 48 hook results and both the initial and
-dispatched state of 16 host-close/successful-detachment scenarios (80 recorded rows).
+`FloatingCloseReferenceTests` compares all 48 hook results and all three states of
+all 40 host scenarios (168 recorded rows, 88 test cases).
 Avalonia's closing arguments have an internal constructor, so the hook comparison
 enters through `Window.Close()` and holds the host open after recording the result.
 
-The remaining rows preserve evidence for further lifecycle work. In particular,
-upstream defers internal closure to its dispatcher, a canceled document close can
-retain its original root after `Closed`, and tool closure can leave a closed host
-in the manager's collection. The adapter's current synchronous cleanup and retained
-registration on canceled removal are tested separately; they are not claimed as
-equivalent to those observations. Do not delete reference rows to narrow that scope.
+The comparison includes deferred internal closure, retained document roots after
+content `Closed`, closed tool hosts remaining in the manager's public collection,
+and canceled unloads clearing that collection. `DeferredFloatingCloseTests` also
+checks native host/factory cleanup, explicit retries, reattachment, replacement
+hosts, and document adoption. These fixtures cover the recorded scenarios;
+remaining platform and floating-window behavior still require a broader audit.

@@ -1884,17 +1884,16 @@ bypasses native content-close commands, releases the old host, and allows a new
 host when the preserved layout is presented again. Ordinary Dock factories keep
 their existing behavior.
 
-Native `Closing` and factory `WindowClosing` vetoes also preserve hosts during
-internal cleanup. The host keeps its native model link, tracking, and manager
-registrations. Removing or replacing a floating-model collection entry leaves
-the original entry if closing is canceled. Transferring that entry to another
+Native `Closing` and factory `WindowClosing` vetoes preserve the native model link
+and tracking. Public registration follows the deferred lifecycle below. Explicitly
+removing or replacing an attached document or nonempty tool model leaves the
+original collection entry if closing is canceled. Transferring that entry to another
 manager throws `InvalidOperationException` when its current host vetoes removal;
 the original manager retains ownership. Retry after the veto is lifted.
 
-Content already closed or docked stays in its resulting state. An empty floating
-window can therefore remain until closing is allowed. `Layout.CollectGarbage()`
-retries that cleanup and returns without looping when cancellation persists.
-Once the host closes, the model and control collections release it once.
+Content already closed or docked stays in its resulting state. Internal closure
+is queued once, and `Layout.CollectGarbage()` does not retry a canceled request.
+Call the retained host's `Close()` after lifting the veto to retry closure.
 
 Derived floating controls can inspect the protected `CloseInitiatedByUser`
 property. It starts true and becomes false when internal model cleanup, layout
@@ -1948,13 +1947,25 @@ when `CanResize` is false or the host is maximized/fullscreen. Zero removes the
 adapter's area for that edge; platform-owned system decorations are independent.
 If you replace the floating window template, include your own resize hit areas.
 
-The WPF reference probe records 168 floating-close observations. Regression tests
-compare all 48 protected-hook cases and initial/final states for 16 actual-host
-scenarios. Internal dispatcher timing and canceled model/manager cleanup remain
-open: WPF can retain a document root after `Closed` or leave a closed tool host in
-its manager collection. Dock currently performs cleanup synchronously and keeps
-canceled cleanup hosts registered. These differences and remaining platform hooks
-are tracked in the compatibility checklist.
+Regression tests compare all 168 recorded WPF floating-close observations:
+48 protected-hook cases and before/synchronous/dispatched states for 40 host
+scenarios. The public lifecycle deliberately includes these WPF behaviors:
+
+| Operation | Before the queued close | After the queued close |
+| --- | --- | --- |
+| Close document content | Content `Closed` has fired; the document still has its floating parent and original root | Successful host closure detaches the floating model; cancellation preserves its root |
+| Close the last tool content | Empty tool model detaches and its host hides | Native tracking is released on success; the host remains in the manager's public collection |
+| Replace `Layout` | Old hosts leave the public manager collection immediately | Successful closure detaches old floating models; cancellation preserves them |
+| Unload the view | Unload processing and host closure are deferred | Public host registrations clear even if closing is canceled; models remain for reattachment |
+
+A closed document retains its public floating parent until another pane adopts
+it. The public and native collection APIs both update that parent on adoption.
+Reattachment creates hosts for preserved models, or registers surviving canceled
+hosts again. A host retained in the public `FloatingWindows` collection may already
+be closed; native tracking and command subscriptions are released on closure.
+Additional regression tests cover explicit retries, native cleanup, fast
+reattachment, and replacement hosts. Remaining platform hooks and behavior outside
+these recorded scenarios stay open in the compatibility checklist.
 
 ## Inspect floating docking overlays
 

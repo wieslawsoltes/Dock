@@ -6,6 +6,7 @@ using Avalonia.Collections;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 using AvalonDock.Layout;
+using AvalonDock.Controls;
 
 namespace AvalonDock.Infrastructure;
 
@@ -63,6 +64,15 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     protected override void RemoveItem(int index)
     {
         LayoutFloatingWindow item = this[index];
+        if (item is LayoutAnchorableFloatingWindow { IsValid: false } &&
+            item.DockWindow.Host is LayoutFloatingWindowControl { HasClosed: false } host)
+        {
+            host.RequestCloseFromLayout();
+            // The public tool model detaches immediately. Native host and
+            // factory ownership survive until the queued close completes.
+            _source.Remove(item.DockWindow);
+            return;
+        }
         if (item.CloseHost()) _owner.DockFactory.RemoveWindow(item.DockWindow);
     }
     protected override void SetItem(int index, LayoutFloatingWindow item)

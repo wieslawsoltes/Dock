@@ -69,9 +69,9 @@ The remaining API inventory and behavior work is still open. Framework-specific
 event arguments, logical trees, Win32 hooks, general resource-URI loading, custom
 XML type reconstruction, and public compatibility callbacks belong to the
 Avalonia/framework or facade boundary. A declaration-only mismatch is not evidence
-of a missing native docking feature. Deferred floating cleanup requires further
-behavioral work, especially removing public model/host registrations independently
-of a canceled host close. Any additional native capability required by that work
+of a missing native docking feature. Deferred floating cleanup uses the existing
+virtual factory and host contracts; its public registration timing belongs to the
+facade. Any additional native capability required by the remaining work
 must follow the same separate-PR, merge-to-`master`, then reintegrate workflow.
 
 
@@ -748,11 +748,18 @@ must follow the same separate-PR, merge-to-`master`, then reintegrate workflow.
   unload preserves them. Dock's optional `IDockWindowClosePolicy` skips native
   content cleanup and releases the host for later presentation. Native model and
   Headless tests cover cancellation, preserved ownership, and replacement hosts.
-  The WPF probe records 168 observations; regression tests compare 48 hook cases
-  and initial/dispatched states for 16 host scenarios (80 recorded rows).
-- 1735 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+  The WPF probe records 168 observations; regression tests compare all 48 hook
+  cases and before/synchronous/dispatched states for all 40 host scenarios.
+  Internal closure is queued once. Documents retain their public floating parent
+  until adoption, and their original root until successful host cleanup. Empty
+  tool models detach before the queued close, leaving the public host entry even
+  after closure; native tracking and factory ownership are released. Unload clears
+  public host registration even if closing is canceled, and reattachment restores
+  a surviving host. Additional tests cover retries, old queued hosts, replacement
+  hosts, native registration cleanup, and public/native document adoption.
+- 1776 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1753 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1794 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -770,13 +777,8 @@ must follow the same separate-PR, merge-to-`master`, then reintegrate workflow.
   before overwriting a saved file.
 - Remaining manager APIs: templates/selectors, styles, general theme URI loading,
   and the control adapter surface.
-  Floating controls still need internal dispatcher timing and canceled model/
-  manager cleanup parity. WPF can retain a document root after content `Closed`,
-  retain a closed tool host in its manager collection, or remove a canceled unload
-  host from that collection. The adapter currently uses synchronous cleanup and
-  retains canceled cleanup registrations. All reference observations are retained.
-  Other open work includes
-  remaining protected/platform hooks, and broader desktop input/focus validation.
+  Floating controls still need the broader protected/platform hook audit and
+  desktop input/focus validation beyond the recorded close lifecycle scenarios.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy
   tests; they do not establish full platform or floating-window parity.
 - All upstream interfaces, extension methods, protected extensibility points,

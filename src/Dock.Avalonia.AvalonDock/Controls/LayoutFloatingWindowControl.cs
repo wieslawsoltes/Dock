@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using AvalonDock.Layout;
 using AvalonDock.Infrastructure;
 using AvalonDock.Themes;
@@ -36,6 +37,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     private bool _internalCloseRequested;
     private bool _preserveCloseOrigin;
     private bool _messageHookAttached;
+    private readonly LayoutFloatingWindow? _floatingModel;
 
     static LayoutFloatingWindowControl()
     {
@@ -52,6 +54,8 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     protected LayoutFloatingWindowControl(ILayoutElement model, bool isContentImmutable)
     {
         ArgumentNullException.ThrowIfNull(model);
+        _floatingModel = model as LayoutFloatingWindow;
+        if (_floatingModel is not null) _floatingModel.PropertyChanged += FloatingModelChanged;
         IsContentImmutable = isContentImmutable;
         Classes.Add("avalondock");
         if (model is LayoutDocumentFloatingWindow document)
@@ -99,8 +103,28 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         bool previous = _preserveCloseOrigin;
         _preserveCloseOrigin = !internalClose;
-        try { Window?.Exit(); }
+        try
+        {
+            if (Window is { } window && ReferenceEquals(window.Host, this)) window.Exit();
+            else base.Exit();
+        }
         finally { _preserveCloseOrigin = previous; }
+    }
+
+    internal void RequestCloseFromLayout(bool internalClose = true)
+    {
+        if (HasClosed || (internalClose && _internalCloseRequested)) return;
+        if (internalClose) _internalCloseRequested = true;
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (!HasClosed) ExitFromLayout(internalClose);
+        }, DispatcherPriority.Send);
+    }
+
+    private void FloatingModelChanged(object? sender, PropertyChangedEventArgs args)
+    {
+        if (args.PropertyName == nameof(LayoutFloatingWindow.IsValid) && _floatingModel is { IsValid: false })
+            RequestCloseFromLayout();
     }
 
     internal void HideForLayout()
@@ -286,6 +310,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         ILayoutRoot? root = Model.Root;
         HasClosed = true;
+        if (_floatingModel is not null) _floatingModel.PropertyChanged -= FloatingModelChanged;
         ((INotifyCollectionChanged)Classes).CollectionChanged -= NativeDragChanged;
         try
         {
@@ -302,8 +327,14 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
             try { base.OnClosed(e); }
             finally
             {
-                if (_internalCloseRequested && Model is LayoutFloatingWindow model && ReferenceEquals(model.Root, root))
-                    root?.FloatingWindows.Remove(model);
+                if (_internalCloseRequested && Model is LayoutFloatingWindow model && ReferenceEquals(model.Root, root) &&
+                    (model.DockWindow.Host is null || ReferenceEquals(model.DockWindow.Host, this)))
+                {
+                    if (root is not null) root.FloatingWindows.Remove(model);
+                    else if (model.DockWindow.Host is null && model.DockWindow.Owner is IRootDock owner &&
+                        owner.Windows?.Contains(model.DockWindow) != true)
+                        model.DockWindow.Factory?.RemoveWindow(model.DockWindow);
+                }
                 root?.CollectGarbage();
             }
         }

@@ -37,6 +37,7 @@ public class FloatingCleanupCancellationTests
         else if (operation == 2) workspace.Manager.Layout.FloatingWindows.Remove(model);
         else if (operation == 3) workspace.Manager.Layout.FloatingWindows.Clear();
         else workspace.Manager.Layout.FloatingWindows[0] = replacement;
+        Dispatcher.UIThread.RunJobs();
 
         Assert.True(host.IsVisible);
         Assert.True(host.IsTracked);
@@ -52,12 +53,12 @@ public class FloatingCleanupCancellationTests
         Assert.Null(replacement.Parent);
         Assert.Equal(0, closed);
         Assert.Equal(0, removed);
-        // Empty floating models can remain while their native close is vetoed.
-        // Collection must return, and subsequent collection can retry later.
+        // Collection does not enqueue another close after a canceled internal
+        // request. An explicit host or collection removal can retry it.
         workspace.Manager.Layout.CollectGarbage();
         Assert.Same(model, Assert.Single(workspace.Manager.Layout.FloatingWindows));
         workspace.CancelClose = false;
-        if (operation < 2) workspace.Manager.Layout.CollectGarbage();
+        if (operation < 2) host.Close();
         else workspace.Manager.Layout.FloatingWindows.Remove(model);
         Assert.False(host.IsVisible);
         Assert.True(((IHostWindowCloseState)host).IsClosed);

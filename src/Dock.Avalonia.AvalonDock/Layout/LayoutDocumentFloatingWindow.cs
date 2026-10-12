@@ -49,7 +49,6 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
             {
                 if (_document is { } previous)
                 {
-                    previous.SetProjectedParent(null);
                     _pane.VisibleDockables?.Remove(previous.DockModel);
                     if (ReferenceEquals(previous.DockModel.Owner, _pane)) previous.DockModel.Owner = null;
                 }
@@ -85,6 +84,8 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
     /// <summary>Occurs when the root document changes.</summary>
     public event EventHandler? RootDocumentChanged;
 
+    internal bool OwnsNativeDocument(IDockable owner) => ReferenceEquals(owner, _pane);
+
     /// <inheritdoc/>
     public override void ReadXml(XmlReader reader)
     {
@@ -112,7 +113,8 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
             foreach (IDockable model in children) if (model is Document) { next = (LayoutDocument)Context.Get(model); break; }
         if (ReferenceEquals(_document, next)) return;
         _document?.DockingHistory.CaptureRemoval(this, -1);
-        _document?.SetProjectedParent(null);
+        // The public document retains its floating parent until another parent
+        // adopts it. Closing the host subsequently detaches that floating model.
         _document = next;
         next?.SetProjectedParent(this);
         RefreshBounds();

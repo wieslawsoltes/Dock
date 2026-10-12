@@ -914,25 +914,34 @@ For nonclosable tools, `CanHide`/`DoHide` run before the canceled window `Closin
 event; cancel the content's `Hiding` event to prevent hiding. A window subscriber
 can change the cancellation result before the factory veto runs.
 
-Successful layout replacement detaches the old floating models without content
-closure. View unload preserves them, and reattachment creates fresh hosts.
+Layout replacement queues host closure and immediately clears the manager's old
+host list. A successful close detaches the old floating model without content
+closure; cancellation leaves it attached to its original root. View unload queues
+closure while preserving models and clears the public host list even if closure
+is canceled. Reattachment creates fresh hosts or registers surviving hosts again.
 Dock's optional `IDockWindowClosePolicy` separates host closure from native layout
 cleanup for compatible hosts; ordinary Dock factories keep their existing behavior.
 Closed hosts release command subscriptions without disposing application commands.
-The WPF reference probe records 168 close observations. Tests compare 48 protected
-hook cases and initial/final states for 16 host scenarios. Internal dispatcher
-timing and canceled cleanup still differ: WPF can retain a document root after
-`Closed` or retain a closed tool host in its manager collection. The adapter keeps
-synchronous cleanup and registrations for canceled cleanup hosts. Remaining
-floating-control/platform behavior stays open.
+All 168 recorded WPF close observations are compared: 48 protected-hook cases and
+before/synchronous/dispatched states for 40 document/tool scenarios. Closing
+content raises its events before the deferred host close. A document retains its
+public floating parent and original root through `Closed`; its root becomes null
+when the host closes successfully. Adding that document to another pane updates
+its public parent and native owner. Empty tool models detach immediately, while
+their host stays in the manager's public `FloatingWindows` collection even after
+closure, as in WPF. The closed host releases native tracking and command
+subscriptions. The public collection therefore does not imply that every host
+is still open.
 
 Canceling native window closing or the factory's `WindowClosing` event keeps a
-cleanup request's host tracked, registered, and linked to its floating model.
-Collection removal or replacement leaves the original entry when closing is
+host alive and natively tracked. Its public registration follows the operation
+described above. Explicit removal or replacement of an attached document or
+nonempty tool model leaves the original collection entry when closing is
 canceled; a transfer to another manager throws `InvalidOperationException`
 instead of adopting a still-live host. Retry after the veto is lifted. If content
-has already closed or docked, that content operation stays applied, and
-`Layout.CollectGarbage()` can retry removing the remaining empty floating window.
+has already closed or docked, that content operation stays applied. Internal
+closure is queued only once; `Layout.CollectGarbage()` does not keep retrying a
+canceled request. Call the retained host's `Close()` to retry after lifting the veto.
 Dock's optional `IHostWindowCloseState` reports completed closure so its model
 adapter and factory preserve ownership while a host remains live. Native and
 managed Dock hosts implement it; existing custom hosts without the contract keep

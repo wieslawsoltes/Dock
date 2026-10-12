@@ -48,6 +48,7 @@ public class FloatingControlTests
         Assert.Equal(new[] { 0, 1 }, changes.Select(args => args.NewStartingIndex));
         Assert.All(changes, args => Assert.Equal(NotifyCollectionChangedAction.Add, args.Action));
         workspace.Document.Dock();
+        Dispatcher.UIThread.RunJobs();
         Assert.Same(toolHost, Assert.Single(workspace.Manager.FloatingWindows));
         Assert.Equal(NotifyCollectionChangedAction.Remove, changes[2].Action);
         Assert.Same(documentHost, Assert.Single(changes[2].OldItems!));

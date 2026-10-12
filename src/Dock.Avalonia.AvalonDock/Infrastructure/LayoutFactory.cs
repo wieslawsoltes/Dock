@@ -162,6 +162,17 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         if (!ReferenceEquals(_evaluatingClose, window)) base.CloseWindow(window);
     }
 
+    public override void RemoveWindow(IDockWindow window)
+    {
+        if (window.Host is LayoutFloatingWindowControl { HasClosed: false, Model: LayoutAnchorableFloatingWindow { IsValid: false } model } &&
+            model.Root is { } root)
+        {
+            root.FloatingWindows.Remove(model);
+            return;
+        }
+        base.RemoveWindow(window);
+    }
+
     public IDockOperationScope? BeginDockOperation(IDockable source, IDockable target, DockOperation operation)
     {
         LayoutOperation notification = operation == DockOperation.Window ? LayoutOperation.Float : LayoutOperation.Dock;

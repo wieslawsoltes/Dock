@@ -149,7 +149,11 @@ public class FloatingWindowCommandTests
         ICommand command = host.CloseWindowCommand;
         command.Execute(parameter);
         Assert.Equal(new[] { "first", "replacement" }, executed);
-        Assert.Empty(workspace.Manager.FloatingWindows);
+        Dispatcher.UIThread.RunJobs();
+        // WPF retains the closed host entry when its tool model detached first.
+        Assert.Same(host, Assert.Single(workspace.Manager.FloatingWindows));
+        Assert.False(host.IsVisible);
+        Assert.Empty(workspace.Manager.DockFactory.HostWindows);
         Assert.Null(workspace.First.Parent);
         Assert.Null(workspace.Second.Parent);
         Assert.False(command.CanExecute(parameter));

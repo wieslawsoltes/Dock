@@ -13,6 +13,7 @@ using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Metadata;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
@@ -223,7 +224,7 @@ public partial class DockingManager : TemplatedControl
             LayoutChanging?.Invoke(this, EventArgs.Empty);
             _contextMenus.Close();
             _navigator.Close();
-            _floatingWindows.Detach();
+            _floatingWindows.Detach(registeredHosts: _floatingControls.Items);
             _autoHide.Detach(hide: true);
             RootDock oldDock = DockLayout;
             LayoutRoot oldLayout = _layout;
@@ -614,6 +615,7 @@ public partial class DockingManager : TemplatedControl
         EnsureAnchorSidePanels();
         EnsureAutoHideWindow();
         _autoHide.Attach(Layout);
+        _floatingControls.Resume();
         _floatingWindows.Attach(Layout);
     }
 
@@ -625,7 +627,12 @@ public partial class DockingManager : TemplatedControl
         _autoHide.Detach(hide: true);
         // Upstream unload closes hosts while preserving content, without
         // making an internal-close request as layout replacement does.
-        _floatingWindows.Detach(internalClose: false);
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (VisualRoot is not null) return;
+            _floatingWindows.Detach(internalClose: false, registeredHosts: _floatingControls.Items);
+            _floatingControls.Suspend();
+        }, DispatcherPriority.Loaded);
         base.OnDetachedFromVisualTree(e);
     }
 

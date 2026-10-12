@@ -20,7 +20,10 @@ internal sealed class LayoutFloatingWindowPresenter
     {
         if (!ReferenceEquals(window.Root, _layout) || _layout is null) return;
         if (!window.IsValid)
-            window.CloseHost();
+        {
+            if (window.DockWindow.Host is LayoutFloatingWindowControl host) host.RequestCloseFromLayout();
+            else window.CloseHost();
+        }
         else if (window is LayoutAnchorableFloatingWindow { IsVisible: false })
         {
             if (window.DockWindow.Host is null)
@@ -36,10 +39,20 @@ internal sealed class LayoutFloatingWindowPresenter
             window.DockWindow.Present(window.DockWindow.IsModal);
     }
 
-    internal void Detach(bool internalClose = true)
+    internal void Detach(bool internalClose = true, IEnumerable<LayoutFloatingWindowControl>? registeredHosts = null)
     {
         if (_layout is null) return;
-        foreach (LayoutFloatingWindow window in new List<LayoutFloatingWindow>(_layout.FloatingWindows)) window.CloseHost(internalClose);
+        LayoutRoot layout = _layout;
         _layout = null;
+        List<LayoutFloatingWindowControl> hosts = registeredHosts is null ? new() : new(registeredHosts);
+        foreach (LayoutFloatingWindow window in new List<LayoutFloatingWindow>(layout.FloatingWindows))
+        {
+            if (window.DockWindow.Host is LayoutFloatingWindowControl host)
+            {
+                if (!hosts.Contains(host)) hosts.Add(host);
+            }
+            else window.CloseHost(internalClose);
+        }
+        foreach (LayoutFloatingWindowControl host in hosts) host.RequestCloseFromLayout(internalClose);
     }
 }

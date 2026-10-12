@@ -48,6 +48,9 @@ internal static class LayoutGarbageCollector
                 if (nodes[i] is not ILayoutContainer { ChildrenCount: 0 } empty || empty is LayoutAnchorSide ||
                     ReferenceEquals(empty, root.RootPanel) || referenced.Contains(empty)) continue;
                 if (empty is LayoutDocumentPane && documentPanes == 1) continue;
+                // A document host owns deferred removal of its empty model.
+                // A canceled close leaves that model rooted for a later retry.
+                if (empty is LayoutDocumentFloatingWindow { DockWindow.Host: Controls.LayoutFloatingWindowControl { HasClosed: false } }) continue;
                 if (empty.Parent is not { } parent) continue;
                 parent.RemoveChild(empty);
                 // A floating host can cancel removal. Retry only when this

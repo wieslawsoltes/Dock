@@ -365,16 +365,22 @@ public class LayoutContentHookTests
             Dispatcher.UIThread.RunJobs();
             host = Assert.IsAssignableFrom<HostWindow>(Assert.Single(manager.Layout.FloatingWindows).DockWindow.Host);
             probe.CancelClose = true;
-            probe.Closed = () => { Assert.Null(content.Parent); Assert.Null(content.Root); };
+            probe.Closed = () =>
+            {
+                if (tools) { Assert.Null(content.Parent); Assert.Null(content.Root); }
+                else { Assert.Same(host.Window!.Layout, Assert.IsType<LayoutDocumentFloatingWindow>(content.Parent).DockModel); Assert.Same(manager.Layout, content.Root); }
+            };
 
             manager.GetLayoutItemFromModel(content)!.CloseCommand!.Execute(null);
             Assert.True(host.IsVisible);
             Assert.DoesNotContain("closed:hook", probe.Trace);
             probe.CancelClose = false;
             manager.GetLayoutItemFromModel(content)!.CloseCommand!.Execute(null);
-
+            Dispatcher.UIThread.RunJobs();
             Assert.False(host.IsVisible);
-            Assert.Null(content.Parent);
+            if (tools) Assert.Null(content.Parent);
+            else Assert.IsType<LayoutDocumentFloatingWindow>(content.Parent);
+            Assert.Null(content.Root);
             Assert.Single(probe.Trace, value => value == "closed:hook");
         }
         finally { probe.CancelClose = false; host?.Close(); owner.Close(); }

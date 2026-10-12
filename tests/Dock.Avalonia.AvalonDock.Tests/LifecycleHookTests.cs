@@ -166,6 +166,7 @@ public class LifecycleHookTests
         host.CancelClose = true;
         if (removeWindow) workspace.Manager.Layout.FloatingWindows.Remove(model);
         else workspace.Document.Dock();
+        Dispatcher.UIThread.RunJobs();
         Assert.True(host.IsVisible);
         Assert.True(host.CanceledAfterBase);
         Assert.False(host.UserCloseOrigin);

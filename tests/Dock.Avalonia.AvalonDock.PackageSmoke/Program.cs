@@ -107,6 +107,7 @@ Dispatcher.UIThread.RunJobs();
 AssertToolTitle(manager, tool);
 AssertNativeContentControl(manager, tool);
 AssertDocumentMenu(manager);
+AssertTemplateCallbacks(manager.DocumentPaneMenuItemHeaderTemplate!);
 AssertConverters(window, manager, tool);
 AssertNavigator(window, manager, document);
 AssertSplitters(manager);
@@ -321,7 +322,7 @@ if (restoredMetadata.ContentId != "metadata" || restoredMetadata.Title != "XML c
     restoredMetadata.CanFloat || !Equals(restoredMetadata.Content, "Existing content") || restoredMetadata.GetSchema() is not null)
     throw new Exception("The model XML contract did not preserve metadata and existing content.");
 AssertNavigatorLifetime(lifetime);
-Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers and selector precedence, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container and command/value converters, navigator input and desktop lifetime cleanup, and close cancellation passed.");
+Console.WriteLine("NuGet consumer: default XML namespace, compiled XAML, Dock rendering, item containers and commands, native tab command overrides, custom manager context menus, document list header/icon templates and activation, container styles/selectors, manager templates/selectors, tab/auto-hide headers, selector callbacks, local binding replacement and explicit coercion, tool and floating document titles/selectors, document caption maximization and close commands, configurable native splitters, auto-hide and floating XML, model XML contracts, observable sources, floating templates, pane return locations, bubbling native docking notifications, typed floating controls and collection notifications, model-to-container and command/value converters, navigator input and desktop lifetime cleanup, and close cancellation passed.");
 
 static void AssertContentControls(Window window, DockingManager manager, LayoutDocument document, LayoutAnchorable tool)
 {
@@ -894,6 +895,28 @@ static void AssertDockingNotifications(DockingManager manager, Window window)
         manager.LayoutFloatingWindowControlCollectionChanged -= RecordHost;
         document.Close();
     }
+}
+
+static void AssertTemplateCallbacks(IDataTemplate template)
+{
+    DockingManager probe = new();
+    using IDisposable binding = probe.Bind(DockingManager.DocumentHeaderTemplateProperty,
+        new CompiledBindingExtension { Source = template });
+    probe.DocumentHeaderTemplateSelector = new DataTemplateSelector();
+    if (probe.DocumentHeaderTemplate is not null ||
+        Avalonia.Data.BindingOperations.GetBindingExpressionBase(probe, DockingManager.DocumentHeaderTemplateProperty) is not null)
+        throw new Exception("A packaged header-selector callback retained its local template binding.");
+    probe.DocumentHeaderTemplate = template;
+    probe.DocumentHeaderTemplateSelector = null;
+    if (probe.DocumentHeaderTemplate is not null)
+        throw new Exception("Removing a packaged selector automatically restored a coerced template.");
+    probe.CoerceValue(DockingManager.DocumentHeaderTemplateProperty);
+    if (!ReferenceEquals(template, probe.DocumentHeaderTemplate))
+        throw new Exception("Explicit packaged template coercion did not restore the pending value.");
+    probe.DocumentPaneMenuItemHeaderTemplate = null;
+    probe.DocumentHeaderTemplate = null;
+    if (!ReferenceEquals(template, probe.DocumentPaneMenuItemHeaderTemplate))
+        throw new Exception("A packaged menu fallback was refreshed without assignment or explicit coercion.");
 }
 
 static void AssertDocumentMenu(DockingManager manager)

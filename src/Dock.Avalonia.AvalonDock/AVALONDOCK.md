@@ -387,8 +387,11 @@ public `LayoutContent` / `LayoutAnchorable` node, so `Title` and other metadata
 can be bound directly. Document headers also apply to tools docked as documents.
 The corresponding `DocumentHeaderTemplateSelector` and
 `AnchorableHeaderTemplateSelector` receive the layout node and its header
-presenter. Header selectors take precedence and coerce the explicit header
-template to null; a null selection falls back to the title. Runtime changes
+presenter. Base selector callbacks clear the explicit header template and its
+local binding; later template assignments are coerced to null while a selector
+is set. A subclass can suppress the base callback and keep an existing template,
+which is rendered before consulting the selector. A null selection falls back
+to the title. Runtime changes
 update docked, floating, and auto-hide headers while preserving native input.
 
 `AnchorableTitleTemplate` customizes the selected tool's title bar independently
@@ -403,8 +406,8 @@ of its tab header, including floating panes and open auto-hide previews:
 ```
 
 `AnchorableTitleTemplateSelector` receives the selected layout node and its
-presenter. As with header selectors, it takes precedence and coerces the explicit
-template to null; a null selection uses the default title text. Template changes,
+presenter. It follows the header callback and coercion rules; a null selection
+uses the default title text. Template changes,
 tab selection, and metadata changes update the visible title. Native context
 menus and title-bar buttons keep their command behavior. Floating document title
 and document-menu header templates are described below.
@@ -549,8 +552,8 @@ public `LayoutDocument` from `LayoutDocumentFloatingWindow.RootDocument`:
 </DockingManager.DocumentTitleTemplate>
 ```
 
-The selector receives the actual presenter, takes precedence over an explicit
-template, and falls back to the document title text when it returns null.
+The selector receives the actual presenter and follows the header callback and
+coercion rules. A null result falls back to the document title text.
 Runtime changes update the caption without changing tab headers. The caption
 uses native window dragging and state, the document context menu, and the
 current item close command. Double-click and maximize/restore buttons change
@@ -580,10 +583,22 @@ inherit the public `LayoutContent`, including tools docked as documents:
 </DockingManager.DocumentPaneMenuItemHeaderTemplate>
 ```
 
-A null menu header template falls back to `DocumentHeaderTemplate`, even when a
-menu selector is present; that non-null fallback takes precedence when rendered.
-An explicit non-null menu template is coerced to null while a selector is set.
-Assigning a document header selector supplies the menu selector when unset.
+Assigning a null menu header template falls back to the current
+`DocumentHeaderTemplate`, even when a menu selector is present. That non-null
+fallback takes precedence when rendered. Changing the document header later
+does not update the cached fallback until another assignment or explicit
+`CoerceValue(DocumentPaneMenuItemHeaderTemplateProperty)` call. A non-null menu
+template assignment is coerced to null while a selector is set. Assigning a
+document header selector supplies the menu selector when unset.
+
+Clearing a header/title selector does not automatically restore a previously
+coerced template. Assign the template again or call `CoerceValue` explicitly.
+Base `DocumentTitleTemplateSelector` and `AnchorableHeaderTemplateSelector`
+callbacks always clear the template when given a selector; the document header,
+tool title, and menu header callbacks do so only when their effective template
+is non-null. Style bindings remain available beneath the local override.
+Application calls to Avalonia's inherited `SetValue` retain bindings; dispose
+an application binding explicitly when replacing it permanently.
 
 Document entries use public `MenuItemEx` containers. Icon selectors receive the
 current `Icon` (possibly null or an already-created control) and that container;

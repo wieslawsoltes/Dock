@@ -656,9 +656,20 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1331 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- Header/title/menu property callbacks are checked against 247 observations from
+  the pinned original WPF implementation on Windows 11 ARM64/.NET 10. Coverage
+  includes local values, compiled bindings, styles, subclass suppression,
+  replacement/removal, explicit coercion, and cached menu fallback. Native
+  rendering preserves an explicit template when a subclass suppresses the base
+  selector callback. Local template bindings are replaced by the base callbacks;
+  style bindings remain available. The external WPF `SetValue` input is adapted
+  with explicit binding disposal because inherited Avalonia `SetValue` preserves
+  bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
+- Retired menu template roots are disconnected from their composition parent,
+  preventing retained icon presenters from keeping removed documents alive.
+- 1373 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1349 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1391 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -697,7 +708,7 @@ supported by corresponding implementation and test evidence.
   content and changes during deserialization.
 - Exact signatures, framework substitutions, inheritance, defaults, and member
   behavior must be audited independently of the presence inventory, including
-  remaining header/title selector callback and property-coercion ordering.
+  remaining property-default, callback, and framework-substitution edge cases.
 - Broader sample interaction and platform coverage for floating windows.
 - Navigator desktop modality/focus validation and remaining theme/overlay integration.
 - The full WPF overlay template-part arrangement and separate

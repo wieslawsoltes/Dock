@@ -1406,7 +1406,9 @@ default XML namespace:
 `DocumentPaneMenuItemHeaderTemplateSelector` coerces an explicit non-null menu
 header template to null. A null assignment instead falls back to
 `DocumentHeaderTemplate`, including when a menu selector exists. That non-null
-fallback is rendered before consulting the selector. If neither provides a
+fallback is rendered before consulting the selector. Later document-header
+changes do not refresh the cached fallback: assign the menu template again or
+call `CoerceValue(DocumentPaneMenuItemHeaderTemplateProperty)`. If neither provides a
 template, the menu shows the default title text. Assigning a document header
 selector also supplies the menu selector if the latter is unset.
 
@@ -1539,9 +1541,17 @@ XML namespace:
 layout node and the actual presenter. A document-header selector should
 also handle `LayoutAnchorable` when tools can be docked into document panes.
 
-As in AvalonDock, header selectors take precedence: setting a selector clears
-the explicit header template, and the template property is coerced to null
-while a selector is present. A null selector result uses a title header.
+The base selector callbacks clear the explicit template and its local binding.
+A subsequent template assignment is coerced to null while a selector is set.
+A subclass can suppress the base callback; an existing non-null template then
+renders before the selector. A null selector result uses a title header.
+Clearing the selector does not restore a previously coerced template: assign it
+again or call `CoerceValue` explicitly. The document-title and tool-header base
+callbacks always clear the template for a new selector; document-header,
+tool-title, and menu-header callbacks clear only a non-null effective template.
+Style bindings survive beneath the local override. Application calls to
+Avalonia's inherited `SetValue` retain bindings; explicitly dispose a binding
+when the application intends to replace it permanently.
 Changing a manager header property updates existing docked, floating, and
 auto-hide headers. Compiled bindings observe live title and metadata changes.
 Native document/tool tab containers and custom public tab controls apply the

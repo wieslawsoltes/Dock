@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Diagnostics;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Metadata;
@@ -404,41 +405,52 @@ public partial class DockingManager : TemplatedControl
     protected virtual void OnLayoutItemTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the document tab header template changes.</summary>
     protected virtual void OnDocumentHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
-    /// <summary>Clears an explicit document header template when a selector is supplied.</summary>
+    /// <summary>Clears a non-null document header template and its local binding when a selector is supplied.</summary>
     protected virtual void OnDocumentHeaderTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.NewValue is not null) SetCurrentValue(DocumentHeaderTemplateProperty, null);
+        if (e.NewValue is not null && DocumentHeaderTemplate is not null) SetTemplateCallbackValue(DocumentHeaderTemplateProperty, null);
         if (DocumentPaneMenuItemHeaderTemplateSelector is null)
-            SetCurrentValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty, DocumentHeaderTemplateSelector);
+            SetTemplateCallbackValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty, DocumentHeaderTemplateSelector);
     }
     /// <summary>Called when the floating document title template changes.</summary>
     protected virtual void OnDocumentTitleTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
-    /// <summary>Clears an explicit floating document title template when a selector is supplied.</summary>
+    /// <summary>Clears the floating document title template and its local binding when a selector is supplied.</summary>
     protected virtual void OnDocumentTitleTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.NewValue is not null) SetCurrentValue(DocumentTitleTemplateProperty, null);
+        if (e.NewValue is not null) SetTemplateCallbackValue(DocumentTitleTemplateProperty, null);
     }
     /// <summary>Called when the document list menu header template changes.</summary>
     protected virtual void OnDocumentPaneMenuItemHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
-    /// <summary>Clears an explicit document list menu header template when a selector is supplied.</summary>
+    /// <summary>Clears a non-null document list menu header template and its local binding when a selector is supplied.</summary>
     protected virtual void OnDocumentPaneMenuItemHeaderTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.NewValue is not null) SetCurrentValue(DocumentPaneMenuItemHeaderTemplateProperty, null);
+        if (e.NewValue is not null && DocumentPaneMenuItemHeaderTemplate is not null) SetTemplateCallbackValue(DocumentPaneMenuItemHeaderTemplateProperty, null);
     }
     /// <summary>Called when the tool tab and auto-hide header template changes.</summary>
     protected virtual void OnAnchorableHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
-    /// <summary>Clears an explicit tool header template when a selector is supplied.</summary>
+    /// <summary>Clears the tool header template and its local binding when a selector is supplied.</summary>
     protected virtual void OnAnchorableHeaderTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.NewValue is not null) SetCurrentValue(AnchorableHeaderTemplateProperty, null);
+        if (e.NewValue is not null) SetTemplateCallbackValue(AnchorableHeaderTemplateProperty, null);
     }
     /// <summary>Called when the tool title bar template changes.</summary>
     protected virtual void OnAnchorableTitleTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
-    /// <summary>Clears an explicit tool title bar template when a selector is supplied.</summary>
+    /// <summary>Clears a non-null tool title bar template and its local binding when a selector is supplied.</summary>
     protected virtual void OnAnchorableTitleTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.NewValue is not null) SetCurrentValue(AnchorableTitleTemplateProperty, null);
+        if (e.NewValue is not null && AnchorableTitleTemplate is not null) SetTemplateCallbackValue(AnchorableTitleTemplateProperty, null);
     }
+    private void SetTemplateCallbackValue<T>(StyledProperty<T> property, T value)
+    {
+        // WPF's selector callbacks replace local template bindings. Avalonia's
+        // SetValue preserves them, so detach only a local binding explicitly;
+        // style bindings remain available when the local override is cleared.
+        if (BindingOperations.GetBindingExpressionBase(this, property) is { } binding &&
+            this.GetDiagnostic(property).Priority == BindingPriority.LocalValue)
+            binding.Dispose();
+        SetValue(property, value);
+    }
+
     /// <summary>Called when the document pane control theme changes.</summary>
     protected virtual void OnDocumentPaneControlStyleChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the tool pane control theme changes.</summary>
@@ -479,7 +491,6 @@ public partial class DockingManager : TemplatedControl
         if (change.Property == LayoutItemContainerStyleSelectorProperty) OnLayoutItemContainerStyleSelectorChanged(change);
         if (change.Property == DocumentHeaderTemplateProperty)
         {
-            CoerceValue(DocumentPaneMenuItemHeaderTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
             OnDocumentHeaderTemplateChanged(change);
@@ -492,7 +503,6 @@ public partial class DockingManager : TemplatedControl
         if (change.Property == DocumentPaneMenuItemHeaderTemplateSelectorProperty)
         {
             OnDocumentPaneMenuItemHeaderTemplateSelectorChanged(change);
-            CoerceValue(DocumentPaneMenuItemHeaderTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
         }
         if (change.Property == DocumentTitleTemplateProperty)
@@ -503,7 +513,6 @@ public partial class DockingManager : TemplatedControl
         if (change.Property == DocumentTitleTemplateSelectorProperty)
         {
             OnDocumentTitleTemplateSelectorChanged(change);
-            CoerceValue(DocumentTitleTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle);
         }
         if (change.Property == AnchorableHeaderTemplateProperty)
@@ -514,13 +523,11 @@ public partial class DockingManager : TemplatedControl
         if (change.Property == DocumentHeaderTemplateSelectorProperty)
         {
             OnDocumentHeaderTemplateSelectorChanged(change);
-            CoerceValue(DocumentHeaderTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document);
         }
         if (change.Property == AnchorableHeaderTemplateSelectorProperty)
         {
             OnAnchorableHeaderTemplateSelectorChanged(change);
-            CoerceValue(AnchorableHeaderTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);
         }
         if (change.Property == AnchorableTitleTemplateProperty)
@@ -531,7 +538,6 @@ public partial class DockingManager : TemplatedControl
         if (change.Property == AnchorableTitleTemplateSelectorProperty)
         {
             OnAnchorableTitleTemplateSelectorChanged(change);
-            CoerceValue(AnchorableTitleTemplateProperty);
             _layoutItems?.RefreshHeaders(LayoutHeaderKind.AnchorableTitle);
         }
     }

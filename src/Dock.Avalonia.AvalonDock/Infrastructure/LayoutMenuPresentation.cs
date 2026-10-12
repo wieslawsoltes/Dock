@@ -34,6 +34,9 @@ internal sealed class LayoutMenuPresentation
         foreach (Visual part in control.GetVisualDescendants())
         {
             if (!ReferenceEquals(part.TemplatedParent, control) || IsApplicationContent(part, control)) continue;
+            // Retained template parts can still reach the menu item through
+            // their composition parent after the visual template is detached.
+            if (ReferenceEquals(part.GetVisualParent(), control)) CaptureContentVisual(part);
             CaptureBindings(part);
             if (part is Popup { Child: { } child }) CapturePopup(child, control);
         }

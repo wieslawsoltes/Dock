@@ -66,8 +66,8 @@ public class DocumentMenuTests
     public void Menu_Header_Falls_Back_To_Document_Header_And_Selectors_Have_Precedence()
     {
         using Workspace workspace = new();
-        workspace.Manager.DocumentPaneMenuItemHeaderTemplate = null;
         workspace.Manager.DocumentHeaderTemplate = workspace.Template("AlternateHeader");
+        workspace.Manager.DocumentPaneMenuItemHeaderTemplate = null;
         Assert.Same(workspace.Manager.DocumentHeaderTemplate, workspace.Manager.DocumentPaneMenuItemHeaderTemplate);
         Assert.Equal("ID: first", Text(workspace.Open()[0], "alternate-header").Text);
         HeaderKindSelector selector = new() { DocumentTemplate = workspace.Template("MenuHeader") };
@@ -191,6 +191,9 @@ public class DocumentMenuTests
         Assert.Same(workspace.Manager.DocumentHeaderTemplate, workspace.Manager.DocumentPaneMenuItemHeaderTemplate);
         Assert.Equal("ID: first", Text(entry, "alternate-header").Text);
         workspace.Manager.DocumentHeaderTemplate = null;
+        workspace.Update();
+        Assert.Equal("ID: first", Text(entry, "alternate-header").Text);
+        workspace.Manager.CoerceValue(DockingManager.DocumentPaneMenuItemHeaderTemplateProperty);
         workspace.Update();
         Assert.Equal("Menu: Alpha", Text(entry, "menu-header").Text);
     }
@@ -335,10 +338,12 @@ public class DocumentMenuTests
         Assert.Equal("ID: first", Text(workspace.Open()[0], "alternate-header").Text);
     }
 
-    [AvaloniaFact]
-    public void Removed_Menu_Header_And_Icon_Release_Their_Model_And_Manager()
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Removed_Menu_Header_And_Icon_Release_Their_Model_And_Manager(bool renderBeforeRemoval)
     {
-        var result = RemoveMenuViews();
+        var result = RemoveMenuViews(renderBeforeRemoval);
         for (int i = 0; i < 3; i++)
         {
             Dispatcher.UIThread.RunJobs();
@@ -373,7 +378,7 @@ public class DocumentMenuTests
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static (ContentPresenter[] Views, WeakReference<LayoutDocument> Model, WeakReference<DockingManager> Manager) RemoveMenuViews()
+    private static (ContentPresenter[] Views, WeakReference<LayoutDocument> Model, WeakReference<DockingManager> Manager) RemoveMenuViews(bool renderBeforeRemoval)
     {
         using Workspace workspace = new();
         workspace.Manager.IconContentTemplate = workspace.Template("Icon");
@@ -381,6 +386,7 @@ public class DocumentMenuTests
         workspace.Update();
         MenuItem item = workspace.Entries[0];
         ContentPresenter[] views = { Presenter(Text(item, "menu-header")), Presenter(Text(item, "custom-icon")) };
+        if (renderBeforeRemoval) TopLevel.GetTopLevel(item)!.CaptureRenderedFrame()?.Dispose();
         workspace.Pane.Children.Remove(workspace.First);
         workspace.Update();
         workspace.Window.CaptureRenderedFrame()?.Dispose();

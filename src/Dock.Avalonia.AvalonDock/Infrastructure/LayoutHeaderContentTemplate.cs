@@ -21,10 +21,10 @@ internal sealed class LayoutHeaderContentTemplate(DockingManager manager, Layout
         _manager.TryGetTarget(out DockingManager? owner);
         IDataTemplate? template = kind switch
         {
-            LayoutHeaderKind.Document => owner?.DocumentHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentHeaderTemplate,
-            LayoutHeaderKind.Anchorable => owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableHeaderTemplate,
-            LayoutHeaderKind.AnchorableTitle => owner?.AnchorableTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.AnchorableTitleTemplate,
-            LayoutHeaderKind.DocumentTitle => owner?.DocumentTitleTemplateSelector?.SelectTemplate(data, presenter) ?? owner?.DocumentTitleTemplate,
+            LayoutHeaderKind.Document => owner?.DocumentHeaderTemplate ?? owner?.DocumentHeaderTemplateSelector?.SelectTemplate(data, presenter),
+            LayoutHeaderKind.Anchorable => owner?.AnchorableHeaderTemplate ?? owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter),
+            LayoutHeaderKind.AnchorableTitle => owner?.AnchorableTitleTemplate ?? owner?.AnchorableTitleTemplateSelector?.SelectTemplate(data, presenter),
+            LayoutHeaderKind.DocumentTitle => owner?.DocumentTitleTemplate ?? owner?.DocumentTitleTemplateSelector?.SelectTemplate(data, presenter),
             LayoutHeaderKind.DocumentMenu => owner?.DocumentPaneMenuItemHeaderTemplate ?? owner?.DocumentPaneMenuItemHeaderTemplateSelector?.SelectTemplate(data, presenter),
             _ => null
         };

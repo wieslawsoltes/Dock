@@ -42,8 +42,8 @@ internal static class AutoHideReturnProbe
             if (!ReferenceEquals(previous, tool.Parent) || !tool.IsFloating)
                 throw new Exception("The packaged auto-hide return lost its floating pane.");
 
-            LayoutAnchorable hidden = new();
-            LayoutAnchorable restored = new();
+            LayoutAnchorable hidden = new() { ContentId = "hidden" };
+            LayoutAnchorable restored = new() { ContentId = "restored" };
             LayoutAnchorGroup group = new() { Children = { hidden, restored } };
             manager.Layout.LeftSide.Children.Add(group);
             hidden.Hide();

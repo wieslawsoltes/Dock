@@ -36,9 +36,9 @@ internal static class UpdateStrategyProbe
         if (manager.Layout.Descendents().OfType<LayoutDocument>().Any(content => manager.GetLayoutItemFromModel(content) is null))
             throw new Exception("The packaged source containers were not registered after their callbacks.");
 
-        LayoutAnchorable tool = new();
+        LayoutAnchorable tool = new() { ContentId = "tool" };
         LayoutAnchorablePane original = new(tool);
-        LayoutAnchorablePane target = new(new LayoutAnchorable());
+        LayoutAnchorablePane target = new(new LayoutAnchorable { ContentId = "target-tool" });
         manager.Layout.RootPanel.Children.Add(original);
         manager.Layout.RootPanel.Children.Add(target);
         tool.Hide();

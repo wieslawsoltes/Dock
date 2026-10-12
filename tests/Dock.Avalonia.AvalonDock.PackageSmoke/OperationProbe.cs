@@ -10,8 +10,8 @@ internal static class OperationProbe
 {
     internal static void Verify()
     {
-        LayoutDocument document = new() { CanClose = false, CanFloat = false };
-        LayoutAnchorable tool = new() { CanAutoHide = false, CanDockAsTabbedDocument = false };
+        LayoutDocument document = new() { ContentId = "document", CanClose = false, CanFloat = false };
+        LayoutAnchorable tool = new() { ContentId = "tool", CanAutoHide = false, CanDockAsTabbedDocument = false };
         LayoutAnchorablePane tools = new(tool);
         LayoutDocumentPane documents = new(document);
         DockingManager manager = new() { Layout = new() { RootPanel = new() { Children = { documents, tools } } } };

@@ -187,10 +187,17 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     /// <summary>Processes a native close request using AvalonDock's framework-independent cancellation signature.</summary>
     /// <remarks>The native lifecycle supplies a WindowClosingEventArgs instance. Calling the base hook
-    /// raises Avalonia's Closing event, then processes Dock factory and content cancellation. Set Cancel
-    /// before calling base to prevent content mutations. Overrides using Avalonia's overload remain supported.</remarks>
+    /// checks close/hide capability before raising Avalonia's Closing event. A nonclosable tool
+    /// may hide before that event; content Hiding can cancel the hide. An eligible host closes
+    /// without closing its content. Overrides using Avalonia's overload remain supported.</remarks>
     protected virtual void OnClosing(CancelEventArgs e)
     {
+        // Internal removal and view unloading bypass user capabilities.
+        if (CloseInitiatedByUser && !_preserveCloseOrigin && !CanClose())
+        {
+            if (CanHide()) DoHide();
+            e.Cancel = true;
+        }
         if (e is WindowClosingEventArgs nativeArgs) base.OnClosing(nativeArgs);
     }
 
@@ -232,13 +239,6 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     protected virtual bool CanHide(object? parameter = null) => false;
     /// <summary>Hides the window's contents when a user close request cannot close them.</summary>
     protected virtual void DoHide() { }
-
-    internal void CloseOrHideContents()
-    {
-        if (CanClose() && Model is LayoutFloatingWindow model)
-            LayoutFloatingWindowOperations.Execute(model, hide: false, parameter: null);
-        else if (CanHide()) DoHide();
-    }
 
     /// <summary>Opens the owning manager's navigator on Ctrl+Tab from floating content.</summary>
     protected virtual void OnPreviewKeyDown(KeyEventArgs e)
@@ -300,7 +300,12 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         finally
         {
             try { base.OnClosed(e); }
-            finally { root?.CollectGarbage(); }
+            finally
+            {
+                if (_internalCloseRequested && Model is LayoutFloatingWindow model && ReferenceEquals(model.Root, root))
+                    root?.FloatingWindows.Remove(model);
+                root?.CollectGarbage();
+            }
         }
     }
 

@@ -95,7 +95,7 @@ public class FloatingControlTests
             if (args.CollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Remove) removed++;
         };
         bool cancel = true;
-        workspace.Document.Closing += (_, args) => args.Cancel = cancel;
+        host.Closing += (_, args) => args.Cancel = cancel;
         host.Close();
         Assert.Same(host, Assert.Single(workspace.Manager.FloatingWindows));
         Assert.True(host.IsVisible);

@@ -493,8 +493,22 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
+        IDockWindow? closingWindow = Window;
+        IFactory? closingFactory = closingWindow?.Factory;
+        bool preserveLayout = closingWindow is not null && closingFactory is IDockWindowClosePolicy policy &&
+            policy.PreserveLayoutOnHostClose(closingWindow);
         _isClosed = true;
         base.OnClosed(e);
+
+        if (preserveLayout)
+        {
+            closingFactory!.HostWindows.Remove(this);
+            IsTracked = false;
+            // A Closed subscriber can already have installed another host.
+            if (ReferenceEquals(closingWindow!.Host, this)) closingWindow.Host = null;
+            closingFactory.OnWindowClosed(closingWindow);
+            return;
+        }
 
         Window?.Factory?.HostWindows.Remove(this);
 
@@ -532,7 +546,8 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
         {
             Window.Save();
 
-            if (Window.Layout is IDock root)
+            if (!(Window.Factory is IDockWindowClosePolicy policy && policy.PreserveLayoutOnHostClose(Window)) &&
+                Window.Layout is IDock root)
             {
                 if (root.Close.CanExecute(null))
                 {

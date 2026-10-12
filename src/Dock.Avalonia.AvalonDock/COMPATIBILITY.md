@@ -442,7 +442,7 @@ supported by corresponding implementation and test evidence.
   input, visibility updates, and target retention through package references.
 - Tool hosts expose `CloseWindowCommand` and `HideWindowCommand`, with current
   per-item commands and parameter forwarding. Protected `CanClose`, `CanHide`,
-  and `DoHide` participate in native closing after the factory veto. Tests cover
+  and `DoHide` participate before the public window `Closing` event. Tests cover
   capabilities, null/disabled/replaced commands, membership changes, snapshot
   execution, content cancellation, native document close and tool hide fallback,
   unprefixed compiled bindings with Headless input, and subscription/lifetime
@@ -467,7 +467,7 @@ supported by corresponding implementation and test evidence.
   and cross-manager transfer respect native/factory vetoes. Garbage collection
   retains canceled empty hosts and can retry without looping indefinitely;
   completed content close/dock operations are not rolled back. Tests cover
-  retries, nested closed-callback cleanup, native closing before content commands,
+  retries, nested closed-callback cleanup, independent host/content closing,
   and one removal notification. Dock's optional `IHostWindowCloseState` also keeps
   ownership intact for managed hosts. Model tests cover legacy hosts, previous
   tracking state, reentrant or throwing exits, and host replacement in callbacks.
@@ -508,7 +508,7 @@ supported by corresponding implementation and test evidence.
   checks all child capabilities, and moving an already-floating group retains
   its docked history. Repeated XML saves distinguish copied native pane IDs
   and restore visible contents without stale native floating ownership.
-  Native floating host close requests honor factory/content cancellation and
+  Native floating host close requests honor window/factory cancellation and
   close capabilities. Tool groups hide when they cannot close but can hide,
   retaining their floating return pane for `Show()`.
 - Auto-hide sides and groups project Dock's native pinned lists, preserving
@@ -666,7 +666,7 @@ supported by corresponding implementation and test evidence.
   initialization. The manager's public `OnApplyTemplate()` refreshes public
   presentations while retaining unchanged models. Floating `OnClosing(CancelEventArgs)`
   shares native arguments with the Avalonia overload and event, preserves native
-  factory/content vetoes, and supports canceled cleanup retries.
+  factory/window vetoes, and supports canceled cleanup retries.
   Overlay BCL/Avalonia closing hooks also share arguments and preserve their
   projections until closure succeeds. Protected typed-host and overlay
   constructors support application subclasses through native window factories.
@@ -704,9 +704,18 @@ supported by corresponding implementation and test evidence.
   bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
 - Retired menu template roots are disconnected from their composition parent,
   preventing retained icon presenters from keeping removed documents alive.
-- 1671 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- `Window.Close()` checks current close commands without executing them and
+  preserves the floating model/content when its host closes. Nonclosable tools
+  hide before the canceled window `Closing` event; content `Hiding` cancels that
+  hide. Successful layout replacement detaches old floating models, while view
+  unload preserves them. Dock's optional `IDockWindowClosePolicy` skips native
+  content cleanup and releases the host for later presentation. Native model and
+  Headless tests cover cancellation, preserved ownership, and replacement hosts.
+  The WPF probe records 168 observations; regression tests compare 48 hook cases
+  and initial/dispatched states for 16 host scenarios (80 recorded rows).
+- 1735 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1689 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1753 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -724,8 +733,12 @@ supported by corresponding implementation and test evidence.
   before overwriting a saved file.
 - Remaining manager APIs: templates/selectors, styles, general theme URI loading,
   and the control adapter surface.
-  Floating controls still need exact close-event ordering,
-  cancellation during manager layout replacement/view unload,
+  Floating controls still need internal dispatcher timing and canceled model/
+  manager cleanup parity. WPF can retain a document root after content `Closed`,
+  retain a closed tool host in its manager collection, or remove a canceled unload
+  host from that collection. The adapter currently uses synchronous cleanup and
+  retains canceled cleanup registrations. All reference observations are retained.
+  Other open work includes
   remaining protected/platform hooks, and broader desktop input/focus validation.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy
   tests; they do not establish full platform or floating-window parity.

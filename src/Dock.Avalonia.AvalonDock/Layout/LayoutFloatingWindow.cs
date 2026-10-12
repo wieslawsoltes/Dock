@@ -68,13 +68,21 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
         // Removing a window from the public collection detaches its layout.
         // The native host must close without executing content-close commands.
         DockWindow.Save();
+        if (DockWindow.Host is LayoutFloatingWindowControl control)
+        {
+            control.ExitFromLayout(internalClose);
+            return DockWindow.Host is null or IHostWindowCloseState { IsClosed: true };
+        }
         DockWindow.Layout = null;
         try
         {
-            if (DockWindow.Host is LayoutFloatingWindowControl control) control.ExitFromLayout(internalClose);
-            else DockWindow.Exit();
+            DockWindow.Exit();
         }
-        finally { DockWindow.Layout = NativeRoot; }
+        finally
+        {
+            if (ReferenceEquals(NativeRoot.Window, DockWindow) && DockWindow.Layout is null)
+                DockWindow.Layout = NativeRoot;
+        }
         return DockWindow.Host is null or IHostWindowCloseState { IsClosed: true };
     }
 

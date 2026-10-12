@@ -122,7 +122,7 @@ public class FloatingCleanupCancellationTests
     }
 
     [AvaloniaFact]
-    public void Native_Closing_Cancellation_Precedes_Content_Commands_And_Retains_Registration()
+    public void Native_Closing_Cancellation_Retains_Registration_And_Closure_Preserves_Content()
     {
         using Workspace workspace = new();
         LayoutFloatingWindow model = workspace.Float();
@@ -142,12 +142,12 @@ public class FloatingCleanupCancellationTests
         cancel = false;
         host.Close();
         Assert.False(host.IsVisible);
-        Assert.Null(workspace.Document.Root);
-        Assert.Empty(workspace.Manager.Layout.FloatingWindows);
+        Assert.Same(workspace.Manager.Layout, workspace.Document.Root);
+        Assert.Same(model, Assert.Single(workspace.Manager.Layout.FloatingWindows));
         Assert.Empty(workspace.Manager.FloatingWindows);
         Assert.Empty(workspace.Manager.DockFactory.HostWindows);
-        Assert.Equal(1, contentClosing);
-        Assert.Equal(1, closed);
+        Assert.Equal(0, contentClosing);
+        Assert.Equal(0, closed);
     }
 
     private sealed class Workspace : IDisposable

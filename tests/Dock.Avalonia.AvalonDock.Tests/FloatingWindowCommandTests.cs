@@ -178,7 +178,7 @@ public class FloatingWindowCommandTests
     }
 
     [AvaloniaFact]
-    public void Native_Document_Close_Uses_The_Current_Command_And_Respects_Its_Enablement()
+    public void Native_Document_Close_Checks_The_Current_Command_Without_Executing_It()
     {
         using Workspace workspace = new();
         workspace.Document.Float();
@@ -193,17 +193,17 @@ public class FloatingWindowCommandTests
         Assert.True(host.IsVisible);
         command.Enabled = true;
         host.Close();
-        Assert.Equal(1, calls);
-        Assert.True(host.IsVisible);
+        Assert.Equal(0, calls);
+        Assert.False(host.IsVisible);
         Assert.Same(workspace.Manager.Layout, workspace.Document.Root);
         item.CloseCommand = new ProbeCommand(_ => true, _ => workspace.Document.Close());
-        host.Close();
-        Assert.False(host.IsVisible);
+        item.CloseCommand.Execute(null);
+        Assert.Null(workspace.Document.Root);
         Assert.Empty(workspace.Manager.FloatingWindows);
     }
 
     [AvaloniaFact]
-    public void Native_Tool_Close_Checks_Factory_Veto_Before_Falling_Back_To_Current_Hide_Commands()
+    public void Native_Tool_Close_Hides_Through_Current_Commands_Before_Window_Cancellation()
     {
         using Workspace workspace = new();
         LayoutAnchorableFloatingWindowControl host = workspace.FloatTools();
@@ -216,10 +216,7 @@ public class FloatingWindowCommandTests
         EventHandler<Dock.Model.Core.Events.WindowClosingEventArgs> veto = (_, args) => args.Cancel = true;
         workspace.Manager.DockFactory.WindowClosing += veto;
         host.Close();
-        Assert.True(host.IsVisible);
-        Assert.Equal(0, hidden);
         workspace.Manager.DockFactory.WindowClosing -= veto;
-        host.Close();
         Assert.Equal(0, closed);
         Assert.Equal(2, hidden);
         Assert.False(host.IsVisible);

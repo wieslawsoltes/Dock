@@ -17,7 +17,7 @@ public class FloatingCloseOriginTests
     [AvaloniaFact]
     public void New_Unshown_And_Manually_Closed_Windows_Start_With_User_Origin()
     {
-        ProbeWindow host = new(new LayoutDocumentFloatingWindow());
+        ProbeWindow host = new(new LayoutDocumentFloatingWindow()) { AllowClose = true };
         Assert.True(host.UserOrigin);
         host.IsTracked = true;
         Assert.True(host.UserOrigin);
@@ -99,7 +99,8 @@ public class FloatingCloseOriginTests
         Assert.Equal(!replaceLayout, host.ClosedOrigin);
         Assert.Equal(new[] { !replaceLayout }, host.ClosingOrigins);
         Assert.Equal(0, contentClosed);
-        Assert.Same(previousLayout, workspace.Document.Root);
+        if (replaceLayout) Assert.Null(workspace.Document.Root);
+        else Assert.Same(previousLayout, workspace.Document.Root);
         Assert.Same(model, workspace.Document.FindParent<LayoutFloatingWindow>());
         Assert.Empty(workspace.Manager.FloatingWindows);
 
@@ -147,8 +148,11 @@ public class FloatingCloseOriginTests
         public ProbeWindow(ILayoutElement model) : base(model) => Model = model;
         public override ILayoutElement Model { get; }
         public bool UserOrigin => CloseInitiatedByUser;
+        public bool AllowClose { get; init; }
         public bool? ClosedOrigin { get; private set; }
         public List<bool> ClosingOrigins { get; } = new();
+
+        protected override bool CanClose(object? parameter = null) => AllowClose;
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {

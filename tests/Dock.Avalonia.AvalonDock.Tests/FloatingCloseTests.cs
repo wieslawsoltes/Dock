@@ -5,6 +5,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using AvalonDock;
+using AvalonDock.Controls;
 using AvalonDock.Layout;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class FloatingCloseTests
 {
     [AvaloniaFact]
-    public void Native_Document_Host_Respects_Capability_And_Content_Closing_Cancellation()
+    public void Native_Document_Host_Respects_Capability_And_Preserves_Content()
     {
         using HostedSources fixture = new();
         LayoutDocument document = Assert.Single(fixture.Manager.Layout.Descendents().OfType<LayoutDocument>());
@@ -27,20 +28,15 @@ public class FloatingCloseTests
         document.CanClose = true;
         int closing = 0;
         int closed = 0;
-        bool cancel = true;
-        document.Closing += (_, args) => { closing++; args.Cancel = cancel; };
+        document.Closing += (_, args) => { closing++; args.Cancel = true; };
         fixture.Manager.DocumentClosed += (_, _) => closed++;
         host.Close();
-        Assert.True(host.IsVisible);
-        Assert.Equal(1, closing);
-        Assert.Equal(0, closed);
-        cancel = false;
-        host.Close();
         Assert.False(host.IsVisible);
-        Assert.Equal(2, closing);
-        Assert.Equal(1, closed);
-        Assert.Null(document.Parent);
-        Assert.Empty(fixture.Manager.Layout.FloatingWindows);
+        Assert.Equal(0, closing);
+        Assert.Equal(0, closed);
+        Assert.Same(fixture.Manager.Layout, document.Root);
+        Assert.Single(fixture.Manager.Layout.FloatingWindows);
+        Assert.Empty(fixture.Manager.FloatingWindows);
     }
 
     [AvaloniaTheory]
@@ -62,11 +58,12 @@ public class FloatingCloseTests
         host.Close();
 
         Assert.Equal(!canClose && !canHide, host.IsVisible);
-        Assert.Equal(canClose ? 1 : 0, closed);
+        Assert.Equal(0, closed);
         if (canClose)
         {
-            Assert.Null(tool.Parent);
-            Assert.Empty(fixture.Manager.Layout.FloatingWindows);
+            Assert.Same(window, tool.FindParent<LayoutFloatingWindow>());
+            Assert.Same(window, Assert.Single(fixture.Manager.Layout.FloatingWindows));
+            Assert.Empty(fixture.Manager.FloatingWindows);
         }
         else if (canHide)
         {
@@ -82,7 +79,7 @@ public class FloatingCloseTests
     }
 
     [AvaloniaFact]
-    public void Native_Tool_Host_Keeps_Canceled_Content_And_Closes_It_Only_Once_When_Allowed()
+    public void Tool_Close_Command_Keeps_Canceled_Content_And_Closes_It_Only_Once_When_Allowed()
     {
         using HostedSources fixture = new();
         LayoutAnchorable tool = Assert.Single(fixture.Manager.Layout.Descendents().OfType<LayoutAnchorable>());
@@ -94,13 +91,13 @@ public class FloatingCloseTests
         int closed = 0;
         tool.Closing += (_, args) => { closing++; args.Cancel = cancel; };
         tool.Closed += (_, _) => closed++;
-        host.Close();
+        ((LayoutAnchorableFloatingWindowControl)host).CloseWindowCommand.Execute(null);
         Assert.True(host.IsVisible);
         Assert.Equal(1, closing);
         Assert.Equal(0, closed);
         Assert.Same(fixture.Manager.Layout, tool.Root);
         cancel = false;
-        host.Close();
+        ((LayoutAnchorableFloatingWindowControl)host).CloseWindowCommand.Execute(null);
         Assert.False(host.IsVisible);
         Assert.Equal(2, closing);
         Assert.Equal(1, closed);
@@ -109,7 +106,7 @@ public class FloatingCloseTests
     }
 
     [AvaloniaFact]
-    public void Native_Window_Veto_Precedes_Content_Closing_And_Hiding_Can_Also_Be_Canceled()
+    public void Tool_Hiding_Precedes_Window_Veto_And_Has_Its_Own_Cancellation()
     {
         using HostedSources fixture = new();
         LayoutAnchorable tool = Assert.Single(fixture.Manager.Layout.Descendents().OfType<LayoutAnchorable>());
@@ -123,15 +120,15 @@ public class FloatingCloseTests
         host.Close();
         Assert.True(host.IsVisible);
         Assert.Same(fixture.Manager.Layout, tool.Root);
-        Assert.Equal(0, hiding);
+        Assert.Equal(1, hiding);
         fixture.Manager.DockFactory.WindowClosing -= cancelWindow;
         host.Close();
         Assert.True(host.IsVisible);
-        Assert.Equal(1, hiding);
+        Assert.Equal(2, hiding);
         cancelHide = false;
         host.Close();
         Assert.False(host.IsVisible);
-        Assert.Equal(2, hiding);
+        Assert.Equal(3, hiding);
         Assert.Same(tool, Assert.Single(fixture.Manager.Layout.Hidden));
     }
 
@@ -150,14 +147,14 @@ public class FloatingCloseTests
         second.Closed += (_, _) => secondClosed++;
         bool cancel = true;
         first.Closing += (_, args) => args.Cancel = cancel;
-        host.Close();
+        ((LayoutAnchorableFloatingWindowControl)host).CloseWindowCommand.Execute(null);
         Assert.True(host.IsVisible);
         Assert.Same(first, Assert.Single(pane.Children));
         Assert.Same(fixture.Manager.Layout, first.Root);
         Assert.Null(second.Parent);
         Assert.Equal(1, secondClosed);
         cancel = false;
-        host.Close();
+        ((LayoutAnchorableFloatingWindowControl)host).CloseWindowCommand.Execute(null);
         Assert.False(host.IsVisible);
         Assert.Empty(fixture.Manager.Layout.FloatingWindows);
         Assert.Equal(1, secondClosed);

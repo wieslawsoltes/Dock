@@ -9,11 +9,11 @@ using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
 
-// Keep native window vetoes first, then let the compatibility layer close or
-// hide content before the native host can detach the floating layout.
+// AvalonDock closes compatible hosts independently of their layout contents.
+// Application-provided plain Dock hosts retain the native close/hide adapter.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement, IDockDropPolicy dropPolicy,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy, IDockSplitPolicy, IDockOuterSplitPolicy
+    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockWindowClosePolicy, IDockItemDragPolicy, IDockDropPolicy, IDockSplitPolicy, IDockOuterSplitPolicy
 {
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
@@ -22,6 +22,8 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     internal IDockWindow? RequestedHostWindow { get; private set; }
     internal event Action? SettingFocus;
     internal event Action<IDock>? FocusSet;
+
+    public bool PreserveLayoutOnHostClose(IDockWindow window) => window.Host is LayoutFloatingWindowControl;
 
     bool IDockDropPolicy.CanDrop(IDockable source, IDockable target, DockOperation operation) =>
         dropPolicy.CanDrop(source, target, operation);
@@ -152,7 +154,7 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         bool allowed;
         try { allowed = base.OnWindowClosing(window); }
         finally { _evaluatingClose = previous; }
-        return allowed && (window is null || closeWindow(window));
+        return allowed && (window is null || PreserveLayoutOnHostClose(window) || closeWindow(window));
     }
 
     public override void CloseWindow(IDockWindow window)

@@ -351,7 +351,7 @@ public class LayoutContentHookTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Floating_Host_Closure_Uses_The_Derived_Content_Hooks(bool tools)
+    public void Floating_Content_Command_Uses_The_Derived_Content_Hooks(bool tools)
     {
         (LayoutContent content, Probe probe) = CreateContent(tools);
         LayoutDocumentPane pane = new(content);
@@ -367,11 +367,11 @@ public class LayoutContentHookTests
             probe.CancelClose = true;
             probe.Closed = () => { Assert.Null(content.Parent); Assert.Null(content.Root); };
 
-            host.Close();
+            manager.GetLayoutItemFromModel(content)!.CloseCommand!.Execute(null);
             Assert.True(host.IsVisible);
             Assert.DoesNotContain("closed:hook", probe.Trace);
             probe.CancelClose = false;
-            host.Close();
+            manager.GetLayoutItemFromModel(content)!.CloseCommand!.Execute(null);
 
             Assert.False(host.IsVisible);
             Assert.Null(content.Parent);

@@ -1752,7 +1752,9 @@ non-Windows or non-native host. Custom layout-item menus still take precedence.
 Headless tests cover message policy, coordinates, override dispatch, and closing
 lifecycle. Windows 11 ARM64 desktop checks exercise real window handles and
 callback results, registration across hide/show, custom/canceled menus, native
-system-menu display, close vetoes, document cleanup, and tool hiding/restoration.
+system-menu display, close vetoes, and tool hiding/restoration. Those earlier
+desktop checks predate the corrected host/content-close distinction below;
+the new close policy has WPF-reference and Avalonia Headless coverage.
 Selecting native menu items through real pointer/keyboard input and broader
 desktop dragging, resizing, and focus validation remain open.
 
@@ -1861,12 +1863,26 @@ binding scope's data context:
 Enablement follows membership, capabilities, command replacement, and application
 `CanExecuteChanged` notifications. Execution snapshots the contents so a command
 can remove its own tool; subsequent tools still use their current commands.
-Content closing/hiding cancellation is preserved. Native window-close requests
-check the factory veto first, then use the current close commands with a null
-parameter, falling back to hide when the tool group cannot close. A command that
-keeps content in place keeps the native window open. The protected `CanClose`,
-`CanHide`, and `DoHide` hooks participate in this path. Closed hosts release their
-command subscriptions without disposing application commands.
+Content closing/hiding cancellation is preserved by those commands.
+`Window.Close()` follows a separate WPF contract: it checks the protected
+`CanClose` hook, which consults current commands without executing them. If close
+is unavailable, it checks `CanHide`, calls `DoHide` when allowed, and marks the
+window close canceled. Hiding therefore precedes the public `Closing` event;
+cancel hiding through the content's `Hiding` event. A `Closing` subscriber can
+change the cancellation result before Dock's factory veto is evaluated.
+
+An eligible `Window.Close()` closes only the host and preserves its floating model
+and content. It raises no content `Closing`/`Closed` events. To remove content, use
+`LayoutContent.Close()`, the layout item's `CloseCommand`, or the tool host's
+`CloseWindowCommand`. Unloading the manager also preserves models; successful
+layout replacement detaches the old floating models without closing their content.
+Closed hosts release command subscriptions without disposing application commands.
+
+Dock's optional `IDockWindowClosePolicy` lets `LayoutFactory` preserve a compatible
+host's layout while retaining window cancellation and closed notifications. It
+bypasses native content-close commands, releases the old host, and allows a new
+host when the preserved layout is presented again. Ordinary Dock factories keep
+their existing behavior.
 
 Native `Closing` and factory `WindowClosing` vetoes also preserve hosts during
 internal cleanup. The host keeps its native model link, tracking, and manager
@@ -1932,9 +1948,13 @@ when `CanResize` is false or the host is maximized/fullscreen. Zero removes the
 adapter's area for that edge; platform-owned system decorations are independent.
 If you replace the floating window template, include your own resize hit areas.
 
-The floating-control surface is still being completed: exact close-event ordering,
-cancellation during manager layout replacement/view unload,
-and remaining protected/platform hooks are tracked in the compatibility checklist.
+The WPF reference probe records 168 floating-close observations. Regression tests
+compare all 48 protected-hook cases and initial/final states for 16 actual-host
+scenarios. Internal dispatcher timing and canceled model/manager cleanup remain
+open: WPF can retain a document root after `Closed` or leave a closed tool host in
+its manager collection. Dock currently performs cleanup synchronously and keeps
+canceled cleanup hosts registered. These differences and remaining platform hooks
+are tracked in the compatibility checklist.
 
 ## Inspect floating docking overlays
 
@@ -2415,6 +2435,8 @@ flowchart TB
     Hosts --> Manager
     Hosts --> Items
     Hosts --> Caption["Platform caption and closing hooks"]
+    Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve layout when closing a compatible host"]
+    Hosts --> ClosePolicy
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
     SystemMenu -->|Native window commands| Hosts
     Models --> Controls
@@ -2465,7 +2487,8 @@ capabilities and return positions, then delegates actual movement to Dock.
 `LayoutFloatingWindowPresenter`, the host factory, and scoped templates manage
 floating presentation and preserve the manager's template lookup scope.
 Window command adapters observe the current item containers and delegate to
-their commands; native factory vetoes still precede content close/hide requests.
+their commands. Host closure uses `IDockWindowClosePolicy` to preserve content;
+the compatibility hooks handle capability and hide checks before `Closing`.
 The optional `IDockWindowHostFactory` supplies the model at initialization and
 when a host is recreated. `LayoutFactory` preserves the native ID-based and
 application locators while making that model available to the manager's host

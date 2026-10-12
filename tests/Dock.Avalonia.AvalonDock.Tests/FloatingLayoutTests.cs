@@ -303,7 +303,7 @@ public class FloatingLayoutTests
             Assert.False(oldHost.IsVisible);
             Assert.Same(document, oldFloating.RootDocument);
             Assert.Null(previous.Manager);
-            Assert.Same(previous, document.Root);
+            Assert.Null(document.Root);
             Assert.True(Assert.IsAssignableFrom<HostWindow>(newFloating.DockWindow.Host).IsVisible);
 
             LayoutAnchorableFloatingWindow added = new()

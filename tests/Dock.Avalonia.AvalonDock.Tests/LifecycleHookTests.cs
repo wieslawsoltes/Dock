@@ -94,7 +94,7 @@ public class LifecycleHookTests
     [InlineData(1)]
     [InlineData(2)]
     [InlineData(3)]
-    public void Hook_Event_Factory_And_Content_Vetoes_Preserve_The_Floating_Document(int stage)
+    public void Window_Vetoes_Are_Independent_Of_Content_Closing_Cancellation(int stage)
     {
         using Workspace workspace = new();
         ProbeWindow host = workspace.Float();
@@ -107,6 +107,17 @@ public class LifecycleHookTests
         workspace.Document.Closing += (_, args) => { contentEvents++; if (stage == 3 && veto) args.Cancel = true; };
         workspace.Document.Closed += (_, _) => closed++;
         host.Close();
+        if (stage == 3)
+        {
+            Assert.False(host.IsVisible);
+            Assert.False(host.CanceledAfterBase);
+            Assert.Same(workspace.Manager.Layout, workspace.Document.Root);
+            Assert.Equal(1, windowEvents);
+            Assert.Equal(1, factoryEvents);
+            Assert.Equal(0, contentEvents);
+            Assert.Equal(0, closed);
+            return;
+        }
         Assert.True(host.IsVisible);
         Assert.True(host.CanceledAfterBase);
         Assert.Same(host, model.DockWindow.Host);
@@ -114,15 +125,15 @@ public class LifecycleHookTests
         Assert.Same(host, Assert.Single(workspace.Manager.FloatingWindows));
         Assert.Equal(1, windowEvents);
         Assert.Equal(stage < 2 ? 0 : 1, factoryEvents);
-        Assert.Equal(stage < 3 ? 0 : 1, contentEvents);
+        Assert.Equal(0, contentEvents);
         Assert.Equal(0, closed);
         veto = false; host.CancelClose = false;
         host.Close();
         Assert.False(host.IsVisible);
-        Assert.Null(workspace.Document.Root);
+        Assert.Same(workspace.Manager.Layout, workspace.Document.Root);
         Assert.Empty(workspace.Manager.FloatingWindows);
-        Assert.Empty(workspace.Manager.Layout.FloatingWindows);
-        Assert.Equal(1, closed);
+        Assert.Same(model, Assert.Single(workspace.Manager.Layout.FloatingWindows));
+        Assert.Equal(0, closed);
     }
 
     [AvaloniaTheory]
@@ -174,8 +185,8 @@ public class LifecycleHookTests
         host.ThrowOnClose = true;
         Assert.Throws<InvalidOperationException>(() => host.Close());
         Assert.False(host.IsVisible);
-        Assert.Null(workspace.Document.Root);
-        Assert.Empty(workspace.Manager.Layout.FloatingWindows);
+        Assert.Same(workspace.Manager.Layout, workspace.Document.Root);
+        Assert.Single(workspace.Manager.Layout.FloatingWindows);
         Assert.Empty(workspace.Manager.FloatingWindows);
         host.ThrowOnClose = false;
     }
@@ -199,6 +210,7 @@ public class LifecycleHookTests
         public override ILayoutElement Model { get; } = model;
         public int BclCalls { get; private set; }
         public bool CancelClose { get; set; }
+        protected override bool CanClose(object? parameter = null) => true;
         protected override void OnClosing(CancelEventArgs e)
         {
             BclCalls++; e.Cancel |= CancelClose; base.OnClosing(e);

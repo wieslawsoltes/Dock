@@ -58,6 +58,7 @@ internal static class LifecycleProbe
         public int Initializations { get; private set; }
         public bool CancelClose { get; set; }
         public CancelEventArgs? ClosingArguments { get; private set; }
+        protected override bool CanClose(object? parameter = null) => true;
         protected override void OnInitialized(EventArgs e) { Initializations++; base.OnInitialized(e); }
         protected override void OnClosing(CancelEventArgs e)
         {

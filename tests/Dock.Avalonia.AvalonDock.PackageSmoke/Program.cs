@@ -53,6 +53,7 @@ PackageConsumer.LocalizationProbe.Verify();
 PackageConsumer.ThemeLifetimeProbe.Verify();
 PackageConsumer.OverlayProbe.Verify();
 PackageConsumer.LifecycleProbe.Verify();
+PackageConsumer.FloatingCloseProbe.Verify();
 PackageConsumer.DestinationProbe.Verify();
 PackageConsumer.SerializationProbe.Verify();
 PackageConsumer.OperationProbe.Verify();
@@ -259,9 +260,9 @@ Dispatcher.UIThread.RunJobs();
 AssertFloatingSourceTemplate(manager, documents[0]);
 EventHandler<CancelEventArgs> cancelClose = (_, args) => args.Cancel = true;
 fromSource.Closing += cancelClose;
-sourceHost.Close();
+sourceItem.CloseCommand!.Execute(null);
 if (!sourceHost.IsVisible || !ReferenceEquals(fromSource.Root, manager.Layout))
-    throw new Exception("The native host ignored content closing cancellation.");
+    throw new Exception("The packaged item command ignored content closing cancellation.");
 fromSource.Closing -= cancelClose;
 sourceItem.DockAsDocumentCommand!.Execute(null);
 if (fromSource.IsFloating || manager.Layout.FloatingWindows.Count != 0)

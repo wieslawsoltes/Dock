@@ -763,9 +763,10 @@ Call the base hooks to preserve this behavior.
 
 Floating controls also expose `OnClosing(CancelEventArgs)`. Native closure passes
 the same `WindowClosingEventArgs` instance to this hook and Avalonia's `Closing`
-event. Set `Cancel` before calling base to veto the close before Dock factory or
-content commands run. Calling base preserves native event, factory, and content
-cancellation; the Avalonia `OnClosing(WindowClosingEventArgs)` overload remains
+event. Calling base checks close/hide capabilities before raising that event;
+nonclosable tools can hide even when the window close was already canceled.
+The content's `Hiding` event cancels hiding. Native and factory window vetoes
+remain available; the Avalonia `OnClosing(WindowClosingEventArgs)` overload remains
 available. These hooks also run during internal layout cleanup.
 
 `OverlayWindow.OnClosing(CancelEventArgs)` shares Avalonia's native arguments
@@ -905,12 +906,25 @@ their layout. Check `CanExecute(parameter)` before calling `Execute(parameter)`;
 the parameter is passed to each current item command. Compiled bindings can use
 `x:DataType="LayoutAnchorableFloatingWindowControl"` with the host as their data
 context. Enablement follows tool capabilities, membership, and command changes.
-Native window-close requests respect factory vetoes and use those item commands
-with a null parameter, falling back to hiding when closing is disabled. Content
-cancellation keeps the remaining tools open. Closing the host releases command
-subscriptions while preserving application command ownership. Exact close-event
-ordering, cancellation during manager layout replacement/view
-unload, and remaining floating-control hooks are still open.
+Those commands honor content cancellation. `Window.Close()` checks current close
+commands without executing them: an eligible host closes while its floating model
+and content remain in the layout, without content `Closing`/`Closed` events.
+Use `LayoutContent.Close()` or the item/window commands to remove content.
+For nonclosable tools, `CanHide`/`DoHide` run before the canceled window `Closing`
+event; cancel the content's `Hiding` event to prevent hiding. A window subscriber
+can change the cancellation result before the factory veto runs.
+
+Successful layout replacement detaches the old floating models without content
+closure. View unload preserves them, and reattachment creates fresh hosts.
+Dock's optional `IDockWindowClosePolicy` separates host closure from native layout
+cleanup for compatible hosts; ordinary Dock factories keep their existing behavior.
+Closed hosts release command subscriptions without disposing application commands.
+The WPF reference probe records 168 close observations. Tests compare 48 protected
+hook cases and initial/final states for 16 host scenarios. Internal dispatcher
+timing and canceled cleanup still differ: WPF can retain a document root after
+`Closed` or retain a closed tool host in its manager collection. The adapter keeps
+synchronous cleanup and registrations for canceled cleanup hosts. Remaining
+floating-control/platform behavior stays open.
 
 Canceling native window closing or the factory's `WindowClosing` event keeps a
 cleanup request's host tracked, registered, and linked to its floating model.
@@ -1142,6 +1156,8 @@ flowchart TB
     Hosts --> Api
     Hosts --> Items
     Hosts --> Caption["Platform caption and closing hooks"]
+    Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve the layout when its host closes"]
+    Hosts --> ClosePolicy
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
     SystemMenu -->|Native window commands| Hosts
     Api --> View

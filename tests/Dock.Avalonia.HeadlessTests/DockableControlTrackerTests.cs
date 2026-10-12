@@ -7,6 +7,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -85,6 +86,60 @@ public class DockableControlTrackerTests
             Assert.Empty(registry);
         }
         finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public void Replacing_A_Model_Publishes_The_Current_Tracked_Bounds_Immediately()
+    {
+        Tool first = new(), second = new();
+        TrackingGrid grid = new() { DataContext = first, Width = 120, Height = 80 };
+        using DockableControlTracker tracker = new(grid, TrackingMode.Visible);
+        Window window = new() { Content = grid, Width = 300, Height = 200 };
+        try
+        {
+            window.Show(); Update(window);
+            grid.DataContext = second;
+            first.GetVisibleBounds(out double x, out double y, out double width, out double height);
+            second.GetVisibleBounds(out double nextX, out double nextY, out double nextWidth, out double nextHeight);
+            Assert.Equal((x, y, width, height), (nextX, nextY, nextWidth, nextHeight));
+            Assert.Equal(120, nextWidth);
+            Assert.Equal(80, nextHeight);
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(TrackingMode.Visible)]
+    [InlineData(TrackingMode.Pinned)]
+    [InlineData(TrackingMode.Tab)]
+    public void Child_Offsets_Are_Applied_Once_In_Native_Bounds(TrackingMode mode)
+    {
+        Tool model = new();
+        TrackingGrid grid = new() { DataContext = model, Width = 120, Height = 80 };
+        Canvas.SetLeft(grid, 40); Canvas.SetTop(grid, 50);
+        Canvas parent = new() { Children = { grid } };
+        using DockableControlTracker tracker = new(grid, mode);
+        Window window = new() { Content = parent, Width = 400, Height = 300 };
+        try
+        {
+            window.Show(); Update(window);
+            AssertBounds();
+            Canvas.SetLeft(grid, 65); Canvas.SetTop(grid, 75);
+            Update(window);
+            AssertBounds();
+        }
+        finally { window.Close(); }
+
+        void AssertBounds()
+        {
+            double x, y, width, height;
+            if (mode == TrackingMode.Pinned) model.GetPinnedBounds(out x, out y, out width, out height);
+            else if (mode == TrackingMode.Tab) model.GetTabBounds(out x, out y, out width, out height);
+            else model.GetVisibleBounds(out x, out y, out width, out height);
+            Point origin = grid.TranslatePoint(default, (Visual)grid.GetVisualRoot()!)!.Value;
+            Assert.Equal(origin.X, x); Assert.Equal(origin.Y, y);
+            Assert.Equal(120, width); Assert.Equal(80, height);
+        }
     }
 
     [AvaloniaFact]

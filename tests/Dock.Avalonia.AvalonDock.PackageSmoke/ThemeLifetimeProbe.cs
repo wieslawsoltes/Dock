@@ -17,7 +17,9 @@ internal static class ThemeLifetimeProbe
             DockingManager manager = new() { Theme = new Dictionary(new() { ["ThemeMarker"] = "previous" }) };
             LayoutDocument document = new() { Title = "Theme lifetime", Content = "Document" };
             manager.Layout = new() { RootPanel = new(new LayoutDocumentPane(document)) };
-            Window owner = new() { Width = 800, Height = 500, Content = manager };
+            Window owner = new() { Width = 800, Height = 500 };
+            owner.Styles.Add(new AvalonDockTheme());
+            owner.Content = manager;
             owner.Show();
             Dispatcher.UIThread.RunJobs();
             document.Float();

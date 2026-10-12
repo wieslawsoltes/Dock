@@ -55,7 +55,9 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         ArgumentNullException.ThrowIfNull(model);
         _floatingModel = model as LayoutFloatingWindow;
-        if (_floatingModel is not null) _floatingModel.PropertyChanged += FloatingModelChanged;
+        if (_floatingModel is LayoutDocumentFloatingWindow documentModel)
+            documentModel.RootDocumentChanged += FloatingDocumentChanged;
+        else if (_floatingModel is not null) _floatingModel.PropertyChanged += FloatingModelChanged;
         IsContentImmutable = isContentImmutable;
         Classes.Add("avalondock");
         if (model is LayoutDocumentFloatingWindow document)
@@ -123,8 +125,23 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     private void FloatingModelChanged(object? sender, PropertyChangedEventArgs args)
     {
-        if (args.PropertyName == nameof(LayoutFloatingWindow.IsValid) && _floatingModel is { IsValid: false })
+        if (_floatingModel is LayoutAnchorableFloatingWindow tool)
+        {
+            if (args.PropertyName == nameof(LayoutAnchorableFloatingWindow.RootPanel) && tool.RootPanel is null)
+                RequestCloseFromLayout();
+            else if (args.PropertyName == nameof(LayoutAnchorableFloatingWindow.IsVisible))
+            {
+                if (tool.IsVisible) RestoreForLayout();
+                else HideForLayout();
+            }
+        }
+        else if (args.PropertyName == nameof(LayoutFloatingWindow.IsValid) && _floatingModel is { IsValid: false })
             RequestCloseFromLayout();
+    }
+
+    private void FloatingDocumentChanged(object? sender, EventArgs args)
+    {
+        if (_floatingModel is LayoutDocumentFloatingWindow { RootDocument: null }) RequestCloseFromLayout();
     }
 
     internal void HideForLayout()
@@ -310,7 +327,9 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         ILayoutRoot? root = Model.Root;
         HasClosed = true;
-        if (_floatingModel is not null) _floatingModel.PropertyChanged -= FloatingModelChanged;
+        if (_floatingModel is LayoutDocumentFloatingWindow documentModel)
+            documentModel.RootDocumentChanged -= FloatingDocumentChanged;
+        else if (_floatingModel is not null) _floatingModel.PropertyChanged -= FloatingModelChanged;
         ((INotifyCollectionChanged)Classes).CollectionChanged -= NativeDragChanged;
         try
         {

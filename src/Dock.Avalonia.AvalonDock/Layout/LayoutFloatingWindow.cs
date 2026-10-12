@@ -46,6 +46,7 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
     public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteFloatingContents(this, writer);
 
     internal RootDock NativeRoot => (RootDock)DockModel;
+    internal virtual bool OwnsNativeChild(IDockable owner) => ReferenceEquals(owner, NativeRoot);
     internal void RefreshBounds() => _bounds.Refresh();
     internal void CopyBoundsFrom(LayoutFloatingWindow window)
     {

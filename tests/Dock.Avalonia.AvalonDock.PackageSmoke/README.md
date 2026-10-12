@@ -204,3 +204,8 @@ against the rendered native preview and its manager/window hierarchy.
 The theme lifetime probe closes a floating document while its previous resource
 provider is being removed and while a custom theme resolves the compiled generic
 URI. It checks that replacement and later themes leave the closed window detached.
+
+The floating-model probe derives document/tool models in this external assembly,
+suppresses child/visibility/all property notifications, and checks immediate and
+deferred host state. It also verifies retained public parents and native adoption
+of removed documents and tool root panels through the packaged Dock factory.

@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Avalonia.Controls;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using AvalonDock;
@@ -234,6 +236,33 @@ public class DeferredFloatingCloseTests
             Assert.True(IsClosed(host));
         }
         finally { host.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Retaining_A_Floating_Model_Does_Not_Retain_Its_Closed_Host(bool tools)
+    {
+        var (model, host) = CreateClosedHost(tools);
+        for (int i = 0; i < 8; i++)
+        {
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            Pump();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        Assert.False(host.IsAlive);
+        GC.KeepAlive(model);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static (LayoutFloatingWindow Model, WeakReference Host) CreateClosedHost(bool tools)
+    {
+        using Workspace workspace = new(tools);
+        workspace.Host.Close();
+        Assert.True(IsClosed(workspace.Host));
+        Assert.Null(workspace.Model.DockModel.Parent);
+        return (workspace.Model, new(workspace.Host));
     }
 
     private static bool IsClosed(LayoutFloatingWindowControl host) => ((IHostWindowCloseState)host).IsClosed;

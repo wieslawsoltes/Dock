@@ -1967,6 +1967,20 @@ Additional regression tests cover explicit retries, native cleanup, fast
 reattachment, and replacement hosts. Remaining platform hooks and behavior outside
 these recorded scenarios stay open in the compatibility checklist.
 
+Another 180 WPF observations cover direct child removal/replacement and model
+subclasses suppressing property notifications. Document windows queue closure
+from `RootDocumentChanged` when the document becomes null. Tool windows observe
+`RootPanel` for closure and `IsVisible` for visibility. Suppressing a tool's
+property notification affects its host; suppressing document property
+notifications does not suppress the explicit document event. Clearing and
+restoring a child before dispatch leaves an already queued close in place.
+
+Removed or replaced root documents and tool root panels retain their public
+floating parent until adopted by another container. Their native Dock owners
+detach immediately, and both public and native collection insertion replace
+the retained parent, including a move to another layout. Retaining a model
+after its host closes does not retain that host through notification handlers.
+
 ## Inspect floating docking overlays
 
 Enable Dock's floating adorner mode during application setup:
@@ -2453,6 +2467,8 @@ flowchart TB
     Hosts --> Manager
     Hosts --> Items
     Hosts --> Caption["Platform caption and closing hooks"]
+    Layout --> ModelEvents["RootDocumentChanged / RootPanel / IsVisible<br/>Deferred closure and visibility notifications"]
+    ModelEvents --> Hosts
     Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve layout when closing a compatible host"]
     Hosts --> ClosePolicy
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]

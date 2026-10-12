@@ -52,3 +52,20 @@ and canceled unloads clearing that collection. `DeferredFloatingCloseTests` also
 checks native host/factory cleanup, explicit retries, reattachment, replacement
 hosts, and document adoption. These fixtures cover the recorded scenarios;
 remaining platform and floating-window behavior still require a broader audit.
+
+The floating-model probe measures replacement and notification overrides:
+
+```powershell
+dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock.WpfTemplateOracle.dll --floating-models wpf-floating-models.tsv
+```
+
+`Assets/WpfFloatingModels.tsv` in the compatibility tests records all 180
+observations: before/synchronous/dispatched states for 60 scenarios. Document and
+tool windows are cleared, replaced, or cleared and restored before dispatch,
+with cancellation and overrides suppressing child, validity, visibility, or all
+property notifications. `FloatingModelReferenceTests` compares every row,
+including old/new parent and root retention. Document hosts observe the explicit
+`RootDocumentChanged` event; tool hosts observe `RootPanel` and `IsVisible`
+property notifications. The native adoption and retained-model lifetime tests
+also verify that those compatibility rules do not leave stale native ownership
+or retain closed hosts.

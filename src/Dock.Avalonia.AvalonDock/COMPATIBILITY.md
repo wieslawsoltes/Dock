@@ -757,6 +757,14 @@ must follow the same separate-PR, merge-to-`master`, then reintegrate workflow.
   public host registration even if closing is canceled, and reattachment restores
   a surviving host. Additional tests cover retries, old queued hosts, replacement
   hosts, native registration cleanup, and public/native document adoption.
+- Floating model overrides match all 180 additional WPF observations: 60
+  document/tool scenarios with child removal, replacement, clear/restore before
+  dispatch, cancellation, and suppressed property notifications. Document hosts
+  observe `RootDocumentChanged`; tool hosts observe `RootPanel` and `IsVisible`
+  property notifications. Removed root panels retain their public floating parent
+  while detaching their native owner, and both public/native adoption replace the
+  retained parent across layouts. Closed hosts unsubscribe from retained models.
+  These rules use the existing native owner-change and host-lifetime contracts.
 - 1776 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
   for real image decoding and HTTP/HTTPS transport contracts (1794 total).

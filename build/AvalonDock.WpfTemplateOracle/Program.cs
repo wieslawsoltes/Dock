@@ -14,6 +14,11 @@ internal static class Program
             FloatingCloseProbe.Run(output);
             return;
         }
+        if (args is ["--floating-models", string modelOutput])
+        {
+            FloatingModelProbe.Run(modelOutput);
+            return;
+        }
         List<string> rows = new() { "property\tscenario\tstage\ttemplate\tselector\tbound\tevents" };
         Spec[] specs =
         {

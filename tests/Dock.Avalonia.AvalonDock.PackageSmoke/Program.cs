@@ -54,6 +54,7 @@ PackageConsumer.ThemeLifetimeProbe.Verify();
 PackageConsumer.OverlayProbe.Verify();
 PackageConsumer.LifecycleProbe.Verify();
 PackageConsumer.FloatingCloseProbe.Verify();
+PackageConsumer.FloatingModelProbe.Verify();
 PackageConsumer.DestinationProbe.Verify();
 PackageConsumer.SerializationProbe.Verify();
 PackageConsumer.OperationProbe.Verify();

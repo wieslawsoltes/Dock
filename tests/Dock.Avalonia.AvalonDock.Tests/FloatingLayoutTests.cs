@@ -156,10 +156,12 @@ public class FloatingLayoutTests
 
         LayoutAnchorablePaneGroup replacement = new(new LayoutAnchorablePane(new LayoutAnchorable()));
         window.ReplaceChild(panel, replacement);
-        Assert.Null(panel.Parent);
+        Assert.Same(window, panel.Parent);
+        Assert.Null(panel.DockModel.Owner);
         Assert.Same(window, replacement.Parent);
         window.RemoveChild(replacement);
-        Assert.Null(replacement.Parent);
+        Assert.Same(window, replacement.Parent);
+        Assert.Null(replacement.DockModel.Owner);
         Assert.False(window.IsValid);
         Assert.False(window.IsVisible);
         Assert.Empty(window.Children);

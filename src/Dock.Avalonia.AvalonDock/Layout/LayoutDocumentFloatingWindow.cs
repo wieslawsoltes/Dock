@@ -37,6 +37,8 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
     }
 
     /// <summary>Gets or sets the document displayed in this window.</summary>
+    /// <remarks>A removed or replaced document retains its public floating parent until another
+    /// container adopts it. Its native Dock owner is detached immediately.</remarks>
     [Content]
     public LayoutDocument? RootDocument
     {
@@ -82,9 +84,11 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
         if (ReferenceEquals(oldElement, RootDocument)) RootDocument = (LayoutDocument)newElement;
     }
     /// <summary>Occurs when the root document changes.</summary>
+    /// <remarks>Floating hosts use this event for deferred closure when the document becomes null.
+    /// Overriding the property-notification hook does not suppress this event.</remarks>
     public event EventHandler? RootDocumentChanged;
 
-    internal bool OwnsNativeDocument(IDockable owner) => ReferenceEquals(owner, _pane);
+    internal override bool OwnsNativeChild(IDockable owner) => ReferenceEquals(owner, _pane);
 
     /// <inheritdoc/>
     public override void ReadXml(XmlReader reader)

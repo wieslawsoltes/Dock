@@ -21,8 +21,9 @@ internal sealed class LayoutFloatingWindowPresenter
         if (!ReferenceEquals(window.Root, _layout) || _layout is null) return;
         if (!window.IsValid)
         {
-            if (window.DockWindow.Host is LayoutFloatingWindowControl host) host.RequestCloseFromLayout();
-            else window.CloseHost();
+            // Compatible hosts observe their model's public notifications.
+            // A model override may intentionally suppress those notifications.
+            if (window.DockWindow.Host is not LayoutFloatingWindowControl) window.CloseHost();
         }
         else if (window is LayoutAnchorableFloatingWindow { IsVisible: false })
         {

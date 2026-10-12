@@ -933,6 +933,17 @@ closure, as in WPF. The closed host releases native tracking and command
 subscriptions. The public collection therefore does not imply that every host
 is still open.
 
+Floating document hosts queue closure from `RootDocumentChanged` when the
+document becomes null. Tool hosts use the `RootPanel` property notification;
+their visibility follows `IsVisible` property notifications. A model subclass
+that suppresses those property notifications therefore affects tool closure and
+visibility, while the document's explicit event still fires. Clearing and
+restoring a child before dispatch does not cancel an already queued close.
+Replacing a document or tool root panel retains the old child's public parent
+until another container adopts it; the native owner detaches immediately.
+All 180 WPF floating-model observations are compared, including notification
+overrides, replacement, cancellation, and retained parent/root values.
+
 Canceling native window closing or the factory's `WindowClosing` event keeps a
 host alive and natively tracked. Its public registration follows the operation
 described above. Explicit removal or replacement of an attached document or
@@ -1172,6 +1183,8 @@ flowchart TB
     Hosts --> Api
     Hosts --> Items
     Hosts --> Caption["Platform caption and closing hooks"]
+    Bridge --> ModelEvents["RootDocumentChanged / RootPanel / IsVisible<br/>Deferred closure and visibility notifications"]
+    ModelEvents --> Hosts
     Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve the layout when its host closes"]
     Hosts --> ClosePolicy
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]

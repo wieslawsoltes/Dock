@@ -35,6 +35,8 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
         Reconnect();
     }
     /// <summary>Gets or sets the root split group.</summary>
+    /// <remarks>A removed or replaced group retains its public floating parent until another
+    /// container adopts it. Its native Dock owner is detached immediately.</remarks>
     [Content]
     public LayoutAnchorablePaneGroup? RootPanel
     {
@@ -45,7 +47,11 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
             _changing = true;
             try
             {
-                if (_panel is { } previous) previous.DockModel.Owner = null;
+                if (_panel is { } previous)
+                {
+                    previous.SetProjectedParent(this);
+                    previous.DockModel.Owner = null;
+                }
                 NativeRoot.VisibleDockables!.Clear();
                 if (value is not null)
                 {
@@ -129,7 +135,11 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
         if (ReferenceEquals(_panel, next)) return;
         if (_panel is not null) _panel.ChildrenTreeChanged -= TreeChanged;
         _panel = next;
-        if (next is not null) next.ChildrenTreeChanged += TreeChanged;
+        if (next is not null)
+        {
+            next.SetProjectedParent(this);
+            next.ChildrenTreeChanged += TreeChanged;
+        }
         RaisePropertyChanged(nameof(RootPanel));
         RaisePropertyChanged(nameof(Children));
         RaisePropertyChanged(nameof(ChildrenCount));
@@ -148,7 +158,10 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
         if (SetField(ref _visible, visible, nameof(IsVisible)))
         {
             IsVisibleChanged?.Invoke(this, EventArgs.Empty);
-            (Root as LayoutRoot)?.Manager?.PresentFloatingWindow(this);
+            // Existing compatible hosts follow PropertyChanged, like WPF's
+            // visibility binding, including a subclass suppressing that event.
+            if (DockWindow.Host is not Controls.LayoutFloatingWindowControl)
+                (Root as LayoutRoot)?.Manager?.PresentFloatingWindow(this);
         }
         (Root as LayoutRoot)?.NotifyUpdated();
     }

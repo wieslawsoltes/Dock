@@ -210,6 +210,35 @@ public class LayoutParentPolicyTests
         Assert.True(changes > 0);
     }
 
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void A_Removed_Floating_Panel_Is_Adopted_By_Public_And_Native_Parents(bool native, bool otherRoot)
+    {
+        LayoutAnchorable tool = new();
+        LayoutAnchorablePaneGroup panel = new(new LayoutAnchorablePane(tool));
+        LayoutAnchorableFloatingWindow floating = new() { RootPanel = panel };
+        LayoutRoot originalRoot = new();
+        originalRoot.FloatingWindows.Add(floating);
+        floating.RootPanel = null;
+        Assert.Same(floating, panel.Parent);
+        Assert.Same(originalRoot, panel.Root);
+        Assert.Null(panel.DockModel.Owner);
+
+        LayoutRoot destination = otherRoot ? new() : originalRoot;
+        if (native) destination.DockFactory.AddDockable((IDock)destination.RootPanel.DockModel, panel.DockModel);
+        else destination.RootPanel.Children.Add(panel);
+
+        Assert.Same(destination.RootPanel, panel.Parent);
+        Assert.Same(destination.RootPanel.DockModel, panel.DockModel.Owner);
+        Assert.Same(destination, panel.Root);
+        Assert.Same(destination, tool.Root);
+        Assert.Contains(panel, destination.RootPanel.Children);
+        Assert.Empty(floating.Children);
+    }
+
     [AvaloniaFact]
     public void Empty_Document_Pane_Visibility_Depends_On_Its_Parent()
     {

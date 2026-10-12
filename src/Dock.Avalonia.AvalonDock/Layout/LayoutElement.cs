@@ -81,9 +81,9 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     private void OwnerChanging(object? sender, DockableOwnerChangingEventArgs args)
     {
         if (_settingParent != 0) return;
-        bool adoptingFloatingDocument = _projectedParent is LayoutDocumentFloatingWindow floating &&
-            args.NewOwner is { } owner && !floating.OwnsNativeDocument(owner);
-        if (_projectedParent is not null && !adoptingFloatingDocument) return;
+        bool adoptingFloatingChild = _projectedParent is LayoutFloatingWindow floating &&
+            args.NewOwner is { } owner && !floating.OwnsNativeChild(owner);
+        if (_projectedParent is not null && !adoptingFloatingChild) return;
         ILayoutContainer? previous = Parent;
         ILayoutRoot? previousRoot = Root;
         if (!IsHiddenNativeParent(args.NewOwner) && args.NewOwner?.Factory is LayoutFactory factory &&
@@ -95,7 +95,7 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         _changingRoot = previousRoot;
         _hasParentChange = true;
         NotifyParentChanging(previous, next);
-        if (adoptingFloatingDocument) _projectedParent = null;
+        if (adoptingFloatingChild) _projectedParent = null;
     }
 
     private void NotifyParentChanging(ILayoutContainer? previous, ILayoutContainer? next)

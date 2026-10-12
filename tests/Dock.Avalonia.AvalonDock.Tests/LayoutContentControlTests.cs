@@ -542,7 +542,9 @@ public class LayoutContentControlTests
         Dispatcher.UIThread.RunJobs();
     }
 
-    private static LayoutContent CreateModel(bool tool) => tool ? new LayoutAnchorable { CanClose = true } : new LayoutDocument();
+    private static LayoutContent CreateModel(bool tool) => tool
+        ? new LayoutAnchorable { CanClose = true, Content = new object() }
+        : new LayoutDocument { Content = new object() };
     private static TemplatedControl CreateControl(bool tool) => tool ? new LayoutAnchorableControl() : new LayoutDocumentControl();
     private static LayoutContent? Model(TemplatedControl control) => control is LayoutDocumentControl document ? document.Model : ((LayoutAnchorableControl)control).Model;
     private static LayoutItem? Item(TemplatedControl control) => control is LayoutDocumentControl document ? document.LayoutItem : ((LayoutAnchorableControl)control).LayoutItem;

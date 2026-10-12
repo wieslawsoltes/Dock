@@ -131,11 +131,11 @@ public class AutoHideOperationTests
     [InlineData(AnchorSide.Bottom, Orientation.Vertical)]
     public void A_Declared_Group_Creates_An_Edge_Pane_With_Upstream_Orientation_And_Minimums(AnchorSide side, Orientation orientation)
     {
-        LayoutDocument document = new();
-        LayoutAnchorablePane existing = new(new LayoutAnchorable());
+        LayoutDocument document = new() { Content = new object() };
+        LayoutAnchorablePane existing = new(new LayoutAnchorable { Content = new object() });
         LayoutPanel original = new() { Orientation = orientation, Children = { existing, new LayoutDocumentPane(document) } };
         DockingManager manager = new() { Layout = new() { RootPanel = original } };
-        LayoutAnchorable tool = new() { CanAutoHide = false, AutoHideMinWidth = 247, AutoHideMinHeight = 139 };
+        LayoutAnchorable tool = new() { Content = new object(), CanAutoHide = false, AutoHideMinWidth = 247, AutoHideMinHeight = 139 };
         LayoutAnchorGroup group = new();
         group.Children.Add(tool);
         Side(manager.Layout, side).Children.Add(group);

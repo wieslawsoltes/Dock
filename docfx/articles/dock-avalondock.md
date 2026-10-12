@@ -131,28 +131,56 @@ After deserialization, look up layout nodes again: the manager now owns a new
 layout tree, while content can retain its application identity.
 
 `manager.Layout.ActiveContent` is the public document or tool node, including
-nodes in floating windows. `manager.ActiveContent` exposes that node's `Content`
-and accepts either application content or a layout node when assigning it:
+nodes in floating windows. `manager.ActiveContent` retains an explicitly assigned
+object; activation from the layout publishes the layout node, as in WPF AvalonDock:
 
 ```csharp
 document.Float();
+manager.ActiveContent = document.Content; // Retains the application object.
 manager.Layout.ActiveContent = document;
 LayoutContent? activeNode = manager.Layout.ActiveContent;
-object? activeContent = manager.ActiveContent;
+object? applicationContent = activeNode?.Content;
 ```
 
 Activation through either property, `IsActive`, a container command, or the
-native Dock factory updates the same public state. Each native root retains
-its own focused item; floating content is never assigned as the primary root's
-focused item. Notifications follow native selection and activation so observers
-can inspect the completed state or activate a different item from a callback.
+native Dock factory uses the owning native Dock root. Each native root retains
+its own focused item. A layout assignment that does not change the active node
+does not republish the manager value. Replacing `Layout` also leaves the manager
+value intact until a subsequent activation change.
+
+Manager lookup uses the first matching item: an application's object matches
+`Content` by identity; a supplied layout node first uses its non-null `Content`,
+then its non-null `ContentId`, then an empty-content match. `ContentId` initially
+is null. Give distinct empty items distinct identifiers. Assigning null can
+activate the first empty item; it is not an unconditional deactivation operation.
+
+`ActiveContentProperty` supports styles and defaults to one-way binding. Specify
+`Mode=TwoWay` when layout activation should update a bound ViewModel. The protected
+`OnActiveContentChanged` hook runs after the layout update; its base implementation
+raises `ActiveContentChanged`. Source updates follow the binding's configured
+trigger, including explicit updates.
+
+The adapter stays reflection-free and retains these Avalonia property-system rules:
+
+| Operation | Avalonia adapter | WPF AvalonDock |
+| --- | --- | --- |
+| Assign a value over a one-way/default binding | Binding remains; later source changes still update the manager. | Assignment replaces the binding. |
+| Assign a value over a two-way binding | Binding remains and follows its source-update trigger. | Same behavior in the measured scenarios. |
+| `ClearValue` on a bound property | Binding remains; a two-way binding can publish the cleared value. | Binding is removed. |
+| Remove a style after layout activation used `SetCurrentValue` | The current override can remain. | The style's removal clears that value. |
+
+To remove a binding explicitly, dispose the subscription returned by `Bind`, or
+dispose `BindingOperations.GetBindingExpressionBase(manager,
+DockingManager.ActiveContentProperty)` before assigning a replacement. To discard a
+retained current-value override after removing a style, call `ClearValue`.
 
 `LastFocusedDocument` remembers the latest document or tool hosted in a document
 pane. Activating an ordinary tool preserves that value. The previous and new
 nodes notify `IsLastFocusedDocument`, and the root notifies `LastFocusedDocument`.
-Window deactivation retains the active-content history. Explicitly setting
-`ActiveContent` to `null` clears the active node and document history; removing
-nodes or replacing their layout clears references to the removed nodes.
+Window deactivation retains this history. The WPF notification order also permits
+reentrant callbacks to redirect activation while the outer transition still records
+its document history. Inspect the active node separately when redirecting focus
+from these callbacks.
 
 ## Select and reorder pane contents
 

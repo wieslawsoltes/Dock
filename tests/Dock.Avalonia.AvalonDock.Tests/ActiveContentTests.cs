@@ -23,17 +23,19 @@ public class ActiveContentTests
         workspace.Manager.ActiveContentChanged += (_, _) => changes.Add(workspace.Manager.ActiveContent);
 
         Activate(workspace, workspace.Floating, activation);
-        AssertActive(workspace, workspace.Floating);
+        AssertActive(workspace, workspace.Floating, payload: activation == "manager");
         Assert.Same(workspace.Docked.DockModel, workspace.NativeRoot.FocusedDockable);
         Assert.Same(workspace.Floating.DockModel, workspace.FloatingRoot.FocusedDockable);
-        Assert.Equal(new[] { workspace.Floating.Content }, changes);
+        Assert.Equal(new[] { activation == "manager" ? workspace.Floating.Content : workspace.Floating }, changes);
 
         Activate(workspace, workspace.Docked, activation);
-        AssertActive(workspace, workspace.Docked);
+        AssertActive(workspace, workspace.Docked, payload: activation == "manager");
         Assert.Same(workspace.Floating.DockModel, workspace.FloatingRoot.FocusedDockable);
         Activate(workspace, workspace.Floating, activation);
-        AssertActive(workspace, workspace.Floating);
-        Assert.Equal(new[] { workspace.Floating.Content, workspace.Docked.Content, workspace.Floating.Content }, changes);
+        AssertActive(workspace, workspace.Floating, payload: activation == "manager");
+        Assert.Equal(activation == "manager"
+            ? new[] { workspace.Floating.Content, workspace.Docked.Content, workspace.Floating.Content }
+            : new object[] { workspace.Floating, workspace.Docked, workspace.Floating }, changes);
     }
 
     [AvaloniaFact]
@@ -126,7 +128,7 @@ public class ActiveContentTests
 
         Activate(workspace, workspace.Floating, activation);
 
-        AssertActive(workspace, workspace.Docked);
+        AssertActive(workspace, workspace.Docked, history: workspace.Floating);
         Assert.Equal(new[] { workspace.Floating, workspace.Docked }, changes);
     }
 
@@ -153,7 +155,7 @@ public class ActiveContentTests
     public void Removing_The_Last_Document_Clears_Root_Activation_And_Document_History()
     {
         Workspace workspace = new();
-        LayoutAnchorable tool = new();
+        LayoutAnchorable tool = new() { Content = new object() };
         workspace.Root.RootPanel.Children.Add(new LayoutAnchorablePane(tool));
         tool.IsActive = true;
         ((LayoutDocumentPane)workspace.Docked.Parent!).Children.Remove(workspace.Docked);
@@ -182,7 +184,7 @@ public class ActiveContentTests
         Workspace workspace = new();
         workspace.FloatingRoot.FocusedDockable = workspace.Floating.DockModel;
         Assert.Same(workspace.Floating, workspace.Root.ActiveContent);
-        Assert.Same(workspace.Floating.Content, workspace.Manager.ActiveContent);
+        Assert.Same(workspace.Floating, workspace.Manager.ActiveContent);
         Assert.Same(workspace.Floating, workspace.Root.LastFocusedDocument);
         workspace.NativeRoot.FocusedDockable = null;
         Assert.Same(workspace.Floating, workspace.Root.ActiveContent);
@@ -202,7 +204,7 @@ public class ActiveContentTests
         workspace.Root.DockFactory.SetFocusedDockable(foreignPane, foreignDocument);
 
         Assert.Same(workspace.Docked, workspace.Root.ActiveContent);
-        Assert.Same(workspace.Docked.Content, workspace.Manager.ActiveContent);
+        Assert.Same(workspace.Docked, workspace.Manager.ActiveContent);
         Assert.Same(workspace.Docked, workspace.Root.LastFocusedDocument);
         Assert.Same(foreignDocument, foreignRoot.FocusedDockable);
     }
@@ -231,7 +233,8 @@ public class ActiveContentTests
         workspace.Root.ActiveContent = workspace.Floating;
 
         Assert.True(redirected);
-        AssertActive(workspace, workspace.Docked);
+        AssertActive(workspace, workspace.Docked, history: source == "next" ? workspace.Docked : workspace.Floating,
+            otherHistory: source == "next");
     }
 
     private static void Activate(Workspace workspace, LayoutContent content, string activation)
@@ -245,17 +248,19 @@ public class ActiveContentTests
         }
     }
 
-    private static void AssertActive(Workspace workspace, LayoutContent content)
+    private static void AssertActive(Workspace workspace, LayoutContent content, bool payload = false,
+        LayoutContent? history = null, bool otherHistory = false)
     {
         Assert.Same(content, workspace.Root.ActiveContent);
-        Assert.Same(content.Content, workspace.Manager.ActiveContent);
-        Assert.Same(content, workspace.Root.LastFocusedDocument);
+        Assert.Same(payload ? content.Content : content, workspace.Manager.ActiveContent);
+        history ??= content;
+        Assert.Same(history, workspace.Root.LastFocusedDocument);
         Assert.True(content.IsActive);
         Assert.True(content.IsSelected);
-        Assert.True(content.IsLastFocusedDocument);
+        Assert.Equal(ReferenceEquals(content, history), content.IsLastFocusedDocument);
         LayoutDocument other = ReferenceEquals(content, workspace.Docked) ? workspace.Floating : workspace.Docked;
         Assert.False(other.IsActive);
-        Assert.False(other.IsLastFocusedDocument);
+        Assert.Equal(otherHistory || ReferenceEquals(other, history), other.IsLastFocusedDocument);
     }
 
     private sealed class Workspace

@@ -129,9 +129,6 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Identifies the layout property.</summary>
     public static readonly DirectProperty<DockingManager, LayoutRoot> LayoutProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, LayoutRoot>(nameof(Layout), x => x.Layout, (x, v) => x.Layout = v);
-    /// <summary>Identifies the active content property.</summary>
-    public static readonly DirectProperty<DockingManager, object?> ActiveContentProperty =
-        AvaloniaProperty.RegisterDirect<DockingManager, object?>(nameof(ActiveContent), x => x.ActiveContent, (x, v) => x.ActiveContent = v, defaultBindingMode: BindingMode.TwoWay);
     /// <summary>Identifies the live root used by the control template.</summary>
     public static readonly DirectProperty<DockingManager, RootDock> DockLayoutProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, RootDock>(nameof(DockLayout), x => x.DockLayout);
@@ -152,7 +149,6 @@ public partial class DockingManager : TemplatedControl
         AvaloniaProperty.RegisterDirect<DockingManager, ILayoutUpdateStrategy?>(nameof(LayoutUpdateStrategy), x => x.LayoutUpdateStrategy, (x, value) => x.LayoutUpdateStrategy = value);
 
     private LayoutRoot _layout;
-    private object? _activeContent;
     internal LayoutSizingViews SizingViews { get; } = new();
     internal LayoutFloatingWindowCreation FloatingWindowCreation { get; }
     private readonly LayoutFloatingWindowPresenter _floatingWindows = new();
@@ -239,7 +235,6 @@ public partial class DockingManager : TemplatedControl
             RaisePropertyChanged(DockFactoryProperty, oldFactory, DockFactory);
             RaisePropertyChanged(DockLayoutProperty, oldDock, DockLayout);
             OnLayoutChanged(oldLayout, value);
-            SynchronizeActiveContent();
             LayoutChanged?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -348,26 +343,6 @@ public partial class DockingManager : TemplatedControl
     internal LayoutItem? GetLayoutItemForNativePresentation(LayoutContent content) => _layoutItems.GetForNativePresentation(content);
     /// <summary>Gets the native host factory that preserves this manager's template scope.</summary>
     public Func<IHostWindow?> DockHostWindowFactory { get; }
-    /// <summary>Gets or sets the active document or tool content.</summary>
-    public object? ActiveContent
-    {
-        get => _activeContent;
-        set
-        {
-            if (ReferenceEquals(value, _activeContent)) return;
-            if (value is null) Layout.ActiveContent = null;
-            else
-            {
-                foreach (ILayoutElement element in Layout.Descendents())
-                    if (element is LayoutContent content && (ReferenceEquals(content.Content, value) || ReferenceEquals(content, value)))
-                    {
-                        Layout.ActiveContent = content;
-                        break;
-                    }
-            }
-            SynchronizeActiveContent();
-        }
-    }
     /// <summary>Gets or sets the strategy used to insert source items.</summary>
     public ILayoutUpdateStrategy? LayoutUpdateStrategy
     {
@@ -466,6 +441,7 @@ public partial class DockingManager : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        if (change.Property == ActiveContentProperty) ApplyActiveContentChange(change);
         OnAnchorControlPropertyChanged(change);
         if (change.Property == AutoHideWindowProperty) OnAutoHideWindowChanged(change);
         if (change.Property == AutoHideWindowClosingTimerProperty) OnAutoHideWindowClosingTimerChanged(change);
@@ -667,11 +643,6 @@ public partial class DockingManager : TemplatedControl
         if (ReferenceEquals(_presentedRootPanel, Layout.RootPanel)) return;
         _presentedRootPanel = Layout.RootPanel;
         SetCurrentValue(LayoutRootPanelProperty, new LayoutPanelControl(Layout.RootPanel));
-    }
-    private void SynchronizeActiveContent()
-    {
-        if (SetAndRaise(ActiveContentProperty, ref _activeContent, Layout.ActiveContent?.Content))
-            ActiveContentChanged?.Invoke(this, EventArgs.Empty);
     }
     internal void NotifyDocumentClosing(LayoutDocument document, CancelEventArgs args)
     {

@@ -221,6 +221,7 @@ public partial class TabPanelTests
             {
                 contents[i] = tool ? new LayoutAnchorable() : new LayoutDocument();
                 contents[i].Title = "Header " + i;
+                contents[i].ContentId = "content-" + i;
             }
             if (tool)
             {

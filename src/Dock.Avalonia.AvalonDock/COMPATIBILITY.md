@@ -302,6 +302,21 @@ remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
   root-specific focus clearing, window reactivation, callback redirection,
   hierarchy removal/replacement, unrelated native roots, and deferred floating
   navigator selection are covered by Headless tests.
+- Manager active-content values retain explicit objects and publish layout models
+  on layout-driven activation. Payload/identifier/empty-content lookup, duplicate
+  matches, null defaults, layout replacement, protected hooks, callback redirection,
+  exceptions, styles, and two-way/explicit-update binding callbacks are covered by
+  the shared WPF probe. Its 280 rows cover 110 scenarios: 102 match WPF exactly;
+  eight deliberately retain Avalonia binding/style lifetime semantics. The latter
+  use a separate, clearly named Avalonia fixture and test, with the common stages
+  still compared against WPF. They are not counted as WPF parity. The package
+  consumer runs the same operations. History notifications preserve WPF's reentrant
+  order, including the outer transition's history and independent item flags.
+  Assigning over one-way/default bindings and `ClearValue` retain the binding in
+  Avalonia; WPF removes it. Removing a style after a current-value override can
+  retain that value in Avalonia. Applications can explicitly dispose the binding
+  or clear the override. Private binding-mode inspection is intentionally excluded
+  to keep this implementation reflection-free; exact framework parity remains open.
 - `PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` bubble through the
   manager and its ancestors with the public layout content as `Source`.
   Protected notification hooks support derived managers. Model methods,

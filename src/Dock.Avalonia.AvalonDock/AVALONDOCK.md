@@ -74,13 +74,21 @@ creating a new window still requires the native float capability. The call
 selects and activates the content in either case.
 
 `manager.Layout.ActiveContent` identifies the active layout node across docked
-and floating windows; `manager.ActiveContent` exposes its application content.
-Set either property, set a node's `IsActive`, or use its activation command.
-The bridge selects and focuses the node in its owning native Dock root, then
-notifies bindings. `LastFocusedDocument` tracks documents and tools hosted in
-document panes, with `IsLastFocusedDocument` notifications on the affected nodes.
-Window deactivation retains this history; clearing active content or removing
-the corresponding layout nodes clears it.
+and floating windows. `manager.ActiveContent` retains explicit assignments;
+layout-driven activation publishes the layout node. Read
+`manager.Layout.ActiveContent?.Content` for the application object. Manager lookup
+uses content identity, then a supplied node's identifier, then empty content.
+Distinct empty items should have distinct `ContentId` values; assigning null can
+activate the first empty item. Layout replacement does not republish the manager
+value. `LastFocusedDocument` and its item flags follow WPF notification ordering,
+including history left by reentrant activation.
+
+`ActiveContentProperty` supports styles and defaults to one-way binding. Use
+`Mode=TwoWay` to write activation back to the ViewModel. The adapter stays
+reflection-free: assignments and `ClearValue` retain Avalonia bindings, and style
+removal can retain a current-value override. Dispose a binding explicitly when
+replacing it; clear a retained override with `ClearValue` after removing its style.
+These differences from WPF are recorded separately in the compatibility tests.
 
 Pane selection is separate from activation: `SelectedContentIndex` and a node's
 `IsSelected` update the selected tab without changing `LayoutRoot.ActiveContent`.

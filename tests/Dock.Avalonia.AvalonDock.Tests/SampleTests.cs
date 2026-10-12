@@ -20,6 +20,34 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 
 public class SampleTests
 {
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Sample_Persistence_Recovers_Identified_Content_And_Skips_Unidentified_Items(bool tool)
+    {
+        object content = new();
+        LayoutDocument identified = new() { ContentId = "editor", Content = content };
+        LayoutDocumentPane documents = new(identified);
+        LayoutRoot root = new() { RootPanel = new LayoutPanel(documents) };
+        if (tool) root.RootPanel.Children.Add(new LayoutAnchorablePane(new LayoutAnchorable { Content = new object() }));
+        else documents.Children.Add(new LayoutDocument { Content = new object() });
+        DockingManager manager = new() { Layout = root };
+        string path = Path.Combine(Path.GetTempPath(), "dock-avalondock-" + Guid.NewGuid().ToString("N"), "layout.xml");
+        try
+        {
+            AvalonDockWorkspace service = new(manager, path);
+            Assert.Contains("Saved layout", service.Save());
+            Assert.Contains("Layout restored", service.Load());
+            LayoutContent restored = Assert.Single(manager.Layout.Descendents().OfType<LayoutContent>());
+            Assert.Equal("editor", restored.ContentId);
+            Assert.Same(content, restored.Content);
+        }
+        finally
+        {
+            if (Directory.Exists(Path.GetDirectoryName(path))) Directory.Delete(Path.GetDirectoryName(path)!, true);
+        }
+    }
+
     [AvaloniaFact]
     public void Sample_Save_Load_Restores_Floating_Document_And_Journal()
     {

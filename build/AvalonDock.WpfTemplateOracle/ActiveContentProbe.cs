@@ -27,12 +27,14 @@ internal static class ActiveContentProbe
     internal static IEnumerable<string> Operations() => new[]
     {
         "fresh", "layout-preactive", "payload", "wrapper", "alias-content", "alias-id", "alias-empty",
-        "alias-unknown-id", "alias-content-priority", "alias-model-content", "unknown", "null",
+        "alias-unknown-id", "alias-content-priority", "alias-model-content", "alias-tool-empty", "alias-tool-id", "unknown", "null",
         "same-payload", "same-wrapper", "model", "content-active", "model-null", "model-empty",
         "duplicate-payload", "duplicate-wrapper", "duplicate-model", "replace-layout", "replace-active-layout",
         "remove-active", "change-content", "hook-redirect", "event-redirect", "hook-redirect-model",
         "event-redirect-model", "hook-throw", "event-throw", "current-value", "clear-value",
         "binding-default", "binding-oneway", "binding-twoway", "binding-current-value", "binding-clear",
+        "binding-explicit", "root-redirect", "history-root", "history-previous", "history-next",
+        "empty-model", "empty-content-active", "empty-wrapper", "empty-clear", "duplicate-id",
         "style", "style-model", "style-clear", "style-remove", "style-clr"
     };
 
@@ -68,6 +70,8 @@ internal static class ActiveContentProbe
                 case "alias-content-priority":
                     manager.ActiveContent = new LayoutDocument { ContentId = "first", Content = workspace.SecondPayload }; break;
                 case "alias-model-content": manager.ActiveContent = new LayoutDocument { Content = workspace.Second }; break;
+                case "alias-tool-empty": manager.ActiveContent = new LayoutAnchorable(); break;
+                case "alias-tool-id": manager.ActiveContent = new LayoutAnchorable { ContentId = "second" }; break;
                 case "unknown": manager.ActiveContent = workspace.Unknown; break;
                 case "null": manager.ActiveContent = null; break;
                 case "same-payload": manager.ActiveContent = workspace.FirstPayload; break;
@@ -76,6 +80,10 @@ internal static class ActiveContentProbe
                 case "content-active": workspace.Second.IsActive = true; break;
                 case "model-null": layout.ActiveContent = null; break;
                 case "model-empty": layout.ActiveContent = workspace.Empty; break;
+                case "empty-model": case "duplicate-id": layout.ActiveContent = workspace.Second; break;
+                case "empty-content-active": workspace.Second.IsActive = true; break;
+                case "empty-wrapper": manager.ActiveContent = workspace.Second; break;
+                case "empty-clear": layout.ActiveContent = null; break;
                 case "duplicate-payload": manager.ActiveContent = workspace.Second.Content; break;
                 case "duplicate-wrapper": manager.ActiveContent = workspace.Second; break;
                 case "duplicate-model": layout.ActiveContent = workspace.Second; break;
@@ -101,6 +109,28 @@ internal static class ActiveContentProbe
                     else workspace.BeforeEvent = fail;
                     manager.ActiveContent = workspace.Second;
                     break;
+                case "root-redirect":
+                    bool redirected = false;
+                    layout.PropertyChanged += (_, args) =>
+                    {
+                        if (redirected || args.PropertyName != nameof(LayoutRoot.ActiveContent)) return;
+                        redirected = true;
+                        layout.ActiveContent = workspace.First;
+                    };
+                    layout.ActiveContent = workspace.Second;
+                    break;
+                case "history-root": case "history-previous": case "history-next":
+                    LayoutElement observed = operation == "history-previous" ? workspace.First
+                        : operation == "history-next" ? workspace.Second : layout;
+                    bool historyRedirected = false;
+                    observed.PropertyChanging += (_, args) =>
+                    {
+                        if (historyRedirected || args.PropertyName is not (nameof(LayoutRoot.LastFocusedDocument) or nameof(LayoutContent.IsLastFocusedDocument))) return;
+                        historyRedirected = true;
+                        layout.ActiveContent = workspace.First;
+                    };
+                    layout.ActiveContent = workspace.Second;
+                    break;
                 case "current-value": manager.SetCurrentValue(DockingManager.ActiveContentProperty, workspace.SecondPayload); break;
                 case "clear-value": manager.ClearValue(DockingManager.ActiveContentProperty); break;
                 case "binding-default": case "binding-oneway": case "binding-twoway":
@@ -122,6 +152,17 @@ internal static class ActiveContentProbe
                     Take("target", "none");
                     workspace.Box.Value = workspace.Unknown;
                     break;
+                case "binding-explicit":
+                    workspace.Bind(BindingMode.TwoWay, explicitUpdate: true);
+                    Take("bound", "none");
+                    layout.ActiveContent = workspace.Second;
+                    Take("model", "none");
+                    workspace.UpdateSource();
+                    Take("updated", "none");
+                    manager.ActiveContent = workspace.FirstPayload;
+                    Take("local", "none");
+                    workspace.UpdateSource();
+                    break;
                 case "style": case "style-model": case "style-clear": case "style-remove": case "style-clr":
                     manager.ClearValue(DockingManager.ActiveContentProperty);
                     workspace.ApplyStyle();
@@ -142,7 +183,8 @@ internal static class ActiveContentProbe
         void Take(string stage, string failure)
         {
             Flush();
-            rows.Add(string.Join('\t', scenario, stage, workspace.State(), failure, string.Join('>', workspace.Events)));
+            rows.Add(string.Join('\t', scenario, stage, workspace.State(), failure,
+                workspace.Events.Count == 0 ? "none" : string.Join('>', workspace.Events)));
             workspace.Events.Clear();
         }
     }
@@ -177,6 +219,12 @@ internal static class ActiveContentProbe
         {
             First = new() { Content = FirstPayload, ContentId = "first", Title = "First" };
             Second = new() { Content = operation.StartsWith("duplicate-", StringComparison.Ordinal) ? FirstPayload : SecondPayload, ContentId = "second", Title = "Second" };
+            bool empty = operation.StartsWith("empty-", StringComparison.Ordinal) || operation == "duplicate-id";
+            if (empty)
+            {
+                First.Content = Second.Content = null;
+                First.ContentId = Second.ContentId = operation == "duplicate-id" ? "duplicate" : null!;
+            }
             Pane = new(First) { Children = { Second, Empty } };
             LayoutRoot root = new() { RootPanel = new LayoutPanel { Children = { Pane } } };
             if (operation == "layout-preactive") root.ActiveContent = First;
@@ -184,7 +232,7 @@ internal static class ActiveContentProbe
             if (operation is not ("fresh" or "layout-preactive"))
             {
                 root.ActiveContent = First;
-                Manager.ActiveContent = operation == "same-wrapper" ? First : FirstPayload;
+                Manager.ActiveContent = operation == "same-wrapper" || empty ? First : FirstPayload;
             }
             Box.Value = FirstPayload;
             Flush();
@@ -197,7 +245,7 @@ internal static class ActiveContentProbe
             };
         }
 
-        internal string State() => $"value={Token(Manager.ActiveContent)};active={Token(Manager.Layout.ActiveContent)};last={Token(Manager.Layout.LastFocusedDocument)};selected={Flag(First.IsSelected)}{Flag(Second.IsSelected)}{Flag(Empty.IsSelected)};flags={Flag(First.IsActive)}{Flag(Second.IsActive)}{Flag(Empty.IsActive)};source={Token(Box.Value)};bound={IsBound()}";
+        internal string State() => $"value={Token(Manager.ActiveContent)};active={Token(Manager.Layout.ActiveContent)};last={Token(Manager.Layout.LastFocusedDocument)};selected={Flag(First.IsSelected)}{Flag(Second.IsSelected)}{Flag(Empty.IsSelected)};flags={Flag(First.IsActive)}{Flag(Second.IsActive)}{Flag(Empty.IsActive)};history={Flag(First.IsLastFocusedDocument)}{Flag(Second.IsLastFocusedDocument)}{Flag(Empty.IsLastFocusedDocument)};source={Token(Box.Value)};bound={IsBound()}";
         private static int Flag(bool value) => value ? 1 : 0;
         private string Token(object? value) => value is null ? "null" : ReferenceEquals(value, First) ? "first-model"
             : ReferenceEquals(value, Second) ? "second-model" : ReferenceEquals(value, Empty) ? "empty-model"
@@ -213,15 +261,26 @@ internal static class ActiveContentProbe
 #endif
         }
 
-        internal void Bind(BindingMode mode)
+        internal void Bind(BindingMode mode, bool explicitUpdate = false)
         {
+            UpdateSourceTrigger trigger = explicitUpdate ? UpdateSourceTrigger.Explicit : UpdateSourceTrigger.PropertyChanged;
 #if WPF_REFERENCE
             BindingOperations.SetBinding(Manager, DockingManager.ActiveContentProperty,
-                new Binding { Source = Box, Path = new PropertyPath(ValueBox.ValueProperty), Mode = mode });
+                new Binding { Source = Box, Path = new PropertyPath(ValueBox.ValueProperty), Mode = mode, UpdateSourceTrigger = trigger });
 #else
             CompiledBindingPath path = new CompiledBindingPathBuilder().Property(ValueBox.ValueProperty,
                 PropertyInfoAccessorFactory.CreateAvaloniaPropertyAccessor).Build();
-            _binding = Manager.Bind(DockingManager.ActiveContentProperty, new CompiledBindingExtension(path) { Source = Box, Mode = mode });
+            _binding = Manager.Bind(DockingManager.ActiveContentProperty,
+                new CompiledBindingExtension(path) { Source = Box, Mode = mode, UpdateSourceTrigger = trigger });
+#endif
+        }
+
+        internal void UpdateSource()
+        {
+#if WPF_REFERENCE
+            BindingOperations.GetBindingExpression(Manager, DockingManager.ActiveContentProperty).UpdateSource();
+#else
+            BindingOperations.GetBindingExpressionBase(Manager, DockingManager.ActiveContentProperty)!.UpdateSource();
 #endif
         }
 

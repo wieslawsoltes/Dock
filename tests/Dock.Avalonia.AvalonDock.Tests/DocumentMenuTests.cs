@@ -40,7 +40,7 @@ public class DocumentMenuTests
         Click(entries[0]);
         workspace.Update();
         Assert.True(workspace.First.IsActive);
-        Assert.Same(workspace.First.Content, workspace.Manager.ActiveContent);
+        Assert.Same(workspace.First, workspace.Manager.ActiveContent);
         Assert.False(workspace.Menu.IsOpen);
     }
 

@@ -8,7 +8,7 @@ public class LayoutDocument : LayoutContent
 {
     private string? _description;
     /// <summary>Creates a document.</summary>
-    public LayoutDocument() : this(new Document()) { }
+    public LayoutDocument() : this(new Document { Id = null! }) { }
     internal LayoutDocument(Document model, LayoutModelContext? context = null) : base(model, context) { }
     /// <summary>Gets or sets whether the document can be moved.</summary>
     public bool CanMove { get => DockModel.CanDrag; set => DockModel.CanDrag = value; }

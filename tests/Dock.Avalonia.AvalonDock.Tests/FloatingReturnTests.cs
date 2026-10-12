@@ -128,7 +128,7 @@ public class FloatingReturnTests
         DockingManager manager = new();
         DockStrategy strategy = new();
         manager.LayoutUpdateStrategy = strategy;
-        FallbackDocument document = new();
+        FallbackDocument document = new() { ContentId = "document" };
         manager.Layout.FloatingWindows.Add(new LayoutDocumentFloatingWindow { RootDocument = document });
         document.Dock();
         Assert.Equal(1, document.FallbackCalls);
@@ -136,7 +136,7 @@ public class FloatingReturnTests
         Assert.Same(document, manager.Layout.ActiveContent);
         Assert.Equal(1, strategy.DocumentsInserted);
 
-        LayoutAnchorable tool = new();
+        LayoutAnchorable tool = new() { ContentId = "tool" };
         manager.Layout.FloatingWindows.Add(new LayoutAnchorableFloatingWindow
         {
             RootPanel = new LayoutAnchorablePaneGroup(new LayoutAnchorablePane(tool))

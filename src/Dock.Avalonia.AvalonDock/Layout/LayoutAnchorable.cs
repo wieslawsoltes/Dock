@@ -22,7 +22,7 @@ public class LayoutAnchorable : LayoutContent
     private bool _lastHidden;
     private bool _lastAutoHidden;
     /// <summary>Creates an anchorable tool.</summary>
-    public LayoutAnchorable() : this(new Tool { CanClose = false }) { }
+    public LayoutAnchorable() : this(new Tool { Id = null!, CanClose = false }) { }
     internal LayoutAnchorable(Tool model, LayoutModelContext? context = null) : base(model, context) { }
     /// <summary>Gets or sets the auto-hide popup width, clamped to <see cref="AutoHideMinWidth"/> when assigned.</summary>
     public double AutoHideWidth

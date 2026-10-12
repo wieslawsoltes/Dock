@@ -219,3 +219,9 @@ The consumer also compiles the shared public-operation probe from
 scenarios with the recorded WPF results. This covers defaults, callback state,
 root changes, visibility, empty XML, and notification overrides in the packaged
 assembly. Both target frameworks compile the probe; the runtime check uses .NET 10.
+
+The active-content probe checks 102 WPF scenarios and eight explicitly documented
+Avalonia binding/style lifetime differences using the shared public operations.
+It covers callback state, source update triggers, alias lookup, empty and duplicate
+content, layout replacement, and reentrant activation/history. The two fixture
+files keep the WPF reference and the Avalonia-specific expectations separate.

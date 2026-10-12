@@ -9,10 +9,11 @@
   <Import Project="../../build/Avalonia.Headless.props" />
   <Import Project="../../build/XUnit.props" />
   <ItemGroup>
-    <AvaloniaResource Include="Assets/**" Exclude="Assets/Wpf*.tsv" />
-    <None Update="Assets/Wpf*.tsv" CopyToOutputDirectory="PreserveNewest" />
+    <AvaloniaResource Include="Assets/**" Exclude="Assets/*.tsv" />
+    <None Update="Assets/*.tsv" CopyToOutputDirectory="PreserveNewest" />
     <Compile Include="../../build/AvalonDockApiAudit/ApiKey.cs" Link="Build/ApiKey.cs" />
     <Compile Include="../../build/AvalonDock.WpfTemplateOracle/FloatingNotificationProbe.cs" Link="Build/FloatingNotificationProbe.cs" />
+    <Compile Include="../../build/AvalonDock.WpfTemplateOracle/ActiveContentProbe.cs" Link="Build/ActiveContentProbe.cs" />
     <PackageReference Include="ReactiveUI.SourceGenerators" PrivateAssets="all" />
     <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
     <ProjectReference Include="../../samples/DockAvalonDockSample/DockAvalonDockSample.csproj" />

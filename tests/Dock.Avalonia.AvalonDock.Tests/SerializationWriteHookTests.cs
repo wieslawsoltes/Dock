@@ -43,7 +43,7 @@ public class SerializationWriteHookTests
         floatingPane.Children.Add(new MarkedTool(New("floating-tool")) { ContentId = "floating-tool", Content = new object() });
         MarkedToolGroup floatingGroup = new(New("floating-group")); floatingGroup.Children.Add(floatingPane);
         manager.Layout.FloatingWindows.Add(new MarkedToolWindow(New("tool-window")) { RootPanel = floatingGroup });
-        Dictionary<string, object?> contents = manager.Layout.Descendents().OfType<LayoutContent>().ToDictionary(x => x.ContentId, x => x.Content);
+        Dictionary<string, object?> contents = manager.Layout.Descendents().OfType<LayoutContent>().ToDictionary(x => Assert.IsType<string>(x.ContentId), x => x.Content);
         XmlLayoutSerializer serializer = new(manager);
 
         string xml = Write(entry, manager, serializer);
@@ -61,7 +61,7 @@ public class SerializationWriteHookTests
         Assert.DoesNotContain("MarkedDocument", xml);
         serializer.Deserialize(new StringReader(xml));
         foreach (LayoutContent content in manager.Layout.Descendents().OfType<LayoutContent>())
-            Assert.Same(contents[content.ContentId], content.Content);
+            Assert.Same(contents[Assert.IsType<string>(content.ContentId)], content.Content);
         Assert.Equal(contents.Count, manager.Layout.Descendents().OfType<LayoutContent>().Count());
     }
 

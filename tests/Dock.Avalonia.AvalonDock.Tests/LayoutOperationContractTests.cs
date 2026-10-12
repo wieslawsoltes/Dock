@@ -348,8 +348,8 @@ public class LayoutOperationContractTests
 
     private static DockingManager CreateManager(out LayoutDocument document, out LayoutAnchorable tool)
     {
-        document = new LayoutDocument { Title = "Document" };
-        tool = new LayoutAnchorable { Title = "Tool" };
+        document = new LayoutDocument { Title = "Document", ContentId = "document" };
+        tool = new LayoutAnchorable { Title = "Tool", ContentId = "tool" };
         return new DockingManager { Layout = new() { RootPanel = new() { Children =
         { new LayoutDocumentPane(document), new LayoutAnchorablePane(tool) } } } };
     }

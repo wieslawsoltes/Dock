@@ -46,7 +46,9 @@ internal sealed class LayoutActiveContent
             ? _root.DockFactory.FindRoot(content.DockModel, static root => root.IsFocusableRoot) ?? (RootDock)_root.DockModel
             : Target(_nativeRoot) ?? (RootDock)_root.DockModel;
         int revision = _revision;
-        if (content is not null) content.IsSelected = true;
+        // Direct content activation selects after its root notification. A root
+        // assignment activates an inactive item and selects before publishing.
+        if (content is { IsActive: false }) content.IsSelected = true;
         if (revision != _revision) return;
         _root.DockFactory.SetFocusedDockable(nativeRoot, content?.DockModel);
         if (revision == _revision) Update(content, nativeRoot);
@@ -134,7 +136,8 @@ internal sealed class LayoutActiveContent
             SetTarget(ref _active, content);
             SetTarget(ref _nativeRoot, nativeRoot);
             _changed(nameof(LayoutRoot.ActiveContent));
-            if (revision != _revision) return;
+            // The root records the content from this transition after observers
+            // run, even when a manager callback has redirected active content.
         }
         else SetTarget(ref _nativeRoot, nativeRoot);
         if (content is null or LayoutDocument || content.Parent is LayoutDocumentPane)
@@ -145,18 +148,12 @@ internal sealed class LayoutActiveContent
     {
         LayoutContent? previous = LastDocument;
         if (ReferenceEquals(previous, content)) return;
-        int revision = ++_revision;
         _changing(nameof(LayoutRoot.LastFocusedDocument));
-        if (revision != _revision) return;
-        previous?.NotifyLastFocusedDocumentChanging();
-        if (revision != _revision) return;
-        content?.NotifyLastFocusedDocumentChanging();
-        if (revision != _revision) return;
+        previous?.SetLastFocusedDocument(false);
         SetTarget(ref _lastDocument, content);
-        previous?.NotifyLastFocusedDocumentChanged();
-        if (revision != _revision) return;
-        content?.NotifyLastFocusedDocumentChanged();
-        if (revision != _revision) return;
+        // Content notifications surround each flag independently. Reentrant
+        // activation may change the root history during the new flag's callback.
+        content?.SetLastFocusedDocument(true);
         _changed(nameof(LayoutRoot.LastFocusedDocument));
     }
 

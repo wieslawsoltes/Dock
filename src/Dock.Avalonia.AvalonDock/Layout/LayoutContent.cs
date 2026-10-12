@@ -23,8 +23,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     public static readonly DirectProperty<LayoutContent, string> TitleProperty =
         AvaloniaProperty.RegisterDirect<LayoutContent, string>(nameof(Title), x => x.Title, (x, v) => x.Title = v);
     /// <summary>Identifies the content identifier property.</summary>
-    public static readonly DirectProperty<LayoutContent, string> ContentIdProperty =
-        AvaloniaProperty.RegisterDirect<LayoutContent, string>(nameof(ContentId), x => x.ContentId, (x, v) => x.ContentId = v);
+    public static readonly DirectProperty<LayoutContent, string?> ContentIdProperty =
+        AvaloniaProperty.RegisterDirect<LayoutContent, string?>(nameof(ContentId), x => x.ContentId, (x, v) => x.ContentId = v);
     /// <summary>Identifies the content property.</summary>
     public static readonly DirectProperty<LayoutContent, object?> ContentProperty =
         AvaloniaProperty.RegisterDirect<LayoutContent, object?>(nameof(Content), x => x.Content, (x, v) => x.Content = v);
@@ -42,6 +42,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private int _previousContainerIndex = -1;
     private DateTime? _lastActivationTimeStamp;
     private bool _synchronizingActive;
+    private bool _isLastFocusedDocument;
 
     internal LayoutContent(DockableBase model, LayoutModelContext? context = null) : base(model, context) => DockingHistory = new(this);
     internal LayoutDockingHistory DockingHistory { get; }
@@ -49,8 +50,8 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
 
     /// <summary>Gets or sets the tab title.</summary>
     public string Title { get => DockModel.Title; set { RaisePropertyChanging(); DockModel.Title = value; } }
-    /// <summary>Gets or sets the identifier used for persistence.</summary>
-    public string ContentId { get => DockModel.Id; set { RaisePropertyChanging(); DockModel.Id = value; } }
+    /// <summary>Gets or sets the identifier used for persistence and active-content lookup; initially null.</summary>
+    public string? ContentId { get => DockModel.Id; set { RaisePropertyChanging(); DockModel.Id = value!; } }
     /// <summary>Gets or sets the document or tool content.</summary>
     [Content]
     public object? Content
@@ -91,7 +92,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         }
     }
     /// <summary>Gets whether this is the last focused document.</summary>
-    public bool IsLastFocusedDocument => ReferenceEquals((Root as LayoutRoot)?.LastFocusedDocument, this);
+    public bool IsLastFocusedDocument => _isLastFocusedDocument;
     /// <summary>Gets or sets the previous container.</summary>
     public ILayoutContainer? PreviousContainer { get => _previousContainer; set => SetField(ref _previousContainer, value); }
     /// <summary>Gets or sets the previous container's persistence identifier.</summary>
@@ -232,7 +233,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             if (State.IsActive)
             {
                 if (Root is LayoutRoot root) root.ActiveContent = this;
-                IsSelected = true;
+                if (State.IsActive) IsSelected = true;
             }
         }
         finally { _synchronizingActive = false; }
@@ -243,8 +244,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         OnIsActiveChanged(previous, current);
         RaisePropertyChanged(nameof(IsActive));
     }
-    internal void NotifyLastFocusedDocumentChanging() => RaisePropertyChanging(nameof(IsLastFocusedDocument));
-    internal void NotifyLastFocusedDocumentChanged() => RaisePropertyChanged(nameof(IsLastFocusedDocument));
+    internal void SetLastFocusedDocument(bool value) => SetField(ref _isLastFocusedDocument, value, nameof(IsLastFocusedDocument));
     internal void RememberDockedLocation()
     {
         if (Parent is not LayoutElement parent || parent is LayoutAnchorGroup or LayoutAnchorSide
@@ -297,7 +297,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             RaisePropertyChanged(TitleProperty, (string)e.OldValue!, (string)e.NewValue!);
         else if (e.Property == DockableBase.IdProperty)
         {
-            RaisePropertyChanged(ContentIdProperty, (string)e.OldValue!, (string)e.NewValue!);
+            RaisePropertyChanged(ContentIdProperty, (string?)e.OldValue, (string?)e.NewValue);
             RaisePropertyChanged(nameof(ContentId));
         }
         else if (e.Property == Document.ContentProperty || e.Property == Tool.ContentProperty)

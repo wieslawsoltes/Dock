@@ -269,8 +269,8 @@ public class UpdateStrategyTests
     [AvaloniaFact]
     public void Docking_The_Last_Focused_Document_Chooses_The_First_Pane_Instead_Of_Its_Own_Pane()
     {
-        LayoutDocument first = new();
-        LayoutDocument moving = new();
+        LayoutDocument first = new() { ContentId = "first" };
+        LayoutDocument moving = new() { ContentId = "moving" };
         LayoutDocumentPane firstPane = new(first);
         LayoutDocumentPane original = new(moving);
         DockingManager manager = new()
@@ -297,7 +297,7 @@ public class UpdateStrategyTests
     {
         RootPanel = new LayoutPanel
         {
-            Children = { new LayoutDocumentPane(new LayoutDocument()), new LayoutAnchorablePane(new LayoutAnchorable()) }
+            Children = { new LayoutDocumentPane(new LayoutDocument { ContentId = "document" }), new LayoutAnchorablePane(new LayoutAnchorable { ContentId = "tool" }) }
         }
     };
 

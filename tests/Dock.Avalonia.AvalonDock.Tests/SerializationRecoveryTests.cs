@@ -99,7 +99,7 @@ public class SerializationRecoveryTests
         ExposedSerializer serializer = new(new DockingManager());
         serializer.LayoutSerializationCallback += (_, args) =>
         {
-            calls.Add(args.Model.ContentId);
+            calls.Add(Assert.IsType<string>(args.Model.ContentId));
             if (args.Model is LayoutAnchorable)
             {
                 document.Content = populated;

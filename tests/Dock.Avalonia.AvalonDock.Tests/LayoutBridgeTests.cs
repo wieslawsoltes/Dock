@@ -136,7 +136,7 @@ public class LayoutBridgeTests
         Assert.Same(secondContent, manager.ActiveContent);
         Assert.True(second.IsActive);
         manager.DockFactory.SetFocusedDockable(manager.DockLayout, first.DockModel);
-        Assert.Same(firstContent, manager.ActiveContent);
+        Assert.Same(first, manager.ActiveContent);
         pane.SelectedContentIndex = 1;
         Assert.Same(second, pane.SelectedContent);
         Assert.True(second.IsSelected);

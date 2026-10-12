@@ -87,8 +87,8 @@ public class LayoutItemTests
     [AvaloniaFact]
     public void Selection_And_Activation_Follow_The_Live_Pane()
     {
-        LayoutDocument first = new();
-        LayoutDocument second = new();
+        LayoutDocument first = new() { ContentId = "first" };
+        LayoutDocument second = new() { ContentId = "second" };
         DockingManager manager = CreateManager(first);
         ((LayoutDocumentPane)first.Parent!).Children.Add(second);
         LayoutItem firstItem = manager.GetLayoutItemFromModel(first)!;

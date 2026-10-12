@@ -87,3 +87,21 @@ consumer, so both run the same public operations against the WPF observations.
 The reference build uses Release configuration; mismatched `RemoveChild` and
 `ReplaceChild` arguments exercise behavior guarded only by upstream debug
 assertions. Application code should pass the current child.
+
+The active-content probe records manager values, source binding ownership, root
+activation/history, selection, item flags, protected hooks, and public callbacks:
+
+```powershell
+dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock.WpfTemplateOracle.dll --active-content wpf-active-content.tsv
+```
+
+`Assets/WpfActiveContent.tsv` records 280 observations across 110 scenarios. The
+adapter matches 102 scenarios, including object/model assignments, alias lookup,
+duplicate and empty content, reentrant callbacks, two-way bindings, and explicit
+source updates. `Assets/AvaloniaActiveContent.tsv` separately records 40 adapter
+observations for eight known framework differences: default/one-way binding
+replacement, clearing a bound value, and style removal after a current override.
+`ActiveContentReferenceTests` checks those against the documented Avalonia contract
+and compares their shared preceding stages with WPF; they are not WPF parity tests.
+The package consumer checks both contracts. These tests use public property APIs
+and compiled Avalonia bindings, with no binding-mode reflection or input adaptation.

@@ -19,7 +19,7 @@ internal sealed class AvalonDockWorkspace : ILayoutWorkspace
         _manager = manager;
         _path = path;
         foreach (ILayoutElement element in manager.Layout.Descendents())
-            if (element is LayoutContent content) _content[content.ContentId] = content.Content;
+            if (element is LayoutContent { ContentId: { } id } content) _content[id] = content.Content;
     }
 
     public string Save() => Run(() =>
@@ -46,7 +46,7 @@ internal sealed class AvalonDockWorkspace : ILayoutWorkspace
         XmlLayoutSerializer serializer = new(_manager);
         serializer.LayoutSerializationCallback += (_, args) =>
         {
-            if (_content.TryGetValue(args.Model.ContentId, out object? content)) args.Content = content;
+            if (args.Model.ContentId is { } id && _content.TryGetValue(id, out object? content)) args.Content = content;
         };
         serializer.Deserialize(_path);
         return "Layout restored. Document content and editor text were preserved.";

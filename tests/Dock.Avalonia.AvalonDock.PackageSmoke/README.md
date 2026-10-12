@@ -200,3 +200,7 @@ existing content identity, external manager hooks and preview replacement,
 XML cleanup, reattachment, idle closing, and negative-delay coercion.
 It also compiles and invokes all six `AvalonDock.Controls.Extentions` helpers
 against the rendered native preview and its manager/window hierarchy.
+
+The theme lifetime probe closes a floating document while its previous resource
+provider is being removed and while a custom theme resolves the compiled generic
+URI. It checks that replacement and later themes leave the closed window detached.

@@ -594,6 +594,9 @@ supported by corresponding implementation and test evidence.
   theme-variant changes across managers, floating windows, and navigators, including
   hidden windows, external dictionary ownership/transfer, reentrant updates,
   replacement/removal, close cancellation, and collection while a theme is retained.
+  Closing a floating document/tool, navigator, or overlay during resource removal,
+  resource creation, or replacement does not attach resources after disposal.
+  Canceling that close preserves the replacement theme and later updates.
   The compiled `Themes/Generic.axaml` dictionary separates resource keys
   from selector styles and can be included by URI from consumer XAML. Tests verify
   both XML namespaces, compiled bindings, view-scoped adapter styles without
@@ -701,9 +704,9 @@ supported by corresponding implementation and test evidence.
   bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
 - Retired menu template roots are disconnected from their composition parent,
   preventing retained icon presenters from keeping removed documents alive.
-- 1647 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1671 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1665 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1689 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

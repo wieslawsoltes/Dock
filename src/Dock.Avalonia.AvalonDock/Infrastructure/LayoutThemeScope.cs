@@ -31,9 +31,13 @@ internal sealed class LayoutThemeScope : IDisposable
         IResourceProvider? previous = _resources;
         _resources = null;
         if (previous is not null) _owner.Resources.MergedDictionaries.Remove(previous);
+        // Resource notifications can close an auxiliary window synchronously.
+        if (_disposed) return;
         if (theme is DictionaryTheme dictionary && ReferenceEquals(dictionary.ThemeResourceDictionary, _owner.Resources))
             throw new InvalidOperationException("A theme dictionary cannot contain the resource scope that consumes it.");
         IResourceProvider? next = LayoutThemeResources.Create(theme);
+        // A custom Theme.GetResourceUri override can also close the window.
+        if (_disposed) return;
         _resources = next;
         if (next is not null) _owner.Resources.MergedDictionaries.Add(next);
     }

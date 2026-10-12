@@ -966,8 +966,11 @@ Avalonia's inherited `StyledElement.Theme` control-template property. Use
 `<DockingManager.Theme><GenericTheme /></DockingManager.Theme>` in unprefixed XAML,
 or derive from `AvalonDock.Themes.DictionaryTheme` and pass a resource dictionary.
 Shared dictionaries, dynamic resources, and theme variants reach the manager,
-floating hosts, and navigator, including runtime replacement. Closed windows
-release their resource providers. `GenericTheme.GetResourceUri()` identifies the
+floating hosts, navigator, and overlays, including runtime replacement. Closed
+windows release their resource providers, including when a resource notification
+or `GetResourceUri()` override closes a window during theme replacement. A
+canceled close keeps the window connected to the replacement and subsequent
+themes. `GenericTheme.GetResourceUri()` identifies the
 compiled `Themes/Generic.axaml` bundle, which also supports compiled
 `ResourceInclude` from consumer XAML. General custom URI loading is
 still open; currently other URIs raise `NotSupportedException`. See the full guide

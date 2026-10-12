@@ -50,6 +50,7 @@ PackageConsumer.AnchorControlProbe.Verify();
 PackageConsumer.MenuControlProbe.Verify();
 PackageConsumer.MetadataAndUtilityProbe.Verify();
 PackageConsumer.LocalizationProbe.Verify();
+PackageConsumer.ThemeLifetimeProbe.Verify();
 PackageConsumer.OverlayProbe.Verify();
 PackageConsumer.LifecycleProbe.Verify();
 PackageConsumer.DestinationProbe.Verify();

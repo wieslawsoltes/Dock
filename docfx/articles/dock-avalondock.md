@@ -2070,7 +2070,7 @@ manager.Theme = new EditorTheme();
 
 A dictionary can be shared by multiple managers, including through separate
 `DictionaryTheme` instances. The adapter supplies each manager, floating host,
-and navigator with its own resource provider. The providers share values and
+navigator, and overlay with its own resource provider. The providers share values and
 forward resource notifications; they do not copy the dictionary or attach it
 to several Avalonia owners. Key and theme-variant changes update dynamic resources.
 An existing external dictionary owner is preserved, including transfers between
@@ -2078,6 +2078,11 @@ owners. Resources remain available after hiding a navigator or canceling a close
 completed window closure removes that window's provider. Clearing or replacing the
 manager's theme updates existing windows, and subsequently created windows receive
 the current theme. Unrelated local resources and merged dictionaries remain intact.
+
+A resource notification or `GetResourceUri()` override can close a window during
+theme replacement. Successful closure stops that replacement and releases the
+window's resources. A canceled close keeps the replacement theme active and
+allows later resource updates.
 
 `ThemeProperty` is an Avalonia styled property, and `OnThemeChanged` is a protected
 virtual hook using `AvaloniaPropertyChangedEventArgs`. Both XML namespaces support

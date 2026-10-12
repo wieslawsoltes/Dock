@@ -74,7 +74,7 @@ internal static class AutoSizingProbe
             double aNatural = horizontal ? aView.DesiredSize.Width : aView.DesiredSize.Height;
             double bNatural = horizontal ? bView.DesiredSize.Width : bView.DesiredSize.Height;
             Check(aView, aNatural); Check(bView, bNatural);
-            ProportionalStackPanel panel = aView.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
+            Panel panel = aView.GetVisualAncestors().OfType<IProportionalSplitterHost>().First().Panel;
             Check(panel, aNatural + bNatural + 12);
 
             Control View(LayoutAnchorablePane pane) => manager.GetVisualDescendants().OfType<ToolDockControl>()

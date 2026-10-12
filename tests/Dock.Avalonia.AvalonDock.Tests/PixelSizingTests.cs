@@ -99,24 +99,22 @@ public class PixelSizingTests
     [InlineData(true, false)]
     [InlineData(false, true)]
     [InlineData(true, true)]
-    public void Reset_Presenter_Values_Are_Restored_From_Unchanged_Model_Lengths(bool vertical, bool floating)
+    public void Size_Updates_Restore_Cleared_Definitions_Without_Rewriting_Model_Lengths(bool vertical, bool floating)
     {
         using Workspace workspace = new(vertical, floating);
-        Control presenter = workspace.Panel.Children.Single(control => ReferenceEquals(control.DataContext, workspace.First.DockModel));
+        Grid grid = Assert.IsAssignableFrom<Grid>(workspace.Panel);
         double proportion = workspace.First.DockModel.Proportion;
-        // A replaced theme can discard this value while the public length and
-        // native proportion are unchanged, so no model notification follows.
-        ItemsControl items = workspace.Panel.GetVisualAncestors().OfType<ItemsControl>().First();
-        var styles = items.Styles.ToArray();
-        items.Styles.Clear();
-        workspace.Update();
-        presenter.SetValue(ProportionalStackPanel.ProportionProperty, double.NaN);
-        Assert.True(double.IsNaN(ProportionalStackPanel.GetProportion(presenter)));
+        // Definitions are public Grid state. A subsequent model size change
+        // recreates removed definitions from the unchanged requested lengths.
+        if (vertical) grid.RowDefinitions.Clear();
+        else grid.ColumnDefinitions.Clear();
         Assert.Equal(proportion, workspace.First.DockModel.Proportion);
+        if (vertical) workspace.First.DockMinHeight++;
+        else workspace.First.DockMinWidth++;
         workspace.Update();
         AssertFixed(workspace, 200, 300);
-        Assert.Equal(proportion, ProportionalStackPanel.GetProportion(presenter));
-        items.Styles.AddRange(styles);
+        Assert.Equal(new GridLength(200), vertical ? grid.RowDefinitions[0].Height : grid.ColumnDefinitions[0].Width);
+        Assert.Equal(proportion, workspace.First.DockModel.Proportion);
         workspace.SetLength(workspace.First, new GridLength(220));
         workspace.Update();
         AssertFixed(workspace, 220, 300);
@@ -302,7 +300,7 @@ public class PixelSizingTests
         Assert.InRange(workspace.Extent(workspace.ControlFor(panes[1])), 299, 301);
     }
 
-    private static LayoutAnchorablePane Pane(string title) => new(new LayoutAnchorable { Title = title, Content = title });
+    private static LayoutAnchorablePane Pane(string title) => new(new LayoutAnchorable { ContentId = title, Title = title, Content = title });
     private static void AssertFixed(Workspace workspace, double first, double second)
     {
         Assert.Equal(new GridLength(first), workspace.GetLength(workspace.First));
@@ -322,7 +320,7 @@ public class PixelSizingTests
         public Control Scope => Host == Window ? Manager : Host;
         public Control FirstControl => ControlFor(First);
         public Control SecondControl => ControlFor(Second);
-        public ProportionalStackPanel Panel => FirstControl.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
+        public Panel Panel => FirstControl.GetVisualAncestors().OfType<IProportionalSplitterHost>().First().Panel;
         public ProportionalStackPanelSplitter Splitter => Panel.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().First();
         public Workspace(bool vertical = false, bool floating = false, LayoutAnchorablePane[]? panes = null)
         {

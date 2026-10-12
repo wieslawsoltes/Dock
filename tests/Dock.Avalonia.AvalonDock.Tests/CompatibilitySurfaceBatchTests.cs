@@ -201,7 +201,7 @@ public class CompatibilitySurfaceBatchTests
             window.MouseMove(end, RawInputModifiers.LeftMouseButton);
             Update();
             Control preview = Assert.Single(AdornerLayer.GetAdornerLayer(splitter)!.Children,
-                control => AdornerLayer.GetAdornedElement(control) is ProportionalStackPanel);
+                control => AdornerLayer.GetAdornedElement(control) is IProportionalSplitterHost);
             Assert.Equal(0.5, preview.Opacity);
             Assert.Equal(new GridLength(200), vertical ? first.DockHeight : first.DockWidth);
             splitter.OpacityWhileDragging = 0.25;

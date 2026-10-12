@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using AvalonDock;
+using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 using Dock.Avalonia.Controls;
@@ -83,7 +84,8 @@ public class SplitterSizingTests
         workspace.Top.DockWidth = new GridLength(140);
         workspace.Update();
         ProportionalStackPanelSplitter splitter = Splitter(workspace.Scope, workspace.Group);
-        ProportionalStackPanel panel = splitter.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
+        IProportionalSplitterHost host = splitter.GetVisualAncestors().OfType<IProportionalSplitterHost>().First();
+        Panel panel = host.Panel;
         Assert.Equal(equalDimensions ? 8 : 12, splitter.Bounds.Width);
         AssertExtent(splitter.Bounds.Height, panel.Bounds.Height);
         AssertExtent(workspace.TopControl.Bounds.Width, 140);
@@ -159,7 +161,7 @@ public class SplitterSizingTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Collapsed_Return_Panes_Do_Not_Consume_Pixel_Space_Or_Split_Gaps(bool floating)
+    public void Collapsed_Return_Panes_Leave_One_Splitter_Between_Visible_Panes(bool floating)
     {
         using Workspace workspace = new(floating);
         LayoutAnchorablePane empty = new() { DockHeight = new GridLength(120) };
@@ -172,7 +174,10 @@ public class SplitterSizingTests
         workspace.Top.DockHeight = new GridLength(200);
         workspace.Update();
         AssertExtent(workspace.TopControl.Bounds.Height, 200);
-        AssertExtent(workspace.TopControl.Bounds.Height + workspace.BottomControl.Bounds.Height, workspace.GroupControl.Bounds.Height);
+        // Upstream keeps the splitter after a visible pane when any later pane
+        // is visible, even when an empty return pane sits between them.
+        AssertExtent(workspace.TopControl.Bounds.Height + workspace.BottomControl.Bounds.Height + workspace.Manager.GridSplitterHeight,
+            workspace.GroupControl.Bounds.Height);
         empty.Children.Add(new LayoutAnchorable { Title = "Restored pane" });
         workspace.Update();
         Assert.Equal(GridLength.Star, workspace.Top.DockHeight);
@@ -240,11 +245,10 @@ public class SplitterSizingTests
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static (DockingManager Manager, WeakReference<ProportionalStackPanel> Panel) ReplaceLayout(bool floating)
+    private static (DockingManager Manager, WeakReference<Panel> Panel) ReplaceLayout(bool floating)
     {
         using Workspace workspace = new(floating);
-        ProportionalStackPanel panel = workspace.GroupControl.GetVisualDescendants().OfType<ProportionalStackPanel>()
-            .Single(control => ReferenceEquals(control.DataContext, workspace.Group.DockModel));
+        Panel panel = workspace.GroupControl;
         workspace.Manager.Layout = new LayoutRoot();
         workspace.Update();
         // Closed windows stop rendering and can retain their last composition frame.
@@ -291,7 +295,7 @@ public class SplitterSizingTests
             .Single(control => ReferenceEquals(control.DataContext, Top.DockModel));
         public ToolDockControl BottomControl => Scope.GetVisualDescendants().OfType<ToolDockControl>()
             .Single(control => ReferenceEquals(control.DataContext, Bottom.DockModel));
-        public ProportionalDockControl GroupControl => Scope.GetVisualDescendants().OfType<ProportionalDockControl>()
+        public LayoutAnchorablePaneGroupControl GroupControl => Scope.GetVisualDescendants().OfType<LayoutAnchorablePaneGroupControl>()
             .Single(control => ReferenceEquals(control.DataContext, Group.DockModel));
 
         public Workspace(bool floating = false)

@@ -6,6 +6,7 @@
         xmlns:proportional="using:Dock.Controls.ProportionalStackPanel"
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        xmlns:controls="using:AvalonDock.Controls"
         x:DataType="models:IDockable">
 
   <Style Selector="dock|DockControl.avalondock dock|ProportionalDockControl, :is(Window).avalondock dock|ProportionalDockControl">
@@ -15,9 +16,12 @@
     <Setter Property="(proportional:ProportionalStackPanelSplitter.MinimumProportionSize)" Value="0" />
   </Style>
   <Style Selector=":is(Control).avalondock-grid-child" x:DataType="models:IDockable">
-    <Setter Property="MinWidth" Value="{Binding MinWidth}" />
     <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
-    <Setter Property="MinHeight" Value="{Binding MinHeight}" />
     <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
+  </Style>
+  <!-- WPF grids allow fractional layout by default. Grid rounding can also
+       distribute spare pixels into fixed definitions, changing resize limits. -->
+  <Style Selector=":is(controls|LayoutPanelControl), :is(controls|LayoutDocumentPaneGroupControl), :is(controls|LayoutAnchorablePaneGroupControl)">
+    <Setter Property="UseLayoutRounding" Value="False" />
   </Style>
 </Styles>

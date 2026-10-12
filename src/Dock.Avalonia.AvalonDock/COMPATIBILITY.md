@@ -119,8 +119,23 @@ own hit testing and docking policy; the adapter supplies only the presentation.
 native services while exposing direct pane/splitter children and real Grid
 definitions. Local validation passed 105 unit, 1,552 Headless and 128 leak cases;
 the final registration-ownership guard passed seven tracker cases, including
-three new replacement cases. The PR is merged through `master`; cross-platform
-CI and consolidated adapter validation remain pending for this batch.
+three new replacement cases. All nine GitHub checks passed, including the three
+platforms, leak tests, AOT and packaging. The PR is merged through `master`.
+
+[PR #1169](https://github.com/wieslawsoltes/Dock/pull/1169) corrects tracked
+coordinates for controls with a nonzero parent offset and initializes bounds
+when a presentation changes models without another layout pass. The native
+tracker uses the control's local origin; 13 focused cases passed before the
+separate PR was merged through `master` and reintegrated here.
+
+The direct-grid integration scopes its native body templates to prevent a second
+public pane from being generated inside each pane. Model minimums belong to the
+grid definitions, leaving public pane themes free to set their own control
+minimums. Compatibility grid styles disable layout rounding, matching WPF's
+default and preserving exact pixel resize limits when fixed panes leave spare
+space. An empty middle pane leaves one splitter between the visible siblings,
+as in the upstream grid. Focused integration validation passed 130 of 131 cases;
+the closed native pinned-window lifetime case remains under investigation.
 
 ### Recent native drag and preview changes
 

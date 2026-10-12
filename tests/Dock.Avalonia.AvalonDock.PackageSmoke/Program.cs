@@ -973,8 +973,8 @@ static void AssertSplitters(DockingManager manager)
     if (splitters.Length == 0) throw new Exception("The package consumer did not render a native splitter.");
     foreach (ProportionalStackPanelSplitter splitter in splitters)
     {
-        ProportionalStackPanel panel = splitter.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
-        bool horizontal = panel.Orientation == Avalonia.Layout.Orientation.Horizontal;
+        IProportionalSplitterHost host = splitter.GetVisualAncestors().OfType<IProportionalSplitterHost>().First();
+        bool horizontal = host.Orientation == Avalonia.Layout.Orientation.Horizontal;
         double expected = horizontal ? manager.GridSplitterWidth : manager.GridSplitterHeight;
         if (splitter.Thickness != expected || (horizontal ? splitter.Bounds.Width : splitter.Bounds.Height) != expected)
             throw new Exception("The packaged splitter did not apply the manager's size to its rendered bounds.");

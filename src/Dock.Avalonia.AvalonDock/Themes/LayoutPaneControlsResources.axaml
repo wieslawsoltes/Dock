@@ -45,7 +45,7 @@
     <Style Selector="^.avalondock-grid-child">
       <Setter Property="Template">
         <ControlTemplate>
-          <DocumentDockControl DataContext="{Binding Model, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockNativePane}}"
+          <DocumentDockControl Classes="avalondock-grid-body" DataContext="{Binding Model, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockNativePane}}"
                                Template="{StaticResource AvalonDockDocumentPaneBody}" />
         </ControlTemplate>
       </Setter>
@@ -65,7 +65,7 @@
     <Style Selector="^.avalondock-grid-child">
       <Setter Property="Template">
         <ControlTemplate>
-          <ToolDockControl DataContext="{Binding Model, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockNativePane}}"
+          <ToolDockControl Classes="avalondock-grid-body" DataContext="{Binding Model, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockNativePane}}"
                                Template="{StaticResource AvalonDockToolPaneBody}" />
         </ControlTemplate>
       </Setter>

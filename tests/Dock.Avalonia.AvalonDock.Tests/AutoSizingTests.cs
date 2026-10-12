@@ -145,7 +145,7 @@ public class AutoSizingTests
             Children = { inner, Pane("C", 80, 70) }
         };
         using Workspace workspace = new(vertical, outer, first, second);
-        ProportionalStackPanel parent = workspace.Panel.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
+        Panel parent = workspace.Panel.GetVisualAncestors().OfType<IProportionalSplitterHost>().First().Panel;
         Control innerPresenter = parent.Children.Single(child => ReferenceEquals(child.DataContext, inner.DockModel));
         double a = workspace.Natural(workspace.FirstControl), b = workspace.Natural(workspace.SecondControl);
         double expected = perpendicular ? Math.Max(a, b) : a + b + 6;
@@ -303,7 +303,7 @@ public class AutoSizingTests
         try
         {
             window.Show(); Dispatcher.UIThread.RunJobs(); window.UpdateLayout();
-            var result = (manager, manager.Layout, new WeakReference<Control>(manager.GetVisualDescendants().OfType<ProportionalStackPanel>().Single()));
+            var result = (manager, manager.Layout, new WeakReference<Control>(manager.GetVisualDescendants().OfType<IProportionalSplitterHost>().Single().Panel));
             manager.Layout = new LayoutRoot();
             Dispatcher.UIThread.RunJobs(); window.UpdateLayout();
             window.CaptureRenderedFrame()?.Dispose();
@@ -326,7 +326,7 @@ public class AutoSizingTests
         public LayoutAnchorablePane Second { get; }
         public Control FirstControl => ControlFor(First);
         public Control SecondControl => ControlFor(Second);
-        public ProportionalStackPanel Panel => FirstControl.GetVisualAncestors().OfType<ProportionalStackPanel>().First();
+        public Panel Panel => FirstControl.GetVisualAncestors().OfType<IProportionalSplitterHost>().First().Panel;
         public ProportionalStackPanelSplitter Splitter => Panel.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().First();
         public Workspace(bool vertical, LayoutPanel? root = null, LayoutAnchorablePane? first = null, LayoutAnchorablePane? second = null)
         {

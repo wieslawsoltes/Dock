@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Extending docking operations and hosts | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Extending docking operations and hosts | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="extending-docking-operations-and-hosts">Extending docking operations and hosts</h1>
+
+<p>Dock exposes optional policies for integrations that need different docking rules,
+selection behavior, sizing, or window lifetimes. The integration supplies decisions;
+Dock continues to validate capabilities, move its models, render panes, and handle
+pointer input. These contracts do not depend on a compatibility package.</p>
+<pre><code class="lang-mermaid">flowchart TD
+    Integration[Application or integration factory] --&gt; Policies[Optional model policies]
+    Policies --&gt; Manager[DockManager validation and operation scope]
+    Manager --&gt; Service[DockService and FactoryBase]
+    Service --&gt; Models[Native Dock models and collections]
+    Models --&gt; Controls[DockControl, panes, and hosts]
+    Presentation[Scoped themes and presentation providers] --&gt; Controls
+    Controls --&gt; Input[Native drag, resize, and close input]
+    Input --&gt; Manager
+</code></pre>
+<h2 id="model-policies">Model policies</h2>
+<p>Implement the required interfaces on the factory that owns the layout. The
+interfaces are in <code>Dock.Model.Core</code>; they contain no Avalonia types.</p>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Purpose</th>
+<th>Behavior without the contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IDockDropPolicy</code></td>
+<td>Veto a source, destination, and operation before target display or drop execution. Both participating factories can reject a drop.</td>
+<td>Existing capability and docking-group validation applies.</td>
+</tr>
+<tr>
+<td><code>IDockItemDragPolicy</code></td>
+<td>Independently allow dragging a tab or pin and reordering it within its strip.</td>
+<td>Existing item drag behavior applies.</td>
+</tr>
+<tr>
+<td><code>IDockSplitPolicy</code></td>
+<td>Choose a document pane when splitting tool content.</td>
+<td>Tool splits create tool panes.</td>
+</tr>
+<tr>
+<td><code>IDockOuterSplitPolicy</code></td>
+<td>Resolve an outer split to the hovered dock or an enclosing region.</td>
+<td>Outer split operations are unavailable.</td>
+</tr>
+<tr>
+<td><code>IDockOperationObserver</code></td>
+<td>Begin a scope before a validated operation mutates the layout.</td>
+<td>Operations run without a scope.</td>
+</tr>
+<tr>
+<td><code>IDockWindowHostFactory</code></td>
+<td>Create a host with access to its <code>IDockWindow</code> model, including when presenting it again.</td>
+<td><code>GetHostWindow(window.Id)</code> resolves the host.</td>
+</tr>
+<tr>
+<td><code>IDockWindowClosePolicy</code></td>
+<td>Preserve a floating model and its contents when only its host closes.</td>
+<td>Closing the host also runs normal layout cleanup.</td>
+</tr>
+</tbody>
+</table>
+<p>For example, an application can compose a destination rule with the Avalonia
+factory without replacing Dock's execution logic:</p>
+<pre><code class="lang-csharp">using System;
+using Dock.Model.Avalonia;
+using Dock.Model.Core;
+
+sealed class WorkspaceFactory : Factory, IDockDropPolicy
+{
+    private readonly Func&lt;IDockable, IDockable, DockOperation, bool&gt; _canDrop;
+
+    public WorkspaceFactory(
+        Func&lt;IDockable, IDockable, DockOperation, bool&gt; canDrop)
+    {
+        _canDrop = canDrop;
+    }
+
+    public bool CanDrop(IDockable source, IDockable target, DockOperation operation)
+        =&gt; _canDrop(source, target, operation);
+}
+</code></pre>
+<p>Drop and outer-region policies also run during pointer movement. Keep them free
+of layout mutations. Returning <code>true</code> from <code>CanDrop</code> allows native validation to
+continue; it does not override capability restrictions. Direct factory edits do
+not consult the drag/drop policy.</p>
+<p>An operation observer returns an <code>IDockOperationScope</code> or <code>null</code>. Dock calls
+<code>Complete()</code> only after successful execution and always disposes the scope,
+including when execution fails or throws. Validation-only and rejected operations
+do not open scopes. Composite operations can nest scopes; disposal alone is not
+a completion notification or a rollback mechanism.</p>
+<h2 id="outer-splits">Outer splits</h2>
+<p><code>OuterLeft</code>, <code>OuterTop</code>, <code>OuterRight</code>, and <code>OuterBottom</code> split beside the region
+selected by <code>IDockOuterSplitPolicy</code>. Dragged panes and groups move as a unit,
+preserving their child order and selected content. A single document or tool gets
+a new native pane. The corresponding left/top/right/bottom operation mask applies
+to each outer direction.</p>
+<p>Dock checks factory ownership, region ancestry, source and destination
+capabilities, docking groups, and whether the destination will retain content
+before changing collections. A policy cannot redirect an outer operation to an
+unrelated region. The target theme must provide selectors with the matching
+attached dock operations; implementing the policy alone does not add visuals.</p>
+<h2 id="host-lifetime-and-selection">Host lifetime and selection</h2>
+<p><code>IDockWindowHostFactory.CreateHostWindow</code> is called when initializing a window
+and when presenting an existing window that no longer has a host. Returning
+<code>null</code> leaves it unhosted; it does not invoke a second locator. The overload that
+initializes an explicitly supplied host continues to use that host.</p>
+<p>Hosts that can cancel or defer <code>Exit()</code> implement <code>IHostWindowCloseState</code>.
+<code>IsClosed</code> becomes true only after closure completes. A hidden host or a canceled
+close returns false. Dock retains the live host and restores its tracking after
+a canceled exit, protects against reentrant exit, and preserves a replacement
+host installed during callbacks. <code>HostWindow</code> implements this contract.</p>
+<p>When <code>IDockWindowClosePolicy.PreserveLayoutOnHostClose</code> returns true, the native
+host still runs cancelable window notifications and saves its geometry. A
+successful close releases host registration and the model's host reference,
+while preserving the floating model, its ownership, and its contents for later
+presentation. Both <code>HostWindow</code> and <code>ManagedHostWindow</code> honor this policy. Managed
+presentation is released before the factory's closed notification, so a callback
+can present the retained model immediately. The integration owns any subsequent
+content/model cleanup.</p>
+<p>Factory subclasses can override <code>ShouldFocusActiveDockable</code> to distinguish pane
+selection from focus and <code>GetActiveDockableAfterRemoval</code> to choose a replacement
+selection. Defaults preserve native focus and selection behavior.
+<code>CloseDockableCore</code> and <code>PinDockableCore</code> let an integration implement explicit
+model operations independently of command capability flags, while retaining
+native cancellation, events, ItemsSource updates, ownership, and cleanup. The
+pin overload accepts the pin-owning root and the unpin destination.</p>
+<p><code>Dock.Model.Avalonia.Core.DockableBase.OwnerChanging</code> reports old and new owners
+before assignment. Equal assignments are silent, and UI-thread access is checked
+before notification. This event is specific to the Avalonia model implementation.</p>
+<h2 id="presentation-and-sizing">Presentation and sizing</h2>
+<p>The following extension points belong to the Avalonia control layer:</p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockAdornerWindow.Factory</code> / <code>IDockAdornerWindowFactory</code></td>
+<td>Supply an unshown floating overlay host in a visual scope. Dock assigns its native target, owner, position, and size. Returning null uses the standard host.</td>
+</tr>
+<tr>
+<td><code>DockTarget.AdornerHostProvider</code> / <code>IDockAdornerHostProvider</code></td>
+<td>Expand a local preview to an ancestor control without changing the docking destination.</td>
+</tr>
+<tr>
+<td><code>DockTarget.TargetMargin</code></td>
+<td>Position pane-local selectors inside an expanded preview. Region-wide indicators can use the full host.</td>
+</tr>
+<tr>
+<td><code>DockTarget.TargetTheme</code></td>
+<td>Inherit a local target <code>ControlTheme</code> from the docking surface.</td>
+</tr>
+<tr>
+<td><code>DockTargetBase.GetSelector</code></td>
+<td>Inspect the current template's registered selector for an operation. It can be hidden; lookup does not validate a drop or apply a template.</td>
+</tr>
+<tr>
+<td><code>HostWindow.TryBeginMoveDrag</code></td>
+<td>Start a move from custom chrome while retaining factory cancellation and native docking targets.</td>
+</tr>
+<tr>
+<td><code>PinnedDockControl.MinimumPinnedWidth</code> / <code>MinimumPinnedHeight</code></td>
+<td>Set finite nonnegative minimum content sizes. Both default to 50.</td>
+</tr>
+<tr>
+<td><code>ProportionalStackPanelSplitter.PreviewBackground</code> / <code>PreviewOpacity</code></td>
+<td>Customize live resize previews. Defaults retain the accent resource and opacity 1.</td>
+</tr>
+</tbody>
+</table>
+<p>Expanded adorner geometry follows layout and window movement for inline, native
+window, and managed window hosting. Providers returning null, the surface itself,
+or an unrelated control retain the ordinary surface-sized preview. Detachment
+releases geometry subscriptions and references to the previous surface.</p>
+<p><code>ProportionalStackPanel</code> subclasses can override <code>OnAssignProportions</code>,
+<code>GetProportionalDimension</code>, <code>GetMeasureConstraint</code>, <code>GetChildMeasureConstraint</code>,
+and <code>ResizeProportions</code> to translate another sizing model into native allocation.
+Measurement, arrangement, splitter input, and preview commit/cancel continue to
+run through the existing panel. The default measurement still rejects infinite
+space along the split axis; an override can resolve intrinsic sizes first.</p>
+<p>Custom templates can use any <code>Control</code> for <code>DockControl.PART_ContentControl</code> and
+a <code>Thumb</code> for <code>PinnedDockControl.PART_PinnedDockSplitter</code>. A custom pinned thumb
+owns its resize behavior; the default <code>GridSplitter</code> retains native handlers.
+The Fluent layout presenter defers content realization, and the document create
+button remains visible alongside tab-strip extension content.</p>
+<h2 id="regression-coverage">Regression coverage</h2>
+<p>The native tests exercise these contracts without an adapter assembly:</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Representative tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Drop, split, and operation scope</td>
+<td><code>DockDropPolicyTests</code>, <code>DockSplitPolicyTests</code>, <code>DockOuterSplitTests</code>, <code>DockOperationObserverTests</code></td>
+</tr>
+<tr>
+<td>Host creation, cancellation, and preservation</td>
+<td><code>DockWindowHostFactoryTests</code>, <code>HostExitCancellationTests</code>, <code>HostCloseCancellationTests</code>, <code>HostWindowClosePolicyTests</code></td>
+</tr>
+<tr>
+<td>Ownership, selection, and explicit operations</td>
+<td><code>DockableOwnerTests</code>, <code>FactorySelectionPolicyTests</code>, <code>FactoryExplicitOperationTests</code>, <code>FactoryPinnedRootTests</code></td>
+</tr>
+<tr>
+<td>Pointer targets and geometry</td>
+<td><code>TabItemDragPolicyTests</code>, <code>OuterWindowDragTests</code>, <code>AdornerGeometryTests</code>, <code>AdornerWindowFactoryTests</code></td>
+</tr>
+<tr>
+<td>Sizing and resource lifetime</td>
+<td><code>ProportionalStackPanelPolicyTests</code>, <code>ProportionalStackPanelSplitterSizingTests</code>, <code>PinnedDockSizingTests</code>, <code>ThemeCommandInteractionLeakTests</code></td>
+</tr>
+</tbody>
+</table>
+<p>Run the complete native solution validation with <code>dotnet build -c Release</code> and
+<code>dotnet test -c Release --no-build</code>. The solution also builds the linked Avalonia
+11 controls and tests the other model implementations.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -394,6 +394,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/dock-extension-policies.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-extension-policies.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/dock-faq.md",
       "output": {
         ".html": {

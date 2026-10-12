@@ -49,8 +49,16 @@ supported by corresponding implementation and test evidence.
   factories retain their tool-pane default. Headless tests cover four edges,
   docked/floating content, nested groups, validation without mutation and XML
   restoration. Native unit tests and the package consumer cover the policy and
-  multi-tab order. This does not implement the separate tool-beside-document
-  overlay selector family.
+  multi-tab order.
+- `DocumentPaneDockAsAnchorable*` selectors move tools beside the highest document
+  region even with `CanDockAsTabbedDocument=false`. The native outer-split policy
+  preserves dragged panes/groups, tab order, containers and active content.
+  Non-mixed groups restrict selectors to their outside edges. Native capabilities,
+  docking groups and directional masks apply; validation leaves the layout intact.
+  Whole-group drops remove empty floating return panes, and XML writes public
+  return history without reviving a cleared location from native history.
+  Scoped native target themes work with reused overlays; weak part registrations
+  survive namescope collection without retaining retired visuals.
 
 - Document-list entries use public `MenuItemEx` containers while retaining native
   flyout input and activation. Icon selectors receive the current icon and its
@@ -679,9 +687,9 @@ supported by corresponding implementation and test evidence.
   bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
 - Retired menu template roots are disconnected from their composition parent,
   preventing retained icon presenters from keeping removed documents alive.
-- 1421 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1499 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1439 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1517 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -723,9 +731,10 @@ supported by corresponding implementation and test evidence.
   remaining property-default, callback, and framework-substitution edge cases.
 - Broader sample interaction and platform coverage for floating windows.
 - Navigator desktop modality/focus validation and remaining theme/overlay integration.
-- The full WPF overlay template-part arrangement and separate
-  `DocumentPaneDockAsAnchorable*` selector family are still missing. Current
-  floating overlays use Dock's native target templates and docking policy.
+- The full WPF overlay template-part arrangement and exact outer preview geometry
+  remain open. Outer selectors execute against the highest document region, but
+  their highlight currently spans one third of the hovered pane. WPF previews
+  the enclosing document region.
 
 ## Reproducible API inventory
 

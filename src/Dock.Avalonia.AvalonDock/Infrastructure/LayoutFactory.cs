@@ -13,7 +13,7 @@ namespace AvalonDock.Infrastructure;
 // hide content before the native host can detach the floating layout.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement, IDockDropPolicy dropPolicy,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy, IDockSplitPolicy
+    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockItemDragPolicy, IDockDropPolicy, IDockSplitPolicy, IDockOuterSplitPolicy
 {
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
@@ -28,6 +28,9 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 
     bool IDockSplitPolicy.UseDocumentDock(IDockable source, IDock target, DockOperation operation) =>
         target is IDocumentDock;
+
+    IDock? IDockOuterSplitPolicy.GetOuterSplitTarget(IDockable source, IDockable target, DockOperation operation) =>
+        LayoutOuterSplitPolicy.Resolve(source, getLayoutElement(target), operation);
 
     internal void SetPaneSelection(IDock owner, IDockable? selected)
     {
@@ -163,7 +166,9 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         if (operation == DockOperation.Fill && source is not IDock &&
             (ReferenceEquals(source.Owner, target) || ReferenceEquals(source.Owner, target.Owner)))
             notification = LayoutOperation.Silent;
-        return operations.Begin(source, notification);
+        IDockOperationScope? scope = operations.Begin(source, notification);
+        return operation is DockOperation.OuterLeft or DockOperation.OuterTop or DockOperation.OuterRight or DockOperation.OuterBottom &&
+            getLayoutElement(target).Root is LayoutRoot root ? new LayoutOuterSplitScope(root, scope) : scope;
     }
 
     public override void FloatAllDockables(IDockable dockable, DockWindowOptions? options)

@@ -21,6 +21,11 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     public void AddAdorner(Visual visual, bool indicatorsOnly, bool allowHorizontalDocking = true, bool allowVerticalDocking = true)
     {
+        if (_adorner is DockTarget target)
+        {
+            if (DockTarget.GetTargetTheme(visual) is { } theme) target.Theme = theme;
+            else target.ClearValue(TemplatedControl.ThemeProperty);
+        }
         if (useFloatingDockAdorner)
         {
             AddFloatingAdorner(visual, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
@@ -168,6 +173,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         {
             RemoveRegularAdorner();
         }
+        if (_adorner is DockTarget target) target.ClearValue(TemplatedControl.ThemeProperty);
     }
 
     private void RemoveFloatingAdorner()

@@ -819,9 +819,23 @@ The compatibility factory supplies Dock's optional `IDockSplitPolicy` to select
 the document destination; Dock creates the pane and moves the content. Ordinary
 Dock factories keep their tool-pane split default.
 
-WPF's full overlay template-part arrangement and its separate tool-beside-document
-selector family are still tracked as compatibility gaps. Use Dock's selector
-templates for the current native presentation.
+The four `DocumentPaneDockAsAnchorable*` targets place tools beside the highest
+containing document-pane group. They remain available when
+`CanDockAsTabbedDocument` is false. Dropping a pane or group preserves that
+container, its children and tab order; single tools get a new anchorable pane.
+With `AllowMixedOrientation=False`, a group with multiple visible children
+exposes only its outside edges along the existing axis. `True` enables all four.
+
+The compatibility factory implements the optional `IDockOuterSplitPolicy`;
+Dock validates capabilities and moves the native models. The adapter supplies
+four extra selectors through `DockTarget.TargetTheme`, scoped to its surfaces.
+They use native `OuterLeft`, `OuterTop`, `OuterRight` and `OuterBottom` operations
+and the existing directional restrictions. The public overlay projection reports
+the corresponding `DropTargetType.DocumentPaneDockAsAnchorable*` values.
+
+WPF's full overlay template-part arrangement and exact preview geometry remain
+open. The outer drop currently previews one third of the hovered pane; WPF
+previews the enclosing document region. The final placement uses that region.
 
 Subscribe to `LayoutFloatingWindowControlCollectionChanged` in a workspace
 service to observe added/removed host controls and their collection indices;
@@ -1052,6 +1066,8 @@ flowchart TB
     View --> Overlays
     Factory --> SplitPolicy
     SplitPolicy --> Models
+    Factory --> OuterSplitPolicy["Optional IDockOuterSplitPolicy<br/>Tool panes and groups beside document regions"]
+    OuterSplitPolicy --> Models
     Overlays -->|Native target input| Factory
     Api --> Navigator
     Navigator --> Items

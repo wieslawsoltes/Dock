@@ -208,7 +208,10 @@ public class FloatingSerializationTests
         LayoutAnchorableFloatingWindow window = new() { RootPanel = new LayoutAnchorablePaneGroup(new LayoutAnchorablePane(tool)) };
         DockingManager manager = new();
         manager.Layout.FloatingWindows.Add(window);
+        ILayoutContainer? previous = tool.Parent;
         manager.DockFactory.HideDockable(tool.DockModel);
+        Assert.Same(previous, tool.PreviousContainer);
+        Assert.Equal(0, tool.PreviousContainerIndex);
         Assert.Same(tool, Assert.Single(manager.Layout.Hidden));
         Assert.True(tool.IsHidden);
         Assert.False(window.IsVisible);

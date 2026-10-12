@@ -307,7 +307,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var isLocalValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
+        var isLocalValid = IsLocalTargetAvailable(point, dragAction, relativeTo, ValidateLocal);
         var isGlobalValid = ValidateGlobal(point, DockOperation.Fill, dragAction, relativeTo);
 
         AddAdorners(isLocalValid, isGlobalValid);

@@ -57,14 +57,16 @@ internal sealed class LayoutOverlayProjection
 
     internal IReadOnlyList<OverlayWindowDropTarget> CaptureTargets()
     {
-        List<OverlayWindowDropTarget> targets = new(5);
+        List<OverlayWindowDropTarget> targets = new(9);
         if (_adorner is not DockTargetBase target) return targets;
-        for (int index = 0; index < 5; index++)
+        for (int index = 0; index < 9; index++)
         {
             DockOperation operation = index switch
             {
                 0 => DockOperation.Left, 1 => DockOperation.Top, 2 => DockOperation.Right,
-                3 => DockOperation.Bottom, _ => DockOperation.Fill
+                3 => DockOperation.Bottom, 4 => DockOperation.Fill,
+                5 => DockOperation.OuterLeft, 6 => DockOperation.OuterTop,
+                7 => DockOperation.OuterRight, _ => DockOperation.OuterBottom
             };
             Control? selector = target.GetSelector(operation);
             if (selector is null || !selector.IsEffectivelyVisible || selector.Opacity <= 0 ||
@@ -77,6 +79,17 @@ internal sealed class LayoutOverlayProjection
 
     private (OverlayWindowDropTargetType Selector, DropTargetType Destination)? Map(DockOperation operation)
     {
+        if (_type == DropAreaType.DocumentPane)
+        {
+            int outer = operation switch
+            {
+                DockOperation.OuterLeft => 0, DockOperation.OuterTop => 1,
+                DockOperation.OuterRight => 2, DockOperation.OuterBottom => 3, _ => -1
+            };
+            if (outer >= 0) return (
+                (OverlayWindowDropTargetType)((int)OverlayWindowDropTargetType.DocumentPaneDockLeft + outer),
+                (DropTargetType)((int)DropTargetType.DocumentPaneDockAsAnchorableLeft + outer));
+        }
         int offset = operation switch
         {
             DockOperation.Left => 0, DockOperation.Top => 1, DockOperation.Right => 2,

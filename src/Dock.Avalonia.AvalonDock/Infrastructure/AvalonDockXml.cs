@@ -155,7 +155,7 @@ internal static class AvalonDockXml
             WriteAttribute(writer, "IsLastFocusedDocument", content.IsLastFocusedDocument);
             if (content.ToolTip is string tip) WriteAttribute(writer, "ToolTip", tip);
             if (content.LastActivationTimeStamp is { } time) WriteAttribute(writer, "LastActivationTimeStamp", time.ToString(CultureInfo.InvariantCulture));
-            var previous = (content.PreviousContainer as LayoutElement)?.DockModel ?? content.DockModel.OriginalOwner;
+            var previous = (content.PreviousContainer as LayoutElement)?.DockModel;
             if (previous is not null)
             {
                 WriteAttribute(writer, "PreviousContainerId", previous.Id);

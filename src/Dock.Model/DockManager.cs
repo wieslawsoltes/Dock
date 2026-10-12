@@ -653,6 +653,9 @@ public class DockManager : IDockManager
     {
         LastCapabilityEvaluation = null;
 
+        if (DockOuterSplit.Direction(operation) is not DockOperation.None)
+            return ValidateOuterSplit(sourceDockable, targetDockable, action, operation, bExecute);
+
         if (!IsDockingAllowed(sourceDockable, targetDockable, operation))
         {
             return false;
@@ -676,6 +679,9 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation)
     {
+        if (DockOuterSplit.Direction(operation) is not DockOperation.None)
+            return ValidateOuterSplit(sourceDockable, targetDockable, DragAction.Move, operation, false);
+
         if (!IsDockingAllowed(sourceDockable, targetDockable, operation))
         {
             return false;
@@ -697,6 +703,51 @@ public class DockManager : IDockManager
         }
 
         return true;
+    }
+
+    private bool ValidateOuterSplit(IDockable source, IDockable hovered, DragAction action, DockOperation operation, bool execute)
+    {
+        if (action != DragAction.Move || source.Owner is not IDock owner ||
+            owner.VisibleDockables?.Contains(source) != true ||
+            hovered.Factory is not IDockOuterSplitPolicy policy ||
+            policy.GetOuterSplitTarget(source, hovered, operation) is not { } target ||
+            target.Owner is not IDock parent || parent.VisibleDockables?.Contains(target) != true ||
+            target.Factory is not { } factory || !ReferenceEquals(source.Factory, factory) ||
+            !ReferenceEquals(hovered.Factory, factory)) return false;
+
+        bool enclosesHovered = false;
+        for (IDockable? current = hovered; current is not null; current = current.Owner)
+            if (ReferenceEquals(current, target)) { enclosesHovered = true; break; }
+        if (!enclosesHovered) return false;
+        for (IDockable? current = target; current is not null; current = current.Owner)
+            if (ReferenceEquals(current, source)) return false;
+        if (DockOuterSplit.Contains(target, source) && !DockOuterSplit.HasOtherContent(target, source)) return false;
+
+        if (!IsDockingAllowed(source, hovered, operation) || !IsDockingAllowed(source, target, operation) ||
+            !IsCapabilityAllowed(hovered, DockCapability.Drop, DockCapabilityResolver.ResolveDropTargetDock(hovered)) ||
+            !IsCapabilityAllowed(target, DockCapability.Drop, DockCapabilityResolver.ResolveDropTargetDock(target)) ||
+            !ValidateOuterSplitSource(source, target, operation)) return false;
+
+        if (execute) DockOuterSplit.Execute(source, target, DockOuterSplit.Direction(operation));
+        return true;
+    }
+
+    private bool ValidateOuterSplitSource(IDockable source, IDock target, DockOperation operation)
+    {
+        if (!IsDockingAllowed(source, target, operation) ||
+            !IsCapabilityAllowed(source, DockCapability.Drag, DockCapabilityResolver.ResolveOperationDock(source)) ||
+            !DockGroupValidator.ValidateDockingGroups(source, target)) return false;
+        if (source is not IDock dock) return source is IDocument or ITool;
+        if (dock.VisibleDockables is null) return false;
+        bool hasContent = false;
+        for (int index = 0; index < dock.VisibleDockables.Count; index++)
+        {
+            IDockable child = dock.VisibleDockables[index];
+            if (child is ISplitter) continue;
+            if (!ValidateOuterSplitSource(child, target, operation)) return false;
+            hasContent = true;
+        }
+        return hasContent;
     }
 
 

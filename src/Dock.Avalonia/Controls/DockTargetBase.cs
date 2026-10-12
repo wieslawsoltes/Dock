@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Automation.Peers;
@@ -7,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Contract;
@@ -28,15 +30,28 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_LeftSelector", typeof(Control))]
 [TemplatePart("PART_RightSelector", typeof(Control))]
 [TemplatePart("PART_CenterSelector", typeof(Control))]
+[TemplatePart("PART_OuterLeftIndicator", typeof(Control))]
+[TemplatePart("PART_OuterTopIndicator", typeof(Control))]
+[TemplatePart("PART_OuterRightIndicator", typeof(Control))]
+[TemplatePart("PART_OuterBottomIndicator", typeof(Control))]
+[TemplatePart("PART_OuterLeftSelector", typeof(Control))]
+[TemplatePart("PART_OuterTopSelector", typeof(Control))]
+[TemplatePart("PART_OuterRightSelector", typeof(Control))]
+[TemplatePart("PART_OuterBottomSelector", typeof(Control))]
 public abstract class DockTargetBase : TemplatedControl, IDockTarget
 {
+    private WeakReference<IControlTemplate>? _appliedTemplate;
+    private (DockOperation Operation, WeakReference<Control> Control)[] _appliedIndicators = [];
+    private (DockOperation Operation, WeakReference<Control> Control)[] _appliedSelectors = [];
+    private bool _registrationsInvalid;
     private static readonly string[] s_indicators =
     [
         "PART_TopIndicator",
         "PART_BottomIndicator",
         "PART_LeftIndicator",
         "PART_RightIndicator",
-        "PART_CenterIndicator"
+        "PART_CenterIndicator",
+        "PART_OuterLeftIndicator", "PART_OuterTopIndicator", "PART_OuterRightIndicator", "PART_OuterBottomIndicator"
     ];
 
     private static readonly string[] s_selectors =
@@ -45,7 +60,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         "PART_BottomSelector",
         "PART_LeftSelector",
         "PART_RightSelector",
-        "PART_CenterSelector"
+        "PART_CenterSelector",
+        "PART_OuterLeftSelector", "PART_OuterTopSelector", "PART_OuterRightSelector", "PART_OuterBottomSelector"
     ];
 
     /// <summary>
@@ -160,6 +176,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     public Control? GetSelector(DockOperation operation)
     {
         VerifyAccess();
+        EnsureTemplateRegistrations();
         return SelectorsOperations.GetValueOrDefault(operation);
     }
 
@@ -167,8 +184,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         return operation switch
         {
-            DockOperation.Left or DockOperation.Right => ShowHorizontalTargets,
-            DockOperation.Top or DockOperation.Bottom => ShowVerticalTargets,
+            DockOperation.Left or DockOperation.Right or DockOperation.OuterLeft or DockOperation.OuterRight => ShowHorizontalTargets,
+            DockOperation.Top or DockOperation.Bottom or DockOperation.OuterTop or DockOperation.OuterBottom => ShowVerticalTargets,
             _ => true
         };
     }
@@ -178,18 +195,59 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         base.OnApplyTemplate(e);
 
+        _appliedTemplate = Template is { } template ? new(template) : null;
+        RegisterTemplateParts(e.NameScope);
+        _appliedIndicators = RememberParts(IndicatorOperations);
+        _appliedSelectors = RememberParts(SelectorsOperations);
+    }
+
+    private void RegisterTemplateParts(INameScope scope)
+    {
+        _registrationsInvalid = false;
+
         IndicatorOperations.Clear();
         SelectorsOperations.Clear();
 
         foreach (var indicator in s_indicators)
         {
-            AddIndicator(indicator, e.NameScope);
+            AddIndicator(indicator, scope);
         }
 
         foreach (var selector in s_selectors)
         {
-            AddSelector(selector, e.NameScope);
+            AddSelector(selector, scope);
         }
+    }
+
+    private void EnsureTemplateRegistrations()
+    {
+        // A theme may clear and restore the same template before layout. Avalonia
+        // then keeps its existing visual tree and does not raise OnApplyTemplate.
+        // The namescope itself need not survive template application, so remember
+        // weak references to the parts still owned by that visual tree.
+        if (_registrationsInvalid && _appliedTemplate?.TryGetTarget(out IControlTemplate? template) == true &&
+            ReferenceEquals(template, Template))
+        {
+            RestoreParts(_appliedIndicators, IndicatorOperations);
+            RestoreParts(_appliedSelectors, SelectorsOperations);
+            _registrationsInvalid = false;
+        }
+    }
+
+    private static (DockOperation Operation, WeakReference<Control> Control)[] RememberParts(Dictionary<DockOperation, Control> parts)
+    {
+        var result = new (DockOperation, WeakReference<Control>)[parts.Count];
+        int index = 0;
+        foreach (var pair in parts) result[index++] = (pair.Key, new(pair.Value));
+        return result;
+    }
+
+    private void RestoreParts((DockOperation Operation, WeakReference<Control> Control)[] parts,
+        Dictionary<DockOperation, Control> operations)
+    {
+        foreach (var part in parts)
+            if (part.Control.TryGetTarget(out Control? control) && this.IsVisualAncestorOf(control))
+                operations[part.Operation] = control;
     }
 
     /// <inheritdoc/>
@@ -197,6 +255,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         if (change.Property == TemplateProperty)
         {
+            _registrationsInvalid = true;
             IndicatorOperations.Clear();
             SelectorsOperations.Clear();
         }
@@ -262,6 +321,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
+        EnsureTemplateRegistrations();
         return ShowIndicatorsOnly 
             ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 
             : GetDockOperationFromSelectors(point, relativeTo, dragAction, validate, visible);

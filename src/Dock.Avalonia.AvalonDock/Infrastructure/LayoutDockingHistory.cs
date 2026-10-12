@@ -31,6 +31,15 @@ internal sealed class LayoutDockingHistory(LayoutContent content)
         else Remember(null, -1);
     }
 
+    internal void CompleteHide()
+    {
+        WeakReference<ILayoutContainer>? location = _removedFrom;
+        _removedFrom = null;
+        if (location?.TryGetTarget(out ILayoutContainer? container) == true && _removedIndex >= 0 &&
+            ReferenceEquals(container.Root, content.Root))
+            Remember(container, _removedIndex);
+    }
+
     internal bool RestorePrevious(bool floatingOnly = false)
     {
         if (content.Root is not LayoutRoot root || content.PreviousContainer is not ILayoutGroup group ||

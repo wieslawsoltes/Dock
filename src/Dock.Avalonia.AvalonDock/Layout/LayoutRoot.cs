@@ -96,6 +96,8 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
                 if (args.Dockable is Tool tool && tool.Owner is RootDock floatingRoot &&
                     !ReferenceEquals(floatingRoot, model) && floatingRoot.HiddenDockables?.Remove(tool) == true)
                     Hidden.Add((LayoutAnchorable)Context.Get(tool));
+                if (args.Dockable is Tool hidden && Context.Get(hidden) is LayoutContent content)
+                    content.DockingHistory.CompleteHide();
             };
         }
         LeftSide = new LayoutAnchorSide();

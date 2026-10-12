@@ -27,4 +27,5 @@
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutFloatingWindowControls.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutSizing.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutCommands.axaml" />
+  <StyleInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDockTargets.axaml" />
 </Styles>

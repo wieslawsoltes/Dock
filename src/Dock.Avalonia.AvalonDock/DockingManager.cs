@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -126,9 +127,10 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Identifies the item container style selector.</summary>
     public static readonly StyledProperty<StyleSelector?> LayoutItemContainerStyleSelectorProperty =
         AvaloniaProperty.Register<DockingManager, StyleSelector?>(nameof(LayoutItemContainerStyleSelector));
-    /// <summary>Identifies the layout property.</summary>
-    public static readonly DirectProperty<DockingManager, LayoutRoot> LayoutProperty =
-        AvaloniaProperty.RegisterDirect<DockingManager, LayoutRoot>(nameof(Layout), x => x.Layout, (x, v) => x.Layout = v);
+    /// <summary>Identifies the layout property, supporting styles and null-to-empty-layout coercion.</summary>
+    public static readonly StyledProperty<LayoutRoot> LayoutProperty =
+        AvaloniaProperty.Register<DockingManager, LayoutRoot>(nameof(Layout), defaultValue: null!,
+            coerce: static (owner, value) => ((DockingManager)owner).CoerceLayout(value));
     /// <summary>Identifies the live root used by the control template.</summary>
     public static readonly DirectProperty<DockingManager, RootDock> DockLayoutProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, RootDock>(nameof(DockLayout), x => x.DockLayout);
@@ -139,16 +141,15 @@ public partial class DockingManager : TemplatedControl
     public static readonly DirectProperty<DockingManager, Func<IHostWindow?>> DockHostWindowFactoryProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, Func<IHostWindow?>>(nameof(DockHostWindowFactory), x => x.DockHostWindowFactory);
     /// <summary>Identifies the document content source.</summary>
-    public static readonly DirectProperty<DockingManager, IEnumerable?> DocumentsSourceProperty =
-        AvaloniaProperty.RegisterDirect<DockingManager, IEnumerable?>(nameof(DocumentsSource), x => x.DocumentsSource, (x, value) => x.DocumentsSource = value);
+    public static readonly StyledProperty<IEnumerable?> DocumentsSourceProperty =
+        AvaloniaProperty.Register<DockingManager, IEnumerable?>(nameof(DocumentsSource));
     /// <summary>Identifies the tool content source.</summary>
-    public static readonly DirectProperty<DockingManager, IEnumerable?> AnchorablesSourceProperty =
-        AvaloniaProperty.RegisterDirect<DockingManager, IEnumerable?>(nameof(AnchorablesSource), x => x.AnchorablesSource, (x, value) => x.AnchorablesSource = value);
+    public static readonly StyledProperty<IEnumerable?> AnchorablesSourceProperty =
+        AvaloniaProperty.Register<DockingManager, IEnumerable?>(nameof(AnchorablesSource));
     /// <summary>Identifies the insertion strategy.</summary>
-    public static readonly DirectProperty<DockingManager, ILayoutUpdateStrategy?> LayoutUpdateStrategyProperty =
-        AvaloniaProperty.RegisterDirect<DockingManager, ILayoutUpdateStrategy?>(nameof(LayoutUpdateStrategy), x => x.LayoutUpdateStrategy, (x, value) => x.LayoutUpdateStrategy = value);
+    public static readonly StyledProperty<ILayoutUpdateStrategy?> LayoutUpdateStrategyProperty =
+        AvaloniaProperty.Register<DockingManager, ILayoutUpdateStrategy?>(nameof(LayoutUpdateStrategy));
 
-    private LayoutRoot _layout;
     internal LayoutSizingViews SizingViews { get; } = new();
     internal LayoutFloatingWindowCreation FloatingWindowCreation { get; }
     private readonly LayoutFloatingWindowPresenter _floatingWindows = new();
@@ -160,9 +161,6 @@ public partial class DockingManager : TemplatedControl
     private readonly ILayoutSystemMenu _systemMenu = new LayoutWindowsSystemMenu();
     private readonly LayoutNavigatorPresenter _navigator = new();
     private readonly LayoutThemeCoordinator _themeResources;
-    private IEnumerable? _documentsSource;
-    private IEnumerable? _anchorablesSource;
-    private ILayoutUpdateStrategy? _layoutUpdateStrategy;
     private int _sourceBindingSuspensions;
     private LayoutPanel? _presentedRootPanel;
 
@@ -184,17 +182,16 @@ public partial class DockingManager : TemplatedControl
         LayoutHostWindowFactory hosts = new(this);
         DockHostWindowFactory = hosts.Create;
         FloatingWindowCreation = new(this, hosts);
-        _layout = new LayoutRoot { Manager = this };
-        _layout.PropertyChanged += LayoutPropertyChanged;
+        LayoutRoot layout = CreateDefaultLayout();
+        SetValue(LayoutProperty, layout);
         _layoutItems = new LayoutItemRegistry(this);
-        _layoutItems.SetLayout(_layout);
         _floatingControls = new(this);
-        _floatingControls.SetLayout(_layout);
         LayoutSourceSubscriptions subscriptions = new(this);
         _documents = new(this, _layoutItems, static content => new LayoutDocument { Content = content },
             LayoutSourcePlacement.FindDocumentDestination, LayoutSourcePlacement.InsertDocument, subscriptions.SetDocuments);
         _anchorables = new(this, _layoutItems, static content => new LayoutAnchorable { Content = content },
             LayoutSourcePlacement.FindAnchorableDestination, LayoutSourcePlacement.InsertAnchorable, subscriptions.SetAnchorables);
+        OnLayoutChanged(null!, layout);
     }
 
     /// <summary>Preserves the default manager theme for derived controls.</summary>
@@ -211,37 +208,26 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Updates theme resources on this manager and its existing floating and navigator windows.</summary>
     protected virtual void OnThemeChanged(AvaloniaPropertyChangedEventArgs e) => _themeResources.Apply(Theme);
 
-    /// <summary>Gets or sets the AvalonDock layout.</summary>
+    /// <summary>Gets or sets the AvalonDock layout. Assigning null creates a fresh empty document layout.</summary>
+    /// <remarks>The constructor supplies a local layout value. Clear it to allow a style to supply the layout.</remarks>
     [Content]
+    [AllowNull]
     public LayoutRoot Layout
     {
-        get => _layout;
-        set
-        {
-            ArgumentNullException.ThrowIfNull(value);
-            if (ReferenceEquals(_layout, value)) return;
-            if (value.Manager is not null && !ReferenceEquals(value.Manager, this))
-                throw new InvalidOperationException("A layout can belong to only one DockingManager.");
-            LayoutChanging?.Invoke(this, EventArgs.Empty);
-            _contextMenus.Close();
-            _navigator.Close();
-            _floatingWindows.Detach(registeredHosts: _floatingControls.Items);
-            _autoHide.Detach(hide: true);
-            RootDock oldDock = DockLayout;
-            LayoutRoot oldLayout = _layout;
-            IFactory oldFactory = DockFactory;
-            _layout.PropertyChanged -= LayoutPropertyChanged;
-            _layout.Manager = null;
-            SetAndRaise(LayoutProperty, ref _layout, value);
-            _layout.Manager = this;
-            _layout.PropertyChanged += LayoutPropertyChanged;
-            _layoutItems.SetLayout(_layout);
-            _floatingControls.SetLayout(_layout);
-            RaisePropertyChanged(DockFactoryProperty, oldFactory, DockFactory);
-            RaisePropertyChanged(DockLayoutProperty, oldDock, DockLayout);
-            OnLayoutChanged(oldLayout, value);
-            LayoutChanged?.Invoke(this, EventArgs.Empty);
-        }
+        get => GetValue(LayoutProperty);
+        set => SetValue(LayoutProperty, value!);
+    }
+
+    private static LayoutRoot CreateDefaultLayout() =>
+        new() { RootPanel = new LayoutPanel(new LayoutDocumentPaneGroup(new LayoutDocumentPane())) };
+
+    private LayoutRoot CoerceLayout(LayoutRoot? value)
+    {
+        if (value is null) return CreateDefaultLayout();
+        if (value.Manager is not null && !ReferenceEquals(value.Manager, this))
+            throw new InvalidOperationException("A layout can belong to only one DockingManager.");
+        LayoutChanging?.Invoke(this, EventArgs.Empty);
+        return value;
     }
     /// <summary>Gets the live Dock root for integration and templates.</summary>
     public RootDock DockLayout => (RootDock)Layout.DockModel;
@@ -351,30 +337,48 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Gets or sets the strategy used to insert source items.</summary>
     public ILayoutUpdateStrategy? LayoutUpdateStrategy
     {
-        get => _layoutUpdateStrategy;
-        set => SetAndRaise(LayoutUpdateStrategyProperty, ref _layoutUpdateStrategy, value);
+        get => GetValue(LayoutUpdateStrategyProperty);
+        set => SetValue(LayoutUpdateStrategyProperty, value);
     }
     /// <summary>Gets or sets the document contents, observing collection changes.</summary>
     public IEnumerable? DocumentsSource
     {
-        get => _documentsSource;
-        set => SetAndRaise(DocumentsSourceProperty, ref _documentsSource, value);
+        get => GetValue(DocumentsSourceProperty);
+        set => SetValue(DocumentsSourceProperty, value);
     }
     /// <summary>Gets or sets the tool contents, observing collection changes.</summary>
     public IEnumerable? AnchorablesSource
     {
-        get => _anchorablesSource;
-        set => SetAndRaise(AnchorablesSourceProperty, ref _anchorablesSource, value);
+        get => GetValue(AnchorablesSourceProperty);
+        set => SetValue(AnchorablesSourceProperty, value);
     }
-    /// <summary>Reattaches source contents to a replacement layout.</summary>
+    /// <summary>Transfers layout ownership, containers, native hosts and source contents, then raises <see cref="LayoutChanged"/>.</summary>
+    /// <remarks>An override can suppress these side effects by omitting the base call; the property value has already changed.
+    /// The constructor invokes this hook with a null old layout after creating its internal services.</remarks>
     protected virtual void OnLayoutChanged(LayoutRoot oldLayout, LayoutRoot newLayout)
     {
+        _contextMenus.Close();
+        _navigator.Close();
+        _floatingWindows.Detach(registeredHosts: _floatingControls.Items);
+        _autoHide.Detach(hide: true);
+        if (oldLayout is not null)
+        {
+            oldLayout.PropertyChanged -= LayoutPropertyChanged;
+            if (ReferenceEquals(oldLayout.Manager, this)) oldLayout.Manager = null;
+        }
+        newLayout.Manager = this;
+        newLayout.PropertyChanged += LayoutPropertyChanged;
+        _layoutItems.SetLayout(newLayout);
+        _floatingControls.SetLayout(newLayout);
+        RaisePropertyChanged(DockFactoryProperty, oldLayout?.DockFactory!, DockFactory);
+        RaisePropertyChanged(DockLayoutProperty, (RootDock?)oldLayout?.DockModel!, DockLayout);
         if (IsInitialized) EnsureLayoutRootPanel();
         if (IsInitialized) EnsureAnchorSidePanels();
         _documents.SetLayout(newLayout);
         _anchorables.SetLayout(newLayout);
         if (IsLoaded) _floatingWindows.Attach(newLayout);
         if (IsLoaded) _autoHide.Attach(newLayout);
+        LayoutChanged?.Invoke(this, EventArgs.Empty);
     }
     /// <summary>Replaces the observed document source.</summary>
     protected virtual void OnDocumentsSourceChanged(AvaloniaPropertyChangedEventArgs e) => _documents.SetSource(DocumentsSource);
@@ -446,6 +450,10 @@ public partial class DockingManager : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        // The constructor installs its per-instance layout before creating the
+        // services which observe it. Subsequent changes use the public hook.
+        if (change.Property == LayoutProperty && _layoutItems is not null)
+            OnLayoutChanged((LayoutRoot)change.OldValue!, (LayoutRoot)change.NewValue!);
         if (change.Property == ActiveContentProperty) ApplyActiveContentChange(change);
         OnAnchorControlPropertyChanged(change);
         if (change.Property == AutoHideWindowProperty) OnAutoHideWindowChanged(change);

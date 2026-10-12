@@ -132,7 +132,7 @@ public class FloatingReturnTests
         manager.Layout.FloatingWindows.Add(new LayoutDocumentFloatingWindow { RootDocument = document });
         document.Dock();
         Assert.Equal(1, document.FallbackCalls);
-        Assert.Same(manager.Layout.RootPanel.Children[0], document.Parent);
+        Assert.Same(Assert.Single(manager.Layout.Descendents().OfType<LayoutDocumentPane>()), document.Parent);
         Assert.Same(document, manager.Layout.ActiveContent);
         Assert.Equal(1, strategy.DocumentsInserted);
 

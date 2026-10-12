@@ -199,10 +199,12 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,541 cases, including 29 new
-  floating-control override, command-subscription, closing-order, null-model,
-  and writable-property cases. Twenty-seven of those cases reproduced failures
-  before correction. Dropdown input,
+- The consolidated adapter suite passes all 2,557 cases, including 16 manager
+  property/style/default/hook cases; the first 13 reproduced failures before
+  correction. The manager audit below records conditional styles, compiled
+  bindings, layout coercion, and protected callbacks. The 29 floating-control
+  override, command-subscription, closing-order, null-model, and writable-property
+  cases remain covered; 27 reproduced failures before their correction. Dropdown input,
   command ordering, nested/child menus, resource updates, and menu lifetime
   pass all 41 focused cases; 14 cases failed before correction. All 30
   rendered-preview/image cases also pass. Tab/title activation, middle-click
@@ -1025,6 +1027,31 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
+
+## Manager property contract audit
+
+The pinned upstream manager registers `Layout`, `DocumentsSource`,
+`AnchorablesSource`, and `LayoutUpdateStrategy` as ordinary writable dependency
+properties. The adapter now uses styled properties for all four. This audit
+checks their style participation and lifecycle wiring separately from API-key
+presence; it does not claim identical WPF/Avalonia binding lifetimes.
+
+| Contract | Implementation and evidence |
+| --- | --- |
+| Source styles | Conditional selectors and compiled style bindings import current contents. Local values override styles; clearing them restores styled sources. Deactivation removes imported contents and releases collection subscriptions. |
+| Strategy styles | Current effective strategy participates in insertion. Clearing local overrides and removing selectors restores the appropriate lower-priority value. |
+| Initial layout | Each manager creates its own locally assigned root with panel, document-pane group, and empty document pane. Style-supplied layouts become effective after the constructor value is cleared; layouts remain exclusive to one manager. |
+| Null assignment | Both the CLR setter and property API create a fresh empty layout for null, without raising `LayoutChanging`. Ownership moves and `LayoutChanged` is raised. |
+| Coercion notification | Non-null assignment raises `LayoutChanging` before the effective value changes, including same-layout reassignment. A thrown callback leaves the previous layout effective and owned. |
+| Protected hook | `OnLayoutChanged` surrounds ownership transfer, container/host replacement, source migration, and `LayoutChanged`. Suppressing or throwing before the base call leaves those side effects untouched. Construction calls the hook with a null previous layout after internal services are created. |
+| Package consumers | Both XML namespaces compile conditional style bindings for all four properties; consumer probes replace data contexts and collections, deactivate styles, and assign a null layout. |
+
+The remaining direct properties were checked against upstream registration:
+read-only container/model flags retain read-only properties, and native adapter
+extensions and bindable wrappers for upstream CLR models retain their distinct
+contracts. `LayoutFloatingWindowControl.IsMaximizedProperty` was corrected in
+the separate floating audit below. Avalonia property priority, binding lifetime,
+and native window behavior remain framework-specific.
 
 ## Floating control contract audit
 

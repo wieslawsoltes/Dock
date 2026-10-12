@@ -77,6 +77,7 @@ if (!closeOrigin.UserOrigin) throw new Exception("A new floating window did not 
 ((Dock.Model.Core.IHostWindow)closeOrigin).Exit();
 if (closeOrigin.UserOrigin) throw new Exception("Native host exit did not expose internal close origin.");
 PackageConsumer.ConsumerWindow window = new();
+PackageConsumer.ManagerPropertyProbe.Verify(window);
 foreach (string key in new[] { "GroupedFloatingModel", "LegacyGroupedFloatingModel" })
     if (window.Resources[key] is not LayoutGroupFloatingWindow { ChildrenCount: 2, IsVisible: true })
         throw new Exception("The grouped floating extension did not compile in both XML namespaces.");

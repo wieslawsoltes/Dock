@@ -26,6 +26,13 @@ dependency property permits assignment, styles, and bindings. A read-only direct
 property rejected those supported uses. The separate `IsDraggingProperty` remains
 read-only, corresponding to upstream's dependency-property key.
 
+The manager property audit likewise corrected `LayoutProperty`,
+`DocumentsSourceProperty`, `AnchorablesSourceProperty`, and
+`LayoutUpdateStrategyProperty` to styled properties. Upstream registers ordinary
+writable dependency properties; conditional styles must participate in value
+priority and release their values when deactivated. Compiled style bindings and
+source/layout replacement are exercised in the adapter and package consumers.
+
 | Difference | Declaration contract |
 | --- | --- |
 | Dependency properties and routed events | Typed Avalonia styled/direct properties and routed events replace WPF metadata objects. Defaults, binding behavior, and callback order need their separate behavioral checks. |

@@ -92,6 +92,7 @@ internal sealed class ImageHttpServer : IAsyncDisposable
             }
             catch (OperationCanceledException) when (_stop.IsCancellationRequested) { }
             catch (SocketException) when (_stop.IsCancellationRequested) { }
+            catch (ObjectDisposedException) when (_stop.IsCancellationRequested) { }
             catch (AuthenticationException) { } // A normal client rejects the test's untrusted certificate.
             catch (IOException) { } // A rejected TLS handshake can close the transport before an HTTP request.
         }
@@ -101,8 +102,11 @@ internal sealed class ImageHttpServer : IAsyncDisposable
     {
         _stop.Cancel();
         _listener.Stop();
-        await _serve.WaitAsync(TimeSpan.FromSeconds(5));
-        _certificate?.Dispose();
-        _stop.Dispose();
+        try { await _serve.WaitAsync(TimeSpan.FromSeconds(5)); }
+        finally
+        {
+            _certificate?.Dispose();
+            _stop.Dispose();
+        }
     }
 }

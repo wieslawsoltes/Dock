@@ -4,6 +4,26 @@
         x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
         Width="640" Height="480">
   <Window.Resources>
+    <DockingManager x:Key="StyledManager">
+      <DockingManager.Styles>
+        <Style Selector="DockingManager.workspace" x:DataType="local:ManagerPropertyViewModel">
+          <Setter Property="LayoutUpdateStrategy" Value="{Binding Strategy}" />
+          <Setter Property="Layout" Value="{Binding Root}" />
+          <Setter Property="DocumentsSource" Value="{Binding Documents}" />
+          <Setter Property="AnchorablesSource" Value="{Binding Tools}" />
+        </Style>
+      </DockingManager.Styles>
+    </DockingManager>
+    <ad:DockingManager x:Key="LegacyStyledManager">
+      <ad:DockingManager.Styles>
+        <Style Selector="ad|DockingManager.workspace" x:DataType="local:ManagerPropertyViewModel">
+          <Setter Property="LayoutUpdateStrategy" Value="{Binding Strategy}" />
+          <Setter Property="Layout" Value="{Binding Root}" />
+          <Setter Property="DocumentsSource" Value="{Binding Documents}" />
+          <Setter Property="AnchorablesSource" Value="{Binding Tools}" />
+        </Style>
+      </ad:DockingManager.Styles>
+    </ad:DockingManager>
     <LayoutGroupFloatingWindow x:Key="GroupedFloatingModel">
       <LayoutDocumentPane><LayoutDocument ContentId="grouped-document" /></LayoutDocumentPane>
       <LayoutAnchorablePane><LayoutAnchorable ContentId="grouped-tool" /></LayoutAnchorablePane>

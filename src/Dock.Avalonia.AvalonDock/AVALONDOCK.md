@@ -503,6 +503,28 @@ panes. Collection changes update the live Dock models. As in AvalonDock,
 moving source entries leaves the user's tab order intact, and resetting a
 source clears all layout items of that type.
 
+`Layout`, `DocumentsSource`, `AnchorablesSource`, and `LayoutUpdateStrategy`
+support Avalonia styles, conditional selectors, and compiled style bindings.
+Removing a source style detaches its collection subscription and removes its
+imported contents; clearing a local source value reveals the style underneath.
+Strategy changes apply to subsequent insertion callbacks.
+
+Each manager starts with its own local `LayoutRoot`, containing a `LayoutPanel`,
+a `LayoutDocumentPaneGroup`, and an empty `LayoutDocumentPane`. Clear
+`DockingManager.LayoutProperty` before supplying a layout through a style;
+otherwise the constructor's local value has precedence. A layout can belong to
+only one manager, so supply a separate instance for each styled manager.
+Assigning `Layout = null` creates a fresh empty layout. This replacement raises
+`LayoutChanged` without `LayoutChanging`; assigning a non-null value invokes
+`LayoutChanging` during coercion, including reassignment of the current layout.
+
+`OnLayoutChanged` encloses ownership transfer, container/host updates, source
+reattachment, and the `LayoutChanged` event. An override sees the new property
+value before calling the base implementation and can suppress those side
+effects by omitting that call. The constructor also invokes this hook with a
+null old layout after creating the internal services; overrides must tolerate
+that initial call. Property bindings use Avalonia's binding lifetime rules.
+
 Initial attachment snapshots source values before invoking insertion strategies,
 skips nulls and values already present in the layout, and preserves duplicate
 values within the source. Add/replace notifications import all new entries.

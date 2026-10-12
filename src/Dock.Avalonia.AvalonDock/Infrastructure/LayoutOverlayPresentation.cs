@@ -94,6 +94,9 @@ internal sealed class LayoutOverlayPresentation : IDockTargetPresentation, IDisp
 
     public void SetOperationState(DockOperation operation, bool visible, bool active)
     {
+        // Native Dock resets the retired presentation while it is detached.
+        // Its window may already have released the platform coordinate service.
+        if (_disposed) return;
         int index = Index(operation);
         if (index < 0) return;
         if (visible) _visible |= 1u << index;

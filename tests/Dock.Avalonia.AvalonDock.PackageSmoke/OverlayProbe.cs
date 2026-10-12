@@ -51,6 +51,8 @@ internal static class OverlayProbe
                 throw new Exception("The packaged overlay did not project its existing native pane.");
             Control center = target.GetSelector(DockOperation.Fill)
                 ?? throw new Exception("The native target did not expose its registered center selector.");
+            if (!ReferenceEquals(TopLevel.GetTopLevel(target), overlay) || !ReferenceEquals(TopLevel.GetTopLevel(center), overlay))
+                throw new Exception("Switching packaged overlay themes detached the native target or its selector.");
             PixelPoint point = center.PointToScreen(new Point(center.Bounds.Width / 2, center.Bounds.Height / 2));
             if (target.GetDockOperation(pane.PointToClient(point), pane, pane, DragAction.Move, (_, _, _, _) => true) != DockOperation.Fill ||
                 !overlay.DropTargets.Any(item => item.TargetType == DropTargetType.DocumentPaneDockInside &&

@@ -135,7 +135,7 @@ grid definitions, leaving public pane themes free to set their own control
 minimums. Compatibility grid styles disable layout rounding, matching WPF's
 default and preserving exact pixel resize limits when fixed panes leave spare
 space. An empty middle pane leaves one splitter between the visible siblings,
-as in the upstream grid. The consolidated adapter suite passes all 2,402 cases,
+as in the upstream grid. The consolidated adapter suite passes all 2,405 cases,
 including direct-grid, overlay, retained-content, reattachment, return-container,
 metadata notification, and content-comparison cases.
 
@@ -864,6 +864,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   Template replacement detaches retired presenters; successful closure also
   releases composition children and the window-owned default theme so a cached native target does not
   retain the closed overlay. Canceling closure preserves the presentation.
+  Theme changes that clear and restore the same template preserve the target and
+  selectors even when Avalonia reuses its visual tree without applying the template again.
 - Outer previews cover one third of the highest document group, or the parent
   layout panel for an ungrouped document pane. Ordinary split and center previews
   remain confined to the hovered pane. The optional native `IDockAdornerHostProvider`
@@ -948,7 +950,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   work waits until the adapter receives the model. Suppressing the base hook
   suppresses those subscriptions. This does not change Avalonia's Initialized
   event timing into WPF's timing.
-- 2,402 passing cases in `Dock.Avalonia.AvalonDock.Tests` after the return-container
+- 2,405 passing cases in `Dock.Avalonia.AvalonDock.Tests` after the return-container
   and metadata batch, including 53 additional regression cases.
   The preceding package checkpoint also passed 18 cases in
   `Dock.Avalonia.AvalonDock.ImageTests`, using Skia with Headless for real image

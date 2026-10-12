@@ -257,6 +257,59 @@ public class OverlayWindowTests
     }
 
     [AvaloniaFact]
+    public void Switching_Themes_With_The_Same_Template_Preserves_Selectors_And_Native_Content()
+    {
+        using Workspace workspace = new(DropAreaType.DocumentPane);
+        SizingFixture resources = new();
+        foreach (string key in new[] { "Overlay", "LegacyOverlay", "Overlay" })
+        {
+            workspace.Overlay.Theme = (ControlTheme)resources.Resources[key]!;
+            workspace.Overlay.OnApplyTemplate();
+            workspace.Update();
+            Assert.Same(workspace.Overlay, TopLevel.GetTopLevel(workspace.Target));
+            Control selector = workspace.Selector(DockOperation.Fill);
+            Assert.Same(workspace.Overlay, TopLevel.GetTopLevel(selector));
+            PixelPoint point = selector.PointToScreen(new Point(selector.Bounds.Width / 2, selector.Bounds.Height / 2));
+            Assert.Equal(DockOperation.Fill, workspace.Target.GetDockOperation(workspace.Surface.PointToClient(point),
+                workspace.Surface, workspace.Surface, DragAction.Move, (_, _, _, _) => true));
+        }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Clearing_And_Restoring_The_Applied_Template_Before_Layout_Reattaches_Its_Target(bool nativeOnly)
+    {
+        using Workspace workspace = new(DropAreaType.DocumentPane);
+        if (nativeOnly)
+        {
+            workspace.Overlay.Template = new FuncControlTemplate((_, scope) =>
+            {
+                ContentPresenter presenter = new() { Content = workspace.Target };
+                scope.Register("PART_NativeTargetPresenter", presenter);
+                return presenter;
+            });
+            workspace.Update();
+        }
+        IControlTemplate? template = workspace.Overlay.Template;
+        Control selector = workspace.Selector(DockOperation.Fill);
+        workspace.Overlay.Template = null;
+        Assert.Null(workspace.Target.GetVisualParent());
+        workspace.Overlay.Template = template;
+        workspace.Update();
+        Assert.Same(workspace.Overlay, TopLevel.GetTopLevel(workspace.Target));
+        Assert.Same(selector, workspace.Selector(DockOperation.Fill));
+        Assert.Same(workspace.Overlay, TopLevel.GetTopLevel(selector));
+        workspace.Overlay.Template = null;
+        workspace.Update();
+        Assert.Null(workspace.Target.GetVisualParent());
+        Assert.Null(workspace.Target.Presentation);
+        workspace.Overlay.Template = template;
+        workspace.Update();
+        Assert.Same(workspace.Overlay, TopLevel.GetTopLevel(workspace.Target));
+    }
+
+    [AvaloniaFact]
     public void Overlay_Windows_Receive_Live_Manager_Resources_And_Release_Them_When_Closed()
     {
         using Workspace workspace = new(DropAreaType.DocumentPane);

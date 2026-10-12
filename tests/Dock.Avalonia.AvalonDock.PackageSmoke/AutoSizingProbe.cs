@@ -27,6 +27,7 @@ internal static class AutoSizingProbe
             LayoutAnchorablePane first = new(new LayoutAnchorable { Title = "A", ContentId = "auto-first", Content = content })
                 { DockWidth = GridLength.Auto, DockHeight = GridLength.Auto };
             LayoutAnchorablePane second = Pane("B");
+            object? secondContent = second.Children[0].Content;
             manager.Layout = new LayoutRoot { RootPanel = new LayoutPanel { Orientation = orientation, Children = { first, second } } };
             manager.GridSplitterWidth = manager.GridSplitterHeight = 12;
             Update();
@@ -51,6 +52,9 @@ internal static class AutoSizingProbe
             view = View(first);
             if (Length(first) != GridLength.Auto || !ReferenceEquals(content, first.Children[0].Content))
                 throw new Exception("Packaged XML restoration lost Auto or its content identity.");
+            if (manager.Layout.RootPanel.Children[1] is not LayoutAnchorablePane { Children.Count: 1 } restoredSecond ||
+                !ReferenceEquals(secondContent, restoredSecond.Children[0].Content))
+                throw new Exception("Packaged XML restoration lost the neighboring pane or its application content.");
             Check(view, natural + 60);
             ProportionalStackPanelSplitter splitter = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().Single(control => control.IsEffectivelyVisible);
             Point start = splitter.TranslatePoint(new Point(splitter.Bounds.Width / 2, splitter.Bounds.Height / 2), window)!.Value;
@@ -92,6 +96,6 @@ internal static class AutoSizingProbe
 
     private static LayoutAnchorablePane Pane(string title) => new(new LayoutAnchorable
     {
-        Title = title, Content = new Border { Width = 220, Height = 160 }
+        Title = title, ContentId = title, Content = new Border { Width = 220, Height = 160 }
     });
 }

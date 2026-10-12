@@ -7,6 +7,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Shapes;
+using Avalonia.Controls.Templates;
 using AvalonDock.Infrastructure;
 using AvalonDock.Themes;
 using Dock.Avalonia.Controls;
@@ -28,6 +29,9 @@ public class OverlayWindow : DockAdornerWindow
     private LayoutOverlayPresentation? _presentation;
     private INameScope? _templateScope;
     private ContentPresenter? _nativePresenter;
+    private IControlTemplate? _appliedTemplate;
+    private bool _templateConnected;
+    private bool _reattachNativeContent;
     private readonly AvalonDockTheme _defaultTheme = new();
 
     /// <summary>Creates a native overlay for a manager, docking surface, and adorner.</summary>
@@ -37,6 +41,7 @@ public class OverlayWindow : DockAdornerWindow
         _projection = new LayoutOverlayProjection(surface, adorner);
         Styles.Add(_defaultTheme);
         manager.AttachThemeResources(this);
+        LayoutUpdated += OnOverlayLayoutUpdated;
     }
 
     /// <summary>Gets a new screen-coordinate snapshot of the native docking surface, or null after closing.</summary>
@@ -58,6 +63,9 @@ public class OverlayWindow : DockAdornerWindow
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+        _appliedTemplate = Template;
+        _templateConnected = false;
+        _reattachNativeContent = false;
         _templateScope = e.NameScope;
         _nativePresenter = e.NameScope.Find<ContentPresenter>("PART_NativeTargetPresenter")
             ?? e.NameScope.Find<ContentPresenter>("PART_ContentPresenter");
@@ -67,10 +75,12 @@ public class OverlayWindow : DockAdornerWindow
     /// <summary>Connects named overlay parts, or the hosted native target template, to Dock's hit testing.</summary>
     public virtual void OnApplyTemplate()
     {
+        _templateConnected = true;
         _presentation?.Dispose();
         _presentation = null;
+        RestoreNativeContent();
         if (Content is TemplatedControl target) target.ApplyTemplate();
-        if (_projection is not null && _templateScope is not null)
+        if (_projection is not null && _templateScope is not null && ReferenceEquals(Template, _appliedTemplate))
             _presentation = LayoutOverlayPresentation.Create(this, _projection, _templateScope);
     }
 
@@ -79,12 +89,23 @@ public class OverlayWindow : DockAdornerWindow
     {
         if (change.Property == TemplateProperty || change.Property == ContentProperty)
         {
+            if (change.Property == TemplateProperty && _nativePresenter is { } presenter &&
+                _projection is { } projection && ReferenceEquals(presenter.Content, projection.Adorner))
+                _reattachNativeContent = true;
             DetachNativeContent();
             _presentation?.Dispose();
             _presentation = null;
-            if (change.Property == TemplateProperty) { _templateScope = null; _nativePresenter = null; }
         }
         base.OnPropertyChanged(change);
+        if (change.Property == TemplateProperty && _templateScope is not null &&
+            ReferenceEquals(Template, _appliedTemplate))
+        {
+            // A theme can clear and restore the same template synchronously.
+            // Avalonia retains that visual tree and skips OnApplyTemplate.
+            RestoreNativeContent();
+            if (_templateConnected && _projection is not null)
+                _presentation = LayoutOverlayPresentation.Create(this, _projection, _templateScope);
+        }
         if (change.Property == ContentProperty && _templateScope is not null && _projection is not null &&
             ReferenceEquals(Content, _projection.Adorner)) OnApplyTemplate();
     }
@@ -109,11 +130,15 @@ public class OverlayWindow : DockAdornerWindow
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
+        LayoutUpdated -= OnOverlayLayoutUpdated;
         DetachNativeContent();
         _presentation?.Dispose();
         _presentation = null;
         _templateScope = null;
         _nativePresenter = null;
+        _appliedTemplate = null;
+        _templateConnected = false;
+        _reattachNativeContent = false;
         _projection = null;
         Content = null;
         // Dock caches its target after this window closes. Its implicit theme
@@ -140,5 +165,29 @@ public class OverlayWindow : DockAdornerWindow
             presenter.SetCurrentValue(ContentPresenter.ContentProperty, null);
             presenter.UpdateChild();
         }
+    }
+
+    private void RestoreNativeContent()
+    {
+        if (!_reattachNativeContent || !ReferenceEquals(Template, _appliedTemplate) ||
+            _nativePresenter is not { } presenter || _projection is not { } projection ||
+            !ReferenceEquals(Content, projection.Adorner)) return;
+        _reattachNativeContent = false;
+        presenter.SetCurrentValue(ContentPresenter.ContentProperty, projection.Adorner);
+        presenter.UpdateChild();
+    }
+
+    private void OnOverlayLayoutUpdated(object? sender, EventArgs e)
+    {
+        // A genuinely removed template has no replacement namescope callback.
+        // Release the old parts after layout has completed the transition.
+        if (ReferenceEquals(Template, _appliedTemplate)) return;
+        _presentation?.Dispose();
+        _presentation = null;
+        _templateScope = null;
+        _nativePresenter = null;
+        _appliedTemplate = null;
+        _templateConnected = false;
+        _reattachNativeContent = false;
     }
 }

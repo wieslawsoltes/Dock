@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Headless;
 using Avalonia.Threading;
 using AvalonDock;
 using AvalonDock.Controls;
@@ -29,12 +30,17 @@ internal static class FloatingModelProbe
             : new DocumentWindow { RootDocument = (LayoutDocument)child, Suppression = suppression };
         DockingManager manager = new();
         manager.Layout.FloatingWindows.Add(model);
-        Window owner = new() { Content = manager, Width = 640, Height = 400 };
+        Window owner = new() { Width = 640, Height = 400 };
         owner.Styles.Add(new AvalonDockTheme());
+        owner.Content = manager;
         try
         {
-            owner.Show(); Pump();
-            LayoutFloatingWindowControl host = manager.FloatingWindows.Single();
+            owner.Show();
+            owner.UpdateLayout();
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            Pump();
+            LayoutFloatingWindowControl host = manager.FloatingWindows.SingleOrDefault() ??
+                throw new Exception($"Floating host missing after loading: tools={tools}, suppression={suppression}, loaded={manager.IsLoaded}.");
             if (model is LayoutAnchorableFloatingWindow tool) tool.RootPanel = null;
             else ((LayoutDocumentFloatingWindow)model).RootDocument = null;
             bool visible = !tools || suppression is "visibility" or "all";

@@ -56,6 +56,33 @@ internal static class FloatingCloseProbe
                 throw new Exception("Tool hiding did not precede the canceled window Closing event.");
             tool.Show();
             if (!toolHost.IsVisible) throw new Exception("The hidden tool host could not be restored.");
+            tool.Close();
+            if (((IHostWindowCloseState)toolHost).IsClosed || tool.Root is not null ||
+                manager.Layout.FloatingWindows.Count != 0 || !ReferenceEquals(manager.FloatingWindows.Single(), toolHost))
+                throw new Exception("Empty tool removal did not precede deferred host closure.");
+            Pump();
+            if (!((IHostWindowCloseState)toolHost).IsClosed || manager.DockFactory.HostWindows.Count != 0 ||
+                !ReferenceEquals(manager.FloatingWindows.Single(), toolHost))
+                throw new Exception("Deferred tool closure did not release native tracking while preserving the public entry.");
+
+            manager.Layout = new();
+            LayoutDocument deferred = new() { Title = "Deferred document" };
+            ((LayoutDocumentPane)manager.Layout.RootPanel.Children[0]).Children.Add(deferred);
+            deferred.Float(); Pump();
+            LayoutFloatingWindowControl deferredHost = manager.FloatingWindows.Single();
+            bool cancelHost = true;
+            deferredHost.Closing += (_, args) => args.Cancel = cancelHost;
+            deferred.Close();
+            if (!deferredHost.IsVisible || !ReferenceEquals(deferred.Root, manager.Layout))
+                throw new Exception("Document closure detached its public root before the deferred host close.");
+            Pump();
+            if (((IHostWindowCloseState)deferredHost).IsClosed || !ReferenceEquals(deferred.Root, manager.Layout))
+                throw new Exception("Canceled deferred document closure did not preserve the original root.");
+            cancelHost = false;
+            deferredHost.Close();
+            if (deferred.Root is not null || !ReferenceEquals(deferred.Parent, deferredHost.Model) ||
+                manager.FloatingWindows.Any() || manager.DockFactory.HostWindows.Count != 0)
+                throw new Exception("Explicit document host retry did not complete deferred cleanup.");
         }
         finally { manager.Layout.FloatingWindows.Clear(); owner.Close(); Pump(); }
     }

@@ -344,7 +344,7 @@ public class ManagedWindowParityTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void NativePreview_Uses_Registered_Live_Content_As_VisualBrush_Proxy(bool useTool)
+    public void NativePreview_Captures_Registered_Content_Without_Reparenting(bool useTool)
     {
         var factory = new Factory();
         IDockable dockable = useTool ? factory.CreateTool() : factory.CreateDocument();
@@ -358,15 +358,13 @@ public class ManagedWindowParityTests
         window.Show();
         try
         {
+            window.UpdateLayout();
             var controls = useTool ? factory.ToolControls : factory.DocumentControls;
             controls[dockable] = liveContent;
             var visualRoot = liveContent.GetVisualRoot();
 
-            var preview = DragPreviewHelper.BuildDockablePreviewContent(dockable, true);
-
-            var border = Assert.IsType<Border>(preview);
-            var brush = Assert.IsType<VisualBrush>(border.Background);
-            Assert.Same(liveContent, brush.Visual);
+            using var preview = Assert.IsType<DragPreviewSnapshot>(DragPreviewHelper.BuildDockablePreviewContent(dockable, true));
+            Assert.NotNull(preview.Source);
             Assert.NotNull(visualRoot);
             Assert.Same(visualRoot, liveContent.GetVisualRoot());
         }

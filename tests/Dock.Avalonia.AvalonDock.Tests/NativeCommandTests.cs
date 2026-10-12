@@ -162,12 +162,15 @@ public partial class NativeCommandTests
     }
 
     [AvaloniaTheory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void Native_Tab_Middle_Click_Uses_Custom_Close_And_Disabled_Commands_Do_Not_Fall_Through(bool tool)
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Native_Tab_Middle_Click_Uses_Custom_Close_And_Disabled_Commands_Do_Not_Fall_Through(bool tool, bool canClose)
     {
         using Workspace workspace = new();
         LayoutContent content = tool ? workspace.Tool : workspace.Document;
+        content.CanClose = canClose;
         LayoutItem item = workspace.Manager.GetLayoutItemFromModel(content)!;
         using BehaviorSubject<bool> enabled = new(true);
         int requests = 0;

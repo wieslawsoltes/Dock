@@ -129,10 +129,13 @@ public partial class TabControlTests
         }
     }
 
-    [AvaloniaFact]
-    public void Custom_Document_Middle_Click_Uses_The_Current_Command_And_Respects_Enablement()
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Custom_Document_Middle_Click_Uses_The_Current_Command_And_Respects_Enablement(bool canClose)
     {
         using Workspace workspace = new(false);
+        workspace.First.CanClose = canClose;
         int closed = 0;
         using BehaviorSubject<bool> enabled = new(true);
         using ReactiveCommand<Unit, Unit> command = ReactiveCommand.Create(() => { closed++; }, enabled, ImmediateScheduler.Instance);

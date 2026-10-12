@@ -12,6 +12,14 @@ internal static class LayoutCommandCapabilities
         DockCapabilityResolver.IsEnabled(content.DockModel, capability,
             DockCapabilityResolver.ResolveOperationDock(content.DockModel));
 
+    // A replacement command owns AvalonDock's capability decision. Explicit
+    // Dock policies remain authoritative for native integration gestures.
+    internal static bool IsAllowedByPolicy(IDockable dockable, DockCapability capability)
+    {
+        DockCapabilityEvaluation evaluation = DockCapabilityResolver.Evaluate(dockable, capability);
+        return evaluation.EffectiveSource == DockCapabilityValueSource.Dockable || evaluation.EffectiveValue;
+    }
+
     internal static bool CanClose(LayoutContent content) =>
         content.CanClose && IsEnabled(content, DockCapability.Close) &&
         (content.DockModel.Owner is not IDock { CanCloseLastDockable: false } owner ||

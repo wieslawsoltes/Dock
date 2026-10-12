@@ -370,8 +370,9 @@ Derived controls can override `OnModelChanged(AvaloniaPropertyChangedEventArgs)`
 use protected `SetLayoutItem`, and override the keyboard/pointer hooks with
 Avalonia event arguments. Base input hooks read the current public `Model` even
 when an overridden model-change hook omits its base call. The full guide explains
-the focus-routing difference from WPF and includes compiled template examples. Dock may recycle a generated
-control for another tab; track the model or container when identity matters.
+the focus-routing difference from WPF and includes compiled template examples.
+Dock may recycle a generated control for another tab; track the model or
+container when identity matters.
 
 `AvalonDock.Controls.AnchorablePaneTitle` is the public title inside native tool
 chrome for docked/floating panes and auto-hide previews. Its `Model` is the tool,
@@ -380,10 +381,12 @@ templates. Custom hosts can use `<AnchorablePaneTitle Model="{Binding}" />` in
 a compiled template with `x:DataType="LayoutAnchorable"`.
 
 The nonfocusable title activates its tool on release. Leaving a pressed custom
-title floats its pane through Dock; auto-hidden tools float individually, and
+title inside a `LayoutAnchorablePaneControl` floats that visual pane through Dock.
+Outside a pane control, only the title's model floats, including when its pane
+contains other tools. Auto-hidden tools also float individually, and
 single-pane floating windows reuse their existing native drag. Native chrome
 keeps its grip handling. `HostWindow.TryBeginMoveDrag` preserves factory drag
-cancellation and completion; cancellation does not undo an earlier pane float.
+cancellation and completion; cancellation does not undo a preceding float.
 Interactive title children keep their input. Derived titles can override the
 model and mouse-named hooks using Avalonia property/pointer event arguments.
 The full guide documents those signatures, lifetime rules, and platform limits.
@@ -404,14 +407,21 @@ Custom tab rows can bind them to a pane's `Children` in compiled templates:
 Use `LayoutAnchorableTabItem` for tool rows. Both the default Avalonia XML
 namespace and the historical alias work. Custom document tabs activate on press,
 tool tabs on release, and document middle-click invokes the current close
-command. Custom rows reorder the live pane and float a tab when it leaves the
-row; native containers retain Dock's input and drag preview/drop behavior.
+command when `CanExecute` permits it. `CanClose` gates the default command;
+application commands can permit their own action while that flag is false.
+Explicit native root/pane policies and per-item overrides remain effective.
+The middle-click hook preserves the event's handled state and uses its current
+`LayoutItem`, including when `Model` is unset. Custom rows reorder the live pane
+and float a tab when it leaves the row; native containers retain Dock's input
+and drag preview/drop behavior.
 `CanMove`, enablement, and drag capabilities restrict dragging;
 `CanRepositionItems` on the pane or its immediate group restricts reordering.
 The factory's optional `IDockItemDragPolicy` applies these restrictions to native
 tab input without changing ordinary factories or direct factory operations.
 
 Model/container hooks and mouse-named hooks use Avalonia event arguments.
+Explicit calls to the document press or tool/title release hooks activate their
+model without applying drag eligibility, event-handled, or source-owner filters.
 Manager transfers refresh the existing item; generated tabs release old models
 on removal or XML replacement. Custom tabs preserve an explicitly assigned model
 and cancel pending input on replacement/detachment. The full guide includes a

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reactive.Concurrency;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -11,12 +12,55 @@ using Avalonia.VisualTree;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 using Dock.Avalonia.Controls;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using ReactiveUI.Reactive;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
 
 public partial class TabControlTests
 {
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Custom_Close_Commands_Use_Explicit_Native_Policy_Precedence_For_Custom_And_Native_Tabs(bool native)
+    {
+        using Workspace workspace = new(false);
+        workspace.First.CanClose = false;
+        LayoutItem item = Item(workspace.Tab)!;
+        System.Windows.Input.ICommand defaultClose = item.CloseCommand!;
+        int calls = 0;
+        using var command = ReactiveCommand.Create(() => calls++, outputScheduler: ImmediateScheduler.Instance);
+        item.CloseCommand = command;
+        IDock pane = (IDock)workspace.First.DockModel.Owner!;
+        IRootDock root = (IRootDock)workspace.Manager.Layout.DockModel;
+        Control tab = native ? NativeTab(workspace.Manager, workspace.First, false) : workspace.Tab;
+
+        root.RootDockCapabilityPolicy = new DockCapabilityPolicy { CanClose = false };
+        Click(tab, MouseButton.Middle);
+        Assert.Equal(0, calls);
+        pane.DockCapabilityPolicy = new DockCapabilityPolicy { CanClose = true };
+        Click(tab, MouseButton.Middle);
+        Assert.Equal(1, calls);
+        workspace.First.DockModel.DockCapabilityOverrides = new DockCapabilityOverrides { CanClose = false };
+        Click(tab, MouseButton.Middle);
+        Assert.Equal(1, calls);
+        workspace.First.DockModel.DockCapabilityOverrides = new DockCapabilityOverrides { CanClose = true };
+        Click(tab, MouseButton.Middle);
+        Assert.Equal(2, calls);
+
+        root.RootDockCapabilityPolicy = null;
+        pane.DockCapabilityPolicy = null;
+        workspace.First.DockModel.DockCapabilityOverrides = null;
+        Click(tab, MouseButton.Middle);
+        Assert.Equal(3, calls);
+        item.CloseCommand = defaultClose;
+        Click(tab, MouseButton.Middle);
+        Assert.Equal(3, calls);
+        Assert.Same(workspace.Pane, workspace.First.Parent);
+    }
+
     [AvaloniaTheory]
     [InlineData(false, false)]
     [InlineData(false, true)]

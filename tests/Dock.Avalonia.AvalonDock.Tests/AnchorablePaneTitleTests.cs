@@ -194,7 +194,7 @@ public class AnchorablePaneTitleTests
     }
 
     [AvaloniaFact]
-    public void A_Custom_Title_Inside_Another_Manager_Does_Not_Activate_Or_Float_Its_Model()
+    public void A_Custom_Title_Inside_Another_Manager_Activates_And_Floats_Its_Own_Model()
     {
         using Workspace workspace = new(custom: true);
         DockingManager other = new()
@@ -208,10 +208,13 @@ public class AnchorablePaneTitleTests
         workspace.Document.IsActive = true;
         workspace.Update();
         Click(workspace.Custom);
-        Assert.Same(workspace.Document, workspace.Manager.Layout.ActiveContent);
+        Assert.Same(workspace.First, workspace.Manager.Layout.ActiveContent);
         PressAndLeave(workspace);
-        Assert.Empty(workspace.Manager.FloatingWindows);
-        workspace.Window.MouseUp(Center(workspace.Custom, workspace.Window) + new Vector(350, 0), MouseButton.Left);
+        LayoutAnchorableFloatingWindow floating = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(workspace.Manager.Layout.FloatingWindows));
+        Assert.Same(workspace.First, Assert.Single(floating.Descendents().OfType<LayoutAnchorable>()));
+        Assert.False(workspace.Second.IsFloating);
+        Assert.Empty(other.FloatingWindows);
+        Assert.Single(workspace.Manager.FloatingWindows).MouseUp(new Point(5, 5), MouseButton.Left);
     }
 
     [AvaloniaFact]
@@ -230,18 +233,22 @@ public class AnchorablePaneTitleTests
     }
 
     [AvaloniaTheory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void Leaving_A_Pressed_Custom_Title_Floats_The_Pane_And_Uses_Native_Drag_Cancellation(bool cancel)
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Leaving_A_Custom_Title_Floats_Its_Visual_Pane_Or_Only_Its_Model_And_Uses_Native_Drag_Cancellation(bool cancel, bool paneTitle)
     {
-        using Workspace workspace = new(custom: true);
+        using Workspace workspace = new(custom: true, paneTitle: paneTitle);
         int began = 0;
         int ended = 0;
         workspace.Manager.DockFactory.WindowMoveDragBegin += (_, args) => { began++; args.Cancel = cancel; };
         workspace.Manager.DockFactory.WindowMoveDragEnd += (_, _) => ended++;
         PressAndLeave(workspace);
         LayoutAnchorableFloatingWindow floating = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(workspace.Manager.Layout.FloatingWindows));
-        Assert.Equal(new[] { workspace.First, workspace.Second }, floating.Descendents().OfType<LayoutAnchorable>());
+        Assert.Equal(paneTitle ? new[] { workspace.First, workspace.Second } : new[] { workspace.First },
+            floating.Descendents().OfType<LayoutAnchorable>());
+        Assert.Equal(paneTitle, workspace.Second.IsFloating);
         LayoutAnchorableFloatingWindowControl host = Assert.IsType<LayoutAnchorableFloatingWindowControl>(Assert.Single(workspace.Manager.FloatingWindows));
         Assert.Equal(1, began);
         Assert.Equal(!cancel, host.IsDragging);
@@ -310,7 +317,7 @@ public class AnchorablePaneTitleTests
     [AvaloniaFact]
     public void A_Refused_Pane_Float_Does_Not_Start_Dragging_Its_Existing_MultiPane_Window()
     {
-        using Workspace workspace = new(custom: true);
+        using Workspace workspace = new(custom: true, paneTitle: true);
         workspace.FloatGroup();
         LayoutAnchorableFloatingWindow floating = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(workspace.Manager.Layout.FloatingWindows));
         floating.RootPanel!.Children.Add(new LayoutAnchorablePane(new LayoutAnchorable { Title = "Another pane" }));
@@ -459,7 +466,7 @@ public class AnchorablePaneTitleTests
         public TitleProbe Custom { get; } = new() { Width = 250, Height = 40, HorizontalAlignment = HorizontalAlignment.Left };
         public Control Scope => Manager.FloatingWindows.FirstOrDefault() as Control ?? Manager;
 
-        public Workspace(bool custom = false)
+        public Workspace(bool custom = false, bool paneTitle = false)
         {
             Pane = new(First) { DockWidth = new GridLength(350) };
             Pane.Children.Add(Second);
@@ -468,8 +475,13 @@ public class AnchorablePaneTitleTests
             if (custom)
             {
                 Custom.Model = First;
-                DockPanel.SetDock(Custom, global::Avalonia.Controls.Dock.Top);
-                Panel.Children.Add(Custom);
+                Control host = paneTitle ? new LayoutAnchorablePaneControl(Pane)
+                {
+                    Height = 40,
+                    Template = new FuncControlTemplate<LayoutAnchorablePaneControl>((_, _) => Custom)
+                } : Custom;
+                DockPanel.SetDock(host, global::Avalonia.Controls.Dock.Top);
+                Panel.Children.Add(host);
             }
             Panel.Children.Add(Manager);
             Window.Content = Panel;

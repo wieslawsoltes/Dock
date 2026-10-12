@@ -36,6 +36,12 @@ public sealed class TitleControlProbe : AnchorablePaneTitle
 
     internal static void Verify()
     {
+        Verify(false);
+        Verify(true);
+    }
+
+    private static void Verify(bool paneTitle)
+    {
         LayoutAnchorable first = new() { ContentId = "first", Title = "First", CanClose = true };
         LayoutAnchorable second = new() { ContentId = "second", Title = "Second", CanClose = true };
         LayoutAnchorablePane pane = new(first);
@@ -58,8 +64,13 @@ public sealed class TitleControlProbe : AnchorablePaneTitle
             compiled.DataContext = null;
         }
         DockPanel panel = new();
-        DockPanel.SetDock(title, global::Avalonia.Controls.Dock.Top);
-        panel.Children.Add(title);
+        Control titleHost = paneTitle ? new LayoutAnchorablePaneControl(pane)
+        {
+            Height = 40,
+            Template = new FuncControlTemplate<LayoutAnchorablePaneControl>((_, _) => title)
+        } : title;
+        DockPanel.SetDock(titleHost, global::Avalonia.Controls.Dock.Top);
+        panel.Children.Add(titleHost);
         panel.Children.Add(manager);
         Window window = new() { Width = 700, Height = 400 };
         window.Styles.Add(new AvalonDockTheme());
@@ -83,9 +94,10 @@ public sealed class TitleControlProbe : AnchorablePaneTitle
             window.MouseMove(start + new Vector(300, 0), RawInputModifiers.LeftMouseButton);
             Dispatcher.UIThread.RunJobs();
             LayoutAnchorableFloatingWindow floating = manager.Layout.FloatingWindows.OfType<LayoutAnchorableFloatingWindow>().Single();
-            if (!floating.Descendents().OfType<LayoutAnchorable>().SequenceEqual(new[] { first, second }) ||
+            if (!floating.Descendents().OfType<LayoutAnchorable>().SequenceEqual(paneTitle ? new[] { first, second } : new[] { first }) ||
+                second.IsFloating != paneTitle ||
                 began != 1 || manager.FloatingWindows.Single().IsDragging || title.Exits == 0 || title.Moves == 0)
-                throw new Exception("The packaged custom title did not float its pane through native drag cancellation.");
+                throw new Exception("The packaged custom title did not float its visual pane or represented tool through native drag cancellation.");
             window.MouseUp(start + new Vector(300, 0), MouseButton.Left);
         }
         finally

@@ -527,13 +527,16 @@ can also use the public control directly:
 </DataTemplate>
 ```
 
-Titles are nonfocusable by default. A title release activates its tool; a press
-followed by leaving a custom title floats its tool pane through Dock's factory.
-An auto-hidden tool floats individually. A tool already in a single-pane
+Titles are nonfocusable by default. A title release activates its tool. A press
+followed by leaving a custom title inside a `LayoutAnchorablePaneControl` floats
+that visual pane through Dock's factory. Outside a pane control, it floats only
+the title's `Model`, even when that model belongs to a pane with other tools.
+An auto-hidden tool also floats individually. A tool already in a single-pane
 floating window starts that existing window's move. Native tool chrome retains
 its own grip handling, so the title does not start a duplicate drag. Interactive
-title children retain their input, and a title hosted under another manager
-cannot activate or move its model through that manager.
+title children retain their handled input. Hosting a title under another manager
+does not replace its explicit model: release activates that model, and a drag
+outside a tool pane uses that model's owning manager.
 
 Custom title dragging uses `HostWindow.TryBeginMoveDrag` to preserve native
 `WindowMoveDragBegin` cancellation and drag completion. Canceling the window
@@ -628,8 +631,12 @@ host window so the controls receive their compiled themes.
 
 Custom document tabs activate on left press; custom tool tabs activate on left
 release. A document's middle-click invokes its current item `CloseCommand` when
-closing is allowed and the command can execute. Focusable children keep their
-input. Dragging across a custom row calls the live pane's `MoveChild`; a bound
+the command can execute. `CanClose` controls the default command; replacing the
+command can permit a middle-click action while `CanClose` is false. Explicit
+native root/pane policies and per-item overrides still apply in their normal
+precedence. The middle-click hook uses `LayoutItem` even when `Model` is unset
+and preserves the event's handled state. Children that handle input keep it.
+Dragging across a custom row calls the live pane's `MoveChild`; a bound
 row follows the new collection order. Leaving the row floats that content and
 starts its native window drag. Factory cancellation stops the window drag but
 does not undo the preceding float. Native tab containers retain Dock's existing
@@ -652,6 +659,10 @@ hooks use Avalonia arguments: `OnMouseLeftButtonDown(PointerPressedEventArgs)`,
 `OnMouseDown(PointerPressedEventArgs)` for middle-click handling. Call the base
 hook to preserve its normal behavior. These are framework-control extension
 points; application actions belong in bound ViewModel commands or services.
+The document press and tool/title release activation hooks act on their model
+even when called explicitly with a handled event, a foreign or focusable source,
+or a disabled control. Avalonia controls normal routed input delivery; native
+gesture policies independently determine whether a drag may start.
 
 Weak model/container subscriptions follow manager transfers. XML replacement
 clears generated tabs' old models and resolves the replacement nodes; custom

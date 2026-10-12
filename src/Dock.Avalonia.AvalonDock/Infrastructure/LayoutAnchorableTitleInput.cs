@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using AvalonDock.Controls;
@@ -22,7 +21,7 @@ internal sealed class LayoutAnchorableTitleInput(AnchorablePaneTitle title)
     internal void Pressed(PointerPressedEventArgs args)
     {
         Cancel();
-        if (args.Handled || !CanUseSource(args.Source) || title.Model is not { } model || HasNativeGrip()) return;
+        if (args.Handled || title.Model is not { } model || HasNativeGrip()) return;
         if (!CanDrag(model)) return;
         if (model.FindParent<LayoutAnchorableFloatingWindow>() is { IsSinglePane: true } floating &&
             floating.DockWindow.Host is HostWindow host)
@@ -36,7 +35,7 @@ internal sealed class LayoutAnchorableTitleInput(AnchorablePaneTitle title)
     internal void Released(PointerReleasedEventArgs args)
     {
         Cancel();
-        if (!args.Handled && CanUseSource(args.Source) && title.Model is { } model) model.IsActive = true;
+        if (title.Model is { } model) model.IsActive = true;
     }
 
     internal void Moved(PointerEventArgs args)
@@ -48,10 +47,13 @@ internal sealed class LayoutAnchorableTitleInput(AnchorablePaneTitle title)
     {
         PointerPressedEventArgs? press = _press;
         Cancel();
-        if (press is null || !title.IsEffectivelyEnabled || !args.GetCurrentPoint(title).Properties.IsLeftButtonPressed ||
-            title.Model is not { Root.Manager: { } manager } model || !CanDrag(model)) return;
+        if (press is null || !title.IsEffectivelyEnabled || !args.GetCurrentPoint(title).Properties.IsLeftButtonPressed) return;
+        LayoutAnchorablePane? pane = FindVisualPane();
+        LayoutAnchorable? model = pane is null ? title.Model :
+            pane.SelectedContent as LayoutAnchorable ?? (pane.Children.Count > 0 ? pane.Children[0] : null);
+        if (model is not { Root.Manager: { } manager } || !CanDrag(model)) return;
         LayoutAnchorableFloatingWindow? previous = model.FindParent<LayoutAnchorableFloatingWindow>();
-        if (model.Parent is LayoutAnchorablePane) manager.DockFactory.FloatAllDockables(model.DockModel);
+        if (pane is not null) manager.DockFactory.FloatAllDockables(model.DockModel);
         else model.Float();
         if (model.FindParent<LayoutAnchorableFloatingWindow>() is { } floating && !ReferenceEquals(floating, previous) &&
             floating.DockWindow.Host is HostWindow host)
@@ -71,17 +73,10 @@ internal sealed class LayoutAnchorableTitleInput(AnchorablePaneTitle title)
         return false;
     }
 
-    private bool CanUseSource(object? source)
+    private LayoutAnchorablePane? FindVisualPane()
     {
-        if (!title.IsEffectivelyEnabled || title.Model is not { } model) return false;
-        bool insideTitle = true;
-        for (Visual? current = source as Visual; current is not null; current = current.GetVisualParent())
-        {
-            if (ReferenceEquals(current, title)) insideTitle = false;
-            else if (insideTitle && current is Control { Focusable: true }) return false;
-            if (current is DockingManager manager) return ReferenceEquals(manager, model.Root?.Manager);
-            if (current is LayoutFloatingWindowControl host) return ReferenceEquals(host.Model.Root?.Manager, model.Root?.Manager);
-        }
-        return true;
+        for (Visual? parent = title.GetVisualParent(); parent is not null; parent = parent.GetVisualParent())
+            if (parent is LayoutAnchorablePaneControl { Model: LayoutAnchorablePane pane }) return pane;
+        return null;
     }
 }

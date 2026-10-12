@@ -39,8 +39,10 @@ internal sealed class LayoutTabItemInput(TemplatedControl control, Func<LayoutCo
     internal void Pressed(PointerPressedEventArgs args)
     {
         Cancel();
+        // Activation is the public hook's contract. Gesture eligibility is
+        // evaluated afterward, independently of source ownership and enablement.
+        if (document && getModel() is { } active) active.IsActive = true;
         if (args.Handled || !CanUseSource(args.Source) || getModel() is not { } model) return;
-        if (document) model.IsActive = true;
         if (HasNativeTab() || !CanDrag(model) || args.ClickCount != 1) return;
         _start = args.GetPosition(control);
         _press = args;
@@ -49,17 +51,15 @@ internal sealed class LayoutTabItemInput(TemplatedControl control, Func<LayoutCo
     internal void Released(PointerReleasedEventArgs args)
     {
         Cancel();
-        if (!document && !args.Handled && CanUseSource(args.Source) && getModel() is { } model) model.IsActive = true;
+        if (!document && getModel() is { } model) model.IsActive = true;
     }
 
     internal void MouseDown(PointerPressedEventArgs args)
     {
-        if (args.Handled || !CanUseSource(args.Source) || HasNativeTab() ||
-            args.GetCurrentPoint(control).Properties.PointerUpdateKind != PointerUpdateKind.MiddleButtonPressed ||
-            getModel() is not { } model) return;
-        args.Handled = true;
-        if (DockCapabilityResolver.IsEnabled(model.DockModel, DockCapability.Close,
-                DockCapabilityResolver.ResolveOperationDock(model.DockModel)) && getItem()?.CloseCommand is { } close && close.CanExecute(null))
+        if (args.GetCurrentPoint(control).Properties.PointerUpdateKind != PointerUpdateKind.MiddleButtonPressed ||
+            getItem() is not { } item) return;
+        if (item.LayoutElement is { } model && !LayoutCommandCapabilities.IsAllowedByPolicy(model.DockModel, DockCapability.Close)) return;
+        if (item.CloseCommand is { } close && close.CanExecute(null))
             close.Execute(null);
     }
 

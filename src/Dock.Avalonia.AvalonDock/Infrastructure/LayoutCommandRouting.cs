@@ -63,8 +63,7 @@ internal sealed class LayoutCommandRouting : AvaloniaObject
         if (sender is not Control control || !e.GetCurrentPoint(control).Properties.IsMiddleButtonPressed ||
             FindItem(e, out IDockable? model) is not { } item || model is null) return;
         e.Handled = true;
-        if (DockCapabilityResolver.IsEnabled(model, DockCapability.Close,
-                DockCapabilityResolver.ResolveOperationDock(model))) Execute(item.CloseCommand);
+        if (LayoutCommandCapabilities.IsAllowedByPolicy(model, DockCapability.Close)) Execute(item.CloseCommand);
     }
 
     private static void DoubleTapped(Control sender, TappedEventArgs e)

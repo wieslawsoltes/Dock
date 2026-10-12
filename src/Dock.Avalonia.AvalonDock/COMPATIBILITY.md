@@ -199,12 +199,14 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The pane/content input contract correction passes all 97 focused cases and
-  all 2,468 consolidated adapter cases. All 30 rendered-preview/image cases
-  also pass. The native create-button lifetime case that failed in the prior
-  Linux CI run passes with all six focused native create-button cases locally;
-  a new CI run must confirm the integrated result. Desktop checks remain
-  deferred at the user's request.
+- The consolidated adapter suite passes all 2,497 cases; all 30
+  rendered-preview/image cases also pass. Tab/title activation, middle-click
+  commands, explicit native policy precedence, and title dragging pass 325
+  focused cases. Nineteen input/command cases failed before their correction.
+  Title drags now distinguish a visual tool-pane ancestor from a standalone
+  title, including titles hosted under another manager. The earlier pane/content
+  input correction passed its 97 focused cases and remains covered by the full
+  suite. Desktop checks remain deferred at the user's request.
 - Eight deserialization reentrancy cases cover actual nested XML restores using
   the same or separate serializers, inner callback failures, replacing both
   sources during recovery, and restoration from `LayoutChanged`. Source
@@ -539,7 +541,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   arguments. Compiled default and historical XML namespaces and custom themes
   work. Native tool chrome uses the control for selected docked/floating titles
   and auto-hide previews, preserving manager template/selector behavior.
-  Custom title input activates the tool, floats its pane or auto-hidden tool
+  Custom title input activates the tool, floats its visual pane or individual model
   through the native factory, and starts the native host drag. Existing single-pane
   floating windows are reused; native grips do not start duplicate drags.
   Tests cover cancellation, restricted capabilities, refused multipane moves,
@@ -563,6 +565,11 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   Tests cover protected model/container and Avalonia pointer hooks, focusable
   children, bound collection reordering, interrupted drags, XML replacement,
   manager transfers, and collection of unused and retained closed tabs.
+  The activation hooks match upstream independently of drag/source/handled
+  filtering. Document middle-click uses the current item's `CloseCommand`,
+  including without a current model, and leaves `Handled` unchanged. A custom
+  command may execute with `CanClose=false`; explicit native policy precedence
+  still applies, and the default command retains its capability checks.
 - Public `DocumentPaneTabPanel` and `AnchorablePaneTabPanel` lay out native
   horizontal tabs and custom bound rows in either XML namespace. Document tabs
   retain natural widths, suppress overflow, and move a selected hidden node to
@@ -1011,6 +1018,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   windows are still rejected before overwriting a saved file.
 - Remaining manager API audit: templates/selectors, styles,
   and the control adapter surface.
+  Dropdown event routing still needs reconciliation: the adapter currently
+  consumes `DropDownControlArea` pointer release and gives child menus priority,
+  whereas the upstream protected preview-release hook leaves `Handled` unchanged.
   Floating controls still need the broader protected/platform hook audit and
   desktop input/focus validation beyond the recorded close lifecycle scenarios.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy

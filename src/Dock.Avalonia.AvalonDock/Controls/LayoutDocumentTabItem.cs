@@ -56,7 +56,8 @@ public class LayoutDocumentTabItem : TemplatedControl
     protected virtual void OnMouseLeave(PointerEventArgs e) => _input.BoundaryChanged();
     /// <summary>Clears an unfinished press when an uncaptured pointer enters the tab.</summary>
     protected virtual void OnMouseEnter(PointerEventArgs e) => _input.BoundaryChanged();
-    /// <summary>Invokes the current close command for a custom document tab on a middle-button press.</summary>
+    /// <summary>Invokes the current item close command for a middle-button press.</summary>
+    /// <remarks>The command controls enablement; explicit native policies still apply. This hook does not change the event's handled state.</remarks>
     protected virtual void OnMouseDown(PointerPressedEventArgs e) => _input.MouseDown(e);
 
     internal void SetNativeModel(LayoutContent model)

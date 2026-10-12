@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Managed in-app host window implementation.
 /// </summary>
-public sealed class ManagedHostWindow : IHostWindow
+public sealed class ManagedHostWindow : IHostWindow, IHostWindowCloseState
 {
     private readonly ManagedHostWindowState _hostWindowState;
     private ManagedDockWindowDocument? _document;
@@ -25,6 +25,7 @@ public sealed class ManagedHostWindow : IHostWindow
     private double _height = 300;
     private DockWindowState _windowState = DockWindowState.Normal;
     private bool _closed;
+    private bool _closing;
     private bool _lastCloseCanceled;
 
     /// <summary>
@@ -33,6 +34,8 @@ public sealed class ManagedHostWindow : IHostWindow
     public int ManagedZIndex => _document?.MdiZIndex ?? 0;
 
     internal bool LastCloseCanceled => _lastCloseCanceled;
+
+    bool IHostWindowCloseState.IsClosed => _closed;
 
     /// <inheritdoc />
     public IHostWindowState HostWindowState => _hostWindowState;
@@ -109,14 +112,30 @@ public sealed class ManagedHostWindow : IHostWindow
     /// <inheritdoc />
     public void Exit()
     {
-        if (_closed)
+        if (_closed || _closing)
         {
             return;
         }
 
-        _lastCloseCanceled = false;
+        _closing = true;
+        try
+        {
+            ExitCore();
+        }
+        finally
+        {
+            _closing = false;
+        }
+    }
 
-        if (Window is { } window)
+    private void ExitCore()
+    {
+        _lastCloseCanceled = false;
+        IDockWindow? closingWindow = Window;
+        IFactory? closingFactory = closingWindow?.Factory;
+        bool preserveLayout = false;
+
+        if (closingWindow is { } window)
         {
             if (window.Factory is { } factory)
             {
@@ -132,11 +151,13 @@ public sealed class ManagedHostWindow : IHostWindow
                 return;
             }
 
+            preserveLayout = closingFactory is IDockWindowClosePolicy policy && policy.PreserveLayoutOnHostClose(window);
+
             if (IsTracked)
             {
                 window.Save();
 
-                if (window.Layout is IDock root && root.Close.CanExecute(null))
+                if (!preserveLayout && window.Layout is IDock root && root.Close.CanExecute(null))
                 {
                     root.Close.Execute(null);
                 }
@@ -144,6 +165,17 @@ public sealed class ManagedHostWindow : IHostWindow
         }
 
         _closed = true;
+
+        if (preserveLayout)
+        {
+            closingFactory!.HostWindows.Remove(this);
+            IsTracked = false;
+            if (ReferenceEquals(closingWindow!.Host, this)) closingWindow.Host = null;
+            ReleasePresentation();
+            // Subscribers can immediately present the retained model again.
+            closingFactory.OnWindowClosed(closingWindow);
+            return;
+        }
 
         if (Window?.Factory is { } windowFactory)
         {
@@ -162,19 +194,27 @@ public sealed class ManagedHostWindow : IHostWindow
             }
         }
 
-        if (_dock is { } && _document is { })
-        {
-            _dock.RemoveWindow(_document);
-            _document.Dispose();
-            _document = null;
-        }
+        ReleasePresentation();
 
-        if (Window is { })
+        if (Window is { } && ReferenceEquals(Window.Host, this))
         {
             Window.Host = null;
         }
 
         IsTracked = false;
+    }
+
+    private void ReleasePresentation()
+    {
+        ManagedWindowDock? dock = _dock;
+        ManagedDockWindowDocument? document = _document;
+        _dock = null;
+        _document = null;
+        if (dock is not null && document is not null)
+        {
+            dock.RemoveWindow(document);
+            document.Dispose();
+        }
     }
 
     /// <inheritdoc />

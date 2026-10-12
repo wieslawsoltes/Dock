@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Data;
 using Avalonia.Styling;
@@ -272,6 +273,55 @@ public class DeferredContentControlTests
         }
     }
 
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void ClearPresentation_Releases_The_Child_Cancels_Queued_Work_And_Allows_Reattachment(bool standardPresenter, bool materialize)
+    {
+        using var scope = new DeferredBatchLimitScope(autoSchedule: false);
+        var template = new CountingTemplate(() => new TextBlock());
+        object content = new();
+        var control = new DeferredContentControl { Content = content, ContentTemplate = template };
+        if (standardPresenter)
+            control.Template = new FuncControlTemplate<DeferredContentControl>((_, names) =>
+                new ContentPresenter { Name = "PART_ContentPresenter" }.RegisterInNameScope(names));
+        control.ClearPresentation(); // Also valid before a template is applied.
+        var window = new Window { Width = 400, Height = 300, Content = control };
+        window.Show();
+        control.ApplyTemplate();
+        try
+        {
+            if (materialize) DrainDeferredQueueBatch(window);
+            Control? child = control.Presenter!.Child;
+            Assert.Equal(materialize, child is not null);
+            control.Content = new object(); // Queue a replacement, then cancel it.
+            control.ClearPresentation();
+            control.ClearPresentation();
+            Assert.Null(control.Presenter.Child);
+            if (child is not null) Assert.Null(child.Parent);
+            Assert.Same(template, control.ContentTemplate);
+            int builds = template.BuildCount;
+            DrainDeferredQueueBatch(window);
+            Assert.Equal(builds, template.BuildCount);
+            Assert.Null(control.Presenter.Child);
+
+            object? preservedContent = control.Content;
+            window.Content = null;
+            window.Content = control;
+            DrainDeferredQueueBatch(window);
+            Assert.Equal(builds + 1, template.BuildCount);
+            Assert.Same(preservedContent, control.Presenter.Child!.DataContext);
+
+            control.ClearPresentation();
+            control.Content = content;
+            DrainDeferredQueueBatch(window);
+            Assert.Same(content, control.Presenter.Child!.DataContext);
+        }
+        finally { window.Close(); }
+    }
+
     [AvaloniaFact]
     public void DeferredContentControl_Applies_Deferred_Content_With_Standard_ContentPresenter_Template()
     {
@@ -421,7 +471,7 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
-    public void DeferredContentControl_Reveals_When_Replacing_Already_Presented_Content()
+    public async Task DeferredContentControl_Reveals_When_Replacing_Already_Presented_Content()
     {
         using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
         var template = new CountingTemplate(() => new TextBlock());
@@ -464,6 +514,7 @@ public class DeferredContentControlTests
 
             var secondTextBlock = Assert.IsType<TextBlock>(control.Presenter.Child);
             Assert.Equal("Second", secondTextBlock.DataContext);
+            await CompleteRevealAsync(window, control.Presenter);
             Assert.Equal(1D, control.Presenter.Opacity);
         }
         finally
@@ -473,7 +524,7 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
-    public void ToolControl_Switching_Active_Tool_Keeps_New_Content_Visible_During_Reveal()
+    public async Task ToolControl_Switching_Active_Tool_Keeps_New_Content_Visible_During_Reveal()
     {
         using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
         var factory = new Factory();
@@ -529,6 +580,7 @@ public class DeferredContentControlTests
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
+            await CompleteRevealAsync(window, presenterHost.Presenter);
             Assert.Equal(1D, presenterHost.Presenter.Opacity);
         }
         finally
@@ -538,7 +590,7 @@ public class DeferredContentControlTests
     }
 
     [AvaloniaFact]
-    public void DeferredContentControl_Reveal_Does_Not_Replace_Existing_Opacity_Transition()
+    public async Task DeferredContentControl_Reveal_Does_Not_Replace_Existing_Opacity_Transition()
     {
         using var _ = new DeferredBatchLimitScope(autoSchedule: false, revealDuration: TimeSpan.FromMilliseconds(50));
         var template = new CountingTemplate(() => new TextBlock { Text = "ExistingTransition" });
@@ -586,6 +638,7 @@ public class DeferredContentControlTests
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
+            await CompleteRevealAsync(window, control.Presenter);
             Assert.Equal(1D, control.Presenter.Opacity);
         }
         finally
@@ -1641,18 +1694,20 @@ public class DeferredContentControlTests
         };
 
         var window = ShowInWindow(control, new DockFluentTheme());
-        var presenterHost = GetDeferredHost(control, "PART_ContentControl");
+        var presenterHost = GetDeferredPresenterHost(control, "PART_ContentControl");
         presenterHost.DataTemplates.Add(CreateCountingTemplate<RootDock>("DockControl", () => buildCount++));
 
         try
         {
             Assert.Equal(0, buildCount);
-            Assert.Null(presenterHost.Presenter?.Child);
+            Assert.Null(presenterHost.Child);
+            Assert.Null(root.TemplatedParent);
+            Assert.Null(root.Parent);
 
             DrainDeferredQueueBatch(window);
 
             Assert.Equal(1, buildCount);
-            var textBlock = Assert.IsType<TextBlock>(presenterHost.Presenter!.Child);
+            var textBlock = Assert.IsType<TextBlock>(presenterHost.Child);
             Assert.Equal("DockControl", textBlock.Text);
         }
         finally
@@ -1881,6 +1936,17 @@ public class DeferredContentControlTests
         timeline.FlushPendingBatchForTesting();
         Dispatcher.UIThread.RunJobs();
         window.UpdateLayout();
+    }
+
+    private static Task CompleteRevealAsync(Window window, Control presenter)
+    {
+        // Dispatcher jobs set the target value; render ticks advance its transition.
+        // A previous input test may already have started the render clock.
+        return PumpDispatcherUntilAsync(window, () =>
+        {
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            return presenter.Opacity == 1D;
+        }, TimeSpan.FromSeconds(2));
     }
 
     private static async Task PumpDispatcherUntilAsync(Window window, Func<bool> condition, TimeSpan timeout)

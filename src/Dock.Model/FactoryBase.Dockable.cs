@@ -40,8 +40,23 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void RemoveDockable(IDockable dockable, bool collapse)
     {
-        // to correctly remove a pinned dockable, it needs to be unpinned
-        UnpinDockable(dockable);
+        // Removal owns its eligibility checks. Unpinning here is lifecycle
+        // cleanup, so a disabled pin command must not leave a removed item in
+        // the root's pinned list.
+        if (IsDockablePinned(dockable))
+        {
+            PinDockableCore(dockable);
+        }
+
+        if (dockable.Owner is IRootDock hiddenRoot && hiddenRoot.HiddenDockables?.Remove(dockable) == true)
+        {
+            OnDockableRemoved(dockable);
+            if (ReferenceEquals(hiddenRoot.FocusedDockable, dockable))
+            {
+                SetFocusedDockable(hiddenRoot, hiddenRoot.ActiveDockable);
+            }
+            return;
+        }
 
         if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
         {
@@ -66,16 +81,7 @@ public abstract partial class FactoryBase
 
         if (wasActive)
         {
-            var indexActiveDockable = index > 0 ? index - 1 : 0;
-            if (dock.VisibleDockables.Count > 0)
-            {
-                var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
-                dock.ActiveDockable = nextActiveDockable is not ISplitter ? nextActiveDockable : null;
-            }
-            else
-            {
-                dock.ActiveDockable = null;
-            }
+            dock.ActiveDockable = GetActiveDockableAfterRemoval(dock, dockable, index);
         }
 
         if (FindRoot(dockable, x => x.IsFocusableRoot) is { } rootDock &&
@@ -91,6 +97,18 @@ public abstract partial class FactoryBase
         {
             CollapseDock(dock);
         }
+    }
+
+    /// <summary>Selects the replacement after an active dockable has been removed.</summary>
+    /// <param name="dock">The source dock, with the removed item already absent.</param>
+    /// <param name="removedDockable">The item that was removed.</param>
+    /// <param name="removedIndex">The item's index before removal.</param>
+    /// <returns>A remaining non-splitter child, or null to leave the dock unselected.</returns>
+    protected virtual IDockable? GetActiveDockableAfterRemoval(IDock dock, IDockable removedDockable, int removedIndex)
+    {
+        if (dock.VisibleDockables is not { Count: > 0 } children) return null;
+        IDockable next = children[removedIndex > 0 ? removedIndex - 1 : 0];
+        return next is ISplitter ? null : next;
     }
 
     /// <summary>
@@ -511,8 +529,18 @@ public abstract partial class FactoryBase
             {
                 restoreOwner = rootDock;
             }
-            dockable.Owner = restoreOwner;
-            dockable.OriginalOwner = null;
+            // A root may pin content from one of its floating layouts. Keep
+            // ownership in the root that contains the pin while remembering the
+            // other layout for a later unpin, including repeated previews.
+            if (IsDockablePinned(dockable, rootDock) && !ReferenceEquals(FindRoot(restoreOwner), rootDock))
+            {
+                dockable.Owner = rootDock;
+            }
+            else
+            {
+                dockable.Owner = restoreOwner;
+                dockable.OriginalOwner = null;
+            }
             RemoveVisibleDockable(rootDock.PinnedDock, dockable);
         }
 
@@ -661,17 +689,47 @@ public abstract partial class FactoryBase
             return;
         }
 
+        PinDockableCore(dockable);
+    }
+
+    /// <summary>
+    /// Toggles a dockable's pinned state without evaluating capability policy.
+    /// </summary>
+    /// <param name="dockable">The dockable to pin or unpin.</param>
+    /// <remarks>
+    /// Derived factories can use this operation when their programmatic API has
+    /// different eligibility rules from <see cref="PinDockable"/>. Native ownership,
+    /// preview cleanup, selection, and pin notifications are preserved.
+    /// </remarks>
+    protected virtual void PinDockableCore(IDockable dockable)
+    {
         var rootDock = FindRoot(dockable, _ => true);
         if (rootDock is null)
         {
             return;
         }
 
+        PinDockableCore(dockable, rootDock, null);
+    }
+
+    /// <summary>
+    /// Toggles pinning in a specified root, optionally restoring to a caller-selected tool dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to pin or unpin.</param>
+    /// <param name="rootDock">The root that owns the pinned collection.</param>
+    /// <param name="unpinDock">The destination when unpinning, or null to use native destination resolution.</param>
+    /// <remarks>
+    /// Capability policy is not evaluated. Pinning content from another root
+    /// transfers native ownership while retaining its original tool dock.
+    /// The caller is responsible for selecting an attached root and destination.
+    /// </remarks>
+    protected virtual void PinDockableCore(IDockable dockable, IRootDock rootDock, IToolDock? unpinDock)
+    {
         if (dockable.Owner is not IToolDock toolDock)
         {
             if (IsDockablePinned(dockable, rootDock))
             {
-                UnpinDockableInternal(dockable, rootDock, null, isVisible: false);
+                UnpinDockableInternal(dockable, rootDock, null, isVisible: false, unpinDock);
             }
             return;
         }
@@ -716,6 +774,12 @@ public abstract partial class FactoryBase
             {
                 RemoveVisibleDockable(toolDock, dockable);
                 OnDockableRemoved(dockable);
+            }
+
+            if (!ReferenceEquals(FindRoot(toolDock), rootDock))
+            {
+                dockable.OriginalOwner = toolDock;
+                InitDockable(dockable, rootDock);
             }
 
             switch (alignment)
@@ -772,7 +836,7 @@ public abstract partial class FactoryBase
         else if (isPinned)
         {
             // Unpin dockable.
-            UnpinDockableInternal(dockable, rootDock, toolDock, isVisible);
+            UnpinDockableInternal(dockable, rootDock, toolDock, isVisible, unpinDock);
 
             UpdateDockingWindowState(dockable);
 
@@ -786,7 +850,7 @@ public abstract partial class FactoryBase
         }
     }
 
-    private void UnpinDockableInternal(IDockable dockable, IRootDock rootDock, IToolDock? currentOwner, bool isVisible)
+    private void UnpinDockableInternal(IDockable dockable, IRootDock rootDock, IToolDock? currentOwner, bool isVisible, IToolDock? unpinDock)
     {
         var previewDock = rootDock.PinnedDock;
         var originalOwner = dockable.OriginalOwner as IToolDock;
@@ -804,8 +868,8 @@ public abstract partial class FactoryBase
             HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
         }
 
-        var targetOwner = originalOwner;
-        if (targetOwner is not null && (!IsOwnerAttached(rootDock, targetOwner) || !IsOwnerAligned(targetOwner, alignment)))
+        var targetOwner = unpinDock ?? originalOwner;
+        if (unpinDock is null && targetOwner is not null && (!IsOwnerAttached(rootDock, targetOwner) || !IsOwnerAligned(targetOwner, alignment)))
         {
             targetOwner = null;
         }
@@ -1230,6 +1294,21 @@ public abstract partial class FactoryBase
             return;
         }
 
+        CloseDockableCore(dockable);
+    }
+
+    /// <summary>
+    /// Closes a dockable without evaluating capability or last-child policy.
+    /// </summary>
+    /// <param name="dockable">The dockable to close.</param>
+    /// <remarks>
+    /// Derived factories can use this operation when their programmatic API has
+    /// different eligibility rules from <see cref="CloseDockable"/>. Closing can
+    /// still be canceled, and ItemsSource removal, hide-on-close behavior, and
+    /// native lifecycle notifications are preserved.
+    /// </remarks>
+    protected virtual void CloseDockableCore(IDockable dockable)
+    {
         if (OnDockableClosing(dockable))
         {
             // Source-generated dockables should be removed (not hidden) so UI state
@@ -1543,7 +1622,8 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void HideDockable(IDockable dockable)
     {
-        UnpinDockable(dockable);
+        // As with removal, unpinning is cleanup rather than a pin command.
+        if (IsDockablePinned(dockable)) PinDockableCore(dockable);
 
         var rootDock = FindRoot(dockable, _ => true);
         if (rootDock is null)

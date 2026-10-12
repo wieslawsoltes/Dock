@@ -143,6 +143,12 @@ internal static class DockHelpers
 
     public static Control? GetControl(Visual? input, Point point, StyledProperty<bool> property)
     {
+        // Hidden windows retain their visual tree and may still have render hits.
+        if (input?.IsEffectivelyVisible != true)
+        {
+            return null;
+        }
+
         List<Visual>? rawElements = null;
         List<Visual>? inputElements = null;
         try
@@ -184,6 +190,11 @@ internal static class DockHelpers
 
         foreach (var control in controlsToInspect)
         {
+            if (!control.IsEffectivelyVisible)
+            {
+                continue;
+            }
+
             if (inputRoot is { } && control.GetVisualRoot() != inputRoot)
             {
                 LogDropSearch($"  Candidate {control.GetType().Name}: skipped due to different visual root ({control.GetVisualRoot()?.GetType().Name}).");
@@ -217,7 +228,7 @@ internal static class DockHelpers
 
     public static Control? GetExternalControl(DockControl dockControl, Point point, StyledProperty<bool> property)
     {
-        if (dockControl.GetVisualRoot() is not Visual visualRoot)
+        if (!dockControl.IsEffectivelyVisible || dockControl.GetVisualRoot() is not Visual visualRoot)
         {
             return null;
         }
@@ -226,7 +237,8 @@ internal static class DockHelpers
 
         foreach (var externalRoot in dockControl.EnumerateExternalDockSurfaceControls())
         {
-            if (externalRoot.GetVisualRoot() is not { } externalRootVisual
+            if (!externalRoot.IsEffectivelyVisible
+                || externalRoot.GetVisualRoot() is not { } externalRootVisual
                 || !ReferenceEquals(externalRootVisual, visualRoot))
             {
                 continue;

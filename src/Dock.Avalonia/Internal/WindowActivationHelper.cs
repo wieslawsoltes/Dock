@@ -48,7 +48,10 @@ internal static class WindowActivationHelper
 
         foreach (var window in sortedWindows)
         {
-            window.Activate();
+            if (window.IsVisible)
+            {
+                window.Activate();
+            }
         }
 
         foreach (var managed in managedHosts
@@ -57,6 +60,9 @@ internal static class WindowActivationHelper
             managed.SetActive();
         }
 
-        rootWindow?.Activate();
+        if (rootWindow is { IsVisible: true })
+        {
+            rootWindow.Activate();
+        }
     }
 }

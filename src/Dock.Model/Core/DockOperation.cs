@@ -41,5 +41,17 @@ public enum DockOperation
     /// <summary>
     /// Dock to window.
     /// </summary>
-    Window
+    Window,
+
+    /// <summary>Split to the left of the region selected by an <see cref="IDockOuterSplitPolicy"/>.</summary>
+    OuterLeft,
+
+    /// <summary>Split above the region selected by an <see cref="IDockOuterSplitPolicy"/>.</summary>
+    OuterTop,
+
+    /// <summary>Split to the right of the region selected by an <see cref="IDockOuterSplitPolicy"/>.</summary>
+    OuterRight,
+
+    /// <summary>Split below the region selected by an <see cref="IDockOuterSplitPolicy"/>.</summary>
+    OuterBottom
 }

@@ -32,8 +32,9 @@ internal static class OuterPreviewProbe
         DockingManager manager = new() { AllowMixedOrientation = true,
             RenderTransformOrigin = RelativePoint.TopLeft, RenderTransform = new ScaleTransform(0.75, 0.75),
             Layout = new() { RootPanel = new() { Children = { tools, region } } } };
-        Window window = new() { Width = 1800, Height = 1000, Content = manager };
+        Window window = new() { Width = 1800, Height = 1000 };
         window.Styles.Add(new AvalonDockTheme());
+        window.Content = manager;
         try
         {
             window.Show(); Update();

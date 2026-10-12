@@ -23,8 +23,10 @@ public class DockDragPreviewSnapshotTests
     [AvaloniaTheory]
     [InlineData(false, 1)]
     [InlineData(true, 1)]
+#if !AVALONIA_11
     [InlineData(false, 2)]
     [InlineData(true, 2)]
+#endif
     public void Preview_Pixels_Survive_Source_Recycling_And_Are_Released_After_The_Drag(bool managed, double scale)
     {
         bool oldPreview = DockSettings.ShowDockablePreviewOnDrag;
@@ -43,7 +45,9 @@ public class DockDragPreviewSnapshotTests
             DockSettings.ShowDockablePreviewOnDrag = true;
             DockSettings.UseManagedWindows = managed;
             owner.Show();
+#if !AVALONIA_11
             owner.SetRenderScaling(scale);
+#endif
             owner.UpdateLayout();
             factory.DocumentControls[document] = source;
             if (managed) ManagedWindowRegistry.RegisterLayer(factory, layer);

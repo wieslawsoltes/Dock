@@ -134,6 +134,60 @@ patterns used by the built-in Dock themes.</p>
 &lt;/Application.Styles&gt;
 </code></pre>
 <p>Your Dock layout now uses the brushes defined in <code>MyDockAccent.axaml</code>. You can further customize control templates by copying them from the Dock source and adjusting the XAML. When editing templates remember to set the <a href="dock-properties.html">DockProperties</a> so that drag and drop continues to work.</p>
+<h2 id="migrating-custom-docking-indicators-to-projected-bounds">Migrating custom docking indicators to projected bounds</h2>
+<p>Dock can project the resulting pane after a move, including source-pane collapse
+and nested splits. Fluent and Simple include the new indicator; Browser inherits
+it from Fluent. Applications that replace <code>DockTarget</code> or <code>GlobalDockTarget</code>
+templates must update both overrides to display projected bounds. Existing
+templates continue to load and use their legacy indicators.</p>
+<p>Keep the existing named indicator and selector parts. Inside the template, wrap
+the existing content and the following overlay in a <code>Panel</code>:</p>
+<pre><code class="lang-xaml">&lt;Canvas IsHitTestVisible=&quot;False&quot;&gt;
+  &lt;Border x:Name=&quot;PART_PreviewIndicator&quot; Opacity=&quot;0.5&quot;
+          Canvas.Left=&quot;{TemplateBinding PreviewX}&quot;
+          Canvas.Top=&quot;{TemplateBinding PreviewY}&quot;
+          Width=&quot;{TemplateBinding PreviewWidth}&quot;
+          Height=&quot;{TemplateBinding PreviewHeight}&quot;
+          Background=&quot;{DynamicResource DockTargetIndicatorBrush}&quot; /&gt;
+&lt;/Canvas&gt;
+</code></pre>
+<p>Add these styles inside the <code>ControlTheme</code>:</p>
+<pre><code class="lang-xaml">&lt;Setter Property=&quot;ClipToBounds&quot; Value=&quot;False&quot; /&gt;
+&lt;Style Selector=&quot;^/template/ Border#PART_PreviewIndicator&quot;&gt;
+  &lt;Setter Property=&quot;IsVisible&quot; Value=&quot;False&quot; /&gt;
+&lt;/Style&gt;
+&lt;Style Selector=&quot;^:preview /template/ Border#PART_PreviewIndicator&quot;&gt;
+  &lt;Setter Property=&quot;IsVisible&quot; Value=&quot;True&quot; /&gt;
+&lt;/Style&gt;
+&lt;Style Selector=&quot;^:preview /template/ Panel#PART_LeftIndicator&quot;&gt;
+  &lt;Setter Property=&quot;IsVisible&quot; Value=&quot;False&quot; /&gt;
+&lt;/Style&gt;
+</code></pre>
+<p>Repeat the last style for <code>PART_RightIndicator</code>, <code>PART_TopIndicator</code>,
+<code>PART_BottomIndicator</code>, and the local target's <code>PART_CenterIndicator</code>. Keep the
+selectors available. Do not clip the overlay or its parent: source collapse can
+move the proposed rectangle outside the old hovered pane. The <code>:preview</code>
+pseudo-class is removed when projection is unavailable, restoring legacy
+indicators. Custom outlines can replace the background with their own border
+brush, thickness and corner radius. Selectors styling the old indicator panels
+must also style <code>PART_PreviewIndicator</code> to affect the new highlight.</p>
+<h3 id="size-constraints-and-compatibility">Size constraints and compatibility</h3>
+<p>Put pane <code>MinWidth</code>, <code>MaxWidth</code>, <code>MinHeight</code> and <code>MaxHeight</code> on the Dock models,
+and retain the theme bindings to those properties. The projection measures model
+constraints; it does not instantiate application widget templates. If a realized
+tool or document pane overrides these constraints through styles or local values,
+Dock conservatively retains legacy indicators. Changes to this eligibility
+invalidate cached previews, including the check immediately before release.</p>
+<p>Derived <code>ProportionalStackPanel</code> implementations can customize sizing through the
+panel extension points. Dock retains their own layout and legacy indicators,
+rather than applying the stock panel’s projected bounds or source-reflow preview.
+Use the stock panel to enable exact projected bounds. Changing the panel template
+also invalidates any cached projection.</p>
+<p>This fallback preserves existing docking behavior; it does not guarantee that a
+legacy indicator matches the final pane. To enable projected bounds, move those
+constraints into the models. Arbitrary custom template geometry and per-position
+styles are outside the projection contract. Derived factories also need the
+explicit opt-in described in <a href="dock-custom-model.html#isolated-docking-preview-factories">Custom Dock Models</a>.</p>
 
 </article>
 

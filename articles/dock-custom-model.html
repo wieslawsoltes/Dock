@@ -208,6 +208,35 @@ explicitly from the consuming application:</p>
 template content and to custom model members that intentionally serialize
 runtime payload objects. Unregistered object payloads throw at runtime in the
 source-generated path instead of silently falling back to reflection.</p>
+<h2 id="isolated-docking-preview-factories">Isolated docking preview factories</h2>
+<p>Stock factories support exact docking projections. A derived factory retains
+legacy indicators until it overrides <code>CreatePreviewFactory()</code> explicitly; Dock
+cannot assume that its pane defaults or docking overrides match the stock
+implementation. Direct <code>IFactory</code> implementations can opt in by implementing
+<code>IDockPreviewFactoryProvider</code>.</p>
+<p>Return a fresh, isolated factory that preserves layout-affecting behavior:</p>
+<pre><code class="lang-csharp">public class AppFactory : Dock.Model.Mvvm.Factory
+{
+    public override Dock.Model.Controls.IToolDock CreateToolDock()
+    {
+        var pane = base.CreateToolDock();
+        pane.MinWidth = 300;
+        return pane;
+    }
+
+    public override Dock.Model.Core.IFactory CreatePreviewFactory() =&gt; new AppFactory();
+}
+</code></pre>
+<p>The isolated factory must not subscribe to live application events, open windows,
+resolve widget services or mutate the live layout. If your factory constructor
+does those things, share its layout defaults with a separate preview factory.
+Returning <code>this</code> is rejected. Return <code>null</code> when an isolated projection cannot
+reproduce your behavior; docking continues with legacy indicators. Both the
+source and target factory must support projection for cross-factory moves.</p>
+<p>An application using standard pane sizing but custom lifecycle services may
+explicitly return a fresh stock factory. Revisit that override if you later add
+layout-affecting defaults. See <a href="dock-custom-theme.html#migrating-custom-docking-indicators-to-projected-bounds">Custom Dock Themes</a>
+for custom indicator templates and model size constraints.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Custom implementations let you integrate Dock with any MVVM pattern while
 keeping the docking logic intact.  Follow the structure of the provided models

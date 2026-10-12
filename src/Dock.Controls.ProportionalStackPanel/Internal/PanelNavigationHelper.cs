@@ -17,16 +17,16 @@ internal static class PanelNavigationHelper
     /// <summary>
     /// Gets the parent ProportionalStackPanel for a control.
     /// </summary>
-    public static ProportionalStackPanel? GetParentPanel(Control control)
+    public static IProportionalSplitterHost? GetParentPanel(Control control)
     {
         if (control.Parent is ContentPresenter presenter)
         {
-            if (presenter.GetVisualParent() is ProportionalStackPanel panel)
+            if (presenter.GetVisualParent() is IProportionalSplitterHost panel)
             {
                 return panel;
             }
         }
-        else if (control.GetVisualParent() is ProportionalStackPanel psp)
+        else if (control.GetVisualParent() is IProportionalSplitterHost psp)
         {
             return psp;
         }
@@ -37,11 +37,11 @@ internal static class PanelNavigationHelper
     /// <summary>
     /// Gets a sibling control in the specified direction, skipping collapsed and splitter controls.
     /// </summary>
-    public static Control? GetSiblingInDirection(Control control, ProportionalStackPanel panel, int direction)
+    public static Control? GetSiblingInDirection(Control control, IProportionalSplitterHost panel, int direction)
     {
         Debug.Assert(direction == -1 || direction == 1);
 
-        var children = panel.Children;
+        var children = panel.Panel.Children;
         int siblingIndex;
 
         if (control.Parent is ContentPresenter parentContentPresenter)
@@ -66,7 +66,7 @@ internal static class PanelNavigationHelper
     /// <summary>
     /// Updates visual state based on panel orientation.
     /// </summary>
-    public static void UpdateControlVisualState(Control control, ProportionalStackPanel panel, double thickness, bool isResizingEnabled)
+    public static void UpdateControlVisualState(Control control, IProportionalSplitterHost panel, double thickness, bool isResizingEnabled)
     {
         if (panel.Orientation == Orientation.Vertical)
         {

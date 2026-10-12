@@ -780,9 +780,9 @@ cancellation, replacement hosts, and explicit deferred-presentation cleanup.
   while detaching their native owner, and both public/native adoption replace the
   retained parent across layouts. Closed hosts unsubscribe from retained models.
   These rules use the existing native owner-change and host-lifetime contracts.
-- 1776 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1842 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1794 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1860 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.

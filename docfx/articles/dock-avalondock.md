@@ -1984,6 +1984,11 @@ The native `HostWindow` also detaches an Avalonia layout model's logical parent
 before `Closed` callbacks, while preserving its `Content` value and the close
 policy's retained layout. Cancellation leaves the parent intact. This native
 lifetime fix is isolated in [PR #1161](https://github.com/wieslawsoltes/Dock/pull/1161).
+The follow-up [PR #1162](https://github.com/wieslawsoltes/Dock/pull/1162) releases
+nested model bindings and deferred visual content, including presenters from
+replaced templates. The preserved layout can be shown in a replacement host
+from `Closed` without retaining the old host. Canceled closes retain the current
+presentation. Both native fixes follow the separate-worktree/PR workflow.
 
 ## Inspect floating docking overlays
 
@@ -2475,6 +2480,7 @@ flowchart TB
     ModelEvents --> Hosts
     Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve layout when closing a compatible host"]
     Hosts --> ClosePolicy
+    Hosts --> PresentationCleanup["Native model and deferred-presentation cleanup<br/>Before Closed; retained layout can reopen"]
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
     SystemMenu -->|Native window commands| Hosts
     Models --> Controls

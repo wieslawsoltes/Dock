@@ -82,6 +82,13 @@ layout-preserving close policies. Its seven new native Headless cases cover mode
 retention, successful/canceled closure, and application control content; existing
 replacement-host cases also verify the model can attach to its new host.
 
+Nested layouts also exposed retained presenters, including a tool template that
+had already left the visual tree. The separate native fix in
+[PR #1162](https://github.com/wieslawsoltes/Dock/pull/1162) releases model bindings
+and deferred visual content before `Closed`, preserving the model graph for a
+replacement host. Its 16 new Headless cases cover documents/tools, local themes,
+cancellation, replacement hosts, and explicit deferred-presentation cleanup.
+
 
 ## Verified implementation
 

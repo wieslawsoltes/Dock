@@ -948,6 +948,12 @@ until another container adopts it; the native owner detaches immediately.
 All 180 WPF floating-model observations are compared, including notification
 overrides, replacement, cancellation, and retained parent/root values.
 
+On successful host closure, native Dock releases the layout models' logical
+parents and deferred presentation, including presenters from replaced templates,
+before `Closed`. Retaining a floating model therefore does not retain its closed
+host. The host's `Content` value and the preserved layout graph remain available
+for a replacement host. Canceling closure keeps the current presentation.
+
 Canceling native window closing or the factory's `WindowClosing` event keeps a
 host alive and natively tracked. Its public registration follows the operation
 described above. Explicit removal or replacement of an attached document or
@@ -1191,6 +1197,7 @@ flowchart TB
     ModelEvents --> Hosts
     Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve the layout when its host closes"]
     Hosts --> ClosePolicy
+    Hosts --> PresentationCleanup["Native model and deferred-presentation cleanup<br/>Before Closed; retained layout can reopen"]
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
     SystemMenu -->|Native window commands| Hosts
     Api --> View

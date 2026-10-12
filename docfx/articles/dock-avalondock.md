@@ -243,8 +243,8 @@ same content reference produces no notifications or identifier fallback; a
 distinct object that compares equal still produces the content notifications.
 Renaming a control does not change an existing identifier.
 
-`LayoutItem.ContentId` is an independent, initially null container input. Setting
-it forwards the value, including null, to the layout content. Model changes do
+`LayoutItem.ContentId` is an independent, initially null container input. Changes
+to it forward the value, including null, to the layout content. Model changes do
 not overwrite it. Applications can bind the property explicitly in their
 container theme when it should track a ViewModel identifier.
 

@@ -689,9 +689,11 @@ internal class DragPreviewHelper
         return local;
     }
 
-    private static bool ShouldShowPreviewContent(IDockable dockable)
+    internal static bool ShouldShowPreviewContent(IDockable? dockable)
     {
-        return DockSettings.ShowDockablePreviewOnDrag;
+        return dockable?.Factory is IDockDragPreviewPolicy policy
+            ? policy.ShowDockablePreviewOnDrag(dockable)
+            : DockSettings.ShowDockablePreviewOnDrag;
     }
 
     internal static Control? BuildDockablePreviewContent(IDockable dockable, bool showDockablePreview)
@@ -709,6 +711,13 @@ internal class DragPreviewHelper
         else if (dockable is IDocument)
         {
             factory.DocumentControls.TryGetValue(dockable, out registeredControl);
+        }
+        else if (dockable is IDock)
+        {
+            // Whole-pane drags must retain their existing tabs, content and custom
+            // templates. Rebuilding the pane would also register duplicate controls.
+            if (factory.VisibleDockableControls.TryGetValue(dockable, out var paneControl))
+                registeredControl = paneControl;
         }
 
         if (registeredControl is not Visual visual || visual.GetVisualRoot() is null)

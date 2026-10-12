@@ -142,7 +142,8 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private static Size? GetPreferredPreviewSize(Control dragControl)
     {
-        if (dragControl is not DocumentTabStripItem)
+        if (dragControl is not DocumentTabStripItem
+            || dragControl.DataContext is IDockable dockable && DragPreviewHelper.ShouldShowPreviewContent(dockable))
         {
             return null;
         }

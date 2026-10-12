@@ -115,6 +115,12 @@ public class DockManager : IDockManager
             return false;
         }
 
+        if (sourceDockable.Factory is IDockDropPolicy sourcePolicy &&
+            !sourcePolicy.CanDrop(sourceDockable, targetDockable, operation)) return false;
+        if (!ReferenceEquals(sourceDockable.Factory, targetDockable.Factory) &&
+            targetDockable.Factory is IDockDropPolicy targetPolicy &&
+            !targetPolicy.CanDrop(sourceDockable, targetDockable, operation)) return false;
+
         return true;
     }
 
@@ -204,29 +210,17 @@ public class DockManager : IDockManager
             return true;
         }
             
-        if (visible.Count == 1)
+        if (visible.Count == 0 || DockDockableIntoDock(visible[0], targetDock, action, operation, bExecute) == false)
         {
-            var sourceDockable = visible.FirstOrDefault();
-            if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
-            {
-                return false;
-            }
+            return false;
         }
-        else
+
+        for (int i = 1; i < visible.Count; i++)
         {
-            var sourceDockable = visible.FirstOrDefault();
-            if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
+            // Insert after the preceding item so a pane drag retains tab order.
+            if (_dockService.DockDockableIntoDockable(visible[i], visible[i - 1], action, bExecute) == false)
             {
                 return false;
-            }
-                
-            foreach (var dockable in visible.Skip(1))
-            {
-                var targetDockable = visible.FirstOrDefault();
-                if (targetDockable is null || _dockService.DockDockableIntoDockable(dockable, targetDockable, action, bExecute) == false)
-                {
-                    return false;
-                }
             }
         }
         return true;
@@ -636,7 +630,31 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        if (bExecute && sourceDockable.Factory is IDockOperationObserver observer)
+        {
+            if (!ValidateDockableCore(sourceDockable, targetDockable, action, operation, false))
+            {
+                return false;
+            }
+
+            using var scope = observer.BeginDockOperation(sourceDockable, targetDockable, operation);
+            var result = ValidateDockableCore(sourceDockable, targetDockable, action, operation, true);
+            if (result)
+            {
+                scope?.Complete();
+            }
+            return result;
+        }
+
+        return ValidateDockableCore(sourceDockable, targetDockable, action, operation, bExecute);
+    }
+
+    private bool ValidateDockableCore(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
         LastCapabilityEvaluation = null;
+
+        if (DockOuterSplit.Direction(operation) is not DockOperation.None)
+            return ValidateOuterSplit(sourceDockable, targetDockable, action, operation, bExecute);
 
         if (!IsDockingAllowed(sourceDockable, targetDockable, operation))
         {
@@ -661,6 +679,9 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation)
     {
+        if (DockOuterSplit.Direction(operation) is not DockOperation.None)
+            return ValidateOuterSplit(sourceDockable, targetDockable, DragAction.Move, operation, false);
+
         if (!IsDockingAllowed(sourceDockable, targetDockable, operation))
         {
             return false;
@@ -682,6 +703,51 @@ public class DockManager : IDockManager
         }
 
         return true;
+    }
+
+    private bool ValidateOuterSplit(IDockable source, IDockable hovered, DragAction action, DockOperation operation, bool execute)
+    {
+        if (action != DragAction.Move || source.Owner is not IDock owner ||
+            owner.VisibleDockables?.Contains(source) != true ||
+            hovered.Factory is not IDockOuterSplitPolicy policy ||
+            policy.GetOuterSplitTarget(source, hovered, operation) is not { } target ||
+            target.Owner is not IDock parent || parent.VisibleDockables?.Contains(target) != true ||
+            target.Factory is not { } factory || !ReferenceEquals(source.Factory, factory) ||
+            !ReferenceEquals(hovered.Factory, factory)) return false;
+
+        bool enclosesHovered = false;
+        for (IDockable? current = hovered; current is not null; current = current.Owner)
+            if (ReferenceEquals(current, target)) { enclosesHovered = true; break; }
+        if (!enclosesHovered) return false;
+        for (IDockable? current = target; current is not null; current = current.Owner)
+            if (ReferenceEquals(current, source)) return false;
+        if (DockOuterSplit.Contains(target, source) && !DockOuterSplit.HasOtherContent(target, source)) return false;
+
+        if (!IsDockingAllowed(source, hovered, operation) || !IsDockingAllowed(source, target, operation) ||
+            !IsCapabilityAllowed(hovered, DockCapability.Drop, DockCapabilityResolver.ResolveDropTargetDock(hovered)) ||
+            !IsCapabilityAllowed(target, DockCapability.Drop, DockCapabilityResolver.ResolveDropTargetDock(target)) ||
+            !ValidateOuterSplitSource(source, target, operation)) return false;
+
+        if (execute) DockOuterSplit.Execute(source, target, DockOuterSplit.Direction(operation));
+        return true;
+    }
+
+    private bool ValidateOuterSplitSource(IDockable source, IDock target, DockOperation operation)
+    {
+        if (!IsDockingAllowed(source, target, operation) ||
+            !IsCapabilityAllowed(source, DockCapability.Drag, DockCapabilityResolver.ResolveOperationDock(source)) ||
+            !DockGroupValidator.ValidateDockingGroups(source, target)) return false;
+        if (source is not IDock dock) return source is IDocument or ITool;
+        if (dock.VisibleDockables is null) return false;
+        bool hasContent = false;
+        for (int index = 0; index < dock.VisibleDockables.Count; index++)
+        {
+            IDockable child = dock.VisibleDockables[index];
+            if (child is ISplitter) continue;
+            if (!ValidateOuterSplitSource(child, target, operation)) return false;
+            hasContent = true;
+        }
+        return hasContent;
     }
 
 

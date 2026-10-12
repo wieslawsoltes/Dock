@@ -182,6 +182,16 @@ public class WindowDragHelper
             return;
         }
 
+        // A press may be released before the drag threshold is reached, when
+        // no window-level release subscription has been installed yet.
+        if (!e.GetCurrentPoint(_owner).Properties.IsLeftButtonPressed)
+        {
+            _pointerPressed = false;
+            _handledPointerPressed = false;
+            _lastPointerPressedArgs = null;
+            return;
+        }
+
         var currentPoint = e.GetPosition(_owner);
         var delta = currentPoint - _dragStartPoint;
 

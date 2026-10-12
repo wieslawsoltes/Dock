@@ -129,6 +129,49 @@ public class WindowDragLifecycleTests
     }
 
     [AvaloniaFact]
+    public void Closing_Dragged_Window_Preserves_Layout_And_Allows_Replacement_In_Drag_End_Callback()
+    {
+        using var drag = new DragScenario();
+        drag.Factory.PreserveLayout = true;
+        var model = drag.Source.Window!;
+        var layout = model.Layout;
+        model.Host = drag.Source;
+        drag.Source.Content = layout;
+        drag.Source.IsTracked = true;
+        HostWindow? replacement = null;
+        drag.StartWithHelper();
+        drag.EnterTarget();
+        var targets = drag.GetTargets();
+        drag.Factory.WindowMoveDragEnd += (_, _) =>
+        {
+            drag.AssertRemoved(targets);
+            Assert.True(((IHostWindowCloseState)drag.Source).IsClosed);
+            Assert.Null(((RootDock)layout!).Parent);
+            replacement = new HostWindow { Window = model, Content = layout };
+            model.Host = replacement;
+            replacement.Show();
+        };
+
+        try
+        {
+            drag.Source.Close();
+
+            Assert.Equal(1, drag.Factory.DragEnds);
+            Assert.Equal(0, drag.Factory.ContentCloseCalls);
+            Assert.Same(layout, model.Layout);
+            Assert.Same(replacement, model.Host);
+            Assert.Same(replacement, ((RootDock)layout!).Parent);
+            Assert.DoesNotContain(drag.Source, drag.Factory.HostWindows);
+            Assert.Contains(replacement!, drag.Factory.HostWindows);
+            drag.AssertRemoved(targets);
+        }
+        finally
+        {
+            replacement?.Close();
+        }
+    }
+
+    [AvaloniaFact]
     public void Handled_Release_Still_Completes_Window_Drag()
     {
         using var drag = new DragScenario();
@@ -322,10 +365,20 @@ public class WindowDragLifecycleTests
         }
     }
 
-    private sealed class TrackingFactory : Factory
+    private sealed class TrackingFactory : Factory, IDockWindowClosePolicy
     {
+        public bool PreserveLayout { get; set; }
+        public int ContentCloseCalls { get; private set; }
         public int DragBegins { get; private set; }
         public int DragEnds { get; private set; }
+
+        public bool PreserveLayoutOnHostClose(IDockWindow window) => PreserveLayout;
+
+        public override void CloseWindow(IDockWindow window)
+        {
+            ContentCloseCalls++;
+            base.CloseWindow(window);
+        }
 
         public override bool OnWindowMoveDragBegin(IDockWindow? window)
         {

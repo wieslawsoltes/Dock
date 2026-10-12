@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../Dock.Avalonia.HeadlessTests/Dock*Preview*Tests.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="../Dock.Avalonia.HeadlessTests/AdornerGeometryTests.cs" Link="AdornerGeometryTests.cs" />
+    <Compile Include="../Dock.Avalonia.HeadlessTests/AdornerWindowFactoryTests.cs" Link="AdornerWindowFactoryTests.cs" />
     <Compile Include="../Dock.Avalonia.HeadlessTests/TestAppBuilder.cs" Link="TestAppBuilder.cs" />
     <Compile Include="../Dock.Avalonia.HeadlessTests/App.axaml.cs" Link="App.axaml.cs" />
     <AvaloniaXaml Include="../Dock.Avalonia.HeadlessTests/App.axaml" Link="App.axaml" />

@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Automation.Peers;
@@ -7,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Contract;
@@ -28,6 +30,14 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_LeftSelector", typeof(Control))]
 [TemplatePart("PART_RightSelector", typeof(Control))]
 [TemplatePart("PART_CenterSelector", typeof(Control))]
+[TemplatePart("PART_OuterLeftIndicator", typeof(Control))]
+[TemplatePart("PART_OuterTopIndicator", typeof(Control))]
+[TemplatePart("PART_OuterRightIndicator", typeof(Control))]
+[TemplatePart("PART_OuterBottomIndicator", typeof(Control))]
+[TemplatePart("PART_OuterLeftSelector", typeof(Control))]
+[TemplatePart("PART_OuterTopSelector", typeof(Control))]
+[TemplatePart("PART_OuterRightSelector", typeof(Control))]
+[TemplatePart("PART_OuterBottomSelector", typeof(Control))]
 [PseudoClasses(":preview")]
 public abstract class DockTargetBase : TemplatedControl, IDockTarget
 {
@@ -88,13 +98,18 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         }
     }
 
+    private WeakReference<IControlTemplate>? _appliedTemplate;
+    private (DockOperation Operation, WeakReference<Control> Control)[] _appliedIndicators = [];
+    private (DockOperation Operation, WeakReference<Control> Control)[] _appliedSelectors = [];
+    private bool _registrationsInvalid;
     private static readonly string[] s_indicators =
     [
         "PART_TopIndicator",
         "PART_BottomIndicator",
         "PART_LeftIndicator",
         "PART_RightIndicator",
-        "PART_CenterIndicator"
+        "PART_CenterIndicator",
+        "PART_OuterLeftIndicator", "PART_OuterTopIndicator", "PART_OuterRightIndicator", "PART_OuterBottomIndicator"
     ];
 
     private static readonly string[] s_selectors =
@@ -103,7 +118,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         "PART_BottomSelector",
         "PART_LeftSelector",
         "PART_RightSelector",
-        "PART_CenterSelector"
+        "PART_CenterSelector",
+        "PART_OuterLeftSelector", "PART_OuterTopSelector", "PART_OuterRightSelector", "PART_OuterBottomSelector"
     ];
 
     /// <summary>
@@ -209,12 +225,25 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// </summary>
     protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new();
 
+    /// <summary>Gets the selector registered for a docking operation in the current template.</summary>
+    /// <param name="operation">The operation assigned to the selector by the template.</param>
+    /// <returns>The registered selector, or null when the template has no selector for the operation.</returns>
+    /// <remarks>The selector may be hidden by docking policy. This method does not apply the template
+    /// or validate a drop. Template part names identify controls; their attached dock operations define
+    /// the mapping used by both this method and native hit testing.</remarks>
+    public Control? GetSelector(DockOperation operation)
+    {
+        VerifyAccess();
+        EnsureTemplateRegistrations();
+        return SelectorsOperations.GetValueOrDefault(operation);
+    }
+
     private bool IsOperationEnabled(DockOperation operation)
     {
         return operation switch
         {
-            DockOperation.Left or DockOperation.Right => ShowHorizontalTargets,
-            DockOperation.Top or DockOperation.Bottom => ShowVerticalTargets,
+            DockOperation.Left or DockOperation.Right or DockOperation.OuterLeft or DockOperation.OuterRight => ShowHorizontalTargets,
+            DockOperation.Top or DockOperation.Bottom or DockOperation.OuterTop or DockOperation.OuterBottom => ShowVerticalTargets,
             _ => true
         };
     }
@@ -224,15 +253,71 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         base.OnApplyTemplate(e);
 
+        _appliedTemplate = Template is { } template ? new(template) : null;
+        RegisterTemplateParts(e.NameScope);
+        _appliedIndicators = RememberParts(IndicatorOperations);
+        _appliedSelectors = RememberParts(SelectorsOperations);
+    }
+
+    private void RegisterTemplateParts(INameScope scope)
+    {
+        _registrationsInvalid = false;
+
+        IndicatorOperations.Clear();
+        SelectorsOperations.Clear();
+
         foreach (var indicator in s_indicators)
         {
-            AddIndicator(indicator, e.NameScope);
+            AddIndicator(indicator, scope);
         }
 
         foreach (var selector in s_selectors)
         {
-            AddSelector(selector, e.NameScope);
+            AddSelector(selector, scope);
         }
+    }
+
+    private void EnsureTemplateRegistrations()
+    {
+        // A theme may clear and restore the same template before layout. Avalonia
+        // then keeps its existing visual tree and does not raise OnApplyTemplate.
+        // The namescope itself need not survive template application, so remember
+        // weak references to the parts still owned by that visual tree.
+        if (_registrationsInvalid && _appliedTemplate?.TryGetTarget(out IControlTemplate? template) == true &&
+            ReferenceEquals(template, Template))
+        {
+            RestoreParts(_appliedIndicators, IndicatorOperations);
+            RestoreParts(_appliedSelectors, SelectorsOperations);
+            _registrationsInvalid = false;
+        }
+    }
+
+    private static (DockOperation Operation, WeakReference<Control> Control)[] RememberParts(Dictionary<DockOperation, Control> parts)
+    {
+        var result = new (DockOperation, WeakReference<Control>)[parts.Count];
+        int index = 0;
+        foreach (var pair in parts) result[index++] = (pair.Key, new(pair.Value));
+        return result;
+    }
+
+    private void RestoreParts((DockOperation Operation, WeakReference<Control> Control)[] parts,
+        Dictionary<DockOperation, Control> operations)
+    {
+        foreach (var part in parts)
+            if (part.Control.TryGetTarget(out Control? control) && this.IsVisualAncestorOf(control))
+                operations[part.Operation] = control;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        if (change.Property == TemplateProperty)
+        {
+            _registrationsInvalid = true;
+            IndicatorOperations.Clear();
+            SelectorsOperations.Clear();
+        }
+        base.OnPropertyChanged(change);
     }
 
     /// <summary>
@@ -294,6 +379,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
+        EnsureTemplateRegistrations();
         return ShowIndicatorsOnly 
             ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 
             : GetDockOperationFromSelectors(point, dropControl, relativeTo, dragAction, validate, visible);
@@ -408,11 +494,13 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     // Unclipped adorners are positioned by the compositor. Translate through the
     // adorned visual, just as projected preview drawing does, rather than using
     // the adorner's ordinary visual-tree origin (which can remain at zero).
+    private Visual HitTestCoordinateSpace => this.GetVisualParent() is AdornerLayer
+        ? AdornerLayer.GetAdornedElement(this) ?? this
+        : this;
+
     internal Point? GetTargetPoint(Point point, Visual relativeTo)
     {
-        var coordinateSpace = AdornerLayer.GetAdornedElement(this) ?? this;
-        return relativeTo.TranslatePoint(point, coordinateSpace)
-            ?? coordinateSpace.PointToClient(relativeTo.PointToScreen(point));
+        return TranslateToSelector(relativeTo, point, HitTestCoordinateSpace);
     }
 
     private Point? GetSelectorPoint(Point point, Visual relativeTo, Control selector)
@@ -428,6 +516,26 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     // causing the last matching operation (usually Fill) to override a side target.
     private static bool IsSelectorHit(Control selector, Point selectorPoint) =>
         new Rect(selector.Bounds.Size).Contains(selectorPoint);
+
+    private static Point? TranslateToSelector(Visual relativeTo, Point point, Visual selector)
+    {
+        // Translate each side through its root so nested render transforms are
+        // composed consistently for inline and separately hosted adorners.
+        TopLevel? sourceRoot = TopLevel.GetTopLevel(relativeTo);
+        TopLevel? targetRoot = TopLevel.GetTopLevel(selector);
+        if (sourceRoot is not null && targetRoot is not null)
+        {
+            if (ReferenceEquals(sourceRoot, targetRoot))
+            {
+                Point? rootPoint = relativeTo.TranslatePoint(point, sourceRoot);
+                return rootPoint is { } position ? sourceRoot.TranslatePoint(position, selector) : null;
+            }
+
+            return selector.PointToClient(relativeTo.PointToScreen(point));
+        }
+
+        return relativeTo.TranslatePoint(point, selector);
+    }
 
     /// <summary>
     /// Invalidates the indicator based on the provided parameters.

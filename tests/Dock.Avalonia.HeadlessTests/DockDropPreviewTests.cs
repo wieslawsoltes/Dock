@@ -412,9 +412,32 @@ public class DockDropPreviewTests(ITestOutputHelper output)
             managed: managed, resizeViewport: resizeViewport,
             caseName: $"floating-{managed}-{resizeViewport}-{global}-{operation}");
 
+    [AvaloniaTheory]
+    [InlineData(0, DockOperation.Left)]
+    [InlineData(0, DockOperation.Right)]
+    [InlineData(0, DockOperation.Top)]
+    [InlineData(0, DockOperation.Bottom)]
+    [InlineData(1, DockOperation.Left)]
+    [InlineData(1, DockOperation.Right)]
+    [InlineData(1, DockOperation.Top)]
+    [InlineData(1, DockOperation.Bottom)]
+    [InlineData(2, DockOperation.Left)]
+    [InlineData(2, DockOperation.Right)]
+    [InlineData(2, DockOperation.Top)]
+    [InlineData(2, DockOperation.Bottom)]
+    public void Rendered_preview_with_custom_adorner_host_matches_release(int hosting, DockOperation operation)
+        => AssertRenderedRelease(false, false, operation, "collapse", floating: hosting != 0,
+            managed: hosting == 2, resizeViewport: true, expandedHost: true,
+            caseName: $"expanded-{hosting}-{operation}");
+
+    private sealed class PreviewAdornerHost(Control host) : IDockAdornerHostProvider
+    {
+        public Control? GetAdornerHost(Visual surface) => host;
+    }
+
     private void AssertRenderedRelease(bool global, bool resize, DockOperation operation, string sourceKind,
         bool nested = false, bool vertical = false, bool constrained = false, bool maximum = false, string? caseName = null,
-        bool documents = false, bool floating = false, bool managed = false, bool resizeViewport = false)
+        bool documents = false, bool floating = false, bool managed = false, bool resizeViewport = false, bool expandedHost = false)
     {
         (Factory factory, IRootDock root, IDock[] panes) = documents
             ? CreateDocumentLayout(0.4, 0.3, 0.3) : CreateLayout(0.4, 0.3, 0.3);
@@ -471,6 +494,7 @@ public class DockDropPreviewTests(ITestOutputHelper output)
         var originalOwner = Assert.IsAssignableFrom<IDock>(source.Owner);
         var control = new DockControl { Layout = root, Margin = new Thickness(73, 84, 0, 0) };
         var window = new Window { Width = 1073, Height = 684, Content = control, Background = Brushes.DimGray };
+        if (expandedHost) DockTarget.SetAdornerHostProvider(control, new PreviewAdornerHost(control));
         var prior = Dock.Settings.DockSettings.GlobalDockingProportion;
         var directory = System.Environment.GetEnvironmentVariable("DOCK_PROOF_DIRECTORY");
         var priorFloating = Dock.Settings.DockSettings.UseFloatingDockAdorner;
@@ -540,6 +564,12 @@ public class DockDropPreviewTests(ITestOutputHelper output)
                 Assert.Equal(control.PointToScreen(default), previewSurface.Position);
                 Assert.Equal(control.Bounds.Size, previewSurface.Bounds.Size);
                 output.WriteLine($"Native overlay: position={previewSurface.Position}, screenOrigin={previewSurface.PointToScreen(default)}, dockOrigin={control.PointToScreen(default)}, size={previewSurface.Bounds.Size}");
+            }
+            if (expandedHost)
+            {
+                var target = Assert.IsType<DockTarget>(state.Target(false));
+                Assert.True(target.TargetMargin.Left > 0);
+                Assert.Equal(control.Bounds.Size, target.Bounds.Size);
             }
             var indicator = state.Target(global).GetVisualDescendants().OfType<Border>().Single(x => x.Name == "PART_PreviewIndicator");
             // Geometry assertions locate a solid marker independently of theme transparency.

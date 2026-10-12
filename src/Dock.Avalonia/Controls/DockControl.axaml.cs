@@ -35,7 +35,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="DockControl"/> xaml.
 /// </summary>
-[TemplatePart("PART_ContentControl", typeof(ContentControl))]
+[TemplatePart("PART_ContentControl", typeof(Control))]
 [TemplatePart("PART_CommandBarHost", typeof(DockCommandBarHost))]
 [TemplatePart("PART_SelectorOverlay", typeof(DockSelectorOverlay))]
 [TemplatePart("PART_ManagedWindowLayer", typeof(ManagedWindowLayer))]
@@ -46,7 +46,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private readonly DockControlState _dockControlState;
     private readonly IDockControlFactoryService _factoryService;
     private bool _isInitialized;
-    private ContentControl? _contentControl;
+    private Control? _contentControl;
     private ProportionalStackPanelSplitter? _previewSplitter;
     private ManagedWindowLayer? _managedWindowLayer;
     private DockCommandBarHost? _commandBarHost;
@@ -441,7 +441,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     {
         base.OnApplyTemplate(e);
 
-        _contentControl = e.NameScope.Find<ContentControl>("PART_ContentControl");
+        _contentControl = e.NameScope.Find<Control>("PART_ContentControl");
         _commandBarHost = e.NameScope.Find<DockCommandBarHost>("PART_CommandBarHost");
         _selectorOverlay = e.NameScope.Find<DockSelectorOverlay>("PART_SelectorOverlay");
         _managedWindowLayer = e.NameScope.Find<ManagedWindowLayer>("PART_ManagedWindowLayer");

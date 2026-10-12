@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Layout;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 
@@ -16,14 +17,30 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     private readonly T _adorner = new T();
     public Control? Adorner;
     private DockAdornerWindow? _window;
-    private Canvas? _floatingCanvas;
     private Visual? _floatingAdornedVisual;
     private AdornerLayer? _layer;
     private ManagedWindowLayer? _managedLayer;
-    private string ManagedOverlayKey => _adorner is GlobalDockTarget ? "GlobalDockAdorner" : "DockAdorner";
+    private Visual? _geometrySurface;
+    private Visual? _geometryHost;
+    private Window? _geometryWindow;
+    private Rect? _managedBounds;
+    private bool _updatingGeometry;
+    private string OverlayKey => _adorner is GlobalDockTarget ? "GlobalDockAdorner" : "DockAdorner";
 
     public void AddAdorner(Visual visual, bool indicatorsOnly, bool allowHorizontalDocking = true, bool allowVerticalDocking = true)
     {
+        ClearGeometry();
+        if (_adorner is DockTarget target)
+        {
+            if (DockTarget.GetTargetTheme(visual) is { } theme) target.Theme = theme;
+            else target.ClearValue(TemplatedControl.ThemeProperty);
+            if (DockTarget.GetAdornerHostProvider(visual)?.GetAdornerHost(visual) is { } host &&
+                host != visual && host.IsVisualAncestorOf(visual))
+            {
+                _geometrySurface = visual;
+                _geometryHost = host;
+            }
+        }
         if (useFloatingDockAdorner)
         {
             AddFloatingAdorner(visual, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
@@ -32,6 +49,15 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         {
             AddRegularAdorner(visual, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
         }
+        if (_geometryHost is Control geometryHost && (_window is not null || _layer is not null || _managedLayer is not null))
+        {
+            geometryHost.LayoutUpdated += OnGeometryChanged;
+            _geometrySurface!.DetachedFromVisualTree += OnGeometryDetached;
+            _geometryWindow = TopLevel.GetTopLevel(visual) as Window;
+            if (_geometryWindow is not null) _geometryWindow.PositionChanged += OnGeometryChanged;
+            UpdateGeometry();
+        }
+        else ClearGeometry();
     }
 
     private void AddFloatingAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
@@ -67,29 +93,27 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
 
         _floatingAdornedVisual = visual;
-        _floatingCanvas = new Canvas();
-        _floatingCanvas.Children.Add(_adorner);
-        // Use the same adorned coordinate reference as regular adorners. This also
-        // avoids a pixel-rounded round trip through screen coordinates for the preview.
-        AdornerLayer.SetAdornedElement(_adorner, visual);
-        _window = new DockAdornerWindow
-        {
-            Content = _floatingCanvas,
-            WindowStartupLocation = WindowStartupLocation.Manual,
-            SizeToContent = SizeToContent.Manual,
-            IsHitTestVisible = true
-        };
+        AdornerLayer.SetAdornedElement(_adorner, _geometryHost ?? visual);
+        _window = DockAdornerWindow.GetFactory(visual)?.CreateWindow(visual, _adorner) ?? new DockAdornerWindow();
+        // Keep the factory's adorner as the direct content. Its margin positions
+        // selectors inside the larger surface needed for source-collapse previews.
+        _window.Content = Adorner;
+        _adorner.HorizontalAlignment = HorizontalAlignment.Left;
+        _adorner.VerticalAlignment = VerticalAlignment.Top;
+        _window.WindowStartupLocation = WindowStartupLocation.Manual;
+        _window.SizeToContent = SizeToContent.Manual;
+        _window.IsHitTestVisible = true;
         UpdateGeometry();
         _window.Show(root);
     }
 
-    internal void UpdateGeometry()
+    private void UpdateFloatingGeometry()
     {
         if (_floatingAdornedVisual is not { } visual) return;
         if (_managedLayer is { } layer)
         {
             var bounds = new Rect(visual.TranslatePoint(default, layer) ?? default, visual.Bounds.Size);
-            layer.ShowOverlay(ManagedOverlayKey, _adorner, bounds, true);
+            layer.ShowOverlay(OverlayKey, _adorner, bounds, true);
             return;
         }
         if (_window is null) return;
@@ -103,8 +127,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         _window.Height = viewport.Bounds.Height;
         _adorner.Width = visual.Bounds.Width;
         _adorner.Height = visual.Bounds.Height;
-        Canvas.SetLeft(_adorner, origin.X);
-        Canvas.SetTop(_adorner, origin.Y);
+        _adorner.Margin = new Thickness(origin.X, origin.Y, 0, 0);
     }
 
     private void AddRegularAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
@@ -120,7 +143,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
 
         Adorner = _adorner;
-        AdornerLayer.SetAdornedElement(Adorner, visual);
+        AdornerLayer.SetAdornedElement(Adorner, _geometryHost ?? visual);
 
         if (Adorner is { } adorner)
         {
@@ -172,6 +195,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
     public void RemoveAdorner(Visual? visual = null)
     {
+        ClearGeometry();
         if (useFloatingDockAdorner)
         {
             RemoveFloatingAdorner();
@@ -180,6 +204,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         {
             RemoveRegularAdorner();
         }
+        if (_adorner is DockTarget target) target.ClearValue(TemplatedControl.ThemeProperty);
     }
 
     private void RemoveFloatingAdorner()
@@ -190,8 +215,6 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
 
         AdornerLayer.SetAdornedElement(_adorner, null);
-        _floatingCanvas?.Children.Remove(_adorner);
-        _floatingCanvas = null;
         _floatingAdornedVisual = null;
         if (_window is not null)
         {
@@ -200,6 +223,9 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             _window = null;
         }
 
+        _adorner.ClearValue(Layoutable.MarginProperty);
+        _adorner.ClearValue(Layoutable.HorizontalAlignmentProperty);
+        _adorner.ClearValue(Layoutable.VerticalAlignmentProperty);
         Adorner = null;
         _adorner.Reset();
     }
@@ -233,7 +259,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
 
         _floatingAdornedVisual = visual;
-        AdornerLayer.SetAdornedElement(_adorner, visual);
+        AdornerLayer.SetAdornedElement(_adorner, _geometryHost ?? visual);
         UpdateGeometry();
     }
 
@@ -241,8 +267,9 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     {
         if (_managedLayer is not null)
         {
-            _managedLayer.HideOverlay(ManagedOverlayKey);
+            _managedLayer.HideOverlay(OverlayKey);
             _managedLayer = null;
+            _managedBounds = null;
         }
 
         Adorner = null;
@@ -255,6 +282,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         {
             _layer.Children.Remove(Adorner);
             ((ISetLogicalParent)Adorner).SetParent(null);
+            AdornerLayer.SetAdornedElement(Adorner, null);
         }
 
         AdornerLayer.SetAdornedElement(_adorner, null);
@@ -262,5 +290,58 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         Adorner = null;
         _layer = null;
         _adorner.Reset();
+    }
+
+    public void UpdateGeometry()
+    {
+        if (_updatingGeometry) return;
+        if (_geometrySurface is not { } surface || _geometryHost is not { } host || _adorner is not DockTarget target)
+        {
+            UpdateFloatingGeometry();
+            return;
+        }
+        Visual? relative = _managedLayer ?? (useFloatingDockAdorner ? TopLevel.GetTopLevel(surface) : host);
+        if (relative is null || host.TransformToVisual(relative) is not { } hostTransform ||
+            surface.TransformToVisual(relative) is not { } surfaceTransform) return;
+        _updatingGeometry = true;
+        try
+        {
+            Rect bounds = new Rect(host.Bounds.Size).TransformToAABB(hostTransform);
+            Rect local = new Rect(surface.Bounds.Size).TransformToAABB(surfaceTransform);
+            target.SetTargetMargin(new Thickness(local.Left - bounds.Left, local.Top - bounds.Top,
+                bounds.Right - local.Right, bounds.Bottom - local.Bottom));
+            if (_window is not null)
+            {
+                _adorner.Margin = default;
+                _window.Position = relative.PointToScreen(bounds.TopLeft);
+                _window.Width = target.Width = bounds.Width;
+                _window.Height = target.Height = bounds.Height;
+            }
+            else if (_managedLayer is not null && _managedBounds != bounds)
+            {
+                _managedBounds = bounds;
+                _managedLayer.ShowOverlay(OverlayKey, _adorner, bounds, true);
+            }
+        }
+        finally { _updatingGeometry = false; }
+    }
+
+    private void OnGeometryChanged(object? sender, System.EventArgs args) => UpdateGeometry();
+
+    private void OnGeometryDetached(object? sender, VisualTreeAttachmentEventArgs args)
+    {
+        if (_geometrySurface is { } surface) RemoveAdorner(surface);
+    }
+
+    private void ClearGeometry()
+    {
+        if (_geometryHost is Control host) host.LayoutUpdated -= OnGeometryChanged;
+        if (_geometrySurface is { } surface) surface.DetachedFromVisualTree -= OnGeometryDetached;
+        if (_geometryWindow is { } window) window.PositionChanged -= OnGeometryChanged;
+        _geometrySurface = null;
+        _geometryHost = null;
+        _geometryWindow = null;
+        _managedBounds = null;
+        if (_adorner is DockTarget target) target.SetTargetMargin(default);
     }
 }

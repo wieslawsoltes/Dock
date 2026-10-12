@@ -122,6 +122,12 @@ tool or document pane overrides these constraints through styles or local values
 Dock conservatively retains legacy indicators. Changes to this eligibility
 invalidate cached previews, including the check immediately before release.
 
+Derived `ProportionalStackPanel` implementations can customize sizing through the
+panel extension points. Dock retains their own layout and legacy indicators,
+rather than applying the stock panel’s projected bounds or source-reflow preview.
+Use the stock panel to enable exact projected bounds. Changing the panel template
+also invalidates any cached projection.
+
 This fallback preserves existing docking behavior; it does not guarantee that a
 legacy indicator matches the final pane. To enable projected bounds, move those
 constraints into the models. Arbitrary custom template geometry and per-position

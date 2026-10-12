@@ -25,13 +25,18 @@ internal static class DockPreviewLayout
         // Keep legacy indicators instead of promising geometry we cannot reproduce.
         for (Visual? visual = control; visual is not null; visual = visual.GetVisualParent())
         {
+            if (visual is DockControl) break;
+            // A derived panel can use the sizing extension points to allocate a
+            // different layout. The stock detached panel cannot reproduce it.
+            if (visual is ProportionalStackPanel panel && panel.GetType() != typeof(ProportionalStackPanel))
+                return false;
             if (visual is not (ToolDockControl or DocumentDockControl)) continue;
             var pane = (Control)visual;
             if (!ReferenceEquals(pane.DataContext, model)) break;
-            return Minimum(pane.MinWidth).Equals(Minimum(model.MinWidth))
+            if (!(Minimum(pane.MinWidth).Equals(Minimum(model.MinWidth))
                 && Minimum(pane.MinHeight).Equals(Minimum(model.MinHeight))
                 && Maximum(pane.MaxWidth).Equals(Maximum(model.MaxWidth))
-                && Maximum(pane.MaxHeight).Equals(Maximum(model.MaxHeight));
+                && Maximum(pane.MaxHeight).Equals(Maximum(model.MaxHeight)))) return false;
         }
         return true;
     }

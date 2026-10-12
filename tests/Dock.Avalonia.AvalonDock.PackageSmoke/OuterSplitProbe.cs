@@ -20,7 +20,7 @@ internal static class OuterSplitProbe
             LayoutAnchorablePane pane = new(first) { Children = { second } };
             LayoutAnchorablePaneGroup source = new(pane);
             LayoutDocumentPane target = new(new LayoutDocument { ContentId = "document", Content = "Document" });
-            LayoutDocumentPaneGroup region = new(new LayoutDocumentPaneGroup(target));
+            LayoutDocumentPaneGroup region = new() { Children = { new LayoutDocumentPaneGroup(target) } };
             DockingManager manager = new() { AllowMixedOrientation = true,
                 Layout = new() { RootPanel = new() { Children = { region, source } } } };
             DockManager engine = new(new DockService());

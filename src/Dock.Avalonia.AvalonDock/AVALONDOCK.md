@@ -860,12 +860,25 @@ the existing controls. Their constructors remain internal, as upstream. The
 adapter additionally exposes `OverlayWindow.DropArea`, `Area`, and `DropTargets`
 as snapshots for inspection. Rectangles use physical screen pixels; read again
 after layout or native target validation changes. Closing releases the window's
-projection and native content. `OnApplyTemplate()` applies the native target
-template. Both XML namespace forms support overlay control themes and enum values.
-Snapshots use the native target's registered selectors and attached docking
-operations, including custom templates. `DockTargetBase.GetSelector(operation)`
-exposes that same mapping. Nested controls with similar names are excluded, and
-replacing or clearing a template releases its previous part registrations.
+projection, native content, and external presentation. `OnApplyTemplate()` connects
+the named window parts through Dock's optional `IDockTargetPresentation` contract.
+Both XML namespace forms support overlay control themes and enum values.
+Snapshots and native hit testing use the same selectors, available through
+`DockTargetBase.GetSelector(operation)`. Native templates retain their attached
+operation mapping; nested controls with similar names are excluded.
+
+The default overlay includes `PART_DropTargetsContainer`, the manager, tool,
+document and optional full-document target grids, and `PART_PreviewBox`.
+Selectors use AvalonDock's directional and `Into` part names; document groups
+expose only the center destination. Native visibility policy selects the full
+document group when outer tool targets are available. The preview path follows
+the native operation and geometry. Custom templates should retain
+`PART_NativeTargetPresenter` bound to the window's `Content`, preserving native
+geometry and template fallback. Explicit native templates and custom target
+themes take precedence. Replacing the window template or closing it clears the
+presentation from Dock's reusable target and detaches its subscriptions.
+The [overlay guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/docfx/articles/dock-avalondock.md#inspect-floating-docking-overlays)
+lists all part names and includes a compiled XAML example.
 
 Dropping documents or tools on a document pane's split targets creates another
 `LayoutDocumentPane` inside a `LayoutDocumentPaneGroup`. Mixed orientation creates
@@ -1193,7 +1206,7 @@ flowchart TB
     Converters["AvalonDock.Converters<br/>Public models to current commands"]
     Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
     ResourceThemes["Themes.Theme<br/>Shared dictionaries and typed compiled URI factories"]
-    Overlays["OverlayWindow and geometry snapshots<br/>Native selector registrations"]
+    Overlays["OverlayWindow named parts and geometry snapshots"]
     Menus["Document and tool context menus<br/>LayoutItem binding context"]
     MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
     DocumentList["Document list menu<br/>LayoutContent headers and icons"]
@@ -1246,7 +1259,8 @@ flowchart TB
     View --> PreviewHost["Optional IDockAdornerHostProvider<br/>Enclosing document region and local selector inset"]
     PreviewHost --> PreviewTarget["DockTarget geometry<br/>Inline, native-window and managed layers"]
     PreviewTarget --> Overlays
-    Overlays -->|Native target input| Factory
+    Overlays --> TargetPresentation["Optional IDockTargetPresentation<br/>External selectors and preview state"]
+    TargetPresentation -->|Native hit testing and drop validation| Factory
     Api --> Navigator
     Navigator --> Items
     Api --> Items

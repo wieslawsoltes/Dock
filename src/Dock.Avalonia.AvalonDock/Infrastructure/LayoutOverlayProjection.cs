@@ -17,6 +17,10 @@ internal sealed class LayoutOverlayProjection
     private readonly Control _adorner;
     private readonly DropAreaType _type;
 
+    internal Control Surface => _surface;
+    internal Control Adorner => _adorner;
+    internal DropAreaType Type => _type;
+
     internal LayoutOverlayProjection(Control surface, Control adorner)
     {
         _surface = surface;

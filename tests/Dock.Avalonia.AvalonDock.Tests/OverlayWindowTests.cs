@@ -1,10 +1,15 @@
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Shapes;
 using Avalonia.Controls.Templates;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -87,8 +92,12 @@ public class OverlayWindowTests
             Assert.IsType<DocumentPaneControlOverlayArea>(workspace.Overlay.Area);
         else Assert.IsType<DockingManagerOverlayArea>(workspace.Overlay.Area);
 
-        var operations = new[] { DockOperation.Left, DockOperation.Top, DockOperation.Right, DockOperation.Bottom, DockOperation.Fill };
-        int count = kind == DropAreaType.DockingManager ? 4 : 5;
+        var operations = kind == DropAreaType.DocumentPaneGroup ? new[] { DockOperation.Fill } :
+            kind == DropAreaType.DocumentPane ? new[] { DockOperation.Left, DockOperation.Top, DockOperation.Right,
+                DockOperation.Bottom, DockOperation.Fill, DockOperation.OuterLeft, DockOperation.OuterTop,
+                DockOperation.OuterRight, DockOperation.OuterBottom } :
+            new[] { DockOperation.Left, DockOperation.Top, DockOperation.Right, DockOperation.Bottom, DockOperation.Fill };
+        int count = kind == DropAreaType.DockingManager ? 4 : operations.Length;
         for (int index = 0; index < count; index++)
         {
             DockOperation expected = operations[index];
@@ -107,20 +116,23 @@ public class OverlayWindowTests
             {
                 DropAreaType.DockingManager => 0, DropAreaType.AnchorablePane => 10, _ => 4
             };
-            Assert.Equal((OverlayWindowDropTargetType)(selectorBase + index), snapshot.Type);
+            int offset = expected == DockOperation.Fill ? 4 : index >= 5 ? index - 5 : index;
+            Assert.Equal((OverlayWindowDropTargetType)(selectorBase + offset), snapshot.Type);
             string prefix = kind switch
             {
                 DropAreaType.DockingManager => "DockingManagerDock", DropAreaType.AnchorablePane => "AnchorablePaneDock",
                 _ => "DocumentPaneDock"
             };
-            Assert.Equal(prefix + (expected == DockOperation.Fill ? "Inside" : expected.ToString()), snapshot.Type.ToString());
+            Assert.Equal(prefix + (expected == DockOperation.Fill ? "Inside" : expected.ToString().Replace("Outer", "")), snapshot.Type.ToString());
             Assert.Equal(kind == DropAreaType.DocumentPaneGroup && expected == DockOperation.Fill
-                ? DropTargetType.DocumentPaneGroupDockInside : (DropTargetType)(targetBase + index), snapshot.TargetType);
+                ? DropTargetType.DocumentPaneGroupDockInside : index >= 5
+                    ? (DropTargetType)((int)DropTargetType.DocumentPaneDockAsAnchorableLeft + index - 5)
+                    : (DropTargetType)(targetBase + index), snapshot.TargetType);
         }
         Assert.Equal(count, workspace.Overlay.DropTargets.Count);
         workspace.Target.ShowHorizontalTargets = false;
         workspace.Target.GetDockOperation(default, workspace.Surface, workspace.Surface, DragAction.Move,
-            (_, _, _, _) => true, (_, operation, _, _) => operation != DockOperation.Top);
+            (_, _, _, _) => true, (_, operation, _, _) => operation is not (DockOperation.Top or DockOperation.OuterTop));
         Assert.DoesNotContain(workspace.Overlay.DropTargets, target => target.Type.ToString().EndsWith("Left", StringComparison.Ordinal)
             || target.Type.ToString().EndsWith("Right", StringComparison.Ordinal) || target.Type.ToString().EndsWith("Top", StringComparison.Ordinal));
         workspace.Overlay.Close();
@@ -128,6 +140,102 @@ public class OverlayWindowTests
         Assert.Null(workspace.Overlay.Area);
         Assert.Empty(workspace.Overlay.DropTargets);
         Assert.Null(workspace.Overlay.Content);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(DropAreaType.DockingManager, DockOperation.Right, "DockingManager", "Right")]
+    [InlineData(DropAreaType.AnchorablePane, DockOperation.Bottom, "AnchorablePane", "Bottom")]
+    [InlineData(DropAreaType.DocumentPane, DockOperation.Fill, "DocumentPane", "Into")]
+    [InlineData(DropAreaType.DocumentPaneGroup, DockOperation.Fill, "DocumentPane", "Into")]
+    public void Window_Template_Parts_Drive_Native_Hit_Testing_And_Projected_Preview(
+        DropAreaType kind, DockOperation operation, string prefix, string direction)
+    {
+        using Workspace workspace = new(kind);
+        Border selector = new() { Width = 51, Height = 37, RenderTransform = new ScaleTransform(1.25, 1.5) };
+        Path preview = new() { Fill = Brushes.Blue };
+        Grid group = new() { Children = { selector } };
+        Canvas canvas = new() { Children = { preview, group } };
+        workspace.Overlay.Template = new FuncControlTemplate((owner, scope) =>
+        {
+            scope.Register("PART_DropTargetsContainer", canvas);
+            scope.Register("PART_" + prefix + "DropTargets", group);
+            scope.Register("PART_" + prefix + "DropTarget" + direction, selector);
+            scope.Register("PART_PreviewBox", preview);
+            ContentPresenter presenter = new() { Content = ((OverlayWindow)owner).Content,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch, VerticalContentAlignment = VerticalAlignment.Stretch };
+            scope.Register("PART_NativeTargetPresenter", presenter);
+            return new Panel { Children = { presenter, canvas } };
+        });
+        workspace.Update();
+        Assert.Same(selector, workspace.Target.GetSelector(operation));
+        Assert.Equal(workspace.Surface.Bounds.Size, group.Bounds.Size);
+        PixelPoint point = selector.PointToScreen(new Point(selector.Bounds.Width / 2, selector.Bounds.Height / 2));
+        Assert.Equal(operation, workspace.Target.GetDockOperation(workspace.Surface.PointToClient(point),
+            workspace.Surface, workspace.Surface, DragAction.Move, (_, candidate, _, _) => candidate == operation));
+        Assert.True(preview.IsVisible);
+        Rect projected = new(17, 23, 81, 63);
+        workspace.Target.SetPreviewBounds(projected);
+        workspace.Update();
+        Assert.Equal(projected, Assert.IsType<RectangleGeometry>(preview.Data).Rect);
+        Assert.Equal(ScreenBounds(selector), Assert.Single(workspace.Overlay.DropTargets).ScreenDetectionArea);
+        ((IDockTarget)workspace.Target).Reset();
+        Assert.False(preview.IsVisible);
+        Assert.Empty(workspace.Overlay.DropTargets);
+        workspace.Overlay.Template = new FuncControlTemplate((owner, _) =>
+            new ContentPresenter { Content = ((OverlayWindow)owner).Content });
+        workspace.Update();
+        Assert.Null(workspace.Target.Presentation);
+        Assert.Null(preview.Data);
+        Assert.NotSame(selector, workspace.Target.GetSelector(operation));
+    }
+
+    [AvaloniaFact]
+    public void Native_Only_Window_Templates_Can_Be_Replaced_Without_Retaining_The_Target()
+    {
+        using Workspace workspace = new(DropAreaType.DocumentPane);
+        ContentPresenter retired = new() { Content = workspace.Target };
+        workspace.Overlay.Template = new FuncControlTemplate((_, scope) =>
+        {
+            scope.Register("PART_NativeTargetPresenter", retired);
+            return retired;
+        });
+        workspace.Update();
+        Assert.Null(workspace.Target.Presentation);
+        Assert.Same(retired, workspace.Target.GetVisualParent());
+        ContentPresenter replacement = new() { Content = workspace.Target };
+        workspace.Overlay.Template = new FuncControlTemplate((_, scope) =>
+        {
+            scope.Register("PART_NativeTargetPresenter", replacement);
+            return replacement;
+        });
+        workspace.Update();
+        Assert.Null(retired.Child);
+        Assert.Same(replacement, workspace.Target.GetVisualParent());
+        workspace.Overlay.Close();
+        Assert.Null(replacement.Child);
+        Assert.Null(workspace.Target.GetVisualParent());
+    }
+
+    [AvaloniaFact]
+    public void Full_Document_Grid_Follows_Outer_Policy_And_Drops_Release_All_Parts()
+    {
+        using Workspace workspace = new(DropAreaType.DocumentPane);
+        Grid normal = workspace.Overlay.GetVisualDescendants().OfType<Grid>().Single(control => control.Name == "PART_DocumentPaneDropTargets");
+        Grid full = workspace.Overlay.GetVisualDescendants().OfType<Grid>().Single(control => control.Name == "PART_DocumentPaneFullDropTargets");
+        Assert.Equal(1, normal.Opacity);
+        Assert.Equal(0, full.Opacity);
+        workspace.Target.GetDockOperation(default, workspace.Surface, workspace.Surface, DragAction.Move,
+            (_, _, _, _) => true, (_, operation, _, _) => operation == DockOperation.OuterRight);
+        Assert.Equal(0, normal.Opacity);
+        Assert.Equal(1, full.Opacity);
+        Assert.Equal(DropTargetType.DocumentPaneDockAsAnchorableRight, Assert.Single(workspace.Overlay.DropTargets).TargetType);
+        workspace.Target.GetDockOperation(default, workspace.Surface, workspace.Surface, DragAction.Move,
+            (_, _, _, _) => true, (_, operation, _, _) => operation == DockOperation.Fill);
+        Assert.Equal(1, normal.Opacity);
+        Assert.Equal(0, full.Opacity);
+        Assert.Equal(DropTargetType.DocumentPaneDockInside, Assert.Single(workspace.Overlay.DropTargets).TargetType);
+        workspace.Overlay.Close();
+        Assert.Null(workspace.Target.Presentation);
     }
 
     [AvaloniaTheory]
@@ -225,6 +333,36 @@ public class OverlayWindowTests
     }
 
     [AvaloniaFact]
+    public async Task Reused_Native_Target_Does_Not_Retain_The_Closed_Overlay_Or_Its_Parts()
+    {
+        (DockTargetBase target, WeakReference window, WeakReference selector) = CaptureClosedOverlay();
+        for (int attempt = 0; attempt < 8; attempt++)
+        {
+            Dispatcher.UIThread.RunJobs();
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            await Task.Delay(25);
+            GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
+        }
+        Assert.Null(target.Presentation);
+        Assert.False(window.IsAlive);
+        Assert.False(selector.IsAlive);
+        GC.KeepAlive(target);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static (DockTargetBase, WeakReference, WeakReference) CaptureClosedOverlay()
+    {
+        Workspace workspace = new(DropAreaType.DocumentPane);
+        var result = (workspace.Target, new WeakReference(workspace.Overlay),
+            new WeakReference(workspace.Target.GetSelector(DockOperation.Fill)!));
+        workspace.Dispose();
+        Assert.Null(workspace.Target.Parent);
+        Assert.Null(workspace.Target.GetVisualParent());
+        Assert.Null(workspace.Target.TemplatedParent);
+        return result;
+    }
+
+    [AvaloniaFact]
     public void Retaining_An_Overlay_Factory_Does_Not_Keep_The_Manager_Alive()
     {
         (IDockAdornerWindowFactory factory, WeakReference manager) = CaptureFactory();
@@ -287,13 +425,7 @@ public class OverlayWindowTests
 
         public Control Selector(DockOperation operation)
         {
-            string name = operation switch
-            {
-                DockOperation.Left => "PART_LeftSelector", DockOperation.Top => "PART_TopSelector",
-                DockOperation.Right => "PART_RightSelector", DockOperation.Bottom => "PART_BottomSelector",
-                _ => "PART_CenterSelector"
-            };
-            return Target.GetVisualDescendants().OfType<Control>().Single(control => control.Name == name);
+            return Target.GetSelector(operation)!;
         }
 
         public void Update() { Dispatcher.UIThread.RunJobs(); Owner.UpdateLayout(); Overlay.UpdateLayout(); }

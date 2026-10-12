@@ -6,6 +6,22 @@ namespace AvalonDock.Infrastructure;
 
 internal static class LayoutOverlayGeometry
 {
+    internal static Rect GetBounds(Control source, Rect bounds, Control destination)
+    {
+        TopLevel? sourceRoot = TopLevel.GetTopLevel(source);
+        TopLevel? destinationRoot = TopLevel.GetTopLevel(destination);
+        if (sourceRoot is null || destinationRoot is null) return default;
+        Point? Map(Point point) => ReferenceEquals(sourceRoot, destinationRoot)
+            ? source.TranslatePoint(point, destination)
+            : destination.PointToClient(source.PointToScreen(point));
+        if (Map(bounds.TopLeft) is not { } a || Map(bounds.TopRight) is not { } b ||
+            Map(bounds.BottomLeft) is not { } c || Map(bounds.BottomRight) is not { } d) return default;
+        double left = Math.Min(Math.Min(a.X, b.X), Math.Min(c.X, d.X));
+        double top = Math.Min(Math.Min(a.Y, b.Y), Math.Min(c.Y, d.Y));
+        return new Rect(left, top, Math.Max(Math.Max(a.X, b.X), Math.Max(c.X, d.X)) - left,
+            Math.Max(Math.Max(a.Y, b.Y), Math.Max(c.Y, d.Y)) - top);
+    }
+
     internal static Rect GetScreenBounds(Control control)
     {
         if (TopLevel.GetTopLevel(control) is null) return default;

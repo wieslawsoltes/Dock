@@ -127,7 +127,7 @@ public partial class TabControlTests
             Assert.Equal(tool ? DropAreaType.AnchorablePane : DropAreaType.DocumentPane, overlay.DropArea!.Type);
             DockTarget native = Assert.IsType<DockTarget>(overlay.Content);
             native.UpdateLayout();
-            Control center = native.GetVisualDescendants().OfType<Control>().Single(control => control.Name == "PART_CenterSelector");
+            Control center = Assert.IsAssignableFrom<Control>(native.GetSelector(DockOperation.Fill));
             PixelPoint screen = center.PointToScreen(new Point(center.Bounds.Width / 2, center.Bounds.Height / 2));
             Point drop = workspace.Window.PointToClient(screen);
             workspace.Window.MouseMove(drop, RawInputModifiers.LeftMouseButton);

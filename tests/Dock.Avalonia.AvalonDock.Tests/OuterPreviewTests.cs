@@ -92,8 +92,11 @@ public partial class TabControlTests
             workspace.Window.MouseMove(drop, RawInputModifiers.LeftMouseButton);
             workspace.Update();
             string part = operation == DockOperation.Fill ? "Center" : operation.ToString();
-            Control indicator = target.GetVisualDescendants().OfType<Control>().Single(control => control.Name == "PART_" + part + "Indicator");
+            Control indicator = overlay is null
+                ? target.GetVisualDescendants().OfType<Control>().Single(control => control.Name == "PART_" + part + "Indicator")
+                : overlay.GetVisualDescendants().OfType<Control>().Single(control => control.Name == "PART_PreviewBox");
             Assert.True(indicator.Opacity > 0, $"The {operation} preview did not activate after moving onto its selector.");
+            Assert.True(indicator.IsVisible);
             AssertPreviewGeometry();
             workspace.Window.Width += 120;
             workspace.Window.Position = new PixelPoint(40, 30);
@@ -127,7 +130,15 @@ public partial class TabControlTests
                     DockOperation.Bottom => new Rect(bounds.Left, bounds.Bottom - bounds.Height / 2, bounds.Width, bounds.Height / 2),
                     _ => bounds
                 };
-                AssertPreviewRect(expected, PreviewScreenBounds(indicator));
+                Rect actual = PreviewScreenBounds(indicator);
+                if (indicator is global::Avalonia.Controls.Shapes.Path path)
+                {
+                    Rect geometry = Assert.IsType<RectangleGeometry>(path.Data).Rect;
+                    PixelPoint first = path.PointToScreen(geometry.TopLeft);
+                    PixelPoint last = path.PointToScreen(geometry.BottomRight);
+                    actual = new Rect(first.X, first.Y, last.X - first.X, last.Y - first.Y);
+                }
+                AssertPreviewRect(expected, actual);
                 AssertPreviewRect(PreviewScreenBounds(regionControl), PreviewScreenBounds(target));
                 Control center = Assert.IsAssignableFrom<Control>(target.GetSelector(DockOperation.Fill));
                 Point paneCenter = PreviewScreenBounds(surface).Center;

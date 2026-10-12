@@ -56,7 +56,7 @@ The native projects have no reference to the AvalonDock assembly or namespaces.
 | Explicit model close and auto-hide operations | Protected close/pin core operations retaining native cancellation and cleanup | AvalonDock command-versus-model capability semantics and return history |
 | Model-aware floating hosts and canceled closure | `IDockWindowHostFactory`, `IHostWindowCloseState`, and `IDockWindowClosePolicy` | Typed public hosts and public manager registration |
 | Close a host while retaining its layout | Desktop and managed host policy implementations; managed reentrancy and replacement-host handling | Deferred WPF ordering and public collection semantics |
-| Custom docking overlays | Scoped window factories/themes, enclosing preview hosts, selector registrations and geometry | AvalonDock overlay types, selector mapping, and public snapshots |
+| Custom docking overlays | Scoped window factories/themes, enclosing preview hosts, selector registrations, `IDockTargetPresentation` and geometry | AvalonDock named window parts, preview path, selector mapping, and public snapshots |
 | Pixel/auto/star sizing and resize previews | Proportional panel hooks, native splitter input, preview properties, pinned minima and custom thumb support | Public grid lengths, normalization, and size notifications |
 | Stable presentation and cleanup | Deferred root presentation, create-button coexistence, hidden-window filtering and tool-menu lifetime fixes | Public templates, layout items, themes, and retained-model subscriptions |
 
@@ -104,6 +104,15 @@ affected native Headless, unit, and leak cases passed before this master merge.
 The adapter adds native preview content/theme/input bindings and matches WPF's
 owned-window shutdown contract. Combined desktop and package validation follows
 this integration.
+
+[PR #1167](https://github.com/wieslawsoltes/Dock/pull/1167) adds optional external
+target presentations. Its 18 new cases exercise all nine operations, transformed
+cross-window selectors, visibility/validation vetoes, indicator-only mode,
+direction and edge restrictions, reentrant replacement, and detached selectors.
+All 1,770 affected native cases and all nine GitHub checks passed before merging
+`master` into this branch. An existing Windows create-button lifetime case failed
+once; the failed CI job passed unchanged on retry. The native code continues to
+own hit testing and docking policy; the adapter supplies only the presentation.
 
 ### Recent native drag and preview changes
 
@@ -793,6 +802,16 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   Snapshots use native selector registrations and attached operations. Custom
   templates with remapped parts or nested similarly named controls agree with
   native hit testing; template replacement clears old selector/indicator maps.
+  The window template now includes the manager, tool, document and optional full
+  document grids, all directional/center selectors, and `PART_PreviewBox`.
+  An `IDockTargetPresentation` maps these parts into native hit testing and
+  renders native operation state and preview geometry. Document groups expose
+  only the center target. Native visibility policy controls the outer-target
+  presentation. Explicit native templates and custom target themes retain
+  precedence, and native-only window templates retain their fallback path.
+  Template replacement detaches retired presenters; successful closure also
+  releases the window-owned default theme so a cached native target does not
+  retain the closed overlay. Canceling closure preserves the presentation.
 - Outer previews cover one third of the highest document group, or the parent
   layout panel for an ungrouped document pane. Ordinary split and center previews
   remain confined to the hovered pane. The optional native `IDockAdornerHostProvider`
@@ -917,14 +936,15 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 - Full native drag/float/redock and lifecycle coverage, including generic and
   mixed native-created groups, layout detachment and leak checks, and source-driven floating
   content and changes during deserialization.
-- Exact signatures, framework substitutions, inheritance, defaults, and member
-  behavior must be audited independently of the presence inventory, including
-  remaining property-default, callback, and framework-substitution edge cases.
+- Complete the remaining default, callback, inheritance-behavior and framework
+  edge cases independently of the presence inventory. The declaration-shape
+  review covers named arguments, modifiers, constraints and differing base lists;
+  it does not establish their runtime behavior.
 - Broader sample interaction and platform coverage for floating windows.
 - Broader navigator modality/focus coverage on macOS and Linux, and remaining
   theme/overlay integration. Windows 11 ARM64 modality, native Ctrl release,
   owner input restoration, and editor focus have desktop validation.
-- The full WPF overlay template-part arrangement remains open.
+- Broader desktop validation of the new named overlay presentation remains open.
 
 ## Reproducible API inventory
 
@@ -935,6 +955,11 @@ All 102 exported type keys are present; member signatures, inheritance, template
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
+
+The separate [declaration-shape review](../../build/AvalonDockApiAudit/SIGNATURES.md)
+records 186 textual signature differences and their explicit contracts, plus
+the modifier and generic-constraint review. It fixed three parameter names needed
+by upstream named-argument calls without changing the presence counts.
 
 Comparison maps the requested `AvalonDock.*` namespace and canonicalizes known
 `CultureInfo`, `CancelEventArgs`, XML reader/writer and IO stream/reader/writer

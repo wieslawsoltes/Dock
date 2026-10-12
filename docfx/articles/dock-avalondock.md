@@ -2090,13 +2090,16 @@ The manager and its floating hosts install an inherited
 then creates an `AvalonDock.Controls.OverlayWindow`, a `DockAdornerWindow`
 subclass. It hosts the same native `DockTarget` or `GlobalDockTarget` that Dock
 uses for hit testing, capability validation, indicators, and drop execution.
-The factory only changes the window host. Ordinary Dock without a factory keeps
-its standard window; inline and managed adorners keep their existing layer paths.
+The factory supplies the window host and its presentation of native operations.
+Ordinary Dock without a factory keeps its standard window; inline and managed
+adorners keep their existing layer paths.
 
 The overlay receives the manager's resource theme, including live replacement
 and dynamic resources. Its compiled control theme is based on the native adorner
 window. It has no decorations, does not activate, and is absent from the taskbar.
-The public `OnApplyTemplate()` hook applies the hosted native target's template.
+The public `OnApplyTemplate()` hook connects the window's named parts to the
+native target through `IDockTargetPresentation`. Templates without the overlay
+canvas retain the hosted native target's template.
 Both XML namespaces support the window type and target enum values in themes:
 
 ```xml
@@ -2122,16 +2125,71 @@ Screen rectangles use physical pixels, matching Avalonia's `PointToScreen`;
 use `PointToClient` when comparing with a control-local pointer position.
 Transforms are included, and detached surfaces produce an empty rectangle.
 
-Snapshot targets come from the native template registrations used for hit testing.
+Snapshot targets come from the active presentation or native template registrations used for hit testing.
 `DockTargetBase.GetSelector(DockOperation)` returns that registered control,
 including hidden selectors; it returns null for an absent operation. A custom
 template's attached `DockProperties.IndicatorDockOperation` determines the
 operation, independently of the part's name. Nested controls that merely reuse
 a selector name are excluded. Replacing or clearing the template discards the
-old selector and indicator registrations.
+old selector and indicator registrations. Explicit native `Template` assignments
+and custom `DockTarget.TargetTheme` values take precedence over the window's
+default presentation. This preserves native customization when using an
+AvalonDock overlay host.
+
+The default window template includes AvalonDock's named selector groups and a
+single preview path. All template parts are Avalonia controls:
+
+| Part | Purpose |
+| --- | --- |
+| `PART_DropTargetsContainer` (`Canvas`) | Holds the selector groups and preview in overlay coordinates. |
+| `PART_DockingManagerDropTargets` (`Grid`) | Manager edge targets. |
+| `PART_AnchorablePaneDropTargets` (`Grid`) | Tool pane edge and center targets. |
+| `PART_DocumentPaneDropTargets` (`Grid`) | Document pane edge and center targets; groups expose the center only. |
+| `PART_DocumentPaneFullDropTargets` (`Grid`, optional) | Document targets when outer tool destinations are available. |
+| `PART_PreviewBox` (`Path`) | The active native preview rectangle. |
+| `PART_NativeTargetPresenter` (`ContentPresenter`) | Hosts native `Content` and supplies the fallback presentation. |
+
+Selector names use `PART_DockingManagerDropTarget`,
+`PART_AnchorablePaneDropTarget`, `PART_DocumentPaneDropTarget`, or
+`PART_DocumentPaneFullDropTarget`, followed by `Left`, `Top`, `Right`, `Bottom`,
+or `Into` (no manager `Into`). Outer tool selectors are
+`PART_DocumentPaneDropTargetLeftAsAnchorablePane`, and the corresponding `Top`,
+`Right`, and `Bottom` names. Missing selectors omit those operations.
+
+Dock still translates coordinates, checks capabilities and directions, validates
+drops, and performs layout changes. The adapter positions groups over the
+hovered area, updates selector opacity, and renders `PART_PreviewBox`. A custom
+template can supply transformed controls; it does not need its own pointer
+handlers. Keep the native presenter in custom Avalonia templates so native
+geometry and extension properties retain an attached coordinate space. For
+example, this template exposes only a document-center destination:
+
+```xml
+<ControlTheme x:Key="DocumentCenterOverlay" TargetType="OverlayWindow"
+              x:DataType="OverlayWindow"
+              BasedOn="{StaticResource {x:Type OverlayWindow}}">
+  <Setter Property="Template">
+    <ControlTemplate x:DataType="OverlayWindow">
+      <Grid>
+        <ContentPresenter x:Name="PART_NativeTargetPresenter"
+                          Content="{TemplateBinding Content}" Opacity="0"
+                          HorizontalContentAlignment="Stretch"
+                          VerticalContentAlignment="Stretch" />
+        <Canvas x:Name="PART_DropTargetsContainer">
+          <Path x:Name="PART_PreviewBox" Fill="DodgerBlue" Opacity="0.35" />
+          <Grid x:Name="PART_DocumentPaneDropTargets">
+            <Border x:Name="PART_DocumentPaneDropTargetInto"
+                    Width="40" Height="40" Background="DodgerBlue" />
+          </Grid>
+        </Canvas>
+      </Grid>
+    </ControlTemplate>
+  </Setter>
+</ControlTheme>
+```
 
 Canceling window closure preserves its projection. Completed closure clears
-the native content and projection references and releases theme providers.
+the native content, external presentation, and projection references and releases theme providers.
 Retaining the optional factory does not keep its manager alive.
 
 Dropping documents or tools on a document pane's split targets creates another
@@ -2168,8 +2226,9 @@ docking destination. Dock updates the adorner bounds and read-only `TargetMargin
 when the layout or window changes; the target theme applies that inset to its
 local selectors and indicators. Inline, native-window, and managed-window hosts
 support the same geometry, including scaled layouts. Removal or surface detachment
-releases geometry subscriptions and clears the inset. WPF's full overlay
-template-part arrangement remains open.
+releases geometry subscriptions and clears the inset. The floating overlay's
+named parts use the same native operations through the optional presentation
+contract added in [PR #1167](https://github.com/wieslawsoltes/Dock/pull/1167).
 
 ## Apply AvalonDock resource themes
 
@@ -2489,7 +2548,7 @@ flowchart TB
         Converters["AvalonDock.Converters<br/>Public models to current commands"]
         Navigator["NavigatorWindow<br/>Snapshot lists and keyboard selection"]
         ResourceThemes["Themes.Theme<br/>Shared dictionaries and typed compiled URI factories"]
-        Overlays["OverlayWindow and geometry snapshots<br/>Native selector registrations"]
+        Overlays["OverlayWindow named parts and geometry snapshots"]
         Menus["Document and tool context menus<br/>LayoutItem binding context"]
         MenuControls["DropDownButton / DropDownControlArea<br/>ContextMenuEx / MenuItemEx"]
         DocumentList["Document list menu<br/>LayoutContent headers and icons"]
@@ -2509,6 +2568,7 @@ flowchart TB
         Factory["Dock factory and docking operations"]
         Controls["DockControl, HostWindow, and Fluent controls"]
         OverlayFactory["Optional IDockAdornerWindowFactory"]
+        TargetPresentation["Optional IDockTargetPresentation<br/>External selectors and preview state"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
         DropPolicy["Optional IDockDropPolicy<br/>Target visibility and drop validation"]
         SplitPolicy["Optional IDockSplitPolicy<br/>Tool drops into typed document groups"]
@@ -2524,10 +2584,11 @@ flowchart TB
     SplitPolicy --> Models
     Factory --> OuterSplitPolicy["Optional IDockOuterSplitPolicy<br/>Tool panes and groups beside document regions"]
     OuterSplitPolicy --> Models
-    View --> PreviewHost["Optional IDockAdornerHostProvider<br/>Enclosing document region and local selector inset"]
+    Controls --> PreviewHost["Optional IDockAdornerHostProvider<br/>Enclosing document region and local selector inset"]
     PreviewHost --> PreviewTarget["DockTarget geometry<br/>Inline, native-window and managed layers"]
     PreviewTarget --> Overlays
-    Overlays -->|Native selectors| Controls
+    Overlays --> TargetPresentation
+    TargetPresentation -->|Native hit testing and drop validation| Controls
     Manager -->|Side panels and anchor templates| Anchors
     Anchors --> Models
     Anchors -->|Pinned reorder and preview| Factory

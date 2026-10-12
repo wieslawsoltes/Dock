@@ -50,6 +50,13 @@ Use `DeferredContentControl` in theme templates that do not require a `ContentPr
 
 The host keeps the latest `Content` and `ContentTemplate`, then forwards them to its inner presenter when the deferred queue grants that target a turn.
 
+`DeferredContentControl.ClearPresentation()` releases the materialized child and
+cancels pending presentation without changing `Content` or `ContentTemplate`.
+It is safe before template application and can be called more than once. A
+content/template change or reattachment materializes the content again. Dock
+uses this during successful floating-window teardown, after releasing the
+presenter's layout binding, so a preserved model can be presented in a new host.
+
 ## Use DeferredContentPresenter
 
 Some templates must keep a `ContentPresenter` contract. In that case, use `DeferredContentPresenter` directly:

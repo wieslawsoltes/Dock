@@ -9,6 +9,11 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        if (args is ["--active-content", string activeContentOutput])
+        {
+            AvalonDock.ReferenceProbes.ActiveContentProbe.Run(activeContentOutput);
+            return;
+        }
         if (args is ["--floating-notifications", string notificationOutput])
         {
             AvalonDock.ReferenceProbes.FloatingNotificationProbe.Run(notificationOutput);

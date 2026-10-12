@@ -11,14 +11,14 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
     private readonly DockingManager _manager;
     private readonly Func<object?, T> _create;
     private readonly Func<LayoutRoot, ILayoutContainer?> _findDestination;
-    private readonly Func<LayoutRoot, T, ILayoutContainer?, ILayoutUpdateStrategy?, ILayoutContainer?> _insert;
+    private readonly Func<LayoutRoot?, T, ILayoutContainer?, DockingManager?, ILayoutContainer?> _insert;
     private readonly Action<IEnumerable?> _observe;
     private LayoutRoot _layout;
     private IEnumerable? _source;
 
     internal LayoutSourceBinding(DockingManager manager, Func<object?, T> create,
         Func<LayoutRoot, ILayoutContainer?> findDestination,
-        Func<LayoutRoot, T, ILayoutContainer?, ILayoutUpdateStrategy?, ILayoutContainer?> insert,
+        Func<LayoutRoot?, T, ILayoutContainer?, DockingManager?, ILayoutContainer?> insert,
         Action<IEnumerable?> observe)
     {
         _manager = manager;
@@ -67,12 +67,15 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
 
     private void InsertItems(IEnumerable items, bool assignContentIds)
     {
+        LayoutRoot importedLayout = _layout;
         ILayoutContainer? destination = _findDestination(_layout);
         foreach (object? item in items)
         {
             T content = _create(item);
             if (assignContentIds) content.ContentId = Guid.NewGuid().ToString();
-            destination = _insert(_layout, content, destination, _manager.LayoutUpdateStrategy);
+            // Initial attachment imports into its supplied root, while live
+            // collection notifications consult the manager's current layout.
+            destination = _insert(assignContentIds ? importedLayout : null, content, destination, _manager);
         }
     }
 

@@ -1046,6 +1046,26 @@ collection notification; changing focus inside a strategy affects the next
 batch. A fallback tool pane created during insertion is reused for the rest of
 that batch.
 
+Each insertion consults the current `LayoutUpdateStrategy` separately for its
+`BeforeInsert…` and `AfterInsert…` calls. Replacing the strategy in `BeforeInsert…`
+directs the matching `AfterInsert…` call to the replacement; clearing it skips
+that call. Returning `true` suppresses default insertion while still allowing
+`AfterInsert…` to run. These rules apply to source imports, live collection
+additions, `Dock()` when no return container is available, and a hidden tool's
+`Show()` operation.
+
+Initial source attachment retains its supplied layout throughout the batch.
+Live collection callbacks receive the manager's current layout each time, even
+if an earlier callback replaces it. The batch's default destination stays fixed;
+an application that replaces the layout during insertion should place the item
+itself and return `true` when the old destination is no longer appropriate.
+
+For `LayoutAnchorable.Show()`, a strategy can update `PreviousContainer` and
+`PreviousContainerIndex` and return `false` to use the updated return location.
+Clearing the return container leaves the tool hidden. `AfterInsertAnchorable`
+runs before the temporary hidden-return history is cleared. Exact layout-item
+creation timing during source callbacks remains under compatibility review.
+
 A derived manager can observe or handle source notifications through
 `OnReceiveWeakEvent(Type, object, EventArgs)`:
 

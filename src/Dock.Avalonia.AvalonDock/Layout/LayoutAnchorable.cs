@@ -118,7 +118,7 @@ public class LayoutAnchorable : LayoutContent
     /// <inheritdoc/>
     protected override void InternalDock()
     {
-        if (Root is LayoutRoot root) LayoutSourcePlacement.DockAnchorable(root, this, root.Manager?.LayoutUpdateStrategy);
+        if (Root is LayoutRoot root) LayoutSourcePlacement.DockAnchorable(root, this);
         base.InternalDock();
     }
     /// <summary>Hides this tool without destroying its content.</summary>
@@ -147,17 +147,29 @@ public class LayoutAnchorable : LayoutContent
         OnHidden();
     }
     /// <summary>Restores this tool to its previous pane.</summary>
+    /// <remarks>
+    /// The update strategy may change <see cref="LayoutContent.PreviousContainer"/>
+    /// and <see cref="LayoutContent.PreviousContainerIndex"/> before default
+    /// restoration. Clearing the return container leaves the tool hidden.
+    /// </remarks>
     public void Show()
     {
         if (IsVisible) return;
         if (!IsHidden) throw new InvalidOperationException("The tool must belong to a layout before it can be shown.");
         LayoutRoot root = (LayoutRoot)Root!;
+        ILayoutContainer? previousBeforeCallback = PreviousContainer;
         ILayoutGroup? previous = PreviousContainer as ILayoutGroup;
         if (previous is null && DockModel.OriginalOwner is { } owner) previous = Context.Get(owner) as ILayoutGroup;
-        ILayoutUpdateStrategy? strategy = root.Manager?.LayoutUpdateStrategy;
-        bool inserted = strategy?.BeforeInsertAnchorable(root, this, previous) == true;
+        bool inserted = root.Manager?.LayoutUpdateStrategy?.BeforeInsertAnchorable(root, this, previous) == true;
+        if (!ReferenceEquals(previousBeforeCallback, PreviousContainer))
+            previous = PreviousContainer as ILayoutGroup;
         if (!inserted && previous is not null)
         {
+            // Anchor groups project Dock's pinned lists rather than own native
+            // content. Other destinations can be restored directly, avoiding
+            // a transient insertion into the tool's old pane.
+            if (previous is LayoutElement returnPane and not LayoutAnchorGroup)
+                DockModel.OriginalOwner = returnPane.DockModel;
             root.DockFactory.RestoreDockable(DockModel);
             int index = PreviousContainerIndex < 0 ? previous.ChildrenCount : Math.Min(PreviousContainerIndex, previous.ChildrenCount);
             if (ReferenceEquals(Parent, previous))
@@ -170,7 +182,7 @@ public class LayoutAnchorable : LayoutContent
             IsSelected = true;
             IsActive = true;
         }
-        strategy?.AfterInsertAnchorable(root, this);
+        root.Manager?.LayoutUpdateStrategy?.AfterInsertAnchorable(root, this);
         PreviousContainer = InitialContainer;
         PreviousContainerIndex = InitialContainerIndex;
         PreviousContainerId = InitialContainerId;

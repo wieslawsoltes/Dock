@@ -40,6 +40,15 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- Update strategies are read separately before and after source insertion,
+  fallback document/tool docking, and hidden-tool restoration. Callbacks may
+  replace or clear the strategy, including during a multi-item batch. Initial
+  imports retain their supplied root while live callbacks read the manager's
+  current root after layout replacement. `Show()` honors callback changes to the
+  return pane/index without briefly reinserting into the old pane; clearing the
+  destination leaves the tool hidden. Docking the last-focused document itself
+  falls back to the first document pane. Headless regressions cover all seven
+  insertion paths, handled/default placement, native ownership, and callback order.
 - `UriSourceToBitmapImageConverter` loads HTTP/HTTPS images asynchronously,
   follows redirects, and publishes decoded bitmaps on the UI thread. It supports
   relative URI resolution, an application-owned HTTP client, request/body
@@ -629,9 +638,9 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1254 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1295 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1272 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1313 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -647,7 +656,8 @@ supported by corresponding implementation and test evidence.
   the public root without a panel and is not yet supported. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: additional update strategy invocation paths,
+- Remaining manager APIs: source layout-item creation timing inside strategy
+  callbacks (upstream defers container creation until after source callbacks),
   templates/selectors, styles, general theme URI loading, translated localization
   resources, and the control adapter surface.
   Floating controls still need exact close-event ordering,

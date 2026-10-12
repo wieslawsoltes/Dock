@@ -90,6 +90,11 @@ public interface ILayoutContentSelector
 }
 
 /// <summary>Customizes document and tool insertion.</summary>
+/// <remarks>
+/// Insertion reads the manager's current strategy separately for the before and
+/// after callbacks. Replacing or clearing the strategy in a before callback
+/// changes which strategy receives the after callback for that same item.
+/// </remarks>
 public interface ILayoutUpdateStrategy
 {
     /// <summary>Returns true if the strategy inserted the anchorable.</summary>

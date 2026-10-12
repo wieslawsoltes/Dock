@@ -423,6 +423,20 @@ values within the source. Add/replace notifications import all new entries.
 The default destination stays fixed for each import/notification batch; a new
 fallback tool pane is reused within that batch.
 
+Insertion reads `LayoutUpdateStrategy` again before `AfterInsertDocument` or
+`AfterInsertAnchorable`. A `BeforeInsert…` callback can replace or clear the
+strategy; its `true` result skips default placement but still permits the
+current strategy's after callback. Source imports, live additions, fallback
+`Dock()` placement, and hidden-tool `Show()` use this contract. Initial imports
+retain their supplied root; live callbacks read the manager's current root.
+The batch destination remains fixed, so a strategy replacing the layout should
+handle placement itself when the old pane is no longer suitable.
+
+A tool's `Show()` callback can change `PreviousContainer` and
+`PreviousContainerIndex` before default restoration. Clearing the return pane
+keeps the tool hidden. The after callback runs before hidden-return history is
+cleared. Exact source layout-item creation timing remains under review.
+
 Derived managers can override `OnReceiveWeakEvent(Type, object, EventArgs)` to
 observe source changes before the default update. Call base to update the layout,
 or return `true` to handle the event yourself. Returning `false` for a delivered

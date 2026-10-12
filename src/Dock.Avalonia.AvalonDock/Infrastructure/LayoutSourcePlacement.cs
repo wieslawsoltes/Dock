@@ -7,7 +7,7 @@ namespace AvalonDock.Infrastructure;
 
 internal static class LayoutSourcePlacement
 {
-    internal static void DockAnchorable(LayoutRoot root, LayoutAnchorable tool, ILayoutUpdateStrategy? strategy)
+    internal static void DockAnchorable(LayoutRoot root, LayoutAnchorable tool)
     {
         ILayoutGroup? destination = !ReferenceEquals(root.ActiveContent, tool)
             ? root.ActiveContent?.Parent as LayoutAnchorablePane : null;
@@ -24,7 +24,7 @@ internal static class LayoutSourcePlacement
             }
             destination ??= (ILayoutGroup?)firstToolPane ?? firstDocumentPane;
         }
-        if (strategy?.BeforeInsertAnchorable(root, tool, destination) != true)
+        if (root.Manager?.LayoutUpdateStrategy?.BeforeInsertAnchorable(root, tool, destination) != true)
         {
             if (destination is null)
             {
@@ -38,15 +38,19 @@ internal static class LayoutSourcePlacement
             }
             destination.InsertChildAt(destination.ChildrenCount, tool);
         }
-        strategy?.AfterInsertAnchorable(root, tool);
+        root.Manager?.LayoutUpdateStrategy?.AfterInsertAnchorable(root, tool);
     }
 
-    internal static void InsertDocument(LayoutRoot root, LayoutDocument document, ILayoutUpdateStrategy? strategy)
-        => InsertDocument(root, document, FindDocumentDestination(root), strategy);
+    internal static void DockDocument(LayoutRoot root, LayoutDocument document)
+        => InsertDocument(root, document, FindDocumentDestination(root, document), null);
 
     internal static LayoutDocumentPane? FindDocumentDestination(LayoutRoot root)
+        => FindDocumentDestination(root, null);
+
+    private static LayoutDocumentPane? FindDocumentDestination(LayoutRoot root, LayoutDocument? dockingDocument)
     {
-        LayoutDocumentPane? destination = root.LastFocusedDocument?.Parent as LayoutDocumentPane;
+        LayoutDocumentPane? destination = !ReferenceEquals(root.LastFocusedDocument, dockingDocument)
+            ? root.LastFocusedDocument?.Parent as LayoutDocumentPane : null;
         if (destination?.Root != root) destination = null;
         if (destination is null)
         {
@@ -56,15 +60,16 @@ internal static class LayoutSourcePlacement
         return destination;
     }
 
-    internal static ILayoutContainer? InsertDocument(LayoutRoot root, LayoutDocument document,
-        ILayoutContainer? destination, ILayoutUpdateStrategy? strategy)
+    internal static ILayoutContainer? InsertDocument(LayoutRoot? fixedLayout, LayoutDocument document,
+        ILayoutContainer? destination, DockingManager? sourceManager)
     {
-        if (strategy?.BeforeInsertDocument(root, document, destination) != true)
+        LayoutRoot root = fixedLayout ?? sourceManager!.Layout;
+        if ((sourceManager ?? root.Manager)?.LayoutUpdateStrategy?.BeforeInsertDocument(root, document, destination) != true)
         {
             if (destination is null) throw new InvalidOperationException("The layout must contain a document pane to host source documents.");
             ((LayoutDocumentPane)destination).Children.Add(document);
         }
-        strategy?.AfterInsertDocument(root, document);
+        (sourceManager ?? root.Manager)?.LayoutUpdateStrategy?.AfterInsertDocument(fixedLayout ?? sourceManager!.Layout, document);
         return destination;
     }
 
@@ -85,13 +90,15 @@ internal static class LayoutSourcePlacement
         return destination;
     }
 
-    internal static ILayoutContainer? InsertAnchorable(LayoutRoot root, LayoutAnchorable tool,
-        ILayoutContainer? destination, ILayoutUpdateStrategy? strategy)
+    internal static ILayoutContainer? InsertAnchorable(LayoutRoot? fixedLayout, LayoutAnchorable tool,
+        ILayoutContainer? destination, DockingManager? sourceManager)
     {
-        if (strategy?.BeforeInsertAnchorable(root, tool, destination) != true)
+        LayoutRoot root = fixedLayout ?? sourceManager!.Layout;
+        if ((sourceManager ?? root.Manager)?.LayoutUpdateStrategy?.BeforeInsertAnchorable(root, tool, destination) != true)
         {
             if (destination is null)
             {
+                root = fixedLayout ?? sourceManager!.Layout;
                 LayoutPanel original = root.RootPanel;
                 LayoutPanel outer = new() { Orientation = Orientation.Horizontal };
                 root.RootPanel = outer;
@@ -102,7 +109,7 @@ internal static class LayoutSourcePlacement
             }
             ((LayoutAnchorablePane)destination).Children.Add(tool);
         }
-        strategy?.AfterInsertAnchorable(root, tool);
+        (sourceManager ?? root.Manager)?.LayoutUpdateStrategy?.AfterInsertAnchorable(fixedLayout ?? sourceManager!.Layout, tool);
         return destination;
     }
 }

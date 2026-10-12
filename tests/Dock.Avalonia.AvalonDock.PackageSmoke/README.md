@@ -1,5 +1,9 @@
 # NuGet consumer smoke test
 
+The update-strategy probe replaces a strategy during a source batch, verifies
+that the replacement receives the after callbacks, and redirects a hidden tool
+to a different pane and tab index through `Show()` using the packaged models.
+
 Metadata and utility probes load consumer-owned compiled image assets through
 the public URI converter, resolve resource strings with a culture override,
 compile resizers in both XML namespaces, and check the actual native tool tab's

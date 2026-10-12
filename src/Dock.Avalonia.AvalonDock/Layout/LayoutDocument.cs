@@ -21,7 +21,7 @@ public class LayoutDocument : LayoutContent
     /// <inheritdoc/>
     protected override void InternalDock()
     {
-        if (Root is LayoutRoot root) LayoutSourcePlacement.InsertDocument(root, this, root.Manager?.LayoutUpdateStrategy);
+        if (Root is LayoutRoot root) LayoutSourcePlacement.DockDocument(root, this);
         base.InternalDock();
     }
 }

@@ -129,10 +129,15 @@ public class NativePinnedWindowTests
     {
         using Workspace workspace = new();
         PinnedDockWindow first = workspace.Preview;
+        global::AvalonDock.Themes.AvalonDockTheme ownedTheme = Assert.Single(first.Styles.OfType<global::AvalonDock.Themes.AvalonDockTheme>());
+        global::Avalonia.Styling.Style applicationStyle = new();
+        first.Styles.Add(applicationStyle);
         workspace.Owner.Content = null;
         workspace.Update();
         Assert.False(first.IsVisible);
         Assert.Empty(first.Resources.MergedDictionaries);
+        Assert.DoesNotContain(ownedTheme, first.Styles);
+        Assert.Contains(applicationStyle, first.Styles);
         workspace.Owner.Content = workspace.Manager;
         workspace.Update();
         workspace.Show();

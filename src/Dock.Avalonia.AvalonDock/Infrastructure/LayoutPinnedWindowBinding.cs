@@ -16,6 +16,7 @@ internal sealed class LayoutPinnedWindowBinding
     private static readonly AttachedProperty<LayoutPinnedWindowBinding?> BindingProperty =
         AvaloniaProperty.RegisterAttached<LayoutPinnedWindowBinding, PinnedDockWindow, LayoutPinnedWindowBinding?>("Binding");
     private readonly WeakReference<DockingManager> _manager;
+    private readonly AvalonDockTheme _theme = new();
 
     private LayoutPinnedWindowBinding(DockingManager manager) => _manager = new(manager);
 
@@ -33,7 +34,7 @@ internal sealed class LayoutPinnedWindowBinding
             window.Closed += binding.Closed;
             window.AddHandler(InputElement.KeyDownEvent, binding.PreviewKeyDown, RoutingStrategies.Tunnel);
             window.Classes.Add("avalondock");
-            window.Styles.Add(new AvalonDockTheme());
+            window.Styles.Add(binding._theme);
             LayoutCommandRouting.SetIsEnabled(window, true);
             LayoutContextMenuRouting.SetIsEnabled(window, true);
             owner.AttachThemeResources(window);
@@ -57,6 +58,9 @@ internal sealed class LayoutPinnedWindowBinding
         window.RemoveHandler(InputElement.KeyDownEvent, PreviewKeyDown);
         LayoutCommandRouting.SetIsEnabled(window, false);
         LayoutContextMenuRouting.SetIsEnabled(window, false);
+        // Detached controls can cache their implicit theme. Release this owned
+        // style's resource owner so retained content cannot retain the window.
+        window.Styles.Remove(_theme);
         window.ClearValue(BindingProperty);
     }
 }

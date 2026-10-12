@@ -189,8 +189,11 @@ precedence over the global setting in both native windows and managed overlays.
 Factories without the policy retain the global default. The policy is evaluated
 when a drag preview opens; changing it affects the next drag.
 
-Content previews reuse registered visuals for documents, tools and whole panes,
-including their custom templates, without reparenting live controls. When no
+Content previews capture registered visuals for documents, tools and whole panes,
+including their custom templates, without reparenting live controls. The image
+is captured once at the source display's scale, before tab selection or source
+layout changes, and released when the drag ends. This keeps the dragged content
+visible even when the source control is recycled for another tab. When no
 attached visual is registered, Dock retains its data-template fallback.
 
 `DockSettings.DragPreviewOpacity` controls the preview window opacity (0.0 to 1.0).

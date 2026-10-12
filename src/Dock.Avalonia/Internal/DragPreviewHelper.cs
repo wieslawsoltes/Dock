@@ -368,6 +368,7 @@ internal class DragPreviewHelper
                 s_control.PreviewContentHeight = double.NaN;
             }
 
+            ClearPreviewContent(s_control);
             s_control.PreviewContent = BuildDockablePreviewContent(dockable, showDockablePreview);
             s_window.DataContext = dockable;
             s_control.Status = string.Empty;
@@ -475,7 +476,8 @@ internal class DragPreviewHelper
                 s_managedLayer.HideOverlay("DragPreview");
                 if (s_managedControl is { })
                 {
-                    s_managedControl.PreviewContent = null;
+                    ClearPreviewContent(s_managedControl);
+                    s_managedControl.DataContext = null;
                 }
                 s_managedLayer = null;
                 s_managedControl = null;
@@ -504,6 +506,8 @@ internal class DragPreviewHelper
             s_frozenContentWidthPixels = double.NaN;
             s_frozenContentHeightPixels = double.NaN;
             s_lastFrozenWindowScaling = 1.0;
+            if (s_control is not null) ClearPreviewContent(s_control);
+            s_window.DataContext = null;
             s_window.Close();
             s_window = null;
             s_control = null;
@@ -619,6 +623,7 @@ internal class DragPreviewHelper
             s_managedControl.PreviewContentHeight = double.NaN;
         }
 
+        ClearPreviewContent(s_managedControl);
         s_managedControl.PreviewContent = BuildManagedPreviewContent(dockable, showDockablePreview);
 
         var localPosition = GetManagedPosition(layer, position, offset);
@@ -725,15 +730,14 @@ internal class DragPreviewHelper
             return null;
         }
 
-        return new Border
-        {
-            Background = new VisualBrush
-            {
-                Visual = visual,
-                Stretch = Stretch.Uniform
-            },
-            ClipToBounds = true
-        };
+        return DragPreviewSnapshot.Capture(visual);
+    }
+
+    private static void ClearPreviewContent(DragPreviewControl control)
+    {
+        Control? previous = control.PreviewContent;
+        control.PreviewContent = null;
+        (previous as DragPreviewSnapshot)?.Dispose();
     }
 
     private static Control? BuildManagedPreviewContent(IDockable dockable, bool showDockablePreview)

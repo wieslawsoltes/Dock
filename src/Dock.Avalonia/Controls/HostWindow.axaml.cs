@@ -499,6 +499,7 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
         bool preserveLayout = closingWindow is not null && closingFactory is IDockWindowClosePolicy policy &&
             policy.PreserveLayoutOnHostClose(closingWindow);
         _isClosed = true;
+        HostWindowContentCleanup.ReleaseModels(this, Content as IDock ?? closingWindow?.Layout);
         // Avalonia model implementations can be logical children of the content
         // control. A retained layout must not keep this closed window as parent.
         if (Content is IDock && Content is ILogical logicalLayout)

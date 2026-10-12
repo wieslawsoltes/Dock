@@ -273,6 +273,55 @@ public class DeferredContentControlTests
         }
     }
 
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void ClearPresentation_Releases_The_Child_Cancels_Queued_Work_And_Allows_Reattachment(bool standardPresenter, bool materialize)
+    {
+        using var scope = new DeferredBatchLimitScope(autoSchedule: false);
+        var template = new CountingTemplate(() => new TextBlock());
+        object content = new();
+        var control = new DeferredContentControl { Content = content, ContentTemplate = template };
+        if (standardPresenter)
+            control.Template = new FuncControlTemplate<DeferredContentControl>((_, names) =>
+                new ContentPresenter { Name = "PART_ContentPresenter" }.RegisterInNameScope(names));
+        control.ClearPresentation(); // Also valid before a template is applied.
+        var window = new Window { Width = 400, Height = 300, Content = control };
+        window.Show();
+        control.ApplyTemplate();
+        try
+        {
+            if (materialize) DrainDeferredQueueBatch(window);
+            Control? child = control.Presenter!.Child;
+            Assert.Equal(materialize, child is not null);
+            control.Content = new object(); // Queue a replacement, then cancel it.
+            control.ClearPresentation();
+            control.ClearPresentation();
+            Assert.Null(control.Presenter.Child);
+            if (child is not null) Assert.Null(child.Parent);
+            Assert.Same(template, control.ContentTemplate);
+            int builds = template.BuildCount;
+            DrainDeferredQueueBatch(window);
+            Assert.Equal(builds, template.BuildCount);
+            Assert.Null(control.Presenter.Child);
+
+            object? preservedContent = control.Content;
+            window.Content = null;
+            window.Content = control;
+            DrainDeferredQueueBatch(window);
+            Assert.Equal(builds + 1, template.BuildCount);
+            Assert.Same(preservedContent, control.Presenter.Child!.DataContext);
+
+            control.ClearPresentation();
+            control.Content = content;
+            DrainDeferredQueueBatch(window);
+            Assert.Same(content, control.Presenter.Child!.DataContext);
+        }
+        finally { window.Close(); }
+    }
+
     [AvaloniaFact]
     public void DeferredContentControl_Applies_Deferred_Content_With_Standard_ContentPresenter_Template()
     {

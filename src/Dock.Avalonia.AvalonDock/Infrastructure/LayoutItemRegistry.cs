@@ -124,8 +124,23 @@ internal sealed class LayoutItemRegistry
 
     public void RefreshStyles()
     {
-        Reconcile();
-        for (int i = 0; i < _items.Count; i++) _items[i].ApplyContainerStyle();
+        // Each existing model attachment refreshes the registered containers.
+        // Keep document/tool snapshots separate: document selectors may change
+        // the tool layout. Detached containers remain until deferred cleanup.
+        List<LayoutDocument> documents = new();
+        foreach (ILayoutElement element in _manager.Layout.Descendents())
+            if (element is LayoutDocument document) documents.Add(document);
+        foreach (LayoutDocument document in documents) AttachOrRefresh(document);
+        List<LayoutAnchorable> tools = new();
+        foreach (ILayoutElement element in _manager.Layout.Descendents())
+            if (element is LayoutAnchorable tool) tools.Add(tool);
+        foreach (LayoutAnchorable tool in tools) AttachOrRefresh(tool);
+
+        void AttachOrRefresh(LayoutContent content)
+        {
+            if (!_byContent.ContainsKey(content)) Create(content);
+            else foreach (LayoutItem item in _items) item.ApplyContainerStyle();
+        }
     }
 
     private void Reconcile()
@@ -139,8 +154,9 @@ internal sealed class LayoutItemRegistry
     private void ReconcileCore()
     {
         if (_root is null) return;
-        HashSet<LayoutElement> current = new() { _root };
-        foreach (ILayoutElement element in _root.Descendents())
+        LayoutRoot currentRoot = _manager.Layout;
+        HashSet<LayoutElement> current = new() { currentRoot };
+        foreach (ILayoutElement element in currentRoot.Descendents())
             if (element is LayoutElement model) current.Add(model);
         foreach (LayoutElement element in _observed)
             if (!current.Contains(element)) element.PropertyChanged -= ModelChanged;
@@ -169,15 +185,17 @@ internal sealed class LayoutItemRegistry
         if (_root is null) return;
         // Snapshot before applying application styles, which may edit the tree.
         List<LayoutContent> pending = new();
-        foreach (ILayoutElement element in _root.Descendents())
-            if (element is LayoutElement model) Collect(model, pending);
+        HashSet<LayoutContent>? membership = added is not null ? new() : null;
+        LayoutRoot layout = added is null ? _root : _manager.Layout;
+        foreach (ILayoutElement element in layout.Descendents())
+            if (element is LayoutElement model) Collect(model, pending, membership);
         // Native floating roots acquire their public parent before Dock inserts
         // the window into its collection. Register that attaching subtree too.
         if (added is not null)
         {
-            Collect(added, pending);
+            Collect(added, pending, membership);
             foreach (ILayoutElement element in added.Descendents())
-                if (element is LayoutElement model) Collect(model, pending);
+                if (element is LayoutElement model) Collect(model, pending, membership);
         }
         // Initial layout attachment registers documents before tools. An
         // ordinary membership change follows the tree's current order.
@@ -185,13 +203,18 @@ internal sealed class LayoutItemRegistry
             foreach (LayoutContent content in pending)
                 if (content is LayoutDocument && !_byContent.ContainsKey(content)) Create(content);
         foreach (LayoutContent content in pending)
+        {
             if (!_byContent.ContainsKey(content)) Create(content);
+            else if (added is not null)
+                foreach (LayoutItem item in _items) item.ApplyContainerStyle();
+        }
     }
 
-    private void Collect(LayoutElement model, List<LayoutContent> pending)
+    private void Collect(LayoutElement model, List<LayoutContent> pending, HashSet<LayoutContent>? membership)
     {
         Observe(model);
-        if (model is LayoutContent content && !_byContent.ContainsKey(content)) pending.Add(content);
+        if (model is LayoutContent content &&
+            (membership is not null ? membership.Add(content) : !_byContent.ContainsKey(content))) pending.Add(content);
     }
 
     private void ElementAdded(object? sender, LayoutElementEventArgs args)

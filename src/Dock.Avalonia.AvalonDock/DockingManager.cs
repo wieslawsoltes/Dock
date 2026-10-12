@@ -318,8 +318,12 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Gets or sets the root panel control displayed by the native layout template.</summary>
     public LayoutPanelControl? LayoutRootPanel { get => GetValue(LayoutRootPanelProperty); set => SetValue(LayoutRootPanelProperty, value); }
     /// <summary>Gets or sets the Avalonia control theme applied to item containers.</summary>
+    /// <remarks>When both style providers are null, existing containers retain their last theme.
+    /// A non-null selector returning null clears that theme.</remarks>
     public ControlTheme? LayoutItemContainerStyle { get => GetValue(LayoutItemContainerStyleProperty); set => SetValue(LayoutItemContainerStyleProperty, value); }
     /// <summary>Gets or sets the container theme selector used when no explicit style is set.</summary>
+    /// <remarks>Selection runs after default commands are cleared and before they are restored.
+    /// Clearing this property preserves existing themes when no explicit style is set.</remarks>
     public StyleSelector? LayoutItemContainerStyleSelector { get => GetValue(LayoutItemContainerStyleSelectorProperty); set => SetValue(LayoutItemContainerStyleSelectorProperty, value); }
     /// <summary>Looks up the registered item container without creating one.</summary>
     /// <remarks>Source items are registered after their insertion callbacks. Removed items remain registered until deferred cleanup.</remarks>
@@ -449,9 +453,13 @@ public partial class DockingManager : TemplatedControl
     protected virtual void OnAnchorablePaneControlStyleChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called after the displayed root panel control changes.</summary>
     protected virtual void OnLayoutRootPanelChanged(AvaloniaPropertyChangedEventArgs e) { }
-    /// <summary>Applies the new item container style to existing layout content.</summary>
+    /// <summary>Reattaches current layout contents and reapplies current container style settings.</summary>
+    /// <remarks>The base call reads current manager settings, including when replaying older arguments.
+    /// Overrides can omit base to preserve existing containers; new source containers use current settings.</remarks>
     protected virtual void OnLayoutItemContainerStyleChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
-    /// <summary>Applies the new item container style selector to existing layout content.</summary>
+    /// <summary>Reattaches current layout contents and reapplies current container style settings.</summary>
+    /// <remarks>The base call reads current manager settings, including when replaying older arguments.
+    /// Overrides can omit base to preserve existing containers; new source containers use current settings.</remarks>
     protected virtual void OnLayoutItemContainerStyleSelectorChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

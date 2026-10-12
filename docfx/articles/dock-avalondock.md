@@ -1379,6 +1379,32 @@ selects a theme for the new object and detaches the old typed bindings first.
 A null selection removes the previously selected theme while preserving the
 live layout state. Styles also apply to new source entries and hidden tools.
 
+Clearing both manager style providers retains the themes already applied to
+existing containers. New containers use the current providers. To clear an
+existing theme, assign a non-null selector that returns null. A retained theme
+also follows replacement content after the previous typed bindings are released.
+
+The protected style callbacks read the current manager settings, including when
+replaying captured change arguments. An override which omits base retains the
+existing container styles; new source containers still use current settings.
+Default commands are cleared before selecting a theme and available defaults
+are restored afterward. Application commands remain intact. If the selector
+throws, the previous theme remains and defaults stay cleared until a successful
+style application. A reentrant manager style change runs immediately; the outer
+selector's result is then applied when it returns.
+
+The callback visits document and tool snapshots in that order. Each existing
+model attachment refreshes the registered container list in registration order,
+so selectors can run multiple times for a single property change. Containers
+awaiting deferred removal still participate until the dispatcher performs their
+cleanup.
+
+Native layout additions also reapply current styles to existing registered
+containers, including after a manager override suppressed an earlier style
+callback. Source insertion batches instead register newly imported containers
+after their insertion callbacks; adding an item within that batch does not
+itself restyle the existing containers.
+
 Command setters bind application `ReactiveCommand` properties through `Model`,
 just like metadata. For example, add this setter to the document theme when
 `EditorViewModel.CloseCommand` implements the application's close workflow:

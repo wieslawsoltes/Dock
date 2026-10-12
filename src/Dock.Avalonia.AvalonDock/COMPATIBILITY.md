@@ -199,7 +199,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,616 cases, including 29 source
+- The consolidated adapter suite passes all 2,638 cases, including 22 container
+  style callback, command-order, and native restyling cases, plus 29 source
   callback, registration, layout-transition, and lifetime cases. All 30 rendered
   preview/image cases pass. The source callback audit below records argument
   handling and weak delivery semantics. Coverage also includes 30 theme
@@ -1033,6 +1034,27 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
 
+## Container style callback audit
+
+The style hooks reattach current layout contents and use the manager's current
+style settings, including when replaying older change arguments. Clearing both
+providers retains existing container themes; a non-null selector returning null
+clears the theme. Retained themes follow replacement content after old typed
+bindings are released. Default commands are cleared before selection and restored
+after successful application, including when the theme itself does not change.
+Application commands remain intact. A selector exception leaves defaults cleared
+and preserves the old theme; reentrant style changes finish before the outer
+selector's result is applied.
+
+Style callbacks visit separate document/tool snapshots. Existing attachments
+refresh registered items in registration order, including containers awaiting
+deferred removal. Native membership additions also refresh current styles;
+source insertion batches retain their separate registration timing. Twenty-two
+new Headless cases cover these contracts, including suppression, exceptions,
+current-value replay, repeated selection, source/native additions, content
+replacement and deferred cleanup. The focused suite passes 122 cases. Package
+consumers exercise the protected hooks and provider/command behavior externally.
+
 ## Source callback and weak registration audit
 
 The source hooks detach `e.OldValue` and import `e.NewValue` using the manager's
@@ -1138,6 +1160,10 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   windows are still rejected before overwriting a saved file.
 - Remaining manager API audit: templates/selectors, styles,
   and the control adapter surface.
+  Container style value, command-order, and native/source attachment behavior is
+  covered above. WPF's accumulating element-event registrations after style
+  changes and the resulting callback multiplicity remain a separate audit;
+  the native registry currently observes each root event once.
   The floating-control audit above records the completed hook corrections and
   remaining framework/platform differences. Desktop input/focus validation
   beyond the recorded close lifecycle scenarios remains open.

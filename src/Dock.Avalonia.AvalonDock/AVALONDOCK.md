@@ -354,9 +354,27 @@ application commands; for an `EditorViewModel` with a `CloseCommand`, add:
 ```
 
 The native tab close button, Close menu item, and middle-click invoke it.
-Removing the theme restores available defaults without disposing application
-commands. Layout methods remain direct model operations. The full guide covers
-selectors, capabilities, and two-way metadata bindings.
+A selector returning null removes the container theme and restores available
+defaults without disposing application commands. Clearing both manager style
+providers retains themes already applied to existing containers; new containers
+use the current providers. Layout methods remain direct model operations. The
+full guide covers selectors, capabilities, and two-way metadata bindings.
+
+Style callbacks use the manager's current settings, including when a derived
+manager replays captured change arguments. Omitting the base call retains the
+existing styles; new source containers still read current settings. Selection
+runs after default commands are cleared and before available defaults return.
+An exception leaves those defaults cleared and preserves the previous theme;
+a later successful application restores them. Each existing model attachment
+refreshes registered containers in registration order, so selectors can run
+more than once per manager style change. Detached containers remain eligible
+until their deferred cleanup runs. Initial document and tool snapshots are
+processed in that order.
+
+Native layout additions also reapply current styles to registered containers.
+Suppressing a manager style callback does not suppress that later attachment
+path. Source insertion batches register their new containers after insertion
+callbacks without restyling existing containers merely because an item was added.
 
 `LayoutItem.View` is the presenter displayed by the native Dock controls.
 `AvalonDock.Controls.LayoutDocumentControl` and `LayoutAnchorableControl` wrap

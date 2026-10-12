@@ -241,3 +241,8 @@ external assembly. It verifies callback arguments after reentrant replacement,
 separate delivery for shared collections, eleven repeated attachments, and
 removal of one registration per detachment. Both .NET 8 and .NET 10 execute
 these checks against the restored package.
+
+The container-style probe checks retained themes after clearing both manager
+providers, a selector's explicit null result, cleared default commands during
+selection, suppressed protected callbacks, and replay using current manager
+settings for both document and tool containers.

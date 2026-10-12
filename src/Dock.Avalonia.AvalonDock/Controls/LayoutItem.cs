@@ -160,7 +160,6 @@ public abstract class LayoutItem : Control
         manager.AttachLayoutItem(this);
         _styleInitialized = true;
         ApplyContainerStyle();
-        SetDefaultBindings();
     }
 
     internal void Detach()
@@ -202,20 +201,30 @@ public abstract class LayoutItem : Control
 
     internal void ApplyContainerStyle()
     {
-        if (_applyingStyle || Manager is not { } manager) return;
-        ControlTheme? theme = manager.LayoutItemContainerStyle ?? manager.LayoutItemContainerStyleSelector?.SelectStyle(Model, this);
-        if (ReferenceEquals(theme, _containerTheme)) return;
+        if (Manager is not { } manager) return;
+        bool applyingStyle = _applyingStyle;
         _applyingStyle = true;
         try
         {
             ClearDefaultBindings();
-            ClearContainerStyle();
-            _containerTheme = theme;
-            SetCurrentValue(ThemeProperty, theme);
-            ApplyStyling();
+            if (manager.LayoutItemContainerStyle is { } theme)
+                ApplyContainerTheme(theme);
+            else if (manager.LayoutItemContainerStyleSelector is { } selector)
+                ApplyContainerTheme(selector.SelectStyle(Model, this));
+            // With neither a style nor a selector, the existing container style
+            // remains applied. A selector returning null explicitly clears it.
         }
-        finally { _applyingStyle = false; }
+        finally { _applyingStyle = applyingStyle; }
         SetDefaultBindings();
+    }
+
+    private void ApplyContainerTheme(ControlTheme? theme)
+    {
+        if (ReferenceEquals(theme, _containerTheme) && ReferenceEquals(theme, Theme)) return;
+        ClearContainerStyle();
+        _containerTheme = theme;
+        SetCurrentValue(ThemeProperty, theme);
+        ApplyStyling();
     }
 
     private void ClearContainerStyle()
@@ -247,9 +256,15 @@ public abstract class LayoutItem : Control
             {
                 // Detach bindings for the old content type before publishing
                 // the new Model and selecting its container theme.
+                ControlTheme? retainedTheme = _containerTheme;
                 ClearContainerStyle();
                 SetAndRaise(ModelProperty, ref _model, content.Content);
-                if (_styleInitialized) ApplyContainerStyle();
+                if (_styleInitialized)
+                {
+                    if (Manager is { LayoutItemContainerStyle: null, LayoutItemContainerStyleSelector: null })
+                        ApplyContainerTheme(retainedTheme);
+                    ApplyContainerStyle();
+                }
             }
             finally { _updatingModel = false; }
             propertyName = null;

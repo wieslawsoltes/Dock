@@ -2350,6 +2350,17 @@ projects have no dependency on AvalonDock. See the
 [native extension guide](https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md)
 for policy defaults, sizing and host contracts, examples, and regression coverage.
 
+The branch also includes the native drag and preview fixes from
+[PR #1153](https://github.com/wieslawsoltes/Dock/pull/1153) and
+[PR #1156](https://github.com/wieslawsoltes/Dock/pull/1156): adorner reuse,
+interrupted-drag cleanup, selector coordinates, Escape cancellation, tab previews,
+global split proportions, and display-scaling fixes. Exact projected layout
+previews remain disabled for the compatibility factory and its custom sizing
+panel. The existing AvalonDock indicators retain their documented geometry;
+an isolated factory alone cannot reproduce its layout policies and sizing.
+See the [compatibility checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md#recent-native-drag-and-preview-changes)
+for the integration analysis and remaining requirements.
+
 ```mermaid
 flowchart TB
     App["Application XAML, ViewModels, and workspace service"]

@@ -89,6 +89,39 @@ and deferred visual content before `Closed`, preserving the model graph for a
 replacement host. Its 16 new Headless cases cover documents/tools, local themes,
 cancellation, replacement hosts, and explicit deferred-presentation cleanup.
 
+### Recent native drag and preview changes
+
+This branch also includes `master` through `805fdb68a`, merging
+[PR #1153](https://github.com/wieslawsoltes/Dock/pull/1153) and
+[PR #1156](https://github.com/wieslawsoltes/Dock/pull/1156). Their relevance to the
+adapter is:
+
+| Native change | Effect on AvalonDock compatibility |
+| --- | --- |
+| Reusable regular adorners and interrupted window-drag cleanup | Existing native hosts and overlays detach old parents, clear pending targets on cancellation/closure, and avoid duplicate drag-end notifications. |
+| Selector coordinate and enclosing-region fixes | Existing public overlay snapshots and outer-document selectors use the corrected native hit testing, including separately hosted and scaled controls. |
+| Escape cancellation and tab-source previews | Native input cancels across focus/capture changes. Dragging a tab can temporarily select another tab; cancellation restores the prior selection unless the application changed it. Public selection notifications still apply. |
+| Global split distribution | Native docking rescales retained siblings and sizes the resulting pane, including whole-pane moves. |
+| Scrollable-source and mixed-display preview sizing | The adapter's native drag preview benefits from finite measurement and macOS logical-coordinate handling across Retina boundaries. |
+| Isolated projected layouts | `IDockPreviewFactoryProvider` and `DockSplitPreview` provide a future integration point; exact projections are not enabled for the compatibility layout. |
+
+Exact projection has two independent limitations here. `LayoutFactory` derives
+from the Avalonia factory and deliberately retains its default null preview
+factory: a stock clone would lose the adapter's typed document splits, outer
+region policy, mixed-orientation rules, and removal selection. In addition,
+`LayoutSizingPanel` specializes proportional sizing for AvalonDock grid lengths;
+native projection conservatively falls back for derived panels. The custom local
+target template currently uses its existing half-pane and third-region indicators.
+Enabling exact projection requires isolated policies, a matching sizing contract,
+and corresponding template/geometry tests together. Simply returning a stock
+factory would not establish compatibility.
+
+The incoming Avalonia 11 preview suite validates native shared controls. It does
+not add an Avalonia 11 target to this adapter. The source-generator changes select
+the appropriate System.Text.Json generator in shared compiler processes; the
+AvalonDock XML codec remains separate. None of these changes implements the
+remaining manager callbacks, theme URI loading, or custom XML subtype recovery.
+
 
 ## Verified implementation
 

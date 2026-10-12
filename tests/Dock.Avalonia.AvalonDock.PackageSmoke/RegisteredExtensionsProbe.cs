@@ -5,11 +5,13 @@ using System.Xml;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 using AvalonDock.Themes;
+using NativeDockControl = Dock.Avalonia.Controls.DockControl;
 
 namespace PackageConsumer;
 
@@ -24,8 +26,9 @@ internal static class RegisteredExtensionsProbe
         Uri uri = new("avares://Dock.Avalonia.AvalonDock.PackageSmoke/RegisteredResources.axaml");
         manager.ThemeResources.Register(uri, static () => new RegisteredResources());
         manager.Theme = new ResourceTheme(uri);
-        Window owner = new() { Content = manager, Width = 640, Height = 480 };
+        Window owner = new() { Width = 640, Height = 480 };
         owner.Styles.Add(new AvalonDockTheme());
+        owner.Content = manager;
         try
         {
             owner.Show();
@@ -33,10 +36,12 @@ internal static class RegisteredExtensionsProbe
             owner.UpdateLayout();
             manager.DockFactory.FloatDockable(panel.DockModel);
             Dispatcher.UIThread.RunJobs();
-            if (manager.Layout.FloatingWindows.Single() is not LayoutGroupFloatingWindow group ||
-                !ReferenceEquals(panel, group.RootPanels.Single()) ||
-                manager.FloatingWindows.Single() is not LayoutGroupFloatingWindowControl host)
-                throw new Exception("Packaged mixed floating groups did not retain their model and host.");
+            if (manager.Layout.FloatingWindows.SingleOrDefault() is not LayoutGroupFloatingWindow group)
+                throw new Exception($"Packaged mixed group model was absent: {manager.Layout.FloatingWindows.Count} public models; {manager.DockLayout.Windows?.Count} native windows; panel parent {panel.Parent?.GetType().Name}.");
+            if (!ReferenceEquals(panel, group.RootPanels.SingleOrDefault()))
+                throw new Exception($"Packaged mixed group lost its panel: {group.RootPanels.Count} panels; valid={group.IsValid}; visible={group.IsVisible}.");
+            if (manager.FloatingWindows.SingleOrDefault() is not LayoutGroupFloatingWindowControl host)
+                throw new Exception($"Packaged mixed group host was absent: {manager.FloatingWindows.Count()} public hosts; native host={group.DockWindow.Host?.GetType().Name}; tracked={group.DockWindow.Host?.IsTracked}; valid={group.IsValid}; visible={group.IsVisible}; loaded={manager.IsLoaded}; native controls={manager.GetVisualDescendants().OfType<NativeDockControl>().Count()}; template={manager.Template is not null}.");
             if (host.FindResource("RegisteredBrush") is not ISolidColorBrush { Color: var color } || color != Color.Parse("#2468AC"))
                 throw new Exception("Packaged compiled URI resources did not reach the grouped host.");
             XmlLayoutSerializer serializer = new(manager);

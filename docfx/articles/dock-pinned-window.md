@@ -9,6 +9,11 @@ DockSettings.UsePinnedDockWindow = true;
 
 When enabled the `PinnedDockControl` places the preview content inside a lightweight `PinnedDockWindow`. The window follows the host layout and closes automatically when the tool is hidden.
 
+Activation can move between the owner and preview without closing the preview,
+so its editors can receive keyboard focus. Leaving both windows closes the
+preview through the factory. `KeepPinnedDockableVisible` preserves it across
+those activation changes.
+
 In managed window mode (`DockSettings.UseManagedWindows = true`), pinned windows render inside `ManagedWindowLayer` instead of a native window.
 
 ## Pinned preview layout

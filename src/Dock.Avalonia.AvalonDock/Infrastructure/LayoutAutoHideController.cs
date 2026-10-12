@@ -70,7 +70,8 @@ internal sealed class LayoutAutoHideController
         _closing.SetModel(_manager.AutoHideWindow is null ? null : model);
     }
 
-    internal void ResetDelay() => _closing.ResetDelay();
+    internal void InitializeClosing() => _closing.Initialize();
+    internal void ResetDelay(int milliseconds) => _closing.ResetDelay(milliseconds);
 
     private void DragStarted(object? sender, VectorEventArgs args)
     {

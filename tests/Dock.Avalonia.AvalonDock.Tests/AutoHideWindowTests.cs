@@ -163,6 +163,84 @@ public class AutoHideWindowTests
     }
 
     [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Suppressing_Or_Throwing_From_The_Delay_Callback_Preserves_The_Applied_Interval(bool fail)
+    {
+        using Workspace workspace = new(probe: true);
+        ManagerProbe manager = (ManagerProbe)workspace.Manager;
+        manager.AutoHideWindowClosingTimer = int.MaxValue;
+        manager.SuppressTimer = true;
+        manager.FailTimer = fail;
+        if (fail) Assert.Throws<InvalidOperationException>(() => manager.AutoHideWindowClosingTimer = 0);
+        else manager.AutoHideWindowClosingTimer = 0;
+        Assert.Equal(0, manager.AutoHideWindowClosingTimer);
+        workspace.Show(workspace.Tool()); workspace.MoveAway();
+        await workspace.Wait(150);
+        Assert.NotNull(workspace.Preview.Model);
+        await workspace.ObserveClosing(() => manager.ApplyTimerChange(manager.LastTimerChange!));
+        Assert.Null(workspace.Preview.Model);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Redirecting_A_Delay_Change_Respects_The_Order_Of_Base_Callbacks(bool afterBase)
+    {
+        using Workspace workspace = new(probe: true);
+        ManagerProbe manager = (ManagerProbe)workspace.Manager;
+        manager.AutoHideWindowClosingTimer = int.MaxValue;
+        manager.TimerCallback = (args, after) =>
+        {
+            if (after == afterBase && Equals(args.NewValue, 0)) manager.AutoHideWindowClosingTimer = int.MaxValue;
+        };
+        manager.AutoHideWindowClosingTimer = 0;
+        Assert.Equal(int.MaxValue, manager.AutoHideWindowClosingTimer);
+        workspace.Show(workspace.Tool()); workspace.MoveAway();
+        if (afterBase)
+        {
+            await workspace.Wait(150);
+            Assert.NotNull(workspace.Preview.Model);
+        }
+        else
+        {
+            await workspace.WaitUntilClosed();
+            Assert.Null(workspace.Preview.Model);
+        }
+    }
+
+    [AvaloniaFact]
+    public async Task Replaying_A_Delay_Callback_Uses_Its_Argument_While_The_Property_Remains_Unchanged()
+    {
+        using Workspace workspace = new(probe: true);
+        ManagerProbe manager = (ManagerProbe)workspace.Manager;
+        manager.AutoHideWindowClosingTimer = 0;
+        AvaloniaPropertyChangedEventArgs captured = manager.LastTimerChange!;
+        manager.AutoHideWindowClosingTimer = int.MaxValue;
+        workspace.Show(workspace.Tool()); workspace.MoveAway();
+        await workspace.Wait(80);
+        await workspace.ObserveClosing(() => manager.ApplyTimerChange(captured));
+        Assert.Null(workspace.Preview.Model);
+        Assert.Equal(int.MaxValue, manager.AutoHideWindowClosingTimer);
+    }
+
+    [AvaloniaFact]
+    public async Task Initial_Timer_Setup_Reads_The_Current_Property_Then_Retains_The_Applied_Interval()
+    {
+        DelayedManagerProbe manager = new() { SuppressTimer = true, AutoHideWindowClosingTimer = 0 };
+        using Workspace workspace = new(configuredManager: manager);
+        await workspace.ObserveClosing(() => { workspace.Show(workspace.Tool()); workspace.MoveAway(); });
+        manager.AutoHideWindowClosingTimer = int.MaxValue;
+        await workspace.ObserveClosing(() =>
+        {
+            workspace.Tool().IsSelected = false;
+            workspace.Show(workspace.Tool()); workspace.MoveAway();
+        });
+        Assert.Null(workspace.Preview.Model);
+        Assert.Equal(int.MaxValue, manager.AutoHideWindowClosingTimer);
+    }
+
+    [AvaloniaTheory]
     [InlineData("unpin")]
     [InlineData("hide")]
     [InlineData("float")]
@@ -314,13 +392,31 @@ public class AutoHideWindowTests
         return result;
     }
 
-    private sealed class ManagerProbe : DockingManager
+    private class ManagerProbe : DockingManager
     {
         public int WindowChanges { get; private set; }
         public int TimerChanges { get; private set; }
+        public bool SuppressTimer { get; set; }
+        public bool FailTimer { get; set; }
+        public Action<AvaloniaPropertyChangedEventArgs, bool>? TimerCallback { get; set; }
+        public AvaloniaPropertyChangedEventArgs? LastTimerChange { get; private set; }
+        public void ApplyTimerChange(AvaloniaPropertyChangedEventArgs args) => base.OnAutoHideWindowClosingTimerChanged(args);
         public void ReplacePreview(LayoutAutoHideWindowControl? value) => SetAutoHideWindow(value);
         protected override void OnAutoHideWindowChanged(AvaloniaPropertyChangedEventArgs e) { WindowChanges++; base.OnAutoHideWindowChanged(e); }
-        protected override void OnAutoHideWindowClosingTimerChanged(AvaloniaPropertyChangedEventArgs e) { TimerChanges++; base.OnAutoHideWindowClosingTimerChanged(e); }
+        protected override void OnAutoHideWindowClosingTimerChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            TimerChanges++;
+            LastTimerChange = e;
+            TimerCallback?.Invoke(e, false);
+            if (FailTimer) throw new InvalidOperationException("Timer callback failure.");
+            if (!SuppressTimer) base.OnAutoHideWindowClosingTimerChanged(e);
+            TimerCallback?.Invoke(e, true);
+        }
+    }
+
+    private sealed class DelayedManagerProbe : ManagerProbe
+    {
+        static DelayedManagerProbe() => AutoHideWindowClosingTimerProperty.OverrideDefaultValue<DelayedManagerProbe>(int.MaxValue);
     }
 
     private sealed class Workspace : IDisposable
@@ -328,14 +424,15 @@ public class AutoHideWindowTests
         public AnchorControlFixture Window { get; } = new();
         public DockingManager Manager { get; }
         public LayoutAutoHideWindowControl Preview => Manager.AutoHideWindow!;
-        public Workspace(bool probe = false)
+        public Workspace(bool probe = false, ManagerProbe? configuredManager = null)
         {
             Manager = Window.FindControl<DockingManager>("Manager")!;
-            if (probe)
+            if (probe || configuredManager is not null)
             {
                 LayoutRoot layout = Manager.Layout;
                 Manager.Layout = new LayoutRoot();
-                Manager = new ManagerProbe { Layout = layout };
+                Manager = configuredManager ?? new ManagerProbe();
+                Manager.Layout = layout;
                 Window.Content = Manager;
             }
             Window.Show(); Update();

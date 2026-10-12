@@ -23,9 +23,17 @@ public sealed class AnchorManagerProbe : DockingManager
     public int[] SideChanges { get; } = new int[4];
     public int PreviewChanges { get; private set; }
     public int ClosingTimerChanges { get; private set; }
+    public bool SuppressTimerCallback { get; set; }
+    public AvaloniaPropertyChangedEventArgs? LastTimerChange { get; private set; }
+    public void ApplyTimerChange(AvaloniaPropertyChangedEventArgs args) => base.OnAutoHideWindowClosingTimerChanged(args);
     public void ReplacePreview(LayoutAutoHideWindowControl? value) => SetAutoHideWindow(value);
     protected override void OnAutoHideWindowChanged(AvaloniaPropertyChangedEventArgs e) { PreviewChanges++; base.OnAutoHideWindowChanged(e); }
-    protected override void OnAutoHideWindowClosingTimerChanged(AvaloniaPropertyChangedEventArgs e) { ClosingTimerChanges++; base.OnAutoHideWindowClosingTimerChanged(e); }
+    protected override void OnAutoHideWindowClosingTimerChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        ClosingTimerChanges++;
+        LastTimerChange = e;
+        if (!SuppressTimerCallback) base.OnAutoHideWindowClosingTimerChanged(e);
+    }
     protected override void OnLeftSidePanelChanged(AvaloniaPropertyChangedEventArgs e) { SideChanges[0]++; base.OnLeftSidePanelChanged(e); }
     protected override void OnTopSidePanelChanged(AvaloniaPropertyChangedEventArgs e) { SideChanges[1]++; base.OnTopSidePanelChanged(e); }
     protected override void OnRightSidePanelChanged(AvaloniaPropertyChangedEventArgs e) { SideChanges[2]++; base.OnRightSidePanelChanged(e); }
@@ -155,6 +163,23 @@ internal static class AnchorControlProbe
             manager.AutoHideWindowClosingTimer = -1;
             if (manager.AutoHideWindowClosingTimer != 1500 || manager.ClosingTimerChanges != 2)
                 throw new Exception("The packaged closing timer did not preserve its default coercion and external hook.");
+            manager.AutoHideWindowClosingTimer = int.MaxValue;
+            manager.SuppressTimerCallback = true;
+            manager.AutoHideWindowClosingTimer = 0;
+            AvaloniaPropertyChangedEventArgs zeroDelay = manager.LastTimerChange!;
+            ((LayoutAnchorable)restored.Model).IsSelected = false;
+            ((LayoutAnchorable)restored.Model).IsSelected = true; Update();
+            window.MouseMove(new Point(895, 645));
+            System.Threading.Thread.Sleep(80); Update();
+            System.Threading.Thread.Sleep(20); Update();
+            if (preview.Model is null)
+                throw new Exception("A suppressed packaged delay callback changed the initialized timer.");
+            manager.AutoHideWindowClosingTimer = int.MaxValue;
+            manager.ApplyTimerChange(zeroDelay);
+            System.Threading.Thread.Sleep(20); Update();
+            if (preview.Model is not null || manager.AutoHideWindowClosingTimer != int.MaxValue)
+                throw new Exception("A replayed packaged delay callback ignored its argument or replaced the property.");
+            manager.SuppressTimerCallback = false;
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
 

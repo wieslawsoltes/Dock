@@ -199,9 +199,11 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,557 cases, including 16 manager
-  property/style/default/hook cases; the first 13 reproduced failures before
-  correction. The manager audit below records conditional styles, compiled
+- The consolidated adapter suite passes all 2,587 cases, including 30 theme
+  and auto-hide timer callback cases; 24 reproduced failures before correction.
+  The focused callback run passed 127 cases before the final initialization
+  case was added. The 16 manager property/style/default/hook cases remain
+  covered; the first 13 reproduced failures before their correction. The manager audit below records conditional styles, compiled
   bindings, layout coercion, and protected callbacks. The 29 floating-control
   override, command-subscription, closing-order, null-model, and writable-property
   cases remain covered; 27 reproduced failures before their correction. Dropdown input,
@@ -1027,6 +1029,26 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
+
+## Manager resource and timer callback audit
+
+The pinned upstream protected hooks use their supplied change values. Manager
+resource updates use `OnThemeChanged`'s new value, while existing and newly
+created floating windows, navigators, and overlays read the manager's current
+`Theme`. Tests exercise before/after-base redirection, suppression, exceptions,
+and explicit callback replay with both non-null and null themes across all four
+window types. Twenty of 24 cases failed before the correction. The coordinator
+retains resource reentrancy and weak ownership; closed-window and canceled-close
+coverage remains in the focused theme suite.
+
+The initialized auto-hide close timer likewise applies
+`OnAutoHideWindowClosingTimerChanged`'s argument instead of rereading the property
+on each idle transition. Suppressing a base call retains its applied interval;
+callback replay and redirection use the supplied interval and base-call order.
+Initialization reads the current property, including configuration supplied
+before loading. Six Headless cases cover these contracts; four of the first five
+failed before correction. Package consumers exercise both callback paths.
+These source-derived contracts do not add desktop validation.
 
 ## Manager property contract audit
 

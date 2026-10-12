@@ -8,6 +8,7 @@ namespace AvalonDock.Infrastructure;
 
 internal sealed class LayoutThemeCoordinator
 {
+    private readonly DockingManager _owner;
     private readonly LayoutThemeScope _manager;
     private readonly ThemeResourceRegistry _registry;
     private readonly List<WeakReference<LayoutThemeScope>> _windows = new();
@@ -17,6 +18,7 @@ internal sealed class LayoutThemeCoordinator
 
     internal LayoutThemeCoordinator(DockingManager manager)
     {
+        _owner = manager;
         _registry = manager.ThemeResources;
         _manager = new(manager, this);
     }
@@ -40,7 +42,9 @@ internal sealed class LayoutThemeCoordinator
                 WeakReference<LayoutThemeScope>[] windows = _windows.ToArray();
                 foreach (WeakReference<LayoutThemeScope> reference in windows)
                 {
-                    if (reference.TryGetTarget(out LayoutThemeScope? scope)) scope.Apply(_theme);
+                    // The manager's callback argument and current property can
+                    // differ after an override redirects or replays a change.
+                    if (reference.TryGetTarget(out LayoutThemeScope? scope)) scope.Apply(_owner.Theme);
                     if (_pending) break;
                 }
             } while (_pending);
@@ -58,6 +62,6 @@ internal sealed class LayoutThemeCoordinator
         LayoutThemeScope scope = new(window, this);
         window.SetValue(LayoutThemeScope.ScopeProperty, scope);
         _windows.Add(new(scope));
-        scope.Apply(_theme);
+        scope.Apply(_owner.Theme);
     }
 }

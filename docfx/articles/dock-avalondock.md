@@ -995,6 +995,13 @@ property updates an already pending deadline. Dock's `KeepPinnedDockableVisible`
 also keeps the native preview open. Closing, unpinning, hiding, floating, layout
 replacement, and manager detachment clear the public preview model.
 
+`OnAutoHideWindowClosingTimerChanged` applies its argument to the initialized
+timer. Suppressing or throwing before the base call preserves the applied
+interval, including for later previews; redirecting or replaying the callback
+uses the order and values of the base calls. Before the preview infrastructure
+is initialized, setup reads the current property value. Assigning a different
+property value without a base callback does not retime an initialized timer.
+
 Style its `Background` and `AnchorableStyle` through ordinary Avalonia XAML;
 `AnchorableStyle` is a `ControlTheme` for the preview's content control. Both XML
 namespaces resolve this API. For example, in a window with `AvalonDockTheme`:
@@ -2364,6 +2371,16 @@ standard resource bundle with unprefixed XAML:
   </DockingManager.Theme>
 </DockingManager>
 ```
+
+The protected `OnThemeChanged` hook uses its event argument's new value for
+manager resources. Auxiliary windows read the manager's current `Theme`
+property. If an override redirects the property before calling the base hook,
+the manager can therefore display the originally requested theme while its
+windows display the redirected theme. Suppressing or throwing before the base
+call leaves existing resources intact; a newly created floating host, navigator,
+or overlay still reads the current property. Replaying a captured base callback
+applies its argument without changing the property. Resource reentrancy, close
+cancellation, and closed-window cleanup retain their normal behavior.
 
 For custom resources, derive from `DictionaryTheme` and supply an Avalonia
 `ResourceDictionary`:

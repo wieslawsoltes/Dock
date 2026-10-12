@@ -205,8 +205,10 @@ public partial class DockingManager : TemplatedControl
     /// Registrations belong to this manager and are also used by its floating, overlay, and navigator windows.</remarks>
     public AvalonDock.Themes.ThemeResourceRegistry ThemeResources { get; } = new();
 
-    /// <summary>Updates theme resources on this manager and its existing floating and navigator windows.</summary>
-    protected virtual void OnThemeChanged(AvaloniaPropertyChangedEventArgs e) => _themeResources.Apply(Theme);
+    /// <summary>Applies the callback's new theme to this manager and the current <see cref="Theme"/> to its auxiliary windows.</summary>
+    /// <remarks>Overriding or redirecting the callback can leave manager resources different from the current property.
+    /// New windows always read the current property, including after a suppressed callback.</remarks>
+    protected virtual void OnThemeChanged(AvaloniaPropertyChangedEventArgs e) => _themeResources.Apply(e.NewValue as CompatibilityTheme);
 
     /// <summary>Gets or sets the AvalonDock layout. Assigning null creates a fresh empty document layout.</summary>
     /// <remarks>The constructor supplies a local layout value. Clear it to allow a style to supply the layout.</remarks>

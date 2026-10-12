@@ -11,7 +11,16 @@ internal sealed class LayoutAutoHideClosing(DockingManager manager)
     private DispatcherTimer? _timer;
     private LayoutAnchorable? _model;
     private bool _closing;
+    private bool _initialized;
+    private TimeSpan _closeInterval;
     internal bool IsResizing { get; set; }
+
+    internal void Initialize()
+    {
+        if (_initialized) return;
+        _closeInterval = TimeSpan.FromMilliseconds(manager.AutoHideWindowClosingTimer);
+        _initialized = true;
+    }
 
     internal void SetModel(LayoutAnchorable? model)
     {
@@ -33,10 +42,13 @@ internal sealed class LayoutAutoHideClosing(DockingManager manager)
         _timer.Start();
     }
 
-    internal void ResetDelay()
+    internal void ResetDelay(int milliseconds)
     {
+        if (!_initialized) return;
+        ArgumentOutOfRangeException.ThrowIfNegative(milliseconds);
+        _closeInterval = TimeSpan.FromMilliseconds(milliseconds);
         if (_closing && _timer is not null)
-            _timer.Interval = TimeSpan.FromMilliseconds(manager.AutoHideWindowClosingTimer);
+            _timer.Interval = _closeInterval;
     }
     internal void Stop()
     {
@@ -59,7 +71,7 @@ internal sealed class LayoutAutoHideClosing(DockingManager manager)
         // A preview is monitored until idle, then checked once at the close deadline.
         // Reentering at that deadline returns to monitoring before a new idle delay.
         _closing = !keepOpen;
-        _timer!.Interval = TimeSpan.FromMilliseconds(_closing ? manager.AutoHideWindowClosingTimer : 50);
+        _timer!.Interval = _closing ? _closeInterval : TimeSpan.FromMilliseconds(50);
     }
 
     private static bool IsAnchorOver(LayoutAnchorSideControl? side, LayoutAnchorable model)

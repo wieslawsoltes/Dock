@@ -623,6 +623,13 @@ Dock's `KeepPinnedDockableVisible` is also respected. Changing the delay updates
 a pending deadline. Native close, unpin, hide, float, layout replacement, and
 manager detachment clear `Model`. Dock retains the content view and pinned bounds.
 
+`OnAutoHideWindowClosingTimerChanged` applies its argument to the initialized
+timer. Suppressing or throwing before the base call preserves the applied
+interval, including for later previews; redirecting or replaying the callback
+uses the order and values of the base calls. Before the preview infrastructure
+is initialized, setup reads the current property value. Assigning a different
+property value without a base callback does not retime an initialized timer.
+
 Auto-hide previews use `LayoutGridResizerControl` in the native pinned host.
 `GridSplitterWidth` sizes the left/right resizer and `GridSplitterHeight` sizes
 the top/bottom resizer; changes apply immediately, with six as the `NaN`
@@ -1183,6 +1190,16 @@ before assigning a theme whose `GetResourceUri()` returns that URI. The factory
 is used for the manager and each auxiliary window and may return a shared
 dictionary. Unregistered URIs raise `NotSupportedException`; no assembly discovery
 or runtime XAML loading is used. See the full guide for a complete example.
+
+The protected `OnThemeChanged` hook uses its event argument's new value for
+manager resources. Auxiliary windows read the manager's current `Theme`
+property. If an override redirects the property before calling the base hook,
+the manager can therefore display the originally requested theme while its
+windows display the redirected theme. Suppressing or throwing before the base
+call leaves existing resources intact; a newly created floating host, navigator,
+or overlay still reads the current property. Replaying a captured base callback
+applies its argument without changing the property. Resource reentrancy, close
+cancellation, and closed-window cleanup retain their normal behavior.
 
 Ctrl+Tab opens `AvalonDock.Controls.NavigatorWindow` from docked or floating
 content. Its document and tool lists expose the live item containers and execute

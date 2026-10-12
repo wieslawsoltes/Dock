@@ -51,6 +51,7 @@ PackageConsumer.MenuControlProbe.Verify();
 PackageConsumer.MetadataAndUtilityProbe.Verify();
 PackageConsumer.LocalizationProbe.Verify();
 PackageConsumer.ThemeLifetimeProbe.Verify();
+PackageConsumer.ThemeCallbackProbe.Verify();
 PackageConsumer.OverlayProbe.Verify();
 PackageConsumer.FullDragPreviewProbe.Verify();
 PackageConsumer.LifecycleProbe.Verify();

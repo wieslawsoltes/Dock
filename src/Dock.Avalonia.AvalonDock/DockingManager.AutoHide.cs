@@ -33,11 +33,14 @@ public partial class DockingManager
         }
         _autoHide.Refresh();
     }
-    /// <summary>Updates a pending close deadline when the configured interval changes.</summary>
-    protected virtual void OnAutoHideWindowClosingTimerChanged(AvaloniaPropertyChangedEventArgs e) => _autoHide.ResetDelay();
+    /// <summary>Applies the callback's new interval to the initialized close timer, including a pending deadline.</summary>
+    /// <remarks>Suppressing this base call retains the applied interval. Before preview initialization,
+    /// the interval is read from the current property when the timer is first initialized.</remarks>
+    protected virtual void OnAutoHideWindowClosingTimerChanged(AvaloniaPropertyChangedEventArgs e) => _autoHide.ResetDelay((int)e.NewValue!);
 
     private void EnsureAutoHideWindow()
     {
+        _autoHide.InitializeClosing();
         if (AutoHideWindow is null) SetAutoHideWindow(new LayoutAutoHideWindowControl());
     }
 }

@@ -183,6 +183,16 @@ Enabled by default.
 `DockSettings.ShowDockablePreviewOnDrag` toggles whether the drag preview window
 renders the full dockable layout instead of only the title/status badge.
 
+A factory can implement `IDockDragPreviewPolicy` to choose this independently
+for each workspace or dockable. `ShowDockablePreviewOnDrag(IDockable)` takes
+precedence over the global setting in both native windows and managed overlays.
+Factories without the policy retain the global default. The policy is evaluated
+when a drag preview opens; changing it affects the next drag.
+
+Content previews reuse registered visuals for documents, tools and whole panes,
+including their custom templates, without reparenting live controls. When no
+attached visual is registered, Dock retains its data-template fallback.
+
 `DockSettings.DragPreviewOpacity` controls the preview window opacity (0.0 to 1.0).
 
 During a move drag, a collapsible tool/document pane is temporarily omitted from

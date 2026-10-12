@@ -497,7 +497,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private static bool ShouldShowManagedDragPreview(IDockable? dockable)
     {
-        return DockSettings.ShowDockablePreviewOnDrag && dockable is not ManagedDockWindowDocument;
+        return dockable is not ManagedDockWindowDocument && DragPreviewHelper.ShouldShowPreviewContent(dockable);
     }
 
     private static PixelPoint CalculateDragOffset(ManagedDockWindowDocument? document, PixelPoint pointerPosition)

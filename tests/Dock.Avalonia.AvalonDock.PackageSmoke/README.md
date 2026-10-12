@@ -137,6 +137,7 @@ dotnet pack src/Dock.Model -c Release -o artifacts/nuget
 dotnet pack src/Dock.Model.Avalonia -c Release --no-build -o artifacts/nuget
 dotnet pack src/Dock.Controls.ProportionalStackPanel -c Release --no-build -o artifacts/nuget
 dotnet pack src/Dock.Avalonia.Themes.Fluent -c Release --no-build -o artifacts/nuget
+dotnet pack src/Dock.Controls.DeferredContentControl -c Release --no-build -o artifacts/nuget
 dock_consumer_validation=$(mktemp -d)
 cat > "$dock_consumer_validation/NuGet.Config" <<EOF
 <configuration>
@@ -153,6 +154,7 @@ cat > "$dock_consumer_validation/NuGet.Config" <<EOF
       <package pattern="Dock.Model.Avalonia" />
       <package pattern="Dock.Controls.ProportionalStackPanel" />
       <package pattern="Dock.Avalonia.Themes.Fluent" />
+      <package pattern="Dock.Controls.DeferredContentControl" />
     </packageSource>
     <packageSource key="nuget.org"><package pattern="*" /></packageSource>
   </packageSourceMapping>

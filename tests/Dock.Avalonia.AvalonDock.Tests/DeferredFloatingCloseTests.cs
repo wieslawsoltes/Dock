@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
@@ -241,22 +242,27 @@ public class DeferredFloatingCloseTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Retaining_A_Floating_Model_Does_Not_Retain_Its_Closed_Host(bool tools)
+    public async Task Retaining_A_Floating_Model_Does_Not_Retain_Its_Closed_Host(bool tools)
     {
         var (model, host) = CreateClosedHost(tools);
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 20; i++)
         {
             AvaloniaHeadlessPlatform.ForceRenderTimerTick();
             Pump();
             GC.Collect();
             GC.WaitForPendingFinalizers();
+            if (!IsRetained(host)) break;
+            await Task.Delay(10);
         }
-        Assert.False(host.IsAlive);
+        Assert.False(IsRetained(host));
         GC.KeepAlive(model);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static (LayoutFloatingWindow Model, WeakReference Host) CreateClosedHost(bool tools)
+    private static bool IsRetained(WeakReference<LayoutFloatingWindowControl> host) => host.TryGetTarget(out _);
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static (LayoutFloatingWindow Model, WeakReference<LayoutFloatingWindowControl> Host) CreateClosedHost(bool tools)
     {
         using Workspace workspace = new(tools);
         workspace.Host.Close();

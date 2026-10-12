@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Controls.ProportionalStackPanel;
 using Avalonia.Headless.XUnit;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -47,6 +49,52 @@ public class DockPreviewCompatibilityTests(ITestOutputHelper output)
             Assert.True(projected.IsVisible);
             output.WriteLine($"Legacy opacity={legacy.Opacity}; projected opacity={projected.Opacity}; brush={projected.Background}");
             Assert.Equal(legacy.Opacity, projected.Opacity);
+        }
+        finally { window.Close(); }
+    }
+
+    private sealed class HalfExtentPanel : ProportionalStackPanel
+    {
+        protected override double GetProportionalDimension(Size size, double splitterThickness)
+            => base.GetProportionalDimension(size, splitterThickness) / 2;
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Custom_panel_policy_invalidates_projection_and_keeps_its_layout(bool vertical)
+    {
+        var (factory, root, panes) = DockDropPreviewTests.CreateLayout(0.5, 0.5);
+        var row = Assert.IsAssignableFrom<IProportionalDock>(panes[0].Owner);
+        row.Orientation = vertical ? Orientation.Vertical : Orientation.Horizontal;
+        var source = panes[0].ActiveDockable!;
+        var control = new DockControl { Layout = root };
+        var window = new Window { Width = 1000, Height = 600, Content = control };
+        var operation = vertical ? DockOperation.Bottom : DockOperation.Right;
+        try
+        {
+            window.Show(); Dispatcher.UIThread.RunJobs(); window.UpdateLayout();
+            var service = new DockDropPreviewService();
+            Assert.NotNull(service.GetBounds(source, panes[1], operation, control, double.NaN));
+            var items = control.GetVisualDescendants().OfType<ItemsControl>()
+                .Single(candidate => candidate.ItemsPanelRoot is ProportionalStackPanel);
+            var originalPanel = items.ItemsPanel;
+            var orientation = vertical ? global::Avalonia.Layout.Orientation.Vertical : global::Avalonia.Layout.Orientation.Horizontal;
+            items.ItemsPanel = new FuncTemplate<Panel?>(() => new HalfExtentPanel { Orientation = orientation });
+            Dispatcher.UIThread.RunJobs(); window.UpdateLayout();
+            Assert.IsType<HalfExtentPanel>(items.ItemsPanelRoot);
+            var pane = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[panes[1]]);
+            var before = pane.Bounds;
+            Assert.False(service.IsCurrent(source, panes[1], operation, control, double.NaN));
+            Assert.Null(service.GetBounds(source, panes[1], operation, control, double.NaN));
+            Assert.Null(DockDragPreviewLayout.TryCreate(source, control));
+            Assert.Equal(before, pane.Bounds);
+            Assert.Same(panes[0], source.Owner);
+            Assert.True(new DockManager(new DockService()).ValidateDockable(source, panes[1], DragAction.Move, operation, false));
+
+            items.ItemsPanel = originalPanel;
+            Dispatcher.UIThread.RunJobs(); window.UpdateLayout();
+            Assert.NotNull(service.GetBounds(source, panes[1], operation, control, double.NaN));
         }
         finally { window.Close(); }
     }

@@ -144,11 +144,13 @@ public class NativePinnedWindowTests
     public async Task Window_Observation_And_Retained_Theme_Do_Not_Retain_A_Closed_Manager()
     {
         var (root, dictionary, manager, window) = CreateClosedReferences();
-        await Task.Delay(100);
-        for (int attempt = 0; attempt < 3; attempt++)
+        for (int attempt = 0; attempt < 8; attempt++)
         {
             Dispatcher.UIThread.RunJobs();
             AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            // Closed native windows can finish render cleanup asynchronously.
+            // Let those completions run between collections under suite load.
+            await Task.Delay(25);
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }

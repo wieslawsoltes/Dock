@@ -172,7 +172,7 @@ public class LayoutParentPolicyTests
     }
 
     [AvaloniaFact]
-    public void Tool_Pane_Hosting_Uses_The_Floating_Tree_And_Visible_Pane_Count()
+    public void Tool_Pane_Hosting_Uses_The_Floating_Tree_And_Visible_Anchorable_Descendant_Count()
     {
         LayoutAnchorablePane first = new(new LayoutAnchorable());
         LayoutAnchorablePane empty = new();
@@ -183,9 +183,11 @@ public class LayoutParentPolicyTests
         LayoutAnchorableFloatingWindow floating = new() { RootPanel = outer };
 
         Assert.True(first.IsHostedInFloatingWindow);
-        Assert.True(first.IsDirectlyHostedInFloatingWindow);
+        Assert.False(first.IsDirectlyHostedInFloatingWindow);
         empty.Children.Add(new LayoutAnchorable());
         Assert.False(first.IsDirectlyHostedInFloatingWindow);
+        floating.RootPanel = new LayoutAnchorablePaneGroup(first);
+        Assert.True(first.IsDirectlyHostedInFloatingWindow);
         GC.KeepAlive(floating);
     }
 

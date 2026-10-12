@@ -18,7 +18,7 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
     private LayoutAnchorablePaneGroup? _panel;
     private INotifyCollectionChanged? _changes;
     private bool _changing;
-    private bool _visible;
+    private bool _visible = true;
 
     /// <summary>Creates an empty tool floating window.</summary>
     public LayoutAnchorableFloatingWindow() => Reconnect();
@@ -44,10 +44,12 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
         set
         {
             if (ReferenceEquals(_panel, value)) return;
+            LayoutAnchorablePaneGroup? previous = _panel;
+            BeginPanelChange(value);
             _changing = true;
             try
             {
-                if (_panel is { } previous)
+                if (previous is not null)
                 {
                     previous.SetProjectedParent(this);
                     previous.DockModel.Owner = null;
@@ -55,7 +57,7 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
                 NativeRoot.VisibleDockables!.Clear();
                 if (value is not null)
                 {
-                    value.Parent?.RemoveChild(value);
+                    if (!ReferenceEquals(value.Parent, this)) LayoutParenting.RemoveFromParent(value);
                     Context.Adopt(value.Context);
                     NativeRoot.VisibleDockables.Add(value.DockModel);
                     if (DockModel.Factory is { } factory) factory.InitDockable(value.DockModel, NativeRoot);
@@ -65,28 +67,39 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
                 NativeRoot.DefaultDockable = value?.DockModel;
             }
             finally { _changing = false; }
-            SynchronizePanel();
+            CompletePanelChange();
         }
     }
-    /// <summary>Gets whether exactly one visible pane is hosted.</summary>
-    public bool IsSinglePane => SinglePane is not null;
+    /// <summary>Gets whether exactly one visible anchorable pane or group is a
+    /// descendant of the root panel.</summary>
+    public bool IsSinglePane => FindSingleVisiblePane() is not null;
     /// <summary>Gets the only visible pane, when there is one.</summary>
+    /// <remarks>Reading a single pane refreshes its directly-hosted notification.</remarks>
     public ILayoutAnchorablePane? SinglePane
     {
         get
         {
-            LayoutAnchorablePane? result = null;
-            if (_panel is null) return null;
-            foreach (ILayoutElement element in _panel.Descendents())
-            {
-                if (element is not LayoutAnchorablePane { IsVisible: true } pane) continue;
-                if (result is not null) return null;
-                result = pane;
-            }
-            return result;
+            ILayoutAnchorablePane? single = FindSingleVisiblePane();
+            if (single is null) return null;
+            if (single is not LayoutAnchorablePane pane) throw new InvalidOperationException("The visible descendant is not an anchorable pane.");
+            pane.NotifyDirectlyHostedInFloatingWindow();
+            return pane;
         }
     }
-    /// <summary>Gets whether the floating layout has visible content.</summary>
+    private ILayoutAnchorablePane? FindSingleVisiblePane()
+    {
+        ILayoutAnchorablePane? result = null;
+        if (_panel is null) return null;
+        foreach (ILayoutElement element in _panel.Descendents())
+        {
+            if (element is not ILayoutAnchorablePane { IsVisible: true } pane) continue;
+            if (result is not null) return null;
+            result = pane;
+        }
+        return result;
+    }
+    /// <summary>Gets whether the floating layout has visible content. An empty, newly
+    /// constructed window remains visible until visibility is first computed.</summary>
     public bool IsVisible => _visible;
     /// <summary>Occurs when the layout visibility changes.</summary>
     public event EventHandler? IsVisibleChanged;
@@ -97,20 +110,27 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
     /// <inheritdoc/>
     public override bool IsValid => _panel is not null;
     /// <inheritdoc/>
-    public override void RemoveChild(ILayoutElement element) { if (ReferenceEquals(element, _panel)) RootPanel = null; }
+    public override void RemoveChild(ILayoutElement element) => RootPanel = null;
     /// <inheritdoc/>
     public override void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
     {
-        if (ReferenceEquals(oldElement, _panel)) RootPanel = (LayoutAnchorablePaneGroup)newElement;
+        RootPanel = newElement as LayoutAnchorablePaneGroup;
     }
-    void ILayoutElementWithVisibility.ComputeVisibility() => NotifyPaneState();
+    void ILayoutElementWithVisibility.ComputeVisibility() => ComputeVisibility();
 
     /// <inheritdoc/>
     public override void ReadXml(XmlReader reader)
     {
+        ArgumentNullException.ThrowIfNull(reader);
+        reader.MoveToContent();
+        bool isEmpty = reader.IsEmptyElement;
         LayoutAnchorableFloatingWindow restored = (LayoutAnchorableFloatingWindow)AvalonDockXml.ReadFloatingWindow(reader, nameof(LayoutAnchorableFloatingWindow));
-        CopyBoundsFrom(restored);
-        RootPanel = restored.RootPanel;
+        if (restored.RootPanel is { } panel)
+        {
+            CopyBoundsFrom(restored);
+            RootPanel = panel;
+        }
+        else if (isEmpty) ComputeVisibility();
     }
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
@@ -126,36 +146,50 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
         SynchronizePanel();
     }
     private void ChildrenChanged(object? sender, NotifyCollectionChangedEventArgs args) { if (!_changing) SynchronizePanel(); }
-    private void TreeChanged(object? sender, ChildrenTreeChangedEventArgs args) => NotifyPaneState();
+    private void TreeChanged(object? sender, ChildrenTreeChangedEventArgs args)
+    {
+        RefreshBounds();
+        NotifyPaneState();
+        (Root as LayoutRoot)?.NotifyUpdated();
+    }
     private void SynchronizePanel()
     {
         LayoutAnchorablePaneGroup? next = null;
         if (NativeRoot.VisibleDockables is { Count: > 0 } children && children[0] is ProportionalDock model)
             next = Context.GetAnchorableGroup(model);
         if (ReferenceEquals(_panel, next)) return;
+        BeginPanelChange(next);
+        CompletePanelChange();
+    }
+    private void BeginPanelChange(LayoutAnchorablePaneGroup? next)
+    {
+        RaisePropertyChanging(nameof(RootPanel));
         if (_panel is not null) _panel.ChildrenTreeChanged -= TreeChanged;
         _panel = next;
-        if (next is not null)
+    }
+    private void CompletePanelChange()
+    {
+        if (_panel is { } next)
         {
             next.SetProjectedParent(this);
             next.ChildrenTreeChanged += TreeChanged;
         }
+        RefreshBounds();
         RaisePropertyChanged(nameof(RootPanel));
+        NotifyPaneState();
         RaisePropertyChanged(nameof(Children));
         RaisePropertyChanged(nameof(ChildrenCount));
-        RaisePropertyChanged(nameof(IsValid));
-        NotifyPaneState();
+        ComputeVisibility();
+        (Root as LayoutRoot)?.NotifyUpdated();
     }
     private void NotifyPaneState()
     {
-        RefreshBounds();
         RaisePropertyChanged(nameof(IsSinglePane));
         RaisePropertyChanged(nameof(SinglePane));
-        bool visible = SinglePane is not null;
-        if (!visible && _panel is not null)
-            foreach (ILayoutElement element in _panel.Descendents())
-                if (element is LayoutAnchorablePane { IsVisible: true }) { visible = true; break; }
-        if (SetField(ref _visible, visible, nameof(IsVisible)))
+    }
+    private void ComputeVisibility()
+    {
+        if (SetField(ref _visible, _panel?.IsVisible ?? false, nameof(IsVisible)))
         {
             IsVisibleChanged?.Invoke(this, EventArgs.Empty);
             // Existing compatible hosts follow PropertyChanged, like WPF's
@@ -163,6 +197,5 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
             if (DockWindow.Host is not Controls.LayoutFloatingWindowControl)
                 (Root as LayoutRoot)?.Manager?.PresentFloatingWindow(this);
         }
-        (Root as LayoutRoot)?.NotifyUpdated();
     }
 }

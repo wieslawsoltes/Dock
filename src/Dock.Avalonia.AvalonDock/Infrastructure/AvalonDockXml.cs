@@ -211,6 +211,8 @@ internal static class AvalonDockXml
             _ => throw new XmlException($"Unknown AvalonDock element '{xml.Name}'.")
         };
         ReadInto(element, xml, selected, ref active);
+        if (xml.IsEmpty && element is LayoutAnchorableFloatingWindow floating)
+            ((ILayoutElementWithVisibility)floating).ComputeVisibility();
         return element;
     }
 

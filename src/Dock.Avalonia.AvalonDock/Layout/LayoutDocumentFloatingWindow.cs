@@ -46,10 +46,12 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
         set
         {
             if (ReferenceEquals(_document, value)) return;
+            LayoutDocument? previous = _document;
+            BeginDocumentChange(value);
             _changing = true;
             try
             {
-                if (_document is { } previous)
+                if (previous is not null)
                 {
                     _pane.VisibleDockables?.Remove(previous.DockModel);
                     if (ReferenceEquals(previous.DockModel.Owner, _pane)) previous.DockModel.Owner = null;
@@ -57,7 +59,7 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
                 if (value is not null)
                 {
                     value.RememberDockedLocation();
-                    value.Parent?.RemoveChild(value);
+                    if (!ReferenceEquals(value.Parent, this)) LayoutParenting.RemoveFromParent(value);
                     Context.Adopt(value.Context);
                     (_pane.VisibleDockables ??= new AvaloniaList<IDockable>()).Add(value.DockModel);
                     if (DockModel.Factory is { } factory) factory.InitDockable(value.DockModel, _pane);
@@ -67,7 +69,7 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
                 _pane.DefaultDockable = value?.DockModel;
             }
             finally { _changing = false; }
-            SynchronizeDocument();
+            CompleteDocumentChange();
         }
     }
     /// <inheritdoc/>
@@ -77,11 +79,11 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
     /// <inheritdoc/>
     public override bool IsValid => RootDocument is not null;
     /// <inheritdoc/>
-    public override void RemoveChild(ILayoutElement element) { if (ReferenceEquals(element, RootDocument)) RootDocument = null; }
+    public override void RemoveChild(ILayoutElement element) => RootDocument = null;
     /// <inheritdoc/>
     public override void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
     {
-        if (ReferenceEquals(oldElement, RootDocument)) RootDocument = (LayoutDocument)newElement;
+        RootDocument = newElement as LayoutDocument;
     }
     /// <summary>Occurs when the root document changes.</summary>
     /// <remarks>Floating hosts use this event for deferred closure when the document becomes null.
@@ -94,8 +96,11 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
     public override void ReadXml(XmlReader reader)
     {
         LayoutDocumentFloatingWindow restored = (LayoutDocumentFloatingWindow)AvalonDockXml.ReadFloatingWindow(reader, nameof(LayoutDocumentFloatingWindow));
-        CopyBoundsFrom(restored);
-        RootDocument = restored.RootDocument;
+        if (restored.RootDocument is { } document)
+        {
+            CopyBoundsFrom(restored);
+            RootDocument = document;
+        }
     }
 
     private void Reconnect()
@@ -116,16 +121,22 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
         if (_pane.VisibleDockables is { } children)
             foreach (IDockable model in children) if (model is Document) { next = (LayoutDocument)Context.Get(model); break; }
         if (ReferenceEquals(_document, next)) return;
+        BeginDocumentChange(next);
+        CompleteDocumentChange();
+    }
+    private void BeginDocumentChange(LayoutDocument? next)
+    {
+        RaisePropertyChanging(nameof(RootDocument));
         _document?.DockingHistory.CaptureRemoval(this, -1);
         // The public document retains its floating parent until another parent
         // adopts it. Closing the host subsequently detaches that floating model.
         _document = next;
-        next?.SetProjectedParent(this);
+    }
+    private void CompleteDocumentChange()
+    {
+        _document?.SetProjectedParent(this);
         RefreshBounds();
         RaisePropertyChanged(nameof(RootDocument));
-        RaisePropertyChanged(nameof(Children));
-        RaisePropertyChanged(nameof(ChildrenCount));
-        RaisePropertyChanged(nameof(IsValid));
         RootDocumentChanged?.Invoke(this, EventArgs.Empty);
         (Root as LayoutRoot)?.NotifyUpdated();
     }

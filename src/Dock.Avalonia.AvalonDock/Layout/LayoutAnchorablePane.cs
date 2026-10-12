@@ -63,6 +63,9 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     private void ParentChildrenChanged(object? sender, EventArgs args) =>
         RaisePropertyChanged(nameof(IsDirectlyHostedInFloatingWindow));
 
+    internal void NotifyDirectlyHostedInFloatingWindow() =>
+        RaisePropertyChanged(nameof(IsDirectlyHostedInFloatingWindow));
+
     /// <summary>Repairs pane selection and updates aggregate capabilities after a collection change.</summary>
     protected override void OnChildrenCollectionChanged()
     {

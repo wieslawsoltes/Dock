@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Xml;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
@@ -18,6 +20,73 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 
 public class FloatingLayoutTests
 {
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Adopting_A_Former_Floating_Child_Preserves_The_Replacement(bool tools, bool floatingDestination)
+    {
+        LayoutElement original = Child();
+        LayoutElement replacement = Child();
+        LayoutFloatingWindow source = Floating(original);
+        if (source is LayoutAnchorableFloatingWindow tool) tool.RootPanel = (LayoutAnchorablePaneGroup)replacement;
+        else ((LayoutDocumentFloatingWindow)source).RootDocument = (LayoutDocument)replacement;
+        Assert.Same(source, original.Parent);
+        Assert.Null(original.DockModel.Owner);
+
+        ILayoutContainer destination;
+        if (floatingDestination) destination = Floating(original);
+        else if (tools)
+        {
+            LayoutPanel panel = new();
+            panel.Children.Add((LayoutAnchorablePaneGroup)original);
+            destination = panel;
+        }
+        else destination = new LayoutDocumentPane((LayoutDocument)original);
+
+        Assert.Same(replacement, Assert.Single(source.Children));
+        Assert.Same(source, replacement.Parent);
+        Assert.NotNull(replacement.DockModel.Owner);
+        Assert.Same(destination, original.Parent);
+        Assert.Same(original, Assert.Single(destination.Children));
+        Assert.NotNull(original.DockModel.Owner);
+
+        LayoutElement Child() => tools
+            ? new LayoutAnchorablePaneGroup(new LayoutAnchorablePane(new LayoutAnchorable())) : new LayoutDocument();
+        LayoutFloatingWindow Floating(LayoutElement child) => tools
+            ? new LayoutAnchorableFloatingWindow { RootPanel = (LayoutAnchorablePaneGroup)child }
+            : new LayoutDocumentFloatingWindow { RootDocument = (LayoutDocument)child };
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Empty_Xml_Preserves_Existing_Floating_Bounds(bool tools, bool shortForm)
+    {
+        LayoutFloatingWindow model = tools
+            ? new LayoutAnchorableFloatingWindow { RootPanel = new(new LayoutAnchorablePane(new LayoutAnchorable())) }
+            : new LayoutDocumentFloatingWindow { RootDocument = new() };
+        model.DockWindow.X = 30;
+        model.DockWindow.Y = 40;
+        model.DockWindow.Width = 500;
+        model.DockWindow.Height = 300;
+        string name = tools ? "LayoutAnchorableFloatingWindow" : "LayoutDocumentFloatingWindow";
+        using StringReader text = new(shortForm ? $"<{name} />" : $"<{name}></{name}>");
+        using XmlReader reader = XmlReader.Create(text);
+
+        model.ReadXml(reader);
+
+        Assert.Equal(30, model.DockWindow.X);
+        Assert.Equal(40, model.DockWindow.Y);
+        Assert.Equal(500, model.DockWindow.Width);
+        Assert.Equal(300, model.DockWindow.Height);
+        Assert.Single(model.Children);
+        Assert.True(reader.EOF);
+    }
+
     [AvaloniaFact]
     public void Document_Window_Uses_Native_Root_And_Pane_With_Public_Document_Parent()
     {
@@ -135,16 +204,17 @@ public class FloatingLayoutTests
         LayoutAnchorableFloatingWindow window = new() { RootPanel = panel };
         int visibilityChanges = 0;
         window.IsVisibleChanged += (_, _) => visibilityChanges++;
-        Assert.True(window.IsSinglePane);
-        Assert.Same(first, window.SinglePane);
+        // WPF counts visible descendant groups as ILayoutAnchorablePane too.
+        Assert.False(window.IsSinglePane);
+        Assert.Null(window.SinglePane);
 
         nested.Children.Add(second);
         Assert.False(window.IsSinglePane);
         Assert.Null(window.SinglePane);
         Assert.True(window.IsVisible);
         second.Children.Clear();
-        Assert.True(window.IsSinglePane);
-        Assert.Same(first, window.SinglePane);
+        Assert.False(window.IsSinglePane);
+        Assert.Null(window.SinglePane);
         first.Children.Clear();
         Assert.False(window.IsVisible);
         Assert.Equal(1, visibilityChanges);

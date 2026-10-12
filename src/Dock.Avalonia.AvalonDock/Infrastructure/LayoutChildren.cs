@@ -96,7 +96,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
             if (ReferenceEquals(ancestor, item)) throw new InvalidOperationException("A layout cannot contain itself or an ancestor.");
         if (Contains(item)) throw new InvalidOperationException("A layout element cannot occur twice in one group.");
         if (_owner is LayoutAnchorGroup && element is LayoutContent content) content.RememberDockedLocation();
-        element.Parent?.RemoveChild(element);
+        LayoutParenting.RemoveFromParent(element);
         _owner.Context.Adopt(element.Context);
         return element;
     }

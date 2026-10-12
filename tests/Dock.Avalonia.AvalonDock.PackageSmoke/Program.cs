@@ -55,6 +55,7 @@ PackageConsumer.OverlayProbe.Verify();
 PackageConsumer.LifecycleProbe.Verify();
 PackageConsumer.FloatingCloseProbe.Verify();
 PackageConsumer.FloatingModelProbe.Verify();
+PackageConsumer.FloatingNotificationReferenceProbe.Verify();
 PackageConsumer.DestinationProbe.Verify();
 PackageConsumer.SerializationProbe.Verify();
 PackageConsumer.OperationProbe.Verify();

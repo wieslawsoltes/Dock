@@ -69,3 +69,21 @@ including old/new parent and root retention. Document hosts observe the explicit
 property notifications. The native adoption and retained-model lifetime tests
 also verify that those compatibility rules do not leave stale native ownership
 or retain closed hosts.
+
+The detached floating-model probe captures notification order and values visible
+inside each callback:
+
+```powershell
+dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock.WpfTemplateOracle.dll --floating-notifications wpf-floating-notifications.tsv
+```
+
+`Assets/WpfFloatingNotifications.tsv` records 300 observations from 150 scenarios:
+document/tool defaults, root assignment/replacement/removal, former-child
+restoration, single-slot container operations, empty and populated XML reads,
+tool visibility recomputation, nested collection changes, single-pane getter
+notifications, and notification overrides. Callback snapshots also capture child
+parent changes. The probe source is also compiled into the adapter tests and package
+consumer, so both run the same public operations against the WPF observations.
+The reference build uses Release configuration; mismatched `RemoveChild` and
+`ReplaceChild` arguments exercise behavior guarded only by upstream debug
+assertions. Application code should pass the current child.

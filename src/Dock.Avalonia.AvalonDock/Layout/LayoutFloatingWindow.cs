@@ -95,7 +95,10 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
     {
-        base.OnModelPropertyChanged(sender, args);
+        // The native root has active/default/visible-dockable properties which
+        // are not public floating-model properties. Child adapters publish the
+        // corresponding AvalonDock notifications explicitly.
+        if (args.Property == DockableBase.OwnerProperty) base.OnModelPropertyChanged(sender, args);
         if (args.Property == DockBase.FocusedDockableProperty && Root is LayoutRoot root)
             root.Focus.NativeFocusChanged(NativeRoot);
     }

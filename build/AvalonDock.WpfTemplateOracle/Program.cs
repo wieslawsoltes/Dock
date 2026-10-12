@@ -9,6 +9,11 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        if (args is ["--floating-notifications", string notificationOutput])
+        {
+            AvalonDock.ReferenceProbes.FloatingNotificationProbe.Run(notificationOutput);
+            return;
+        }
         if (args is ["--closing", string output])
         {
             FloatingCloseProbe.Run(output);

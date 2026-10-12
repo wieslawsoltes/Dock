@@ -7,6 +7,10 @@
         xmlns:chrome="using:Avalonia.Controls.Chrome"
         x:DataType="controls:LayoutAnchorableFloatingWindowControl">
 
+  <Styles.Resources>
+    <infrastructure:LayoutFloatingPaneBinding x:Key="AvalonDockFloatingPane" />
+  </Styles.Resources>
+
   <Style Selector=":is(controls|LayoutFloatingWindowControl):custom-content">
     <Setter Property="ContentTemplate" Value="{x:Null}" />
   </Style>
@@ -15,8 +19,15 @@
     <Setter Property="WindowDecorationsTheme" Value="{OnPlatform Windows={StaticResource AvalonDockContentWindowDecorations}, Default={x:Null}}" />
   </Style>
   <Style Selector="controls|LayoutAnchorableFloatingWindowControl">
+    <Setter Property="infrastructure:LayoutFloatingPaneBinding.Pane">
+      <MultiBinding Converter="{StaticResource AvalonDockFloatingPane}">
+        <Binding Path="$self.Model" />
+        <Binding Path="$self.((layout:LayoutAnchorableFloatingWindow)Model).SinglePane" />
+        <Binding Path="$self.((layout:LayoutAnchorableFloatingWindow)Model).IsVisible" />
+      </MultiBinding>
+    </Setter>
     <Setter Property="infrastructure:LayoutItemBinding.Model"
-            Value="{Binding $self.((layout:LayoutAnchorableFloatingWindow)Model).((layout:ILayoutContentSelector)SinglePane).SelectedContent}" />
+            Value="{Binding $self.(infrastructure:LayoutFloatingPaneBinding.Pane).SelectedContent}" />
     <Setter Property="SingleContentLayoutItem"
             Value="{Binding $self.(infrastructure:LayoutItemBinding.Item)}" />
   </Style>

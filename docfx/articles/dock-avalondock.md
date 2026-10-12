@@ -1975,6 +1975,29 @@ property notification affects its host; suppressing document property
 notifications does not suppress the explicit document event. Clearing and
 restoring a child before dispatch leaves an already queued close in place.
 
+Floating models also match 300 recorded WPF observations of property-notification
+order and callback-visible state. Document root changes raise `PropertyChanging`,
+`PropertyChanged`, then `RootDocumentChanged`. Tool root changes notify
+`RootPanel`, `IsSinglePane`, `SinglePane`, `Children`, and `ChildrenCount`;
+visibility can change while the new group acquires its parent. A newly constructed
+empty tool window starts visible until visibility is computed. Calling
+`ILayoutElementWithVisibility.ComputeVisibility()` only notifies a changed
+visibility value. Nested tree changes notify the single-pane properties separately.
+`IsSinglePane` counts visible anchorable groups as well as panes below the root
+panel. Reading `SinglePane` refreshes the returned pane's
+`IsDirectlyHostedInFloatingWindow` notification; reading `IsSinglePane` does not.
+The floating caption observes visibility independently so restoring a hidden
+tool reconnects its selected-item binding without extra model notifications.
+
+Reading empty floating XML preserves the existing child and window bounds. A
+self-closing empty tool element recomputes visibility; an explicit empty opening
+and closing pair leaves it unchanged, matching WPF. The single-child container
+methods operate on the root slot: callers should pass the current child to
+`RemoveChild` and `ReplaceChild`. As in the WPF Release build, a mismatched old
+child does not prevent the operation, and an incompatible replacement clears
+the slot. Native adoption checks actual membership so moving a retained former
+child preserves the source window's replacement.
+
 Removed or replaced root documents and tool root panels retain their public
 floating parent until adopted by another container. Their native Dock owners
 detach immediately, and both public and native collection insertion replace

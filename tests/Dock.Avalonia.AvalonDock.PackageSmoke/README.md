@@ -211,3 +211,11 @@ The floating-model probe derives document/tool models in this external assembly,
 suppresses child/visibility/all property notifications, and checks immediate and
 deferred host state. It also verifies retained public parents and native adoption
 of removed documents and tool root panels through the packaged Dock factory.
+
+## Floating-model reference checks
+
+The consumer also compiles the shared public-operation probe from
+`build/AvalonDock.WpfTemplateOracle` and compares all 150 floating notification
+scenarios with the recorded WPF results. This covers defaults, callback state,
+root changes, visibility, empty XML, and notification overrides in the packaged
+assembly. Both target frameworks compile the probe; the runtime check uses .NET 10.

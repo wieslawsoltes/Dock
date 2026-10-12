@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);WPF_REFERENCE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(AvalonDockReferenceProject)" />

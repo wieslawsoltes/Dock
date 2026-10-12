@@ -63,6 +63,7 @@ public class HiddenFloatingWindowTests
             Assert.Same(host, Assert.Single(workspace.Manager.DockFactory.HostWindows));
             Assert.Same(originalContent, host.Content);
             Assert.Same(marker, host.Resources["ApplicationState"]);
+            Assert.Same(workspace.Tool, ((ILayoutContentSelector)model.SinglePane!).SelectedContent);
             Assert.Same(item, host.SingleContentLayoutItem);
             Assert.Contains(workspace.Tool.Content, host.GetVisualDescendants());
             Assert.Equal(new PixelPoint(70, 90), host.Position);

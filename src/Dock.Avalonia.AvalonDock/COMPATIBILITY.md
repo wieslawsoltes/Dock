@@ -147,7 +147,17 @@ for cached native targets and replaced templates. This uses public composition
 APIs without reflection and preserves the application editor and its bindings.
 Overlay geometry retains fractional local coordinates across window origins,
 DPI scales and visual transforms; screen-coordinate snapshots remain physical
-pixels. Package and desktop validation of this source checkpoint remain open.
+pixels. Package and consumer validation passed at `e04288110`; the final desktop
+checks are deferred at the user's request.
+
+[PR #1174](https://github.com/wieslawsoltes/Dock/pull/1174) repairs the shared API
+documentation pipeline. DocFX reads each primary library's compiled metadata,
+XML comments, and Source Link PDB, including generated ReactiveUI members.
+Generated sources no longer pollute shared project directories, and failed
+stages return a failing script exit. The native full build and its master CI
+deployment pass; after integration, the complete AvalonDock API and article
+build also passes with zero DocFX warnings or errors. This branch includes
+the master merge at `0141ac063`.
 
 ### Recent native drag and preview changes
 
@@ -194,7 +204,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   sources during recovery, and restoration from `LayoutChanged`. Source
   subscriptions resume after failures, retired roots release their manager, and
   committed callback side effects remain observable. The focused serialization
-  suite passes all 97 cases.
+  suite passes all 97 cases, and the consolidated adapter suite passes all 2,430.
 - Native document split targets create `LayoutDocumentPane` for documents and
   tools, within a `LayoutDocumentPaneGroup`. Existing groups retain their axis
   or nest an orthogonal split when mixed orientation is enabled. Tool-pane drops
@@ -995,7 +1005,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   Additional selection edge cases and protected override ordering remain open.
 - The direct public pane/splitter Grid structure passes consolidated Headless
   validation of sizing, native drag, floating hosts, themes and lifetime. Package
-  and desktop validation of this implementation remain open.
+  and consumer validation pass at `e04288110`. The final desktop checks remain
+  deferred at the user's request.
 - Finish the rendering and behavior audit of repositioning policies and remaining
   metadata edge cases. Tab icons, tooltips, enablement, and document header
   visibility and public auto-hide resizers are implemented. Auto-hide content

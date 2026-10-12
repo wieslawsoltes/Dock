@@ -193,9 +193,9 @@ public partial class DockingManager : TemplatedControl
         _floatingControls = new(this);
         _floatingControls.SetLayout(_layout);
         LayoutSourceSubscriptions subscriptions = new(this);
-        _documents = new(this, static content => new LayoutDocument { Content = content },
+        _documents = new(this, _layoutItems, static content => new LayoutDocument { Content = content },
             LayoutSourcePlacement.FindDocumentDestination, LayoutSourcePlacement.InsertDocument, subscriptions.SetDocuments);
-        _anchorables = new(this, static content => new LayoutAnchorable { Content = content },
+        _anchorables = new(this, _layoutItems, static content => new LayoutAnchorable { Content = content },
             LayoutSourcePlacement.FindAnchorableDestination, LayoutSourcePlacement.InsertAnchorable, subscriptions.SetAnchorables);
     }
 
@@ -331,11 +331,11 @@ public partial class DockingManager : TemplatedControl
     public ControlTheme? LayoutItemContainerStyle { get => GetValue(LayoutItemContainerStyleProperty); set => SetValue(LayoutItemContainerStyleProperty, value); }
     /// <summary>Gets or sets the container theme selector used when no explicit style is set.</summary>
     public StyleSelector? LayoutItemContainerStyleSelector { get => GetValue(LayoutItemContainerStyleSelectorProperty); set => SetValue(LayoutItemContainerStyleSelectorProperty, value); }
-    /// <summary>Gets the stable item container for content in this manager, or null for unattached content.</summary>
-    public LayoutItem? GetLayoutItemFromModel(LayoutContent content)
+    /// <summary>Looks up the registered item container without creating one.</summary>
+    /// <remarks>Source items are registered after their insertion callbacks. Removed items remain registered until deferred cleanup.</remarks>
+    public LayoutItem? GetLayoutItemFromModel(LayoutContent? content)
     {
-        ArgumentNullException.ThrowIfNull(content);
-        return _layoutItems.Get(content);
+        return content is null ? null : _layoutItems.Get(content);
     }
     /// <summary>Gets an enumerator over this manager's current Avalonia logical children.</summary>
     /// <remarks>Template visuals are excluded; item containers and explicitly attached logical children are included.</remarks>

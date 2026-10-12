@@ -10,7 +10,7 @@ namespace AvalonDock.Infrastructure;
 internal sealed class LayoutContentConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        value is IDockable { Factory: LayoutFactory factory } model ? factory.GetLayoutItem(model)?.LayoutElement : null;
+        value is IDockable { Factory: LayoutFactory factory } model ? factory.GetLayoutContent(model) : null;
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotSupportedException();

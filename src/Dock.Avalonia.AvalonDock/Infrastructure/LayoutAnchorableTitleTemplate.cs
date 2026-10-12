@@ -16,7 +16,7 @@ internal sealed class LayoutAnchorableTitleTemplate : IRecyclingDataTemplate
         LayoutAnchorable? model = data switch
         {
             LayoutAnchorable anchorable => anchorable,
-            IDockable { Factory: LayoutFactory factory } native => factory.GetLayoutItem(native)?.LayoutElement as LayoutAnchorable,
+            IDockable { Factory: LayoutFactory factory } native => factory.GetLayoutContent(native) as LayoutAnchorable,
             _ => null
         };
         if (model is null) return null;

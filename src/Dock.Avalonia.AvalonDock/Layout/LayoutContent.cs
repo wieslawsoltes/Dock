@@ -16,6 +16,9 @@ namespace AvalonDock.Layout;
 /// <summary>A document or tool whose state is owned by Dock.</summary>
 public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>, ILayoutElementForFloatingWindow, IXmlSerializable
 {
+    internal event EventHandler? LayoutItemChanged;
+    internal void NotifyLayoutItemChanged() => LayoutItemChanged?.Invoke(this, EventArgs.Empty);
+
     /// <summary>Identifies the title property.</summary>
     public static readonly DirectProperty<LayoutContent, string> TitleProperty =
         AvaloniaProperty.RegisterDirect<LayoutContent, string>(nameof(Title), x => x.Title, (x, v) => x.Title = v);

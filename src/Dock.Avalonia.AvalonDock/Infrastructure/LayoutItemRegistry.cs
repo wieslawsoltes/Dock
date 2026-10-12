@@ -14,22 +14,31 @@ internal sealed class LayoutItemRegistry
     private readonly DockingManager _manager;
     private readonly Dictionary<LayoutContent, LayoutItem> _byContent = new();
     private readonly List<LayoutItem> _items = new();
+    private readonly HashSet<LayoutContent> _creating = new();
     private HashSet<LayoutElement> _observed = new();
     private LayoutRoot? _root;
     private bool _queued;
     private bool _refreshing;
     private bool _reconciling;
     private int _generation;
+    private int _sourceBatches;
 
     public LayoutItemRegistry(DockingManager manager) => _manager = manager;
 
-    public LayoutItem? Get(LayoutContent content)
+    public LayoutItem? Get(LayoutContent content) => _byContent.GetValueOrDefault(content);
+
+    internal void BeginSourceBatch() => _sourceBatches++;
+    internal void EndSourceBatch()
     {
-        if (!ReferenceEquals(content.Root, _root)) return null;
-        if (_byContent.TryGetValue(content, out LayoutItem? existing)) return existing;
-        LayoutItem item = Create(content);
-        Reconcile();
-        return item;
+        if (--_sourceBatches != 0 || _root is null) return;
+        foreach (ILayoutElement element in _root.Descendents())
+            if (element is LayoutElement model) Observe(model);
+    }
+
+    internal void CompleteSourceInsertion(LayoutContent content, bool initialImport)
+    {
+        if ((initialImport || ReferenceEquals(content.Root?.Manager, _manager)) && !_byContent.ContainsKey(content))
+            Create(content);
     }
 
     internal LayoutItem? GetForNativePresentation(LayoutContent content)
@@ -39,28 +48,46 @@ internal sealed class LayoutItemRegistry
         // reconciliation so its presenter can transfer between native hosts.
         if (content.Root is null && ReferenceEquals(content.DockModel.Factory, _manager.DockFactory) &&
             _byContent.TryGetValue(content, out LayoutItem? existing)) return existing;
-        return Get(content);
+        return ReferenceEquals(content.Root, _root) ? Get(content) : null;
     }
 
-    private LayoutItem Create(LayoutContent content)
+    private void Create(LayoutContent content)
     {
+        if (!_creating.Add(content)) return;
         LayoutItem item = content switch
         {
             LayoutDocument => new LayoutDocumentItem(),
             LayoutAnchorable => new LayoutAnchorableItem(),
             _ => throw new NotSupportedException("A layout item must be a document or an anchorable.")
         };
-        _byContent.Add(content, item);
-        _items.Add(item);
-        item.Attach(_manager, content);
-        return item;
+        try
+        {
+            item.Attach(_manager, content);
+            _byContent.Add(content, item);
+            _items.Add(item);
+            if (_observed.Add(content)) content.PropertyChanged += ModelChanged;
+            content.NotifyLayoutItemChanged();
+        }
+        catch
+        {
+            _byContent.Remove(content);
+            _items.Remove(item);
+            item.Detach();
+            throw;
+        }
+        finally { _creating.Remove(content); }
     }
 
     public void SetLayout(LayoutRoot root)
     {
         _generation++;
         _queued = false;
-        if (_root is not null) _root.Updated -= RootUpdated;
+        if (_root is not null)
+        {
+            _root.Updated -= RootUpdated;
+            _root.ElementAdded -= ElementAdded;
+            _root.ElementRemoved -= ElementRemoved;
+        }
         foreach (LayoutElement element in _observed) element.PropertyChanged -= ModelChanged;
         _observed.Clear();
         _byContent.Clear();
@@ -68,6 +95,9 @@ internal sealed class LayoutItemRegistry
         _items.Clear();
         _root = root;
         root.Updated += RootUpdated;
+        root.ElementAdded += ElementAdded;
+        root.ElementRemoved += ElementRemoved;
+        CreateLayoutItems();
         Reconcile();
     }
 
@@ -126,11 +156,54 @@ internal sealed class LayoutItemRegistry
             _items.RemoveAt(i);
             item.Detach();
         }
-        if (_manager.LayoutItemContainerStyle is not null || _manager.LayoutItemContainerStyleSelector is not null)
-            foreach (LayoutElement element in current)
-                if (element is LayoutContent content && ReferenceEquals(content.Root, _root) && !_byContent.ContainsKey(content))
-                    Create(content);
         RefreshCommands();
+    }
+
+    private void Observe(LayoutElement element)
+    {
+        if (_observed.Add(element)) element.PropertyChanged += ModelChanged;
+    }
+
+    private void CreateLayoutItems(LayoutElement? added = null)
+    {
+        if (_root is null) return;
+        // Snapshot before applying application styles, which may edit the tree.
+        List<LayoutContent> pending = new();
+        foreach (ILayoutElement element in _root.Descendents())
+            if (element is LayoutElement model) Collect(model, pending);
+        // Native floating roots acquire their public parent before Dock inserts
+        // the window into its collection. Register that attaching subtree too.
+        if (added is not null)
+        {
+            Collect(added, pending);
+            foreach (ILayoutElement element in added.Descendents())
+                if (element is LayoutElement model) Collect(model, pending);
+        }
+        // Initial layout attachment registers documents before tools. An
+        // ordinary membership change follows the tree's current order.
+        if (added is null)
+            foreach (LayoutContent content in pending)
+                if (content is LayoutDocument && !_byContent.ContainsKey(content)) Create(content);
+        foreach (LayoutContent content in pending)
+            if (!_byContent.ContainsKey(content)) Create(content);
+    }
+
+    private void Collect(LayoutElement model, List<LayoutContent> pending)
+    {
+        Observe(model);
+        if (model is LayoutContent content && !_byContent.ContainsKey(content)) pending.Add(content);
+    }
+
+    private void ElementAdded(object? sender, LayoutElementEventArgs args)
+    {
+        if (_sourceBatches != 0) return;
+        CreateLayoutItems(args.Element);
+        QueueReconcile();
+    }
+
+    private void ElementRemoved(object? sender, LayoutElementEventArgs args)
+    {
+        if (_sourceBatches == 0) QueueReconcile();
     }
 
     private void RootUpdated(object? sender, EventArgs e)

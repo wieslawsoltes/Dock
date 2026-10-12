@@ -1063,8 +1063,26 @@ itself and return `true` when the old destination is no longer appropriate.
 For `LayoutAnchorable.Show()`, a strategy can update `PreviousContainer` and
 `PreviousContainerIndex` and return `false` to use the updated return location.
 Clearing the return container leaves the tool hidden. `AfterInsertAnchorable`
-runs before the temporary hidden-return history is cleared. Exact layout-item
-creation timing during source callbacks remains under compatibility review.
+runs before the temporary hidden-return history is cleared.
+
+`GetLayoutItemFromModel` performs a lookup and accepts null. During a source
+item's `BeforeInsert…` and `AfterInsert…` callbacks its container is not registered
+yet. Set the layout model's title, identifier, and other metadata in those
+callbacks. Registration and container styling happen after the after callback
+returns and before the next source item is processed. Existing native controls
+can be realized while a callback pumps the dispatcher; they receive the completed
+container, its content, headers, and commands afterward. This includes floating
+hosts created during insertion.
+
+Initial source attachment registers handled items even if they remain detached.
+A live add/replace notification registers an item only when it belongs to this
+manager. Manually added items inside a source callback are also excluded from
+automatic container creation during that batch; a later ordinary layout
+attachment discovers them. Ordinary layout attachment creates containers eagerly,
+with documents before tools when assigning a layout. Container lookup retains
+removed items until deferred cleanup, while commands check their current model
+ownership. Callback exceptions release the insertion suspension and propagate;
+already completed model edits are retained.
 
 A derived manager can observe or handle source notifications through
 `OnReceiveWeakEvent(Type, object, EventArgs)`:
@@ -2247,7 +2265,8 @@ flowchart TB
     App --> Layout
     App --> Xml
     Manager --> Layout
-    Manager --> Items
+    Manager --> Registration["Container registration<br/>After source callbacks; eager layout attachment"]
+    Registration --> Items
     Items <--> Layout
     Items -->|Capability and last-child checks| Factory
     Layout --> ModelOperations

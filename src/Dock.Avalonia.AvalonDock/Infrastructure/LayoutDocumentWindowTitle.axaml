@@ -10,7 +10,6 @@
              x:DataType="layout:LayoutDocumentFloatingWindow"
              infrastructure:LayoutDocumentTitleBehavior.IsEnabled="True">
   <UserControl.Resources>
-    <infrastructure:LayoutItemConverter x:Key="LayoutItem" />
     <DataTemplate x:Key="DefaultTitle" x:DataType="layout:LayoutDocument">
       <TextBlock Classes="avalondock-default-document-title" Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
     </DataTemplate>
@@ -33,7 +32,9 @@
         </Path>
       </Button>
       <Button Grid.Column="2" Classes="avalondock-document-window-close" Theme="{DynamicResource ChromeButton}"
-              x:DataType="items:LayoutItem" DataContext="{Binding RootDocument.DockModel, Converter={StaticResource LayoutItem}}"
+              x:DataType="items:LayoutItem"
+              infrastructure:LayoutItemBinding.Model="{Binding $parent[infrastructure:LayoutDocumentWindowTitle].((layout:LayoutDocumentFloatingWindow)DataContext).RootDocument}"
+              DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
               Command="{Binding CloseCommand}"
               AutomationProperties.Name="Close document" ToolTip.Tip="Close document">
         <Button.IsVisible>

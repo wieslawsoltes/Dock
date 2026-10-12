@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Avalonia.Controls;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using AvalonDock;
 using AvalonDock.Layout;
 
@@ -11,7 +15,15 @@ internal static class UpdateStrategyProbe
     {
         DockingManager manager = new();
         List<string> callbacks = new();
-        Strategy replacement = new() { After = content => callbacks.Add("replacement:" + content.Content) };
+        Strategy replacement = new()
+        {
+            After = content =>
+            {
+                if (manager.GetLayoutItemFromModel(content) is not null)
+                    throw new Exception("A packaged source container was registered before its callback finished.");
+                callbacks.Add("replacement:" + content.Content);
+            }
+        };
         manager.LayoutUpdateStrategy = new Strategy
         {
             Before = _ => { manager.LayoutUpdateStrategy = replacement; return false; },
@@ -20,6 +32,8 @@ internal static class UpdateStrategyProbe
         manager.DocumentsSource = new[] { "first", "second" };
         if (callbacks.Count != 2 || callbacks[0] != "replacement:first" || callbacks[1] != "replacement:second")
             throw new Exception("The packaged source import did not use the current strategy throughout the batch.");
+        if (manager.Layout.Descendents().OfType<LayoutDocument>().Any(content => manager.GetLayoutItemFromModel(content) is null))
+            throw new Exception("The packaged source containers were not registered after their callbacks.");
 
         LayoutAnchorable tool = new();
         LayoutAnchorablePane original = new(tool);
@@ -45,6 +59,43 @@ internal static class UpdateStrategyProbe
         tool.Show();
         if (!restored || original.Children.Count != 0 || !tool.IsActive)
             throw new Exception("The packaged Show operation did not honor the strategy's return pane and index.");
+
+        VerifyRenderingDuringInsertion();
+    }
+
+    private static void VerifyRenderingDuringInsertion()
+    {
+        DockingManager manager = new();
+        TextBox editor = new() { Text = "Container registered after callback" };
+        Window window = new() { Content = manager, Width = 640, Height = 480 };
+        try
+        {
+            window.Show();
+            manager.LayoutUpdateStrategy = new Strategy
+            {
+                After = content =>
+                {
+                    content.IsActive = true;
+                    window.UpdateLayout();
+                    Dispatcher.UIThread.RunJobs();
+                    if (manager.GetLayoutItemFromModel(content) is not null)
+                        throw new Exception("Rendering prematurely created a packaged source container.");
+                }
+            };
+            manager.DocumentsSource = new[] { editor };
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            if (!manager.GetVisualDescendants().Contains(editor))
+                throw new Exception("The packaged content did not update after container registration.");
+            Button close = manager.GetVisualDescendants().OfType<Button>().Single(button => button.Classes.Contains("avalondock-close"));
+            if (close.Command?.CanExecute(close.CommandParameter) != true)
+                throw new Exception("The packaged close button missed deferred container registration.");
+            close.Command.Execute(close.CommandParameter);
+            Dispatcher.UIThread.RunJobs();
+            if (manager.Layout.Descendents().OfType<LayoutDocument>().Any())
+                throw new Exception("The packaged close command did not remove its source document.");
+        }
+        finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
     }
 
     private sealed class Strategy : ILayoutUpdateStrategy

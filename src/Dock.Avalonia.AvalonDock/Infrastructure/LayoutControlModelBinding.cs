@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
@@ -12,7 +13,7 @@ namespace AvalonDock.Infrastructure;
 
 // Resolves the public model and its existing container without allowing model
 // publishers to retain discarded presentation controls.
-internal sealed class LayoutControlModelBinding(TemplatedControl control,
+internal sealed class LayoutControlModelBinding(Control control,
     Action<LayoutItem?> setItem, Action clearModel,
     Action<LayoutContent, PropertyChangedEventArgs>? modelChanged = null)
 {
@@ -76,6 +77,7 @@ internal sealed class LayoutControlModelBinding(TemplatedControl control,
             _model = model;
             _owner = new(owner);
             model.PropertyChanged += ModelChanged;
+            model.LayoutItemChanged += LayoutItemChanged;
         }
 
         internal void SetItem(LayoutItem? item)
@@ -98,9 +100,16 @@ internal sealed class LayoutControlModelBinding(TemplatedControl control,
             if (args.Property == LayoutItem.LayoutElementProperty && args.NewValue is null) owner.ItemDetached();
         }
 
+        private void LayoutItemChanged(object? sender, EventArgs args)
+        {
+            if (_owner.TryGetTarget(out LayoutControlModelBinding? owner)) owner.RefreshItem();
+            else Dispose();
+        }
+
         public void Dispose()
         {
             _model.PropertyChanged -= ModelChanged;
+            _model.LayoutItemChanged -= LayoutItemChanged;
             SetItem(null);
         }
     }

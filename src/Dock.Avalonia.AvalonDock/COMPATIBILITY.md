@@ -40,6 +40,15 @@ supported by corresponding implementation and test evidence.
 
 ## Verified implementation
 
+- `GetLayoutItemFromModel` is a passive lookup, including a null input. Ordinary
+  layout attachment registers containers eagerly; source batches defer each
+  container and its style until its after callback finishes. Styles see completed
+  model metadata, and callbacks can pump the dispatcher or create floating hosts
+  without prematurely creating the container. Native content/tab/title controls
+  and command chrome observe eventual registration through weak subscriptions.
+  Initial handled imports and live ownership checks follow their distinct
+  upstream rules. Removed containers survive until deferred cleanup, preserving
+  native moves. Source scope cleanup also runs when a callback throws.
 - Update strategies are read separately before and after source insertion,
   fallback document/tool docking, and hidden-tool restoration. Callbacks may
   replace or clear the strategy, including during a multi-item batch. Initial
@@ -638,9 +647,9 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1295 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1324 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1313 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1342 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -656,9 +665,7 @@ supported by corresponding implementation and test evidence.
   the public root without a panel and is not yet supported. XML rejects
   native floating shapes that cannot be represented by the AvalonDock hierarchy
   before overwriting a saved file.
-- Remaining manager APIs: source layout-item creation timing inside strategy
-  callbacks (upstream defers container creation until after source callbacks),
-  templates/selectors, styles, general theme URI loading, translated localization
+- Remaining manager APIs: templates/selectors, styles, general theme URI loading, translated localization
   resources, and the control adapter surface.
   Floating controls still need exact close-event ordering,
   cancellation during manager layout replacement/view unload,

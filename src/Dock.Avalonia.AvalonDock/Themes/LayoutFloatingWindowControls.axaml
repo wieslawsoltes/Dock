@@ -3,7 +3,6 @@
         xmlns:controls="using:AvalonDock.Controls"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:layout="using:AvalonDock.Layout"
-        xmlns:converters="using:AvalonDock.Converters"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         xmlns:chrome="using:Avalonia.Controls.Chrome"
         x:DataType="controls:LayoutAnchorableFloatingWindowControl">
@@ -16,7 +15,9 @@
     <Setter Property="WindowDecorationsTheme" Value="{OnPlatform Windows={StaticResource AvalonDockContentWindowDecorations}, Default={x:Null}}" />
   </Style>
   <Style Selector="controls|LayoutAnchorableFloatingWindowControl">
+    <Setter Property="infrastructure:LayoutItemBinding.Model"
+            Value="{Binding $self.((layout:LayoutAnchorableFloatingWindow)Model).((layout:ILayoutContentSelector)SinglePane).SelectedContent}" />
     <Setter Property="SingleContentLayoutItem"
-            Value="{Binding $self.((layout:LayoutAnchorableFloatingWindow)Model).((layout:ILayoutContentSelector)SinglePane).SelectedContent, Converter={StaticResource AvalonDockItemFromModel}}" />
+            Value="{Binding $self.(infrastructure:LayoutItemBinding.Item)}" />
   </Style>
 </Styles>

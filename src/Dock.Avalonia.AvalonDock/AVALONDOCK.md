@@ -435,7 +435,22 @@ handle placement itself when the old pane is no longer suitable.
 A tool's `Show()` callback can change `PreviousContainer` and
 `PreviousContainerIndex` before default restoration. Clearing the return pane
 keeps the tool hidden. The after callback runs before hidden-return history is
-cleared. Exact source layout-item creation timing remains under review.
+cleared.
+
+`GetLayoutItemFromModel` only looks up registered containers; passing null returns
+null. A newly imported source item has no container during its before or after
+callback. The manager creates and styles the container after that item's after
+callback returns, before processing the next source entry. This also holds when
+a callback forces layout or opens a floating host: existing content controls,
+headers, and command buttons pick up the completed container afterward.
+
+Initial imports register a container even when a handled item remains detached;
+live additions register only items belonging to this manager. Ordinary layout
+attachment creates containers eagerly, with documents preceding tools on initial
+attachment. Removed containers remain available until deferred cleanup; their
+commands already respect the detached model state. A callback exception releases
+the source-creation suspension and propagates to the caller without rolling back
+model changes.
 
 Derived managers can override `OnReceiveWeakEvent(Type, object, EventArgs)` to
 observe source changes before the default update. Call base to update the layout,
@@ -946,6 +961,9 @@ flowchart TB
     App["Application XAML and workspace service"]
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
+    Registration["Container registration<br/>After source callbacks; eager layout attachment"]
+    Api --> Registration
+    Registration --> Items
     GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
     PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
     Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]

@@ -6,7 +6,6 @@
              x:Class="AvalonDock.Infrastructure.LayoutDocumentMenu"
              x:DataType="layout:LayoutDocumentPane">
   <UserControl.Resources>
-    <infrastructure:LayoutItemConverter x:Key="LayoutItem" />
     <DataTemplate x:Key="DefaultHeader" x:DataType="layout:LayoutContent">
       <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
     </DataTemplate>
@@ -18,7 +17,8 @@
     <infrastructure:LayoutMenuIcon x:Key="MenuIcon" DefaultTemplate="{StaticResource DefaultIcon}" />
     <ControlTheme x:Key="MenuItemTheme" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}"
                   x:DataType="layout:LayoutContent">
-      <Setter Property="Tag" Value="{Binding DockModel, Converter={StaticResource LayoutItem}}" />
+      <Setter Property="infrastructure:LayoutItemBinding.Model" Value="{Binding}" />
+      <Setter Property="Tag" Value="{Binding $self.(infrastructure:LayoutItemBinding.Item)}" />
       <Setter Property="HeaderTemplate" Value="{StaticResource MenuHeader}" />
       <Setter Property="Command" Value="{Binding $self.((items:LayoutItem)Tag).ActivateCommand}" />
       <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />

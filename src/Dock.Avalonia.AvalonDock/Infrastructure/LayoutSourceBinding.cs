@@ -9,6 +9,7 @@ namespace AvalonDock.Infrastructure;
 internal sealed class LayoutSourceBinding<T> where T : LayoutContent
 {
     private readonly DockingManager _manager;
+    private readonly LayoutItemRegistry _items;
     private readonly Func<object?, T> _create;
     private readonly Func<LayoutRoot, ILayoutContainer?> _findDestination;
     private readonly Func<LayoutRoot?, T, ILayoutContainer?, DockingManager?, ILayoutContainer?> _insert;
@@ -16,12 +17,13 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
     private LayoutRoot _layout;
     private IEnumerable? _source;
 
-    internal LayoutSourceBinding(DockingManager manager, Func<object?, T> create,
+    internal LayoutSourceBinding(DockingManager manager, LayoutItemRegistry items, Func<object?, T> create,
         Func<LayoutRoot, ILayoutContainer?> findDestination,
         Func<LayoutRoot?, T, ILayoutContainer?, DockingManager?, ILayoutContainer?> insert,
         Action<IEnumerable?> observe)
     {
         _manager = manager;
+        _items = items;
         _layout = manager.Layout;
         _create = create;
         _findDestination = findDestination;
@@ -69,14 +71,20 @@ internal sealed class LayoutSourceBinding<T> where T : LayoutContent
     {
         LayoutRoot importedLayout = _layout;
         ILayoutContainer? destination = _findDestination(_layout);
-        foreach (object? item in items)
+        _items.BeginSourceBatch();
+        try
         {
-            T content = _create(item);
-            if (assignContentIds) content.ContentId = Guid.NewGuid().ToString();
-            // Initial attachment imports into its supplied root, while live
-            // collection notifications consult the manager's current layout.
-            destination = _insert(assignContentIds ? importedLayout : null, content, destination, _manager);
+            foreach (object? item in items)
+            {
+                T content = _create(item);
+                if (assignContentIds) content.ContentId = Guid.NewGuid().ToString();
+                // Initial attachment imports into its supplied root, while live
+                // collection notifications consult the manager's current layout.
+                destination = _insert(assignContentIds ? importedLayout : null, content, destination, _manager);
+                _items.CompleteSourceInsertion(content, assignContentIds);
+            }
         }
+        finally { _items.EndSourceBatch(); }
     }
 
     private void RemoveMatching(IEnumerable items, bool clearContent)

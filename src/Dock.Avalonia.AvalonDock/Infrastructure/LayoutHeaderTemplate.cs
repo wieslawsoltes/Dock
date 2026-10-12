@@ -27,6 +27,16 @@ internal sealed class LayoutHeaderTemplate : IRecyclingDataTemplate
             LayoutContent content => content.Root?.Manager?.GetLayoutItemFromModel(content),
             _ => null
         };
-        return item?.BuildHeader(Kind, DefaultTemplate, existing, SelectionContainer);
+        if (item is not null) return item.BuildHeader(Kind, DefaultTemplate, existing, SelectionContainer);
+        LayoutContent? pending = data switch
+        {
+            LayoutContent content => content,
+            IDockable { Factory: LayoutFactory factory } model => factory.GetLayoutContent(model),
+            _ => null
+        };
+        if (pending is null) return null;
+        LayoutHeaderPresenter view = new() { Kind = Kind, DefaultTemplate = DefaultTemplate, SelectionContainer = SelectionContainer };
+        view.WaitForItem(pending);
+        return view;
     }
 }

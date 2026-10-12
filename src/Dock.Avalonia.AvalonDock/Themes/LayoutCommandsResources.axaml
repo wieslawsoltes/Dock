@@ -16,7 +16,6 @@
     <infrastructure:LayoutCommandResources />
   </ResourceDictionary.MergedDictionaries>
   <compatConverters:AnchorableContextMenuAutoHideHeaderConverter x:Key="AvalonDockAutoHideHeaderConverter" />
-  <infrastructure:LayoutItemConverter x:Key="AvalonDockLayoutItem" />
   <infrastructure:LayoutToolCloseCommandConverter x:Key="AvalonDockToolCloseCommand" />
   <infrastructure:LayoutAnchorableTitleTemplate x:Key="AvalonDockToolTitle">
     <infrastructure:LayoutAnchorableTitleTemplate.TitleTemplate>
@@ -52,7 +51,8 @@
 
       <Button x:DataType="items:LayoutItem" Classes="avalondock-close"
               ToolTip.Tip="{x:Static properties:Resources.Document_Close}"
-              DataContext="{Binding $parent[ContentPresenter].Content, Converter={StaticResource AvalonDockLayoutItem}}"
+              infrastructure:LayoutItemBinding.Model="{Binding $parent[ContentPresenter].Content}"
+              DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
               Command="{Binding CloseCommand}"
               IsVisible="{Binding $self.IsEffectivelyEnabled}"
               Theme="{Binding $parent[dock:DocumentTabStrip].CloseButtonTheme}">
@@ -104,7 +104,8 @@
               </Button>
               <Button x:Name="PART_PinButton" x:DataType="items:LayoutAnchorableItem"
                       ToolTip.Tip="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden, Converter={StaticResource AvalonDockAutoHideHeaderConverter}}"
-                      DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
+                      infrastructure:LayoutItemBinding.Model="{Binding $parent[dock:ToolChromeControl].((dmc:IToolDock)DataContext).ActiveDockable}"
+                      DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
                       Command="{Binding AutoHideCommand}"
                       Theme="{TemplateBinding PinButtonTheme}">
                 <Button.IsVisible>
@@ -132,7 +133,8 @@
               </Button>
               <Button x:Name="PART_CloseButton" x:DataType="items:LayoutAnchorableItem"
                       ToolTip.Tip="{x:Static properties:Resources.Anchorable_BtnClose_Hint}"
-                      DataContext="{Binding ActiveDockable, Converter={StaticResource AvalonDockLayoutItem}}"
+                      infrastructure:LayoutItemBinding.Model="{Binding $parent[dock:ToolChromeControl].((dmc:IToolDock)DataContext).ActiveDockable}"
+                      DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
                       Theme="{TemplateBinding CloseButtonTheme}">
                 <Button.IsVisible>
                   <MultiBinding Converter="{x:Static BoolConverters.And}">

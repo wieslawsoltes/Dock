@@ -130,7 +130,7 @@ internal sealed class LayoutTabOverflow(DocumentPaneTabPanel panel)
                 LayoutAnchorableTabItem tab => tab.Model,
                 TabItem { Content: LayoutContent content } => content,
                 { DataContext: LayoutContent content } => content,
-                { DataContext: IDockable { Factory: LayoutFactory factory } native } => factory.GetLayoutItem(native)?.LayoutElement,
+                { DataContext: IDockable { Factory: LayoutFactory factory } native } => factory.GetLayoutContent(native),
                 _ => null
             };
             if (ReferenceEquals(model, Model)) return;

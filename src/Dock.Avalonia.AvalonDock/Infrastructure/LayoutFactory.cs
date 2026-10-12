@@ -47,7 +47,7 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         // by the anchor, without clearing Dock's active preview content or
         // selecting the pinned tool as the root's main layout.
         if (property == DockingWindowStateProperty.IsSelected && IsDockablePinned(dockable)
-            && getLayoutItem(dockable)?.LayoutElement is LayoutAnchorable { IsAutoHidden: true }) return;
+            && getLayoutElement(dockable) is LayoutAnchorable { IsAutoHidden: true }) return;
         base.OnDockingWindowStatePropertyChanged(dockable, property);
     }
 
@@ -61,7 +61,7 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 
     public override void MovePinnedDockable(IDockable sourceDockable, IDockable targetDockable)
     {
-        if (getLayoutItem(sourceDockable)?.LayoutElement is { } element && element.FindParent<LayoutAnchorSide>() is { } side)
+        if (getLayoutElement(sourceDockable).FindParent<LayoutAnchorSide>() is { } side)
             side.MovePinned(() => base.MovePinnedDockable(sourceDockable, targetDockable));
         else base.MovePinnedDockable(sourceDockable, targetDockable);
     }
@@ -96,6 +96,7 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     }
 
     internal LayoutItem? GetLayoutItem(IDockable model) => getLayoutItem(model);
+    internal LayoutContent? GetLayoutContent(IDockable model) => getLayoutElement(model) as LayoutContent;
     internal ILayoutContainer? GetLayoutContainer(IDockable model) => getLayoutElement(model) as ILayoutContainer;
 
     // AvalonDock's explicit model operations are independent of UI capability

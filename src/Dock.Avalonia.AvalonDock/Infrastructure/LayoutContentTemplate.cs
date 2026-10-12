@@ -23,7 +23,7 @@ internal sealed class LayoutContentTemplate : IRecyclingDataTemplate
     public Control? Build(object? data, Control? existing)
     {
         if (data is LayoutContent layout) data = layout.DockModel;
-        if (data is IDockable { Factory: LayoutFactory factory } model && factory.GetLayoutItem(model)?.LayoutElement is { } contentModel)
+        if (data is IDockable { Factory: LayoutFactory factory } model && factory.GetLayoutContent(model) is { } contentModel)
         {
             if (contentModel is LayoutDocument || contentModel.Parent is LayoutDocumentPane)
             {

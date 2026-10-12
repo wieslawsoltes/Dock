@@ -18,19 +18,28 @@ internal sealed class LayoutHeaderViews(LayoutItem item)
     {
         if (existing is LayoutHeaderPresenter view && ReferenceEquals(view.Item, item) && view.Kind == kind)
             return view;
-        for (int i = _views.Count - 1; i >= 0; i--)
-            if (!_views[i].TryGetTarget(out _)) _views.RemoveAt(i);
         view = new LayoutHeaderPresenter { Item = item, Kind = kind, DefaultTemplate = fallback, SelectionContainer = selectionContainer };
+        Attach(view);
+        return view;
+    }
+
+    internal void Attach(LayoutHeaderPresenter view)
+    {
+        for (int i = _views.Count - 1; i >= 0; i--)
+        {
+            if (!_views[i].TryGetTarget(out LayoutHeaderPresenter? existing) || !ReferenceEquals(existing.Item, item))
+                _views.RemoveAt(i);
+            else if (ReferenceEquals(existing, view)) return;
+        }
         _views.Add(new(view));
         ApplyTemplate(view);
-        return view;
     }
 
     public void Refresh(LayoutHeaderKind kind)
     {
         for (int i = _views.Count - 1; i >= 0; i--)
         {
-            if (!_views[i].TryGetTarget(out LayoutHeaderPresenter? view)) _views.RemoveAt(i);
+            if (!_views[i].TryGetTarget(out LayoutHeaderPresenter? view) || !ReferenceEquals(view.Item, item)) _views.RemoveAt(i);
             else if (view.Kind == kind) ApplyTemplate(view);
         }
     }
@@ -38,7 +47,7 @@ internal sealed class LayoutHeaderViews(LayoutItem item)
     public void Detach()
     {
         foreach (WeakReference<LayoutHeaderPresenter> reference in _views)
-            if (reference.TryGetTarget(out LayoutHeaderPresenter? view))
+            if (reference.TryGetTarget(out LayoutHeaderPresenter? view) && ReferenceEquals(view.Item, item))
             {
                 view.Item = null;
                 view.ContentTemplate = null;

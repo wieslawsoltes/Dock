@@ -3,6 +3,8 @@
 The update-strategy probe replaces a strategy during a source batch, verifies
 that the replacement receives the after callbacks, and redirects a hidden tool
 to a different pane and tab index through `Show()` using the packaged models.
+It also renders native content during an insertion callback, checks that lookup
+stays empty until registration, and then executes the updated native close button.
 
 Metadata and utility probes load consumer-owned compiled image assets through
 the public URI converter, resolve resource strings with a culture override,

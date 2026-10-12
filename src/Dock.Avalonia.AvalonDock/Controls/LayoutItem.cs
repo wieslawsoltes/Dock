@@ -197,6 +197,7 @@ public abstract class LayoutItem : Control
         (_headers ??= new LayoutHeaderViews(this)).Build(kind, fallback, existing, selectionContainer);
 
     internal void RefreshHeaders(LayoutHeaderKind kind) => _headers?.Refresh(kind);
+    internal void AttachHeader(LayoutHeaderPresenter view) => (_headers ??= new LayoutHeaderViews(this)).Attach(view);
 
     internal void ApplyContainerStyle()
     {

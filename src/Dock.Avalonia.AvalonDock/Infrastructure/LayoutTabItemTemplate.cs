@@ -18,7 +18,7 @@ internal sealed class LayoutTabItemTemplate : IRecyclingDataTemplate
         LayoutContent? model = data switch
         {
             LayoutContent content => content,
-            IDockable { Factory: LayoutFactory factory } native => factory.GetLayoutItem(native)?.LayoutElement,
+            IDockable { Factory: LayoutFactory factory } native => factory.GetLayoutContent(native),
             _ => null
         };
         if (model is null) return null;

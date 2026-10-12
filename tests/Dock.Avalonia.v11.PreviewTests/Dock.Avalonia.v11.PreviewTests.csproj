@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <ProjectReference Include="../../src/Dock.Avalonia.v11/Dock.Avalonia.v11.csproj" />
     <ProjectReference Include="../../src/Dock.Avalonia.Themes.Fluent.v11/Dock.Avalonia.Themes.Fluent.v11.csproj" />
+    <ProjectReference Include="../../src/Dock.Avalonia.Themes.Browser.v11/Dock.Avalonia.Themes.Browser.v11.csproj" />
     <ProjectReference Include="../../src/Dock.Model.Mvvm/Dock.Model.Mvvm.csproj" />
   </ItemGroup>
   <ItemGroup>

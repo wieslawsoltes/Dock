@@ -379,6 +379,9 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
+        // The first hover can arrive before layout creates the template parts.
+        // Register them now so this hover filters the first rendered frame too.
+        ApplyTemplate();
         EnsureTemplateRegistrations();
         return ShowIndicatorsOnly 
             ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 
@@ -635,7 +638,9 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             return false;
         }
 
-        var selectorPoint = GetSelectorPoint(point, relativeTo, selector);
+        // Indicator-only mode uses the original drop surface, which can be in a
+        // different native window from this adorner. Translate directly to it.
+        var selectorPoint = TranslateToSelector(relativeTo, point, selector);
 
         if (selectorPoint is not null)
         {

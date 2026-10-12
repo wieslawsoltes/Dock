@@ -14,8 +14,19 @@ namespace Dock.Controls.ProportionalStackPanel;
 /// <summary>
 /// A Panel that stacks controls either horizontally or vertically, with proportional resizing.
 /// </summary>
-public class ProportionalStackPanel : Panel
+public class ProportionalStackPanel : Panel, IProportionalSplitterHost
 {
+    Panel IProportionalSplitterHost.Panel => this;
+    private event EventHandler? SplitterOrientationChanged;
+    event EventHandler? IProportionalSplitterHost.OrientationChanged
+    {
+        add => SplitterOrientationChanged += value;
+        remove => SplitterOrientationChanged -= value;
+    }
+
+    void IProportionalSplitterHost.Resize(Control target, Control neighbor, double dragDelta, double minimumSize) =>
+        ResizeProportions(target, neighbor, dragDelta, minimumSize);
+
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
     /// </summary>
@@ -163,6 +174,7 @@ public class ProportionalStackPanel : Panel
 
         if (change.Property == OrientationProperty)
         {
+            SplitterOrientationChanged?.Invoke(this, EventArgs.Empty);
             for (int i = 0; i < Children.Count; i++)
                 if (ProportionalStackPanelSplitter.IsSplitter(Children[i], out ProportionalStackPanelSplitter? splitter))
                     splitter?.UpdateVisualState();

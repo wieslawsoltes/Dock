@@ -560,9 +560,13 @@ it should target `LayoutGridResizerControl` directly or through the manager.
 The preview is created when the manager loads. Derived managers can use
 `SetAutoHideWindow`, `OnAutoHideWindowChanged`, and
 `OnAutoHideWindowClosingTimerChanged`. Changed hooks use
-`AvaloniaPropertyChangedEventArgs`. The Avalonia control replaces WPF's
-`HwndHost`; Win32 child-window hooks, native separate pinned-window modes, and
-desktop focus behavior are not covered by the current compatibility claim.
+`AvaloniaPropertyChangedEventArgs`. With `Dock.Settings.DockSettings.UsePinnedDockWindow`
+set to `true`, native Overlay previews host the same public preview and cached
+editor in an owned `PinnedDockWindow`. Manager themes, content styles, context
+menus, close commands, and Ctrl+Tab navigation also apply there. Switching a
+tool to Inline mode returns its editor to the manager. The resizer remains in
+the manager's pinned host. The Avalonia control does not provide WPF's `HwndHost`
+or its Win32 child-window hooks.
 
 Floating document captions use `DocumentTitleTemplate` and its selector with the
 public `LayoutDocument` from `LayoutDocumentFloatingWindow.RootDocument`:
@@ -942,6 +946,12 @@ For nonclosable tools, `CanHide`/`DoHide` run before the canceled window `Closin
 event; cancel the content's `Hiding` event to prevent hiding. A window subscriber
 can change the cancellation result before the factory veto runs.
 
+Closing the owning application window closes its floating hosts without invoking
+child close/hide commands or child `Closing` handlers, matching
+[WPF owned-window closing](https://learn.microsoft.com/en-us/dotnet/api/system.windows.window.closing).
+The owner's own `Closing` handler can still cancel shutdown. Successful owner
+closure releases the native hosts and preserves their layout models.
+
 Layout replacement queues host closure and immediately clears the manager's old
 host list. A successful close detaches the old floating model without content
 closure; cancellation leaves it attached to its original root. View unload queues
@@ -1207,6 +1217,10 @@ flowchart TB
     Anchors --> Models
     Anchors -->|Pinned reorder and preview| Factory
     Api -->|AutoHideWindow and closing delay| AutoHide
+    PinnedWindows["Native PinnedDockWindow binding<br/>Single editor host, themes, and input"]
+    AutoHide --> PinnedWindows
+    ResourceThemes --> PinnedWindows
+    PinnedWindows --> ContentControls
     AutoHide --> ContentControls
     AutoHide -->|Observe preview and close through Dock| Factory
     View --> Anchors

@@ -246,7 +246,18 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     internal bool TryShowSystemMenu(PixelPoint position) => ShowSystemMenu(position);
 
     /// <summary>Dispatches a native close request to the AvalonDock cancellation hook.</summary>
-    protected override void OnClosing(WindowClosingEventArgs e) => OnClosing((CancelEventArgs)e);
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        // WPF closes owned windows without asking each child's Closing policy.
+        // Avalonia routes the owner's request through children first. Preserve
+        // the owner's own veto and let OnClosed release these native hosts.
+        if (e.CloseReason == WindowCloseReason.OwnerWindowClosing)
+        {
+            e.Cancel = false;
+            return;
+        }
+        OnClosing((CancelEventArgs)e);
+    }
 
     /// <summary>Routes a derived Avalonia closing override's base call to the AvalonDock cancellation hook.</summary>
     /// <typeparam name="TEventArgs">The native window-closing argument type.</typeparam>

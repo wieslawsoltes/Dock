@@ -3,7 +3,7 @@
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:models="using:Dock.Model.Controls"
         xmlns:controls="using:AvalonDock.Controls">
-  <Style Selector="dock|DockControl.avalondock dock|PinnedDockControl, :is(dock|HostWindow).avalondock dock|PinnedDockControl"
+  <Style Selector="dock|DockControl.avalondock dock|PinnedDockControl, :is(Window).avalondock dock|PinnedDockControl"
          x:DataType="models:IRootDock">
     <Setter Property="Template" Value="{StaticResource AvalonDockPinnedLayout}" />
   </Style>

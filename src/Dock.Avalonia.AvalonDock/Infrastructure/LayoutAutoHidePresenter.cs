@@ -1,9 +1,13 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.VisualTree;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Avalonia.Controls;
+using Dock.Settings;
 
 namespace AvalonDock.Infrastructure;
 
@@ -15,6 +19,7 @@ internal sealed class LayoutAutoHidePresenter : ContentControl
         AvaloniaProperty.Register<LayoutAutoHidePresenter, Control?>(nameof(Body));
     private ManagerBinding? _binding;
     private bool _attached;
+    private bool _suppressBody;
 
     public LayoutAutoHidePresenter()
     {
@@ -31,7 +36,7 @@ internal sealed class LayoutAutoHidePresenter : ContentControl
         if (change.Property == BodyProperty)
         {
             if (Content is LayoutAutoHideWindowControl window) window.SetContent(Body);
-            else SetCurrentValue(ContentProperty, Body);
+            else SetCurrentValue(ContentProperty, _suppressBody ? null : Body);
         }
         if (change.Property == DataContextProperty && _attached) Refresh();
     }
@@ -54,6 +59,7 @@ internal sealed class LayoutAutoHidePresenter : ContentControl
     private void Refresh()
     {
         _binding?.Dispose(); _binding = null;
+        _suppressBody = false;
         if (DataContext is IToolDock { Factory: LayoutFactory factory } native
             && factory.FindRoot(native, static _ => true) is { } root && ReferenceEquals(root.PinnedDock, native)
             && factory.GetLayoutContainer(root) is LayoutRoot { Manager: { } manager } layout && ReferenceEquals(manager.Layout, layout))
@@ -80,20 +86,39 @@ internal sealed class LayoutAutoHidePresenter : ContentControl
     {
         private readonly WeakReference<DockingManager> _manager;
         private readonly WeakReference<LayoutAutoHidePresenter> _owner;
+        private readonly PinnedDockControl? _inline;
         internal ManagerBinding(DockingManager manager, LayoutAutoHidePresenter owner)
         {
             _manager = new(manager); _owner = new(owner);
+            _inline = owner.FindAncestorOfType<PinnedDockControl>();
             manager.PropertyChanged += Changed;
-            owner.Present(manager.AutoHideWindow);
+            if (_inline is not null) owner.LayoutUpdated += LayoutUpdated;
+            Update(owner, manager);
         }
         private void Changed(object? sender, AvaloniaPropertyChangedEventArgs args)
         {
             if (!_owner.TryGetTarget(out LayoutAutoHidePresenter? owner)) { Dispose(); return; }
-            if (args.Property == DockingManager.AutoHideWindowProperty && sender is DockingManager manager) owner.Present(manager.AutoHideWindow);
+            if (args.Property == DockingManager.AutoHideWindowProperty && sender is DockingManager manager) Update(owner, manager);
+        }
+        private void LayoutUpdated(object? sender, EventArgs args)
+        {
+            if (!_owner.TryGetTarget(out LayoutAutoHidePresenter? owner) || !_manager.TryGetTarget(out DockingManager? manager)) { Dispose(); return; }
+            Update(owner, manager);
+        }
+        private void Update(LayoutAutoHidePresenter owner, DockingManager manager)
+        {
+            // Deferred inline content can attach after the owned window. Keep
+            // one editor host, and return it when display mode changes to Inline.
+            owner._suppressBody = _inline is not null && DockSettings.UsePinnedDockWindow &&
+                !DockSettings.IsManagedWindowHostingEnabled(manager.DockLayout) && owner.DataContext is IToolDock native &&
+                (native.ActiveDockable?.PinnedDockDisplayModeOverride ?? _inline.PinnedDockDisplayMode) == PinnedDockDisplayMode.Overlay;
+            LayoutAutoHideWindowControl? window = owner._suppressBody ? null : manager.AutoHideWindow;
+            if (!ReferenceEquals(owner.Content, window)) owner.Present(window);
         }
         public void Dispose()
         {
             if (_manager.TryGetTarget(out DockingManager? manager)) manager.PropertyChanged -= Changed;
+            if (_owner.TryGetTarget(out LayoutAutoHidePresenter? owner)) owner.LayoutUpdated -= LayoutUpdated;
         }
     }
 }

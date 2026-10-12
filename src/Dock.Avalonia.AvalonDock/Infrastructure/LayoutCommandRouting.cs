@@ -16,11 +16,11 @@ namespace AvalonDock.Infrastructure;
 internal sealed class LayoutCommandRouting : AvaloniaObject
 {
     public static readonly AttachedProperty<bool> IsEnabledProperty =
-        AvaloniaProperty.RegisterAttached<LayoutCommandRouting, DockControl, bool>("IsEnabled");
+        AvaloniaProperty.RegisterAttached<LayoutCommandRouting, Control, bool>("IsEnabled");
 
     static LayoutCommandRouting()
     {
-        IsEnabledProperty.Changed.AddClassHandler<DockControl>(Changed);
+        IsEnabledProperty.Changed.AddClassHandler<Control>(Changed);
         // DoubleTapped only bubbles. Class handlers run before native tab
         // instance handlers, including when the tab itself is the event source.
         InputElement.DoubleTappedEvent.AddClassHandler<DocumentTabStripItem>(DoubleTapped);
@@ -28,10 +28,10 @@ internal sealed class LayoutCommandRouting : AvaloniaObject
         Button.ClickEvent.AddClassHandler<Button>(ToolCloseClicked);
     }
 
-    public static bool GetIsEnabled(DockControl control) => control.GetValue(IsEnabledProperty);
-    public static void SetIsEnabled(DockControl control, bool value) => control.SetValue(IsEnabledProperty, value);
+    public static bool GetIsEnabled(Control control) => control.GetValue(IsEnabledProperty);
+    public static void SetIsEnabled(Control control, bool value) => control.SetValue(IsEnabledProperty, value);
 
-    private static void Changed(DockControl control, AvaloniaPropertyChangedEventArgs change)
+    private static void Changed(Control control, AvaloniaPropertyChangedEventArgs change)
     {
         if (change.GetNewValue<bool>())
         {
@@ -60,7 +60,7 @@ internal sealed class LayoutCommandRouting : AvaloniaObject
 
     private static void Pressed(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is not DockControl control || !e.GetCurrentPoint(control).Properties.IsMiddleButtonPressed ||
+        if (sender is not Control control || !e.GetCurrentPoint(control).Properties.IsMiddleButtonPressed ||
             FindItem(e, out IDockable? model) is not { } item || model is null) return;
         e.Handled = true;
         if (DockCapabilityResolver.IsEnabled(model, DockCapability.Close,
@@ -83,8 +83,12 @@ internal sealed class LayoutCommandRouting : AvaloniaObject
         }
     }
 
-    private static bool IsEnabled(Control control) =>
-        control.FindAncestorOfType<DockControl>() is { } dock && GetIsEnabled(dock);
+    private static bool IsEnabled(Control control)
+    {
+        for (Visual? ancestor = control.GetVisualParent(); ancestor is not null; ancestor = ancestor.GetVisualParent())
+            if (ancestor is Control host && GetIsEnabled(host)) return true;
+        return false;
+    }
 
     private static void ToolCloseClicked(Button button, RoutedEventArgs e)
     {

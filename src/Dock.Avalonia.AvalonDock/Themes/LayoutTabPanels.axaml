@@ -6,31 +6,31 @@
   <Style Selector="dock|DockControl.avalondock dock|DocumentTabStrip[Orientation=Horizontal]">
     <Setter Property="ItemsPanel" Value="{StaticResource AvalonDockDocumentTabPanel}" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|DocumentTabStrip[Orientation=Horizontal]">
+  <Style Selector=":is(Window).avalondock dock|DocumentTabStrip[Orientation=Horizontal]">
     <Setter Property="ItemsPanel" Value="{StaticResource AvalonDockDocumentTabPanel}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolTabStrip">
     <Setter Property="ItemsPanel" Value="{StaticResource AvalonDockAnchorableTabPanel}" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|ToolTabStrip">
+  <Style Selector=":is(Window).avalondock dock|ToolTabStrip">
     <Setter Property="ItemsPanel" Value="{StaticResource AvalonDockAnchorableTabPanel}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolTabStripItem">
     <Setter Property="ClipToBounds" Value="True" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|ToolTabStripItem">
+  <Style Selector=":is(Window).avalondock dock|ToolTabStripItem">
     <Setter Property="ClipToBounds" Value="True" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|DocumentTabStrip[Orientation=Horizontal] /template/ ScrollViewer#PART_ScrollViewer">
     <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|DocumentTabStrip[Orientation=Horizontal] /template/ ScrollViewer#PART_ScrollViewer">
+  <Style Selector=":is(Window).avalondock dock|DocumentTabStrip[Orientation=Horizontal] /template/ ScrollViewer#PART_ScrollViewer">
     <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolTabStrip /template/ ScrollViewer#PART_ScrollViewer">
     <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|ToolTabStrip /template/ ScrollViewer#PART_ScrollViewer">
+  <Style Selector=":is(Window).avalondock dock|ToolTabStrip /template/ ScrollViewer#PART_ScrollViewer">
     <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
   </Style>
 </Styles>

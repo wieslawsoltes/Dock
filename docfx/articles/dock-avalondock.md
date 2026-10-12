@@ -944,9 +944,15 @@ namespaces resolve this API. For example, in a window with `AvalonDockTheme`:
 
 Derived managers can use `SetAutoHideWindow` and override
 `OnAutoHideWindowChanged` or `OnAutoHideWindowClosingTimerChanged`, with
-`AvaloniaPropertyChangedEventArgs`. The control uses Avalonia's visual tree,
-rather than WPF's `HwndHost` and Win32 child-window hooks. Native separate pinned
-window modes and desktop focus behavior still require platform validation.
+`AvaloniaPropertyChangedEventArgs`. To use a separate native window for Overlay
+previews, enable `Dock.Settings.DockSettings.UsePinnedDockWindow`. The owned
+`PinnedDockWindow` receives the manager's current theme resources and presents
+the same `AutoHideWindow`, content style, and cached editor. Manager context
+menus, close commands, and Ctrl+Tab navigation work inside it. Changing a tool's
+`PinnedDockDisplayModeOverride` to Inline returns its editor to the manager;
+changing back creates a new native preview. The resizer stays beside the pinned
+area in the manager. The control does not provide WPF's `HwndHost` or Win32
+child-window hooks.
 
 ## Use converters in compiled bindings
 
@@ -1925,6 +1931,12 @@ and content. It raises no content `Closing`/`Closed` events. To remove content, 
 layout replacement detaches the old floating models without closing their content.
 Closed hosts release command subscriptions without disposing application commands.
 
+Closing the owning application window closes its floating hosts without invoking
+child close/hide commands or child `Closing` handlers, matching
+[WPF owned-window closing](https://learn.microsoft.com/en-us/dotnet/api/system.windows.window.closing).
+The owner's own `Closing` handler can still cancel shutdown. Successful owner
+closure releases the native hosts and preserves their layout models.
+
 Dock's optional `IDockWindowClosePolicy` lets `LayoutFactory` preserve a compatible
 host's layout while retaining window cancellation and closed notifications. It
 bypasses native content-close commands, releases the old host, and allows a new
@@ -2519,6 +2531,10 @@ flowchart TB
     Anchors --> Models
     Anchors -->|Pinned reorder and preview| Factory
     Manager -->|AutoHideWindow and closing delay| AutoHide
+    PinnedWindows["Native PinnedDockWindow binding<br/>Single editor host, themes, and input"]
+    AutoHide --> PinnedWindows
+    ResourceThemes --> PinnedWindows
+    PinnedWindows --> ContentControls
     AutoHide --> ContentControls
     AutoHide -->|Observe preview, commit pinned bounds, and close through Dock| Factory
     Controls --> Anchors

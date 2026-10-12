@@ -18,6 +18,33 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class NativeFloatingGroupTests
 {
     [AvaloniaTheory]
+    [InlineData("documents")]
+    [InlineData("document-group")]
+    [InlineData("mixed")]
+    [InlineData("root")]
+    public void Floating_A_Group_Presents_The_Selected_Editor_In_Its_Native_Host(string shape)
+    {
+        using Workspace workspace = new(shape);
+        LayoutDocument document = workspace.Source.Descendents().OfType<LayoutDocument>().First();
+        TextBox editor = new() { Text = "Grouped editor" };
+        document.Content = editor;
+        document.IsActive = true;
+        workspace.Update();
+        Assert.Same(workspace.Window, TopLevel.GetTopLevel(editor));
+
+        workspace.Manager.DockFactory.FloatDockable(workspace.Source.DockModel);
+        workspace.Update();
+        LayoutGroupFloatingWindowControl host = Assert.IsType<LayoutGroupFloatingWindowControl>(Assert.Single(workspace.Manager.FloatingWindows));
+        Assert.Same(document, workspace.Manager.Layout.ActiveContent);
+        Assert.Same(host, TopLevel.GetTopLevel(editor));
+        Assert.Contains(editor, host.GetVisualDescendants());
+
+        document.Dock();
+        workspace.Update();
+        Assert.Same(workspace.Window, TopLevel.GetTopLevel(editor));
+    }
+
+    [AvaloniaTheory]
     [InlineData("documents", false)]
     [InlineData("documents", true)]
     [InlineData("document-group", false)]

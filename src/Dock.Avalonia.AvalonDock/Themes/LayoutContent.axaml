@@ -7,10 +7,10 @@
        Keeping these bindings in the templates also preserves logical ownership
        while ancestor styles detach and reattach. -->
 
-  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, :is(dock|HostWindow).avalondock dock|DocumentControl">
+  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, :is(Window).avalondock dock|DocumentControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockDocumentContent}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolControl, :is(dock|HostWindow).avalondock dock|ToolControl">
+  <Style Selector="dock|DockControl.avalondock dock|ToolControl, :is(Window).avalondock dock|ToolControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockToolContent}" />
   </Style>
 </Styles>

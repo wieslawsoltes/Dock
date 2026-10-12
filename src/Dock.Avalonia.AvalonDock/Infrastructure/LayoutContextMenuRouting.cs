@@ -12,11 +12,11 @@ namespace AvalonDock.Infrastructure;
 internal sealed class LayoutContextMenuRouting : AvaloniaObject
 {
     public static readonly AttachedProperty<bool> IsEnabledProperty =
-        AvaloniaProperty.RegisterAttached<LayoutContextMenuRouting, DockControl, bool>("IsEnabled");
+        AvaloniaProperty.RegisterAttached<LayoutContextMenuRouting, Control, bool>("IsEnabled");
 
     static LayoutContextMenuRouting()
     {
-        IsEnabledProperty.Changed.AddClassHandler<DockControl>((control, change) =>
+        IsEnabledProperty.Changed.AddClassHandler<Control>((control, change) =>
         {
             if (change.GetNewValue<bool>()) control.AddHandler(Control.ContextRequestedEvent, Requested);
             else control.RemoveHandler(Control.ContextRequestedEvent, Requested);
@@ -24,8 +24,8 @@ internal sealed class LayoutContextMenuRouting : AvaloniaObject
         Button.ClickEvent.AddClassHandler<Button>(MenuClicked);
     }
 
-    public static bool GetIsEnabled(DockControl control) => control.GetValue(IsEnabledProperty);
-    public static void SetIsEnabled(DockControl control, bool value) => control.SetValue(IsEnabledProperty, value);
+    public static bool GetIsEnabled(Control control) => control.GetValue(IsEnabledProperty);
+    public static void SetIsEnabled(Control control, bool value) => control.SetValue(IsEnabledProperty, value);
 
     private static void Requested(object? sender, ContextRequestedEventArgs e)
     {
@@ -59,9 +59,16 @@ internal sealed class LayoutContextMenuRouting : AvaloniaObject
     private static void MenuClicked(Button button, RoutedEventArgs e)
     {
         if (button.Name != "PART_MenuButton" || button.TemplatedParent is not ToolChromeControl chrome ||
-            button.FindAncestorOfType<DockControl>() is not { } dock || !GetIsEnabled(dock)) return;
+            !HasEnabledHost(button)) return;
         if (chrome.DataContext is IDock pane)
             e.Handled = Show(button, pane.ActiveDockable, LayoutHeaderKind.Anchorable, null, pane);
+    }
+
+    private static bool HasEnabledHost(Control control)
+    {
+        for (Visual? ancestor = control.GetVisualParent(); ancestor is not null; ancestor = ancestor.GetVisualParent())
+            if (ancestor is Control host && GetIsEnabled(host)) return true;
+        return false;
     }
 
     private static bool ShowPane(Control control, LayoutHeaderKind kind, ContextRequestedEventArgs? request) =>

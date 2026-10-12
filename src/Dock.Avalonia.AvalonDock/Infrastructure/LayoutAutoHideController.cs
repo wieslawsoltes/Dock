@@ -18,6 +18,7 @@ internal sealed class LayoutAutoHideController
     private readonly LayoutAutoHideClosing _closing;
     private LayoutRoot? _layout;
     private Subscription? _subscription;
+    private IDisposable? _nativeWindows;
 
     internal LayoutAutoHideController(DockingManager manager)
     {
@@ -32,6 +33,7 @@ internal sealed class LayoutAutoHideController
             Detach(hide: false);
             _layout = layout;
             _subscription = new((RootDock)layout.DockModel, this);
+            _nativeWindows = LayoutPinnedWindowBinding.Observe(_manager);
             _manager.AddHandler(Thumb.DragStartedEvent, DragStarted, handledEventsToo: true);
             _manager.AddHandler(Thumb.DragCompletedEvent, DragCompleted, handledEventsToo: true);
         }
@@ -43,6 +45,7 @@ internal sealed class LayoutAutoHideController
         LayoutRoot? previous = _layout;
         _layout = null;
         _subscription?.Dispose(); _subscription = null;
+        _nativeWindows?.Dispose(); _nativeWindows = null;
         _closing.Stop();
         _manager.AutoHideWindow?.SetModel(null);
         _manager.RemoveHandler(Thumb.DragStartedEvent, DragStarted);

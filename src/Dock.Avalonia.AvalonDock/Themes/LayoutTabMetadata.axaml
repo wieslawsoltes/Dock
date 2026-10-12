@@ -4,7 +4,7 @@
         xmlns:core="using:Dock.Model.Core"
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:DataType="core:IDockable">
-  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStripItem, :is(dock|HostWindow).avalondock dock|DocumentTabStripItem, dock|DockControl.avalondock dock|ToolTabStripItem, :is(dock|HostWindow).avalondock dock|ToolTabStripItem">
+  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStripItem, :is(Window).avalondock dock|DocumentTabStripItem, dock|DockControl.avalondock dock|ToolTabStripItem, :is(Window).avalondock dock|ToolTabStripItem">
     <Setter Property="infrastructure:LayoutTabMetadata.Model" Value="{Binding Converter={StaticResource AvalonDockLayoutContent}}" />
     <Setter Property="IsEnabled" Value="{Binding $self.(infrastructure:LayoutTabMetadata.Model).IsEnabled, FallbackValue=True}" />
     <Setter Property="ToolTip.Tip" Value="{Binding $self.(infrastructure:LayoutTabMetadata.Model).ToolTip}" />

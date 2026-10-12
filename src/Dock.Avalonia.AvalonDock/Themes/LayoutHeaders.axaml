@@ -14,16 +14,16 @@
   <Style Selector="dock|DockControl.avalondock dock|ToolControl">
     <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableTabHeader}" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|DocumentControl">
+  <Style Selector=":is(Window).avalondock dock|DocumentControl">
     <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockDocumentTabHeader}" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|ToolControl">
+  <Style Selector=":is(Window).avalondock dock|ToolControl">
     <Setter Property="HeaderTemplate" Value="{StaticResource AvalonDockAnchorableTabHeader}" />
   </Style>
   <Style Selector="dock|DockControl.avalondock dock|ToolPinItemControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockAutoHideHeader}" />
   </Style>
-  <Style Selector=":is(dock|HostWindow).avalondock dock|ToolPinItemControl">
+  <Style Selector=":is(Window).avalondock dock|ToolPinItemControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockAutoHideHeader}" />
   </Style>
 </Styles>

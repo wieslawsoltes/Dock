@@ -89,9 +89,16 @@ and deferred visual content before `Closed`, preserving the model graph for a
 replacement host. Its 16 new Headless cases cover documents/tools, local themes,
 cancellation, replacement hosts, and explicit deferred-presentation cleanup.
 
+[PR #1165](https://github.com/wieslawsoltes/Dock/pull/1165) resolves Avalonia 12's
+presentation wrapper to its owning top level. Native pinned windows now receive
+an actual owner, and activation, coordinate conversion, and other native owner
+lookups use the same corrected helper. All 1,748 affected native UI, unit, and
+leak cases and all nine GitHub checks passed. This branch includes that master
+merge and the 12.1.0.8 version update.
+
 ### Recent native drag and preview changes
 
-This branch also includes `master` through `805fdb68a`, merging
+The earlier `master` integration at `805fdb68a` included
 [PR #1153](https://github.com/wieslawsoltes/Dock/pull/1153) and
 [PR #1156](https://github.com/wieslawsoltes/Dock/pull/1156). Their relevance to the
 adapter is:
@@ -737,7 +744,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   compatibility strips allow an empty selection; ordinary Dock defaults remain
   unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
   Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
-  floating layouts remain a separate compatibility gap.
+  layouts use the additional native-backed floating model described below.
 - `LayoutDocumentPane.ShowHeader` controls the actual tabs, document menu, and
   separator through compiled template bindings, retaining the selected content
   view, focus, and activation. Pane policies remain independent through runtime
@@ -885,10 +892,10 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   desktop input/focus validation beyond the recorded close lifecycle scenarios.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy
   tests; they do not establish full platform or floating-window parity.
-- All upstream interfaces, extension methods, protected extensibility points,
-  and `IXmlSerializable` methods not yet represented in the adapter.
-  Additional selection edge cases and protected override ordering still require
-  the broader signature and behavior audit below.
+- Complete the semantic audit of interfaces, extension methods, protected hooks,
+  and inherited XML methods. The individual declaration review maps the existing
+  counterparts; it does not establish full signature or behavior equivalence.
+  Additional selection edge cases and protected override ordering remain open.
 - Public grid child/row/column collections host a native items presenter rather than
   reproducing WPF's direct pane/splitter visual tree.
 - Finish the rendering and behavior audit of repositioning policies and remaining
@@ -903,7 +910,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   behavior must be audited independently of the presence inventory, including
   remaining property-default, callback, and framework-substitution edge cases.
 - Broader sample interaction and platform coverage for floating windows.
-- Navigator desktop modality/focus validation and remaining theme/overlay integration.
+- Broader navigator modality/focus coverage on macOS and Linux, and remaining
+  theme/overlay integration. Windows 11 ARM64 modality, native Ctrl release,
+  owner input restoration, and editor focus have desktop validation.
 - The full WPF overlay template-part arrangement remains open.
 
 ## Reproducible API inventory

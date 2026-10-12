@@ -8,10 +8,10 @@
         xmlns:infrastructure="using:AvalonDock.Infrastructure"
         x:DataType="models:IProportionalDock">
 
-  <Style Selector="dock|DockControl.avalondock dock|ProportionalDockControl, :is(dock|HostWindow).avalondock dock|ProportionalDockControl">
+  <Style Selector="dock|DockControl.avalondock dock|ProportionalDockControl, :is(Window).avalondock dock|ProportionalDockControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockProportionalLayout}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock :is(proportional|ProportionalStackPanelSplitter), :is(dock|HostWindow).avalondock :is(proportional|ProportionalStackPanelSplitter)">
+  <Style Selector="dock|DockControl.avalondock :is(proportional|ProportionalStackPanelSplitter), :is(Window).avalondock :is(proportional|ProportionalStackPanelSplitter)">
     <Setter Property="(proportional:ProportionalStackPanelSplitter.MinimumProportionSize)" Value="0" />
     <Setter Property="Thickness">
       <MultiBinding Converter="{StaticResource AvalonDockSplitterSize}">

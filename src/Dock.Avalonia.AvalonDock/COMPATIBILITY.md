@@ -96,6 +96,15 @@ lookups use the same corrected helper. All 1,748 affected native UI, unit, and
 leak cases and all nine GitHub checks passed. This branch includes that master
 merge and the 12.1.0.8 version update.
 
+[PR #1166](https://github.com/wieslawsoltes/Dock/pull/1166) keeps a native pinned
+preview open while activation moves between it and its owner, and closes the
+preview through Dock when both lose activation. It also preserves floating
+window title/icon values and bindings during default owner lookup. All 1,752
+affected native Headless, unit, and leak cases passed before this master merge.
+The adapter adds native preview content/theme/input bindings and matches WPF's
+owned-window shutdown contract. Combined desktop and package validation follows
+this integration.
+
 ### Recent native drag and preview changes
 
 The earlier `master` integration at `805fdb68a` included
@@ -868,7 +877,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   work waits until the adapter receives the model. Suppressing the base hook
   suppresses those subscriptions. This does not change Avalonia's Initialized
   event timing into WPF's timing.
-- 2322 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 2322 passing cases in `Dock.Avalonia.AvalonDock.Tests` at the `7919caeb1`
+  validation checkpoint, before the native pinned-window integration.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
   for real image decoding and HTTP/HTTPS transport contracts (2340 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package

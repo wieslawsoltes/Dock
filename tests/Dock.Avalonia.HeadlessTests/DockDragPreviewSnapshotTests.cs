@@ -21,6 +21,50 @@ namespace Dock.Avalonia.HeadlessTests;
 public class DockDragPreviewSnapshotTests
 {
     [AvaloniaTheory]
+    [InlineData(1)]
+#if !AVALONIA_11
+    [InlineData(2)]
+#endif
+    public void Snapshot_Renders_The_Whole_Content_At_The_Original_Logical_Size(double scale)
+    {
+        Border marker = new() { Width = 30, Height = 20, Background = Brushes.Magenta,
+            HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Left,
+            VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Top, Margin = new Thickness(120, 90, 0, 0) };
+        Border source = new() { Width = 200, Height = 140, Background = Brushes.Lime, Child = marker };
+        Window owner = new() { Content = source, Width = 200, Height = 140 };
+        Window preview = new() { Width = 200, Height = 140 };
+        DragPreviewSnapshot? snapshot = null;
+        try
+        {
+            owner.Show();
+#if !AVALONIA_11
+            owner.SetRenderScaling(scale);
+#endif
+            owner.UpdateLayout();
+            snapshot = DragPreviewSnapshot.Capture(source);
+            preview.Content = snapshot;
+            preview.Show();
+#if !AVALONIA_11
+            preview.SetRenderScaling(scale);
+#endif
+            preview.UpdateLayout();
+            Dispatcher.UIThread.RunJobs();
+            using Bitmap rendered = preview.CaptureRenderedFrame()!;
+            byte[] pixels = Pixels(rendered);
+            AssertPixel(125, 95, new byte[] { 255, 0, 255, 255 });
+            AssertPixel(155, 115, new byte[] { 0, 255, 0, 255 });
+            AssertPixel(65, 50, new byte[] { 0, 255, 0, 255 });
+
+            void AssertPixel(int x, int y, byte[] expected)
+            {
+                int offset = ((int)(y * scale) * rendered.PixelSize.Width + (int)(x * scale)) * 4;
+                Assert.Equal(expected, pixels[offset..(offset + 4)]);
+            }
+        }
+        finally { preview.Close(); snapshot?.Dispose(); owner.Close(); Dispatcher.UIThread.RunJobs(); }
+    }
+
+    [AvaloniaTheory]
     [InlineData(false, 1)]
     [InlineData(true, 1)]
 #if !AVALONIA_11

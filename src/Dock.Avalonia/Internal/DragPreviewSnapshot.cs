@@ -12,10 +12,12 @@ internal sealed class DragPreviewSnapshot : Image, IDisposable
 {
     private RenderTargetBitmap? _bitmap;
 
-    private DragPreviewSnapshot(RenderTargetBitmap bitmap)
+    private DragPreviewSnapshot(RenderTargetBitmap bitmap, Size size)
     {
         _bitmap = bitmap;
         Source = bitmap;
+        Width = size.Width;
+        Height = size.Height;
         Stretch = Stretch.Uniform;
         ClipToBounds = true;
     }
@@ -26,11 +28,15 @@ internal sealed class DragPreviewSnapshot : Image, IDisposable
         if (!double.IsFinite(size.Width) || !double.IsFinite(size.Height) || size.Width <= 0 || size.Height <= 0)
             return null;
         double scaling = TopLevel.GetTopLevel(visual)?.RenderScaling ?? 1;
-        RenderTargetBitmap bitmap = new(PixelSize.FromSize(size, scaling), new Vector(96 * scaling, 96 * scaling));
+        // Store at 96 DPI so Image's source rectangle addresses every pixel on
+        // both immediate and composition renderers. Preserve the logical size
+        // on this control and rasterize the visual at the host's pixel density.
+        RenderTargetBitmap bitmap = new(PixelSize.FromSize(size, scaling));
         try
         {
-            bitmap.Render(visual);
-            return new DragPreviewSnapshot(bitmap);
+            using (DrawingContext context = bitmap.CreateDrawingContext())
+                context.DrawRectangle(new VisualBrush(visual) { Stretch = Stretch.Fill }, null, new Rect(bitmap.Size));
+            return new DragPreviewSnapshot(bitmap, size);
         }
         catch
         {

@@ -19,7 +19,6 @@ internal sealed class ImageHttpServer : IAsyncDisposable
     private readonly byte[] _image;
     private readonly TcpListener _listener = new(IPAddress.Loopback, 0);
     private readonly CancellationTokenSource _stop = new();
-    private readonly ECDsa? _key;
     private readonly X509Certificate2? _certificate;
     private readonly Task _serve;
     private readonly bool _pauseBody;
@@ -33,12 +32,17 @@ internal sealed class ImageHttpServer : IAsyncDisposable
         _pauseBody = pauseBody;
         if (tls)
         {
-            _key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
-            CertificateRequest request = new("CN=localhost", _key, HashAlgorithmName.SHA256);
+            using ECDsa key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+            CertificateRequest request = new("CN=localhost", key, HashAlgorithmName.SHA256);
             SubjectAlternativeNameBuilder names = new();
             names.AddIpAddress(IPAddress.Loopback);
             request.CertificateExtensions.Add(names.Build());
-            _certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(1));
+            using X509Certificate2 generated = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(1));
+            // Schannel cannot use the ephemeral key from CreateSelfSigned.
+            // A PKCS#12 import supplies a named key, deleted on certificate disposal.
+            byte[] pfx = generated.Export(X509ContentType.Pkcs12);
+            try { _certificate = X509CertificateLoader.LoadPkcs12(pfx, password: null); }
+            finally { CryptographicOperations.ZeroMemory(pfx); }
         }
         _listener.Start();
         BaseUri = new($"{(tls ? "https" : "http")}://127.0.0.1:{((IPEndPoint)_listener.LocalEndpoint).Port}/");
@@ -99,7 +103,6 @@ internal sealed class ImageHttpServer : IAsyncDisposable
         _listener.Stop();
         await _serve.WaitAsync(TimeSpan.FromSeconds(5));
         _certificate?.Dispose();
-        _key?.Dispose();
         _stop.Dispose();
     }
 }

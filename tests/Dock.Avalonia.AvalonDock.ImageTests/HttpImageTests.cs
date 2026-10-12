@@ -57,8 +57,9 @@ public class HttpImageTests
         await using ImageHttpServer server = new(ImageBytes(), tls);
         using HttpClient client = server.CreateClient();
         using UriSourceToBitmapImageConverter converter = tls ? new(client) : new();
+        using LogCapture log = new();
         Image image = Convert(converter, new(server.BaseUri, redirect ? "redirect" : "icon.png"));
-        using Bitmap bitmap = await ObserveBitmap(image);
+        using Bitmap bitmap = await ObserveBitmap(image, log.Warning.Task);
         Assert.Equal(new PixelSize(1, 1), bitmap.PixelSize);
         Assert.Equal(redirect ? new[] { "/redirect", "/icon.png" } : new[] { "/icon.png" }, server.Requests);
     }
@@ -228,7 +229,7 @@ public class HttpImageTests
     private static Image Convert(UriSourceToBitmapImageConverter converter, Uri uri, Uri? baseUri = null) =>
         Assert.IsAssignableFrom<Image>(converter.Convert(uri, typeof(Image), baseUri, CultureInfo.InvariantCulture));
 
-    private static async Task<Bitmap> ObserveBitmap(Image image)
+    private static async Task<Bitmap> ObserveBitmap(Image image, Task<object?[]>? warning = null)
     {
         if (image.Source is Bitmap existing) return existing;
         TaskCompletionSource<Bitmap> ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -241,7 +242,12 @@ public class HttpImageTests
             }
         }
         image.PropertyChanged += Changed;
-        try { return await ready.Task.WaitAsync(TimeSpan.FromSeconds(10)); }
+        try
+        {
+            if (warning is not null && await Task.WhenAny(ready.Task, warning).WaitAsync(TimeSpan.FromSeconds(10)) == warning)
+                throw new Xunit.Sdk.XunitException(string.Join("; ", await warning));
+            return await ready.Task.WaitAsync(TimeSpan.FromSeconds(10));
+        }
         finally { image.PropertyChanged -= Changed; }
     }
 

@@ -3,6 +3,8 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
+using Avalonia.Styling;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -16,6 +18,44 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class AdornerHelperTests
 {
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Local_Targets_Inherit_The_Surface_Theme_And_Release_It_When_Removed(bool floating)
+    {
+        Border surface = new() { Width = 240, Height = 180 };
+        Window window = new() { Width = 400, Height = 300, Content = surface };
+        ControlTheme theme = new(typeof(DockTarget));
+        theme.Setters.Add(new Setter(TemplatedControl.TemplateProperty, new FuncControlTemplate((_, scope) =>
+        {
+            Border selector = new() { Width = 40, Height = 40 };
+            Panel indicator = new();
+            DockProperties.SetIndicatorDockOperation(selector, DockOperation.OuterLeft);
+            DockProperties.SetIndicatorDockOperation(indicator, DockOperation.OuterLeft);
+            scope.Register("PART_OuterLeftSelector", selector);
+            scope.Register("PART_OuterLeftIndicator", indicator);
+            return new Panel { Children = { indicator, selector } };
+        })));
+        DockTarget.SetTargetTheme(window, theme);
+        AdornerHelper<DockTarget> helper = new(floating);
+        try
+        {
+            window.Show(); window.UpdateLayout();
+            Assert.Same(theme, DockTarget.GetTargetTheme(surface));
+            helper.AddAdorner(surface, false);
+            Dispatcher.UIThread.RunJobs(); window.UpdateLayout();
+            DockTarget target = Assert.IsType<DockTarget>(helper.Adorner);
+            target.UpdateLayout();
+            Assert.Same(theme, target.Theme);
+            Assert.NotNull(target.GetSelector(DockOperation.OuterLeft));
+            helper.RemoveAdorner(surface);
+            Assert.Null(target.Theme);
+            DockTarget.SetTargetTheme(window, null);
+            Assert.Null(DockTarget.GetTargetTheme(surface));
+        }
+        finally { helper.RemoveAdorner(surface); window.Close(); Dispatcher.UIThread.RunJobs(); }
+    }
+
     [AvaloniaFact]
     public void AddRemove_Reuses_Same_Instance()
     {

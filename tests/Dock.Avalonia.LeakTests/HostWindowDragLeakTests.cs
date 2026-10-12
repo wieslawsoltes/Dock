@@ -1,6 +1,8 @@
 using System;
-using System.Reflection;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Headless;
+using Avalonia.Input;
 using Avalonia.Themes.Fluent;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
@@ -8,6 +10,7 @@ using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 using Xunit;
 using static Dock.Avalonia.LeakTests.LeakTestCaseHelpers;
 using static Dock.Avalonia.LeakTests.LeakTestHelpers;
@@ -39,6 +42,8 @@ public class HostWindowDragLeakTests
             {
                 Window = dockWindow,
                 ToolChromeControlsWholeWindow = true,
+                Width = 400,
+                Height = 300,
                 Content = new Border()
             };
             dockWindow.Host = window;
@@ -51,9 +56,10 @@ public class HostWindowDragLeakTests
             window.UpdateLayout();
             DrainDispatcher();
 
-            var moveDrag = typeof(HostWindow).GetMethod("MoveDrag", BindingFlags.Instance | BindingFlags.NonPublic);
-            Assert.NotNull(moveDrag);
-            moveDrag!.Invoke(window, [null]);
+            window.PointerPressed += (sender, args) =>
+                Assert.False(((HostWindow)sender!).TryBeginMoveDrag(args, WindowDragDockScope.FullWindow));
+            window.MouseDown(new Point(10, 10), MouseButton.Left);
+            window.MouseUp(new Point(10, 10), MouseButton.Left);
             DrainDispatcher();
 
             window.Window = null;

@@ -27,6 +27,7 @@ public class ToolChromeControl : ContentControl
     private HostWindow? _attachedWindow;
     private WindowDragHelper? _windowDragHelper;
     private Button? _maximizeRestoreButton;
+    private readonly ToolMenuLifetime _menuLifetime = new();
 
     /// <summary>
     /// Define <see cref="Title"/> property.
@@ -201,6 +202,7 @@ public class ToolChromeControl : ContentControl
     {
         base.OnAttachedToVisualTree(e);
         AttachToWindow();
+        _menuLifetime.Attach();
     }
 
     /// <inheritdoc/>
@@ -216,6 +218,7 @@ public class ToolChromeControl : ContentControl
         }
 
         DetachFromWindow();
+        _menuLifetime.Detach();
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -245,6 +248,7 @@ public class ToolChromeControl : ContentControl
 
         Grip = e.NameScope.Find<Control>("PART_Grip");
         CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
+        _menuLifetime.SetButton(e.NameScope.Find<Button>("PART_MenuButton"));
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
 
         AttachToWindow();

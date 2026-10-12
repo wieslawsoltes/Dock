@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Contract;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
@@ -67,6 +68,18 @@ internal abstract class DockManagerState : IDockManagerState
     }
 
     protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockingService.ResolveGlobalTargetDock(dropControl);
+
+    protected void UpdateAdornerGeometry() => LocalAdornerHelper.UpdateGeometry();
+
+    protected bool IsLocalTargetAvailable(Point point, DragAction action, Visual relativeTo, DockOperationHandler validate)
+    {
+        if (validate(point, DockOperation.Fill, action, relativeTo)) return true;
+        return DropControl?.DataContext is IDockable { Factory: IDockOuterSplitPolicy } &&
+            (validate(point, DockOperation.OuterLeft, action, relativeTo) ||
+             validate(point, DockOperation.OuterTop, action, relativeTo) ||
+             validate(point, DockOperation.OuterRight, action, relativeTo) ||
+             validate(point, DockOperation.OuterBottom, action, relativeTo));
+    }
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {

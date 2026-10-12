@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -95,5 +97,88 @@ public class DockTargetTests
         target.AddSelectorPublic("none", scope);
 
         Assert.Empty(target.SelectorOps);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(DockOperation.Fill, "Center")]
+    [InlineData(DockOperation.OuterLeft, "OuterLeft")]
+    [InlineData(DockOperation.OuterTop, "OuterTop")]
+    [InlineData(DockOperation.OuterRight, "OuterRight")]
+    [InlineData(DockOperation.OuterBottom, "OuterBottom")]
+    public void Restoring_The_Same_Template_Before_Layout_Restores_Selector_Hit_Testing(DockOperation operation, string part)
+    {
+        DockTarget target = new();
+        Control selector = new Border { Width = 50, Height = 50 };
+        Control indicator = new Panel { IsHitTestVisible = false };
+        DockProperties.SetIndicatorDockOperation(selector, operation);
+        DockProperties.SetIndicatorDockOperation(indicator, operation);
+        IControlTemplate template = new FuncControlTemplate((_, scope) =>
+        {
+            scope.Register("PART_" + part + "Selector", selector);
+            scope.Register("PART_" + part + "Indicator", indicator);
+            return new Panel { Children = { indicator, selector } };
+        });
+        target.Template = template;
+        Window window = new() { Width = 300, Height = 200, Content = target };
+        try
+        {
+            window.Show(); window.UpdateLayout();
+            Assert.Same(selector, target.GetSelector(operation));
+            target.Template = null;
+            Assert.Null(target.GetSelector(operation));
+            GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
+            target.Template = template;
+            window.UpdateLayout();
+            Assert.Same(selector, target.GetSelector(operation));
+            Point center = selector.TranslatePoint(new Point(25, 25), target)!.Value;
+            Assert.Equal(operation, target.GetDockOperation(center, target, target, DragAction.Move, (_, _, _, _) => true));
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Selectors_Use_Registered_Operations_And_Retemplating_Discards_Removed_Parts(bool global)
+    {
+        DockTargetBase target = global ? new TestGlobalDockTarget() : new TestDockTarget();
+        Control selector = new Border { Width = 50, Height = 50 };
+        Control indicator = new Panel { IsHitTestVisible = false };
+        DockProperties.SetIndicatorDockOperation(selector, DockOperation.Right);
+        DockProperties.SetIndicatorDockOperation(indicator, DockOperation.Right);
+        target.Template = new FuncControlTemplate((_, scope) =>
+        {
+            scope.Register("PART_LeftSelector", selector);
+            scope.Register("PART_LeftIndicator", indicator);
+            return new Panel { Children = { indicator, selector } };
+        });
+        Window window = new() { Width = 300, Height = 200, Content = target };
+        try
+        {
+            window.Show(); window.UpdateLayout();
+            Assert.Same(selector, target.GetSelector(DockOperation.Right));
+            Assert.Null(target.GetSelector(DockOperation.Left));
+            Point center = selector.TranslatePoint(new Point(25, 25), target)!.Value;
+            Assert.Equal(DockOperation.Right, target.GetDockOperation(center, target, target, DragAction.Move, (_, _, _, _) => true));
+            selector.IsVisible = false;
+            Assert.Same(selector, target.GetSelector(DockOperation.Right));
+            selector.IsVisible = true;
+
+            target.Template = new FuncControlTemplate((_, _) => new Border());
+            window.UpdateLayout();
+            Assert.Null(target.GetSelector(DockOperation.Right));
+            Assert.Empty(global ? ((TestGlobalDockTarget)target).IndicatorOps : ((TestDockTarget)target).IndicatorOps);
+            Assert.Equal(global ? DockOperation.None : DockOperation.Window,
+                target.GetDockOperation(center, target, target, DragAction.Move, (_, _, _, _) => true));
+
+            NameScope scope = new();
+            scope.Register("custom", selector);
+            if (global) ((TestGlobalDockTarget)target).AddSelectorPublic("custom", scope);
+            else ((TestDockTarget)target).AddSelectorPublic("custom", scope);
+            Assert.Same(selector, target.GetSelector(DockOperation.Right));
+            target.Template = null;
+            Assert.Null(target.GetSelector(DockOperation.Right));
+        }
+        finally { window.Close(); }
     }
 }

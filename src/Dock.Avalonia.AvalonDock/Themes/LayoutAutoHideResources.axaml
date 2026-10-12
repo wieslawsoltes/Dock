@@ -1,6 +1,37 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:models="using:Dock.Model.Controls"
+                    xmlns:infrastructure="using:AvalonDock.Infrastructure"
                     xmlns:controls="using:AvalonDock.Controls">
+  <ControlTemplate x:Key="AvalonDockPinnedLayout" TargetType="PinnedDockControl" x:DataType="models:IRootDock">
+    <Grid x:Name="PART_PinnedDockGrid" FlowDirection="LeftToRight"
+          IsVisible="{Binding !!PinnedDock?.VisibleDockables?.Count, TargetNullValue={x:False}, FallbackValue={x:False}}">
+      <DeferredContentControl x:Name="PART_PinnedDock" Content="{Binding PinnedDock}"
+                              FlowDirection="{TemplateBinding FlowDirection}">
+        <DeferredContentControl.Styles>
+          <Style Selector="ToolDockControl">
+            <Setter Property="Background">
+              <MultiBinding Converter="{x:Static EitherNotNullConverter.Instance}">
+                <Binding Path="$parent[Window].Background" />
+                <Binding Path="$parent[Window].TransparencyBackgroundFallback" />
+              </MultiBinding>
+            </Setter>
+          </Style>
+          <Style Selector="ToolControl">
+            <Setter Property="IsHitTestVisible" Value="{Binding !$parent[DockControl].IsDraggingDock}" />
+          </Style>
+        </DeferredContentControl.Styles>
+      </DeferredContentControl>
+      <controls:LayoutGridResizerControl x:Name="PART_PinnedDockSplitter" Background="Transparent"
+          infrastructure:LayoutAutoHideResize.Model="{Binding PinnedDock.ActiveDockable, Converter={StaticResource AvalonDockLayoutContent}}"
+          infrastructure:LayoutAutoHideResize.Preview="{Binding #PART_PinnedDockResizePreview}" />
+      <Canvas Grid.RowSpan="3" Grid.ColumnSpan="3" IsHitTestVisible="False" ZIndex="1">
+        <Border x:Name="PART_PinnedDockResizePreview" IsVisible="False"
+                Background="{Binding #PART_PinnedDockSplitter.BackgroundWhileDragging}"
+                Opacity="{Binding #PART_PinnedDockSplitter.OpacityWhileDragging}" />
+      </Canvas>
+    </Grid>
+  </ControlTemplate>
   <ControlTheme x:Key="{x:Type controls:LayoutAutoHideWindowControl}" TargetType="controls:LayoutAutoHideWindowControl"
                 x:DataType="controls:LayoutAutoHideWindowControl">
     <Setter Property="Template">

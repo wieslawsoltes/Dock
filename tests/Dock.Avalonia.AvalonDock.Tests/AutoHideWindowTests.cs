@@ -238,7 +238,7 @@ public class AutoHideWindowTests
         LayoutAnchorable tool = workspace.Tool();
         tool.AutoHideWidth = 230;
         workspace.Show(tool);
-        GridSplitter splitter = workspace.Manager.GetVisualDescendants().OfType<GridSplitter>()
+        LayoutGridResizerControl splitter = workspace.Manager.GetVisualDescendants().OfType<LayoutGridResizerControl>()
             .Single(control => control.Name == "PART_PinnedDockSplitter" && control.IsEffectivelyVisible);
         Assert.NotNull(splitter.FindAncestorOfType<PinnedDockControl>());
         Point start = workspace.Center(splitter);

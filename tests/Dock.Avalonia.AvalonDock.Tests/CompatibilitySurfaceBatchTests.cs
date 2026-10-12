@@ -193,7 +193,7 @@ public class CompatibilitySurfaceBatchTests
         try
         {
             window.Show(); Update();
-            LayoutGridResizerControl splitter = Assert.Single(manager.GetVisualDescendants().OfType<LayoutGridResizerControl>());
+            LayoutGridResizerControl splitter = Assert.Single(manager.GetVisualDescendants().OfType<LayoutGridResizerControl>(), control => control.IsEffectivelyVisible);
             splitter.PreviewResize = true;
             Point start = splitter.TranslatePoint(new Point(splitter.Bounds.Width / 2, splitter.Bounds.Height / 2), window)!.Value;
             Point end = start + (vertical ? new Vector(0, 24) : new Vector(24, 0));

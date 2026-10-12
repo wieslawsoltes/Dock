@@ -52,7 +52,7 @@ internal static class AutoSizingProbe
             if (Length(first) != GridLength.Auto || !ReferenceEquals(content, first.Children[0].Content))
                 throw new Exception("Packaged XML restoration lost Auto or its content identity.");
             Check(view, natural + 60);
-            ProportionalStackPanelSplitter splitter = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().Single();
+            ProportionalStackPanelSplitter splitter = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().Single(control => control.IsEffectivelyVisible);
             Point start = splitter.TranslatePoint(new Point(splitter.Bounds.Width / 2, splitter.Bounds.Height / 2), window)!.Value;
             Vector delta = horizontal ? new Vector(40, 0) : new Vector(0, 40);
             window.MouseDown(start, MouseButton.Left); window.MouseMove(start + delta);

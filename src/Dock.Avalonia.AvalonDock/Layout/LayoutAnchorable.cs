@@ -24,22 +24,66 @@ public class LayoutAnchorable : LayoutContent
     /// <summary>Creates an anchorable tool.</summary>
     public LayoutAnchorable() : this(new Tool { CanClose = false }) { }
     internal LayoutAnchorable(Tool model, LayoutModelContext? context = null) : base(model, context) { }
-    /// <summary>Gets or sets the auto-hide popup width.</summary>
+    /// <summary>Gets or sets the auto-hide popup width, clamped to <see cref="AutoHideMinWidth"/> when assigned.</summary>
     public double AutoHideWidth
     {
-        get => DockModel.PinnedBounds?.Width ?? 0;
-        set { DockModel.PinnedBounds = new DockRect(0, 0, value, AutoHideHeight); RaisePropertyChanged(); }
+        get => GetAutoHideSize().Width;
+        set
+        {
+            if (AutoHideWidth == value) return;
+            RaisePropertyChanging();
+            DockModel.PinnedBounds = new DockRect(0, 0, Math.Max(value, AutoHideMinWidth), AutoHideHeight);
+            RaisePropertyChanged();
+        }
     }
-    /// <summary>Gets or sets the auto-hide popup height.</summary>
+    /// <summary>Gets or sets the auto-hide popup height, clamped to <see cref="AutoHideMinHeight"/> when assigned.</summary>
     public double AutoHideHeight
     {
-        get => DockModel.PinnedBounds?.Height ?? 0;
-        set { DockModel.PinnedBounds = new DockRect(0, 0, AutoHideWidth, value); RaisePropertyChanged(); }
+        get => GetAutoHideSize().Height;
+        set
+        {
+            if (AutoHideHeight == value) return;
+            RaisePropertyChanging();
+            DockModel.PinnedBounds = new DockRect(0, 0, AutoHideWidth, Math.Max(value, AutoHideMinHeight));
+            RaisePropertyChanged();
+        }
     }
-    /// <summary>Gets or sets the minimum auto-hide width.</summary>
-    public double AutoHideMinWidth { get => _autoHideMinWidth; set => SetField(ref _autoHideMinWidth, value); }
-    /// <summary>Gets or sets the minimum auto-hide height.</summary>
-    public double AutoHideMinHeight { get => _autoHideMinHeight; set => SetField(ref _autoHideMinHeight, value); }
+    /// <summary>Gets or sets the minimum auto-hide width. Defaults to 100; negative values are rejected.</summary>
+    public double AutoHideMinWidth
+    {
+        get => _autoHideMinWidth;
+        set
+        {
+            if (_autoHideMinWidth == value) return;
+            RaisePropertyChanging();
+            if (value < 0) throw new ArgumentException("value");
+            _autoHideMinWidth = value;
+            RaisePropertyChanged();
+        }
+    }
+    /// <summary>Gets or sets the minimum auto-hide height. Defaults to 100; negative values are rejected.</summary>
+    public double AutoHideMinHeight
+    {
+        get => _autoHideMinHeight;
+        set
+        {
+            if (_autoHideMinHeight == value) return;
+            RaisePropertyChanging();
+            if (value < 0) throw new ArgumentException("value");
+            _autoHideMinHeight = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private (double Width, double Height) GetAutoHideSize()
+    {
+        DockModel.GetPinnedBounds(out double x, out double y, out double width, out double height);
+        // Dock represents an unset rectangle with four NaNs. Read its raw
+        // dimensions so an explicitly assigned NaN or infinity is not lost
+        // through the native PinnedBounds serialization filter.
+        return double.IsNaN(x) && double.IsNaN(y) && double.IsNaN(width) && double.IsNaN(height)
+            ? (0, 0) : (width, height);
+    }
     /// <summary>Gets or sets whether the tool can be hidden.</summary>
     public bool CanHide { get => _canHide; set => SetField(ref _canHide, value); }
     /// <summary>Gets or sets whether the tool can be auto-hidden.</summary>

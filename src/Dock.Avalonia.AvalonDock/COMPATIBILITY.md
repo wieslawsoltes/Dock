@@ -578,6 +578,13 @@ supported by corresponding implementation and test evidence.
   converter loads local files and compiled assets, including relative base URIs.
 - `LayoutGridResizerControl` uses native proportional splitter input and preview
   commit/cancel behavior. Its brush and opacity settings update an active preview.
+  Auto-hide templates expose the same public control over native pinned bounds:
+  manager width/height settings and tool minima update the displayed host,
+  every edge and right-to-left content supports preview/commit, and interrupted
+  drags cancel. Native inline previews also resize. Size assignments clamp to
+  the current minimum, preserve native bounds, and raise changing/changed events;
+  negative minima are rejected. Headless tests cover input, live settings,
+  cancellation, public model notifications, and retained-model lifetime.
   Ordinary native splitter defaults remain unchanged.
 - `DockingManager.LogicalChildrenPublic` exposes the current Avalonia logical
   collection. Floating `OnStateChanged` overrides synchronize maximization when
@@ -622,9 +629,9 @@ supported by corresponding implementation and test evidence.
   preserve their public group types, item containers, and floating ownership.
   Tests cover all drop directions, docked and floating sources, rejected drops
   without mutation, XML restoration, and redocking.
-- 1217 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
+- 1254 passing cases in `Dock.Avalonia.AvalonDock.Tests` as of this checkpoint.
   Another 18 cases in `Dock.Avalonia.AvalonDock.ImageTests` use Skia with Headless
-  for real image decoding and HTTP/HTTPS transport contracts (1235 total).
+  for real image decoding and HTTP/HTTPS transport contracts (1272 total).
   NuGet pack produces net8.0 and net10.0 assemblies, XML docs, and the package
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
@@ -656,7 +663,9 @@ supported by corresponding implementation and test evidence.
   reproducing WPF's direct pane/splitter visual tree.
 - Finish the rendering and behavior audit of repositioning policies and remaining
   metadata edge cases. Tab icons, tooltips, enablement, and document header
-  visibility are implemented; auto-hide resizer control parity remains open.
+  visibility and public auto-hide resizers are implemented. Auto-hide content
+  and resizers remain composed within Dock's native pinned host; its visual
+  tree and 50-unit remaining-content constraint differ from WPF's popup grid.
 - Full native drag/float/redock and lifecycle coverage, including generic and
   mixed native-created groups, layout detachment and leak checks, and source-driven floating
   content and changes during deserialization.

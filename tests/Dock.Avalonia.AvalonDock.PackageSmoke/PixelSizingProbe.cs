@@ -38,7 +38,7 @@ internal static class PixelSizingProbe
             window.Width += 100; window.Height += 100;
             Update();
             CheckExtent(firstView, 200); CheckExtent(secondView, 300);
-            ProportionalStackPanelSplitter splitter = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().Single();
+            ProportionalStackPanelSplitter splitter = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().Single(control => control.IsEffectivelyVisible);
             if (!splitter.PreviewResize)
                 throw new Exception("The packaged native splitter did not enable preview resizing.");
             Point start = splitter.TranslatePoint(new Point(splitter.Bounds.Width / 2, splitter.Bounds.Height / 2), window)!.Value;

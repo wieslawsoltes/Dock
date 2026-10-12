@@ -86,6 +86,24 @@ internal static class AnchorControlProbe
                 !preview.GetVisualDescendants().Contains(view) || ((ISolidColorBrush)preview.Presenter!.Background!).Color != Colors.Coral ||
                 preview.GetVisualDescendants().OfType<LayoutAnchorableControl>().Single().Tag is not "Packaged preview")
                 throw new Exception("The packaged public auto-hide window did not wrap the native preview or apply its compiled styles.");
+            tool.AutoHideMinWidth = 180;
+            tool.AutoHideWidth = 230;
+            manager.GridSplitterWidth = 14;
+            Update();
+            LayoutGridResizerControl resizer = manager.GetVisualDescendants().OfType<LayoutGridResizerControl>()
+                .Single(control => control.Name == "PART_PinnedDockSplitter" && control.IsEffectivelyVisible);
+            resizer.BackgroundWhileDragging = Brushes.Teal;
+            resizer.OpacityWhileDragging = 0.4;
+            if (resizer.Bounds.Width != 14) throw new Exception("The packaged auto-hide resizer ignored the manager's width.");
+            Point resizeStart = Center(resizer);
+            window.MouseMove(resizeStart); window.MouseDown(resizeStart, MouseButton.Left);
+            window.MouseMove(resizeStart + new Vector(40, 0), RawInputModifiers.LeftMouseButton); Update();
+            Border ghost = manager.GetVisualDescendants().OfType<Border>().Single(control => control.Name == "PART_PinnedDockResizePreview");
+            if (!ghost.IsVisible || ghost.Background != Brushes.Teal || ghost.Opacity != 0.4 || tool.AutoHideWidth != 230)
+                throw new Exception("The packaged auto-hide preview did not retain its brush, opacity, and uncommitted size.");
+            window.MouseUp(resizeStart + new Vector(40, 0), MouseButton.Left); Update();
+            if (ghost.IsVisible || tool.AutoHideWidth != 270)
+                throw new Exception("The packaged auto-hide resizer did not commit the native pinned width on release.");
             manager.ReplacePreview(null); Update(); manager.ReplacePreview(preview); Update();
             if (manager.PreviewChanges != 3 || !ReferenceEquals(preview.Model, tool) || !preview.GetVisualDescendants().Contains(view))
                 throw new Exception("An external manager could not clear and restore its packaged preview presentation.");

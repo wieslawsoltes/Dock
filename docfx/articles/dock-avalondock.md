@@ -845,8 +845,31 @@ Derived managers can override `OnLeftSidePanelChanged`, `OnTopSidePanelChanged`,
 The manager creates its readonly `AutoHideWindow` when loaded. This
 `LayoutAutoHideWindowControl` wraps Dock's existing preview; `Model` identifies
 the current `LayoutAnchorable` and becomes null when the preview closes. The
-native preview still owns content placement and splitter resizing. The public
+native preview still owns content placement and pinned bounds. The public
 control hosts the existing `LayoutAnchorableControl` and `LayoutItem.View`.
+
+The native auto-hide host presents `LayoutGridResizerControl`. Manager
+`GridSplitterWidth` and `GridSplitterHeight` size its horizontal and vertical
+resize axes, including runtime changes; `NaN` uses six. The tool's
+`AutoHideMinWidth` and `AutoHideMinHeight` default to 100 and update the native
+content constraints. Size assignments clamp to the current minimum and raise
+changing/changed notifications. Negative minima throw `ArgumentException`;
+changing a minimum leaves the stored requested size intact.
+
+Dragging displays the public resizer's brush and opacity and commits
+`AutoHideWidth` or `AutoHideHeight` to Dock's existing pinned bounds on release.
+Escape, capture loss, disabling resizing, switching tools, replacing the layout,
+and detachment discard an unfinished drag. All four edges, right-to-left
+content, and native inline previews are supported. The native layout reserves
+50 units for remaining content. The resizer sits beside the public preview
+content in `PinnedDockControl`, so target it directly or through the manager:
+
+```xml
+<Style Selector="LayoutGridResizerControl" x:DataType="LayoutGridResizerControl">
+  <Setter Property="BackgroundWhileDragging" Value="Teal" />
+  <Setter Property="OpacityWhileDragging" Value="0.4" />
+</Style>
+```
 
 `AutoHideWindowClosingTimer` specifies the idle closing delay in milliseconds
 (1500 by default; negative values coerce to 1500). The preview checks for idle
@@ -1405,7 +1428,8 @@ The adapter presents `LayoutGridResizerControl`, derived from Dock's native
 the preview. The defaults are black and 0.5; use opacity between zero and one.
 Changes also update an open drag preview. Both XML namespace forms
 are supported. Ordinary native Dock splitters retain their accent resource and
-opacity of one. Auto-hide previews use a separate native grid splitter.
+opacity of one. Auto-hide previews also expose this public resizer, using
+Dock's pinned layout and bounds instead of proportional pane dimensions.
 
 Derived positionable groups can override `OnDockWidthChanged()` and
 `OnDockHeightChanged()`. The hooks run after property-changing and property-changed
@@ -2141,7 +2165,7 @@ flowchart TB
         GridControls["Public split-container grids<br/>Live model, orientation, and length policies"]
         PaneControls["Public pane controls<br/>Live model, selection, and manager ControlThemes"]
         Anchors["Public auto-hide side, group, and anchor controls<br/>Manager templates and preview gestures"]
-        AutoHide["LayoutAutoHideWindowControl<br/>Preview model, content theme, and idle closing"]
+        AutoHide["LayoutAutoHideWindowControl and LayoutGridResizerControl<br/>Preview, constrained resizing, and idle closing"]
         ContentControls["LayoutDocumentControl / LayoutAnchorableControl<br/>Model, LayoutItem, and existing View"]
         TabPanels["DocumentPaneTabPanel / AnchorablePaneTabPanel<br/>Natural widths, compression, and overflow selection"]
         Tabs["LayoutDocumentTabItem / LayoutAnchorableTabItem<br/>Existing items, header templates, and custom row input"]
@@ -2186,7 +2210,7 @@ flowchart TB
     Anchors -->|Pinned reorder and preview| Factory
     Manager -->|AutoHideWindow and closing delay| AutoHide
     AutoHide --> ContentControls
-    AutoHide -->|Observe preview and close through Dock| Factory
+    AutoHide -->|Observe preview, commit pinned bounds, and close through Dock| Factory
     Controls --> Anchors
     PaneControls --> ContentControls
     PaneControls --> Tabs

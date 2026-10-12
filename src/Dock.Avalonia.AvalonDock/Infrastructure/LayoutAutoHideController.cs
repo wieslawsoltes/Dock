@@ -1,10 +1,10 @@
 using System;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using AvalonDock.Layout;
+using AvalonDock.Controls;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
@@ -71,7 +71,8 @@ internal sealed class LayoutAutoHideController
 
     private void DragStarted(object? sender, VectorEventArgs args)
     {
-        if (args.Source is GridSplitter splitter && splitter.FindAncestorOfType<PinnedDockControl>() is { } preview
+        if (args.Source is LayoutGridResizerControl resizer && !LayoutAutoHideResize.IsResizing(resizer)) return;
+        if (args.Source is Thumb splitter && splitter.FindAncestorOfType<PinnedDockControl>() is { } preview
             && ReferenceEquals(preview.DataContext, _layout?.DockModel)) _closing.IsResizing = true;
     }
     private void DragCompleted(object? sender, VectorEventArgs args)

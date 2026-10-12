@@ -155,7 +155,7 @@ public class LayoutSizeHookTests
     public void Native_Splitter_Preview_Invokes_The_Hook_Only_When_The_Length_Is_Committed(bool vertical)
     {
         using Workspace workspace = new(vertical);
-        ProportionalStackPanelSplitter splitter = workspace.Manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().Single();
+        ProportionalStackPanelSplitter splitter = workspace.Manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().Single(control => control.IsEffectivelyVisible);
         Point start = splitter.TranslatePoint(new Point(splitter.Bounds.Width / 2, splitter.Bounds.Height / 2), workspace.Window)!.Value;
         Point end = start + (vertical ? new Vector(0, 35) : new Vector(35, 0));
         workspace.Window.MouseMove(start);

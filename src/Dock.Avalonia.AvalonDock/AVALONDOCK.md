@@ -484,7 +484,23 @@ closing delay. An active tool, pointer over the preview or anchor, or native
 splitter drag keeps it open; interaction at the deadline restarts monitoring.
 Dock's `KeepPinnedDockableVisible` is also respected. Changing the delay updates
 a pending deadline. Native close, unpin, hide, float, layout replacement, and
-manager detachment clear `Model`. Dock retains the content view and resizing.
+manager detachment clear `Model`. Dock retains the content view and pinned bounds.
+
+Auto-hide previews use `LayoutGridResizerControl` in the native pinned host.
+`GridSplitterWidth` sizes the left/right resizer and `GridSplitterHeight` sizes
+the top/bottom resizer; changes apply immediately, with six as the `NaN`
+fallback. `AutoHideMinWidth` and `AutoHideMinHeight` default to 100 and constrain
+the native content. Assigning `AutoHideWidth` or `AutoHideHeight` clamps the value
+to its current minimum, with changing/changed notifications; negative minima
+throw `ArgumentException`. Changing a minimum does not rewrite the stored size.
+
+Drag previews use `BackgroundWhileDragging` and `OpacityWhileDragging` and
+commit the size on release. Escape, lost capture, disabled resizing, model or
+layout replacement, and detachment discard an unfinished drag. The behavior
+supports every edge, right-to-left content, and Dock's inline preview mode.
+Native layout reserves 50 units for the remaining content area. The resizer is
+a sibling of the public preview content in `PinnedDockControl`, so styles for
+it should target `LayoutGridResizerControl` directly or through the manager.
 
 The preview is created when the manager loads. Derived managers can use
 `SetAutoHideWindow`, `OnAutoHideWindowChanged`, and

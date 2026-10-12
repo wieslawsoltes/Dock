@@ -914,7 +914,8 @@ static void AssertDocumentMenu(DockingManager manager)
 
 static void AssertSplitters(DockingManager manager)
 {
-    ProportionalStackPanelSplitter[] splitters = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>().ToArray();
+    ProportionalStackPanelSplitter[] splitters = manager.GetVisualDescendants().OfType<ProportionalStackPanelSplitter>()
+        .Where(splitter => splitter.DataContext is Dock.Model.Controls.IProportionalDockSplitter).ToArray();
     if (splitters.Length == 0) throw new Exception("The package consumer did not render a native splitter.");
     foreach (ProportionalStackPanelSplitter splitter in splitters)
     {

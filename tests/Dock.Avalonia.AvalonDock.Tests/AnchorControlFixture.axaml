@@ -25,6 +25,12 @@
     </ControlTemplate>
   </Window.Resources>
   <Window.Styles>
+    <Style Selector="LayoutGridResizerControl" x:DataType="LayoutGridResizerControl">
+      <Setter Property="BackgroundWhileDragging" Value="Teal" />
+    </Style>
+    <Style Selector="ad|LayoutGridResizerControl" x:DataType="ad:LayoutGridResizerControl">
+      <Setter Property="OpacityWhileDragging" Value="0.35" />
+    </Style>
     <Style Selector="LayoutAutoHideWindowControl" x:DataType="LayoutAutoHideWindowControl">
       <Setter Property="Tag" Value="{Binding $self.Model}" />
     </Style>

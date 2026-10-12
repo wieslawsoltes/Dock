@@ -41,6 +41,28 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":preview")]
 public abstract class DockTargetBase : TemplatedControl, IDockTarget
 {
+    /// <summary>Defines the optional external presentation property.</summary>
+    public static readonly DirectProperty<DockTargetBase, IDockTargetPresentation?> PresentationProperty =
+        AvaloniaProperty.RegisterDirect<DockTargetBase, IDockTargetPresentation?>(nameof(Presentation),
+            target => target.Presentation, (target, value) => target.Presentation = value);
+
+    private IDockTargetPresentation? _presentation;
+
+    /// <summary>Gets or sets the presentation used instead of the target's template selectors.</summary>
+    /// <remarks>Null uses the normal template. Replacing a presentation clears its visual state.
+    /// The owner must clear this property when an external template or window is discarded.</remarks>
+    public IDockTargetPresentation? Presentation
+    {
+        get => _presentation;
+        set => SetAndRaise(PresentationProperty, ref _presentation, value);
+    }
+
+    private static ReadOnlySpan<DockOperation> PresentationOperations =>
+    [
+        DockOperation.Top, DockOperation.Bottom, DockOperation.Left, DockOperation.Right, DockOperation.Fill,
+        DockOperation.OuterLeft, DockOperation.OuterTop, DockOperation.OuterRight, DockOperation.OuterBottom
+    ];
+
     /// <summary>Defines the projected docking rectangle's x property.</summary>
     public static readonly DirectProperty<DockTargetBase, double> PreviewXProperty =
         AvaloniaProperty.RegisterDirect<DockTargetBase, double>(nameof(PreviewX), target => target.PreviewX);
@@ -225,15 +247,16 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// </summary>
     protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new();
 
-    /// <summary>Gets the selector registered for a docking operation in the current template.</summary>
+    /// <summary>Gets the selector supplied by the current presentation or template for a docking operation.</summary>
     /// <param name="operation">The operation assigned to the selector by the template.</param>
-    /// <returns>The registered selector, or null when the template has no selector for the operation.</returns>
+    /// <returns>The registered selector, or null when the presentation or template omits the operation.</returns>
     /// <remarks>The selector may be hidden by docking policy. This method does not apply the template
     /// or validate a drop. Template part names identify controls; their attached dock operations define
     /// the mapping used by both this method and native hit testing.</remarks>
     public Control? GetSelector(DockOperation operation)
     {
         VerifyAccess();
+        if (Presentation is { } presentation) return presentation.GetSelector(operation);
         EnsureTemplateRegistrations();
         return SelectorsOperations.GetValueOrDefault(operation);
     }
@@ -311,6 +334,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
+        if (change.Property == PresentationProperty)
+        {
+            ResetPresentation(change.GetOldValue<IDockTargetPresentation?>());
+            foreach (Control indicator in IndicatorOperations.Values) indicator.Opacity = 0;
+            foreach (Control selector in SelectorsOperations.Values) selector.Opacity = 0;
+        }
         if (change.Property == TemplateProperty)
         {
             _registrationsInvalid = true;
@@ -383,9 +412,58 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         // Register them now so this hover filters the first rendered frame too.
         ApplyTemplate();
         EnsureTemplateRegistrations();
+        if (Presentation is { } presentation)
+            return GetPresentedDockOperation(presentation, point, dropControl, relativeTo, dragAction, validate, visible);
         return ShowIndicatorsOnly 
             ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 
             : GetDockOperationFromSelectors(point, dropControl, relativeTo, dragAction, validate, visible);
+    }
+
+    private DockOperation GetPresentedDockOperation(IDockTargetPresentation presentation,
+        Point point, Control dropControl, Visual relativeTo, DragAction dragAction,
+        DockOperationHandler validate, DockOperationHandler? visible)
+    {
+        DockOperation result = DefaultDockOperation;
+        uint visibleOperations = 0;
+        ReadOnlySpan<DockOperation> operations = PresentationOperations;
+        DockOperation indicated = ShowIndicatorsOnly ? DockProperties.GetIndicatorDockOperation(dropControl) : DockOperation.None;
+        for (int index = 0; index < operations.Length; index++)
+        {
+            DockOperation operation = operations[index];
+            Control? selector = presentation.GetSelector(operation);
+            if (!ReferenceEquals(Presentation, presentation)) return DefaultDockOperation;
+            if (selector is null || !selector.IsEffectivelyVisible || !IsOperationEnabled(operation)) continue;
+            if (ShowIndicatorsOnly && operation != indicated) continue;
+            bool allowed = visible?.Invoke(point, operation, dragAction, relativeTo) ?? true;
+            if (!ReferenceEquals(Presentation, presentation)) return DefaultDockOperation;
+            if (!allowed) continue;
+            if (ShowIndicatorsOnly)
+            {
+                if (TranslateToSelector(relativeTo, point, dropControl).HasValue) result = operation;
+                continue;
+            }
+
+            visibleOperations |= 1u << index;
+            Point? selectorPoint = TranslateToSelector(relativeTo, point, selector);
+            if (selectorPoint is { } position && IsSelectorHit(selector, position) &&
+                IsWithinTarget(point, relativeTo, dropControl, operation) && validate(point, operation, dragAction, relativeTo))
+                result = operation;
+            if (!ReferenceEquals(Presentation, presentation)) return DefaultDockOperation;
+        }
+
+        for (int index = 0; index < operations.Length; index++)
+        {
+            presentation.SetOperationState(operations[index], (visibleOperations & (1u << index)) != 0,
+                operations[index] == result);
+            if (!ReferenceEquals(Presentation, presentation)) return DefaultDockOperation;
+        }
+        return result;
+    }
+
+    private static void ResetPresentation(IDockTargetPresentation? presentation)
+    {
+        if (presentation is null) return;
+        foreach (DockOperation operation in PresentationOperations) presentation.SetOperationState(operation, false, false);
     }
 
     private DockOperation GetDockOperationIndicatorsOnly(
@@ -483,6 +561,12 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// <returns>True if the control is a selector.</returns>
     protected bool IsDockTargetSelector(Control selector)
     {
+        if (Presentation is { } presentation)
+        {
+            foreach (DockOperation operation in PresentationOperations)
+                if (ReferenceEquals(presentation.GetSelector(operation), selector)) return true;
+            return false;
+        }
         foreach (var kvp in SelectorsOperations)
         {
             if (kvp.Value == selector)
@@ -654,6 +738,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
     void IDockTarget.Reset()
     {
+        ResetPresentation(Presentation);
         SetPreviewBounds(null);
         foreach (var control in IndicatorOperations.Values.Concat(SelectorsOperations.Values))
         {

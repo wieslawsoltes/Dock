@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.LogicalTree;
 using Avalonia.Styling;
@@ -335,10 +336,20 @@ public class SourceContainerTests
     public void A_Retained_Header_That_Waited_For_Registration_Releases_The_Closed_Workspace()
     {
         var (header, model, manager) = CreateClosedPendingHeader();
-        Dispatcher.UIThread.RunJobs();
-        for (int i = 0; i < 3; i++) { GC.Collect(); GC.WaitForPendingFinalizers(); }
+        for (int i = 0; i < 3; i++)
+        {
+            Dispatcher.UIThread.RunJobs();
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
         Assert.Null(header.Content);
         Assert.Null(header.ContentTemplate);
+        Assert.Null(header.Child);
+        Assert.Null(header.Parent);
+        Assert.Null(header.GetVisualParent());
+        Assert.Null(header.TemplatedParent);
+        Assert.Null(header.DataContext);
         Assert.False(model.TryGetTarget(out _));
         Assert.False(manager.TryGetTarget(out _));
         GC.KeepAlive(header);

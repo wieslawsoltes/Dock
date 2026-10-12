@@ -38,6 +38,43 @@ Required verification before declaring completion:
 Current status: implementation in progress. The checklist above is open until
 supported by corresponding implementation and test evidence.
 
+## Native Dock prerequisites
+
+The shared Dock changes are maintained separately from the AvalonDock facade.
+[PR #1160](https://github.com/wieslawsoltes/Dock/pull/1160) merged the native policies,
+host lifecycle support, sizing hooks, and interaction fixes into the repository's
+default branch, `master`. This branch includes that merge.
+The native projects have no reference to the AvalonDock assembly or namespaces.
+
+| Compatibility requirement | Native Dock support | Work owned by the adapter |
+| --- | --- | --- |
+| Drop restrictions and tool-to-document splits | `IDockDropPolicy`, `IDockSplitPolicy`, native validation and pane creation | Manager identity, floating destination rules, and public pane types |
+| Split beside an enclosing document region | Outer operations and `IDockOuterSplitPolicy`; ordered movement of whole panes/groups | Resolve the public document region and normalize its public hierarchy |
+| Preview/complete operation notifications | `IDockOperationObserver` and disposable operation scopes | Routed AvalonDock events and nested-operation coalescing |
+| Independent tab dragging and reordering | `IDockItemDragPolicy` in native tab/pin input | `CanMove`, `IsEnabled`, and `CanRepositionItems` mapping |
+| Selection distinct from activation | Factory focus and replacement-selection hooks; Avalonia-model `OwnerChanging` | Public selection notifications, activation history, and parent/root projection |
+| Explicit model close and auto-hide operations | Protected close/pin core operations retaining native cancellation and cleanup | AvalonDock command-versus-model capability semantics and return history |
+| Model-aware floating hosts and canceled closure | `IDockWindowHostFactory`, `IHostWindowCloseState`, and `IDockWindowClosePolicy` | Typed public hosts and public manager registration |
+| Close a host while retaining its layout | Desktop and managed host policy implementations; managed reentrancy and replacement-host handling | Deferred WPF ordering and public collection semantics |
+| Custom docking overlays | Scoped window factories/themes, enclosing preview hosts, selector registrations and geometry | AvalonDock overlay types, selector mapping, and public snapshots |
+| Pixel/auto/star sizing and resize previews | Proportional panel hooks, native splitter input, preview properties, pinned minima and custom thumb support | Public grid lengths, normalization, and size notifications |
+| Stable presentation and cleanup | Deferred root presentation, create-button coexistence, hidden-window filtering and tool-menu lifetime fixes | Public templates, layout items, themes, and retained-model subscriptions |
+
+The [native extension guide](https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md)
+documents contract defaults, usage, architecture, and regression coverage.
+Validation is performed in a native-only worktree before reintegration, including
+all model implementations and Avalonia 11 linked controls.
+
+The remaining API inventory and behavior work is still open. Framework-specific
+event arguments, logical trees, Win32 hooks, general resource-URI loading, custom
+XML type reconstruction, and public compatibility callbacks belong to the
+Avalonia/framework or facade boundary. A declaration-only mismatch is not evidence
+of a missing native docking feature. Deferred floating cleanup requires further
+behavioral work, especially removing public model/host registrations independently
+of a canceled host close. Any additional native capability required by that work
+must follow the same separate-PR, merge-to-`master`, then reintegrate workflow.
+
+
 ## Verified implementation
 
 - Native document split targets create `LayoutDocumentPane` for documents and

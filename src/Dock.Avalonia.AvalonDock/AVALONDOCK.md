@@ -1051,6 +1051,13 @@ custom instances can call their own `ReadXml` overrides directly.
 
 ## Architecture
 
+The shared Dock prerequisites are maintained in the native packages and were
+merged through [PR #1160](https://github.com/wieslawsoltes/Dock/pull/1160).
+The facade consumes those extension points after merging `master`; the native
+projects have no dependency on AvalonDock. See the
+[native extension guide](https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md)
+for policy defaults, sizing and host contracts, examples, and regression coverage.
+
 ```mermaid
 flowchart TB
     App["Application XAML and workspace service"]

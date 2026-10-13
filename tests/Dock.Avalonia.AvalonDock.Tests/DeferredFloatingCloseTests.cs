@@ -270,6 +270,9 @@ public class DeferredFloatingCloseTests
         workspace.Host.Close();
         Assert.True(IsClosed(workspace.Host));
         Assert.Null(workspace.Model.DockModel.Parent);
+        Assert.Null(workspace.Model.DockWindow.Host);
+        foreach (LayoutElement child in workspace.Model.Descendents().OfType<LayoutElement>())
+            Assert.Null(child.DockModel.Parent);
         return (workspace.Model, new(workspace.Host));
     }
 
@@ -314,6 +317,9 @@ public class DeferredFloatingCloseTests
             CancelClose = false;
             if (!IsClosed(Host)) Host.Close();
             OwnerRoot.FloatingWindows.Clear();
+            // Reset preserves public parent/root references. Explicitly detach
+            // the disposed workspace's containers and their retained Views.
+            Manager.Layout = new();
             View.Close();
             Pump();
         }

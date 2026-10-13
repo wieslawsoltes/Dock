@@ -313,7 +313,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         if (action != DragAction.Move || _context.SourcePreviewInitialized) return;
         _context.SourcePreviewInitialized = true;
         if (_context.DragControl is { DataContext: IDockable source } dragControl
-            && dragControl.FindAncestorOfType<DockControl>() is { } sourceHost)
+            && DockHelpers.ResolveDockControl(dragControl) is { } sourceHost)
             _context.SourcePreview = DockDragPreviewLayout.TryCreate(DragDockableResolver.Resolve(source), sourceHost);
     }
 
@@ -445,7 +445,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             && _context.DragControl?.DataContext is IDockable dragModel
             && DragDockableResolver.Resolve(dragModel) is { } resolved
             && DropControl is { } previewDropControl
-            && previewDropControl.FindAncestorOfType<DockControl>() is { } previewDockControl)
+            && DockHelpers.ResolveDockControl(previewDropControl) is { } previewDockControl)
         {
             var previewTarget = useGlobalOperation ? ResolveGlobalTargetDock(previewDropControl) : previewDropControl.DataContext as IDockable;
             var proportion = useGlobalOperation ? DockSettings.GlobalDockingProportion : double.NaN;
@@ -479,7 +479,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 {
                     if (CanFloatDockable(sourceDockable))
                     {
-                        var activeDockControl = _context.DragControl.FindAncestorOfType<DockControl>();
+                        var activeDockControl = DockHelpers.ResolveDockControl(_context.DragControl);
                         var factory = activeDockControl?.Layout?.Factory ?? targetDock.Factory;
                         if (activeDockControl is { } active && factory is { })
                         {
@@ -539,8 +539,8 @@ internal class DockControlState : DockManagerState, IDockControlState
                     // If local docking target is invalid, fallback to floating if allowed
                     if (CanFloatDockable(sourceDockable))
                     {
-                        var activeDockControl = _context.DragControl.FindAncestorOfType<DockControl>();
-                        var factory = activeDockControl?.Layout?.Factory ?? DropControl.FindAncestorOfType<DockControl>()?.Layout?.Factory;
+                        var activeDockControl = DockHelpers.ResolveDockControl(_context.DragControl);
+                        var factory = activeDockControl?.Layout?.Factory ?? DockHelpers.ResolveDockControl(DropControl)?.Layout?.Factory;
                         if (activeDockControl is { } active && factory is { })
                         {
                             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
@@ -702,7 +702,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         if (GlobalAdornerHelper.Adorner is DockTargetBase globalAdorner) globalAdorner.SetPreviewBounds(null);
         if (!valid || action != DragAction.Move || _context.DragControl?.DataContext is not IDockable dragModel
             || DragDockableResolver.Resolve(dragModel) is not { } source || DropControl is not { } dropControl
-            || dropControl.FindAncestorOfType<DockControl>() is not { } dockControl)
+            || DockHelpers.ResolveDockControl(dropControl) is not { } dockControl)
             return;
         var target = global ? ResolveGlobalTargetDock(dropControl) : dropControl.DataContext as IDockable;
         var adorner = (global ? GlobalAdornerHelper.Adorner : LocalAdornerHelper.Adorner) as DockTargetBase;

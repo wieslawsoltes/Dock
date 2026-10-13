@@ -173,6 +173,21 @@ owns its resize behavior; the default `GridSplitter` retains native handlers.
 The Fluent layout presenter defers content realization, and the document create
 button remains visible alongside tab-strip extension content.
 
+## External native surfaces
+
+An `IExternalDockSurface` can live in another visual root, including an embedded
+native child. Register it with `DockControl.RegisterExternalDockSurface` when
+attaching it and unregister it when destroying its host. Keep the same live Dock
+models and controls inside the surface; the owning `DockControl` supplies docking
+policy, global targets, previews, and the managed window layer.
+
+Registered visible surfaces are hit tested in screen coordinates before the
+owning dock's content. Tool and document tab drags transfer pointer capture to
+that owner, and source previews include tabs in external roots. Floating target
+adorners use the actual window owner, or the registered dock's window for an
+embedded root, and include both the docking viewport and target bounds. Hidden,
+detached, and unregistered surfaces do not participate in drop hit testing.
+
 ## Regression coverage
 
 The native tests exercise these contracts without an adapter assembly:
@@ -182,7 +197,7 @@ The native tests exercise these contracts without an adapter assembly:
 | Drop, split, and operation scope | `DockDropPolicyTests`, `DockSplitPolicyTests`, `DockOuterSplitTests`, `DockOperationObserverTests` |
 | Host creation, cancellation, and preservation | `DockWindowHostFactoryTests`, `HostExitCancellationTests`, `HostCloseCancellationTests`, `HostWindowClosePolicyTests` |
 | Ownership, selection, and explicit operations | `DockableOwnerTests`, `FactorySelectionPolicyTests`, `FactoryExplicitOperationTests`, `FactoryPinnedRootTests` |
-| Pointer targets and geometry | `TabItemDragPolicyTests`, `OuterWindowDragTests`, `AdornerGeometryTests`, `AdornerWindowFactoryTests` |
+| Pointer targets and geometry | `TabItemDragPolicyTests`, `OuterWindowDragTests`, `AdornerGeometryTests`, `AdornerWindowFactoryTests`, `ExternalNativeDockSurfaceTests` |
 | Sizing and resource lifetime | `ProportionalStackPanelPolicyTests`, `ProportionalStackPanelSplitterSizingTests`, `PinnedDockSizingTests`, `ThemeCommandInteractionLeakTests` |
 
 Run the complete native solution validation with `dotnet build -c Release` and

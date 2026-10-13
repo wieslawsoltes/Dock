@@ -8,6 +8,12 @@ namespace Dock.Avalonia.Contract;
 /// <summary>
 /// Represents an external surface that participates in DockControl drag and drop.
 /// </summary>
+/// <remarks>
+/// Register the surface with its owner before use and unregister when its host is destroyed.
+/// The surface can belong to another visual root, including an embedded native child.
+/// Visible registered surfaces are hit tested in screen coordinates before the owning dock's
+/// content. The owner supplies docking policy, global targets and preview layout.
+/// </remarks>
 public interface IExternalDockSurface
 {
     /// <summary>

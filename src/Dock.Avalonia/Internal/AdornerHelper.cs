@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
+using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
@@ -95,7 +96,9 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             }
         }
 
-        if (TopLevel.GetTopLevel(visual) is not Window root)
+        var root = TopLevel.GetTopLevel(visual) as Window
+            ?? TopLevel.GetTopLevel(DockHelpers.ResolveDockControl(visual)) as Window;
+        if (root is null)
         {
             return;
         }
@@ -113,6 +116,26 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         _window.IsHitTestVisible = true;
         UpdateGeometry();
         _window.Show(root);
+        UpdateGeometry();
+    }
+
+    private static PixelRect ScreenBounds(Visual visual)
+    {
+        var root = visual.GetVisualRoot() as Visual ?? visual;
+        var bounds = new Rect(visual.Bounds.Size);
+        if (visual.TransformToVisual(root) is { } transform) bounds = bounds.TransformToAABB(transform);
+        var first = root.PointToScreen(bounds.TopLeft);
+        var last = root.PointToScreen(bounds.BottomRight);
+        return new PixelRect(Math.Min(first.X, last.X), Math.Min(first.Y, last.Y),
+            Math.Abs(last.X - first.X), Math.Abs(last.Y - first.Y));
+    }
+
+    private static Rect BoundsIn(Visual visual, Visual relative)
+    {
+        if (visual.TransformToVisual(relative) is { } transform)
+            return new Rect(visual.Bounds.Size).TransformToAABB(transform);
+        var screen = ScreenBounds(visual);
+        return new Rect(relative.PointToClient(screen.TopLeft), relative.PointToClient(screen.BottomRight));
     }
 
     private void UpdateFloatingGeometry()
@@ -120,22 +143,22 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         if (_floatingAdornedVisual is not { } visual) return;
         if (_managedLayer is { } layer)
         {
-            var bounds = new Rect(visual.TranslatePoint(default, layer) ?? default, visual.Bounds.Size);
-            layer.ShowOverlay(OverlayKey, _adorner, bounds, true);
+            layer.ShowOverlay(OverlayKey, _adorner, BoundsIn(visual, layer), true);
             return;
         }
         if (_window is null) return;
-        var viewport = visual as DockControl ?? visual.FindAncestorOfType<DockControl>() ?? visual;
-        var origin = visual.TranslatePoint(default, viewport) ?? default;
-        // The proposed pane can extend outside the old target after source collapse.
-        // Keep a full docking viewport as the native surface while the selectors
-        // retain their position and size over the actual target.
-        _window.Position = viewport.PointToScreen(default);
-        _window.Width = viewport.Bounds.Width;
-        _window.Height = viewport.Bounds.Height;
-        _adorner.Width = visual.Bounds.Width;
-        _adorner.Height = visual.Bounds.Height;
-        _adorner.Margin = new Thickness(origin.X, origin.Y, 0, 0);
+        var viewport = DockHelpers.ResolveDockControl(visual) ?? visual;
+        var surface = ScreenBounds(visual);
+        var extent = ScreenBounds(viewport).Union(surface);
+        // A target, its registered owner and the overlay window can each use a
+        // different render scale. Unite physical corners, then use the overlay's DIPs.
+        _window.Position = extent.Position;
+        var scale = _window.RenderScaling;
+        _window.Width = extent.Width / scale;
+        _window.Height = extent.Height / scale;
+        _adorner.Width = surface.Width / scale;
+        _adorner.Height = surface.Height / scale;
+        _adorner.Margin = new Thickness((surface.X - extent.X) / scale, (surface.Y - extent.Y) / scale, 0, 0);
     }
 
     private void AddRegularAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
@@ -313,21 +336,26 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             return;
         }
         Visual? relative = _managedLayer ?? (useFloatingDockAdorner ? TopLevel.GetTopLevel(surface) : host);
-        if (relative is null || host.TransformToVisual(relative) is not { } hostTransform ||
-            surface.TransformToVisual(relative) is not { } surfaceTransform) return;
+        if (relative is null) return;
         _updatingGeometry = true;
         try
         {
-            Rect bounds = new Rect(host.Bounds.Size).TransformToAABB(hostTransform);
-            Rect local = new Rect(surface.Bounds.Size).TransformToAABB(surfaceTransform);
+            Rect bounds = BoundsIn(host, relative);
+            Rect local = BoundsIn(surface, relative);
             target.SetTargetMargin(new Thickness(local.Left - bounds.Left, local.Top - bounds.Top,
                 bounds.Right - local.Right, bounds.Bottom - local.Bottom));
             if (_window is not null)
             {
+                var hostScreen = ScreenBounds(host);
+                var surfaceScreen = ScreenBounds(surface);
                 _adorner.Margin = default;
-                _window.Position = relative.PointToScreen(bounds.TopLeft);
-                _window.Width = target.Width = bounds.Width;
-                _window.Height = target.Height = bounds.Height;
+                _window.Position = hostScreen.Position;
+                var scale = _window.RenderScaling;
+                _window.Width = target.Width = hostScreen.Width / scale;
+                _window.Height = target.Height = hostScreen.Height / scale;
+                target.SetTargetMargin(new Thickness((surfaceScreen.X - hostScreen.X) / scale,
+                    (surfaceScreen.Y - hostScreen.Y) / scale, (hostScreen.Right - surfaceScreen.Right) / scale,
+                    (hostScreen.Bottom - surfaceScreen.Bottom) / scale));
             }
             else if (_managedLayer is not null && _managedBounds != bounds)
             {

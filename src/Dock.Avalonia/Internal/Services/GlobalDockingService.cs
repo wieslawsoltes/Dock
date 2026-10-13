@@ -1,8 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia.Controls;
-using Avalonia.VisualTree;
-using Dock.Avalonia.Controls;
 using Dock.Model.Core;
 using Dock.Model;
 using Dock.Settings;
@@ -22,7 +20,7 @@ internal sealed class GlobalDockingService : IGlobalDockingService
                 return legacyDockable as IDock ?? legacyDockable.Owner as IDock;
             }
 
-            if (dropControl?.FindAncestorOfType<DockControl>()?.Layout?.ActiveDockable is IDock legacyActiveDock)
+            if (DockHelpers.ResolveDockControl(dropControl)?.Layout?.ActiveDockable is IDock legacyActiveDock)
             {
                 return legacyActiveDock;
             }
@@ -35,7 +33,7 @@ internal sealed class GlobalDockingService : IGlobalDockingService
             return ResolveOutermostGlobalTargetDock(dockable) ?? dockable as IDock ?? dockable.Owner as IDock;
         }
 
-        if (dropControl?.FindAncestorOfType<DockControl>()?.Layout?.ActiveDockable is IDock activeDock)
+        if (DockHelpers.ResolveDockControl(dropControl)?.Layout?.ActiveDockable is IDock activeDock)
         {
             return ResolveOutermostGlobalTargetDock(activeDock) ?? activeDock;
         }

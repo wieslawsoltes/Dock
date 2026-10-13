@@ -47,7 +47,7 @@ internal sealed class DockDragPreviewLayout : IDisposable
         if (projection is null) return null;
         var thickness = host.PreviewSplitterThickness;
         ProportionalStackPanelSplitter? liveSplitter = null;
-        foreach (var visual in host.GetVisualDescendants())
+        foreach (var visual in DockHelpers.EnumerateDockVisuals(host))
             if (visual is ProportionalStackPanelSplitter splitter)
             {
                 thickness = splitter.Thickness;
@@ -63,10 +63,10 @@ internal sealed class DockDragPreviewLayout : IDisposable
             _splitter = liveSplitter, _thickness = thickness,
             _scale = LayoutHelper.GetLayoutScale(host), _version = DockDropPreviewService.Fingerprint(root)
         };
-        foreach (var visual in host.GetVisualDescendants())
+        foreach (var visual in DockHelpers.EnumerateDockVisuals(host))
         {
             if (visual is not ProportionalStackPanel panel
-                || !ReferenceEquals(panel.FindAncestorOfType<DockControl>(), host)
+                || !ReferenceEquals(DockHelpers.ResolveDockControl(panel), host)
                 || panel.DataContext is not IProportionalDock model)
                 continue;
             var parentBounds = FindBounds(model, bounds);
@@ -116,7 +116,7 @@ internal sealed class DockDragPreviewLayout : IDisposable
         };
         // Retain ownership and collection order until the drop commits. Normal tab
         // selection lets custom and cached-content templates reveal the remaining item.
-        foreach (var visual in host.GetVisualDescendants())
+        foreach (var visual in DockHelpers.EnumerateDockVisuals(host))
             if (visual is Control control && control is ToolTabStripItem or DocumentTabStripItem
                 && ReferenceEquals(control.DataContext, source))
                 session._visibility.Add(control.SetValue(Visual.IsVisibleProperty, false, BindingPriority.Animation)!);

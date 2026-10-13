@@ -9,6 +9,14 @@ DockSettings.UsePinnedDockWindow = true;
 
 When enabled the `PinnedDockControl` places the preview content inside a lightweight `PinnedDockWindow`. The window follows the host layout and closes automatically when the tool is hidden.
 
+`PinnedDockControl.UsePinnedDockWindow` overrides this setting for an individual
+control or a styled scope. Its default, `null`, follows the global setting.
+Set it to `false` when a custom template supplies its own embedded host; set it
+to `true` to use the configured native or managed window host. Changing or
+clearing the property moves an open preview between these presentations without
+unpinning the tool or changing its stored size. Inline previews stay in their
+template regardless of this setting.
+
 Activation can move between the owner and preview without closing the preview,
 so its editors can receive keyboard focus. Leaving both windows closes the
 preview through the factory. `KeepPinnedDockableVisible` preserves it across

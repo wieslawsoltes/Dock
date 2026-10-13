@@ -152,6 +152,7 @@ The following extension points belong to the Avalonia control layer:
 | `PinnedDockControl.MinimumPinnedWidth` / `MinimumPinnedHeight` | Set finite nonnegative minimum content sizes. Both default to 50. |
 | `PinnedDockControl.MinimumRemainingContentSize` | Set the finite nonnegative minimum region beside an overlay preview. Defaults to 50; custom resizers can set zero and enforce their own limits. Inline layout is unaffected. |
 | `PinnedDockControl.InitializePinnedBoundsOnLayout` | Defaults to true. Set false when a custom resize behavior must retain unset model bounds until it commits. Native splitter resizing still records sizes. |
+| `PinnedDockControl.UsePinnedDockWindow` | Nullable per-control override for the global pinned-window setting. Null follows the global default, false keeps the preview in its template, and true uses the configured native or managed host. Changes update an open preview; inline previews remain in the template. |
 | `ProportionalStackPanelSplitter.PreviewBackground` / `PreviewOpacity` | Customize live resize previews. Defaults retain the accent resource and opacity 1. |
 
 Expanded adorner geometry follows layout and window movement for inline, native

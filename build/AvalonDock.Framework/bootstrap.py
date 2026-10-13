@@ -81,8 +81,10 @@ def main():
         config_core["Packages"] = [item for item in config_core["Packages"] if item["Id"] == "Avalonia"]
         merge_config.write_text(json.dumps(config_core))
         # Use upstream's IL repacking, NuGet dependency merge, signing, and reference-assembly generation.
+        # Its GitHub Actions host appends a build suffix even to a forced version.
+        # This dependency must have the same pinned identity locally and in CI.
         run("dotnet", "run", "--project", "nukebuild/_build.csproj", "--", "--target", "CreateNugetPackages",
-            "--skip", "--force-nuget-version", version)
+            "--skip", "--host", "terminal", "--force-nuget-version", version)
         built_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=checkout, text=True).strip()
         changed_files = set(subprocess.check_output(["git", "diff", "HEAD", "--name-only"], cwd=checkout, text=True).splitlines())
         changed_files.update(subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard"], cwd=checkout, text=True).splitlines())

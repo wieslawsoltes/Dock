@@ -19,16 +19,40 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     private ILayoutContainer? _changingParent;
     private ILayoutRoot? _changingRoot;
     private bool _hasParentChange;
+    private AvaloniaProperty? _xmlRestoreProperty;
     internal LayoutElement(DockableBase model, LayoutModelContext? context = null)
     {
         DockModel = model;
         Context = context ?? new LayoutModelContext();
         Context.Register(this);
         model.OwnerChanging += OwnerChanging;
-        model.PropertyChanged += OnModelPropertyChanged;
+        model.PropertyChanged += ModelPropertyChanged;
     }
 
     internal LayoutModelContext Context { get; }
+
+    // Upstream group XML writes backing fields. Native Dock still needs its
+    // property notification, while the public facade must remain silent.
+    internal void RestoreXmlProperty<T>(DirectPropertyBase<T> property, T value)
+    {
+        VerifyAccess();
+        AvaloniaProperty? previous = _xmlRestoreProperty;
+        _xmlRestoreProperty = property;
+        try { DockModel.SetValue(property, value); }
+        finally { _xmlRestoreProperty = previous; }
+    }
+
+    private void ModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (ReferenceEquals(_xmlRestoreProperty, e.Property))
+        {
+            // Consume only this notification. Reentrant public changes from a
+            // native observer retain their ordinary compatibility callbacks.
+            _xmlRestoreProperty = null;
+            return;
+        }
+        OnModelPropertyChanged(sender, e);
+    }
 
     // Dock's unset Id is empty; WPF's serialized pane Id starts at null.
     // Preserve an explicitly read empty attribute without changing native Ids.

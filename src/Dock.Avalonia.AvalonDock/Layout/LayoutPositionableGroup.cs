@@ -101,6 +101,23 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
         _dockHeight = height;
     }
 
+    void ILayoutPositionableGroup.RestoreDockMinimum(double value, bool horizontal) =>
+        RestoreXmlProperty(horizontal ? DockableBase.MinWidthProperty : DockableBase.MinHeightProperty, value);
+
+    LayoutFloatingMetadata ILayoutPositionableGroup.FloatingMetadata
+    {
+        get => new(_floatingWidth, _floatingHeight, _floatingLeft, _floatingTop, _isMaximized);
+        set
+        {
+            VerifyAccess();
+            _floatingWidth = value.Width;
+            _floatingHeight = value.Height;
+            _floatingLeft = value.Left;
+            _floatingTop = value.Top;
+            _isMaximized = value.IsMaximized;
+        }
+    }
+
     void ILayoutPositionableGroup.ApplyDockProportion(double proportion, double availableExtent, bool horizontal)
     {
         _availableExtent = availableExtent;

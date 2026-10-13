@@ -23,6 +23,7 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
     }
     /// <summary>Gets or sets whether the pane shows its document tabs and document list menu. The selected content remains visible.</summary>
     public bool ShowHeader { get => _showHeader; set => SetFieldChanged(ref _showHeader, value); }
+    internal void RestoreShowHeader(bool value) { VerifyAccess(); _showHeader = value; }
     /// <inheritdoc/>
     public int SelectedContentIndex
     {

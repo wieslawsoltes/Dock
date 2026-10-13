@@ -10,6 +10,7 @@ namespace AvalonDock.Layout;
 public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, ILayoutAnchorablePane, ILayoutContentSelector, ILayoutPaneSelection
 {
     private readonly LayoutPaneSelection<LayoutAnchorable>? _selection;
+    private string? _name;
     /// <summary>Creates an empty anchorable pane.</summary>
     public LayoutAnchorablePane() : this(new ToolDock()) { }
     /// <summary>Creates a pane containing its first anchorable.</summary>
@@ -18,12 +19,15 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     // them. Its layout collector decides when the native pane can be removed.
     internal LayoutAnchorablePane(ToolDock model, LayoutModelContext? context = null) : base(model, context)
     {
+        _name = model.Name;
         model.IsCollapsable = false;
         _selection = new(this, false, RaisePropertyChanging, RaisePropertyChanged);
         _selection.Initialize();
     }
     /// <summary>Gets or sets the pane's name; initially null.</summary>
-    public string Name { get => DockModel.Name!; set => DockModel.Name = value; }
+    /// <remarks>This layout metadata remains editable after native styling and is separate from Avalonia's styling name.</remarks>
+    public string Name { get => _name!; set => SetFieldChanged(ref _name, value); }
+    internal void RestoreName(string value) { VerifyAccess(); _name = value; }
     /// <summary>Gets whether every child can be hidden.</summary>
     public bool CanHide { get { foreach (LayoutAnchorable child in Children) if (!child.CanHide) return false; return true; } }
     /// <summary>Gets whether every child can be closed.</summary>

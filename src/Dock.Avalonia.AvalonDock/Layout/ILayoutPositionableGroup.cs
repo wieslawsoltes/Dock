@@ -11,5 +11,9 @@ internal interface ILayoutPositionableGroup : ILayoutElementForFloatingWindow
     bool AllowDuplicateContent { get; set; }
     bool CanRepositionItems { get; set; }
     void RestoreDockLengths(GridLength width, GridLength height);
+    void RestoreDockMinimum(double value, bool horizontal);
+    LayoutFloatingMetadata FloatingMetadata { get; set; }
     void ApplyDockProportion(double proportion, double availableExtent, bool horizontal);
 }
+
+internal readonly record struct LayoutFloatingMetadata(double Width, double Height, double Left, double Top, bool IsMaximized);

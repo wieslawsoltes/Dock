@@ -199,7 +199,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,764 cases, including 39 layout
+- The consolidated adapter suite passes all 2,822 cases, including 58 group XML
+  metadata, notification, failure, visibility, enum, and pane-name cases, plus 39 layout
   helper/group contracts and the recorded activation and membership ordering
   checks, plus 51 template
   callback delivery, reentrancy, failure, and replay cases, plus 19 layout
@@ -847,6 +848,17 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   unset ID, resolves all previous references before initial references, and rejects
   missing references before content callbacks or manager replacement. Pane IDs
   take precedence over native group-extension IDs and survive repeated saves.
+  Group XML restores dimensions, floating metadata, IDs, tool-pane names, and
+  document header flags without public setter notifications or size propagation.
+  Native minimum values still update their Dock models; reentrant public changes
+  and later edits retain normal notifications. Attributes apply in inheritance
+  order, preserving earlier assignments when a later conversion fails. Stored
+  minima bypass the public setters' negative-value check, matching upstream field
+  restoration. Orientation accepts case-insensitive names and numeric enum values.
+  A self-closing empty group recomputes visibility; an explicit empty start/end
+  pair retains the existing state. The 58 group-metadata cases and external package
+  probe cover these contracts. These targeted checks do not complete the remaining
+  content, cursor/error, and inherited XML hook audit.
   Assigning a return container raises only its changed notification, then initializes
   an unset pane ID using the reference left by application callbacks. Identifier
   metadata is quiet; changed return indices raise only changed notifications.
@@ -855,6 +867,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   null. Equal title assignments are quiet, and tooltip/icon changes use reference
   identity. Changed-only content metadata, pane maximization, and header flags
   use upstream notification contracts;
+  tool-pane names are separate from Avalonia's immutable styling name and remain
+  mutable after native styling, with changed-only notifications and silent XML reads;
   native capability changes publish `CanMove`, `CanAutoHide`, and
   `CanDockAsTabbedDocument` through the public models. `LayoutContent.CompareTo`
   and `LayoutDocumentPane.ChildrenSorted` use application `IComparable` content

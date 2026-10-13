@@ -1371,6 +1371,20 @@ layout committed by callback code survive a later exception. `LayoutChanged`
 runs after replacement; throwing from it does not restore the old layout, and
 a nested restore from that event leaves its own layout installed.
 
+Group `ReadXml` restores stored docked/floating dimensions, IDs, tool-pane
+names, and document header flags without public setter notifications or pixel-size
+propagation. Native minimum values still update the existing Dock model. Public
+changes made by native observers, and later ordinary edits, retain notifications.
+Attributes apply in inheritance order; a later conversion error leaves earlier
+assignments in place. XML minima restore stored values even when negative, while
+ordinary minimum setters continue to reject negative values. Orientation accepts
+case-insensitive names and numeric enum values. Self-closing empty groups recompute
+visibility; explicit empty start/end pairs retain the current visibility.
+
+`LayoutAnchorablePane.Name` is layout metadata, separate from the native model's
+Avalonia styling name. It remains editable after native styling and raises a
+changed notification when its value changes. XML restoration writes it silently.
+
 Nested virtual `WriteXml` overrides participate in complete layout saves, including
 hidden, pinned, and floating content. Write extra group attributes before calling
 base, because base writes the children. A shared writer prepares return-container

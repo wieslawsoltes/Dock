@@ -266,3 +266,7 @@ The layout-interface probe traverses an external `ILayoutElement` without readin
 its `Root` property, verifies the parent-search cast contract, and checks group
 replacement bounds, invalid child types, removal ownership, selection, and
 collection/tree/count callback ordering through the public interfaces.
+
+The group-XML probe verifies silent metadata restoration, mutable pane names
+after native styling, accepted enum spellings, stored minimum dimensions, empty
+group visibility, and retention of earlier values after a later attribute error.

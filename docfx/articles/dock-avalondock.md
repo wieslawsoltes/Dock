@@ -2753,6 +2753,20 @@ reads replace the hierarchy while retaining the native root and factory.
 These methods do not resolve application content or return-container references;
 use `XmlLayoutSerializer` for complete layout restoration and content callbacks.
 
+Group `ReadXml` restores stored docked/floating dimensions, IDs, tool-pane
+names, and document header flags without public setter notifications or pixel-size
+propagation. Native minimum values still update the existing Dock model. Public
+changes made by native observers, and later ordinary edits, retain notifications.
+Attributes apply in inheritance order; a later conversion error leaves earlier
+assignments in place. XML minima restore stored values even when negative, while
+ordinary minimum setters continue to reject negative values. Orientation accepts
+case-insensitive names and numeric enum values. Self-closing empty groups recompute
+visibility; explicit empty start/end pairs retain the current visibility.
+
+`LayoutAnchorablePane.Name` is layout metadata, separate from the native model's
+Avalonia styling name. It remains editable after native styling and raises a
+changed notification when its value changes. XML restoration writes it silently.
+
 Whole-layout writes dispatch each nested model's virtual `WriteXml`, including
 panes, groups, side/anchor nodes, hidden content, and floating models. Custom
 overrides can add attributes before calling base; content-only models may also

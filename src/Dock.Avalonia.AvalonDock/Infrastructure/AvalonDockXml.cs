@@ -5,7 +5,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
@@ -236,31 +235,8 @@ internal static class AvalonDockXml
 
     private static void ReadInto(LayoutElement element, XElement xml, LayoutXmlReadContext context)
     {
-        if (element is ILayoutOrientableGroup orientable && xml.Attribute("Orientation") is { } direction)
-        {
-            orientable.Orientation = direction.Value switch
-            {
-                "Horizontal" => Orientation.Horizontal,
-                "Vertical" => Orientation.Vertical,
-                _ => throw new XmlException($"Invalid orientation '{direction.Value}'.")
-            };
-        }
-        if (element is ILayoutPositionableGroup position)
-        {
-            if (xml.Attribute("Id") is { } id)
-            {
-                element.HasExplicitXmlId = true;
-                element.DockModel.Id = id.Value;
-            }
-            position.RestoreDockLengths(
-                xml.Attribute("DockWidth") is { } width ? GridLength.Parse(width.Value) : position.DockWidth,
-                xml.Attribute("DockHeight") is { } height ? GridLength.Parse(height.Value) : position.DockHeight);
-            position.DockMinWidth = Number(xml, "DockMinWidth", position.DockMinWidth);
-            position.DockMinHeight = Number(xml, "DockMinHeight", position.DockMinHeight);
-            position.AllowDuplicateContent = Boolean(xml, "AllowDuplicateContent", position.AllowDuplicateContent);
-            position.CanRepositionItems = Boolean(xml, "CanRepositionItems", position.CanRepositionItems);
-        }
-        if (element is ILayoutElementForFloatingWindow floating)
+        if (element is ILayoutGroup) LayoutGroupXml.ReadMetadata(element, xml);
+        if (element is ILayoutElementForFloatingWindow floating && element is not ILayoutPositionableGroup)
         {
             floating.FloatingWidth = Number(xml, "FloatingWidth", floating.FloatingWidth);
             floating.FloatingHeight = Number(xml, "FloatingHeight", floating.FloatingHeight);
@@ -299,17 +275,8 @@ internal static class AvalonDockXml
             tool.AutoHideMinWidth = Number(xml, "AutoHideMinWidth", tool.AutoHideMinWidth);
             tool.AutoHideMinHeight = Number(xml, "AutoHideMinHeight", tool.AutoHideMinHeight);
         }
-        if (element is LayoutDocumentPane documents) documents.ShowHeader = Boolean(xml, "ShowHeader", documents.ShowHeader);
-        if (element is LayoutAnchorablePane tools && xml.Attribute("Name") is { } name) tools.Name = name.Value;
-        if (element is LayoutAnchorGroup anchorGroup)
-        {
-            if (xml.Attribute("Id") is { } groupId)
-            {
-                anchorGroup.HasExplicitXmlId = true;
-                anchorGroup.DockModel.Id = groupId.Value;
-            }
-            if (xml.Attribute("PreviousContainerId") is { } previousId) anchorGroup.PreviousContainerId = previousId.Value;
-        }
+        if (xml.IsEmpty && element is ILayoutGroup && element is ILayoutElementWithVisibility visibility)
+            visibility.ComputeVisibility();
         foreach (XElement child in xml.Elements())
         {
             LayoutElement childElement = ReadElement(child, context);

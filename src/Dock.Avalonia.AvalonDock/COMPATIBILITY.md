@@ -199,8 +199,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,822 cases, including 58 group XML
-  metadata, notification, failure, visibility, enum, and pane-name cases, plus 39 layout
+- The consolidated adapter suite passes all 2,873 cases, including 51 content XML
+  metadata, setter-order, selection, focus, floating-state, reader-position, failure,
+  custom child-element, and thread-access cases, plus 58 group XML metadata, notification, failure, visibility, enum, and pane-name cases, plus 39 layout
   helper/group contracts and the recorded activation and membership ordering
   checks, plus 51 template
   callback delivery, reentrancy, failure, and replay cases, plus 19 layout
@@ -829,9 +830,16 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   and resume after successful or failed restoration, including nested serializer
   scopes through the protected deserialization hooks.
   Content, pane/group, root, and floating `IXmlSerializable` methods share the
-  explicit codecs. Standalone readers consume one element, preserve existing
-  native model identity and application content, and restore tab selection
-  before a factory is attached. Root reads replace the hierarchy while retaining
+  explicit codecs. Standalone readers preserve existing native model identity
+  and application content, and restore tab selection before a factory is attached.
+  Content readers apply document/tool attributes before base metadata, select
+  immediately after the title, and advance the original reader once. Custom
+  overrides can read child elements after the base call; conversion or callback
+  errors retain preceding assignments and the failing attribute position.
+  Persisted last-focused flags do not activate content or update timestamps.
+  Floating flags round-trip as metadata without creating windows; later native
+  docking-state changes update the facade before native-state observers run.
+  Group/root readers continue to buffer their subtrees. Root reads replace the hierarchy while retaining
   the manager's native root and factory. Without a callback, missing documents
   close and tools hide while retaining their return panes. Callback cancellation
   requests closure and preserves content closing-event vetoes. Unresolved null
@@ -857,8 +865,10 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   restoration. Orientation accepts case-insensitive names and numeric enum values.
   A self-closing empty group recomputes visibility; an explicit empty start/end
   pair retains the existing state. The 58 group-metadata cases and external package
-  probe cover these contracts. These targeted checks do not complete the remaining
-  content, cursor/error, and inherited XML hook audit.
+  probe cover these contracts. The 51 content-metadata cases and external consumer
+  probe cover direct and registered content reads. Remaining XML work includes
+  group/root streaming and partial-failure behavior, pane selection repair during
+  child restoration, and the broader inherited-hook and write-contract audit.
   Assigning a return container raises only its changed notification, then initializes
   an unset pane ID using the reference left by application callbacks. Identifier
   metadata is quiet; changed return indices raise only changed notifications.
@@ -1313,8 +1323,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 820
-matching type/member keys and 131 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 822
+matching type/member keys and 129 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

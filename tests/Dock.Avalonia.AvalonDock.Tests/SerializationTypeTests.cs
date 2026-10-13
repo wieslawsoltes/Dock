@@ -15,7 +15,7 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class SerializationTypeTests
 {
     [AvaloniaFact]
-    public void Registered_Nested_Types_Retain_Metadata_Content_Selection_And_Active_State()
+    public void Registered_Nested_Types_Retain_Metadata_Content_Selection_And_Focus_Metadata()
     {
         object payload = new();
         CustomDocument document = new() { ContentId = "editor", Content = payload, Marker = "document & metadata", Description = "description" };
@@ -39,7 +39,10 @@ public class SerializationTypeTests
         Assert.Equal("description", restored.Description);
         Assert.Same(payload, restored.Content);
         Assert.Same(restored, restoredPane.SelectedContent);
-        Assert.Same(restored, manager.Layout.ActiveContent);
+        Assert.True(restored.IsLastFocusedDocument);
+        Assert.False(restored.IsActive);
+        Assert.Null(manager.Layout.ActiveContent);
+        Assert.Null(manager.Layout.LastFocusedDocument);
         Assert.Equal(new[] { "before", "after" }, restored.ReadEvents);
         Assert.Equal(new[] { "before", "after" }, restoredPane.ReadEvents);
     }

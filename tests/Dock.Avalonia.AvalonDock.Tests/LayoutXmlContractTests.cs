@@ -194,7 +194,11 @@ public class LayoutXmlContractTests
         Assert.Same(native, target.DockModel);
         Assert.Same(factory, target.DockFactory);
         Assert.Null(previous.Parent);
-        Assert.Equal("document", target.ActiveContent?.ContentId);
+        // The persisted last-focused flag is metadata; upstream ReadXml does
+        // not translate it into root activation or a new activation timestamp.
+        Assert.Null(target.ActiveContent);
+        Assert.Null(target.LastFocusedDocument);
+        Assert.True(target.Descendents().OfType<LayoutDocument>().Single(item => item.ContentId == "document").IsLastFocusedDocument);
         Assert.Equal("pinned", Assert.Single(Assert.Single(target.LeftSide.Children).Children).ContentId);
         Assert.Equal("hidden", Assert.Single(target.Hidden).ContentId);
         Assert.Equal(500, Assert.Single(target.FloatingWindows).DockWindow.Width);

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Xml;
-using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 
 namespace AvalonDock.Infrastructure;
@@ -10,8 +8,6 @@ namespace AvalonDock.Infrastructure;
 internal sealed class LayoutXmlReadContext(LayoutSerializationTypes? types = null)
 {
     internal LayoutSerializationTypes? Types { get; } = types;
-    internal List<LayoutContent> Selected { get; } = new();
-    internal LayoutContent? Active;
 }
 
 internal sealed class LayoutXmlReader(XmlReader reader, LayoutXmlReadContext context) : XmlReader

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Xml;
 using Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -90,6 +91,12 @@ public class LayoutAnchorable : LayoutContent
     public bool CanAutoHide { get => DockModel.CanPin; set => DockModel.CanPin = value; }
     /// <summary>Gets or sets whether the tool can become a document tab.</summary>
     public bool CanDockAsTabbedDocument { get => DockModel.CanDockAsDocument; set => DockModel.CanDockAsDocument = value; }
+    /// <summary>Reads tool-specific metadata before the shared content metadata.</summary>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutContentXml.ReadAnchorable(this, reader);
+        base.ReadXml(reader);
+    }
     /// <summary>Gets whether this tool is in an auto-hide strip.</summary>
     public bool IsAutoHidden => Parent is LayoutAnchorGroup;
     /// <summary>Gets whether this tool is hidden.</summary>

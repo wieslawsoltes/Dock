@@ -2747,11 +2747,27 @@ before an existing save file is overwritten.
 
 Individual content, pane/group, root, and floating models also implement
 `IXmlSerializable`. Their `WriteXml` methods write attributes and children inside
-an element opened by the caller; `ReadXml` consumes that element. Content reads
-preserve an existing `Content` object, group reads append children, and root
-reads replace the hierarchy while retaining the native root and factory.
+an element opened by the caller. Content reads preserve an existing `Content`
+object, group reads append children, and root reads replace the hierarchy while
+retaining the native root and factory.
 These methods do not resolve application content or return-container references;
 use `XmlLayoutSerializer` for complete layout restoration and content callbacks.
+
+Content `ReadXml` uses the ordinary setters in AvalonDock's order: document/tool
+attributes first, then shared metadata, with selection immediately after the title
+and before `ContentId`. A later conversion or application callback failure leaves
+preceding assignments intact and the reader on the failing attribute. Content
+reads advance the caller's reader once instead of buffering the element, so a
+derived override can read its own child elements after `base.ReadXml(reader)`.
+Explicit start/end tags leave the reader on the end tag; self-closing tags advance
+to the following node. Group/root readers still buffer their subtrees.
+
+`IsLastFocusedDocument` restores both true and false without changing root focus
+references, `IsActive`, or the saved activation time. `IsFloating` also restores
+both values as metadata without moving content or opening a window, and true
+values are written back to XML. Subsequent native docking-state changes update
+the floating flag. Full layout restoration continues to build native placement
+from the layout hierarchy; a persisted focus flag does not activate its content.
 
 Group `ReadXml` restores stored docked/floating dimensions, IDs, tool-pane
 names, and document header flags without public setter notifications or pixel-size
@@ -2787,8 +2803,8 @@ serializer.Deserialize(path);
 `EditorDocument` and `EditorPane` derive from the corresponding public layout
 models. Their virtual `WriteXml` and `ReadXml` methods can write and read additional
 attributes around their base call. Registrations also work for hidden tools and
-floating-window subclasses. Content recovery, selection, activation, and return
-locations use the same restoration pipeline as built-in types.
+floating-window subclasses. Content recovery, selection, focus metadata, and
+return locations use the same restoration pipeline as built-in types.
 
 Register each XML name and exact CLR type once on both saving and restoring
 serializers. Factories must return a fresh detached instance; null, attached,

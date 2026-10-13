@@ -101,8 +101,6 @@ internal static class AvalonDockXml
             }
         }
         if (!hasPanel) throw new XmlException("A layout must contain a RootPanel.");
-        RestoreSelection(context.Selected);
-        if (context.Active is not null) root.ActiveContent = context.Active;
         return root;
     }
 
@@ -161,6 +159,7 @@ internal static class AvalonDockXml
             WriteAttribute(writer, "CanFloat", content.CanFloat);
             WriteAttribute(writer, "IsSelected", content.IsSelected);
             WriteAttribute(writer, "IsLastFocusedDocument", content.IsLastFocusedDocument);
+            if (content.IsFloating) WriteAttribute(writer, "IsFloating", true);
             if (content.ToolTip is string tip) WriteAttribute(writer, "ToolTip", tip);
             if (content.LastActivationTimeStamp is { } time) WriteAttribute(writer, "LastActivationTimeStamp", time.ToString(CultureInfo.InvariantCulture));
             var previous = (content.PreviousContainer as LayoutElement)?.DockModel;
@@ -235,46 +234,13 @@ internal static class AvalonDockXml
 
     private static void ReadInto(LayoutElement element, XElement xml, LayoutXmlReadContext context)
     {
-        if (element is ILayoutGroup) LayoutGroupXml.ReadMetadata(element, xml);
-        if (element is ILayoutElementForFloatingWindow floating && element is not ILayoutPositionableGroup)
-        {
-            floating.FloatingWidth = Number(xml, "FloatingWidth", floating.FloatingWidth);
-            floating.FloatingHeight = Number(xml, "FloatingHeight", floating.FloatingHeight);
-            floating.FloatingLeft = Number(xml, "FloatingLeft", floating.FloatingLeft);
-            floating.FloatingTop = Number(xml, "FloatingTop", floating.FloatingTop);
-            floating.IsMaximized = Boolean(xml, "IsMaximized", floating.IsMaximized);
-        }
         if (element is LayoutContent content)
         {
-            if (xml.Attribute("Title") is { } title) content.Title = title.Value;
-            if (xml.Attribute("ContentId") is { } contentId) content.ContentId = contentId.Value;
-            content.CanClose = Boolean(xml, "CanClose", content.CanClose);
-            content.CanFloat = Boolean(xml, "CanFloat", content.CanFloat);
-            if (xml.Attribute("ToolTip") is { } tip) content.ToolTip = tip.Value;
-            if (xml.Attribute("PreviousContainerId") is { } previousId) content.PreviousContainerId = previousId.Value;
-            if (xml.Attribute("PreviousContainerIndex") is { } previousIndex) content.PreviousContainerIndex = (int)previousIndex;
-            if (xml.Attribute("InitialContainerId") is { } initialId) content.InitialContainerId = initialId.Value;
-            if (xml.Attribute("InitialContainerIndex") is { } initialIndex) content.InitialContainerIndex = (int)initialIndex;
-            if (xml.Attribute("LastActivationTimeStamp") is { } time) content.LastActivationTimeStamp = DateTime.Parse(time.Value, CultureInfo.InvariantCulture);
-            if (Boolean(xml, "IsSelected", false)) context.Selected.Add(content);
-            else if (xml.Attribute("IsSelected") is not null) content.IsSelected = false;
-            if (Boolean(xml, "IsLastFocusedDocument", false)) context.Active = content;
+            using XmlReader reader = xml.CreateReader();
+            content.ReadXml(reader);
+            return;
         }
-        if (element is LayoutDocument document)
-        {
-            if (xml.Attribute("Description") is { } description) document.Description = description.Value;
-            document.CanMove = Boolean(xml, "CanMove", document.CanMove);
-        }
-        if (element is LayoutAnchorable tool)
-        {
-            tool.CanHide = Boolean(xml, "CanHide", tool.CanHide);
-            tool.CanAutoHide = Boolean(xml, "CanAutoHide", tool.CanAutoHide);
-            tool.CanDockAsTabbedDocument = Boolean(xml, "CanDockAsTabbedDocument", tool.CanDockAsTabbedDocument);
-            tool.AutoHideWidth = Number(xml, "AutoHideWidth", tool.AutoHideWidth);
-            tool.AutoHideHeight = Number(xml, "AutoHideHeight", tool.AutoHideHeight);
-            tool.AutoHideMinWidth = Number(xml, "AutoHideMinWidth", tool.AutoHideMinWidth);
-            tool.AutoHideMinHeight = Number(xml, "AutoHideMinHeight", tool.AutoHideMinHeight);
-        }
+        if (element is ILayoutGroup) LayoutGroupXml.ReadMetadata(element, xml);
         if (xml.IsEmpty && element is ILayoutGroup && element is ILayoutElementWithVisibility visibility)
             visibility.ComputeVisibility();
         foreach (XElement child in xml.Elements())
@@ -327,11 +293,6 @@ internal static class AvalonDockXml
         XElement xml = ReadNode(reader);
         LayoutXmlReadContext context = (reader as LayoutXmlReader)?.Context ?? new();
         ReadInto(element, xml, context);
-        if (reader is not LayoutXmlReader)
-        {
-            RestoreSelection(context.Selected);
-            if (context.Active is not null && element.Root is { } root) root.ActiveContent = context.Active;
-        }
     }
 
     internal static LayoutRoot? ReadRoot(XmlReader reader)
@@ -370,23 +331,7 @@ internal static class AvalonDockXml
         ReadInto(window, xml, context);
         if (xml.IsEmpty && window is LayoutAnchorableFloatingWindow floating)
             ((ILayoutElementWithVisibility)floating).ComputeVisibility();
-        if (reader is not LayoutXmlReader) RestoreSelection(context.Selected);
         return window;
-    }
-
-    private static void RestoreSelection(List<LayoutContent> selected)
-    {
-        foreach (LayoutContent content in selected)
-        {
-            if (content.Parent is ILayoutContentSelector selector && content.Parent is ILayoutContainer container)
-            {
-                selector.SelectedContentIndex = selector.IndexOf(content);
-                // Standalone XML models have no factory to update sibling state.
-                foreach (ILayoutElement sibling in container.Children)
-                    if (sibling is LayoutContent other && !ReferenceEquals(other, content)) other.IsSelected = false;
-            }
-            content.IsSelected = true;
-        }
     }
 
     private static void ValidateFloatingWindow(LayoutFloatingWindow window)
@@ -409,10 +354,6 @@ internal static class AvalonDockXml
             throw new NotSupportedException("An AvalonDock tool floating window can contain only its root pane group.");
     }
 
-    private static bool Boolean(XElement element, string name, bool fallback) =>
-        element.Attribute(name) is { } value ? bool.Parse(value.Value) : fallback;
     private static string FormatLength(GridLength value) => value.IsAuto ? "Auto" :
         value.Value.ToString(CultureInfo.InvariantCulture) + (value.IsStar ? "*" : string.Empty);
-    private static double Number(XElement element, string name, double fallback) =>
-        element.Attribute(name) is { } value ? double.Parse(value.Value, CultureInfo.InvariantCulture) : fallback;
 }

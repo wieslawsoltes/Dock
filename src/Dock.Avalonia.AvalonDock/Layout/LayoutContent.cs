@@ -47,9 +47,14 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private bool _synchronizingActive;
     private int _writingActive;
     private bool _isLastFocusedDocument;
+    private bool _isFloating;
     private int _contentRevision;
 
-    internal LayoutContent(DockableBase model, LayoutModelContext? context = null) : base(model, context) => DockingHistory = new(this);
+    internal LayoutContent(DockableBase model, LayoutModelContext? context = null) : base(model, context)
+    {
+        DockingHistory = new(this);
+        _isFloating = (model.DockingState & DockingWindowState.Floating) != 0;
+    }
     internal LayoutDockingHistory DockingHistory { get; }
     private IDockingWindowState State => (IDockingWindowState)DockModel;
 
@@ -172,8 +177,9 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     public object? ToolTip { get => _toolTip; set => SetReferenceChanged(ref _toolTip, value); }
     /// <summary>Gets or sets the tab icon.</summary>
     public IImage? IconSource { get => _iconSource; set => SetReferenceChanged(ref _iconSource, value); }
-    /// <summary>Gets whether this item is in a floating window.</summary>
-    public bool IsFloating => (DockModel.DockingState & DockingWindowState.Floating) != 0;
+    /// <summary>Gets the item's floating state, restored from XML or updated by native docking operations.</summary>
+    /// <remarks>Reading this flag from XML records metadata without moving the item or creating a window.</remarks>
+    public bool IsFloating => _isFloating;
     /// <summary>Gets or sets whether UI commands can close this item.</summary>
     public bool CanClose { get => DockModel.CanClose; set => DockModel.CanClose = value; }
     /// <summary>Gets or sets whether this item can be floated.</summary>
@@ -185,7 +191,12 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// <summary>Returns no custom XML schema.</summary>
     public XmlSchema? GetSchema() => null;
     /// <summary>Reads content metadata, retaining its application content and native model.</summary>
-    public virtual void ReadXml(XmlReader reader) => AvalonDockXml.ReadContents(this, reader);
+    /// <remarks>
+    /// Applies setters in AvalonDock's metadata order and advances the reader once.
+    /// Earlier assignments remain if a later conversion or application callback fails.
+    /// Persisted focus and floating flags do not activate content or create windows.
+    /// </remarks>
+    public virtual void ReadXml(XmlReader reader) => LayoutContentXml.Read(this, reader);
     /// <summary>Writes content metadata inside the caller's XML element.</summary>
     public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <summary>Compares application content when it implements <see cref="IComparable"/>, otherwise titles using the current culture.</summary>
@@ -310,6 +321,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         RaisePropertyChanged(nameof(IsActive));
     }
     internal void SetLastFocusedDocument(bool value) => SetField(ref _isLastFocusedDocument, value, nameof(IsLastFocusedDocument));
+    internal void SetFloating(bool value) => SetFieldChanged(ref _isFloating, value, nameof(IsFloating));
     internal void RememberDockedLocation()
     {
         if (Parent is not LayoutElement parent || parent is LayoutAnchorGroup or LayoutAnchorSide
@@ -368,9 +380,19 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
             NotifyContentChanged(e.OldValue, e.NewValue);
             return;
         }
+        if (e.Property == DockableBase.DockingStateProperty)
+        {
+            // Publish the current native value before observers of DockingState
+            // can read the facade, including nested docking or XML callbacks.
+            bool previous = _isFloating;
+            bool floating = (DockModel.DockingState & DockingWindowState.Floating) != 0;
+            _isFloating = floating;
+            base.OnModelPropertyChanged(sender, e);
+            if (previous != floating) RaisePropertyChanged(nameof(IsFloating));
+            return;
+        }
         base.OnModelPropertyChanged(sender, e);
         if (e.Property == DockableBase.TitleProperty)
             RaisePropertyChanged(TitleProperty, (string)e.OldValue!, (string)e.NewValue!);
-        else if (e.Property == DockableBase.DockingStateProperty) RaisePropertyChanged(nameof(IsFloating));
     }
 }

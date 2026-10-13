@@ -13,7 +13,7 @@ checker. Source aliases, fully qualified names, generic parameter spellings,
 framework types, and inherited members require subsequent review. Compile and
 exercise representative C# and XAML consumers in addition to this inventory.
 
-[`PORTABILITY.md`](PORTABILITY.md) classifies the current 131 unmatched
+[`PORTABILITY.md`](PORTABILITY.md) classifies the current 129 unmatched
 declarations, with an individual mapping in `portability-review.tsv`. The strict
 comparison still reports those mismatches; the review is separate evidence.
 [`SIGNATURES.md`](SIGNATURES.md) reviews declaration shapes, named arguments,

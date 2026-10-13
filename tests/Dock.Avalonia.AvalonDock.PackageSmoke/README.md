@@ -270,3 +270,10 @@ collection/tree/count callback ordering through the public interfaces.
 The group-XML probe verifies silent metadata restoration, mutable pane names
 after native styling, accepted enum spellings, stored minimum dimensions, empty
 group visibility, and retention of earlier values after a later attribute error.
+
+The content-XML probe verifies derived/base setter order, immediate selection,
+focus and floating metadata without activation, floating-flag persistence, partial
+state and reader position after an attribute error, and external `ReadXml`
+overrides with child elements. Registered content callbacks retain stored focus
+flags and activation timestamps without assigning root focus. Both .NET 8 and
+.NET 10 execute these checks against the restored package.

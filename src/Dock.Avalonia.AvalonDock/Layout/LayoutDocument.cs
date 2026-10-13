@@ -1,3 +1,4 @@
+using System.Xml;
 using Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -18,6 +19,12 @@ public class LayoutDocument : LayoutContent
     public bool IsVisible { get; internal set; } = true;
     /// <summary>Gets or sets the document description.</summary>
     public string? Description { get => _description; set => SetFieldChanged(ref _description, value); }
+    /// <summary>Reads document-specific metadata before the shared content metadata.</summary>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutContentXml.ReadDocument(this, reader);
+        base.ReadXml(reader);
+    }
     /// <inheritdoc/>
     public override void Close() => CloseCore();
     /// <inheritdoc/>

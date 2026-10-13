@@ -1371,6 +1371,22 @@ layout committed by callback code survive a later exception. `LayoutChanged`
 runs after replacement; throwing from it does not restore the old layout, and
 a nested restore from that event leaves its own layout installed.
 
+Content `ReadXml` uses the ordinary setters in AvalonDock's order: document/tool
+attributes first, then shared metadata, with selection immediately after the title
+and before `ContentId`. A later conversion or application callback failure leaves
+preceding assignments intact and the reader on the failing attribute. Content
+reads advance the caller's reader once instead of buffering the element, so a
+derived override can read its own child elements after `base.ReadXml(reader)`.
+Explicit start/end tags leave the reader on the end tag; self-closing tags advance
+to the following node. Group/root readers still buffer their subtrees.
+
+`IsLastFocusedDocument` restores both true and false without changing root focus
+references, `IsActive`, or the saved activation time. `IsFloating` also restores
+both values as metadata without moving content or opening a window, and true
+values are written back to XML. Subsequent native docking-state changes update
+the floating flag. Full layout restoration continues to build native placement
+from the layout hierarchy; a persisted focus flag does not activate its content.
+
 Group `ReadXml` restores stored docked/floating dimensions, IDs, tool-pane
 names, and document header flags without public setter notifications or pixel-size
 propagation. Native minimum values still update the existing Dock model. Public

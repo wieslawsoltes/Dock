@@ -1104,6 +1104,11 @@ below rather than automatic discovery.
   negative minima are rejected. Headless tests cover input, live settings,
   cancellation, public model notifications, and retained-model lifetime.
   Ordinary native splitter defaults remain unchanged.
+- `LayoutAutoHideWindowControl.HasFocusWithinCore` preserves the upstream base
+  hook's constant `false` result. Avalonia's `IsKeyboardFocusWithin` separately
+  reports actual focus. `AutoHideFocusHookTests` exercises focus on the preview,
+  inside its content, and outside it without reflection or changing constructor
+  accessibility.
 - `DockingManager.LogicalChildrenPublic` exposes the current Avalonia logical
   collection. Floating `OnStateChanged` overrides synchronize maximization when
   they call the base hook. `IsMaximizedProperty` retains the upstream writable

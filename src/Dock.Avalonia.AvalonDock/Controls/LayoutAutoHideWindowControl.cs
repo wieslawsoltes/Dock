@@ -51,8 +51,9 @@ public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
     protected override Size MeasureOverride(Size constraint) => base.MeasureOverride(constraint);
     /// <summary>Arranges the existing native preview content.</summary>
     protected override Size ArrangeOverride(Size finalSize) => base.ArrangeOverride(finalSize);
-    /// <summary>Reports whether Avalonia keyboard focus is inside the preview.</summary>
-    protected virtual bool HasFocusWithinCore() => IsKeyboardFocusWithin;
+    /// <summary>Returns the upstream native-host focus hook's false result.</summary>
+    /// <remarks>Actual Avalonia focus remains available through <see cref="global::Avalonia.Input.InputElement.IsKeyboardFocusWithin"/>.</remarks>
+    protected virtual bool HasFocusWithinCore() => false;
 
     internal void SetModel(LayoutAnchorable? model)
     {

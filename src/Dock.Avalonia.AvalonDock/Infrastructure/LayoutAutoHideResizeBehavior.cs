@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Utilities;
@@ -22,6 +23,7 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
     private LayoutAnchorable? _model;
     private ContentControl? _content;
     private Border? _preview;
+    private Popup? _nativePreview;
     private IPointer? _pointer;
     private TopLevel? _inputRoot;
     private bool _dragging;
@@ -55,6 +57,7 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
     {
         _dragging = false;
         if (_preview is not null) _preview.IsVisible = false;
+        if (_nativePreview is not null) _nativePreview.IsOpen = false;
         _inputRoot?.RemoveHandler(InputElement.KeyDownEvent, KeyDown);
         _inputRoot = null;
         IPointer? pointer = _pointer;
@@ -73,6 +76,7 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         _host = host;
         _host.PropertyChanged += HostChanged;
         _preview = LayoutAutoHideResize.GetPreview(_splitter);
+        _nativePreview = LayoutAutoHideResize.GetNativePreview(_splitter);
         _model = LayoutAutoHideResize.GetModel(_splitter);
         if (_model is not null) WeakEvents.ThreadSafePropertyChanged.Subscribe(_model, this);
         if (_splitter.GetVisualParent() is Grid grid)
@@ -101,12 +105,14 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         _model = null;
         _host = null;
         _preview = null;
+        _nativePreview = null;
         _content = null;
     }
 
     private void SplitterChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
     {
-        if (args.Property == LayoutAutoHideResize.ModelProperty || args.Property == LayoutAutoHideResize.PreviewProperty)
+        if (args.Property == LayoutAutoHideResize.ModelProperty || args.Property == LayoutAutoHideResize.PreviewProperty
+            || args.Property == LayoutAutoHideResize.NativePreviewProperty)
             Connect();
         else if (args.Property == LayoutSplitterSizing.WidthProperty || args.Property == LayoutSplitterSizing.HeightProperty)
         {
@@ -204,7 +210,15 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         _inputRoot = TopLevel.GetTopLevel(_splitter);
         _inputRoot?.AddHandler(InputElement.KeyDownEvent, KeyDown, RoutingStrategies.Tunnel);
         PositionPreview();
-        _preview.IsVisible = true;
+        bool native = false;
+        if (_nativePreview is not null)
+        {
+            foreach (Visual visual in _content.GetVisualDescendants())
+                if (visual is LayoutAutoHideWindowControl { IsNativeHosted: true }) { native = true; break; }
+            // A separate native popup stays above the embedded HWND/NSView's airspace.
+            _nativePreview.IsOpen = native;
+        }
+        _preview.IsVisible = !native;
     }
 
     private void Pressed(object? sender, PointerPressedEventArgs args)
@@ -227,6 +241,8 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         if (_preview is null) return;
         Canvas.SetLeft(_preview, _horizontal ? _targetPosition : _areaOrigin.X);
         Canvas.SetTop(_preview, _horizontal ? _areaOrigin.Y : _targetPosition);
+        if (_nativePreview is not null)
+            _nativePreview.PlacementRect = new Rect(new Point(Canvas.GetLeft(_preview), Canvas.GetTop(_preview)), default(Size));
     }
 
     private void Completed(object? sender, VectorEventArgs args)

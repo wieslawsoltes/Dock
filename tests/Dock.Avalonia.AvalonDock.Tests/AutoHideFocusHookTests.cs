@@ -4,6 +4,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using AvalonDock;
 using AvalonDock.Controls;
+using AvalonDock.Themes;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
@@ -28,6 +29,7 @@ public class AutoHideFocusHookTests
             Width = 300,
             Height = 200
         };
+        window.Styles.Add(new AvalonDockTheme());
         try
         {
             window.Show();

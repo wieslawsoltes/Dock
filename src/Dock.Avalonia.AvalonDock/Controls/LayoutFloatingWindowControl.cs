@@ -25,7 +25,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         AvaloniaProperty.Register<LayoutFloatingWindowControl, bool>(nameof(IsContentImmutable));
     /// <summary>Defines the thickness of the floating window's resize hit areas.</summary>
     public static readonly StyledProperty<Thickness> ResizeBorderThicknessProperty =
-        AvaloniaProperty.Register<LayoutFloatingWindowControl, Thickness>(nameof(ResizeBorderThickness), new Thickness(10));
+        AvaloniaProperty.Register<LayoutFloatingWindowControl, Thickness>(name: nameof(ResizeBorderThickness), metadata: AvalonDockProperty.StyledMetadata<Thickness>(defaultValue: new Thickness(10)));
     /// <summary>Defines the current native window drag state.</summary>
     public static readonly DirectProperty<LayoutFloatingWindowControl, bool> IsDraggingProperty =
         AvaloniaProperty.RegisterDirect<LayoutFloatingWindowControl, bool>(nameof(IsDragging), window => window.IsDragging);
@@ -34,6 +34,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         AvaloniaProperty.Register<LayoutFloatingWindowControl, bool>(nameof(IsMaximized));
 
     private bool _dragging;
+    private bool _nativeDragNotification;
     private bool _notifyOpened;
     private bool _internalCloseRequested;
     private bool _preserveCloseOrigin;
@@ -199,6 +200,10 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         base.Present(isDialog);
     }
 
+    /// <summary>Defers the native initialization hook until the derived host exposes its model.</summary>
+    /// <remarks>Show, EndInit, or visual attachment retries initialization after construction.</remarks>
+    protected override bool IsInitializationDeferred => Model is null;
+
     /// <summary>Dispatches Avalonia initialization to the AvalonDock extensibility hook.</summary>
     protected override void OnInitialized() => OnInitialized(EventArgs.Empty);
 
@@ -323,8 +328,14 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     /// <summary>Updates the drag notification state used by derived window controls.</summary>
     protected void SetIsDragging(bool value) => SetAndRaise(IsDraggingProperty, ref _dragging, value);
-    /// <summary>Called when the native drag state changes. Dock owns pointer capture and drag execution.</summary>
-    protected virtual void OnIsDraggingChanged(AvaloniaPropertyChangedEventArgs e) { }
+    /// <summary>Captures or releases the primary mouse when a derived host changes its drag state.</summary>
+    /// <remarks>Notifications from Dock's active drag retain Dock's existing pointer capture.</remarks>
+    protected virtual void OnIsDraggingChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if (_nativeDragNotification) return;
+        if ((bool)e.NewValue!) CaptureMouse();
+        else ReleaseMouseCapture();
+    }
 
     /// <summary>Synchronizes the public maximized state after the native window state changes.</summary>
     protected virtual void OnStateChanged(EventArgs e) =>
@@ -437,6 +448,10 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         base.OnClosedCore(e, closingWindow);
     }
 
-    private void NativeDragChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
-        SetIsDragging(Classes.Contains(":dragging"));
+    private void NativeDragChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        _nativeDragNotification = true;
+        try { SetIsDragging(Classes.Contains(":dragging")); }
+        finally { _nativeDragNotification = false; }
+    }
 }

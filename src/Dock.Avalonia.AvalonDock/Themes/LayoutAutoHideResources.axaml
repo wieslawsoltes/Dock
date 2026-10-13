@@ -24,11 +24,20 @@
       </DeferredContentControl>
       <controls:LayoutGridResizerControl x:Name="PART_PinnedDockSplitter" Background="Transparent"
           infrastructure:LayoutAutoHideResize.Model="{Binding PinnedDock.ActiveDockable, Converter={StaticResource AvalonDockLayoutContent}}"
-          infrastructure:LayoutAutoHideResize.Preview="{Binding #PART_PinnedDockResizePreview}" />
-      <Canvas Grid.RowSpan="3" Grid.ColumnSpan="3" IsHitTestVisible="False" ZIndex="1">
+          infrastructure:LayoutAutoHideResize.Preview="{Binding #PART_PinnedDockResizePreview}"
+          infrastructure:LayoutAutoHideResize.NativePreview="{Binding #PART_NativeResizePreview}" />
+      <Canvas x:Name="PART_ResizePreviewCanvas" Grid.RowSpan="3" Grid.ColumnSpan="3" IsHitTestVisible="False" ZIndex="1">
         <Border x:Name="PART_PinnedDockResizePreview" IsVisible="False"
                 Background="{Binding #PART_PinnedDockSplitter.BackgroundWhileDragging}"
                 Opacity="{Binding #PART_PinnedDockSplitter.OpacityWhileDragging}" />
+        <Popup x:Name="PART_NativeResizePreview" PlacementTarget="{Binding #PART_ResizePreviewCanvas}"
+               Placement="AnchorAndGravity" PlacementAnchor="TopLeft" PlacementGravity="BottomRight"
+               PlacementConstraintAdjustment="None" IsHitTestVisible="False" IsLightDismissEnabled="False"
+               ShouldUseOverlayLayer="False">
+          <Border Width="{Binding #PART_PinnedDockResizePreview.Width}" Height="{Binding #PART_PinnedDockResizePreview.Height}"
+                  Background="{Binding #PART_PinnedDockSplitter.BackgroundWhileDragging}"
+                  Opacity="{Binding #PART_PinnedDockSplitter.OpacityWhileDragging}" />
+        </Popup>
       </Canvas>
     </Grid>
   </ControlTemplate>
@@ -36,10 +45,15 @@
                 x:DataType="controls:LayoutAutoHideWindowControl">
     <Setter Property="Template">
       <ControlTemplate>
-        <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding Content}"
-                          Background="{TemplateBinding Background}"
-                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+        <Grid>
+          <Decorator x:Name="PART_InlinePresenter">
+            <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding Content}"
+                              Background="{TemplateBinding Background}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Decorator>
+          <infrastructure:LayoutAutoHideNativeHost InlinePresenter="{Binding #PART_InlinePresenter}" />
+        </Grid>
       </ControlTemplate>
     </Setter>
   </ControlTheme>

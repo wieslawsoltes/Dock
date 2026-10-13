@@ -8,6 +8,7 @@
     <Setter Property="Template" Value="{StaticResource AvalonDockPinnedLayout}" />
     <Setter Property="MinimumPinnedWidth" Value="0" />
     <Setter Property="MinimumPinnedHeight" Value="0" />
+    <Setter Property="UsePinnedDockWindow" Value="False" />
     <Setter Property="MinimumRemainingContentSize" Value="0" />
     <Setter Property="InitializePinnedBoundsOnLayout" Value="False" />
   </Style>

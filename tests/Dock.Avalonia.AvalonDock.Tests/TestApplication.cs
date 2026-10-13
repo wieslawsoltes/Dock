@@ -16,5 +16,7 @@ public class TestApplication : Application
     }
 
     public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<TestApplication>()
-        .UseHeadless(new AvaloniaHeadlessPlatformOptions());
+        // Desktop roots share the primary mouse; capture must remain valid across
+        // Dock's owner, floating windows, popups, and embedded presentation roots.
+        .UseHeadless(new AvaloniaHeadlessPlatformOptions { UseSharedMouseDevice = true });
 }

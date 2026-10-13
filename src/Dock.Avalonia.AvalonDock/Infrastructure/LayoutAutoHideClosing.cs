@@ -60,7 +60,7 @@ internal sealed class LayoutAutoHideClosing(DockingManager manager)
     {
         if (_model is not { } model || !ReferenceEquals(manager.AutoHideWindow?.Model, model)) { Stop(); return; }
         bool keepOpen = model.IsActive || IsResizing || model.DockModel.KeepPinnedDockableVisible ||
-            manager.AutoHideWindow is { IsPointerOver: true } || IsAnchorOver(manager.LeftSidePanel, model) ||
+            manager.AutoHideWindow is { IsPreviewPointerOver: true } || IsAnchorOver(manager.LeftSidePanel, model) ||
             IsAnchorOver(manager.TopSidePanel, model) || IsAnchorOver(manager.RightSidePanel, model) || IsAnchorOver(manager.BottomSidePanel, model);
         if (_closing && !keepOpen)
         {

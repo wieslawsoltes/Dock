@@ -109,7 +109,7 @@ internal sealed class LayoutAutoHidePresenter : ContentControl
         {
             // Deferred inline content can attach after the owned window. Keep
             // one editor host, and return it when display mode changes to Inline.
-            owner._suppressBody = _inline is not null && DockSettings.UsePinnedDockWindow &&
+            owner._suppressBody = _inline is not null && (_inline.UsePinnedDockWindow ?? DockSettings.UsePinnedDockWindow) &&
                 !DockSettings.IsManagedWindowHostingEnabled(manager.DockLayout) && owner.DataContext is IToolDock native &&
                 (native.ActiveDockable?.PinnedDockDisplayModeOverride ?? _inline.PinnedDockDisplayMode) == PinnedDockDisplayMode.Overlay;
             LayoutAutoHideWindowControl? window = owner._suppressBody ? null : manager.AutoHideWindow;

@@ -1,9 +1,10 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:models="using:Dock.Model.Controls"
         xmlns:controls="using:AvalonDock.Controls">
-  <Style Selector="dock|DockControl.avalondock dock|PinnedDockControl, :is(Window).avalondock dock|PinnedDockControl"
+  <Style Selector=":is(ad|DockingManager) dock|PinnedDockControl, dock|DockControl.avalondock dock|PinnedDockControl, :is(Window).avalondock dock|PinnedDockControl"
          x:DataType="models:IRootDock">
     <Setter Property="Template" Value="{StaticResource AvalonDockPinnedLayout}" />
     <Setter Property="MinimumPinnedWidth" Value="0" />

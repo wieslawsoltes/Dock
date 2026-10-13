@@ -3305,6 +3305,14 @@ projects have no dependency on AvalonDock. See the
 [native extension guide](https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md)
 for policy defaults, sizing and host contracts, examples, and regression coverage.
 
+[PR #1184](https://github.com/wieslawsoltes/Dock/pull/1184) adds the nullable
+`PinnedDockControl.UsePinnedDockWindow` override. The adapter scopes it to false
+so the existing preview presenter can move into its embedded native root without
+changing the application's global host policy.
+[PR #1185](https://github.com/wieslawsoltes/Dock/pull/1185) extends registered
+external surfaces to route dragging, docking targets, and previews across native
+roots, including display-density conversions for floating geometry.
+
 The branch also includes the native drag and preview fixes from
 [PR #1153](https://github.com/wieslawsoltes/Dock/pull/1153) and
 [PR #1156](https://github.com/wieslawsoltes/Dock/pull/1156): adorner reuse,

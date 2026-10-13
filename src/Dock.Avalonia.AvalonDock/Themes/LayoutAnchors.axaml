@@ -7,7 +7,7 @@
     <Setter Property="AnchorGroupTemplate" Value="{StaticResource AvalonDockAnchorGroup}" />
     <Setter Property="AnchorTemplate" Value="{StaticResource AvalonDockAnchor}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolPinnedControl, :is(Window).avalondock dock|ToolPinnedControl">
+  <Style Selector=":is(ad|DockingManager) dock|ToolPinnedControl, dock|DockControl.avalondock dock|ToolPinnedControl, :is(Window).avalondock dock|ToolPinnedControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockPinnedStrip}" />
   </Style>
 </Styles>

@@ -13,13 +13,16 @@ internal static class LayoutItemViewTransfer
     {
         if (ReferenceEquals(view, existing)) return view;
         TopLevel? previousRoot = TopLevel.GetTopLevel(view);
-        if (view.GetVisualParent() is ContentPresenter previous && ReferenceEquals(previous.Child, view))
+        // The public View remains logically owned by its manager. Transfer
+        // through its physical host, which may be an application panel.
+        var parent = view.GetVisualParent() ?? view.Parent;
+        if (parent is ContentPresenter previous && ReferenceEquals(previous.Child, view))
         {
             previous.SetCurrentValue(ContentPresenter.ContentProperty, null);
             previous.UpdateChild();
         }
-        else if (view.Parent is Panel panel) panel.Children.Remove(view);
-        else if (view.Parent is Decorator decorator && ReferenceEquals(decorator.Child, view)) decorator.Child = null;
+        else if (parent is Panel panel) panel.Children.Remove(view);
+        else if (parent is Decorator decorator && ReferenceEquals(decorator.Child, view)) decorator.Child = null;
         // Retire invalidations queued by the old host before attaching the
         // presenter to a different layout manager.
         if (view.GetVisualParent() is null) previousRoot?.UpdateLayout();

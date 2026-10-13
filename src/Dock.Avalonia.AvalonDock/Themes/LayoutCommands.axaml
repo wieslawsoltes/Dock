@@ -22,19 +22,19 @@
   <Style Selector=":is(Window).avalondock dock|DockControl">
     <Setter Property="HostWindowFactory" Value="{Binding $self.(infrastructure:LayoutHostWindowFactory.Factory)}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, :is(Window).avalondock dock|DocumentControl">
+  <Style Selector=":is(ad|DockingManager) dock|DocumentControl, dock|DockControl.avalondock dock|DocumentControl, :is(Window).avalondock dock|DocumentControl">
     <Setter Property="CloseTemplate" Value="{StaticResource AvalonDockDocumentCloseTemplate}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|DocumentTabStripItem, :is(Window).avalondock dock|DocumentTabStripItem">
+  <Style Selector=":is(ad|DockingManager) dock|DocumentTabStripItem, dock|DockControl.avalondock dock|DocumentTabStripItem, :is(Window).avalondock dock|DocumentTabStripItem">
     <Setter Property="DocumentContextMenu" Value="{x:Null}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolTabStripItem, :is(Window).avalondock dock|ToolTabStripItem">
+  <Style Selector=":is(ad|DockingManager) dock|ToolTabStripItem, dock|DockControl.avalondock dock|ToolTabStripItem, :is(Window).avalondock dock|ToolTabStripItem">
     <Setter Property="TabContextMenu" Value="{x:Null}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolPinItemControl, :is(Window).avalondock dock|ToolPinItemControl">
+  <Style Selector=":is(ad|DockingManager) dock|ToolPinItemControl, dock|DockControl.avalondock dock|ToolPinItemControl, :is(Window).avalondock dock|ToolPinItemControl">
     <Setter Property="PinContextMenu" Value="{x:Null}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolChromeControl, :is(Window).avalondock dock|ToolChromeControl">
+  <Style Selector=":is(ad|DockingManager) dock|ToolChromeControl, dock|DockControl.avalondock dock|ToolChromeControl, :is(Window).avalondock dock|ToolChromeControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockToolChrome}" />
     <Setter Property="ToolFlyout" Value="{x:Null}" />
     <Style Selector="^ /template/ ContentPresenter#PART_Title">

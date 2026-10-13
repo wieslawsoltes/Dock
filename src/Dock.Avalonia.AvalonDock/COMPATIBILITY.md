@@ -36,8 +36,8 @@ Acceptance requirements:
 - Release builds and NuGet pack/consumer validation for supported frameworks;
   CI integration and an open PR with incremental commits.
 
-The latest automated contract pass contains **3,876 adapter cases and 30 rendering
-cases**, with no skipped cases. It includes 30 added auto-hide focus/resize cases,
+The automated checkpoint before the framework extensions contained **3,876 adapter cases and 30 rendering
+cases**, with no skipped cases. It included 30 added auto-hide focus/resize cases,
 alongside the earlier manager key-down and inherited-control-property cases described below. The matrix makes the acceptance evidence explicit; it
 replaces the former open-ended lists of manager, interface, callback, and default
 work. Each contract remains subject to the framework boundaries and deferred
@@ -106,6 +106,8 @@ The native projects have no reference to the AvalonDock assembly or namespaces.
 | Custom docking overlays | Scoped window factories/themes, enclosing preview hosts, selector registrations, `IDockTargetPresentation` and geometry | AvalonDock named window parts, preview path, selector mapping, and public snapshots |
 | Pixel/auto/star sizing and resize previews | Custom splitter host, native tracker/input, preview properties, pinned sizing and custom thumb support | Public grid lengths, normalization, and size notifications |
 | Auto-hide resize limits and unset sizes | `PinnedDockControl.MinimumRemainingContentSize` and `InitializePinnedBoundsOnLayout` ([PR #1183](https://github.com/wieslawsoltes/Dock/pull/1183)); defaults remain 50 and true | Scoped zero/false settings, initial fallback dimensions, physical ghost bounds, and commit-time model coercion |
+| Scoped auto-hide hosting | Nullable `PinnedDockControl.UsePinnedDockWindow` ([PR #1184](https://github.com/wieslawsoltes/Dock/pull/1184)); null follows the global policy | Scoped false keeps the native preview in its template so the public auto-hide control can embed its existing presenter |
+| Embedded native docking surfaces | Existing `IExternalDockSurface` registration participates in drag input, docking targets, and previews across visual roots, with display-density conversions ([PR #1185](https://github.com/wieslawsoltes/Dock/pull/1185)) | Register the embedded public auto-hide root and preserve its model, presenter, and owning native Dock control |
 | Stable presentation and cleanup | Deferred root presentation, create-button coexistence, hidden-window filtering and tool-menu lifetime fixes | Public templates, layout items, themes, and retained-model subscriptions |
 
 The [native extension guide](https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md)

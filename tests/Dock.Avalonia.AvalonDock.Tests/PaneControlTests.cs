@@ -173,6 +173,10 @@ public class PaneControlTests
         Assert.Equal(FlowDirection.RightToLeft, control.FlowDirection);
         ControlTheme next = (ControlTheme)workspace.Window.Resources["LegacyToolPane"]!;
         DockingManager manager = new() { AnchorablePaneControlStyle = next };
+        // Application controls retain their first manager's logical ownership
+        // until deferred item cleanup completes, as in upstream AvalonDock.
+        model.Parent!.RemoveChild(model);
+        Dispatcher.UIThread.RunJobs();
         manager.Layout.RootPanel.Children.Add(model);
         Assert.Same(next, control.Theme);
         Assert.Equal(FlowDirection.LeftToRight, control.FlowDirection);

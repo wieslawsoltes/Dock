@@ -1,5 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:models="using:Dock.Model.Core"
         xmlns:docking="using:Dock.Settings"
@@ -9,10 +10,10 @@
         xmlns:controls="using:AvalonDock.Controls"
         x:DataType="models:IDockable">
 
-  <Style Selector="dock|DockControl.avalondock dock|ProportionalDockControl, :is(Window).avalondock dock|ProportionalDockControl">
+  <Style Selector=":is(ad|DockingManager) dock|ProportionalDockControl, dock|DockControl.avalondock dock|ProportionalDockControl, :is(Window).avalondock dock|ProportionalDockControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockProportionalLayout}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock :is(proportional|ProportionalStackPanelSplitter), :is(Window).avalondock :is(proportional|ProportionalStackPanelSplitter)">
+  <Style Selector=":is(ad|DockingManager) :is(proportional|ProportionalStackPanelSplitter), dock|DockControl.avalondock :is(proportional|ProportionalStackPanelSplitter), :is(Window).avalondock :is(proportional|ProportionalStackPanelSplitter)">
     <Setter Property="(proportional:ProportionalStackPanelSplitter.MinimumProportionSize)" Value="0" />
   </Style>
   <Style Selector=":is(Control).avalondock-grid-child" x:DataType="models:IDockable">

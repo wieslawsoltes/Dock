@@ -1,5 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
         xmlns:dock="using:Dock.Avalonia.Controls"
         xmlns:dmc="using:Dock.Model.Controls"
         xmlns:converters="using:Dock.Avalonia.Converters">
@@ -7,10 +8,10 @@
        Keeping these bindings in the templates also preserves logical ownership
        while ancestor styles detach and reattach. -->
 
-  <Style Selector="dock|DockControl.avalondock dock|DocumentControl, :is(Window).avalondock dock|DocumentControl">
+  <Style Selector=":is(ad|DockingManager) dock|DocumentControl, dock|DockControl.avalondock dock|DocumentControl, :is(Window).avalondock dock|DocumentControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockDocumentContent}" />
   </Style>
-  <Style Selector="dock|DockControl.avalondock dock|ToolControl, :is(Window).avalondock dock|ToolControl">
+  <Style Selector=":is(ad|DockingManager) dock|ToolControl, dock|DockControl.avalondock dock|ToolControl, :is(Window).avalondock dock|ToolControl">
     <Setter Property="Template" Value="{StaticResource AvalonDockToolContent}" />
   </Style>
 </Styles>

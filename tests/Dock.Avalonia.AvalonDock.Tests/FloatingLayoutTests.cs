@@ -156,6 +156,7 @@ public class FloatingLayoutTests
         LayoutDocument document = new();
         LayoutDocumentPane pane = new(document);
         LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };
+        DockingManager manager = new() { Layout = root };
         document.Float();
         LayoutDocumentFloatingWindow window = Assert.IsType<LayoutDocumentFloatingWindow>(Assert.Single(root.FloatingWindows));
         Assert.Same(document, window.RootDocument);

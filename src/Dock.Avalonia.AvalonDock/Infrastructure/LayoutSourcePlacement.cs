@@ -24,7 +24,7 @@ internal static class LayoutSourcePlacement
             }
             destination ??= (ILayoutGroup?)firstToolPane ?? firstDocumentPane;
         }
-        if (root.Manager?.LayoutUpdateStrategy?.BeforeInsertAnchorable(root, tool, destination) != true)
+        if (root.Manager!.LayoutUpdateStrategy?.BeforeInsertAnchorable(root, tool, destination) != true)
         {
             if (destination is null)
             {
@@ -38,11 +38,20 @@ internal static class LayoutSourcePlacement
             }
             destination.InsertChildAt(destination.ChildrenCount, tool);
         }
-        root.Manager?.LayoutUpdateStrategy?.AfterInsertAnchorable(root, tool);
+        root.Manager!.LayoutUpdateStrategy?.AfterInsertAnchorable(root, tool);
     }
 
     internal static void DockDocument(LayoutRoot root, LayoutDocument document)
-        => InsertDocument(root, document, FindDocumentDestination(root, document), null);
+    {
+        LayoutDocumentPane? destination = FindDocumentDestination(root, document);
+        if (root.Manager!.LayoutUpdateStrategy?.BeforeInsertDocument(root, document, destination) != true)
+        {
+            if (destination is null)
+                throw new InvalidOperationException("Layout must contains at least one LayoutDocumentPane in order to host documents");
+            destination.Children.Add(document);
+        }
+        root.Manager!.LayoutUpdateStrategy?.AfterInsertDocument(root, document);
+    }
 
     internal static LayoutDocumentPane? FindDocumentDestination(LayoutRoot root)
         => FindDocumentDestination(root, null);

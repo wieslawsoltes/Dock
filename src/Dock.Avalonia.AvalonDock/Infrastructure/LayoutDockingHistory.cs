@@ -1,5 +1,4 @@
 using System;
-using Dock.Model.Core;
 using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
@@ -42,23 +41,23 @@ internal sealed class LayoutDockingHistory(LayoutContent content)
 
     internal bool RestorePrevious(bool floatingOnly = false)
     {
-        if (content.Root is not LayoutRoot root || content.PreviousContainer is not ILayoutGroup group ||
-            group is not LayoutElement { DockModel: IDock target } || !ReferenceEquals(group.Root, root) ||
-            (floatingOnly && !IsFloatingContainer(group)) || content.DockModel.Owner is not IDock source ||
-            content.DockModel.Factory is not { } factory || ReferenceEquals(source, target)) return false;
+        ILayoutContainer? previous = content.PreviousContainer;
+        if (previous is null || (floatingOnly && previous.FindParent<LayoutFloatingWindow>() is null)) return false;
 
-        int index = content.PreviousContainerIndex;
-        // Upstream Float reuses a previous floating pane without creating a
-        // window or raising the manager's float/dock notifications.
-        using IDockOperationScope? silent = floatingOnly ? root.Operations.Begin(content.DockModel, LayoutOperation.Silent) : null;
-        factory.MoveDockable(source, target, content.DockModel, null);
-        if (!ReferenceEquals(content.Parent, group)) return false;
-        if (group is ILayoutPane pane)
-        {
-            int current = group.IndexOfChild(content);
-            int desired = index < 0 ? group.ChildrenCount - 1 : Math.Min(index, group.ChildrenCount - 1);
-            if (current != desired) pane.MoveChild(current, desired);
-        }
+        ILayoutContainer? current = content.Parent;
+        // Float's return path requires a pane, whereas Dock also accepts a
+        // floating document's single-child container or the hidden collection.
+        int currentIndex = floatingOnly
+            ? ((current as ILayoutPane) as ILayoutGroup)!.IndexOfChild(content)
+            : (current as ILayoutGroup)?.IndexOfChild(content) ?? -1;
+        ILayoutGroup group = (previous as ILayoutGroup)!;
+        group.InsertChildAt(Math.Min(content.PreviousContainerIndex, group.ChildrenCount), content);
+
+        // Public collection edits preserve the native model and publish the
+        // requested insertion index immediately, including moves across roots.
+        _removedFrom = null;
+        content.PreviousContainer = currentIndex >= 0 ? current : null;
+        content.PreviousContainerIndex = currentIndex >= 0 ? currentIndex : 0;
         return true;
     }
 

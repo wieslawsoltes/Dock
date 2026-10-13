@@ -6,6 +6,13 @@ values, equal replacement objects, container inputs, bound identifiers, nested
 activation, callback suppression and exceptions, and retained activation history.
 Both consumer frameworks compile the shared public-operation probes.
 
+Minimum-size probes check both axes for public/native notification names,
+repeated `NaN`, unchanged negative XML values, argument errors, and reentrant
+assignments. Model docking probes check missing manager context, protected
+fallback overrides, insertion indices, return panes in another layout, callback
+ordering, and retained return-location metadata. These use the packed assemblies
+through public APIs and external subclasses.
+
 The update-strategy probe replaces a strategy during a source batch, verifies
 that the replacement receives the after callbacks, and redirects a hidden tool
 to a different pane and tab index through `Show()` using the packaged models.

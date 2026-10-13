@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Orientation = Avalonia.Layout.Orientation;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
-using Dock.Model.Core;
 
 namespace AvalonDock.Infrastructure;
 
@@ -14,7 +12,7 @@ internal static class LayoutItemOperations
     internal static LayoutContent RequireManagedContent(LayoutItem item)
     {
         LayoutContent content = item.LayoutElement!;
-        if (content.Root!.Manager is null) throw new NullReferenceException();
+        LayoutOperationContext.RequireManager(content);
         return content;
     }
 
@@ -101,12 +99,7 @@ internal static class LayoutItemOperations
 
     private static void ActivateAndCollect(LayoutContent content)
     {
-        content.IsSelected = true;
-        // A public collection transfer is passive. Complete native focus once
-        // the destination has been published, as a factory transfer would do.
-        if (content.DockModel.Owner is IDock pane && content.DockModel.Factory is { } factory)
-            factory.SetFocusedDockable(pane, content.DockModel);
-        content.IsActive = true;
+        LayoutOperationContext.SelectAndActivate(content);
         content.Root!.CollectGarbage();
     }
 

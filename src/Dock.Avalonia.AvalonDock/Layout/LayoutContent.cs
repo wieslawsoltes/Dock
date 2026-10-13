@@ -210,30 +210,36 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// Creating a new window uses the native factory's capability rules. The item
     /// is selected and activated even when new window creation is disabled.
     /// </remarks>
+    /// <exception cref="NullReferenceException">New window creation has no layout root or manager.</exception>
     public void Float()
     {
         if (!DockingHistory.RestorePrevious(floatingOnly: true))
         {
+            LayoutOperationContext.RequireManager(this);
             DockModel.SetVisibleBounds(FloatingLeft, FloatingTop, FloatingWidth, FloatingHeight);
             DockModel.Factory?.FloatDockable(DockModel);
         }
-        IsSelected = true;
-        IsActive = true;
-        Root?.CollectGarbage();
+        LayoutOperationContext.SelectAndActivate(this);
+        Root!.CollectGarbage();
     }
     /// <summary>Docks this item in a document pane.</summary>
     /// <remarks>This explicit operation does not consult an anchorable's tabbed-document capability.</remarks>
     /// <exception cref="InvalidOperationException">The content does not belong to a layout.</exception>
+    /// <exception cref="NullReferenceException">A move is required but the layout has no manager.</exception>
     public void DockAsDocument() => LayoutDocumentPlacement.Dock(this);
     /// <summary>Returns the item to its previous container.</summary>
+    /// <exception cref="NullReferenceException">The content has no layout root or manager.</exception>
     public void Dock()
     {
-        using IDockOperationScope? scope = (Root as LayoutRoot)?.Operations.Begin(DockModel, LayoutOperation.Dock);
-        if (!DockingHistory.RestorePrevious()) InternalDock();
-        IsSelected = true;
-        IsActive = true;
+        LayoutOperationContext.RequireManager(this).NotifyLayoutOperation(this, floating: false, preview: true);
+        if (DockingHistory.RestorePrevious())
+        {
+            LayoutOperationContext.SelectAndActivate(this);
+        }
+        else InternalDock();
+        LayoutOperationContext.RequireManager(this).NotifyLayoutOperation(this, floating: false, preview: false);
+        SetFloating(false);
         Root?.CollectGarbage();
-        scope?.Complete();
     }
     /// <summary>Chooses a docking destination when no previous container is available.</summary>
     protected virtual void InternalDock() { }

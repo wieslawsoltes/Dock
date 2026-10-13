@@ -132,7 +132,8 @@ public class LayoutAnchorable : LayoutContent
     /// <inheritdoc/>
     protected override void InternalDock()
     {
-        if (Root is LayoutRoot root) LayoutSourcePlacement.DockAnchorable(root, this);
+        LayoutOperationContext.RequireManager(this);
+        LayoutSourcePlacement.DockAnchorable((LayoutRoot)Root!, this);
         base.InternalDock();
     }
     /// <summary>Hides this tool without destroying its content.</summary>

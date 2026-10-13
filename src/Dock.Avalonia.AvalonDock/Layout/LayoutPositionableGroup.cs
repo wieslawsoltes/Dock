@@ -24,6 +24,8 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     private bool _applyingProportion;
     private double _availableExtent;
     private bool _horizontal;
+    private int _minimumWidthRevision;
+    private int _minimumHeightRevision;
 
     /// <summary>Creates a positionable split group.</summary>
     public LayoutPositionableGroup() : this(new ProportionalDock()) { }
@@ -71,32 +73,20 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     /// <summary>Gets or sets whether items can be repositioned.</summary>
     public bool CanRepositionItems { get => _canRepositionItems; set => SetField(ref _canRepositionItems, value); }
     /// <summary>Gets or sets the minimum docked width, initially 25 pixels.</summary>
-    /// <exception cref="ArgumentException">The value is negative.</exception>
+    /// <remarks>Unchanged values are ignored before validation. Repeated NaN assignments each raise the public changing/changed notifications.</remarks>
+    /// <exception cref="ArgumentException">A different negative value is assigned.</exception>
     public double DockMinWidth
     {
         get => DockModel.MinWidth;
-        set
-        {
-            VerifyAccess();
-            if (value < 0) throw new ArgumentException("The minimum width must not be negative.", nameof(value));
-            if (DockModel.MinWidth.Equals(value)) return;
-            RaisePropertyChanging();
-            DockModel.MinWidth = value;
-        }
+        set => SetDockMinimum(value, horizontal: true);
     }
     /// <summary>Gets or sets the minimum docked height, initially 25 pixels.</summary>
-    /// <exception cref="ArgumentException">The value is negative.</exception>
+    /// <remarks>Unchanged values are ignored before validation. Repeated NaN assignments each raise the public changing/changed notifications.</remarks>
+    /// <exception cref="ArgumentException">A different negative value is assigned.</exception>
     public double DockMinHeight
     {
         get => DockModel.MinHeight;
-        set
-        {
-            VerifyAccess();
-            if (value < 0) throw new ArgumentException("The minimum height must not be negative.", nameof(value));
-            if (DockModel.MinHeight.Equals(value)) return;
-            RaisePropertyChanging();
-            DockModel.MinHeight = value;
-        }
+        set => SetDockMinimum(value, horizontal: false);
     }
     /// <summary>Gets or sets the floating width.</summary>
     public double FloatingWidth { get => _floatingWidth; set => SetField(ref _floatingWidth, value); }
@@ -146,12 +136,12 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        base.OnModelPropertyChanged(sender, e);
         if (e.Property == DockableBase.MinWidthProperty || e.Property == DockableBase.MinHeightProperty)
         {
-            RaisePropertyChanged(e.Property == DockableBase.MinWidthProperty ? nameof(DockMinWidth) : nameof(DockMinHeight));
-            Root?.Manager?.SizingViews.Invalidate();
+            NotifyMinimumChanged(e.Property == DockableBase.MinWidthProperty);
+            return;
         }
+        base.OnModelPropertyChanged(sender, e);
         if (e.Property != DockableBase.ProportionProperty || _applyingProportion || _availableExtent <= 0
             || !double.IsFinite(DockModel.Proportion) || DockModel.Proportion < 0) return;
         // Retain user splitter resizing when the manager is measured again.
@@ -161,6 +151,30 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
             : new GridLength(DockModel.Proportion, GridUnitType.Star);
         if (_horizontal) ChangeDockWidth(next);
         else ChangeDockHeight(next);
+    }
+
+    private void SetDockMinimum(double value, bool horizontal)
+    {
+        VerifyAccess();
+        double current = horizontal ? DockModel.MinWidth : DockModel.MinHeight;
+        if (current == value) return;
+        if (value < 0) throw new ArgumentException("Invalid value, must be a positive number or equal to zero");
+        RaisePropertyChanging(horizontal ? nameof(DockMinWidth) : nameof(DockMinHeight));
+        int revision = horizontal ? _minimumWidthRevision : _minimumHeightRevision;
+        if (horizontal) DockModel.MinWidth = value;
+        else DockModel.MinHeight = value;
+        // Avalonia suppresses equal native writes, including NaN. The public
+        // setter still completes a change accepted before a reentrant callback.
+        if (revision == (horizontal ? _minimumWidthRevision : _minimumHeightRevision))
+            NotifyMinimumChanged(horizontal);
+    }
+
+    private void NotifyMinimumChanged(bool horizontal)
+    {
+        if (horizontal) _minimumWidthRevision++;
+        else _minimumHeightRevision++;
+        RaisePropertyChanged(horizontal ? nameof(DockMinWidth) : nameof(DockMinHeight));
+        Root?.Manager?.SizingViews.Invalidate();
     }
 
     private bool ChangeDockWidth(GridLength value)

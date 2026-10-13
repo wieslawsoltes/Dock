@@ -311,7 +311,7 @@ public class DockingEventTests
         LayoutRoot previous = workspace.Manager.Layout;
         List<Notification> events = Observe(workspace.Manager);
         workspace.Manager.Layout = new LayoutRoot();
-        workspace.First.Float();
+        Assert.Throws<NullReferenceException>(workspace.First.Float);
         Assert.Empty(events);
         previous.FloatingWindows.Clear();
     }

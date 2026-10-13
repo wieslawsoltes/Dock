@@ -36,7 +36,8 @@ public class LayoutDocument : LayoutContent
     /// <inheritdoc/>
     protected override void InternalDock()
     {
-        if (Root is LayoutRoot root) LayoutSourcePlacement.DockDocument(root, this);
+        LayoutOperationContext.RequireManager(this);
+        LayoutSourcePlacement.DockDocument((LayoutRoot)Root!, this);
         base.InternalDock();
     }
 

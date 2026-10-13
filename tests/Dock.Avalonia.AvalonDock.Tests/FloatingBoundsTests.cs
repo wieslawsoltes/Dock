@@ -51,6 +51,7 @@ public class FloatingBoundsTests
         LayoutPanel panel = new(new LayoutDocumentPane());
         panel.Children.Add(new LayoutAnchorablePane(tool));
         LayoutRoot root = new() { RootPanel = panel };
+        DockingManager manager = new() { Layout = root };
         tool.Float();
         LayoutAnchorableFloatingWindow window = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(root.FloatingWindows));
         Assert.Equal(70, window.DockWindow.X);

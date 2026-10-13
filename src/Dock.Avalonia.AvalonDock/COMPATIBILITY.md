@@ -219,7 +219,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   continue to raise `CanExecuteChanged`. Local binding expressions to current
   defaults are cleared; raw observable subscriptions retain Avalonia ownership
   (use compiled bindings or `ToBinding()` for expression cleanup).
-- The consolidated adapter suite passes all 3,287 cases, including 100 new focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
+- The consolidated adapter suite passes all 3,375 cases, including 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
   reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
@@ -477,9 +477,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   to keep this implementation reflection-free; exact framework parity remains open.
 - `PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` bubble through the
   manager and its ancestors with the public layout content as `Source`.
-  Protected notification hooks support derived managers. Model methods,
-  container commands, menu pointer input, and native drag execution share
-  operation scopes; internal split/group moves do not duplicate notifications.
+  Protected notification hooks support derived managers. Direct model docking
+  reports its public insertion and activation phases; native drag execution uses
+  operation scopes so internal split/group moves do not duplicate notifications.
   Native validation, tab reordering/group commands, and reuse of an existing floating pane are
   silent. Tests cover timing against live native ownership, group selection,
   grouped redocking, preview ordering before auto-hide unpinning, handled routing
@@ -501,6 +501,21 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   activates even after a rejected new float, and can refloat existing floating
   content while retaining its original docked return pane. Headless and external
   package-consumer tests exercise these differences from UI command eligibility.
+- Direct model `Dock` and new-window `Float` require a root and manager; detached
+  calls fail before selection or movement. Existing floating return panes can be
+  restored without a manager. Previous-container insertion publishes the requested
+  index immediately, rejects negative indices, and supports a destination in
+  another layout. Completion reads the current destination manager. A suppressed
+  `InternalDock` does not add activation; `Dock` clears the floating flag after
+  `Docked`, and `DockAsDocument` completes before explicit activation. Garbage
+  collection retains unreferenced return metadata and clears foreign references
+  without rewriting the saved index/identifier. Headless cases cover collection
+  notifications, missing context, external overrides, callbacks, and return history.
+- Group minimum properties publish only the `DockMinWidth`/`DockMinHeight`
+  compatibility names, including native assignments. Equality precedes negative
+  validation; repeated `NaN` and reentrant assignments retain both public
+  notification phases. Argument errors and callback failures preserve their
+  upstream phase and completed state. XML restores remain publicly silent.
 - Observable document/tool sources, source replacement, layout replacement,
   insertion strategies, and source removal from visible, hidden, and pinned
   locations. Compiled bindings and data templates render ReactiveUI ViewModel
@@ -1372,6 +1387,24 @@ the later lookup. `LayoutItem.Float()` remains an unused protected no-op.
 Twelve external consumer probes reproduce these focus/command defects against
 the preceding `32f4de07d` packages. This audit supplements the command inheritance
 and binding checks; it does not establish all WPF framework behavior.
+
+## Direct model docking and group minimum metadata
+
+The model-operation audit adds 52 Headless cases for manager context, return
+indices, cross-layout insertion, protected `InternalDock`, completion/activation
+ordering, garbage collection, and existing floating-pane restoration. Explicit
+model edits use public collections backed by the original native Dock objects.
+The no-history fallback does not force activation. `Docked` uses the manager of
+the resulting layout and precedes the final floating flag and cleanup phases.
+The 36 group-minimum cases cover all five concrete positionable group kinds,
+both axes, native/public property names, XML values, repeated `NaN`, validation,
+reentrancy, and observer failures.
+
+The independent package consumer adds 12 minimum-metadata and 16 model-docking
+checks. Against the preceding `7d5dd7f28` packages, all 12 minimum checks and 15
+of the 16 model checks reproduce defects; the remaining insertion-index case is
+a passing control. These checks use the pinned source contracts, not new desktop
+observations. Interactive desktop validation remains deferred.
 
 ## Open work (not release-complete)
 

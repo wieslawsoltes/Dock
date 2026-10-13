@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Headless.XUnit;
+using AvalonDock;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
 using AvalonDock.Layout;
@@ -155,6 +156,7 @@ public class LayoutLifecycleTests
         ProbeDocument document = new();
         LayoutDocumentPane pane = new(document);
         LayoutRoot root = new() { RootPanel = new LayoutPanel(pane) };
+        DockingManager manager = new() { Layout = root };
         document.Transitions.Clear();
 
         document.Float();
@@ -279,6 +281,7 @@ public class LayoutLifecycleTests
         ProbeAnchorable tool = new();
         LayoutAnchorablePane pane = new(tool);
         LayoutRoot root = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane()) };
+        DockingManager manager = new() { Layout = root };
         root.RootPanel.Children.Add(pane);
         tool.Transitions.Clear();
         switch (operation)
@@ -302,6 +305,7 @@ public class LayoutLifecycleTests
     {
         ProbeDocument document = new();
         LayoutRoot root = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(document)) };
+        DockingManager manager = new() { Layout = root };
         if (floating) document.Float();
         ILayoutContainer? parent = document.Parent;
         IDockable? owner = document.DockModel.Owner;

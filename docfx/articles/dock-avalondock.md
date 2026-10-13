@@ -639,6 +639,7 @@ some explicit model methods deliberately have different rules:
 | `tool.ToggleAutoHide()` | Pins or restores a tool in an anchorable pane or auto-hide group even when `CanAutoHide` is false, including a floating tool. Hidden tools and tools in document panes stay in place. |
 | `tool.DockAsDocument()` | Moves to a document pane even when `CanDockAsTabbedDocument` is false, then selects and activates the tool. |
 | `content.Float()` | Reuses a previous floating pane regardless of `CanFloat`; creating a new window still requires the native float capability. Both paths select and activate the content. Floating an already floating item can create another window while keeping its original docked return pane. |
+| `content.Dock()` | Restores its previous pane and selects/activates the item. Without a previous pane, it calls the protected `InternalDock()` without adding an activation step. The completion event precedes clearing the floating flag and collecting empty containers. |
 
 For example, an application can disable a document's close button while keeping
 its own programmatic close workflow:
@@ -660,8 +661,27 @@ close and pin operations to preserve native lifecycle events, ItemsSource
 removal, pinned ownership, and cleanup.
 
 `DockAsDocumentCommand` returns a floating document to its previous document
-pane. Without a previous document pane, docking chooses the last focused main
-document pane or another main document pane, creating one when necessary.
+pane. Without a previous document pane, docking uses the last focused document's
+pane. If there is no last focused document, it searches the layout's document
+panes, including floating panes. It creates a pane if the chosen path has no
+destination. `DockAsDocument()` raises `Docked` after insertion and before its
+explicit selection and activation.
+
+Direct `Dock()` and creation of a new floating window require a rooted model
+with a manager; missing context raises `NullReferenceException` before movement.
+`DockAsDocument()` rejects a rootless model with `InvalidOperationException`, but
+already being in a rooted document pane is a no-op even without a manager.
+Restoring an existing floating pane does not require a manager. Return indices
+are clamped only at the upper end; a negative index fails before insertion.
+Collection observers see the requested insertion index in the add notification.
+Previous panes can belong to another layout; the original manager receives
+`PreviewDock`, and the manager of the resulting layout receives `Docked`.
+Callbacks can change or remove that manager, and failures stop the operation
+at the callback phase without undoing completed collection changes.
+
+Garbage collection clears references to disconnected or foreign return panes
+without rewriting their saved index or identifier. It leaves unreferenced
+metadata alone; removal of an empty local return pane clears its index.
 
 ## Use public document and tool tabs
 
@@ -1808,6 +1828,14 @@ remaining after fixed sizes, intrinsic sizes, and minimums. `DockMinWidth` and
 lengths. Collapsed return panes and adjacent hidden splitters consume no space.
 Changing group orientation selects the corresponding manager splitter setting.
 
+Minimum setters raise `PropertyChanging` and `PropertyChanged` using the public
+`DockMinWidth` or `DockMinHeight` name. Native size edits project the corresponding
+public changed notification without leaking `MinWidth` or `MinHeight`. Equal
+values are ignored before validation, so reassigning a negative value restored
+from XML is allowed; a different negative value raises `ArgumentException`
+without a parameter name. Repeated `NaN` assignments each raise both notifications.
+Reentrant callbacks and their exceptions retain the same notification phases.
+
 Native splitter previews commit public pane dimensions on release and cancel
 when pointer capture is lost. Pixel lengths retain their units, a resized
 star/star pair retains its combined weight, and resizing `Auto` converts it to
@@ -2910,7 +2938,7 @@ propagation. Native minimum values still update the existing Dock model. Public
 changes made by native observers, and later ordinary edits, retain notifications.
 Attributes apply in inheritance order; a later conversion error leaves earlier
 assignments in place. XML minima restore stored values even when negative, while
-ordinary minimum setters continue to reject negative values. Orientation accepts
+ordinary minimum setters reject changed negative values. Orientation accepts
 case-insensitive names and numeric enum values. Self-closing empty groups recompute
 visibility; explicit empty start/end pairs retain the current visibility.
 

@@ -84,6 +84,21 @@ restrictions; direct `ICommand.Execute` does not repeat `CanExecute`.
 creating a new window still requires the native float capability. The call
 selects and activates the content in either case.
 
+Direct `Dock()` and creation of a new floating window require a root and manager;
+missing context throws before movement. Restoring an existing floating pane can
+work without a manager. Return panes may belong to another layout, and collection
+observers see the requested insertion index immediately; negative indices fail.
+The original manager receives `PreviewDock`, and the resulting layout's manager
+receives `Docked`. Callback failures retain changes completed before the failure.
+Without a previous pane, `Dock()` calls `InternalDock()` without adding activation.
+Its completion event precedes clearing the floating flag and garbage collection.
+`DockAsDocument()` completes insertion before explicitly selecting and activating
+the content. It uses the last focused document's pane, or searches all document
+panes when there is no last focused document, creating a pane if necessary.
+An already document-hosted item is a no-op; a rootless item is rejected.
+Garbage collection clears disconnected/foreign return references while retaining
+their index and identifier, and leaves unreferenced metadata alone.
+
 Floating widths and heights initially use zero; Dock supplies a valid window
 size when content is floated without explicit dimensions. Document-list sorting
 uses the content object's `IComparable` implementation when available, otherwise
@@ -782,8 +797,8 @@ source removal release old title presenters and caption commands.
 
 `PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` are bubbling routed events.
 `Source` contains the public `LayoutContent`; `Handled` affects routing without
-canceling the operation. Layout methods, float/dock commands, native menu input, and native
-drag execution share operation scopes, so a split or group move raises one pair.
+canceling the operation. Model docking reports its public insertion and activation
+phases. Native drag execution uses operation scopes, so a split or group move raises one pair.
 Native validation and document tab-group commands are silent. Reordering tabs or reusing a previous floating pane
 without creating a window is also silent. Subscribe from a workspace service
 and unsubscribe when that service detaches. Derived managers can override the
@@ -844,8 +859,13 @@ nested or floating native panel. Runtime splitter settings and window resizing
 preserve requested pixel lengths, including all-pixel splits. Fixed panes leave
 unused space in a larger host and can exceed a smaller viewport. Star panes
 share the remainder after fixed sizes, intrinsic `Auto` sizes, and minimum constraints are reserved.
-`DockMinWidth` and `DockMinHeight` default to 25, reject negative values, and
+`DockMinWidth` and `DockMinHeight` default to 25, reject changed negative values, and
 update layout without overwriting the requested `DockWidth` or `DockHeight`.
+Their public notifications use those compatibility names, including native size
+changes. Equality is checked before validation, so an unchanged negative XML
+value can be reassigned. Changed negative values raise `ArgumentException` with
+no parameter name; repeated `NaN` raises both notifications on each assignment.
+Reentrant callbacks retain their notification phases and completed state.
 
 `Auto` measures the existing pane without constraining its split axis. Content
 changes and tab selection update its size; growing the host leaves that natural
@@ -1493,7 +1513,7 @@ propagation. Native minimum values still update the existing Dock model. Public
 changes made by native observers, and later ordinary edits, retain notifications.
 Attributes apply in inheritance order; a later conversion error leaves earlier
 assignments in place. XML minima restore stored values even when negative, while
-ordinary minimum setters continue to reject negative values. Orientation accepts
+ordinary minimum setters reject changed negative values. Orientation accepts
 case-insensitive names and numeric enum values. Self-closing empty groups recompute
 visibility; explicit empty start/end pairs retain the current visibility.
 

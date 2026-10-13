@@ -24,6 +24,7 @@ public class FloatingReturnTests
         LayoutAnchorable tool = new() { ContentId = "tool", CanClose = true };
         LayoutAnchorablePane pane = new(tool);
         LayoutRoot root = CreateRoot(pane);
+        DockingManager manager = new() { Layout = root };
         if (useNativeFactory) root.DockFactory.FloatDockable(tool.DockModel);
         else tool.Float();
 
@@ -63,6 +64,7 @@ public class FloatingReturnTests
         LayoutAnchorablePane pane = new();
         foreach (LayoutAnchorable tool in tools) pane.Children.Add(tool);
         LayoutRoot root = CreateRoot(pane);
+        DockingManager manager = new() { Layout = root };
         root.DockFactory.FloatDockable(tools[index].DockModel);
         Assert.Equal(index, tools[index].PreviousContainerIndex);
         tools[index].Dock();
@@ -143,7 +145,7 @@ public class FloatingReturnTests
         });
         tool.Dock();
         Assert.Same(document.Parent, tool.Parent);
-        Assert.Same(tool, manager.Layout.ActiveContent);
+        Assert.Same(document, manager.Layout.ActiveContent); // InternalDock inserts without explicit activation.
         Assert.Equal(1, strategy.ToolsInserted);
         Assert.Empty(manager.Layout.FloatingWindows);
     }

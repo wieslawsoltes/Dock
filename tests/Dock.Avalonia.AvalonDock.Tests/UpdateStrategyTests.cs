@@ -87,7 +87,8 @@ public class UpdateStrategyTests
             content.PreviousContainer = null;
             manager.LayoutUpdateStrategy = original;
             content.Dock();
-            Assert.Equal(handled, content.IsFloating);
+            Assert.Equal(handled, content.FindParent<LayoutFloatingWindow>() is not null);
+            Assert.False(content.IsFloating); // Dock clears the metadata after its completion event.
         }
         else if (operation == "show")
         {
@@ -308,7 +309,7 @@ public class UpdateStrategyTests
 
         Assert.Equal(new[] { first, moving }, firstPane.Children);
         Assert.Same(firstPane.DockModel, moving.DockModel.Owner);
-        Assert.Same(moving, manager.Layout.ActiveContent);
+        Assert.Same(first, manager.Layout.ActiveContent); // The no-history InternalDock path does not reactivate it.
     }
 
     private static DockingManager CreateManager() => new() { Layout = CreateRoot() };

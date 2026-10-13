@@ -19,21 +19,18 @@ internal static class LayoutGarbageCollector
                 if (node is LayoutDocumentPane) documentPanes++;
                 if (node is LayoutContent content)
                 {
-                    if (content.PreviousContainer?.Root != root ||
-                        (content.PreviousContainer is { ChildrenCount: 0 } previousEmpty &&
-                         !LayoutDockingHistory.IsFloatingContainer(previousEmpty) && !content.IsFloating &&
-                         content is not LayoutAnchorable { IsVisible: false }))
+                    if (content.PreviousContainer is { } previousContainer && previousContainer.Root != root)
+                        content.PreviousContainer = null;
+                    if (content.PreviousContainer is { ChildrenCount: 0 } previousEmpty &&
+                        !LayoutDockingHistory.IsFloatingContainer(previousEmpty) && !content.IsFloating &&
+                        content is not LayoutAnchorable { IsVisible: false })
                     {
                         content.PreviousContainer = null;
                         content.PreviousContainerIndex = -1;
                         content.PreviousContainerId = null;
                     }
-                    if (content.InitialContainer?.Root != root)
-                    {
+                    if (content.InitialContainer is { } initialContainer && initialContainer.Root != root)
                         content.InitialContainer = null;
-                        content.InitialContainerIndex = -1;
-                        content.InitialContainerId = null;
-                    }
                     if (content.PreviousContainer is { } previous) referenced.Add(previous);
                     if (content.InitialContainer is { } initial) referenced.Add(initial);
                 }

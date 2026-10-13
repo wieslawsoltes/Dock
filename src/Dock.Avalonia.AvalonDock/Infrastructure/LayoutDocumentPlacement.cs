@@ -1,6 +1,5 @@
 using System;
 using AvalonDock.Layout;
-using Dock.Model.Core;
 
 namespace AvalonDock.Infrastructure;
 
@@ -9,24 +8,20 @@ internal static class LayoutDocumentPlacement
     public static void Dock(LayoutContent content)
     {
         if (content.Root is not LayoutRoot root) throw new InvalidOperationException("The content must belong to a layout.");
-        if (content.Parent is LayoutDocumentPane || content.DockModel.Owner is not IDock source) return;
-        using IDockOperationScope? scope = root.Operations.Begin(content.DockModel, LayoutOperation.Dock);
-        if (content.PreviousContainer is LayoutDocumentPane previous && ReferenceEquals(previous.Root, root))
+        if (content.Parent is LayoutDocumentPane) return;
+        if (content.PreviousContainer is LayoutDocumentPane)
         {
             content.Dock();
-            scope?.Complete();
             return;
         }
 
         LayoutDocumentPane? destination = root.LastFocusedDocument?.Parent as LayoutDocumentPane;
-        if (destination is null || !ReferenceEquals(destination.Root, root) || destination.FindParent<LayoutFloatingWindow>() is not null)
+        if (root.LastFocusedDocument is null)
         {
-            destination = null;
-            // A native floating root has its own document dock. Search the
-            // manager's main panel so docking cannot target that same window.
-            foreach (ILayoutElement element in root.RootPanel.Descendents())
+            foreach (ILayoutElement element in root.Descendents())
                 if (element is LayoutDocumentPane pane) { destination = pane; break; }
         }
+        LayoutOperationContext.RequireManager(content).NotifyLayoutOperation(content, floating: false, preview: true);
         if (destination is null)
         {
             LayoutPanel previousPanel = root.RootPanel;
@@ -36,10 +31,10 @@ internal static class LayoutDocumentPlacement
             destination = new LayoutDocumentPane();
             panel.Children.Add(destination);
         }
-        root.DockFactory.MoveDockable(source, (IDock)destination.DockModel, content.DockModel, null);
-        content.IsSelected = true;
-        content.IsActive = true;
+        destination.Children.Add(content);
+        LayoutOperationContext.RequireManager(content).NotifyLayoutOperation(content, floating: false, preview: false);
         root.CollectGarbage();
-        scope?.Complete();
+        content.SetFloating(false);
+        LayoutOperationContext.SelectAndActivate(content);
     }
 }

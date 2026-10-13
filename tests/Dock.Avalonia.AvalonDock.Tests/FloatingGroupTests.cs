@@ -22,6 +22,7 @@ public class FloatingGroupTests
         LayoutAnchorablePane pane = new() { DockWidth = new GridLength(225), DockMinWidth = 170 };
         foreach (LayoutAnchorable tool in tools) pane.Children.Add(tool);
         LayoutRoot root = CreateRoot(pane);
+        DockingManager manager = new() { Layout = root };
         pane.SelectedContentIndex = 1;
         root.DockFactory.FloatAllDockables(tools[1].DockModel);
 
@@ -55,6 +56,7 @@ public class FloatingGroupTests
         pane.Children.Add(second);
         pane.SelectedContentIndex = 1;
         LayoutRoot root = CreateRoot(pane);
+        DockingManager manager = new() { Layout = root };
         root.DockFactory.FloatDockable(pane.DockModel);
 
         LayoutAnchorableFloatingWindow window = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(root.FloatingWindows));
@@ -85,6 +87,7 @@ public class FloatingGroupTests
         LayoutAnchorablePaneGroup group = new(firstPane) { Orientation = Orientation.Vertical, DockWidth = new GridLength(280) };
         group.Children.Add(secondPane);
         LayoutRoot root = CreateRoot(group);
+        DockingManager manager = new() { Layout = root };
         root.ActiveContent = second;
         root.DockFactory.FloatDockable(group.DockModel);
 
@@ -199,6 +202,7 @@ public class FloatingGroupTests
         LayoutAnchorablePane pane = new(first);
         pane.Children.Add(second);
         LayoutRoot root = CreateRoot(pane);
+        DockingManager manager = new() { Layout = root };
         root.DockFactory.FloatAllDockables(first.DockModel);
         LayoutFloatingWindow original = Assert.Single(root.FloatingWindows);
         root.DockFactory.FloatAllDockables(second.DockModel);
@@ -247,6 +251,7 @@ public class FloatingGroupTests
         pane.Children.Add(second);
         pane.SelectedContentIndex = 1;
         LayoutRoot root = CreateRoot(pane);
+        DockingManager manager = new() { Layout = root };
         root.DockFactory.FloatDockable(pane.DockModel);
         LayoutAnchorableFloatingWindow original = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(root.FloatingWindows));
         LayoutAnchorablePane destination = Assert.IsType<LayoutAnchorablePane>(first.PreviousContainer);

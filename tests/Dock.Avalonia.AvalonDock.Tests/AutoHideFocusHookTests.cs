@@ -2,7 +2,6 @@ using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
-using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Themes;
 using Xunit;
@@ -17,9 +16,7 @@ public class AutoHideFocusHookTests
     public void The_Base_Hook_Remains_False_While_Avalonia_Tracks_Actual_Preview_Focus(bool focusContent)
     {
         Button editor = new() { Content = "Preview content" };
-        DockingManager manager = new();
-        manager.OnApplyTemplate();
-        LayoutAutoHideWindowControl preview = Assert.IsType<LayoutAutoHideWindowControl>(manager.AutoHideWindow);
+        LayoutAutoHideWindowControl preview = CreatePreview();
         preview.Content = editor;
         preview.IsVisible = true;
         Button outside = new() { Content = "Outside preview" };
@@ -63,4 +60,7 @@ public class AutoHideFocusHookTests
     // Access the protected hook without reflection or widening the production API.
     [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "HasFocusWithinCore")]
     private static extern bool ReadBaseFocus(LayoutAutoHideWindowControl preview);
+
+    [UnsafeAccessor(UnsafeAccessorKind.Constructor)]
+    private static extern LayoutAutoHideWindowControl CreatePreview();
 }

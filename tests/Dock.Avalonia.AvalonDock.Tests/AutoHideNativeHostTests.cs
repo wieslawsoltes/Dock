@@ -20,6 +20,8 @@ using AvalonDock;
 using AvalonDock.Layout;
 using AvalonDock.Controls;
 using AvalonDock.Themes;
+using Dock.Avalonia.Controls;
+using Dock.Settings;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
@@ -96,6 +98,9 @@ public class AutoHideNativeHostTests
         Assert.True(platform.Embedded.Count >= 2);
         Assert.All(platform.Embedded.SkipLast(1), implementation => Assert.Equal(1, implementation.Disposals));
         Assert.Equal(0, platform.Embedded[^1].Disposals);
+        Assert.Equal(platform.Embedded[^1].Handle!.Handle, TopLevel.GetTopLevel(editor)!.TryGetPlatformHandle()!.Handle);
+        Assert.All(platform.Native.Attachments.SkipLast(1), attachment => Assert.Equal(1, attachment.Disposals));
+        Assert.Equal(0, platform.Native.Attachments[^1].Disposals);
         Assert.Same(editor, preview.Presenter!.Child);
         Assert.Equal(1, first.Disposals);
     }
@@ -129,6 +134,7 @@ public class AutoHideNativeHostTests
     [InlineData(true)]
     public void Native_Resize_Ghost_Uses_A_Separate_Popup_And_Closes_On_Cancel_Or_Commit(bool cancel)
     {
+        using PinnedWindowSetting nativeWindowDefault = new();
         using IDisposable scope = AvaloniaLocator.EnterScope();
         RecordingPlatform platform = new(AvaloniaLocator.Current.GetRequiredService<IWindowingPlatform>());
         AvaloniaLocator.CurrentMutable.Bind<IWindowingPlatform>().ToConstant(platform);
@@ -143,6 +149,9 @@ public class AutoHideNativeHostTests
         tool.IsSelected = true;
         Update();
         Assert.NotEmpty(platform.Embedded);
+        PinnedDockControl[] pinnedHosts = manager.GetVisualDescendants().OfType<PinnedDockControl>().ToArray();
+        Assert.NotEmpty(pinnedHosts);
+        Assert.All(pinnedHosts, host => Assert.False(host.UsePinnedDockWindow));
         LayoutGridResizerControl splitter = manager.GetVisualDescendants().OfType<LayoutGridResizerControl>()
             .Single(control => control.Name == "PART_PinnedDockSplitter" && control.IsEffectivelyVisible);
         Popup popup = manager.GetVisualDescendants().OfType<Popup>().Single(control => control.Name == "PART_NativeResizePreview");
@@ -172,6 +181,13 @@ public class AutoHideNativeHostTests
 
     [UnsafeAccessor(UnsafeAccessorKind.Constructor)]
     private static extern LayoutAutoHideWindowControl CreatePreview();
+
+    private sealed class PinnedWindowSetting : IDisposable
+    {
+        private readonly bool _previous = DockSettings.UsePinnedDockWindow;
+        internal PinnedWindowSetting() => DockSettings.UsePinnedDockWindow = true;
+        public void Dispose() => DockSettings.UsePinnedDockWindow = _previous;
+    }
 
     private sealed class RecordingPlatform(IWindowingPlatform inner) : IWindowingPlatform
     {

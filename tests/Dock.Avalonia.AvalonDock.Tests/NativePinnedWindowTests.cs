@@ -220,7 +220,15 @@ public class NativePinnedWindowTests
             catch { Owner.Close(); DockSettings.UsePinnedDockWindow = _previous; throw; }
         }
 
-        internal void Show() { Tool.IsSelected = true; Update(); }
+        internal void Show()
+        {
+            // The compatibility theme chooses an embedded child by default. These
+            // extension tests explicitly opt into Dock's separate owned-window mode.
+            foreach (PinnedDockControl host in Manager.GetVisualDescendants().OfType<PinnedDockControl>())
+                host.UsePinnedDockWindow = true;
+            Tool.IsSelected = true;
+            Update();
+        }
         internal void Update()
         {
             Owner.UpdateLayout();

@@ -90,6 +90,9 @@ Pane checks separate selection from activation, exercise an external `ChildMoved
 override after reordering, and use the native factory to verify document-history
 and enabled-tool fallback. Emptying a rooted document pane clears root activation,
 including an active tool in another pane.
+The pane-selection probe adds 16 document/tool checks with and without a root:
+content flags before parent callbacks, nested empty selection, callback failures,
+unchanged-flag assignments, and the index-based document/tool reorder rules.
 An external document overrides selection, activation, closing, and closed hooks.
 The consumer verifies completed state during activation, native activation of an
 already selected tab, cancellation, and detachment before the closed callback.

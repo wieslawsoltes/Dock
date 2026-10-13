@@ -52,7 +52,7 @@ The native projects have no reference to the AvalonDock assembly or namespaces.
 | Split beside an enclosing document region | Outer operations and `IDockOuterSplitPolicy`; ordered movement of whole panes/groups | Resolve the public document region and normalize its public hierarchy |
 | Preview/complete operation notifications | `IDockOperationObserver` and disposable operation scopes | Routed AvalonDock events and nested-operation coalescing |
 | Independent tab dragging and reordering | `IDockItemDragPolicy` in native tab/pin input | `CanMove`, `IsEnabled`, and `CanRepositionItems` mapping |
-| Selection distinct from activation | Factory focus and replacement-selection hooks; Avalonia-model `OwnerChanging` | Public selection notifications, activation history, and parent/root projection |
+| Selection distinct from activation | Factory focus, selected-flag synchronization, and replacement-selection hooks; Avalonia-model `OwnerChanging` | Public selection notifications, activation history, and parent/root projection |
 | Explicit model close and auto-hide operations | Protected close/pin core operations retaining native cancellation and cleanup | AvalonDock command-versus-model capability semantics and return history |
 | Model-aware floating hosts and canceled closure | `IDockWindowHostFactory`, `IHostWindowCloseState`, and `IDockWindowClosePolicy` | Typed public hosts and public manager registration |
 | Close a host while retaining its layout | Desktop and managed host policy implementations; managed reentrancy and replacement-host handling | Deferred WPF ordering and public collection semantics |
@@ -427,18 +427,20 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   notifications. Floating-pane detection counts visible panes in the public
   tree, and parent collection subscriptions are released on reparenting.
 - Pane selection is independent of activation for both `SelectedContentIndex`
-  and content `IsSelected`. Changing/changed notifications bracket the public
-  selection and native flags; changed observers can immediately redirect selection
-  or explicitly activate another item. Removing selected rooted documents uses
+  and content `IsSelected`. Content flags precede parent selection; pane transitions
+  publish nested clear notifications before completing their requested index.
+  Reentrant observers and exceptions retain the source-defined intermediate state.
+  Removing selected rooted documents uses
   activation history with stable child-order ties, including disabled content.
   Detached document panes and tool panes choose the first enabled child. Emptying
   a rooted document pane clears root activation, even with another active tool.
-  Child moves preserve selection, report its new index, and invoke protected
-  `ChildMoved` overrides; identical indices are silent. Tool collection changes
+  Child moves run collection policy before protected `ChildMoved` overrides, whose
+  index-based update preserves document/tool differences; identical indices are silent. Tool collection changes
   notify aggregate capabilities, which are true for empty panes. Native factory
   selection/focus policies retain ordinary Dock defaults. Native collection
   repair waits until item generators finish; the queued fallback uses weak
-  ownership. Tests cover public/native removals, derived callbacks, reentrancy,
+  ownership. Native presentation coalesces nested clears without changing public
+  callback delivery. Tests cover public/native removals, derived callbacks, reentrancy,
   native floating rendering, and collection of a removed pane with repair queued.
 - Protected content selection/activation and closing/closed hooks run through
   public and native operations. State hooks receive old/new values before the
@@ -1498,6 +1500,29 @@ Six source-placement cases and two pane-parent cases pass, together with the
 existing source, parent-policy, and selection suites in focused runs. Final
 consolidated and package validation for these follow-up changes is pending.
 
+### Pane selection callback and reorder audit
+
+Public selection now retains the pinned source's flag-before-parent ordering,
+nested index clearing, unchanged-value checks, exception phases, and document/tool
+collection and `ChildMoved` ordering. The coordinator records the public index;
+Dock still owns content state, native selection, focus, and presentation. Internal
+projection coalesces nested clears and protects public tab moves from temporary
+native item-generator selection. This keeps open menus and redocked editor views
+attached while preserving the public callback sequence. A rooted document's
+fallback activates the child chosen before a callback, even if that callback
+detaches its pane.
+
+Native [PR #1177](https://github.com/wieslawsoltes/Dock/pull/1177) adds
+`ShouldSynchronizeDockingWindowSelection` so projection can preserve those flags
+while retaining native factory events and tracking. Its default behavior is
+unchanged. It was implemented in a separate worktree, merged to `master`, and
+integrated here by merging `master`.
+
+The audit adds 33 Headless cases plus 16 isolated package-consumer checks. The
+package checks all reproduce the defects against the earlier `470e973d2` package.
+Existing tests now assert the source-defined nested notifications and differing
+document/tool reorder hooks. Consolidated validation is recorded with the PR.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering
@@ -1528,7 +1553,8 @@ consolidated and package validation for these follow-up changes is pending.
   have the targeted audits recorded above; those checks do not establish all
   interface implementation behavior. The declaration review maps counterparts
   without establishing full signature or behavior equivalence.
-  Additional selection edge cases and protected override ordering remain open.
+  Pane selection and reorder callback ordering have the targeted audit above;
+  other interface and protected override contracts remain open.
   Root `Updated` dispatch has the parent/structure separation audit above.
   Direct parent assignment, root history, application-defined parent contracts,
   and root-slot setters have the targeted audits recorded above.

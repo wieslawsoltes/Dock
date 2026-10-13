@@ -22,6 +22,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
     private bool _syncing;
     private LayoutElement? _pendingAttachment;
     internal bool IsRefreshingSource { get; private set; }
+    internal bool IsMovingSource { get; private set; }
     public bool IsNotifying { get; private set; }
     public event Action? NotificationCompleted;
 
@@ -182,23 +183,36 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         if (newIndex < 0 || newIndex >= Count) throw new ArgumentOutOfRangeException(nameof(newIndex));
         Mutate(() =>
         {
-            base.MoveItem(oldIndex, newIndex);
-            ILayoutContentSelector? selector = _owner as ILayoutContentSelector;
-            LayoutContent? selected = selector?.SelectedContent;
-            if (!MoveNativePane(oldIndex, newIndex))
+            bool previous = IsMovingSource;
+            IsMovingSource = true;
+            try
             {
-                // Groups also contain native splitters, normalized below.
-                for (int i = _source.Count - 1; i >= 0; i--) _source.RemoveAt(i);
-                foreach (T child in this) _source.Add(((LayoutElement)(ILayoutElement)child).DockModel);
+                base.MoveItem(oldIndex, newIndex);
+                IDockable? selected = _model.ActiveDockable;
+                MoveNativeItems(oldIndex, newIndex);
+                // Native item generators can clear or change their selection
+                // during a move. Keep the public collection policy's result;
+                // MoveChild applies its protected hook after this projection.
+                if (_owner is ILayoutContentSelector && !ReferenceEquals(_model.ActiveDockable, selected))
+                {
+                    if (_model.Factory is LayoutFactory factory) factory.SetPaneSelection(_model, selected);
+                    else _model.ActiveDockable = selected;
+                }
             }
-            // Native item generators can transiently deselect a moved container.
-            // Restore through the passive pane API without changing activation.
-            if (selected is not null && selector is { SelectedContent: null })
+            finally
             {
-                int index = selector.IndexOf(selected);
-                if (index >= 0) selector.SelectedContentIndex = index;
+                IsMovingSource = previous;
+                if (!previous && !IsNotifying) NotificationCompleted?.Invoke();
             }
         });
+    }
+
+    private void MoveNativeItems(int oldIndex, int newIndex)
+    {
+        if (MoveNativePane(oldIndex, newIndex)) return;
+        // Groups also contain native splitters, normalized below.
+        for (int i = _source.Count - 1; i >= 0; i--) _source.RemoveAt(i);
+        foreach (T child in this) _source.Add(((LayoutElement)(ILayoutElement)child).DockModel);
     }
 
     private bool MoveNativePane(int oldIndex, int newIndex)

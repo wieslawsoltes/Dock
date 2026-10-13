@@ -254,7 +254,11 @@ public class LayoutContentControlTests
         Assert.Same(item, floating.LayoutItem);
         Assert.Contains(view, floating.GetVisualDescendants());
         workspace.Document.Dock();
+        Assert.True(workspace.Document.IsSelected);
         workspace.Update();
+        Assert.True(workspace.Document.IsSelected);
+        Assert.Same(workspace.Document, ((ILayoutContentSelector)workspace.Document.Parent!).SelectedContent);
+        Assert.Same(workspace.Document.DockModel, ((Dock.Model.Core.IDock)workspace.Document.DockModel.Owner!).ActiveDockable);
         Assert.Same(item, workspace.DocumentControl.LayoutItem);
         Assert.Contains(view, workspace.DocumentControl.GetVisualDescendants());
         Assert.Same(workspace.Editor, view.Child);

@@ -147,8 +147,14 @@ selected document from a rooted pane selects and activates the remaining item
 with the latest `LastActivationTimeStamp`; ties use child order, including disabled
 items. Detached document panes and tool panes choose the first enabled child.
 Emptying a rooted document pane clears root activation, even if a tool in another
-pane was active. `MoveChild` retains the selected content, notifies its changed
-index, and invokes the protected `ChildMoved` hook after reordering.
+pane was active. Content flags change before their parent selector. Switching the
+pane index can publish a nested empty selection before the requested child; callback
+exceptions retain the intermediate state. Native presentation waits for completed
+selection. `MoveChild` invokes `ChildMoved` after collection notifications. Its
+index-based rule, including different document/tool reorder behavior, follows
+AvalonDock and can leave the index and selected child flag referring to different items.
+Dock's `ShouldSynchronizeDockingWindowSelection` extension keeps native factory
+events and tracking while the adapter coordinates public selection flags.
 
 Public `LayoutDocumentPaneControl` and `LayoutAnchorablePaneControl` wrap Dock's
 native panes and expose their existing public `Model` and live `ItemsSource`.

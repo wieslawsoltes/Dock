@@ -49,6 +49,8 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
     /// <inheritdoc/>
     public LayoutContent? SelectedContent => _selection?.Selected;
     void ILayoutPaneSelection.ReconcileSelection() => _selection?.ChildrenChanged();
+    bool ILayoutPaneSelection.IsRefreshingChildren => IsRefreshingNativeChildren;
+    bool ILayoutPaneSelection.IsMovingChildren => IsMovingNativeChildren;
     /// <summary>Gets the documents sorted by comparable application content, falling back to titles.</summary>
     public IEnumerable<LayoutContent> ChildrenSorted
     {
@@ -77,10 +79,11 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
         base.OnChildrenCollectionChanged();
         RaisePropertyChanged(nameof(ChildrenSorted));
     }
-    /// <summary>Refreshes the selected index after a child is reordered.</summary>
+    /// <summary>Moves the stored selected index when it equals the child's old index.</summary>
+    /// <remarks>Collection notifications have already run before this hook. Omitting the base call retains that earlier index.</remarks>
     protected override void ChildMoved(int oldIndex, int newIndex)
     {
-        _selection?.Refresh();
+        _selection?.ChildMoved(oldIndex, newIndex);
         base.ChildMoved(oldIndex, newIndex);
     }
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

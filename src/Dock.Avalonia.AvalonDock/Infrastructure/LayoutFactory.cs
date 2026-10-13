@@ -19,6 +19,8 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     private IDock? _selectionOwner;
     private IDockable? _selectionTarget;
     private IDockable? _writingActiveFlag;
+    private IDockable? _writingSelectedFlag;
+    private IDock? _projectingPaneSelection;
     private bool _passivePreview;
     internal IDockWindow? RequestedHostWindow { get; private set; }
     internal event Action? SettingFocus;
@@ -42,10 +44,32 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     {
         IDock? previousOwner = _selectionOwner;
         IDockable? previousTarget = _selectionTarget;
+        IDock? previousProjection = _projectingPaneSelection;
         _selectionOwner = owner;
         _selectionTarget = selected;
+        _projectingPaneSelection = owner;
         try { owner.ActiveDockable = selected; }
-        finally { _selectionOwner = previousOwner; _selectionTarget = previousTarget; }
+        finally
+        {
+            _selectionOwner = previousOwner;
+            _selectionTarget = previousTarget;
+            _projectingPaneSelection = previousProjection;
+        }
+    }
+
+    public override void InitActiveDockable(IDockable? dockable, IDock owner)
+    {
+        if (!ReferenceEquals(owner, _projectingPaneSelection) &&
+            getLayoutElement(owner) is not ILayoutPaneSelection { IsMovingChildren: true })
+        {
+            base.InitActiveDockable(dockable, owner);
+            return;
+        }
+        // Public selection has already updated each affected flag, including
+        // nested callbacks. Project the chosen item without a second native
+        // normalization pass changing those observable intermediate states.
+        OnActiveDockableChanged(dockable);
+        dockable?.OnSelected();
     }
 
     protected override bool ShouldFocusActiveDockable(IDockable dockable, IDock owner) =>
@@ -53,9 +77,15 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         (!ReferenceEquals(owner, _selectionOwner) || !ReferenceEquals(dockable, _selectionTarget)) &&
         base.ShouldFocusActiveDockable(dockable, owner);
 
+    protected override bool ShouldSynchronizeDockingWindowSelection(IDockable dockable) =>
+        (_projectingPaneSelection is null || !ReferenceEquals(dockable.Owner, _projectingPaneSelection)) &&
+        (dockable.Owner is not IDock owner || getLayoutElement(owner) is not ILayoutPaneSelection { IsMovingChildren: true }) &&
+        base.ShouldSynchronizeDockingWindowSelection(dockable);
+
     protected override void OnDockingWindowStatePropertyChanged(IDockable dockable, DockingWindowStateProperty property)
     {
         if (property == DockingWindowStateProperty.IsActive && ReferenceEquals(dockable, _writingActiveFlag)) return;
+        if (property == DockingWindowStateProperty.IsSelected && ReferenceEquals(dockable, _writingSelectedFlag)) return;
         // An auto-hide selection is a preview request. Its public flag is reset
         // by the anchor, without clearing Dock's active preview content or
         // selecting the pinned tool as the root's main layout.
@@ -70,6 +100,14 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         _writingActiveFlag = model;
         try { ((IDockingWindowState)model).IsActive = active; }
         finally { _writingActiveFlag = previous; }
+    }
+
+    internal void SetContentSelectedFlag(IDockable model, bool selected)
+    {
+        IDockable? previous = _writingSelectedFlag;
+        _writingSelectedFlag = model;
+        try { ((IDockingWindowState)model).IsSelected = selected; }
+        finally { _writingSelectedFlag = previous; }
     }
 
     internal void PreviewAnchor(IDockable model, bool activate)

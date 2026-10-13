@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Threading;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 
@@ -17,6 +18,9 @@ internal sealed class LayoutPaneControlBinding(LayoutCachePaneControl control, L
     private Subscription? _subscription;
     private bool _refreshing;
     private bool _selectionPending;
+    private bool _selectionQueued;
+    private bool IsUpdatingChildren => children is ILayoutChildrenNotification { IsNotifying: true }
+        || selection is ILayoutPaneSelection pane && (pane.IsRefreshingChildren || pane.IsMovingChildren);
 
     internal void Initialize()
     {
@@ -30,9 +34,20 @@ internal sealed class LayoutPaneControlBinding(LayoutCachePaneControl control, L
 
     private void RefreshSelection()
     {
-        if (_refreshing || children is ILayoutChildrenNotification { IsNotifying: true })
+        if (_refreshing || IsUpdatingChildren)
         {
             _selectionPending = true;
+            if (!_refreshing && !_selectionQueued)
+            {
+                _selectionQueued = true;
+                WeakReference<LayoutPaneControlBinding> reference = new(this);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (!reference.TryGetTarget(out LayoutPaneControlBinding? binding)) return;
+                    binding._selectionQueued = false;
+                    binding.RefreshSelection();
+                });
+            }
             return;
         }
         _refreshing = true;
@@ -49,7 +64,7 @@ internal sealed class LayoutPaneControlBinding(LayoutCachePaneControl control, L
 
     internal void SelectFromControl(SelectionChangedEventArgs args, bool activate)
     {
-        if (_refreshing || children is ILayoutChildrenNotification { IsNotifying: true }) return;
+        if (_refreshing || IsUpdatingChildren) return;
         // Collection reconciliation belongs to the public pane model. Avalonia
         // may clear its selection before that model finishes a native removal.
         if (control.SelectedItem is not LayoutContent content)

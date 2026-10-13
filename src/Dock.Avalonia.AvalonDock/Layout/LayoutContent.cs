@@ -46,6 +46,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private DateTime? _lastActivationTimeStamp;
     private bool _synchronizingActive;
     private int _writingActive;
+    private int _writingSelected;
     private bool _isLastFocusedDocument;
     private bool _isFloating;
     private int _contentRevision;
@@ -92,18 +93,27 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         }
     }
     /// <summary>Gets or sets whether this item is selected in its pane.</summary>
+    /// <remarks>Updates the flag before the parent selector, then invokes the selection hook and property notification.</remarks>
     public bool IsSelected
     {
         get => State.IsSelected;
         set
         {
-            if (Parent is ILayoutContentSelector selector)
+            VerifyAccess();
+            bool previous = State.IsSelected;
+            if (previous == value) return;
+            RaisePropertyChanging();
+            _writingSelected++;
+            try
             {
-                int index = selector.IndexOf(this);
-                if (value && index >= 0) { selector.SelectedContentIndex = index; return; }
-                if (!value && ReferenceEquals(selector.SelectedContent, this)) { selector.SelectedContentIndex = -1; return; }
+                if (DockModel.Factory is LayoutFactory factory) factory.SetContentSelectedFlag(DockModel, value);
+                else State.IsSelected = value;
             }
-            SetSelectedFromPane(value);
+            finally { _writingSelected--; }
+            if (Parent is ILayoutContentSelector selector)
+                selector.SelectedContentIndex = State.IsSelected ? selector.IndexOf(this) : -1;
+            OnIsSelectedChanged(previous, value);
+            RaisePropertyChanged(nameof(IsSelected));
         }
     }
     /// <summary>Gets or sets whether this item is active.</summary>
@@ -259,13 +269,6 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         base.OnParentChanged(oldValue, newValue);
     }
 
-    internal void SetSelectedFromPane(bool selected)
-    {
-        VerifyAccess();
-        if (State.IsSelected == selected) return;
-        RaisePropertyChanging(nameof(IsSelected));
-        State.IsSelected = selected;
-    }
     /// <summary>Occurs after the item is closed.</summary>
     public event EventHandler? Closed;
     /// <summary>Occurs before closing and permits cancellation.</summary>
@@ -366,7 +369,10 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property == Document.IsSelectedProperty || e.Property == Tool.IsSelectedProperty)
+        {
+            if (_writingSelected != 0) return;
             OnIsSelectedChanged((bool)e.OldValue!, (bool)e.NewValue!);
+        }
         else if (e.Property == Document.IsActiveProperty || e.Property == Tool.IsActiveProperty)
         {
             if (_synchronizingActive || _writingActive != 0) return;

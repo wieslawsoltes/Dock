@@ -83,7 +83,7 @@ public class LayoutPaneSelectionTests
     [InlineData(true, false)]
     [InlineData(false, true)]
     [InlineData(true, true)]
-    public void Reordering_Notifies_Selected_Index_Without_Changing_Selected_Content(bool tools, bool moveSelected)
+    public void Reordering_Applies_The_Panes_Collection_Policy_Before_The_Child_Move_Hook(bool tools, bool moveSelected)
     {
         ILayoutGroup pane = CreatePane(tools);
         ILayoutContentSelector selector = (ILayoutContentSelector)pane;
@@ -91,7 +91,8 @@ public class LayoutPaneSelectionTests
         LayoutContent selected = CreateContent(tools);
         pane.InsertChildAt(0, first);
         pane.InsertChildAt(1, selected);
-        pane.InsertChildAt(2, CreateContent(tools));
+        LayoutContent third = CreateContent(tools);
+        pane.InsertChildAt(2, third);
         selector.SelectedContentIndex = 1;
         List<(string Phase, int Index)> indices = new();
         pane.PropertyChanging += (_, args) =>
@@ -105,10 +106,14 @@ public class LayoutPaneSelectionTests
 
         ((ILayoutPane)pane).MoveChild(moveSelected ? 1 : 2, moveSelected ? 2 : 0);
 
-        Assert.Same(selected, selector.SelectedContent);
+        Assert.Same(moveSelected ? selected : tools ? third : first, selector.SelectedContent);
         Assert.True(selected.IsSelected);
-        Assert.Equal(2, selector.SelectedContentIndex);
-        Assert.Equal(new[] { ("changing", 1), ("changed", 2) }, indices);
+        Assert.Equal(moveSelected ? 2 : tools ? 0 : 1, selector.SelectedContentIndex);
+        Assert.Equal(moveSelected
+            ? new[] { ("changing", 1), ("changed", 2) }
+            : tools
+                ? new[] { ("changing", 1), ("changed", 2), ("changing", 2), ("changed", 0) }
+                : Array.Empty<(string, int)>(), indices);
     }
 
     [AvaloniaTheory]
@@ -208,22 +213,35 @@ public class LayoutPaneSelectionTests
         {
             if (args.PropertyName is not ("SelectedContentIndex" or "SelectedContent")) return;
             Assert.Same(first, selector.SelectedContent);
-            Assert.True(first.IsSelected);
             Assert.False(second.IsSelected);
-            phases.Add("changing:" + args.PropertyName);
+            phases.Add($"changing:{args.PropertyName}:{selector.SelectedContentIndex}");
         };
         pane.PropertyChanged += (_, args) =>
         {
             if (args.PropertyName is not ("SelectedContentIndex" or "SelectedContent")) return;
-            Assert.Same(second, selector.SelectedContent);
             Assert.False(first.IsSelected);
-            Assert.True(second.IsSelected);
-            phases.Add("changed:" + args.PropertyName);
+            if (selector.SelectedContentIndex == -1)
+            {
+                Assert.Null(selector.SelectedContent);
+                Assert.False(second.IsSelected);
+            }
+            else
+            {
+                Assert.Same(second, selector.SelectedContent);
+                Assert.True(second.IsSelected);
+            }
+            phases.Add($"changed:{args.PropertyName}:{selector.SelectedContentIndex}");
         };
 
         selector.SelectedContentIndex = 1;
 
-        Assert.Equal(new[] { "changing:SelectedContentIndex", "changing:SelectedContent", "changed:SelectedContentIndex", "changed:SelectedContent" }, phases);
+        Assert.Equal(new[]
+        {
+            "changing:SelectedContentIndex:0", "changing:SelectedContent:0",
+            "changing:SelectedContentIndex:0", "changing:SelectedContent:0",
+            "changed:SelectedContentIndex:-1", "changed:SelectedContent:-1",
+            "changed:SelectedContentIndex:1", "changed:SelectedContent:1"
+        }, phases);
         GC.KeepAlive(root);
     }
 
@@ -267,7 +285,7 @@ public class LayoutPaneSelectionTests
         ((ILayoutPane)pane).MoveChild(1, 1);
 
         Assert.Same(selected, selector.SelectedContent);
-        Assert.Equal(new[] { (0, 1, 1) }, tools ? anchorables.Moves : documents.Moves);
+        Assert.Equal(new[] { (0, 1, tools ? 1 : 0) }, tools ? anchorables.Moves : documents.Moves);
     }
 
     [AvaloniaTheory]
@@ -288,7 +306,7 @@ public class LayoutPaneSelectionTests
         bool redirected = false;
         pane.PropertyChanged += (_, args) =>
         {
-            if (args.PropertyName != "SelectedContentIndex" || redirected) return;
+            if (args.PropertyName != "SelectedContentIndex" || redirected || !ReferenceEquals(selector.SelectedContent, second)) return;
             redirected = true;
             selector.SelectedContentIndex = 2;
             Assert.Same(third, selector.SelectedContent);

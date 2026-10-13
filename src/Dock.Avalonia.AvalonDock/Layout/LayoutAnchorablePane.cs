@@ -65,6 +65,8 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     /// <inheritdoc/>
     public LayoutContent? SelectedContent => _selection?.Selected;
     void ILayoutPaneSelection.ReconcileSelection() => _selection?.ChildrenChanged();
+    bool ILayoutPaneSelection.IsRefreshingChildren => IsRefreshingNativeChildren;
+    bool ILayoutPaneSelection.IsMovingChildren => IsMovingNativeChildren;
     /// <inheritdoc/>
     public int IndexOf(LayoutContent content) => content is LayoutAnchorable anchorable ? Children.IndexOf(anchorable) : -1;
     /// <summary>Shows the pane while it contains a visible tool.</summary>
@@ -101,10 +103,11 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
         base.OnChildrenCollectionChanged();
     }
 
-    /// <summary>Refreshes the selected index after a child is reordered.</summary>
+    /// <summary>Moves the stored selected index when it equals the child's old index.</summary>
+    /// <remarks>The collection notification may already have updated the index from child selection flags.</remarks>
     protected override void ChildMoved(int oldIndex, int newIndex)
     {
-        _selection?.Refresh();
+        _selection?.ChildMoved(oldIndex, newIndex);
         base.ChildMoved(oldIndex, newIndex);
     }
 

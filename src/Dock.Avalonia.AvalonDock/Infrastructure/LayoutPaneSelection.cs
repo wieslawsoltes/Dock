@@ -8,25 +8,31 @@ namespace AvalonDock.Infrastructure;
 internal interface ILayoutPaneSelection
 {
     void ReconcileSelection();
+    bool IsRefreshingChildren { get; }
+    bool IsMovingChildren { get; }
 }
 
 internal sealed class LayoutPaneSelection<T>(LayoutGroup<T> pane, bool documents,
     Action<string?> changing, Action<string?> changed) where T : LayoutContent
 {
     private readonly DockBase _model = (DockBase)pane.DockModel;
-    private T? _selected;
     private int _index = -1;
-    private bool _refreshing;
-    private bool _publishingChanges;
+    private bool _projecting;
+    private int _selecting;
     private bool _pending;
     private bool _autoFix = true;
 
-    internal T? Selected { get { EnsureCurrent(); return _selected; } }
+    internal T? Selected { get { EnsureCurrent(); return _index == -1 ? null : pane.Children[_index]; } }
     internal int Index { get { EnsureCurrent(); return _index; } }
 
     private void EnsureCurrent()
     {
-        if (_pending && !pane.IsRefreshingNativeChildren) ChildrenChanged();
+        if (!_pending || pane.IsRefreshingNativeChildren) return;
+        _pending = false;
+        // A native collection edit preserves Dock's selected item identity.
+        // Public collection edits instead run the pane's index-based policy.
+        Refresh();
+        ChildrenChanged();
     }
 
     private void DeferNativeChange()
@@ -45,7 +51,7 @@ internal sealed class LayoutPaneSelection<T>(LayoutGroup<T> pane, bool documents
 
     internal void Initialize()
     {
-        _selected = Resolve(out _index);
+        _index = ResolveIndex();
     }
 
     internal void BeginXmlRead() => _autoFix = false;
@@ -55,34 +61,110 @@ internal sealed class LayoutPaneSelection<T>(LayoutGroup<T> pane, bool documents
         // Upstream reenables fallback only after successful restoration. A
         // failed or nested read retains the resulting state of this one flag.
         _autoFix = true;
-        ChildrenChanged();
+        FixSelection();
     }
 
     internal void Select(int index)
     {
-        T? selected = index >= 0 && index < pane.Children.Count ? pane.Children[index] : null;
-        if (!ReferenceEquals(_model.ActiveDockable, selected?.DockModel))
+        if (index < 0 || index >= pane.Children.Count) index = -1;
+        if (_index == index)
+        {
+            // Insertion can change the child occupying an unchanged public
+            // index. Keep the native presentation aligned without adding public
+            // notifications or rewriting any content selection flags.
+            if (_selecting == 0) Project();
+            return;
+        }
+        _selecting++;
+        try
+        {
+            changing(nameof(ILayoutContentSelector.SelectedContentIndex));
+            changing(nameof(ILayoutContentSelector.SelectedContent));
+            SetCurrentFlag(false);
+            _index = index;
+            SetCurrentFlag(true);
+            if (_selecting == 1) Project();
+            changed(nameof(ILayoutContentSelector.SelectedContentIndex));
+            changed(nameof(ILayoutContentSelector.SelectedContent));
+        }
+        finally
+        {
+            // Native presentation needs the completed selection. Publishing
+            // the nested clear would close open menus and detach editors.
+            if (--_selecting == 0) Project();
+        }
+    }
+
+    private void SetCurrentFlag(bool selected)
+    {
+        if (_index >= 0 && _index < pane.Children.Count) pane.Children[_index].IsSelected = selected;
+    }
+
+    private void Project()
+    {
+        T? selected = _index >= 0 && _index < pane.Children.Count ? pane.Children[_index] : null;
+        if (ReferenceEquals(_model.ActiveDockable, selected?.DockModel)) return;
+        bool previous = _projecting;
+        _projecting = true;
+        try
         {
             if (_model.Factory is LayoutFactory factory) factory.SetPaneSelection(_model, selected?.DockModel);
             else _model.ActiveDockable = selected?.DockModel;
         }
-        Refresh();
+        finally { _projecting = previous; }
     }
 
+    internal void ChildMoved(int oldIndex, int newIndex)
+    {
+        if (_index != oldIndex) return;
+        changing(nameof(ILayoutContentSelector.SelectedContentIndex));
+        _index = newIndex;
+        Project();
+        changed(nameof(ILayoutContentSelector.SelectedContentIndex));
+    }
     internal void ChildrenChanged()
     {
         if (pane.IsRefreshingNativeChildren) { DeferNativeChange(); return; }
+        if (_pending) { EnsureCurrent(); return; }
         _pending = false;
-        if (Resolve(out _) is not null || !_autoFix) { Refresh(); return; }
+        if (documents || _autoFix) FixSelection();
+        if (documents) return;
+        for (int index = 0; index < pane.Children.Count; index++)
+        {
+            if (!pane.Children[index].IsSelected) continue;
+            Select(index);
+            break;
+        }
+    }
+
+    private void FixSelection()
+    {
+        if (_index >= pane.Children.Count) Select(pane.Children.Count - 1);
+        if (_index == -1) SelectFallback();
+    }
+
+    private void SelectFallback()
+    {
         int next = -1;
         if (documents && pane.Root is not null)
         {
+            if (pane.Children.Count == 0)
+            {
+                pane.Root.ActiveContent = null;
+                return;
+            }
             DateTime latest = DateTime.MinValue;
             for (int index = 0; index < pane.Children.Count; index++)
             {
                 DateTime timestamp = pane.Children[index].LastActivationTimeStamp.GetValueOrDefault();
                 if (next < 0 || timestamp > latest) { next = index; latest = timestamp; }
             }
+            T selected = pane.Children[next];
+            Select(next);
+            // Application callbacks may move this pane or select another item.
+            // The fallback still activates the child chosen before the callback.
+            selected.IsActive = true;
+            return;
         }
         else
         {
@@ -90,55 +172,19 @@ internal sealed class LayoutPaneSelection<T>(LayoutGroup<T> pane, bool documents
                 if (pane.Children[index].IsEnabled) { next = index; break; }
         }
         Select(next);
-        if (documents && pane.Root is LayoutRoot root)
-        {
-            if (_selected is { } selected) selected.IsActive = true;
-            else root.ActiveContent = null;
-        }
     }
 
     internal void Refresh()
     {
+        if (_projecting || pane.IsMovingNativeChildren) return;
         if (pane.IsRefreshingNativeChildren) { DeferNativeChange(); return; }
-        if (_refreshing && !_publishingChanges) return;
-        T? selected = Resolve(out int index);
-        bool contentChanged = !ReferenceEquals(_selected, selected);
-        bool indexChanged = _index != index;
-        if (!contentChanged && !indexChanged) return;
-        bool previousRefreshing = _refreshing;
-        bool previousPublishing = _publishingChanges;
-        _refreshing = true;
-        _publishingChanges = false;
-        try
-        {
-            if (indexChanged) changing(nameof(ILayoutContentSelector.SelectedContentIndex));
-            if (contentChanged) changing(nameof(ILayoutContentSelector.SelectedContent));
-            // A changing observer may redirect selection to a different item.
-            selected = Resolve(out index);
-            T? previous = _selected;
-            _selected = selected;
-            _index = index;
-            if (previous is not null && !ReferenceEquals(previous, selected)) previous.SetSelectedFromPane(false);
-            for (int childIndex = 0; childIndex < pane.Children.Count; childIndex++)
-            {
-                T child = pane.Children[childIndex];
-                if (ReferenceEquals(child.DockModel.Owner, _model))
-                    child.SetSelectedFromPane(ReferenceEquals(child, selected));
-            }
-            _publishingChanges = true;
-            if (indexChanged) changed(nameof(ILayoutContentSelector.SelectedContentIndex));
-            if (contentChanged) changed(nameof(ILayoutContentSelector.SelectedContent));
-        }
-        finally { _publishingChanges = previousPublishing; _refreshing = previousRefreshing; }
-        // Changed observers can start another selection transition.
-        if (!_refreshing) Refresh();
+        Select(ResolveIndex());
     }
 
-    private T? Resolve(out int index)
+    private int ResolveIndex()
     {
-        for (index = 0; index < pane.Children.Count; index++)
-            if (ReferenceEquals(pane.Children[index].DockModel, _model.ActiveDockable)) return pane.Children[index];
-        index = -1;
-        return null;
+        for (int index = 0; index < pane.Children.Count; index++)
+            if (ReferenceEquals(pane.Children[index].DockModel, _model.ActiveDockable)) return index;
+        return -1;
     }
 }

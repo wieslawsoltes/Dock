@@ -36,6 +36,7 @@ using ReactiveUI.Reactive;
 
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
+PackageConsumer.PaneSelectionProbe.Verify();
 PackageConsumer.RootUpdatedProbe.Verify();
 AssertLayoutLifecycle();
 AssertLayoutParentPolicies();
@@ -553,9 +554,9 @@ static void AssertPaneSelectionPolicies()
     selected.IsSelected = true;
     documents.MoveChild(1, 2);
     documents.MoveChild(2, 2);
-    if (documents.MoveCount != 1 || documents.LastMove != (1, 2, 2) ||
+    if (documents.MoveCount != 1 || documents.LastMove != (1, 2, 1) ||
         !ReferenceEquals(documents.SelectedContent, selected))
-        throw new Exception("The external ChildMoved override did not receive the updated selected index.");
+        throw new Exception("The external ChildMoved override did not observe the index before its inherited update.");
 
     selected.IsActive = true;
     first.LastActivationTimeStamp = new DateTime(2000, 1, 1);

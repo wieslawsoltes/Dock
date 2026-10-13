@@ -120,6 +120,7 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutContainer, ILayou
     internal void AddProjectedChild(T child) => _children.AddProjected(child);
     internal void RemoveProjectedChild(T child) => _children.RemoveProjected(child);
     internal bool IsRefreshingNativeChildren => _children?.IsRefreshingSource == true;
+    internal bool IsMovingNativeChildren => _children?.IsMovingSource == true;
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {

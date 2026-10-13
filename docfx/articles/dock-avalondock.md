@@ -231,9 +231,17 @@ if (selected is not null)
     selected.IsActive = true;
 ```
 
-Selection property notifications bracket the update: `PropertyChanging` exposes
-the old selected content and flags, and `PropertyChanged` exposes the new state.
-A changed observer can immediately select another item or explicitly activate it.
+Content `IsSelected` writes its flag before updating the parent selector. Changing
+the pane index clears the old child's flag first; that child can recursively clear
+the pane index to `-1` before the outer assignment selects its requested child.
+Observers therefore see each intermediate state, including an empty selection.
+Nested assignments take effect immediately, and the outer assignment continues
+after the callback returns. An exception retains the state reached before the
+failure; repeating an unchanged content flag does not repair its parent index.
+The native presentation receives completed pane selection without tearing down
+editors or open menus during the nested clear.
+Dock's `ShouldSynchronizeDockingWindowSelection` policy lets the adapter retain
+these flags during native projection while factory events and tracking still run.
 
 When the selected item is removed, rooted document panes select and activate the
 remaining child with the latest `LastActivationTimeStamp`. Equal timestamps retain
@@ -243,9 +251,12 @@ is enabled. Emptying a rooted document pane clears the root's active content and
 document history, including when a tool in another pane was active. These rules
 apply to public collections and removal through the native Dock factory.
 
-`MoveChild(oldIndex, newIndex)` preserves the selected content and notifies changes
-to its index. The protected `ChildMoved` hook runs after the move; an identical
-index is a no-op. Tool panes also notify `CanClose`, `CanHide`, and
+`MoveChild(oldIndex, newIndex)` changes the collection before invoking the protected
+`ChildMoved` hook; identical indices are a no-op. Document panes update their stored
+selected index in that hook only when it equals `oldIndex`. Tool panes first scan
+their selected child flags during the collection notification, then apply the same
+hook rule. As in AvalonDock, moving another child can leave the stored index and
+child selection flags referring to different items. Tool panes also notify `CanClose`, `CanHide`, and
 `IsDirectlyHostedInFloatingWindow` when their collection changes. `CanClose` and
 `CanHide` are true for an empty tool pane, as no child disallows the operation.
 

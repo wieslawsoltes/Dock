@@ -1,6 +1,10 @@
 using System;
 using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Headless;
+using Avalonia.Input;
+using Avalonia.Media;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
@@ -12,6 +16,7 @@ internal static class FloatingOverrideProbe
 {
     internal static void Verify()
     {
+        VerifyCaptureAndInitialization();
         LayoutDocument main = new() { Content = "Main" };
         DockingManager original = new() { Layout = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(main)) } };
         DockingManager current = new();
@@ -59,6 +64,57 @@ internal static class FloatingOverrideProbe
                 throw new Exception("The packaged closing hook did not preserve cancellation ordering and the hide override's change.");
         }
         finally { ((IHostWindow)closing).Exit(); }
+    }
+
+    private static void VerifyCaptureAndInitialization()
+    {
+        LayoutDocumentFloatingWindow model = new() { RootDocument = new LayoutDocument() };
+        Border editor = new() { Background = Brushes.White };
+        CaptureHost host = new(model) { Width = 300, Height = 200, Content = editor };
+        IPointer? pointer = null;
+        host.PointerMoved += (_, args) => pointer = args.Pointer;
+        try
+        {
+            if (host.Initializations != 0) throw new Exception("Floating initialization ran before its model was available.");
+            host.Show();
+            if (host.Initializations != 1 || !ReferenceEquals(host.InitializedModel, model))
+                throw new Exception("Floating initialization did not observe its constructor model exactly once.");
+            host.MouseMove(new Point(20, 20));
+            if (pointer is null) throw new Exception("No primary mouse reached the packaged floating host.");
+            host.Drag(true);
+            if (!host.IsDragging || !ReferenceEquals(pointer.Captured, host))
+                throw new Exception("The packaged drag hook did not capture the real primary mouse.");
+            host.Drag(false);
+            if (host.IsDragging || pointer.Captured is not null)
+                throw new Exception("The packaged drag hook did not release its own capture.");
+            host.Drag(true);
+            pointer.Capture(editor);
+            host.Drag(false);
+            if (!ReferenceEquals(pointer.Captured, editor))
+                throw new Exception("The packaged drag hook released another control's capture.");
+            pointer.Capture(null);
+            host.Hide();
+            host.Show();
+            if (host.Initializations != 1) throw new Exception("A floating host initialized again after re-showing.");
+        }
+        finally
+        {
+            pointer?.Capture(null);
+            ((IHostWindow)host).Exit();
+        }
+    }
+
+    private sealed class CaptureHost(LayoutDocumentFloatingWindow model) : LayoutDocumentFloatingWindowControl(model)
+    {
+        public int Initializations { get; private set; }
+        public ILayoutElement? InitializedModel { get; private set; }
+        public void Drag(bool value) => SetIsDragging(value);
+        protected override void OnInitialized(EventArgs e)
+        {
+            InitializedModel = Model;
+            ++Initializations;
+            base.OnInitialized(e);
+        }
     }
 
     private sealed class DocumentHost(LayoutDocumentFloatingWindow model) : LayoutDocumentFloatingWindowControl(model)

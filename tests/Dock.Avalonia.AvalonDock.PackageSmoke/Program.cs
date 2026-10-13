@@ -35,7 +35,7 @@ using Dock.Controls.DeferredContentControl;
 using ReactiveUI.Reactive;
 
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
-AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
+AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions { UseSharedMouseDevice = true }).SetupWithLifetime(lifetime);
 PackageConsumer.AutoHideResizeProbe.Verify();
 PackageConsumer.ManagerKeyDownProbe.Verify();
 PackageConsumer.InheritedControlPropertyProbe.Verify();

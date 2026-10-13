@@ -173,6 +173,7 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
     {
+        UseWeakInheritanceChildren = true;
         InitializeLogicalChildren();
         _autoHide = new(this);
         _themeResources = new(this);

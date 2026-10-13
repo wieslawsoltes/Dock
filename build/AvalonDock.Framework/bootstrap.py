@@ -83,6 +83,12 @@ def main():
         # Use upstream's IL repacking, NuGet dependency merge, signing, and reference-assembly generation.
         run("dotnet", "run", "--project", "nukebuild/_build.csproj", "--", "--target", "CreateNugetPackages",
             "--skip", "--force-nuget-version", version)
+        built_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=checkout, text=True).strip()
+        changed_files = set(subprocess.check_output(["git", "diff", "HEAD", "--name-only"], cwd=checkout, text=True).splitlines())
+        changed_files.update(subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard"], cwd=checkout, text=True).splitlines())
+        changed_files.difference_update({"nukebuild/numerge.json", project.name})
+        if built_commit != config["commit"] or changed_files:
+            raise RuntimeError("The framework source changed during packaging; discard this build and rebuild from a clean pinned revision.")
         output.mkdir(parents=True, exist_ok=True)
         packages = {}
         for name in ["Avalonia", "Avalonia.Remote.Protocol"]:
@@ -93,7 +99,7 @@ def main():
                     shutil.copy2(source, output / filename)
                 packages[filename] = sha256(output / filename)
         manifest.write_text(json.dumps({"specification": fingerprint,
-                                       "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=checkout, text=True).strip(),
+                                       "commit": built_commit,
                                        "packages": packages}, indent=2) + "\n")
         print(f"Pinned framework packages built: {output}")
     finally:

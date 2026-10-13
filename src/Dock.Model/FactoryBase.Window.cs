@@ -40,8 +40,7 @@ public abstract partial class FactoryBase
     {
         rootDock.Windows ??= CreateList<IDockWindow>();
         rootDock.Windows.Add(window);
-        OnWindowAdded(window);
-        InitDockWindow(window, rootDock);
+        InitializeAddedWindow(rootDock, window);
     }
 
     /// <inheritdoc/>
@@ -51,7 +50,22 @@ public abstract partial class FactoryBase
         {
             rootDock.Windows ??= CreateList<IDockWindow>();
             rootDock.Windows.Insert(index, window);
-            OnWindowAdded(window);
+            InitializeAddedWindow(rootDock, window);
+        }
+    }
+
+    private void InitializeAddedWindow(IRootDock rootDock, IDockWindow window)
+    {
+        // Collection and factory callbacks can cancel registration or transfer
+        // the window to another root before initialization creates its host.
+        if (rootDock.Windows?.Contains(window) != true)
+        {
+            return;
+        }
+
+        OnWindowAdded(window);
+        if (rootDock.Windows?.Contains(window) == true)
+        {
             InitDockWindow(window, rootDock);
         }
     }

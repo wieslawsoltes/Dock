@@ -7843,6 +7843,24 @@ references:
   fullName.vb: Dock.Avalonia.Controls.PinnedDockControl.New
   nameWithType: PinnedDockControl.PinnedDockControl
   nameWithType.vb: PinnedDockControl.New
+- uid: Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout
+  name: InitializePinnedBoundsOnLayout
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_InitializePinnedBoundsOnLayout
+  commentId: P:Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout
+  nameWithType: PinnedDockControl.InitializePinnedBoundsOnLayout
+- uid: Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout*
+  name: InitializePinnedBoundsOnLayout
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_InitializePinnedBoundsOnLayout_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout
+  nameWithType: PinnedDockControl.InitializePinnedBoundsOnLayout
+- uid: Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayoutProperty
+  name: InitializePinnedBoundsOnLayoutProperty
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_InitializePinnedBoundsOnLayoutProperty
+  commentId: F:Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayoutProperty
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayoutProperty
+  nameWithType: PinnedDockControl.InitializePinnedBoundsOnLayoutProperty
 - uid: Dock.Avalonia.Controls.PinnedDockControl.MeasureOverride(Avalonia.Size)
   name: MeasureOverride(Size)
   href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_MeasureOverride_Avalonia_Size_
@@ -7891,6 +7909,24 @@ references:
   commentId: F:Dock.Avalonia.Controls.PinnedDockControl.MinimumPinnedWidthProperty
   fullName: Dock.Avalonia.Controls.PinnedDockControl.MinimumPinnedWidthProperty
   nameWithType: PinnedDockControl.MinimumPinnedWidthProperty
+- uid: Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize
+  name: MinimumRemainingContentSize
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_MinimumRemainingContentSize
+  commentId: P:Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize
+  nameWithType: PinnedDockControl.MinimumRemainingContentSize
+- uid: Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize*
+  name: MinimumRemainingContentSize
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_MinimumRemainingContentSize_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize
+  nameWithType: PinnedDockControl.MinimumRemainingContentSize
+- uid: Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSizeProperty
+  name: MinimumRemainingContentSizeProperty
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_MinimumRemainingContentSizeProperty
+  commentId: F:Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSizeProperty
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSizeProperty
+  nameWithType: PinnedDockControl.MinimumRemainingContentSizeProperty
 - uid: Dock.Avalonia.Controls.PinnedDockControl.OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs)
   name: OnApplyTemplate(TemplateAppliedEventArgs)
   href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_OnApplyTemplate_Avalonia_Controls_Primitives_TemplateAppliedEventArgs_

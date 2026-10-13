@@ -1242,6 +1242,37 @@ dockable's pinned bounds and invalidates this control's measure.</p>
 
 
 
+  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_InitializePinnedBoundsOnLayoutProperty" data-uid="Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayoutProperty">
+  InitializePinnedBoundsOnLayoutProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines whether layout initializes pinned bounds that have no stored size.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;bool&gt; InitializePinnedBoundsOnLayoutProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <h3 id="Dock_Avalonia_Controls_PinnedDockControl_MinimumPinnedHeightProperty" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MinimumPinnedHeightProperty">
   MinimumPinnedHeightProperty
   <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs"><i class="bi bi-code-slash"></i></a>
@@ -1284,6 +1315,37 @@ dockable's pinned bounds and invalidates this control's measure.</p>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;double&gt; MinimumPinnedWidthProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_MinimumRemainingContentSizeProperty" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSizeProperty">
+  MinimumRemainingContentSizeProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the minimum space remaining beside an overlay pinned preview.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;double&gt; MinimumRemainingContentSizeProperty</code></pre>
   </div>
 
 
@@ -1369,6 +1431,42 @@ dockable's pinned bounds and invalidates this control's measure.</p>
 </h2>
 
 
+  <a id="Dock_Avalonia_Controls_PinnedDockControl_InitializePinnedBoundsOnLayout_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_InitializePinnedBoundsOnLayout" data-uid="Dock.Avalonia.Controls.PinnedDockControl.InitializePinnedBoundsOnLayout">
+  InitializePinnedBoundsOnLayout
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether layout initializes missing pinned sizes from the rendered content. Defaults to true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InitializePinnedBoundsOnLayout { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Dock_Avalonia_Controls_PinnedDockControl_InitializePinnedBoundsOnLayout_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Custom resize behaviors may disable initialization and commit their own bounds. Native splitter resizing
+still records sizes. Enabling initialization updates missing bounds of an already arranged preview.</p>
+</div>
+
+
+
+
   <a id="Dock_Avalonia_Controls_PinnedDockControl_MinimumPinnedHeight_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MinimumPinnedHeight*"></a>
 
   <h3 id="Dock_Avalonia_Controls_PinnedDockControl_MinimumPinnedHeight" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MinimumPinnedHeight">
@@ -1429,6 +1527,42 @@ dockable's pinned bounds and invalidates this control's measure.</p>
 
 
 
+
+
+
+
+  <a id="Dock_Avalonia_Controls_PinnedDockControl_MinimumRemainingContentSize_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_MinimumRemainingContentSize" data-uid="Dock.Avalonia.Controls.PinnedDockControl.MinimumRemainingContentSize">
+  MinimumRemainingContentSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the minimum remaining width or height beside an overlay preview. Defaults to 50.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinimumRemainingContentSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Dock_Avalonia_Controls_PinnedDockControl_MinimumRemainingContentSize_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Applies to the unused grid region along the preview's resize axis. Inline previews do not use this value.
+Custom resize behaviors may set zero and enforce their own limits. This does not clamp stored pinned sizes.</p>
+</div>
 
 
 

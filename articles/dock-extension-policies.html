@@ -272,6 +272,14 @@ before notification. This event is specific to the Avalonia model implementation
 <td>Set finite nonnegative minimum content sizes. Both default to 50.</td>
 </tr>
 <tr>
+<td><code>PinnedDockControl.MinimumRemainingContentSize</code></td>
+<td>Set the finite nonnegative minimum region beside an overlay preview. Defaults to 50; custom resizers can set zero and enforce their own limits. Inline layout is unaffected.</td>
+</tr>
+<tr>
+<td><code>PinnedDockControl.InitializePinnedBoundsOnLayout</code></td>
+<td>Defaults to true. Set false when a custom resize behavior must retain unset model bounds until it commits. Native splitter resizing still records sizes.</td>
+</tr>
+<tr>
 <td><code>ProportionalStackPanelSplitter.PreviewBackground</code> / <code>PreviewOpacity</code></td>
 <td>Customize live resize previews. Defaults retain the accent resource and opacity 1.</td>
 </tr>

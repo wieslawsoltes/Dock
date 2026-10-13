@@ -138,6 +138,14 @@ and deferred visual content before `Closed`, preserving the model graph for a
 replacement host. Its 16 new Headless cases cover documents/tools, local themes,
 cancellation, replacement hosts, and explicit deferred-presentation cleanup.
 
+Those fixes release native logical-parent, notification, and deferred-presentation
+links. Public collection `Clear()`/`Reset` retains former parent/root references,
+as upstream does, so a retained model can still keep its manager, layout-item
+Views, and their presentation graph reachable. Workspace-disposal tests explicitly
+replace `manager.Layout` to detach old containers and Views before asserting
+collection. Closing a window or clearing `FloatingWindows` alone does not dispose
+that public graph.
+
 [PR #1165](https://github.com/wieslawsoltes/Dock/pull/1165) resolves Avalonia 12's
 presentation wrapper to its owning top level. Native pinned windows now receive
 an actual owner, and activation, coordinate conversion, and other native owner

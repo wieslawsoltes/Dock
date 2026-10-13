@@ -1410,9 +1410,16 @@ binds visibility separately to reconnect selection after hidden-tool restoration
 
 On successful host closure, native Dock releases the layout models' logical
 parents and deferred presentation, including presenters from replaced templates,
-before `Closed`. Retaining a floating model therefore does not retain its closed
-host. The host's `Content` value and the preserved layout graph remain available
-for a replacement host. Canceling closure keeps the current presentation.
+before `Closed`. These native links no longer retain the closed host. The host's
+`Content` value and preserved layout graph remain available for a replacement
+host. Canceling closure keeps the current presentation.
+
+Public collection `Clear()`/`Reset` intentionally retains former `Parent` and
+`Root` references, matching upstream. A retained model can consequently keep its
+manager, layout-item Views, and their presentation graph reachable. To discard a
+workspace, replace `manager.Layout` with a new `LayoutRoot`, which detaches the
+old containers and Views. Closing its window or clearing `FloatingWindows` alone
+does not dispose that public graph.
 
 Canceling native window closing or the factory's `WindowClosing` event keeps a
 host alive and natively tracked. Its public registration follows the operation

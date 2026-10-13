@@ -2649,8 +2649,16 @@ lifetime fix is isolated in [PR #1161](https://github.com/wieslawsoltes/Dock/pul
 The follow-up [PR #1162](https://github.com/wieslawsoltes/Dock/pull/1162) releases
 nested model bindings and deferred visual content, including presenters from
 replaced templates. The preserved layout can be shown in a replacement host
-from `Closed` without retaining the old host. Canceled closes retain the current
-presentation. Both native fixes follow the separate-worktree/PR workflow.
+from `Closed`; these native links no longer retain the old host. Canceled closes
+retain the current presentation. Both native fixes follow the separate-worktree/PR
+workflow.
+
+Public collection `Clear()`/`Reset` intentionally retains former `Parent` and
+`Root` references, matching upstream. A retained model can consequently keep its
+manager, layout-item Views, and their presentation graph reachable. To discard a
+workspace, replace `manager.Layout` with a new `LayoutRoot`, which detaches the
+old containers and Views. Closing its window or clearing `FloatingWindows` alone
+does not dispose that public graph.
 
 ## Inspect floating docking overlays
 

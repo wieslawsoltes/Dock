@@ -15,12 +15,14 @@ source at commit `2c71faba5eecc1b6ae6cd3d269408e0df37715d8`.
 The implementation is new MIT-licensed adapter code; it does not incorporate
 the upstream WPF docking engine.
 
-Reference this package and add the adapter theme alongside your Avalonia theme:
-
 This branch requires the pinned prerelease Avalonia dependency described in the
 [framework build guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md).
 Run `python3 build/AvalonDock.Framework/bootstrap.py` before building the repository.
 Package consumers need the generated framework feed alongside the Dock feed.
+The version is pinned in `build/AvalonDock.Framework/framework.json`; it is a
+project-specific prerelease, not an official Avalonia release.
+
+Reference this package and add the adapter theme alongside your Avalonia theme:
 
 ```xml
 <Application.Styles>
@@ -901,8 +903,13 @@ editor in an owned `PinnedDockWindow`. Manager themes, content styles, context
 menus, close commands, and Ctrl+Tab navigation also apply there. Switching a
 tool to Inline mode returns its editor to the manager. The resizer remains in
 the manager's pinned host. Windows 11 ARM64 desktop validation covers native
-pointer resizing and editor focus on all four edges. The Avalonia control does
-not provide WPF's `HwndHost` or its Win32 child-window hooks.
+pointer resizing and editor focus on all four edges for the earlier native
+preview implementation. The current `BuildWindowCore` and `DestroyWindowCore`
+hooks create and dispose an embeddable native root around the same presenter
+and editor on Windows and macOS. Avalonia owns native parenting, position,
+clipping, and visibility. Headless and X11 keep inline presentation because
+those backends do not support embedded roots. Current desktop checks remain
+pending.
 `HasFocusWithinCore` retains the upstream base hook's `false` result; use
 Avalonia's `IsKeyboardFocusWithin` to observe actual preview focus.
 

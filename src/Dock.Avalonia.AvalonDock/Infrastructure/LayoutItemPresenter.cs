@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.LogicalTree;
 using AvalonDock.Controls;
 
 namespace AvalonDock.Infrastructure;
@@ -13,6 +14,22 @@ internal sealed partial class LayoutItemPresenter
 
     private LayoutItem? _item;
     public LayoutItem? Item { get => _item; set => SetAndRaise(ItemProperty, ref _item, value); }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        // The public View belongs logically to its manager, even when a custom
+        // content control displays it while that manager is not in a window.
+        // ContentPresenter's automatic realization requires logical attachment.
+        if (!((ILogical)this).IsAttachedToLogicalTree) UpdateChild();
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if ((change.Property == ContentProperty || change.Property == ContentTemplateProperty) &&
+            VisualRoot is not null && !((ILogical)this).IsAttachedToLogicalTree) UpdateChild();
+    }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {

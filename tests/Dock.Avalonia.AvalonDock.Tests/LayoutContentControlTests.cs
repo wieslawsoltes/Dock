@@ -235,6 +235,10 @@ public class LayoutContentControlTests
             model.Title = "Updated title";
             Assert.Equal(model.Title, title.Text);
             Assert.Same(model.Content, item.View.Child);
+            TextBox replacement = new() { Text = "Replacement editor" };
+            model.Content = replacement;
+            Dispatcher.UIThread.RunJobs();
+            Assert.Same(replacement, item.View.Child);
         }
         finally { window.Close(); }
     }

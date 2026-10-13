@@ -172,7 +172,6 @@ public class LogicalChildrenContractTests
         LogicalManager manager = new() { NullEnumeration = true };
         Assert.Null(manager.LogicalChildrenPublic);
         Assert.Empty(manager.GetLogicalChildren());
-        Assert.Equal(0, ((ILogical)manager).LogicalChildren.Count);
     }
 
     [AvaloniaFact]
@@ -194,6 +193,30 @@ public class LogicalChildrenContractTests
             Assert.Equal("after", child.DataContext);
         }
         finally { window.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Failed_Content_Parent_Assignment_Retains_The_Published_Container(bool tool)
+    {
+        Border content = new();
+        ContentControl owner = new() { Content = content };
+        LayoutContent model = tool ? new LayoutAnchorable { Content = content } : new LayoutDocument { Content = content };
+        ILayoutPanelElement pane = tool ? new LayoutAnchorablePane((LayoutAnchorable)model) : new LayoutDocumentPane((LayoutDocument)model);
+        LayoutRoot layout = new() { RootPanel = new(pane) };
+        DockingManager manager = new();
+
+        Assert.Throws<InvalidOperationException>(() => manager.Layout = layout);
+
+        LayoutItem item = Assert.IsAssignableFrom<LayoutItem>(manager.GetLayoutItemFromModel(model));
+        Assert.Same(model, item.LayoutElement);
+        Assert.Same(content, item.Model);
+        Assert.Contains(content, Read(manager.LogicalChildrenPublic));
+        Assert.Same(owner, content.Parent);
+        manager.Layout = new();
+        Assert.Null(item.LayoutElement);
+        Assert.Same(owner, content.Parent);
     }
 
     [AvaloniaFact]

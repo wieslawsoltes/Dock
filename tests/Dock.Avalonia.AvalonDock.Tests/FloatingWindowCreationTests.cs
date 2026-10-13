@@ -171,7 +171,7 @@ public class FloatingWindowCreationTests
     }
 
     [AvaloniaFact]
-    public void Standalone_Pane_Content_And_Content_From_Another_Manager_Can_Be_Moved_Into_This_Manager()
+    public void Standalone_And_NonVisual_Content_From_Another_Manager_Can_Be_Moved_Into_This_Manager()
     {
         using Workspace destination = new();
         using Workspace source = new();
@@ -181,6 +181,9 @@ public class FloatingWindowCreationTests
         Assert.Empty(pane.Children);
         Assert.Same(destination.Manager.Layout, standalone.Root);
         Assert.False(standaloneHost.IsVisible);
+        // UI controls retain their original manager's logical ownership until
+        // its deferred cleanup; model content can move synchronously.
+        source.Document.Content = "Transferred document";
         LayoutDocumentFloatingWindowControl transferredHost = Assert.IsType<LayoutDocumentFloatingWindowControl>(destination.Manager.CreateFloatingWindow(source.Document, true));
         Assert.Same(destination.Manager.Layout, source.Document.Root);
         Assert.DoesNotContain(source.Document, source.Manager.Layout.Descendents());

@@ -12,6 +12,13 @@ The CLR namespaces are `AvalonDock.*`; update using directives and any explicit
 CLR namespace declarations when porting source from the WPF library. The
 assembly/package name remains `Dock.Avalonia.AvalonDock`.
 
+This branch requires the project-specific prerelease framework pinned in
+`build/AvalonDock.Framework/framework.json`, not an official Avalonia release.
+Source builds must run the bootstrap first; package consumers need both the
+generated framework feed and the Dock feed. The
+[framework build guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
+describes both workflows.
+
 Floating hosts default to `ShowInTaskbar="False"`. Overlay windows default to
 no activation, no taskbar entry, no decorations, and a transparent surface.
 These are property defaults and apply before styling and with a replacement
@@ -1271,8 +1278,12 @@ menus, close commands, and Ctrl+Tab navigation work inside it. Changing a tool's
 `PinnedDockDisplayModeOverride` to Inline returns its editor to the manager;
 changing back creates a new native preview. The resizer stays beside the pinned
 area in the manager. Windows 11 ARM64 desktop checks cover native pointer
-resizing and editor focus on all four edges. The control does not provide WPF's `HwndHost` or Win32
-child-window hooks.
+resizing and editor focus on all four edges for the earlier native preview
+implementation. The current `BuildWindowCore` and `DestroyWindowCore` hooks
+create and dispose an embeddable native root around the same presenter and
+editor on Windows and macOS. Avalonia owns native parenting, position, clipping,
+and visibility. Headless and X11 keep inline presentation because those
+backends do not support embedded roots. Current desktop checks remain pending.
 
 ## Use converters in compiled bindings
 

@@ -18,6 +18,7 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     private LayoutFloatingWindow? _pendingAttachment;
     private IDockWindow? _publicMutationWindow;
     private HashSet<IDockWindow>? _replacementWindows;
+    private HashSet<LayoutFloatingWindow>? _clearingWindows;
     private readonly HashSet<LayoutFloatingWindow> _unprojectedWindows = new();
 
     internal LayoutFloatingWindows(LayoutRoot owner)
@@ -114,6 +115,9 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     {
         CheckReentrancy();
         LayoutFloatingWindow item = this[index];
+        // Closing a shown native host calls back into this collection. The
+        // outer Clear owns that removal and publishes its single Reset.
+        if (_clearingWindows?.Contains(item) == true) return;
         if (CountOccurrences(item) > 1 || _unprojectedWindows.Contains(item))
         {
             bool previousSyncing = _syncing;
@@ -265,8 +269,10 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         List<LayoutFloatingWindow> windows = new(this);
         bool previousSyncing = _syncing;
         IDockWindow? previousMutation = _publicMutationWindow;
+        HashSet<LayoutFloatingWindow>? previousClearing = _clearingWindows;
         _syncing = true;
         _publicMutationWindow = null;
+        _clearingWindows = new(windows);
         try
         {
             HashSet<LayoutFloatingWindow> closed = new();
@@ -284,7 +290,12 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
             }
             else Refresh(); // A native host can cancel its close request.
         }
-        finally { _syncing = previousSyncing; _publicMutationWindow = previousMutation; }
+        finally
+        {
+            _syncing = previousSyncing;
+            _publicMutationWindow = previousMutation;
+            _clearingWindows = previousClearing;
+        }
         _owner.NotifyStructureChanged();
     }
     protected override void MoveItem(int oldIndex, int newIndex)

@@ -1,7 +1,7 @@
 # Review of declaration mismatches
 
 The pinned upstream inventory has 951 declarations. The strict source inventory
-finds 845 matching keys. All 106 unmatched keys have now been classified in
+finds 850 matching keys. All 101 unmatched keys have now been classified in
 [`portability-review.tsv`](portability-review.tsv); the original inventory and
 comparison rules remain unchanged.
 
@@ -14,9 +14,7 @@ binary compatibility, or completion of the compatibility project.
 | Mouse, keyboard, or focus argument | 32 | The same hook name accepts Avalonia pointer, key, or focus arguments. Press and release use their distinct event types. |
 | Context-menu opening argument | 1 | `ContextMenuEx.OnOpened` accepts Avalonia's `RoutedEventArgs`. |
 | Visual/logical tree extension receiver | 6 | `Extentions` accepts `AvaloniaObject`; traversal follows Avalonia trees. |
-| Framework logical-child contract | 3 | Avalonia supplies a logical-child collection, rather than WPF's overridable enumerator property. |
 | Native arrangement | 1 | Native arrangement and current overlay-area projection replace the WPF manager's cached-area invalidation. |
-| WPF `HwndHost` hooks | 2 | No equivalent hook is supplied by the native pinned-content presenter. |
 
 The 100 mapped source declarations in the first four rows were checked against
 the adapter's source inventory. Each TSV row retains the original upstream key,
@@ -33,7 +31,7 @@ Nine explicit XML write overrides and nine read overrides, including document
 and tool content overrides, now have exact presence keys. Typed attribute helpers
 follow the inheritance chain; generic base readers and writers handle children
 without inferring concrete metadata from additional interfaces. Custom read/write
-overrides participate through the explicit `XmlLayoutSerializer.KnownTypes` registry.
+overrides participate through generated application catalogs or the explicit `XmlLayoutSerializer.KnownTypes` registry.
 
 External classes can derive from `LayoutGroupBase` using its protected parameterless
 constructor, matching the implicit constructor in upstream source. Each instance
@@ -55,11 +53,12 @@ base close lifecycle and unsubscribe only after it returns successfully. The
 base collects its captured root before `Closed`, with native factory notification
 preserved by `HostWindow.OnClosedCore`.
 
-The three `LogicalChildren` mismatches are `DockingManager`,
-`LayoutDocumentPaneControl`, and `LayoutAutoHideWindowControl`. Their protected
-collection and `ILogical.LogicalChildren` follow Avalonia's ownership rules.
-`DockingManager.LogicalChildrenPublic` exposes an enumerator for callers. This
-does not reproduce WPF's logical-tree shape or its virtual enumerator override.
+The protected `LogicalChildren` declarations on `DockingManager`,
+`LayoutDocumentPaneControl`, and `LayoutAutoHideWindowControl` now have matching
+presence keys. Their virtual enumerators supply the framework's logical source;
+manager public enumeration retains weak raw entries, while public framework
+traversal filters non-logical values. Internal lifecycle propagation also visits
+physically owned children. This removes three former mismatches.
 
 The WPF manager's `ArrangeOverride` invalidates cached overlay areas. The adapter
 uses native arrangement and captures current areas through
@@ -74,9 +73,11 @@ including the Apps key and menus owned by editor content. Ctrl+Tab has its
 separate `OnPreviewKeyDown` compatibility hook.
 
 `LayoutAutoHideWindowControl.BuildWindowCore(HandleRef)` and
-`DestroyWindowCore(HandleRef)` belong to WPF's `HwndHost`. The adapter composes
-content inside Dock's native pinned host. It does not create a replacement HWND
-or provide dummy implementations of these hooks.
+`DestroyWindowCore(HandleRef)` now have matching declaration keys. They execute
+real `NativeControlHost` creation and destruction around the existing presenter,
+using an embeddable framework root on Windows/macOS. Headless and X11 retain
+inline presentation because their backends do not support embedding; hooks are
+not fabricated. Their platform behavior remains separate validation evidence.
 
 ## What this review does not verify
 
@@ -86,6 +87,6 @@ ordering, styling, rendering, or lifecycle behavior. These require the focused
 contract tests and platform validation listed in
 [`COMPATIBILITY.md`](../../src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md).
 
-The strict inventory deliberately continues to report 106 unmatched declarations.
+The strict inventory deliberately continues to report 101 unmatched declarations.
 Do not subtract these rows from the upstream baseline or report 951 equivalent
 APIs on the strength of this classification.

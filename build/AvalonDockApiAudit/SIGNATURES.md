@@ -1,6 +1,6 @@
 # Declaration-shape review
 
-The pinned inventory contains 951 declarations; 845 now have matching presence
+The pinned inventory contains 951 declarations; 850 now have matching presence
 keys. The signature review covered the preceding 820 matching keys, then inspected
 accessibility, virtual/static modifiers, generic constraints, and differing
 base/interface declarations. The two newly declared document/tool `ReadXml`
@@ -30,7 +30,7 @@ identify this defect. External compilation and native ownership/notification tes
 cover it. The upstream constructors on `LayoutElement`, `LayoutContent`, and
 `LayoutGroup<T>` are explicitly internal; those are not exposed for external use.
 
-The remaining 184 textual signature differences are recorded individually in
+The remaining 187 textual signature differences are recorded individually in
 [`signature-review.tsv`](signature-review.tsv). The comparison normalizes the
 requested CLR namespace mapping, known BCL qualification, whitespace, nullable
 annotations, and the `partial` implementation modifier. It does not silently
@@ -85,18 +85,20 @@ The 26 differing base lists fall into these groups:
 
 The protected `IEnumerator LogicalChildren` declarations on the manager,
 document pane, and auto-hide control are provided as virtual hooks. A typed
-framework source uses those hooks for actual logical traversal while the
+framework source uses those hooks for public logical traversal while the
 manager's public enumeration preserves its raw weak-reference entries.
+Internal lifecycle propagation also visits physically owned children; opting
+the manager into weak inheritance tracking preserves the weak registrations.
 
 All shared generic class and method constraints agree except `DropArea<T>`:
 Avalonia `Control` replaces WPF `FrameworkElement`. The modifier review found
-14 WPF framework overrides exposed as virtual compatibility hooks,
-five `new` declarations needed to hide different Avalonia base members, and a
+19 WPF framework overrides exposed as virtual compatibility hooks,
+eight `new` declarations needed to hide different Avalonia base members, and a
 virtual default for the upstream abstract `LayoutGroup<T>.GetVisibility` hook.
 Existing subclasses can still override that hook; the adapter additionally
 allows its inherited default. Hook routing and ordering are validated separately.
 
-The 106 keys without exact source matches remain in
+The 101 keys without exact source matches remain in
 [`portability-review.tsv`](portability-review.tsv). Neither declaration review establishes runtime equivalence. The compatibility
 checklist records the separate acceptance evidence, framework boundaries, and
 deferred desktop checks.

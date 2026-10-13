@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
@@ -28,6 +29,12 @@ internal sealed class LayoutItemContentTemplate(LayoutContent model, DockingMana
         IDataTemplate? template = Settings.Select(data, presenter);
         if (template is null)
         {
+            // AvalonDock registers application controls logically with the
+            // manager. That ownership is independent of their visual host and
+            // must survive presentation; native recycling otherwise treats an
+            // unknown logical owner as a control that cannot be transferred.
+            if (data is Control control && ReferenceEquals(control.Parent, owner) &&
+                control.GetVisualParent() is null) return control;
             // Delegate explicit controls and native template content to Dock's
             // existing ownership, deferred-content, and recycling machinery.
             if (data is null or Control or ITemplate or IDataTemplate or Func<IServiceProvider, object>)

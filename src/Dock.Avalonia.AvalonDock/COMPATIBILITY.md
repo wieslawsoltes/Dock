@@ -47,7 +47,7 @@ behavior or binary compatibility.
 ## Acceptance evidence
 
 The upstream reference is the pinned source above. The strict declaration audit
-retains all 951 entries: 845 keys match and 106 have individual classifications.
+retains all 951 entries: 850 keys match and 101 have individual classifications.
 All 102 exported type keys are present. The signature review separately covers
 parameter names, modifiers, generic constraints, differing base lists, and the
 implicit constructor omitted by the syntax inventory. No unmatched declaration
@@ -403,8 +403,9 @@ below rather than automatic discovery.
   failure short-circuiting; native auto-hide projections retain Dock's ownership
   transitions. `LayoutExtensionTests` and `LayoutGroupContractTests` add 39 cases,
   supplemented by the existing parent, selection, auto-hide and lifecycle tests
-  and an external package consumer. Duplicate/cyclic membership and stale parents
-  after `Clear()` are not reproduced: the adapter preserves a valid Dock graph.
+  and an external package consumer. Duplicate occurrences and stale parents after
+  `Clear()` are retained by the facade while native models remain unique and
+  removed native ownership is detached. Cycles remain rejected.
 - `LayoutAutoHideWindowControl` presents the existing native preview and exposes
   its current public model, background, and anchorable content theme. The
   manager's readonly `AutoHideWindow` and protected hooks expose the generated
@@ -459,8 +460,8 @@ below rather than automatic discovery.
   null root slots in both namespaces, and empty side XML sections round-trip.
   Construction order, lazy child enumeration order, fixed-slot child counts,
   remove/add replacement notifications, cancellation, and observer failures have
-  focused Headless and external package coverage. The native bridge still detaches
-  replaced side parents; upstream's retained-parent behavior remains open below.
+  focused Headless and external package coverage. Replaced sides retain their
+  public parent while releasing their native pinned projection.
 - Parent-change selection and visibility policies: content deselects while its
   previous parent is still available; initially selected content selects its
   destination pane. Pane and content selection synchronize before a factory is
@@ -1110,8 +1111,16 @@ below rather than automatic discovery.
   accessibility.
 - `DockingManager.LogicalChildrenPublic` exposes its virtual weak child
   enumeration: presentation controls, initial application controls, and lazy item
-  views, excluding layout item containers. The framework uses the same hook and
-  filters non-logical entries. Base property callbacks own membership changes.
+  views, excluding layout item containers. The framework's public enumeration
+  uses the same hook and filters non-logical entries. Internal attachment,
+  styling, resources, and inheritance also visit physically owned children, so
+  native templates and hidden containers retain their lifecycle. Manager
+  inheritance tracking is weak; replaced content can expire while its raw weak
+  registration remains. Base property callbacks own membership changes.
+  Failed application-content parent assignment retains the already-published
+  container and weak registration, as upstream does. Immediate transfer of a
+  control between managers can therefore fail until the old manager's deferred
+  logical cleanup completes; nonvisual application content has no such parent.
   Floating `OnStateChanged` overrides synchronize maximization when
   they call the base hook. `IsMaximizedProperty` retains the upstream writable
   property contract through an Avalonia styled property; assignment and binding
@@ -1217,11 +1226,10 @@ below rather than automatic discovery.
   Group floating and float-all record document/tool return panes, including an
   entire root panel. Empty return groups retain their model while their host is
   hidden. Their XML element is a Dock extension outside the upstream WPF schema.
-- Typed floating initialization hooks request model subscriptions after their
-  base call. Avalonia can initialize in its Window constructor; model-dependent
-  work waits until the adapter receives the model. Suppressing the base hook
-  suppresses those subscriptions. This does not change Avalonia's Initialized
-  event timing into WPF's timing.
+- Typed floating initialization is deferred by the framework until the constructor
+  model is available. Show, EndInit, or attachment initializes once, and external
+  `OnInitialized` overrides can inspect Model. Typed subscriptions occur after
+  the base call; suppressing that hook suppresses the subscriptions.
 - 2,422 passing cases in `Dock.Avalonia.AvalonDock.Tests`, including 17 new
   full-preview cases for docked/floating tabs, per-manager settings, both XML
   namespaces, native/managed hosting, cancellation, and content registration.
@@ -1418,8 +1426,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 | Focus after close/hide | `FloatingFocusRestorationTests` covers 27 owner/current-model/first-focusable-target cases, callback redirection and errors, disabled/hidden targets, and the ordering after `Closed` but before typed cleanup. Only one target is attempted. Native desktop activation checks remain deferred. |
 | `IsContentImmutable` | Loaded-only content coercion is covered by `FloatingControlTests` and external consumer construction. |
 | `IsMaximizedProperty`, `OnStateChanged` | Writable property metadata, bindings, native state synchronization, and persisted bounds are covered by override/control/bounds tests. Avalonia reports native state changes; WPF's internal Win32 state-loop ordering is not reproduced. |
-| `SetIsDragging`, `OnIsDraggingChanged` | Public state and override notifications follow native Dock drag state. Native Dock owns capture and drag execution; setting a Boolean does not perform WPF's global mouse capture. |
-| `OnInitialized` | Typed subscription suppression and empty-document closure are covered by `FloatingInitializationTests`. Avalonia can initialize during base construction, so model-dependent work is deferred; WPF initialization timing is not reproduced. |
+| `SetIsDragging`, `OnIsDraggingChanged` | Explicit state changes use the framework's primary pointer capture and release only capture owned by the control. Native Dock gesture notifications preserve the gesture's existing capture. Override notifications retain the public property contract. |
+| `OnInitialized` | Framework initialization is deferred until Model is assigned; Show, EndInit, and attachment initialize once. Typed subscription suppression and empty-document closure retain their existing contract. `FloatingHostInteropTests` exercises the new initialization and capture integration. |
 | Keyboard hooks | Per-manager enablement, routed editor handling, desktop scaling, persistence, and floating navigator input are covered by keyboard/navigator tests. |
 | `FilterMessage`, resize borders, native focus | Windows caption policy and resize hit tests have Headless coverage plus the previously recorded desktop checks. WPF client-area rewriting and its activation message loop remain native Avalonia/Dock responsibilities; current-package desktop checks are deferred. |
 
@@ -1829,15 +1837,15 @@ Dock features or hidden by the API inventory:
 
 | Boundary | Contract |
 | --- | --- |
-| CLR and UI framework | Public namespaces are `AvalonDock.*` as requested. WPF controls, events, metadata, templates, pointer/focus arguments, and assemblies require Avalonia counterparts. This is not binary compatibility. The 106 strict inventory differences remain individually classified in `portability-review.tsv`. |
+| CLR and UI framework | Public namespaces are `AvalonDock.*` as requested. WPF controls, events, metadata, templates, pointer/focus arguments, and assemblies require Avalonia counterparts. This is not binary compatibility. The 101 strict inventory differences remain individually classified in `portability-review.tsv`. |
 | Binding lifetime | Opt-in framework metadata implements WPF binding replacement, current-value overrides, style-priority isolation, and direct-property clearing without reflection. The unchanged ActiveContent oracle includes all 110 WPF scenarios; native Dock properties retain ordinary Avalonia policy. |
-| Logical trees and native hosting | The public logical-child enumerator hooks supply real Avalonia traversal through the framework's typed logical source. Weak manager membership and base-callback suppression follow upstream. Keyboard/context-menu routes use Avalonia arguments. WPF `HwndHost.BuildWindowCore` and `DestroyWindowCore` have no replacement hooks; pinned content uses Dock's native host. |
+| Logical trees and native hosting | The public logical-child enumerator hooks supply real Avalonia traversal through the framework's typed logical source. Weak manager membership and base-callback suppression follow upstream. Keyboard/context-menu routes use Avalonia arguments. `BuildWindowCore`/`DestroyWindowCore` execute actual embeddable native-root lifecycle on Windows/macOS. Headless and X11 use inline presentation because their backends do not embed child roots. |
 | Graph integrity | Public collections retain duplicate occurrences and upstream Reset parent references while projecting unique native nodes and detaching removed native ownership. Cycles remain rejected. Both WPF `DependencyObject` and Avalonia `AvaloniaObject` seal object equality. Native floating-close cancellation remains effective. |
 | XML/custom resources | Custom CLR XML types and compiled resource URIs use typed factory registration. Runtime assembly discovery and arbitrary WPF resource loading are absent. Custom model hooks still participate through their public virtual methods. |
 | Additional floating layouts | Generic/mixed Dock groups use the additional `LayoutGroupFloatingWindow` XML element, which WPF cannot consume. Hidden/pinned contents inside a floating root, nested windows, and incompatible typed-window mutations are rejected before a file is overwritten. |
 | Auto-hide layout | Content and resizers use Dock's pinned host with adapter-controlled spacing and unset-size persistence. Physical resize ghost limits follow upstream; the visual tree differs from WPF's popup grid. |
 | Preview geometry | Full-content source snapshots are implemented and enabled by default. Exact projected destination layouts remain disabled because the stock clone cannot reproduce the adapter's custom grids and typed policies; the documented half/third destination indicators remain available. |
-| Framework initialization and input | Avalonia initialization, capture, routed input, window decoration, and focus behavior remain platform contracts. Source-level hooks and automated tests do not establish identical OS behavior. |
+| Framework initialization and input | Opt-in framework APIs provide model-ready initialization, primary pointer capture, and hosted-root focus/input routing. OS window decoration and native focus timing remain platform behavior; source-level hooks and automated tests do not replace the deferred desktop checks. |
 
 Current-package interactive desktop checks are **deferred at the user's request**.
 They cover broader native drag/float/redock, grouped window lifecycles, pinned
@@ -1850,15 +1858,15 @@ commit. Headless, rendering, package, and hosted CI results are recorded separat
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 845
-matching type/member keys and 106 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 850
+matching type/member keys and 101 missing declarations at this checkpoint.
 All 102 exported type keys are present; signatures, inheritance, templates, and
 behavior have the separate acceptance evidence and framework boundaries above.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 
 The separate [declaration-shape review](../../build/AvalonDockApiAudit/SIGNATURES.md)
-records 184 textual signature differences and their explicit contracts, plus
+records 187 textual signature differences and their explicit contracts, plus
 the modifier and generic-constraint review. It fixed three parameter names needed
 by upstream named-argument calls without changing the presence counts.
 

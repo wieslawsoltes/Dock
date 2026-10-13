@@ -66,20 +66,23 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
             LayoutAnchorable => new LayoutAnchorableItem(),
             _ => throw new NotSupportedException("A layout item must be a document or an anchorable.")
         };
+        bool registered = false;
         try
         {
             item.Attach(_manager, content);
             _byContent.Add(content, item);
             _items.Add(item);
+            registered = true;
             if (content.Content is InputElement logicalContent) _manager.InternalAddLogicalChild(logicalContent);
             if (_observed.Add(content)) content.PropertyChanged += ModelChanged;
             content.NotifyLayoutItemChanged();
         }
         catch
         {
-            _byContent.Remove(content);
-            _items.Remove(item);
-            item.Detach();
+            // Upstream publishes the container before adding application
+            // content to its logical tree. A failed parent assignment retains
+            // both that container and the already-added weak registration.
+            if (!registered) item.Detach();
             throw;
         }
         finally { _creating.Remove(content); }
@@ -174,20 +177,27 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
         HashSet<LayoutElement> current = new() { currentRoot };
         foreach (ILayoutElement element in currentRoot.Descendents())
             if (element is LayoutElement model) current.Add(model);
+        for (int i = _items.Count - 1; i >= 0; i--)
+        {
+            LayoutItem item = _items[i];
+            if (item.LayoutElement is not { } content) continue;
+            if (ReferenceEquals(content.Root, currentRoot))
+            {
+                // Reset preserves the public parent even after native removal.
+                // Observe the retained item until an explicit parent change
+                // actually removes it from this manager's root.
+                current.Add(content);
+                continue;
+            }
+            _byContent.Remove(content);
+            _items.RemoveAt(i);
+            item.Detach();
+        }
         foreach (LayoutElement element in _observed)
             if (!current.Contains(element)) element.PropertyChanged -= ModelChanged;
         foreach (LayoutElement element in current)
             if (!_observed.Contains(element)) element.PropertyChanged += ModelChanged;
         _observed = current;
-
-        for (int i = _items.Count - 1; i >= 0; i--)
-        {
-            LayoutItem item = _items[i];
-            if (item.LayoutElement is not { } content || ReferenceEquals(content.Root, currentRoot)) continue;
-            _byContent.Remove(content);
-            _items.RemoveAt(i);
-            item.Detach();
-        }
         RefreshCommands();
     }
 

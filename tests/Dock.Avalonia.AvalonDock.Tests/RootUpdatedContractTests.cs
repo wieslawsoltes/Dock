@@ -217,7 +217,7 @@ public class RootUpdatedContractTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Clearing_A_Floating_Child_Releases_Its_Item_Even_With_Suppressed_Property_Notifications(bool tool)
+    public void Clearing_A_Floating_Child_Retains_Its_Item_While_Its_Public_Root_Remains_Current(bool tool)
     {
         LayoutContent content = tool ? new LayoutAnchorable() : new LayoutDocument();
         LayoutFloatingWindow window = tool
@@ -235,10 +235,14 @@ public class RootUpdatedContractTests
         else ((LayoutDocumentFloatingWindow)window).RootDocument = null;
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Null(manager.GetLayoutItemFromModel(content));
-        Assert.Null(item.LayoutElement);
+        // The upstream floating setters retain the removed child's Parent;
+        // CollectLayoutItemsDeleted compares Root, not descendant membership.
+        Assert.Same(root, content.Root);
+        Assert.Same(item, manager.GetLayoutItemFromModel(content));
+        Assert.Same(content, item.LayoutElement);
         manager.Layout = new();
         Dispatcher.UIThread.RunJobs();
+        Assert.Null(item.LayoutElement);
     }
 
     private sealed class ApplicationGroup : LayoutGroupBase

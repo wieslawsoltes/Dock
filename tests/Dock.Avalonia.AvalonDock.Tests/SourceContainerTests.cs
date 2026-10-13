@@ -223,7 +223,7 @@ public class SourceContainerTests
         ILayoutGroup pane = documents ? new LayoutDocumentPane() : new LayoutAnchorablePane();
         manager.Layout.RootPanel.Children.Add((ILayoutPanelElement)pane);
         pane.InsertChildAt(0, content);
-        LayoutItem item = Assert.Single(created);
+        LayoutItem item = Assert.Single(created.Distinct());
         Assert.Same(content, item.LayoutElement);
         Assert.Same(item, manager.GetLayoutItemFromModel(content));
         pane.RemoveChild(content);

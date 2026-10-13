@@ -374,6 +374,10 @@ public class SourceContainerTests
         WeakReference<DockingManager> managerReference = new(manager);
         manager.Layout.FloatingWindows.Clear();
         manager.DocumentsSource = null;
+        // Upstream Reset retains the removed floating model's public parent;
+        // source detachment only visits the current layout. Replace the layout
+        // explicitly to dispose every retained item before checking retention.
+        manager.Layout = new LayoutRoot();
         window.Close();
         Dispatcher.UIThread.RunJobs();
         return (header, modelReference, managerReference);

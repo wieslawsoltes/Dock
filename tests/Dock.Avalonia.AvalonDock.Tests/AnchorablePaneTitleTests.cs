@@ -197,11 +197,12 @@ public class AnchorablePaneTitleTests
     public void A_Custom_Title_Inside_Another_Manager_Activates_And_Floats_Its_Own_Model()
     {
         using Workspace workspace = new(custom: true);
+        // The destination manager takes logical ownership of application controls.
+        workspace.Panel.Children.Remove(workspace.Custom);
         DockingManager other = new()
         {
             Layout = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(new LayoutDocument { Content = workspace.Custom })) }
         };
-        workspace.Panel.Children.Remove(workspace.Custom);
         DockPanel.SetDock(other, global::Avalonia.Controls.Dock.Top);
         other.Height = 100;
         workspace.Panel.Children.Insert(0, other);
@@ -214,6 +215,7 @@ public class AnchorablePaneTitleTests
         Assert.Same(workspace.First, Assert.Single(floating.Descendents().OfType<LayoutAnchorable>()));
         Assert.False(workspace.Second.IsFloating);
         Assert.Empty(other.FloatingWindows);
+        workspace.Custom.ReleasePlatformCapture();
         Assert.Single(workspace.Manager.FloatingWindows).MouseUp(new Point(5, 5), MouseButton.Left);
     }
 
@@ -229,6 +231,7 @@ public class AnchorablePaneTitleTests
         LayoutAnchorableFloatingWindow floating = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(workspace.Manager.Layout.FloatingWindows));
         Assert.Same(workspace.First, Assert.Single(floating.Descendents().OfType<LayoutAnchorable>()));
         Assert.True(workspace.Second.IsAutoHidden);
+        workspace.Custom.ReleasePlatformCapture();
         Assert.Single(workspace.Manager.FloatingWindows).MouseUp(new Point(5, 5), MouseButton.Left);
     }
 
@@ -252,6 +255,7 @@ public class AnchorablePaneTitleTests
         LayoutAnchorableFloatingWindowControl host = Assert.IsType<LayoutAnchorableFloatingWindowControl>(Assert.Single(workspace.Manager.FloatingWindows));
         Assert.Equal(1, began);
         Assert.Equal(!cancel, host.IsDragging);
+        workspace.Custom.ReleasePlatformCapture();
         host.MouseUp(new Point(5, 5), MouseButton.Left);
         workspace.Update();
         Assert.False(host.IsDragging);
@@ -275,6 +279,7 @@ public class AnchorablePaneTitleTests
         Assert.Equal(1, began);
         Assert.Same(host, Assert.Single(workspace.Manager.FloatingWindows));
         Assert.Equal(!cancel, host.IsDragging);
+        workspace.Custom.ReleasePlatformCapture();
         host.MouseUp(new Point(5, 5), MouseButton.Left);
         Assert.False(host.IsDragging);
     }
@@ -438,18 +443,26 @@ public class AnchorablePaneTitleTests
 
     private sealed class TitleProbe : AnchorablePaneTitle
     {
+        private IPointer? _pressedPointer;
         public List<object?> Models { get; } = new();
         public bool SuppressModelHook { get; init; }
         public int Presses { get; private set; }
         public int Releases { get; private set; }
         public int Exits { get; private set; }
         public void AssignContainer(LayoutItem? item) => SetLayoutItem(item);
+        public void ReleasePlatformCapture()
+        {
+            // Win32 BeginMoveDrag releases the original control's implicit
+            // capture before entering its native move loop. Headless has no
+            // move loop, so emulate that handoff before releasing in its host.
+            _pressedPointer?.Capture(null);
+        }
         protected override void OnModelChanged(AvaloniaPropertyChangedEventArgs e)
         {
             Models.Add(e.NewValue);
             if (!SuppressModelHook) base.OnModelChanged(e);
         }
-        protected override void OnMouseLeftButtonDown(PointerPressedEventArgs e) { Presses++; base.OnMouseLeftButtonDown(e); }
+        protected override void OnMouseLeftButtonDown(PointerPressedEventArgs e) { _pressedPointer = e.Pointer; Presses++; base.OnMouseLeftButtonDown(e); }
         protected override void OnMouseLeftButtonUp(PointerReleasedEventArgs e) { Releases++; base.OnMouseLeftButtonUp(e); }
         protected override void OnMouseLeave(PointerEventArgs e) { Exits++; base.OnMouseLeave(e); }
     }

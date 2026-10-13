@@ -28,7 +28,7 @@ internal static class DockHelpers
             return DockSettings.ResolveFloatingWindowHostMode();
         }
 
-        var dockControl = visual as DockControl ?? visual.FindAncestorOfType<DockControl>();
+        var dockControl = ResolveDockControl(visual);
         var root = dockControl?.Layout as IRootDock;
         return DockSettings.ResolveFloatingWindowHostMode(root);
     }
@@ -122,9 +122,9 @@ internal static class DockHelpers
         }
     }
 
-    public static DockControl? ResolveDockControl(Control control)
+    public static DockControl? ResolveDockControl(Visual? control)
     {
-        if (control.FindAncestorOfType<DockControl>() is { } dockControl)
+        if ((control as DockControl ?? control?.FindAncestorOfType<DockControl>()) is { } dockControl)
         {
             return dockControl;
         }
@@ -139,6 +139,18 @@ internal static class DockHelpers
         }
 
         return null;
+    }
+
+    public static IEnumerable<Visual> EnumerateDockVisuals(DockControl host)
+    {
+        foreach (var visual in host.GetVisualDescendants()) yield return visual;
+        foreach (var surface in host.EnumerateExternalDockSurfaceControls())
+        {
+            if (host.IsVisualAncestorOf(surface) || !surface.IsEffectivelyVisible
+                || surface.GetVisualRoot() is null) continue;
+            yield return surface;
+            foreach (var visual in surface.GetVisualDescendants()) yield return visual;
+        }
     }
 
     public static Control? GetControl(Visual? input, Point point, StyledProperty<bool> property)
@@ -217,18 +229,14 @@ internal static class DockHelpers
 
     public static Control? GetControlIncludingExternal(DockControl dockControl, Point point, StyledProperty<bool> property)
     {
-        var localHit = GetControl(dockControl, point, property);
-        if (localHit is not null)
-        {
-            return localHit;
-        }
-
-        return GetExternalControl(dockControl, point, property);
+        // A registered child/native surface can cover content in the owning root.
+        // Hit it first so a drop cannot pass through to the underlying dock pane.
+        return GetExternalControl(dockControl, point, property) ?? GetControl(dockControl, point, property);
     }
 
     public static Control? GetExternalControl(DockControl dockControl, Point point, StyledProperty<bool> property)
     {
-        if (!dockControl.IsEffectivelyVisible || dockControl.GetVisualRoot() is not Visual visualRoot)
+        if (!dockControl.IsEffectivelyVisible || dockControl.GetVisualRoot() is null)
         {
             return null;
         }
@@ -238,8 +246,7 @@ internal static class DockHelpers
         foreach (var externalRoot in dockControl.EnumerateExternalDockSurfaceControls())
         {
             if (!externalRoot.IsEffectivelyVisible
-                || externalRoot.GetVisualRoot() is not { } externalRootVisual
-                || !ReferenceEquals(externalRootVisual, visualRoot))
+                || externalRoot.GetVisualRoot() is null)
             {
                 continue;
             }

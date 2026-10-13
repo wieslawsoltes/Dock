@@ -95,7 +95,9 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             }
         }
 
-        if (TopLevel.GetTopLevel(visual) is not Window root)
+        var root = TopLevel.GetTopLevel(visual) as Window
+            ?? TopLevel.GetTopLevel(DockHelpers.ResolveDockControl(visual)) as Window;
+        if (root is null)
         {
             return;
         }
@@ -120,22 +122,23 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         if (_floatingAdornedVisual is not { } visual) return;
         if (_managedLayer is { } layer)
         {
-            var bounds = new Rect(visual.TranslatePoint(default, layer) ?? default, visual.Bounds.Size);
+            var bounds = new Rect(visual.TranslatePoint(default, layer) ?? layer.PointToClient(visual.PointToScreen(default)), visual.Bounds.Size);
             layer.ShowOverlay(OverlayKey, _adorner, bounds, true);
             return;
         }
         if (_window is null) return;
-        var viewport = visual as DockControl ?? visual.FindAncestorOfType<DockControl>() ?? visual;
-        var origin = visual.TranslatePoint(default, viewport) ?? default;
+        var viewport = DockHelpers.ResolveDockControl(visual) ?? visual;
+        var origin = visual.TranslatePoint(default, viewport) ?? viewport.PointToClient(visual.PointToScreen(default));
         // The proposed pane can extend outside the old target after source collapse.
         // Keep a full docking viewport as the native surface while the selectors
         // retain their position and size over the actual target.
-        _window.Position = viewport.PointToScreen(default);
-        _window.Width = viewport.Bounds.Width;
-        _window.Height = viewport.Bounds.Height;
+        var extent = new Rect(viewport.Bounds.Size).Union(new Rect(origin, visual.Bounds.Size));
+        _window.Position = viewport.PointToScreen(extent.Position);
+        _window.Width = extent.Width;
+        _window.Height = extent.Height;
         _adorner.Width = visual.Bounds.Width;
         _adorner.Height = visual.Bounds.Height;
-        _adorner.Margin = new Thickness(origin.X, origin.Y, 0, 0);
+        _adorner.Margin = new Thickness(origin.X - extent.X, origin.Y - extent.Y, 0, 0);
     }
 
     private void AddRegularAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)

@@ -146,8 +146,12 @@ public class AutoHideNativeHostTests
         owner.Styles.Add(new AvalonDockTheme());
         owner.Content = manager;
         owner.Prepare();
+        Update();
         tool.IsSelected = true;
         Update();
+        Assert.Same(tool, manager.AutoHideWindow?.Model);
+        Assert.NotNull(manager.AutoHideWindow?.Content);
+        Assert.Same(owner, TopLevel.GetTopLevel(manager.AutoHideWindow!));
         Assert.NotEmpty(platform.Embedded);
         PinnedDockControl[] pinnedHosts = manager.GetVisualDescendants().OfType<PinnedDockControl>().ToArray();
         Assert.NotEmpty(pinnedHosts);
@@ -194,7 +198,10 @@ public class AutoHideNativeHostTests
         private int _nextHandle = 100;
         internal List<RecordingTopLevel> Embedded { get; } = new();
         internal RecordingNativeHost Native { get; } = new();
-        internal RecordingTopLevel CreateOwner() => new(inner.CreateWindow(), new IntPtr(++_nextHandle), Native);
+        internal RecordingTopLevel CreateOwner() => new(inner.CreateWindow(), new IntPtr(++_nextHandle), Native,
+            // The recording native backend supports independent popup surfaces. Headless
+            // normally returns null to force overlays, but its window also implements IPopupImpl.
+            () => (IPopupImpl)inner.CreateWindow());
         public IWindowImpl CreateWindow() => inner.CreateWindow();
         public IWindowImpl CreateEmbeddableWindow() => throw new NotSupportedException();
         public ITopLevelImpl CreateEmbeddableTopLevel()
@@ -235,7 +242,7 @@ public class AutoHideNativeHostTests
         }
     }
 
-    private sealed class RecordingTopLevel(ITopLevelImpl inner, IntPtr handle, INativeControlHostImpl? native = null) : ITopLevelImpl
+    private sealed class RecordingTopLevel(ITopLevelImpl inner, IntPtr handle, INativeControlHostImpl? native = null, Func<IPopupImpl>? createPopup = null) : ITopLevelImpl
     {
         private Size _size = new(400, 300);
         internal int Disposals { get; private set; }
@@ -257,7 +264,7 @@ public class AutoHideNativeHostTests
         public void SetCursor(ICursorImpl? cursor) => inner.SetCursor(cursor);
         public Action? Closed { get => inner.Closed; set => inner.Closed = value; }
         public Action? LostFocus { get => inner.LostFocus; set => inner.LostFocus = value; }
-        public IPopupImpl? CreatePopup() => inner.CreatePopup();
+        public IPopupImpl? CreatePopup() => createPopup?.Invoke() ?? inner.CreatePopup();
         public void SetTransparencyLevelHint(IReadOnlyList<WindowTransparencyLevel> levels) => inner.SetTransparencyLevelHint(levels);
         public WindowTransparencyLevel TransparencyLevel => inner.TransparencyLevel;
         public AcrylicPlatformCompensationLevels AcrylicCompensationLevels => inner.AcrylicCompensationLevels;

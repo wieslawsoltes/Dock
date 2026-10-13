@@ -36,6 +36,7 @@ using ReactiveUI.Reactive;
 
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
+PackageConsumer.RootUpdatedProbe.Verify();
 AssertLayoutLifecycle();
 AssertLayoutParentPolicies();
 AssertPaneSelectionPolicies();

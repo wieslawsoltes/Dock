@@ -336,6 +336,13 @@ notifies the current root after property observers finish. A reentrant observer
 can change that destination. Parent transitions notify `Parent` without an
 additional `Root` property notification.
 
+`Updated` reports completed parent changes, rather than every collection edit.
+Reordering tabs or floating windows and propagating group-tree notifications do
+not raise it. Replacing a root panel or floating child reports the incoming
+child's attachment once; removing a floating child whose public parent is
+retained does not add an event. Native commands and deferred container cleanup
+use internal structure notifications for these mutations.
+
 The `Root` getter walks the current parent chain. An unparented `LayoutRoot.Root`
 is null; `GetRoot()` also considers the element itself and returns that root.
 Membership hooks compare against the root recorded after the element's last
@@ -3149,7 +3156,8 @@ flowchart TB
         Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
         Focus["Active content and document history<br/>Across native roots"]
         ContentHooks["Content state and close overrides"]
-        TreeEvents["Parent and root hooks<br/>Layout membership events"]
+        TreeEvents["Parent and root hooks<br/>Layout membership and Updated events"]
+        Structure["Internal structure notifications<br/>Command refresh and item cleanup"]
         Sizing["Pane dimensions and splitter settings<br/>Grid definitions and native proportions"]
         Lifecycle["Floating hosts, templates, and close/hide lifecycle"]
         Events["Operation notifications<br/>Public layout source and routed events"]
@@ -3172,6 +3180,8 @@ flowchart TB
     GridControls --> PaneControls
     GridControls -->|DockableControlTracker and IProportionalSplitterHost| Controls
     GridControls --> Controls
+    Bridge --> Structure
+    Structure --> Items
     Manager --> PaneControls
     Manager -->|ShowDockablePreviewOnDrag| DragPreview
     Controls --> DragPreview

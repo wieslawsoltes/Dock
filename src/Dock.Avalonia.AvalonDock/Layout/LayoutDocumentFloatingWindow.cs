@@ -130,6 +130,6 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
         RefreshBounds();
         RaisePropertyChanged(nameof(RootDocument));
         RootDocumentChanged?.Invoke(this, EventArgs.Empty);
-        (Root as LayoutRoot)?.NotifyUpdated();
+        (Root as LayoutRoot)?.NotifyStructureChanged();
     }
 }

@@ -138,7 +138,7 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
     {
         RefreshBounds();
         NotifyPaneState();
-        (Root as LayoutRoot)?.NotifyUpdated();
+        (Root as LayoutRoot)?.NotifyStructureChanged();
     }
     private void SynchronizePanel()
     {
@@ -168,7 +168,7 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
         RaisePropertyChanged(nameof(Children));
         RaisePropertyChanged(nameof(ChildrenCount));
         ComputeVisibility();
-        (Root as LayoutRoot)?.NotifyUpdated();
+        (Root as LayoutRoot)?.NotifyStructureChanged();
     }
     private void NotifyPaneState()
     {

@@ -41,7 +41,7 @@ public abstract class LayoutGroupBase : LayoutElement
     {
         OnChildrenTreeChanged(change);
         if (Parent is LayoutGroupBase parent) parent.NotifyChildrenTreeChanged(ChildrenTreeChange.TreeChanged);
-        if (Root is LayoutRoot root) root.NotifyUpdated();
+        if (Root is LayoutRoot root) root.NotifyStructureChanged();
     }
     /// <summary>Raises the tree notification.</summary>
     protected virtual void OnChildrenTreeChanged(ChildrenTreeChange change) =>

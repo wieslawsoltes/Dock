@@ -141,7 +141,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
             DockFactory.InitDockable(value.DockModel, root);
             root.ActiveDockable = value.DockModel;
             RaisePropertyChanged();
-            NotifyUpdated();
+            NotifyStructureChanged();
         }
     }
     /// <inheritdoc/>
@@ -261,8 +261,13 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     public void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadRoot(this, reader);
     /// <summary>Writes the layout hierarchy inside the caller's XML element.</summary>
     public void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
-    /// <summary>Occurs when the layout tree changes.</summary>
+    /// <summary>Occurs after an element's parent change completes within this layout.</summary>
+    /// <remarks>Reordering children and propagating group-tree notifications do not raise this event.
+    /// The root is resolved after the element's parent property observers return.</remarks>
     public event EventHandler? Updated;
+    // Native presentation also needs refreshes for mutations that preserve
+    // public parents, including reordering and removing a floating child.
+    internal event EventHandler? StructureChanged;
     /// <summary>Occurs when a parent transition attaches an element or subtree to this layout.</summary>
     public event EventHandler<LayoutElementEventArgs>? ElementAdded;
     /// <summary>Occurs when a parent transition removes an element or subtree from this layout.</summary>
@@ -274,6 +279,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         ElementRemoved?.Invoke(this, new LayoutElementEventArgs(element));
     }
     internal void NotifyUpdated() => Updated?.Invoke(this, EventArgs.Empty);
+    internal void NotifyStructureChanged() => StructureChanged?.Invoke(this, EventArgs.Empty);
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         base.OnModelPropertyChanged(sender, e);

@@ -258,6 +258,10 @@ Moving an ancestor does not update each child's record. A failing parent hook
 keeps the earlier record; a failing root hook retains the newly recorded root.
 Parent transitions raise `Parent` notifications without an additional `Root`
 property notification, and `Updated` uses the current root after observers run.
+Reordering children, propagating group-tree notifications, and removing a
+floating child whose public parent is retained do not raise `Updated`.
+Internal structure notifications keep native commands and container cleanup
+current without adding public root events.
 
 `Parent` accepts application-defined `ILayoutContainer` objects without assigning
 a native owner. A custom `ILayoutRoot` reaches `OnRootChanged`; the default hook
@@ -1687,7 +1691,8 @@ flowchart TB
     Selection["Pane selection and removal fallback<br/>Native factory focus policies"]
     Focus["Active content and document history<br/>Across native roots"]
     ContentHooks["Content state and close overrides"]
-    TreeEvents["Parent and root hooks<br/>Layout membership events"]
+    TreeEvents["Parent and root hooks<br/>Layout membership and Updated events"]
+    Structure["Internal structure notifications<br/>Command refresh and item cleanup"]
     Events["Operation notifications<br/>Public layout source and routed events"]
     Hosts["Floating control API<br/>Typed and grouped hosts, deferred creation, and notifications"]
     Sizing["Pixel/Auto/star lengths and minimums<br/>Grid definitions and native proportions"]
@@ -1704,6 +1709,8 @@ flowchart TB
     GridControls --> Tracking
     Tracking --> Models
     GridControls --> View
+    Bridge --> Structure
+    Structure --> Items
     Api --> PaneControls
     Api -->|ShowDockablePreviewOnDrag| DragPreview
     Factory --> DragPreview

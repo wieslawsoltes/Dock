@@ -47,7 +47,7 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
             }
         }
         finally { _syncing = false; }
-        _owner.NotifyUpdated();
+        _owner.NotifyStructureChanged();
     }
     protected override void InsertItem(int index, LayoutFloatingWindow item)
     {
@@ -101,6 +101,6 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
             base.MoveItem(oldIndex, newIndex);
         }
         finally { _syncing = false; }
-        _owner.NotifyUpdated();
+        _owner.NotifyStructureChanged();
     }
 }

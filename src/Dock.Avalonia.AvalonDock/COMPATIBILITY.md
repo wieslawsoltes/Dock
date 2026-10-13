@@ -219,7 +219,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   continue to raise `CanExecuteChanged`. Local binding expressions to current
   defaults are cleared; raw observable subscriptions retain Avalonia ownership
   (use compiled bindings or `ToBinding()` for expression cleanup).
-- The consolidated adapter suite passes all 3,475 cases, including 39 parent/command/focus cases, 23 side-lifetime and 37 root-property cases and root replacement cancellation, 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
+- The consolidated adapter suite passes all 3,501 cases, including 26 root-update cases, 39 parent/command/focus cases, 23 side-lifetime and 37 root-property cases and root replacement cancellation, 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
   reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
@@ -1463,6 +1463,23 @@ earlier run reported manager retention in
 That case passed three isolated runs and the complete rerun without a code
 change; the intermittent result is retained in the validation evidence.
 
+## Root update notifications
+
+The public `Updated` event is raised only by completed parent transitions,
+following the pinned source's single call site. Group-tree propagation,
+collection reorder/removal, and floating child removal do not add root events.
+An incoming root panel or floating child reports its parent attachment once,
+before the enclosing property notification. Reentrant tree observers can move
+the group; only that actual parent transition reports the new root.
+
+Native structure notifications are internal and independently refresh commands
+and deferred item cleanup. This includes floating children that retain their
+public parents and subclasses that suppress public property notifications.
+Headless and external package probes cover the public event and native behavior.
+The consolidated run passes all 3,501 adapter and 30 rendering cases, including
+26 focused root-update cases. All 11 new external checks reproduce the
+extra notifications in the preceding `d6694eaf9` packages.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering
@@ -1494,8 +1511,7 @@ change; the intermittent result is retained in the validation evidence.
   interface implementation behavior. The declaration review maps counterparts
   without establishing full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
-  Review the extra root `Updated` notifications currently emitted by group-tree
-  propagation; the upstream group base only propagates tree notifications.
+  Root `Updated` dispatch has the parent/structure separation audit above.
   Direct parent assignment, root history, application-defined parent contracts,
   and root-slot setters have the targeted audits recorded above.
   Tool command/binding inheritance now has explicit overrides and focused

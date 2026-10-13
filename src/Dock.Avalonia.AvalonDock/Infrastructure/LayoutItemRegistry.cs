@@ -90,6 +90,7 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
         if (_root is not null)
         {
             _root.Updated -= RootUpdated;
+            _root.StructureChanged -= RootStructureChanged;
         }
         foreach (LayoutElement element in _observed) element.PropertyChanged -= ModelChanged;
         _observed.Clear();
@@ -106,6 +107,7 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
     {
         _root = root;
         root.Updated += RootUpdated;
+        root.StructureChanged += RootStructureChanged;
         RefreshStyles();
         Reconcile();
     }
@@ -239,6 +241,12 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
     private void RootUpdated(object? sender, EventArgs e)
     {
         QueueReconcile();
+    }
+
+    private void RootStructureChanged(object? sender, EventArgs e)
+    {
+        QueueReconcile();
+        RefreshCommands();
     }
 
     private void ModelChanged(object? sender, PropertyChangedEventArgs e)

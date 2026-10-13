@@ -94,14 +94,14 @@ public class LayoutGroupFloatingWindow : LayoutFloatingWindow, ILayoutGroup, ILa
         RaisePropertyChanged(nameof(ChildrenCount));
         RaisePropertyChanged(nameof(IsValid));
         ChildrenCollectionChanged?.Invoke(this, EventArgs.Empty);
-        (Root as LayoutRoot)?.NotifyUpdated();
+        (Root as LayoutRoot)?.NotifyStructureChanged();
     }
 
     private void TreeChanged(object? sender, ChildrenTreeChangedEventArgs args)
     {
         RefreshBounds();
         ComputeVisibility();
-        (Root as LayoutRoot)?.NotifyUpdated();
+        (Root as LayoutRoot)?.NotifyStructureChanged();
     }
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs args)

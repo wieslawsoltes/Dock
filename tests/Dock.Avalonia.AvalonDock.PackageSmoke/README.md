@@ -1,5 +1,11 @@
 # NuGet consumer smoke test
 
+Root-update probes distinguish completed parent changes from group reordering,
+floating collection mutations, and floating child replacement/removal. External
+subclasses exercise protected tree hooks and suppress property notifications;
+native container cleanup and tab-group commands still refresh without extra
+public `Updated` events.
+
 Content-state probes compare 68 identifier and 88 activation-hook scenarios with
 the original WPF observations. They cover named-control identifiers, null/empty
 values, equal replacement objects, container inputs, bound identifiers, nested

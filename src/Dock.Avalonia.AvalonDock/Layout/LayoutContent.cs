@@ -60,6 +60,9 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private IDockingWindowState State => (IDockingWindowState)DockModel;
 
     /// <summary>Gets or sets the tab title; initially null.</summary>
+    /// <remarks>This native-backed property uses Avalonia binding lifetime rules. Assigning a value or
+    /// using typed ClearValue retains an existing binding; dispose that binding to replace it permanently.
+    /// Avalonia's untyped ClearValue overload does not reset direct properties.</remarks>
     public string Title
     {
         get => DockModel.Title;
@@ -72,7 +75,9 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
         }
     }
     /// <summary>Gets or sets the identifier used for persistence and active-content lookup; initially null.</summary>
-    /// <remarks>A named control assigned to <see cref="Content"/> supplies an identifier when this value is null.</remarks>
+    /// <remarks>A named control assigned to <see cref="Content"/> supplies an identifier when this value is null.
+    /// Assigning a value or using typed ClearValue retains an existing Avalonia binding; dispose the binding to replace it permanently.
+    /// Avalonia's untyped ClearValue overload does not reset direct properties.</remarks>
     public string? ContentId { get => DockModel.Id; set => DockModel.Id = value!; }
     /// <summary>Gets or sets the document or tool content.</summary>
     [Content]

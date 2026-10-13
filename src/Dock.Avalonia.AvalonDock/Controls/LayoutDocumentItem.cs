@@ -22,14 +22,18 @@ public class LayoutDocumentItem : LayoutItem
     /// <summary>Forwards a change to the document description.</summary>
     protected virtual void OnDescriptionChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!IsSynchronizing && LayoutElement is LayoutDocument document) document.Description = Description;
+        if (!IsSynchronizing && LayoutElement is LayoutDocument document) document.Description = (string?)e.NewValue;
     }
 
     /// <inheritdoc/>
     protected override void OnVisibilityChanged()
     {
+        if (LayoutElement is LayoutDocument { Root: not null } document)
+        {
+            document.IsVisible = IsVisible;
+            (document.Parent as LayoutDocumentPane)?.ComputeVisibility();
+        }
         base.OnVisibilityChanged();
-        SynchronizeModel();
     }
 
     /// <inheritdoc/>

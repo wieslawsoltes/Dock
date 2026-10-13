@@ -293,6 +293,15 @@ to it forward the value, including null, to the layout content. Model changes do
 not overwrite it. Applications can bind the property explicitly in their
 container theme when it should track a ViewModel identifier.
 
+`LayoutContent.Title` and `ContentId` remain backed by the native Dock model.
+Their compiled bindings default to one-way. CLR assignments, `SetValue`,
+`SetCurrentValue`, and typed `ClearValue` retain the binding; two-way bindings
+also update their source. Dispose the binding before permanently replacing it.
+For clearing, pass the typed property directly, for example
+`document.ClearValue(LayoutContent.TitleProperty)`: Avalonia's untyped
+`ClearValue(AvaloniaProperty)` overload does not reset direct properties.
+Explicit coercion does not introduce WPF dependency-property metadata.
+
 `OnClosing(CancelEventArgs)` and `OnClosed()` provide the corresponding close
 overrides. Call their base implementations to raise `Closing` and `Closed`.
 For example, an application model can veto a close until its workspace command
@@ -711,6 +720,18 @@ var item = manager.GetLayoutItemFromModel(document);
 // item.CloseCommand.CanExecute(null) is false.
 document.Close(); // Still raises cancelable closing notifications.
 ```
+
+Container metadata callbacks preserve a null title and forward the supplied
+changed value for title, identifier, selection, activation, capabilities, and
+text description. The icon callback reads the current icon, as upstream does.
+
+Setting a document container's `IsVisible` to false updates the document flag
+and its pane's computed visibility before requesting closure. Cancellation or
+an exception retains that requested visibility and the document; set the
+container visible again before retrying. Setting a tool container invisible
+maps to WPF's hidden state: it calls `Hide(false)`, bypassing `CanHide` and the
+cancelable `Hiding` event, while retaining `Hidden` and normal restoration.
+Use the hide command or `Hide()` when cancellation is required.
 
 These explicit methods do not temporarily enable capabilities. Default item
 command queries check their flags and native Dock policies; close-command queries

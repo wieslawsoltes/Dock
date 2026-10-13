@@ -1631,6 +1631,34 @@ skipped cases. CI consumer restoration now maps the entire `Dock.*` package
 family to the freshly packed local feed, so a version bump does not depend on
 unchanged Dock dependencies already having been published to NuGet.org.
 
+## Container metadata and binding contracts
+
+The final item-metadata review corrects null title forwarding and the supplied
+callback values for titles, identifiers, selection, activation, capabilities,
+and document descriptions. Icon callbacks intentionally read the current icon.
+Document container visibility updates its model and pane before closure; a
+cancellation or callback failure retains the requested visibility. Tool
+container visibility maps false to the upstream hidden state and calls
+`Hide(false)`, independently of `CanHide` and without `Hiding` cancellation.
+The callback guard is released when `Hidden` fails so restoration can be retried.
+
+`ItemMetadataCallbackTests` adds 24 Headless cases for null/empty titles, property
+clearing, document/pane state inside manager and model closing callbacks,
+cancellation, exceptions, restoration, and tool capability/cancellation gates.
+The external consumer adds 18 checks; nine fail against the preceding
+`198fe6b12` packages.
+
+The `Title` and `ContentId` registration review retains their native-backed
+direct properties. Layout models are not styled elements, and changing the
+registration alone cannot reproduce WPF binding ownership. Twelve compiled
+binding cases cover document/tool default, one-way, and two-way bindings across
+CLR and property assignments, current values, clearing, native model updates,
+coercion, and disposal. Avalonia retains these bindings; typed `ClearValue`
+resets the value, whereas the inherited untyped overload does not reset direct
+properties. These are explicit framework contracts, not claims of WPF parity.
+No reflection or property-store inspection is introduced.
+The consolidated adapter suite passes all 3,772 cases with none skipped.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering

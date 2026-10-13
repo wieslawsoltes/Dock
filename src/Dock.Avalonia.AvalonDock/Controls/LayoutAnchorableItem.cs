@@ -10,6 +10,7 @@ namespace AvalonDock.Controls;
 public class LayoutAnchorableItem : LayoutItem
 {
     private LayoutItemCommands? _toolCommands;
+    private bool _changingVisibility;
     private LayoutItemCommands ToolCommands => _toolCommands ??= new(this,
         HideCommandProperty, AutoHideCommandProperty, DockCommandProperty);
 
@@ -104,16 +105,20 @@ public class LayoutAnchorableItem : LayoutItem
     /// <summary>Forwards a change to the tool hide capability.</summary>
     protected virtual void OnCanHideChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!IsSynchronizing && LayoutElement is LayoutAnchorable tool) tool.CanHide = CanHide;
+        if (!IsSynchronizing && LayoutElement is LayoutAnchorable tool) tool.CanHide = (bool)e.NewValue!;
     }
 
     /// <inheritdoc/>
     protected override void OnVisibilityChanged()
     {
-        if (IsSynchronizing || !IsAttached || LayoutElement is not LayoutAnchorable tool) return;
-        if (IsVisible && tool.IsHidden) tool.Show();
-        else if (!IsVisible && tool.CanHide) tool.Hide();
-        SynchronizeModel();
+        if (IsSynchronizing || _changingVisibility || LayoutElement is not LayoutAnchorable { Root: not null } tool) return;
+        _changingVisibility = true;
+        try
+        {
+            if (IsVisible) tool.Show();
+            else tool.Hide(cancelable: false);
+        }
+        finally { _changingVisibility = false; }
     }
 
     /// <inheritdoc/>

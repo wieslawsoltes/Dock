@@ -357,17 +357,17 @@ public abstract class LayoutItem : Control
     /// <summary>Applies a change to the Avalonia visibility property.</summary>
     protected virtual void OnVisibilityChanged()
     {
-        if (!_synchronizing && LayoutElement is not null && !IsVisible) Close();
+        if (!_synchronizing && LayoutElement is not null && !IsVisible) LayoutElement.Close();
     }
-    /// <summary>Forwards a change to the tab title.</summary>
+    /// <summary>Forwards the supplied title value, including null, to the attached content.</summary>
     protected virtual void OnTitleChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!_synchronizing && LayoutElement is { } content) content.Title = Title ?? string.Empty;
+        if (!_synchronizing && LayoutElement is { } content) content.Title = (string)e.NewValue!;
     }
     /// <summary>Forwards a change to the persistence identifier.</summary>
     protected virtual void OnContentIdChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!_synchronizing && LayoutElement is { } content) content.ContentId = ContentId;
+        if (!_synchronizing && LayoutElement is { } content) content.ContentId = (string?)e.NewValue;
     }
     /// <summary>Forwards a change to the tab icon.</summary>
     protected virtual void OnIconSourceChanged(AvaloniaPropertyChangedEventArgs e)
@@ -377,22 +377,22 @@ public abstract class LayoutItem : Control
     /// <summary>Forwards a change to the pane selection state.</summary>
     protected virtual void OnIsSelectedChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!_synchronizing && LayoutElement is { } content) content.IsSelected = IsSelected;
+        if (!_synchronizing && LayoutElement is { } content) content.IsSelected = (bool)e.NewValue!;
     }
     /// <summary>Forwards a change to the active content state.</summary>
     protected virtual void OnIsActiveChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!_synchronizing && LayoutElement is { } content) content.IsActive = IsActive;
+        if (!_synchronizing && LayoutElement is { } content) content.IsActive = (bool)e.NewValue!;
     }
     /// <summary>Forwards a change to the close capability.</summary>
     protected virtual void OnCanCloseChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!_synchronizing && LayoutElement is { } content) content.CanClose = CanClose;
+        if (!_synchronizing && LayoutElement is { } content) content.CanClose = (bool)e.NewValue!;
     }
     /// <summary>Forwards a change to the floating capability.</summary>
     protected virtual void OnCanFloatChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        if (!_synchronizing && LayoutElement is { } content) content.CanFloat = CanFloat;
+        if (!_synchronizing && LayoutElement is { } content) content.CanFloat = (bool)e.NewValue!;
     }
     /// <summary>Called when the command for closing this content changes.</summary>
     protected virtual void OnCloseCommandChanged(AvaloniaPropertyChangedEventArgs e) { }

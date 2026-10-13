@@ -136,6 +136,15 @@ control or assigning the same content again does not recompute the identifier.
 to it forward the value, including null, to the model. Bind that property explicitly
 when the container should track an application identifier.
 
+`LayoutContent.Title` and `ContentId` remain backed by the native Dock model.
+Their compiled bindings default to one-way. CLR assignments, `SetValue`,
+`SetCurrentValue`, and typed `ClearValue` retain the binding; two-way bindings
+also update their source. Dispose the binding before permanently replacing it.
+For clearing, pass the typed property directly, for example
+`document.ClearValue(LayoutContent.TitleProperty)`: Avalonia's untyped
+`ClearValue(AvaloniaProperty)` overload does not reset direct properties.
+Explicit coercion does not introduce WPF dependency-property metadata.
+
 Setting `IsActive=false` retains the root's active-content reference and pane
 selection. Activation hooks receive the previous and requested values even when
 a callback redirects activation or clears the flag. Nested assignments publish
@@ -317,6 +326,18 @@ LayoutItem? item = manager.GetLayoutItemFromModel(document);
 if (item?.FloatCommand is { } command && command.CanExecute(null))
     command.Execute(null);
 ```
+
+Container metadata callbacks preserve a null title and forward the supplied
+changed value for title, identifier, selection, activation, capabilities, and
+text description. The icon callback reads the current icon, as upstream does.
+
+Setting a document container's `IsVisible` to false updates the document flag
+and its pane's computed visibility before requesting closure. Cancellation or
+an exception retains that requested visibility and the document; set the
+container visible again before retrying. Setting a tool container invisible
+maps to WPF's hidden state: it calls `Hide(false)`, bypassing `CanHide` and the
+cancelable `Hiding` event, while retaining `Hidden` and normal restoration.
+Use the hide command or `Hide()` when cancellation is required.
 
 Direct `Execute` invokes the action even when `CanExecute` is false, matching
 AvalonDock. Item commands ignore the caller's parameter and propagate original

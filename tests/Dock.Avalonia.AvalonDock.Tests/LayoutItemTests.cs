@@ -319,7 +319,7 @@ public class LayoutItemTests
     }
 
     [AvaloniaFact]
-    public void Visibility_Changes_Honor_Close_And_Hide_Cancellation()
+    public void Visibility_Changes_Retain_Canceled_Documents_And_Hide_Tools_Without_Cancellation()
     {
         LayoutDocument document = new();
         LayoutAnchorable tool = new();
@@ -331,14 +331,15 @@ public class LayoutItemTests
         tool.Hiding += veto;
         documentItem.IsVisible = false;
         toolItem.IsVisible = false;
-        Assert.True(documentItem.IsVisible);
-        Assert.True(toolItem.IsVisible);
+        Assert.False(documentItem.IsVisible);
+        Assert.False(document.IsVisible);
+        Assert.False(toolItem.IsVisible);
         Assert.Same(manager.Layout, document.Root);
-        Assert.True(tool.IsVisible);
+        Assert.True(tool.IsHidden);
         document.Closing -= veto;
         tool.Hiding -= veto;
+        documentItem.IsVisible = true;
         documentItem.IsVisible = false;
-        toolItem.IsVisible = false;
         Dispatcher.UIThread.RunJobs();
         Assert.Null(document.Root);
         Assert.Null(documentItem.LayoutElement);

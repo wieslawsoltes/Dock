@@ -123,8 +123,8 @@ public class FloatingWindowCreationTests
         Assert.False(nested.IsVisible);
         Assert.False(workspace.Tool.IsAutoHidden);
         Assert.Same(workspace.Manager.Layout, workspace.Tool.Root);
-        Assert.DoesNotContain(workspace.Tool, workspace.Manager.Layout.LeftSide.Descendents());
-        Assert.DoesNotContain(workspace.Tool, workspace.Manager.Layout.RightSide.Descendents());
+        Assert.DoesNotContain(workspace.Tool, workspace.Manager.Layout.LeftSide!.Descendents());
+        Assert.DoesNotContain(workspace.Tool, workspace.Manager.Layout.RightSide!.Descendents());
         nested.Show();
         Dispatcher.UIThread.RunJobs();
         Assert.Contains(workspace.Tool.Content, nested.GetVisualDescendants());

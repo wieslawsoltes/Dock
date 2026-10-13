@@ -30,8 +30,8 @@ internal static class LayoutSourcePlacement
             {
                 LayoutPanel original = root.RootPanel;
                 LayoutPanel outer = new() { Orientation = Orientation.Horizontal };
-                root.RootPanel = outer;
                 outer.Children.Add(original);
+                root.RootPanel = outer;
                 LayoutAnchorablePane pane = new() { DockWidth = new GridLength(200) };
                 outer.Children.Add(pane);
                 destination = pane;

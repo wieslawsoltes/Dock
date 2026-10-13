@@ -210,7 +210,7 @@ public class AutoHideResizeTests
             case "escape": workspace.Window.KeyPress(Key.Escape, RawInputModifiers.None, PhysicalKey.Escape, null); break;
             case "capture": workspace.LoseCapture(); break;
             case "detach": workspace.Window.Content = null; break;
-            case "switch": workspace.Manager.Layout.LeftSide.Children[0].Children[1].IsSelected = true; break;
+            case "switch": workspace.Manager.Layout.LeftSide!.Children[0].Children[1].IsSelected = true; break;
             case "layout": workspace.Manager.Layout = new LayoutRoot(); break;
             case "disable": workspace.Splitter.IsResizingEnabled = false; break;
             case "minimum": tool.AutoHideMinWidth = 180; break;
@@ -252,8 +252,8 @@ public class AutoHideResizeTests
             Manager.FlowDirection = rtl ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
             Tool = (side switch
             {
-                AnchorSide.Left => Manager.Layout.LeftSide, AnchorSide.Right => Manager.Layout.RightSide,
-                AnchorSide.Top => Manager.Layout.TopSide, _ => Manager.Layout.BottomSide
+                AnchorSide.Left => Manager.Layout.LeftSide!, AnchorSide.Right => Manager.Layout.RightSide!,
+                AnchorSide.Top => Manager.Layout.TopSide!, _ => Manager.Layout.BottomSide!
             }).Children[0].Children[0];
             Tool.AutoHideWidth = 220;
             Tool.AutoHideHeight = 190;

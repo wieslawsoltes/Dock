@@ -219,7 +219,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   continue to raise `CanExecuteChanged`. Local binding expressions to current
   defaults are cleared; raw observable subscriptions retain Avalonia ownership
   (use compiled bindings or `ToBinding()` for expression cleanup).
-- The consolidated adapter suite passes all 3,375 cases, including 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
+- The consolidated adapter suite passes all 3,413 cases, including 37 root-property cases and root replacement cancellation, 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
   reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
@@ -406,6 +406,14 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   transfer between native hosts during temporary detachment. Tests cover
   ordering, subtree notifications, overrides, rejected assignments, tool
   hide/auto-hide/float cycles, native factory moves, and package consumers.
+- Root panel, side, and manager property assignments publish changing and changed
+  phases. A null panel creates the default document layout; nullable sides update
+  native pinned projections and live manager side controls. Compiled XAML accepts
+  null root slots in both namespaces, and empty side XML sections round-trip.
+  Construction order, lazy child enumeration order, fixed-slot child counts,
+  remove/add replacement notifications, cancellation, and observer failures have
+  focused Headless and external package coverage. The native bridge still detaches
+  replaced side parents; upstream's retained-parent behavior remains open below.
 - Parent-change selection and visibility policies: content deselects while its
   previous parent is still available; initially selected content selects its
   destination pane. Pane and content selection synchronize before a factory is
@@ -1408,6 +1416,13 @@ observations. Interactive desktop validation remains deferred.
 
 ## Open work (not release-complete)
 
+The root-property batch adds 37 property, construction, traversal, XAML, XML,
+replacement, and observer-failure cases, plus a native floating-close cancellation
+case for `LayoutRoot.ReplaceChild`. Thirteen independent consumer probes reproduce
+the earlier `532c692c1` package failures, including compiled null slots in both
+XML namespaces. All 3,413 adapter and 30 rendering cases pass after the changes.
+This audit does not resolve the retained-parent difference listed below.
+
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering
   editor attachment, native pointer resizing and release, and editor focus on
   all four edges. Broader platform coverage remains open. WPF `HwndHost`/Win32
@@ -1437,6 +1452,9 @@ observations. Interactive desktop validation remains deferred.
   interface implementation behavior. The declaration review maps counterparts
   without establishing full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
+  Root-side replacement still detaches the former side's parent to release native
+  pinned ownership; upstream retains that parent reference. The public parent
+  contract and native projection lifetime need a separate reconciliation.
   Tool command/binding inheritance now has explicit overrides and focused
   coverage. Document floating-window closure now has an explicit override;
   both typed hosts and their base have the cleanup-order coverage recorded above.

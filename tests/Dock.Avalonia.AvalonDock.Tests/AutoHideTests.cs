@@ -71,13 +71,13 @@ public class AutoHideTests
         LayoutAnchorGroup group = new();
         group.Children.Add(tool);
         LayoutRoot root = new();
-        root.LeftSide.Children.Add(group);
+        root.LeftSide!.Children.Add(group);
         tool.ToggleAutoHide();
         Assert.False(tool.IsAutoHidden);
         LayoutAnchorablePane pane = Assert.IsType<LayoutAnchorablePane>(tool.Parent);
         Assert.Same(root, pane.Root);
         Assert.Contains(pane, root.Descendents());
-        Assert.Empty(root.LeftSide.Children);
+        Assert.Empty(root.LeftSide!.Children);
     }
 
     [AvaloniaFact]
@@ -87,7 +87,7 @@ public class AutoHideTests
         LayoutAnchorGroup group = new();
         LayoutAnchorable first = new() { ContentId = "one" };
         LayoutAnchorable second = new() { ContentId = "two" };
-        root.RightSide.Children.Add(group);
+        root.RightSide!.Children.Add(group);
         group.Children.Add(first);
         group.Children.Add(second);
         group.Children.Move(1, 0);
@@ -98,7 +98,7 @@ public class AutoHideTests
         Assert.Same(second.DockModel, Assert.Single(model.RightPinnedDockables!));
         Tool native = new() { Id = "native", Owner = model, Factory = root.DockFactory };
         model.RightPinnedDockables = root.DockFactory.CreateList<IDockable>(native);
-        LayoutAnchorable wrapper = Assert.Single(Assert.Single(root.RightSide.Children).Children);
+        LayoutAnchorable wrapper = Assert.Single(Assert.Single(root.RightSide!.Children).Children);
         Assert.Same(native, wrapper.DockModel);
         Assert.Same(root, wrapper.Root);
     }
@@ -107,7 +107,7 @@ public class AutoHideTests
     public void Replacing_A_Side_Detaches_The_Old_Projection()
     {
         LayoutRoot root = new();
-        LayoutAnchorSide old = root.TopSide;
+        LayoutAnchorSide old = root.TopSide!;
         LayoutAnchorGroup group = new();
         LayoutAnchorable tool = new();
         group.Children.Add(tool);
@@ -133,13 +133,13 @@ public class AutoHideTests
         firstGroup.Children.Add(first);
         firstGroup.Children.Add(second);
         secondGroup.Children.Add(third);
-        root.LeftSide.Children.Add(firstGroup);
-        root.LeftSide.Children.Add(secondGroup);
+        root.LeftSide!.Children.Add(firstGroup);
+        root.LeftSide!.Children.Add(secondGroup);
         AvaloniaList<IDockable> pinned = (AvaloniaList<IDockable>)((RootDock)root.DockModel).LeftPinnedDockables!;
         pinned.Move(1, 0);
         Assert.Equal(new[] { second, first }, firstGroup.Children);
         pinned.Move(2, 0);
-        Assert.Equal(new[] { secondGroup, firstGroup }, root.LeftSide.Children);
+        Assert.Equal(new[] { secondGroup, firstGroup }, root.LeftSide!.Children);
         Assert.Same(second.DockModel, pinned[1]);
         Assert.Same(firstGroup, second.Parent);
     }
@@ -179,17 +179,17 @@ public class AutoHideTests
         Assert.Equal(AnchorSide.Left, left.GetSide());
         Assert.Equal(AnchorSide.Right, right.GetSide());
         second.ToggleAutoHide();
-        Assert.Same(second, Assert.Single(Assert.Single(root.RightSide.Children).Children));
+        Assert.Same(second, Assert.Single(Assert.Single(root.RightSide!.Children).Children));
         root.RootPanel.Orientation = Orientation.Vertical;
         first.ToggleAutoHide();
-        Assert.Same(first, Assert.Single(Assert.Single(root.TopSide.Children).Children));
+        Assert.Same(first, Assert.Single(Assert.Single(root.TopSide!.Children).Children));
     }
 
     private static LayoutAnchorSide GetSide(LayoutRoot root, AnchorSide side) => side switch
     {
-        AnchorSide.Left => root.LeftSide,
-        AnchorSide.Top => root.TopSide,
-        AnchorSide.Right => root.RightSide,
-        _ => root.BottomSide
+        AnchorSide.Left => root.LeftSide!,
+        AnchorSide.Top => root.TopSide!,
+        AnchorSide.Right => root.RightSide!,
+        _ => root.BottomSide!
     };
 }

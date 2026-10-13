@@ -13,6 +13,12 @@ fallback overrides, insertion indices, return panes in another layout, callback
 ordering, and retained return-location metadata. These use the packed assemblies
 through public APIs and external subclasses.
 
+Root-property probes clear/reset the root panel, clear all four auto-hide sides,
+check constructor/property notification order, traverse root children, and replace
+hidden items through remove/add notifications. A compiled consumer view uses
+`{x:Null}` for root slots in both XML namespaces. Changing-callback exceptions
+are checked before native ownership mutates.
+
 The update-strategy probe replaces a strategy during a source batch, verifies
 that the replacement receives the after callbacks, and redirects a hidden tool
 to a different pane and tab index through `Show()` using the packaged models.

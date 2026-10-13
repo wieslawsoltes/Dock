@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -23,13 +24,13 @@ public interface ILayoutRoot
     /// <summary>Gets the root split panel.</summary>
     LayoutPanel RootPanel { get; }
     /// <summary>Gets the top auto-hide strip.</summary>
-    LayoutAnchorSide TopSide { get; }
+    LayoutAnchorSide? TopSide { get; }
     /// <summary>Gets the left auto-hide strip.</summary>
-    LayoutAnchorSide LeftSide { get; }
+    LayoutAnchorSide? LeftSide { get; }
     /// <summary>Gets the right auto-hide strip.</summary>
-    LayoutAnchorSide RightSide { get; }
+    LayoutAnchorSide? RightSide { get; }
     /// <summary>Gets the bottom auto-hide strip.</summary>
-    LayoutAnchorSide BottomSide { get; }
+    LayoutAnchorSide? BottomSide { get; }
     /// <summary>Gets or sets the active document or tool across docked and floating layouts.</summary>
     LayoutContent? ActiveContent { get; set; }
     /// <summary>Gets the hidden tools.</summary>
@@ -45,10 +46,11 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
 {
     private readonly LayoutChildren<LayoutAnchorable> _hidden;
     private readonly LayoutFloatingWindows _floatingWindows;
-    private LayoutAnchorSide _leftSide = null!;
-    private LayoutAnchorSide _topSide = null!;
-    private LayoutAnchorSide _rightSide = null!;
-    private LayoutAnchorSide _bottomSide = null!;
+    private LayoutAnchorSide? _leftSide;
+    private LayoutAnchorSide? _topSide;
+    private LayoutAnchorSide? _rightSide;
+    private LayoutAnchorSide? _bottomSide;
+    private DockingManager? _manager;
     /// <summary>Creates a layout with an empty document pane.</summary>
     public LayoutRoot() : this(new RootDock { IsCollapsable = false })
     {
@@ -100,9 +102,9 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
                     content.DockingHistory.CompleteHide();
             };
         }
+        RightSide = new LayoutAnchorSide();
         LeftSide = new LayoutAnchorSide();
         TopSide = new LayoutAnchorSide();
-        RightSide = new LayoutAnchorSide();
         BottomSide = new LayoutAnchorSide();
         _floatingWindows = new LayoutFloatingWindows(this);
         Focus = new LayoutActiveContent(this, RaisePropertyChanging, RaisePropertyChanged);
@@ -111,22 +113,25 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     public IFactory DockFactory => DockModel.Factory!;
     internal ILayoutOperationEvents Operations { get; }
     internal LayoutActiveContent Focus { get; }
-    /// <summary>Gets or sets the root split panel.</summary>
+    /// <summary>Gets or sets the root split panel; assigning null creates an empty document layout.</summary>
     [Content]
+    [AllowNull]
     public LayoutPanel RootPanel
     {
         get
         {
             if (((RootDock)DockModel).VisibleDockables is { Count: > 0 } children)
                 return (LayoutPanel)Context.Get(children[0]);
-            throw new InvalidOperationException("The layout does not have a root panel.");
+            return null!;
         }
         set
         {
-            ArgumentNullException.ThrowIfNull(value);
+            VerifyAccess();
             RootDock root = (RootDock)DockModel;
-            if (root.VisibleDockables is { Count: > 0 } old && ReferenceEquals(old[0], value.DockModel)) return;
-            if (root.VisibleDockables is { Count: > 0 } previous) previous[0].Owner = null;
+            if (ReferenceEquals(RootPanel, value)) return;
+            RaisePropertyChanging();
+            if (RootPanel is { } previous && ReferenceEquals(previous.Parent, this)) previous.Parent = null;
+            value ??= new LayoutPanel(new LayoutDocumentPane());
             value.Parent?.RemoveChild(value);
             Context.Adopt(value.Context);
             root.VisibleDockables!.Clear();
@@ -140,24 +145,25 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         }
     }
     /// <inheritdoc/>
-    public DockingManager? Manager { get; internal set; }
-    /// <summary>Gets or sets the left auto-hide strip.</summary>
-    public LayoutAnchorSide LeftSide { get => _leftSide; set => SetSide(ref _leftSide, value, AnchorSide.Left, nameof(LeftSide)); }
-    /// <summary>Gets or sets the top auto-hide strip.</summary>
-    public LayoutAnchorSide TopSide { get => _topSide; set => SetSide(ref _topSide, value, AnchorSide.Top, nameof(TopSide)); }
-    /// <summary>Gets or sets the right auto-hide strip.</summary>
-    public LayoutAnchorSide RightSide { get => _rightSide; set => SetSide(ref _rightSide, value, AnchorSide.Right, nameof(RightSide)); }
-    /// <summary>Gets or sets the bottom auto-hide strip.</summary>
-    public LayoutAnchorSide BottomSide { get => _bottomSide; set => SetSide(ref _bottomSide, value, AnchorSide.Bottom, nameof(BottomSide)); }
+    public DockingManager? Manager { get => _manager; internal set => SetField(ref _manager, value); }
+    /// <summary>Gets or sets the left auto-hide strip; null removes the strip.</summary>
+    public LayoutAnchorSide? LeftSide { get => _leftSide; set => SetSide(ref _leftSide, value, AnchorSide.Left, nameof(LeftSide)); }
+    /// <summary>Gets or sets the top auto-hide strip; null removes the strip.</summary>
+    public LayoutAnchorSide? TopSide { get => _topSide; set => SetSide(ref _topSide, value, AnchorSide.Top, nameof(TopSide)); }
+    /// <summary>Gets or sets the right auto-hide strip; null removes the strip.</summary>
+    public LayoutAnchorSide? RightSide { get => _rightSide; set => SetSide(ref _rightSide, value, AnchorSide.Right, nameof(RightSide)); }
+    /// <summary>Gets or sets the bottom auto-hide strip; null removes the strip.</summary>
+    public LayoutAnchorSide? BottomSide { get => _bottomSide; set => SetSide(ref _bottomSide, value, AnchorSide.Bottom, nameof(BottomSide)); }
 
-    private void SetSide(ref LayoutAnchorSide field, LayoutAnchorSide value, AnchorSide side, string name)
+    private void SetSide(ref LayoutAnchorSide? field, LayoutAnchorSide? value, AnchorSide side, string name)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        VerifyAccess();
         if (ReferenceEquals(field, value)) return;
-        value.Parent?.RemoveChild(value);
+        RaisePropertyChanging(name);
+        value?.Parent?.RemoveChild(value);
         field?.Detach();
         field = value;
-        value.Attach(this, side);
+        value?.Attach(this, side);
         RaisePropertyChanged(name);
         NotifyUpdated();
     }
@@ -178,40 +184,48 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     {
         get
         {
-            yield return RootPanel;
-            yield return TopSide;
-            yield return RightSide;
-            yield return LeftSide;
-            yield return BottomSide;
-            foreach (LayoutFloatingWindow window in FloatingWindows) yield return window;
+            if (RootPanel is { } panel) yield return panel;
+            if (_floatingWindows is not null)
+                foreach (LayoutFloatingWindow window in _floatingWindows) yield return window;
+            if (TopSide is { } top) yield return top;
+            if (RightSide is { } right) yield return right;
+            if (BottomSide is { } bottom) yield return bottom;
+            if (LeftSide is { } left) yield return left;
             foreach (LayoutAnchorable hidden in Hidden) yield return hidden;
         }
     }
-    /// <inheritdoc/>
-    public int ChildrenCount => (((RootDock)DockModel).VisibleDockables?.Count ?? 0) + 4 + Hidden.Count + FloatingWindows.Count;
+    /// <summary>Gets five fixed root slots plus the number of floating windows and hidden tools.</summary>
+    /// <remarks>Null sides are omitted from <see cref="Children"/> but still count as fixed slots.</remarks>
+    public int ChildrenCount => 5 + (_hidden?.Count ?? 0) + (_floatingWindows?.Count ?? 0);
     /// <inheritdoc/>
     public void RemoveChild(ILayoutElement element)
     {
-        if (ReferenceEquals(element, RootPanel)) RootPanel = new LayoutPanel(new LayoutDocumentPane());
-        else if (ReferenceEquals(element, LeftSide)) LeftSide = new LayoutAnchorSide();
-        else if (ReferenceEquals(element, TopSide)) TopSide = new LayoutAnchorSide();
-        else if (ReferenceEquals(element, RightSide)) RightSide = new LayoutAnchorSide();
-        else if (ReferenceEquals(element, BottomSide)) BottomSide = new LayoutAnchorSide();
-        else if (element is LayoutAnchorable hidden) Hidden.Remove(hidden);
+        if (ReferenceEquals(element, RootPanel)) RootPanel = null;
         else if (element is LayoutFloatingWindow window) FloatingWindows.Remove(window);
+        else if (element is LayoutAnchorable hidden) Hidden.Remove(hidden);
+        else if (ReferenceEquals(element, TopSide)) TopSide = null;
+        else if (ReferenceEquals(element, RightSide)) RightSide = null;
+        else if (ReferenceEquals(element, BottomSide)) BottomSide = null;
+        else if (ReferenceEquals(element, LeftSide)) LeftSide = null;
     }
     /// <inheritdoc/>
     public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
     {
         if (ReferenceEquals(oldElement, RootPanel)) RootPanel = (LayoutPanel)newElement;
-        else if (ReferenceEquals(oldElement, LeftSide)) LeftSide = (LayoutAnchorSide)newElement;
+        else if (oldElement is LayoutFloatingWindow window && FloatingWindows.IndexOf(window) is int windowIndex && windowIndex >= 0)
+        {
+            FloatingWindows.RemoveAt(windowIndex);
+            if (!FloatingWindows.Contains(window)) FloatingWindows.Insert(windowIndex, (LayoutFloatingWindow)newElement);
+        }
+        else if (oldElement is LayoutAnchorable hidden && Hidden.IndexOf(hidden) is int index && index >= 0)
+        {
+            Hidden.RemoveAt(index);
+            Hidden.Insert(index, (LayoutAnchorable)newElement);
+        }
         else if (ReferenceEquals(oldElement, TopSide)) TopSide = (LayoutAnchorSide)newElement;
         else if (ReferenceEquals(oldElement, RightSide)) RightSide = (LayoutAnchorSide)newElement;
         else if (ReferenceEquals(oldElement, BottomSide)) BottomSide = (LayoutAnchorSide)newElement;
-        else if (oldElement is LayoutAnchorable hidden && Hidden.IndexOf(hidden) is int index && index >= 0)
-            Hidden[index] = (LayoutAnchorable)newElement;
-        else if (oldElement is LayoutFloatingWindow window && FloatingWindows.IndexOf(window) is int windowIndex && windowIndex >= 0)
-            FloatingWindows[windowIndex] = (LayoutFloatingWindow)newElement;
+        else if (ReferenceEquals(oldElement, LeftSide)) LeftSide = (LayoutAnchorSide)newElement;
     }
     /// <inheritdoc/>
     public void CollectGarbage()

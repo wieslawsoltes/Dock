@@ -175,7 +175,7 @@ public class LayoutXmlContractTests
         LayoutRoot source = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(document)) };
         LayoutAnchorGroup pinned = new();
         pinned.Children.Add(new LayoutAnchorable { ContentId = "pinned" });
-        source.LeftSide.Children.Add(pinned);
+        source.LeftSide!.Children.Add(pinned);
         source.Hidden.Add(new LayoutAnchorable { ContentId = "hidden" });
         source.FloatingWindows.Add(new LayoutDocumentFloatingWindow
         {
@@ -199,7 +199,7 @@ public class LayoutXmlContractTests
         Assert.Null(target.ActiveContent);
         Assert.Null(target.LastFocusedDocument);
         Assert.True(target.Descendents().OfType<LayoutDocument>().Single(item => item.ContentId == "document").IsLastFocusedDocument);
-        Assert.Equal("pinned", Assert.Single(Assert.Single(target.LeftSide.Children).Children).ContentId);
+        Assert.Equal("pinned", Assert.Single(Assert.Single(target.LeftSide!.Children).Children).ContentId);
         Assert.Equal("hidden", Assert.Single(target.Hidden).ContentId);
         Assert.Equal(500, Assert.Single(target.FloatingWindows).DockWindow.Width);
         Assert.All(target.Descendents().OfType<LayoutContent>(), item =>

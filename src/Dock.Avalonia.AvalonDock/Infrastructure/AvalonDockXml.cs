@@ -99,10 +99,10 @@ internal static class AvalonDockXml
         }
     }
 
-    private static void WriteElement(LayoutElement element, XmlWriter writer, string? name = null, bool serialized = false)
+    private static void WriteElement(LayoutElement? element, XmlWriter writer, string? name = null, bool serialized = false)
     {
         if (element is LayoutFloatingWindow window) ValidateFloatingWindow(window);
-        name ??= (writer as LayoutXmlWriter)?.Types?.GetName(element);
+        if (element is not null) name ??= (writer as LayoutXmlWriter)?.Types?.GetName(element);
         name ??= element switch
         {
             LayoutPanel => "LayoutPanel",
@@ -121,7 +121,7 @@ internal static class AvalonDockXml
         };
         if (serialized) writer.WriteStartElement(name, string.Empty);
         else writer.WriteStartElement(name);
-        ((IXmlSerializable)element).WriteXml(writer);
+        if (element is IXmlSerializable serializable) serializable.WriteXml(writer);
         writer.WriteEndElement();
     }
 

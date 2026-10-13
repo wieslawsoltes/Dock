@@ -334,7 +334,7 @@ public class XmlStreamingTests
         : "<LayoutDocument ContentId='" + id + "' FloatingWidth='450' />";
     private static LayoutAnchorSide Side(LayoutRoot root, string name) => name switch
     {
-        "TopSide" => root.TopSide, "RightSide" => root.RightSide, "LeftSide" => root.LeftSide, _ => root.BottomSide
+        "TopSide" => root.TopSide!, "RightSide" => root.RightSide!, "LeftSide" => root.LeftSide!, _ => root.BottomSide!
     };
 
     private sealed class TrackedPane : LayoutDocumentPane

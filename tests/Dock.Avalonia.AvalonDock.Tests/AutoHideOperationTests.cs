@@ -72,7 +72,7 @@ public class AutoHideOperationTests
         // Upstream retains the floating flag while the tool is in an anchor
         // group. It still remembers a floating pane, but belongs to the main strip.
         Assert.True(tool.IsFloating);
-        Assert.Same(workspace.Manager.Layout.RightSide, tool.Parent!.Parent);
+        Assert.Same(workspace.Manager.Layout.RightSide!, tool.Parent!.Parent);
         Assert.Same(workspace.Manager.DockLayout, workspace.Manager.DockFactory.FindRoot(tool.DockModel));
         Assert.Contains(tool.DockModel, workspace.Manager.DockLayout.RightPinnedDockables!);
         Assert.DoesNotContain(tool.DockModel, ((IRootDock)floating.DockModel).RightPinnedDockables!);
@@ -116,7 +116,7 @@ public class AutoHideOperationTests
         // Presenting an existing host restores that native root's focus history.
         // An empty root reconstructed from XML has no focused tool to restore.
         Assert.Same(roundTrip ? (LayoutContent)active : tool, workspace.Manager.Layout.ActiveContent);
-        Assert.Empty(workspace.Manager.Layout.RightSide.Children);
+        Assert.Empty(workspace.Manager.Layout.RightSide!.Children);
         Assert.False(workspace.Manager.DockFactory.IsDockablePinned(tool.DockModel));
     }
 
@@ -179,7 +179,7 @@ public class AutoHideOperationTests
         LayoutAnchorable restored = new() { ContentId = "restored", CanAutoHide = false };
         LayoutAnchorGroup group = new() { Children = { hidden, restored } };
         if (keepSibling) group.Children.Add(new LayoutAnchorable());
-        manager.Layout.LeftSide.Children.Add(group);
+        manager.Layout.LeftSide!.Children.Add(group);
         hidden.Hide();
         Assert.Same(group, hidden.PreviousContainer);
 
@@ -188,7 +188,7 @@ public class AutoHideOperationTests
         LayoutAnchorablePane pane = Assert.IsType<LayoutAnchorablePane>(restored.Parent);
         Assert.Same(pane, hidden.PreviousContainer);
         Assert.Same(pane.DockModel, hidden.DockModel.OriginalOwner);
-        Assert.Equal(keepSibling, manager.Layout.LeftSide.Children.Contains(group));
+        Assert.Equal(keepSibling, manager.Layout.LeftSide!.Children.Contains(group));
         manager.Layout.CollectGarbage();
         hidden.Show();
         Assert.Same(pane, hidden.Parent);
@@ -207,7 +207,7 @@ public class AutoHideOperationTests
         LayoutAnchorable hidden = new();
         LayoutAnchorable closing = new() { CanClose = false, CanAutoHide = false };
         LayoutAnchorGroup group = new() { Children = { hidden, closing } };
-        root.BottomSide.Children.Add(group);
+        root.BottomSide!.Children.Add(group);
         hidden.Hide();
         bool cancel = true;
         closing.Closing += (_, args) => args.Cancel = cancel && !nativeVeto;
@@ -221,7 +221,7 @@ public class AutoHideOperationTests
         closing.Close();
 
         Assert.Null(closing.Parent);
-        Assert.Empty(root.BottomSide.Children);
+        Assert.Empty(root.BottomSide!.Children);
         LayoutAnchorablePane pane = Assert.IsType<LayoutAnchorablePane>(hidden.PreviousContainer);
         Assert.Same(root, pane.Root);
         hidden.Show();
@@ -269,7 +269,7 @@ public class AutoHideOperationTests
         first.ToggleAutoHide();
 
         Assert.NotSame(first.Parent, second.Parent);
-        Assert.Equal(2, manager.Layout.LeftSide.Children.Count);
+        Assert.Equal(2, manager.Layout.LeftSide!.Children.Count);
         Assert.Same(first, Assert.Single(((LayoutAnchorGroup)first.Parent!).Children));
         Assert.Same(second, Assert.Single(((LayoutAnchorGroup)second.Parent!).Children));
     }
@@ -326,10 +326,10 @@ public class AutoHideOperationTests
 
     private static LayoutAnchorSide Side(LayoutRoot root, AnchorSide side) => side switch
     {
-        AnchorSide.Left => root.LeftSide,
-        AnchorSide.Top => root.TopSide,
-        AnchorSide.Right => root.RightSide,
-        _ => root.BottomSide
+        AnchorSide.Left => root.LeftSide!,
+        AnchorSide.Top => root.TopSide!,
+        AnchorSide.Right => root.RightSide!,
+        _ => root.BottomSide!
     };
 
     private static System.Collections.Generic.IList<IDockable> Pinned(LayoutRoot root, AnchorSide side)

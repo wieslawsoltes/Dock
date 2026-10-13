@@ -19,6 +19,7 @@ public class FloatingCleanupCancellationTests
     [InlineData(2)]
     [InlineData(3)]
     [InlineData(4)]
+    [InlineData(5)]
     public void Canceled_Cleanup_Retains_The_Host_And_Ownership_Until_Retry(int operation)
     {
         using Workspace workspace = new();
@@ -36,7 +37,8 @@ public class FloatingCleanupCancellationTests
         else if (operation == 1) workspace.Document.Close();
         else if (operation == 2) workspace.Manager.Layout.FloatingWindows.Remove(model);
         else if (operation == 3) workspace.Manager.Layout.FloatingWindows.Clear();
-        else workspace.Manager.Layout.FloatingWindows[0] = replacement;
+        else if (operation == 4) workspace.Manager.Layout.FloatingWindows[0] = replacement;
+        else workspace.Manager.Layout.ReplaceChild(model, replacement);
         Dispatcher.UIThread.RunJobs();
 
         Assert.True(host.IsVisible);

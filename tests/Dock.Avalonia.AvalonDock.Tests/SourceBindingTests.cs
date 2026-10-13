@@ -62,7 +62,7 @@ public class SourceBindingTests
         hidden.Hide();
         source.Remove(pinnedContent);
         Assert.Null(pinned.Parent);
-        Assert.Empty(manager.Layout.RightSide.Children);
+        Assert.Empty(manager.Layout.RightSide!.Children);
         Assert.Same(pane, Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorablePane>()));
         source.Remove(hiddenContent);
         Assert.Empty(manager.Layout.Hidden);

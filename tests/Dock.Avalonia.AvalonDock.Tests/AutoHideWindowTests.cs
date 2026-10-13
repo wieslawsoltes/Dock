@@ -99,7 +99,7 @@ public class AutoHideWindowTests
         Assert.Same(second.DockModel, workspace.Manager.DockLayout.PinnedDock!.ActiveDockable);
         Assert.Contains(workspace.Manager.GetLayoutItemFromModel(second)!.View, preview.GetVisualDescendants());
         Assert.DoesNotContain(workspace.Manager.GetLayoutItemFromModel(first)!.View, preview.GetVisualDescendants());
-        Assert.Same(workspace.Manager.Layout.LeftSide.Children[0], first.Parent);
+        Assert.Same(workspace.Manager.Layout.LeftSide!.Children[0], first.Parent);
         Assert.True(first.IsAutoHidden);
     }
 
@@ -439,8 +439,8 @@ public class AutoHideWindowTests
         }
         public LayoutAnchorable Tool(AnchorSide side = AnchorSide.Left) => (side switch
         {
-            AnchorSide.Left => Manager.Layout.LeftSide, AnchorSide.Top => Manager.Layout.TopSide,
-            AnchorSide.Right => Manager.Layout.RightSide, _ => Manager.Layout.BottomSide
+            AnchorSide.Left => Manager.Layout.LeftSide!, AnchorSide.Top => Manager.Layout.TopSide!,
+            AnchorSide.Right => Manager.Layout.RightSide!, _ => Manager.Layout.BottomSide!
         }).Children[0].Children[0];
         public void Show(LayoutAnchorable tool) { tool.IsSelected = true; Update(); }
         public void MoveAway() { Window.MouseMove(new Point(895, 645)); Update(); }

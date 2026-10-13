@@ -70,11 +70,11 @@ public partial class DockingManager
         Ensure(RightSidePanelProperty, Layout.RightSide, ref _presentedRightSide);
         Ensure(BottomSidePanelProperty, Layout.BottomSide, ref _presentedBottomSide);
 
-        void Ensure(StyledProperty<LayoutAnchorSideControl?> property, LayoutAnchorSide side, ref LayoutAnchorSide? previous)
+        void Ensure(StyledProperty<LayoutAnchorSideControl?> property, LayoutAnchorSide? side, ref LayoutAnchorSide? previous)
         {
             if (ReferenceEquals(previous, side)) return;
             previous = side;
-            SetCurrentValue(property, new LayoutAnchorSideControl(side));
+            SetCurrentValue(property, side is null ? null : new LayoutAnchorSideControl(side));
         }
     }
 }

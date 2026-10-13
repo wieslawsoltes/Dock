@@ -24,13 +24,13 @@ internal static class LayoutAutoHideOperations
         }
         if (tool.Parent is not LayoutAnchorablePane pane) return;
         AnchorSide edge = pane.GetSide();
-        LayoutAnchorSide strip = edge switch
+        LayoutAnchorSide strip = (edge switch
         {
             AnchorSide.Left => root.LeftSide,
             AnchorSide.Top => root.TopSide,
             AnchorSide.Right => root.RightSide,
             _ => root.BottomSide
-        };
+        })!;
         tool.RememberDockedLocation();
         ((IToolDock)pane.DockModel).Alignment = strip.DockAlignment;
         strip.Pin(tool, () => ToggleNative(root, tool, null));

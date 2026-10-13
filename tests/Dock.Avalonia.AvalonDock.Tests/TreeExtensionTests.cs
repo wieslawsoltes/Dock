@@ -124,7 +124,7 @@ public class TreeExtensionTests
         try
         {
             window.Show(); Update();
-            LayoutAnchorable tool = manager.Layout.LeftSide.Children[0].Children[0];
+            LayoutAnchorable tool = manager.Layout.LeftSide!.Children[0].Children[0];
             tool.IsSelected = true; Update();
             Control view = manager.GetLayoutItemFromModel(tool)!.View;
             Assert.Same(manager.AutoHideWindow, Assert.Single(manager.FindVisualChildren<LayoutAutoHideWindowControl>()));

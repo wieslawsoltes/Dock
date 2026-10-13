@@ -211,8 +211,8 @@ public class NativePinnedWindowTests
             };
             LayoutAnchorSide anchors = side switch
             {
-                AnchorSide.Left => Manager.Layout.LeftSide, AnchorSide.Right => Manager.Layout.RightSide,
-                AnchorSide.Top => Manager.Layout.TopSide, _ => Manager.Layout.BottomSide
+                AnchorSide.Left => Manager.Layout.LeftSide!, AnchorSide.Right => Manager.Layout.RightSide!,
+                AnchorSide.Top => Manager.Layout.TopSide!, _ => Manager.Layout.BottomSide!
             };
             anchors.Children.Add(group);
             Owner = new Window { Width = 950, Height = 650, Content = Manager };

@@ -121,7 +121,7 @@ public class SampleTests
             Dispatcher.UIThread.RunJobs();
             Assert.Contains(window.GetVisualDescendants().OfType<TextBlock>(), text => text.Text == "Properties");
             Assert.Contains(window.GetVisualDescendants().OfType<TextBlock>(), text => text.Text == "Agenda");
-            Assert.Equal(2, Assert.Single(manager.Layout.LeftSide.Children).Children.Count);
+            Assert.Equal(2, Assert.Single(manager.Layout.LeftSide!.Children).Children.Count);
             Assert.Contains("Save a layout", service.Load());
             LayoutDocument editor = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => x.ContentId == "document2");
             ((TextBox)editor.Content!).Text = "Unsaved editor text";
@@ -135,7 +135,7 @@ public class SampleTests
             Assert.Contains("Layout restored", service.Load());
             Dispatcher.UIThread.RunJobs();
             LayoutDocument restored = manager.Layout.Descendents().OfType<LayoutDocument>().Single(x => x.ContentId == "document2");
-            Assert.Equal(2, Assert.Single(manager.Layout.LeftSide.Children).Children.Count);
+            Assert.Equal(2, Assert.Single(manager.Layout.LeftSide!.Children).Children.Count);
             Assert.Equal("Unsaved editor text", ((TextBox)restored.Content!).Text);
             restored.IsActive = true;
             Dispatcher.UIThread.RunJobs();
@@ -157,7 +157,7 @@ public class SampleTests
             window.Show();
             Dispatcher.UIThread.RunJobs();
             DockingManager manager = window.FindControl<DockingManager>("DockManager")!;
-            LayoutAnchorGroup group = Assert.Single(manager.Layout.LeftSide.Children);
+            LayoutAnchorGroup group = Assert.Single(manager.Layout.LeftSide!.Children);
             LayoutAnchorable agenda = group.Children[0];
             TextBlock header = window.GetVisualDescendants().OfType<TextBlock>().First(x => x.Text == "Agenda");
             Point position = header.TranslatePoint(new Point(header.Bounds.Width / 2, header.Bounds.Height / 2), window)!.Value;

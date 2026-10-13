@@ -276,8 +276,8 @@ public class XmlWriterContextTests
             case "document-group": root.RootPanel = new(new LayoutDocumentPaneGroup(new LayoutDocumentPane(document))); break;
             case "root-panel": root.RootPanel = new FailingPanel(failure); break;
             case "top-side": root.TopSide = new FailingSide(failure); break;
-            case "anchor-group": root.TopSide.Children.Add(new FailingAnchorGroup(failure)); break;
-            case "pinned-tool": LayoutAnchorGroup group = new(); group.Children.Add(tool); root.TopSide.Children.Add(group); break;
+            case "anchor-group": root.TopSide!.Children.Add(new FailingAnchorGroup(failure)); break;
+            case "pinned-tool": LayoutAnchorGroup group = new(); group.Children.Add(tool); root.TopSide!.Children.Add(group); break;
             case "hidden-tool": root.Hidden.Add(tool); break;
             case "floating-window": root.FloatingWindows.Add(new FailingWindow(failure) { RootDocument = new LayoutDocument() }); break;
             case "floating-document": root.FloatingWindows.Add(new LayoutDocumentFloatingWindow { RootDocument = document }); break;

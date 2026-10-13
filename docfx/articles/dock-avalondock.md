@@ -1293,6 +1293,28 @@ Assigning `Layout = null` creates a fresh empty layout. This replacement raises
 `LayoutChanged` without `LayoutChanging`; assigning a non-null value invokes
 `LayoutChanging` during coercion, including reassignment of the current layout.
 
+On the root model, assigning `RootPanel = null` creates a new `LayoutPanel` with
+one empty `LayoutDocumentPane`. `RemoveChild` and `ReplaceChild` use the same
+reset behavior. `RootPanel`, the four side properties, and `Manager` publish
+`PropertyChanging` before the assignment and `PropertyChanged` afterward.
+Observers can stop an operation by throwing; completed earlier changes remain.
+Derived roots observe construction in right, left, top, bottom, then root-panel
+order, with no root panel available before its construction assignment.
+
+`LeftSide`, `TopSide`, `RightSide`, and `BottomSide` are nullable. Clearing a side
+removes its displayed control and native pinned projection; assigning a side
+restores it. This also works with `TopSide="{x:Null}"` and the other side names
+in either XML namespace. Cleared sides write empty XML sections, which load as
+default empty side models. Replaced sides retain their groups and contents for
+reuse, while their native ownership and subscriptions are detached.
+
+`LayoutRoot.Children` visits the root panel, floating windows, top/right/bottom/left
+sides, then hidden tools, omitting null sides. `ChildrenCount` follows AvalonDock's
+fixed-slot contract: five plus the floating-window and hidden-tool counts, even
+when a side is null. `ReplaceChild` for hidden tools or floating windows sends
+separate remove and add notifications. A removal callback failure stops before
+insertion; native floating-host cancellation retains the original window.
+
 `OnLayoutChanged` encloses ownership transfer, container/host updates, source
 reattachment, and the `LayoutChanged` event. An override sees the new property
 value before calling the base implementation and can suppress those side

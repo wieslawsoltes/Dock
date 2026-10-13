@@ -597,6 +597,17 @@ Assigning `Layout = null` creates a fresh empty layout. This replacement raises
 `LayoutChanged` without `LayoutChanging`; assigning a non-null value invokes
 `LayoutChanging` during coercion, including reassignment of the current layout.
 
+The root's `RootPanel = null` creates a panel with one empty document pane.
+Root panel, side, and manager assignments raise changing and changed
+notifications. The four side properties accept null, including `{x:Null}` in
+compiled XAML. Clearing a side removes its control and pinned projection;
+reassignment restores it. Detached sides retain reusable groups and contents.
+XML writes a null side as an empty section and restores an empty side model.
+Root children enumerate panel, floating windows, top/right/bottom/left sides,
+then hidden tools, skipping null sides. `ChildrenCount` retains five fixed slots
+plus window/hidden counts. `ReplaceChild` removes and then inserts collection
+members; callback failures and floating-host cancellation stop the insertion.
+
 `OnLayoutChanged` encloses ownership transfer, container/host updates, source
 reattachment, and the `LayoutChanged` event. An override sees the new property
 value before calling the base implementation and can suppress those side

@@ -86,6 +86,7 @@ PackageConsumer.FloatingClosedHookProbe.Verify();
 PackageConsumer.FocusAndExecutionProbe.Verify();
 PackageConsumer.ModelDockingProbe.Verify();
 PackageConsumer.GroupMinimumProbe.Verify();
+PackageConsumer.RootPropertyProbe.Verify();
 PackageConsumer.GroupBaseDerivationProbe.Verify();
 PackageConsumer.GroupXmlProbe.Verify();
 PackageConsumer.ContentXmlProbe.Verify();

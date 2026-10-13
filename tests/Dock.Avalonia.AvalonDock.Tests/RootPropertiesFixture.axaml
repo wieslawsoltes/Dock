@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             x:Class="Dock.Avalonia.AvalonDock.Tests.RootPropertiesFixture"
+             x:DataType="x:Object">
+  <StackPanel>
+    <DockingManager x:Name="DefaultManager" Height="240">
+      <LayoutRoot RootPanel="{x:Null}" LeftSide="{x:Null}" TopSide="{x:Null}" RightSide="{x:Null}" BottomSide="{x:Null}" />
+    </DockingManager>
+    <ad:DockingManager x:Name="PrefixedManager" Height="240">
+      <ad:LayoutRoot RootPanel="{x:Null}" LeftSide="{x:Null}" TopSide="{x:Null}" RightSide="{x:Null}" BottomSide="{x:Null}" />
+    </ad:DockingManager>
+  </StackPanel>
+</UserControl>

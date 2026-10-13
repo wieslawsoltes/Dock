@@ -110,13 +110,13 @@ public class RootXmlContractTests
     {
         LayoutRoot root = new();
         LayoutPanel previousPanel = root.RootPanel;
-        LayoutAnchorSide previousSide = root.TopSide;
+        LayoutAnchorSide previousSide = root.TopSide!;
         string children = "<LayoutDocument />" + (side ? "<LayoutAnchorGroup />" : "<LayoutDocumentPane />") + "<Unknown />";
         string xml = side ? Canonical("<RootPanel />", "TopSide", children) : Canonical("<RootPanel>" + children + "</RootPanel>");
         using XmlReader reader = XmlReader.Create(new StringReader(xml));
         Assert.Throws<ArgumentException>(() => root.ReadXml(reader));
         Assert.Equal("Unknown", reader.LocalName);
-        if (side) { Assert.NotSame(previousSide, root.TopSide); Assert.Empty(root.TopSide.Children); }
+        if (side) { Assert.NotSame(previousSide, root.TopSide!); Assert.Empty(root.TopSide!.Children); }
         else Assert.Same(previousPanel, root.RootPanel);
     }
 
@@ -153,7 +153,7 @@ public class RootXmlContractTests
     }
     private static LayoutAnchorSide Side(LayoutRoot root, string name) => name switch
     {
-        "TopSide" => root.TopSide, "RightSide" => root.RightSide, "LeftSide" => root.LeftSide, _ => root.BottomSide
+        "TopSide" => root.TopSide!, "RightSide" => root.RightSide!, "LeftSide" => root.LeftSide!, _ => root.BottomSide!
     };
     private static void Read(LayoutRoot root, string xml)
     {

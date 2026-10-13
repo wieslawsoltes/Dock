@@ -26,8 +26,8 @@ internal static class LayoutDocumentPlacement
         {
             LayoutPanel previousPanel = root.RootPanel;
             LayoutPanel panel = new() { Orientation = Avalonia.Layout.Orientation.Horizontal };
-            root.RootPanel = panel;
             panel.Children.Add(previousPanel);
+            root.RootPanel = panel;
             destination = new LayoutDocumentPane();
             panel.Children.Add(destination);
         }

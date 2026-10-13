@@ -176,17 +176,23 @@ public class DocumentTitleTests
     }
 
     [AvaloniaFact]
-    public void Root_Document_Replacement_Releases_The_Previous_Title()
+    public void Root_Document_Replacement_Updates_The_Title_And_Retains_The_Old_Item_Until_Detachment()
     {
         using Workspace workspace = new();
         ContentPresenter previous = Presenter(Text(workspace.Host, "document-title"));
         LayoutDocument replacement = new() { Title = "Replacement", ContentId = "replacement", Content = new SourceContent("New content") };
         workspace.Floating.RootDocument = replacement;
         workspace.Update();
-        Assert.Null(previous.Content);
-        Assert.Null(previous.Child);
+        // Upstream retains the former root document's public parent/root and
+        // only collects its item after LayoutElement.Root leaves the manager.
+        Assert.Same(workspace.Floating, workspace.Document.Parent);
+        Assert.Same(workspace.Document, previous.Content);
         Assert.Same(replacement, Text(workspace.Host, "document-title").DataContext);
         Assert.Equal("Window: Replacement", Text(workspace.Host, "document-title").Text);
+        workspace.Document.Parent = null;
+        workspace.Update();
+        Assert.Null(previous.Content);
+        Assert.Null(previous.Child);
     }
 
     [AvaloniaFact]

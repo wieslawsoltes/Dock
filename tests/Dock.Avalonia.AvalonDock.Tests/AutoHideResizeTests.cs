@@ -363,6 +363,13 @@ public class AutoHideResizeTests
             model.Content = new Border();
         Assert.True(native.Classes.Remove("avalondock"));
         workspace.Update();
+        // Public logical ownership keeps the manager's compatibility scope
+        // active independently of its inner native control's marker class.
+        Assert.Equal(0, host.MinimumPinnedWidth);
+        host.SetValue(StyledElement.DataContextProperty, host.DataContext);
+        Assert.IsAssignableFrom<Panel>(host.GetVisualParent()).Children.Remove(host);
+        workspace.Window.Content = host;
+        workspace.Update();
         Assert.Equal(50, host.MinimumPinnedWidth);
         Assert.Equal(50, host.MinimumPinnedHeight);
         Assert.Equal(50, host.MinimumRemainingContentSize);

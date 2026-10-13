@@ -32,6 +32,12 @@ For example, a right-side preview 769 units wide with a 6-unit splitter needs a
 zero keeps that preview aligned to the host's right edge; retaining 50 makes the
 combined regions wider than the host.
 
+Layout normally initializes missing pinned bounds from the arranged content.
+Custom resizers can set `InitializePinnedBoundsOnLayout` to `False` to keep an
+unset model size until their own commit. This also preserves unset sizes through
+layout and canceled custom drags. Native `GridSplitter` input still records
+sizes, and setting the option back to `True` initializes an already open preview.
+
 ## Alignment and orientation
 
 `PinnedDockControl` exposes `PinnedDockAlignment` to control which edge the pinned preview occupies. The default templates bind it to the owning `ToolDock.Alignment`, but you can override it when building custom templates.

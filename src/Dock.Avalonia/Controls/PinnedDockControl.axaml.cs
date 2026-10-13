@@ -60,6 +60,10 @@ public class PinnedDockControl : TemplatedControl
         AvaloniaProperty.Register<PinnedDockControl, double>(nameof(MinimumRemainingContentSize), 50,
             validate: value => double.IsFinite(value) && value >= 0);
 
+    /// <summary>Defines whether layout initializes pinned bounds that have no stored size.</summary>
+    public static readonly StyledProperty<bool> InitializePinnedBoundsOnLayoutProperty =
+        AvaloniaProperty.Register<PinnedDockControl, bool>(nameof(InitializePinnedBoundsOnLayout), true);
+
     /// <summary>Gets or sets the minimum pinned content width. Defaults to 50.</summary>
     public double MinimumPinnedWidth
     {
@@ -83,6 +87,17 @@ public class PinnedDockControl : TemplatedControl
     {
         get => GetValue(MinimumRemainingContentSizeProperty);
         set => SetValue(MinimumRemainingContentSizeProperty, value);
+    }
+
+    /// <summary>Gets or sets whether layout initializes missing pinned sizes from the rendered content. Defaults to true.</summary>
+    /// <remarks>
+    /// Custom resize behaviors may disable initialization and commit their own bounds. Native splitter resizing
+    /// still records sizes. Enabling initialization updates missing bounds of an already arranged preview.
+    /// </remarks>
+    public bool InitializePinnedBoundsOnLayout
+    {
+        get => GetValue(InitializePinnedBoundsOnLayoutProperty);
+        set => SetValue(InitializePinnedBoundsOnLayoutProperty, value);
     }
 
     /// <summary>
@@ -128,6 +143,13 @@ public class PinnedDockControl : TemplatedControl
         MinimumPinnedWidthProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
         MinimumPinnedHeightProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
         MinimumRemainingContentSizeProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        InitializePinnedBoundsOnLayoutProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) =>
+        {
+            if (control.InitializePinnedBoundsOnLayout)
+            {
+                control.UpdatePinnedDockableBounds();
+            }
+        });
     }
 
     /// <inheritdoc />
@@ -733,7 +755,7 @@ public class PinnedDockControl : TemplatedControl
                 return;
             }
         }
-        if (!_isResizingPinnedDock && hasStoredBounds)
+        if (!_isResizingPinnedDock && (hasStoredBounds || !InitializePinnedBoundsOnLayout))
         {
             return;
         }

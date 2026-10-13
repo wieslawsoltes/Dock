@@ -156,10 +156,9 @@ internal static class AnchorControlProbe
             manager.AutoHideWindowClosingTimer = 0;
             ((LayoutAnchorable)restored.Model).IsSelected = true; Update();
             window.MouseMove(new Point(895, 645));
-            System.Threading.Thread.Sleep(80); Update();
-            System.Threading.Thread.Sleep(20); Update();
+            WaitForPreviewClose();
             if (preview.Model is not null || manager.DockLayout.PinnedDock is not null || manager.ClosingTimerChanges != 1)
-                throw new Exception("The packaged idle closing timer did not close the native preview.");
+                throw new Exception($"The packaged idle closing timer did not close the native preview: model={(preview.Model as LayoutContent)?.ContentId}, active={(preview.Model as LayoutContent)?.IsActive}, pinned={manager.DockLayout.PinnedDock is not null}, callbacks={manager.ClosingTimerChanges}.");
             manager.AutoHideWindowClosingTimer = -1;
             if (manager.AutoHideWindowClosingTimer != 1500 || manager.ClosingTimerChanges != 2)
                 throw new Exception("The packaged closing timer did not preserve its default coercion and external hook.");
@@ -176,21 +175,26 @@ internal static class AnchorControlProbe
                 throw new Exception("A suppressed packaged delay callback changed the initialized timer.");
             manager.AutoHideWindowClosingTimer = int.MaxValue;
             manager.ApplyTimerChange(zeroDelay);
-            DispatcherFrame closingFrame = new();
-            void PreviewChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
-            {
-                if (preview.Model is null) closingFrame.Continue = false;
-            }
-            preview.PropertyChanged += PreviewChanged;
-            try
-            {
-                using IDisposable deadline = DispatcherTimer.RunOnce(() => closingFrame.Continue = false, TimeSpan.FromSeconds(5));
-                if (preview.Model is not null) Dispatcher.UIThread.PushFrame(closingFrame);
-            }
-            finally { preview.PropertyChanged -= PreviewChanged; Update(); }
+            WaitForPreviewClose();
             if (preview.Model is not null || manager.AutoHideWindowClosingTimer != int.MaxValue)
                 throw new Exception($"A replayed packaged delay callback did not close: argument={zeroDelay.NewValue}, current={manager.AutoHideWindowClosingTimer}, active={(preview.Model as LayoutAnchorable)?.IsActive}, pointer={preview.IsPointerOver}, keep={(preview.Model as LayoutAnchorable)?.DockModel.KeepPinnedDockableVisible}.");
             manager.SuppressTimerCallback = false;
+
+            void WaitForPreviewClose()
+            {
+                DispatcherFrame closingFrame = new();
+                void PreviewChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
+                {
+                    if (preview.Model is null) closingFrame.Continue = false;
+                }
+                preview.PropertyChanged += PreviewChanged;
+                try
+                {
+                    using IDisposable deadline = DispatcherTimer.RunOnce(() => closingFrame.Continue = false, TimeSpan.FromSeconds(5));
+                    if (preview.Model is not null) Dispatcher.UIThread.PushFrame(closingFrame);
+                }
+                finally { preview.PropertyChanged -= PreviewChanged; Update(); }
+            }
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
 

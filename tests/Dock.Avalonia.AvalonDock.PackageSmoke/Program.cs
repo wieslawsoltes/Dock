@@ -79,6 +79,7 @@ PackageConsumer.TemplateCallbackProbe.Verify();
 PackageConsumer.LayoutInterfaceProbe.Verify();
 PackageConsumer.XmlWriteProbe.Verify();
 PackageConsumer.XmlReadInheritanceProbe.Verify();
+PackageConsumer.XmlWriterContextProbe.Verify();
 PackageConsumer.GroupBaseDerivationProbe.Verify();
 PackageConsumer.GroupXmlProbe.Verify();
 PackageConsumer.ContentXmlProbe.Verify();

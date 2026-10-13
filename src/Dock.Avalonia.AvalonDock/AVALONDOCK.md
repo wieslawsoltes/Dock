@@ -1465,6 +1465,23 @@ their orientation first. Generic base writers do not infer concrete attributes
 from extra interfaces on application subclasses. Writer callbacks observe this
 order, and a failure stops later attributes and hooks.
 
+`Serialize(XmlWriter)` passes the live caller context to model hooks: namespace
+prefixes, `xml:lang`, `xml:space`, settings, and output order remain available.
+Serialized child elements use an empty namespace, independent of a containing
+application element. Caller-owned output stays open. Text/stream overloads also
+leave a retained hook writer usable after returning; failures do not complete
+partial XML. Byte output uses UTF-8 without a byte order mark, while text output
+uses the caller's encoding in its declaration.
+
+Model and writer errors preserve nested `InvalidOperationException` wrappers at
+the same serializer boundaries as group and floating child writes. Direct root
+sections and hidden tools add no child serializer boundary. Each completed child
+serializer flushes; its flush is outside its own error wrapper and inside any
+parent serializer. The outermost flush error stays unchanged. See the
+[.NET writer contract](https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.Xml/src/System/Xml/Serialization/XmlSerializer.cs#L290-L365).
+The file overload continues to stage output before opening its destination, so
+model failures preserve an existing file; that is an intentional Dock extension.
+
 Saved booleans use `True` and `False`. `CanClose` is always written because tools
 and documents have different defaults. Default star lengths, 25-unit group
 minima, zero floating dimensions, and default flags are omitted. Blank titles,
@@ -1559,7 +1576,7 @@ flowchart TB
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
     DragPreview["Native full-content drag preview<br/>Factory policy and content snapshots"]
-    Xml["XmlLayoutSerializer and explicit XML codec<br/>Live readers, typed custom factories, virtual hooks, and content recovery"]
+    Xml["XmlLayoutSerializer and explicit XML codec<br/>Live readers and writers, typed custom factories, virtual hooks, and content recovery"]
     Api -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
     GridControls --> PaneControls

@@ -294,3 +294,8 @@ The read-inheritance probe checks that extra interfaces do not add metadata to
 an inherited XML reader, both directly and through a registered custom factory.
 The base-group probe derives `LayoutGroupBase` in this external assembly and
 checks native ownership, root identity, and protected collection/tree hooks.
+
+The writer-context probe verifies nested serialization errors, caller namespaces
+and XML context, writer/model callback order, empty child namespaces, and flush
+delivery at the child, pane, and root boundaries. It also checks retained writer
+lifetime and stream output without a byte order mark.

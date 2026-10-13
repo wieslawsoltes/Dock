@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using AvalonDock.Infrastructure;
@@ -16,23 +17,28 @@ public class XmlLayoutSerializer : LayoutSerializer
     /// saving and restoring serializers to preserve its concrete type and virtual XML hooks.</remarks>
     public LayoutSerializationTypes KnownTypes { get; } = new();
     /// <summary>Writes to a caller-owned XML writer.</summary>
+    /// <remarks>Model hooks use the live writer context. Model and writer errors retain
+    /// nested InvalidOperationException wrappers at serializer boundaries. A final
+    /// flush failure retains its original error. The caller's writer stays open.</remarks>
     public void Serialize(XmlWriter writer)
     {
         ArgumentNullException.ThrowIfNull(writer);
-        AvalonDockXml.Write(Manager.Layout, KnownTypes.Snapshot()).WriteTo(writer);
+        AvalonDockXml.Write(Manager.Layout, writer, KnownTypes.Snapshot());
     }
     /// <summary>Writes to a caller-owned text writer.</summary>
     public void Serialize(TextWriter writer)
     {
         ArgumentNullException.ThrowIfNull(writer);
-        using XmlWriter xml = XmlWriter.Create(writer, WriterSettings());
+        // Like XmlSerializer, leave the wrapper alive for application hooks.
+        // Disposing it would complete partial XML and could mask a model error.
+        XmlWriter xml = XmlWriter.Create(writer, WriterSettings());
         Serialize(xml);
     }
     /// <summary>Writes to a caller-owned stream.</summary>
     public void Serialize(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
-        using XmlWriter xml = XmlWriter.Create(stream, WriterSettings());
+        XmlWriter xml = XmlWriter.Create(stream, WriterSettings());
         Serialize(xml);
     }
     /// <summary>Writes to a file.</summary>
@@ -79,7 +85,7 @@ public class XmlLayoutSerializer : LayoutSerializer
         using FileStream stream = File.OpenRead(filepath);
         Deserialize(stream);
     }
-    private static XmlWriterSettings WriterSettings() => new() { Indent = true, CloseOutput = false };
+    private static XmlWriterSettings WriterSettings() => new() { Indent = true, CloseOutput = false, Encoding = new UTF8Encoding(false) };
     private static XmlReaderSettings ReaderSettings() => new()
     {
         DtdProcessing = DtdProcessing.Prohibit,

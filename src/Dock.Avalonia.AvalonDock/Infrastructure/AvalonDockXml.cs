@@ -16,13 +16,28 @@ internal static class AvalonDockXml
     {
         XDocument document = new();
         using (XmlWriter writer = document.CreateWriter())
-        {
-            writer.WriteStartElement("LayoutRoot");
-            EnsureContainerIds(layout);
-            layout.WriteXml(new LayoutXmlWriter(writer, types));
-            writer.WriteEndElement();
-        }
+            Write(layout, writer, types);
         return document.Root!;
+    }
+
+    internal static void Write(LayoutRoot layout, XmlWriter writer, LayoutSerializationTypes? types)
+    {
+        // Reject unsupported native hierarchies before emitting any XML. This
+        // validation belongs to the native extension, outside serializer errors.
+        foreach (LayoutFloatingWindow window in layout.FloatingWindows) ValidateFloatingWindow(window);
+        try
+        {
+            EnsureContainerIds(layout);
+            LayoutXmlWriter contextual = new(writer, types);
+            if (contextual.WriteState == WriteState.Start) contextual.WriteStartDocument();
+            contextual.WriteStartElement("LayoutRoot", string.Empty);
+            layout.WriteXml(contextual);
+            contextual.WriteEndElement();
+        }
+        catch (Exception error) { throw WriteError(error); }
+        // XmlSerializer flushes after its error boundary; final flush failures
+        // retain their original identity. Nested flushes belong to their caller.
+        writer.Flush();
     }
 
     private static void WriteRootContents(LayoutRoot layout, XmlWriter writer)
@@ -84,7 +99,7 @@ internal static class AvalonDockXml
         }
     }
 
-    private static void WriteElement(LayoutElement element, XmlWriter writer, string? name = null)
+    private static void WriteElement(LayoutElement element, XmlWriter writer, string? name = null, bool serialized = false)
     {
         if (element is LayoutFloatingWindow window) ValidateFloatingWindow(window);
         name ??= (writer as LayoutXmlWriter)?.Types?.GetName(element);
@@ -104,17 +119,32 @@ internal static class AvalonDockXml
             LayoutGroupFloatingWindow => "LayoutGroupFloatingWindow",
             _ => throw new NotSupportedException("Unsupported AvalonDock layout node.")
         };
-        writer.WriteStartElement(name);
+        if (serialized) writer.WriteStartElement(name, string.Empty);
+        else writer.WriteStartElement(name);
         ((IXmlSerializable)element).WriteXml(writer);
         writer.WriteEndElement();
     }
+
+    private static void SerializeElement(LayoutElement element, XmlWriter writer)
+    {
+        try
+        {
+            if (writer.WriteState == WriteState.Start) writer.WriteStartDocument();
+            WriteElement(element, writer, serialized: true);
+        }
+        catch (Exception error) { throw WriteError(error); }
+        writer.Flush();
+    }
+
+    private static InvalidOperationException WriteError(Exception error) =>
+        new("There was an error generating the XML document.", error);
 
     internal static void WriteContents(LayoutElement element, XmlWriter writer)
     {
         writer = PrepareWriter(element, writer);
         if (element is LayoutRoot root) WriteRootContents(root, writer);
         else if (element is ILayoutContainer container)
-            foreach (ILayoutElement child in container.Children) WriteElement((LayoutElement)child, writer);
+            foreach (ILayoutElement child in container.Children) SerializeElement((LayoutElement)child, writer);
     }
 
     internal static XmlWriter PrepareWriter(LayoutElement element, XmlWriter writer)
@@ -130,7 +160,7 @@ internal static class AvalonDockXml
         writer = PrepareWriter(window, writer);
         window.DockWindow.Save();
         ValidateFloatingWindow(window);
-        foreach (ILayoutElement child in window.Children) WriteElement((LayoutElement)child, writer);
+        foreach (ILayoutElement child in window.Children) SerializeElement((LayoutElement)child, writer);
     }
 
     private static void ValidateFloatingWindow(LayoutFloatingWindow window)

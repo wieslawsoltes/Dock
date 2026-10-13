@@ -199,7 +199,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 3,052 cases, including 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
+- The consolidated adapter suite passes all 3,087 cases, including 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
   cases, plus 63 numeric XML
@@ -903,9 +903,18 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   Three external reader probes reproduce the preceding package defects; a separate
   compile probe reproduces the missing protected base constructor. The implicit
   upstream constructor is not represented by the source-presence inventory.
-  Remaining XML work includes root-format edge cases and the write-contract audit (including nested write-error boundaries, namespaces,
-  and broader culture changes). Compact roots with omitted empty sections and persisted native
-  root-panel metadata remain adapter extensions to the canonical upstream format.
+  Thirty-five writer-context cases cover nested model/writer errors, live caller
+  namespaces/settings/XML context, partial output, callback ordering, child and
+  outer flush boundaries, retained text/stream writers, and byte/text encoding.
+  Seven external probes reproduce the preceding package defects. Group and
+  floating child serializers use empty namespaces and flush at their own boundaries;
+  direct root sections and hidden tools add no child serializer error wrapper.
+  Text/stream wrappers remain usable after success or failure without closing the
+  caller's output. Stream/file writes use UTF-8 without a byte order mark.
+  Remaining XML work includes root-format edge cases and broader culture/namespace
+  inputs. Compact roots with omitted empty sections and persisted native root-panel
+  metadata, native hierarchy validation, and preserving existing files on model
+  write failures remain adapter extensions to the upstream format.
   Assigning a return container raises only its changed notification, then initializes
   an unset pane ID using the reference left by application callbacks. Identifier
   metadata is quiet; changed return indices raise only changed notifications.

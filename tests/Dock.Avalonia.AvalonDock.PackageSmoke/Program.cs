@@ -474,7 +474,9 @@ static void AssertThemes(Window owner, DockingManager manager, HostWindow host)
 static void AssertLayoutLifecycle()
 {
     PackageConsumer.LifecycleDocument document = new();
-    LayoutRoot first = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(document)) };
+    LayoutDocumentPane source = new();
+    LayoutRoot first = new() { RootPanel = new LayoutPanel(source) };
+    source.Children.Add(document);
     LayoutDocumentPane destination = new();
     LayoutRoot second = new() { RootPanel = new LayoutPanel(destination) };
     int removed = 0;

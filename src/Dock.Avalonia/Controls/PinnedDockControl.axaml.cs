@@ -55,6 +55,15 @@ public class PinnedDockControl : TemplatedControl
         AvaloniaProperty.Register<PinnedDockControl, double>(nameof(MinimumPinnedHeight), 50,
             validate: value => double.IsFinite(value) && value >= 0);
 
+    /// <summary>Defines the minimum space remaining beside an overlay pinned preview.</summary>
+    public static readonly StyledProperty<double> MinimumRemainingContentSizeProperty =
+        AvaloniaProperty.Register<PinnedDockControl, double>(nameof(MinimumRemainingContentSize), 50,
+            validate: value => double.IsFinite(value) && value >= 0);
+
+    /// <summary>Defines whether layout initializes pinned bounds that have no stored size.</summary>
+    public static readonly StyledProperty<bool> InitializePinnedBoundsOnLayoutProperty =
+        AvaloniaProperty.Register<PinnedDockControl, bool>(nameof(InitializePinnedBoundsOnLayout), true);
+
     /// <summary>Gets or sets the minimum pinned content width. Defaults to 50.</summary>
     public double MinimumPinnedWidth
     {
@@ -67,6 +76,28 @@ public class PinnedDockControl : TemplatedControl
     {
         get => GetValue(MinimumPinnedHeightProperty);
         set => SetValue(MinimumPinnedHeightProperty, value);
+    }
+
+    /// <summary>Gets or sets the minimum remaining width or height beside an overlay preview. Defaults to 50.</summary>
+    /// <remarks>
+    /// Applies to the unused grid region along the preview's resize axis. Inline previews do not use this value.
+    /// Custom resize behaviors may set zero and enforce their own limits. This does not clamp stored pinned sizes.
+    /// </remarks>
+    public double MinimumRemainingContentSize
+    {
+        get => GetValue(MinimumRemainingContentSizeProperty);
+        set => SetValue(MinimumRemainingContentSizeProperty, value);
+    }
+
+    /// <summary>Gets or sets whether layout initializes missing pinned sizes from the rendered content. Defaults to true.</summary>
+    /// <remarks>
+    /// Custom resize behaviors may disable initialization and commit their own bounds. Native splitter resizing
+    /// still records sizes. Enabling initialization updates missing bounds of an already arranged preview.
+    /// </remarks>
+    public bool InitializePinnedBoundsOnLayout
+    {
+        get => GetValue(InitializePinnedBoundsOnLayoutProperty);
+        set => SetValue(InitializePinnedBoundsOnLayoutProperty, value);
     }
 
     /// <summary>
@@ -111,6 +142,14 @@ public class PinnedDockControl : TemplatedControl
         PinnedDockDisplayModeProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.OnDisplayModeChanged());
         MinimumPinnedWidthProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
         MinimumPinnedHeightProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        MinimumRemainingContentSizeProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        InitializePinnedBoundsOnLayoutProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) =>
+        {
+            if (control.InitializePinnedBoundsOnLayout)
+            {
+                control.UpdatePinnedDockableBounds();
+            }
+        });
     }
 
     /// <inheritdoc />
@@ -172,7 +211,7 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 if (isOverlay)
                 {
-                    _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = 50 });
+                    _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = MinimumRemainingContentSize });
                 }
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 0);
@@ -185,7 +224,7 @@ public class PinnedDockControl : TemplatedControl
             case Alignment.Bottom:
                 if (isOverlay)
                 {
-                    _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = 50 });
+                    _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = MinimumRemainingContentSize });
                     _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
                     _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto) { MinHeight = MinimumPinnedHeight });
                 }
@@ -205,7 +244,7 @@ public class PinnedDockControl : TemplatedControl
             case Alignment.Right:
                 if (isOverlay)
                 {
-                    _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = 50 });
+                    _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = MinimumRemainingContentSize });
                     _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                     _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto) { MinWidth = MinimumPinnedWidth });
                 }
@@ -227,7 +266,7 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
                 if (isOverlay)
                 {
-                    _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = 50 });
+                    _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = MinimumRemainingContentSize });
                 }
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 0);
@@ -716,7 +755,7 @@ public class PinnedDockControl : TemplatedControl
                 return;
             }
         }
-        if (!_isResizingPinnedDock && hasStoredBounds)
+        if (!_isResizingPinnedDock && (hasStoredBounds || !InitializePinnedBoundsOnLayout))
         {
             return;
         }

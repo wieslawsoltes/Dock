@@ -150,6 +150,8 @@ The following extension points belong to the Avalonia control layer:
 | `DockTargetBase.GetSelector` | Inspect the current template's registered selector for an operation. It can be hidden; lookup does not validate a drop or apply a template. |
 | `HostWindow.TryBeginMoveDrag` | Start a move from custom chrome while retaining factory cancellation and native docking targets. |
 | `PinnedDockControl.MinimumPinnedWidth` / `MinimumPinnedHeight` | Set finite nonnegative minimum content sizes. Both default to 50. |
+| `PinnedDockControl.MinimumRemainingContentSize` | Set the finite nonnegative minimum region beside an overlay preview. Defaults to 50; custom resizers can set zero and enforce their own limits. Inline layout is unaffected. |
+| `PinnedDockControl.InitializePinnedBoundsOnLayout` | Defaults to true. Set false when a custom resize behavior must retain unset model bounds until it commits. Native splitter resizing still records sizes. |
 | `ProportionalStackPanelSplitter.PreviewBackground` / `PreviewOpacity` | Customize live resize previews. Defaults retain the accent resource and opacity 1. |
 
 Expanded adorner geometry follows layout and window movement for inline, native

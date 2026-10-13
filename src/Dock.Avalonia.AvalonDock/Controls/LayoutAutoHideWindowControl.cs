@@ -110,14 +110,9 @@ public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
     /// <inheritdoc/>
     protected override void OnTemplateChanged(AvaloniaPropertyChangedEventArgs e)
     {
-        // The native presenter is outside the old template's visual tree, so the
-        // framework cannot release its editor while dismantling that template.
-        // Retire that template binding before a replacement presenter takes ownership.
-        if (_logicalPresenter is { } presenter)
-        {
-            presenter.Content = null;
-            presenter.UpdateChild();
-        }
+        // Return the existing presenter before the framework dismantles or reuses
+        // its template. A presenter left in another root would escape that lifecycle.
+        _nativeRoot?.ReturnPresenterToInline();
         base.OnTemplateChanged(e);
     }
 
@@ -157,6 +152,9 @@ public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
     internal void SetContent(Control? content)
     {
         SetCurrentValue(ContentProperty, content);
-        if (content is null) Presenter?.UpdateChild();
+        // The preview keeps its manager logical parent while its visual host changes.
+        // A host transfer therefore may not trigger the presenter's logical attachment
+        // callback; realize the current body before the new visual host measures it.
+        if (Presenter is { } presenter && !ReferenceEquals(presenter.Child, content)) presenter.UpdateChild();
     }
 }

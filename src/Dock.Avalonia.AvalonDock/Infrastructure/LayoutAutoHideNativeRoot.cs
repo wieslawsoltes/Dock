@@ -20,7 +20,7 @@ internal sealed class LayoutAutoHideNativeRoot(LayoutAutoHideWindowControl owner
     private Decorator? _inline;
     private ContentPresenter? _presenter;
 
-    internal bool IsHosted => _root is not null;
+    internal bool IsHosted => _presenter is not null;
     internal Decorator? InlinePresenter { get; set; }
 
     internal HandleRef Build()
@@ -75,6 +75,16 @@ internal sealed class LayoutAutoHideNativeRoot(LayoutAutoHideWindowControl owner
     }
 
     internal void Arrange(Size size) => _presenter?.Arrange(new Rect(size));
+
+    internal void ReturnPresenterToInline()
+    {
+        if (_root is not { } root || _inline is not { } inline || _presenter is not { } presenter) return;
+        _inline = null;
+        _presenter = null;
+        root.Content = null;
+        root.Presenter?.UpdateChild();
+        RestoreInlinePresenter(inline, presenter);
+    }
 
     private void RestoreInlinePresenter(Decorator inline, ContentPresenter presenter)
     {

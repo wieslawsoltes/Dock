@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
 using AvalonDock.Controls;
@@ -17,6 +18,7 @@ internal sealed class LayoutAutoHideNativeHost : NativeControlHost
     private Decorator? _inlinePresenter;
     private LayoutAutoHideWindowControl? _owner;
     private bool _nativeAttached;
+    private IControlTemplate? _template;
 
     public Decorator? InlinePresenter
     {
@@ -32,6 +34,10 @@ internal sealed class LayoutAutoHideNativeHost : NativeControlHost
         if (descriptor is not ("HWND" or "NSWindow" or "NSView")) return;
         _owner = this.FindAncestorOfType<LayoutAutoHideWindowControl>();
         if (_owner is null) return;
+        // A detached old template can briefly reattach before ApplyTemplate replaces
+        // it. Keep its presenter inline so the normal template teardown can release it.
+        if (_template is not null && !ReferenceEquals(_template, _owner.Template)) return;
+        _template = _owner.Template;
         _nativeAttached = true;
         base.OnAttachedToVisualTree(e);
     }

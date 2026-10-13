@@ -35,6 +35,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     private bool _dragging;
     private bool _nativeDragNotification;
+    private bool _nativeDragging;
     private bool _notifyOpened;
     private bool _internalCloseRequested;
     private bool _preserveCloseOrigin;
@@ -179,7 +180,14 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         bool hiddenLayout = Model is LayoutAnchorableFloatingWindow { IsVisible: false } or LayoutGroupFloatingWindow { IsVisible: false };
         if (DeferNativePresentation || hiddenLayout)
         {
-            if (hiddenLayout && !DeferNativePresentation) IsHiddenByLayout = true;
+            if (hiddenLayout && !DeferNativePresentation)
+            {
+                IsHiddenByLayout = true;
+                // Hidden restored hosts have no visual attachment to complete
+                // deferred initialization. Observe the model before waiting
+                // for its contents to become visible again.
+                InitializeIfNeeded();
+            }
             _notifyOpened = true;
             if (IsVisible)
             {
@@ -450,8 +458,11 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     private void NativeDragChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        bool dragging = Classes.Contains(":dragging");
+        if (_nativeDragging == dragging) return;
+        _nativeDragging = dragging;
         _nativeDragNotification = true;
-        try { SetIsDragging(Classes.Contains(":dragging")); }
+        try { SetIsDragging(dragging); }
         finally { _nativeDragNotification = false; }
     }
 }

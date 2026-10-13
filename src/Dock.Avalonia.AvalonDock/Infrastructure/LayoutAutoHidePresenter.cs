@@ -74,10 +74,12 @@ internal sealed class LayoutAutoHidePresenter : ContentControl
     private void Present(LayoutAutoHideWindowControl? window)
     {
         if (ReferenceEquals(Content, window)) { window?.SetContent(Body); return; }
-        if (Content is LayoutAutoHideWindowControl previous) previous.SetContent(null);
+        if (Content is LayoutAutoHideWindowControl previous && ReferenceEquals(previous.Content, Body))
+            previous.SetContent(null);
         SetCurrentValue(ContentProperty, null);
         Presenter?.UpdateChild();
-        if (window?.Parent is LayoutAutoHidePresenter previousHost && !ReferenceEquals(previousHost, this)) previousHost.Present(null);
+        if (window?.FindAncestorOfType<LayoutAutoHidePresenter>() is { } previousHost && !ReferenceEquals(previousHost, this))
+            previousHost.Present(null);
         SetCurrentValue(ContentProperty, window);
         window?.SetContent(Body);
     }

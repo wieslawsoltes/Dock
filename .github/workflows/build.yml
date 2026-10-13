@@ -127,8 +127,10 @@ jobs:
           --packages "$RUNNER_TEMP/avalondock-consumer-packages"
     - name: Build AvalonDock package consumer
       run: dotnet build tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release --no-restore
-    - name: Run AvalonDock package consumer
-      run: dotnet run --project tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release -f net10.0 --no-build --no-restore
+    - name: Run AvalonDock package consumer on supported runtimes
+      run: |
+        dotnet run --project tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release -f net8.0 --no-build --no-restore
+        dotnet run --project tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release -f net10.0 --no-build --no-restore
     - name: Upload NuGet artifacts
       uses: actions/upload-artifact@v4
       with:

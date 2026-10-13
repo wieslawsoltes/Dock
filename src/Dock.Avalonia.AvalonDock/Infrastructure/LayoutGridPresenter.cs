@@ -44,6 +44,9 @@ internal sealed class LayoutGridPresenter : ContentControl
         _model = null;
         SetCurrentValue(ContentProperty, null);
         Presenter?.UpdateChild();
+        // A closed floating host cannot render another frame to reconcile the
+        // discarded grid. Reattachment reconstructs this composition subtree.
+        LayoutCompositionCleanup.ReleaseChildren(this);
         base.OnDetachedFromVisualTree(e);
     }
 

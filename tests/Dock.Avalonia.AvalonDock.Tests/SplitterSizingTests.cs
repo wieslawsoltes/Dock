@@ -254,6 +254,8 @@ public class SplitterSizingTests
         // Closed windows stop rendering and can retain their last composition frame.
         // Flush the replacement frame while the window is still open.
         workspace.Window.CaptureRenderedFrame()?.Dispose();
+        Assert.Null(TopLevel.GetTopLevel(panel));
+        Assert.Null(panel.GetVisualParent());
         return (workspace.Manager, new(panel));
     }
 

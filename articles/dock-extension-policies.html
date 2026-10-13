@@ -280,6 +280,10 @@ before notification. This event is specific to the Avalonia model implementation
 <td>Defaults to true. Set false when a custom resize behavior must retain unset model bounds until it commits. Native splitter resizing still records sizes.</td>
 </tr>
 <tr>
+<td><code>PinnedDockControl.UsePinnedDockWindow</code></td>
+<td>Nullable per-control override for the global pinned-window setting. Null follows the global default, false keeps the preview in its template, and true uses the configured native or managed host. Changes update an open preview; inline previews remain in the template.</td>
+</tr>
+<tr>
 <td><code>ProportionalStackPanelSplitter.PreviewBackground</code> / <code>PreviewOpacity</code></td>
 <td>Customize live resize previews. Defaults retain the accent resource and opacity 1.</td>
 </tr>

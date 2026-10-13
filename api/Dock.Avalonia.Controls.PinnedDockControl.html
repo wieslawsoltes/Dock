@@ -1427,6 +1427,37 @@ dockable's pinned bounds and invalidates this control's measure.</p>
 
 
 
+
+  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_UsePinnedDockWindowProperty" data-uid="Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindowProperty">
+  UsePinnedDockWindowProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines whether this control presents overlay previews in a separate window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StyledProperty&lt;bool?&gt; UsePinnedDockWindowProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StyledProperty</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
 
@@ -1627,6 +1658,43 @@ Custom resize behaviors may set zero and enforce their own limits. This does not
 
 
 
+
+
+
+
+  <a id="Dock_Avalonia_Controls_PinnedDockControl_UsePinnedDockWindow_" data-uid="Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_PinnedDockControl_UsePinnedDockWindow" data-uid="Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow">
+  UsePinnedDockWindow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/PinnedDockControl.axaml.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether overlay previews use a separate window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool? UsePinnedDockWindow { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Dock_Avalonia_Controls_PinnedDockControl_UsePinnedDockWindow_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Null follows <a class="xref" href="Dock.Settings.DockSettings.html#Dock_Settings_DockSettings_UsePinnedDockWindow">UsePinnedDockWindow</a>. False keeps the preview in this
+control's template; true uses the configured native or managed window host. Inline previews
+remain in the template. Changing this value updates an open preview without unpinning it.</p>
+</div>
 
 
 

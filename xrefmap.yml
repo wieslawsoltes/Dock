@@ -7987,6 +7987,24 @@ references:
   commentId: F:Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayModeProperty
   fullName: Dock.Avalonia.Controls.PinnedDockControl.PinnedDockDisplayModeProperty
   nameWithType: PinnedDockControl.PinnedDockDisplayModeProperty
+- uid: Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow
+  name: UsePinnedDockWindow
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_UsePinnedDockWindow
+  commentId: P:Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow
+  nameWithType: PinnedDockControl.UsePinnedDockWindow
+- uid: Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow*
+  name: UsePinnedDockWindow
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_UsePinnedDockWindow_
+  commentId: Overload:Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindow
+  nameWithType: PinnedDockControl.UsePinnedDockWindow
+- uid: Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindowProperty
+  name: UsePinnedDockWindowProperty
+  href: api/Dock.Avalonia.Controls.PinnedDockControl.html#Dock_Avalonia_Controls_PinnedDockControl_UsePinnedDockWindowProperty
+  commentId: F:Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindowProperty
+  fullName: Dock.Avalonia.Controls.PinnedDockControl.UsePinnedDockWindowProperty
+  nameWithType: PinnedDockControl.UsePinnedDockWindowProperty
 - uid: Dock.Avalonia.Controls.PinnedDockHostPanel
   name: PinnedDockHostPanel
   href: api/Dock.Avalonia.Controls.PinnedDockHostPanel.html

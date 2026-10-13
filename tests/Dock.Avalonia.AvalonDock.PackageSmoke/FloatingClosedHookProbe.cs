@@ -49,16 +49,19 @@ internal static class FloatingClosedHookProbe
             host.Close();
             if (!observed || source.HasObservers) throw new Exception("The local tool binding did not clear after the base event.");
         });
-        Check("empty model before Closed", () =>
+        foreach (bool emptyPane in new[] { false, true })
+        Check($"empty model before Closed, emptyPane={emptyPane}", () =>
         {
             using Workspace workspace = new();
+            if (emptyPane) workspace.Root.RootPanel.Children.Add(new LayoutAnchorablePane());
             bool removed = false;
             int notifications = 0;
             workspace.Manager.DockFactory.WindowClosed += (_, _) => notifications++;
             workspace.Host.Closed += (_, _) => removed = workspace.Model.Root is null;
             workspace.Model.RootDocument = null;
             Dispatcher.UIThread.RunJobs();
-            if (!removed || notifications != 1) throw new Exception("Empty-model collection or native closure notification occurred out of order.");
+            if (removed != emptyPane || notifications != 1 || workspace.Model.Root is not null)
+                throw new Exception("Empty-model collection or native closure notification occurred out of order.");
         });
         Check("failed Closed retains observation", () =>
         {

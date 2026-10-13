@@ -3316,16 +3316,37 @@ an isolated factory alone cannot reproduce its layout policies and sizing.
 See the [compatibility checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md#recent-native-drag-and-preview-changes)
 for the integration analysis and remaining requirements.
 
+At build time, the incremental generator discovers application layout types and
+resource paths and composes typed catalogs from referenced assemblies. Avalonia's
+XAML compiler replaces resource-factory stubs with compiled constructors. At
+runtime, the application exposes that immutable catalog through
+`IAvalonDockGeneratedCatalogProvider`; XML operation snapshots and theme lookup
+consume its typed factories. Explicit registrations take precedence. The adapter
+opts into framework binding and logical-lifetime semantics and uses framework
+hooks for embedded roots, initialization, and input. Native Dock still owns the
+layout and docking operations.
+
 ```mermaid
 flowchart TB
     App["Application XAML, ViewModels, and workspace service"]
-    Generator["Incremental catalog generator<br/>Typed layout constructors and compiled resource factories"]
-    Framework["Pinned Avalonia framework APIs<br/>Binding policy, logical traversal, embedded roots, and compiled resources"]
-    App --> Generator
-    Generator --> Xml
-    Generator --> ResourceThemes
+    Generator["Incremental catalog generator<br/>Application types, resource paths, and referenced catalogs"]
+    Catalog["Per-Application catalog provider<br/>Typed local and referenced-assembly catalogs"]
+    XamlCompiler["Avalonia XAML compiler hook<br/>CompiledResourceFactory stubs to typed resource factories"]
+    Framework["Pinned Avalonia opt-in APIs<br/>Binding assignment; logical source and weak inheritance<br/>Embedded roots, deferred initialization, and mouse capture"]
+    Explicit["Explicit layout and theme registries<br/>Override generated registrations"]
+    App -->|Compile-time inputs| Generator
+    Generator -->|Typed constructors and catalog composition| Catalog
+    Generator -->|Resource factory stubs| XamlCompiler
+    XamlCompiler -->|Compiled resource constructors| Catalog
+    App -->|Generated catalog-provider interface| Catalog
+    Catalog -->|Operation snapshot| Xml
+    Catalog -->|Typed URI factories| ResourceThemes
+    Explicit --> Xml
+    Explicit --> ResourceThemes
     Manager --> Framework
+    Items --> Framework
     AutoHide --> Framework
+    Hosts --> Framework
     subgraph Compatibility["Dock.Avalonia.AvalonDock"]
         Manager["DockingManager + AvalonDockTheme"]
         Layout["AvalonDock.Layout API"]

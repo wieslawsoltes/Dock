@@ -1802,16 +1802,37 @@ their documented geometry. See the
 for the isolated factory, sizing, and template requirements for future projection
 support.
 
+At build time, the incremental generator discovers application layout types and
+resource paths and composes typed catalogs from referenced assemblies. Avalonia's
+XAML compiler replaces resource-factory stubs with compiled constructors. At
+runtime, the application exposes that immutable catalog through
+`IAvalonDockGeneratedCatalogProvider`; XML operation snapshots and theme lookup
+consume its typed factories. Explicit registrations take precedence. The adapter
+opts into framework binding and logical-lifetime semantics and uses framework
+hooks for embedded roots, initialization, and input. Native Dock still owns the
+layout and docking operations.
+
 ```mermaid
 flowchart TB
     App["Application XAML and workspace service"]
-    Generator["Incremental catalog generator<br/>Typed layout and compiled-resource factories"]
-    Framework["Pinned Avalonia framework APIs<br/>Binding, logical traversal, hosted roots, compiled resources"]
-    App --> Generator
-    Generator --> Xml
-    Generator --> ResourceThemes
+    Generator["Incremental catalog generator<br/>Application types, resource paths, and referenced catalogs"]
+    Catalog["Per-Application catalog provider<br/>Typed local and referenced-assembly catalogs"]
+    XamlCompiler["Avalonia XAML compiler hook<br/>CompiledResourceFactory stubs to typed resource factories"]
+    Framework["Pinned Avalonia opt-in APIs<br/>Binding assignment; logical source and weak inheritance<br/>Embedded roots, deferred initialization, and mouse capture"]
+    Explicit["Explicit layout and theme registries<br/>Override generated registrations"]
+    App -->|Compile-time inputs| Generator
+    Generator -->|Typed constructors and catalog composition| Catalog
+    Generator -->|Resource factory stubs| XamlCompiler
+    XamlCompiler -->|Compiled resource constructors| Catalog
+    App -->|Generated catalog-provider interface| Catalog
+    Catalog -->|Operation snapshot| Xml
+    Catalog -->|Typed URI factories| ResourceThemes
+    Explicit --> Xml
+    Explicit --> ResourceThemes
     Api --> Framework
+    Items --> Framework
     AutoHide --> Framework
+    Hosts --> Framework
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
     Registration["Container registration<br/>After source callbacks; eager layout attachment"]

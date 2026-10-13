@@ -77,7 +77,7 @@ internal static class RootUpdatedProbe
             }
             finally { manager.Layout = new(); Dispatcher.UIThread.RunJobs(); }
         });
-        Check("retained floating child cleanup", () =>
+        Check("retained floating child lifetime", () =>
         {
             LayoutDocument document = new();
             SilentDocumentWindow window = new() { RootDocument = document };
@@ -92,7 +92,13 @@ internal static class RootUpdatedProbe
                 root.Updated += (_, _) => updates++;
                 window.RootDocument = null;
                 Dispatcher.UIThread.RunJobs();
-                Require(updates == 0 && item.LayoutElement is null && manager.GetLayoutItemFromModel(document) is null);
+                // Upstream keeps the removed child's Parent and removes an
+                // item only when its public Root differs from the manager's.
+                Require(updates == 0 && ReferenceEquals(document.Root, root) &&
+                    ReferenceEquals(item.LayoutElement, document) && ReferenceEquals(manager.GetLayoutItemFromModel(document), item));
+                manager.Layout = new();
+                Dispatcher.UIThread.RunJobs();
+                Require(item.LayoutElement is null && manager.GetLayoutItemFromModel(document) is null);
             }
             finally { manager.Layout = new(); Dispatcher.UIThread.RunJobs(); }
         });

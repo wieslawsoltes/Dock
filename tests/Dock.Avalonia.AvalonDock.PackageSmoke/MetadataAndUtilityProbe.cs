@@ -76,10 +76,16 @@ internal static class MetadataAndUtilityProbe
             if (!manager.GetVisualDescendants().OfType<LayoutGridResizerControl>().Any())
                 throw new Exception("The packaged layout did not use the public native-backed resizer.");
             LayoutItem item = manager.GetLayoutItemFromModel(document)!;
+            Control view = item.View;
             var children = manager.LogicalChildrenPublic;
-            bool found = false;
-            while (children.MoveNext()) found |= ReferenceEquals(children.Current, item);
-            if (!found) throw new Exception("The public logical enumerator did not expose the current layout item.");
+            bool foundView = false, foundItem = false;
+            while (children.MoveNext())
+            {
+                foundView |= ReferenceEquals(children.Current, view);
+                foundItem |= children.Current is LayoutItem;
+            }
+            if (!foundView || foundItem || !ReferenceEquals(view.Parent, manager))
+                throw new Exception("The public logical enumerator did not expose the manager-owned View without its layout item container.");
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
         void Update() { Dispatcher.UIThread.RunJobs(); window.UpdateLayout(); }

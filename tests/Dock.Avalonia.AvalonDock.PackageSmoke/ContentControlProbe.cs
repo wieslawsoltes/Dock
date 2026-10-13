@@ -33,7 +33,10 @@ public sealed class ContentControlProbe : LayoutDocumentControl
         control.SetLayoutItem(null);
         if (control.LayoutItem is not null) throw new Exception("The protected content-control container setter did not clear the read-only property.");
         control.Model = null;
-        if (control.ModelChanges != 2 || !control.IsEnabled)
-            throw new Exception("Clearing the packaged control's model did not invoke the model hook and restore enablement.");
+        if (control.ModelChanges != 2 || control.IsEnabled)
+            throw new Exception("Clearing the packaged control's model did not invoke the model hook and preserve enablement.");
+        document.IsEnabled = true;
+        if (control.IsEnabled)
+            throw new Exception("Clearing the packaged control's model retained its enablement subscription.");
     }
 }

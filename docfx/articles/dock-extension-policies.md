@@ -112,6 +112,15 @@ preserved layout in another host immediately.
 Factory subclasses can override `ShouldFocusActiveDockable` to distinguish pane
 selection from focus and `GetActiveDockableAfterRemoval` to choose a replacement
 selection. Defaults preserve native focus and selection behavior.
+
+`ShouldSynchronizeDockingWindowSelection` controls whether a layout update writes
+`IDockingWindowState.IsSelected`. An integration that coordinates its own selection
+callbacks can temporarily return `false` for affected items while projecting their
+pane's `ActiveDockable`. Open state, activation, docking state, tracking, and factory
+events continue normally. Model flag assignments still request selection changes.
+The default returns `true`; after reenabling synchronization, the next layout
+update reconciles any retained selection flags.
+
 `CloseDockableCore` and `PinDockableCore` let an integration implement explicit
 model operations independently of command capability flags, while retaining
 native cancellation, events, ItemsSource updates, ownership, and cleanup. The

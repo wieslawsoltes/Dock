@@ -6,6 +6,10 @@
   <Style Selector="dock|DockControl.avalondock dock|PinnedDockControl, :is(Window).avalondock dock|PinnedDockControl"
          x:DataType="models:IRootDock">
     <Setter Property="Template" Value="{StaticResource AvalonDockPinnedLayout}" />
+    <Setter Property="MinimumPinnedWidth" Value="0" />
+    <Setter Property="MinimumPinnedHeight" Value="0" />
+    <Setter Property="MinimumRemainingContentSize" Value="0" />
+    <Setter Property="InitializePinnedBoundsOnLayout" Value="False" />
   </Style>
   <Style Selector="controls|LayoutAutoHideWindowControl controls|LayoutAnchorableControl"
          x:DataType="controls:LayoutAnchorableControl">

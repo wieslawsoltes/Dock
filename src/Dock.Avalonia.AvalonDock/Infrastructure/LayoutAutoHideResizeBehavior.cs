@@ -28,10 +28,13 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
     private bool _horizontal;
     private double _direction;
     private double _startSize;
-    private double _targetSize;
+    private double _targetPosition;
     private double _minimum;
     private double _maximum;
+    private double _originalContentWidth;
+    private double _originalContentHeight;
     private Point _origin;
+    private Point _areaOrigin;
 
     internal bool IsResizing => _dragging;
 
@@ -77,7 +80,12 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
             foreach (Control child in grid.Children)
                 if (child is ContentControl { Name: "PART_PinnedDock" } content) { _content = content; break; }
         }
-        UpdateSizing();
+        if (_content is not null)
+        {
+            _originalContentWidth = _content.Width;
+            _originalContentHeight = _content.Height;
+        }
+        UpdateSizing(updateContentSize: true);
     }
 
     private void Disconnect()
@@ -85,6 +93,11 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         Cancel();
         if (_model is not null) WeakEvents.ThreadSafePropertyChanged.Unsubscribe(_model, this);
         if (_host is not null) _host.PropertyChanged -= HostChanged;
+        if (_content is not null)
+        {
+            _content.SetCurrentValue(Control.WidthProperty, _originalContentWidth);
+            _content.SetCurrentValue(Control.HeightProperty, _originalContentHeight);
+        }
         _model = null;
         _host = null;
         _preview = null;
@@ -109,7 +122,7 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         if (args.Property == PinnedDockControl.PinnedDockAlignmentProperty)
         {
             Cancel();
-            UpdateSizing();
+            UpdateSizing(updateContentSize: true);
         }
         else if (args.Property == Visual.BoundsProperty || args.Property == PinnedDockControl.PinnedDockDisplayModeProperty)
             Cancel();
@@ -126,6 +139,8 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         else if (args.PropertyName is nameof(LayoutAnchorable.AutoHideWidth) or nameof(LayoutAnchorable.AutoHideHeight))
         {
             Cancel();
+            UpdateSizing(updateContentSize: args.PropertyName == (_horizontal
+                ? nameof(LayoutAnchorable.AutoHideWidth) : nameof(LayoutAnchorable.AutoHideHeight)));
             _host?.InvalidateMeasure();
         }
         else if (args.PropertyName == nameof(LayoutAnchorable.IsAutoHidden)) Cancel();
@@ -133,7 +148,7 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
 
     private static double Dimension(double value, double fallback) => double.IsFinite(value) && value >= 0 ? value : fallback;
 
-    private void UpdateSizing()
+    private void UpdateSizing(bool updateContentSize = false)
     {
         if (_host is null) return;
         _horizontal = _host.PinnedDockAlignment is Alignment.Left or Alignment.Right or Alignment.Unset;
@@ -143,25 +158,48 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
         _splitter.SetCurrentValue(Control.HeightProperty, _horizontal ? double.NaN : thickness);
         _splitter.SetCurrentValue(InputElement.CursorProperty,
             new Cursor(_horizontal ? StandardCursorType.SizeWestEast : StandardCursorType.SizeNorthSouth));
-        _host.SetCurrentValue(PinnedDockControl.MinimumPinnedWidthProperty, Dimension(_model?.AutoHideMinWidth ?? 100, 100));
-        _host.SetCurrentValue(PinnedDockControl.MinimumPinnedHeightProperty, Dimension(_model?.AutoHideMinHeight ?? 100, 100));
+        if (updateContentSize && _content is not null && _model is not null)
+        {
+            double width = _horizontal && _model.AutoHideWidth == 0
+                ? Dimension(_model.AutoHideMinWidth, 100) : _originalContentWidth;
+            double height = !_horizontal && _model.AutoHideHeight == 0
+                ? Dimension(_model.AutoHideMinHeight, 100) : _originalContentHeight;
+            _content.SetCurrentValue(Control.WidthProperty, width);
+            _content.SetCurrentValue(Control.HeightProperty, height);
+        }
     }
 
     private void Started(object? sender, VectorEventArgs args)
     {
         if (!_splitter.IsResizingEnabled || _model is not { IsAutoHidden: true } || _host is null
             || _content is null || _preview?.Parent is not Canvas canvas) return;
-        _minimum = _horizontal ? _host.MinimumPinnedWidth : _host.MinimumPinnedHeight;
         Control area = _host.FindAncestorOfType<PinnedDockHostPanel>() ?? (Control)_host;
-        double available = _horizontal ? area.Bounds.Width : area.Bounds.Height;
+        Point first = area.TranslatePoint(default, canvas) ?? default;
+        Point last = area.TranslatePoint(new Point(area.Bounds.Width, area.Bounds.Height), canvas) ?? first;
+        _areaOrigin = new Point(Math.Min(first.X, last.X), Math.Min(first.Y, last.Y));
+        double available = _horizontal ? Math.Abs(last.X - first.X) : Math.Abs(last.Y - first.Y);
         double thickness = _horizontal ? _splitter.Bounds.Width : _splitter.Bounds.Height;
-        // Match the native overlay grid's reserved space for the document area.
-        _maximum = Math.Max(_minimum, available - thickness - 50);
-        _startSize = _horizontal ? _content.Bounds.Width : _content.Bounds.Height;
-        _targetSize = Math.Clamp(_startSize, _minimum, _maximum);
+        double areaStart = _horizontal ? _areaOrigin.X : _areaOrigin.Y;
+        // The ghost has physical limits independent of the model's size minimum.
+        _minimum = areaStart + 25;
+        _maximum = areaStart + available - (_horizontal ? 0 : _model.AutoHideMinHeight);
+        double stored = _horizontal ? _model.AutoHideWidth : _model.AutoHideHeight;
+        _startSize = stored == 0 ? (_horizontal ? _content.Bounds.Width : _content.Bounds.Height) : stored;
         _origin = _splitter.TranslatePoint(default, canvas) ?? default;
-        _preview.Width = _horizontal ? thickness : _host.Bounds.Width;
-        _preview.Height = _horizontal ? _host.Bounds.Height : thickness;
+        _targetPosition = _horizontal ? _origin.X : _origin.Y;
+        if ((_model.DockModel.PinnedDockDisplayModeOverride ?? _host.PinnedDockDisplayMode) == PinnedDockDisplayMode.Inline)
+        {
+            // Native inline content has no WPF overlay equivalent. Preserve its
+            // size-relative range when its leading splitter starts at zero.
+            double minimumSize = Dimension(_horizontal ? _model.AutoHideMinWidth : _model.AutoHideMinHeight, 100);
+            double maximumSize = Math.Max(minimumSize, available - thickness - 50);
+            double firstDelta = (minimumSize - _startSize) * _direction;
+            double lastDelta = (maximumSize - _startSize) * _direction;
+            _minimum = _targetPosition + Math.Min(firstDelta, lastDelta);
+            _maximum = _targetPosition + Math.Max(firstDelta, lastDelta);
+        }
+        _preview.Width = _horizontal ? thickness : Math.Abs(last.X - first.X);
+        _preview.Height = _horizontal ? Math.Abs(last.Y - first.Y) : thickness;
         _dragging = true;
         _inputRoot = TopLevel.GetTopLevel(_splitter);
         _inputRoot?.AddHandler(InputElement.KeyDownEvent, KeyDown, RoutingStrategies.Tunnel);
@@ -180,22 +218,22 @@ internal sealed class LayoutAutoHideResizeBehavior : IWeakEventSubscriber<Proper
     {
         if (!_dragging) return;
         double delta = _horizontal ? args.Vector.X : args.Vector.Y;
-        _targetSize = Math.Clamp(_startSize + _direction * delta, _minimum, _maximum);
+        _targetPosition = Math.Clamp((_horizontal ? _origin.X : _origin.Y) + delta, _minimum, _maximum);
         PositionPreview();
     }
 
     private void PositionPreview()
     {
         if (_preview is null) return;
-        double delta = (_targetSize - _startSize) * _direction;
-        Canvas.SetLeft(_preview, _origin.X + (_horizontal ? delta : 0));
-        Canvas.SetTop(_preview, _origin.Y + (_horizontal ? 0 : delta));
+        Canvas.SetLeft(_preview, _horizontal ? _targetPosition : _areaOrigin.X);
+        Canvas.SetTop(_preview, _horizontal ? _areaOrigin.Y : _targetPosition);
     }
 
     private void Completed(object? sender, VectorEventArgs args)
     {
         if (!_dragging || _model is not { } model) return;
-        double size = _targetSize;
+        double delta = _targetPosition - (_horizontal ? _origin.X : _origin.Y);
+        double size = _startSize + _direction * delta;
         Cancel();
         if (_horizontal) model.AutoHideWidth = size;
         else model.AutoHideHeight = size;

@@ -1184,17 +1184,23 @@ control hosts the existing `LayoutAnchorableControl` and `LayoutItem.View`.
 The native auto-hide host presents `LayoutGridResizerControl`. Manager
 `GridSplitterWidth` and `GridSplitterHeight` size its horizontal and vertical
 resize axes, including runtime changes; `NaN` uses six. The tool's
-`AutoHideMinWidth` and `AutoHideMinHeight` default to 100 and update the native
-content constraints. Size assignments clamp to the current minimum and raise
+`AutoHideMinWidth` and `AutoHideMinHeight` default to 100. An unset size uses the
+minimum when the preview opens. Size assignments clamp to the current minimum and raise
 changing/changed notifications. Negative minima throw `ArgumentException`;
-changing a minimum leaves the stored requested size intact.
+changing a minimum leaves the stored requested size and an already open preview intact.
 
 Dragging displays the public resizer's brush and opacity and commits
 `AutoHideWidth` or `AutoHideHeight` to Dock's existing pinned bounds on release.
 Escape, capture loss, disabling resizing, switching tools, replacing the layout,
 and detachment discard an unfinished drag. All four edges, right-to-left
-content, and native inline previews are supported. The native layout reserves
-50 units for remaining content. The resizer sits beside the public preview
+content, and native inline previews are supported. The ghost follows upstream
+physical limits relative to the auto-hide area: horizontal coordinates run from
+25 to the area's width, and vertical coordinates run from 25 to its height minus
+`AutoHideMinHeight`. These bounds apply before the model coerces the committed
+size to its minimum. The adapter's scoped style disables native remaining-space
+reservation and automatic initialization of unset pinned bounds; ordinary Dock
+controls retain their defaults. Dock's additional inline mode uses resize limits
+relative to the current content size. The resizer sits beside the public preview
 content in `PinnedDockControl`, so target it directly or through the manager:
 
 ```xml

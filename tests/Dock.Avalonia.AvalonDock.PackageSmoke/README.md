@@ -1,5 +1,13 @@
 # NuGet consumer smoke test
 
+Auto-hide resize probes exercise all four sides in both layout directions at
+extreme shrinking and growing positions. They compare the physical ghost
+coordinates with the upstream drag limits, retain model sizes until release,
+check committed minima and maximum sizes, and preserve the stationary content
+edge, including right and bottom anchoring. The fixture loads the packaged
+AvalonDock theme before attaching its manager. All 16 checks fail against the
+preceding `9321b1af1` packages.
+
 Manager key-down probes exercise the protected Shift+F10 base hook through an
 external subclass, model/visual active content, origin placement, custom controls
 without a layout item, cancellation, suppression, and the opening key release.

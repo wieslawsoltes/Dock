@@ -861,17 +861,24 @@ property value without a base callback does not retime an initialized timer.
 Auto-hide previews use `LayoutGridResizerControl` in the native pinned host.
 `GridSplitterWidth` sizes the left/right resizer and `GridSplitterHeight` sizes
 the top/bottom resizer; changes apply immediately, with six as the `NaN`
-fallback. `AutoHideMinWidth` and `AutoHideMinHeight` default to 100 and constrain
-the native content. Assigning `AutoHideWidth` or `AutoHideHeight` clamps the value
+fallback. `AutoHideMinWidth` and `AutoHideMinHeight` default to 100. An unset
+size uses the minimum when the preview opens. Assigning `AutoHideWidth` or `AutoHideHeight` clamps the value
 to its current minimum, with changing/changed notifications; negative minima
-throw `ArgumentException`. Changing a minimum does not rewrite the stored size.
+throw `ArgumentException`. Changing a minimum does not rewrite the stored size
+or enlarge an already open preview.
 
 Drag previews use `BackgroundWhileDragging` and `OpacityWhileDragging` and
 commit the size on release. Escape, lost capture, disabled resizing, model or
 layout replacement, and detachment discard an unfinished drag. The behavior
 supports every edge, right-to-left content, and Dock's inline preview mode.
-Native layout reserves 50 units for the remaining content area. The resizer is
-a sibling of the public preview content in `PinnedDockControl`, so styles for
+The ghost follows the upstream physical limits: horizontal movement runs from
+25 to the auto-hide area's width; vertical movement runs from 25 to its height
+minus `AutoHideMinHeight`. The stored size changes only on release, when its
+minimum is applied. The adapter disables native remaining-space reservation and
+automatic initialization of unset pinned bounds through its scoped style.
+Dock's additional inline mode uses resize limits relative to the current content size.
+Ordinary Dock controls retain their defaults. The resizer is a sibling of the
+public preview content in `PinnedDockControl`, so styles for
 it should target `LayoutGridResizerControl` directly or through the manager.
 
 The preview is created when the manager loads. Derived managers can use
@@ -885,6 +892,8 @@ tool to Inline mode returns its editor to the manager. The resizer remains in
 the manager's pinned host. Windows 11 ARM64 desktop validation covers native
 pointer resizing and editor focus on all four edges. The Avalonia control does
 not provide WPF's `HwndHost` or its Win32 child-window hooks.
+`HasFocusWithinCore` retains the upstream base hook's `false` result; use
+Avalonia's `IsKeyboardFocusWithin` to observe actual preview focus.
 
 Floating document captions use `DocumentTitleTemplate` and its selector with the
 public `LayoutDocument` from `LayoutDocumentFloatingWindow.RootDocument`:

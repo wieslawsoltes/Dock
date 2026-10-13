@@ -36,9 +36,9 @@ Acceptance requirements:
 - Release builds and NuGet pack/consumer validation for supported frameworks;
   CI integration and an open PR with incremental commits.
 
-The latest automated contract pass contains **3,846 adapter cases and 30 rendering
-cases**, with no skipped cases. It includes the 29 manager key-down and 15 inherited-control-property
-cases described below. The matrix makes the acceptance evidence explicit; it
+The latest automated contract pass contains **3,876 adapter cases and 30 rendering
+cases**, with no skipped cases. It includes 30 added auto-hide focus/resize cases,
+alongside the earlier manager key-down and inherited-control-property cases described below. The matrix makes the acceptance evidence explicit; it
 replaces the former open-ended lists of manager, interface, callback, and default
 work. Each contract remains subject to the framework boundaries and deferred
 interactive checks at the end of this document. This is not a claim of exact WPF
@@ -104,7 +104,8 @@ The native projects have no reference to the AvalonDock assembly or namespaces.
 | Close a host while retaining its layout | Desktop and managed host policy implementations; managed reentrancy and replacement-host handling | Deferred WPF ordering and public collection semantics |
 | Collect empty layouts before `Closed` | `HostWindow.OnClosedCore(EventArgs, IDockWindow?)` after capturing the original model/factory and closed state ([PR #1176](https://github.com/wieslawsoltes/Dock/pull/1176)) | Captured-root collection, typed subscriptions, binding cleanup, and callback failure order |
 | Custom docking overlays | Scoped window factories/themes, enclosing preview hosts, selector registrations, `IDockTargetPresentation` and geometry | AvalonDock named window parts, preview path, selector mapping, and public snapshots |
-| Pixel/auto/star sizing and resize previews | Custom splitter host, native tracker/input, preview properties, pinned minima and custom thumb support | Public grid lengths, normalization, and size notifications |
+| Pixel/auto/star sizing and resize previews | Custom splitter host, native tracker/input, preview properties, pinned sizing and custom thumb support | Public grid lengths, normalization, and size notifications |
+| Auto-hide resize limits and unset sizes | `PinnedDockControl.MinimumRemainingContentSize` and `InitializePinnedBoundsOnLayout` ([PR #1183](https://github.com/wieslawsoltes/Dock/pull/1183)); defaults remain 50 and true | Scoped zero/false settings, initial fallback dimensions, physical ghost bounds, and commit-time model coercion |
 | Stable presentation and cleanup | Deferred root presentation, create-button coexistence, hidden-window filtering and tool-menu lifetime fixes | Public templates, layout items, themes, and retained-model subscriptions |
 
 The [native extension guide](https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-extension-policies.md)
@@ -1097,7 +1098,7 @@ below rather than automatic discovery.
 - `LayoutGridResizerControl` uses native proportional splitter input and preview
   commit/cancel behavior. Its brush and opacity settings update an active preview.
   Auto-hide templates expose the same public control over native pinned bounds:
-  manager width/height settings and tool minima update the displayed host,
+  manager width/height settings update the displayed host,
   every edge and right-to-left content supports preview/commit, and interrupted
   drags cancel. Native inline previews also resize. Size assignments clamp to
   the current minimum, preserve native bounds, and raise changing/changed events;
@@ -1780,6 +1781,41 @@ Shift+F10 configuration on the headless platform. Thirteen package-only checks
 all fail against the preceding `c7a9b8699` package. The complete adapter suite
 passes 3,846 cases; the 30 rendering cases pass separately.
 
+## Auto-hide focus and resize contracts
+
+The auto-hide focus base hook returns `false`, matching upstream, while
+Avalonia's `IsKeyboardFocusWithin` reports actual focus independently. Two
+Headless cases fail against the preceding implementation and verify focus on
+the preview, within its content, and outside it.
+
+Resize ghosts use physical coordinates relative to the auto-hide area. The
+horizontal interval is 25 through the area's width; the vertical interval is
+25 through its height minus `AutoHideMinHeight`. Model minima apply when the
+size is committed, so the ghost can move beyond the eventual minimum content
+size. Completion adds the signed ghost movement to the stored size, or to the
+displayed size when the stored value is zero. In normal untransformed layout,
+the maximum committed sizes are the area width on the left, width minus 25 and
+splitter thickness on the right, height minus the minimum height on top, and
+height minus 25 and splitter thickness on the bottom.
+
+An unset size uses the initial minimum when opening and remains unset until
+an assignment or successful resize. Later minimum changes do not enlarge the
+open preview. Inactive-axis assignments also preserve that initial fallback.
+Switching models or detaching the behavior restores temporary content sizing.
+The scoped native settings disable remaining-space reservation and automatic
+size initialization; native controls outside the adapter retain their defaults.
+Right-to-left content, all edges, inline previews, interrupted drags, runtime
+splitter dimensions, and native content anchoring have targeted coverage.
+Dock's additional inline mode retains limits relative to the content size;
+the upstream physical ghost intervals apply to overlay previews.
+
+Sixteen package-consumer checks all fail against `9321b1af1`, covering extreme
+shrink/grow movement, ghost positions, deferred commit, rendered sizes, and
+stationary content edges. The native prerequisite has 36 new cases and passes
+1,623 native Headless tests plus four Avalonia 11 tests.
+The integrated focus/resize pass contains 61 cases, and the complete adapter suite
+passes 3,876 cases. All 30 rendering cases pass separately, with none skipped.
+
 ## Framework boundaries and deferred desktop checks
 
 The adapter implements the Avalonia migration contracts documented here. The
@@ -1795,7 +1831,7 @@ Dock features or hidden by the API inventory:
 | Standalone controls | Controls accept model assignment before a manager is attached, refresh their container on attachment, and initialize enablement immediately. These are documented Avalonia integration extensions. |
 | XML/custom resources | Custom CLR XML types and compiled resource URIs use typed factory registration. Runtime assembly discovery and arbitrary WPF resource loading are absent. Custom model hooks still participate through their public virtual methods. |
 | Additional floating layouts | Generic/mixed Dock groups use the additional `LayoutGroupFloatingWindow` XML element, which WPF cannot consume. Hidden/pinned contents inside a floating root, nested windows, and incompatible typed-window mutations are rejected before a file is overwritten. |
-| Auto-hide layout | Content and resizers use Dock's pinned host and retain its 50-unit remaining-content constraint. Its visual tree differs from WPF's popup grid. |
+| Auto-hide layout | Content and resizers use Dock's pinned host with adapter-controlled spacing and unset-size persistence. Physical resize ghost limits follow upstream; the visual tree differs from WPF's popup grid. |
 | Preview geometry | Full-content source snapshots are implemented and enabled by default. Exact projected destination layouts remain disabled because the stock clone cannot reproduce the adapter's custom grids and typed policies; the documented half/third destination indicators remain available. |
 | Framework initialization and input | Avalonia initialization, capture, routed input, window decoration, and focus behavior remain platform contracts. Source-level hooks and automated tests do not establish identical OS behavior. |
 

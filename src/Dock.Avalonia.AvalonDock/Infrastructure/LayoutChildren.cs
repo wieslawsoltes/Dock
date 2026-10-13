@@ -18,6 +18,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
     private readonly Func<IList<IDockable>?> _getSource;
     private readonly Action<IList<IDockable>> _setSource;
     private readonly bool _visible;
+    private readonly Action? _notifyOwner;
     private IList<IDockable> _source = null!;
     private bool _syncing;
     private LayoutElement? _pendingAttachment;
@@ -27,14 +28,16 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
     public event Action? NotificationCompleted;
 
     internal LayoutChildren(LayoutElement owner, DockBase model,
-        Func<IList<IDockable>?>? getSource = null, Action<IList<IDockable>>? setSource = null)
+        Func<IList<IDockable>?>? getSource = null, Action<IList<IDockable>>? setSource = null, Action? notifyOwner = null)
     {
         _owner = owner;
         _model = model;
         _visible = getSource is null;
+        _notifyOwner = notifyOwner;
         _getSource = getSource ?? (() => model.VisibleDockables);
         _setSource = setSource ?? (value => model.VisibleDockables = value);
         Reconnect();
+        CollectionChanged += ApplyCollectionChange;
     }
 
     internal void Reconnect()
@@ -112,6 +115,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
 
     protected override void InsertItem(int index, T item)
     {
+        CheckReentrancy();
         if (index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
         LayoutElement element = Prepare(item);
         Mutate(() =>
@@ -127,6 +131,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
 
     protected override void RemoveItem(int index)
     {
+        CheckReentrancy();
         LayoutElement element = (LayoutElement)(ILayoutElement)this[index];
         Mutate(() =>
         {
@@ -137,6 +142,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
 
     protected override void SetItem(int index, T item)
     {
+        CheckReentrancy();
         LayoutElement old = (LayoutElement)(ILayoutElement)this[index];
         // ObservableCollection still publishes a replacement for the same
         // instance. Its parent detach/attach hooks are part of that contract;
@@ -163,19 +169,6 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         IsNotifying = true;
         try
         {
-            // Public edits detach removed models before selection and group
-            // observers. During native projection, Dock owns the transition;
-            // projected auto-hide removals must not detach a moving model.
-            if (!IsRefreshingSource && (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace) && e.OldItems is { } oldItems)
-                foreach (object? item in oldItems)
-                    if (item is LayoutElement old && ReferenceEquals(old.Parent, _owner)) old.Parent = null;
-            // ObservableCollection has inserted the item at this point, so parent
-            // hooks can resolve its index. Publish only after native initialization.
-            if (_pendingAttachment is { } attachment)
-            {
-                _pendingAttachment = null;
-                Attach(attachment);
-            }
             base.OnCollectionChanged(e);
         }
         finally
@@ -185,8 +178,24 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         }
     }
 
+    private void ApplyCollectionChange(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        // Parent and group hooks belong to one collection subscriber, as in
+        // AvalonDock. The BCL reentrancy guard covers the entire hook sequence.
+        if (!IsRefreshingSource && (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace) && e.OldItems is { } oldItems)
+            foreach (object? item in oldItems)
+                if (item is LayoutElement old && ReferenceEquals(old.Parent, _owner)) old.Parent = null;
+        if (_pendingAttachment is { } attachment)
+        {
+            _pendingAttachment = null;
+            Attach(attachment);
+        }
+        _notifyOwner?.Invoke();
+    }
+
     protected override void MoveItem(int oldIndex, int newIndex)
     {
+        CheckReentrancy();
         if (newIndex < 0 || newIndex >= Count) throw new ArgumentOutOfRangeException(nameof(newIndex));
         Mutate(() =>
         {
@@ -232,6 +241,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
 
     protected override void ClearItems()
     {
+        CheckReentrancy();
         Mutate(() =>
         {
             foreach (T child in this) ((LayoutElement)(ILayoutElement)child).DockModel.Owner = null;

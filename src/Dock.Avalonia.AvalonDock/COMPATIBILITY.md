@@ -1582,6 +1582,32 @@ Headless cases and four external package checks cover these contracts.
 All four external checks reproduce the prior defects in `815d9fb09`. The
 consolidated run passes 3,626 adapter cases and all 30 rendering cases.
 
+### Collection callback reentrancy
+
+Pane children, hidden tools, and floating windows now run parent/group hooks
+inside the collection's internal subscriber. Nested public edits check BCL
+reentrancy before changing native membership. The single internal subscriber
+still permits nested edits; additional subscribers reject add/remove/replace/
+move/clear atomically. Floating projection retains immediate nested edits and
+single replacement notifications, including shown-host closure and callbacks
+that remove, replace, or move an incoming window. A failed insertion can be
+retried to complete native ownership and host presentation.
+
+Native [PR #1182](https://github.com/wieslawsoltes/Dock/pull/1182) prevents
+`AddWindow`/`InsertWindow` from initializing a registration removed by collection
+or `WindowAdded` callbacks. Transfers preserve the destination owner. It passed
+2,418 native tests, including 18 new callback cases, before merge to `master`
+and reintegration. This merge also includes the new splitter initialization
+fix from [PR #1180](https://github.com/wieslawsoltes/Dock/pull/1180), which enables
+preview settings on splitters inserted into existing proportional docks, and
+the 12.1.0.9 package version update.
+
+The adapter adds 54 Headless cases and 27 package checks. Twenty-four package
+checks reproduce the previous defects at `26f941518`; three allowed pane/hidden
+nested additions already passed. The consolidated result is recorded with this
+checkpoint's validation evidence: all 3,680 adapter cases and 30 rendering cases
+pass, with no skipped cases.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering

@@ -1466,6 +1466,16 @@ the `ChildrenCount` notification; an earlier exception prevents later callbacks.
 Native Dock operations retain ownership of their intermediate transitions and
 auto-hide projections.
 
+Parent and group callbacks run inside the observable collection's reentrancy
+scope. With an additional `CollectionChanged` subscriber, nested add, remove,
+replace, move, and clear operations throw `InvalidOperationException` before
+changing either public or native membership. With only the internal subscriber,
+permitted nested edits are visible before the callback returns. This applies to
+pane children, hidden tools, and floating windows. A callback may remove or
+replace an incoming floating window before its native host is initialized;
+Dock cancels that registration. Retrying an insertion whose property callback
+threw completes ownership and host presentation.
+
 Layout objects inherit Avalonia's sealed identity equality: application layout
 subclasses cannot override `Equals` or `GetHashCode` as upstream CLR models can.
 Child collections require Dock-backed elements and reject duplicate membership

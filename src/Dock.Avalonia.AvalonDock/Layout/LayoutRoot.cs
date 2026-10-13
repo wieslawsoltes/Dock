@@ -201,6 +201,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     /// <remarks>
     /// Indexed replacement publishes one replacement notification after parent hooks and retains native host close cancellation.
     /// A failing public callback leaves completed collection and parent phases in place; assigning the entry again can retry attachment.
+    /// Parent hooks participate in observable collection reentrancy checks before nested edits change native membership.
     /// </remarks>
     public ObservableCollection<LayoutFloatingWindow> FloatingWindows => _floatingWindows;
     /// <inheritdoc/>

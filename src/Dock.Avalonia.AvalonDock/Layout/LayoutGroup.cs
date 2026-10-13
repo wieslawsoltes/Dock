@@ -20,22 +20,24 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutContainer, ILayou
 
     internal LayoutGroup(DockBase model, LayoutModelContext? context = null) : base(model, context)
     {
-        _children = new LayoutChildren<T>(this, model);
-        _children.CollectionChanged += (_, _) =>
-        {
-            ComputeVisibility();
-            OnChildrenCollectionChanged();
-            NotifyChildrenTreeChanged(ChildrenTreeChange.DirectChildrenChanged);
-            RaisePropertyChanged(nameof(ChildrenCount));
-        };
+        _children = new LayoutChildren<T>(this, model, notifyOwner: NotifyChildrenChanged);
         // Native trees may already have parents and children when first wrapped.
         // Empty, detached public groups retain AvalonDock's initial visible state.
         if (model.Owner is not null || _children.Count > 0) ComputeVisibility();
     }
 
+    private void NotifyChildrenChanged()
+    {
+        ComputeVisibility();
+        OnChildrenCollectionChanged();
+        NotifyChildrenTreeChanged(ChildrenTreeChange.DirectChildrenChanged);
+        RaisePropertyChanged(nameof(ChildrenCount));
+    }
+
     /// <summary>Gets the mutable children, synchronized with Dock.</summary>
     /// <remarks>
     /// Replacing an entry with the same instance still detaches and reattaches its parent and publishes a replacement notification.
+    /// Parent and group callbacks participate in observable collection reentrancy checks; rejected edits leave native membership unchanged.
     /// Incoming parent callbacks observe the completed target collection membership.
     /// </remarks>
     [Content]

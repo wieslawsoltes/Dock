@@ -199,7 +199,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 3,035 cases, including 47 XML write-attribute, inheritance, identifier,
+- The consolidated adapter suite passes all 3,052 cases, including 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
   cases, plus 63 numeric XML
@@ -896,8 +896,14 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   longer receive generated IDs. Explicit empty pane IDs remain supported, native
   group references receive IDs, and unsupported return-container kinds are omitted.
   Nine concrete/base write overrides now have matching source-presence keys.
-  Remaining XML work includes the broader inherited-hook, root-format edge-case,
-  and write-contract audit (including nested write-error boundaries, namespaces,
+  Seven group read overrides now follow the class inheritance chain; additional
+  interfaces do not cause unrelated metadata restoration. Seventeen regression
+  cases cover direct/registered readers, callback order, suppressed base calls,
+  external `LayoutGroupBase` construction, native ownership, and notification hooks.
+  Three external reader probes reproduce the preceding package defects; a separate
+  compile probe reproduces the missing protected base constructor. The implicit
+  upstream constructor is not represented by the source-presence inventory.
+  Remaining XML work includes root-format edge cases and the write-contract audit (including nested write-error boundaries, namespaces,
   and broader culture changes). Compact roots with omitted empty sections and persisted native
   root-panel metadata remain adapter extensions to the canonical upstream format.
   Assigning a return container raises only its changed notification, then initializes
@@ -1323,8 +1329,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   beyond the recorded close lifecycle scenarios remains open.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy
   tests; they do not establish full platform or floating-window parity.
-- Complete the remaining interface implementations, protected hooks, and inherited
-  XML methods. Layout traversal/group methods and the visual/logical tree helpers
+- Complete the remaining interface implementations, protected hooks, and inheritance
+  behavior. Layout traversal/group methods and the visual/logical tree helpers
   have the targeted audits recorded above; those checks do not establish all
   interface implementation behavior. The declaration review maps counterparts
   without establishing full signature or behavior equivalence.
@@ -1354,8 +1360,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 831
-matching type/member keys and 120 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 838
+matching type/member keys and 113 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

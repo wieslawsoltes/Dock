@@ -30,7 +30,6 @@ internal static class LayoutXmlDeserializer
     {
         ArgumentNullException.ThrowIfNull(reader);
         element.VerifyAccess();
-        if (element is ILayoutGroup) LayoutGroupXml.ReadMetadata(element, reader);
         reader.MoveToContent();
         bool empty = reader.IsEmptyElement;
         foreach (LayoutElement child in ReadChildren(reader))
@@ -55,7 +54,6 @@ internal static class LayoutXmlDeserializer
             }
         }
         if (empty && element is ILayoutElementWithVisibility visibility) visibility.ComputeVisibility();
-        if (element is LayoutAnchorablePane pane) pane.CompleteXmlRead();
     }
 
     internal static void ReadRoot(LayoutRoot root, XmlReader reader)
@@ -77,7 +75,8 @@ internal static class LayoutXmlDeserializer
                 case "RootPanel":
                     if ((seen & RootSections.Panel) != 0) throw new XmlException("A layout can contain only one RootPanel.");
                     LayoutPanel panel = new();
-                    LayoutGroupXml.ReadMetadata(panel, reader);
+                    LayoutGroupXml.ReadOrientable(panel, panel, reader);
+                    LayoutGroupXml.ReadPositionable(panel, panel, reader);
                     List<ILayoutPanelElement> panels = new();
                     foreach (LayoutElement child in ReadChildren(reader)) panels.Add((ILayoutPanelElement)child);
                     root.RootPanel = panel;

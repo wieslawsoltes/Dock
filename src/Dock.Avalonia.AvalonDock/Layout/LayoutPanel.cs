@@ -8,6 +8,13 @@ namespace AvalonDock.Layout;
 /// <summary>A split panel containing document and anchorable panes.</summary>
 public class LayoutPanel : LayoutPositionableGroup<ILayoutPanelElement>, ILayoutOrientableGroup
 {
+    /// <summary>Restores this group's metadata before its inherited dimensions and children.</summary>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutGroupXml.ReadOrientable(this, this, reader);
+        base.ReadXml(reader);
+    }
+
     /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
     public override void WriteXml(XmlWriter writer)
     {

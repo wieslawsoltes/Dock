@@ -7,6 +7,13 @@ namespace AvalonDock.Layout;
 /// <summary>A group of tools in an auto-hide strip.</summary>
 public class LayoutAnchorGroup : LayoutGroup<LayoutAnchorable>
 {
+    /// <summary>Restores this group's metadata before its children.</summary>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutGroupXml.ReadAnchorGroup(this, reader);
+        base.ReadXml(reader);
+    }
+
     /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
     public override void WriteXml(XmlWriter writer)
     {

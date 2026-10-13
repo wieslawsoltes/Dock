@@ -1,4 +1,5 @@
 using System;
+using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using AvalonDock.Infrastructure;
 
@@ -25,6 +26,8 @@ public class ChildrenTreeChangedEventArgs : EventArgs
 /// <summary>Base for groups exposing collection and tree notifications.</summary>
 public abstract class LayoutGroupBase : LayoutElement
 {
+    /// <summary>Creates an application-defined group backed by a native Dock container.</summary>
+    protected LayoutGroupBase() : this(new ProportionalDock()) { }
     internal LayoutGroupBase(DockBase model, LayoutModelContext? context = null) : base(model, context) { }
 
     /// <summary>Occurs when the immediate children change.</summary>

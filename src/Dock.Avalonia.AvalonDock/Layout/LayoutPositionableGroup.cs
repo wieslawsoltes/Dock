@@ -34,6 +34,14 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
         if (double.IsNaN(model.MinHeight)) model.MinHeight = 25;
     }
 
+    /// <summary>Restores stored dimensions and native options before appending children.</summary>
+    /// <remarks>Stored dimensions restore without public setter notifications or size propagation.</remarks>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutGroupXml.ReadPositionable(this, this, reader);
+        base.ReadXml(reader);
+    }
+
     /// <summary>Writes nondefault dimensions and native options before the group's children.</summary>
     public override void WriteXml(XmlWriter writer)
     {

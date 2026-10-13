@@ -10,6 +10,15 @@ namespace AvalonDock.Layout;
 /// <summary>A tabbed tool pane backed by a Dock tool dock.</summary>
 public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, ILayoutAnchorablePane, ILayoutContentSelector, ILayoutPaneSelection
 {
+    /// <summary>Restores this group's metadata before its inherited dimensions and children.</summary>
+    /// <remarks>Automatic selection waits for success; explicit selection stays immediate. A failed read leaves fallback disabled until a successful read.</remarks>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutGroupXml.ReadAnchorablePane(this, reader);
+        base.ReadXml(reader);
+        CompleteXmlRead();
+    }
+
     /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
     public override void WriteXml(XmlWriter writer)
     {

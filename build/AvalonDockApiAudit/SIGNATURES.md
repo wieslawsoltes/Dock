@@ -1,14 +1,14 @@
 # Declaration-shape review
 
-The pinned inventory contains 951 declarations; 831 now have matching presence
+The pinned inventory contains 951 declarations; 838 now have matching presence
 keys. The signature review covered the preceding 820 matching keys, then inspected
 accessibility, virtual/static modifiers, generic constraints, and differing
 base/interface declarations. The two newly declared document/tool `ReadXml`
 overrides match the upstream public override signature after BCL qualification
 normalization and add no textual signature differences. Nine newly declared
-`WriteXml` overrides also match the upstream public override signatures. This is a declaration
-review, not evidence that every default, callback, visual tree, or operation is
-behaviorally equivalent.
+`WriteXml` overrides and seven group `ReadXml` overrides also match the upstream
+public override signatures. This is a declaration review, not evidence that every
+default, callback, visual tree, or operation is behaviorally equivalent.
 
 The review found three source compatibility defects hidden by a matching key:
 `ILayoutUpdateStrategy.BeforeInsertDocument` must name its document argument
@@ -16,6 +16,14 @@ The review found three source compatibility defects hidden by a matching key:
 `LayoutAnchorablePaneGroup` constructor must use `firstChild`. The adapter now
 preserves these names. `UpdateStrategyTests` compiles calls using all three
 upstream named arguments and checks their supplied values.
+
+A separate external-consumer check found that `LayoutGroupBase` was missing the
+protected parameterless constructor supplied implicitly by upstream. The adapter
+now provides that constructor with a native Dock container. Because the upstream
+syntax inventory contains no explicit constructor, the presence-key count cannot
+identify this defect. External compilation and native ownership/notification tests
+cover it. The upstream constructors on `LayoutElement`, `LayoutContent`, and
+`LayoutGroup<T>` are explicitly internal; those are not exposed for external use.
 
 The remaining 186 textual signature differences are recorded individually in
 [`signature-review.tsv`](signature-review.tsv). The comparison normalizes the
@@ -73,6 +81,6 @@ virtual default for the upstream abstract `LayoutGroup<T>.GetVisibility` hook.
 Existing subclasses can still override that hook; the adapter additionally
 allows its inherited default. Hook routing and ordering are validated separately.
 
-The 120 keys without exact source matches remain in
+The 113 keys without exact source matches remain in
 [`portability-review.tsv`](portability-review.tsv). Neither review closes the
 remaining semantic and platform work in the compatibility checklist.

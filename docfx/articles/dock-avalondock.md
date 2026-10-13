@@ -2801,6 +2801,17 @@ values are written back to XML. Subsequent native docking-state changes update
 the floating flag. Full layout restoration continues to build native placement
 from the layout hierarchy; a persisted focus flag does not activate its content.
 
+Group readers follow their class inheritance: concrete panes and orientable
+groups restore their own metadata, `LayoutPositionableGroup<T>` restores dimensions,
+and `LayoutGroup<T>` reads children. Adding an interface to an application subclass
+does not make the base reader process that interface's attributes. Registered
+custom overrides can call the appropriate base reader and retain the live reader
+context. Suppressing a base call also suppresses that level's metadata and children.
+
+Application classes may derive from `LayoutGroupBase` through its protected
+parameterless constructor. Each instance receives its own native Dock container;
+parent/root identity and protected collection/tree notification hooks remain usable.
+
 Group `ReadXml` restores stored docked/floating dimensions, IDs, tool-pane
 names, and document header flags without public setter notifications or pixel-size
 propagation. Native minimum values still update the existing Dock model. Public

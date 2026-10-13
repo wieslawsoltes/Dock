@@ -10,6 +10,13 @@ namespace AvalonDock.Layout;
 /// <summary>A tabbed document pane backed by a Dock document dock.</summary>
 public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayoutDocumentPane, ILayoutContentSelector, ILayoutPaneSelection
 {
+    /// <summary>Restores this group's metadata before its inherited dimensions and children.</summary>
+    public override void ReadXml(XmlReader reader)
+    {
+        LayoutGroupXml.ReadDocumentPane(this, reader);
+        base.ReadXml(reader);
+    }
+
     /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
     public override void WriteXml(XmlWriter writer)
     {

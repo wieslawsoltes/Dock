@@ -41,15 +41,13 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     public int ChildrenCount => Children.Count;
     /// <summary>Returns no custom XML schema.</summary>
     public XmlSchema? GetSchema() => null;
-    /// <summary>Reads group metadata and appends children to the live native container.</summary>
+    /// <summary>Appends XML children to the live native container.</summary>
     /// <remarks>
-    /// Stored dimensions, pane names, and header flags restore silently. Orientation and child changes retain their ordinary notifications.
-    /// Tool panes defer automatic selection until a read succeeds; explicit selection remains immediate.
-    /// A failed tool-pane read leaves automatic selection disabled until a later successful read.
-    /// The caller's reader stays live; a later read error retains preceding metadata and appended children.
+    /// Derived model overrides restore their metadata before reading children. This base does not infer metadata from additional interfaces.
+    /// The caller's reader stays live; a later read error retains preceding changes and appended children.
     /// </remarks>
     public virtual void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadContainer(this, reader);
-    /// <summary>Writes group metadata and children inside the caller's XML element.</summary>
+    /// <summary>Writes children inside the caller's XML element after any derived metadata.</summary>
     public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <inheritdoc/>
     public bool IsVisible

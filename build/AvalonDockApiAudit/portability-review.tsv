@@ -110,12 +110,5 @@ Xceed.Wpf.AvalonDock.DockingManager|method:OnRightSidePanelChanged(DependencyPro
 Xceed.Wpf.AvalonDock.DockingManager|method:OnThemeChanged(DependencyPropertyChangedEventArgs)	Avalonia property callback argument	AvalonDock.DockingManager|method:OnThemeChanged(AvaloniaPropertyChangedEventArgs)
 Xceed.Wpf.AvalonDock.DockingManager|method:OnTopSidePanelChanged(DependencyPropertyChangedEventArgs)	Avalonia property callback argument	AvalonDock.DockingManager|method:OnTopSidePanelChanged(AvaloniaPropertyChangedEventArgs)
 Xceed.Wpf.AvalonDock.DockingManager|property:LogicalChildren	Inherited Avalonia logical children collection	Avalonia.StyledElement.LogicalChildren / Avalonia.LogicalTree.ILogical.LogicalChildren
-Xceed.Wpf.AvalonDock.Layout.LayoutAnchorGroup|method:ReadXml(System.Xml.XmlReader)	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:ReadXml(System.Xml.XmlReader)
 Xceed.Wpf.AvalonDock.Layout.LayoutAnchorablePaneGroup|method:OnIsVisibleChanged()	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:OnIsVisibleChanged()
-Xceed.Wpf.AvalonDock.Layout.LayoutAnchorablePaneGroup|method:ReadXml(System.Xml.XmlReader)	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:ReadXml(System.Xml.XmlReader)
-Xceed.Wpf.AvalonDock.Layout.LayoutAnchorablePane|method:ReadXml(System.Xml.XmlReader)	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:ReadXml(System.Xml.XmlReader)
-Xceed.Wpf.AvalonDock.Layout.LayoutDocumentPaneGroup|method:ReadXml(System.Xml.XmlReader)	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:ReadXml(System.Xml.XmlReader)
 Xceed.Wpf.AvalonDock.Layout.LayoutDocumentPane|method:OnIsVisibleChanged()	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:OnIsVisibleChanged()
-Xceed.Wpf.AvalonDock.Layout.LayoutDocumentPane|method:ReadXml(System.Xml.XmlReader)	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:ReadXml(System.Xml.XmlReader)
-Xceed.Wpf.AvalonDock.Layout.LayoutPanel|method:ReadXml(System.Xml.XmlReader)	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:ReadXml(System.Xml.XmlReader)
-Xceed.Wpf.AvalonDock.Layout.LayoutPositionableGroup<T>|method:ReadXml(System.Xml.XmlReader)	Inherited adapter member	AvalonDock.Layout.LayoutGroup<T>|method:ReadXml(System.Xml.XmlReader)

@@ -12,28 +12,61 @@ namespace AvalonDock.Infrastructure;
 // if a later attribute fails. Stored dimensions do not invoke public setters.
 internal static class LayoutGroupXml
 {
-    internal static void ReadMetadata(LayoutElement element, XmlReader reader)
+    private static void Prepare(LayoutElement element, XmlReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);
         element.VerifyAccess();
         if (reader.ReadState == ReadState.Initial) reader.MoveToContent();
-        if (element is ILayoutPositionableGroup or LayoutAnchorGroup && Attribute(reader, "Id") is { } id)
+    }
+
+    private static void Identifier(LayoutElement element, XmlReader reader)
+    {
+        if (Attribute(reader, "Id") is { } id)
         {
             element.HasExplicitXmlId = true;
             element.RestoreXmlProperty(DockableBase.IdProperty, id);
         }
-        if (element is LayoutDocumentPane documents && Attribute(reader, "ShowHeader") is { } header)
-            documents.RestoreShowHeader(bool.Parse(header));
-        if (element is LayoutAnchorablePane tools)
-        {
-            if (Attribute(reader, "Name") is { } name) tools.RestoreName(name);
-            tools.BeginXmlRead();
-        }
-        if (element is LayoutAnchorGroup group && Attribute(reader, "PreviousContainerId") is { } previous)
+    }
+
+    internal static void ReadDocumentPane(LayoutDocumentPane pane, XmlReader reader)
+    {
+        Prepare(pane, reader);
+        Identifier(pane, reader);
+        if (Attribute(reader, "ShowHeader") is { } header) pane.RestoreShowHeader(bool.Parse(header));
+    }
+
+    internal static void ReadAnchorablePane(LayoutAnchorablePane pane, XmlReader reader)
+    {
+        Prepare(pane, reader);
+        Identifier(pane, reader);
+        if (Attribute(reader, "Name") is { } name) pane.RestoreName(name);
+        pane.BeginXmlRead();
+    }
+
+    internal static void ReadAnchorGroup(LayoutAnchorGroup group, XmlReader reader)
+    {
+        Prepare(group, reader);
+        Identifier(group, reader);
+        if (Attribute(reader, "PreviousContainerId") is { } previous)
             group.PreviousContainerId = previous;
-        if (element is ILayoutOrientableGroup orientable && Attribute(reader, "Orientation") is { } direction)
-            orientable.Orientation = Enum.Parse<Orientation>(direction, ignoreCase: true);
-        if (element is not ILayoutPositionableGroup position) return;
+    }
+
+    internal static void ReadOrientable(LayoutElement element, ILayoutOrientableGroup group, XmlReader reader)
+    {
+        Prepare(element, reader);
+        Identifier(element, reader); // Native group return-location extension.
+        if (Attribute(reader, "Orientation") is { } direction)
+            group.Orientation = Enum.Parse<Orientation>(direction, ignoreCase: true);
+    }
+
+    internal static void ReadPositionable(LayoutElement element, ILayoutPositionableGroup position, XmlReader reader)
+    {
+        Prepare(element, reader);
+        // Concrete panes and orientable groups have already read their identifier.
+        // An application deriving directly from this base can also restore a
+        // native group return identifier, without inferring additional metadata.
+        if (element is not (LayoutDocumentPane or LayoutAnchorablePane or LayoutPanel or LayoutDocumentPaneGroup or LayoutAnchorablePaneGroup))
+            Identifier(element, reader);
         if (Attribute(reader, "DockWidth") is { } width)
             position.RestoreDockLengths(GridLength.Parse(width), position.DockHeight);
         if (Attribute(reader, "DockHeight") is { } height)

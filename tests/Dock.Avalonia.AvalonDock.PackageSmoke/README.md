@@ -289,3 +289,8 @@ read hooks with the original depth, line information, and following siblings.
 The XML write probe checks attribute omission and boolean spellings, tool/base
 metadata order, whitespace-only strings, unchanged unreferenced pane identifiers,
 and base write behavior on an external group with additional layout interfaces.
+
+The read-inheritance probe checks that extra interfaces do not add metadata to
+an inherited XML reader, both directly and through a registered custom factory.
+The base-group probe derives `LayoutGroupBase` in this external assembly and
+checks native ownership, root identity, and protected collection/tree hooks.

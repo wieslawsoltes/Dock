@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -11,6 +12,7 @@ using Avalonia.Threading;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
+using AvalonDock.Themes;
 
 namespace PackageConsumer;
 
@@ -117,9 +119,9 @@ internal static class ManagerKeyDownProbe
         KeyModifiers = KeyModifiers.Shift
     };
 
-    private static void Require(bool condition)
+    private static void Require(bool condition, [CallerArgumentExpression(nameof(condition))] string? expression = null)
     {
-        if (!condition) throw new InvalidOperationException("Manager key-down contract changed.");
+        if (!condition) throw new InvalidOperationException("Manager key-down contract changed: " + expression);
     }
 
     private sealed class ManagerProbe : DockingManager
@@ -150,7 +152,9 @@ internal static class ManagerKeyDownProbe
             Manager = new() { Layout = new() { RootPanel = new(pane) } };
             if (tool) Manager.AnchorableContextMenu = Menu;
             else Manager.DocumentContextMenu = Menu;
-            Window = new() { Content = Manager, Width = 500, Height = 300 };
+            Window = new() { Width = 500, Height = 300 };
+            Window.Styles.Add(new AvalonDockTheme());
+            Window.Content = Manager;
             _hotkeys = Application.Current!.PlatformSettings!.HotkeyConfiguration;
             _contextMenuKeys = _hotkeys.OpenContextMenu;
             _hotkeys.OpenContextMenu = new(_contextMenuKeys) { new(Key.F10, KeyModifiers.Shift) };

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
+using Avalonia.Rendering.Composition;
 using Orientation = Avalonia.Layout.Orientation;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -77,17 +79,29 @@ public class DocumentCreateButtonTests
     public async Task Retaining_The_Model_Does_Not_Retain_A_Removed_Create_Button_Host(bool visible)
     {
         var result = Detach(visible);
+        // Closing the window can leave a compositor batch and its dispatcher
+        // continuation holding the old scene. Wait for an acknowledged render
+        // before using the weak reference to diagnose model-owned retention.
+        Task rendered = result.Compositor.RequestCompositionBatchCommitAsync().Rendered;
+        Stopwatch deadline = Stopwatch.StartNew();
+        while (!rendered.IsCompleted && deadline.Elapsed < TimeSpan.FromSeconds(5))
+        {
+            Dispatcher.UIThread.RunJobs();
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            if (!rendered.IsCompleted) await Task.Delay(10);
+        }
+        Assert.True(rendered.IsCompletedSuccessfully, "The headless compositor did not finish its cleanup batch.");
         for (int i = 0; i < 20; i++)
         {
             Dispatcher.UIThread.RunJobs(); AvaloniaHeadlessPlatform.ForceRenderTimerTick();
             // A render commit can enqueue cleanup after the timer tick. Allow
             // the render thread and its dispatcher continuation to finish.
             Dispatcher.UIThread.RunJobs();
-            GC.Collect(); GC.WaitForPendingFinalizers();
+            GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
             if (!IsAlive(result.Strip)) break;
             await Task.Delay(10);
         }
-        Assert.False(result.Strip.TryGetTarget(out _));
+        Assert.False(IsAlive(result.Strip));
         GC.KeepAlive(result.Model);
     }
 
@@ -95,7 +109,7 @@ public class DocumentCreateButtonTests
     private static bool IsAlive(WeakReference<Control> reference) => reference.TryGetTarget(out _);
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static (DocumentDock Model, WeakReference<Control> Strip) Detach(bool visible)
+    private static (DocumentDock Model, WeakReference<Control> Strip, Compositor Compositor) Detach(bool visible)
     {
         DocumentDock model = new() { CanCreateDocument = visible };
         DocumentTabStrip strip = new() { DataContext = model };
@@ -103,10 +117,12 @@ public class DocumentCreateButtonTests
         try
         {
             window.Show(); Update(window);
+            Compositor compositor = ElementComposition.GetElementVisual(window)!.Compositor;
             window.Content = new Border();
             Update(window);
             window.CaptureRenderedFrame()?.Dispose();
-            return (model, new(strip));
+            Assert.Null(model.Parent);
+            return (model, new(strip), compositor);
         }
         finally { window.Close(); Dispatcher.UIThread.RunJobs(); }
     }

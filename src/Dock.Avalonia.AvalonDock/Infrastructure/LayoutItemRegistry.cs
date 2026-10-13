@@ -9,9 +9,10 @@ namespace AvalonDock.Infrastructure;
 
 // Containers follow model identity, including temporary removal during native
 // moves. Reconcile on the dispatcher after a tree mutation has finished.
-internal sealed class LayoutItemRegistry
+internal sealed class LayoutItemRegistry : ILayoutElementEventListener
 {
     private readonly DockingManager _manager;
+    private readonly LayoutItemEventSubscriptions _elementSubscriptions;
     private readonly Dictionary<LayoutContent, LayoutItem> _byContent = new();
     private readonly List<LayoutItem> _items = new();
     private readonly HashSet<LayoutContent> _creating = new();
@@ -23,7 +24,11 @@ internal sealed class LayoutItemRegistry
     private int _generation;
     private int _sourceBatches;
 
-    public LayoutItemRegistry(DockingManager manager) => _manager = manager;
+    public LayoutItemRegistry(DockingManager manager)
+    {
+        _manager = manager;
+        _elementSubscriptions = new(this);
+    }
 
     public LayoutItem? Get(LayoutContent content) => _byContent.GetValueOrDefault(content);
 
@@ -85,19 +90,18 @@ internal sealed class LayoutItemRegistry
         if (_root is not null)
         {
             _root.Updated -= RootUpdated;
-            _root.ElementAdded -= ElementAdded;
-            _root.ElementRemoved -= ElementRemoved;
         }
         foreach (LayoutElement element in _observed) element.PropertyChanged -= ModelChanged;
         _observed.Clear();
         _byContent.Clear();
         foreach (LayoutItem item in _items) item.Detach();
         _items.Clear();
+        // AvalonDock removes one registration from the current property value,
+        // which need not be the root that was previously presented.
+        _elementSubscriptions.Detach(_manager.Layout);
         _root = root;
         root.Updated += RootUpdated;
-        root.ElementAdded += ElementAdded;
-        root.ElementRemoved += ElementRemoved;
-        CreateLayoutItems();
+        RefreshStyles();
         Reconcile();
     }
 
@@ -135,6 +139,9 @@ internal sealed class LayoutItemRegistry
         foreach (ILayoutElement element in _manager.Layout.Descendents())
             if (element is LayoutAnchorable tool) tools.Add(tool);
         foreach (LayoutAnchorable tool in tools) AttachOrRefresh(tool);
+        // Attach only after successful callbacks, to the then-current root.
+        // Repeated base calls preserve distinct registrations and event order.
+        _elementSubscriptions.Attach(_manager.Layout);
 
         void AttachOrRefresh(LayoutContent content)
         {
@@ -180,51 +187,46 @@ internal sealed class LayoutItemRegistry
         if (_observed.Add(element)) element.PropertyChanged += ModelChanged;
     }
 
-    private void CreateLayoutItems(LayoutElement? added = null)
+    private void CreateLayoutItems(LayoutElement added)
     {
         if (_root is null) return;
         // Snapshot before applying application styles, which may edit the tree.
         List<LayoutContent> pending = new();
-        HashSet<LayoutContent>? membership = added is not null ? new() : null;
-        LayoutRoot layout = added is null ? _root : _manager.Layout;
+        HashSet<LayoutContent> membership = new();
+        LayoutRoot layout = _manager.Layout;
         foreach (ILayoutElement element in layout.Descendents())
             if (element is LayoutElement model) Collect(model, pending, membership);
         // Native floating roots acquire their public parent before Dock inserts
         // the window into its collection. Register that attaching subtree too.
-        if (added is not null)
+        if (ReferenceEquals(added.Root, layout))
         {
             Collect(added, pending, membership);
             foreach (ILayoutElement element in added.Descendents())
                 if (element is LayoutElement model) Collect(model, pending, membership);
         }
-        // Initial layout attachment registers documents before tools. An
-        // ordinary membership change follows the tree's current order.
-        if (added is null)
-            foreach (LayoutContent content in pending)
-                if (content is LayoutDocument && !_byContent.ContainsKey(content)) Create(content);
+        // A membership change follows the current tree's order, including when
+        // the notification came from an older retained root.
         foreach (LayoutContent content in pending)
         {
             if (!_byContent.ContainsKey(content)) Create(content);
-            else if (added is not null)
-                foreach (LayoutItem item in _items) item.ApplyContainerStyle();
+            else foreach (LayoutItem item in _items) item.ApplyContainerStyle();
         }
     }
 
-    private void Collect(LayoutElement model, List<LayoutContent> pending, HashSet<LayoutContent>? membership)
+    private void Collect(LayoutElement model, List<LayoutContent> pending, HashSet<LayoutContent> membership)
     {
         Observe(model);
-        if (model is LayoutContent content &&
-            (membership is not null ? membership.Add(content) : !_byContent.ContainsKey(content))) pending.Add(content);
+        if (model is LayoutContent content && membership.Add(content)) pending.Add(content);
     }
 
-    private void ElementAdded(object? sender, LayoutElementEventArgs args)
+    void ILayoutElementEventListener.ElementAdded(LayoutElementEventArgs args)
     {
         if (_sourceBatches != 0) return;
         CreateLayoutItems(args.Element);
         QueueReconcile();
     }
 
-    private void ElementRemoved(object? sender, LayoutElementEventArgs args)
+    void ILayoutElementEventListener.ElementRemoved()
     {
         if (_sourceBatches == 0) QueueReconcile();
     }

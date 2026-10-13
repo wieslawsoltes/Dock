@@ -246,3 +246,7 @@ The container-style probe checks retained themes after clearing both manager
 providers, a selector's explicit null result, cleared default commands during
 selection, suppressed protected callbacks, and replay using current manager
 settings for both document and tool containers.
+
+The root-subscription probe verifies independent registrations from repeated
+protected style calls, notifications from retained old roots, exclusion of
+foreign content, and removal of one registration when returning to a root.

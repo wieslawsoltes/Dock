@@ -455,11 +455,13 @@ public partial class DockingManager : TemplatedControl
     protected virtual void OnLayoutRootPanelChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Reattaches current layout contents and reapplies current container style settings.</summary>
     /// <remarks>The base call reads current manager settings, including when replaying older arguments.
-    /// Overrides can omit base to preserve existing containers; new source containers use current settings.</remarks>
+    /// Overrides can omit base to preserve existing containers; new source containers use current settings.
+    /// Each successful base call adds a distinct element-event registration on the then-current layout.</remarks>
     protected virtual void OnLayoutItemContainerStyleChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <summary>Reattaches current layout contents and reapplies current container style settings.</summary>
     /// <remarks>The base call reads current manager settings, including when replaying older arguments.
-    /// Overrides can omit base to preserve existing containers; new source containers use current settings.</remarks>
+    /// Overrides can omit base to preserve existing containers; new source containers use current settings.
+    /// Each successful base call adds a distinct element-event registration on the then-current layout.</remarks>
     protected virtual void OnLayoutItemContainerStyleSelectorChanged(AvaloniaPropertyChangedEventArgs e) => _layoutItems.RefreshStyles();
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

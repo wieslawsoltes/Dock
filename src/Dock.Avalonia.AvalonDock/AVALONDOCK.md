@@ -376,6 +376,18 @@ Suppressing a manager style callback does not suppress that later attachment
 path. Source insertion batches register their new containers after insertion
 callbacks without restyling existing containers merely because an item was added.
 
+Each successful style attachment registers a distinct pair of root element
+listeners after its document/tool callbacks finish. Suppressing or throwing
+before completion adds no registration. Listeners already in flight retain
+their order around application handlers; a registration added during delivery
+starts with the next event. Layout replacement removes one registration from
+the current layout property and then attaches again after initializing its
+containers. Retained old roots can consequently notify the manager, which
+refreshes only its current layout and does not import the old root's new content.
+These registrations use weak ownership so neither old roots nor unused managers
+are retained. The native `Updated` subscription remains scoped to the presented
+root.
+
 `LayoutItem.View` is the presenter displayed by the native Dock controls.
 `AvalonDock.Controls.LayoutDocumentControl` and `LayoutAnchorableControl` wrap
 that same presenter inside native panes. Their `Model` is the public layout

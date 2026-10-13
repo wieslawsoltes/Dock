@@ -1405,6 +1405,24 @@ callback. Source insertion batches instead register newly imported containers
 after their insertion callbacks; adding an item within that batch does not
 itself restyle the existing containers.
 
+Each successful style attachment registers a distinct pair of root element
+listeners after the document and tool callbacks finish. An override that skips
+base, or a callback that throws before completion, adds no registration. Native
+event delivery preserves the order of these registrations and application
+handlers. New registrations created during a notification participate from the
+next event onward.
+
+Layout replacement removes one registration from the manager's current layout
+property, then attaches again after creating its containers. A retained previous
+root can therefore still send notifications. Its listener refreshes the current
+layout and excludes foreign content added to the old root. Returning to a root
+removes one existing registration before adding its replacement. Weak keys and
+weak listeners preserve these callback contracts without retaining obsolete
+roots or unused managers; native `Updated` observation stays scoped to the
+presented root. Initial attachment processes document callbacks before taking
+the tool snapshot, and starts root membership observation only after successful
+completion.
+
 Command setters bind application `ReactiveCommand` properties through `Model`,
 just like metadata. For example, add this setter to the document theme when
 `EditorViewModel.CloseCommand` implements the application's close workflow:

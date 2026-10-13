@@ -199,7 +199,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,638 cases, including 22 container
+- The consolidated adapter suite passes all 2,655 cases, including 17 root-event
+  registration, reentrancy, attachment-order, and lifetime cases, plus 22 container
   style callback, command-order, and native restyling cases, plus 29 source
   callback, registration, layout-transition, and lifetime cases. All 30 rendered
   preview/image cases pass. The source callback audit below records argument
@@ -1034,6 +1035,30 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
 
+## Root element registration audit
+
+Each completed container attachment registers a distinct pair of root element
+listeners. Suppressed or failed style callbacks do not commit a registration;
+initial document callbacks run before taking the tool snapshot, and membership
+observation starts only after successful attachment. Multicast delivery preserves
+application-handler ordering and excludes registrations added during an event
+until its next delivery.
+
+Layout replacement removes one registration from the current layout property
+before attaching again. Retained old roots still notify the registry, which
+refreshes current containers without importing foreign old-root content.
+Returning to a root removes one of its registrations, preserving the rest.
+Weak keys and listeners retain neither an obsolete root nor an unused manager;
+stale listeners detach when their retained publisher next raises an event.
+Native `Updated` observation remains scoped to the presented root.
+
+Seventeen new Headless cases cover repeated calls, suppression, exceptions,
+old-root notifications, returning to a root, reentrant/application-handler order,
+suppressed layout transitions, initial document/tool callback order, failed
+initial attachment, and both ownership lifetimes. All 80 focused cases pass.
+The package consumer verifies registration multiplicity, old-root notifications,
+foreign-content exclusion and returning-root behavior on both target runtimes.
+
 ## Container style callback audit
 
 The style hooks reattach current layout contents and use the manager's current
@@ -1161,9 +1186,10 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 - Remaining manager API audit: templates/selectors, styles,
   and the control adapter surface.
   Container style value, command-order, and native/source attachment behavior is
-  covered above. WPF's accumulating element-event registrations after style
-  changes and the resulting callback multiplicity remain a separate audit;
-  the native registry currently observes each root event once.
+  covered above, including repeated root registrations and old-root callbacks.
+  `OnLayoutChanged` still needs a separate audit of redirected/replayed root
+  arguments: upstream uses the current `Layout` for ownership and presentation,
+  while source imports and root event hookup also use supplied arguments.
   The floating-control audit above records the completed hook corrections and
   remaining framework/platform differences. Desktop input/focus validation
   beyond the recorded close lifecycle scenarios remains open.

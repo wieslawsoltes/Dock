@@ -25,13 +25,23 @@ public class DependencyPropertyBindingTests
     public void Compatibility_Properties_Preserve_Current_Values_And_Replace_Explicit_Bindings(string kind)
     {
         int titleIndex = 0;
+        LayoutDocumentPane? models = kind == "control-model" ? new() : null;
+        DockingManager? modelManager = models is null ? null : new()
+        {
+            Layout = new LayoutRoot { RootPanel = new LayoutPanel { Children = { models } } },
+        };
         (AvaloniaObject Target, AvaloniaProperty Property, Func<object> CreateValue) configuration = kind switch
         {
             "template" => (new DockingManager(), DockingManager.LayoutItemTemplateProperty,
                 () => new FuncDataTemplate<object>((_, _) => new Border())),
             "source" => (new DockingManager(), DockingManager.DocumentsSourceProperty, () => new object[0]),
             "command" => (new LayoutDocumentItem(), LayoutItem.CloseCommandProperty, () => new TestCommand()),
-            "control-model" => (new LayoutDocumentControl(), LayoutDocumentControl.ModelProperty, () => new LayoutDocument()),
+            "control-model" => (new LayoutDocumentControl(), LayoutDocumentControl.ModelProperty, () =>
+            {
+                LayoutDocument model = new();
+                models!.Children.Add(model);
+                return model;
+            }),
             "item-title" => (new LayoutDocumentItem(), LayoutItem.TitleProperty, () => $"title{++titleIndex}"),
             _ => throw new ArgumentOutOfRangeException(nameof(kind)),
         };
@@ -65,6 +75,7 @@ public class DependencyPropertyBindingTests
         Assert.Null(target.GetValue(property));
         Assert.Same(current, source.Value);
         Assert.Null(BindingOperations.GetBindingExpressionBase(target, property));
+        GC.KeepAlive(modelManager);
     }
 
     private sealed class ValueSource : AvaloniaObject

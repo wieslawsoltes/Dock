@@ -129,24 +129,8 @@ internal abstract class DockManagerState : IDockManagerState
                 $"Evaluating global adorners for drop control '{dropControlType}' (DataContext={dropDataContextType}) " +
                 $"with horizontal={horizontalGlobalDocking}, vertical={verticalGlobalDocking}.");
 
-            // Try to find DockControl ancestor - look through the visual tree more thoroughly
-            var dockControl = dropControl.FindAncestorOfType<DockControl>();
-            
-            // If not found directly, walk up the visual tree manually
-            if (dockControl is null)
-            {
-                var current = dropControl.GetVisualParent();
-                while (current is not null)
-                {
-                    if (current is DockControl dc)
-                    {
-                        dockControl = dc;
-                        break;
-                    }
-                    current = current.GetVisualParent();
-                }
-            }
-            
+            var dockControl = DockHelpers.ResolveDockControl(dropControl);
+
             var targetDock = ResolveGlobalTargetDock(dropControl);
             if (dockControl is not null && targetDock is not null)
             {
@@ -372,7 +356,7 @@ internal abstract class DockManagerState : IDockManagerState
     {
         managedPoint = default;
 
-        var dockControl = relativeTo as DockControl ?? relativeTo.FindAncestorOfType<DockControl>();
+        var dockControl = DockHelpers.ResolveDockControl(relativeTo);
         if (dockControl?.Layout?.Factory is not { } factory)
         {
             return false;

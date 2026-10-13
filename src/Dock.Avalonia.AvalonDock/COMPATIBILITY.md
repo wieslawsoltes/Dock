@@ -199,7 +199,18 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 3,140 cases, including 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
+- Tool containers declare their default binding/lifetime overrides and process
+  hide, auto-hide, and dock before common item commands. Derived initialization
+  is safe before attachment and does not evaluate command predicates. Application
+  and clearing read live definitions after each callback, preserve application
+  commands, and stop on failures. Reinitialization and definition clearing retain
+  assigned commands; native detachment disables and releases owned commands.
+  Default `CanExecute` queries read current state while native/root notifications
+  continue to raise `CanExecuteChanged`. Local binding expressions to current
+  defaults are cleared; raw observable subscriptions retain Avalonia ownership
+  (use compiled bindings or `ToBinding()` for expression cleanup).
+- The consolidated adapter suite passes all 3,167 cases, including 27 default-command initialization, binding, callback,
+  reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
   cases, plus 63 numeric XML
@@ -1353,6 +1364,9 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   interface implementation behavior. The declaration review maps counterparts
   without establishing full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
+  Tool command/binding inheritance now has explicit overrides and focused
+  coverage. Document floating-window closure remains the one inherited member
+  classified by the presence audit; its concrete cleanup order needs review.
 - The direct public pane/splitter Grid structure passes consolidated Headless
   validation of sizing, native drag, floating hosts, themes and lifetime. Package
   and consumer validation pass at `e04288110`. The final desktop checks remain
@@ -1378,8 +1392,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 840
-matching type/member keys and 111 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 843
+matching type/member keys and 108 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

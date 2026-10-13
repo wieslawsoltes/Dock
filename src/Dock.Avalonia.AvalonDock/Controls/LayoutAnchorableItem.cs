@@ -9,6 +9,10 @@ namespace AvalonDock.Controls;
 /// <summary>A bindable container for an anchorable tool.</summary>
 public class LayoutAnchorableItem : LayoutItem
 {
+    private LayoutItemCommands? _toolCommands;
+    private LayoutItemCommands ToolCommands => _toolCommands ??= new(this,
+        HideCommandProperty, AutoHideCommandProperty, DockCommandProperty);
+
     /// <summary>Identifies the tool hide command.</summary>
     public static readonly StyledProperty<ICommand?> HideCommandProperty =
         AvaloniaProperty.Register<LayoutAnchorableItem, ICommand?>(nameof(HideCommand));
@@ -41,15 +45,49 @@ public class LayoutAnchorableItem : LayoutItem
     /// <inheritdoc/>
     protected override void InitDefaultCommands()
     {
-        base.InitDefaultCommands();
-        DefaultCommands.Add(HideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.Hide(),
+        ToolCommands.Add(HideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.Hide(),
             () => IsAttached && LayoutElement is LayoutAnchorable { CanHide: true });
-        DefaultCommands.Add(AutoHideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.ToggleAutoHide(),
+        ToolCommands.Add(AutoHideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.ToggleAutoHide(),
             () => IsAttached && LayoutElement is LayoutAnchorable { CanAutoHide: true, IsHidden: false } tool &&
                 tool.FindParent<LayoutAnchorableFloatingWindow>() is null &&
                 LayoutCommandCapabilities.IsEnabled(tool, DockCapability.Pin));
-        DefaultCommands.Add(DockCommandProperty, () => LayoutElement?.Dock(),
+        ToolCommands.Add(DockCommandProperty, () => LayoutElement?.Dock(),
             () => IsAttached && LayoutElement?.FindParent<LayoutAnchorableFloatingWindow>() is not null);
+        base.InitDefaultCommands();
+    }
+
+    /// <inheritdoc/>
+    protected override void ClearDefaultCommands()
+    {
+        _toolCommands?.ClearDefinitions();
+        base.ClearDefaultCommands();
+    }
+
+    /// <inheritdoc/>
+    protected override void ClearDefaultBindings()
+    {
+        ToolCommands.Clear();
+        base.ClearDefaultBindings();
+    }
+
+    /// <inheritdoc/>
+    protected override void SetDefaultBindings()
+    {
+        ToolCommands.Apply();
+        SynchronizeProperty(IsVisibleProperty, ((LayoutAnchorable)LayoutElement!).IsVisible);
+        base.SetDefaultBindings();
+    }
+
+    internal override void RefreshCommands()
+    {
+        _toolCommands?.Refresh();
+        base.RefreshCommands();
+    }
+
+    internal override void DisposeCommands()
+    {
+        _toolCommands?.Dispose();
+        base.DisposeCommands();
     }
 
     /// <summary>Called when the tool hide command changes.</summary>

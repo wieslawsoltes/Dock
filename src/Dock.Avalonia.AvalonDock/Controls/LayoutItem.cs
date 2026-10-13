@@ -147,14 +147,17 @@ public abstract class LayoutItem : Control
     internal DockingManager? Manager { get; private set; }
     internal bool IsAttached => Manager is not null && ReferenceEquals(LayoutElement?.Root, Manager.Layout);
     internal bool IsSynchronizing => _synchronizing;
-    internal LayoutItemCommands DefaultCommands => _commands!;
+    internal LayoutItemCommands DefaultCommands => _commands ??= new(this,
+        CloseCommandProperty, FloatCommandProperty, DockAsDocumentCommandProperty,
+        CloseAllButThisCommandProperty, CloseAllCommandProperty, ActivateCommandProperty,
+        NewVerticalTabGroupCommandProperty, NewHorizontalTabGroupCommandProperty,
+        MoveToNextTabGroupCommandProperty, MoveToPreviousTabGroupCommandProperty);
 
     internal void Attach(DockingManager manager, LayoutContent content)
     {
         Manager = manager;
         SetAndRaise(LayoutElementProperty, ref _layoutElement, content);
         DataContext = this;
-        _commands = new LayoutItemCommands(this);
         SynchronizeModel();
         InitDefaultCommands();
         manager.AttachLayoutItem(this);
@@ -166,6 +169,7 @@ public abstract class LayoutItem : Control
     {
         ClearDefaultBindings();
         ClearDefaultCommands();
+        DisposeCommands();
         _styleInitialized = false;
         DockingManager? manager = Manager;
         Manager = null;
@@ -185,7 +189,8 @@ public abstract class LayoutItem : Control
         }
     }
 
-    internal void RefreshCommands() => _commands?.Refresh();
+    internal virtual void RefreshCommands() => _commands?.Refresh();
+    internal virtual void DisposeCommands() => _commands?.Dispose();
 
     internal void RequestContextMenu(Control target, ContextRequestedEventArgs request)
     {
@@ -303,7 +308,7 @@ public abstract class LayoutItem : Control
         IsAttached && LayoutElement is { } content && content.Parent is not LayoutDocumentPane &&
         LayoutCommandCapabilities.IsEnabled(content, DockCapability.DockAsDocument);
 
-    /// <summary>Creates the default commands for the attached model.</summary>
+    /// <summary>Creates default command definitions without assigning them or evaluating their predicates.</summary>
     protected virtual void InitDefaultCommands()
     {
         DefaultCommands.Add(CloseCommandProperty, Close, () => IsAttached && LayoutCommandCapabilities.CanClose(LayoutElement!));
@@ -326,19 +331,28 @@ public abstract class LayoutItem : Control
             () => LayoutItemOperations.CanMove(this, -1));
     }
 
-    /// <summary>Releases the default commands without disposing application commands.</summary>
-    protected virtual void ClearDefaultCommands()
-    {
-        _commands?.Dispose();
-        _commands = null;
-    }
+    /// <summary>Clears the default command definitions without changing assigned commands.</summary>
+    protected virtual void ClearDefaultCommands() => _commands?.ClearDefinitions();
     /// <summary>Removes default commands while preserving application command values.</summary>
-    protected virtual void ClearDefaultBindings() => _commands?.Clear();
+    protected virtual void ClearDefaultBindings() => DefaultCommands.Clear();
     /// <summary>Applies default commands and synchronizes model state.</summary>
     protected virtual void SetDefaultBindings()
     {
-        _commands?.Apply();
+        DefaultCommands.Apply();
+        SynchronizeProperty(IsSelectedProperty, LayoutElement!.IsSelected);
+        SynchronizeProperty(IsActiveProperty, LayoutElement!.IsActive);
+        SynchronizeProperty(CanCloseProperty, LayoutElement!.CanClose);
+        // Native metadata and compiled container themes also synchronize after
+        // the upstream command/selection phase has completed.
         SynchronizeModel();
+    }
+
+    internal void SynchronizeProperty<T>(StyledProperty<T> property, T value)
+    {
+        bool synchronizing = _synchronizing;
+        _synchronizing = true;
+        try { SetCurrentValue(property, value); }
+        finally { _synchronizing = synchronizing; }
     }
     /// <summary>Applies a change to the Avalonia visibility property.</summary>
     protected virtual void OnVisibilityChanged()

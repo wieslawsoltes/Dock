@@ -474,6 +474,27 @@ current `CloseCommand`, including application replacements, and honors close
 capabilities and cancellation. Individual command properties can be replaced
 or bound to application commands.
 
+`LayoutAnchorableItem` initializes, applies, and clears hide, auto-hide, and dock
+defaults before the common `LayoutItem` commands. When applying defaults, it
+synchronizes tool visibility before the base selection/activation/close state.
+The protected hooks remain overridable: omitting the base call suppresses that
+phase, and a callback failure stops subsequent assignments. Reinitialization
+replaces definitions while retaining commands already assigned to properties;
+`ClearDefaultCommands` clears definitions without clearing those properties.
+
+`InitDefaultCommands` can be called by a derived class before attachment and does
+not evaluate its virtual command predicates. `CanExecute` queries current state.
+`SetDefaultBindings` still requires an attached model: on an unattached tool it
+assigns the three tool defaults before failing at visibility; the base/document
+hook assigns its ten defaults before failing at model state.
+
+Clearing defaults removes local Avalonia binding expressions whose current value
+matches the default, including a null default before initialization. Application
+commands and bindings to them remain intact. Raw `Bind(property, observable)`
+subscriptions retain Avalonia ownership and must be disposed by their caller;
+use compiled bindings or `observable.ToBinding()` for binding-expression cleanup.
+No reflection is used to discover or remove bindings.
+
 Containers retain identity during moves, floating, auto-hide, and tool hiding.
 Removal detaches a container after the current layout mutation; replacing or
 deserializing the manager's layout detaches the old containers immediately.

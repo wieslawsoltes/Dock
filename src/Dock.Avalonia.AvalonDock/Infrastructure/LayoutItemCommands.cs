@@ -1,85 +1,67 @@
 using System;
 using System.Collections.Generic;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Subjects;
 using System.Windows.Input;
 using Avalonia;
+using Avalonia.Data;
+using Avalonia.Diagnostics;
 using AvalonDock.Controls;
-using ReactiveUI.Reactive;
 
 namespace AvalonDock.Infrastructure;
 
-// Owns only the defaults. Application commands and their bindings are never
-// disposed or overwritten when a container is detached or restyled.
-internal sealed class LayoutItemCommands(LayoutItem owner) : IDisposable
+// Definitions follow the protected hooks; command lifetime follows attachment.
+// Reinitializing a definition does not invalidate a command still held by a caller.
+internal sealed class LayoutItemCommands(LayoutItem owner, params StyledProperty<ICommand?>[] properties) : IDisposable
 {
-    private readonly List<Entry> _entries = new(13);
+    private readonly LayoutItemCommand?[] _defaults = new LayoutItemCommand?[properties.Length];
+    private readonly List<LayoutItemCommand> _owned = new(properties.Length);
 
     public void Add(StyledProperty<ICommand?> property, Action execute, Func<bool> canExecute)
-        => _entries.Add(new Entry(property, execute, canExecute));
+    {
+        for (int index = 0; index < properties.Length; index++)
+        {
+            if (properties[index] != property) continue;
+            LayoutItemCommand command = new(execute, canExecute);
+            _owned.Add(command);
+            _defaults[index] = command;
+            return;
+        }
+        throw new ArgumentException("The command property is not registered with this container.", nameof(property));
+    }
 
     public void Apply()
     {
-        foreach (Entry entry in _entries)
-            if (owner.GetValue(entry.Property) is null)
-                owner.SetCurrentValue(entry.Property, entry.Command);
+        for (int index = 0; index < properties.Length; index++)
+            if (owner.GetValue(properties[index]) is null)
+                owner.SetCurrentValue(properties[index], _defaults[index]);
     }
 
     public void Clear()
     {
-        foreach (Entry entry in _entries)
-            if (ReferenceEquals(owner.GetValue(entry.Property), entry.Command))
-                owner.SetCurrentValue(entry.Property, null);
+        for (int index = 0; index < properties.Length; index++)
+        {
+            StyledProperty<ICommand?> property = properties[index];
+            if (!ReferenceEquals(owner.GetValue(property), _defaults[index])) continue;
+            if (BindingOperations.GetBindingExpressionBase(owner, property) is { } binding &&
+                owner.GetDiagnostic(property).Priority == BindingPriority.LocalValue)
+                binding.Dispose();
+            owner.SetCurrentValue(property, null);
+        }
     }
+
+    public void ClearDefinitions() => Array.Clear(_defaults, 0, _defaults.Length);
 
     public void Refresh()
     {
-        foreach (Entry entry in _entries) entry.Refresh();
+        // Callbacks can reinitialize or release commands. Newly created commands
+        // answer CanExecute live and join the next notification pass.
+        int count = _owned.Count;
+        for (int index = 0; index < count && index < _owned.Count; index++) _owned[index].Refresh();
     }
 
     public void Dispose()
     {
-        foreach (Entry entry in _entries) entry.Dispose();
-        _entries.Clear();
-    }
-
-    private sealed class Entry : IDisposable
-    {
-        private readonly Func<bool> _canExecute;
-        private readonly BehaviorSubject<bool> _enabled;
-        private bool _disposed;
-
-        public Entry(StyledProperty<ICommand?> property, Action execute, Func<bool> canExecute)
-        {
-            Property = property;
-            _canExecute = canExecute;
-            _enabled = new(canExecute());
-            Command = ReactiveCommand.Create(() =>
-            {
-                // Also guard direct ICommand.Execute calls and state changes
-                // occurring while an application handles another command.
-                if (!_disposed && _canExecute()) execute();
-            }, _enabled, ImmediateScheduler.Instance);
-        }
-
-        public StyledProperty<ICommand?> Property { get; }
-        public ReactiveCommand<Unit, Unit> Command { get; }
-
-        public void Refresh()
-        {
-            if (_disposed) return;
-            bool enabled = _canExecute();
-            if (_enabled.Value != enabled) _enabled.OnNext(enabled);
-        }
-
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _disposed = true;
-            _enabled.OnNext(false);
-            Command.Dispose();
-            _enabled.Dispose();
-        }
+        ClearDefinitions();
+        for (int index = 0; index < _owned.Count; index++) _owned[index].Dispose();
+        _owned.Clear();
     }
 }

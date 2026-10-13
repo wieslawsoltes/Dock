@@ -237,10 +237,14 @@ public class LayoutCallbackTests
         manager.DockLayout.RootDockCapabilityPolicy = policy;
         System.Windows.Input.ICommand close = manager.GetLayoutItemFromModel(Content(manager.Layout))!.CloseCommand!;
         Assert.True(close.CanExecute(null));
+        int notifications = 0;
+        close.CanExecuteChanged += (_, _) => notifications++;
         policy.CanClose = false;
-        Assert.True(close.CanExecute(null));
+        Assert.False(close.CanExecute(null));
+        Assert.Equal(0, notifications);
         supplied.LeftSide = new LayoutAnchorSide();
         Assert.False(close.CanExecute(null));
+        Assert.True(notifications > 0);
     }
 
     [AvaloniaFact]

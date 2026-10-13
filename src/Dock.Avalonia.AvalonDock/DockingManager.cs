@@ -667,7 +667,7 @@ public partial class DockingManager : TemplatedControl
         if (_sourceBindingSuspensions > 0) _sourceBindingSuspensions--;
     }
 
-    internal void LayoutUpdated() => _layoutItems.RefreshCommands();
+    internal void LayoutRootUpdated() => _layoutItems.RefreshCommands();
 
     internal void LayoutPropertyChanged(PropertyChangedEventArgs e)
     {

@@ -45,7 +45,7 @@ internal sealed class LayoutRootEventSubscriptions(DockingManager manager)
 
         internal void Updated(object? sender, EventArgs args)
         {
-            if (_manager.TryGetTarget(out DockingManager? manager)) manager.LayoutUpdated();
+            if (_manager.TryGetTarget(out DockingManager? manager)) manager.LayoutRootUpdated();
             else if (sender is LayoutRoot root) Detach(root);
         }
 

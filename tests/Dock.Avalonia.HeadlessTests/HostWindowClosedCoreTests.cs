@@ -12,6 +12,22 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class HostWindowClosedCoreTests
 {
+    [AvaloniaFact]
+    public void An_Unbound_Host_Passes_A_Null_Closing_Model()
+    {
+        ProbeHost host = new();
+        int closed = 0;
+        host.Before = _ =>
+        {
+            Assert.True(((IHostWindowCloseState)host).IsClosed);
+            Assert.Null(host.ClosingModel);
+        };
+        host.Closed += (_, _) => closed++;
+        host.Show();
+        host.Close();
+        Assert.Equal(1, closed);
+    }
+
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
@@ -22,6 +38,7 @@ public class HostWindowClosedCoreTests
         EventArgs? arguments = null;
         workspace.Host.Before = e =>
         {
+            Assert.Same(workspace.Model, workspace.Host.ClosingModel);
             Assert.True(((IHostWindowCloseState)workspace.Host).IsClosed);
             Assert.Same(workspace.Host, workspace.Layout.Parent);
             arguments = e;
@@ -133,11 +150,13 @@ public class HostWindowClosedCoreTests
         internal Action<EventArgs>? Before { get; set; }
         internal Action<EventArgs>? After { get; set; }
         internal bool Suppress { get; set; }
+        internal IDockWindow? ClosingModel { get; private set; }
         internal void Replay() => base.OnClosed(EventArgs.Empty);
-        protected override void OnClosedCore(EventArgs e)
+        protected override void OnClosedCore(EventArgs e, IDockWindow? closingWindow)
         {
+            ClosingModel = closingWindow;
             Before?.Invoke(e);
-            if (!Suppress) base.OnClosedCore(e);
+            if (!Suppress) base.OnClosedCore(e, closingWindow);
             After?.Invoke(e);
         }
     }

@@ -121,9 +121,10 @@ factory.WindowClosed += (_, e) =>
 
 ## Custom close lifecycle
 
-Native `HostWindow` subclasses can override `OnClosedCore(EventArgs)` to update
+Native `HostWindow` subclasses can override `OnClosedCore(EventArgs, IDockWindow?)` to update
 their layout before the framework `Closed` event. At entry, the host reports
-`IHostWindowCloseState.IsClosed` and Dock has captured its close policy. Calling
+`IHostWindowCloseState.IsClosed` and Dock has captured its close policy. The model
+argument identifies the window captured when closing began. Calling
 the base implementation releases presentation references, detaches the native
 layout from the logical tree, and raises `Closed`.
 

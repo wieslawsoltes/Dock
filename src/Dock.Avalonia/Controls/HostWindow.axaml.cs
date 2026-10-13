@@ -507,7 +507,7 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
         bool preserveLayout = closingWindow is not null && closingFactory is IDockWindowClosePolicy policy &&
             policy.PreserveLayoutOnHostClose(closingWindow);
         _isClosed = true;
-        OnClosedCore(e);
+        OnClosedCore(e, closingWindow);
 
         if (preserveLayout)
         {
@@ -537,6 +537,7 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
     /// Releases the host presentation and raises the framework Closed event.
     /// </summary>
     /// <param name="e">The arguments supplied by the native close lifecycle.</param>
+    /// <param name="closingWindow">The window model captured when closing began, or null for an unbound host.</param>
     /// <remarks>
     /// The host is already marked closed and its close policy has been captured.
     /// An override can update its layout before Closed subscribers run without
@@ -544,9 +545,9 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
     /// Call the base implementation to release model references and raise Closed.
     /// Factory notification and tracking cleanup follow this hook's successful return.
     /// </remarks>
-    protected virtual void OnClosedCore(EventArgs e)
+    protected virtual void OnClosedCore(EventArgs e, IDockWindow? closingWindow)
     {
-        HostWindowContentCleanup.ReleaseModels(this, Content as IDock ?? Window?.Layout);
+        HostWindowContentCleanup.ReleaseModels(this, Content as IDock ?? closingWindow?.Layout);
         // Avalonia model implementations can be logical children of the content
         // control. A retained layout must not keep this closed window as parent.
         if (Content is IDock && Content is ILogical logicalLayout)

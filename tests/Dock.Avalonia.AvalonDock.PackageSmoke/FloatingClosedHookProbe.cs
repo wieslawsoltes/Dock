@@ -70,12 +70,14 @@ internal static class FloatingClosedHookProbe
             host.Show();
             try
             {
-                try { host.Close(); throw new Exception("Closed did not propagate the callback error."); }
+                // Exercise the protected hook directly so the deliberate error
+                // cannot interrupt Avalonia's separate lifetime teardown.
+                try { host.InvokeClosed(); throw new Exception("Closed did not propagate the callback error."); }
                 catch (InvalidOperationException e) when (ReferenceEquals(e, failure)) { }
                 model.RootDocument = null;
                 if (host.UserOrigin) throw new Exception("The failed base call removed the document subscription.");
             }
-            finally { fail = false; host.Replay(); Dispatcher.UIThread.RunJobs(); }
+            finally { fail = false; host.Close(); Dispatcher.UIThread.RunJobs(); }
         });
         if (failures.Count != 0) throw new Exception("Packaged Closed-hook failures: " + string.Join("; ", failures));
 
@@ -108,7 +110,7 @@ internal static class FloatingClosedHookProbe
     private sealed class DocumentHost(LayoutDocumentFloatingWindow model) : LayoutDocumentFloatingWindowControl(model)
     {
         internal bool UserOrigin => CloseInitiatedByUser;
-        internal void Replay() => base.OnClosed(EventArgs.Empty);
+        internal void InvokeClosed() => base.OnClosed(EventArgs.Empty);
         protected override bool CanClose(object? parameter = null) => true;
     }
     private sealed class ToolHost(LayoutAnchorableFloatingWindow model) : LayoutAnchorableFloatingWindowControl(model)

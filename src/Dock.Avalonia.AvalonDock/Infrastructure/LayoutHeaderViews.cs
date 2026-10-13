@@ -34,12 +34,12 @@ internal sealed class LayoutHeaderViews(LayoutItem item)
         ApplyTemplate(view);
     }
 
-    public void Refresh(LayoutHeaderKind kind)
+    public void Refresh(LayoutHeaderKind kind, bool selectorChanged)
     {
         for (int i = _views.Count - 1; i >= 0; i--)
         {
             if (!_views[i].TryGetTarget(out LayoutHeaderPresenter? view) || !ReferenceEquals(view.Item, item)) _views.RemoveAt(i);
-            else if (view.Kind == kind) ApplyTemplate(view);
+            else if (view.Kind == kind) ApplyTemplate(view, selectorChanged);
         }
     }
 
@@ -58,10 +58,18 @@ internal sealed class LayoutHeaderViews(LayoutItem item)
         _views.Clear();
     }
 
-    private void ApplyTemplate(LayoutHeaderPresenter view)
+    private void ApplyTemplate(LayoutHeaderPresenter view, bool? selectorChanged = null)
     {
         if (item.Manager is { } manager)
+        {
+            LayoutTemplateSettings settings = LayoutTemplateSettings.Header(manager, view.Kind);
+            if (view.ContentTemplate is LayoutHeaderContentTemplate previous)
+            {
+                settings = previous.Settings.Update(settings, selectorChanged);
+                if (previous.Settings.Matches(settings) && ReferenceEquals(previous.Fallback, view.DefaultTemplate)) return;
+            }
             view.SetCurrentValue(ContentPresenter.ContentTemplateProperty,
-                new LayoutHeaderContentTemplate(manager, view.Kind, view.DefaultTemplate, view));
+                new LayoutHeaderContentTemplate(settings, view.DefaultTemplate, view));
+        }
     }
 }

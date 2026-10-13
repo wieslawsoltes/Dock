@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -7,28 +6,20 @@ using AvalonDock.Layout;
 
 namespace AvalonDock.Infrastructure;
 
-internal sealed class LayoutHeaderContentTemplate(DockingManager manager, LayoutHeaderKind kind,
+internal sealed class LayoutHeaderContentTemplate(LayoutTemplateSettings settings,
     IDataTemplate? fallback, ContentPresenter presenter) : IRecyclingDataTemplate
 {
-    private readonly WeakReference<DockingManager> _manager = new(manager);
     private readonly ConditionalWeakTable<Control, IDataTemplate> _builtTemplates = new();
+
+    internal LayoutTemplateSettings Settings { get; } = settings;
+    internal IDataTemplate? Fallback { get; } = fallback;
 
     public bool Match(object? data) => data is LayoutContent;
     public Control? Build(object? data) => Build(data, null);
     public Control? Build(object? data, Control? existing)
     {
         if (data is not LayoutContent) return null;
-        _manager.TryGetTarget(out DockingManager? owner);
-        IDataTemplate? template = kind switch
-        {
-            LayoutHeaderKind.Document => owner?.DocumentHeaderTemplate ?? owner?.DocumentHeaderTemplateSelector?.SelectTemplate(data, presenter),
-            LayoutHeaderKind.Anchorable => owner?.AnchorableHeaderTemplate ?? owner?.AnchorableHeaderTemplateSelector?.SelectTemplate(data, presenter),
-            LayoutHeaderKind.AnchorableTitle => owner?.AnchorableTitleTemplate ?? owner?.AnchorableTitleTemplateSelector?.SelectTemplate(data, presenter),
-            LayoutHeaderKind.DocumentTitle => owner?.DocumentTitleTemplate ?? owner?.DocumentTitleTemplateSelector?.SelectTemplate(data, presenter),
-            LayoutHeaderKind.DocumentMenu => owner?.DocumentPaneMenuItemHeaderTemplate ?? owner?.DocumentPaneMenuItemHeaderTemplateSelector?.SelectTemplate(data, presenter),
-            _ => null
-        };
-        template ??= fallback;
+        IDataTemplate? template = Settings.Select(data, presenter) ?? Fallback;
         if (template is null) return null;
         if (existing is not null && (!_builtTemplates.TryGetValue(existing, out IDataTemplate? previous) ||
             !ReferenceEquals(previous, template))) existing = null;

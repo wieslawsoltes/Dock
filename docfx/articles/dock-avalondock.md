@@ -1824,6 +1824,21 @@ tool-title, and menu-header callbacks clear only a non-null effective template.
 Style bindings survive beneath the local override. Application calls to
 Avalonia's inherited `SetValue` retain bindings; explicitly dispose a binding
 when the application intends to replace it permanently.
+
+Content, tab/header, title, and menu presenters receive each template or selector
+value after its protected change callback returns successfully. A throwing
+callback leaves that provider's previously delivered value in existing
+presenters; completed nested changes remain applied. Updating the other provider
+does not import a value whose callback failed. Newly created presenters read the
+current manager properties. Nested callbacks that already delivered the final
+settings do not rebuild those presenters a second time. A document-header change
+does not refresh a menu whose coerced fallback template stayed unchanged.
+
+Replaying a selector callback uses its supplied `NewValue` to decide whether to
+clear the explicit template. Document-menu selector fallback instead reads the
+current document-header selector at the base call and preserves an existing
+non-null menu selector.
+
 Changing a manager header property updates existing docked, floating, and
 auto-hide headers. Compiled bindings observe live title and metadata changes.
 Native document/tool tab containers and custom public tab controls apply the

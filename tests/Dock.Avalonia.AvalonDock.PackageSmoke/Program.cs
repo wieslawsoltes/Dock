@@ -75,6 +75,7 @@ PackageConsumer.SourceCallbackProbe.Verify();
 PackageConsumer.ContainerStyleCallbackProbe.Verify();
 PackageConsumer.ContainerRootSubscriptionProbe.Verify();
 PackageConsumer.LayoutCallbackProbe.Verify();
+PackageConsumer.TemplateCallbackProbe.Verify();
 PackageConsumer.UpdateStrategyProbe.Verify();
 PackageConsumer.HttpImageProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());

@@ -121,14 +121,14 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
         finally { _refreshing = false; }
     }
 
-    public void RefreshTemplates()
+    public void RefreshTemplates(bool selectorChanged)
     {
-        for (int i = 0; i < _items.Count; i++) _items[i].RefreshViewTemplate();
+        for (int i = 0; i < _items.Count; i++) _items[i].RefreshViewTemplate(selectorChanged);
     }
 
-    public void RefreshHeaders(LayoutHeaderKind kind)
+    public void RefreshHeaders(LayoutHeaderKind kind, bool selectorChanged)
     {
-        for (int i = 0; i < _items.Count; i++) _items[i].RefreshHeaders(kind);
+        for (int i = 0; i < _items.Count; i++) _items[i].RefreshHeaders(kind, selectorChanged);
     }
 
     public void RefreshStyles()

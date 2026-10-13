@@ -10,11 +10,14 @@ namespace AvalonDock.Infrastructure;
 
 // Resolve against the incoming content during Build, so changing content types
 // cannot briefly apply the previous compiled template to the new ViewModel.
-internal sealed class LayoutItemContentTemplate(LayoutContent model, DockingManager manager, ContentPresenter presenter)
+internal sealed class LayoutItemContentTemplate(LayoutContent model, DockingManager manager, ContentPresenter presenter,
+    LayoutTemplateSettings settings)
     : IRecyclingDataTemplate
 {
     private readonly WeakReference<DockingManager> _manager = new(manager);
     private readonly ConditionalWeakTable<Control, IDataTemplate> _builtTemplates = new();
+
+    internal LayoutTemplateSettings Settings { get; } = settings;
 
     public bool Match(object? data) => true;
     public Control? Build(object? data) => Build(data, null);
@@ -22,7 +25,7 @@ internal sealed class LayoutItemContentTemplate(LayoutContent model, DockingMana
     public Control? Build(object? data, Control? existing)
     {
         _manager.TryGetTarget(out DockingManager? owner);
-        IDataTemplate? template = owner?.LayoutItemTemplate ?? owner?.LayoutItemTemplateSelector?.SelectTemplate(data, presenter);
+        IDataTemplate? template = Settings.Select(data, presenter);
         if (template is null)
         {
             // Delegate explicit controls and native template content to Dock's

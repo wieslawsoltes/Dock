@@ -403,8 +403,12 @@ public partial class DockingManager : TemplatedControl
     protected virtual void OnAnchorablesSourceChanged(AvaloniaPropertyChangedEventArgs e)
         => _anchorables.ChangeSource(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
     /// <summary>Called when the application content template changes.</summary>
+    /// <remarks>Existing presenters receive this provider after the hook returns successfully.
+    /// A throwing hook retains that provider's previously delivered value.</remarks>
     protected virtual void OnLayoutItemTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the application content template selector changes.</summary>
+    /// <remarks>Existing presenters receive this provider after the hook returns successfully,
+    /// independently of the last delivered explicit template.</remarks>
     protected virtual void OnLayoutItemTemplateSelectorChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called when the document tab header template changes.</summary>
     protected virtual void OnDocumentHeaderTemplateChanged(AvaloniaPropertyChangedEventArgs e) { }
@@ -491,68 +495,69 @@ public partial class DockingManager : TemplatedControl
         if (change.Property == DocumentsSourceProperty) OnDocumentsSourceChanged(change);
         if (change.Property == AnchorablesSourceProperty) OnAnchorablesSourceChanged(change);
         if (change.Property == AllowMixedOrientationProperty) _layoutItems?.RefreshCommands();
+        // WPF delivers dependency-property bindings after the metadata callback.
+        // Preserve each provider independently through exceptions and nested changes.
         if (change.Property == LayoutItemTemplateProperty)
         {
-            _layoutItems?.RefreshTemplates();
             OnLayoutItemTemplateChanged(change);
+            _layoutItems?.RefreshTemplates(selectorChanged: false);
         }
         if (change.Property == LayoutItemTemplateSelectorProperty)
         {
-            _layoutItems?.RefreshTemplates();
             OnLayoutItemTemplateSelectorChanged(change);
+            _layoutItems?.RefreshTemplates(selectorChanged: true);
         }
         if (change.Property == LayoutItemContainerStyleProperty) OnLayoutItemContainerStyleChanged(change);
         if (change.Property == LayoutItemContainerStyleSelectorProperty) OnLayoutItemContainerStyleSelectorChanged(change);
         if (change.Property == DocumentHeaderTemplateProperty)
         {
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document);
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
             OnDocumentHeaderTemplateChanged(change);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document, selectorChanged: false);
         }
         if (change.Property == DocumentPaneMenuItemHeaderTemplateProperty)
         {
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
             OnDocumentPaneMenuItemHeaderTemplateChanged(change);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu, selectorChanged: false);
         }
         if (change.Property == DocumentPaneMenuItemHeaderTemplateSelectorProperty)
         {
             OnDocumentPaneMenuItemHeaderTemplateSelectorChanged(change);
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentMenu, selectorChanged: true);
         }
         if (change.Property == DocumentTitleTemplateProperty)
         {
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle);
             OnDocumentTitleTemplateChanged(change);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle, selectorChanged: false);
         }
         if (change.Property == DocumentTitleTemplateSelectorProperty)
         {
             OnDocumentTitleTemplateSelectorChanged(change);
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.DocumentTitle, selectorChanged: true);
         }
         if (change.Property == AnchorableHeaderTemplateProperty)
         {
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);
             OnAnchorableHeaderTemplateChanged(change);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable, selectorChanged: false);
         }
         if (change.Property == DocumentHeaderTemplateSelectorProperty)
         {
             OnDocumentHeaderTemplateSelectorChanged(change);
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Document, selectorChanged: true);
         }
         if (change.Property == AnchorableHeaderTemplateSelectorProperty)
         {
             OnAnchorableHeaderTemplateSelectorChanged(change);
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.Anchorable, selectorChanged: true);
         }
         if (change.Property == AnchorableTitleTemplateProperty)
         {
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.AnchorableTitle);
             OnAnchorableTitleTemplateChanged(change);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.AnchorableTitle, selectorChanged: false);
         }
         if (change.Property == AnchorableTitleTemplateSelectorProperty)
         {
             OnAnchorableTitleTemplateSelectorChanged(change);
-            _layoutItems?.RefreshHeaders(LayoutHeaderKind.AnchorableTitle);
+            _layoutItems?.RefreshHeaders(LayoutHeaderKind.AnchorableTitle, selectorChanged: true);
         }
     }
     /// <summary>Occurs before replacing the layout.</summary>

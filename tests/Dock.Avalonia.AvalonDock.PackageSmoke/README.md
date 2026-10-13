@@ -255,3 +255,9 @@ The layout-callback probe derives an external manager, redirects its layout
 before the base hook, replays supplied roots (including a foreign-owned and null
 root), distinguishes initial source imports from live updates, and checks
 independent root property registrations against the current panel presentation.
+
+The template-callback probe checks callback-before-presenter delivery, retained
+provider settings after failure, independent template/selector updates, current
+settings for new views, reentrant child identity, and replayed selector arguments
+with current document-menu fallback. It reproduces the premature-delivery defect
+against the preceding package and passes only with the corrected adapter.

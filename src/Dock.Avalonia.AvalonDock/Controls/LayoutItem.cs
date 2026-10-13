@@ -196,7 +196,7 @@ public abstract class LayoutItem : Control
     internal Control BuildHeader(LayoutHeaderKind kind, IDataTemplate? fallback, Control? existing) =>
         (_headers ??= new LayoutHeaderViews(this)).Build(kind, fallback, existing);
 
-    internal void RefreshHeaders(LayoutHeaderKind kind) => _headers?.Refresh(kind);
+    internal void RefreshHeaders(LayoutHeaderKind kind, bool selectorChanged) => _headers?.Refresh(kind, selectorChanged);
     internal void AttachHeader(LayoutHeaderPresenter view) => (_headers ??= new LayoutHeaderViews(this)).Attach(view);
 
     internal void ApplyContainerStyle()
@@ -240,10 +240,18 @@ public abstract class LayoutItem : Control
         finally { _synchronizing = synchronizing; }
     }
 
-    internal void RefreshViewTemplate()
+    internal void RefreshViewTemplate(bool? selectorChanged = null)
     {
         if (_view is not null && Manager is { } manager && LayoutElement is { } content)
-            _view.SetCurrentValue(ContentPresenter.ContentTemplateProperty, new LayoutItemContentTemplate(content, manager, _view));
+        {
+            LayoutTemplateSettings settings = LayoutTemplateSettings.Content(manager);
+            if (_view.ContentTemplate is LayoutItemContentTemplate previous)
+            {
+                settings = previous.Settings.Update(settings, selectorChanged);
+                if (previous.Settings.Matches(settings)) return;
+            }
+            _view.SetCurrentValue(ContentPresenter.ContentTemplateProperty, new LayoutItemContentTemplate(content, manager, _view, settings));
+        }
     }
 
     internal void SynchronizeModel(string? propertyName = null)

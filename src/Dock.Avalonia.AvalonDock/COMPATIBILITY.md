@@ -199,7 +199,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,674 cases, including 19 layout
+- The consolidated adapter suite passes all 2,725 cases, including 51 template
+  callback delivery, reentrancy, failure, and replay cases, plus 19 layout
   callback argument, ownership, presentation, and lifetime cases, plus 17 root-event
   registration, reentrancy, attachment-order, and lifetime cases, plus 22 container
   style callback, command-order, and native restyling cases, plus 29 source
@@ -1036,6 +1037,32 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
 
+## Template callback delivery audit
+
+Existing content, header, title and document-menu presenters observe template
+and selector properties independently, after the corresponding protected change
+hook returns normally. Failed callbacks keep that provider's last delivered
+value; completed nested property changes remain applied. An unrelated provider
+update does not import a previously failed value. New presenters start from
+current manager settings, and a reentrant outer notification does not rebuild
+an already-delivered inner value. Document-header changes leave an unchanged
+coerced menu fallback alone.
+
+This ordering follows WPF's [`DependencyObject.NotifyPropertyChange`](https://github.com/dotnet/wpf/blob/a088618af985b17dfbc2327c7caed84f7758a2ff/src/Microsoft.DotNet.Wpf/src/WindowsBase/System/Windows/DependencyObject.cs),
+which invokes property callbacks before invalidating dependent bindings. The
+pinned AvalonDock manager supplies the template/selector callbacks; its content
+presenter binds the providers separately. This pass uses source contract review
+and Avalonia Headless, without resuming the deferred Windows desktop checks.
+
+Fifty-one new cases cover all six presenter kinds, both provider properties,
+success/failure ordering, exceptions after nested template clears, independent
+failed-value retention, new-view initialization, reentrant child identity, menu
+fallback identity, captured selector arguments, and current/sticky menu selector
+fallback. The focused suite passes 139 cases, including the existing recorded
+WPF metadata observations. The external consumer reproduces premature provider
+delivery against package commit `2aaacd47e`; its new probe verifies the corrected
+behavior through public/protected APIs.
+
 ## Layout callback argument audit
 
 `OnLayoutChanged` assigns ownership and attaches containers to the current
@@ -1211,8 +1238,9 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   retains a replacement main panel and return panes. That XML extension is not
   understood by upstream WPF. Floating roots with hidden/pinned contents or nested
   windows are still rejected before overwriting a saved file.
-- Remaining manager API audit: templates/selectors, styles,
-  and the control adapter surface.
+- Remaining manager API audit: control adapter behavior and framework edge
+  cases. Template/coercion callbacks, provider delivery, and container styling
+  have the targeted audits recorded above.
   Container style value, command-order, and native/source attachment behavior is
   covered above, including repeated root registrations and old-root callbacks.
   The layout callback argument audit above covers redirected/replayed roots,

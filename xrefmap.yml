@@ -33711,6 +33711,18 @@ references:
   commentId: Overload:Dock.Model.FactoryBase.ShouldFocusActiveDockable
   fullName: Dock.Model.FactoryBase.ShouldFocusActiveDockable
   nameWithType: FactoryBase.ShouldFocusActiveDockable
+- uid: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection(Dock.Model.Core.IDockable)
+  name: ShouldSynchronizeDockingWindowSelection(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowSelection_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.ShouldSynchronizeDockingWindowSelection(IDockable)
+- uid: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection*
+  name: ShouldSynchronizeDockingWindowSelection
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowSelection_
+  commentId: Overload:Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection
+  fullName: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection
+  nameWithType: FactoryBase.ShouldSynchronizeDockingWindowSelection
 - uid: Dock.Model.FactoryBase.SplitToDock(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)
   name: SplitToDock(IDock, IDockable, DockOperation)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SplitToDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_

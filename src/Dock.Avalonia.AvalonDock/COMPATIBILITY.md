@@ -394,8 +394,8 @@ below rather than automatic discovery.
   tests for deferred traversal, closest-parent/root lookup, null/value-type
   contracts, type helpers, and nearest-panel side lookup. `GetRoot` walks the
   parent contract rather than reading a custom `Root` property. Layout models
-  retain Avalonia's sealed identity equality; upstream equality overrides are
-  a framework inheritance difference.
+  retain sealed identity equality in both implementations: upstream inherits
+  WPF `DependencyObject`, and the adapter inherits `AvaloniaObject`.
 - The public group-operation audit verifies invalid replacement indices,
   incompatible child casts, absent/null children, interface lookup, and native
   synchronization. Public removals detach ownership before selection/group
@@ -653,8 +653,9 @@ below rather than automatic discovery.
   native docked/floating panes and auto-hide previews. Their model properties
   resolve the existing read-only `LayoutItem`, and their compiled themes present
   its same `View`. Document controls also host tools docked as documents.
-  Model replacement updates subscriptions and initial/runtime enablement;
-  disabling active content selects the first enabled sibling or clears selection.
+  Model replacement updates subscriptions; public controls copy enablement only
+  when the model notifies a change, while native presenters also initialize it.
+  Disabling active content selects the first enabled sibling or clears selection.
   Protected model/container hooks and actual focus/left/right pointer routes are
   covered, including derived themes, nested managers, delayed navigator focus,
   and the floating-host focus exception. Pointer ownership uses the source's
@@ -1735,11 +1736,17 @@ unused controls. Twelve new package-consumer checks all fail against the prior
 One existing retained-title lifetime case failed once in the focused run; it
 passed unchanged in isolation and in the complete suite.
 
-The adapter's safe standalone preassignment and immediate initial enablement are
-explicit integration extensions. They do not claim WPF's unrooted-model failure
-behavior or delayed initialization. Initial state, property-store ownership,
-logical-tree structure, and input-route substitutions remain described by the
-framework contracts in the guide.
+Standalone content controls now follow the upstream callback sequence. Document
+controls subscribe before resolving `Root.Manager`, so an unmanaged model raises
+`NullReferenceException` while retaining its new property value, subscription,
+and previous item. Tool controls clear their item without subscribing when the
+model has no manager. Assigning or clearing either model leaves control
+enablement unchanged until the model raises an `IsEnabled` notification. The
+resolved or explicitly supplied item survives visual attachment and ownership
+changes until another base model callback replaces it. Native presenters retain
+initial enablement, ownership refresh, and cleanup through their separate setup.
+`ContentControlCallbackTests` and `LayoutContentControlTests` cover these states,
+including suppressed hooks, failed lookup, later attachment, and native reuse.
 
 ## Inherited control property contracts
 
@@ -1827,8 +1834,7 @@ Dock features or hidden by the API inventory:
 | CLR and UI framework | Public namespaces are `AvalonDock.*` as requested. WPF controls, events, metadata, templates, pointer/focus arguments, and assemblies require Avalonia counterparts. This is not binary compatibility. The 106 strict inventory differences remain individually classified in `portability-review.tsv`. |
 | Binding lifetime | The implementation remains reflection-free as requested. Avalonia binding/style ownership, one-way assignment, current-value overrides, and direct-property clearing differ from WPF. The eight ActiveContent reference differences and the Title/ContentId contracts remain documented and tested. Dispose a binding for permanent replacement; clear direct properties through their typed overload. |
 | Logical trees and native hosting | Avalonia owns the logical/visual tree. Public logical children and keyboard/context-menu routes therefore have different framework shapes. WPF `HwndHost.BuildWindowCore` and `DestroyWindowCore` have no replacement hooks; pinned content uses Dock's native host. |
-| Model identity and graph integrity | Avalonia's sealed object equality prevents layout subclasses from overriding identity. Native-backed collections reject duplicate/cyclic membership and detach cleared children instead of retaining invalid upstream parent references. |
-| Standalone controls | Controls accept model assignment before a manager is attached, refresh their container on attachment, and initialize enablement immediately. These are documented Avalonia integration extensions. |
+| Graph integrity | Native-backed collections reject duplicate/cyclic membership and detach cleared children instead of retaining invalid upstream parent references. Both WPF `DependencyObject` and Avalonia `AvaloniaObject` seal object equality, so layout-subclass equality is unchanged. |
 | XML/custom resources | Custom CLR XML types and compiled resource URIs use typed factory registration. Runtime assembly discovery and arbitrary WPF resource loading are absent. Custom model hooks still participate through their public virtual methods. |
 | Additional floating layouts | Generic/mixed Dock groups use the additional `LayoutGroupFloatingWindow` XML element, which WPF cannot consume. Hidden/pinned contents inside a floating root, nested windows, and incompatible typed-window mutations are rejected before a file is overwritten. |
 | Auto-hide layout | Content and resizers use Dock's pinned host with adapter-controlled spacing and unset-size persistence. Physical resize ghost limits follow upstream; the visual tree differs from WPF's popup grid. |

@@ -27,11 +27,12 @@ public class LayoutAnchorableControl : TemplatedControl
     protected override Type StyleKeyOverride => typeof(LayoutAnchorableControl);
     /// <summary>Gets or sets the public tool model displayed by this control.</summary>
     public LayoutAnchorable? Model { get => GetValue(ModelProperty); set => SetValue(ModelProperty, value); }
-    /// <summary>Gets the manager's existing item container, or null for unattached content.</summary>
+    /// <summary>Gets the item container resolved by the last model-change hook, or null for unattached content.</summary>
     public LayoutItem? LayoutItem => _layoutItem;
-    /// <summary>Updates model subscriptions, enablement, and the item container.</summary>
+    /// <summary>Updates model subscriptions and the item container.</summary>
     /// <remarks>Removes one enablement subscription from the supplied old model. Each base
-    /// call subscribes to the current managed model; callbacks read the live Model property.</remarks>
+    /// call subscribes to the current managed model; callbacks read the live Model property.
+    /// Enablement changes when the model later raises its IsEnabled notification.</remarks>
     protected virtual void OnModelChanged(AvaloniaPropertyChangedEventArgs e) => _binding.SetModel((LayoutContent?)e.OldValue, Model);
     /// <summary>Sets the container exposed to compiled control templates.</summary>
     protected void SetLayoutItem(LayoutItem? value)

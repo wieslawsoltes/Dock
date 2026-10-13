@@ -33,12 +33,14 @@ public class LayoutDocumentControl : TemplatedControl
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(LayoutDocumentControl);
     /// <summary>Gets or sets the public model displayed by this control.</summary>
+    /// <remarks>The model must already belong to a layout with a manager when the base model-change hook runs.</remarks>
     public LayoutContent? Model { get => GetValue(ModelProperty); set => SetValue(ModelProperty, value); }
-    /// <summary>Gets the manager's existing item container, or null for unattached content.</summary>
+    /// <summary>Gets the item container resolved by the last model-change hook.</summary>
     public LayoutItem? LayoutItem => _layoutItem;
-    /// <summary>Updates model subscriptions, enablement, and the item container.</summary>
+    /// <summary>Updates model subscriptions and the item container.</summary>
     /// <remarks>Removes one enablement subscription from the supplied old model and adds one
-    /// to the current model. Replayed base calls retain their separate registrations.</remarks>
+    /// to the current model before resolving its manager. Replayed base calls retain their separate
+    /// registrations. Enablement changes when the model later raises its IsEnabled notification.</remarks>
     protected virtual void OnModelChanged(AvaloniaPropertyChangedEventArgs e) => _binding.SetModel((LayoutContent?)e.OldValue, Model);
     /// <summary>Sets the container exposed to compiled control templates.</summary>
     protected void SetLayoutItem(LayoutItem? value)

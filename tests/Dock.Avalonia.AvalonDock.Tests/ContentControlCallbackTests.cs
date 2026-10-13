@@ -17,6 +17,109 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class ContentControlCallbackTests
 {
     [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Assigning_And_Clearing_A_Model_Does_Not_Copy_Its_Initial_Enablement(bool tool, bool enabled)
+    {
+        var (manager, first, _) = Create(tool);
+        first.IsEnabled = !enabled;
+        IProbe probe = NewProbe(tool);
+        probe.Control.IsEnabled = enabled;
+
+        probe.Model = first;
+
+        Assert.Equal(enabled, probe.Control.IsEnabled);
+        Assert.Same(manager.GetLayoutItemFromModel(first), probe.Item);
+        first.IsEnabled = enabled;
+        first.IsEnabled = !enabled;
+        Assert.Equal(!enabled, probe.Control.IsEnabled);
+        probe.Model = null;
+        Assert.Null(probe.Item);
+        Assert.Equal(!enabled, probe.Control.IsEnabled);
+        first.IsEnabled = enabled;
+        Assert.Equal(!enabled, probe.Control.IsEnabled);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void An_Unmanaged_Document_Fails_After_Subscription_Without_Replacing_The_Previous_Item(bool hasRoot)
+    {
+        var (manager, first, _) = Create(false);
+        DocumentProbe probe = new() { Model = first };
+        LayoutItem item = probe.LayoutItem!;
+        LayoutDocument replacement = new();
+        LayoutRoot? root = hasRoot ? new() { RootPanel = new(new LayoutDocumentPane(replacement)) } : null;
+
+        Assert.Throws<NullReferenceException>(() => probe.Model = replacement);
+
+        Assert.Same(replacement, probe.Model);
+        Assert.Same(item, probe.LayoutItem);
+        first.IsEnabled = false;
+        Assert.True(probe.IsEnabled);
+        replacement.IsEnabled = false;
+        Assert.False(probe.IsEnabled);
+        replacement.IsEnabled = true;
+        Assert.True(probe.IsEnabled);
+        probe.Model = null;
+        Assert.Null(probe.LayoutItem);
+        replacement.IsEnabled = false;
+        Assert.True(probe.IsEnabled);
+        GC.KeepAlive(manager);
+        GC.KeepAlive(root);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void An_Unmanaged_Tool_Clears_The_Previous_Item_Without_Subscribing(bool hasRoot)
+    {
+        var (manager, first, _) = Create(true);
+        ToolProbe probe = new() { Model = (LayoutAnchorable)first };
+        LayoutAnchorable replacement = new();
+        LayoutRoot? root = hasRoot ? new() { RootPanel = new(new LayoutAnchorablePane(replacement)) } : null;
+
+        probe.Model = replacement;
+
+        Assert.Null(probe.LayoutItem);
+        first.IsEnabled = false;
+        replacement.IsEnabled = false;
+        Assert.True(probe.IsEnabled);
+        GC.KeepAlive(manager);
+        GC.KeepAlive(root);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Attaching_A_Public_Control_Does_Not_Refresh_An_Explicit_Or_Suppressed_Item(bool tool, bool suppressed)
+    {
+        var (manager, first, second) = Create(tool);
+        IProbe probe = NewProbe(tool);
+        probe.Model = first;
+        LayoutItem expected = suppressed ? probe.Item! : new LayoutDocumentItem();
+        if (suppressed)
+        {
+            probe.Suppress = true;
+            probe.Model = second;
+        }
+        else probe.SetItem(expected);
+        Window window = new() { Content = probe.Control };
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            Assert.Same(expected, probe.Item);
+        }
+        finally { window.Close(); }
+        GC.KeepAlive(manager);
+    }
+
+    [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
     public void Replayed_Callback_Removes_Its_Supplied_Old_Model_And_Observes_The_Current_Model(bool tool)
@@ -203,7 +306,8 @@ public class ContentControlCallbackTests
     {
         LayoutContent model = tool ? new LayoutAnchorable() : new LayoutDocument();
         IProbe probe = NewProbe(tool);
-        probe.Model = model;
+        if (tool) probe.Model = model;
+        else Assert.Throws<NullReferenceException>(() => probe.Model = model);
         model.IsEnabled = false;
         Assert.Equal(tool, probe.Control.IsEnabled);
         ILayoutPanelElement pane = tool ? new LayoutAnchorablePane((LayoutAnchorable)model) : new LayoutDocumentPane(model);
@@ -211,10 +315,14 @@ public class ContentControlCallbackTests
         model.IsEnabled = true;
         model.IsEnabled = false;
         Assert.Equal(tool, probe.Control.IsEnabled);
+        Assert.Null(probe.Item);
         probe.Apply(probe.Last!);
-        Assert.False(probe.Control.IsEnabled);
+        Assert.Equal(tool, probe.Control.IsEnabled);
+        Assert.Same(manager.GetLayoutItemFromModel(model), probe.Item);
         model.IsEnabled = true;
         Assert.True(probe.Control.IsEnabled);
+        model.IsEnabled = false;
+        Assert.False(probe.Control.IsEnabled);
         GC.KeepAlive(manager);
     }
 
@@ -324,6 +432,7 @@ public class ContentControlCallbackTests
         bool Suppress { get; set; }
         AvaloniaPropertyChangedEventArgs? Last { get; }
         void Apply(AvaloniaPropertyChangedEventArgs change);
+        void SetItem(LayoutItem? item);
     }
 
     private sealed class DocumentProbe : LayoutDocumentControl, IProbe
@@ -333,6 +442,7 @@ public class ContentControlCallbackTests
         public bool Suppress { get; set; }
         public AvaloniaPropertyChangedEventArgs? Last { get; private set; }
         public void Apply(AvaloniaPropertyChangedEventArgs change) => base.OnModelChanged(change);
+        public void SetItem(LayoutItem? item) => SetLayoutItem(item);
         protected override void OnModelChanged(AvaloniaPropertyChangedEventArgs e)
         {
             Last = e;
@@ -348,6 +458,7 @@ public class ContentControlCallbackTests
         public bool Suppress { get; set; }
         public AvaloniaPropertyChangedEventArgs? Last { get; private set; }
         public void Apply(AvaloniaPropertyChangedEventArgs change) => base.OnModelChanged(change);
+        public void SetItem(LayoutItem? item) => SetLayoutItem(item);
         protected override void OnModelChanged(AvaloniaPropertyChangedEventArgs e)
         {
             Last = e;

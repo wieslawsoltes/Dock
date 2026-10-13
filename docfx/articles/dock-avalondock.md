@@ -474,8 +474,9 @@ native drop engine rejects the corresponding operation before changing the
 layout. Split targets and direct collection/model edits remain available.
 Changing either key or the option takes effect on the next drop validation.
 
-Layout objects inherit Avalonia's sealed identity equality: application layout
-subclasses cannot override `Equals` or `GetHashCode` as upstream CLR models can.
+Layout objects retain sealed identity equality: both upstream's WPF
+`DependencyObject` and the adapter's `AvaloniaObject` prevent application layout
+subclasses from overriding `Equals` or `GetHashCode`.
 Child collections require Dock-backed elements and reject duplicate membership
 and cycles. Clearing a collection detaches its former children to preserve the
 native model graph; upstream's plain collection reset can retain stale parents.
@@ -652,10 +653,14 @@ can affect the next enabled item. Document controls apply this policy only to
 document panes; tool controls apply it only to tool panes. Registrations use weak
 references so retained old models do not keep discarded controls alive.
 
-Standalone Avalonia controls support model assignment before a manager exists
-and initialize enablement immediately. Those integration behaviors extend the
-upstream callback contract; they do not reproduce WPF's unrooted-model failures
-or deferred initial enablement.
+For standalone controls, assign a document model only after its layout has a
+manager: the base hook subscribes, then raises `NullReferenceException` if
+`Root.Manager` is unavailable. Tool controls accept an unmanaged model but leave
+their item null and do not subscribe until another base model callback runs with
+a manager. Assigning or clearing a model preserves the control's current
+`IsEnabled`; later model notifications update it. Visual attachment and ownership
+changes do not refresh the resolved item. Native Dock presenters separately
+initialize enablement, follow ownership changes, and release removed content.
 
 Document pointer-preview hooks activate only when the source is a visual whose
 nearest parent `DockingManager` owns the model. Standalone presentations, foreign

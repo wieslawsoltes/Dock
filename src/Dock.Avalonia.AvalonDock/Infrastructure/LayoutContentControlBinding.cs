@@ -14,13 +14,17 @@ internal sealed class LayoutContentControlBinding
     private readonly LayoutControlModelBinding _model;
     private readonly LayoutContentPreviewRegistration _preview;
     private readonly LayoutContentModelEvents _events;
+    private readonly Action<LayoutItem?> _setItem;
     private readonly Func<LayoutContent?> _getModel;
     private readonly bool _anchorable;
+    private LayoutContent? _publicModel;
+    private bool _publicModelSubscribed;
 
     internal LayoutContentControlBinding(TemplatedControl control, Action<LayoutItem?> setItem,
         Action clearModel, Func<LayoutContent?> getModel, bool anchorable)
     {
         _control = control;
+        _setItem = setItem;
         _getModel = getModel;
         _anchorable = anchorable;
         _preview = new(control);
@@ -32,14 +36,51 @@ internal sealed class LayoutContentControlBinding
     internal void SetModel(LayoutContent? previous, LayoutContent? model)
     {
         _events.Remove(previous);
-        if (model is not null && (!_anchorable || IsNativePresentation || model.Root?.Manager is not null))
-            _events.Add(model);
+        if (IsNativePresentation)
+        {
+            _publicModel = null;
+            if (model is not null) _events.Add(model);
+            SetNativeModel(model);
+            return;
+        }
+
+        _publicModel = model;
+        _publicModelSubscribed = model is not null && (!_anchorable || model.Root?.Manager is not null);
+        if (_publicModelSubscribed)
+        {
+            _events.Add(model!);
+            // The document hook subscribes before resolving its manager, and
+            // retains that subscription if an unattached model causes failure.
+            _setItem(model!.Root!.Manager!.GetLayoutItemFromModel(model));
+        }
+        else _setItem(null);
+    }
+
+    private void SetNativeModel(LayoutContent? model)
+    {
         _model.SetModel(model);
-        _preview.Refresh(_model.Model, IsNativePresentation);
+        _preview.Refresh(_model.Model, native: true);
         if (ReferenceEquals(_model.Model, model))
             _control.SetCurrentValue(InputElement.IsEnabledProperty, model?.IsEnabled ?? true);
     }
-    internal void RefreshItem() => _model.RefreshItem();
+
+    internal void RefreshItem()
+    {
+        if (!IsNativePresentation) return;
+        // A custom compiled template can assign Model before the native host
+        // adopts its control. Upgrade only a model whose base hook actually ran.
+        if (_publicModel is { } model)
+        {
+            if (ReferenceEquals(model, _getModel()))
+            {
+                _publicModel = null;
+                if (!_publicModelSubscribed) _events.Add(model);
+                SetNativeModel(model);
+            }
+            return;
+        }
+        _model.RefreshItem();
+    }
     internal void WatchItem(LayoutItem? item) => _model.WatchItem(item);
 
     internal void ActivateFromFocus(LayoutContent? model, FocusChangedEventArgs args)

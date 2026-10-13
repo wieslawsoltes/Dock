@@ -18,12 +18,43 @@ using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
+using AvalonDock.Themes;
 using Xunit;
 
 namespace Dock.Avalonia.AvalonDock.Tests;
 
 public class LayoutContentControlTests
 {
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Native_Presentation_Initializes_Enablement_When_Adopting_A_Public_Control(bool tool, bool initiallyManaged)
+    {
+        LayoutContent model = CreateModel(tool);
+        model.IsEnabled = false;
+        TemplatedControl control = CreateControl(tool);
+        DockingManager? manager = initiallyManaged ? CreateManager(model) : null;
+        if (tool || initiallyManaged) SetModel(control, model);
+        else Assert.Throws<NullReferenceException>(() => SetModel(control, model));
+        Assert.True(control.IsEnabled);
+        manager ??= CreateManager(model);
+        manager.Theme = new GenericTheme();
+        IRecyclingDataTemplate template = Assert.IsAssignableFrom<IRecyclingDataTemplate>(manager.FindResource("AvalonDockContentTemplate"));
+
+        Assert.Same(control, template.Build(model, control));
+
+        Assert.False(control.IsEnabled);
+        Assert.Same(manager.GetLayoutItemFromModel(model), Item(control));
+        model.IsEnabled = true;
+        Assert.True(control.IsEnabled);
+        model.Close();
+        Dispatcher.UIThread.RunJobs();
+        Assert.Null(Model(control));
+        Assert.Null(Item(control));
+    }
+
     [AvaloniaTheory]
     [InlineData(false, false)]
     [InlineData(true, false)]
@@ -43,13 +74,21 @@ public class LayoutContentControlTests
                 SetModel(control, replacement);
         };
         SetModel(control, first);
+        if (!fromContainer)
+        {
+            first.IsEnabled = true;
+            first.IsEnabled = false;
+        }
         Assert.Same(replacement, Model(control));
         Assert.Same(manager.GetLayoutItemFromModel(replacement), Item(control));
-        Assert.True(control.IsEnabled);
+        Assert.Equal(fromContainer, control.IsEnabled);
         replacement.IsEnabled = false;
         Assert.False(control.IsEnabled);
+        replacement.IsEnabled = true;
+        Assert.True(control.IsEnabled);
         first.IsEnabled = true;
-        Assert.False(control.IsEnabled);
+        first.IsEnabled = false;
+        Assert.True(control.IsEnabled);
     }
 
     [AvaloniaTheory]
@@ -67,9 +106,15 @@ public class LayoutContentControlTests
         first.IsEnabled = false;
         SetModel(control, first);
         Assert.Same(manager.GetLayoutItemFromModel(first), Item(control));
+        Assert.True(control.IsEnabled);
+        first.IsEnabled = true;
+        first.IsEnabled = false;
         Assert.False(control.IsEnabled);
         SetModel(control, second);
         Assert.Same(manager.GetLayoutItemFromModel(second), Item(control));
+        Assert.False(control.IsEnabled);
+        second.IsEnabled = false;
+        second.IsEnabled = true;
         Assert.True(control.IsEnabled);
         first.IsEnabled = true;
         first.IsEnabled = false;
@@ -78,40 +123,44 @@ public class LayoutContentControlTests
         Assert.False(control.IsEnabled);
         SetModel(control, null);
         Assert.Null(Item(control));
-        Assert.True(control.IsEnabled);
+        Assert.False(control.IsEnabled);
         second.IsEnabled = true;
         second.IsEnabled = false;
-        Assert.True(control.IsEnabled);
+        Assert.False(control.IsEnabled);
     }
 
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void An_Unattached_Model_Resolves_Its_Container_When_Added_To_A_Manager(bool tool)
+    public void An_Unattached_Model_Requires_A_New_Model_Callback_To_Resolve_Its_Container(bool tool)
     {
         LayoutContent model = CreateModel(tool);
         TemplatedControl control = CreateControl(tool);
-        SetModel(control, model);
+        if (tool) SetModel(control, model);
+        else Assert.Throws<NullReferenceException>(() => SetModel(control, model));
         Assert.Null(Item(control));
         DockingManager manager = CreateManager(model);
-        Assert.Same(manager.GetLayoutItemFromModel(model), Item(control));
+        Assert.Null(Item(control));
         Assert.Same(model, Model(control));
+        SetModel(control, null);
+        SetModel(control, model);
+        Assert.Same(manager.GetLayoutItemFromModel(model), Item(control));
     }
 
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Explicit_Controls_Keep_The_Assigned_Model_And_Release_A_Detached_Container(bool tool)
+    public void Explicit_Controls_Keep_The_Assigned_Model_And_Previously_Resolved_Container(bool tool)
     {
         LayoutContent model = CreateModel(tool);
         DockingManager manager = CreateManager(model);
         TemplatedControl control = CreateControl(tool);
         SetModel(control, model);
-        Assert.NotNull(Item(control));
+        LayoutItem item = Assert.IsAssignableFrom<LayoutItem>(Item(control));
         model.Close();
         Dispatcher.UIThread.RunJobs();
         Assert.Same(model, Model(control));
-        Assert.Null(Item(control));
+        Assert.Same(item, Item(control));
         Assert.Null(manager.GetLayoutItemFromModel(model));
     }
 

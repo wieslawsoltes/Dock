@@ -503,11 +503,29 @@ the focus-routing difference from WPF and includes compiled template examples.
 Dock may recycle a generated control for another tab; track the model or
 container when identity matters.
 
+The base content-model callback removes one enablement subscription from its
+supplied old model, then registers the current model; repeated base calls add
+separate registrations. Tool controls register managed models, while native
+presentations also support ownership transitions. Existing registrations read
+the live `Model` even if a later override suppresses its base call. Disabling
+active content clears selection before scanning the live children, so callbacks
+can affect the next enabled item. Document controls apply this policy only to
+document panes; tool controls apply it only to tool panes. Registrations use weak
+references so retained old models do not keep discarded controls alive.
+
+Standalone Avalonia controls support model assignment before a manager exists
+and initialize enablement immediately. Those integration behaviors extend the
+upstream callback contract; they do not reproduce WPF's unrooted-model failures
+or deferred initial enablement.
+
 `AvalonDock.Controls.AnchorablePaneTitle` is the public title inside native tool
 chrome for docked/floating panes and auto-hide previews. Its `Model` is the tool,
 and its read-only `LayoutItem` supplies the existing container and manager title
 templates. Custom hosts can use `<AnchorablePaneTitle Model="{Binding}" />` in
 a compiled template with `x:DataType="LayoutAnchorable"`.
+Clearing an explicitly assigned title model retains its last `LayoutItem`, as
+upstream does. Generated native titles clear both values when their content is
+released, preserving the native presentation lifetime.
 
 The nonfocusable title activates its tool on release. Leaving a pressed custom
 title inside a `LayoutAnchorablePaneControl` floats that visual pane through Dock.

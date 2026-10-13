@@ -1659,6 +1659,36 @@ properties. These are explicit framework contracts, not claims of WPF parity.
 No reflection or property-store inspection is introduced.
 The consolidated adapter suite passes all 3,772 cases with none skipped.
 
+## Content control callback registration
+
+Document/tool content callbacks remove one registration from the supplied old
+model and add a separate registration for each base call on the current model.
+Notifications read the live public property, including after suppressed model
+hooks; old publishers therefore follow current state. The registrations use
+weak references and do not retain discarded controls. Tool callback registration
+requires managed content; native presentation supports transient ownership.
+
+Disabling active content first clears its pane selection, then scans current
+children for the first enabled item. Callbacks during clearing can change that
+choice or stop it with an exception. Document controls only change document-pane
+selection; tool controls only change tool-pane selection. Public title controls
+retain the previous container when their model is cleared, while native title
+cleanup continues to release both values.
+
+Thirty new Headless cases cover replay, suppression, repeated registrations,
+individual removal, redirected enablement, clear-before-scan ordering, pane
+kinds, exceptions/retry, late attachment, title retention, and collection of
+unused controls. Twelve new package-consumer checks all fail against the prior
+`37d4e8851` packages. The consolidated adapter suite passes all 3,802 cases.
+One existing retained-title lifetime case failed once in the focused run; it
+passed unchanged in isolation and in the complete suite.
+
+The adapter's safe standalone preassignment and immediate initial enablement are
+explicit integration extensions. They do not claim WPF's unrooted-model failure
+behavior or delayed initialization. Initial state, property-store ownership,
+logical-tree structure, and input-route substitutions remain described by the
+framework contracts in the guide.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering

@@ -13,17 +13,27 @@ internal sealed class LayoutContentControlBinding
     private readonly TemplatedControl _control;
     private readonly LayoutControlModelBinding _model;
     private readonly LayoutContentPreviewRegistration _preview;
+    private readonly LayoutContentModelEvents _events;
+    private readonly Func<LayoutContent?> _getModel;
+    private readonly bool _anchorable;
 
-    internal LayoutContentControlBinding(TemplatedControl control, Action<LayoutItem?> setItem, Action clearModel)
+    internal LayoutContentControlBinding(TemplatedControl control, Action<LayoutItem?> setItem,
+        Action clearModel, Func<LayoutContent?> getModel, bool anchorable)
     {
         _control = control;
+        _getModel = getModel;
+        _anchorable = anchorable;
         _preview = new(control);
         _model = new(control, setItem, clearModel, ModelChanged);
+        _events = new(EnablementChanged);
     }
 
     internal bool IsNativePresentation { get => _model.IsNativePresentation; set => _model.IsNativePresentation = value; }
-    internal void SetModel(LayoutContent? model)
+    internal void SetModel(LayoutContent? previous, LayoutContent? model)
     {
+        _events.Remove(previous);
+        if (model is not null && (!_anchorable || IsNativePresentation || model.Root?.Manager is not null))
+            _events.Add(model);
         _model.SetModel(model);
         _preview.Refresh(_model.Model, IsNativePresentation);
         if (ReferenceEquals(_model.Model, model))
@@ -51,17 +61,29 @@ internal sealed class LayoutContentControlBinding
     {
         if (args.PropertyName is nameof(LayoutContent.Root) or nameof(LayoutContent.Parent) or nameof(Dock.Model.Core.IDockable.Factory))
             _preview.Refresh(model, IsNativePresentation);
-        if (args.PropertyName != nameof(LayoutContent.IsEnabled)) return;
+    }
+
+    private void EnablementChanged()
+    {
+        if (_getModel() is not { } model) return;
         _control.SetCurrentValue(InputElement.IsEnabledProperty, model.IsEnabled);
-        if (model.IsEnabled || !model.IsActive || model.Parent is not ILayoutContentSelector selector ||
-            model.Parent is not ILayoutGroup group) return;
-        int enabled = -1;
+        // Application handlers can replace Model while enablement is published.
+        // As in the compatibility hook, subsequent decisions use its live value.
+        if (_control.IsEnabled || _getModel() is not { IsActive: true } current) return;
+        ILayoutContainer? parent = current.Parent;
+        if (_anchorable ? parent is not LayoutAnchorablePane : parent is not LayoutDocumentPane) return;
+        ILayoutContentSelector selector = (ILayoutContentSelector)parent;
+        ILayoutGroup group = (ILayoutGroup)parent;
+        selector.SelectedContentIndex = -1;
         int index = 0;
         foreach (ILayoutElement child in group.Children)
         {
-            if (child is LayoutContent { IsEnabled: true }) { enabled = index; break; }
+            if (child is LayoutContent { IsEnabled: true })
+            {
+                selector.SelectedContentIndex = index;
+                return;
+            }
             index++;
         }
-        selector.SelectedContentIndex = enabled;
     }
 }

@@ -634,6 +634,21 @@ when focus enters a nested manager. Focus returning from a floating-window
 control retains the upstream activation exception. A native presenter's delayed
 focus restoration cannot override a newer tab selection.
 
+The base content-model callback removes one enablement subscription from its
+supplied old model, then registers the current model; repeated base calls add
+separate registrations. Tool controls register managed models, while native
+presentations also support ownership transitions. Existing registrations read
+the live `Model` even if a later override suppresses its base call. Disabling
+active content clears selection before scanning the live children, so callbacks
+can affect the next enabled item. Document controls apply this policy only to
+document panes; tool controls apply it only to tool panes. Registrations use weak
+references so retained old models do not keep discarded controls alive.
+
+Standalone Avalonia controls support model assignment before a manager exists
+and initialize enablement immediately. Those integration behaviors extend the
+upstream callback contract; they do not reproduce WPF's unrooted-model failures
+or deferred initial enablement.
+
 Document pointer-preview hooks activate only when the source is a visual whose
 nearest parent `DockingManager` owns the model. Standalone presentations, foreign
 managers, nonvisual sources, and unrooted models do not pass that ownership check.
@@ -691,6 +706,9 @@ and use `SetLayoutItem(LayoutItem?)`. The protected `OnMouseLeftButtonDown`,
 Call their base implementations to keep the default behavior. Titles share the
 content controls' weak model/container subscriptions, recycling, and generated
 control cleanup; tracking a tool should use its model or container identity.
+Clearing an explicitly assigned title model retains its last `LayoutItem`,
+including across visual attachment. Generated native titles clear their model
+and item together when the owning content is released.
 
 Tool title-bar close buttons use `CloseCommand` when `CanClose` is true and
 `HideCommand` otherwise. A disabled command cannot fall through to the native

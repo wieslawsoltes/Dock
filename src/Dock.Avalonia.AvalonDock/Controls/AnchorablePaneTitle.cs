@@ -24,7 +24,7 @@ public class AnchorablePaneTitle : TemplatedControl
     /// <summary>Creates a nonfocusable tool title.</summary>
     public AnchorablePaneTitle()
     {
-        _binding = new(this, SetLayoutItem, () => SetCurrentValue(ModelProperty, null));
+        _binding = new(this, SetLayoutItem, () => SetCurrentValue(ModelProperty, null), preserveItemWhenCleared: true);
         _input = new(this);
     }
 
@@ -35,6 +35,8 @@ public class AnchorablePaneTitle : TemplatedControl
     /// <summary>Gets the manager's current item container, or null for unattached content.</summary>
     public LayoutItem? LayoutItem => _layoutItem;
     /// <summary>Updates the model/container connection and cancels an unfinished title press.</summary>
+    /// <remarks>Clearing an explicitly assigned model retains the last layout item. Native title
+    /// presentations clear both values when their owning content is released.</remarks>
     protected virtual void OnModelChanged(AvaloniaPropertyChangedEventArgs e)
     {
         _input.Cancel();

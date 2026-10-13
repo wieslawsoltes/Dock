@@ -26,7 +26,7 @@ public class LayoutDocumentControl : TemplatedControl
     /// <summary>Creates a document content control.</summary>
     public LayoutDocumentControl()
     {
-        _binding = new(this, SetLayoutItem, () => SetCurrentValue(ModelProperty, null));
+        _binding = new(this, SetLayoutItem, () => SetCurrentValue(ModelProperty, null), () => Model, anchorable: false);
         AddHandler(PointerPressedEvent, PreviewPointerPressed, RoutingStrategies.Tunnel, handledEventsToo: true);
     }
 
@@ -37,7 +37,9 @@ public class LayoutDocumentControl : TemplatedControl
     /// <summary>Gets the manager's existing item container, or null for unattached content.</summary>
     public LayoutItem? LayoutItem => _layoutItem;
     /// <summary>Updates model subscriptions, enablement, and the item container.</summary>
-    protected virtual void OnModelChanged(AvaloniaPropertyChangedEventArgs e) => _binding.SetModel(Model);
+    /// <remarks>Removes one enablement subscription from the supplied old model and adds one
+    /// to the current model. Replayed base calls retain their separate registrations.</remarks>
+    protected virtual void OnModelChanged(AvaloniaPropertyChangedEventArgs e) => _binding.SetModel((LayoutContent?)e.OldValue, Model);
     /// <summary>Sets the container exposed to compiled control templates.</summary>
     protected void SetLayoutItem(LayoutItem? value)
     {

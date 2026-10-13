@@ -15,7 +15,8 @@ namespace AvalonDock.Infrastructure;
 // publishers to retain discarded presentation controls.
 internal sealed class LayoutControlModelBinding(Control control,
     Action<LayoutItem?> setItem, Action clearModel,
-    Action<LayoutContent, PropertyChangedEventArgs>? modelChanged = null)
+    Action<LayoutContent, PropertyChangedEventArgs>? modelChanged = null,
+    bool preserveItemWhenCleared = false)
 {
     private Subscription? _subscription;
     internal LayoutContent? Model { get; private set; }
@@ -31,6 +32,7 @@ internal sealed class LayoutControlModelBinding(Control control,
 
     internal void RefreshItem()
     {
+        if (Model is null && preserveItemWhenCleared && !IsNativePresentation) return;
         // Public ownership changes before native factory initialization during
         // a manager transfer. Prefer that new owner; retain the factory fallback
         // for transiently unparented content moving between native hosts.

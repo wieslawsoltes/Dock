@@ -44,7 +44,7 @@ public class AnchorablePaneTitleTests
         title.AssignContainer(custom);
         Assert.Same(custom, title.GetValue(AnchorablePaneTitle.LayoutItemProperty));
         title.Model = null;
-        Assert.Null(title.LayoutItem);
+        Assert.Same(custom, title.LayoutItem);
         TitleProbe suppressing = new() { SuppressModelHook = true, Model = workspace.First };
         Assert.Same(workspace.First, suppressing.Model);
         Assert.Null(suppressing.LayoutItem);

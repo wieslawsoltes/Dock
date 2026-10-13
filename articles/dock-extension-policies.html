@@ -304,6 +304,18 @@ a <code>Thumb</code> for <code>PinnedDockControl.PART_PinnedDockSplitter</code>.
 owns its resize behavior; the default <code>GridSplitter</code> retains native handlers.
 The Fluent layout presenter defers content realization, and the document create
 button remains visible alongside tab-strip extension content.</p>
+<h2 id="external-native-surfaces">External native surfaces</h2>
+<p>An <code>IExternalDockSurface</code> can live in another visual root, including an embedded
+native child. Register it with <code>DockControl.RegisterExternalDockSurface</code> when
+attaching it and unregister it when destroying its host. Keep the same live Dock
+models and controls inside the surface; the owning <code>DockControl</code> supplies docking
+policy, global targets, previews, and the managed window layer.</p>
+<p>Registered visible surfaces are hit tested in screen coordinates before the
+owning dock's content. Tool and document tab drags transfer pointer capture to
+that owner, and source previews include tabs in external roots. Floating target
+adorners use the actual window owner, or the registered dock's window for an
+embedded root, and include both the docking viewport and target bounds. Hidden,
+detached, and unregistered surfaces do not participate in drop hit testing.</p>
 <h2 id="regression-coverage">Regression coverage</h2>
 <p>The native tests exercise these contracts without an adapter assembly:</p>
 <table>
@@ -328,7 +340,7 @@ button remains visible alongside tab-strip extension content.</p>
 </tr>
 <tr>
 <td>Pointer targets and geometry</td>
-<td><code>TabItemDragPolicyTests</code>, <code>OuterWindowDragTests</code>, <code>AdornerGeometryTests</code>, <code>AdornerWindowFactoryTests</code></td>
+<td><code>TabItemDragPolicyTests</code>, <code>OuterWindowDragTests</code>, <code>AdornerGeometryTests</code>, <code>AdornerWindowFactoryTests</code>, <code>ExternalNativeDockSurfaceTests</code></td>
 </tr>
 <tr>
 <td>Sizing and resource lifetime</td>

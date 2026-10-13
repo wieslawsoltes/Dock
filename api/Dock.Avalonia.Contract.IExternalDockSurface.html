@@ -111,6 +111,12 @@ Interface IExternalDockSurface  <a class="header-action link-secondary" title="V
 
 
 
+  <h2 id="Dock_Avalonia_Contract_IExternalDockSurface_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>Register the surface with its owner before use and unregister when its host is destroyed.
+The surface can belong to another visual root, including an embedded native child.
+Visible registered surfaces are hit tested in screen coordinates before the owning dock's
+content. The owner supplies docking policy, global targets and preview layout.</p>
+</div>
 
 
   <h2 class="section" id="properties">Properties

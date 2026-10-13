@@ -5,7 +5,7 @@ import base64
 import json
 import os
 from pathlib import Path
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
@@ -60,6 +60,8 @@ def main():
                                        os.environ.get("NUGET_FEED_TOKEN", ""))
     except (OSError, URLError, ValueError, KeyError) as error:
         available = False
+        if isinstance(error, HTTPError):
+            error.close()
         print(f"Framework availability could not be verified ({type(error).__name__}).")
     message = (f"Pinned framework {version} is available; Dock feed publishing is enabled." if available else
                f"Dock feed publishing skipped: Avalonia and Avalonia.Remote.Protocol {version} "

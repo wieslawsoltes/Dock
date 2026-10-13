@@ -51,7 +51,9 @@ class PublishGuardTests(unittest.TestCase):
         for failure_index in (1, 2):
             opener = self.opener()
             results = list(opener.open.side_effect)
-            results[failure_index] = HTTPError(self.feed, 404, "Missing", {}, None)
+            error = HTTPError(self.feed, 404, "Missing", {}, None)
+            self.addCleanup(error.close)
+            results[failure_index] = error
             opener.open.side_effect = results
             with self.assertRaises(HTTPError):
                 check_publish.packages_available(self.feed, self.version, opener=opener)

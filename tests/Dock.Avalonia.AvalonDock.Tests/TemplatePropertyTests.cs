@@ -60,10 +60,6 @@ public class TemplatePropertyTests
         else if (source == "local") manager.SetValue(spec.Template, first);
         Take("first-template");
         manager.SetValue(spec.Selector, selector); Take("set-selector");
-        // WPF SetValue replaces a binding; Avalonia SetValue keeps it. The
-        // external assignment uses explicit disposal for the equivalent input.
-        // The preceding selector stage verifies the adapter's own disposal.
-        binding?.Dispose();
         manager.SetValue(spec.Template, second); Take("second-template");
         manager.SetValue(spec.Selector, replacement); Take("replace-selector");
         manager.SetValue(spec.Selector, null); Take("clear-selector");

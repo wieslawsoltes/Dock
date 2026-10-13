@@ -23,10 +23,10 @@ Review the output before replacing
 `TemplatePropertyTests` compares the Avalonia adapter with all 247 observations:
 five template/selector pairs, local values, bindings, styles, base callbacks,
 subclass suppression, selector replacement/removal, explicit coercion, and the
-menu-header fallback. The comparison adapts the external WPF `SetValue` operation
-by explicitly disposing its binding before the corresponding Avalonia assignment:
-Avalonia's inherited `SetValue` retains bindings. The preceding selector stage
-checks the adapter callback's own binding disposal without that adaptation.
+menu-header fallback. The comparison uses the same `SetValue` operations without
+manually disposing bindings. Compatibility property metadata opts into the
+framework's WPF assignment semantics; selector stages separately check the
+adapter callback's own binding disposal.
 The probe uses typed dependency-property references and
 bindings without property paths; it does not inspect private framework state.
 
@@ -67,8 +67,10 @@ property notifications. `FloatingModelReferenceTests` compares every row,
 including old/new parent and root retention. Document hosts observe the explicit
 `RootDocumentChanged` event; tool hosts observe `RootPanel` and `IsVisible`
 property notifications. The native adoption and retained-model lifetime tests
-also verify that those compatibility rules do not leave stale native ownership
-or retain closed hosts.
+also verify native ownership cleanup and collection of closed hosts after the
+workspace's layout is detached. Collection `Clear()` publishes `Reset` and
+intentionally retains public parent/root references; replacing the manager's
+layout releases the old containers and their Views when disposing a workspace.
 
 The detached floating-model probe captures notification order and values visible
 inside each callback:

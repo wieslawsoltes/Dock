@@ -118,9 +118,15 @@ public abstract class LayoutSerializer
 
     private static void RestoreOriginalOwner(LayoutContent content)
     {
+        // Auto-hide groups project pinned collections, so they are not native
+        // restoration destinations. Restore through their docked return pane;
+        // Show then inserts into the public group and recreates its pin state.
+        ILayoutContainer? previous = content.PreviousContainer;
+        if (previous is LayoutAnchorGroup group) previous = group.PreviousContainer;
+        var nativeOwner = (previous as LayoutElement)?.DockModel;
         if (content.DockModel.Factory is LayoutFactory factory)
-            factory.RestoreOriginalOwner(content.DockModel, (content.PreviousContainer as LayoutElement)?.DockModel);
-        else content.DockModel.OriginalOwner = (content.PreviousContainer as LayoutElement)?.DockModel;
+            factory.RestoreOriginalOwner(content.DockModel, nativeOwner);
+        else content.DockModel.OriginalOwner = nativeOwner;
     }
 
     private static T? FindPrevious<T>(List<T> previous, string? contentId) where T : LayoutContent

@@ -228,7 +228,14 @@ public abstract class LayoutItem : Control
     private void ApplyContainerTheme(ControlTheme? theme)
     {
         if (ReferenceEquals(theme, _containerTheme) && ReferenceEquals(theme, Theme)) return;
-        ClearContainerStyle();
+        if (theme is null)
+        {
+            ClearContainerStyle();
+            return;
+        }
+        // Let the replacement theme publish its effective values to the model.
+        // Clearing under the synchronization guard first can reset a property
+        // to the replacement's same value without ever updating the model.
         _containerTheme = theme;
         SetCurrentValue(ThemeProperty, theme);
         ApplyStyling();

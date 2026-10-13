@@ -139,10 +139,18 @@ public class PaneInputContractTests
     public void Document_Preview_Hooks_Check_Visual_Ownership_And_Run_Even_For_Handled_Events(string host, bool handled)
     {
         LayoutDocument model = new();
-        DockingManager manager = new();
-        if (host != "unrooted") manager.Layout = new() { RootPanel = new(new LayoutDocumentPane(model)) };
+        LayoutDocumentPane pane = new(model);
+        DockingManager manager = new() { Layout = new() { RootPanel = new(pane) } };
         Border source = new() { Background = Brushes.Transparent };
         DocumentProbe control = new() { Model = model };
+        // The base model hook requires a manager. Detach after assignment to
+        // test how the pointer hook handles a model that subsequently loses it.
+        if (host == "unrooted")
+        {
+            pane.Children.Remove(model);
+            Assert.Null(model.Root);
+            Assert.Same(model, control.Model);
+        }
         control.Template = new FuncControlTemplate<LayoutDocumentControl>((_, _) => source);
         DockingManager foreign = new();
         Control view = host switch

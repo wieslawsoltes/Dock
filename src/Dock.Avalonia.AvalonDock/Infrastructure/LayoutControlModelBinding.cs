@@ -84,6 +84,10 @@ internal sealed class LayoutControlModelBinding(Control control,
 
         internal void SetItem(LayoutItem? item)
         {
+            // A layout replacement can remove manager ownership before the
+            // old container publishes its detachment. Keep observing that
+            // container until it detaches or a replacement becomes available.
+            if (item is null && _item?.LayoutElement is not null) return;
             if (ReferenceEquals(_item, item)) return;
             if (_item is not null) _item.PropertyChanged -= ItemChanged;
             _item = item;
@@ -112,7 +116,8 @@ internal sealed class LayoutControlModelBinding(Control control,
         {
             _model.PropertyChanged -= ModelChanged;
             _model.LayoutItemChanged -= LayoutItemChanged;
-            SetItem(null);
+            if (_item is not null) _item.PropertyChanged -= ItemChanged;
+            _item = null;
         }
     }
 }

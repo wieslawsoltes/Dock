@@ -27,6 +27,8 @@ jobs:
       with:
         global-json-file: global.json
     - uses: ./.github/actions/setup-avalondock-framework
+    - name: Test framework publishing checks
+      run: python3 -m unittest discover -s build/AvalonDock.Framework -p 'test_*.py'
 
   build:
     needs: framework

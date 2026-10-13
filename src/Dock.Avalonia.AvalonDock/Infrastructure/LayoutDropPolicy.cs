@@ -6,13 +6,14 @@ namespace AvalonDock.Infrastructure;
 
 // AvalonDock document floating windows are not overlay hosts. Tool floating
 // windows accept tools from the same manager, retaining their typed hierarchy.
-internal sealed class LayoutDropPolicy(LayoutRoot layout) : IDockDropPolicy
+internal sealed class LayoutDropPolicy(LayoutRoot layout, IDockDropPolicy contentPolicy) : IDockDropPolicy
 {
     public bool CanDrop(IDockable source, IDockable target, DockOperation operation)
     {
         if (operation == DockOperation.Window) return true;
         if (!ReferenceEquals(source.Factory, target.Factory)) return false;
         if (!AllowsDocumentSplit(target, operation)) return false;
+        if (!contentPolicy.CanDrop(source, target, operation)) return false;
         for (IDockable? current = target; current is not null; current = current.Owner)
         {
             if (current is not IRootDock { Window: not null } root) continue;

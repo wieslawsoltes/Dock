@@ -90,13 +90,7 @@ jobs:
           </packageSources>
           <packageSourceMapping>
             <packageSource key="local">
-              <package pattern="Dock.Avalonia.AvalonDock" />
-              <package pattern="Dock.Avalonia" />
-              <package pattern="Dock.Model" />
-              <package pattern="Dock.Model.Avalonia" />
-              <package pattern="Dock.Controls.ProportionalStackPanel" />
-              <package pattern="Dock.Avalonia.Themes.Fluent" />
-              <package pattern="Dock.Controls.DeferredContentControl" />
+              <package pattern="Dock.*" />
             </packageSource>
             <packageSource key="nuget.org"><package pattern="*" /></packageSource>
           </packageSourceMapping>

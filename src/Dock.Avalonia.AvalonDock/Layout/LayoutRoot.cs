@@ -63,7 +63,7 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         _hidden = new LayoutChildren<LayoutAnchorable>(this, model, () => model.HiddenDockables, value => model.HiddenDockables = value);
         if (model.Factory is null)
         {
-            Factory factory = new LayoutFactory(window => LayoutWindowClosing.TryClose(this, window), new LayoutFloatingPlacement(this), new LayoutDropPolicy(this), Operations,
+            Factory factory = new LayoutFactory(window => LayoutWindowClosing.TryClose(this, window), new LayoutFloatingPlacement(this), new LayoutDropPolicy(this, new LayoutDuplicateContentPolicy(Context)), Operations,
                 dockable => Context.Get(dockable) is LayoutContent content ? Manager?.GetLayoutItemForNativePresentation(content) : null,
                 dockable => Context.Get(dockable))
                 { HideToolsOnClose = false, HideDocumentsOnClose = false };

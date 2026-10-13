@@ -446,6 +446,17 @@ replace an incoming floating window before its native host is initialized;
 Dock cancels that registration. Retrying an insertion whose property callback
 threw completes ownership and host presentation.
 
+Set `AllowDuplicateContent="False"` on a `LayoutDocumentPane` or
+`LayoutAnchorablePane` to prevent dropping matching content into that pane.
+A duplicate has both the same `Title` and the same `ContentId`, compared as
+case-sensitive strings; two null values match. All incoming descendants are
+checked, including unselected content in a dragged pane, group, or floating
+window. The destination pane's option controls the decision; source and ancestor
+options do not override it. The native overlay hides its into target and the
+native drop engine rejects the corresponding operation before changing the
+layout. Split targets and direct collection/model edits remain available.
+Changing either key or the option takes effect on the next drop validation.
+
 Layout objects inherit Avalonia's sealed identity equality: application layout
 subclasses cannot override `Equals` or `GetHashCode` as upstream CLR models can.
 Child collections require Dock-backed elements and reject duplicate membership

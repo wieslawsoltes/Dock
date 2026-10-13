@@ -1608,6 +1608,29 @@ nested additions already passed. The consolidated result is recorded with this
 checkpoint's validation evidence: all 3,680 adapter cases and 30 rendering cases
 pass, with no skipped cases.
 
+### Duplicate-content drop policy
+
+`AllowDuplicateContent=false` now participates in native into-target visibility
+and drop validation. The destination document/tool pane rejects any incoming
+content with the same title and identifier, using ordinal string comparison
+and matching null values. The scan covers every visible descendant of dragged
+panes, nested groups, and floating roots, including mixed document/tool groups.
+It uses projected public metadata for native-created content. An item is not
+its own duplicate during an in-pane move; ancestor/source options do not
+replace the destination pane option. Side/outer/window operations and direct
+model/collection edits remain available.
+
+This uses the existing `IDockDropPolicy` extension point and a composed adapter
+policy, with no native Dock change. Fifty-six new Headless cases cover identity,
+null/case semantics, live metadata changes, rejection without mutation, native
+execution after enabling duplicates, subtree dragging, native-created models,
+and actual overlay selector visibility. Ten external package checks include
+seven reproductions of missing behavior in the preceding `9b26d086c` packages.
+The consolidated run passes all 3,736 adapter and 30 rendering cases, with no
+skipped cases. CI consumer restoration now maps the entire `Dock.*` package
+family to the freshly packed local feed, so a version bump does not depend on
+unchanged Dock dependencies already having been published to NuGet.org.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering

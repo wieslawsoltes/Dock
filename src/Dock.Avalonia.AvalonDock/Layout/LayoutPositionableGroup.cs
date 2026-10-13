@@ -69,6 +69,7 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
     /// <summary>Called after a changed docked height has raised its property notifications.</summary>
     protected virtual void OnDockHeightChanged() { }
     /// <summary>Gets or sets whether duplicate content is allowed.</summary>
+    /// <remarks>When false on a document or tool pane, a drop into that pane is rejected if any incoming item has the same title and content ID as an existing item. Split targets and direct model edits remain available.</remarks>
     public bool AllowDuplicateContent { get => _allowDuplicateContent; set => SetField(ref _allowDuplicateContent, value); }
     /// <summary>Gets or sets whether items can be repositioned.</summary>
     public bool CanRepositionItems { get => _canRepositionItems; set => SetField(ref _canRepositionItems, value); }

@@ -43,12 +43,17 @@ internal static class ItemMetadataProbe
                         { Source = source, Mode = twoWay ? BindingMode.TwoWay : BindingMode.OneWay });
                     content.SetValue(property, "explicit");
                     Require(Equals(content.GetValue(property), "explicit") && source.Value == (twoWay ? "explicit" : "source"));
+                    Require((BindingOperations.GetBindingExpressionBase(content, property) is not null) == twoWay);
+                    source.Value = "replacement";
+                    Require(Equals(content.GetValue(property), twoWay ? "replacement" : "explicit"));
                     if (title) content.ClearValue(LayoutContent.TitleProperty);
                     else content.ClearValue(LayoutContent.ContentIdProperty);
-                    Require(content.GetValue(property) is null && source.Value == (twoWay ? null : "source"));
-                    source.Value = "replacement";
-                    Require(Equals(content.GetValue(property), "replacement"));
-                    Require(BindingOperations.GetBindingExpressionBase(content, property) is not null);
+                    // WPF ClearValue removes the local binding without writing
+                    // the property's default value back into its source.
+                    Require(content.GetValue(property) is null && source.Value == "replacement");
+                    source.Value = "after-clear";
+                    Require(content.GetValue(property) is null);
+                    Require(BindingOperations.GetBindingExpressionBase(content, property) is null);
                     binding.Dispose();
                     content.SetValue(property, "local");
                     source.Value = "detached";

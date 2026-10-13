@@ -75,10 +75,11 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     }
 
     /// <summary>Observes the new parent group's membership when reporting floating pane state.</summary>
+    /// <remarks>Notifies IsDirectlyHostedInFloatingWindow before the inherited hook;
+    /// IsHostedInFloatingWindow is read from the current ancestry without an additional property event.</remarks>
     protected override void OnParentChanged(ILayoutContainer? oldValue, ILayoutContainer? newValue)
     {
         if (oldValue is ILayoutGroup previous) previous.ChildrenCollectionChanged -= ParentChildrenChanged;
-        RaisePropertyChanged(nameof(IsHostedInFloatingWindow));
         RaisePropertyChanged(nameof(IsDirectlyHostedInFloatingWindow));
         if (newValue is ILayoutGroup next) next.ChildrenCollectionChanged += ParentChildrenChanged;
         base.OnParentChanged(oldValue, newValue);

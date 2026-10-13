@@ -110,8 +110,10 @@ internal static class LayoutSourcePlacement
                 root = fixedLayout ?? sourceManager!.Layout;
                 LayoutPanel original = root.RootPanel;
                 LayoutPanel outer = new() { Orientation = Orientation.Horizontal };
-                root.RootPanel = outer;
                 outer.Children.Add(original);
+                // Removing the original panel can redirect a live source to
+                // another layout. Initial imports keep their supplied root.
+                (fixedLayout ?? sourceManager!.Layout).RootPanel = outer;
                 LayoutAnchorablePane pane = new() { DockWidth = new GridLength(200) };
                 outer.Children.Add(pane);
                 destination = pane;

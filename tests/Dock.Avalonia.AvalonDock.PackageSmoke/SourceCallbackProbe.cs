@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
@@ -16,6 +17,11 @@ internal static class SourceCallbackProbe
         VerifyRedirect(false);
         VerifyRepeatedAttachments(true);
         VerifyRepeatedAttachments(false);
+        foreach (bool initial in new[] { false, true })
+        {
+            VerifyFallback(initial, false);
+            VerifyFallback(initial, true);
+        }
         ObservableCollection<object> shared = new() { new object() };
         SourceManager manager = new() { DocumentsSource = shared, AnchorablesSource = shared };
         shared.Add(new object());
@@ -72,9 +78,43 @@ internal static class SourceCallbackProbe
         else manager.AnchorablesSource = source;
     }
 
+    private static void VerifyFallback(bool initial, bool redirect)
+    {
+        SourceManager manager = new();
+        LayoutRoot previous = manager.Layout;
+        LayoutRoot redirected = new();
+        LayoutPanel original = previous.RootPanel;
+        List<ILayoutPanelElement[]> published = new();
+        previous.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName != "RootPanel") return;
+            published.Add(previous.RootPanel.Children.ToArray());
+            if (redirect && published.Count == 1)
+            {
+                manager.SuppressLayout = true;
+                manager.Layout = redirected;
+            }
+        };
+        object content = new();
+        ObservableCollection<object> source = new();
+        if (initial) source.Add(content);
+        manager.AnchorablesSource = source;
+        if (!initial) source.Add(content);
+
+        LayoutRoot destination = initial || !redirect ? previous : redirected;
+        if (!ReferenceEquals(destination.RootPanel.Children[0], original) ||
+            !ReferenceEquals(destination.Descendents().OfType<LayoutAnchorable>().Single().Content, content) ||
+            (!redirect && (published.Count != 2 || published[1].Length != 1 || !ReferenceEquals(published[1][0], original))))
+            throw new Exception("Packaged tool-source fallback lost populated-panel ordering or current-root delivery.");
+        manager.SuppressLayout = false;
+        manager.AnchorablesSource = null;
+        manager.Layout = new();
+    }
+
     private sealed class SourceManager : DockingManager
     {
         internal int Calls { get; private set; }
+        internal bool SuppressLayout { get; set; }
         internal Action<AvaloniaPropertyChangedEventArgs>? BeforeSource { get; set; }
         internal AvaloniaPropertyChangedEventArgs? LastChange { get; private set; }
 
@@ -102,6 +142,11 @@ internal static class SourceCallbackProbe
         {
             Calls++;
             return base.OnReceiveWeakEvent(managerType, sender, e);
+        }
+
+        protected override void OnLayoutChanged(LayoutRoot oldLayout, LayoutRoot newLayout)
+        {
+            if (!SuppressLayout) base.OnLayoutChanged(oldLayout, newLayout);
         }
     }
 }

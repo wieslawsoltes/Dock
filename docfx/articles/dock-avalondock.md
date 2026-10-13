@@ -1403,6 +1403,13 @@ if an earlier callback replaces it. The batch's default destination stays fixed;
 an application that replaces the layout during insertion should place the item
 itself and return `true` when the old destination is no longer appropriate.
 
+When a tool source needs a new pane, its outer panel already contains the
+original panel when root property observers receive the replacement. If moving
+the original panel redirects the manager's layout, live source insertion uses
+that current root; initial attachment still uses its supplied root. A failure
+while publishing the outer panel preserves the completed subtree and stops
+before inserting the tool.
+
 For `LayoutAnchorable.Show()`, a strategy can update `PreviousContainer` and
 `PreviousContainerIndex` and return `false` to use the updated return location.
 Clearing the return container leaves the tool hidden. `AfterInsertAnchorable`

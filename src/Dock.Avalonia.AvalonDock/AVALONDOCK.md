@@ -708,6 +708,11 @@ subscribe to their supplied source only after the batch completes; a failed
 initial import does not add a subscription. Callback exceptions preserve model
 changes already made and release the source-creation suspension.
 
+A fallback tool pane publishes its outer root panel after adding the original
+panel. Live source changes reread the manager's layout after that move, while
+initial imports retain their supplied root. A root-property callback failure
+keeps the completed subtree and stops before tool insertion.
+
 Derived managers can override `OnReceiveWeakEvent(Type, object, EventArgs)` to
 observe source changes before the default update. Call base to update the layout,
 or return `true` to handle the event yourself. Returning `false` for a delivered

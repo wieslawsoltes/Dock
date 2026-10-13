@@ -6,6 +6,11 @@ subclasses exercise protected tree hooks and suppress property notifications;
 native container cleanup and tab-group commands still refresh without extra
 public `Updated` events.
 
+Tool-source fallback probes observe a populated replacement root panel during
+property callbacks. They redirect the layout while wrapping the original panel
+and check that live source changes use the current layout while initial imports
+retain their supplied root.
+
 Content-state probes compare 68 identifier and 88 activation-hook scenarios with
 the original WPF observations. They cover named-control identifiers, null/empty
 values, equal replacement objects, container inputs, bound identifiers, nested

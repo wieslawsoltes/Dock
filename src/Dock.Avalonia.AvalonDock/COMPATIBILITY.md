@@ -1480,6 +1480,24 @@ The consolidated run passes all 3,501 adapter and 30 rendering cases, including
 26 focused root-update cases. All 11 new external checks reproduce the
 extra notifications in the preceding `d6694eaf9` packages.
 
+## Tool-source root placement and pane parent notifications
+
+When tool sources need a new pane, the replacement outer panel contains the
+original panel before it is assigned to the root. Source batches reuse that
+destination. A callback failure while publishing the outer panel leaves the
+completed subtree intact and stops before inserting the tool. A live collection
+notification reads the current manager layout again after wrapping the original
+panel; an initial import keeps its supplied root throughout the operation.
+
+Tool-pane parent hooks notify `IsDirectlyHostedInFloatingWindow` and switch the
+parent's collection subscription before the inherited hook. They do not add an
+`IsHostedInFloatingWindow` property event. The latter getter still reads the
+current ancestry for both public and native owner changes.
+
+Six source-placement cases and two pane-parent cases pass, together with the
+existing source, parent-policy, and selection suites in focused runs. Final
+consolidated and package validation for these follow-up changes is pending.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering

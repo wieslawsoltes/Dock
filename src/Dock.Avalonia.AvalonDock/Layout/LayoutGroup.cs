@@ -23,10 +23,10 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
         _children = new LayoutChildren<T>(this, model);
         _children.CollectionChanged += (_, _) =>
         {
-            RaisePropertyChanged(nameof(ChildrenCount));
             ComputeVisibility();
             OnChildrenCollectionChanged();
             NotifyChildrenTreeChanged(ChildrenTreeChange.DirectChildrenChanged);
+            RaisePropertyChanged(nameof(ChildrenCount));
         };
         // Native trees may already have parents and children when first wrapped.
         // Empty, detached public groups retain AvalonDock's initial visible state.
@@ -94,18 +94,21 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     /// <inheritdoc/>
     public void InsertChildAt(int index, ILayoutElement element) => Children.Insert(index, (T)element);
     /// <inheritdoc/>
-    public void RemoveChild(ILayoutElement element)
-    {
-        if (element is T child) Children.Remove(child);
-    }
+    /// <remarks>An element of an incompatible type raises a cast exception; an absent compatible element is ignored.</remarks>
+    public void RemoveChild(ILayoutElement element) => Children.Remove((T)element);
     /// <inheritdoc/>
+    /// <remarks>The old element must have the group's child type. The replacement is checked only when the old element is found.</remarks>
     public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
     {
-        int index = IndexOfChild(oldElement);
+        int index = Children.IndexOf((T)oldElement);
         if (index >= 0) ReplaceChildAt(index, newElement);
     }
     /// <inheritdoc/>
-    public void ReplaceChildAt(int index, ILayoutElement element) => Children[index] = (T)element;
+    /// <remarks>An index outside the current collection is ignored before checking the replacement's type.</remarks>
+    public void ReplaceChildAt(int index, ILayoutElement element)
+    {
+        if ((uint)index < (uint)Children.Count) Children[index] = (T)element;
+    }
 
     internal void AddProjectedChild(T child) => _children.AddProjected(child);
     internal void RemoveProjectedChild(T child) => _children.RemoveProjected(child);

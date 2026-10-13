@@ -199,7 +199,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,725 cases, including 51 template
+- The consolidated adapter suite passes all 2,764 cases, including 39 layout
+  helper/group contracts and the recorded activation and membership ordering
+  checks, plus 51 template
   callback delivery, reentrancy, failure, and replay cases, plus 19 layout
   callback argument, ownership, presentation, and lifetime cases, plus 17 root-event
   registration, reentrancy, attachment-order, and lifetime cases, plus 22 container
@@ -313,6 +315,21 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   reparenting, native previews, and layout replacement. The class name retains
   the upstream spelling. Framework argument substitutions remain distinct in
   the API presence audit.
+- `AvalonDock.Layout.Extensions` is covered by custom-interface and native-model
+  tests for deferred traversal, closest-parent/root lookup, null/value-type
+  contracts, type helpers, and nearest-panel side lookup. `GetRoot` walks the
+  parent contract rather than reading a custom `Root` property. Layout models
+  retain Avalonia's sealed identity equality; upstream equality overrides are
+  a framework inheritance difference.
+- The public group-operation audit verifies invalid replacement indices,
+  incompatible child casts, absent/null children, interface lookup, and native
+  synchronization. Public removals detach ownership before selection/group
+  callbacks. Group and ancestor tree callbacks precede `ChildrenCount`, including
+  failure short-circuiting; native auto-hide projections retain Dock's ownership
+  transitions. `LayoutExtensionTests` and `LayoutGroupContractTests` add 39 cases,
+  supplemented by the existing parent, selection, auto-hide and lifecycle tests
+  and an external package consumer. Duplicate/cyclic membership and stale parents
+  after `Clear()` are not reproduced: the adapter preserves a valid Dock graph.
 - `LayoutAutoHideWindowControl` presents the existing native preview and exposes
   its current public model, background, and anchorable content theme. The
   manager's readonly `AutoHideWindow` and protected hooks expose the generated
@@ -1251,9 +1268,11 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   beyond the recorded close lifecycle scenarios remains open.
   The Windows 11 ARM64 native-message/menu checks supplement Headless policy
   tests; they do not establish full platform or floating-window parity.
-- Complete the semantic audit of interfaces, extension methods, protected hooks,
-  and inherited XML methods. The individual declaration review maps the existing
-  counterparts; it does not establish full signature or behavior equivalence.
+- Complete the remaining interface implementations, protected hooks, and inherited
+  XML methods. Layout traversal/group methods and the visual/logical tree helpers
+  have the targeted audits recorded above; those checks do not establish all
+  interface implementation behavior. The declaration review maps counterparts
+  without establishing full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
 - The direct public pane/splitter Grid structure passes consolidated Headless
   validation of sizing, native drag, floating hosts, themes and lifetime. Package

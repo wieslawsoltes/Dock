@@ -52,14 +52,19 @@ public class LayoutLifecycleTests
         oldRoot.ElementRemoved += (sender, args) =>
         {
             Assert.Same(oldRoot, sender);
-            Assert.Null(oldRoot.ActiveContent);
-            Assert.Null(oldRoot.LastFocusedDocument);
+            // A leaf removal reports membership before the pane selects its
+            // replacement. Upstream root cleanup only clears descendants here.
+            Assert.Same(document, oldRoot.ActiveContent);
+            Assert.Same(document, oldRoot.LastFocusedDocument);
+            Assert.Null(args.Element.Parent);
             events.Add(("removed", args.Element));
         };
         newRoot.ElementAdded += (sender, args) =>
         {
             Assert.Same(newRoot, sender);
             Assert.Same(newRoot, args.Element.Root);
+            Assert.Null(oldRoot.ActiveContent);
+            Assert.Null(oldRoot.LastFocusedDocument);
             events.Add(("added", args.Element));
         };
         document.Transitions.Clear();
@@ -129,10 +134,16 @@ public class LayoutLifecycleTests
         List<LayoutElement> added = new();
         List<LayoutElement> removed = new();
         root.ElementAdded += (_, args) => added.Add(args.Element);
-        root.ElementRemoved += (_, args) => removed.Add(args.Element);
+        root.ElementRemoved += (_, args) =>
+        {
+            Assert.Null(root.ActiveContent);
+            Assert.Null(root.LastFocusedDocument);
+            removed.Add(args.Element);
+        };
         root.RootPanel.Children.Add(pane);
         Assert.Same(pane, Assert.Single(added));
         Assert.Same(root, document.Root);
+        root.ActiveContent = document;
         root.RootPanel.Children.Remove(pane);
         Assert.Same(pane, Assert.Single(removed));
         Assert.Null(document.Root);

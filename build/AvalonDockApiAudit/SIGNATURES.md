@@ -49,6 +49,11 @@ The 28 differing base lists fall into these groups:
   require Avalonia control/object/host counterparts. `LayoutGridResizerControl`
   still derives from Avalonia `Thumb` through the native splitter. Native pin and
   floating hosts similarly retain their Avalonia control/window ancestry.
+- Layout model classes inherit `AvaloniaObject`, whose `Equals` and `GetHashCode`
+  overrides are sealed. Unlike upstream CLR layout models, application subclasses
+  cannot override equality; collection lookup and side traversal use object
+  identity. Custom `ILayoutElement` implementations remain usable by traversal
+  helpers, but actual child collections require Dock-backed model wrappers.
 - Public layout interfaces remain reachable through adapter base classes.
   `ILayoutContainer` comes through `ILayoutGroup`; visibility comes through
   `ILayoutPane`. Upstream positionable, initial/previous-container, pane-XML and

@@ -16,15 +16,17 @@ public static class Extensions
             foreach (ILayoutElement descendant in child.Descendents()) yield return descendant;
         }
     }
-    /// <summary>Finds the closest parent of the requested type.</summary>
+    /// <summary>Finds the closest parent of the requested type, excluding the starting element.</summary>
+    /// <remarks>An absent parent is cast to <typeparamref name="T"/>; a non-nullable value type therefore raises a null-reference exception.</remarks>
     public static T? FindParent<T>(this ILayoutElement element)
     {
-        for (ILayoutContainer? parent = element.Parent; parent is not null; parent = parent.Parent)
-            if (parent is T match) return match;
-        return default;
+        ILayoutContainer? parent = element.Parent;
+        while (parent is not null && parent is not T) parent = parent.Parent;
+        return (T)parent!;
     }
-    /// <summary>Gets the layout root.</summary>
-    public static ILayoutRoot? GetRoot(this ILayoutElement element) => element.Root;
+    /// <summary>Gets the starting root or the nearest root in its parent chain.</summary>
+    /// <remarks>This search does not read <see cref="ILayoutElement.Root"/>, including on custom interface implementations.</remarks>
+    public static ILayoutRoot? GetRoot(this ILayoutElement element) => element is ILayoutRoot root ? root : element.FindParent<ILayoutRoot>();
     /// <summary>Tests whether a descendant has the requested type.</summary>
     public static bool ContainsChildOfType<T>(this ILayoutContainer element)
     {

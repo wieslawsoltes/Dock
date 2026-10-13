@@ -21,6 +21,8 @@ internal sealed class LayoutActiveContent
     private int _revision;
     private int _focusDepth;
     private int _projectionDepth;
+    private int _validationDepth;
+    private bool _validationPending;
     private List<(LayoutContent Content, bool Previous)>? _pendingActivation;
 
     internal LayoutActiveContent(LayoutRoot root, Action<string> changing, Action<string> changed)
@@ -94,8 +96,30 @@ internal sealed class LayoutActiveContent
 
     internal void Validate()
     {
+        if (_validationDepth != 0) { _validationPending = true; return; }
         if (Active is { } active && !ReferenceEquals(active.Root, _root)) Activate(null);
         if (LastDocument is { } document && !ReferenceEquals(document.Root, _root)) SetLastDocument(null);
+    }
+
+    // A public collection edit detaches old ownership before the pane chooses
+    // its replacement. Clearing root focus in between would activate a native
+    // fallback and overwrite the pane's activation-history ordering.
+    internal ValidationScope DeferValidation()
+    {
+        _validationDepth++;
+        return new(this);
+    }
+
+    internal readonly struct ValidationScope(LayoutActiveContent owner) : IDisposable
+    {
+        public void Dispose()
+        {
+            if (owner is not null && --owner._validationDepth == 0 && owner._validationPending)
+            {
+                owner._validationPending = false;
+                owner.Validate();
+            }
+        }
     }
 
     private void FocusedDockableChanged(object? sender, FocusedDockableChangedEventArgs args)

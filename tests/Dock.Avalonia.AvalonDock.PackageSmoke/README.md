@@ -261,3 +261,8 @@ provider settings after failure, independent template/selector updates, current
 settings for new views, reentrant child identity, and replayed selector arguments
 with current document-menu fallback. It reproduces the premature-delivery defect
 against the preceding package and passes only with the corrected adapter.
+
+The layout-interface probe traverses an external `ILayoutElement` without reading
+its `Root` property, verifies the parent-search cast contract, and checks group
+replacement bounds, invalid child types, removal ownership, selection, and
+collection/tree/count callback ordering through the public interfaces.

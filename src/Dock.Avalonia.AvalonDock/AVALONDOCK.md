@@ -231,6 +231,10 @@ membership events. These hooks also observe native Dock owner changes, with the
 old parent available before assignment and the new parent afterward. Floating
 documents expose their public floating window throughout these callbacks.
 
+During public pane removal, the detached leaf raises `ElementRemoved` before
+the pane replaces its selection and activation history. Removing a whole group
+clears focus on its descendants before that membership notification.
+
 Content deselects before leaving a parent; content already selected when first
 inserted becomes its pane's selected item. This also works before a root supplies
 the native factory. Collection observers see initialized ownership and selection.
@@ -1318,6 +1322,31 @@ parents. These query current UI trees, including native Dock controls; layout
 nodes use `Descendents()`. The visual root may be Avalonia's host above a window.
 Logical descendant queries do not cross visual-only template boundaries.
 The full guide documents null/nonvisual inputs and includes a usage example.
+
+`AvalonDock.Layout.Extensions` queries the layout hierarchy through its public
+interfaces. `Descendents()` is deferred and visits children in depth-first order.
+`FindParent<T>()` excludes the starting element; `GetRoot()` returns a starting
+root or walks `Parent`, without reading `ILayoutElement.Root`. An unmatched
+reference or nullable value type returns null; requesting an unmatched
+non-nullable value type retains the upstream null-reference cast error.
+`GetSide()` locates the element within the nearest containing split panel.
+
+Group operations through `ILayoutGroup` retain their method-specific checks:
+`ReplaceChildAt` ignores an invalid index before inspecting the replacement;
+`RemoveChild` and `ReplaceChild` require the group's child type, while a missing
+compatible child is ignored. Public removals detach ownership and repair pane
+selection before group observers run. Automatic root-focus cleanup waits for
+that replacement selection, preserving activation history through reentrant
+removals and throwing observers. Group and ancestor tree callbacks precede
+the `ChildrenCount` notification; an earlier exception prevents later callbacks.
+Native Dock operations retain ownership of their intermediate transitions and
+auto-hide projections.
+
+Layout objects inherit Avalonia's sealed identity equality: application layout
+subclasses cannot override `Equals` or `GetHashCode` as upstream CLR models can.
+Child collections require Dock-backed elements and reject duplicate membership
+and cycles. Clearing a collection detaches its former children to preserve the
+native model graph; upstream's plain collection reset can retain stale parents.
 
 ## Serialization hooks and content recovery
 

@@ -129,7 +129,6 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         {
             _source.Remove(element.DockModel);
             base.RemoveItem(index);
-            if (ReferenceEquals(element.DockModel.Owner, _model)) element.DockModel.Owner = null;
         });
     }
 
@@ -149,17 +148,24 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
+        using LayoutActiveContent.ValidationScope validation = !IsRefreshingSource && _owner is ILayoutContentSelector &&
+            (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace) && _owner.Root is LayoutRoot root
+                ? root.Focus.DeferValidation() : default;
         bool previousNotifying = IsNotifying;
         IsNotifying = true;
         try
         {
+            // Public edits detach removed models before selection and group
+            // observers. During native projection, Dock owns the transition;
+            // projected auto-hide removals must not detach a moving model.
+            if (!IsRefreshingSource && (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace) && e.OldItems is { } oldItems)
+                foreach (object? item in oldItems)
+                    if (item is LayoutElement old && ReferenceEquals(old.DockModel.Owner, _model)) old.DockModel.Owner = null;
             // ObservableCollection has inserted the item at this point, so parent
             // hooks can resolve its index. Publish only after native initialization.
             if (_pendingAttachment is { } attachment)
             {
                 _pendingAttachment = null;
-                if (e.Action == NotifyCollectionChangedAction.Replace && e.OldItems?[0] is LayoutElement previous &&
-                    ReferenceEquals(previous.DockModel.Owner, _model)) previous.DockModel.Owner = null;
                 Attach(attachment);
             }
             base.OnCollectionChanged(e);

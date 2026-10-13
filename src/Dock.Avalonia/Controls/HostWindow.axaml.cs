@@ -507,15 +507,7 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
         bool preserveLayout = closingWindow is not null && closingFactory is IDockWindowClosePolicy policy &&
             policy.PreserveLayoutOnHostClose(closingWindow);
         _isClosed = true;
-        HostWindowContentCleanup.ReleaseModels(this, Content as IDock ?? closingWindow?.Layout);
-        // Avalonia model implementations can be logical children of the content
-        // control. A retained layout must not keep this closed window as parent.
-        if (Content is IDock && Content is ILogical logicalLayout)
-        {
-            LogicalChildren.Remove(logicalLayout);
-        }
-        CancelExternalWindowDrag();
-        base.OnClosed(e);
+        OnClosedCore(e);
 
         if (preserveLayout)
         {
@@ -539,6 +531,30 @@ public class HostWindow : Window, IHostWindow, IHostWindowCloseState
                 Window?.Factory?.RemoveWindow(Window);
             }
         }
+    }
+
+    /// <summary>
+    /// Releases the host presentation and raises the framework Closed event.
+    /// </summary>
+    /// <param name="e">The arguments supplied by the native close lifecycle.</param>
+    /// <remarks>
+    /// The host is already marked closed and its close policy has been captured.
+    /// An override can update its layout before Closed subscribers run without
+    /// losing the captured factory notification for a preserved layout.
+    /// Call the base implementation to release model references and raise Closed.
+    /// Factory notification and tracking cleanup follow this hook's successful return.
+    /// </remarks>
+    protected virtual void OnClosedCore(EventArgs e)
+    {
+        HostWindowContentCleanup.ReleaseModels(this, Content as IDock ?? Window?.Layout);
+        // Avalonia model implementations can be logical children of the content
+        // control. A retained layout must not keep this closed window as parent.
+        if (Content is IDock && Content is ILogical logicalLayout)
+        {
+            LogicalChildren.Remove(logicalLayout);
+        }
+        CancelExternalWindowDrag();
+        base.OnClosed(e);
     }
 
     /// <inheritdoc/>

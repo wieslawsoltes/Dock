@@ -119,6 +119,21 @@ factory.WindowClosed += (_, e) =>
     Console.WriteLine($"Closed {e.Window?.Title}");
 ```
 
+## Custom close lifecycle
+
+Native `HostWindow` subclasses can override `OnClosedCore(EventArgs)` to update
+their layout before the framework `Closed` event. At entry, the host reports
+`IHostWindowCloseState.IsClosed` and Dock has captured its close policy. Calling
+the base implementation releases presentation references, detaches the native
+layout from the logical tree, and raises `Closed`.
+
+Factory notification and host tracking cleanup follow the hook's successful
+return. For a preserved layout, the captured factory still receives
+`WindowClosed` if the override removes the window model before calling base.
+An exception stops subsequent stages; suppressing the base call also suppresses
+presentation cleanup and the framework event. Supply a custom host through the
+[host window locator](dock-host-window-locator.md).
+
 ## Window magnetism
 
 Floating windows can optionally snap to the edges of other floating windows while being dragged.

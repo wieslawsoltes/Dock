@@ -121,6 +121,13 @@ events continue normally. Model flag assignments still request selection changes
 The default returns `true`; after reenabling synchronization, the next layout
 update reconciles any retained selection flags.
 
+`ShouldSynchronizeDockingWindowActivation` provides the corresponding policy for
+`IDockingWindowState.IsActive`. For example, an integration can retain a public
+activation flag on hidden content without opening it. Native focus, selection,
+open state, docking state, and factory events continue normally. Assigning the
+model flag still requests native activation. The default returns `true`; the
+next synchronization after reenabling the policy reconciles retained flags.
+
 `CloseDockableCore` and `PinDockableCore` let an integration implement explicit
 model operations independently of command capability flags, while retaining
 native cancellation, events, ItemsSource updates, ownership, and cleanup. The

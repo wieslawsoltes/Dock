@@ -212,7 +212,7 @@ internal static class FocusAndExecutionProbe
             View.Show();
             View.UpdateLayout();
             Dispatcher.UIThread.RunJobs();
-            Host = tools ? new ToolHost(manager.Layout) : new DocumentHost(manager.Layout);
+            Host = tools ? new ToolHost(manager.Layout.RootPanel) : new DocumentHost(manager.Layout.RootPanel);
             if (owned) Host.Show(View);
             else Host.Show();
             Dispatcher.UIThread.RunJobs();

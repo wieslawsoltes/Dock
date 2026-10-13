@@ -155,10 +155,10 @@ internal static class AnchorControlProbe
             if (!manager.GetVisualDescendants().Contains(restored)) throw new Exception("The packaged anchor did not survive visual reattachment.");
             manager.AutoHideWindowClosingTimer = 0;
             ((LayoutAnchorable)restored.Model).IsSelected = true; Update();
-            window.MouseMove(new Point(895, 645));
+            window.MouseMove(new Point(-10, -10));
             WaitForPreviewClose();
             if (preview.Model is not null || manager.DockLayout.PinnedDock is not null || manager.ClosingTimerChanges != 1)
-                throw new Exception($"The packaged idle closing timer did not close the native preview: model={(preview.Model as LayoutContent)?.ContentId}, active={(preview.Model as LayoutContent)?.IsActive}, pinned={manager.DockLayout.PinnedDock is not null}, callbacks={manager.ClosingTimerChanges}.");
+                throw new Exception($"The packaged idle closing timer did not close the native preview: model={(preview.Model as LayoutContent)?.ContentId}, active={(preview.Model as LayoutContent)?.IsActive}, pinned={manager.DockLayout.PinnedDock is not null}, callbacks={manager.ClosingTimerChanges}, pointer={preview.IsPointerOver}, anchor={restored.IsPointerOver}, keep={(preview.Model as LayoutAnchorable)?.DockModel.KeepPinnedDockableVisible}.");
             manager.AutoHideWindowClosingTimer = -1;
             if (manager.AutoHideWindowClosingTimer != 1500 || manager.ClosingTimerChanges != 2)
                 throw new Exception("The packaged closing timer did not preserve its default coercion and external hook.");
@@ -168,7 +168,7 @@ internal static class AnchorControlProbe
             AvaloniaPropertyChangedEventArgs zeroDelay = manager.LastTimerChange!;
             ((LayoutAnchorable)restored.Model).IsSelected = false;
             ((LayoutAnchorable)restored.Model).IsSelected = true; Update();
-            window.MouseMove(new Point(895, 645));
+            window.MouseMove(new Point(-10, -10));
             System.Threading.Thread.Sleep(80); Update();
             System.Threading.Thread.Sleep(20); Update();
             if (preview.Model is null)

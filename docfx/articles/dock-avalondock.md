@@ -1208,6 +1208,24 @@ effects by omitting that call. The constructor also invokes this hook with a
 null old layout after creating the internal services; overrides must tolerate
 that initial call. Property bindings use Avalonia's binding lifetime rules.
 
+When an override redirects `Layout` or replays earlier arguments, the base hook
+uses the **current `Layout`** for ownership, container attachment, pane/side
+controls, floating hosts, and pinned previews. Source removal uses the supplied
+old root; source import uses the supplied new root. Live source notifications
+continue to use the current property. Replaying a foreign new-root argument does
+not transfer that root's ownership.
+
+Root property/update notifications are removed once from the supplied old root
+before source removal and registered on the supplied new root only after imports
+and presentation succeed. A failed import does not advance the base hook to panel/host setup or new
+notification registration. Repeated successful
+base calls retain independent registrations and application-handler ordering;
+these subscriptions retain neither obsolete roots nor unused managers. A root
+notification reads the current manager layout, even when its sender is an older
+callback argument. Native container cleanup continues to observe the presented
+root independently. A null new argument skips source import and notification
+attachment while current layout ownership and containers are retained.
+
 Initial source attachment skips null values and values equal to content already
 in the layout. Repeated values within a new source remain separate items.
 Later add/replace notifications import every new entry, including nulls and

@@ -199,7 +199,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,655 cases, including 17 root-event
+- The consolidated adapter suite passes all 2,674 cases, including 19 layout
+  callback argument, ownership, presentation, and lifetime cases, plus 17 root-event
   registration, reentrancy, attachment-order, and lifetime cases, plus 22 container
   style callback, command-order, and native restyling cases, plus 29 source
   callback, registration, layout-transition, and lifetime cases. All 30 rendered
@@ -1035,6 +1036,33 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   documentation with dependencies on Dock's Avalonia model, Fluent theme, and
   ReactiveUI commands.
 
+## Layout callback argument audit
+
+`OnLayoutChanged` assigns ownership and attaches containers to the current
+`Layout`, including when an override redirects the property before calling
+base or replays earlier arguments. Pane/side controls, floating hosts, native
+container lookup, and pinned previews also follow that current property.
+Source removal/import still uses the supplied old/new roots; subsequent source
+notifications update the current root. A foreign supplied new root keeps its
+existing manager, and a null new argument skips imports and notification hookup.
+
+The base hook removes one property/update registration from the supplied old
+root before source removal. It registers the supplied new root only after
+container attachment, source imports and presentation complete. Import failures
+do not advance to panel/host setup or install new root listeners. Replayed
+registrations preserve multicast ordering and remove only one occurrence.
+Their publishers and manager endpoints are weak; native container cleanup
+independently observes the presented root. Root notifications consult the
+current layout, and supplied-root updates refresh current container commands.
+
+Nineteen Headless cases cover before/after-base redirection, suppressed nested
+callbacks, source imports versus live notifications, foreign/null arguments,
+presentation and failure ordering, repeated/detached registrations, application
+handler ordering, command refresh, native floating/pinned presentation, and
+both listener endpoint lifetimes. The focused suite passes all 80 cases.
+The external package probe covers redirection, replay, source routing, ownership,
+and independent notification delivery through the public/protected API.
+
 ## Root element registration audit
 
 Each completed container attachment registers a distinct pair of root element
@@ -1187,9 +1215,9 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   and the control adapter surface.
   Container style value, command-order, and native/source attachment behavior is
   covered above, including repeated root registrations and old-root callbacks.
-  `OnLayoutChanged` still needs a separate audit of redirected/replayed root
-  arguments: upstream uses the current `Layout` for ownership and presentation,
-  while source imports and root event hookup also use supplied arguments.
+  The layout callback argument audit above covers redirected/replayed roots,
+  current ownership/presentation, supplied-root source migration and notification
+  registrations, import failure ordering, and weak listener lifetimes.
   The floating-control audit above records the completed hook corrections and
   remaining framework/platform differences. Desktop input/focus validation
   beyond the recorded close lifecycle scenarios remains open.

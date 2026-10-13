@@ -250,3 +250,8 @@ settings for both document and tool containers.
 The root-subscription probe verifies independent registrations from repeated
 protected style calls, notifications from retained old roots, exclusion of
 foreign content, and removal of one registration when returning to a root.
+
+The layout-callback probe derives an external manager, redirects its layout
+before the base hook, replays supplied roots (including a foreign-owned and null
+root), distinguishes initial source imports from live updates, and checks
+independent root property registrations against the current panel presentation.

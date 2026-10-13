@@ -157,6 +157,7 @@ public partial class DockingManager : TemplatedControl
     private readonly LayoutSourceBinding<LayoutDocument> _documents;
     private readonly LayoutSourceBinding<LayoutAnchorable> _anchorables;
     private readonly LayoutItemRegistry _layoutItems;
+    private readonly LayoutRootEventSubscriptions _layoutRootEvents;
     private readonly LayoutContextMenus _contextMenus = new();
     private readonly ILayoutSystemMenu _systemMenu = new LayoutWindowsSystemMenu();
     private readonly LayoutNavigatorPresenter _navigator = new();
@@ -185,6 +186,7 @@ public partial class DockingManager : TemplatedControl
         LayoutRoot layout = CreateDefaultLayout();
         SetValue(LayoutProperty, layout);
         _layoutItems = new LayoutItemRegistry(this);
+        _layoutRootEvents = new(this);
         _floatingControls = new(this);
         LayoutSourceSubscriptions subscriptions = new(this);
         _documents = new(this, _layoutItems, static content => new LayoutDocument { Content = content },
@@ -360,30 +362,35 @@ public partial class DockingManager : TemplatedControl
     }
     /// <summary>Transfers layout ownership, containers, native hosts and source contents, then raises <see cref="LayoutChanged"/>.</summary>
     /// <remarks>An override can suppress these side effects by omitting the base call; the property value has already changed.
+    /// Ownership, containers and presentation follow the current <see cref="Layout"/> property.
+    /// Source removal/import and root notification registrations use the supplied old/new arguments.
+    /// New root notifications attach only after imports and presentation complete successfully.
     /// The constructor invokes this hook with a null old layout after creating its internal services.</remarks>
     protected virtual void OnLayoutChanged(LayoutRoot oldLayout, LayoutRoot newLayout)
     {
+        _layoutRootEvents.Detach(oldLayout);
         _contextMenus.Close();
         _navigator.Close();
         _floatingWindows.Detach(registeredHosts: _floatingControls.Items);
         _autoHide.Detach(hide: true);
-        if (oldLayout is not null) oldLayout.PropertyChanged -= LayoutPropertyChanged;
         _documents.Detach(oldLayout, DocumentsSource);
         _anchorables.Detach(oldLayout, AnchorablesSource);
         if (oldLayout is not null && ReferenceEquals(oldLayout.Manager, this)) oldLayout.Manager = null;
-        newLayout.Manager = this;
-        newLayout.PropertyChanged += LayoutPropertyChanged;
-        _layoutItems.SetLayout(newLayout);
-        _floatingControls.SetLayout(newLayout);
+        _layoutItems.DetachLayout();
+        Layout.Manager = this;
+        _layoutItems.AttachLayout(Layout);
+        _documents.Attach(newLayout, DocumentsSource);
+        _anchorables.Attach(newLayout, AnchorablesSource);
+        _floatingControls.SetLayout(Layout);
         RaisePropertyChanged(DockFactoryProperty, oldLayout?.DockFactory!, DockFactory);
         RaisePropertyChanged(DockLayoutProperty, (RootDock?)oldLayout?.DockModel!, DockLayout);
         if (IsInitialized) EnsureLayoutRootPanel();
         if (IsInitialized) EnsureAnchorSidePanels();
-        _documents.Attach(newLayout, DocumentsSource);
-        _anchorables.Attach(newLayout, AnchorablesSource);
-        if (IsLoaded) _floatingWindows.Attach(newLayout);
-        if (IsLoaded) _autoHide.Attach(newLayout);
+        if (IsLoaded) _floatingWindows.Attach(Layout);
+        if (IsLoaded) _autoHide.Attach(Layout);
+        _layoutRootEvents.Attach(newLayout);
         LayoutChanged?.Invoke(this, EventArgs.Empty);
+        _layoutItems.RefreshCommands();
     }
     /// <summary>Detaches the document source in <paramref name="e"/>'s old value and imports its new value.</summary>
     /// <remarks>The arguments control attachment even when an override changes the current source before calling base.
@@ -660,7 +667,9 @@ public partial class DockingManager : TemplatedControl
         if (_sourceBindingSuspensions > 0) _sourceBindingSuspensions--;
     }
 
-    private void LayoutPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    internal void LayoutUpdated() => _layoutItems.RefreshCommands();
+
+    internal void LayoutPropertyChanged(PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(LayoutRoot.ActiveContent)) SynchronizeActiveContent();
         if (e.PropertyName == nameof(LayoutRoot.RootPanel) && IsInitialized) EnsureLayoutRootPanel();

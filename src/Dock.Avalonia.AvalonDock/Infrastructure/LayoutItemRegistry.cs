@@ -83,7 +83,7 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
         finally { _creating.Remove(content); }
     }
 
-    public void SetLayout(LayoutRoot root)
+    public void DetachLayout()
     {
         _generation++;
         _queued = false;
@@ -99,6 +99,11 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
         // AvalonDock removes one registration from the current property value,
         // which need not be the root that was previously presented.
         _elementSubscriptions.Detach(_manager.Layout);
+        _root = null;
+    }
+
+    public void AttachLayout(LayoutRoot root)
+    {
         _root = root;
         root.Updated += RootUpdated;
         RefreshStyles();
@@ -234,7 +239,6 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
     private void RootUpdated(object? sender, EventArgs e)
     {
         QueueReconcile();
-        RefreshCommands();
     }
 
     private void ModelChanged(object? sender, PropertyChangedEventArgs e)

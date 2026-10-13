@@ -171,7 +171,9 @@ public partial class DockingManager : TemplatedControl
         FloatedEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
         PreviewDockEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
         DockedEvent.AddClassHandler<DockingManager>(LayoutOperationEventArgs.RestoreSource, handledEventsToo: true);
+        KeyDownEvent.AddClassHandler<DockingManager>(static (manager, args) => manager.PrepareContextMenuKey(args), RoutingStrategies.Tunnel);
         KeyDownEvent.AddClassHandler<DockingManager>(static (manager, args) => manager.OnPreviewKeyDown(args), RoutingStrategies.Tunnel);
+        KeyUpEvent.AddClassHandler<DockingManager>(static (manager, args) => manager.CompleteContextMenuKey(args), RoutingStrategies.Tunnel);
     }
 
     /// <summary>Creates a manager with an empty document layout.</summary>

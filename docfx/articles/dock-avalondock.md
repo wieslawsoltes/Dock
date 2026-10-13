@@ -1749,6 +1749,17 @@ pane content use the active item, while a child control's own context menu or
 flyout takes precedence, including when its opening is canceled. Title-bar menus
 track active-tool changes; tab menus keep the requested tab's item.
 
+`DockingManager.OnKeyDown(KeyEventArgs)` handles Shift+F10 on key press. Its base
+implementation reads the current `ActiveContent`, follows its visual parents to
+the public document/tool content control, and opens the appropriate manager menu
+at that control's origin. The menu receives that control's `LayoutItem`, which
+can be null for an application-created content control. An override can replace
+the menu before calling base, or suppress the base call. Cancellation and
+suppression do not produce another docking-menu request on key release. A menu
+opened by the shortcut stays open through that release. Child-owned menus and
+flyouts retain their platform shortcuts; the Apps key follows Avalonia's ordinary
+context-request route.
+
 The adapter theme supplies separate default menus per manager. Assigning `null`
 (or `{x:Null}` in XAML) disables the corresponding menu. Replacing a menu closes
 the old invocation; clearing the local property value restores the theme default.

@@ -36,8 +36,8 @@ Acceptance requirements:
 - Release builds and NuGet pack/consumer validation for supported frameworks;
   CI integration and an open PR with incremental commits.
 
-The final automated contract pass contains **3,817 adapter cases and 30 rendering
-cases**, with no skipped cases. It includes the 15 inherited-control-property
+The latest automated contract pass contains **3,846 adapter cases and 30 rendering
+cases**, with no skipped cases. It includes the 29 manager key-down and 15 inherited-control-property
 cases described below. The matrix makes the acceptance evidence explicit; it
 replaces the former open-ended lists of manager, interface, callback, and default
 work. Each contract remains subject to the framework boundaries and deferred
@@ -47,7 +47,7 @@ behavior or binary compatibility.
 ## Acceptance evidence
 
 The upstream reference is the pinned source above. The strict declaration audit
-retains all 951 entries: 844 keys match and 107 have individual classifications.
+retains all 951 entries: 845 keys match and 106 have individual classifications.
 All 102 exported type keys are present. The signature review separately covers
 parameter names, modifiers, generic constraints, differing base lists, and the
 implicit constructor omitted by the syntax inventory. No unmatched declaration
@@ -62,6 +62,7 @@ is silently removed from the baseline.
 | Selection, activation, and model operations | `PaneSelectionContractTests`, `ContentActivationHookReferenceTests`, `ModelDockingContractTests`, `RootUpdatedContractTests`, and `GarbageCollectionContractTests` cover independent selection/activation, history, explicit operations, root callbacks, and return locations. Reference probes retain recorded WPF traces and separately record Avalonia differences. |
 | Docking, floating, hiding, and capabilities | Native policies and factory operations implement the movements. `NativeFloatingGroupTests`, `FloatingDropPolicyTests`, `OuterSplitTests`, `AutoHideOperationTests`, and `DuplicateContentDropTests` cover typed and mixed groups, capabilities, cancellations, restoration, and target visibility/execution. |
 | Manager, sources, templates, and commands | The template, layout, source, resource/timer, container-style, and root-registration audits below cover callback arguments, suppression, replay, reentrancy, failure phases, and weak subscriptions. `DefaultCommandActionContractTests`, `ItemMetadataCallbackTests`, and `ContentControlCallbackTests` cover container and command behavior. |
+| Manager keyboard menus | `ManagerKeyDownContractTests` and the external `ManagerKeyDownProbe` cover the protected base hook, active visual/model lookup, custom controls without an item, origin placement, override replacement/suppression, cancellation, and key press/release routing with Windows-style shortcuts. Editor-owned menus and the Apps key retain Avalonia routes. |
 | Grids, splitters, tabs, anchors, and overlays | `GridControlTests`, `SplitterSizingTests`, `AutoSizingTests`, `TabControlPolicyTests`, `PaneInputContractTests`, `AutoHideResizeTests`, and `OverlayWindowTests` exercise public controls with native layout, input, live policy changes, and replacement themes. |
 | Full-content drag previews | `FullDragPreviewTests`, the Skia `FullDragPreviewImageTests`, and the package probe cover document/tool/pane snapshots, content size and display density, per-manager settings, cancellation, and disposal. Exact projected destination layouts are a separate native option, as explained below. |
 | Floating lifecycle, focus, and navigator | The floating close/override/closed-hook/focus tests and navigator owner/focus tests cover Headless lifecycle and input contracts. Retained editor/model/window tests cover detachment and weak lifetimes. These do not replace the explicitly deferred desktop checks. |
@@ -1751,6 +1752,29 @@ replacement themes, and base-control isolation. Fourteen package-only checks
 fail against `60e39b103`; the new implementation passes all 102 focused control
 cases and the complete 3,817-case adapter suite. The 30 rendering cases pass.
 
+## Manager key-down contracts
+
+`DockingManager.OnKeyDown(KeyEventArgs)` now implements the Shift+F10 base hook.
+It reads the current `ActiveContent`, unwraps a layout model's content, and walks
+visual parents to the first public document or tool content control. Its matching
+manager menu opens at that control's origin, using the control's `LayoutItem` as
+the data context. An application-created content control can have no item; its
+menu then receives a null context. Nonvisual application objects and detached
+visuals do not open a menu; a nonvisual `AvaloniaObject` retains the invalid visual
+traversal error. The hook leaves the supplied key-down event's handled state alone.
+
+Opening happens on key press. An override can replace the menu before calling
+base, or suppress the base call entirely. A canceled or suppressed opening is
+not retried on key release, and a successful opening remains visible through that
+release. Subsequent shortcuts retain ordinary menu toggling. Editor-owned context
+menus and flyouts retain Avalonia's platform shortcut route; the Apps key continues
+to request the active pane's menu through native content.
+
+Twenty-nine new Headless cases cover those contracts, including Windows-style
+Shift+F10 configuration on the headless platform. Thirteen package-only checks
+all fail against the preceding `c7a9b8699` package. The complete adapter suite
+passes 3,846 cases; the 30 rendering cases pass separately.
+
 ## Framework boundaries and deferred desktop checks
 
 The adapter implements the Avalonia migration contracts documented here. The
@@ -1759,7 +1783,7 @@ Dock features or hidden by the API inventory:
 
 | Boundary | Contract |
 | --- | --- |
-| CLR and UI framework | Public namespaces are `AvalonDock.*` as requested. WPF controls, events, metadata, templates, pointer/focus arguments, and assemblies require Avalonia counterparts. This is not binary compatibility. The 107 strict inventory differences remain individually classified in `portability-review.tsv`. |
+| CLR and UI framework | Public namespaces are `AvalonDock.*` as requested. WPF controls, events, metadata, templates, pointer/focus arguments, and assemblies require Avalonia counterparts. This is not binary compatibility. The 106 strict inventory differences remain individually classified in `portability-review.tsv`. |
 | Binding lifetime | The implementation remains reflection-free as requested. Avalonia binding/style ownership, one-way assignment, current-value overrides, and direct-property clearing differ from WPF. The eight ActiveContent reference differences and the Title/ContentId contracts remain documented and tested. Dispose a binding for permanent replacement; clear direct properties through their typed overload. |
 | Logical trees and native hosting | Avalonia owns the logical/visual tree. Public logical children and keyboard/context-menu routes therefore have different framework shapes. WPF `HwndHost.BuildWindowCore` and `DestroyWindowCore` have no replacement hooks; pinned content uses Dock's native host. |
 | Model identity and graph integrity | Avalonia's sealed object equality prevents layout subclasses from overriding identity. Native-backed collections reject duplicate/cyclic membership and detach cleared children instead of retaining invalid upstream parent references. |
@@ -1781,8 +1805,8 @@ commit. Headless, rendering, package, and hosted CI results are recorded separat
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 844
-matching type/member keys and 107 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 845
+matching type/member keys and 106 missing declarations at this checkpoint.
 All 102 exported type keys are present; signatures, inheritance, templates, and
 behavior have the separate acceptance evidence and framework boundaries above.
 This is a **presence audit only**, not a percentage of completed compatibility.

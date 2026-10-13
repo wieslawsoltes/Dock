@@ -1,5 +1,11 @@
 # NuGet consumer smoke test
 
+Manager key-down probes exercise the protected Shift+F10 base hook through an
+external subclass, model/visual active content, origin placement, custom controls
+without a layout item, cancellation, suppression, and the opening key release.
+They explicitly configure Windows-style shortcuts on the headless platform.
+All 13 checks fail against the preceding `c7a9b8699` packages.
+
 Inherited-property probes verify floating taskbar defaults across document,
 tool, and group hosts, including custom themes and style removal. Splitter
 backgrounds remain transparent without a stock theme. Auto-hide focus and

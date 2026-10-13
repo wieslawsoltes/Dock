@@ -1,7 +1,7 @@
 # Review of declaration mismatches
 
 The pinned upstream inventory has 951 declarations. The strict source inventory
-finds 844 matching keys. All 107 unmatched keys have now been classified in
+finds 845 matching keys. All 106 unmatched keys have now been classified in
 [`portability-review.tsv`](portability-review.tsv); the original inventory and
 comparison rules remain unchanged.
 
@@ -15,7 +15,7 @@ binary compatibility, or completion of the compatibility project.
 | Context-menu opening argument | 1 | `ContextMenuEx.OnOpened` accepts Avalonia's `RoutedEventArgs`. |
 | Visual/logical tree extension receiver | 6 | `Extentions` accepts `AvaloniaObject`; traversal follows Avalonia trees. |
 | Framework logical-child contract | 3 | Avalonia supplies a logical-child collection, rather than WPF's overridable enumerator property. |
-| Native layout/input routing | 2 | Native arrangement and context-menu request routing replace manager-specific WPF overrides. |
+| Native arrangement | 1 | Native arrangement and current overlay-area projection replace the WPF manager's cached-area invalidation. |
 | WPF `HwndHost` hooks | 2 | No equivalent hook is supplied by the native pinned-content presenter. |
 
 The 100 mapped source declarations in the first four rows were checked against
@@ -63,12 +63,15 @@ does not reproduce WPF's logical-tree shape or its virtual enumerator override.
 
 The WPF manager's `ArrangeOverride` invalidates cached overlay areas. The adapter
 uses native arrangement and captures current areas through
-`LayoutOverlayProjection`; it does not keep that WPF cache. The manager's WPF
-`OnKeyDown` handles Shift+F10. The adapter routes framework context-menu requests
-through `LayoutContextMenuRouting`, including keyboard requests and menus owned
-by editor content. An inherited `OnKeyDown` override is available, but the menu
-route is not implemented inside that override. Ctrl+Tab has its separate
-`OnPreviewKeyDown` compatibility hook.
+`LayoutOverlayProjection`; it does not keep that WPF cache. The manager now
+declares `OnKeyDown(KeyEventArgs)`: its base call handles Shift+F10 using the
+current active content's public visual parent. Opening happens on key press;
+canceling or suppressing the base call prevents a second request on key release.
+The popup stays open through the opening shortcut's release. This matching
+presence key still uses Avalonia's key arguments, not WPF's argument type.
+`LayoutContextMenuRouting` continues to handle ordinary framework requests,
+including the Apps key and menus owned by editor content. Ctrl+Tab has its
+separate `OnPreviewKeyDown` compatibility hook.
 
 `LayoutAutoHideWindowControl.BuildWindowCore(HandleRef)` and
 `DestroyWindowCore(HandleRef)` belong to WPF's `HwndHost`. The adapter composes
@@ -83,6 +86,6 @@ ordering, styling, rendering, or lifecycle behavior. These require the focused
 contract tests and platform validation listed in
 [`COMPATIBILITY.md`](../../src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md).
 
-The strict inventory deliberately continues to report 107 unmatched declarations.
+The strict inventory deliberately continues to report 106 unmatched declarations.
 Do not subtract these rows from the upstream baseline or report 951 equivalent
 APIs on the strength of this classification.

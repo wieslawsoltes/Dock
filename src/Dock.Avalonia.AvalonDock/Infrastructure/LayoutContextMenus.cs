@@ -20,52 +20,62 @@ internal sealed class LayoutContextMenus
     private readonly LayoutContextMenuFocus _focus = new();
     private ContextMenu? _menu;
     private Control? _target;
-    private LayoutItem? _owner;
+    private Control? _owner;
     private LayoutItem? _item;
     private IDock? _pane;
     private ContextMenu? _previousTargetMenu;
+    private bool _suppressOpeningKeyRelease;
 
-    public void Show(ContextMenu? menu, Control target, LayoutItem item, ContextRequestedEventArgs? request, IDock? pane, PixelPoint? screenPosition = null)
+    public void Show(ContextMenu? menu, Control target, LayoutItem? item, ContextRequestedEventArgs? request, IDock? pane,
+        PixelPoint? screenPosition = null, bool placeAtOrigin = false)
     {
         Close();
-        if (menu is null || !item.IsAttached) return;
+        if (menu is null || item is { IsAttached: false }) return;
         menu.Close();
         _menu = menu;
         _target = target;
-        _owner = item;
+        Control owner = item ?? (Control)target;
+        _owner = owner;
         _item = item;
         _pane = pane;
-        _previousTargetMenu = item.ContextMenu;
+        _previousTargetMenu = owner.ContextMenu;
+        _suppressOpeningKeyRelease = placeAtOrigin;
         menu.Opening += Opening;
         menu.Closing += Closing;
         menu.Closed += Closed;
         menu.AddHandler(MenuItem.SubmenuOpenedEvent, SubmenuOpened);
+        if (placeAtOrigin) menu.AddHandler(InputElement.KeyUpEvent, OpeningKeyReleased, RoutingStrategies.Tunnel);
         target.DetachedFromVisualTree += TargetDetached;
-        item.PropertyChanged += ItemChanged;
-        item.ResourcesChanged += OwnerResourcesChanged;
+        if (item is not null) item.PropertyChanged += ItemChanged;
+        owner.ResourcesChanged += OwnerResourcesChanged;
         if (pane is AvaloniaObject observable) observable.PropertyChanged += PaneChanged;
         menu.SetCurrentValue(StyledElement.DataContextProperty, item);
         menu.SetCurrentValue(ContextMenu.PlacementProperty, request?.TryGetPosition(null, out _) == true ? PlacementMode.Pointer : PlacementMode.Bottom);
         menu.SetCurrentValue(ContextMenu.PlacementRectProperty, null);
-        if (screenPosition is { } point)
+        if (screenPosition.HasValue || placeAtOrigin)
         {
             menu.SetCurrentValue(ContextMenu.PlacementProperty, PlacementMode.AnchorAndGravity);
             menu.SetCurrentValue(ContextMenu.PlacementAnchorProperty, PopupAnchor.TopLeft);
             menu.SetCurrentValue(ContextMenu.PlacementGravityProperty, PopupGravity.BottomRight);
-            menu.SetCurrentValue(ContextMenu.PlacementRectProperty, new Rect(target.PointToClient(point), default(Size)));
+            Point position = screenPosition is { } point ? target.PointToClient(point) : default;
+            menu.SetCurrentValue(ContextMenu.PlacementRectProperty, new Rect(position, default(Size)));
         }
         menu.SetCurrentValue(ContextMenu.PlacementTargetProperty, target);
         menu.SetCurrentValue(ContextMenu.HorizontalOffsetProperty, 0);
         menu.SetCurrentValue(ContextMenu.VerticalOffsetProperty, 0);
-        item.SetCurrentValue(Control.ContextMenuProperty, menu);
+        owner.SetCurrentValue(Control.ContextMenuProperty, menu);
         _focus.Capture(target);
         // Use Avalonia's ordinary context-request path, including its cancelable
         // Opening event. The marker prevents fallback recursion if canceled.
-        item.RequestContextMenu(target, new LayoutContextMenuRequest(request));
+        if (item is not null) item.RequestContextMenu(target, new LayoutContextMenuRequest(request));
+        else target.RaiseEvent(new LayoutContextMenuRequest(request));
         if (!ReferenceEquals(_menu, menu)) menu.Close();
         else if (!menu.IsOpen) Close();
         else
         {
+            // Avalonia's keyboard context request selects Bottom placement.
+            // The manager hook instead anchors the popup at the content origin.
+            if (placeAtOrigin && menu.Parent is Popup popup) popup.Placement = PlacementMode.AnchorAndGravity;
             menu.UpdateLayout();
             _presentation.Capture(menu);
         }
@@ -85,6 +95,8 @@ internal sealed class LayoutContextMenus
         menu.Closing -= Closing;
         menu.Closed -= Closed;
         menu.RemoveHandler(MenuItem.SubmenuOpenedEvent, SubmenuOpened);
+        menu.RemoveHandler(InputElement.KeyUpEvent, OpeningKeyReleased);
+        _suppressOpeningKeyRelease = false;
         // Close the popup before removing its logical owner so Avalonia can
         // detach its visuals while their theme and template are still active.
         menu.Close();
@@ -118,7 +130,16 @@ internal sealed class LayoutContextMenus
 
     private void Opening(object? sender, CancelEventArgs e)
     {
-        if (!ReferenceEquals(sender, _menu) || _item?.IsAttached != true) e.Cancel = true;
+        if (!ReferenceEquals(sender, _menu) || _item is { IsAttached: false }) e.Cancel = true;
+    }
+
+    private void OpeningKeyReleased(object? sender, KeyEventArgs e)
+    {
+        if (!_suppressOpeningKeyRelease || e.Key != Key.F10) return;
+        _suppressOpeningKeyRelease = false;
+        // Focus moved into the popup on key press. Do not let its ordinary
+        // keyboard-toggle handler close it on that same shortcut's release.
+        e.Handled = true;
     }
 
     private void Closing(object? sender, CancelEventArgs e)

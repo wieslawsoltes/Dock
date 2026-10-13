@@ -64,6 +64,13 @@ theme; styles and local values can override them. A standalone
 theme supplies none. Auto-hide previews default to focusable and hidden; a style
 can disable focus without being blocked by a constructor assignment.
 
+The protected `DockingManager.OnKeyDown(KeyEventArgs)` base hook opens document
+and tool menus for Shift+F10 on key press, using the active content's public
+control and item. It places the popup at the content origin and keeps it open
+through key release. Suppressing the base call or canceling `Opening` prevents a
+second request on release. Editor-owned menus and the Apps key keep Avalonia's
+normal context-request route.
+
 The familiar C# operations are available to a workspace service called by
 ViewModel commands. Given a manager and content nodes from its layout:
 

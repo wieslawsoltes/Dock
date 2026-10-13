@@ -8,8 +8,12 @@ using Dock.Controls.ProportionalStackPanel;
 namespace AvalonDock.Controls;
 
 /// <summary>Resizes layout panes and auto-hide previews through Dock's native layout controls.</summary>
+/// <remarks>The default background is transparent, including when a replacement theme
+/// supplies no background. Styles and local values can override it.</remarks>
 public class LayoutGridResizerControl : ProportionalStackPanelSplitter
 {
+    static LayoutGridResizerControl() => BackgroundProperty.OverrideDefaultValue<LayoutGridResizerControl>(Brushes.Transparent);
+
     /// <summary>Defines the brush used for the drag preview.</summary>
     public static readonly StyledProperty<IBrush?> BackgroundWhileDraggingProperty =
         AvaloniaProperty.Register<LayoutGridResizerControl, IBrush?>(nameof(BackgroundWhileDragging), Brushes.Black);

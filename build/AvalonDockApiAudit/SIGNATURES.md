@@ -90,5 +90,6 @@ Existing subclasses can still override that hook; the adapter additionally
 allows its inherited default. Hook routing and ordering are validated separately.
 
 The 107 keys without exact source matches remain in
-[`portability-review.tsv`](portability-review.tsv). Neither review closes the
-remaining semantic and platform work in the compatibility checklist.
+[`portability-review.tsv`](portability-review.tsv). Neither declaration review establishes runtime equivalence. The compatibility
+checklist records the separate acceptance evidence, framework boundaries, and
+deferred desktop checks.

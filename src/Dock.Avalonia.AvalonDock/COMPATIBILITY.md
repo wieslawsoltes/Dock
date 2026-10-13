@@ -3,7 +3,8 @@
 The objective remains complete AvalonDock C# and XAML API compatibility on
 Avalonia, using Dock's Avalonia models and docking implementation, a NuGet
 package, and a licensed adaptation of the Xceed sample. This document records
-remaining work; a passing subset of tests is not proof of full compatibility.
+implementation evidence and portability boundaries; a passing subset of tests is
+not proof of exact WPF compatibility.
 
 Reference: Xceed `wpftoolkit` commit
 `2c71faba5eecc1b6ae6cd3d269408e0df37715d8`, including public layout types,
@@ -16,7 +17,7 @@ upstream `Xceed.Wpf` prefix. Source consumers update their using directives;
 the API inventory applies this explicit namespace mapping. The default
 Avalonia XML namespace and the Xceed XML namespace alias are both supported.
 
-Required verification before declaring completion:
+Acceptance requirements:
 
 - Public type/member/signature inventory compared to the pinned upstream API,
   with explicit framework substitutions and no unexplained missing members.
@@ -35,8 +36,52 @@ Required verification before declaring completion:
 - Release builds and NuGet pack/consumer validation for supported frameworks;
   CI integration and an open PR with incremental commits.
 
-Current status: implementation in progress. The checklist above is open until
-supported by corresponding implementation and test evidence.
+The final automated contract pass contains **3,817 adapter cases and 30 rendering
+cases**, with no skipped cases. It includes the 15 inherited-control-property
+cases described below. The matrix makes the acceptance evidence explicit; it
+replaces the former open-ended lists of manager, interface, callback, and default
+work. Each contract remains subject to the framework boundaries and deferred
+interactive checks at the end of this document. This is not a claim of exact WPF
+behavior or binary compatibility.
+
+## Acceptance evidence
+
+The upstream reference is the pinned source above. The strict declaration audit
+retains all 951 entries: 844 keys match and 107 have individual classifications.
+All 102 exported type keys are present. The signature review separately covers
+parameter names, modifiers, generic constraints, differing base lists, and the
+implicit constructor omitted by the syntax inventory. No unmatched declaration
+is silently removed from the baseline.
+
+| Requirement | Implementation and representative verification |
+| --- | --- |
+| Public models and interfaces | `LayoutInterfaceMembershipTests`, `LayoutGroupContractTests`, `LayoutExtensionTests`, and `GroupBaseDerivationTests` exercise concrete interface membership, application-defined containers, traversal, external subclass construction, and group notifications. The external `LayoutInterfaceProbe` and `GroupBaseDerivationProbe` compile against NuGet only. |
+| Property defaults and inherited behavior | The final source review compares 84 styled registration defaults, reviews 26 direct registrations, and checks the 27 non-style-key metadata overrides. `ManagerPropertyTests`, `LayoutMetadataContractTests`, `ContentPropertyBindingContractTests`, and `InheritedControlPropertyTests` cover priority, clearing, binding lifetime, model-backed values, and custom themes. |
+| Compiled XAML and namespaces | `CompiledXamlTests` and the compiled layout, source, template, sizing, menu, theme, and floating fixtures use both the default Avalonia namespace and historical Xceed alias. The package consumer repeats these compilation checks without project references. Production and sample bindings use the compiled path. |
+| Live native identity and ownership | `LayoutBridgeTests`, `LayoutParentPolicyTests`, `ParentTransitionContractTests`, `RootSideLifetimeContractTests`, `CollectionReplacementContractTests`, and `CollectionReentrancyContractTests` cover both wrapper and native edits, callback ordering, ownership, failures, and retention. |
+| Selection, activation, and model operations | `PaneSelectionContractTests`, `ContentActivationHookReferenceTests`, `ModelDockingContractTests`, `RootUpdatedContractTests`, and `GarbageCollectionContractTests` cover independent selection/activation, history, explicit operations, root callbacks, and return locations. Reference probes retain recorded WPF traces and separately record Avalonia differences. |
+| Docking, floating, hiding, and capabilities | Native policies and factory operations implement the movements. `NativeFloatingGroupTests`, `FloatingDropPolicyTests`, `OuterSplitTests`, `AutoHideOperationTests`, and `DuplicateContentDropTests` cover typed and mixed groups, capabilities, cancellations, restoration, and target visibility/execution. |
+| Manager, sources, templates, and commands | The template, layout, source, resource/timer, container-style, and root-registration audits below cover callback arguments, suppression, replay, reentrancy, failure phases, and weak subscriptions. `DefaultCommandActionContractTests`, `ItemMetadataCallbackTests`, and `ContentControlCallbackTests` cover container and command behavior. |
+| Grids, splitters, tabs, anchors, and overlays | `GridControlTests`, `SplitterSizingTests`, `AutoSizingTests`, `TabControlPolicyTests`, `PaneInputContractTests`, `AutoHideResizeTests`, and `OverlayWindowTests` exercise public controls with native layout, input, live policy changes, and replacement themes. |
+| Full-content drag previews | `FullDragPreviewTests`, the Skia `FullDragPreviewImageTests`, and the package probe cover document/tool/pane snapshots, content size and display density, per-manager settings, cancellation, and disposal. Exact projected destination layouts are a separate native option, as explained below. |
+| Floating lifecycle, focus, and navigator | The floating close/override/closed-hook/focus tests and navigator owner/focus tests cover Headless lifecycle and input contracts. Retained editor/model/window tests cover detachment and weak lifetimes. These do not replace the explicitly deferred desktop checks. |
+| XML persistence | Read/write inheritance, numeric, root, group, content, streaming, writer-context, malformed-input, recovery, reentrancy, source, and floating serialization tests cover all overloads and registered custom types. Package consumers repeat public serialization hooks and file/stream round trips. |
+| Themes, resources, and converters | Theme callback/lifetime tests, localization tests, tree helpers, converter tests, and the image suite cover compiled dictionaries, window propagation, culture fallback, all 13 satellites, public utilities, and URI images. Custom resource/type registration stays reflection-free. |
+| Sample and documentation | `DockAvalonDockSample` supplies passive views, ReactiveUI commands, a workspace service, compiled bindings, and the retained sample license/attribution. `SampleTests` covers its ViewModel behavior. The guide and PR include usage examples and architecture diagrams; the DocFX pipeline includes adapter API metadata. |
+| Release integration | The package-only consumer targets .NET 8 and .NET 10. Validation packs all 11 dependency/adapter packages and symbols, checks repository commits and assembly/documentation/satellite hashes, and executes the consumer on both runtimes. CI builds/tests Windows, Linux, and macOS, runs native leak/AOT checks, and validates packing. The PR records the validated commit and results. |
+
+The type/reference review also checked exported APIs used through inference or
+extension syntax: layout and visual-tree extension classes, event argument types,
+`OverlayArea`, `ILayoutDocumentPane`, and `LayoutGroup<T>`. Their behavior is covered
+through concrete types, generic constraints, event traces, and extension calls;
+a text search for direct type names is not a coverage measure.
+
+The 84 registration-default comparisons have no unexplained value mismatch.
+Direct `Title` and `ContentId` properties retain the explicitly documented
+Avalonia binding and clearing behavior. The inherited metadata review exposed
+and fixed theme-dependent floating/overlay/splitter defaults and constructor-local
+auto-hide focus/visibility values. WPF style keys map to Avalonia control themes;
+WPF transparency and decorations map to Avalonia's corresponding window properties.
 
 ## Native Dock prerequisites
 
@@ -66,14 +111,13 @@ documents contract defaults, usage, architecture, and regression coverage.
 Validation is performed in a native-only worktree before reintegration, including
 all model implementations and Avalonia 11 linked controls.
 
-The remaining API inventory and behavior work is still open. Framework-specific
-event arguments, logical trees, Win32 hooks, general resource-URI loading, custom
-XML type reconstruction, and public compatibility callbacks belong to the
+Framework-specific event arguments, logical trees, Win32 hooks, general
+resource-URI loading, custom XML type reconstruction, and public compatibility callbacks belong to the
 Avalonia/framework or facade boundary. A declaration-only mismatch is not evidence
 of a missing native docking feature. Deferred floating cleanup uses the existing
 virtual factory and host contracts; its public registration timing belongs to the
-facade. Any additional native capability required by the remaining work
-must follow the same separate-PR, merge-to-`master`, then reintegrate workflow.
+facade. Any additional native capability must follow the same separate-PR,
+merge-to-`master`, then reintegrate workflow.
 
 The floating-model lifetime audit found another native issue: a retained Avalonia
 layout remained a logical child of its closed `HostWindow`. The isolated fix in
@@ -194,8 +238,9 @@ bounds. It does not disable full-content previews that follow the pointer.
 The incoming Avalonia 11 preview suite validates native shared controls. It does
 not add an Avalonia 11 target to this adapter. The source-generator changes select
 the appropriate System.Text.Json generator in shared compiler processes; the
-AvalonDock XML codec remains separate. None of these changes implements the
-remaining manager callbacks, platform behavior, or automatic custom CLR type discovery.
+AvalonDock XML codec remains separate. These native changes do not determine manager callback contracts or platform
+behavior. Custom CLR type reconstruction uses the explicit registry documented
+below rather than automatic discovery.
 
 
 ## Verified implementation
@@ -1689,75 +1734,57 @@ behavior or delayed initialization. Initial state, property-store ownership,
 logical-tree structure, and input-route substitutions remain described by the
 framework contracts in the guide.
 
-## Open work (not release-complete)
+## Inherited control property contracts
 
-- Windows 11 ARM64 native pinned-window validation passes 37 checks covering
-  editor attachment, native pointer resizing and release, and editor focus on
-  all four edges. Broader platform coverage remains open. WPF `HwndHost`/Win32
-  hooks have no direct Avalonia equivalent.
-- Validate the broader native floating lifecycle and group redocking on desktop
-  platforms. Grouped documents and generic/mixed panels now use the additional
-  `LayoutGroupFloatingWindow` model, host, and XML element; whole-root floating
-  retains a replacement main panel and return panes. That XML extension is not
-  understood by upstream WPF. Floating roots with hidden/pinned contents or nested
-  windows are still rejected before overwriting a saved file.
-- Remaining manager API audit: control adapter behavior and framework edge
-  cases. Template/coercion callbacks, provider delivery, and container styling
-  have the targeted audits recorded above.
-  Container style value, command-order, and native/source attachment behavior is
-  covered above, including repeated root registrations and old-root callbacks.
-  The layout callback argument audit above covers redirected/replayed roots,
-  current ownership/presentation, supplied-root source migration and notification
-  registrations, import failure ordering, and weak listener lifetimes.
-  The floating-control audit above records the completed hook corrections and
-  remaining framework/platform differences. Desktop input/focus validation
-  beyond the recorded close lifecycle scenarios remains open.
-  The Windows 11 ARM64 native-message/menu checks supplement Headless policy
-  tests; they do not establish full platform or floating-window parity.
-- Complete the remaining interface implementations, protected hooks, and inheritance
-  behavior. Layout traversal/group methods and the visual/logical tree helpers
-  have the targeted audits recorded above; those checks do not establish all
-  interface implementation behavior. The declaration review maps counterparts
-  without establishing full signature or behavior equivalence.
-  Pane selection and reorder callback ordering have the targeted audit above;
-  other interface and protected override contracts remain open.
-  Root `Updated` dispatch has the parent/structure separation audit above.
-  Direct parent assignment, root history, application-defined parent contracts,
-  and root-slot setters have the targeted audits recorded above.
-  Tool command/binding inheritance now has explicit overrides and focused
-  coverage. Document floating-window closure now has an explicit override;
-  both typed hosts and their base have the cleanup-order coverage recorded above.
-  Direct default-command execution and floating focus ordering have the targeted
-  contract coverage above; desktop focus validation is still deferred.
-- The direct public pane/splitter Grid structure passes consolidated Headless
-  validation of sizing, native drag, floating hosts, themes and lifetime. Package
-  and consumer validation pass at `e04288110`. The final desktop checks remain
-  deferred at the user's request.
-- Finish the rendering and behavior audit of repositioning policies and remaining
-  metadata edge cases. Tab icons, tooltips, enablement, and document header
-  visibility and public auto-hide resizers are implemented. Auto-hide content
-  and resizers remain composed within Dock's native pinned host; its visual
-  tree and 50-unit remaining-content constraint differ from WPF's popup grid.
-- Full native drag/float/redock and lifecycle coverage, including generic and
-  mixed native-created groups, layout detachment and leak checks, and source-driven floating
-  content and changes during deserialization.
-- Complete the remaining default, callback, inheritance-behavior and framework
-  edge cases independently of the presence inventory. The declaration-shape
-  review covers named arguments, modifiers, constraints and differing base lists;
-  it does not establish their runtime behavior.
-- Broader sample interaction and platform coverage for floating windows.
-- Broader navigator modality/focus coverage on macOS and Linux, and remaining
-  theme/overlay integration. Windows 11 ARM64 modality, native Ctrl release,
-  owner input restoration, and editor focus have desktop validation.
-- Broader desktop validation of the new named overlay presentation remains open.
+Floating document, tool, and group hosts exclude themselves from the taskbar by
+default, before any theme is applied. Overlay windows default to no activation,
+no taskbar entry, no decorations, and a transparent surface. A replacement
+control theme can override those values, and removing a style or clearing a
+local value restores the defaults. Splitters retain a transparent hit surface
+with an empty replacement theme. Auto-hide focus and initial visibility use
+metadata defaults instead of constructor-local values, so application focus
+styles remain effective. Native Dock and Avalonia base-control defaults are
+unchanged.
+
+Fifteen new Headless cases cover those defaults, style priority, clearing,
+replacement themes, and base-control isolation. Fourteen package-only checks
+fail against `60e39b103`; the new implementation passes all 102 focused control
+cases and the complete 3,817-case adapter suite. The 30 rendering cases pass.
+
+## Framework boundaries and deferred desktop checks
+
+The adapter implements the Avalonia migration contracts documented here. The
+following differences remain explicit and are not represented as missing native
+Dock features or hidden by the API inventory:
+
+| Boundary | Contract |
+| --- | --- |
+| CLR and UI framework | Public namespaces are `AvalonDock.*` as requested. WPF controls, events, metadata, templates, pointer/focus arguments, and assemblies require Avalonia counterparts. This is not binary compatibility. The 107 strict inventory differences remain individually classified in `portability-review.tsv`. |
+| Binding lifetime | The implementation remains reflection-free as requested. Avalonia binding/style ownership, one-way assignment, current-value overrides, and direct-property clearing differ from WPF. The eight ActiveContent reference differences and the Title/ContentId contracts remain documented and tested. Dispose a binding for permanent replacement; clear direct properties through their typed overload. |
+| Logical trees and native hosting | Avalonia owns the logical/visual tree. Public logical children and keyboard/context-menu routes therefore have different framework shapes. WPF `HwndHost.BuildWindowCore` and `DestroyWindowCore` have no replacement hooks; pinned content uses Dock's native host. |
+| Model identity and graph integrity | Avalonia's sealed object equality prevents layout subclasses from overriding identity. Native-backed collections reject duplicate/cyclic membership and detach cleared children instead of retaining invalid upstream parent references. |
+| Standalone controls | Controls accept model assignment before a manager is attached, refresh their container on attachment, and initialize enablement immediately. These are documented Avalonia integration extensions. |
+| XML/custom resources | Custom CLR XML types and compiled resource URIs use typed factory registration. Runtime assembly discovery and arbitrary WPF resource loading are absent. Custom model hooks still participate through their public virtual methods. |
+| Additional floating layouts | Generic/mixed Dock groups use the additional `LayoutGroupFloatingWindow` XML element, which WPF cannot consume. Hidden/pinned contents inside a floating root, nested windows, and incompatible typed-window mutations are rejected before a file is overwritten. |
+| Auto-hide layout | Content and resizers use Dock's pinned host and retain its 50-unit remaining-content constraint. Its visual tree differs from WPF's popup grid. |
+| Preview geometry | Full-content source snapshots are implemented and enabled by default. Exact projected destination layouts remain disabled because the stock clone cannot reproduce the adapter's custom grids and typed policies; the documented half/third destination indicators remain available. |
+| Framework initialization and input | Avalonia initialization, capture, routed input, window decoration, and focus behavior remain platform contracts. Source-level hooks and automated tests do not establish identical OS behavior. |
+
+Current-package interactive desktop checks are **deferred at the user's request**.
+They cover broader native drag/float/redock, grouped window lifecycles, pinned
+resizing/focus, navigator modality, and overlays across Windows, macOS, and Linux.
+Earlier Windows 11 ARM64 checks include 37 pinned-window checks and native
+message/menu, navigator, and drag scenarios. The retained `e04288110` Windows
+publication is older than the current package and is not evidence for its exact
+commit. Headless, rendering, package, and hosted CI results are recorded separately.
 
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
 types in the pinned upstream source. The Roslyn-based source audit counts 844
 matching type/member keys and 107 missing declarations at this checkpoint.
-All 102 exported type keys are present; member signatures, inheritance, templates,
-and behavior still require the separate checks below.
+All 102 exported type keys are present; signatures, inheritance, templates, and
+behavior have the separate acceptance evidence and framework boundaries above.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 

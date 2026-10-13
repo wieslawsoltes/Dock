@@ -1,6 +1,6 @@
 # AvalonDock compatibility for Dock
 
-This package is under development. It exposes the `AvalonDock`
+This package exposes the `AvalonDock`
 namespaces over `Dock.Model.Avalonia` and Dock's controls. Its XAML types are
 available in Avalonia's default `https://github.com/avaloniaui` XML namespace
 and in `http://schemas.xceed.com/wpf/xaml/avalondock`. Dock owns the live layout,
@@ -55,6 +55,14 @@ For a compact caption/status preview, set the Avalonia extension
 `ShowDockablePreviewOnDrag="False"` on `DockingManager`. Changes apply to the next
 drag and do not modify `DockSettings.ShowDockablePreviewOnDrag` for other Dock
 workspaces. Floating layouts follow their owning manager's setting.
+
+Floating hosts default to `ShowInTaskbar="False"`. Overlay windows default to
+no activation, no taskbar entry, no decorations, and a transparent surface.
+These are property defaults, so they also apply before styling and with a custom
+theme; styles and local values can override them. A standalone
+`LayoutGridResizerControl` has a transparent background, even when its replacement
+theme supplies none. Auto-hide previews default to focusable and hidden; a style
+can disable focus without being blocked by a constructor assignment.
 
 The familiar C# operations are available to a workspace service called by
 ViewModel commands. Given a manager and content nodes from its layout:
@@ -1419,9 +1427,11 @@ by the platform. A replacement window template must supply its own resize areas.
 
 Avalonia applications use Avalonia controls, properties, templates, and
 bindings. WPF framework types and compiled WPF assemblies cannot be loaded as
-Avalonia controls. Framework type substitutions and any outstanding API or
-behavior gaps are tracked in [COMPATIBILITY.md](COMPATIBILITY.md). Full API
-compatibility has not yet been established.
+Avalonia controls. The acceptance matrix and framework differences are recorded
+in [COMPATIBILITY.md](COMPATIBILITY.md). This is an AvalonDock source migration
+layer with Avalonia framework contracts; exact WPF behavior and binary
+compatibility are not claimed. Current-package interactive desktop checks remain
+deferred at the user's request.
 
 `DockingManager.Theme` accepts AvalonDock resource themes independently of
 Avalonia's inherited `StyledElement.Theme` control-template property. Use

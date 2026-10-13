@@ -9,7 +9,8 @@ using AvalonDock.Layout;
 namespace AvalonDock.Controls;
 
 /// <summary>Presents Dock's existing auto-hide preview and its current public tool model.</summary>
-/// <remarks>The Avalonia counterpart hosts native Dock visuals instead of a WPF child HWND.</remarks>
+/// <remarks>The Avalonia counterpart hosts native Dock visuals instead of a WPF child HWND.
+/// It is focusable and hidden by default; these defaults remain available to application styles.</remarks>
 public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
 {
     /// <summary>Identifies the theme applied to the preview's anchorable content control.</summary>
@@ -24,12 +25,16 @@ public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
 
     private ILayoutElement? _model;
 
+    static LayoutAutoHideWindowControl()
+    {
+        FocusableProperty.OverrideDefaultValue<LayoutAutoHideWindowControl>(true);
+        IsVisibleProperty.OverrideDefaultValue<LayoutAutoHideWindowControl>(false);
+    }
+
     internal LayoutAutoHideWindowControl()
     {
         HorizontalContentAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch;
         VerticalContentAlignment = global::Avalonia.Layout.VerticalAlignment.Stretch;
-        Focusable = true;
-        IsVisible = false;
     }
 
     /// <summary>Gets or sets the theme of the existing preview's <see cref="LayoutAnchorableControl"/>.</summary>

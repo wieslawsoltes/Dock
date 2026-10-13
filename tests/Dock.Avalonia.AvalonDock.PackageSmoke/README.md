@@ -1,5 +1,13 @@
 # NuGet consumer smoke test
 
+Inherited-property probes verify floating taskbar defaults across document,
+tool, and group hosts, including custom themes and style removal. Splitter
+backgrounds remain transparent without a stock theme. Auto-hide focus and
+visibility return to their defaults when local values are cleared, and a focus
+style can override the default. Overlay activation, taskbar, decorations, and
+transparency defaults survive local-value and theme replacement. All 14 checks
+fail against the preceding `60e39b103` packages.
+
 Root-update probes distinguish completed parent changes from group reordering,
 floating collection mutations, and floating child replacement/removal. External
 subclasses exercise protected tree hooks and suppress property notifications;

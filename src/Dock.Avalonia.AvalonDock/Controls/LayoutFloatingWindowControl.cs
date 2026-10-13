@@ -16,6 +16,8 @@ using Dock.Model.Core;
 namespace AvalonDock.Controls;
 
 /// <summary>An AvalonDock floating control implemented by Dock's native host window.</summary>
+/// <remarks>Floating hosts are excluded from the taskbar by default. Application styles
+/// and local values can override <see cref="Window.ShowInTaskbar"/>.</remarks>
 public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, IHostWindow
 {
     /// <summary>Defines whether application content can be replaced after loading.</summary>
@@ -45,6 +47,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     static LayoutFloatingWindowControl()
     {
+        ShowInTaskbarProperty.OverrideDefaultValue<LayoutFloatingWindowControl>(false);
         KeyDownEvent.AddClassHandler<LayoutFloatingWindowControl>(static (window, args) => window.OnPreviewKeyDown(args), RoutingStrategies.Tunnel);
         ContentProperty.OverrideMetadata<LayoutFloatingWindowControl>(new StyledPropertyMetadata<object?>(
             coerce: static (owner, value) => owner is LayoutFloatingWindowControl { IsLoaded: true, IsContentImmutable: true } window

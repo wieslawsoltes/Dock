@@ -16,7 +16,9 @@ namespace AvalonDock.Controls;
 
 /// <summary>Hosts Dock's native floating selectors and indicators for an AvalonDock layout.</summary>
 /// <remarks>Created by Dock when floating docking adorners are enabled. Dock continues to own
-/// hit testing, capabilities, drag capture, drop validation, and layout mutations.</remarks>
+/// hit testing, capabilities, drag capture, drop validation, and layout mutations.
+/// The default window is transparent, undecorated, nonactivating, and excluded from the taskbar,
+/// including with an application-supplied control theme.</remarks>
 [TemplatePart("PART_DropTargetsContainer", typeof(Canvas))]
 [TemplatePart("PART_DockingManagerDropTargets", typeof(Grid))]
 [TemplatePart("PART_AnchorablePaneDropTargets", typeof(Grid))]
@@ -25,6 +27,15 @@ namespace AvalonDock.Controls;
 [TemplatePart("PART_PreviewBox", typeof(Path))]
 public class OverlayWindow : DockAdornerWindow
 {
+    static OverlayWindow()
+    {
+        ShowActivatedProperty.OverrideDefaultValue<OverlayWindow>(false);
+        ShowInTaskbarProperty.OverrideDefaultValue<OverlayWindow>(false);
+        WindowDecorationsProperty.OverrideDefaultValue<OverlayWindow>(WindowDecorations.None);
+        TransparencyLevelHintProperty.OverrideDefaultValue<OverlayWindow>(
+            Array.AsReadOnly(new[] { WindowTransparencyLevel.Transparent }));
+    }
+
     private LayoutOverlayProjection? _projection;
     private LayoutOverlayPresentation? _presentation;
     private INameScope? _templateScope;

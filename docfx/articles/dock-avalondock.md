@@ -2,15 +2,23 @@
 
 `Dock.Avalonia.AvalonDock` lets an Avalonia application use the
 `AvalonDock` C# namespaces and layout names. The implementation wraps
-`Dock.Model.Avalonia` models and renders them through Dock's controls. It is an
-in-progress compatibility project; the
+`Dock.Model.Avalonia` models and renders them through Dock's controls. The
 [acceptance checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md)
-records implemented behavior and remaining API gaps. WPF controls, dependency
-properties, and assemblies require their Avalonia counterparts.
+records implementation evidence, framework differences, and deferred desktop
+checks. WPF controls, dependency properties, and assemblies require their
+Avalonia counterparts; exact WPF behavior and binary compatibility are not claimed.
 
 The CLR namespaces are `AvalonDock.*`; update using directives and any explicit
 CLR namespace declarations when porting source from the WPF library. The
 assembly/package name remains `Dock.Avalonia.AvalonDock`.
+
+Floating hosts default to `ShowInTaskbar="False"`. Overlay windows default to
+no activation, no taskbar entry, no decorations, and a transparent surface.
+These are property defaults and apply before styling and with a replacement
+control theme. Application styles and local values can override them, and
+clearing those values restores the defaults. `LayoutGridResizerControl` likewise
+has a transparent background without relying on its theme. Auto-hide previews
+default to focusable and hidden; application focus styles remain effective.
 
 Layout content starts with zero floating dimensions, letting Dock choose the
 native window size unless an application supplies one. Document-list sorting
@@ -3549,9 +3557,10 @@ MIT-licensed code.
 
 The main test project covers compiled default/Xceed namespaces, Headless input,
 native model synchronization, XML, and lifecycle behavior. The image test project
-uses Headless with Skia to verify actual decoding and loopback HTTP/HTTPS loading.
-The
-separate NuGet consumer builds against the packed assemblies. The
+uses Headless with Skia to verify full-content drag snapshots, actual decoding,
+and loopback HTTP/HTTPS loading. The separate NuGet consumer builds against the
+packed assemblies on .NET 8 and .NET 10. The
 [compatibility checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md)
-also describes the pinned API audit and the work still required before claiming
-full compatibility.
+records the pinned API/signature/default reviews, implementation evidence, and
+framework boundaries. Current-package interactive desktop checks remain deferred
+at the user's request; Headless and rendering results are recorded separately.

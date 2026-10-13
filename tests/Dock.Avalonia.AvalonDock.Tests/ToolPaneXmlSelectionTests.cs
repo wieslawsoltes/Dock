@@ -47,9 +47,11 @@ public class ToolPaneXmlSelectionTests
     public void Failed_Xml_Leaves_Automatic_Selection_Disabled_Until_A_Successful_Read(bool metadataFailure)
     {
         ObservedPane pane = new();
-        Assert.Throws<FormatException>(() => Read(pane, metadataFailure
+        Exception? error = Record.Exception(() => Read(pane, metadataFailure
             ? "<Pane Name='retained' DockMinWidth='invalid' />"
             : "<Pane Name='retained'><LayoutAnchorable ContentId='first' /><LayoutAnchorable CanHide='invalid' /></Pane>"));
+        if (!metadataFailure) error = Assert.IsType<InvalidOperationException>(error).InnerException;
+        Assert.IsType<FormatException>(error);
         Assert.Equal("retained", pane.Name);
         pane.Children.Add(new LayoutAnchorable { ContentId = "added" });
         Assert.Equal(-1, pane.SelectedContentIndex);

@@ -93,15 +93,7 @@ public class LayoutDocumentFloatingWindow : LayoutFloatingWindow
     internal override bool OwnsNativeChild(IDockable owner) => ReferenceEquals(owner, _pane);
 
     /// <inheritdoc/>
-    public override void ReadXml(XmlReader reader)
-    {
-        LayoutDocumentFloatingWindow restored = (LayoutDocumentFloatingWindow)AvalonDockXml.ReadFloatingWindow(reader, nameof(LayoutDocumentFloatingWindow));
-        if (restored.RootDocument is { } document)
-        {
-            CopyBoundsFrom(restored);
-            RootDocument = document;
-        }
-    }
+    public override void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadContainer(this, reader);
 
     private void Reconnect()
     {

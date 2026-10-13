@@ -60,6 +60,32 @@ internal sealed class LayoutFloatingBounds
         finally { _changing = false; }
     }
 
+    internal void RestoreXml(LayoutElement child)
+    {
+        ILayoutElementForFloatingWindow primary = (ILayoutElementForFloatingWindow)child;
+        bool maximized = primary.IsMaximized;
+        foreach (ILayoutElement element in child.Descendents())
+        {
+            if (element is not ILayoutElementForFloatingWindow candidate) continue;
+            if (!HasSize(primary.FloatingWidth) && !HasSize(primary.FloatingHeight) &&
+                HasSize(candidate.FloatingWidth) && HasSize(candidate.FloatingHeight)) primary = candidate;
+            maximized |= candidate.IsMaximized;
+        }
+        // Apply the incoming XML geometry before attaching the new child, without
+        // propagating it into the outgoing child still observed by this service.
+        bool changing = _changing;
+        _changing = true;
+        try
+        {
+            _window.Width = HasSize(primary.FloatingWidth) ? primary.FloatingWidth : double.NaN;
+            _window.Height = HasSize(primary.FloatingHeight) ? primary.FloatingHeight : double.NaN;
+            _window.X = double.IsFinite(primary.FloatingLeft) ? primary.FloatingLeft : 0;
+            _window.Y = double.IsFinite(primary.FloatingTop) ? primary.FloatingTop : 0;
+            _window.WindowState = maximized ? DockWindowState.Maximized : DockWindowState.Normal;
+        }
+        finally { _changing = changing; }
+    }
+
     private void ElementChanged(object? sender, PropertyChangedEventArgs args)
     {
         if (_changing || sender is not ILayoutElementForFloatingWindow element) return;

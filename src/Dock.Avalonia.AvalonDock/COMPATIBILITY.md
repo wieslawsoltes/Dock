@@ -199,7 +199,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,946 cases, including 63 numeric XML
+- The consolidated adapter suite passes all 2,988 cases, including 43 streaming XML
+  reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
+  cases, plus 63 numeric XML
   formatting, culture, round-trip, and enum-error cases, plus 10 tool-pane XML
   selection, callback, failure, recovery, and nested-read cases, plus 51 content XML
   metadata, setter-order, selection, focus, floating-state, reader-position, failure,
@@ -841,7 +843,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   Persisted last-focused flags do not activate content or update timestamps.
   Floating flags round-trip as metadata without creating windows; later native
   docking-state changes update the facade before native-state observers run.
-  Group/root readers continue to buffer their subtrees. Root reads replace the hierarchy while retaining
+  Groups, roots, and floating windows retain the caller's live XML reader. Root reads replace sections while retaining
   the manager's native root and factory. Without a callback, missing documents
   close and tools hide while retaining their return panes. Callback cancellation
   requests closure and preserves content closing-event vetoes. Unresolved null
@@ -875,9 +877,22 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   selections and application callbacks remain immediate. Failed reads leave
   fallback disabled until a successful read, including successful nested reads.
   These cases cover built-in panes and registered application subclasses.
-  Remaining XML work includes group/root streaming and partial-failure behavior,
-  serializer exception wrapping, and the broader inherited-hook and write-contract
-  audit (including omitted defaults, attribute ordering, and culture changes).
+  Groups, roots, and floating windows now use live readers, preserving original
+  depth, line information, callback positions, and following siblings. Direct
+  reads retain preceding changes after later errors. Root sections stage children
+  before attachment, replace sides before reading, and clear floating/hidden
+  collections before reading replacements. Successive floating children replace
+  the previous root and restore geometry without changing outgoing-child metadata.
+  Deserialization wraps model parsing failures at each nested serializer boundary;
+  content-recovery callbacks and reference fixup retain their original errors.
+  Forty-three streaming cases and an external consumer cover these contracts;
+  five package probes reproduce the preceding reader and error-boundary defects.
+  The earlier floating test that rejected two document roots was corrected: each
+  child replaces the previous one, so the last document remains.
+  Remaining XML work includes the broader inherited-hook, root-format edge-case,
+  and write-contract audit (including omitted defaults, attribute ordering, and
+  culture changes). Compact roots with omitted empty sections and persisted native
+  root-panel metadata remain adapter extensions to the canonical upstream format.
   Assigning a return container raises only its changed notification, then initializes
   an unset pane ID using the reference left by application callbacks. Identifier
   metadata is quiet; changed return indices raise only changed notifications.

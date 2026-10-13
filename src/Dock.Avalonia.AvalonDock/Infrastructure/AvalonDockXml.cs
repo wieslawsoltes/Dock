@@ -67,43 +67,6 @@ internal static class AvalonDockXml
         }
     }
 
-    internal static LayoutRoot Read(XElement xml, LayoutSerializationTypes? types = null)
-    {
-        if (xml.Name != "LayoutRoot") throw new XmlException("Expected an AvalonDock LayoutRoot element.");
-        LayoutRoot root = new();
-        bool hasPanel = false;
-        LayoutXmlReadContext context = new(types);
-        foreach (XElement child in xml.Elements())
-        {
-            switch (child.Name.LocalName)
-            {
-                case "RootPanel":
-                    if (hasPanel) throw new XmlException("A layout can contain only one RootPanel.");
-                    root.RootPanel = (LayoutPanel)ReadElement(child, context);
-                    hasPanel = true;
-                    break;
-                case "Hidden":
-                    foreach (XElement hidden in child.Elements()) root.Hidden.Add((LayoutAnchorable)ReadElement(hidden, context));
-                    break;
-                case "TopSide": root.TopSide = (LayoutAnchorSide)ReadElement(child, context); break;
-                case "RightSide": root.RightSide = (LayoutAnchorSide)ReadElement(child, context); break;
-                case "LeftSide": root.LeftSide = (LayoutAnchorSide)ReadElement(child, context); break;
-                case "BottomSide": root.BottomSide = (LayoutAnchorSide)ReadElement(child, context); break;
-                case "FloatingWindows":
-                    foreach (XElement window in child.Elements())
-                    {
-                        if (ReadElement(window, context) is not LayoutFloatingWindow floating)
-                            throw new XmlException("FloatingWindows can contain only floating layouts.");
-                        root.FloatingWindows.Add(floating);
-                    }
-                    break;
-                default: throw new XmlException($"Unknown layout element '{child.Name}'.");
-            }
-        }
-        if (!hasPanel) throw new XmlException("A layout must contain a RootPanel.");
-        return root;
-    }
-
     private static void WriteElement(LayoutElement element, XmlWriter writer, string? name = null)
     {
         if (element is LayoutFloatingWindow window) ValidateFloatingWindow(window);
@@ -200,69 +163,6 @@ internal static class AvalonDockXml
             foreach (ILayoutElement child in container.Children) WriteElement((LayoutElement)child, writer);
     }
 
-    private static LayoutElement ReadElement(XElement xml, LayoutXmlReadContext context)
-    {
-        if (context.Types?.TryCreate(xml.Name.LocalName, out LayoutElement? custom) == true)
-        {
-            using XmlReader source = xml.CreateReader();
-            using LayoutXmlReader reader = new(source, context);
-            reader.MoveToContent();
-            ((IXmlSerializable)custom!).ReadXml(reader);
-            return custom!;
-        }
-        LayoutElement element = xml.Name.LocalName switch
-        {
-            "RootPanel" or "LayoutPanel" => new LayoutPanel(),
-            "LayoutDocumentPaneGroup" => new LayoutDocumentPaneGroup(),
-            "LayoutAnchorablePaneGroup" => new LayoutAnchorablePaneGroup(),
-            "LayoutDocumentPane" => new LayoutDocumentPane(),
-            "LayoutAnchorablePane" => new LayoutAnchorablePane(),
-            "LayoutDocument" => new LayoutDocument(),
-            "LayoutAnchorable" => new LayoutAnchorable(),
-            "LayoutAnchorGroup" => new LayoutAnchorGroup(),
-            "LayoutDocumentFloatingWindow" => new LayoutDocumentFloatingWindow(),
-            "LayoutAnchorableFloatingWindow" => new LayoutAnchorableFloatingWindow(),
-            "LayoutGroupFloatingWindow" => new LayoutGroupFloatingWindow(),
-            "LayoutAnchorSide" or "TopSide" or "RightSide" or "LeftSide" or "BottomSide" => new LayoutAnchorSide(),
-            _ => throw new XmlException($"Unknown AvalonDock element '{xml.Name}'.")
-        };
-        ReadInto(element, xml, context);
-        if (xml.IsEmpty && element is LayoutAnchorableFloatingWindow floating)
-            ((ILayoutElementWithVisibility)floating).ComputeVisibility();
-        return element;
-    }
-
-    private static void ReadInto(LayoutElement element, XElement xml, LayoutXmlReadContext context)
-    {
-        if (element is LayoutContent content)
-        {
-            using XmlReader reader = xml.CreateReader();
-            content.ReadXml(reader);
-            return;
-        }
-        if (element is ILayoutGroup) LayoutGroupXml.ReadMetadata(element, xml);
-        if (xml.IsEmpty && element is ILayoutGroup && element is ILayoutElementWithVisibility visibility)
-            visibility.ComputeVisibility();
-        foreach (XElement child in xml.Elements())
-        {
-            LayoutElement childElement = ReadElement(child, context);
-            switch (element)
-            {
-                case LayoutDocumentFloatingWindow { RootDocument: null } documentWindow when childElement is LayoutDocument rootDocument:
-                    documentWindow.RootDocument = rootDocument;
-                    break;
-                case LayoutAnchorableFloatingWindow { RootPanel: null } toolWindow when childElement is LayoutAnchorablePaneGroup panel:
-                    toolWindow.RootPanel = panel;
-                    break;
-                case ILayoutGroup group:
-                    group.InsertChildAt(group.ChildrenCount, childElement);
-                    break;
-                default: throw new XmlException($"Invalid child in '{xml.Name}'.");
-            }
-        }
-        if (element is LayoutAnchorablePane tools) tools.CompleteXmlRead();
-    }
-
     internal static void WriteContents(LayoutElement element, XmlWriter writer)
     {
         writer = PrepareWriter(element, writer);
@@ -291,50 +191,12 @@ internal static class AvalonDockXml
     private static void WriteAttribute(XmlWriter writer, string name, double value) =>
         writer.WriteAttributeString(name, value.ToString(CultureInfo.InvariantCulture));
 
-    internal static void ReadContents(LayoutElement element, XmlReader reader)
-    {
-        XElement xml = ReadNode(reader);
-        LayoutXmlReadContext context = (reader as LayoutXmlReader)?.Context ?? new();
-        ReadInto(element, xml, context);
-    }
-
-    internal static LayoutRoot? ReadRoot(XmlReader reader)
-    {
-        XElement xml = ReadNode(reader);
-        if (xml.IsEmpty) return null;
-        // IXmlSerializable callers own the surrounding element name.
-        xml.Name = "LayoutRoot";
-        return Read(xml, (reader as LayoutXmlReader)?.Context.Types);
-    }
-
-    private static XElement ReadNode(XmlReader reader)
-    {
-        ArgumentNullException.ThrowIfNull(reader);
-        if (reader.MoveToContent() != XmlNodeType.Element) throw new XmlException("Expected a layout element.");
-        return (XElement)XNode.ReadFrom(reader);
-    }
-
     internal static void WriteFloatingContents(LayoutFloatingWindow window, XmlWriter writer)
     {
         writer = PrepareWriter(window, writer);
         window.DockWindow.Save();
         ValidateFloatingWindow(window);
         foreach (ILayoutElement child in window.Children) WriteElement((LayoutElement)child, writer);
-    }
-
-    internal static LayoutFloatingWindow ReadFloatingWindow(XmlReader reader, string expectedName)
-    {
-        ArgumentNullException.ThrowIfNull(reader);
-        if (reader.MoveToContent() != XmlNodeType.Element || (reader is not LayoutXmlReader && reader.LocalName != expectedName))
-            throw new XmlException($"Expected a {expectedName} element.");
-        XElement xml = (XElement)XNode.ReadFrom(reader);
-        LayoutXmlReadContext context = (reader as LayoutXmlReader)?.Context ?? new();
-        LayoutFloatingWindow window = expectedName == nameof(LayoutDocumentFloatingWindow)
-            ? new LayoutDocumentFloatingWindow() : new LayoutAnchorableFloatingWindow();
-        ReadInto(window, xml, context);
-        if (xml.IsEmpty && window is LayoutAnchorableFloatingWindow floating)
-            ((ILayoutElementWithVisibility)floating).ComputeVisibility();
-        return window;
     }
 
     private static void ValidateFloatingWindow(LayoutFloatingWindow window)

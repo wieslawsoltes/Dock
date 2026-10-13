@@ -10,9 +10,13 @@ internal sealed class LayoutXmlReadContext(LayoutSerializationTypes? types = nul
     internal LayoutSerializationTypes? Types { get; } = types;
 }
 
-internal sealed class LayoutXmlReader(XmlReader reader, LayoutXmlReadContext context) : XmlReader
+internal sealed class LayoutXmlReader(XmlReader reader, LayoutXmlReadContext context) : XmlReader, IXmlLineInfo
 {
     internal LayoutXmlReadContext Context { get; } = context;
+    internal IXmlLineInfo? LineInfo => reader is LayoutXmlReader contextual ? contextual.LineInfo : reader as IXmlLineInfo;
+    public bool HasLineInfo() => LineInfo?.HasLineInfo() == true;
+    public int LineNumber => LineInfo?.LineNumber ?? 0;
+    public int LinePosition => LineInfo?.LinePosition ?? 0;
     public override XmlReaderSettings? Settings => reader.Settings;
     public override int AttributeCount => reader.AttributeCount;
     public override string BaseURI => reader.BaseURI;

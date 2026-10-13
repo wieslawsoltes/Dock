@@ -1378,7 +1378,39 @@ preceding assignments intact and the reader on the failing attribute. Content
 reads advance the caller's reader once instead of buffering the element, so a
 derived override can read its own child elements after `base.ReadXml(reader)`.
 Explicit start/end tags leave the reader on the end tag; self-closing tags advance
-to the following node. Group/root readers still buffer their subtrees.
+to the following node. Groups, roots, and floating windows also use the original
+reader: registered hooks retain the document depth, line information, namespaces,
+and following siblings. Group metadata errors leave the reader on the failing
+attribute. Completed children remain attached if a later child or XML syntax fails.
+Unknown child names raise `ArgumentException` during type lookup.
+
+Direct root reads apply sections incrementally. The root panel's children are
+read before replacing the panel, then attach after the replacement notification.
+Sides are replaced before their children are read; floating and hidden collections
+are cleared before reading their replacements. Children of those sections attach
+only after the section succeeds. A later failure retains those preceding changes.
+Compact layouts may omit empty sections, and Dock's additional root-panel metadata
+continues to round-trip. Self-closing root reads retain the existing layout.
+
+Floating reads replace their root child for each successfully read child, keeping
+the last replacement and its restored bounds. Later failures retain the preceding
+replacement. Empty reads preserve existing children and geometry. The caller owns
+the surrounding element name, including for standalone floating-window reads.
+
+`XmlLayoutSerializer.Deserialize` keeps the manager's existing layout until parsing
+and content recovery succeed. It consumes one layout and leaves following XML
+available to the caller. Parse errors and errors from model `ReadXml` hooks become
+`InvalidOperationException` with the original cause and reader location. Nested
+model reads add nested wrappers, following the
+[.NET XML serializer boundary](https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.Xml/src/System/Xml/Serialization/XmlSerializer.cs#L415-L455).
+Direct model metadata errors remain unwrapped. Content-recovery callbacks, return
+reference resolution, and manager layout replacement happen after parsing and
+retain their original errors.
+
+Custom child payloads require a registered `ReadXml` override that consumes them.
+An unregistered subclass's extra attributes can be read by the built-in model,
+but arbitrary child XML, including comments appended inside content elements,
+is not silently discarded by streaming readers.
 
 `IsLastFocusedDocument` restores both true and false without changing root focus
 references, `IsActive`, or the saved activation time. `IsFloating` also restores
@@ -1493,7 +1525,7 @@ flowchart TB
     Factory["Native Dock factory and docking operations"]
     View["DockControl and floating HostWindow"]
     DragPreview["Native full-content drag preview<br/>Factory policy and content snapshots"]
-    Xml["XmlLayoutSerializer and explicit XML codec<br/>Typed custom XML factories, virtual hooks, and content recovery"]
+    Xml["XmlLayoutSerializer and explicit XML codec<br/>Live readers, typed custom factories, virtual hooks, and content recovery"]
     Api -->|LayoutRootPanel| GridControls
     GridControls --> Sizing
     GridControls --> PaneControls

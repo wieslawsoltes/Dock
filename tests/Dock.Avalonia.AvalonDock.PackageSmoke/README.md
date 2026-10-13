@@ -281,3 +281,7 @@ flags and activation timestamps without assigning root focus. Both .NET 8 and
 The numeric/selection XML probe checks CLR infinity spellings, current-culture
 return-index round trips, deferred tool-pane fallback selection, immediate
 explicit selection, and selection recovery after failed and successful reads.
+
+The streaming XML probe checks live attribute positions, partial root restoration,
+successive floating-window children, nested deserialization errors, and external
+read hooks with the original depth, line information, and following siblings.

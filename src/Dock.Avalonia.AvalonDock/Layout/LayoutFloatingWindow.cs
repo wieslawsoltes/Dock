@@ -48,14 +48,7 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
     internal RootDock NativeRoot => (RootDock)DockModel;
     internal virtual bool OwnsNativeChild(IDockable owner) => ReferenceEquals(owner, NativeRoot);
     internal void RefreshBounds() => _bounds.Refresh();
-    internal void CopyBoundsFrom(LayoutFloatingWindow window)
-    {
-        DockWindow.X = window.DockWindow.X;
-        DockWindow.Y = window.DockWindow.Y;
-        DockWindow.Width = window.DockWindow.Width;
-        DockWindow.Height = window.DockWindow.Height;
-        DockWindow.WindowState = window.DockWindow.WindowState;
-    }
+    internal void RestoreXmlBounds(LayoutElement child) => _bounds.RestoreXml(child);
     internal void Attach(LayoutRoot root)
     {
         root.Context.Adopt(Context);

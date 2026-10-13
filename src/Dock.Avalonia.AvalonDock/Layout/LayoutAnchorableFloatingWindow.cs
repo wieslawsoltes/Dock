@@ -119,19 +119,7 @@ public class LayoutAnchorableFloatingWindow : LayoutFloatingWindow, ILayoutEleme
     void ILayoutElementWithVisibility.ComputeVisibility() => ComputeVisibility();
 
     /// <inheritdoc/>
-    public override void ReadXml(XmlReader reader)
-    {
-        ArgumentNullException.ThrowIfNull(reader);
-        reader.MoveToContent();
-        bool isEmpty = reader.IsEmptyElement;
-        LayoutAnchorableFloatingWindow restored = (LayoutAnchorableFloatingWindow)AvalonDockXml.ReadFloatingWindow(reader, nameof(LayoutAnchorableFloatingWindow));
-        if (restored.RootPanel is { } panel)
-        {
-            CopyBoundsFrom(restored);
-            RootPanel = panel;
-        }
-        else if (isEmpty) ComputeVisibility();
-    }
+    public override void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadContainer(this, reader);
 
     internal override void OnModelPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
     {

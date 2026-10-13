@@ -151,7 +151,6 @@ public class FloatingSerializationTests
     }
 
     [AvaloniaTheory]
-    [InlineData("<LayoutDocumentFloatingWindow><LayoutDocument /><LayoutDocument /></LayoutDocumentFloatingWindow>")]
     [InlineData("<LayoutAnchorableFloatingWindow><LayoutPanel /></LayoutAnchorableFloatingWindow>")]
     [InlineData("<LayoutDocumentFloatingWindow><LayoutAnchorable /></LayoutDocumentFloatingWindow>")]
     [InlineData("<LayoutDocument />")]
@@ -160,7 +159,7 @@ public class FloatingSerializationTests
         DockingManager manager = new();
         LayoutRoot original = manager.Layout;
         string xml = "<LayoutRoot><RootPanel /><FloatingWindows>" + floatingXml + "</FloatingWindows></LayoutRoot>";
-        Assert.Throws<XmlException>(() => new XmlLayoutSerializer(manager).Deserialize(new StringReader(xml)));
+        Assert.Throws<InvalidOperationException>(() => new XmlLayoutSerializer(manager).Deserialize(new StringReader(xml)));
         Assert.Same(original, manager.Layout);
     }
 

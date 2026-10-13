@@ -58,14 +58,16 @@ public class XmlLayoutSerializer : LayoutSerializer
         Deserialize(xml);
     }
     /// <summary>Reads from a caller-owned XML reader and atomically replaces the layout.</summary>
+    /// <remarks>Parsing and model ReadXml failures are reported as InvalidOperationException with
+    /// the original error as an inner exception. Nested model reads retain nested error wrappers.
+    /// Content-recovery callbacks and layout replacement run after parsing and keep their original errors.</remarks>
     public void Deserialize(XmlReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);
         StartDeserialization();
         try
         {
-            XElement xml = XElement.Load(reader);
-            LayoutRoot layout = AvalonDockXml.Read(xml, KnownTypes.Snapshot());
+            LayoutRoot layout = LayoutXmlDeserializer.Deserialize(reader, KnownTypes.Snapshot());
             FixupLayout(layout);
             Manager.Layout = layout;
         }

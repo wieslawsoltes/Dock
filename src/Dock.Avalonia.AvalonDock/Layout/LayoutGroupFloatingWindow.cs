@@ -77,7 +77,7 @@ public class LayoutGroupFloatingWindow : LayoutFloatingWindow, ILayoutGroup, ILa
         if (index >= 0) ReplaceChildAt(index, newElement);
     }
     /// <inheritdoc/>
-    public override void ReadXml(XmlReader reader) => AvalonDockXml.ReadContents(this, reader);
+    public override void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadContainer(this, reader);
 
     private void PanelsChanged()
     {

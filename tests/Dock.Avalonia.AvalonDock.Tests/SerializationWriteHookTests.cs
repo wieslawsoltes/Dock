@@ -59,7 +59,14 @@ public class SerializationWriteHookTests
         Assert.Contains("Description=\"Editor\"", xml);
         Assert.Contains("CanHide=\"false\"", xml);
         Assert.DoesNotContain("MarkedDocument", xml);
-        serializer.Deserialize(new StringReader(xml));
+        // These unregistered write-only subclasses append comment nodes. A
+        // streaming built-in reader does not consume custom child payloads;
+        // applications must register a corresponding ReadXml override for them.
+        Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(new StringReader(xml)));
+        foreach (XComment comment in root.DescendantNodes().OfType<XComment>().ToArray()) comment.Remove();
+        foreach (XElement element in root.Descendants())
+            if (!element.Nodes().Any()) element.RemoveNodes();
+        serializer.Deserialize(new StringReader(root.ToString()));
         foreach (LayoutContent content in manager.Layout.Descendents().OfType<LayoutContent>())
             Assert.Same(contents[Assert.IsType<string>(content.ContentId)], content.Content);
         Assert.Equal(contents.Count, manager.Layout.Descendents().OfType<LayoutContent>().Count());

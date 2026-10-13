@@ -210,14 +210,14 @@ public class LayoutXmlContractTests
     }
 
     [AvaloniaFact]
-    public void Invalid_Root_Xml_Does_Not_Detach_The_Existing_Hierarchy()
+    public void A_Later_Root_Xml_Error_Retains_The_Completed_Panel_Replacement()
     {
         LayoutRoot root = new();
         LayoutPanel previous = root.RootPanel;
         using XmlReader reader = XmlReader.Create(new StringReader("<Layout><RootPanel /><Unknown /></Layout>"));
-        Assert.Throws<XmlException>(() => root.ReadXml(reader));
-        Assert.Same(previous, root.RootPanel);
-        Assert.Same(root, previous.Parent);
+        Assert.Throws<ArgumentException>(() => root.ReadXml(reader));
+        Assert.NotSame(previous, root.RootPanel);
+        Assert.Null(previous.Parent);
     }
 
     [AvaloniaFact]

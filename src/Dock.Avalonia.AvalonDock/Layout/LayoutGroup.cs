@@ -46,8 +46,9 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     /// Stored dimensions, pane names, and header flags restore silently. Orientation and child changes retain their ordinary notifications.
     /// Tool panes defer automatic selection until a read succeeds; explicit selection remains immediate.
     /// A failed tool-pane read leaves automatic selection disabled until a later successful read.
+    /// The caller's reader stays live; a later read error retains preceding metadata and appended children.
     /// </remarks>
-    public virtual void ReadXml(XmlReader reader) => AvalonDockXml.ReadContents(this, reader);
+    public virtual void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadContainer(this, reader);
     /// <summary>Writes group metadata and children inside the caller's XML element.</summary>
     public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <inheritdoc/>

@@ -87,7 +87,7 @@ public class DeserializationSourceTests
             serializer.LayoutSerializationCallback += (_, _) => throw new InvalidOperationException("Content restore failed.");
             Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(new StringReader(xml)));
         }
-        else Assert.Throws<XmlException>(() => serializer.Deserialize(new StringReader("<LayoutRoot>")));
+        else Assert.IsType<XmlException>(Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(new StringReader("<LayoutRoot>"))).InnerException);
 
         Assert.Same(previous, manager.Layout);
         documents.Add(new object());

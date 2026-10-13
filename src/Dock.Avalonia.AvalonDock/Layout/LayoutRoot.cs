@@ -222,23 +222,9 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     /// <summary>Returns no custom XML schema.</summary>
     public XmlSchema? GetSchema() => null;
     /// <summary>Reads the layout hierarchy while retaining this root's native model and factory.</summary>
-    public void ReadXml(XmlReader reader)
-    {
-        LayoutRoot? restored = AvalonDockXml.ReadRoot(reader);
-        if (restored is null) return;
-        LayoutContent? active = restored.ActiveContent;
-        ActiveContent = null;
-        FloatingWindows.Clear();
-        Hidden.Clear();
-        RootPanel = restored.RootPanel;
-        TopSide = restored.TopSide;
-        RightSide = restored.RightSide;
-        LeftSide = restored.LeftSide;
-        BottomSide = restored.BottomSide;
-        while (restored.FloatingWindows.Count > 0) FloatingWindows.Add(restored.FloatingWindows[0]);
-        while (restored.Hidden.Count > 0) Hidden.Add(restored.Hidden[0]);
-        if (active is not null) ActiveContent = active;
-    }
+    /// <remarks>Sections restore as they are read. A later error retains preceding changes.
+    /// Use XmlLayoutSerializer to keep the manager's existing layout until parsing and content recovery succeed.</remarks>
+    public void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadRoot(this, reader);
     /// <summary>Writes the layout hierarchy inside the caller's XML element.</summary>
     public void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <summary>Occurs when the layout tree changes.</summary>

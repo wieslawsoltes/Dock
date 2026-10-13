@@ -176,7 +176,7 @@ public class GroupXmlMetadataTests
         LayoutAnchorGroup group = new();
         List<string> changes = new();
         group.PropertyChanged += (_, e) => changes.Add(e.PropertyName!);
-        Assert.Throws<XmlException>(() => Read(group, "<Group Id='restored-id' PreviousContainerId='return-pane'><Unknown /></Group>"));
+        Assert.Throws<ArgumentException>(() => Read(group, "<Group Id='restored-id' PreviousContainerId='return-pane'><Unknown /></Group>"));
         Assert.Equal("restored-id", group.DockModel.Id);
         Assert.Empty(changes);
     }

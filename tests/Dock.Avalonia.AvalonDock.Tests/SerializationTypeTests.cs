@@ -144,8 +144,7 @@ public class SerializationTypeTests
                 _ => new CustomDocument()
             });
         string xml = "<LayoutRoot><RootPanel><LayoutDocumentPane><ApplicationDocument ContentId='custom'/></LayoutDocumentPane></RootPanel></LayoutRoot>";
-        if (failure == "unknown") Assert.Throws<XmlException>(() => serializer.Deserialize(new StringReader(xml)));
-        else Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(new StringReader(xml)));
+        Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(new StringReader(xml)));
         Assert.Same(previous, manager.Layout);
         Assert.Same(pane, attached.Parent);
     }
@@ -167,7 +166,7 @@ public class SerializationTypeTests
         });
         serializer.LayoutSerializationCallback += (_, args) => args.Content = new object();
         const string xml = "<LayoutRoot><RootPanel><LayoutDocumentPane><ApplicationDocument/><ApplicationTool/></LayoutDocumentPane></RootPanel></LayoutRoot>";
-        Assert.Throws<XmlException>(() => serializer.Deserialize(new StringReader(xml)));
+        Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(new StringReader(xml)));
         serializer.Deserialize(new StringReader(xml));
         Assert.Single(manager.Layout.Descendents().OfType<CustomDocument>());
         Assert.Single(manager.Layout.Descendents().OfType<CustomTool>());

@@ -80,6 +80,7 @@ PackageConsumer.LayoutInterfaceProbe.Verify();
 PackageConsumer.GroupXmlProbe.Verify();
 PackageConsumer.ContentXmlProbe.Verify();
 PackageConsumer.XmlNumericSelectionProbe.Verify();
+PackageConsumer.XmlStreamingProbe.Verify();
 PackageConsumer.UpdateStrategyProbe.Verify();
 PackageConsumer.HttpImageProbe.Verify();
 PackageConsumer.CloseOriginProbe closeOrigin = new(new LayoutDocumentFloatingWindow());

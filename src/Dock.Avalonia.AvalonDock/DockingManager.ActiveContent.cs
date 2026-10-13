@@ -9,7 +9,7 @@ public partial class DockingManager
 {
     /// <summary>Defines the active content property, which supports styles and defaults to one-way binding.</summary>
     public static readonly StyledProperty<object?> ActiveContentProperty =
-        AvaloniaProperty.Register<DockingManager, object?>(nameof(ActiveContent), defaultBindingMode: BindingMode.OneWay);
+        AvaloniaProperty.Register<DockingManager, object?>(name: nameof(ActiveContent), metadata: AvalonDockProperty.StyledMetadata<object?>(defaultBindingMode: BindingMode.OneWay));
 
     private bool _settingActiveContent;
     private EventHandler<AvaloniaPropertyChangedEventArgs>? _activeContentNotification;
@@ -18,8 +18,8 @@ public partial class DockingManager
     /// <remarks>
     /// Explicit assignments retain the supplied object and activate its matching layout content.
     /// Layout-driven activation publishes the public layout model while preserving an existing binding.
-    /// Assignments and clearing use Avalonia's binding lifetime rules. In particular, assigning a
-    /// value does not detach a one-way binding; dispose the binding to replace it permanently.
+    /// Explicit assignment replaces a one-way binding and preserves a writable binding.
+    /// Clearing removes the binding; layout-driven current values retain it.
     /// </remarks>
     public object? ActiveContent
     {

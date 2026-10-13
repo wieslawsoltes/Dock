@@ -25,16 +25,16 @@ public class NavigatorWindow : Window
         AvaloniaProperty.RegisterDirect<NavigatorWindow, IEnumerable<LayoutAnchorableItem>?>(nameof(Anchorables), window => window.Anchorables);
     /// <summary>Identifies the selected document container.</summary>
     public static readonly StyledProperty<LayoutDocumentItem?> SelectedDocumentProperty =
-        AvaloniaProperty.Register<NavigatorWindow, LayoutDocumentItem?>(nameof(SelectedDocument));
+        AvaloniaProperty.Register<NavigatorWindow, LayoutDocumentItem?>(name: nameof(SelectedDocument), metadata: AvalonDockProperty.StyledMetadata<LayoutDocumentItem?>());
     /// <summary>Identifies the selected tool container.</summary>
     public static readonly StyledProperty<LayoutAnchorableItem?> SelectedAnchorableProperty =
-        AvaloniaProperty.Register<NavigatorWindow, LayoutAnchorableItem?>(nameof(SelectedAnchorable));
+        AvaloniaProperty.Register<NavigatorWindow, LayoutAnchorableItem?>(name: nameof(SelectedAnchorable), metadata: AvalonDockProperty.StyledMetadata<LayoutAnchorableItem?>());
     /// <summary>Identifies the label above the document list.</summary>
     public static readonly StyledProperty<string> LayoutDocumentsLabelProperty =
-        AvaloniaProperty.Register<NavigatorWindow, string>(nameof(LayoutDocumentsLabel), "Active Files");
+        AvaloniaProperty.Register<NavigatorWindow, string>(name: nameof(LayoutDocumentsLabel), metadata: AvalonDockProperty.StyledMetadata<string>(defaultValue: "Active Files"));
     /// <summary>Identifies the label above the tool list.</summary>
     public static readonly StyledProperty<string> LayoutAnchorablesLabelProperty =
-        AvaloniaProperty.Register<NavigatorWindow, string>(nameof(LayoutAnchorablesLabel), "Active Tool Windows");
+        AvaloniaProperty.Register<NavigatorWindow, string>(name: nameof(LayoutAnchorablesLabel), metadata: AvalonDockProperty.StyledMetadata<string>(defaultValue: "Active Tool Windows"));
 
     private LayoutDocumentItem[]? _documents;
     private IEnumerable<LayoutAnchorableItem>? _anchorables;

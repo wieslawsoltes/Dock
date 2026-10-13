@@ -22,10 +22,10 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
 
     /// <summary>Identifies the title property.</summary>
     public static readonly DirectProperty<LayoutContent, string> TitleProperty =
-        AvaloniaProperty.RegisterDirect<LayoutContent, string>(nameof(Title), x => x.Title, (x, v) => x.Title = v);
+        AvaloniaProperty.RegisterDirect<LayoutContent, string>(name: nameof(Title), metadata: AvalonDockProperty.DirectMetadata<string>(), getter: x => x.Title, setter: (x, v) => x.SetTitle(v));
     /// <summary>Identifies the content identifier property.</summary>
     public static readonly DirectProperty<LayoutContent, string?> ContentIdProperty =
-        AvaloniaProperty.RegisterDirect<LayoutContent, string?>(nameof(ContentId), x => x.ContentId, (x, v) => x.ContentId = v);
+        AvaloniaProperty.RegisterDirect<LayoutContent, string?>(name: nameof(ContentId), metadata: AvalonDockProperty.DirectMetadata<string?>(), getter: x => x.ContentId, setter: (x, v) => x.SetContentId(v));
     /// <summary>Identifies the content property.</summary>
     public static readonly DirectProperty<LayoutContent, object?> ContentProperty =
         AvaloniaProperty.RegisterDirect<LayoutContent, object?>(nameof(Content), x => x.Content, (x, v) => x.Content = v);
@@ -60,25 +60,28 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     private IDockingWindowState State => (IDockingWindowState)DockModel;
 
     /// <summary>Gets or sets the tab title; initially null.</summary>
-    /// <remarks>This native-backed property uses Avalonia binding lifetime rules. Assigning a value or
-    /// using typed ClearValue retains an existing binding; dispose that binding to replace it permanently.
-    /// Avalonia's untyped ClearValue overload does not reset direct properties.</remarks>
+    /// <remarks>Explicit assignment replaces a one-way binding; current values preserve it.
+    /// Clearing resets the native value and removes the binding.</remarks>
     public string Title
     {
         get => DockModel.Title;
-        set
-        {
-            VerifyAccess();
-            if (DockModel.Title == value) return;
-            RaisePropertyChanging();
-            DockModel.Title = value;
-        }
+        set => SetValue(TitleProperty, value);
     }
+
+    private void SetTitle(string value)
+    {
+        VerifyAccess();
+        if (DockModel.Title == value) return;
+        RaisePropertyChanging(nameof(Title));
+        DockModel.Title = value;
+    }
+
     /// <summary>Gets or sets the identifier used for persistence and active-content lookup; initially null.</summary>
     /// <remarks>A named control assigned to <see cref="Content"/> supplies an identifier when this value is null.
-    /// Assigning a value or using typed ClearValue retains an existing Avalonia binding; dispose the binding to replace it permanently.
-    /// Avalonia's untyped ClearValue overload does not reset direct properties.</remarks>
-    public string? ContentId { get => DockModel.Id; set => DockModel.Id = value!; }
+    /// Explicit assignment replaces a one-way binding; clearing removes the binding and resets the native value.</remarks>
+    public string? ContentId { get => DockModel.Id; set => SetValue(ContentIdProperty, value); }
+
+    private void SetContentId(string? value) => DockModel.Id = value!;
     /// <summary>Gets or sets the document or tool content.</summary>
     [Content]
     public object? Content

@@ -12,10 +12,10 @@ public class DropDownControlArea : UserControl
 {
     /// <summary>Defines the menu opened by the area.</summary>
     public static readonly StyledProperty<ContextMenu?> DropDownContextMenuProperty =
-        AvaloniaProperty.Register<DropDownControlArea, ContextMenu?>(nameof(DropDownContextMenu));
+        AvaloniaProperty.Register<DropDownControlArea, ContextMenu?>(name: nameof(DropDownContextMenu), metadata: AvalonDockProperty.StyledMetadata<ContextMenu?>());
     /// <summary>Defines the data context assigned when the menu opens.</summary>
     public static readonly StyledProperty<object?> DropDownContextMenuDataContextProperty =
-        AvaloniaProperty.Register<DropDownControlArea, object?>(nameof(DropDownContextMenuDataContext));
+        AvaloniaProperty.Register<DropDownControlArea, object?>(name: nameof(DropDownContextMenuDataContext), metadata: AvalonDockProperty.StyledMetadata<object?>());
 
     private readonly LayoutDropDownMenu _menu;
 

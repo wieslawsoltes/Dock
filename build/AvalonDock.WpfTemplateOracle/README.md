@@ -95,16 +95,12 @@ activation/history, selection, item flags, protected hooks, and public callbacks
 dotnet build/AvalonDock.WpfTemplateOracle/bin/Release/net10.0-windows/AvalonDock.WpfTemplateOracle.dll --active-content wpf-active-content.tsv
 ```
 
-`Assets/WpfActiveContent.tsv` records 280 observations across 110 scenarios. The
-adapter matches 102 scenarios, including object/model assignments, alias lookup,
-duplicate and empty content, reentrant callbacks, two-way bindings, and explicit
-source updates. `Assets/AvaloniaActiveContent.tsv` separately records 40 adapter
-observations for eight known framework differences: default/one-way binding
-replacement, clearing a bound value, and style removal after a current override.
-`ActiveContentReferenceTests` checks those against the documented Avalonia contract
-and compares their shared preceding stages with WPF; they are not WPF parity tests.
-The package consumer checks both contracts. These tests use public property APIs
-and compiled Avalonia bindings, with no binding-mode reflection or input adaptation.
+`Assets/WpfActiveContent.tsv` records 280 observations across 110 scenarios.
+`ActiveContentReferenceTests` and the package consumer compare every scenario
+against this unchanged WPF reference, including default/one-way binding replacement,
+clearing a bound value, style removal after a current override, and suppressed hooks.
+The adapter opts into the framework's binding-value metadata to implement these
+lifetimes through public property APIs and compiled bindings, without reflection.
 
 Content identifiers and protected activation hooks have separate probes:
 

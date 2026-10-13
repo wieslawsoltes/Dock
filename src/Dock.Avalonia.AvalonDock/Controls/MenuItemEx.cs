@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using AvalonDock.Infrastructure;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 
@@ -10,10 +11,10 @@ public class MenuItemEx : MenuItem
 {
     /// <summary>Defines the template used to create the icon when there is no selector.</summary>
     public static readonly StyledProperty<IDataTemplate?> IconTemplateProperty =
-        AvaloniaProperty.Register<MenuItemEx, IDataTemplate?>(nameof(IconTemplate));
+        AvaloniaProperty.Register<MenuItemEx, IDataTemplate?>(name: nameof(IconTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>());
     /// <summary>Defines the selector that receives the current icon and this menu item.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> IconTemplateSelectorProperty =
-        AvaloniaProperty.Register<MenuItemEx, DataTemplateSelector?>(nameof(IconTemplateSelector));
+        AvaloniaProperty.Register<MenuItemEx, DataTemplateSelector?>(name: nameof(IconTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
 
     private bool _updatingIcon;
 

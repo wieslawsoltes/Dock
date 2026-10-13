@@ -12,7 +12,7 @@ public class LayoutDocumentTabItem : TemplatedControl
 {
     /// <summary>Defines the public content displayed by the tab.</summary>
     public static readonly StyledProperty<LayoutContent?> ModelProperty =
-        AvaloniaProperty.Register<LayoutDocumentTabItem, LayoutContent?>(nameof(Model));
+        AvaloniaProperty.Register<LayoutDocumentTabItem, LayoutContent?>(name: nameof(Model), metadata: AvalonDockProperty.StyledMetadata<LayoutContent?>());
     /// <summary>Defines the manager's existing item container for this tab.</summary>
     public static readonly DirectProperty<LayoutDocumentTabItem, LayoutItem?> LayoutItemProperty =
         AvaloniaProperty.RegisterDirect<LayoutDocumentTabItem, LayoutItem?>(nameof(LayoutItem), tab => tab.LayoutItem);

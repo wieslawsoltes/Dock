@@ -13,7 +13,7 @@ public class LayoutDocumentControl : TemplatedControl
 {
     /// <summary>Defines the public document or tool model displayed in a document pane.</summary>
     public static readonly StyledProperty<LayoutContent?> ModelProperty =
-        AvaloniaProperty.Register<LayoutDocumentControl, LayoutContent?>(nameof(Model));
+        AvaloniaProperty.Register<LayoutDocumentControl, LayoutContent?>(name: nameof(Model), metadata: AvalonDockProperty.StyledMetadata<LayoutContent?>());
     /// <summary>Defines the manager's container for the displayed model.</summary>
     public static readonly DirectProperty<LayoutDocumentControl, LayoutItem?> LayoutItemProperty =
         AvaloniaProperty.RegisterDirect<LayoutDocumentControl, LayoutItem?>(nameof(LayoutItem), control => control.LayoutItem);
@@ -21,7 +21,10 @@ public class LayoutDocumentControl : TemplatedControl
     private readonly LayoutContentControlBinding _binding;
     private LayoutItem? _layoutItem;
 
-    static LayoutDocumentControl() => FocusableProperty.OverrideDefaultValue<LayoutDocumentControl>(true);
+    static LayoutDocumentControl()
+    {
+        FocusableProperty.OverrideDefaultValue<LayoutDocumentControl>(true);
+    }
 
     /// <summary>Creates a document content control.</summary>
     public LayoutDocumentControl()

@@ -14,7 +14,7 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
 {
     /// <summary>Defines the item container selected in the only visible tool pane.</summary>
     public static readonly StyledProperty<LayoutItem?> SingleContentLayoutItemProperty =
-        AvaloniaProperty.Register<LayoutAnchorableFloatingWindowControl, LayoutItem?>(nameof(SingleContentLayoutItem));
+        AvaloniaProperty.Register<LayoutAnchorableFloatingWindowControl, LayoutItem?>(name: nameof(SingleContentLayoutItem), metadata: AvalonDockProperty.StyledMetadata<LayoutItem?>());
 
     private readonly LayoutAnchorableFloatingWindow _model;
     private readonly LayoutFloatingWindowCommands _commands;

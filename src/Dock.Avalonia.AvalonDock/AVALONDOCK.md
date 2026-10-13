@@ -247,9 +247,24 @@ membership events. These hooks also observe native Dock owner changes, with the
 old parent available before assignment and the new parent afterward. Floating
 documents expose their public floating window throughout these callbacks.
 
-During public pane removal, the detached leaf raises `ElementRemoved` before
+After a leaf has recorded its root, public pane removal raises `ElementRemoved` before
 the pane replaces its selection and activation history. Removing a whole group
 clears focus on its descendants before that membership notification.
+
+`Root` walks the current parent chain; an unparented `LayoutRoot.Root` is null.
+Use `GetRoot()` to include the root element itself. Root membership hooks compare
+against the root recorded after the last successful `OnParentChanged` callback.
+Moving an ancestor does not update each child's record. A failing parent hook
+keeps the earlier record; a failing root hook retains the newly recorded root.
+Parent transitions raise `Parent` notifications without an additional `Root`
+property notification, and `Updated` uses the current root after observers run.
+
+`Parent` accepts application-defined `ILayoutContainer` objects without assigning
+a native owner. A custom `ILayoutRoot` reaches `OnRootChanged`; the default hook
+requires a concrete `LayoutRoot`, so applications supporting another root type
+must override that hook. The side's default `OnParentChanged` requires a root:
+assigning a null or unrooted parent throws after the parent write. Native pinned
+ownership is still released, and a later valid assignment can restore the strip.
 
 Content deselects before leaving a parent; content already selected when first
 inserted becomes its pane's selected item. This also works before a root supplies
@@ -1189,6 +1204,8 @@ in progress keeps its original content snapshot and resolves each command live.
 Direct execution does not query capabilities again. Missing context or child
 commands fail synchronously and stop later tools; guarded capability queries
 return false for missing model/root/manager context.
+An unparented `LayoutRoot` supplied as the virtual model has no enclosing root;
+use a node such as `Layout.RootPanel` to provide its manager context.
 Typed caption activation and `RootDocumentLayoutItem` use the constructor model.
 After hiding or successful base closure, focus goes to the owner, or to the
 current model manager's first focusable visual descendant when there is no owner.

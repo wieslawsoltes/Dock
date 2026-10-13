@@ -79,7 +79,7 @@ public class FloatingOverrideContractTests
     public void Capability_Hooks_Read_The_Overridden_Model_And_Filter_Descendants_By_Host_Type(bool tools, string target)
     {
         using Workspace workspace = new(tools);
-        bool attached = target is "root" or "panel" or "pane" or "content";
+        bool attached = target is "panel" or "pane" or "content";
         workspace.Original.CanClose = !attached;
         if (workspace.Original is LayoutAnchorable originalTool) originalTool.CanHide = !attached;
         workspace.Probe.Redirect = true;
@@ -126,7 +126,7 @@ public class FloatingOverrideContractTests
         using Workspace workspace = new(tools: true);
         ToolProbe host = (ToolProbe)workspace.Probe;
         host.Redirect = true;
-        host.Current = workspace.CurrentManager.Layout;
+        host.Current = workspace.CurrentManager.Layout.RootPanel;
         object parameter = new();
         List<string> calls = new();
         Command replacement = new(_ => false, value =>
@@ -138,7 +138,7 @@ public class FloatingOverrideContractTests
         {
             Assert.Same(parameter, value);
             calls.Add("first");
-            host.Current = workspace.OriginalManager.Layout;
+            host.Current = workspace.OriginalManager.Layout.RootPanel;
             SetCommand(workspace, workspace.Second, hide, replacement);
         });
         SetCommand(workspace, workspace.First, hide, first);

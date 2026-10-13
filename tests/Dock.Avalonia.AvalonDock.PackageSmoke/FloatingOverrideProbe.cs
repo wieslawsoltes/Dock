@@ -31,7 +31,7 @@ internal static class FloatingOverrideProbe
             if (!documentHost.IsMaximized || documentHost.WindowState != WindowState.Normal)
                 throw new Exception("The packaged maximized flag lost its writable property contract.");
             documentHost.ClearValue(LayoutFloatingWindowControl.IsMaximizedProperty);
-            documentHost.Current = toolHost.Current = current.Layout;
+            documentHost.Current = toolHost.Current = current.Layout.RootPanel;
             if (!documentHost.CheckClose() || !toolHost.CloseWindowCommand.CanExecute(null) || !toolHost.HideWindowCommand.CanExecute(null))
                 throw new Exception("Packaged floating capabilities ignored the overridden Model.");
             toolHost.HideWindowCommand.Execute(null);

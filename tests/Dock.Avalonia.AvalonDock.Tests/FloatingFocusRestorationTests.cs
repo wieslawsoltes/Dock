@@ -37,6 +37,23 @@ public class FloatingFocusRestorationTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
+    public void An_Unparented_Root_Model_Does_Not_Provide_A_Manager_Focus_Context(bool tools)
+    {
+        using Workspace workspace = new(tools, owned: false);
+        workspace.Host.Window.Closed += (_, _) =>
+        {
+            workspace.Host.Current = workspace.Manager.Layout;
+            Assert.True(workspace.Outside.Focus());
+        };
+
+        workspace.Host.Window.Close();
+
+        Assert.Same(workspace.Outside, workspace.Focused);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
     public void Owner_Focus_Does_Not_Read_A_Model_Redirected_By_Closed(bool tools)
     {
         using Workspace workspace = new(tools, owned: true);
@@ -54,9 +71,9 @@ public class FloatingFocusRestorationTests
     {
         using Workspace workspace = new(operation != "document-close", owned: false);
         if (operation.EndsWith("close", StringComparison.Ordinal))
-            workspace.Host.Window.Closed += (_, _) => workspace.Host.Current = workspace.OtherManager.Layout;
+            workspace.Host.Window.Closed += (_, _) => workspace.Host.Current = workspace.OtherManager.Layout.RootPanel;
         else
-            workspace.ToolItem.HideCommand = new Command(() => workspace.Host.Current = workspace.OtherManager.Layout);
+            workspace.ToolItem.HideCommand = new Command(() => workspace.Host.Current = workspace.OtherManager.Layout.RootPanel);
         workspace.Execute(operation);
         Assert.Same(workspace.OtherFirst, workspace.Focused);
     }
@@ -216,7 +233,7 @@ public class FloatingFocusRestorationTests
             View.UpdateLayout();
             Dispatcher.UIThread.RunJobs();
             Host = tools ? new ToolHost() : new DocumentHost();
-            Host.Current = Manager.Layout;
+            Host.Current = Manager.Layout.RootPanel;
             if (owned) Host.Window.Show(View);
             else Host.Window.Show();
             Dispatcher.UIThread.RunJobs();

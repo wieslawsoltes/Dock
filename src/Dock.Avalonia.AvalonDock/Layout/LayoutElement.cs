@@ -15,9 +15,11 @@ namespace AvalonDock.Layout;
 public abstract class LayoutElement : AvaloniaObject, ILayoutElement
 {
     private ILayoutContainer? _projectedParent;
+    private ILayoutRoot? _reportedRoot;
     private int _settingParent;
     private ILayoutContainer? _changingParent;
     private ILayoutRoot? _changingRoot;
+    private ILayoutRoot? _changingNativeRoot;
     private bool _hasParentChange;
     private AvaloniaProperty? _xmlRestoreProperty;
     internal LayoutElement(DockableBase model, LayoutModelContext? context = null)
@@ -30,6 +32,10 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     }
 
     internal LayoutModelContext Context { get; }
+
+    // Projections follow the completed parent write even when a public hook
+    // aborts its remaining notifications. This is independent of virtual dispatch.
+    internal event Action? ParentChangeCompleted;
 
     // Upstream group XML writes backing fields. Native Dock still needs its
     // property notification, while the public facade must remain silent.
@@ -63,27 +69,28 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     public DockableBase DockModel { get; }
 
     /// <summary>Gets or sets the containing element.</summary>
+    /// <remarks>Application-defined containers are supported without native ownership.
+    /// Root callbacks compare the root recorded after the last completed parent hook.</remarks>
     public ILayoutContainer? Parent
     {
         get => _projectedParent ?? GetNativeParent(DockModel.Owner);
         set
         {
             VerifyAccess();
-            if (value is not null and not LayoutElement)
-                throw new ArgumentException("A parent must be a Dock-backed layout element.", nameof(value));
             ILayoutContainer? previous = Parent;
             if (ReferenceEquals(previous, value)) return;
-            ILayoutRoot? previousRoot = Root;
+            ILayoutRoot? previousRoot = _reportedRoot;
+            ILayoutRoot? previousNativeRoot = Root;
             if (value is LayoutElement element) element.Context.Adopt(Context);
             NotifyParentChanging(previous, value);
             _settingParent++;
             try
             {
-                _projectedParent = null;
+                _projectedParent = value is LayoutElement ? null : value;
                 DockModel.Owner = (value as LayoutElement)?.DockModel;
             }
             finally { _settingParent--; }
-            NotifyParentChanged(previous, Parent, previousRoot);
+            NotifyParentChanged(previous, Parent, previousRoot, previousNativeRoot);
         }
     }
 
@@ -93,10 +100,11 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         ILayoutContainer? previous = Parent;
         ILayoutContainer? next = parent ?? GetNativeParent(DockModel.Owner);
         if (ReferenceEquals(previous, next)) { _projectedParent = parent; return; }
-        ILayoutRoot? previousRoot = Root;
+        ILayoutRoot? previousRoot = _reportedRoot;
+        ILayoutRoot? previousNativeRoot = Root;
         NotifyParentChanging(previous, next);
         _projectedParent = parent;
-        NotifyParentChanged(previous, Parent, previousRoot);
+        NotifyParentChanged(previous, Parent, previousRoot, previousNativeRoot);
     }
 
     // Single-document floating windows expose the document directly. Their
@@ -120,7 +128,8 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
             args.NewOwner is { } owner && !floating.OwnsNativeChild(owner);
         if (_projectedParent is not null && !adoptingFloatingChild) return;
         ILayoutContainer? previous = Parent;
-        ILayoutRoot? previousRoot = Root;
+        ILayoutRoot? previousRoot = _reportedRoot;
+        ILayoutRoot? previousNativeRoot = Root;
         if (!IsHiddenNativeParent(args.NewOwner) && args.NewOwner?.Factory is LayoutFactory factory &&
             factory.GetLayoutContainer(args.NewOwner) is LayoutElement parent)
             parent.Context.Adopt(Context);
@@ -128,6 +137,7 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         if (ReferenceEquals(previous, next)) return;
         _changingParent = previous;
         _changingRoot = previousRoot;
+        _changingNativeRoot = previousNativeRoot;
         _hasParentChange = true;
         NotifyParentChanging(previous, next);
         if (adoptingFloatingChild) _projectedParent = null;
@@ -139,16 +149,22 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         OnParentChanging(previous, next);
     }
 
-    private void NotifyParentChanged(ILayoutContainer? previous, ILayoutContainer? next, ILayoutRoot? previousRoot)
+    private void NotifyParentChanged(ILayoutContainer? previous, ILayoutContainer? next, ILayoutRoot? previousRoot, ILayoutRoot? previousNativeRoot)
     {
         ClearParentChange();
-        OnParentChanged(previous, next);
-        ILayoutRoot? root = Root;
-        if (!ReferenceEquals(previousRoot, root)) OnRootChanged(previousRoot, root);
-        (previousRoot as LayoutRoot)?.Focus?.Validate();
-        RaisePropertyChanged(nameof(Parent));
-        RaisePropertyChanged(nameof(Root));
-        (root as LayoutRoot)?.NotifyUpdated();
+        try
+        {
+            OnParentChanged(previous, next);
+            _reportedRoot = Root;
+            if (!ReferenceEquals(previousRoot, _reportedRoot)) OnRootChanged(previousRoot, _reportedRoot);
+            (previousNativeRoot as LayoutRoot)?.Focus?.Validate();
+            RaisePropertyChanged(nameof(Parent));
+            (Root as LayoutRoot)?.NotifyUpdated();
+        }
+        finally
+        {
+            ParentChangeCompleted?.Invoke();
+        }
     }
 
     private void ClearParentChange()
@@ -156,6 +172,7 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         _hasParentChange = false;
         _changingParent = null;
         _changingRoot = null;
+        _changingNativeRoot = null;
     }
 
     /// <summary>Called before a parent transition, including native ownership changes.</summary>
@@ -167,16 +184,16 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     /// <summary>Notifies the previous and new layout roots about this element's membership.</summary>
     protected virtual void OnRootChanged(ILayoutRoot? oldRoot, ILayoutRoot? newRoot)
     {
-        (oldRoot as LayoutRoot)?.NotifyElementRemoved(this);
-        (newRoot as LayoutRoot)?.NotifyElementAdded(this);
+        if (oldRoot is not null) ((LayoutRoot)oldRoot).NotifyElementRemoved(this);
+        if (newRoot is not null) ((LayoutRoot)newRoot).NotifyElementAdded(this);
     }
 
     /// <inheritdoc/>
+    /// <remarks>Traversal starts at the parent; an unparented layout root has no owning root.</remarks>
     public ILayoutRoot? Root
     {
         get
         {
-            if (this is ILayoutRoot root) return root;
             ILayoutContainer? current = Parent;
             while (current is not null)
             {
@@ -241,9 +258,10 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         {
             if (_settingParent != 0 || _projectedParent is not null) return;
             ILayoutContainer? previous = _hasParentChange ? _changingParent : GetNativeParent(e.OldValue as IDockable);
-            ILayoutRoot? previousRoot = _hasParentChange ? _changingRoot : previous?.Root;
+            ILayoutRoot? previousRoot = _hasParentChange ? _changingRoot : _reportedRoot;
+            ILayoutRoot? previousNativeRoot = _hasParentChange ? _changingNativeRoot : previous as ILayoutRoot ?? previous?.Root;
             ClearParentChange();
-            if (!ReferenceEquals(previous, Parent)) NotifyParentChanged(previous, Parent, previousRoot);
+            if (!ReferenceEquals(previous, Parent)) NotifyParentChanged(previous, Parent, previousRoot, previousNativeRoot);
         }
         else
         {

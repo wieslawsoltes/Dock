@@ -321,3 +321,9 @@ The side-lifetime probe checks retained parents and roots after clearing all
 four strips, cross-root slot retention, shared slots, native ownership transfer,
 and incoming parent callback failures. It verifies that native pinned lists
 remain attached only to a current slot while preserving the public references.
+
+The parent-transition probe checks recorded root history after ancestor moves
+and failed hooks, reentrant update delivery, parent-only property notifications,
+root traversal, application-defined parent/root interfaces, and direct side
+parent failures and recovery. Its protected hooks are implemented in the
+external consumer assembly.

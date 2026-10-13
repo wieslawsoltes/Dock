@@ -12,7 +12,7 @@ public class LayoutAnchorSide : LayoutGroup<LayoutAnchorGroup>
     private LayoutAnchorSideBinding? _binding;
 
     /// <summary>Creates an empty auto-hide side.</summary>
-    public LayoutAnchorSide() : base(new ProportionalDock()) { }
+    public LayoutAnchorSide() : base(new ProportionalDock()) => ParentChangeCompleted += SynchronizeProjection;
     /// <summary>Gets the edge assigned by the containing layout root.</summary>
     /// <remarks>The edge is resolved when the parent changes. Reusing this side in another slot of the same root retains the existing value.</remarks>
     public AnchorSide Side => _side;
@@ -27,10 +27,11 @@ public class LayoutAnchorSide : LayoutGroup<LayoutAnchorGroup>
     protected override bool GetVisibility() => Children.Count > 0;
 
     /// <summary>Resolves the edge from the new root before publishing the parent change.</summary>
+    /// <exception cref="NullReferenceException">The new parent chain does not contain a layout root.</exception>
     protected override void OnParentChanged(ILayoutContainer? oldValue, ILayoutContainer? newValue)
     {
         base.OnParentChanged(oldValue, newValue);
-        if (Root is not { } root) return;
+        ILayoutRoot root = Root!;
         if (ReferenceEquals(root.LeftSide, this)) SetField(ref _side, AnchorSide.Left, nameof(Side));
         else if (ReferenceEquals(root.TopSide, this)) SetField(ref _side, AnchorSide.Top, nameof(Side));
         else if (ReferenceEquals(root.RightSide, this)) SetField(ref _side, AnchorSide.Right, nameof(Side));

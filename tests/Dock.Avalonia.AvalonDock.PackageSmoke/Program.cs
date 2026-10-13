@@ -88,6 +88,7 @@ PackageConsumer.ModelDockingProbe.Verify();
 PackageConsumer.GroupMinimumProbe.Verify();
 PackageConsumer.RootPropertyProbe.Verify();
 PackageConsumer.RootSideLifetimeProbe.Verify();
+PackageConsumer.ParentTransitionProbe.Verify();
 PackageConsumer.GroupBaseDerivationProbe.Verify();
 PackageConsumer.GroupXmlProbe.Verify();
 PackageConsumer.ContentXmlProbe.Verify();

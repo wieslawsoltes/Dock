@@ -19,10 +19,11 @@ public class LayoutLifecycleTests
     public void Direct_Parent_Changes_Notify_Before_And_After_Native_Ownership(bool native)
     {
         ProbeDocument document = new();
-        LayoutDocumentPane first = new(document);
+        LayoutDocumentPane first = new();
         LayoutDocumentPane second = new();
         LayoutRoot root = new() { RootPanel = new LayoutPanel(first) };
         root.RootPanel.Children.Add(second);
+        first.Children.Add(document);
         document.Transitions.Clear();
         int added = 0;
         int removed = 0;
@@ -44,10 +45,11 @@ public class LayoutLifecycleTests
     public void Collection_Moves_Between_Roots_Report_The_Public_Node_And_Clear_Old_Focus()
     {
         ProbeDocument document = new();
-        LayoutDocumentPane first = new(document);
+        LayoutDocumentPane first = new();
         LayoutDocumentPane second = new();
         LayoutRoot oldRoot = new() { RootPanel = new LayoutPanel(first) };
         LayoutRoot newRoot = new() { RootPanel = new LayoutPanel(second) };
+        first.Children.Add(document);
         oldRoot.ActiveContent = document;
         List<(string Kind, LayoutElement Element)> events = new();
         oldRoot.ElementRemoved += (sender, args) =>

@@ -219,7 +219,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   continue to raise `CanExecuteChanged`. Local binding expressions to current
   defaults are cleared; raw observable subscriptions retain Avalonia ownership
   (use compiled bindings or `ToBinding()` for expression cleanup).
-- The consolidated adapter suite passes all 3,436 cases, including 23 side-lifetime and 37 root-property cases and root replacement cancellation, 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
+- The consolidated adapter suite passes all 3,475 cases, including 39 parent/command/focus cases, 23 side-lifetime and 37 root-property cases and root replacement cancellation, 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
   reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
@@ -1435,6 +1435,34 @@ cover the root-slot and native projection contracts; all 14 reproduce failures
 in the preceding `ec18570ec` packages. All 3,436 adapter and 30 rendering cases
 pass. No desktop checks were added.
 
+## Parent transition contracts
+
+Parent transitions retain the root recorded after the last successful parent
+hook and advance that record before calling the root hook. Ancestor movement
+does not rewrite descendant records. Failing parent, root, and property hooks
+retain their completed phases, and reentrant property observers determine the
+root receiving `Updated`. `Parent` notifications do not add a `Root` property
+notification. The root getter starts at the parent; `GetRoot()` includes self.
+
+Application-defined containers can be public parents without native ownership.
+Custom root interfaces reach the protected hook; the default implementation
+retains the upstream concrete `LayoutRoot` cast. A side's default parent hook
+requires a root and fails after assigning null or an unrooted parent. Native
+pinned ownership is reconciled after failed or suppressed hooks, and a later
+valid assignment restores its current root slot's projection.
+
+The batch adds 35 parent-contract cases and four command/focus cases. Existing
+floating fixtures now use `RootPanel` when they require an enclosing manager;
+an unparented `LayoutRoot` does not supply that context. Sixteen external package
+probes cover the source contracts: 15 reproduce failures against `176ce80ce`,
+and one root-hook failure/recovery check is a passing control. These are pinned
+source-contract checks; interactive desktop validation remains deferred.
+The final consolidated run passes all 3,475 adapter and 30 rendering cases. One
+earlier run reported manager retention in
+`AnchorablePaneTitleTests.A_Retained_Closed_Title_Does_Not_Retain_Its_Model_Or_Manager`.
+That case passed three isolated runs and the complete rerun without a code
+change; the intermittent result is retained in the validation evidence.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering
@@ -1466,9 +1494,10 @@ pass. No desktop checks were added.
   interface implementation behavior. The declaration review maps counterparts
   without establishing full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
-  Direct assignments to `LayoutAnchorSide.Parent` still need callback-failure
-  and native-projection reconciliation, including the upstream failure after
-  assigning a null parent. The root-slot setters have the audit recorded above.
+  Review the extra root `Updated` notifications currently emitted by group-tree
+  propagation; the upstream group base only propagates tree notifications.
+  Direct parent assignment, root history, application-defined parent contracts,
+  and root-slot setters have the targeted audits recorded above.
   Tool command/binding inheritance now has explicit overrides and focused
   coverage. Document floating-window closure now has an explicit override;
   both typed hosts and their base have the cleanup-order coverage recorded above.

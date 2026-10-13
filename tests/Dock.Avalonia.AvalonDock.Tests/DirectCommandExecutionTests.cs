@@ -166,16 +166,19 @@ public class DirectCommandExecutionTests
     [InlineData(false, "null")]
     [InlineData(false, "rootless")]
     [InlineData(false, "unowned")]
+    [InlineData(false, "layout-root")]
     [InlineData(true, "null")]
     [InlineData(true, "rootless")]
     [InlineData(true, "unowned")]
+    [InlineData(true, "layout-root")]
     public void Direct_Floating_Execution_Retains_Missing_Context_Failures(bool hide, string context)
     {
         using Workspace workspace = new();
         workspace.Host.Current = context switch
         {
             "rootless" => new LayoutPanel(),
-            "unowned" => new LayoutRoot { RootPanel = new(new LayoutAnchorablePane(new LayoutAnchorable())) },
+            "layout-root" => workspace.Manager.Layout,
+            "unowned" => new LayoutRoot { RootPanel = new(new LayoutAnchorablePane(new LayoutAnchorable())) }.RootPanel,
             _ => null
         };
         Assert.False(workspace.Command(hide).CanExecute(null));
@@ -186,10 +189,10 @@ public class DirectCommandExecutionTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void An_Empty_Managerless_Root_Does_Not_Dereference_A_Manager_During_Execution(bool hide)
+    public void An_Empty_Managerless_Layout_Does_Not_Dereference_A_Manager_During_Execution(bool hide)
     {
         using Workspace workspace = new();
-        workspace.Host.Current = new LayoutRoot();
+        workspace.Host.Current = new LayoutRoot().RootPanel;
         Assert.False(workspace.Command(hide).CanExecute(null));
         workspace.Command(hide).Execute(null);
         Dispatcher.UIThread.RunJobs();
@@ -234,7 +237,7 @@ public class DirectCommandExecutionTests
         internal Workspace()
         {
             Manager = new() { Layout = new() { RootPanel = new(new LayoutAnchorablePane { Children = { First, Second } }) } };
-            Host = new() { Current = Manager.Layout };
+            Host = new() { Current = Manager.Layout.RootPanel };
         }
         internal ICommand Command(bool hide) => hide ? Host.HideWindowCommand : Host.CloseWindowCommand;
         internal void Set(LayoutAnchorable tool, bool hide, ICommand? command)

@@ -320,7 +320,7 @@ node; the events do not enumerate all descendants. Moving directly between panes
 in the same root does not change root membership. A move that first detaches a
 node and then reattaches it produces removal and addition notifications.
 
-During public pane removal, the detached leaf raises `ElementRemoved` before
+After a leaf has recorded its root, public pane removal raises `ElementRemoved` before
 the pane replaces its selection and activation history. Removing a whole group
 clears focus on its descendants before that membership notification.
 
@@ -332,7 +332,29 @@ container during the changing hook and the new container during the changed
 hook. The base root hook raises the membership events; call it when overriding
 to retain that behavior. `RaisePropertyChanging` and `RaisePropertyChanged` are
 also virtual. Parent property notifications bracket these hooks, and `Updated`
-notifies the destination root afterward.
+notifies the current root after property observers finish. A reentrant observer
+can change that destination. Parent transitions notify `Parent` without an
+additional `Root` property notification.
+
+The `Root` getter walks the current parent chain. An unparented `LayoutRoot.Root`
+is null; `GetRoot()` also considers the element itself and returns that root.
+Membership hooks compare against the root recorded after the element's last
+successful `OnParentChanged` callback. Moving an ancestor leaves the child's
+record unchanged. If a parent hook throws after assignment, the new parent
+remains while the earlier root record is retained. The record advances before
+`OnRootChanged`, so a failure in that hook leaves the new record in place.
+
+`Parent` also accepts an application-defined `ILayoutContainer`. The public
+parent/root chain is available without a native Dock owner. A custom
+`ILayoutRoot` reaches the protected root hook; its default implementation casts
+to `LayoutRoot` to publish membership events. An override may replace that
+behavior when supporting another root implementation.
+
+The default `LayoutAnchorSide.OnParentChanged` requires a layout root. A null or
+unrooted parent raises `NullReferenceException` after the parent is assigned,
+before membership and changed notifications. The adapter releases native pinned
+ownership even if this hook fails or an override suppresses its base call. A
+later valid parent assignment restores the projection for a current root slot.
 
 Native factory moves use the same callbacks. `Dock.Model.Avalonia.Core.DockableBase`
 provides `OwnerChanging`, with `DockableOwnerChangingEventArgs` from
@@ -2269,9 +2291,10 @@ Enablement follows membership, capabilities, command replacement, and applicatio
 `CanExecuteChanged` notifications. Execution snapshots the contents so a command
 can remove its own tool; subsequent tools still use their current commands.
 A missing model, root, container, or command fails direct execution; errors
-propagate synchronously and stop later tools. An empty managerless root has no
-child command to execute. Capability queries safely return false for missing
-model/root/manager context.
+propagate synchronously and stop later tools. An empty model with a root but no
+manager has no child command to execute. An unparented `LayoutRoot` used as the
+model has no enclosing root and fails direct execution. Capability queries
+safely return false for missing model/root/manager context.
 Protected `CanClose`, `CanHide`, `DoHide`, and the tool-window commands read the
 current virtual `Model` property. A document host filters document descendants;
 a tool host filters tool descendants, including when an override supplies a

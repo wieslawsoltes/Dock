@@ -193,8 +193,13 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
             (ReferenceEquals(source.Owner, target) || ReferenceEquals(source.Owner, target.Owner)))
             notification = LayoutOperation.Silent;
         IDockOperationScope? scope = operations.Begin(source, notification);
-        return operation is DockOperation.OuterLeft or DockOperation.OuterTop or DockOperation.OuterRight or DockOperation.OuterBottom &&
-            getLayoutElement(target).Root is LayoutRoot root ? new LayoutOuterSplitScope(root, scope) : scope;
+        if (operation is DockOperation.OuterLeft or DockOperation.OuterTop or DockOperation.OuterRight or DockOperation.OuterBottom)
+        {
+            LayoutElement targetElement = getLayoutElement(target);
+            if ((targetElement as LayoutRoot ?? targetElement.Root as LayoutRoot) is { } root)
+                return new LayoutOuterSplitScope(root, scope);
+        }
+        return scope;
     }
 
     public override void FloatAllDockables(IDockable dockable, DockWindowOptions? options)

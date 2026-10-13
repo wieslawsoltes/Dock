@@ -3041,6 +3041,13 @@ Nested count and parent callbacks can insert siblings while retaining each item'
 public and native ownership.
 Replacing a floating window with itself preserves its native host and registration
 while publishing the parent transitions and collection notification.
+Replacing it with another model closes and unregisters the old native host, then
+publishes one `Replace` notification after the parent hooks. Those hooks see the
+incoming model in the collection. Native close cancellation retains the original
+entry; windows added by a closing callback still appear. If a public callback
+throws, completed collection and parent changes remain, and assigning the same
+entry again can finish attachment and presentation. A retained closed host stays
+closed when its model is replaced with itself.
 
 Group `ReadXml` restores stored docked/floating dimensions, IDs, tool-pane
 names, and document header flags without public setter notifications or pixel-size

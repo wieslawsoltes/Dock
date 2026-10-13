@@ -346,3 +346,7 @@ The collection-mutation probe checks same-instance replacement of content and
 floating windows, incoming parent callback membership, and retained activation
 for hidden and pinned tools. These checks run against the packaged assemblies
 without project references.
+
+The floating-collection probe verifies replacement notification arguments and
+parent phases, plus the partial state and successful retry after a throwing
+parent callback.

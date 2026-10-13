@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
@@ -16,6 +17,7 @@ namespace AvalonDock.Layout;
 public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IXmlSerializable
 {
     private readonly LayoutFloatingBounds _bounds;
+    private int _parentProjectionDepth;
     /// <summary>Creates an empty floating window.</summary>
     public LayoutFloatingWindow() : this(CreateWindow()) { }
     internal LayoutFloatingWindow(DockWindow window, LayoutModelContext? context = null)
@@ -51,10 +53,28 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
     internal void RestoreXmlBounds(LayoutElement child) => _bounds.RestoreXml(child);
     internal void Attach(LayoutRoot root)
     {
+        PrepareAttachment(root);
+        SetProjectedParent(root);
+    }
+
+    internal void PrepareAttachment(LayoutRoot root)
+    {
         root.Context.Adopt(Context);
         DockWindow.Layout = NativeRoot;
         NativeRoot.Window = DockWindow;
-        SetProjectedParent(root);
+    }
+
+    // Native replacement unregisters and registers windows before the public
+    // collection publishes its parent hooks. Keep those hooks in one phase.
+    internal ParentProjectionScope DeferParentProjection()
+    {
+        _parentProjectionDepth++;
+        return new(this);
+    }
+
+    internal readonly struct ParentProjectionScope(LayoutFloatingWindow owner) : IDisposable
+    {
+        public void Dispose() => owner._parentProjectionDepth--;
     }
 
     internal bool CloseHost(bool internalClose = true)
@@ -82,7 +102,7 @@ public abstract class LayoutFloatingWindow : LayoutElement, ILayoutContainer, IX
 
     private void WindowChanged(object? sender, AvaloniaPropertyChangedEventArgs args)
     {
-        if (args.Property == DockWindow.OwnerProperty)
+        if (args.Property == DockWindow.OwnerProperty && _parentProjectionDepth == 0)
             SetProjectedParent(DockWindow.Owner is { } owner ? Context.Get(owner) as ILayoutContainer : null);
     }
 

@@ -1571,6 +1571,17 @@ The facade adds 42 Headless cases and fourteen external consumer checks. All
 fourteen reproduce defects against the preceding `e3d2916fb` packages. The
 consolidated adapter run passes 3,613 cases, and all 30 rendering cases pass.
 
+Floating-window replacement with a different model now retains indexed
+`ObservableCollection` replacement and parent-hook phases while executing native
+host cleanup and registration. Closing cancellation retains the outgoing model;
+callback-added windows remain projected. Throwing public callbacks retain their
+completed phases and support attachment/presentation retry. Native refreshes do
+not attach the incoming model early during an outgoing parent callback, and
+same-instance replacement does not reopen a retained closed host. Thirteen
+Headless cases and four external package checks cover these contracts.
+All four external checks reproduce the prior defects in `815d9fb09`. The
+consolidated run passes 3,626 adapter cases and all 30 rendering cases.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering

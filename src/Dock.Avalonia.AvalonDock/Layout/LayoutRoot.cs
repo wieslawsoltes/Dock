@@ -198,6 +198,10 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     /// <inheritdoc/>
     public ObservableCollection<LayoutAnchorable> Hidden => _hidden;
     /// <inheritdoc/>
+    /// <remarks>
+    /// Indexed replacement publishes one replacement notification after parent hooks and retains native host close cancellation.
+    /// A failing public callback leaves completed collection and parent phases in place; assigning the entry again can retry attachment.
+    /// </remarks>
     public ObservableCollection<LayoutFloatingWindow> FloatingWindows => _floatingWindows;
     /// <inheritdoc/>
     public IEnumerable<ILayoutElement> Children

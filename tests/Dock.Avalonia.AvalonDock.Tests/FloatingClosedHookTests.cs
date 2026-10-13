@@ -110,10 +110,13 @@ public class FloatingClosedHookTests
         Assert.Contains(empty, workspace.Root.RootPanel.Children);
     }
 
-    [AvaloniaFact]
-    public void An_Empty_Document_Window_Is_Removed_Before_Closed_Without_Losing_Native_Notification()
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Empty_Document_Collection_Before_Closed_Depends_On_An_Empty_Pane(bool emptyPane)
     {
         using Workspace workspace = new(tools: false);
+        if (emptyPane) workspace.Root.RootPanel.Children.Add(new LayoutAnchorablePane());
         int nativeClosed = 0;
         workspace.Manager.DockFactory.WindowClosed += (_, e) =>
         {
@@ -121,8 +124,8 @@ public class FloatingClosedHookTests
         };
         workspace.Probe.Window.Closed += (_, _) =>
         {
-            Assert.Null(workspace.Model.Root);
-            Assert.DoesNotContain(workspace.Model, workspace.Root.FloatingWindows);
+            Assert.Equal(!emptyPane, workspace.Root.FloatingWindows.Contains(workspace.Model));
+            Assert.Same(emptyPane ? null : workspace.Root, workspace.Model.Root);
             Assert.Equal(0, nativeClosed);
         };
         Empty(workspace.Model);

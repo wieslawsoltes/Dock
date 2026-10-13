@@ -202,7 +202,8 @@ public class FloatingWindowCommandTests
         Assert.Same(workspace.Manager.Layout, workspace.Document.Root);
         item.CloseCommand = new ProbeCommand(_ => true, _ => workspace.Document.Close());
         item.CloseCommand.Execute(null);
-        Assert.Null(workspace.Document.Root);
+        Assert.Same(workspace.Manager.Layout, workspace.Document.Root);
+        Assert.Null(Assert.IsType<LayoutDocumentFloatingWindow>(workspace.Document.Parent).RootDocument);
         Assert.Empty(workspace.Manager.FloatingWindows);
     }
 

@@ -98,6 +98,16 @@ panes when there is no last focused document, creating a pane if necessary.
 An already document-hosted item is a no-op; a rootless item is rejected.
 Garbage collection clears disconnected/foreign return references while retaining
 their index and identifier, and leaves unreferenced metadata alone.
+An empty return pane is cleared for visible docked content, including when that
+pane belonged to a floating window. Its index becomes `-1`; the saved identifier
+remains. Hidden and floating contents retain their return panes. Collection
+visits panes in tree order and retains the last document pane. Empty panels,
+floating windows, and auto-hide groups are pruned only after a pane removal;
+unshown empty windows can remain until such a pass or explicit removal. An empty
+root panel resets to the default document layout. Nested tool groups collapse
+before document groups, following live children and callback-created groups.
+Group cleanup preserves the focused document/tool. XML return-owner restoration
+refreshes native floating state before content callbacks and collection.
 
 Floating widths and heights initially use zero; Dock supplies a valid window
 size when content is floated without explicit dimensions. Document-list sorting
@@ -1185,7 +1195,9 @@ the appropriate model/application content.
 
 Hiding a tool group retains its floating host in `manager.FloatingWindows`.
 Restoring a tool reuses that same control, including its resources and geometry.
-Retained floating return panes also keep their hidden hosts after docking.
+Hidden and floating contents retain their return panes and hosts. Docking the
+last visible tool clears its empty floating return pane; floating it again
+creates a new window. Populated floating return panes remain reusable.
 Hide/show cycles preserve a single native factory registration. XML reload and
 view reattachment replace hosts while preserving the models' hidden state.
 Hidden windows do not become docking drop targets or activate when Dock brings

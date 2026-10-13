@@ -812,8 +812,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   scope, including ancestor templates, and preserve template recycling without
   retaining an unused manager.
   Public and native single-content floating operations preserve tool return
-  panes and tab indices. Docked tools can reuse their former floating windows;
-  both return locations survive XML. Protected docking fallbacks invoke layout
+  panes and tab indices. Docked tools can reuse populated former floating panes;
+  empty floating return panes are collected. Valid return locations survive XML.
+  Protected docking fallbacks invoke layout
   insertion strategies when there is no previous pane.
   Whole tool panes and typed tool groups retain their nested docked return
   locations, tab order, selected content, and docked sizing. Batch floating
@@ -1497,8 +1498,9 @@ parent's collection subscription before the inherited hook. They do not add an
 current ancestry for both public and native owner changes.
 
 Six source-placement cases and two pane-parent cases pass, together with the
-existing source, parent-policy, and selection suites in focused runs. Final
-consolidated and package validation for these follow-up changes is pending.
+existing source, parent-policy, and selection suites in focused runs. Commit
+`c398082aa` passes 3,542 adapter tests, 30 rendering cases, and isolated .NET 8/10
+package consumers, including these follow-up changes.
 
 ### Pane selection callback and reorder audit
 
@@ -1522,6 +1524,29 @@ The audit adds 33 Headless cases plus 16 isolated package-consumer checks. The
 package checks all reproduce the defects against the earlier `470e973d2` package.
 Existing tests now assert the source-defined nested notifications and differing
 document/tool reorder hooks. Consolidated validation is recorded with the PR.
+
+### Layout collection and restoration audit
+
+Collection now validates references through their container's parent/root,
+preserves saved identifiers, clears empty pane references only for visible
+nonfloating content, and leaves referenced panels intact. It removes panes in
+forward tree order, retains the last document pane, and runs the ordered
+container-pruning phases only after a pane removal. An emptied root panel resets
+to the default document layout. Tool-group collapse precedes document-group
+collapse; both rescan the current tree and consume live children after callbacks.
+Native document-host closure retains its deferred cancellation contract.
+
+Pinned and hidden XML return owners now refresh native docking state before
+content callbacks and collection. This preserves floating return destinations
+that native initialization previously marked docked before resolving IDs.
+The audit adds 28 Headless cases, a second floating-close phase case, and eleven
+package checks that all reproduce earlier defects in `c398082aa`. Existing
+floating tests now distinguish populated return panes from empty panes, and
+unshown floating models from the deferred closure of shown hosts. Consolidated
+validation is recorded with the PR. Public group child projection now preserves
+the focused document/tool instead of focusing a structural container during
+cleanup; all eight affected grouped outer-drop cases retain their original
+focus expectations.
 
 ## Open work (not release-complete)
 

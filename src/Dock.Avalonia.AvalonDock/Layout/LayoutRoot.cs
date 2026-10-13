@@ -248,6 +248,9 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
         else if (ReferenceEquals(oldElement, LeftSide)) LeftSide = (LayoutAnchorSide)newElement;
     }
     /// <inheritdoc/>
+    /// <remarks>Removes empty panes in tree order, retaining the last document pane.
+    /// Container pruning follows a successful pane removal. Nested tool groups
+    /// collapse before document groups, including live changes from callbacks.</remarks>
     public void CollectGarbage()
     {
         LayoutGarbageCollector.Collect(this);

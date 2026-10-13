@@ -86,6 +86,8 @@ public class AutoHideOperationTests
             serializer.Serialize(text);
             serializer.Deserialize(new StringReader(text.ToString()));
             tool = workspace.Manager.Layout.Descendents().OfType<LayoutAnchorable>().Single();
+            Assert.True(tool.IsFloating);
+            Assert.True((tool.DockModel.DockingState & DockingWindowState.Floating) != 0);
             pane = (LayoutAnchorablePane)tool.PreviousContainer!;
             floating = pane.FindParent<LayoutAnchorableFloatingWindow>()!;
         }

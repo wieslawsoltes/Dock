@@ -26,6 +26,15 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
     internal event Action? SettingFocus;
     internal event Action<IDock>? FocusSet;
 
+    internal void RestoreOriginalOwner(IDockable dockable, IDockable? originalOwner)
+    {
+        dockable.OriginalOwner = originalOwner;
+        // Pinned/hidden XML contents are initialized before their return IDs
+        // are resolved. Recompute native state before layout collection can
+        // discard a floating return pane that is still needed by the content.
+        UpdateDockingWindowState(dockable);
+    }
+
     public bool PreserveLayoutOnHostClose(IDockWindow window) => window.Host is LayoutFloatingWindowControl;
 
     bool IDockDragPreviewPolicy.ShowDockablePreviewOnDrag(IDockable dockable) =>

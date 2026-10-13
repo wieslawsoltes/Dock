@@ -75,7 +75,7 @@ public abstract class LayoutSerializer
                 // and pinned items. Visible contents may remember a floating
                 // return pane without currently belonging to that window.
                 if (item.Parent is LayoutRoot or LayoutAnchorGroup)
-                    item.DockModel.OriginalOwner = (item.PreviousContainer as LayoutElement)?.DockModel;
+                    RestoreOriginalOwner(item);
             }
             else ((LayoutAnchorGroup)element).PreviousContainer = parent;
         }
@@ -97,7 +97,7 @@ public abstract class LayoutSerializer
                 // reference. Project their shared destination into native Dock.
                 if (tool.PreviousContainerId is not null) continue;
                 tool.PreviousContainer = (ILayoutContainer)previous;
-                tool.DockModel.OriginalOwner = (tool.PreviousContainer as LayoutElement)?.DockModel;
+                RestoreOriginalOwner(tool);
             }
             if (previous.DockModel is Dock.Model.Avalonia.Controls.ToolDock pane && group.Parent is LayoutAnchorSide side)
                 pane.Alignment = side.DockAlignment;
@@ -114,6 +114,13 @@ public abstract class LayoutSerializer
             if (element is LayoutDocument { Content: null } document) documents.Add(document);
         foreach (LayoutDocument document in documents) RestoreContent(document, FindPrevious(_previousDocuments, document.ContentId));
         layout.CollectGarbage();
+    }
+
+    private static void RestoreOriginalOwner(LayoutContent content)
+    {
+        if (content.DockModel.Factory is LayoutFactory factory)
+            factory.RestoreOriginalOwner(content.DockModel, (content.PreviousContainer as LayoutElement)?.DockModel);
+        else content.DockModel.OriginalOwner = (content.PreviousContainer as LayoutElement)?.DockModel;
     }
 
     private static T? FindPrevious<T>(List<T> previous, string? contentId) where T : LayoutContent

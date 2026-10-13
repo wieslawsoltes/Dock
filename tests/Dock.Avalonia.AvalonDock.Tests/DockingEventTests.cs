@@ -194,8 +194,9 @@ public class DockingEventTests
         Assert.Same(floatingPane, events[0].Parent);
         Assert.Same(target, events[1].Parent);
         Assert.Same(target, workspace.OtherTool.Parent);
-        // Dock retains the empty return pane so Float can restore this window.
-        Assert.False(Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(workspace.Manager.Layout.FloatingWindows)).IsVisible);
+        Assert.Empty(workspace.Manager.Layout.FloatingWindows);
+        Assert.Null(workspace.Tool.PreviousContainer);
+        Assert.Null(workspace.OtherTool.PreviousContainer);
     }
 
     [AvaloniaFact]

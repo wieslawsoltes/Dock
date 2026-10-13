@@ -719,9 +719,27 @@ Previous panes can belong to another layout; the original manager receives
 Callbacks can change or remove that manager, and failures stop the operation
 at the callback phase without undoing completed collection changes.
 
-Garbage collection clears references to disconnected or foreign return panes
-without rewriting their saved index or identifier. It leaves unreferenced
-metadata alone; removal of an empty local return pane clears its index.
+`CollectGarbage()` validates return containers through their parent's root.
+Disconnected or foreign references are cleared without rewriting their saved
+index or identifier. A visible, docked content item loses its reference to an
+empty return pane, including a floating pane; its index becomes `-1` and its
+saved identifier remains. Hidden and floating contents retain their return
+panes. Empty referenced panels are not treated as panes.
+
+Collection removes empty panes in tree order and retains the last document
+pane. After each pane removal it prunes one empty tool group, panel, floating
+window, and auto-hide group, in that order. Without a pane removal, those
+containers remain; an unshown empty document window can therefore remain in
+`FloatingWindows`. Shown document hosts also have their deferred close lifecycle.
+An emptied root panel resets to the default document layout. Finally, nested
+tool groups collapse before document groups, using the live children after
+each callback. New groups created by callbacks are included in the current phase.
+
+Docking the last visible tool out of a floating pane collects that empty pane
+and its return reference. A later `Float()` creates a new window. A populated
+floating return pane remains reusable, including after XML restoration. Pinned
+and hidden XML return owners are resolved into native Dock state before content
+callbacks and collection, preserving their floating destinations.
 
 ## Use public document and tool tabs
 
@@ -2247,8 +2265,8 @@ update `IsDragging` and `IsMaximized`.
 
 Hiding all tools hides their floating window while retaining the same control,
 resources, geometry, item commands, and model. `LayoutAnchorable.Show()` restores
-that host. A floating return pane retained after docking also keeps its hidden
-host for reuse. These visibility changes do not add or remove manager controls
+that host. Empty panes referenced by hidden or floating content keep the host
+available for restoration. These visibility changes do not add or remove manager controls
 or duplicate native host registration. Hidden models loaded from XML or a
 reattached view receive new unshown controls and become visible when restored.
 Hidden windows are excluded from native docking hit tests and the optional

@@ -281,13 +281,8 @@ public class LayoutOperationContractTests
         content.Dock();
         Dispatcher.UIThread.RunJobs();
         Assert.Same(dockedPane, content.Parent);
-        if (tools)
-        {
-            Assert.Same(second, Assert.Single(workspace.Manager.Layout.FloatingWindows));
-            Assert.False(Assert.IsType<LayoutAnchorableFloatingWindow>(second).IsVisible);
-            Assert.Same(second, content.PreviousContainer!.FindParent<LayoutFloatingWindow>());
-        }
-        else Assert.Empty(workspace.Manager.Layout.FloatingWindows);
+        Assert.Empty(workspace.Manager.Layout.FloatingWindows);
+        Assert.Null(content.PreviousContainer);
     }
 
     [AvaloniaTheory]

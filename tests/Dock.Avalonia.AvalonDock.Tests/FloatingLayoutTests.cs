@@ -165,7 +165,10 @@ public class FloatingLayoutTests
         Assert.Same(document, root.ActiveContent);
 
         document.Dock();
-        Assert.Empty(root.FloatingWindows);
+        // An unshown document host has no queued close. Collection only
+        // prunes floating models after it removes an empty pane.
+        Assert.Same(window, Assert.Single(root.FloatingWindows));
+        Assert.Null(window.RootDocument);
         Assert.Same(document, Assert.Single(pane.Children));
         Assert.Same(pane, document.Parent);
         Assert.False(document.IsFloating);

@@ -62,12 +62,19 @@ public class SourceBindingTests
         hidden.Hide();
         source.Remove(pinnedContent);
         Assert.Null(pinned.Parent);
-        Assert.Empty(manager.Layout.RightSide!.Children);
+        Assert.Empty(Assert.Single(manager.Layout.RightSide!.Children).Children);
         Assert.Same(pane, Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorablePane>()));
         source.Remove(hiddenContent);
         Assert.Empty(manager.Layout.Hidden);
         Assert.Empty(manager.Layout.Descendents().OfType<LayoutAnchorable>());
         Assert.Null(hidden.Parent);
+        // The empty anchor group still references its return pane. A later
+        // pane removal starts the container phase and releases that group.
+        Assert.Empty(Assert.Single(manager.Layout.RightSide.Children).Children);
+        manager.Layout.RootPanel.Children.Add(new LayoutAnchorablePane());
+        manager.Layout.CollectGarbage();
+        Assert.Empty(manager.Layout.RightSide.Children);
+        Assert.DoesNotContain(pane, manager.Layout.RootPanel.Children);
     }
 
     [AvaloniaFact]

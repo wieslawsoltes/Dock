@@ -41,10 +41,12 @@ public class FloatingGroupTests
         foreach (LayoutAnchorable tool in tools) tool.Dock();
         Assert.Equal(tools, pane.Children);
         Assert.False(window.IsVisible);
-        // Each Dock records its current floating tab index; undo in reverse.
-        foreach (LayoutAnchorable tool in tools.Reverse()) tool.Float();
-        Assert.Same(window, Assert.Single(root.FloatingWindows));
-        Assert.Equal(tools, floatingPane.Children);
+        Assert.Empty(root.FloatingWindows);
+        Assert.All(tools, tool => Assert.Null(tool.PreviousContainer));
+        root.DockFactory.FloatAllDockables(tools[0].DockModel);
+        LayoutAnchorableFloatingWindow replacement = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(root.FloatingWindows));
+        Assert.NotSame(window, replacement);
+        Assert.Equal(tools, Assert.IsType<LayoutAnchorablePane>(replacement.SinglePane).Children);
     }
 
     [AvaloniaFact]
@@ -73,7 +75,9 @@ public class FloatingGroupTests
         first.Dock();
         second.Dock();
         Assert.Equal(new[] { first, second }, destination.Children);
-        Assert.Same(pane, first.PreviousContainer);
+        Assert.Null(first.PreviousContainer);
+        Assert.Null(second.PreviousContainer);
+        Assert.Null(pane.Parent);
         Assert.False(window.IsVisible);
     }
 
@@ -110,7 +114,7 @@ public class FloatingGroupTests
     }
 
     [AvaloniaFact]
-    public void Nested_Group_Return_Panes_Survive_Xml_And_Reuse_The_Floating_Window()
+    public void Nested_Group_Return_Panes_Survive_Xml_And_Can_Float_Again_After_Collection()
     {
         LayoutAnchorable first = CreateTool("first");
         LayoutAnchorable second = CreateTool("second");
@@ -134,10 +138,11 @@ public class FloatingGroupTests
         Assert.Same(destination.Children[1], tools[1].Parent);
 
         RoundTrip(manager);
-        LayoutAnchorableFloatingWindow window = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(manager.Layout.FloatingWindows));
+        Assert.Empty(manager.Layout.FloatingWindows);
         tools = manager.Layout.Descendents().OfType<LayoutAnchorable>().ToArray();
-        foreach (LayoutAnchorable tool in tools) tool.Float();
-        Assert.Same(window, Assert.Single(manager.Layout.FloatingWindows));
+        destination = Assert.IsType<LayoutAnchorablePaneGroup>(manager.Layout.RootPanel.Children[1]);
+        manager.DockFactory.FloatDockable(destination.DockModel);
+        LayoutAnchorableFloatingWindow window = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(manager.Layout.FloatingWindows));
         Assert.Equal(Orientation.Vertical, window.RootPanel!.Orientation);
         Assert.Same(window.RootPanel.Children[0], tools[0].Parent);
         Assert.Same(window.RootPanel.Children[1], tools[1].Parent);
@@ -163,7 +168,7 @@ public class FloatingGroupTests
     }
 
     [AvaloniaFact]
-    public void Batch_Floating_After_An_Earlier_Save_Round_Trips_Both_Return_Locations()
+    public void Batch_Floating_After_An_Earlier_Save_Round_Trips_The_Docked_Return_Location()
     {
         LayoutAnchorable first = CreateTool("first");
         LayoutAnchorable second = CreateTool("second");
@@ -179,18 +184,14 @@ public class FloatingGroupTests
         foreach (LayoutAnchorable tool in restored) tool.Dock();
         Assert.All(restored, tool => Assert.False(tool.IsFloating));
         RoundTrip(manager);
-        LayoutFloatingWindow window = Assert.Single(manager.Layout.FloatingWindows);
+        Assert.Empty(manager.Layout.FloatingWindows);
         restored = manager.Layout.Descendents().OfType<LayoutAnchorable>().ToArray();
         Assert.Equal(2, restored.Length);
         Assert.All(restored, tool => Assert.False(tool.IsFloating));
-        foreach (LayoutAnchorable tool in restored.Reverse())
-        {
-            Assert.Same(window, tool.PreviousContainer!.FindParent<LayoutFloatingWindow>());
-            Assert.Same(manager.DockFactory, tool.DockModel.Factory);
-            tool.Float();
-            Assert.Same(window, tool.FindParent<LayoutFloatingWindow>());
-        }
-        Assert.Same(window, Assert.Single(manager.Layout.FloatingWindows));
+        Assert.All(restored, tool => Assert.Null(tool.PreviousContainer));
+        manager.DockFactory.FloatAllDockables(restored[0].DockModel);
+        LayoutFloatingWindow window = Assert.Single(manager.Layout.FloatingWindows);
+        Assert.All(restored, tool => Assert.Same(window, tool.FindParent<LayoutFloatingWindow>()));
         Assert.Equal(new[] { "first", "second" }, window.Descendents().OfType<LayoutAnchorable>().Select(x => x.ContentId));
     }
 

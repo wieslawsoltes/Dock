@@ -36,6 +36,7 @@ using ReactiveUI.Reactive;
 
 ClassicDesktopStyleApplicationLifetime lifetime = new() { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 AppBuilder.Configure<PackageConsumer.ConsumerApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions()).SetupWithLifetime(lifetime);
+PackageConsumer.GarbageCollectionProbe.Verify();
 PackageConsumer.PaneSelectionProbe.Verify();
 PackageConsumer.RootUpdatedProbe.Verify();
 AssertLayoutLifecycle();
@@ -346,12 +347,12 @@ batchManager.DockFactory.FloatAllDockables(batchTools[0].DockModel);
 RoundTrip(batchManager);
 foreach (LayoutAnchorable item in batchManager.Layout.Descendents().OfType<LayoutAnchorable>().ToArray()) item.Dock();
 RoundTrip(batchManager);
-LayoutFloatingWindow batchWindow = batchManager.Layout.FloatingWindows.Single();
+if (batchManager.Layout.FloatingWindows.Count != 0) throw new Exception("Empty tool return windows were not collected.");
 batchTools = batchManager.Layout.Descendents().OfType<LayoutAnchorable>().ToArray();
 if (batchTools.Any(item => item.IsFloating)) throw new Exception("Docked tools retained a floating state after XML reload.");
-foreach (LayoutAnchorable item in batchTools.Reverse()) item.Float();
-if (!ReferenceEquals(batchWindow, batchManager.Layout.FloatingWindows.Single()) ||
-    !batchWindow.Descendents().OfType<LayoutAnchorable>().Select(item => item.ContentId).SequenceEqual(new[] { "first-tool", "second-tool" }))
+batchManager.DockFactory.FloatAllDockables(batchTools[0].DockModel);
+LayoutFloatingWindow batchWindow = batchManager.Layout.FloatingWindows.Single();
+if (!batchWindow.Descendents().OfType<LayoutAnchorable>().Select(item => item.ContentId).SequenceEqual(new[] { "first-tool", "second-tool" }))
     throw new Exception("Batch floating did not preserve tab order and return locations across XML saves.");
 LayoutDocument metadata = new() { ContentId = "metadata", Title = "XML contract", CanFloat = false };
 using StringWriter metadataWriter = new();

@@ -188,11 +188,11 @@ public class DeferredFloatingCloseTests
         {
             if (replacementHost is not null) return;
             model.RootDocument = replacement;
-            // The empty floating model is collected before Closed callbacks.
-            // Re-adopt it before creating its replacement native host.
-            workspace.OwnerRoot.FloatingWindows.Add(model);
-            replacementHost = (LayoutFloatingWindowControl)model.DockWindow.Host!;
+            // Without an empty pane, collection retains the model until the
+            // old host's internal-close phase. Reuse its rooted registration.
+            Assert.Contains(model, workspace.OwnerRoot.FloatingWindows);
             model.DockWindow.Present(false);
+            replacementHost = (LayoutFloatingWindowControl)model.DockWindow.Host!;
         };
         workspace.Content.Close();
         Pump();

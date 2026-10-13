@@ -67,7 +67,8 @@ public class FloatingSerializationTests
         Assert.Same(manager.Layout, returnPane.Root);
         restoredDocument.Dock();
         Assert.Same(restoredDocument, Assert.Single(returnPane.Children));
-        Assert.Single(manager.Layout.FloatingWindows);
+        Assert.Equal(2, manager.Layout.FloatingWindows.Count);
+        Assert.Null(restoredDocumentWindow.RootDocument);
         Assert.False(restoredDocument.IsFloating);
     }
 
@@ -137,7 +138,9 @@ public class FloatingSerializationTests
         XmlLayoutSerializer serializer = new(manager);
         serializer.Deserialize(new StringReader(xml));
         LayoutAnchorable hidden = Assert.Single(manager.Layout.Hidden);
-        LayoutAnchorableFloatingWindow window = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(manager.Layout.FloatingWindows));
+        Assert.Equal(3, manager.Layout.FloatingWindows.OfType<LayoutDocumentFloatingWindow>().Count());
+        Assert.All(manager.Layout.FloatingWindows.OfType<LayoutDocumentFloatingWindow>(), window => Assert.Null(window.RootDocument));
+        LayoutAnchorableFloatingWindow window = Assert.Single(manager.Layout.FloatingWindows.OfType<LayoutAnchorableFloatingWindow>());
         Assert.True(hidden.IsHidden);
         Assert.Same(manager.Layout, hidden.Root);
         Assert.False(window.IsVisible);

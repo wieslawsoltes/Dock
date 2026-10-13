@@ -19,7 +19,7 @@ public class FloatingReturnTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
-    public void Last_Tool_Returns_To_Its_Pane_And_Reuses_Its_Floating_Window(bool useNativeFactory)
+    public void Last_Tool_Returns_To_Its_Pane_And_Collects_Its_Empty_Floating_Window(bool useNativeFactory)
     {
         LayoutAnchorable tool = new() { ContentId = "tool", CanClose = true };
         LayoutAnchorablePane pane = new(tool);
@@ -39,15 +39,18 @@ public class FloatingReturnTests
         Assert.Same(pane, tool.Parent);
         Assert.False(tool.IsFloating);
         Assert.Same(tool, root.ActiveContent);
-        Assert.Same(floatingPane, tool.PreviousContainer);
-        Assert.Same(window, Assert.Single(root.FloatingWindows));
+        Assert.Null(tool.PreviousContainer);
+        Assert.Equal(-1, tool.PreviousContainerIndex);
+        Assert.Null(floatingPane.Parent);
+        Assert.Empty(root.FloatingWindows);
         Assert.False(window.IsVisible);
 
         tool.Float();
-        Assert.Same(window, Assert.Single(root.FloatingWindows));
-        Assert.Same(floatingPane, tool.Parent);
+        LayoutAnchorableFloatingWindow replacement = Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(root.FloatingWindows));
+        Assert.NotSame(window, replacement);
+        Assert.NotSame(floatingPane, tool.Parent);
         Assert.Same(pane, tool.PreviousContainer);
-        Assert.True(window.IsVisible);
+        Assert.True(replacement.IsVisible);
         tool.Close();
         Assert.Empty(root.FloatingWindows);
         Assert.DoesNotContain(pane, root.RootPanel.Children);
@@ -84,6 +87,8 @@ public class FloatingReturnTests
         root.DockFactory.FloatDockable(tool.DockModel);
         LayoutAnchorablePane floatingPane = (LayoutAnchorablePane)tool.Parent!;
         LayoutFloatingWindow window = Assert.Single(root.FloatingWindows);
+        // A populated floating pane remains a valid return destination.
+        floatingPane.Children.Add(new LayoutAnchorable());
 
         root.DockFactory.MoveDockable((IDock)tool.DockModel.Owner!, (IDock)destination.DockModel, tool.DockModel, null);
         Assert.Same(destination, tool.Parent);
@@ -112,11 +117,12 @@ public class FloatingReturnTests
         pane = Assert.IsType<LayoutAnchorablePane>(tool.PreviousContainer);
         Assert.Equal("Original", pane.Name);
         Assert.Same(manager.Layout, pane.Root);
+        ((LayoutAnchorablePane)tool.Parent!).Children.Add(new LayoutAnchorable { ContentId = "companion", Content = new object() });
         tool.Dock();
         Assert.Same(pane, tool.Parent);
 
         RoundTrip(manager);
-        tool = Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorable>());
+        tool = manager.Layout.Descendents().OfType<LayoutAnchorable>().Single(item => item.ContentId == "tool");
         LayoutFloatingWindow window = Assert.Single(manager.Layout.FloatingWindows);
         Assert.Same(window, tool.PreviousContainer!.FindParent<LayoutFloatingWindow>());
         tool.Float();
@@ -147,11 +153,11 @@ public class FloatingReturnTests
         Assert.Same(document.Parent, tool.Parent);
         Assert.Same(document, manager.Layout.ActiveContent); // InternalDock inserts without explicit activation.
         Assert.Equal(1, strategy.ToolsInserted);
-        Assert.Empty(manager.Layout.FloatingWindows);
+        Assert.Null(Assert.IsType<LayoutAnchorableFloatingWindow>(Assert.Single(manager.Layout.FloatingWindows)).RootPanel);
     }
 
     [AvaloniaFact]
-    public void Reused_Tool_Host_Reopens_And_Content_Close_Honors_Cancellation()
+    public void Collected_Tool_Host_Is_Replaced_And_Content_Close_Honors_Cancellation()
     {
         SourcesFixture view = new() { DataContext = new SourceViewModel() };
         DockingManager manager = view.FindControl<DockingManager>("Manager")!;
@@ -169,12 +175,13 @@ public class FloatingReturnTests
             tool.Dock();
             Dispatcher.UIThread.RunJobs();
             Assert.False(firstHost.IsVisible);
-            Assert.Same(firstHost, window.DockWindow.Host);
+            Assert.Null(window.DockWindow.Host);
             tool.Float();
             Dispatcher.UIThread.RunJobs();
-            Assert.Same(window, Assert.Single(manager.Layout.FloatingWindows));
-            HostWindow secondHost = Assert.IsAssignableFrom<HostWindow>(window.DockWindow.Host);
-            Assert.Same(firstHost, secondHost);
+            LayoutFloatingWindow replacement = Assert.Single(manager.Layout.FloatingWindows);
+            Assert.NotSame(window, replacement);
+            HostWindow secondHost = Assert.IsAssignableFrom<HostWindow>(replacement.DockWindow.Host);
+            Assert.NotSame(firstHost, secondHost);
             Assert.True(secondHost.IsVisible);
 
             int closed = 0;

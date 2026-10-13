@@ -244,7 +244,14 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
             {
                 if (_model is ProportionalDock) NormalizeSplitters();
                 if (_owner is not ILayoutContentSelector && (_model.ActiveDockable is null || !_source.Contains(_model.ActiveDockable)))
-                    _model.ActiveDockable = Count > 0 ? ((LayoutElement)(ILayoutElement)this[0]).DockModel : null;
+                {
+                    IDockable? selected = Count > 0 ? ((LayoutElement)(ILayoutElement)this[0]).DockModel : null;
+                    // A public group has no selection/activation contract.
+                    // Keep its native active child valid without replacing
+                    // the focused document/tool with a structural container.
+                    if (_model.Factory is LayoutFactory factory) factory.SetPaneSelection(_model, selected);
+                    else _model.ActiveDockable = selected;
+                }
                 _model.DefaultDockable = _model.ActiveDockable;
                 _model.IsEmpty = Count == 0;
             }

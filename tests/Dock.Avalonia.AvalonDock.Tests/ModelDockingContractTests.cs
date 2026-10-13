@@ -254,7 +254,7 @@ public class ModelDockingContractTests
     }
 
     [AvaloniaFact]
-    public void Docked_Observers_See_The_Empty_Floating_Model_Before_Garbage_Collection()
+    public void Docking_Retains_An_Empty_Unshown_Floating_Model_Until_A_Pane_Can_Be_Collected()
     {
         LayoutDocument document = new();
         LayoutDocumentPane target = new(new LayoutDocument());
@@ -275,9 +275,12 @@ public class ModelDockingContractTests
         document.Dock();
 
         Assert.True(completed);
-        Assert.DoesNotContain(window, manager.Layout.FloatingWindows);
+        Assert.Contains(window, manager.Layout.FloatingWindows);
         Assert.Null(document.PreviousContainer);
         Assert.Equal(0, document.PreviousContainerIndex);
+        manager.Layout.RootPanel.Children.Add(new LayoutAnchorablePane());
+        manager.Layout.CollectGarbage();
+        Assert.DoesNotContain(window, manager.Layout.FloatingWindows);
     }
 
     [AvaloniaTheory]
@@ -372,7 +375,7 @@ public class ModelDockingContractTests
         Assert.NotSame(original, document.Parent);
         Assert.Same(manager.Layout, original.Root);
         Assert.Same(document, manager.Layout.ActiveContent);
-        Assert.Empty(manager.Layout.FloatingWindows);
+        Assert.Null(Assert.IsType<LayoutDocumentFloatingWindow>(Assert.Single(manager.Layout.FloatingWindows)).RootDocument);
     }
 
     private interface IExposeDock

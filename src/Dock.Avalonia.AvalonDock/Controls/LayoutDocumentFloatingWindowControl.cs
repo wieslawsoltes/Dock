@@ -28,7 +28,14 @@ public class LayoutDocumentFloatingWindowControl : LayoutFloatingWindowControl
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
-        ObserveLayoutModel(closeEmptyDocument: true);
+        ObserveLayoutModel(closeEmptyDocument: true, cleanupInDerivedHook: true);
+    }
+
+    /// <summary>Releases root-document observation after the base close lifecycle completes.</summary>
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        StopObservingLayoutModel();
     }
 
     /// <summary>Checks document descendants of the current Model, including a model supplied by an override.</summary>

@@ -1,6 +1,6 @@
 # Declaration-shape review
 
-The pinned inventory contains 951 declarations; 843 now have matching presence
+The pinned inventory contains 951 declarations; 844 now have matching presence
 keys. The signature review covered the preceding 820 matching keys, then inspected
 accessibility, virtual/static modifiers, generic constraints, and differing
 base/interface declarations. The two newly declared document/tool `ReadXml`
@@ -9,8 +9,9 @@ normalization and add no textual signature differences. Nine newly declared
 `WriteXml` overrides and seven group `ReadXml` overrides also match the upstream
 public override signatures. Two concrete visibility overrides also match their
 upstream declarations. The three tool default-command overrides also match
-their upstream protected override signatures. This is a declaration review, not evidence that every
-default, callback, visual tree, or operation is behaviorally equivalent.
+their upstream protected override signatures, as does the document floating
+control's explicit `OnClosed(EventArgs)` override. This is a declaration review,
+not evidence that every default, callback, visual tree, or operation is behaviorally equivalent.
 
 The review found three source compatibility defects hidden by a matching key:
 `ILayoutUpdateStrategy.BeforeInsertDocument` must name its document argument
@@ -88,6 +89,6 @@ virtual default for the upstream abstract `LayoutGroup<T>.GetVisibility` hook.
 Existing subclasses can still override that hook; the adapter additionally
 allows its inherited default. Hook routing and ordering are validated separately.
 
-The 108 keys without exact source matches remain in
+The 107 keys without exact source matches remain in
 [`portability-review.tsv`](portability-review.tsv). Neither review closes the
 remaining semantic and platform work in the compatibility checklist.

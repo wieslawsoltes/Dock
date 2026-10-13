@@ -1162,6 +1162,25 @@ Dock's native host also detaches Avalonia layout content from its logical childr
 before `Closed` callbacks. Retaining a layout therefore does not retain the closed
 window through `StyledElement.Parent`; its content value and preserved model stay
 available. A canceled close keeps the logical parent until a later successful close.
+
+The base floating `OnClosed` captures the current model's root. After native Dock
+captures the model/factory/policy and marks the host closed, `HostWindow.OnClosedCore`
+removes the manager registration and collects that root before `Closed`. Empty
+floating models can be removed at this point without losing the original factory's
+later `WindowClosed` notification. Redirecting `Model` inside a callback does not
+redirect the captured-root collection, and there is no second collection after
+`Closed`. To reuse a collected model for a replacement host, explicitly add it
+back to `root.FloatingWindows` after assigning new content.
+
+The document and tool controls declare `OnClosed` overrides that unsubscribe from
+their constructor model after the base lifecycle returns successfully. Root changes
+inside `Closed` can therefore still mark the request internal. The tool override
+then clears local binding expressions for `IsVisible` and `SingleContentLayoutItem`
+and releases its owned commands; these remain available during `Closed`. Raw
+observable bindings retain Avalonia ownership; compiled bindings and `ToBinding()`
+support expression cleanup. Suppressing a base call or throwing from a callback
+stops the following stages and their cleanup.
+
 All 168 recorded WPF close observations are compared: 48 protected-hook cases and
 before/synchronous/dispatched states for 40 document/tool scenarios. Closing
 content raises its events before the deferred host close. A document retains its
@@ -1681,7 +1700,8 @@ flowchart TB
     ModelEvents --> Hosts
     Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve the layout when its host closes"]
     Hosts --> ClosePolicy
-    Hosts --> PresentationCleanup["Native model and deferred-presentation cleanup<br/>Before Closed; retained layout can reopen"]
+    Hosts --> CloseCore["HostWindow.OnClosedCore<br/>Captured-root collection before Closed; original factory retained"]
+    CloseCore --> PresentationCleanup["Native model and deferred-presentation cleanup<br/>Before Closed; retained layout can reopen"]
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
     SystemMenu -->|Native window commands| Hosts
     Api --> View

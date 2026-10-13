@@ -39,6 +39,8 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     private bool _observingModel;
     private bool _observeModelRequested;
     private bool _closeEmptyDocument;
+    private bool _cleanupModelInDerivedHook;
+    private ILayoutRoot? _closingRoot;
     private readonly LayoutFloatingWindow? _floatingModel;
 
     static LayoutFloatingWindowControl()
@@ -116,8 +118,9 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     internal void RequestCloseFromLayout(bool internalClose = true)
     {
-        if (HasClosed || (internalClose && _internalCloseRequested)) return;
+        if (internalClose && _internalCloseRequested) return;
         if (internalClose) _internalCloseRequested = true;
+        if (HasClosed) return;
         Dispatcher.UIThread.Post(() =>
         {
             if (!HasClosed) ExitFromLayout(internalClose);
@@ -207,10 +210,11 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     // Avalonia may initialize in the Window base constructor. Remember the
     // request until our constructor receives the model, without invoking an
     // abstract Model getter while the derived host is still being constructed.
-    private protected void ObserveLayoutModel(bool closeEmptyDocument = false)
+    private protected void ObserveLayoutModel(bool closeEmptyDocument = false, bool cleanupInDerivedHook = false)
     {
         _observeModelRequested = true;
         _closeEmptyDocument |= closeEmptyDocument;
+        _cleanupModelInDerivedHook |= cleanupInDerivedHook;
         if (_floatingModel is null || HasClosed) return;
         if (_closeEmptyDocument && _floatingModel is LayoutDocumentFloatingWindow { RootDocument: null })
         {
@@ -222,6 +226,14 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         if (_floatingModel is LayoutDocumentFloatingWindow document)
             document.RootDocumentChanged += FloatingDocumentChanged;
         else if (_floatingModel is not null) _floatingModel.PropertyChanged += FloatingModelChanged;
+    }
+
+    private protected void StopObservingLayoutModel()
+    {
+        _observingModel = false;
+        if (_floatingModel is LayoutDocumentFloatingWindow document)
+            document.RootDocumentChanged -= FloatingDocumentChanged;
+        else if (_floatingModel is not null) _floatingModel.PropertyChanged -= FloatingModelChanged;
     }
 
     /// <summary>Filters native Windows messages before Avalonia processes them.</summary>
@@ -363,42 +375,45 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
             PseudoClasses.Set(":custom-content", change.NewValue is not IRootDock);
     }
 
-    /// <summary>Removes a closed native host from its manager before native layout cleanup.</summary>
+    /// <summary>Completes closure using the root captured before native callbacks run.</summary>
     protected override void OnClosed(EventArgs e)
     {
         ILayoutRoot? root = Model?.Root;
+        ILayoutRoot? previousRoot = _closingRoot;
+        _closingRoot = root;
         HasClosed = true;
-        _observingModel = false;
-        if (_floatingModel is LayoutDocumentFloatingWindow documentModel)
-            documentModel.RootDocumentChanged -= FloatingDocumentChanged;
-        else if (_floatingModel is not null) _floatingModel.PropertyChanged -= FloatingModelChanged;
+        if (!_cleanupModelInDerivedHook) StopObservingLayoutModel();
         ((INotifyCollectionChanged)Classes).CollectionChanged -= NativeDragChanged;
         try
         {
-            if (_messageHookAttached)
+            base.OnClosed(e);
+            if (_internalCloseRequested && Model is LayoutFloatingWindow model && ReferenceEquals(model.Root, root) &&
+                (model.DockWindow.Host is null || ReferenceEquals(model.DockWindow.Host, this)))
             {
-                Win32Properties.RemoveWndProcHookCallback(this, DispatchWindowMessage);
-                _messageHookAttached = false;
+                if (root is not null) root.FloatingWindows.Remove(model);
+                else if (model.DockWindow.Host is null && model.DockWindow.Owner is IRootDock owner &&
+                    owner.Windows?.Contains(model.DockWindow) != true)
+                    model.DockWindow.Factory?.RemoveWindow(model.DockWindow);
             }
-            SetIsDragging(false);
-            root?.Manager?.RemoveFloatingWindow(this);
         }
-        finally
+        finally { _closingRoot = previousRoot; }
+    }
+
+    /// <summary>Removes the host and collects its captured layout before raising Closed.</summary>
+    protected override void OnClosedCore(EventArgs e, IDockWindow? closingWindow)
+    {
+        // Dock has captured its factory and marked the host closed before this
+        // phase, so collecting an empty floating model retains native closure
+        // notification even when collection clears that model's factory.
+        SetIsDragging(false);
+        _closingRoot?.Manager?.RemoveFloatingWindow(this);
+        _closingRoot?.CollectGarbage();
+        if (_messageHookAttached)
         {
-            try { base.OnClosed(e); }
-            finally
-            {
-                if (_internalCloseRequested && Model is LayoutFloatingWindow model && ReferenceEquals(model.Root, root) &&
-                    (model.DockWindow.Host is null || ReferenceEquals(model.DockWindow.Host, this)))
-                {
-                    if (root is not null) root.FloatingWindows.Remove(model);
-                    else if (model.DockWindow.Host is null && model.DockWindow.Owner is IRootDock owner &&
-                        owner.Windows?.Contains(model.DockWindow) != true)
-                        model.DockWindow.Factory?.RemoveWindow(model.DockWindow);
-                }
-                root?.CollectGarbage();
-            }
+            Win32Properties.RemoveWndProcHookCallback(this, DispatchWindowMessage);
+            _messageHookAttached = false;
         }
+        base.OnClosedCore(e, closingWindow);
     }
 
     private void NativeDragChanged(object? sender, NotifyCollectionChangedEventArgs e) =>

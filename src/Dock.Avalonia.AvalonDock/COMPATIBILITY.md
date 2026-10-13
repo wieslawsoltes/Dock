@@ -56,6 +56,7 @@ The native projects have no reference to the AvalonDock assembly or namespaces.
 | Explicit model close and auto-hide operations | Protected close/pin core operations retaining native cancellation and cleanup | AvalonDock command-versus-model capability semantics and return history |
 | Model-aware floating hosts and canceled closure | `IDockWindowHostFactory`, `IHostWindowCloseState`, and `IDockWindowClosePolicy` | Typed public hosts and public manager registration |
 | Close a host while retaining its layout | Desktop and managed host policy implementations; managed reentrancy and replacement-host handling | Deferred WPF ordering and public collection semantics |
+| Collect empty layouts before `Closed` | `HostWindow.OnClosedCore(EventArgs, IDockWindow?)` after capturing the original model/factory and closed state ([PR #1176](https://github.com/wieslawsoltes/Dock/pull/1176)) | Captured-root collection, typed subscriptions, binding cleanup, and callback failure order |
 | Custom docking overlays | Scoped window factories/themes, enclosing preview hosts, selector registrations, `IDockTargetPresentation` and geometry | AvalonDock named window parts, preview path, selector mapping, and public snapshots |
 | Pixel/auto/star sizing and resize previews | Custom splitter host, native tracker/input, preview properties, pinned minima and custom thumb support | Public grid lengths, normalization, and size notifications |
 | Stable presentation and cleanup | Deferred root presentation, create-button coexistence, hidden-window filtering and tool-menu lifetime fixes | Public templates, layout items, themes, and retained-model subscriptions |
@@ -199,6 +200,15 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
+- Floating hosts remove their manager registration and collect the captured root
+  before `Closed`, without collecting again after its callbacks. The native
+  `HostWindow.OnClosedCore` hook from
+  [PR #1176](https://github.com/wieslawsoltes/Dock/pull/1176) preserves the original
+  factory notification when that collection removes an empty floating model.
+  Typed controls retain constructor-model observation through the base lifecycle;
+  successful return then releases observation and tool bindings/owned commands.
+  Callback errors stop the following stages. Twenty Headless cases cover phase
+  order, redirected models, suppression, failure/replay, and binding lifetime.
 - Tool containers declare their default binding/lifetime overrides and process
   hide, auto-hide, and dock before common item commands. Derived initialization
   is safe before attachment and does not evaluate command predicates. Application
@@ -209,7 +219,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   continue to raise `CanExecuteChanged`. Local binding expressions to current
   defaults are cleared; raw observable subscriptions retain Avalonia ownership
   (use compiled bindings or `ToBinding()` for expression cleanup).
-- The consolidated adapter suite passes all 3,167 cases, including 27 default-command initialization, binding, callback,
+- The consolidated adapter suite passes all 3,187 cases, including 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
   reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
@@ -1325,7 +1335,7 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 | `Model`, `CanClose`, `CanHide`, `DoHide`, tool-window commands | Current virtual model, typed descendant snapshots, live command lookup, parameter forwarding, redirected-model subscriptions, and null/managerless queries are covered by `FloatingOverrideContractTests` and `FloatingWindowCommandTests`. |
 | Typed caption hooks and `RootDocumentLayoutItem` | Constructor-model activation and item lookup are covered by override tests; `NativeWindowMessageTests` covers caption/menu routing. |
 | `OnClosing`, `CloseInitiatedByUser` | Cancellation precedes hide hooks and preserves callback changes/failures. The new override tests supplement the recorded WPF close scenarios and owner/close-origin tests. |
-| `OnClosed` | Current model can be null during internal closure. Existing close/model reference tests cover registry changes, model retention, cancellation, subscriptions, and reentrant closure. |
+| `OnClosed` | Explicit typed overrides unsubscribe after the base lifecycle succeeds. The base removes the host and collects the captured root before `Closed`; native factory notification follows even when collection removes an empty model. There is no second collection after `Closed`. `FloatingClosedHookTests` covers suppression, errors/replay, redirected models, command/binding lifetime, and observation during callbacks, supplementing the existing close/model reference tests. |
 | `IsContentImmutable` | Loaded-only content coercion is covered by `FloatingControlTests` and external consumer construction. |
 | `IsMaximizedProperty`, `OnStateChanged` | Writable property metadata, bindings, native state synchronization, and persisted bounds are covered by override/control/bounds tests. Avalonia reports native state changes; WPF's internal Win32 state-loop ordering is not reproduced. |
 | `SetIsDragging`, `OnIsDraggingChanged` | Public state and override notifications follow native Dock drag state. Native Dock owns capture and drag execution; setting a Boolean does not perform WPF's global mouse capture. |
@@ -1365,8 +1375,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   without establishing full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
   Tool command/binding inheritance now has explicit overrides and focused
-  coverage. Document floating-window closure remains the one inherited member
-  classified by the presence audit; its concrete cleanup order needs review.
+  coverage. Document floating-window closure now has an explicit override;
+  both typed hosts and their base have the cleanup-order coverage recorded above.
 - The direct public pane/splitter Grid structure passes consolidated Headless
   validation of sizing, native drag, floating hosts, themes and lifetime. Package
   and consumer validation pass at `e04288110`. The final desktop checks remain
@@ -1392,8 +1402,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 843
-matching type/member keys and 108 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 844
+matching type/member keys and 107 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

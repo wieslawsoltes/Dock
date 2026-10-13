@@ -1,7 +1,7 @@
 # Review of declaration mismatches
 
 The pinned upstream inventory has 951 declarations. The strict source inventory
-finds 843 matching keys. All 108 unmatched keys have now been classified in
+finds 844 matching keys. All 107 unmatched keys have now been classified in
 [`portability-review.tsv`](portability-review.tsv); the original inventory and
 comparison rules remain unchanged.
 
@@ -14,16 +14,13 @@ binary compatibility, or completion of the compatibility project.
 | Mouse, keyboard, or focus argument | 32 | The same hook name accepts Avalonia pointer, key, or focus arguments. Press and release use their distinct event types. |
 | Context-menu opening argument | 1 | `ContextMenuEx.OnOpened` accepts Avalonia's `RoutedEventArgs`. |
 | Visual/logical tree extension receiver | 6 | `Extentions` accepts `AvaloniaObject`; traversal follows Avalonia trees. |
-| Member inherited from an adapter base | 1 | Document-window closure remains callable or overridable through its base class. |
 | Framework logical-child contract | 3 | Avalonia supplies a logical-child collection, rather than WPF's overridable enumerator property. |
 | Native layout/input routing | 2 | Native arrangement and context-menu request routing replace manager-specific WPF overrides. |
 | WPF `HwndHost` hooks | 2 | No equivalent hook is supplied by the native pinned-content presenter. |
 
-The 101 mapped source declarations in the first five rows were checked against
+The 100 mapped source declarations in the first four rows were checked against
 the adapter's source inventory. Each TSV row retains the original upstream key,
 its classification, and the corresponding adapter declaration or implementation.
-An inherited declaration points to its declaring base type; it is not counted as
-a declaration on the derived type by `compare`.
 
 ## Framework and routing differences
 
@@ -51,6 +48,12 @@ recomputes it again. Reparenting, suppression, and errors preserve that call ord
 overrides. Tool commands precede common commands; initialization, application,
 clearing, callback failures, and reinitialization follow the declared inheritance
 order. These corrections have external consumer and Headless coverage.
+
+`LayoutDocumentFloatingWindowControl` now declares its `OnClosed` override.
+Both typed floating controls retain constructor-model observation through the
+base close lifecycle and unsubscribe only after it returns successfully. The
+base collects its captured root before `Closed`, with native factory notification
+preserved by `HostWindow.OnClosedCore`.
 
 The three `LogicalChildren` mismatches are `DockingManager`,
 `LayoutDocumentPaneControl`, and `LayoutAutoHideWindowControl`. Their protected
@@ -80,6 +83,6 @@ ordering, styling, rendering, or lifecycle behavior. These require the focused
 contract tests and platform validation listed in
 [`COMPATIBILITY.md`](../../src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md).
 
-The strict inventory deliberately continues to report 108 unmatched declarations.
+The strict inventory deliberately continues to report 107 unmatched declarations.
 Do not subtract these rows from the upstream baseline or report 951 equivalent
 APIs on the strength of this classification.

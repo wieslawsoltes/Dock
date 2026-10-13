@@ -2222,6 +2222,30 @@ bypasses native content-close commands, releases the old host, and allows a new
 host when the preserved layout is presented again. Ordinary Dock factories keep
 their existing behavior.
 
+The base `OnClosed(EventArgs)` captures the current model's root before callbacks.
+Dock first captures the native model, factory, and close policy and marks the host
+closed. Its `HostWindow.OnClosedCore` hook then lets the adapter remove the host
+from the manager and collect that captured root before raising `Closed`. An empty
+floating model can therefore be absent during `Closed`, while the original native
+factory still receives its later `WindowClosed` notification. A callback that
+redirects the virtual `Model` cannot redirect this collection. There is no second
+garbage collection after `Closed`; empty panes added by that callback remain.
+
+Both typed floating controls keep observing their constructor model throughout
+the base close lifecycle. Removing its document or tool root in a `Closed`
+callback can still mark the request internal. Their explicit `OnClosed` overrides
+unsubscribe after the base call returns successfully. The tool override then
+clears local binding expressions for `IsVisible` and `SingleContentLayoutItem`,
+and releases its owned commands. Those bindings and commands remain available
+inside `Closed`. Raw observable bindings retain Avalonia ownership; use compiled
+bindings or `ToBinding()` for expression cleanup. Suppressing a base call or
+throwing from a callback stops later lifecycle stages and their cleanup.
+
+If an empty floating model was collected before `Closed` or `WindowClosed`,
+reusing it for a replacement host requires explicitly adding it back to
+`root.FloatingWindows` after assigning its new content. The old host's deferred
+cleanup preserves an already registered replacement host.
+
 Native `Closing` and factory `WindowClosing` vetoes preserve the native model link
 and tracking. Public registration follows the deferred lifecycle below. Explicitly
 removing or replacing an attached document or nonempty tool model leaves the
@@ -3143,7 +3167,8 @@ flowchart TB
     ModelEvents --> Hosts
     Factory --> ClosePolicy["Optional IDockWindowClosePolicy<br/>Preserve layout when closing a compatible host"]
     Hosts --> ClosePolicy
-    Hosts --> PresentationCleanup["Native model and deferred-presentation cleanup<br/>Before Closed; retained layout can reopen"]
+    Hosts --> CloseCore["HostWindow.OnClosedCore<br/>Captured-root collection before Closed; original factory retained"]
+    CloseCore --> PresentationCleanup["Native model and deferred-presentation cleanup<br/>Before Closed; retained layout can reopen"]
     Caption --> SystemMenu["Windows system-menu service<br/>Source-generated interop"]
     SystemMenu -->|Native window commands| Hosts
     Models --> Controls

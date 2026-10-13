@@ -2,6 +2,8 @@ using System;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.Diagnostics;
 using Avalonia.VisualTree;
 using AvalonDock.Infrastructure;
 using AvalonDock.Layout;
@@ -51,7 +53,7 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
-        ObserveLayoutModel();
+        ObserveLayoutModel(cleanupInDerivedHook: true);
     }
 
     /// <summary>Checks tool descendants of the current Model, including a model supplied by an override.</summary>
@@ -82,8 +84,18 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
-        try { _commands?.Dispose(); }
-        finally { base.OnClosed(e); }
+        base.OnClosed(e);
+        StopObservingLayoutModel();
+        ClearLocalBinding(IsVisibleProperty);
+        ClearLocalBinding(SingleContentLayoutItemProperty);
+        _commands?.Dispose();
+    }
+
+    private void ClearLocalBinding<T>(StyledProperty<T> property)
+    {
+        if (BindingOperations.GetBindingExpressionBase(this, property) is { } binding &&
+            this.GetDiagnostic(property).Priority == BindingPriority.LocalValue)
+            binding.Dispose();
     }
 
     /// <inheritdoc/>

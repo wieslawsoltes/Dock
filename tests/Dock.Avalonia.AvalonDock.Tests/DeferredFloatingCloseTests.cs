@@ -188,7 +188,9 @@ public class DeferredFloatingCloseTests
         {
             if (replacementHost is not null) return;
             model.RootDocument = replacement;
-            workspace.Manager.DockFactory.InitDockWindow(model.DockWindow, workspace.OwnerRoot.DockModel);
+            // The empty floating model is collected before Closed callbacks.
+            // Re-adopt it before creating its replacement native host.
+            workspace.OwnerRoot.FloatingWindows.Add(model);
             replacementHost = (LayoutFloatingWindowControl)model.DockWindow.Host!;
             model.DockWindow.Present(false);
         };

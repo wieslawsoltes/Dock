@@ -36,13 +36,28 @@ Acceptance requirements:
 - Release builds and NuGet pack/consumer validation for supported frameworks;
   CI integration and an open PR with incremental commits.
 
-The automated checkpoint before the framework extensions contained **3,876 adapter cases and 30 rendering
-cases**, with no skipped cases. It included 30 added auto-hide focus/resize cases,
-alongside the earlier manager key-down and inherited-control-property cases described below. The matrix makes the acceptance evidence explicit; it
-replaces the former open-ended lists of manager, interface, callback, and default
-work. Each contract remains subject to the framework boundaries and deferred
-interactive checks at the end of this document. This is not a claim of exact WPF
-behavior or binary compatibility.
+Final runtime validation at
+[`77c15f965`](https://github.com/wieslawsoltes/Dock/commit/77c15f96566690a4f2f6f31078130d119337dc4f)
+passes **3,954 adapter cases and 30 rendering cases**, with zero failures or
+skipped cases. The catalog integration suite passes six cases and the incremental
+generator suite passes 18. Earlier counts below describe historical checkpoints.
+
+The pinned framework source
+[`57744b19b6`](https://github.com/wieslawsoltes/Avalonia/commit/57744b19b6ab8ff05edb3776474792467b9d545b)
+has 7,096 passing Base/Controls cases, 100 passing focused logical/weak-lifetime
+cases, and five passing compiled-resource-factory cases. Framework packaging and
+hash verification use the revision in `build/AvalonDock.Framework/framework.json`.
+
+Fresh packages from the validated runtime pass the complete isolated consumer on
+both .NET 8 and .NET 10. Validation covers all 11 Dock packages, both framework
+packages and their symbols, package repository commits, adapter DLL/XML contents,
+all 13 satellite assemblies per target, and package hashes. The DocFX pipeline
+completed with zero warnings and errors before the final internal lifetime fix;
+the subsequent runtime build, tests, and package consumers include that fix.
+
+The matrix makes the acceptance evidence explicit. Each contract remains subject
+to the framework boundaries and deferred interactive checks at the end of this
+document. These results do not claim exact WPF behavior or binary compatibility.
 
 ## Acceptance evidence
 

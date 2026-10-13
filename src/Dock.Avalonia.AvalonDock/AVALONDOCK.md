@@ -22,6 +22,15 @@ Package consumers need the generated framework feed alongside the Dock feed.
 The version is pinned in `build/AvalonDock.Framework/framework.json`; it is a
 project-specific prerelease, not an official Avalonia release.
 
+Runtime source
+[`77c15f965`](https://github.com/wieslawsoltes/Dock/commit/77c15f96566690a4f2f6f31078130d119337dc4f)
+passes 3,954 adapter tests, 30 rendering tests, and isolated package consumers on
+.NET 8 and .NET 10. Six catalog integration cases and 18 generator cases also
+pass. The framework source is pinned to
+[`57744b19b6`](https://github.com/wieslawsoltes/Avalonia/commit/57744b19b6ab8ff05edb3776474792467b9d545b).
+The [compatibility checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md)
+records the validation scope and deferred desktop checks.
+
 Reference this package and add the adapter theme alongside your Avalonia theme:
 
 ```xml

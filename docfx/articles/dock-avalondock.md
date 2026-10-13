@@ -19,6 +19,15 @@ generated framework feed and the Dock feed. The
 [framework build guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
 describes both workflows.
 
+Runtime source
+[`77c15f965`](https://github.com/wieslawsoltes/Dock/commit/77c15f96566690a4f2f6f31078130d119337dc4f)
+passes 3,954 adapter tests, 30 rendering tests, and isolated package consumers on
+.NET 8 and .NET 10. Six catalog integration cases and 18 generator cases also
+pass. The framework source is pinned to
+[`57744b19b6`](https://github.com/wieslawsoltes/Avalonia/commit/57744b19b6ab8ff05edb3776474792467b9d545b).
+The acceptance checklist above records the validation scope and deferred desktop
+checks.
+
 Floating hosts default to `ShowInTaskbar="False"`. Overlay windows default to
 no activation, no taskbar entry, no decorations, and a transparent surface.
 These are property defaults and apply before styling and with a replacement

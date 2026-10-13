@@ -30,6 +30,8 @@ jobs:
         with:
           global-json-file: global.json
 
+      - name: Prepare AvalonDock framework
+        uses: ./.github/actions/setup-avalondock-framework
       - name: Determine version suffix
         id: version
         run: |
@@ -57,10 +59,36 @@ jobs:
       - name: Pack
         run: dotnet pack -c Release --no-build -p:VersionSuffix="${{ steps.version.outputs.version-suffix }}" -o artifacts/packages
 
-      - name: Publish to GitHub Packages
+      - name: Bundle Dock and framework packages
+        run: |
+          shopt -s nullglob
+          zip -j artifacts/dock-nightly-packages.zip \
+            artifacts/packages/*.nupkg artifacts/packages/*.snupkg \
+            artifacts/avalondock-framework/nuget/*.nupkg \
+            artifacts/avalondock-framework/nuget/*.snupkg
+
+      - name: Upload complete package bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-package-bundle
+          path: artifacts/dock-nightly-packages.zip
+          if-no-files-found: error
+
+      - name: Check published framework dependency
+        id: framework_publish
+        env:
+          NUGET_FEED_USERNAME: ${{ github.actor }}
+          NUGET_FEED_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 -m unittest discover -s build/AvalonDock.Framework -p 'test_*.py'
+          python3 build/AvalonDock.Framework/check_publish.py --feed "${{ env.NUGET_SOURCE }}"
+
+      - name: Publish Dock packages to GitHub Packages
+        if: steps.framework_publish.outputs.available == 'true'
         run: |
           shopt -s nullglob
           for package in artifacts/packages/*.nupkg; do
+            case "$(basename "$package")" in Avalonia.*) continue ;; esac
             echo "Publishing $package..."
             dotnet nuget push "$package" \
               --api-key ${{ secrets.GITHUB_TOKEN }} \

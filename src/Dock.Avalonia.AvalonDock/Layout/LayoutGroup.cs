@@ -13,7 +13,7 @@ namespace AvalonDock.Layout;
 
 /// <summary>A typed view of the children of a live Dock container.</summary>
 /// <typeparam name="T">The accepted layout child type.</typeparam>
-public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPane, ILayoutPanelElement, IXmlSerializable where T : class, ILayoutElement
+public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutContainer, ILayoutGroup, IXmlSerializable where T : class, ILayoutElement
 {
     private readonly LayoutChildren<T> _children;
     private bool _isVisible = true;
@@ -46,7 +46,10 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutGroup, ILayoutPan
     /// Derived model overrides restore their metadata before reading children. This base does not infer metadata from additional interfaces.
     /// The caller's reader stays live; a later read error retains preceding changes and appended children.
     /// </remarks>
-    public virtual void ReadXml(XmlReader reader) => LayoutXmlDeserializer.ReadContainer(this, reader);
+    public virtual void ReadXml(XmlReader reader)
+    {
+        if (LayoutXmlDeserializer.ReadContainer(this, reader)) ComputeVisibility();
+    }
     /// <summary>Writes children inside the caller's XML element after any derived metadata.</summary>
     public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
     /// <inheritdoc/>

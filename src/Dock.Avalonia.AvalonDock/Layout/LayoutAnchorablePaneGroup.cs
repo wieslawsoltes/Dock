@@ -9,6 +9,13 @@ namespace AvalonDock.Layout;
 /// <summary>A split group containing anchorable panes.</summary>
 public class LayoutAnchorablePaneGroup : LayoutPositionableGroup<ILayoutAnchorablePane>, ILayoutAnchorablePane, ILayoutOrientableGroup
 {
+    /// <summary>Recomputes parent visibility before the inherited visibility notification.</summary>
+    protected override void OnIsVisibleChanged()
+    {
+        (Parent as ILayoutElementWithVisibility)?.ComputeVisibility();
+        base.OnIsVisibleChanged();
+    }
+
     /// <summary>Restores this group's metadata before its inherited dimensions and children.</summary>
     public override void ReadXml(XmlReader reader)
     {

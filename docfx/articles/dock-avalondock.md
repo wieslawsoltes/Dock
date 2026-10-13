@@ -2801,6 +2801,19 @@ values are written back to XML. Subsequent native docking-state changes update
 the floating flag. Full layout restoration continues to build native placement
 from the layout hierarchy; a persisted focus flag does not activate its content.
 
+Generic layout groups expose container/group APIs without automatically
+implementing `ILayoutPane`, `ILayoutPanelElement`, or `ILayoutElementWithVisibility`.
+Concrete document/tool panes and pane groups supply their pane interfaces;
+`LayoutPanel` supplies panel-element and visibility interfaces. Auto-hide sides
+and anchor groups retain their public visibility methods without becoming panes
+or panel elements. Self-closing group XML invokes the class's visibility method,
+so an additional interface on an application subclass does not replace that call.
+
+`LayoutDocumentPane` and `LayoutAnchorablePaneGroup` recompute parent visibility
+before their inherited visibility hook, which recomputes the current parent again.
+A reentrant parent change redirects the second pass. Suppressing the base hook
+skips both passes; a failure stops the remaining callbacks.
+
 Group readers follow their class inheritance: concrete panes and orientable
 groups restore their own metadata, `LayoutPositionableGroup<T>` restores dimensions,
 and `LayoutGroup<T>` reads children. Adding an interface to an application subclass
@@ -2822,10 +2835,20 @@ ordinary minimum setters continue to reject negative values. Orientation accepts
 case-insensitive names and numeric enum values. Self-closing empty groups recompute
 visibility; explicit empty start/end pairs retain the current visibility.
 
+The `RootPanel` section uses its own orientation rule: only the exact value
+`Vertical` selects vertical layout; missing, differently cased, numeric, or invalid
+values select horizontal layout. Standalone/nested `LayoutPanel.ReadXml` still
+uses the enum parser, even when the caller names its element `RootPanel`.
+Root panels and root side sections consume recognized children of other model
+kinds without attaching them. Registered read hooks still run for those children,
+but discarded content does not enter content recovery. Unknown child names still
+fail, preserving the section's existing staging and partial-state rules.
+Native root sizing/options and compact roots remain adapter XML extensions.
+
 XML double attributes use invariant CLR number spellings, including `Infinity`,
 `-Infinity`, and `NaN`, so the values accepted by the readers can be saved and read
 again. Previous and initial container indices use the current culture for both
-writing and reading, matching AvalonDock. Invalid orientation text raises enum
+writing and reading, matching AvalonDock. Invalid standalone/nested group orientation text raises enum
 parsing errors (`ArgumentException` or `OverflowException`) before later metadata
 is applied.
 

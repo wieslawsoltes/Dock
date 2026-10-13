@@ -188,7 +188,7 @@ public class SerializationTests
     [InlineData("<Unexpected />", typeof(InvalidOperationException))]
     [InlineData("<LayoutRoot><RootPanel><Unknown /></RootPanel></LayoutRoot>", typeof(ArgumentException))]
     [InlineData("<!DOCTYPE x [<!ENTITY external SYSTEM 'file:///should-not-be-read'>]><LayoutRoot>&external;</LayoutRoot>", typeof(XmlException))]
-    [InlineData("<LayoutRoot><RootPanel Orientation='Sideways' /></LayoutRoot>", typeof(ArgumentException))]
+    [InlineData("<LayoutRoot><RootPanel><LayoutPanel Orientation='Sideways' /></RootPanel></LayoutRoot>", typeof(ArgumentException))]
     public void Invalid_Xml_Does_Not_Replace_The_Current_Layout(string xml, Type errorType)
     {
         DockingManager manager = new();

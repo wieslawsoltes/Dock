@@ -6,7 +6,7 @@ using AvalonDock.Infrastructure;
 namespace AvalonDock.Layout;
 
 /// <summary>A split panel containing document and anchorable panes.</summary>
-public class LayoutPanel : LayoutPositionableGroup<ILayoutPanelElement>, ILayoutOrientableGroup
+public class LayoutPanel : LayoutPositionableGroup<ILayoutPanelElement>, ILayoutPanelElement, ILayoutOrientableGroup, ILayoutElementWithVisibility
 {
     /// <summary>Restores this group's metadata before its inherited dimensions and children.</summary>
     public override void ReadXml(XmlReader reader)

@@ -199,7 +199,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 3,087 cases, including 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
+- The consolidated adapter suite passes all 3,140 cases, including 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
   cases, plus 63 numeric XML
@@ -911,8 +911,17 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   direct root sections and hidden tools add no child serializer error wrapper.
   Text/stream wrappers remain usable after success or failure without closing the
   caller's output. Stream/file writes use UTF-8 without a byte order mark.
-  Remaining XML work includes root-format edge cases and broader culture/namespace
-  inputs. Compact roots with omitted empty sections and persisted native root-panel
+  Root sections recognize only the exact `Vertical` spelling and consume known
+  children that do not have the section's required model interface. Registered
+  readers run for discarded children, but content recovery does not see them.
+  Thirty-one root cases cover spelling, direct/whole-layout restoration, filtering,
+  section staging, and the retained native metadata extension. Fourteen interface
+  cases verify concrete membership and class-based empty-group visibility dispatch;
+  generic groups no longer make sides/anchor groups into panes or panel elements.
+  Eight visibility inheritance cases cover both concrete parent recomputations,
+  reparenting, errors, and suppressed base calls. Seven external probes reproduce
+  the preceding package defects. Remaining XML work includes broader root-format,
+  culture, and namespace inputs. Compact roots with omitted empty sections and persisted native root-panel
   metadata, native hierarchy validation, and preserving existing files on model
   write failures remain adapter extensions to the upstream format.
   Assigning a return container raises only its changed notification, then initializes
@@ -1369,15 +1378,15 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 838
-matching type/member keys and 113 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 840
+matching type/member keys and 111 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.
 It includes the upstream control, theme, converter, and resource surfaces.
 
 The separate [declaration-shape review](../../build/AvalonDockApiAudit/SIGNATURES.md)
-records 186 textual signature differences and their explicit contracts, plus
+records 184 textual signature differences and their explicit contracts, plus
 the modifier and generic-constraint review. It fixed three parameter names needed
 by upstream named-argument calls without changing the presence counts.
 

@@ -64,6 +64,12 @@ public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayou
             if (content is LayoutAnchorable || content is LayoutDocument { IsVisible: true }) return true;
         return false;
     }
+    /// <summary>Recomputes parent visibility before the inherited visibility notification.</summary>
+    protected override void OnIsVisibleChanged()
+    {
+        (Parent as ILayoutElementWithVisibility)?.ComputeVisibility();
+        base.OnIsVisibleChanged();
+    }
     /// <summary>Notifies document list menus that the sorted contents changed.</summary>
     protected override void OnChildrenCollectionChanged()
     {

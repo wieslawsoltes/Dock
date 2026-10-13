@@ -26,7 +26,7 @@ internal static class LayoutXmlDeserializer
         catch (Exception error) { throw ReadError(contextual, error); }
     }
 
-    internal static void ReadContainer(LayoutElement element, XmlReader reader)
+    internal static bool ReadContainer(LayoutElement element, XmlReader reader)
     {
         ArgumentNullException.ThrowIfNull(reader);
         element.VerifyAccess();
@@ -53,7 +53,8 @@ internal static class LayoutXmlDeserializer
                     throw new InvalidOperationException("This layout element cannot contain children.");
             }
         }
-        if (empty && element is ILayoutElementWithVisibility visibility) visibility.ComputeVisibility();
+        if (empty && element is LayoutFloatingWindow && element is ILayoutElementWithVisibility visibility) visibility.ComputeVisibility();
+        return empty;
     }
 
     internal static void ReadRoot(LayoutRoot root, XmlReader reader)
@@ -75,10 +76,11 @@ internal static class LayoutXmlDeserializer
                 case "RootPanel":
                     if ((seen & RootSections.Panel) != 0) throw new XmlException("A layout can contain only one RootPanel.");
                     LayoutPanel panel = new();
-                    LayoutGroupXml.ReadOrientable(panel, panel, reader);
+                    LayoutGroupXml.ReadRootPanel(panel, reader);
                     LayoutGroupXml.ReadPositionable(panel, panel, reader);
                     List<ILayoutPanelElement> panels = new();
-                    foreach (LayoutElement child in ReadChildren(reader)) panels.Add((ILayoutPanelElement)child);
+                    foreach (LayoutElement child in ReadChildren(reader))
+                        if (child is ILayoutPanelElement panelElement) panels.Add(panelElement);
                     root.RootPanel = panel;
                     foreach (ILayoutPanelElement child in panels) panel.Children.Add(child);
                     seen |= RootSections.Panel;
@@ -135,7 +137,8 @@ internal static class LayoutXmlDeserializer
         // A root replaces its side before reading it, then attaches the restored
         // groups only after the whole side succeeds. Standalone group reads append.
         List<LayoutAnchorGroup> groups = new();
-        foreach (LayoutElement child in ReadChildren(reader)) groups.Add((LayoutAnchorGroup)child);
+        foreach (LayoutElement child in ReadChildren(reader))
+            if (child is LayoutAnchorGroup group) groups.Add(group);
         foreach (LayoutAnchorGroup group in groups) side.Children.Add(group);
     }
 

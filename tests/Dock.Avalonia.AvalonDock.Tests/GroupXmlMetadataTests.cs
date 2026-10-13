@@ -220,9 +220,16 @@ public class GroupXmlMetadataTests
     public void Only_Self_Closing_Empty_Groups_Recompute_Visibility(string kind, bool selfClosing)
     {
         LayoutElement group = Create(kind);
-        Assert.True(((ILayoutPanelElement)group).IsVisible);
+        Assert.True(Visible(group));
         Read(group, selfClosing ? "<Group />" : "<Group></Group>");
-        Assert.Equal(!selfClosing || kind is "document-pane" or "document-group", ((ILayoutPanelElement)group).IsVisible);
+        Assert.Equal(!selfClosing || kind is "document-pane" or "document-group", Visible(group));
+
+        static bool Visible(LayoutElement element) => element switch
+        {
+            LayoutAnchorGroup anchors => anchors.IsVisible,
+            LayoutAnchorSide side => side.IsVisible,
+            _ => ((ILayoutPanelElement)element).IsVisible
+        };
     }
 
     private static LayoutElement Create(string kind) => kind switch

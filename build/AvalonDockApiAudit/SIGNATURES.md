@@ -1,13 +1,14 @@
 # Declaration-shape review
 
-The pinned inventory contains 951 declarations; 838 now have matching presence
+The pinned inventory contains 951 declarations; 840 now have matching presence
 keys. The signature review covered the preceding 820 matching keys, then inspected
 accessibility, virtual/static modifiers, generic constraints, and differing
 base/interface declarations. The two newly declared document/tool `ReadXml`
 overrides match the upstream public override signature after BCL qualification
 normalization and add no textual signature differences. Nine newly declared
 `WriteXml` overrides and seven group `ReadXml` overrides also match the upstream
-public override signatures. This is a declaration review, not evidence that every
+public override signatures. Two concrete visibility overrides also match their
+upstream declarations. This is a declaration review, not evidence that every
 default, callback, visual tree, or operation is behaviorally equivalent.
 
 The review found three source compatibility defects hidden by a matching key:
@@ -25,7 +26,7 @@ identify this defect. External compilation and native ownership/notification tes
 cover it. The upstream constructors on `LayoutElement`, `LayoutContent`, and
 `LayoutGroup<T>` are explicitly internal; those are not exposed for external use.
 
-The remaining 186 textual signature differences are recorded individually in
+The remaining 184 textual signature differences are recorded individually in
 [`signature-review.tsv`](signature-review.tsv). The comparison normalizes the
 requested CLR namespace mapping, known BCL qualification, whitespace, nullable
 annotations, and the `partial` implementation modifier. It does not silently
@@ -54,7 +55,7 @@ source/layout replacement are exercised in the adapter and package consumers.
 | Qualified BCL types and the `CompatibilityTheme` alias | These resolve to the same BCL types or `AvalonDock.Themes.Theme`. |
 | Hexadecimal enum spellings | The five `AnchorableShowStrategy` values are unchanged. |
 
-The 28 differing base lists fall into these groups:
+The 26 differing base lists fall into these groups:
 
 - WPF `Control`, `FrameworkElement`, `DependencyObject`, `Window`, and `HwndHost`
   require Avalonia control/object/host counterparts. `LayoutGridResizerControl`
@@ -65,10 +66,15 @@ The 28 differing base lists fall into these groups:
   cannot override equality; collection lookup and side traversal use object
   identity. Custom `ILayoutElement` implementations remain usable by traversal
   helpers, but actual child collections require Dock-backed model wrappers.
-- Public layout interfaces remain reachable through adapter base classes.
-  `ILayoutContainer` comes through `ILayoutGroup`; visibility comes through
-  `ILayoutPane`. Upstream positionable, initial/previous-container, pane-XML and
-  overlay-host helper interfaces are internal implementation contracts.
+- Generic groups implement the upstream container/group interfaces without
+  adding pane, panel-element, or visibility interfaces. Concrete document/tool
+  panes and groups get these through their corresponding pane interface;
+  `LayoutPanel` explicitly implements panel-element and visibility interfaces.
+  Auto-hide sides and anchor groups therefore fail pane/panel casts as upstream
+  does. Their public visibility methods remain callable. This correction removes
+  two differing base declarations and is checked by interface-membership tests.
+  Upstream positionable, initial/previous-container, pane-XML and overlay-host
+  helper interfaces remain internal implementation contracts.
 - The adapter adds internal presentation interfaces and `IDisposable` on the
   bitmap converter. WPF's `IWeakEventListener` is framework-specific; source
   subscriptions use the adapter's weak-event services rather than that interface.
@@ -81,6 +87,6 @@ virtual default for the upstream abstract `LayoutGroup<T>.GetVisibility` hook.
 Existing subclasses can still override that hook; the adapter additionally
 allows its inherited default. Hook routing and ordering are validated separately.
 
-The 113 keys without exact source matches remain in
+The 111 keys without exact source matches remain in
 [`portability-review.tsv`](portability-review.tsv). Neither review closes the
 remaining semantic and platform work in the compatibility checklist.

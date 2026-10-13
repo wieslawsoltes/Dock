@@ -299,3 +299,7 @@ The writer-context probe verifies nested serialization errors, caller namespaces
 and XML context, writer/model callback order, empty child namespaces, and flush
 delivery at the child, pane, and root boundaries. It also checks retained writer
 lifetime and stream output without a byte order mark.
+
+The root/visibility probe checks root orientation spelling/fallback, recognized
+child filtering, model interface membership, both concrete visibility passes,
+and class visibility dispatch when a custom group adds an interface.

@@ -59,6 +59,15 @@ internal static class LayoutGroupXml
             group.Orientation = Enum.Parse<Orientation>(direction, ignoreCase: true);
     }
 
+    internal static void ReadRootPanel(LayoutPanel panel, XmlReader reader)
+    {
+        Prepare(panel, reader);
+        Identifier(panel, reader); // Native group return-location extension.
+        // The root section has a separate upstream format: only this exact
+        // spelling selects vertical orientation. Nested panels parse an enum.
+        panel.Orientation = reader.GetAttribute("Orientation") == "Vertical" ? Orientation.Vertical : Orientation.Horizontal;
+    }
+
     internal static void ReadPositionable(LayoutElement element, ILayoutPositionableGroup position, XmlReader reader)
     {
         Prepare(element, reader);

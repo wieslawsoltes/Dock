@@ -83,6 +83,11 @@ The 26 differing base lists fall into these groups:
   bitmap converter. WPF's `IWeakEventListener` is framework-specific; source
   subscriptions use the adapter's weak-event services rather than that interface.
 
+The protected `IEnumerator LogicalChildren` declarations on the manager,
+document pane, and auto-hide control are provided as virtual hooks. A typed
+framework source uses those hooks for actual logical traversal while the
+manager's public enumeration preserves its raw weak-reference entries.
+
 All shared generic class and method constraints agree except `DropArea<T>`:
 Avalonia `Control` replaces WPF `FrameworkElement`. The modifier review found
 14 WPF framework overrides exposed as virtual compatibility hooks,

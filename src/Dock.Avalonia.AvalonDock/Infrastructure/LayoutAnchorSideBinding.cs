@@ -96,9 +96,10 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
             List<IDockable> order = new();
             foreach (LayoutAnchorGroup group in _side.Children)
             {
+                if (!ReferenceEquals(group.Parent, _side)) continue;
                 foreach (LayoutAnchorable tool in group.Children)
                 {
-                    desired.Add(tool, group);
+                    if (!ReferenceEquals(tool.Parent, group) || !desired.TryAdd(tool, group)) continue;
                     order.Add(tool.DockModel);
                     tool.SetProjectedParent(group);
                     group.PreviousContainer ??= tool.PreviousContainer;
@@ -107,7 +108,9 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
             foreach (var pair in _projected)
             {
                 if (desired.ContainsKey(pair.Key)) continue;
-                pair.Key.SetProjectedParent(null);
+                // Reset and removed groups retain their public child parent.
+                // Detach only the native pinned projection in those cases.
+                if (!ReferenceEquals(pair.Key.Parent, pair.Value)) pair.Key.SetProjectedParent(null);
                 _pinned.Remove(pair.Key.DockModel);
                 // Public collection removal detaches the tool. Native operations
                 // use Pull and keep their own ownership transitions intact.

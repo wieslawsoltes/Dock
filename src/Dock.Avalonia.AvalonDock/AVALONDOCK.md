@@ -17,6 +17,11 @@ the upstream WPF docking engine.
 
 Reference this package and add the adapter theme alongside your Avalonia theme:
 
+This branch requires the pinned prerelease Avalonia dependency described in the
+[framework build guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md).
+Run `python3 build/AvalonDock.Framework/bootstrap.py` before building the repository.
+Package consumers need the generated framework feed alongside the Dock feed.
+
 ```xml
 <Application.Styles>
   <FluentTheme />
@@ -151,14 +156,13 @@ control or assigning the same content again does not recompute the identifier.
 to it forward the value, including null, to the model. Bind that property explicitly
 when the container should track an application identifier.
 
-`LayoutContent.Title` and `ContentId` remain backed by the native Dock model.
-Their compiled bindings default to one-way. CLR assignments, `SetValue`,
-`SetCurrentValue`, and typed `ClearValue` retain the binding; two-way bindings
-also update their source. Dispose the binding before permanently replacing it.
-For clearing, pass the typed property directly, for example
-`document.ClearValue(LayoutContent.TitleProperty)`: Avalonia's untyped
-`ClearValue(AvaloniaProperty)` overload does not reset direct properties.
-Explicit coercion does not introduce WPF dependency-property metadata.
+`LayoutContent.Title` and `ContentId` remain native-backed direct properties.
+Their compiled bindings default to one-way. The compatibility metadata makes a
+CLR assignment or `SetValue` replace a local one-way binding, including an equal
+assignment. Two-way bindings remain attached and update their source.
+`SetCurrentValue` preserves the binding; `ClearValue` removes the local binding
+and restores the default or styled value. Typed, untyped, indexer, and base-object
+property access use the same reflection-free framework value policy.
 
 Setting `IsActive=false` retains the root's active-content reference and pane
 selection. Activation hooks receive the previous and requested values even when
@@ -169,10 +173,11 @@ suppresses that timestamp update and the public active-state event.
 
 `ActiveContentProperty` supports styles and defaults to one-way binding. Use
 `Mode=TwoWay` to write activation back to the ViewModel. The adapter stays
-reflection-free: assignments and `ClearValue` retain Avalonia bindings, and style
-removal can retain a current-value override. Dispose a binding explicitly when
-replacing it; clear a retained override with `ClearValue` after removing its style.
-These differences from WPF are recorded separately in the compatibility tests.
+reflection-free: assignments replace local one-way bindings while retaining
+two-way expressions and their source updates. `SetCurrentValue` preserves the
+expression; `ClearValue` removes local binding state and restores the style or
+default. Compatibility metadata also releases current-value overrides when their
+style is removed.
 
 Pane selection is separate from activation: `SelectedContentIndex` and a node's
 `IsSelected` update the selected tab without changing `LayoutRoot.ActiveContent`.
@@ -210,10 +215,12 @@ application view. Model-driven selection remains passive; explicit document
 control selection activates its document. Empty selection is supported, and
 `LayoutCachePaneControl` suppresses its bubbling selection notification.
 The tool-pane constructor accepts an existing `LayoutAnchorablePane`; the
-document-pane constructor remains internal, as upstream. Avalonia uses its own
-logical-child collection instead of the WPF `LogicalChildren` enumerator hook.
-`DockingManager.LogicalChildrenPublic` enumerates that collection, including
-current layout item containers; template visuals are not logical children.
+document-pane constructor remains internal, as upstream. Its protected
+`IEnumerator LogicalChildren` hook returns an empty enumeration. The manager's
+virtual hook and `LogicalChildrenPublic` expose weakly registered layout/side
+controls, the auto-hide control, initial application controls, and lazy item
+presenters. Layout item containers are excluded. The framework uses the same
+hook for logical traversal, filtering raw entries that are not logical nodes.
 
 Set `LayoutDocumentPane.ShowHeader="False"` to hide a pane's tabs, document list
 menu, and separator while retaining the selected content view, activation, and
@@ -1464,7 +1471,10 @@ or `GetResourceUri()` override closes a window during theme replacement. A
 canceled close keeps the window connected to the replacement and subsequent
 themes. `GenericTheme.GetResourceUri()` identifies the
 compiled `Themes/Generic.axaml` bundle, which also supports compiled
-`ResourceInclude` from consumer XAML. Register additional compiled dictionaries
+`ResourceInclude` from consumer XAML. The package's incremental generator catalogs
+application and referenced-library `AvaloniaResource` dictionaries, including classless
+XAML, and emits direct compiled factories for their `avares://` URIs. A partial
+application class receives its own immutable catalog. Explicitly override a URI
 with `manager.ThemeResources.Register(uri, static () => new EditorThemeResources())`
 before assigning a theme whose `GetResourceUri()` returns that URI. The factory
 is used for the manager and each auxiliary window and may return a shared
@@ -1559,9 +1569,11 @@ Changing either key or the option takes effect on the next drop validation.
 Layout objects retain sealed identity equality: both upstream's WPF
 `DependencyObject` and the adapter's `AvaloniaObject` prevent application layout
 subclasses from overriding `Equals` or `GetHashCode`.
-Child collections require Dock-backed elements and reject duplicate membership
-and cycles. Clearing a collection detaches its former children to preserve the
-native model graph; upstream's plain collection reset can retain stale parents.
+Child collections require Dock-backed elements and reject cycles. They retain
+repeated public references while projecting each native node once. Removing one
+occurrence clears its public parent even when another occurrence remains, as in
+AvalonDock. `Clear()` publishes `Reset` and retains the former public parent
+references; native ownership is detached so the rendered Dock graph remains valid.
 
 ## Serialization hooks and content recovery
 
@@ -1740,8 +1752,17 @@ Nested virtual `WriteXml` overrides participate in complete layout saves, includ
 hidden, pinned, and floating content. Write extra group attributes before calling
 base, because base writes the children. A shared writer prepares return-container
 IDs once, and a failing override leaves an existing save file untouched.
-Register custom models on the serializer to preserve their concrete types and
-invoke their `ReadXml` overrides during whole-layout restoration:
+Custom `IXmlSerializable` layout classes with accessible, non-file-local
+declarations and public parameterless constructors receive generated typed factories. A non-nested, non-generic partial
+`Application` class composes the application and referenced-library catalogs.
+Whole-layout restoration invokes the custom `ReadXml` hooks without manual
+registration. Reserved built-in names are skipped with a diagnostic; register
+those types under a unique name. Duplicate XML names are build errors: rename
+them, or set `<AvalonDockGenerateCatalog>false</AvalonDockGenerateCatalog>` in
+the project and use explicit layout/resource registrations. This opt-out leaves
+an application-supplied catalog provider intact.
+
+Explicit serializer registrations override generated factories and names:
 
 ```csharp
 var serializer = new AvalonDock.Layout.Serialization.XmlLayoutSerializer(manager);
@@ -1752,7 +1773,7 @@ serializer.KnownTypes.Register("EditorPane", static () => new EditorPane());
 Use the same registrations when saving and restoring. Each operation snapshots
 the registry, including nested panes and floating windows. Factories must return
 fresh detached instances of the exact registered type. Built-in XML names are
-reserved. Unregistered subclasses retain their built-in element name on save;
+reserved. Subclasses absent from both catalogs and registrations retain their built-in element name on save;
 unknown input names fail before replacing the manager's layout. Automatic CLR
 assembly scanning is intentionally absent from this reflection-free path.
 
@@ -1777,6 +1798,13 @@ support.
 ```mermaid
 flowchart TB
     App["Application XAML and workspace service"]
+    Generator["Incremental catalog generator<br/>Typed layout and compiled-resource factories"]
+    Framework["Pinned Avalonia framework APIs<br/>Binding, logical traversal, hosted roots, compiled resources"]
+    App --> Generator
+    Generator --> Xml
+    Generator --> ResourceThemes
+    Api --> Framework
+    AutoHide --> Framework
     Api["DockingManager and AvalonDock layout API"]
     Items["LayoutItem containers<br/>Content, headers, window titles, styles, and commands"]
     Registration["Container registration<br/>After source callbacks; eager layout attachment"]

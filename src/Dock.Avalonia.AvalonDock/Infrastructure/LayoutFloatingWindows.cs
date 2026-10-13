@@ -18,6 +18,7 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     private LayoutFloatingWindow? _pendingAttachment;
     private IDockWindow? _publicMutationWindow;
     private HashSet<IDockWindow>? _replacementWindows;
+    private readonly HashSet<LayoutFloatingWindow> _unprojectedWindows = new();
 
     internal LayoutFloatingWindows(LayoutRoot owner)
     {
@@ -49,19 +50,30 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         {
             for (int i = Count - 1; i >= 0; i--)
             {
-                if (_source.Contains(this[i].DockWindow)) continue;
+                if (_source.Contains(this[i].DockWindow))
+                {
+                    _unprojectedWindows.Remove(this[i]);
+                    continue;
+                }
+                if (_unprojectedWindows.Contains(this[i])) continue;
+                if (CountOccurrences(this[i]) > 1) _unprojectedWindows.Add(this[i]);
                 base.RemoveItem(i);
             }
+            int target = 0;
+            HashSet<LayoutFloatingWindow> projected = new();
             for (int i = 0; i < _source.Count; i++)
             {
+                while (target < Count && (projected.Contains(this[target]) || _unprojectedWindows.Contains(this[target]))) target++;
                 LayoutFloatingWindow window = _owner.Context.GetWindow(_source[i]);
                 int oldIndex = IndexOf(window);
-                if (oldIndex < 0) base.InsertItem(i, window);
+                if (oldIndex < 0) base.InsertItem(target, window);
                 else
                 {
                     if (!ReferenceEquals(window, _pendingAttachment)) window.Attach(_owner);
-                    if (oldIndex != i) base.MoveItem(oldIndex, i);
+                    if (oldIndex != target) base.MoveItem(oldIndex, target);
                 }
+                projected.Add(window);
+                target++;
             }
         }
         finally { _syncing = previousSyncing; }
@@ -72,9 +84,13 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         CheckReentrancy();
         ArgumentNullException.ThrowIfNull(item);
         if (index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
-        if (Contains(item)) throw new InvalidOperationException("A floating window cannot occur twice in a layout.");
-        item.Parent?.RemoveChild(item);
-        if (item.Parent is not null)
+        if (Contains(item) && _source.Contains(item.DockWindow))
+        {
+            base.InsertItem(index, item);
+            return;
+        }
+        LayoutParenting.RemoveFromParent(item);
+        if (item.DockWindow.Owner is not null)
             throw new InvalidOperationException("The floating window's current host canceled removal from its layout.");
         item.PrepareAttachment(_owner);
         IDockWindow? previousMutation = _publicMutationWindow;
@@ -82,8 +98,14 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         try
         {
             using LayoutFloatingWindow.ParentProjectionScope parent = item.DeferParentProjection();
-            _owner.DockFactory.InsertWindow((RootDock)_owner.DockModel, item.DockWindow, index);
-            if (!Contains(item) && _source.Contains(item.DockWindow)) Refresh();
+            bool retained = Contains(item);
+            _owner.DockFactory.InsertWindow((RootDock)_owner.DockModel, item.DockWindow, GetNativeInsertionIndex(index));
+            if (retained && _source.Contains(item.DockWindow))
+            {
+                _unprojectedWindows.Remove(item);
+                base.InsertItem(index, item);
+            }
+            else if (!Contains(item) && _source.Contains(item.DockWindow)) Refresh();
         }
         finally { _publicMutationWindow = previousMutation; }
         if (Contains(item)) _owner.Manager?.PresentFloatingWindow(item);
@@ -92,6 +114,25 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     {
         CheckReentrancy();
         LayoutFloatingWindow item = this[index];
+        if (CountOccurrences(item) > 1 || _unprojectedWindows.Contains(item))
+        {
+            bool previousSyncing = _syncing;
+            IDockWindow? duplicateMutation = _publicMutationWindow;
+            _syncing = true;
+            _publicMutationWindow = null;
+            try
+            {
+                using LayoutFloatingWindow.ParentProjectionScope parent = item.DeferParentProjection();
+                if (_source.Contains(item.DockWindow)) RemoveNativeWindow(item);
+                if (_source.Contains(item.DockWindow)) return;
+                _unprojectedWindows.Add(item);
+                base.RemoveItem(index);
+                if (!Contains(item)) _unprojectedWindows.Remove(item);
+            }
+            finally { _syncing = previousSyncing; _publicMutationWindow = duplicateMutation; }
+            _owner.NotifyStructureChanged();
+            return;
+        }
         IDockWindow? previousMutation = _publicMutationWindow;
         _publicMutationWindow = item.DockWindow;
         try
@@ -129,6 +170,12 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         if (ReferenceEquals(this[index], item))
         {
             ReplacePublicItem(index, item);
+            if (!_source.Contains(item.DockWindow))
+            {
+                using LayoutFloatingWindow.ParentProjectionScope parent = item.DeferParentProjection();
+                _owner.DockFactory.InsertWindow((RootDock)_owner.DockModel, item.DockWindow, GetNativeInsertionIndex(index + 1));
+                _unprojectedWindows.Remove(item);
+            }
             if (item.DockWindow.Owner is null && _source.Contains(item.DockWindow))
                 _owner.DockFactory.InitDockWindow(item.DockWindow, _owner.DockModel);
             if (item.DockWindow.Host is IHostWindowCloseState { IsClosed: false } && !item.DockWindow.Host.IsTracked)
@@ -136,7 +183,6 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
             _owner.NotifyStructureChanged();
             return;
         }
-        if (Contains(item)) throw new InvalidOperationException("A floating window cannot occur twice in a layout.");
         LayoutFloatingWindow previous = this[index];
         bool previousSyncing = _syncing;
         IDockWindow? previousMutation = _publicMutationWindow;
@@ -153,12 +199,17 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
                 Refresh();
                 return;
             }
-            item.Parent?.RemoveChild(item);
-            if (item.Parent is not null)
-                throw new InvalidOperationException("The floating window's current host canceled removal from its layout.");
-            using LayoutFloatingWindow.ParentProjectionScope incoming = item.DeferParentProjection();
-            item.PrepareAttachment(_owner);
-            _owner.DockFactory.InsertWindow((RootDock)_owner.DockModel, item.DockWindow, Math.Min(index, _source.Count));
+            if (!_source.Contains(item.DockWindow))
+            {
+                LayoutParenting.RemoveFromParent(item);
+                if (item.DockWindow.Owner is not null)
+                    throw new InvalidOperationException("The floating window's current host canceled removal from its layout.");
+                using LayoutFloatingWindow.ParentProjectionScope incoming = item.DeferParentProjection();
+                item.PrepareAttachment(_owner);
+                _owner.DockFactory.InsertWindow((RootDock)_owner.DockModel, item.DockWindow, GetNativeInsertionIndex(index + 1));
+            }
+            _unprojectedWindows.Remove(item);
+            if (CountOccurrences(previous) > 1) _unprojectedWindows.Add(previous);
         }
         catch
         {
@@ -176,6 +227,23 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         _owner.Manager?.PresentFloatingWindow(item);
         Refresh();
     }
+    private int CountOccurrences(LayoutFloatingWindow window)
+    {
+        int count = 0;
+        foreach (LayoutFloatingWindow child in this) if (ReferenceEquals(child, window)) count++;
+        return count;
+    }
+
+    private int GetNativeInsertionIndex(int index)
+    {
+        for (int i = index; i < Count; i++)
+        {
+            int nativeIndex = _source.IndexOf(this[i].DockWindow);
+            if (nativeIndex >= 0) return nativeIndex;
+        }
+        return _source.Count;
+    }
+
     private void ReplacePublicItem(int index, LayoutFloatingWindow item)
     {
         LayoutFloatingWindow? previous = _pendingAttachment;
@@ -195,7 +263,29 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     {
         CheckReentrancy();
         List<LayoutFloatingWindow> windows = new(this);
-        for (int i = windows.Count - 1; i >= 0; i--) Remove(windows[i]);
+        bool previousSyncing = _syncing;
+        IDockWindow? previousMutation = _publicMutationWindow;
+        _syncing = true;
+        _publicMutationWindow = null;
+        try
+        {
+            HashSet<LayoutFloatingWindow> closed = new();
+            for (int i = windows.Count - 1; i >= 0; i--)
+            {
+                LayoutFloatingWindow window = windows[i];
+                if (!closed.Add(window)) continue;
+                using LayoutFloatingWindow.ParentProjectionScope parent = window.DeferParentProjection();
+                if (_source.Contains(window.DockWindow)) RemoveNativeWindow(window);
+            }
+            if (_source.Count == 0)
+            {
+                _unprojectedWindows.Clear();
+                base.ClearItems();
+            }
+            else Refresh(); // A native host can cancel its close request.
+        }
+        finally { _syncing = previousSyncing; _publicMutationWindow = previousMutation; }
+        _owner.NotifyStructureChanged();
     }
     protected override void MoveItem(int oldIndex, int newIndex)
     {
@@ -207,10 +297,18 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
         _syncing = true;
         try
         {
-            IDockWindow window = _source[oldIndex];
-            _source.RemoveAt(oldIndex);
-            _source.Insert(newIndex, window);
             base.MoveItem(oldIndex, newIndex);
+            HashSet<IDockWindow> projected = new(_source);
+            List<IDockWindow> desired = new(_source.Count);
+            foreach (LayoutFloatingWindow window in this)
+                if (projected.Remove(window.DockWindow)) desired.Add(window.DockWindow);
+            for (int index = 0; index < desired.Count; index++)
+            {
+                int current = _source.IndexOf(desired[index]);
+                if (current == index) continue;
+                _source.RemoveAt(current);
+                _source.Insert(index, desired[index]);
+            }
         }
         finally
         {

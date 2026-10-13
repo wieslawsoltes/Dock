@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -17,6 +18,7 @@ public class LayoutDocumentPaneControl : LayoutCachePaneControl, ILayoutControl
     internal LayoutDocumentPaneControl(LayoutDocumentPane model)
     {
         ArgumentNullException.ThrowIfNull(model);
+        LogicalChildrenSource = new LogicalChildrenView(() => LogicalChildren);
         Model = model;
         _binding = new(this, model, model, model.Children, true);
         _binding.Initialize();
@@ -26,6 +28,10 @@ public class LayoutDocumentPaneControl : LayoutCachePaneControl, ILayoutControl
     public ILayoutElement Model { get; }
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(LayoutDocumentPaneControl);
+
+    /// <summary>Enumerates the document pane's logical children, empty by default.</summary>
+    /// <remarks>Document contents belong to the manager's logical tree.</remarks>
+    protected new virtual IEnumerator LogicalChildren => Array.Empty<object>().GetEnumerator();
 
     /// <summary>Applies an explicit control selection and activates the selected document.</summary>
     protected override void OnSelectionChanged(SelectionChangedEventArgs e)

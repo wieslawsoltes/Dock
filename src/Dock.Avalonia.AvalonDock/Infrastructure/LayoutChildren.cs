@@ -21,6 +21,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
     private readonly Action? _notifyOwner;
     private IList<IDockable> _source = null!;
     private bool _syncing;
+    private readonly HashSet<T> _unprojectedChildren = new();
     private LayoutElement? _pendingAttachment;
     internal bool IsRefreshingSource { get; private set; }
     internal bool IsMovingSource { get; private set; }
@@ -76,18 +77,42 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         IsRefreshingSource = true;
         try
         {
-            int target = 0;
+            // The public ObservableCollection permits repeated references. Dock
+            // renders a model once; extra occurrences and the stale occurrence
+            // left by a public removal remain part of the facade collection.
+            List<(int Index, T Child)> retained = new();
+            HashSet<T> seen = new();
+            for (int i = 0; i < Count; i++)
+            {
+                T child = this[i];
+                bool inSource = _source.Contains(((LayoutElement)(ILayoutElement)child).DockModel);
+                if (inSource) _unprojectedChildren.Remove(child);
+                if (!seen.Add(child) || _unprojectedChildren.Contains(child))
+                {
+                    retained.Add((i, child));
+                    if (!inSource) _unprojectedChildren.Add(child);
+                }
+            }
+            List<T> desired = new(_source.Count + retained.Count);
             foreach (IDockable model in _source)
             {
                 if (model is ISplitter) continue;
                 T child = (T)(ILayoutElement)_owner.Context.GetChild(model, _owner);
-                if (target < Count && ReferenceEquals(this[target], child)) { target++; continue; }
-                int existing = IndexOf(child);
+                if (!desired.Contains(child)) desired.Add(child);
+            }
+            foreach ((int index, T child) in retained) desired.Insert(Math.Min(index, desired.Count), child);
+            for (int target = 0; target < desired.Count; target++)
+            {
+                T child = desired[target];
+                if (target < Count && ReferenceEquals(this[target], child)) continue;
+                int existing = -1;
+                for (int i = target + 1; i < Count; i++)
+                    if (ReferenceEquals(this[i], child)) { existing = i; break; }
                 if (existing >= 0) base.MoveItem(existing, target);
                 else base.InsertItem(target, child);
-                target++;
             }
-            while (Count > target) base.RemoveItem(Count - 1);
+            while (Count > desired.Count) base.RemoveItem(Count - 1);
+            _unprojectedChildren.RemoveWhere(child => !Contains(child));
         }
         finally { IsRefreshingSource = false; _syncing = false; }
     }
@@ -98,7 +123,6 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         if (item is not LayoutElement element) throw new ArgumentException("Children must use Dock-backed layout elements.", nameof(item));
         for (ILayoutElement? ancestor = _owner; ancestor is not null; ancestor = ancestor.Parent)
             if (ReferenceEquals(ancestor, item)) throw new InvalidOperationException("A layout cannot contain itself or an ancestor.");
-        if (Contains(item)) throw new InvalidOperationException("A layout element cannot occur twice in one group.");
         if (_owner is LayoutAnchorGroup && element is LayoutContent content) content.RememberDockedLocation();
         return element;
     }
@@ -120,8 +144,8 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         LayoutElement element = Prepare(item);
         Mutate(() =>
         {
-            int nativeIndex = index < Count ? _source.IndexOf(((LayoutElement)(ILayoutElement)this[index]).DockModel) : _source.Count;
-            _source.Insert(nativeIndex, element.DockModel);
+            if (!_source.Contains(element.DockModel)) _source.Insert(GetNativeInsertionIndex(index), element.DockModel);
+            _unprojectedChildren.Remove(item);
             LayoutElement? previousAttachment = _pendingAttachment;
             _pendingAttachment = element;
             try { base.InsertItem(index, item); }
@@ -136,7 +160,9 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         Mutate(() =>
         {
             _source.Remove(element.DockModel);
+            if (CountOccurrences(this[index]) > 1) _unprojectedChildren.Add(this[index]);
             base.RemoveItem(index);
+            if (!Contains((T)(ILayoutElement)element)) _unprojectedChildren.Remove((T)(ILayoutElement)element);
         });
     }
 
@@ -145,17 +171,43 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         CheckReentrancy();
         LayoutElement old = (LayoutElement)(ILayoutElement)this[index];
         // ObservableCollection still publishes a replacement for the same
-        // instance. Its parent detach/attach hooks are part of that contract;
-        // the existing child does not need duplicate-membership validation.
+        // instance. Its parent detach/attach hooks are part of that contract.
         LayoutElement replacement = ReferenceEquals(old, item) ? old : Prepare(item);
         Mutate(() =>
         {
-            _source[_source.IndexOf(old.DockModel)] = replacement.DockModel;
+            int nativeIndex = _source.IndexOf(old.DockModel);
+            if (nativeIndex >= 0 && (ReferenceEquals(old, replacement) || !_source.Contains(replacement.DockModel)))
+                _source[nativeIndex] = replacement.DockModel;
+            else
+            {
+                _source.Remove(old.DockModel);
+                if (!_source.Contains(replacement.DockModel)) _source.Insert(GetNativeInsertionIndex(index + 1), replacement.DockModel);
+            }
+            if (CountOccurrences(this[index]) > 1) _unprojectedChildren.Add(this[index]);
+            _unprojectedChildren.Remove(item);
             LayoutElement? previousAttachment = _pendingAttachment;
             _pendingAttachment = replacement;
             try { base.SetItem(index, item); }
             finally { _pendingAttachment = previousAttachment; }
+            if (!Contains((T)(ILayoutElement)old)) _unprojectedChildren.Remove((T)(ILayoutElement)old);
         });
+    }
+
+    private int CountOccurrences(T item)
+    {
+        int count = 0;
+        foreach (T child in this) if (ReferenceEquals(child, item)) count++;
+        return count;
+    }
+
+    private int GetNativeInsertionIndex(int index)
+    {
+        for (int i = index; i < Count; i++)
+        {
+            int nativeIndex = _source.IndexOf(((LayoutElement)(ILayoutElement)this[i]).DockModel);
+            if (nativeIndex >= 0) return nativeIndex;
+        }
+        return _source.Count;
     }
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
@@ -226,14 +278,20 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
     private void MoveNativeItems(int oldIndex, int newIndex)
     {
         if (MoveNativePane(oldIndex, newIndex)) return;
-        // Groups also contain native splitters, normalized below.
+        // Groups also contain native splitters, normalized below. Repeated
+        // facade occurrences must not create repeated native nodes.
+        HashSet<IDockable> projected = new(_source);
         for (int i = _source.Count - 1; i >= 0; i--) _source.RemoveAt(i);
-        foreach (T child in this) _source.Add(((LayoutElement)(ILayoutElement)child).DockModel);
+        foreach (T child in this)
+        {
+            IDockable model = ((LayoutElement)(ILayoutElement)child).DockModel;
+            if (projected.Remove(model)) _source.Add(model);
+        }
     }
 
     private bool MoveNativePane(int oldIndex, int newIndex)
     {
-        if (_owner is not ILayoutContentSelector) return false;
+        if (_owner is not ILayoutContentSelector || _source.Count != Count) return false;
         if (_source is AvaloniaList<IDockable> avalonia) { avalonia.Move(oldIndex, newIndex); return true; }
         if (_source is ObservableCollection<IDockable> observable) { observable.Move(oldIndex, newIndex); return true; }
         return false;
@@ -244,8 +302,14 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
         CheckReentrancy();
         Mutate(() =>
         {
-            foreach (T child in this) ((LayoutElement)(ILayoutElement)child).DockModel.Owner = null;
+            foreach (T child in this)
+            {
+                LayoutElement element = (LayoutElement)(ILayoutElement)child;
+                element.RetainParentAfterCollectionReset();
+                element.DockModel.Owner = null;
+            }
             _source.Clear();
+            _unprojectedChildren.Clear();
             base.ClearItems();
         });
     }

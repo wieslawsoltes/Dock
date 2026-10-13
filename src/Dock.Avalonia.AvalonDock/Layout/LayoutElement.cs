@@ -15,6 +15,7 @@ namespace AvalonDock.Layout;
 public abstract class LayoutElement : AvaloniaObject, ILayoutElement
 {
     private ILayoutContainer? _projectedParent;
+    private bool _retainedCollectionParent;
     private ILayoutRoot? _reportedRoot;
     private int _settingParent;
     private ILayoutContainer? _changingParent;
@@ -86,6 +87,7 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
             _settingParent++;
             try
             {
+                _retainedCollectionParent = false;
                 _projectedParent = value is LayoutElement ? null : value;
                 DockModel.Owner = (value as LayoutElement)?.DockModel;
             }
@@ -96,6 +98,7 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
 
     internal void SetProjectedParent(ILayoutContainer? parent)
     {
+        _retainedCollectionParent = false;
         if (ReferenceEquals(_projectedParent, parent)) return;
         ILayoutContainer? previous = Parent;
         ILayoutContainer? next = parent ?? GetNativeParent(DockModel.Owner);
@@ -105,6 +108,14 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         NotifyParentChanging(previous, next);
         _projectedParent = parent;
         NotifyParentChanged(previous, Parent, previousRoot, previousNativeRoot);
+    }
+
+    // ObservableCollection.Reset has no old items in AvalonDock's group
+    // callback. Keep that public parent without leaving a native owner behind.
+    internal void RetainParentAfterCollectionReset()
+    {
+        _projectedParent = Parent;
+        _retainedCollectionParent = _projectedParent is not null;
     }
 
     // Single-document floating windows expose the document directly. Their
@@ -126,7 +137,8 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         if (_settingParent != 0) return;
         bool adoptingFloatingChild = _projectedParent is LayoutFloatingWindow floating &&
             args.NewOwner is { } owner && !floating.OwnsNativeChild(owner);
-        if (_projectedParent is not null && !adoptingFloatingChild) return;
+        bool adoptingResetChild = _retainedCollectionParent && args.NewOwner is not null;
+        if (_projectedParent is not null && !adoptingFloatingChild && !adoptingResetChild) return;
         ILayoutContainer? previous = Parent;
         ILayoutRoot? previousRoot = _reportedRoot;
         ILayoutRoot? previousNativeRoot = Root;
@@ -140,7 +152,11 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
         _changingNativeRoot = previousNativeRoot;
         _hasParentChange = true;
         NotifyParentChanging(previous, next);
-        if (adoptingFloatingChild) _projectedParent = null;
+        if (adoptingFloatingChild || adoptingResetChild)
+        {
+            _projectedParent = null;
+            _retainedCollectionParent = false;
+        }
     }
 
     private void NotifyParentChanging(ILayoutContainer? previous, ILayoutContainer? next)
@@ -256,6 +272,12 @@ public abstract class LayoutElement : AvaloniaObject, ILayoutElement
     {
         if (e.Property == DockableBase.OwnerProperty)
         {
+            if (_retainedCollectionParent && e.NewValue is IDockable owner && ReferenceEquals(Parent, GetNativeParent(owner)))
+            {
+                _projectedParent = null;
+                _retainedCollectionParent = false;
+                return;
+            }
             if (_settingParent != 0 || _projectedParent is not null) return;
             ILayoutContainer? previous = _hasParentChange ? _changingParent : GetNativeParent(e.OldValue as IDockable);
             ILayoutRoot? previousRoot = _hasParentChange ? _changingRoot : _reportedRoot;

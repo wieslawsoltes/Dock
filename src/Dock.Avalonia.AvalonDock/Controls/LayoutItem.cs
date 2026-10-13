@@ -27,55 +27,55 @@ public abstract class LayoutItem : Control
         AvaloniaProperty.RegisterDirect<LayoutItem, object?>(nameof(Model), item => item.Model);
     /// <summary>Identifies the tab title property.</summary>
     public static readonly StyledProperty<string?> TitleProperty =
-        AvaloniaProperty.Register<LayoutItem, string?>(nameof(Title), null);
+        AvaloniaProperty.Register<LayoutItem, string?>(name: nameof(Title), metadata: AvalonDockProperty.StyledMetadata<string?>(defaultValue: null));
     /// <summary>Identifies the persistence identifier property.</summary>
     public static readonly StyledProperty<string?> ContentIdProperty =
-        AvaloniaProperty.Register<LayoutItem, string?>(nameof(ContentId), null);
+        AvaloniaProperty.Register<LayoutItem, string?>(name: nameof(ContentId), metadata: AvalonDockProperty.StyledMetadata<string?>(defaultValue: null));
     /// <summary>Identifies the tab icon property.</summary>
     public static readonly StyledProperty<IImage?> IconSourceProperty =
-        AvaloniaProperty.Register<LayoutItem, IImage?>(nameof(IconSource), null);
+        AvaloniaProperty.Register<LayoutItem, IImage?>(name: nameof(IconSource), metadata: AvalonDockProperty.StyledMetadata<IImage?>(defaultValue: null));
     /// <summary>Identifies the pane selection state property.</summary>
     public static readonly StyledProperty<bool> IsSelectedProperty =
-        AvaloniaProperty.Register<LayoutItem, bool>(nameof(IsSelected), false);
+        AvaloniaProperty.Register<LayoutItem, bool>(name: nameof(IsSelected), metadata: AvalonDockProperty.StyledMetadata<bool>(defaultValue: false));
     /// <summary>Identifies the active content state property.</summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
-        AvaloniaProperty.Register<LayoutItem, bool>(nameof(IsActive), false);
+        AvaloniaProperty.Register<LayoutItem, bool>(name: nameof(IsActive), metadata: AvalonDockProperty.StyledMetadata<bool>(defaultValue: false));
     /// <summary>Identifies the close capability property.</summary>
     public static readonly StyledProperty<bool> CanCloseProperty =
-        AvaloniaProperty.Register<LayoutItem, bool>(nameof(CanClose), true);
+        AvaloniaProperty.Register<LayoutItem, bool>(name: nameof(CanClose), metadata: AvalonDockProperty.StyledMetadata<bool>(defaultValue: true));
     /// <summary>Identifies the floating capability property.</summary>
     public static readonly StyledProperty<bool> CanFloatProperty =
-        AvaloniaProperty.Register<LayoutItem, bool>(nameof(CanFloat), true);
+        AvaloniaProperty.Register<LayoutItem, bool>(name: nameof(CanFloat), metadata: AvalonDockProperty.StyledMetadata<bool>(defaultValue: true));
     /// <summary>Identifies the command for closing this content.</summary>
     public static readonly StyledProperty<ICommand?> CloseCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(CloseCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(CloseCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for floating this content.</summary>
     public static readonly StyledProperty<ICommand?> FloatCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(FloatCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(FloatCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for docking this content as a document.</summary>
     public static readonly StyledProperty<ICommand?> DockAsDocumentCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(DockAsDocumentCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(DockAsDocumentCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for closing the other documents.</summary>
     public static readonly StyledProperty<ICommand?> CloseAllButThisCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(CloseAllButThisCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(CloseAllButThisCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for closing all documents.</summary>
     public static readonly StyledProperty<ICommand?> CloseAllCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(CloseAllCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(CloseAllCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for activating this content.</summary>
     public static readonly StyledProperty<ICommand?> ActivateCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(ActivateCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(ActivateCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for splitting documents into columns.</summary>
     public static readonly StyledProperty<ICommand?> NewVerticalTabGroupCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(NewVerticalTabGroupCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(NewVerticalTabGroupCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for splitting documents into rows.</summary>
     public static readonly StyledProperty<ICommand?> NewHorizontalTabGroupCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(NewHorizontalTabGroupCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(NewHorizontalTabGroupCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for moving to the next document pane.</summary>
     public static readonly StyledProperty<ICommand?> MoveToNextTabGroupCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(MoveToNextTabGroupCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(MoveToNextTabGroupCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
     /// <summary>Identifies the command for moving to the previous document pane.</summary>
     public static readonly StyledProperty<ICommand?> MoveToPreviousTabGroupCommandProperty =
-        AvaloniaProperty.Register<LayoutItem, ICommand?>(nameof(MoveToPreviousTabGroupCommand));
+        AvaloniaProperty.Register<LayoutItem, ICommand?>(name: nameof(MoveToPreviousTabGroupCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
 
     private LayoutContent? _layoutElement;
     private object? _model;
@@ -104,6 +104,7 @@ public abstract class LayoutItem : Control
             {
                 _view = new LayoutItemPresenter { Item = this };
                 RefreshViewTemplate();
+                LayoutElement?.Root?.Manager?.InternalAddLogicalChild(_view);
             }
             return _view;
         }
@@ -182,6 +183,7 @@ public abstract class LayoutItem : Control
         _headers = null;
         if (_view is not null)
         {
+            manager?.InternalRemoveLogicalChild(_view);
             _view.Item = null;
             _view.ContentTemplate = null;
             _view.DataTemplates.Clear();

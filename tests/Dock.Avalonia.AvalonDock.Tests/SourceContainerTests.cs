@@ -28,7 +28,7 @@ public class SourceContainerTests
     {
         DockingManager manager = new();
         Assert.Null(manager.GetLayoutItemFromModel(null));
-        Assert.Empty(manager.GetLogicalChildren().OfType<LayoutItem>());
+        Assert.Empty(manager.GetLogicalChildren());
     }
 
     [AvaloniaFact]
@@ -51,7 +51,7 @@ public class SourceContainerTests
             }
         };
         Assert.Equal(new[] { "document", "tool" }, styled);
-        Assert.Equal(2, manager.GetLogicalChildren().OfType<LayoutItem>().Count());
+        Assert.All(manager.Layout.Descendents().OfType<LayoutContent>(), content => Assert.NotNull(manager.GetLayoutItemFromModel(content)));
     }
 
     [AvaloniaTheory]
@@ -98,7 +98,7 @@ public class SourceContainerTests
                     if (render) Pump(window);
                     else Dispatcher.UIThread.RunJobs();
                     Assert.Null(manager.GetLayoutItemFromModel(content));
-                    Assert.DoesNotContain(manager.GetLogicalChildren().OfType<LayoutItem>(), item => ReferenceEquals(item.LayoutElement, content));
+                    Assert.DoesNotContain((ILogical)content.Content!, manager.GetLogicalChildren());
                     Assert.Equal(imported.Count - 1, selector.Calls);
                     calls.Add("after:" + ((TextBox)content.Content!).Text);
                     content.Title = "after callback";
@@ -217,12 +217,13 @@ public class SourceContainerTests
     [InlineData(false)]
     public void Ordinary_Attachment_Creates_Containers_Before_Lookup_And_Defers_Removal(bool documents)
     {
-        DockingManager manager = new();
+        List<LayoutItem> created = new();
+        DockingManager manager = new() { LayoutItemContainerStyleSelector = new RecordingSelector { Selecting = created.Add } };
         LayoutContent content = documents ? new LayoutDocument() : new LayoutAnchorable();
         ILayoutGroup pane = documents ? new LayoutDocumentPane() : new LayoutAnchorablePane();
         manager.Layout.RootPanel.Children.Add((ILayoutPanelElement)pane);
         pane.InsertChildAt(0, content);
-        LayoutItem item = Assert.Single(manager.GetLogicalChildren().OfType<LayoutItem>());
+        LayoutItem item = Assert.Single(created);
         Assert.Same(content, item.LayoutElement);
         Assert.Same(item, manager.GetLayoutItemFromModel(content));
         pane.RemoveChild(content);
@@ -329,7 +330,7 @@ public class SourceContainerTests
         pane.InsertChildAt(pane.ChildrenCount, other);
         Assert.NotNull(manager.GetLayoutItemFromModel(content));
         Assert.NotNull(manager.GetLayoutItemFromModel(other));
-        Assert.Equal(2, manager.GetLogicalChildren().OfType<LayoutItem>().Count());
+        Assert.Empty(manager.GetLogicalChildren().OfType<LayoutItem>());
     }
 
     [AvaloniaFact]

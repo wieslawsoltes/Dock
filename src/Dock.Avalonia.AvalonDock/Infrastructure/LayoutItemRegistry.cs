@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Avalonia.Input;
 using Avalonia.Threading;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
@@ -70,6 +71,7 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
             item.Attach(_manager, content);
             _byContent.Add(content, item);
             _items.Add(item);
+            if (content.Content is InputElement logicalContent) _manager.InternalAddLogicalChild(logicalContent);
             if (_observed.Add(content)) content.PropertyChanged += ModelChanged;
             content.NotifyLayoutItemChanged();
         }
@@ -181,7 +183,7 @@ internal sealed class LayoutItemRegistry : ILayoutElementEventListener
         for (int i = _items.Count - 1; i >= 0; i--)
         {
             LayoutItem item = _items[i];
-            if (item.LayoutElement is not { } content || current.Contains(content)) continue;
+            if (item.LayoutElement is not { } content || ReferenceEquals(content.Root, currentRoot)) continue;
             _byContent.Remove(content);
             _items.RemoveAt(i);
             item.Detach();

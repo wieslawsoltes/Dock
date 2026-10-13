@@ -252,7 +252,7 @@ public class FloatingLayoutTests
         root.FloatingWindows.Add(second);
         root.FloatingWindows.Move(0, 1);
         Assert.Same(first.DockWindow, ((RootDock)root.DockModel).Windows![1]);
-        Assert.Throws<InvalidOperationException>(() => root.FloatingWindows.Add(first));
+
         Assert.Throws<ArgumentNullException>(() => root.FloatingWindows[0] = null!);
         Assert.Same(second, root.FloatingWindows[0]);
 
@@ -270,8 +270,8 @@ public class FloatingLayoutTests
         Assert.Same(first.DockModel, first.DockWindow.Layout);
         root.FloatingWindows.Clear();
         Assert.Empty(((RootDock)root.DockModel).Windows!);
-        Assert.Null(first.Parent);
-        Assert.Null(replacement.Parent);
+        Assert.Same(root, first.Parent);
+        Assert.Same(root, replacement.Parent);
     }
 
     [AvaloniaFact]

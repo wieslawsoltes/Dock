@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Core;
 using AvalonDock;
 using AvalonDock.Layout;
 using Xunit;
@@ -93,19 +94,20 @@ public class LayoutBridgeTests
         Assert.Same(c.DockModel, ((DocumentDock)pane.DockModel).VisibleDockables![0]);
         pane.Children.Clear();
         Assert.Empty(((DocumentDock)pane.DockModel).VisibleDockables!);
-        Assert.Null(a.Parent);
-        Assert.Null(c.Parent);
+        Assert.Same(pane, a.Parent);
+        Assert.Same(pane, c.Parent);
     }
 
     [AvaloniaFact]
-    public void Collection_Rejects_Cycles_And_Duplicates_Without_Changing_The_Tree()
+    public void Collection_Rejects_Cycles_And_Projects_Duplicate_References_Once()
     {
         LayoutPanel panel = new();
         LayoutPanel child = new();
         panel.Children.Add(child);
         Assert.Throws<InvalidOperationException>(() => child.Children.Add(panel));
-        Assert.Throws<InvalidOperationException>(() => panel.Children.Add(child));
-        Assert.Same(child, Assert.Single(panel.Children));
+        panel.Children.Add(child);
+        Assert.Equal(new[] { child, child }, panel.Children);
+        Assert.Same(child.DockModel, Assert.Single(((IDock)panel.DockModel).VisibleDockables!));
         Assert.Empty(child.Children);
     }
 

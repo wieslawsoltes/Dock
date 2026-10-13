@@ -125,14 +125,16 @@ public class CompatibilitySurfaceBatchTests
     }
 
     [AvaloniaFact]
-    public void Public_Logical_Children_Enumerator_Exposes_Current_Item_Containers()
+    public void Public_Logical_Children_Enumerator_Exposes_Lazy_Item_Views()
     {
         LayoutDocument document = new() { Title = "First" };
         DockingManager manager = new() { Layout = new() { RootPanel = new LayoutPanel(new LayoutDocumentPane(document)) } };
         LayoutItem old = manager.GetLayoutItemFromModel(document)!;
-        Assert.Contains(old, Children(manager.LogicalChildrenPublic));
-        manager.Layout = new();
         Assert.DoesNotContain(old, Children(manager.LogicalChildrenPublic));
+        Control view = old.View;
+        Assert.Contains(view, Children(manager.LogicalChildrenPublic));
+        manager.Layout = new();
+        Assert.DoesNotContain(view, Children(manager.LogicalChildrenPublic));
 
         static List<object?> Children(IEnumerator enumerator)
         {

@@ -78,8 +78,8 @@ through concrete types, generic constraints, event traces, and extension calls;
 a text search for direct type names is not a coverage measure.
 
 The 84 registration-default comparisons have no unexplained value mismatch.
-Direct `Title` and `ContentId` properties retain the explicitly documented
-Avalonia binding and clearing behavior. The inherited metadata review exposed
+Direct `Title` and `ContentId` properties use the reflection-free framework
+value policy for WPF binding replacement, current values, and clearing. The inherited metadata review exposed
 and fixed theme-dependent floating/overlay/splitter defaults and constructor-local
 auto-hide focus/visibility values. WPF style keys map to Avalonia control themes;
 WPF transparency and decorations map to Avalonia's corresponding window properties.
@@ -521,17 +521,14 @@ below rather than automatic discovery.
   on layout-driven activation. Payload/identifier/empty-content lookup, duplicate
   matches, null defaults, layout replacement, protected hooks, callback redirection,
   exceptions, styles, and two-way/explicit-update binding callbacks are covered by
-  the shared WPF probe. Its 280 rows cover 110 scenarios: 102 match WPF exactly;
-  eight deliberately retain Avalonia binding/style lifetime semantics. The latter
-  use a separate, clearly named Avalonia fixture and test, with the common stages
-  still compared against WPF. They are not counted as WPF parity. The package
-  consumer runs the same operations. History notifications preserve WPF's reentrant
-  order, including the outer transition's history and independent item flags.
-  Assigning over one-way/default bindings and `ClearValue` retain the binding in
-  Avalonia; WPF removes it. Removing a style after a current-value override can
-  retain that value in Avalonia. Applications can explicitly dispose the binding
-  or clear the override. Private binding-mode inspection is intentionally excluded
-  to keep this implementation reflection-free; exact framework parity remains open.
+  the shared WPF probe. Its 280 rows cover 110 scenarios against one unchanged
+  WPF reference fixture, including the eight former binding/style differences.
+  The package consumer runs the same operations. History notifications preserve
+  WPF's reentrant order, including the outer transition's history and independent
+  item flags. Opt-in framework metadata implements assignment, current-value,
+  clearing, and style-priority behavior without private binding-mode inspection
+  or reflection. One-way local assignments replace their binding; two-way local
+  assignments retain it and update their source.
 - `PreviewFloat`, `Floated`, `PreviewDock`, and `Docked` bubble through the
   manager and its ancestors with the public layout content as `Source`.
   Protected notification hooks support derived managers. Direct model docking
@@ -1076,9 +1073,9 @@ below rather than automatic discovery.
   moves/removal, manager transfers, and weak publisher lifetime are tested.
   Presentation selection waits until child collection observers finish. Native
   compatibility strips allow an empty selection; ordinary Dock defaults remain
-  unchanged. The WPF `IEnumerator LogicalChildren` override is not provided:
-  Avalonia uses a different, nonvirtual logical-child collection. Grouped/mixed
-  layouts use the additional native-backed floating model described below.
+  unchanged. The protected `IEnumerator LogicalChildren` hook also supplies
+  framework traversal; document panes expose upstream's empty enumeration.
+  Grouped/mixed layouts use the additional native-backed floating model below.
 - `LayoutDocumentPane.ShowHeader` controls the actual tabs, document menu, and
   separator through compiled template bindings, retaining the selected content
   view, focus, and activation. Pane policies remain independent through runtime
@@ -1111,8 +1108,11 @@ below rather than automatic discovery.
   reports actual focus. `AutoHideFocusHookTests` exercises focus on the preview,
   inside its content, and outside it without reflection or changing constructor
   accessibility.
-- `DockingManager.LogicalChildrenPublic` exposes the current Avalonia logical
-  collection. Floating `OnStateChanged` overrides synchronize maximization when
+- `DockingManager.LogicalChildrenPublic` exposes its virtual weak child
+  enumeration: presentation controls, initial application controls, and lazy item
+  views, excluding layout item containers. The framework uses the same hook and
+  filters non-logical entries. Base property callbacks own membership changes.
+  Floating `OnStateChanged` overrides synchronize maximization when
   they call the base hook. `IsMaximizedProperty` retains the upstream writable
   property contract through an Avalonia styled property; assignment and binding
   do not themselves change the native window state. `IsDraggingProperty`
@@ -1183,9 +1183,9 @@ below rather than automatic discovery.
   replacement/removal, explicit coercion, and cached menu fallback. Native
   rendering preserves an explicit template when a subclass suppresses the base
   selector callback. Local template bindings are replaced by the base callbacks;
-  style bindings remain available. The external WPF `SetValue` input is adapted
-  with explicit binding disposal because inherited Avalonia `SetValue` preserves
-  bindings. The reproducible reference probe is in `build/AvalonDock.WpfTemplateOracle`.
+  style bindings remain available. Registered compatibility properties use
+  the framework's value policy for direct `SetValue` calls. The reproducible
+  reference probe is in `build/AvalonDock.WpfTemplateOracle`.
 - Retired menu template roots are disconnected from their composition parent,
   preventing retained icon presenters from keeping removed documents alive.
 - `Window.Close()` checks current close commands without executing them and
@@ -1701,15 +1701,13 @@ cancellation, exceptions, restoration, and tool capability/cancellation gates.
 The external consumer adds 18 checks; nine fail against the preceding
 `198fe6b12` packages.
 
-The `Title` and `ContentId` registration review retains their native-backed
-direct properties. Layout models are not styled elements, and changing the
-registration alone cannot reproduce WPF binding ownership. Twelve compiled
-binding cases cover document/tool default, one-way, and two-way bindings across
-CLR and property assignments, current values, clearing, native model updates,
-coercion, and disposal. Avalonia retains these bindings; typed `ClearValue`
-resets the value, whereas the inherited untyped overload does not reset direct
-properties. These are explicit framework contracts, not claims of WPF parity.
-No reflection or property-store inspection is introduced.
+`Title` and `ContentId` retain their native-backed direct properties and opt into
+the framework's compatibility metadata. Compiled binding cases cover default,
+one-way, and two-way bindings across CLR, typed, untyped, indexer, and base-object
+assignments; current values, clearing, native model updates, coercion, and
+disposal. Equal one-way assignments retire the expression, two-way assignments
+write their source, and both `ClearValue` paths remove a local binding. No
+reflection or property-store inspection is introduced.
 The consolidated adapter suite passes all 3,772 cases with none skipped.
 
 ## Content control callback registration
@@ -1832,9 +1830,9 @@ Dock features or hidden by the API inventory:
 | Boundary | Contract |
 | --- | --- |
 | CLR and UI framework | Public namespaces are `AvalonDock.*` as requested. WPF controls, events, metadata, templates, pointer/focus arguments, and assemblies require Avalonia counterparts. This is not binary compatibility. The 106 strict inventory differences remain individually classified in `portability-review.tsv`. |
-| Binding lifetime | The implementation remains reflection-free as requested. Avalonia binding/style ownership, one-way assignment, current-value overrides, and direct-property clearing differ from WPF. The eight ActiveContent reference differences and the Title/ContentId contracts remain documented and tested. Dispose a binding for permanent replacement; clear direct properties through their typed overload. |
-| Logical trees and native hosting | Avalonia owns the logical/visual tree. Public logical children and keyboard/context-menu routes therefore have different framework shapes. WPF `HwndHost.BuildWindowCore` and `DestroyWindowCore` have no replacement hooks; pinned content uses Dock's native host. |
-| Graph integrity | Native-backed collections reject duplicate/cyclic membership and detach cleared children instead of retaining invalid upstream parent references. Both WPF `DependencyObject` and Avalonia `AvaloniaObject` seal object equality, so layout-subclass equality is unchanged. |
+| Binding lifetime | Opt-in framework metadata implements WPF binding replacement, current-value overrides, style-priority isolation, and direct-property clearing without reflection. The unchanged ActiveContent oracle includes all 110 WPF scenarios; native Dock properties retain ordinary Avalonia policy. |
+| Logical trees and native hosting | The public logical-child enumerator hooks supply real Avalonia traversal through the framework's typed logical source. Weak manager membership and base-callback suppression follow upstream. Keyboard/context-menu routes use Avalonia arguments. WPF `HwndHost.BuildWindowCore` and `DestroyWindowCore` have no replacement hooks; pinned content uses Dock's native host. |
+| Graph integrity | Public collections retain duplicate occurrences and upstream Reset parent references while projecting unique native nodes and detaching removed native ownership. Cycles remain rejected. Both WPF `DependencyObject` and Avalonia `AvaloniaObject` seal object equality. Native floating-close cancellation remains effective. |
 | XML/custom resources | Custom CLR XML types and compiled resource URIs use typed factory registration. Runtime assembly discovery and arbitrary WPF resource loading are absent. Custom model hooks still participate through their public virtual methods. |
 | Additional floating layouts | Generic/mixed Dock groups use the additional `LayoutGroupFloatingWindow` XML element, which WPF cannot consume. Hidden/pinned contents inside a floating root, nested windows, and incompatible typed-window mutations are rejected before a file is overwritten. |
 | Auto-hide layout | Content and resizers use Dock's pinned host with adapter-controlled spacing and unset-size persistence. Physical resize ghost limits follow upstream; the visual tree differs from WPF's popup grid. |

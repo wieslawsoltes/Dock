@@ -39,6 +39,8 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutContainer, ILayou
     /// Replacing an entry with the same instance still detaches and reattaches its parent and publishes a replacement notification.
     /// Parent and group callbacks participate in observable collection reentrancy checks; rejected edits leave native membership unchanged.
     /// Incoming parent callbacks observe the completed target collection membership.
+    /// Repeated references remain distinct public occurrences while Dock renders each model once.
+    /// Clearing publishes Reset and retains former public parents, while detaching native ownership.
     /// </remarks>
     [Content]
     public ObservableCollection<T> Children => _children;

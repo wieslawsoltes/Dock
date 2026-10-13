@@ -112,7 +112,7 @@ public class ContainerStyleTests
             Assert.False(toolItem.HideCommand!.CanExecute(null));
             Assert.Same(manager, documentItem.Parent);
             Assert.Same(manager, toolItem.Parent);
-            Assert.Contains(documentItem, manager.GetLogicalChildren());
+            Assert.DoesNotContain(documentItem, manager.GetLogicalChildren());
 
             source.Documents[0].Title = "Renamed in ViewModel";
             source.Tools[0].CanFloat = true;

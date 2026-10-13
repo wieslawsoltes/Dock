@@ -30,7 +30,7 @@ public partial class DockingManager : TemplatedControl
 {
     /// <summary>Identifies the AvalonDock resource theme applied to this manager and its auxiliary windows.</summary>
     public new static readonly StyledProperty<CompatibilityTheme?> ThemeProperty =
-        AvaloniaProperty.Register<DockingManager, CompatibilityTheme?>(nameof(Theme));
+        AvaloniaProperty.Register<DockingManager, CompatibilityTheme?>(name: nameof(Theme), metadata: AvalonDockProperty.StyledMetadata<CompatibilityTheme?>());
     /// <summary>Identifies the bubbling notification before creating a floating window.</summary>
     public static readonly RoutedEvent<RoutedEventArgs> PreviewFloatEvent =
         RoutedEvent.Register<DockingManager, RoutedEventArgs>(nameof(PreviewFloat), RoutingStrategies.Bubble);
@@ -45,92 +45,86 @@ public partial class DockingManager : TemplatedControl
         RoutedEvent.Register<DockingManager, RoutedEventArgs>(nameof(Docked), RoutingStrategies.Bubble);
     /// <summary>Identifies the width of splitters between horizontally arranged panes.</summary>
     public static readonly StyledProperty<double> GridSplitterWidthProperty =
-        AvaloniaProperty.Register<DockingManager, double>(nameof(GridSplitterWidth), 6);
+        AvaloniaProperty.Register<DockingManager, double>(name: nameof(GridSplitterWidth), metadata: AvalonDockProperty.StyledMetadata<double>(defaultValue: 6));
     /// <summary>Identifies the height of splitters between vertically arranged panes.</summary>
     public static readonly StyledProperty<double> GridSplitterHeightProperty =
-        AvaloniaProperty.Register<DockingManager, double>(nameof(GridSplitterHeight), 6);
+        AvaloniaProperty.Register<DockingManager, double>(name: nameof(GridSplitterHeight), metadata: AvalonDockProperty.StyledMetadata<double>(defaultValue: 6));
     /// <summary>Identifies the document context menu.</summary>
     public static readonly StyledProperty<ContextMenu?> DocumentContextMenuProperty =
-        AvaloniaProperty.Register<DockingManager, ContextMenu?>(nameof(DocumentContextMenu));
+        AvaloniaProperty.Register<DockingManager, ContextMenu?>(name: nameof(DocumentContextMenu), metadata: AvalonDockProperty.StyledMetadata<ContextMenu?>());
     /// <summary>Identifies the tool context menu.</summary>
     public static readonly StyledProperty<ContextMenu?> AnchorableContextMenuProperty =
-        AvaloniaProperty.Register<DockingManager, ContextMenu?>(nameof(AnchorableContextMenu));
+        AvaloniaProperty.Register<DockingManager, ContextMenu?>(name: nameof(AnchorableContextMenu), metadata: AvalonDockProperty.StyledMetadata<ContextMenu?>());
     /// <summary>Identifies whether a floating caption may fall back to the Windows system menu.</summary>
     public static readonly StyledProperty<bool> ShowSystemMenuProperty =
-        AvaloniaProperty.Register<DockingManager, bool>(nameof(ShowSystemMenu), true);
+        AvaloniaProperty.Register<DockingManager, bool>(name: nameof(ShowSystemMenu), metadata: AvalonDockProperty.StyledMetadata<bool>(defaultValue: true));
     /// <summary>Identifies whether document-group commands may change a populated group's orientation.</summary>
     public static readonly StyledProperty<bool> AllowMixedOrientationProperty =
-        AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMixedOrientation));
+        AvaloniaProperty.Register<DockingManager, bool>(name: nameof(AllowMixedOrientation), metadata: AvalonDockProperty.StyledMetadata<bool>());
     /// <summary>Identifies whether unhandled arrow keys move floating windows.</summary>
     public static readonly StyledProperty<bool> AllowMovingFloatingWindowWithKeyboardProperty =
-        AvaloniaProperty.Register<DockingManager, bool>(nameof(AllowMovingFloatingWindowWithKeyboard));
+        AvaloniaProperty.Register<DockingManager, bool>(name: nameof(AllowMovingFloatingWindowWithKeyboard), metadata: AvalonDockProperty.StyledMetadata<bool>());
     /// <summary>Identifies the template used to display application content.</summary>
     public static readonly StyledProperty<IDataTemplate?> LayoutItemTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(LayoutItemTemplate));
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(name: nameof(LayoutItemTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>());
     /// <summary>Identifies the application content template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> LayoutItemTemplateSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(LayoutItemTemplateSelector));
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(name: nameof(LayoutItemTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
     /// <summary>Identifies the document tab header template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> DocumentHeaderTemplateSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(DocumentHeaderTemplateSelector));
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(name: nameof(DocumentHeaderTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
     /// <summary>Identifies the template used for document tab headers.</summary>
     public static readonly StyledProperty<IDataTemplate?> DocumentHeaderTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentHeaderTemplate),
-            coerce: static (owner, value) => owner.GetValue(DocumentHeaderTemplateSelectorProperty) is null ? value : null);
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(name: nameof(DocumentHeaderTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>(coerce: static (owner, value) => owner.GetValue(DocumentHeaderTemplateSelectorProperty) is null ? value : null));
     /// <summary>Identifies the floating document window title template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> DocumentTitleTemplateSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(DocumentTitleTemplateSelector));
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(name: nameof(DocumentTitleTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
     /// <summary>Identifies the floating document window title template.</summary>
     public static readonly StyledProperty<IDataTemplate?> DocumentTitleTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentTitleTemplate),
-            coerce: static (owner, value) => owner.GetValue(DocumentTitleTemplateSelectorProperty) is null ? value : null);
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(name: nameof(DocumentTitleTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>(coerce: static (owner, value) => owner.GetValue(DocumentTitleTemplateSelectorProperty) is null ? value : null));
     /// <summary>Identifies the document list menu header template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> DocumentPaneMenuItemHeaderTemplateSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(DocumentPaneMenuItemHeaderTemplateSelector));
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(name: nameof(DocumentPaneMenuItemHeaderTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
     /// <summary>Identifies the document list menu header template.</summary>
     public static readonly StyledProperty<IDataTemplate?> DocumentPaneMenuItemHeaderTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(DocumentPaneMenuItemHeaderTemplate),
-            coerce: static (owner, value) => value is null ? owner.GetValue(DocumentHeaderTemplateProperty)
-                : owner.GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty) is null ? value : null);
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(name: nameof(DocumentPaneMenuItemHeaderTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>(coerce: static (owner, value) => value is null ? owner.GetValue(DocumentHeaderTemplateProperty)
+                : owner.GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty) is null ? value : null));
     /// <summary>Identifies the document list menu icon template.</summary>
     public static readonly StyledProperty<IDataTemplate?> IconContentTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(IconContentTemplate));
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(name: nameof(IconContentTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>());
     /// <summary>Identifies the document list menu icon template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> IconContentTemplateSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(IconContentTemplateSelector));
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(name: nameof(IconContentTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
     /// <summary>Identifies the tool tab and auto-hide header template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> AnchorableHeaderTemplateSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(AnchorableHeaderTemplateSelector));
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(name: nameof(AnchorableHeaderTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
     /// <summary>Identifies the template used for tool tab and auto-hide headers.</summary>
     public static readonly StyledProperty<IDataTemplate?> AnchorableHeaderTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(AnchorableHeaderTemplate),
-            coerce: static (owner, value) => owner.GetValue(AnchorableHeaderTemplateSelectorProperty) is null ? value : null);
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(name: nameof(AnchorableHeaderTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>(coerce: static (owner, value) => owner.GetValue(AnchorableHeaderTemplateSelectorProperty) is null ? value : null));
     /// <summary>Identifies the tool title bar template selector.</summary>
     public static readonly StyledProperty<DataTemplateSelector?> AnchorableTitleTemplateSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(nameof(AnchorableTitleTemplateSelector));
+        AvaloniaProperty.Register<DockingManager, DataTemplateSelector?>(name: nameof(AnchorableTitleTemplateSelector), metadata: AvalonDockProperty.StyledMetadata<DataTemplateSelector?>());
     /// <summary>Identifies the template used for the selected tool's title bar.</summary>
     public static readonly StyledProperty<IDataTemplate?> AnchorableTitleTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(nameof(AnchorableTitleTemplate),
-            coerce: static (owner, value) => owner.GetValue(AnchorableTitleTemplateSelectorProperty) is null ? value : null);
+        AvaloniaProperty.Register<DockingManager, IDataTemplate?>(name: nameof(AnchorableTitleTemplate), metadata: AvalonDockProperty.StyledMetadata<IDataTemplate?>(coerce: static (owner, value) => owner.GetValue(AnchorableTitleTemplateSelectorProperty) is null ? value : null));
     /// <summary>Identifies the control theme applied to document panes.</summary>
     public static readonly StyledProperty<ControlTheme?> DocumentPaneControlStyleProperty =
-        AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(DocumentPaneControlStyle));
+        AvaloniaProperty.Register<DockingManager, ControlTheme?>(name: nameof(DocumentPaneControlStyle), metadata: AvalonDockProperty.StyledMetadata<ControlTheme?>());
     /// <summary>Identifies the control theme applied to tool panes.</summary>
     public static readonly StyledProperty<ControlTheme?> AnchorablePaneControlStyleProperty =
-        AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(AnchorablePaneControlStyle));
+        AvaloniaProperty.Register<DockingManager, ControlTheme?>(name: nameof(AnchorablePaneControlStyle), metadata: AvalonDockProperty.StyledMetadata<ControlTheme?>());
     /// <summary>Identifies the public control displayed for the layout's root panel.</summary>
     public static readonly StyledProperty<LayoutPanelControl?> LayoutRootPanelProperty =
-        AvaloniaProperty.Register<DockingManager, LayoutPanelControl?>(nameof(LayoutRootPanel));
+        AvaloniaProperty.Register<DockingManager, LayoutPanelControl?>(name: nameof(LayoutRootPanel), metadata: AvalonDockProperty.StyledMetadata<LayoutPanelControl?>());
     /// <summary>Identifies the theme applied to document and tool containers.</summary>
     public static readonly StyledProperty<ControlTheme?> LayoutItemContainerStyleProperty =
-        AvaloniaProperty.Register<DockingManager, ControlTheme?>(nameof(LayoutItemContainerStyle));
+        AvaloniaProperty.Register<DockingManager, ControlTheme?>(name: nameof(LayoutItemContainerStyle), metadata: AvalonDockProperty.StyledMetadata<ControlTheme?>());
     /// <summary>Identifies the item container style selector.</summary>
     public static readonly StyledProperty<StyleSelector?> LayoutItemContainerStyleSelectorProperty =
-        AvaloniaProperty.Register<DockingManager, StyleSelector?>(nameof(LayoutItemContainerStyleSelector));
+        AvaloniaProperty.Register<DockingManager, StyleSelector?>(name: nameof(LayoutItemContainerStyleSelector), metadata: AvalonDockProperty.StyledMetadata<StyleSelector?>());
     /// <summary>Identifies the layout property, supporting styles and null-to-empty-layout coercion.</summary>
     public static readonly StyledProperty<LayoutRoot> LayoutProperty =
-        AvaloniaProperty.Register<DockingManager, LayoutRoot>(nameof(Layout), defaultValue: null!,
-            coerce: static (owner, value) => ((DockingManager)owner).CoerceLayout(value));
+        AvaloniaProperty.Register<DockingManager, LayoutRoot>(name: nameof(Layout), metadata: AvalonDockProperty.StyledMetadata<LayoutRoot>(defaultValue: null!, coerce: static (owner, value) => ((DockingManager)owner).CoerceLayout(value)));
     /// <summary>Identifies the live root used by the control template.</summary>
     public static readonly DirectProperty<DockingManager, RootDock> DockLayoutProperty =
         AvaloniaProperty.RegisterDirect<DockingManager, RootDock>(nameof(DockLayout), x => x.DockLayout);
@@ -142,13 +136,13 @@ public partial class DockingManager : TemplatedControl
         AvaloniaProperty.RegisterDirect<DockingManager, Func<IHostWindow?>>(nameof(DockHostWindowFactory), x => x.DockHostWindowFactory);
     /// <summary>Identifies the document content source.</summary>
     public static readonly StyledProperty<IEnumerable?> DocumentsSourceProperty =
-        AvaloniaProperty.Register<DockingManager, IEnumerable?>(nameof(DocumentsSource));
+        AvaloniaProperty.Register<DockingManager, IEnumerable?>(name: nameof(DocumentsSource), metadata: AvalonDockProperty.StyledMetadata<IEnumerable?>());
     /// <summary>Identifies the tool content source.</summary>
     public static readonly StyledProperty<IEnumerable?> AnchorablesSourceProperty =
-        AvaloniaProperty.Register<DockingManager, IEnumerable?>(nameof(AnchorablesSource));
+        AvaloniaProperty.Register<DockingManager, IEnumerable?>(name: nameof(AnchorablesSource), metadata: AvalonDockProperty.StyledMetadata<IEnumerable?>());
     /// <summary>Identifies the insertion strategy.</summary>
     public static readonly StyledProperty<ILayoutUpdateStrategy?> LayoutUpdateStrategyProperty =
-        AvaloniaProperty.Register<DockingManager, ILayoutUpdateStrategy?>(nameof(LayoutUpdateStrategy));
+        AvaloniaProperty.Register<DockingManager, ILayoutUpdateStrategy?>(name: nameof(LayoutUpdateStrategy), metadata: AvalonDockProperty.StyledMetadata<ILayoutUpdateStrategy?>());
 
     internal LayoutSizingViews SizingViews { get; } = new();
     internal LayoutFloatingWindowCreation FloatingWindowCreation { get; }
@@ -179,6 +173,7 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Creates a manager with an empty document layout.</summary>
     public DockingManager()
     {
+        InitializeLogicalChildren();
         _autoHide = new(this);
         _themeResources = new(this);
         DockAdornerWindow.SetFactory(this, new LayoutOverlayWindowFactory(this));
@@ -335,11 +330,11 @@ public partial class DockingManager : TemplatedControl
     {
         return content is null ? null : _layoutItems.Get(content);
     }
-    /// <summary>Gets an enumerator over this manager's current Avalonia logical children.</summary>
-    /// <remarks>Template visuals are excluded; item containers and explicitly attached logical children are included.</remarks>
+    /// <summary>Gets the manager's overridable logical-child enumeration.</summary>
+    /// <remarks>Includes registered layout presentations, application controls, and lazily created item views.</remarks>
     public IEnumerator LogicalChildrenPublic
     {
-        get { VerifyAccess(); return LogicalChildren.GetEnumerator(); }
+        get => LogicalChildren;
     }
     internal LayoutItem? GetLayoutItemForNativePresentation(LayoutContent content) => _layoutItems.GetForNativePresentation(content);
     /// <summary>Gets the native host factory that preserves this manager's template scope.</summary>
@@ -378,6 +373,7 @@ public partial class DockingManager : TemplatedControl
         _documents.Detach(oldLayout, DocumentsSource);
         _anchorables.Detach(oldLayout, AnchorablesSource);
         if (oldLayout is not null && ReferenceEquals(oldLayout.Manager, this)) oldLayout.Manager = null;
+        ClearLogicalChildrenList();
         _layoutItems.DetachLayout();
         Layout.Manager = this;
         _layoutItems.AttachLayout(Layout);
@@ -386,8 +382,8 @@ public partial class DockingManager : TemplatedControl
         _floatingControls.SetLayout(Layout);
         RaisePropertyChanged(DockFactoryProperty, oldLayout?.DockFactory!, DockFactory);
         RaisePropertyChanged(DockLayoutProperty, (RootDock?)oldLayout?.DockModel!, DockLayout);
-        if (IsInitialized) EnsureLayoutRootPanel();
-        if (IsInitialized) EnsureAnchorSidePanels();
+        if (IsInitialized) EnsureLayoutRootPanel(force: true);
+        if (IsInitialized) EnsureAnchorSidePanels(force: true);
         if (IsLoaded) _floatingWindows.Attach(Layout);
         if (IsLoaded) _autoHide.Attach(Layout);
         _layoutRootEvents.Attach(newLayout);
@@ -465,7 +461,7 @@ public partial class DockingManager : TemplatedControl
     /// <summary>Called when the tool pane control theme changes.</summary>
     protected virtual void OnAnchorablePaneControlStyleChanged(AvaloniaPropertyChangedEventArgs e) { }
     /// <summary>Called after the displayed root panel control changes.</summary>
-    protected virtual void OnLayoutRootPanelChanged(AvaloniaPropertyChangedEventArgs e) { }
+    protected virtual void OnLayoutRootPanelChanged(AvaloniaPropertyChangedEventArgs e) => ReplaceLogicalChild(e);
     /// <summary>Reattaches current layout contents and reapplies current container style settings.</summary>
     /// <remarks>The base call reads current manager settings, including when replaying older arguments.
     /// Overrides can omit base to preserve existing containers; new source containers use current settings.
@@ -665,8 +661,12 @@ public partial class DockingManager : TemplatedControl
     internal void ShowContextMenu(Control target, LayoutItem item, LayoutHeaderKind kind, ContextRequestedEventArgs? request, IDock? pane = null, PixelPoint? screenPosition = null) =>
         _contextMenus.Show(kind == LayoutHeaderKind.Document ? DocumentContextMenu : AnchorableContextMenu,
             target, item, request, pane, screenPosition);
-    internal void AttachLayoutItem(LayoutItem item) => LogicalChildren.Add(item);
-    internal void DetachLayoutItem(LayoutItem item) => LogicalChildren.Remove(item);
+    internal void AttachLayoutItem(LayoutItem item) => base.LogicalChildren.Add(item);
+    internal void DetachLayoutItem(LayoutItem item)
+    {
+        base.LogicalChildren.Remove(item);
+        if (item.Model is InputElement content) InternalRemoveLogicalChild(content);
+    }
     internal bool AreSourceBindingsSuspended => _sourceBindingSuspensions > 0;
     internal void SuspendSourceBindings() => _sourceBindingSuspensions++;
     internal void ResumeSourceBindings()
@@ -684,9 +684,9 @@ public partial class DockingManager : TemplatedControl
             && IsInitialized) EnsureAnchorSidePanels();
     }
 
-    internal void EnsureLayoutRootPanel()
+    internal void EnsureLayoutRootPanel(bool force = false)
     {
-        if (ReferenceEquals(_presentedRootPanel, Layout.RootPanel)) return;
+        if (!force && ReferenceEquals(_presentedRootPanel, Layout.RootPanel)) return;
         _presentedRootPanel = Layout.RootPanel;
         SetCurrentValue(LayoutRootPanelProperty, new LayoutPanelControl(Layout.RootPanel));
     }

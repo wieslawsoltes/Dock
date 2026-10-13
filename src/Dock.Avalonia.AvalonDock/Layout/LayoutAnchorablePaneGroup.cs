@@ -1,3 +1,4 @@
+using System.Xml;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
@@ -8,6 +9,14 @@ namespace AvalonDock.Layout;
 /// <summary>A split group containing anchorable panes.</summary>
 public class LayoutAnchorablePaneGroup : LayoutPositionableGroup<ILayoutAnchorablePane>, ILayoutAnchorablePane, ILayoutOrientableGroup
 {
+    /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
+    public override void WriteXml(XmlWriter writer)
+    {
+        writer = AvalonDockXml.PrepareWriter(this, writer);
+        writer.WriteAttributeString(nameof(Orientation), Orientation.ToString());
+        base.WriteXml(writer);
+    }
+
     /// <summary>Creates an empty anchorable pane group.</summary>
     public LayoutAnchorablePaneGroup() { }
     /// <summary>Creates a group containing an anchorable pane.</summary>

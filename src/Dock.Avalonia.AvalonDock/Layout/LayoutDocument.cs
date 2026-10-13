@@ -25,6 +25,12 @@ public class LayoutDocument : LayoutContent
         LayoutContentXml.ReadDocument(this, reader);
         base.ReadXml(reader);
     }
+    /// <summary>Writes common content attributes followed by document metadata, omitting default values.</summary>
+    public override void WriteXml(XmlWriter writer)
+    {
+        base.WriteXml(writer);
+        LayoutXmlAttributes.Document(this, writer);
+    }
     /// <inheritdoc/>
     public override void Close() => CloseCore();
     /// <inheritdoc/>

@@ -30,7 +30,7 @@ internal static class ContentXmlProbe
             tool.WriteXml(writer);
             writer.WriteEndElement();
         }
-        if (xml.Root?.Attribute("IsFloating")?.Value != "true")
+        if (xml.Root?.Attribute("IsFloating")?.Value != "True")
             throw new Exception("Packaged content XML did not persist the floating flag.");
 
         ExtendedDocument document = new();

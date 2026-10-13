@@ -1,3 +1,4 @@
+using System.Xml;
 using System;
 using Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -9,6 +10,14 @@ namespace AvalonDock.Layout;
 /// <summary>A tabbed tool pane backed by a Dock tool dock.</summary>
 public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, ILayoutAnchorablePane, ILayoutContentSelector, ILayoutPaneSelection
 {
+    /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
+    public override void WriteXml(XmlWriter writer)
+    {
+        writer = AvalonDockXml.PrepareWriter(this, writer);
+        LayoutXmlAttributes.AnchorablePane(this, writer);
+        base.WriteXml(writer);
+    }
+
     private readonly LayoutPaneSelection<LayoutAnchorable>? _selection;
     private string? _name;
     /// <summary>Creates an empty anchorable pane.</summary>

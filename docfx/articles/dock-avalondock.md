@@ -2829,6 +2829,29 @@ subclasses, preserving the selection observed by child-collection hooks.
 Avalonia styling name. It remains editable after native styling and raises a
 changed notification when its value changes. XML restoration writes it silently.
 
+Concrete models declare their own `WriteXml` overrides. Tool-specific attributes
+precede common content metadata; document-specific attributes follow it. Pane
+IDs, names, and header flags precede dimensions, while orientable groups write
+their orientation first. Generic base writers do not infer concrete attributes
+from extra interfaces on application subclasses. Writer callbacks observe this
+order, and a failure stops later attributes and hooks.
+
+Saved booleans use `True` and `False`. `CanClose` is always written because tools
+and documents have different defaults. Default star lengths, 25-unit group
+minima, zero floating dimensions, and default flags are omitted. Blank titles,
+content IDs, descriptions, and string tooltips are omitted without modifying the
+model; use nonblank content IDs for automatic recovery after a save. Explicit
+empty pane IDs and pane names remain supported. Auto-hide sizes are written only
+when positive. Following upstream's write condition, auto-hide minima of 25 are
+omitted even though newly created tools start at 100 and write that value.
+
+Saving does not assign IDs to unused containers. Existing IDs and explicit empty
+IDs remain, and referenced native groups receive IDs for return-location recovery.
+Duplicate native IDs are still made unique, preserving pane precedence. Return
+references to roots, floating windows, or anchor sides are omitted because those
+containers have no serializable pane identity. Native group IDs and nondefault
+`AllowDuplicateContent` / `CanRepositionItems` remain Dock XML extensions.
+
 Whole-layout writes dispatch each nested model's virtual `WriteXml`, including
 panes, groups, side/anchor nodes, hidden content, and floating models. Custom
 overrides can add attributes before calling base; content-only models may also

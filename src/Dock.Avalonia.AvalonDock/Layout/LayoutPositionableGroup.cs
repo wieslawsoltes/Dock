@@ -1,4 +1,5 @@
 using System;
+using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
@@ -31,6 +32,14 @@ public abstract class LayoutPositionableGroup<T> : LayoutGroup<T>, ILayoutPositi
         // Dock uses NaN for an unspecified constraint; AvalonDock starts at 25.
         if (double.IsNaN(model.MinWidth)) model.MinWidth = 25;
         if (double.IsNaN(model.MinHeight)) model.MinHeight = 25;
+    }
+
+    /// <summary>Writes nondefault dimensions and native options before the group's children.</summary>
+    public override void WriteXml(XmlWriter writer)
+    {
+        writer = AvalonDockXml.PrepareWriter(this, writer);
+        LayoutXmlAttributes.Position(this, this, writer);
+        base.WriteXml(writer);
     }
 
     /// <summary>Gets or sets the preferred docked width.</summary>

@@ -1,3 +1,4 @@
+using System.Xml;
 using Avalonia.Layout;
 using Dock.Model.Avalonia.Controls;
 using AvalonDock.Infrastructure;
@@ -7,6 +8,14 @@ namespace AvalonDock.Layout;
 /// <summary>A split panel containing document and anchorable panes.</summary>
 public class LayoutPanel : LayoutPositionableGroup<ILayoutPanelElement>, ILayoutOrientableGroup
 {
+    /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
+    public override void WriteXml(XmlWriter writer)
+    {
+        writer = AvalonDockXml.PrepareWriter(this, writer);
+        writer.WriteAttributeString(nameof(Orientation), Orientation.ToString());
+        base.WriteXml(writer);
+    }
+
     /// <summary>Creates an empty panel.</summary>
     public LayoutPanel() : this(new ProportionalDock()) { }
     /// <summary>Creates a panel with its first child.</summary>

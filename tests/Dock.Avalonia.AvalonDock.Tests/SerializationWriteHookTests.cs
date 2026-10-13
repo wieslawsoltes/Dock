@@ -57,7 +57,7 @@ public class SerializationWriteHookTests
             Assert.Single(root.Descendants(), node => (string?)node.Attribute(metadata + "marker") == probe.Name);
         }
         Assert.Contains("Description=\"Editor\"", xml);
-        Assert.Contains("CanHide=\"false\"", xml);
+        Assert.Contains("CanHide=\"False\"", xml);
         Assert.DoesNotContain("MarkedDocument", xml);
         // These unregistered write-only subclasses append comment nodes. A
         // streaming built-in reader does not consume custom child payloads;

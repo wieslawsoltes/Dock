@@ -199,7 +199,8 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,988 cases, including 43 streaming XML
+- The consolidated adapter suite passes all 3,035 cases, including 47 XML write-attribute, inheritance, identifier,
+  callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
   cases, plus 63 numeric XML
   formatting, culture, round-trip, and enum-error cases, plus 10 tool-pane XML
@@ -889,9 +890,15 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   five package probes reproduce the preceding reader and error-boundary defects.
   The earlier floating test that rejected two document roots was corrected: each
   child replaces the previous one, so the last document remains.
+  Forty-seven write-contract cases cover explicit inheritance dispatch, attribute
+  order, default omission, CLR boolean spellings, whitespace-only content strings,
+  writer callbacks and failures, and return identifiers. Unused containers no
+  longer receive generated IDs. Explicit empty pane IDs remain supported, native
+  group references receive IDs, and unsupported return-container kinds are omitted.
+  Nine concrete/base write overrides now have matching source-presence keys.
   Remaining XML work includes the broader inherited-hook, root-format edge-case,
-  and write-contract audit (including omitted defaults, attribute ordering, and
-  culture changes). Compact roots with omitted empty sections and persisted native
+  and write-contract audit (including nested write-error boundaries, namespaces,
+  and broader culture changes). Compact roots with omitted empty sections and persisted native
   root-panel metadata remain adapter extensions to the canonical upstream format.
   Assigning a return container raises only its changed notification, then initializes
   an unset pane ID using the reference left by application callbacks. Identifier
@@ -1347,8 +1354,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 ## Reproducible API inventory
 
 `UPSTREAM-API.txt` records 951 public/protected declarations across 102 exported
-types in the pinned upstream source. The Roslyn-based source audit counts 822
-matching type/member keys and 129 missing declarations at this checkpoint.
+types in the pinned upstream source. The Roslyn-based source audit counts 831
+matching type/member keys and 120 missing declarations at this checkpoint.
 All 102 exported type keys are present; member signatures, inheritance, templates,
 and behavior still require the separate checks below.
 This is a **presence audit only**, not a percentage of completed compatibility.

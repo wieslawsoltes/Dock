@@ -97,6 +97,13 @@ public class LayoutAnchorable : LayoutContent
         LayoutContentXml.ReadAnchorable(this, reader);
         base.ReadXml(reader);
     }
+    /// <summary>Writes tool metadata followed by common content attributes using AvalonDock's omission rules.</summary>
+    public override void WriteXml(XmlWriter writer)
+    {
+        writer = AvalonDockXml.PrepareWriter(this, writer);
+        LayoutXmlAttributes.Anchorable(this, writer);
+        base.WriteXml(writer);
+    }
     /// <summary>Gets whether this tool is in an auto-hide strip.</summary>
     public bool IsAutoHidden => Parent is LayoutAnchorGroup;
     /// <summary>Gets whether this tool is hidden.</summary>

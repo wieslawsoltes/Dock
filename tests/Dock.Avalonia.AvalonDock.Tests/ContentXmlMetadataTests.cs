@@ -203,7 +203,7 @@ public class ContentXmlMetadataTests
         Read(content, "<Content IsFloating='true' />");
         Read(content, "<Content IsFloating='true' />");
         Assert.Equal(new[] { "changed:IsFloating" }, notifications);
-        Assert.Equal("true", Write(content).Attribute("IsFloating")?.Value);
+        Assert.Equal("True", Write(content).Attribute("IsFloating")?.Value);
         content.DockModel.DockingState = DockingWindowState.Document;
         Assert.False(content.IsFloating);
         Assert.Null(Write(content).Attribute("IsFloating"));

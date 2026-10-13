@@ -34,7 +34,7 @@ public class GroupXmlMetadataTests
         Assert.Equal(125, group.DockModel.MinWidth);
         Assert.Equal(175, group.DockModel.MinHeight);
         XElement result = Write(group);
-        foreach ((string name, string value) in new[] { ("Id", "pane-id"), ("DockWidth", "145"), ("DockHeight", "2*"), ("DockMinWidth", "125"), ("DockMinHeight", "175"), ("FloatingWidth", "501"), ("FloatingHeight", "401"), ("FloatingLeft", "31"), ("FloatingTop", "41"), ("IsMaximized", "true") })
+        foreach ((string name, string value) in new[] { ("Id", "pane-id"), ("DockWidth", "145"), ("DockHeight", "2*"), ("DockMinWidth", "125"), ("DockMinHeight", "175"), ("FloatingWidth", "501"), ("FloatingHeight", "401"), ("FloatingLeft", "31"), ("FloatingTop", "41"), ("IsMaximized", "True") })
             Assert.Equal(value, result.Attribute(name)?.Value);
         if (group is LayoutDocumentPane documents) Assert.False(documents.ShowHeader);
         if (group is LayoutAnchorablePane tools) Assert.Equal("Tools", tools.Name);
@@ -67,7 +67,7 @@ public class GroupXmlMetadataTests
             "<Group Id='restored-id' Name='Restored tools' ShowHeader='false' Orientation='Vertical' DockWidth='146' DockHeight='invalid' DockMinWidth='200' />")));
         XElement result = Write(group);
         Assert.Equal("146", result.Attribute("DockWidth")?.Value);
-        Assert.Equal("1*", result.Attribute("DockHeight")?.Value);
+        Assert.Null(result.Attribute("DockHeight"));
         Assert.Equal(25, group.DockModel.MinWidth);
         if (group is LayoutDocumentPane documents) Assert.False(documents.ShowHeader);
         if (group is LayoutAnchorablePane tools) Assert.Equal("Restored tools", tools.Name);
@@ -90,8 +90,8 @@ public class GroupXmlMetadataTests
         Assert.Empty(notifications);
         XElement result = Write(group);
         Assert.Equal("502", result.Attribute("FloatingWidth")?.Value);
-        Assert.Equal("0", result.Attribute("FloatingHeight")?.Value);
-        Assert.Equal("0", result.Attribute("FloatingLeft")?.Value);
+        Assert.Null(result.Attribute("FloatingHeight"));
+        Assert.Null(result.Attribute("FloatingLeft"));
         Assert.Equal(130, group.DockModel.MinWidth);
         Assert.Equal(140, group.DockModel.MinHeight);
     }
@@ -190,7 +190,7 @@ public class GroupXmlMetadataTests
         Assert.IsType<InvalidOperationException>(error);
         Assert.Equal(initialId, group.DockModel.Id);
         Assert.Equal(25, group.DockMinWidth);
-        Assert.False(string.IsNullOrEmpty(Write(group).Attribute("Id")?.Value));
+        Assert.Null(Write(group).Attribute("Id"));
     }
 
     public static IEnumerable<object[]> Orientations()

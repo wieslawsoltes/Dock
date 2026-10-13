@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
 using AvalonDock;
@@ -34,7 +35,13 @@ public class SerializationRecoveryTests
             if (isTool) args.Model.IconSource = replacement;
         };
 
-        serializer.Deserialize(new StringReader(Save(serializer)));
+        XElement input = XElement.Parse(Save(serializer));
+        // Empty identifiers remain valid reader input, but upstream writers omit
+        // them. Supply the explicit attribute when testing empty-key recovery.
+        if (id.Length == 0)
+            foreach (XElement item in input.Descendants().Where(item => item.Name == "LayoutDocument" || item.Name == "LayoutAnchorable"))
+                item.SetAttributeValue("ContentId", id);
+        serializer.Deserialize(new StringReader(input.ToString()));
 
         LayoutDocument restoredDocument = Assert.Single(manager.Layout.Descendents().OfType<LayoutDocument>());
         LayoutAnchorable restoredTool = Assert.Single(manager.Layout.Descendents().OfType<LayoutAnchorable>());

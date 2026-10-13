@@ -285,3 +285,7 @@ explicit selection, and selection recovery after failed and successful reads.
 The streaming XML probe checks live attribute positions, partial root restoration,
 successive floating-window children, nested deserialization errors, and external
 read hooks with the original depth, line information, and following siblings.
+
+The XML write probe checks attribute omission and boolean spellings, tool/base
+metadata order, whitespace-only strings, unchanged unreferenced pane identifiers,
+and base write behavior on an external group with additional layout interfaces.

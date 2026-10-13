@@ -77,6 +77,7 @@ PackageConsumer.ContainerRootSubscriptionProbe.Verify();
 PackageConsumer.LayoutCallbackProbe.Verify();
 PackageConsumer.TemplateCallbackProbe.Verify();
 PackageConsumer.LayoutInterfaceProbe.Verify();
+PackageConsumer.XmlWriteProbe.Verify();
 PackageConsumer.GroupXmlProbe.Verify();
 PackageConsumer.ContentXmlProbe.Verify();
 PackageConsumer.XmlNumericSelectionProbe.Verify();

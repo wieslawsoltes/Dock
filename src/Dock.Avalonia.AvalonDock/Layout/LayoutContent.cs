@@ -198,7 +198,7 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
     /// </remarks>
     public virtual void ReadXml(XmlReader reader) => LayoutContentXml.Read(this, reader);
     /// <summary>Writes content metadata inside the caller's XML element.</summary>
-    public virtual void WriteXml(XmlWriter writer) => AvalonDockXml.WriteContents(this, writer);
+    public virtual void WriteXml(XmlWriter writer) => LayoutXmlAttributes.Content(this, AvalonDockXml.PrepareWriter(this, writer));
     /// <summary>Compares application content when it implements <see cref="IComparable"/>, otherwise titles using the current culture.</summary>
     /// <exception cref="NullReferenceException">The other layout content is null.</exception>
     public int CompareTo(LayoutContent? other) => Content is IComparable comparable

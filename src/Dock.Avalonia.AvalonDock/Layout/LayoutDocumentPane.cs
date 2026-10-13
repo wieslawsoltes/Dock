@@ -1,3 +1,4 @@
+using System.Xml;
 using System.Collections.Generic;
 using Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -9,6 +10,14 @@ namespace AvalonDock.Layout;
 /// <summary>A tabbed document pane backed by a Dock document dock.</summary>
 public class LayoutDocumentPane : LayoutPositionableGroup<LayoutContent>, ILayoutDocumentPane, ILayoutContentSelector, ILayoutPaneSelection
 {
+    /// <summary>Writes this group's metadata before its inherited attributes and children.</summary>
+    public override void WriteXml(XmlWriter writer)
+    {
+        writer = AvalonDockXml.PrepareWriter(this, writer);
+        LayoutXmlAttributes.DocumentPane(this, writer);
+        base.WriteXml(writer);
+    }
+
     private bool _showHeader = true;
     private readonly LayoutPaneSelection<LayoutContent>? _selection;
     /// <summary>Creates an empty document pane.</summary>

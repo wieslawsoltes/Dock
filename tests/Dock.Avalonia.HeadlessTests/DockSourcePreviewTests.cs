@@ -297,6 +297,84 @@ public class DockSourcePreviewTests
         }
     }
 
+    [AvaloniaTheory]
+    [InlineData(DockOperation.Left)]
+    [InlineData(DockOperation.Right)]
+    [InlineData(DockOperation.Top)]
+    [InlineData(DockOperation.Bottom)]
+    public void Drag_after_splitting_a_tab_reflows_and_restores_the_source(DockOperation operation)
+    {
+        var (factory, root, panes) = DockDropPreviewTests.CreateLayout(0.4, 0.3, 0.3);
+        var row = (IProportionalDock)panes[0].Owner!;
+        var horizontal = operation is DockOperation.Left or DockOperation.Right;
+        row.Orientation = horizontal ? Orientation.Horizontal : Orientation.Vertical;
+        var source = panes[0].ActiveDockable!;
+        source.CanFloat = false;
+        var retained = factory.CreateTool();
+        factory.AddDockable(panes[0], retained);
+        var host = new DockControl { Layout = root };
+        var window = new Window { Width = 1000, Height = 600, Content = host };
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            // The first drop takes a tab out of a group and inserts a divider into
+            // an existing row. Do not reinitialize the layout between operations.
+            Assert.True(new DockManager(new DockService()).ValidateDockable(source, panes[1], DragAction.Move, operation, true));
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            var sourcePane = Assert.IsAssignableFrom<IDock>(source.Owner);
+            var sourceControl = (Control)factory.VisibleDockableControls[sourcePane];
+            var originalSource = Bounds(factory, sourcePane, host);
+            var originalTarget = Bounds(factory, panes[1], host);
+            var children = row.VisibleDockables!.ToArray();
+            var shares = children.Select(x => (x.Proportion, x.CollapsedProportion)).ToArray();
+            for (var attempt = 0; attempt < 2; attempt++)
+            {
+                var drag = host.GetVisualDescendants().OfType<Control>()
+                    .First(x => ReferenceEquals(x.DataContext, source));
+                var state = (DockControlState)host.DockControlState;
+                state.StartDrag(drag, default, new Point(500, 300), host);
+                Dispatcher.UIThread.RunJobs();
+                window.UpdateLayout();
+                Assert.False(sourceControl.IsEffectivelyVisible);
+                var expanded = Bounds(factory, panes[1], host);
+                Assert.True(horizontal ? expanded.Width > originalTarget.Width : expanded.Height > originalTarget.Height);
+                Assert.Equal(children, row.VisibleDockables);
+                Assert.Equal(shares, children.Select(x => (x.Proportion, x.CollapsedProportion)));
+                Assert.Same(sourcePane, source.Owner);
+
+                window.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+                window.KeyReleaseQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+                state.Process(default, default, EventType.Released, DragAction.Move, host, new List<IDockControl> { host });
+                Dispatcher.UIThread.RunJobs();
+                window.UpdateLayout();
+                Assert.True(sourceControl.IsEffectivelyVisible);
+                DockDropPreviewTests.AssertBounds(originalSource, Bounds(factory, sourcePane, host));
+                DockDropPreviewTests.AssertBounds(originalTarget, Bounds(factory, panes[1], host));
+                Assert.Equal(children, row.VisibleDockables);
+                Assert.Same(sourcePane, source.Owner);
+            }
+
+            using var preview = DockDragPreviewLayout.TryCreate(source, host);
+            Assert.NotNull(preview);
+            var predicted = new DockDropPreviewService().GetBounds(source, panes[1], operation, host, double.NaN);
+            Assert.NotNull(predicted);
+            preview!.Dispose();
+            Assert.True(new DockManager(new DockService()).ValidateDockable(source, panes[1], DragAction.Move, operation, true));
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            DockDropPreviewTests.AssertBounds(predicted!.Value, Bounds(factory, source.Owner!, host));
+        }
+        finally
+        {
+            window.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+            window.MouseUp(default, MouseButton.Left);
+            window.Close();
+        }
+    }
+
     private static Rect Bounds(IFactory factory, IDockable model, Control relativeTo)
     {
         var control = (Control)factory.VisibleDockableControls[model];

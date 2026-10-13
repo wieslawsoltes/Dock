@@ -591,6 +591,8 @@ public abstract partial class FactoryBase : IFactory
                                     }
                                 }
 
+                                InitDockable(splitter, proportionalOwner);
+
                                 // Clean up any orphaned splitters that might have been created
                                 CleanupOrphanedSplitters(proportionalOwner);
 

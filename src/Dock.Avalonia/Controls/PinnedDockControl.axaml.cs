@@ -64,6 +64,22 @@ public class PinnedDockControl : TemplatedControl
     public static readonly StyledProperty<bool> InitializePinnedBoundsOnLayoutProperty =
         AvaloniaProperty.Register<PinnedDockControl, bool>(nameof(InitializePinnedBoundsOnLayout), true);
 
+    /// <summary>Defines whether this control presents overlay previews in a separate window.</summary>
+    public static readonly StyledProperty<bool?> UsePinnedDockWindowProperty =
+        AvaloniaProperty.Register<PinnedDockControl, bool?>(nameof(UsePinnedDockWindow));
+
+    /// <summary>Gets or sets whether overlay previews use a separate window.</summary>
+    /// <remarks>
+    /// Null follows <see cref="DockSettings.UsePinnedDockWindow"/>. False keeps the preview in this
+    /// control's template; true uses the configured native or managed window host. Inline previews
+    /// remain in the template. Changing this value updates an open preview without unpinning it.
+    /// </remarks>
+    public bool? UsePinnedDockWindow
+    {
+        get => GetValue(UsePinnedDockWindowProperty);
+        set => SetValue(UsePinnedDockWindowProperty, value);
+    }
+
     /// <summary>Gets or sets the minimum pinned content width. Defaults to 50.</summary>
     public double MinimumPinnedWidth
     {
@@ -143,6 +159,7 @@ public class PinnedDockControl : TemplatedControl
         MinimumPinnedWidthProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
         MinimumPinnedHeightProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
         MinimumRemainingContentSizeProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        UsePinnedDockWindowProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateWindow());
         InitializePinnedBoundsOnLayoutProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) =>
         {
             if (control.InitializePinnedBoundsOnLayout)
@@ -183,7 +200,7 @@ public class PinnedDockControl : TemplatedControl
         UpdateGrid();
         if (IsOverlayDisplayMode())
         {
-            if (DockSettings.UsePinnedDockWindow)
+            if (UsePinnedDockWindow ?? DockSettings.UsePinnedDockWindow)
             {
                 UpdateWindow();
             }
@@ -312,7 +329,7 @@ public class PinnedDockControl : TemplatedControl
 
     private void OnAttached(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        if (DockSettings.UsePinnedDockWindow && IsOverlayDisplayMode())
+        if ((UsePinnedDockWindow ?? DockSettings.UsePinnedDockWindow) && IsOverlayDisplayMode())
         {
             UpdateWindow();
         }
@@ -457,8 +474,13 @@ public class PinnedDockControl : TemplatedControl
 
     private void UpdateWindow()
     {
-        if (!DockSettings.UsePinnedDockWindow || !IsOverlayDisplayMode() || _pinnedDockGrid is null || _pinnedDock is null)
+        if (!(UsePinnedDockWindow ?? DockSettings.UsePinnedDockWindow) || !IsOverlayDisplayMode() ||
+            _pinnedDockGrid is null || _pinnedDock is null || this.GetVisualRoot() is null)
         {
+            if (_window is not null || _managedLayer is not null || _managedPinnedHost is not null)
+            {
+                CloseWindow();
+            }
             return;
         }
 

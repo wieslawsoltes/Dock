@@ -1548,6 +1548,29 @@ the focused document/tool instead of focusing a structural container during
 cleanup; all eight affected grouped outer-drop cases retain their original
 focus expectations.
 
+### Collection replacement and hidden activation
+
+Indexed replacement publishes `Replace` and parent detach/attach hooks even for
+the same instance. Incoming parent callbacks observe the new collection membership;
+reattachment reconciles a parent selected by an earlier callback. Hidden and pinned
+tools use their public parents during detachment. Same-instance floating-window
+replacement retains its host and native registration. Callback failures retain
+completed collection phases and permit a later attachment retry.
+Nested count and parent callbacks can insert another child without consuming the
+outer attachment or losing native collection membership.
+
+Explicitly activating hidden tools retains the public active flag without showing
+them, including calling `Hide()` on an already hidden tool. Collection replacement
+does not clear that activation. Native [PR #1178](https://github.com/wieslawsoltes/Dock/pull/1178)
+adds the optional `ShouldSynchronizeDockingWindowActivation` policy with an unchanged
+default. It was implemented and validated in a separate worktree, merged to `master`,
+and reintegrated by merging `master`. Its 2,485 native test cases pass, including
+seven new policy cases and the Release leak suite. GitHub platform checks were
+still running at integration; final results are recorded with the PR.
+The facade adds 42 Headless cases and fourteen external consumer checks. All
+fourteen reproduce defects against the preceding `e3d2916fb` packages. The
+consolidated adapter run passes 3,613 cases, and all 30 rendering cases pass.
+
 ## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering

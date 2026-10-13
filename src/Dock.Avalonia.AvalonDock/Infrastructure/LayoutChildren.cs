@@ -97,29 +97,31 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
             if (ReferenceEquals(ancestor, item)) throw new InvalidOperationException("A layout cannot contain itself or an ancestor.");
         if (Contains(item)) throw new InvalidOperationException("A layout element cannot occur twice in one group.");
         if (_owner is LayoutAnchorGroup && element is LayoutContent content) content.RememberDockedLocation();
-        LayoutParenting.RemoveFromParent(element);
-        _owner.Context.Adopt(element.Context);
         return element;
     }
 
     private void Attach(LayoutElement element)
     {
+        // The target collection already contains this item when parent hooks
+        // run. Use its current parent, including changes made by earlier hooks.
+        if (!ReferenceEquals(element.Parent, _owner)) LayoutParenting.RemoveFromParent(element);
+        _owner.Context.Adopt(element.Context);
         if (_model.Factory is { } factory) factory.InitDockable(element.DockModel, _model);
         else element.DockModel.Owner = _model;
     }
 
     protected override void InsertItem(int index, T item)
     {
-        if (_syncing) { base.InsertItem(index, item); return; }
         if (index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
         LayoutElement element = Prepare(item);
         Mutate(() =>
         {
             int nativeIndex = index < Count ? _source.IndexOf(((LayoutElement)(ILayoutElement)this[index]).DockModel) : _source.Count;
             _source.Insert(nativeIndex, element.DockModel);
+            LayoutElement? previousAttachment = _pendingAttachment;
             _pendingAttachment = element;
             try { base.InsertItem(index, item); }
-            finally { _pendingAttachment = null; }
+            finally { _pendingAttachment = previousAttachment; }
         });
     }
 
@@ -135,22 +137,27 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
 
     protected override void SetItem(int index, T item)
     {
-        if (ReferenceEquals(this[index], item)) return;
         LayoutElement old = (LayoutElement)(ILayoutElement)this[index];
-        LayoutElement replacement = Prepare(item);
+        // ObservableCollection still publishes a replacement for the same
+        // instance. Its parent detach/attach hooks are part of that contract;
+        // the existing child does not need duplicate-membership validation.
+        LayoutElement replacement = ReferenceEquals(old, item) ? old : Prepare(item);
         Mutate(() =>
         {
             _source[_source.IndexOf(old.DockModel)] = replacement.DockModel;
+            LayoutElement? previousAttachment = _pendingAttachment;
             _pendingAttachment = replacement;
             try { base.SetItem(index, item); }
-            finally { _pendingAttachment = null; }
+            finally { _pendingAttachment = previousAttachment; }
         });
     }
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
-        using LayoutActiveContent.ValidationScope validation = !IsRefreshingSource && _owner is ILayoutContentSelector &&
-            (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace) && _owner.Root is LayoutRoot root
+        using LayoutActiveContent.ValidationScope validation = !IsRefreshingSource &&
+            (_owner is ILayoutContentSelector || e.Action == NotifyCollectionChangedAction.Replace && e.OldItems?[0] is LayoutContent) &&
+            (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace) &&
+            (_owner as LayoutRoot ?? _owner.Root as LayoutRoot) is { } root
                 ? root.Focus.DeferValidation() : default;
         bool previousNotifying = IsNotifying;
         IsNotifying = true;
@@ -161,7 +168,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
             // projected auto-hide removals must not detach a moving model.
             if (!IsRefreshingSource && (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace) && e.OldItems is { } oldItems)
                 foreach (object? item in oldItems)
-                    if (item is LayoutElement old && ReferenceEquals(old.DockModel.Owner, _model)) old.DockModel.Owner = null;
+                    if (item is LayoutElement old && ReferenceEquals(old.Parent, _owner)) old.Parent = null;
             // ObservableCollection has inserted the item at this point, so parent
             // hooks can resolve its index. Publish only after native initialization.
             if (_pendingAttachment is { } attachment)
@@ -236,6 +243,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
     private void Mutate(Action action)
     {
         _owner.VerifyAccess();
+        bool previousSyncing = _syncing;
         _syncing = true;
         try
         {
@@ -260,7 +268,7 @@ internal sealed class LayoutChildren<T> : ObservableCollection<T>, ILayoutChildr
                 foreach (IDockable child in _source) factory.InitDockable(child, _model);
             }
         }
-        finally { _syncing = false; }
+        finally { _syncing = previousSyncing; }
     }
 
     private void NormalizeSplitters()

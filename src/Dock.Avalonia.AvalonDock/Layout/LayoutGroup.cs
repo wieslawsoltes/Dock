@@ -34,6 +34,10 @@ public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutContainer, ILayou
     }
 
     /// <summary>Gets the mutable children, synchronized with Dock.</summary>
+    /// <remarks>
+    /// Replacing an entry with the same instance still detaches and reattaches its parent and publishes a replacement notification.
+    /// Incoming parent callbacks observe the completed target collection membership.
+    /// </remarks>
     [Content]
     public ObservableCollection<T> Children => _children;
     IEnumerable<ILayoutElement> ILayoutContainer.Children => _children;

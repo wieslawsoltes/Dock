@@ -341,3 +341,8 @@ and failed hooks, reentrant update delivery, parent-only property notifications,
 root traversal, application-defined parent/root interfaces, and direct side
 parent failures and recovery. Its protected hooks are implemented in the
 external consumer assembly.
+
+The collection-mutation probe checks same-instance replacement of content and
+floating windows, incoming parent callback membership, and retained activation
+for hidden and pinned tools. These checks run against the packaged assemblies
+without project references.

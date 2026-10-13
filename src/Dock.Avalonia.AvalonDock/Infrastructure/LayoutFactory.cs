@@ -91,6 +91,12 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
         (dockable.Owner is not IDock owner || getLayoutElement(owner) is not ILayoutPaneSelection { IsMovingChildren: true }) &&
         base.ShouldSynchronizeDockingWindowSelection(dockable);
 
+    // AvalonDock permits explicitly activating hidden tools without showing
+    // them. Their public flag is independent of native visible-window focus.
+    protected override bool ShouldSynchronizeDockingWindowActivation(IDockable dockable) =>
+        getLayoutElement(dockable) is not LayoutAnchorable { IsHidden: true } &&
+        base.ShouldSynchronizeDockingWindowActivation(dockable);
+
     protected override void OnDockingWindowStatePropertyChanged(IDockable dockable, DockingWindowStateProperty property)
     {
         if (property == DockingWindowStateProperty.IsActive && ReferenceEquals(dockable, _writingActiveFlag)) return;

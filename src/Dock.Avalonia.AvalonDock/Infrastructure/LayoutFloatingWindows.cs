@@ -78,11 +78,28 @@ internal sealed class LayoutFloatingWindows : ObservableCollection<LayoutFloatin
     protected override void SetItem(int index, LayoutFloatingWindow item)
     {
         ArgumentNullException.ThrowIfNull(item);
-        if (ReferenceEquals(this[index], item)) return;
+        if (ReferenceEquals(this[index], item))
+        {
+            base.SetItem(index, item);
+            _owner.NotifyStructureChanged();
+            return;
+        }
         if (Contains(item)) throw new InvalidOperationException("A floating window cannot occur twice in a layout.");
         LayoutFloatingWindow previous = this[index];
         RemoveItem(index);
         if (!Contains(previous)) InsertItem(index, item);
+    }
+    protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Replace)
+        {
+            if (e.OldItems is { } previous)
+                foreach (LayoutFloatingWindow window in previous)
+                    if (ReferenceEquals(window.Parent, _owner)) window.SetProjectedParent(null);
+            if (e.NewItems is { } current)
+                foreach (LayoutFloatingWindow window in current) window.Attach(_owner);
+        }
+        base.OnCollectionChanged(e);
     }
     protected override void ClearItems()
     {

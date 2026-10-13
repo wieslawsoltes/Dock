@@ -3031,6 +3031,17 @@ Application classes may derive from `LayoutGroupBase` through its protected
 parameterless constructor. Each instance receives its own native Dock container;
 parent/root identity and protected collection/tree notification hooks remain usable.
 
+Collection replacement follows `ObservableCollection` semantics even when the
+new entry is the same instance: parent hooks detach and reattach it, selection
+hooks run, and subscribers receive `Replace`. Incoming parent callbacks see the
+item already in its target collection. Detachment callbacks may move an item to
+another parent; reattachment reconciles that membership before publishing the
+replacement. Hidden and pinned tool replacements retain root activation.
+Nested count and parent callbacks can insert siblings while retaining each item's
+public and native ownership.
+Replacing a floating window with itself preserves its native host and registration
+while publishing the parent transitions and collection notification.
+
 Group `ReadXml` restores stored docked/floating dimensions, IDs, tool-pane
 names, and document header flags without public setter notifications or pixel-size
 propagation. Native minimum values still update the existing Dock model. Public

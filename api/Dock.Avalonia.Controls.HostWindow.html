@@ -2260,6 +2260,49 @@ type that you wish the elements to be styled as.</p>
 
 
 
+  <a id="Dock_Avalonia_Controls_HostWindow_OnClosedCore_" data-uid="Dock.Avalonia.Controls.HostWindow.OnClosedCore*"></a>
+
+  <h3 id="Dock_Avalonia_Controls_HostWindow_OnClosedCore_System_EventArgs_Dock_Model_Core_IDockWindow_" data-uid="Dock.Avalonia.Controls.HostWindow.OnClosedCore(System.EventArgs,Dock.Model.Core.IDockWindow)">
+  OnClosedCore(EventArgs, IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Avalonia/Controls/HostWindow.axaml.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Releases the host presentation and raises the framework Closed event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnClosedCore(EventArgs e, IDockWindow? closingWindow)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a></dt>
+    <dd><p>The arguments supplied by the native close lifecycle.</p>
+</dd>
+    <dt><code>closingWindow</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window model captured when closing began, or null for an unbound host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Dock_Avalonia_Controls_HostWindow_OnClosedCore_System_EventArgs_Dock_Model_Core_IDockWindow__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The host is already marked closed and its close policy has been captured.
+An override can update its layout before Closed subscribers run without
+losing the captured factory notification for a preserved layout.
+Call the base implementation to release model references and raise Closed.
+Factory notification and tracking cleanup follow this hook's successful return.</p>
+</div>
+
+
+
+
   <a id="Dock_Avalonia_Controls_HostWindow_OnClosing_" data-uid="Dock.Avalonia.Controls.HostWindow.OnClosing*"></a>
 
   <h3 id="Dock_Avalonia_Controls_HostWindow_OnClosing_Avalonia_Controls_WindowClosingEventArgs_" data-uid="Dock.Avalonia.Controls.HostWindow.OnClosing(Avalonia.Controls.WindowClosingEventArgs)">

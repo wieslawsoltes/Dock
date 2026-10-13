@@ -323,6 +323,19 @@ entire window.</p>
 <pre><code class="lang-csharp">factory.WindowClosed += (_, e) =&gt;
     Console.WriteLine($&quot;Closed {e.Window?.Title}&quot;);
 </code></pre>
+<h2 id="custom-close-lifecycle">Custom close lifecycle</h2>
+<p>Native <code>HostWindow</code> subclasses can override <code>OnClosedCore(EventArgs, IDockWindow?)</code> to update
+their layout before the framework <code>Closed</code> event. At entry, the host reports
+<code>IHostWindowCloseState.IsClosed</code> and Dock has captured its close policy. The model
+argument identifies the window captured when closing began. Calling
+the base implementation releases presentation references, detaches the native
+layout from the logical tree, and raises <code>Closed</code>.</p>
+<p>Factory notification and host tracking cleanup follow the hook's successful
+return. For a preserved layout, the captured factory still receives
+<code>WindowClosed</code> if the override removes the window model before calling base.
+An exception stops subsequent stages; suppressing the base call also suppresses
+presentation cleanup and the framework event. Supply a custom host through the
+<a href="dock-host-window-locator.html">host window locator</a>.</p>
 <h2 id="window-magnetism">Window magnetism</h2>
 <p>Floating windows can optionally snap to the edges of other floating windows while being dragged.
 This behavior is controlled by two settings on <code>DockSettings</code>:</p>

@@ -3793,6 +3793,21 @@ references:
   commentId: Overload:Dock.Avalonia.Controls.HostWindow.OnClosed
   fullName: Dock.Avalonia.Controls.HostWindow.OnClosed
   nameWithType: HostWindow.OnClosed
+- uid: Dock.Avalonia.Controls.HostWindow.OnClosedCore(System.EventArgs,Dock.Model.Core.IDockWindow)
+  name: OnClosedCore(EventArgs, IDockWindow?)
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnClosedCore_System_EventArgs_Dock_Model_Core_IDockWindow_
+  commentId: M:Dock.Avalonia.Controls.HostWindow.OnClosedCore(System.EventArgs,Dock.Model.Core.IDockWindow)
+  name.vb: OnClosedCore(EventArgs, IDockWindow)
+  fullName: Dock.Avalonia.Controls.HostWindow.OnClosedCore(System.EventArgs, Dock.Model.Core.IDockWindow?)
+  fullName.vb: Dock.Avalonia.Controls.HostWindow.OnClosedCore(System.EventArgs, Dock.Model.Core.IDockWindow)
+  nameWithType: HostWindow.OnClosedCore(EventArgs, IDockWindow?)
+  nameWithType.vb: HostWindow.OnClosedCore(EventArgs, IDockWindow)
+- uid: Dock.Avalonia.Controls.HostWindow.OnClosedCore*
+  name: OnClosedCore
+  href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnClosedCore_
+  commentId: Overload:Dock.Avalonia.Controls.HostWindow.OnClosedCore
+  fullName: Dock.Avalonia.Controls.HostWindow.OnClosedCore
+  nameWithType: HostWindow.OnClosedCore
 - uid: Dock.Avalonia.Controls.HostWindow.OnClosing(Avalonia.Controls.WindowClosingEventArgs)
   name: OnClosing(WindowClosingEventArgs)
   href: api/Dock.Avalonia.Controls.HostWindow.html#Dock_Avalonia_Controls_HostWindow_OnClosing_Avalonia_Controls_WindowClosingEventArgs_

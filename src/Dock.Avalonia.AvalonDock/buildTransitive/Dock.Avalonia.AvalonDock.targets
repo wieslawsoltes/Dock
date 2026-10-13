@@ -1,0 +1,15 @@
+<Project>
+  <ItemGroup>
+    <CompilerVisibleProperty Include="MSBuildProjectDirectory" />
+    <CompilerVisibleProperty Include="AvalonDockGenerateCatalog" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="AvalonDockResourcePath" />
+  </ItemGroup>
+  <Target Name="CollectAvalonDockCatalogResources" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun;CoreCompile">
+    <ItemGroup>
+      <AdditionalFiles Include="@(AvaloniaResource)" Condition="'%(AvaloniaResource.Extension)' == '.axaml' Or '%(AvaloniaResource.Extension)' == '.xaml'">
+        <AvalonDockResourcePath Condition="'%(AvaloniaResource.Link)' != ''">%(AvaloniaResource.Link)</AvalonDockResourcePath>
+        <AvalonDockResourcePath Condition="'%(AvaloniaResource.Link)' == ''">%(AvaloniaResource.Identity)</AvalonDockResourcePath>
+      </AdditionalFiles>
+    </ItemGroup>
+  </Target>
+</Project>

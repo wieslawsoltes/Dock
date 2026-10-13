@@ -40,8 +40,20 @@ public sealed class LayoutSerializationTypes
     internal LayoutSerializationTypes Snapshot()
     {
         LayoutSerializationTypes result = new();
-        foreach (KeyValuePair<string, Func<LayoutElement>> entry in _factories) result._factories.Add(entry.Key, entry.Value);
-        foreach (KeyValuePair<Type, string> entry in _names) result._names.Add(entry.Key, entry.Value);
+        if (Avalonia.Application.Current is Generated.IAvalonDockGeneratedCatalogProvider provider)
+            provider.AvalonDockCatalog.RegisterLayoutTypes(result);
+        // Explicit registrations replace generated entries by both name and exact type.
+        foreach (KeyValuePair<Type, string> entry in _names)
+        {
+            if (result._names.Remove(entry.Key, out string? previousName))
+                result._factories.Remove(previousName);
+            Type? previousType = null;
+            foreach (KeyValuePair<Type, string> generated in result._names)
+                if (generated.Value == entry.Value) { previousType = generated.Key; break; }
+            if (previousType is not null) result._names.Remove(previousType);
+            result._names[entry.Key] = entry.Value;
+            result._factories[entry.Value] = _factories[entry.Value];
+        }
         return result;
     }
 

@@ -8,6 +8,7 @@
     <PackageId>Dock.Avalonia.AvalonDock</PackageId>
     <Description>AvalonDock API adapters backed by Dock's Avalonia models and controls.</Description>
     <PackageReadmeFile>AVALONDOCK.md</PackageReadmeFile>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddAvalonDockGeneratorToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
   <Import Project="../../build/SignAssembly.props" />
   <Import Project="../../build/SourceLink.props" />
@@ -17,7 +18,19 @@
     <PackageReference Include="ReactiveUI.Reactive" />
     <ProjectReference Include="../Dock.Model.Avalonia/Dock.Model.Avalonia.csproj" />
     <ProjectReference Include="../Dock.Avalonia.Themes.Fluent/Dock.Avalonia.Themes.Fluent.csproj" />
+    <ProjectReference Include="../Dock.Avalonia.AvalonDock.Generators/Dock.Avalonia.AvalonDock.Generators.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"
+                      GlobalPropertiesToRemove="RuntimeIdentifier;SelfContained;PublishAot;PublishTrimmed;TrimMode;InvariantGlobalization;StripSymbols"
+                      SetTargetFramework="TargetFramework=netstandard2.0" />
     <None Include="AVALONDOCK.md" Pack="true" PackagePath="/" />
     <None Include="COMPATIBILITY.md" Pack="true" PackagePath="/" />
+    <None Include="buildTransitive/Dock.Avalonia.AvalonDock.targets" Pack="true" PackagePath="buildTransitive/" />
   </ItemGroup>
+  <Target Name="AddAvalonDockGeneratorToPackage" Condition="'$(TargetFramework)' == 'net8.0'">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(MSBuildProjectDirectory)/../Dock.Avalonia.AvalonDock.Generators/bin/$(Configuration)/netstandard2.0/Dock.Avalonia.AvalonDock.Generators.dll">
+        <PackagePath>analyzers/dotnet/cs/</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
+  </Target>
 </Project>

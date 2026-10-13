@@ -73,6 +73,7 @@ PackageConsumer.FloatingNotificationReferenceProbe.Verify();
 PackageConsumer.ActiveContentReferenceProbe.Verify();
 PackageConsumer.ContentStateReferenceProbe.Verify();
 PackageConsumer.RegisteredExtensionsProbe.Verify();
+PackageConsumer.GeneratedExtensionsProbe.Verify();
 PackageConsumer.DestinationProbe.Verify();
 PackageConsumer.SerializationProbe.Verify();
 PackageConsumer.OperationProbe.Verify();
@@ -1083,7 +1084,7 @@ namespace PackageConsumer
             => item is string && container is LayoutDocumentItem ? SourceStyle : null;
     }
 
-    public class ConsumerApp : Application
+    public partial class ConsumerApp : Application
     {
         public override void Initialize()
         {

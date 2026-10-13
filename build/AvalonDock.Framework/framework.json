@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/wieslawsoltes/Avalonia.git",
+  "commit": "462531a6d633d4eaf37f79b11641ea4c164e704a",
+  "base": "8eeda4f6f546165b3f72e63c9f42247abb306905",
+  "packageVersion": "12.1.4-avalondock.2"
+}

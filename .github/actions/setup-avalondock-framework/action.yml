@@ -1,0 +1,19 @@
+name: Prepare AvalonDock framework dependency
+description: Restore or build the pinned reflection-free Avalonia compatibility packages.
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - uses: actions/cache@v4
+      with:
+        path: artifacts/avalondock-framework/nuget
+        key: avalondock-framework-${{ hashFiles('build/AvalonDock.Framework/framework.json', 'build/AvalonDock.Framework/bootstrap.py') }}
+        enableCrossOsArchive: true
+    - name: Verify or build pinned framework packages
+      shell: bash
+      run: python3 build/AvalonDock.Framework/bootstrap.py

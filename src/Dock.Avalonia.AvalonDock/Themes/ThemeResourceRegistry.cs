@@ -28,7 +28,13 @@ public sealed class ThemeResourceRegistry
     internal ResourceDictionary Create(Uri uri)
     {
         if (!_factories.TryGetValue(uri, out Func<ResourceDictionary>? factory))
-            throw new NotSupportedException($"Register a compiled resource factory in DockingManager.ThemeResources for '{uri}'.");
+        {
+            ThemeResourceRegistry generated = new();
+            if (Avalonia.Application.Current is Generated.IAvalonDockGeneratedCatalogProvider provider)
+                provider.AvalonDockCatalog.RegisterThemeResources(generated);
+            if (!generated._factories.TryGetValue(uri, out factory))
+                throw new NotSupportedException($"No compiled theme resource was generated for '{uri}'. Include its AvaloniaResource in a project using the AvalonDock generator, or register a factory in DockingManager.ThemeResources.");
+        }
         return factory() ?? throw new InvalidOperationException("A theme resource factory returned null.");
     }
 }

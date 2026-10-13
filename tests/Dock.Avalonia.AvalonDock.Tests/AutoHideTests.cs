@@ -113,9 +113,9 @@ public class AutoHideTests
         group.Children.Add(tool);
         old.Children.Add(group);
         root.TopSide = new LayoutAnchorSide();
-        Assert.Null(old.Parent);
+        Assert.Same(root, old.Parent);
         Assert.Same(group, tool.Parent);
-        Assert.Null(tool.Root);
+        Assert.Same(root, tool.Root);
         Assert.Empty(((RootDock)root.DockModel).TopPinnedDockables!);
         group.Children.Add(new LayoutAnchorable());
         Assert.Empty(((RootDock)root.DockModel).TopPinnedDockables!);

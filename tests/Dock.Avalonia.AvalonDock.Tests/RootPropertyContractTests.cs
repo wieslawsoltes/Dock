@@ -134,8 +134,8 @@ public class RootPropertyContractTests
         else root.ReplaceChild(previous, null!);
 
         Assert.Null(slot.Read());
-        Assert.Null(previous.Parent);
-        Assert.Null(tool.Root);
+        Assert.Same(root, previous.Parent);
+        Assert.Same(root, tool.Root);
         Assert.Same(group, tool.Parent);
         Assert.DoesNotContain(previous, root.Children);
         Assert.Equal(4, root.Children.Count());
@@ -170,7 +170,7 @@ public class RootPropertyContractTests
         Assert.Same(error, Assert.Throws<InvalidOperationException>(() => slot.Write(replacement)));
 
         Assert.Same(before ? previous : replacement, slot.Read());
-        Assert.Same(before ? root : null, previous.Parent);
+        Assert.Same(root, previous.Parent);
         Assert.Same(before ? null : root, replacement.Parent);
         fail = false;
         slot.Write(null);

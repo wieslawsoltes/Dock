@@ -147,25 +147,45 @@ public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSeri
     /// <inheritdoc/>
     public DockingManager? Manager { get => _manager; internal set => SetField(ref _manager, value); }
     /// <summary>Gets or sets the left auto-hide strip; null removes the strip.</summary>
-    public LayoutAnchorSide? LeftSide { get => _leftSide; set => SetSide(ref _leftSide, value, AnchorSide.Left, nameof(LeftSide)); }
+    /// <remarks>Replacing the slot retains the former side's public parent and releases its unused native projection.</remarks>
+    public LayoutAnchorSide? LeftSide { get => _leftSide; set => SetSide(ref _leftSide, value, nameof(LeftSide)); }
     /// <summary>Gets or sets the top auto-hide strip; null removes the strip.</summary>
-    public LayoutAnchorSide? TopSide { get => _topSide; set => SetSide(ref _topSide, value, AnchorSide.Top, nameof(TopSide)); }
+    /// <remarks>Replacing the slot retains the former side's public parent and releases its unused native projection.</remarks>
+    public LayoutAnchorSide? TopSide { get => _topSide; set => SetSide(ref _topSide, value, nameof(TopSide)); }
     /// <summary>Gets or sets the right auto-hide strip; null removes the strip.</summary>
-    public LayoutAnchorSide? RightSide { get => _rightSide; set => SetSide(ref _rightSide, value, AnchorSide.Right, nameof(RightSide)); }
+    /// <remarks>Replacing the slot retains the former side's public parent and releases its unused native projection.</remarks>
+    public LayoutAnchorSide? RightSide { get => _rightSide; set => SetSide(ref _rightSide, value, nameof(RightSide)); }
     /// <summary>Gets or sets the bottom auto-hide strip; null removes the strip.</summary>
-    public LayoutAnchorSide? BottomSide { get => _bottomSide; set => SetSide(ref _bottomSide, value, AnchorSide.Bottom, nameof(BottomSide)); }
+    /// <remarks>Replacing the slot retains the former side's public parent and releases its unused native projection.</remarks>
+    public LayoutAnchorSide? BottomSide { get => _bottomSide; set => SetSide(ref _bottomSide, value, nameof(BottomSide)); }
 
-    private void SetSide(ref LayoutAnchorSide? field, LayoutAnchorSide? value, AnchorSide side, string name)
+    private void SetSide(ref LayoutAnchorSide? field, LayoutAnchorSide? value, string name)
     {
         VerifyAccess();
         if (ReferenceEquals(field, value)) return;
         RaisePropertyChanging(name);
-        value?.Parent?.RemoveChild(value);
-        field?.Detach();
+        LayoutAnchorSide? previous = field;
         field = value;
-        value?.Attach(this, side);
+        previous?.ReleaseProjection(this);
+        value?.Attach(this);
         RaisePropertyChanged(name);
-        NotifyUpdated();
+    }
+
+    internal AnchorSide? GetSideSlot(LayoutAnchorSide side)
+    {
+        LayoutAnchorSide? current = side.Side switch
+        {
+            AnchorSide.Left => _leftSide,
+            AnchorSide.Top => _topSide,
+            AnchorSide.Right => _rightSide,
+            _ => _bottomSide
+        };
+        if (ReferenceEquals(current, side)) return side.Side;
+        if (ReferenceEquals(_leftSide, side)) return AnchorSide.Left;
+        if (ReferenceEquals(_topSide, side)) return AnchorSide.Top;
+        if (ReferenceEquals(_rightSide, side)) return AnchorSide.Right;
+        if (ReferenceEquals(_bottomSide, side)) return AnchorSide.Bottom;
+        return null;
     }
     /// <inheritdoc/>
     public LayoutContent? ActiveContent

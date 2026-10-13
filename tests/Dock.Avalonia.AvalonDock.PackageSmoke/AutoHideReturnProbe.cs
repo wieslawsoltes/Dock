@@ -45,7 +45,7 @@ internal static class AutoHideReturnProbe
             LayoutAnchorable hidden = new() { ContentId = "hidden" };
             LayoutAnchorable restored = new() { ContentId = "restored" };
             LayoutAnchorGroup group = new() { Children = { hidden, restored } };
-            manager.Layout.LeftSide.Children.Add(group);
+            manager.Layout.LeftSide!.Children.Add(group);
             hidden.Hide();
             restored.ToggleAutoHide();
             if (!ReferenceEquals(restored.Parent, hidden.PreviousContainer))

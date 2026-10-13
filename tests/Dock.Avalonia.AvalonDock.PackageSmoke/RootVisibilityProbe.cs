@@ -31,7 +31,7 @@ internal static class RootVisibilityProbe
         Check("side child filtering", () =>
         {
             LayoutRoot root = Read("<RootPanel />", "<TopSide><LayoutDocument /><LayoutAnchorGroup /></TopSide>");
-            if (root.TopSide.ChildrenCount != 1) throw new Exception("A root side did not consume a non-group child.");
+            if (root.TopSide!.ChildrenCount != 1) throw new Exception("A root side did not consume a non-group child.");
         });
         Check("public interface membership", () =>
         {

@@ -601,7 +601,12 @@ The root's `RootPanel = null` creates a panel with one empty document pane.
 Root panel, side, and manager assignments raise changing and changed
 notifications. The four side properties accept null, including `{x:Null}` in
 compiled XAML. Clearing a side removes its control and pinned projection;
-reassignment restores it. Detached sides retain reusable groups and contents.
+reassignment restores it. Replaced sides retain their public parent, groups,
+contents, and root without parent or membership notifications; unused native
+ownership and subscriptions are released. Assigning a side to another root
+retains the old root's slot reference while transferring the side's parent.
+Two slots may reference one side. Its `Side` changes only when its parent changes;
+the adapter separately routes the native pinned projection to a current slot.
 XML writes a null side as an empty section and restores an empty side model.
 Root children enumerate panel, floating windows, top/right/bottom/left sides,
 then hidden tools, skipping null sides. `ChildrenCount` retains five fixed slots

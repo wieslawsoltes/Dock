@@ -316,3 +316,8 @@ lifetime and stream output without a byte order mark.
 The root/visibility probe checks root orientation spelling/fallback, recognized
 child filtering, model interface membership, both concrete visibility passes,
 and class visibility dispatch when a custom group adds an interface.
+
+The side-lifetime probe checks retained parents and roots after clearing all
+four strips, cross-root slot retention, shared slots, native ownership transfer,
+and incoming parent callback failures. It verifies that native pinned lists
+remain attached only to a current slot while preserving the public references.

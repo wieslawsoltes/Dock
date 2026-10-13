@@ -219,7 +219,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   continue to raise `CanExecuteChanged`. Local binding expressions to current
   defaults are cleared; raw observable subscriptions retain Avalonia ownership
   (use compiled bindings or `ToBinding()` for expression cleanup).
-- The consolidated adapter suite passes all 3,413 cases, including 37 root-property cases and root replacement cancellation, 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
+- The consolidated adapter suite passes all 3,436 cases, including 23 side-lifetime and 37 root-property cases and root replacement cancellation, 36 group-minimum and 52 model-docking cases, 100 focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
   reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
@@ -1414,14 +1414,28 @@ of the 16 model checks reproduce defects; the remaining insertion-index case is
 a passing control. These checks use the pinned source contracts, not new desktop
 observations. Interactive desktop validation remains deferred.
 
-## Open work (not release-complete)
+## Root property and side lifetime contracts
 
 The root-property batch adds 37 property, construction, traversal, XAML, XML,
 replacement, and observer-failure cases, plus a native floating-close cancellation
 case for `LayoutRoot.ReplaceChild`. Thirteen independent consumer probes reproduce
 the earlier `532c692c1` package failures, including compiled null slots in both
 XML namespaces. All 3,413 adapter and 30 rendering cases pass after the changes.
-This audit does not resolve the retained-parent difference listed below.
+
+The subsequent side-lifetime audit adds 23 cases for retained parent/root
+references, silent removal from root slots, cross-root assignments, shared slots,
+unchanged side values when the parent is unchanged, reentrant callbacks, incoming
+parent/side observer failures, native pinned ownership, and released model
+lifetimes. The public slot and parent references follow the pinned source
+contract; one native projection follows a current slot. Replacing a strip does
+not raise parent or membership notifications for the former strip or its tools.
+Incoming callback errors preserve the completed public phase and synchronize
+native ownership with the resulting parent. Fourteen independent package probes
+cover the root-slot and native projection contracts; all 14 reproduce failures
+in the preceding `ec18570ec` packages. All 3,436 adapter and 30 rendering cases
+pass. No desktop checks were added.
+
+## Open work (not release-complete)
 
 - Windows 11 ARM64 native pinned-window validation passes 37 checks covering
   editor attachment, native pointer resizing and release, and editor focus on
@@ -1452,9 +1466,9 @@ This audit does not resolve the retained-parent difference listed below.
   interface implementation behavior. The declaration review maps counterparts
   without establishing full signature or behavior equivalence.
   Additional selection edge cases and protected override ordering remain open.
-  Root-side replacement still detaches the former side's parent to release native
-  pinned ownership; upstream retains that parent reference. The public parent
-  contract and native projection lifetime need a separate reconciliation.
+  Direct assignments to `LayoutAnchorSide.Parent` still need callback-failure
+  and native-projection reconciliation, including the upstream failure after
+  assigning a null parent. The root-slot setters have the audit recorded above.
   Tool command/binding inheritance now has explicit overrides and focused
   coverage. Document floating-window closure now has an explicit override;
   both typed hosts and their base have the cleanup-order coverage recorded above.

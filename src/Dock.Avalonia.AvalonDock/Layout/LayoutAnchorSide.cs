@@ -14,8 +14,9 @@ public class LayoutAnchorSide : LayoutGroup<LayoutAnchorGroup>
     /// <summary>Creates an empty auto-hide side.</summary>
     public LayoutAnchorSide() : base(new ProportionalDock()) { }
     /// <summary>Gets the edge assigned by the containing layout root.</summary>
+    /// <remarks>The edge is resolved when the parent changes. Reusing this side in another slot of the same root retains the existing value.</remarks>
     public AnchorSide Side => _side;
-    internal Alignment DockAlignment => Side switch
+    internal Alignment DockAlignment => (_binding?.Edge ?? Side) switch
     {
         AnchorSide.Left => Alignment.Left,
         AnchorSide.Top => Alignment.Top,
@@ -36,19 +37,41 @@ public class LayoutAnchorSide : LayoutGroup<LayoutAnchorGroup>
         else if (ReferenceEquals(root.BottomSide, this)) SetField(ref _side, AnchorSide.Bottom, nameof(Side));
     }
 
-    internal void Attach(LayoutRoot root, AnchorSide side)
+    internal void Attach(LayoutRoot root)
     {
-        root.Context.Adopt(Context);
-        DockModel.Owner = root.DockModel;
-        SetField(ref _side, side, nameof(Side));
-        _binding = new LayoutAnchorSideBinding(root, this);
+        try { Parent = root; }
+        finally { SynchronizeProjection(); }
     }
 
-    internal void Detach()
+    internal void ReleaseProjection(LayoutRoot root)
     {
-        _binding?.Dispose();
+        if (ReferenceEquals(Parent, root)) SynchronizeProjection();
+    }
+
+    private void ReleaseProjection()
+    {
+        // Root side properties retain their former value's public parent. The
+        // native pinned list and its subscriptions still belong only to live slots.
+        SetProjectedParent(Parent);
+        LayoutAnchorSideBinding? binding = _binding;
         _binding = null;
+        binding?.Dispose();
         DockModel.Owner = null;
+    }
+
+    private void SynchronizeProjection()
+    {
+        if (Parent is not LayoutRoot root || root.GetSideSlot(this) is not { } edge)
+        {
+            ReleaseProjection();
+            return;
+        }
+        if (_binding?.IsBoundTo(root, edge) == true) return;
+        ReleaseProjection();
+        root.Context.Adopt(Context);
+        DockModel.Owner = root.DockModel;
+        SetProjectedParent(null);
+        _binding = new LayoutAnchorSideBinding(root, this, edge);
     }
 
     internal void Reconnect() => _binding?.Reconnect();

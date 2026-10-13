@@ -18,10 +18,11 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
     private LayoutAnchorable? _pinContent;
     private LayoutAnchorGroup? _pinGroup;
 
-    internal LayoutAnchorSideBinding(LayoutRoot root, LayoutAnchorSide side)
+    internal LayoutAnchorSideBinding(LayoutRoot root, LayoutAnchorSide side, AnchorSide edge)
     {
         _root = root;
         _side = side;
+        Edge = edge;
         ReconnectCore();
         _side.ChildrenTreeChanged += TreeChanged;
         if (side.IsVisible) Push();
@@ -33,6 +34,9 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
         ReconnectCore();
         Pull();
     }
+
+    internal AnchorSide Edge { get; }
+    internal bool IsBoundTo(LayoutRoot root, AnchorSide edge) => ReferenceEquals(_root, root) && Edge == edge;
 
     internal void MovePinned(Action move)
     {
@@ -63,7 +67,7 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
     {
         if (_pinned is INotifyCollectionChanged old) old.CollectionChanged -= PinnedChanged;
         RootDock root = (RootDock)_root.DockModel;
-        _pinned = _side.Side switch
+        _pinned = Edge switch
         {
             AnchorSide.Left => root.LeftPinnedDockables ??= new AvaloniaList<IDockable>(),
             AnchorSide.Top => root.TopPinnedDockables ??= new AvaloniaList<IDockable>(),
@@ -199,8 +203,8 @@ internal sealed class LayoutAnchorSideBinding : IDisposable
         foreach (var pair in _projected)
         {
             _pinned.Remove(pair.Key.DockModel);
-            pair.Key.SetProjectedParent(null);
             pair.Key.DockModel.Owner = pair.Value.DockModel;
+            pair.Key.SetProjectedParent(null);
             pair.Key.DockModel.Factory = null;
             pair.Key.DockModel.DockingState = DockingWindowState.None;
         }

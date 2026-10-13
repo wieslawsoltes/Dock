@@ -1306,7 +1306,18 @@ removes its displayed control and native pinned projection; assigning a side
 restores it. This also works with `TopSide="{x:Null}"` and the other side names
 in either XML namespace. Cleared sides write empty XML sections, which load as
 default empty side models. Replaced sides retain their groups and contents for
-reuse, while their native ownership and subscriptions are detached.
+reuse. Their public `Parent` and `Root` references also remain, with no parent or
+membership notifications from the removal. The adapter releases unused native
+ownership and subscriptions so changes to the former strip no longer affect the
+root's pinned list.
+
+Assigning a side that belongs to another root retains the old root's slot
+reference while changing the side's parent. Multiple slots may reference the
+same side. Its public `Side` value is resolved during a parent change; assigning
+another slot of the same root does not recompute it. Native pinned ownership
+uses one current slot independently of that retained value. Incoming parent
+callback failures leave the root's new slot assignment in place and retain the
+parent transition completed before the failure.
 
 `LayoutRoot.Children` visits the root panel, floating windows, top/right/bottom/left
 sides, then hidden tools, omitting null sides. `ChildrenCount` follows AvalonDock's

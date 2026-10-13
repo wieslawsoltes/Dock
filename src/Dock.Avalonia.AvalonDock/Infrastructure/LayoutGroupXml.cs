@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using System.Xml;
 using System.Xml.Linq;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -23,16 +22,15 @@ internal static class LayoutGroupXml
         }
         if (element is LayoutDocumentPane documents && xml.Attribute("ShowHeader") is { } header)
             documents.RestoreShowHeader(bool.Parse(header.Value));
-        if (element is LayoutAnchorablePane tools && xml.Attribute("Name") is { } name)
-            tools.RestoreName(name.Value);
+        if (element is LayoutAnchorablePane tools)
+        {
+            if (xml.Attribute("Name") is { } name) tools.RestoreName(name.Value);
+            tools.BeginXmlRead();
+        }
         if (element is LayoutAnchorGroup group && xml.Attribute("PreviousContainerId") is { } previous)
             group.PreviousContainerId = previous.Value;
         if (element is ILayoutOrientableGroup orientable && xml.Attribute("Orientation") is { } direction)
-        {
-            if (!Enum.TryParse(direction.Value, ignoreCase: true, out Orientation orientation))
-                throw new XmlException($"Invalid orientation '{direction.Value}'.");
-            orientable.Orientation = orientation;
-        }
+            orientable.Orientation = Enum.Parse<Orientation>(direction.Value, ignoreCase: true);
         if (element is not ILayoutPositionableGroup position) return;
         if (xml.Attribute("DockWidth") is { } width)
             position.RestoreDockLengths(GridLength.Parse(width.Value), position.DockHeight);

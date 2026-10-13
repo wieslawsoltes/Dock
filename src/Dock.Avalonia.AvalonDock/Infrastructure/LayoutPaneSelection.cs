@@ -19,6 +19,7 @@ internal sealed class LayoutPaneSelection<T>(LayoutGroup<T> pane, bool documents
     private bool _refreshing;
     private bool _publishingChanges;
     private bool _pending;
+    private bool _autoFix = true;
 
     internal T? Selected { get { EnsureCurrent(); return _selected; } }
     internal int Index { get { EnsureCurrent(); return _index; } }
@@ -47,6 +48,16 @@ internal sealed class LayoutPaneSelection<T>(LayoutGroup<T> pane, bool documents
         _selected = Resolve(out _index);
     }
 
+    internal void BeginXmlRead() => _autoFix = false;
+
+    internal void CompleteXmlRead()
+    {
+        // Upstream reenables fallback only after successful restoration. A
+        // failed or nested read retains the resulting state of this one flag.
+        _autoFix = true;
+        ChildrenChanged();
+    }
+
     internal void Select(int index)
     {
         T? selected = index >= 0 && index < pane.Children.Count ? pane.Children[index] : null;
@@ -62,7 +73,7 @@ internal sealed class LayoutPaneSelection<T>(LayoutGroup<T> pane, bool documents
     {
         if (pane.IsRefreshingNativeChildren) { DeferNativeChange(); return; }
         _pending = false;
-        if (Resolve(out _) is not null) { Refresh(); return; }
+        if (Resolve(out _) is not null || !_autoFix) { Refresh(); return; }
         int next = -1;
         if (documents && pane.Root is not null)
         {

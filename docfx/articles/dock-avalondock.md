@@ -2779,6 +2779,20 @@ ordinary minimum setters continue to reject negative values. Orientation accepts
 case-insensitive names and numeric enum values. Self-closing empty groups recompute
 visibility; explicit empty start/end pairs retain the current visibility.
 
+XML double attributes use invariant CLR number spellings, including `Infinity`,
+`-Infinity`, and `NaN`, so the values accepted by the readers can be saved and read
+again. Previous and initial container indices use the current culture for both
+writing and reading, matching AvalonDock. Invalid orientation text raises enum
+parsing errors (`ArgumentException` or `OverflowException`) before later metadata
+is applied.
+
+Tool panes defer automatic fallback selection until XML restoration succeeds.
+An explicit selected child or an application callback can still select immediately.
+A failed metadata conversion or child callback leaves fallback selection disabled;
+a later successful `ReadXml` reenables it. A successful nested read also reenables
+it during the outer read. These rules apply to built-in panes and registered
+subclasses, preserving the selection observed by child-collection hooks.
+
 `LayoutAnchorablePane.Name` is layout metadata, separate from the native model's
 Avalonia styling name. It remains editable after native styling and raises a
 changed notification when its value changes. XML restoration writes it silently.

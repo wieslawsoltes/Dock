@@ -185,15 +185,15 @@ public class SerializationTests
     }
 
     [AvaloniaTheory]
-    [InlineData("<Unexpected />")]
-    [InlineData("<LayoutRoot><RootPanel><Unknown /></RootPanel></LayoutRoot>")]
-    [InlineData("<!DOCTYPE x [<!ENTITY external SYSTEM 'file:///should-not-be-read'>]><LayoutRoot>&external;</LayoutRoot>")]
-    [InlineData("<LayoutRoot><RootPanel Orientation='Sideways' /></LayoutRoot>")]
-    public void Invalid_Xml_Does_Not_Replace_The_Current_Layout(string xml)
+    [InlineData("<Unexpected />", typeof(XmlException))]
+    [InlineData("<LayoutRoot><RootPanel><Unknown /></RootPanel></LayoutRoot>", typeof(XmlException))]
+    [InlineData("<!DOCTYPE x [<!ENTITY external SYSTEM 'file:///should-not-be-read'>]><LayoutRoot>&external;</LayoutRoot>", typeof(XmlException))]
+    [InlineData("<LayoutRoot><RootPanel Orientation='Sideways' /></LayoutRoot>", typeof(ArgumentException))]
+    public void Invalid_Xml_Does_Not_Replace_The_Current_Layout(string xml, Type errorType)
     {
         DockingManager manager = new();
         LayoutRoot previous = manager.Layout;
-        Assert.Throws<XmlException>(() => new XmlLayoutSerializer(manager).Deserialize(new StringReader(xml)));
+        Assert.Throws(errorType, () => new XmlLayoutSerializer(manager).Deserialize(new StringReader(xml)));
         Assert.Same(previous, manager.Layout);
     }
 

@@ -260,6 +260,7 @@ internal static class AvalonDockXml
                 default: throw new XmlException($"Invalid child in '{xml.Name}'.");
             }
         }
+        if (element is LayoutAnchorablePane tools) tools.CompleteXmlRead();
     }
 
     internal static void WriteContents(LayoutElement element, XmlWriter writer)
@@ -283,10 +284,12 @@ internal static class AvalonDockXml
     }
     private static void WriteAttribute(XmlWriter writer, string name, bool value) =>
         writer.WriteAttributeString(name, XmlConvert.ToString(value));
+    // Match the CLR parsers used by upstream readers. XML Schema's INF spelling
+    // is not accepted by those readers; return indices use the current culture.
     private static void WriteAttribute(XmlWriter writer, string name, int value) =>
-        writer.WriteAttributeString(name, XmlConvert.ToString(value));
+        writer.WriteAttributeString(name, value.ToString(CultureInfo.CurrentCulture));
     private static void WriteAttribute(XmlWriter writer, string name, double value) =>
-        writer.WriteAttributeString(name, XmlConvert.ToString(value));
+        writer.WriteAttributeString(name, value.ToString(CultureInfo.InvariantCulture));
 
     internal static void ReadContents(LayoutElement element, XmlReader reader)
     {

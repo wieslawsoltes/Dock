@@ -277,3 +277,7 @@ state and reader position after an attribute error, and external `ReadXml`
 overrides with child elements. Registered content callbacks retain stored focus
 flags and activation timestamps without assigning root focus. Both .NET 8 and
 .NET 10 execute these checks against the restored package.
+
+The numeric/selection XML probe checks CLR infinity spellings, current-culture
+return-index round trips, deferred tool-pane fallback selection, immediate
+explicit selection, and selection recovery after failed and successful reads.

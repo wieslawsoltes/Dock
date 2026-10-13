@@ -28,6 +28,8 @@ public class LayoutAnchorablePane : LayoutPositionableGroup<LayoutAnchorable>, I
     /// <remarks>This layout metadata remains editable after native styling and is separate from Avalonia's styling name.</remarks>
     public string Name { get => _name!; set => SetFieldChanged(ref _name, value); }
     internal void RestoreName(string value) { VerifyAccess(); _name = value; }
+    internal void BeginXmlRead() => _selection?.BeginXmlRead();
+    internal void CompleteXmlRead() => _selection?.CompleteXmlRead();
     /// <summary>Gets whether every child can be hidden.</summary>
     public bool CanHide { get { foreach (LayoutAnchorable child in Children) if (!child.CanHide) return false; return true; } }
     /// <summary>Gets whether every child can be closed.</summary>

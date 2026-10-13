@@ -199,7 +199,9 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
 
 ## Verified implementation
 
-- The consolidated adapter suite passes all 2,873 cases, including 51 content XML
+- The consolidated adapter suite passes all 2,946 cases, including 63 numeric XML
+  formatting, culture, round-trip, and enum-error cases, plus 10 tool-pane XML
+  selection, callback, failure, recovery, and nested-read cases, plus 51 content XML
   metadata, setter-order, selection, focus, floating-state, reader-position, failure,
   custom child-element, and thread-access cases, plus 58 group XML metadata, notification, failure, visibility, enum, and pane-name cases, plus 39 layout
   helper/group contracts and the recorded activation and membership ordering
@@ -862,13 +864,20 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   and later edits retain normal notifications. Attributes apply in inheritance
   order, preserving earlier assignments when a later conversion fails. Stored
   minima bypass the public setters' negative-value check, matching upstream field
-  restoration. Orientation accepts case-insensitive names and numeric enum values.
+  restoration. Orientation accepts case-insensitive names and numeric enum values; invalid
+  strings and overflow retain the enum parser's exception types.
   A self-closing empty group recomputes visibility; an explicit empty start/end
   pair retains the existing state. The 58 group-metadata cases and external package
   probe cover these contracts. The 51 content-metadata cases and external consumer
-  probe cover direct and registered content reads. Remaining XML work includes
-  group/root streaming and partial-failure behavior, pane selection repair during
-  child restoration, and the broader inherited-hook and write-contract audit.
+  probe cover direct and registered content reads. Numeric writes use invariant CLR double spellings so nonfinite values can be
+  read again; return indices use current-culture formatting and parsing. Tool
+  panes defer fallback selection until a successful XML read, while explicit
+  selections and application callbacks remain immediate. Failed reads leave
+  fallback disabled until a successful read, including successful nested reads.
+  These cases cover built-in panes and registered application subclasses.
+  Remaining XML work includes group/root streaming and partial-failure behavior,
+  serializer exception wrapping, and the broader inherited-hook and write-contract
+  audit (including omitted defaults, attribute ordering, and culture changes).
   Assigning a return container raises only its changed notification, then initializes
   an unset pane ID using the reference left by application callbacks. Identifier
   metadata is quiet; changed return indices raise only changed notifications.

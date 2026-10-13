@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reactive;
-using System.Reactive.Concurrency;
 using System.Windows.Input;
 using Avalonia;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
-using ReactiveUI.Reactive;
 
 namespace AvalonDock.Infrastructure;
 
@@ -136,17 +133,14 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
     private sealed class Command : ICommand, IDisposable
     {
         private Func<object?, bool>? _canExecute;
-        private Action<object?>? _execute;
         private Action? _prepare;
-        private readonly ReactiveCommand<object?, Unit> _command;
+        private readonly LayoutCommandExecution<object?> _command;
 
         internal Command(Func<object?, bool> canExecute, Action<object?> execute, Action prepare)
         {
             _canExecute = canExecute;
-            _execute = execute;
             _prepare = prepare;
-            _command = ReactiveCommand.Create<object?>(parameter => _execute?.Invoke(parameter),
-                outputScheduler: ImmediateScheduler.Instance);
+            _command = new(execute);
         }
 
         public event EventHandler? CanExecuteChanged;
@@ -160,14 +154,13 @@ internal sealed class LayoutFloatingWindowCommands : IDisposable
             _prepare?.Invoke();
             // Like upstream, direct execution delegates to item commands;
             // command sources query CanExecute before invoking this method.
-            if (_execute is not null) ((ICommand)_command).Execute(parameter);
+            _command.Execute(parameter);
         }
         internal void Refresh() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
         public void Dispose()
         {
             _canExecute = null;
-            _execute = null;
             _prepare = null;
             try { Refresh(); }
             finally

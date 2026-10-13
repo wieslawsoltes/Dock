@@ -219,7 +219,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   continue to raise `CanExecuteChanged`. Local binding expressions to current
   defaults are cleared; raw observable subscriptions retain Avalonia ownership
   (use compiled bindings or `ToBinding()` for expression cleanup).
-- The consolidated adapter suite passes all 3,187 cases, including 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
+- The consolidated adapter suite passes all 3,287 cases, including 100 new focus/direct-command cases, 20 floating-close lifecycle cases and 27 default-command initialization, binding, callback,
   reentrancy and inheritance cases, plus 31 root XML, 14 interface-membership/dispatch, and eight visibility inheritance cases, plus 35 XML writer-context, error-boundary, flush, lifetime and encoding cases, plus 17 XML read-inheritance and external base-group cases, plus 47 XML write-attribute, inheritance, identifier,
   callback and failure cases, plus 43 streaming XML
   reader, partial-state, floating replacement, geometry, custom-hook and error-boundary
@@ -496,7 +496,7 @@ remaining manager callbacks, platform behavior, or automatic custom CLR type dis
   removal, ownership, and cleanup without changing policy for reentrant calls.
   Closing hidden content removes its native hidden-list entry; pinned removal
   unpins as cleanup even when the pin command is disabled.
-  Default commands retain native policy/last-child checks and refresh on policy
+  Default command queries retain native policy/last-child checks and refresh on policy
   replacement. `Float` restores a previous floating pane with `CanFloat=false`,
   activates even after a rejected new float, and can refloat existing floating
   content while retaining its original docked return pane. Headless and external
@@ -1332,16 +1332,46 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
 
 | Surface | Implemented contract and evidence |
 | --- | --- |
-| `Model`, `CanClose`, `CanHide`, `DoHide`, tool-window commands | Current virtual model, typed descendant snapshots, live command lookup, parameter forwarding, redirected-model subscriptions, and null/managerless queries are covered by `FloatingOverrideContractTests` and `FloatingWindowCommandTests`. |
+| `Model`, `CanClose`, `CanHide`, `DoHide`, tool-window commands | Current virtual model, typed descendant snapshots, live command lookup, parameter forwarding, redirected-model subscriptions, and null/managerless queries are covered by `FloatingOverrideContractTests` and `FloatingWindowCommandTests`. `DirectCommandExecutionTests` verifies direct execution without a capability query, synchronous errors, and missing-context/command failures. |
 | Typed caption hooks and `RootDocumentLayoutItem` | Constructor-model activation and item lookup are covered by override tests; `NativeWindowMessageTests` covers caption/menu routing. |
 | `OnClosing`, `CloseInitiatedByUser` | Cancellation precedes hide hooks and preserves callback changes/failures. The new override tests supplement the recorded WPF close scenarios and owner/close-origin tests. |
 | `OnClosed` | Explicit typed overrides unsubscribe after the base lifecycle succeeds. The base removes the host and collects the captured root before `Closed`; native factory notification follows even when collection removes an empty model. There is no second collection after `Closed`. `FloatingClosedHookTests` covers suppression, errors/replay, redirected models, command/binding lifetime, and observation during callbacks, supplementing the existing close/model reference tests. |
+| Focus after close/hide | `FloatingFocusRestorationTests` covers 27 owner/current-model/first-focusable-target cases, callback redirection and errors, disabled/hidden targets, and the ordering after `Closed` but before typed cleanup. Only one target is attempted. Native desktop activation checks remain deferred. |
 | `IsContentImmutable` | Loaded-only content coercion is covered by `FloatingControlTests` and external consumer construction. |
 | `IsMaximizedProperty`, `OnStateChanged` | Writable property metadata, bindings, native state synchronization, and persisted bounds are covered by override/control/bounds tests. Avalonia reports native state changes; WPF's internal Win32 state-loop ordering is not reproduced. |
 | `SetIsDragging`, `OnIsDraggingChanged` | Public state and override notifications follow native Dock drag state. Native Dock owns capture and drag execution; setting a Boolean does not perform WPF's global mouse capture. |
 | `OnInitialized` | Typed subscription suppression and empty-document closure are covered by `FloatingInitializationTests`. Avalonia can initialize during base construction, so model-dependent work is deferred; WPF initialization timing is not reproduced. |
 | Keyboard hooks | Per-manager enablement, routed editor handling, desktop scaling, persistence, and floating navigator input are covered by keyboard/navigator tests. |
 | `FilterMessage`, resize borders, native focus | Windows caption policy and resize hit tests have Headless coverage plus the previously recorded desktop checks. WPF client-area rewriting and its activation message loop remain native Avalonia/Dock responsibilities; current-package desktop checks are deferred. |
+
+## Direct default-command behavior
+
+Default item and tool-window commands retain ReactiveUI execution while exposing
+AvalonDock's synchronous `ICommand` contract. `Execute` does not call
+`CanExecute`; item parameters are ignored and floating-window parameters are
+forwarded. Original application errors return to the executing caller, including
+nested calls and disposal during a callback. Detached owned commands release
+their targets and remain disabled, as documented for the native lifetime.
+
+`DirectCommandExecutionTests` covers 23 cases; `DefaultCommandActionContractTests`
+covers 38 context, group-transfer, callback-order, failure, and close-all cases.
+Twelve added operation cases verify that direct close/auto-hide/dock actions
+bypass availability flags without changing native policies or losing cancellation
+and model identity. The existing explicit-operation cases now distinguish the
+native factory's guarded operations from direct compatibility command actions.
+
+Split availability checks `CanMove`, document count, and orientation policy;
+adjacent-pane movement does not require `CanMove`. Direct split/move actions
+retain invalid-context/index failures and use the Dock-backed collections.
+Content moves into a new pane before the group publishes it, followed by native
+focus and activation. Close-all snapshots contents, checks `CanClose`, and then
+uses each current command's availability or the model fallback when null.
+An earlier callback can replace a later command; removing its container fails
+the later lookup. `LayoutItem.Float()` remains an unused protected no-op.
+
+Twelve external consumer probes reproduce these focus/command defects against
+the preceding `32f4de07d` packages. This audit supplements the command inheritance
+and binding checks; it does not establish all WPF framework behavior.
 
 ## Open work (not release-complete)
 
@@ -1377,6 +1407,8 @@ and platform boundaries; it does not claim all inherited WPF window behavior.
   Tool command/binding inheritance now has explicit overrides and focused
   coverage. Document floating-window closure now has an explicit override;
   both typed hosts and their base have the cleanup-order coverage recorded above.
+  Direct default-command execution and floating focus ordering have the targeted
+  contract coverage above; desktop focus validation is still deferred.
 - The direct public pane/splitter Grid structure passes consolidated Headless
   validation of sizing, native drag, floating hosts, themes and lifetime. Package
   and consumer validation pass at `e04288110`. The final desktop checks remain

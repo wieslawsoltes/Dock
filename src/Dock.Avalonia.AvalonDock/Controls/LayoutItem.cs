@@ -301,8 +301,8 @@ public abstract class LayoutItem : Control
 
     /// <summary>Closes the attached content through the docking implementation.</summary>
     protected abstract void Close();
-    /// <summary>Floats the attached content through the docking implementation.</summary>
-    protected virtual void Float() => LayoutElement?.Float();
+    /// <summary>Provides the upstream no-op floating hook; the default float command does not invoke it.</summary>
+    protected virtual void Float() { }
     /// <summary>Determines whether the content can enter a document pane.</summary>
     protected virtual bool CanExecuteDockAsDocumentCommand() =>
         IsAttached && LayoutElement is { } content && content.Parent is not LayoutDocumentPane &&
@@ -312,15 +312,15 @@ public abstract class LayoutItem : Control
     protected virtual void InitDefaultCommands()
     {
         DefaultCommands.Add(CloseCommandProperty, Close, () => IsAttached && LayoutCommandCapabilities.CanClose(LayoutElement!));
-        DefaultCommands.Add(FloatCommandProperty, Float, () => IsAttached && LayoutElement is { CanFloat: true } content &&
+        DefaultCommands.Add(FloatCommandProperty, () => LayoutItemOperations.RequireManagedContent(this).Float(), () => IsAttached && LayoutElement is { CanFloat: true } content &&
             content.FindParent<LayoutFloatingWindow>() is null &&
             LayoutCommandCapabilities.IsEnabled(content, DockCapability.Float));
-        DefaultCommands.Add(DockAsDocumentCommandProperty, () => LayoutElement?.DockAsDocument(), CanExecuteDockAsDocumentCommand);
+        DefaultCommands.Add(DockAsDocumentCommandProperty, () => LayoutItemOperations.RequireManagedContent(this).DockAsDocument(), CanExecuteDockAsDocumentCommand);
         DefaultCommands.Add(CloseAllButThisCommandProperty, () => LayoutItemOperations.CloseDocuments(this, true),
             () => LayoutItemOperations.HasDocuments(this, true));
         DefaultCommands.Add(CloseAllCommandProperty, () => LayoutItemOperations.CloseDocuments(this, false),
             () => LayoutItemOperations.HasDocuments(this, false));
-        DefaultCommands.Add(ActivateCommandProperty, () => { if (LayoutElement is { } content) content.IsActive = true; }, () => IsAttached);
+        DefaultCommands.Add(ActivateCommandProperty, () => LayoutItemOperations.RequireManagedContent(this).IsActive = true, () => IsAttached);
         DefaultCommands.Add(NewVerticalTabGroupCommandProperty, () => LayoutItemOperations.Split(this, Orientation.Horizontal),
             () => LayoutItemOperations.CanSplit(this, Orientation.Horizontal));
         DefaultCommands.Add(NewHorizontalTabGroupCommandProperty, () => LayoutItemOperations.Split(this, Orientation.Vertical),
@@ -357,7 +357,7 @@ public abstract class LayoutItem : Control
     /// <summary>Applies a change to the Avalonia visibility property.</summary>
     protected virtual void OnVisibilityChanged()
     {
-        if (!_synchronizing && !IsVisible) Close();
+        if (!_synchronizing && LayoutElement is not null && !IsVisible) Close();
     }
     /// <summary>Forwards a change to the tab title.</summary>
     protected virtual void OnTitleChanged(AvaloniaPropertyChangedEventArgs e)

@@ -468,11 +468,30 @@ using the default XML namespace:
 The default ReactiveUI commands cover closing, floating, activation, docking as
 a document, closing document sets, splitting document panes, and moving between
 adjacent document panes. Tool containers add hide, auto-hide, and dock commands.
-Document-group commands honor `CanMove` and the manager's
-`AllowMixedOrientation` setting. Closing document sets uses each container's
-current `CloseCommand`, including application replacements, and honors close
-capabilities and cancellation. Individual command properties can be replaced
-or bound to application commands.
+Split-command availability honors `CanMove`, the number of documents, and the
+manager's `AllowMixedOrientation` setting. Moving to an adjacent document pane
+does not require `CanMove`. Individual command properties can be replaced or
+bound to application commands.
+
+As in AvalonDock, `ICommand.Execute` invokes its action without first calling
+`CanExecute`. Buttons and menus perform that query; application code should do
+the same when it wants UI restrictions. A direct call can close, hide, auto-hide,
+dock, or split content whose command is unavailable. Content cancellation still
+applies. Item commands ignore their caller's parameter. Application errors are
+returned synchronously to the caller with their original exception and stack,
+including nested execution; they are not queued as unhandled ReactiveUI errors.
+The protected `LayoutItem.Float()` hook is an upstream no-op and is not called
+by the default float command.
+
+Closing document sets snapshots the documents, skips contents with `CanClose`
+false, then queries and executes each current `CloseCommand`, including
+application replacements. A null command falls back to the model close action.
+The current command owns its availability decision; the default command checks
+native policy. If an earlier callback removes a later container, execution fails
+at that lookup. Direct split/move commands likewise retain errors for invalid
+contexts and destinations. Splitting transfers content into a new pane before
+publishing that pane in its group; both operations use the Dock-backed pane
+collections and activate the moved content without drag/dock notifications.
 
 `LayoutAnchorableItem` initializes, applies, and clears hide, auto-hide, and dock
 defaults before the common `LayoutItem` commands. When applying defaults, it
@@ -611,7 +630,7 @@ cancellation. Native window decoration close requests still use the window
 lifecycle and its cancellation events. Calling layout methods such as `Close`
 or `Float` directly invokes model operations, independently of UI commands.
 
-As in upstream AvalonDock, capability flags control the default UI commands;
+As in upstream AvalonDock, capability flags control default UI command availability;
 some explicit model methods deliberately have different rules:
 
 | Explicit model call | Contract |
@@ -632,8 +651,9 @@ document.Close(); // Still raises cancelable closing notifications.
 ```
 
 These explicit methods do not temporarily enable capabilities. Default item
-commands continue to check their flags and native Dock policies; close commands
-also honor `CanCloseLastDockable`. Replacing a root/pane policy or a content
+command queries check their flags and native Dock policies; close-command queries
+also honor `CanCloseLastDockable`. Direct `Execute` does not repeat those queries.
+Replacing a root/pane policy or a content
 override refreshes command availability. Native `manager.DockFactory` methods
 retain their own capability checks. The adapter reuses the factory's protected
 close and pin operations to preserve native lifecycle events, ItemsSource
@@ -2163,9 +2183,10 @@ window content uses normal Avalonia content rendering. Derived floating controls
 can also use the protected constructor's immutability option.
 
 `LayoutAnchorableFloatingWindowControl.CloseWindowCommand` and
-`HideWindowCommand` operate on all tools in that window. They check each model's
-capability and its current container command, then forward the caller's parameter
-to the current commands. Check `CanExecute` before calling `Execute` directly:
+`HideWindowCommand` operate on all tools in that window. Their `CanExecute`
+queries check each model's capability and current container command. Execution
+forwards the caller's parameter without repeating those queries. Check
+`CanExecute` before calling `Execute` directly:
 
 ```csharp
 // toolWindow is a LayoutAnchorableFloatingWindowControl.
@@ -2186,6 +2207,10 @@ binding scope's data context:
 Enablement follows membership, capabilities, command replacement, and application
 `CanExecuteChanged` notifications. Execution snapshots the contents so a command
 can remove its own tool; subsequent tools still use their current commands.
+A missing model, root, container, or command fails direct execution; errors
+propagate synchronously and stop later tools. An empty managerless root has no
+child command to execute. Capability queries safely return false for missing
+model/root/manager context.
 Protected `CanClose`, `CanHide`, `DoHide`, and the tool-window commands read the
 current virtual `Model` property. A document host filters document descendants;
 a tool host filters tool descendants, including when an override supplies a
@@ -2195,6 +2220,15 @@ callback can replace `Model` without redirecting an execution already in progres
 Typed caption activation and `RootDocumentLayoutItem` continue to use the
 constructor's floating model, as upstream does.
 Content closing/hiding cancellation is preserved by those commands.
+After successful hiding or the base floating `OnClosed` lifecycle, focus is
+requested on the owner window. Without an owner, the current virtual model's
+manager supplies its first focusable visual descendant. Only that target is
+attempted: a hidden/disabled target or a failed focus request does not select a
+later descendant, and the manager itself is excluded. A callback can redirect
+the model or focus; callback failures prevent this final focus request. Closing
+restores focus after `Closed`, before typed model subscriptions are removed.
+These ordering rules have Headless coverage; desktop activation remains subject
+to Avalonia and the platform, with the current desktop checks deferred.
 `Window.Close()` follows a separate WPF contract: it checks the protected
 `CanClose` hook, which consults current commands without executing them. If close
 is unavailable, it marks the close canceled before checking `CanHide` and calling

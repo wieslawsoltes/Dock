@@ -375,7 +375,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
             PseudoClasses.Set(":custom-content", change.NewValue is not IRootDock);
     }
 
-    /// <summary>Completes closure using the root captured before native callbacks run.</summary>
+    /// <summary>Completes closure using the captured root, then requests focus on the owner or current manager's first focusable descendant.</summary>
     protected override void OnClosed(EventArgs e)
     {
         ILayoutRoot? root = Model?.Root;
@@ -395,8 +395,26 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
                     owner.Windows?.Contains(model.DockWindow) != true)
                     model.DockWindow.Factory?.RemoveWindow(model.DockWindow);
             }
+            RestoreOwnerOrManagerFocus();
         }
         finally { _closingRoot = previousRoot; }
+    }
+
+    private protected void RestoreOwnerOrManagerFocus()
+    {
+        InputElement? target = Owner;
+        if (target is null && Model?.Root?.Manager is { } manager)
+        {
+            foreach (InputElement element in manager.FindVisualChildren<InputElement>())
+            {
+                if (!element.Focusable) continue;
+                target = element;
+                break;
+            }
+        }
+        // Upstream attempts one focusable target, even when it is disabled or
+        // hidden. Failure does not select a different descendant.
+        target?.Focus();
     }
 
     /// <summary>Removes the host and collects its captured layout before raising Closed.</summary>

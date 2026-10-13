@@ -36,7 +36,10 @@ public class LayoutAnchorableItem : LayoutItem
     public bool CanHide { get => GetValue(CanHideProperty); set => SetValue(CanHideProperty, value); }
 
     /// <inheritdoc/>
-    protected override void Close() => LayoutElement?.Close();
+    protected override void Close()
+    {
+        if (LayoutElement!.Root?.Manager is not null) LayoutElement.Close();
+    }
 
     /// <inheritdoc/>
     protected override bool CanExecuteDockAsDocumentCommand() =>
@@ -45,13 +48,15 @@ public class LayoutAnchorableItem : LayoutItem
     /// <inheritdoc/>
     protected override void InitDefaultCommands()
     {
-        ToolCommands.Add(HideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.Hide(),
+        ToolCommands.Add(HideCommandProperty, () =>
+            { if (LayoutElement?.Root?.Manager is not null) ((LayoutAnchorable)LayoutElement).Hide(); },
             () => IsAttached && LayoutElement is LayoutAnchorable { CanHide: true });
-        ToolCommands.Add(AutoHideCommandProperty, () => ((LayoutAnchorable?)LayoutElement)?.ToggleAutoHide(),
+        ToolCommands.Add(AutoHideCommandProperty, () =>
+            { if (LayoutElement?.Root?.Manager is not null) ((LayoutAnchorable)LayoutElement).ToggleAutoHide(); },
             () => IsAttached && LayoutElement is LayoutAnchorable { CanAutoHide: true, IsHidden: false } tool &&
                 tool.FindParent<LayoutAnchorableFloatingWindow>() is null &&
                 LayoutCommandCapabilities.IsEnabled(tool, DockCapability.Pin));
-        ToolCommands.Add(DockCommandProperty, () => LayoutElement?.Dock(),
+        ToolCommands.Add(DockCommandProperty, () => LayoutItemOperations.RequireManagedContent(this).Dock(),
             () => IsAttached && LayoutElement?.FindParent<LayoutAnchorableFloatingWindow>() is not null);
         base.InitDefaultCommands();
     }

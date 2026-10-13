@@ -16,9 +16,11 @@ namespace Dock.Avalonia.AvalonDock.Tests;
 public class LayoutOperationContractTests
 {
     [AvaloniaTheory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void Explicit_Close_Ignores_Capabilities_Without_Changing_Them_Or_Reentrant_Native_Calls(bool tools)
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void Explicit_And_Direct_Command_Close_Ignore_Capabilities_Without_Changing_Them_Or_Reentrant_Native_Calls(bool tools, bool directCommand)
     {
         DockingManager manager = CreateManager(out LayoutDocument document, out LayoutAnchorable tool);
         LayoutContent content = tools ? tool : document;
@@ -47,11 +49,11 @@ public class LayoutOperationContractTests
         manager.DockFactory.DockableClosed += (_, _) => events.Add("native:closed");
         ICommand command = manager.GetLayoutItemFromModel(content)!.CloseCommand!;
         Assert.False(command.CanExecute(null));
-        command.Execute(null);
         manager.DockFactory.CloseDockable(content.DockModel);
         Assert.Empty(events);
 
-        content.Close();
+        if (directCommand) command.Execute(null);
+        else content.Close();
 
         Assert.Null(content.Root);
         Assert.False(content.CanClose);
@@ -91,15 +93,23 @@ public class LayoutOperationContractTests
     }
 
     [AvaloniaTheory]
-    [InlineData(AnchorSide.Left, false)]
-    [InlineData(AnchorSide.Top, false)]
-    [InlineData(AnchorSide.Right, false)]
-    [InlineData(AnchorSide.Bottom, false)]
-    [InlineData(AnchorSide.Left, true)]
-    [InlineData(AnchorSide.Top, true)]
-    [InlineData(AnchorSide.Right, true)]
-    [InlineData(AnchorSide.Bottom, true)]
-    public void Explicit_AutoHide_And_Return_Preserve_Native_Identity_While_Commands_Respect_Capabilities(AnchorSide side, bool policy)
+    [InlineData(AnchorSide.Left, false, false)]
+    [InlineData(AnchorSide.Top, false, false)]
+    [InlineData(AnchorSide.Right, false, false)]
+    [InlineData(AnchorSide.Bottom, false, false)]
+    [InlineData(AnchorSide.Left, true, false)]
+    [InlineData(AnchorSide.Top, true, false)]
+    [InlineData(AnchorSide.Right, true, false)]
+    [InlineData(AnchorSide.Bottom, true, false)]
+    [InlineData(AnchorSide.Left, false, true)]
+    [InlineData(AnchorSide.Top, false, true)]
+    [InlineData(AnchorSide.Right, false, true)]
+    [InlineData(AnchorSide.Bottom, false, true)]
+    [InlineData(AnchorSide.Left, true, true)]
+    [InlineData(AnchorSide.Top, true, true)]
+    [InlineData(AnchorSide.Right, true, true)]
+    [InlineData(AnchorSide.Bottom, true, true)]
+    public void Explicit_And_Direct_Command_AutoHide_Preserve_Native_Identity_While_Command_Availability_Respects_Capabilities(AnchorSide side, bool policy, bool directCommand)
     {
         DockingManager manager = new();
         LayoutAnchorable tool = new() { CanAutoHide = policy };
@@ -120,12 +130,12 @@ public class LayoutOperationContractTests
         manager.DockFactory.DockablePinned += (_, args) => { Assert.Same(tool.DockModel, args.Dockable); events.Add("pin"); };
         manager.DockFactory.DockableUnpinned += (_, args) => { Assert.Same(tool.DockModel, args.Dockable); events.Add("unpin"); };
         Assert.False(item.AutoHideCommand!.CanExecute(null));
-        item.AutoHideCommand.Execute(null);
         manager.DockFactory.PinDockable(tool.DockModel);
         Assert.Same(pane, tool.Parent);
         Assert.Empty(events);
 
-        tool.ToggleAutoHide();
+        if (directCommand) item.AutoHideCommand.Execute(null);
+        else tool.ToggleAutoHide();
         LayoutAnchorGroup group = Assert.IsType<LayoutAnchorGroup>(tool.Parent);
         Assert.Equal(side, Assert.IsType<LayoutAnchorSide>(group.Parent).Side);
         Assert.Same(pane, tool.PreviousContainer);
@@ -133,7 +143,8 @@ public class LayoutOperationContractTests
         Assert.True(manager.DockFactory.IsDockablePinned(tool.DockModel));
         manager.DockFactory.UnpinDockable(tool.DockModel);
         Assert.Same(group, tool.Parent);
-        tool.ToggleAutoHide();
+        if (directCommand) item.AutoHideCommand.Execute(null);
+        else tool.ToggleAutoHide();
 
         Assert.Same(pane, tool.Parent);
         Assert.Equal(new[] { neighbor, tool }, pane.Children);
@@ -164,9 +175,11 @@ public class LayoutOperationContractTests
     }
 
     [AvaloniaTheory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void Explicit_DockAsDocument_Ignores_Command_Capability_And_Selects_The_Native_Destination(bool policy)
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void Explicit_And_Direct_Command_DockAsDocument_Ignore_Command_Capability_And_Select_The_Native_Destination(bool policy, bool directCommand)
     {
         DockingManager manager = CreateManager(out LayoutDocument document, out LayoutAnchorable tool);
         LayoutDocumentPane destination = (LayoutDocumentPane)document.Parent!;
@@ -178,12 +191,12 @@ public class LayoutOperationContractTests
         manager.PreviewDock += (_, _) => events.Add("preview");
         manager.Docked += (_, _) => events.Add("docked");
         Assert.False(command.CanExecute(null));
-        command.Execute(null);
         manager.DockFactory.DockAsDocument(tool.DockModel);
         Assert.IsType<LayoutAnchorablePane>(tool.Parent);
         Assert.Empty(events);
 
-        tool.DockAsDocument();
+        if (directCommand) command.Execute(null);
+        else tool.DockAsDocument();
 
         Assert.Same(destination, tool.Parent);
         Assert.Same(destination.DockModel, tool.DockModel.Owner);

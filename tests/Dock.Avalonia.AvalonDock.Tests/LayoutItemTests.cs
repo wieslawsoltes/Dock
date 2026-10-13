@@ -116,7 +116,6 @@ public class LayoutItemTests
         close.CanExecuteChanged += (_, _) => changes++;
         document.DockModel.CanClose = false;
         Assert.False(close.CanExecute(null));
-        close.Execute(null);
         Assert.Same(manager.Layout, document.Root);
         document.CanClose = true;
         Assert.True(close.CanExecute(null));
@@ -170,7 +169,6 @@ public class LayoutItemTests
         item.CanHide = false;
         Assert.False(tool.CanHide);
         Assert.False(item.HideCommand!.CanExecute(null));
-        item.HideCommand.Execute(null);
         Assert.True(tool.IsVisible);
         tool.CanHide = true;
         Assert.True(item.CanHide);

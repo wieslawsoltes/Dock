@@ -4,8 +4,8 @@ using Dock.Model.Core;
 
 namespace AvalonDock.Infrastructure;
 
-// Explicit layout methods follow AvalonDock's model contract. UI commands also
-// honor the restrictions of the native factory they previously called.
+// Explicit layout methods follow AvalonDock's model contract. UI command
+// availability also honors the native factory's restrictions.
 internal static class LayoutCommandCapabilities
 {
     internal static bool IsEnabled(LayoutContent content, DockCapability capability) =>

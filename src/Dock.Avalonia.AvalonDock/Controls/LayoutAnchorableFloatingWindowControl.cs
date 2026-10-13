@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Diagnostics;
-using Avalonia.VisualTree;
 using AvalonDock.Infrastructure;
 using AvalonDock.Layout;
 
@@ -75,10 +74,7 @@ public class LayoutAnchorableFloatingWindowControl : LayoutFloatingWindowControl
     private void HideContents(object? parameter)
     {
         LayoutFloatingWindowOperations.Execute<LayoutAnchorable>(Model, hide: true, parameter);
-        if (Owner is { } owner) owner.Focus();
-        else if (Model?.Root?.Manager is { } manager)
-            foreach (Visual visual in manager.GetVisualDescendants())
-                if (visual is Control { Focusable: true, IsEffectivelyVisible: true, IsEffectivelyEnabled: true } control && control.Focus()) break;
+        RestoreOwnerOrManagerFocus();
     }
 
     /// <inheritdoc/>

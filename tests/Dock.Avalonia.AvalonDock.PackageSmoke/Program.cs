@@ -83,6 +83,7 @@ PackageConsumer.XmlWriterContextProbe.Verify();
 PackageConsumer.RootVisibilityProbe.Verify();
 PackageConsumer.DefaultCommandHookProbe.Verify();
 PackageConsumer.FloatingClosedHookProbe.Verify();
+PackageConsumer.FocusAndExecutionProbe.Verify();
 PackageConsumer.GroupBaseDerivationProbe.Verify();
 PackageConsumer.GroupXmlProbe.Verify();
 PackageConsumer.ContentXmlProbe.Verify();

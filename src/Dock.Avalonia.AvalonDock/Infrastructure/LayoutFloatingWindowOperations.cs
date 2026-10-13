@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using AvalonDock.Controls;
@@ -22,9 +23,15 @@ internal static class LayoutFloatingWindowOperations
 
     internal static void Execute<TContent>(ILayoutElement? model, bool hide, object? parameter) where TContent : LayoutContent
     {
-        if (model?.Root?.Manager is not { } manager) return;
+        // Direct execution retains upstream's failures for a missing model,
+        // root, container, or command; CanExecute is the guarded query path.
+        DockingManager? manager = model!.Root!.Manager;
         foreach (TContent content in Snapshot<TContent>(model))
-            GetCommand(manager.GetLayoutItemFromModel(content), hide)?.Execute(parameter);
+        {
+            ICommand? command = GetCommand(manager!.GetLayoutItemFromModel(content), hide);
+            if (command is null) throw new NullReferenceException();
+            command.Execute(parameter);
+        }
     }
 
     internal static List<TContent> Snapshot<TContent>(ILayoutElement model) where TContent : LayoutContent

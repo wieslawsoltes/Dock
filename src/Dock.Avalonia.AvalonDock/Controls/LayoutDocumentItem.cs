@@ -14,7 +14,10 @@ public class LayoutDocumentItem : LayoutItem
     public string? Description { get => GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
     /// <inheritdoc/>
-    protected override void Close() => LayoutElement?.Close();
+    protected override void Close()
+    {
+        if (LayoutElement!.Root?.Manager is not null) LayoutElement.Close();
+    }
 
     /// <summary>Forwards a change to the document description.</summary>
     protected virtual void OnDescriptionChanged(AvaloniaPropertyChangedEventArgs e)

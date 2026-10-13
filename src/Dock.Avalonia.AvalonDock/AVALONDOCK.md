@@ -77,8 +77,9 @@ new XmlLayoutSerializer(manager).Deserialize("layout.xml");
 Explicit `Close()`, `ToggleAutoHide()`, and `DockAsDocument()` follow upstream
 model behavior independently of `CanClose`, `CanAutoHide`, and
 `CanDockAsTabbedDocument`. Closing still honors cancellation. Default item
-commands and native factory methods retain capability checks, and commands
-observe replacement native policies and last-child close restrictions.
+command availability and native factory methods retain capability checks.
+Command queries observe replacement native policies and last-child close
+restrictions; direct `ICommand.Execute` does not repeat `CanExecute`.
 `Float()` can reuse an existing previous floating pane when `CanFloat` is false;
 creating a new window still requires the native float capability. The call
 selects and activates the content in either case.
@@ -256,8 +257,8 @@ or `LayoutAnchorableItem` in `AvalonDock.Controls`. Its `Model` is the applicati
 content; its metadata, selection, and capabilities track the live Dock model.
 Default ReactiveUI commands support close, float, activate, dock-as-document,
 close document sets, split/move document groups, and tool hide/auto-hide/dock.
-Commands honor capabilities and cancellation and can be replaced with
-application commands. For example:
+Command availability honors capabilities; execution retains cancellation.
+Commands can be replaced with application commands. For example:
 
 ```csharp
 using AvalonDock.Controls;
@@ -266,6 +267,21 @@ LayoutItem? item = manager.GetLayoutItemFromModel(document);
 if (item?.FloatCommand is { } command && command.CanExecute(null))
     command.Execute(null);
 ```
+
+Direct `Execute` invokes the action even when `CanExecute` is false, matching
+AvalonDock. Item commands ignore the caller's parameter and propagate original
+application errors synchronously, including reentrant calls. The protected
+`LayoutItem.Float()` hook is a no-op and is not used by the default float command.
+Unattached direct actions retain their missing-context failures; tool hide and
+auto-hide actions explicitly guard missing context.
+
+Split availability checks `CanMove`, document count, and `AllowMixedOrientation`;
+adjacent-pane movement does not check `CanMove`. Direct split/move actions use
+the native Dock-backed collections and activate the content without docking
+notifications. A new split pane contains its document before insertion is
+published. Closing document sets snapshots the documents, skips `CanClose=false`,
+and uses each current command's `CanExecute`; a null command falls back to model
+closure. Invalid destinations and missing containers fail direct execution.
 
 Containers survive moves and floating. Layout replacement detaches old
 containers, so look them up again after loading XML. Native close/pin buttons,
@@ -1134,7 +1150,16 @@ The capability hooks and tool commands use the current virtual `Model`, filterin
 document/tool descendants according to the host type. Queries and execution
 refresh subscriptions after an override changes that model; an execution already
 in progress keeps its original content snapshot and resolves each command live.
+Direct execution does not query capabilities again. Missing context or child
+commands fail synchronously and stop later tools; guarded capability queries
+return false for missing model/root/manager context.
 Typed caption activation and `RootDocumentLayoutItem` use the constructor model.
+After hiding or successful base closure, focus goes to the owner, or to the
+current model manager's first focusable visual descendant when there is no owner.
+Only that target is attempted, even if disabled, hidden, or unable to accept
+focus. Callback failures stop restoration. Closure requests focus after `Closed`
+and before typed subscription cleanup. Headless checks cover this ordering;
+current-package desktop activation checks remain deferred.
 Those commands honor content cancellation. `Window.Close()` checks current close
 commands without executing them: an eligible host closes while its floating model
 and content remain in the layout, without content `Closing`/`Closed` events.

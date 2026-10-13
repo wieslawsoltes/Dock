@@ -84,6 +84,118 @@ public class ExternalNativeDockSurfaceTests
         finally { helper.RemoveAdorner(fixture.Target); }
     }
 
+    [AvaloniaTheory]
+    [InlineData(false, 1, 2, 1)]
+    [InlineData(false, 2, 1, 1.5)]
+    [InlineData(true, 1, 2, 1)]
+    [InlineData(true, 2, 1, 1.5)]
+    public void Floating_Adorner_Converts_Both_Corners_Across_Root_Scaling(bool embedded, double ownerScale, double surfaceScale, double overlayScale)
+    {
+        using Fixture fixture = new(embedded);
+        fixture.Owner.SetRenderScaling(ownerScale);
+        fixture.Root.SetRenderScaling(surfaceScale);
+        fixture.Owner.UpdateLayout(); fixture.Root.UpdateLayout();
+        AdornerHelper<DockTarget> helper = new(true);
+        try
+        {
+            helper.AddAdorner(fixture.Target, false);
+            DockAdornerWindow window = Assert.IsAssignableFrom<DockAdornerWindow>(TopLevel.GetTopLevel(helper.Adorner!));
+            window.SetRenderScaling(overlayScale);
+            helper.UpdateGeometry();
+            window.UpdateLayout();
+            PixelPoint first = fixture.Target.PointToScreen(default);
+            PixelPoint last = fixture.Target.PointToScreen(new Point(fixture.Target.Bounds.Width, fixture.Target.Bounds.Height));
+            Point renderedFirst = window.PointToClient(first);
+            Point renderedLast = window.PointToClient(last);
+            Assert.Equal(renderedFirst.X, helper.Adorner!.Margin.Left, 3);
+            Assert.Equal(renderedFirst.Y, helper.Adorner.Margin.Top, 3);
+            Assert.Equal(renderedLast.X - renderedFirst.X, helper.Adorner.Width, 3);
+            Assert.Equal(renderedLast.Y - renderedFirst.Y, helper.Adorner.Height, 3);
+            PixelPoint viewportFirst = fixture.Host.PointToScreen(default);
+            PixelPoint viewportLast = fixture.Host.PointToScreen(new Point(fixture.Host.Bounds.Width, fixture.Host.Bounds.Height));
+            double physicalWidth = Math.Max(last.X, viewportLast.X) - Math.Min(first.X, viewportFirst.X);
+            double physicalHeight = Math.Max(last.Y, viewportLast.Y) - Math.Min(first.Y, viewportFirst.Y);
+            Assert.Equal(physicalWidth / window.RenderScaling, window.Width, 3);
+            Assert.Equal(physicalHeight / window.RenderScaling, window.Height, 3);
+        }
+        finally { helper.RemoveAdorner(fixture.Target); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Expanded_Adorner_Uses_Overlay_Dips_For_Host_And_Selector_Margins(bool embedded)
+    {
+        using Fixture fixture = new(embedded);
+        fixture.Root.SetRenderScaling(2);
+        fixture.Root.UpdateLayout();
+        DockTarget.SetAdornerHostProvider(fixture.Target, new ExpandedHost(fixture.Surface));
+        AdornerHelper<DockTarget> helper = new(true);
+        try
+        {
+            helper.AddAdorner(fixture.Target, false);
+            DockAdornerWindow window = Assert.IsAssignableFrom<DockAdornerWindow>(TopLevel.GetTopLevel(helper.Adorner!));
+            window.SetRenderScaling(1.5);
+            helper.UpdateGeometry();
+            window.UpdateLayout();
+            PixelPoint hostFirst = fixture.Surface.PointToScreen(default);
+            PixelPoint hostLast = fixture.Surface.PointToScreen(new Point(fixture.Surface.Bounds.Width, fixture.Surface.Bounds.Height));
+            PixelPoint targetFirst = fixture.Target.PointToScreen(default);
+            PixelPoint targetLast = fixture.Target.PointToScreen(new Point(fixture.Target.Bounds.Width, fixture.Target.Bounds.Height));
+            DockTarget target = Assert.IsType<DockTarget>(helper.Adorner);
+            Assert.Equal(hostFirst, window.Position);
+            Assert.Equal((hostLast.X - hostFirst.X) / 1.5, target.Width, 3);
+            Assert.Equal((hostLast.Y - hostFirst.Y) / 1.5, target.Height, 3);
+            Assert.Equal(new Thickness((targetFirst.X - hostFirst.X) / 1.5, (targetFirst.Y - hostFirst.Y) / 1.5,
+                (hostLast.X - targetLast.X) / 1.5, (hostLast.Y - targetLast.Y) / 1.5), target.TargetMargin);
+        }
+        finally { helper.RemoveAdorner(fixture.Target); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Managed_Adorner_Converts_External_Root_Geometry_And_Expanded_Host(bool expanded)
+    {
+        using Fixture fixture = new(true);
+        Factory factory = new();
+        var root = factory.CreateRootDock();
+        root.FloatingWindowHostMode = DockFloatingWindowHostMode.Managed;
+        factory.InitLayout(root);
+        fixture.Host.Layout = root;
+        ManagedWindowLayer layer = new() { Dock = root };
+        fixture.Host.Template = new FuncControlTemplate<DockControl>((_, _) => layer);
+        fixture.Owner.SetRenderScaling(1.5);
+        fixture.Root.SetRenderScaling(2);
+        fixture.Owner.UpdateLayout(); fixture.Root.UpdateLayout();
+        if (expanded) DockTarget.SetAdornerHostProvider(fixture.Target, new ExpandedHost(fixture.Surface));
+        AdornerHelper<DockTarget> helper = new(true);
+        try
+        {
+            helper.AddAdorner(fixture.Target, false);
+            fixture.Owner.UpdateLayout();
+            Control host = expanded ? fixture.Surface : fixture.Target;
+            DockTarget target = Assert.IsType<DockTarget>(helper.Adorner);
+            Assert.Same(fixture.Owner, TopLevel.GetTopLevel(target));
+            PixelPoint first = host.PointToScreen(default);
+            PixelPoint last = host.PointToScreen(new Point(host.Bounds.Width, host.Bounds.Height));
+            Assert.Equal(first, target.PointToScreen(default));
+            Assert.Equal(last, target.PointToScreen(new Point(target.Bounds.Width, target.Bounds.Height)));
+            if (expanded)
+            {
+                PixelPoint local = fixture.Target.PointToScreen(default);
+                Assert.Equal((local.X - first.X) / fixture.Owner.RenderScaling, target.TargetMargin.Left, 3);
+                Assert.Equal((local.Y - first.Y) / fixture.Owner.RenderScaling, target.TargetMargin.Top, 3);
+            }
+        }
+        finally { helper.RemoveAdorner(fixture.Target); }
+    }
+
+    private sealed class ExpandedHost(Control host) : IDockAdornerHostProvider
+    {
+        public Control? GetAdornerHost(Visual surface) => host;
+    }
+
     [AvaloniaFact]
     public void Root_Host_Mode_And_Global_Target_Are_Resolved_From_An_External_Surface()
     {

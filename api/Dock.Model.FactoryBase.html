@@ -5524,6 +5524,50 @@ will become the selected dockable.</p>
 
 
 
+  <a id="Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowActivation_" data-uid="Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowActivation_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation(Dock.Model.Core.IDockable)">
+  ShouldSynchronizeDockingWindowActivation(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.DockingWindowStateSync.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether native state synchronization updates a docking window's active flag.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool ShouldSynchronizeDockingWindowActivation(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The docking window whose active flag differs from native focus.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True to update the flag; false to preserve externally coordinated activation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowActivation_Dock_Model_Core_IDockable__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The default is true. This policy only controls layout-to-model activation synchronization;
+focus, selection, open state, docking state, tracking, and factory events continue normally.
+Assigning a model's active flag still requests native activation.</p>
+</div>
+
+
+
+
   <a id="Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowSelection_" data-uid="Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection*"></a>
 
   <h3 id="Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowSelection_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection(Dock.Model.Core.IDockable)">

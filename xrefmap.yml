@@ -33711,6 +33711,18 @@ references:
   commentId: Overload:Dock.Model.FactoryBase.ShouldFocusActiveDockable
   fullName: Dock.Model.FactoryBase.ShouldFocusActiveDockable
   nameWithType: FactoryBase.ShouldFocusActiveDockable
+- uid: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation(Dock.Model.Core.IDockable)
+  name: ShouldSynchronizeDockingWindowActivation(IDockable)
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowActivation_Dock_Model_Core_IDockable_
+  commentId: M:Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation(Dock.Model.Core.IDockable)
+  fullName: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation(Dock.Model.Core.IDockable)
+  nameWithType: FactoryBase.ShouldSynchronizeDockingWindowActivation(IDockable)
+- uid: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation*
+  name: ShouldSynchronizeDockingWindowActivation
+  href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowActivation_
+  commentId: Overload:Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation
+  fullName: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowActivation
+  nameWithType: FactoryBase.ShouldSynchronizeDockingWindowActivation
 - uid: Dock.Model.FactoryBase.ShouldSynchronizeDockingWindowSelection(Dock.Model.Core.IDockable)
   name: ShouldSynchronizeDockingWindowSelection(IDockable)
   href: api/Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ShouldSynchronizeDockingWindowSelection_Dock_Model_Core_IDockable_

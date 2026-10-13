@@ -20,6 +20,18 @@ In managed window mode (`DockSettings.UseManagedWindows = true`), pinned windows
 
 Pinned previews can either overlay the main content or take real layout space. Configure the root dock with `PinnedDockDisplayMode` (`Overlay` or `Inline`) to pick the default behavior. Individual dockables can override this by setting `PinnedDockDisplayModeOverride` to force a specific mode for that tool or document.
 
+`PinnedDockControl.MinimumRemainingContentSize` reserves at least 50 layout units
+beside an overlay preview by default. Set it through a style or custom template
+to change that region; values must be finite and nonnegative. A custom resize
+behavior can set zero and enforce its own preview limits. Changes update an open
+preview immediately and do not affect inline layout or the stored pinned size.
+
+This is a minimum for the remaining grid region, not a maximum on pinned content.
+For example, a right-side preview 769 units wide with a 6-unit splitter needs a
+25-unit remaining region inside an 800-unit host. Setting the minimum to 25 or
+zero keeps that preview aligned to the host's right edge; retaining 50 makes the
+combined regions wider than the host.
+
 ## Alignment and orientation
 
 `PinnedDockControl` exposes `PinnedDockAlignment` to control which edge the pinned preview occupies. The default templates bind it to the owning `ToolDock.Alignment`, but you can override it when building custom templates.

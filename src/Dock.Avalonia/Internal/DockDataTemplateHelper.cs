@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Data.Core;
+using Avalonia.Markup.Xaml.MarkupExtensions.CompiledBindings;
+#if AVALONIA_11
+using CompiledBinding = Avalonia.Markup.Xaml.MarkupExtensions.CompiledBindingExtension;
+#endif
 using Dock.Avalonia.Controls;
 using Dock.Controls.ProportionalStackPanel;
 using Dock.Model.Controls;
@@ -27,12 +32,20 @@ internal static class DockDataTemplateHelper
         yield return CreateDataTemplate<IToolContent>(() => new ToolContentControl());
         yield return CreateDataTemplate<IProportionalDockSplitter>(() => new ProportionalStackPanelSplitter
         {
-            [!ProportionalStackPanelSplitter.IsResizingEnabledProperty] = new Binding(nameof(IProportionalDockSplitter.CanResize)),
-            [!ProportionalStackPanelSplitter.PreviewResizeProperty] = new Binding(nameof(IProportionalDockSplitter.ResizePreview))
+            [!ProportionalStackPanelSplitter.IsResizingEnabledProperty] = CreateSplitterBinding<IProportionalDockSplitter, bool>(
+                nameof(IProportionalDockSplitter.CanResize), static splitter => splitter.CanResize),
+            [!ProportionalStackPanelSplitter.PreviewResizeProperty] = CreateSplitterBinding<IProportionalDockSplitter, bool>(
+                nameof(IProportionalDockSplitter.ResizePreview), static splitter => splitter.ResizePreview)
         });
         yield return CreateDataTemplate<IGridDockSplitter>(() => new GridSplitter
         {
-            [!GridSplitter.ResizeDirectionProperty] = new Binding(nameof(IGridDockSplitter.ResizeDirection))
+            [!GridSplitter.ResizeDirectionProperty] = CreateSplitterBinding<IGridDockSplitter, global::Avalonia.Controls.GridResizeDirection>(
+                nameof(IGridDockSplitter.ResizeDirection), static splitter => splitter.ResizeDirection switch
+                {
+                    Model.Core.GridResizeDirection.Rows => global::Avalonia.Controls.GridResizeDirection.Rows,
+                    Model.Core.GridResizeDirection.Columns => global::Avalonia.Controls.GridResizeDirection.Columns,
+                    _ => global::Avalonia.Controls.GridResizeDirection.Auto
+                })
         });
         yield return CreateDataTemplate<IDocumentDock>(() => new DocumentDockControl());
         yield return CreateDataTemplate<IToolDock>(() => new ToolDockControl());
@@ -44,6 +57,20 @@ internal static class DockDataTemplateHelper
         yield return CreateDataTemplate<IUniformGridDock>(() => new UniformGridDockControl());
         yield return CreateDataTemplate<IDockDock>(() => new DockDockControl());
         yield return CreateDataTemplate<IRootDock>(() => new RootDockControl());
+    }
+
+    private static CompiledBinding CreateSplitterBinding<T, TValue>(string propertyName, Func<T, TValue> getter)
+        where T : class
+    {
+        // Keep the model property name for change notifications, with a typed getter instead of reflection.
+        var property = new ClrPropertyInfo(propertyName, source => getter((T)source), null, typeof(TValue));
+        return new CompiledBinding(new CompiledBindingPathBuilder()
+            .TypeCast<T>()
+            .Property(property, PropertyInfoAccessorFactory.CreateInpcPropertyAccessor)
+            .Build())
+        {
+            Mode = BindingMode.OneWay
+        };
     }
 
     /// <summary>

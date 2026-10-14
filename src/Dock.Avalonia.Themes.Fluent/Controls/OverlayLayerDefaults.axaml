@@ -1,22 +1,24 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:overlays="using:Dock.Avalonia.Controls.Overlays"
-                    x:CompileBindings="False">
+                    xmlns:services="using:Dock.Model.Services"
+                    x:DataType="services:IHostOverlayServices"
+                    x:CompileBindings="True">
   <overlays:OverlayLayerCollection x:Key="DockDefaultOverlayLayers" x:Shared="False">
     <overlays:OverlayLayer ZIndex="10"
                            StyleKey="{x:Static OverlayLayerStyleKeys.DialogLayerThemeKey}">
-      <DialogOverlayControl DialogService="{Binding Dialogs}"
-                            GlobalDialogService="{Binding GlobalDialogService}" />
+      <DialogOverlayControl DialogService="{Binding Dialogs, FallbackValue={x:Null}}"
+                            GlobalDialogService="{Binding GlobalDialogService, FallbackValue={x:Null}}" />
     </overlays:OverlayLayer>
     <overlays:OverlayLayer ZIndex="20"
                            StyleKey="{x:Static OverlayLayerStyleKeys.ConfirmationLayerThemeKey}">
-      <ConfirmationOverlayControl ConfirmationService="{Binding Confirmations}"
-                                  GlobalConfirmationService="{Binding GlobalConfirmationService}" />
+      <ConfirmationOverlayControl ConfirmationService="{Binding Confirmations, FallbackValue={x:Null}}"
+                                  GlobalConfirmationService="{Binding GlobalConfirmationService, FallbackValue={x:Null}}" />
     </overlays:OverlayLayer>
     <overlays:OverlayLayer ZIndex="30"
                            StyleKey="{x:Static OverlayLayerStyleKeys.BusyLayerThemeKey}">
-      <BusyOverlayControl BusyService="{Binding Busy}"
-                          GlobalBusyService="{Binding GlobalBusyService}" />
+      <BusyOverlayControl BusyService="{Binding Busy, FallbackValue={x:Null}}"
+                          GlobalBusyService="{Binding GlobalBusyService, FallbackValue={x:Null}}" />
     </overlays:OverlayLayer>
   </overlays:OverlayLayerCollection>
 

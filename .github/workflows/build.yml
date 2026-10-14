@@ -50,9 +50,21 @@ jobs:
       run: dotnet test -c Release
 
   aot_sourcegen_sample:
-    needs: test
-    name: AOT source-gen sample
-    runs-on: ubuntu-latest
+    needs: build
+    name: AOT Fluent/source-gen (${{ matrix.rid }})
+    strategy:
+      matrix:
+        include:
+        - os: ubuntu-latest
+          rid: linux-x64
+          executable-suffix: ''
+        - os: windows-latest
+          rid: win-x64
+          executable-suffix: '.exe'
+        - os: macos-latest
+          rid: osx-arm64
+          executable-suffix: ''
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -60,11 +72,12 @@ jobs:
       with:
         global-json-file: global.json
     - name: Install NativeAOT toolchain
+      if: runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
     - name: Publish AOT sample
-      run: dotnet publish samples/DockSystemTextJsonSourceGenAotSample/DockSystemTextJsonSourceGenAotSample.csproj -c Release -r linux-x64 -o artifacts/aot-sourcegen-sample
+      run: dotnet publish samples/DockSystemTextJsonSourceGenAotSample/DockSystemTextJsonSourceGenAotSample.csproj -c Release -r ${{ matrix.rid }} -o artifacts/aot-sourcegen-sample -m:1
     - name: Run AOT sample
-      run: ./artifacts/aot-sourcegen-sample/DockSystemTextJsonSourceGenAotSample
+      run: ./artifacts/aot-sourcegen-sample/DockSystemTextJsonSourceGenAotSample${{ matrix.executable-suffix }}
 
   pack:
     needs:

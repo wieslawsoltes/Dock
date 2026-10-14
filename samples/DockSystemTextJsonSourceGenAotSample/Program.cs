@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Avalonia.Headless;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm.Controls;
@@ -15,8 +16,16 @@ internal static class Program
 {
     private static int Main()
     {
+        Avalonia.AppBuilder.Configure<BindingSmokeApp>()
+            .UseHeadless(new Avalonia.Headless.AvaloniaHeadlessPlatformOptions())
+            .SetupWithoutStarting();
+        BindingSmokeChecks.ValidateProportionalSplitter(new ProportionalDockSplitter(), new ProportionalDockSplitter());
+        BindingSmokeChecks.ValidateGridSplitter(new GridDockSplitter(), new GridDockSplitter());
+        BindingSmokeChecks.ValidateMdiCommands();
+        BindingSmokeChecks.ValidateOverlayServices();
+        BindingSmokeChecks.ValidateCommandBarKinds();
         ValidateRoundTrip();
-        Console.WriteLine("Dock source-generated AOT serialization round trip succeeded.");
+        Console.WriteLine("Dock Fluent bindings and source-generated AOT serialization round trip succeeded.");
         return 0;
     }
 

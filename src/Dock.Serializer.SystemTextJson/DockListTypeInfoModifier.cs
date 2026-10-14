@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Dock.Model.Core;
 
@@ -29,6 +30,15 @@ internal static class DockListTypeInfoModifier
 
         if (TryAssignAotSafeCreator(typeInfo, type, listType))
         {
+            return;
+        }
+
+        // Generated metadata covers the supported docking collections above. Keep the reflection
+        // fallback out of trimmed/AOT applications, where arbitrary generic constructors may not exist.
+        if (!JsonSerializer.IsReflectionEnabledByDefault)
+        {
+            typeInfo.CreateObject = () => throw new NotSupportedException(
+                $"The list type '{listType}' for '{type}' requires reflection-based JSON serialization.");
             return;
         }
 

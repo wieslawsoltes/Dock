@@ -60,13 +60,13 @@ public sealed class DockSerializer : IDockSerializer
     /// <inheritdoc/>
     public string Serialize<T>(T value)
     {
-        return JsonSerializer.Serialize(value, _options);
+        return JsonSerializer.Serialize(value, (JsonTypeInfo<T>)_options.GetTypeInfo(typeof(T)));
     }
 
     /// <inheritdoc/>
     public T? Deserialize<T>(string text)
     {
-        return JsonSerializer.Deserialize<T>(text, _options);
+        return JsonSerializer.Deserialize(text, (JsonTypeInfo<T>)_options.GetTypeInfo(typeof(T)));
     }
 
     /// <inheritdoc/>

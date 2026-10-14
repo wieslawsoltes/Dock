@@ -28,6 +28,7 @@ internal sealed class DockDragPreviewLayout : IDisposable
     private IDock? _tabPane;
     private IDockable? _originalActive;
     private IDockable? _temporaryActive;
+    private IDisposable? _customPreview;
 
     internal bool IsCurrent => _host is { } host && _root is { } root
         && host.PreviewViewport == _viewport && LayoutHelper.GetLayoutScale(host).Equals(_scale)
@@ -41,6 +42,22 @@ internal sealed class DockDragPreviewLayout : IDisposable
             return null;
         if (source is not IDock && pane.VisibleDockables is { Count: > 1 })
             return CreateTabPreview(source, pane, host);
+        if (source.Factory is IDockDragSourcePreviewProvider provider)
+        {
+            var preview = provider.CreateDragSourcePreview(source, host);
+            if (preview is null) return null;
+            var custom = new DockDragPreviewLayout
+            {
+                _customPreview = preview, _host = host,
+                _root = DockDropPreviewService.LayoutRoot(source),
+                _viewport = host.PreviewViewport, _scale = LayoutHelper.GetLayoutScale(host),
+                _thickness = host.PreviewSplitterThickness
+            };
+            host.DetachedFromVisualTree += custom.OnDetached;
+            host.UpdateLayout();
+            custom._version = DockDropPreviewService.Fingerprint(custom._root);
+            return custom;
+        }
         if (!pane.IsCollapsable || (source is not IDock && pane.VisibleDockables?.Count != 1))
             return null;
         var projection = DockSplitPreview.CreateSourceRemoval(source);
@@ -156,6 +173,8 @@ internal sealed class DockDragPreviewLayout : IDisposable
         _root = null;
         _splitter = null;
         host.DetachedFromVisualTree -= OnDetached;
+        _customPreview?.Dispose();
+        _customPreview = null;
         foreach (var panel in _panels) panel.SetPreviewSlots(null);
         foreach (var visibility in _visibility) visibility.Dispose();
         _panels.Clear();

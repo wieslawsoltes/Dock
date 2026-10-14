@@ -12,10 +12,10 @@ public class DropDownButton : ToggleButton
 {
     /// <summary>Defines the menu opened by the button.</summary>
     public static readonly StyledProperty<ContextMenu?> DropDownContextMenuProperty =
-        AvaloniaProperty.Register<DropDownButton, ContextMenu?>(name: nameof(DropDownContextMenu), metadata: AvalonDockProperty.StyledMetadata<ContextMenu?>());
+        AvaloniaProperty.Register<DropDownButton, ContextMenu?>(name: nameof(DropDownContextMenu));
     /// <summary>Defines the data context assigned when the menu opens.</summary>
     public static readonly StyledProperty<object?> DropDownContextMenuDataContextProperty =
-        AvaloniaProperty.Register<DropDownButton, object?>(name: nameof(DropDownContextMenuDataContext), metadata: AvalonDockProperty.StyledMetadata<object?>());
+        AvaloniaProperty.Register<DropDownButton, object?>(name: nameof(DropDownContextMenuDataContext));
 
     private readonly LayoutDropDownMenu _menu;
 

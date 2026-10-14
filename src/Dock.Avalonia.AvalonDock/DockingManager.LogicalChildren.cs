@@ -8,15 +8,18 @@ using AvalonDock.Infrastructure;
 
 namespace AvalonDock;
 
-public partial class DockingManager
+public partial class DockingManager : ILogical
 {
     private readonly List<WeakReference> _publicLogicalChildren = new();
     private LogicalChildrenView? _logicalChildrenView;
 
     /// <summary>Enumerates the manager's registered presentation children.</summary>
-    /// <remarks>Overrides also supply Avalonia logical-tree traversal. The framework filters
+    /// <remarks>Overrides also supply public Avalonia logical-tree traversal. The projection filters
     /// non-logical objects; <see cref="LogicalChildrenPublic"/> preserves the raw enumeration.</remarks>
     protected new virtual IEnumerator LogicalChildren => EnumerateLogicalChildren().GetEnumerator();
+
+    global::Avalonia.Collections.IAvaloniaReadOnlyList<ILogical> ILogical.LogicalChildren =>
+        _logicalChildrenView is { } children ? children : base.LogicalChildren;
 
     private IEnumerable<object?> EnumerateLogicalChildren()
     {
@@ -26,7 +29,6 @@ public partial class DockingManager
     private void InitializeLogicalChildren()
     {
         _logicalChildrenView = new(() => LogicalChildren);
-        LogicalChildrenSource = _logicalChildrenView;
     }
 
     internal void InternalAddLogicalChild(object? child)

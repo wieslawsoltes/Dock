@@ -22,10 +22,10 @@ public abstract class LayoutContent : LayoutElement, IComparable<LayoutContent>,
 
     /// <summary>Identifies the title property.</summary>
     public static readonly DirectProperty<LayoutContent, string> TitleProperty =
-        AvaloniaProperty.RegisterDirect<LayoutContent, string>(name: nameof(Title), metadata: AvalonDockProperty.DirectMetadata<string>(), getter: x => x.Title, setter: (x, v) => x.SetTitle(v));
+        AvaloniaProperty.RegisterDirect<LayoutContent, string>(name: nameof(Title), getter: x => x.Title, setter: (x, v) => x.SetTitle(v));
     /// <summary>Identifies the content identifier property.</summary>
     public static readonly DirectProperty<LayoutContent, string?> ContentIdProperty =
-        AvaloniaProperty.RegisterDirect<LayoutContent, string?>(name: nameof(ContentId), metadata: AvalonDockProperty.DirectMetadata<string?>(), getter: x => x.ContentId, setter: (x, v) => x.SetContentId(v));
+        AvaloniaProperty.RegisterDirect<LayoutContent, string?>(name: nameof(ContentId), getter: x => x.ContentId, setter: (x, v) => x.SetContentId(v));
     /// <summary>Identifies the content property.</summary>
     public static readonly DirectProperty<LayoutContent, object?> ContentProperty =
         AvaloniaProperty.RegisterDirect<LayoutContent, object?>(nameof(Content), x => x.Content, (x, v) => x.Content = v);

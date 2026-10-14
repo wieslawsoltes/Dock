@@ -4,27 +4,13 @@ using Avalonia.Data;
 
 namespace AvalonDock.Infrastructure;
 
-/// <summary>Applies WPF value and binding lifetimes to compatibility dependency properties.</summary>
+/// <summary>Creates metadata for compatibility properties added to existing Avalonia properties.</summary>
 internal static class AvalonDockProperty
 {
-    private const BindingValueBehavior Behavior =
-        BindingValueBehavior.ReplaceNonWritableBindingOnSetValue |
-        BindingValueBehavior.RemoveBindingOnClearValue |
-        BindingValueBehavior.ResetCurrentValueOnSourceChange |
-        BindingValueBehavior.IgnoreInactiveBindingSourceUpdates;
-
+    // Binding ownership follows official Avalonia until the opt-in WPF contracts
+    // tracked in Dock #1186 are available in a published framework release.
     internal static StyledPropertyMetadata<T> StyledMetadata<T>(T defaultValue = default!,
         BindingMode defaultBindingMode = BindingMode.OneWay, Func<AvaloniaObject, T, T>? coerce = null,
         bool enableDataValidation = false) =>
-        new(defaultValue, defaultBindingMode, coerce, enableDataValidation)
-        {
-            BindingValueBehavior = Behavior,
-        };
-
-    internal static DirectPropertyMetadata<T> DirectMetadata<T>(T unsetValue = default!,
-        BindingMode defaultBindingMode = BindingMode.OneWay, bool enableDataValidation = false) =>
-        new(unsetValue, defaultBindingMode, enableDataValidation)
-        {
-            BindingValueBehavior = Behavior,
-        };
+        new(defaultValue, defaultBindingMode, coerce, enableDataValidation);
 }

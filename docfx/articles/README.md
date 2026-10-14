@@ -54,9 +54,9 @@ Start with the Quick start, then continue with the content guides and the framew
 If you are building a full application, the sample projects are the best end-to-end reference for layout construction, navigation, and overlays.
 
 The [AvalonDock compatibility guide](dock-avalondock.md) preserves the prototype's
-XAML and C# usage, architecture, and XML persistence documentation. This feature
-is deferred until the required upstream Avalonia APIs ship; see
-[#1186](https://github.com/wieslawsoltes/Dock/issues/1186).
+XAML and C# usage, architecture, and XML persistence documentation. The source
+sample runs on official Avalonia; full framework parity and package publication
+remain tracked in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186).
 
 ## Sample applications
 

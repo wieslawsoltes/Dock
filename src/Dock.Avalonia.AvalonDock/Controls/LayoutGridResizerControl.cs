@@ -19,11 +19,11 @@ public class LayoutGridResizerControl : ProportionalStackPanelSplitter
 
     /// <summary>Defines the brush used for the drag preview.</summary>
     public static readonly StyledProperty<IBrush?> BackgroundWhileDraggingProperty =
-        AvaloniaProperty.Register<LayoutGridResizerControl, IBrush?>(name: nameof(BackgroundWhileDragging), metadata: AvalonDockProperty.StyledMetadata<IBrush?>(defaultValue: Brushes.Black));
+        AvaloniaProperty.Register<LayoutGridResizerControl, IBrush?>(name: nameof(BackgroundWhileDragging), defaultValue: Brushes.Black);
 
     /// <summary>Defines the drag preview opacity.</summary>
     public static readonly StyledProperty<double> OpacityWhileDraggingProperty =
-        AvaloniaProperty.Register<LayoutGridResizerControl, double>(name: nameof(OpacityWhileDragging), metadata: AvalonDockProperty.StyledMetadata<double>(defaultValue: 0.5));
+        AvaloniaProperty.Register<LayoutGridResizerControl, double>(name: nameof(OpacityWhileDragging), defaultValue: 0.5);
 
     /// <summary>Creates a splitter with a black, half-opacity preview.</summary>
     public LayoutGridResizerControl() => SynchronizePreview();

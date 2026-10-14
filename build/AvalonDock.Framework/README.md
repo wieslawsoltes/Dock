@@ -1,9 +1,12 @@
 # AvalonDock framework work (deferred)
 
 Regular Dock builds and releases use official Avalonia packages. The AvalonDock
-compatibility implementation is retained, but its projects are excluded from
-`Dock.slnx`, API documentation generation, CI, and package release until the
-required framework APIs are published upstream.
+compatibility source builds against public Avalonia APIs, and
+`samples/DockAvalonDockSample` plus its focused headless tests are included in
+`Dock.slnx` and CI. Run `dotnet run --project samples/DockAvalonDockSample`.
+Full framework parity, adapter API documentation generation, the historical
+parity suite, and compatibility package release remain deferred until the
+required upstream contracts are available.
 
 [Dock issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks all
 required contracts, migration steps, validation, and release acceptance:
@@ -13,6 +16,13 @@ required contracts, migration steps, validation, and release acceptance:
 - Hosted native roots for auto-hide resources, styles, input, focus, and disposal.
 - Initialization deferral and primary-pointer capture for floating hosts.
 - Reflection-free factories for compiled XAML resources.
+
+The runnable source uses ordinary Avalonia property registrations, public
+`ILogical` projections, logical parenting for embedded roots, model-ready
+initialization callbacks, and pointer instances received through input events.
+These public API paths do not reproduce every WPF binding, lifecycle, inheritance,
+or native-host behavior. The sample's tests establish its supported workflows;
+the historical full-parity results below do not apply to these substitutes.
 
 The reference implementation is in
 [Avalonia fork PR #9](https://github.com/wieslawsoltes/Avalonia/pull/9).

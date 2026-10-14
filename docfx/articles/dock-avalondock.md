@@ -1,11 +1,25 @@
 # AvalonDock compatibility
 
-> **Deferred:** the compatibility package and sample are excluded from Dock's
-> normal build, CI, API metadata, and release. Regular Dock uses official Avalonia
-> packages. [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks
-> the required upstream APIs and the work to re-enable compatibility.
-> This page preserves the prototype's usage and architecture; its validation
-> results apply to the historical custom-framework revision, not official Avalonia.
+> **Source preview:** the sample builds and runs on official Avalonia and is
+> included in the normal solution and focused headless CI tests. Compatibility
+> package publication, full WPF framework parity, the historical parity suite,
+> generated resource factories, and API metadata remain deferred in
+> [issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186).
+> Full-parity results below apply to the historical custom-framework revision.
+
+Run the sample from the repository root:
+
+```sh
+dotnet run --project samples/DockAvalonDockSample
+```
+
+The current source uses Avalonia property and binding semantics, public logical
+projections, ordinary logical parenting for native roots, model-ready floating
+initialization, and capture through pointer events. These paths support the
+sample without a framework fork; exact WPF binding ownership, weak inheritance,
+native-host lifecycle, and global capture remain upstream work. Compiled resource
+catalogs still need the upstream factory API; use explicit typed registrations
+and `AvalonDockGenerateCatalog=false` for custom dictionaries in the meantime.
 
 `Dock.Avalonia.AvalonDock` lets an Avalonia application use the
 `AvalonDock` C# namespaces and layout names. The implementation wraps
@@ -52,10 +66,10 @@ while identifier metadata itself does not raise property notifications.
 ## Reference the package and theme
 
 The retained project targets .NET 8 and .NET 10, but package generation is
-disabled while compatibility is deferred. The examples below describe the
-intended API after reactivation. Do not add `Dock.Avalonia.AvalonDock` to an
-application using official Avalonia until the release criteria in
-[#1186](https://github.com/wieslawsoltes/Dock/issues/1186) are complete.
+disabled while full compatibility is deferred. The examples below are available
+through source project references, as demonstrated by the runnable sample.
+NuGet publication remains subject to the release criteria in
+[#1186](https://github.com/wieslawsoltes/Dock/issues/1186).
 
 For historical reproduction only, use the
 [validated revision's build guide](https://github.com/wieslawsoltes/Dock/blob/447653dbc589757eb6cbc6062dd3ffe0f79629ee/build/AvalonDock.Framework/README.md)

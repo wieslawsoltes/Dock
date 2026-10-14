@@ -17,11 +17,11 @@ namespace AvalonDock.Controls;
 /// <summary>Presents Dock's existing auto-hide preview and its current public tool model.</summary>
 /// <remarks>Supported desktop backends present the same Dock visuals in a native embedded child.
 /// Backends without embedding retain the in-tree presenter. The control is focusable and hidden by default.</remarks>
-public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
+public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl, ILogical
 {
     /// <summary>Identifies the theme applied to the preview's anchorable content control.</summary>
     public static readonly StyledProperty<ControlTheme?> AnchorableStyleProperty =
-        AvaloniaProperty.Register<LayoutAutoHideWindowControl, ControlTheme?>(name: nameof(AnchorableStyle), metadata: AvalonDockProperty.StyledMetadata<ControlTheme?>());
+        AvaloniaProperty.Register<LayoutAutoHideWindowControl, ControlTheme?>(name: nameof(AnchorableStyle));
     /// <summary>Identifies the preview background.</summary>
     public new static readonly StyledProperty<IBrush?> BackgroundProperty =
         TemplatedControl.BackgroundProperty.AddOwner<LayoutAutoHideWindowControl>(AvalonDockProperty.StyledMetadata<IBrush?>());
@@ -43,7 +43,7 @@ public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
     internal LayoutAutoHideWindowControl()
     {
         _nativeRoot = new(this);
-        LogicalChildrenSource = _logicalChildrenView = new(() => LogicalChildren);
+        _logicalChildrenView = new(() => LogicalChildren);
         HorizontalContentAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch;
         VerticalContentAlignment = global::Avalonia.Layout.VerticalAlignment.Stretch;
     }
@@ -78,6 +78,9 @@ public class LayoutAutoHideWindowControl : ContentControl, ILayoutControl
 
     /// <summary>Enumerates the preview's existing content presenter.</summary>
     protected new virtual IEnumerator LogicalChildren => EnumerateLogicalPresenter().GetEnumerator();
+
+    global::Avalonia.Collections.IAvaloniaReadOnlyList<ILogical> ILogical.LogicalChildren =>
+        _logicalChildrenView is { } children ? children : base.LogicalChildren;
 
     /// <summary>Creates the real embedded child used by the native host lifecycle.</summary>
     /// <param name="hwndParent">The platform parent supplied by Avalonia's native control host.</param>

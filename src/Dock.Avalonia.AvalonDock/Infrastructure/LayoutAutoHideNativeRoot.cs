@@ -96,8 +96,9 @@ internal sealed class LayoutAutoHideNativeRoot(LayoutAutoHideWindowControl owner
 
     private sealed class EmbeddedRoot : EmbeddableControlRoot, IExternalDockSurface
     {
-        internal EmbeddedRoot(LayoutAutoHideWindowControl owner) : base(owner)
+        internal EmbeddedRoot(LayoutAutoHideWindowControl owner)
         {
+            ((ISetLogicalParent)this).SetParent(owner);
             owner.FindAncestorOfType<DockControl>()?.RegisterExternalDockSurface(this);
         }
 
@@ -107,6 +108,7 @@ internal sealed class LayoutAutoHideNativeRoot(LayoutAutoHideWindowControl owner
         protected override void OnClosed(EventArgs e)
         {
             DockControl?.UnregisterExternalDockSurface(this);
+            ((ISetLogicalParent)this).SetParent(null);
             base.OnClosed(e);
         }
     }

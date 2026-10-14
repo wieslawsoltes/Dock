@@ -25,7 +25,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         AvaloniaProperty.Register<LayoutFloatingWindowControl, bool>(nameof(IsContentImmutable));
     /// <summary>Defines the thickness of the floating window's resize hit areas.</summary>
     public static readonly StyledProperty<Thickness> ResizeBorderThicknessProperty =
-        AvaloniaProperty.Register<LayoutFloatingWindowControl, Thickness>(name: nameof(ResizeBorderThickness), metadata: AvalonDockProperty.StyledMetadata<Thickness>(defaultValue: new Thickness(10)));
+        AvaloniaProperty.Register<LayoutFloatingWindowControl, Thickness>(name: nameof(ResizeBorderThickness), defaultValue: new Thickness(10));
     /// <summary>Defines the current native window drag state.</summary>
     public static readonly DirectProperty<LayoutFloatingWindowControl, bool> IsDraggingProperty =
         AvaloniaProperty.RegisterDirect<LayoutFloatingWindowControl, bool>(nameof(IsDragging), window => window.IsDragging);
@@ -44,6 +44,9 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     private bool _observeModelRequested;
     private bool _closeEmptyDocument;
     private bool _cleanupModelInDerivedHook;
+    private bool _frameworkInitialized;
+    private bool _modelInitialized;
+    private IPointer? _dragPointer;
     private ILayoutRoot? _closingRoot;
     private readonly LayoutFloatingWindow? _floatingModel;
 
@@ -51,6 +54,10 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     {
         ShowInTaskbarProperty.OverrideDefaultValue<LayoutFloatingWindowControl>(false);
         KeyDownEvent.AddClassHandler<LayoutFloatingWindowControl>(static (window, args) => window.OnPreviewKeyDown(args), RoutingStrategies.Tunnel);
+        PointerPressedEvent.AddClassHandler<LayoutFloatingWindowControl>(static (window, args) =>
+        {
+            if (args.Pointer.Type == PointerType.Mouse) window._dragPointer = args.Pointer;
+        }, RoutingStrategies.Tunnel, handledEventsToo: true);
         ContentProperty.OverrideMetadata<LayoutFloatingWindowControl>(new StyledPropertyMetadata<object?>(
             coerce: static (owner, value) => owner is LayoutFloatingWindowControl { IsLoaded: true, IsContentImmutable: true } window
                 ? window.Content : value));
@@ -187,6 +194,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
                 // deferred initialization. Observe the model before waiting
                 // for its contents to become visible again.
                 InitializeIfNeeded();
+                InitializeModelIfReady();
             }
             _notifyOpened = true;
             if (IsVisible)
@@ -208,18 +216,26 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         base.Present(isDialog);
     }
 
-    /// <summary>Defers the native initialization hook until the derived host exposes its model.</summary>
-    /// <remarks>Show, EndInit, or visual attachment retries initialization after construction.</remarks>
-    protected override bool IsInitializationDeferred => Model is null;
-
-    /// <summary>Dispatches Avalonia initialization to the AvalonDock extensibility hook.</summary>
-    protected override void OnInitialized() => OnInitialized(EventArgs.Empty);
-
-    /// <summary>Called once when Avalonia completes floating-window initialization.</summary>
-    /// <remarks>Call the base hook to retain native initialization. The public Initialized event follows this hook.</remarks>
-    protected virtual void OnInitialized(EventArgs e)
+    /// <summary>Records framework initialization and initializes the compatibility model when available.</summary>
+    protected override void OnInitialized()
     {
         base.OnInitialized();
+        _frameworkInitialized = true;
+        InitializeModelIfReady();
+    }
+
+    private void InitializeModelIfReady()
+    {
+        if (!_frameworkInitialized || _modelInitialized || _floatingModel is null || Model is null) return;
+        _modelInitialized = true;
+        OnInitialized(EventArgs.Empty);
+    }
+
+    /// <summary>Called once after framework initialization when the floating model is available.</summary>
+    /// <remarks>Call the base hook to retain model observation. Official Avalonia may raise its
+    /// Initialized event before this hook when initialization occurs in the Window constructor.</remarks>
+    protected virtual void OnInitialized(EventArgs e)
+    {
         ObserveLayoutModel();
     }
 
@@ -314,6 +330,7 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
     /// <summary>Notifies the native factory when an explicitly created window is first shown.</summary>
     protected override void OnOpened(EventArgs e)
     {
+        InitializeModelIfReady();
         // Initialization may run while a base constructor installs its styles.
         // Native callbacks must wait until derived hosts have their model state.
         if (!_messageHookAttached)
@@ -336,13 +353,14 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
 
     /// <summary>Updates the drag notification state used by derived window controls.</summary>
     protected void SetIsDragging(bool value) => SetAndRaise(IsDraggingProperty, ref _dragging, value);
-    /// <summary>Captures or releases the primary mouse when a derived host changes its drag state.</summary>
-    /// <remarks>Notifications from Dock's active drag retain Dock's existing pointer capture.</remarks>
+    /// <summary>Captures or releases the mouse observed through this window's pointer events.</summary>
+    /// <remarks>Notifications from Dock's active drag retain Dock's existing pointer capture.
+    /// Programmatic dragging before a pointer event cannot capture a global mouse on official Avalonia.</remarks>
     protected virtual void OnIsDraggingChanged(AvaloniaPropertyChangedEventArgs e)
     {
         if (_nativeDragNotification) return;
-        if ((bool)e.NewValue!) CaptureMouse();
-        else ReleaseMouseCapture();
+        if ((bool)e.NewValue!) _dragPointer?.Capture(this);
+        else if (_dragPointer is { } pointer && ReferenceEquals(pointer.Captured, this)) pointer.Capture(null);
     }
 
     /// <summary>Synchronizes the public maximized state after the native window state changes.</summary>
@@ -404,6 +422,8 @@ public abstract class LayoutFloatingWindowControl : HostWindow, ILayoutControl, 
         ILayoutRoot? previousRoot = _closingRoot;
         _closingRoot = root;
         HasClosed = true;
+        if (_dragPointer is { } pointer && ReferenceEquals(pointer.Captured, this)) pointer.Capture(null);
+        _dragPointer = null;
         if (!_cleanupModelInDerivedHook) StopObservingLayoutModel();
         ((INotifyCollectionChanged)Classes).CollectionChanged -= NativeDragChanged;
         try

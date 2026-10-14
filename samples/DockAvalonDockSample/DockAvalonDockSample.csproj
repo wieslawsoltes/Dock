@@ -14,6 +14,9 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>Dock.Avalonia.AvalonDock.Tests</_Parameter1>
     </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DockAvalonDockSample.HeadlessTests</_Parameter1>
+    </AssemblyAttribute>
     <PackageReference Include="ReactiveUI.SourceGenerators" />
     <PackageReference Include="ReactiveUI.Reactive" />
     <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />

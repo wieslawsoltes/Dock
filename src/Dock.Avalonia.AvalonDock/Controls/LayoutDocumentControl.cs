@@ -13,7 +13,7 @@ public class LayoutDocumentControl : TemplatedControl
 {
     /// <summary>Defines the public document or tool model displayed in a document pane.</summary>
     public static readonly StyledProperty<LayoutContent?> ModelProperty =
-        AvaloniaProperty.Register<LayoutDocumentControl, LayoutContent?>(name: nameof(Model), metadata: AvalonDockProperty.StyledMetadata<LayoutContent?>());
+        AvaloniaProperty.Register<LayoutDocumentControl, LayoutContent?>(name: nameof(Model));
     /// <summary>Defines the manager's container for the displayed model.</summary>
     public static readonly DirectProperty<LayoutDocumentControl, LayoutItem?> LayoutItemProperty =
         AvaloniaProperty.RegisterDirect<LayoutDocumentControl, LayoutItem?>(nameof(LayoutItem), control => control.LayoutItem);

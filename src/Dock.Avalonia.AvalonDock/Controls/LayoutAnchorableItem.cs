@@ -16,16 +16,16 @@ public class LayoutAnchorableItem : LayoutItem
 
     /// <summary>Identifies the tool hide command.</summary>
     public static readonly StyledProperty<ICommand?> HideCommandProperty =
-        AvaloniaProperty.Register<LayoutAnchorableItem, ICommand?>(name: nameof(HideCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
+        AvaloniaProperty.Register<LayoutAnchorableItem, ICommand?>(name: nameof(HideCommand));
     /// <summary>Identifies the tool auto-hide command.</summary>
     public static readonly StyledProperty<ICommand?> AutoHideCommandProperty =
-        AvaloniaProperty.Register<LayoutAnchorableItem, ICommand?>(name: nameof(AutoHideCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
+        AvaloniaProperty.Register<LayoutAnchorableItem, ICommand?>(name: nameof(AutoHideCommand));
     /// <summary>Identifies the command returning a floating tool to its pane.</summary>
     public static readonly StyledProperty<ICommand?> DockCommandProperty =
-        AvaloniaProperty.Register<LayoutAnchorableItem, ICommand?>(name: nameof(DockCommand), metadata: AvalonDockProperty.StyledMetadata<ICommand?>());
+        AvaloniaProperty.Register<LayoutAnchorableItem, ICommand?>(name: nameof(DockCommand));
     /// <summary>Identifies the tool hide capability.</summary>
     public static readonly StyledProperty<bool> CanHideProperty =
-        AvaloniaProperty.Register<LayoutAnchorableItem, bool>(name: nameof(CanHide), metadata: AvalonDockProperty.StyledMetadata<bool>(defaultValue: true));
+        AvaloniaProperty.Register<LayoutAnchorableItem, bool>(name: nameof(CanHide), defaultValue: true);
 
     /// <summary>Gets or sets the tool hide command.</summary>
     public ICommand? HideCommand { get => GetValue(HideCommandProperty); set => SetValue(HideCommandProperty, value); }

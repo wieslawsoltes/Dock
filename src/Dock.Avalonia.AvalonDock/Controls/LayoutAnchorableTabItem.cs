@@ -12,7 +12,7 @@ public class LayoutAnchorableTabItem : TemplatedControl
 {
     /// <summary>Defines the public content displayed by the tab.</summary>
     public static readonly StyledProperty<LayoutContent?> ModelProperty =
-        AvaloniaProperty.Register<LayoutAnchorableTabItem, LayoutContent?>(name: nameof(Model), metadata: AvalonDockProperty.StyledMetadata<LayoutContent?>());
+        AvaloniaProperty.Register<LayoutAnchorableTabItem, LayoutContent?>(name: nameof(Model));
     /// <summary>Defines the manager's existing item container for this tab.</summary>
     public static readonly DirectProperty<LayoutAnchorableTabItem, LayoutItem?> LayoutItemProperty =
         AvaloniaProperty.RegisterDirect<LayoutAnchorableTabItem, LayoutItem?>(nameof(LayoutItem), tab => tab.LayoutItem);

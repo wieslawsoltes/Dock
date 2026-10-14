@@ -9,7 +9,7 @@ public class LayoutDocumentItem : LayoutItem
 {
     /// <summary>Identifies the document description property.</summary>
     public static readonly StyledProperty<string?> DescriptionProperty =
-        AvaloniaProperty.Register<LayoutDocumentItem, string?>(name: nameof(Description), metadata: AvalonDockProperty.StyledMetadata<string?>());
+        AvaloniaProperty.Register<LayoutDocumentItem, string?>(name: nameof(Description));
 
     /// <summary>Gets or sets the document description.</summary>
     public string? Description { get => GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }

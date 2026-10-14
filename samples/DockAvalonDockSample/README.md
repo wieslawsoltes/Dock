@@ -1,10 +1,13 @@
 # AvalonDock on Dock sample
 
-This sample is deferred and excluded from the normal solution until the required
-framework APIs ship in official Avalonia. See
-[#1186](https://github.com/wieslawsoltes/Dock/issues/1186) for the remaining work.
-The source and license attribution are retained for reactivation; the sample
-cannot currently be run against Dock's official Avalonia dependency.
+Run `dotnet run --project samples/DockAvalonDockSample` from the repository root.
+The sample builds against official Avalonia and is included in the normal
+solution and headless CI tests. It uses Avalonia's binding and lifecycle
+semantics; exact WPF property ownership, weak inheritance, native-host lifecycle,
+global pointer capture, and generated compiled resource factories remain tracked
+in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186).
+The compatibility NuGet package remains non-packable until those release criteria
+are satisfied. No framework fork or reflection is required to run this sample.
 
 The sample adapts the Xceed Live Explorer 3.7.0 layout to Avalonia while keeping
 the AvalonDock layout names. It uses Avalonia's default XML namespace, so the

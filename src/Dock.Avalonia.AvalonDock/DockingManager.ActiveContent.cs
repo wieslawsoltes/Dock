@@ -9,7 +9,7 @@ public partial class DockingManager
 {
     /// <summary>Defines the active content property, which supports styles and defaults to one-way binding.</summary>
     public static readonly StyledProperty<object?> ActiveContentProperty =
-        AvaloniaProperty.Register<DockingManager, object?>(name: nameof(ActiveContent), metadata: AvalonDockProperty.StyledMetadata<object?>(defaultBindingMode: BindingMode.OneWay));
+        AvaloniaProperty.Register<DockingManager, object?>(name: nameof(ActiveContent), defaultBindingMode: BindingMode.OneWay);
 
     private bool _settingActiveContent;
     private EventHandler<AvaloniaPropertyChangedEventArgs>? _activeContentNotification;

@@ -10,25 +10,25 @@ public partial class DockingManager
 {
     /// <summary>Identifies the control template for auto-hide side controls.</summary>
     public static readonly StyledProperty<IControlTemplate?> AnchorSideTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IControlTemplate?>(name: nameof(AnchorSideTemplate), metadata: AvalonDockProperty.StyledMetadata<IControlTemplate?>());
+        AvaloniaProperty.Register<DockingManager, IControlTemplate?>(name: nameof(AnchorSideTemplate));
     /// <summary>Identifies the control template for auto-hide group controls.</summary>
     public static readonly StyledProperty<IControlTemplate?> AnchorGroupTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IControlTemplate?>(name: nameof(AnchorGroupTemplate), metadata: AvalonDockProperty.StyledMetadata<IControlTemplate?>());
+        AvaloniaProperty.Register<DockingManager, IControlTemplate?>(name: nameof(AnchorGroupTemplate));
     /// <summary>Identifies the control template for individual auto-hide anchors.</summary>
     public static readonly StyledProperty<IControlTemplate?> AnchorTemplateProperty =
-        AvaloniaProperty.Register<DockingManager, IControlTemplate?>(name: nameof(AnchorTemplate), metadata: AvalonDockProperty.StyledMetadata<IControlTemplate?>());
+        AvaloniaProperty.Register<DockingManager, IControlTemplate?>(name: nameof(AnchorTemplate));
     /// <summary>Identifies the displayed left auto-hide side control.</summary>
     public static readonly StyledProperty<LayoutAnchorSideControl?> LeftSidePanelProperty =
-        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(LeftSidePanel), metadata: AvalonDockProperty.StyledMetadata<LayoutAnchorSideControl?>());
+        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(LeftSidePanel));
     /// <summary>Identifies the displayed top auto-hide side control.</summary>
     public static readonly StyledProperty<LayoutAnchorSideControl?> TopSidePanelProperty =
-        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(TopSidePanel), metadata: AvalonDockProperty.StyledMetadata<LayoutAnchorSideControl?>());
+        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(TopSidePanel));
     /// <summary>Identifies the displayed right auto-hide side control.</summary>
     public static readonly StyledProperty<LayoutAnchorSideControl?> RightSidePanelProperty =
-        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(RightSidePanel), metadata: AvalonDockProperty.StyledMetadata<LayoutAnchorSideControl?>());
+        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(RightSidePanel));
     /// <summary>Identifies the displayed bottom auto-hide side control.</summary>
     public static readonly StyledProperty<LayoutAnchorSideControl?> BottomSidePanelProperty =
-        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(BottomSidePanel), metadata: AvalonDockProperty.StyledMetadata<LayoutAnchorSideControl?>());
+        AvaloniaProperty.Register<DockingManager, LayoutAnchorSideControl?>(name: nameof(BottomSidePanel));
 
     private LayoutAnchorSide? _presentedLeftSide, _presentedTopSide, _presentedRightSide, _presentedBottomSide;
 

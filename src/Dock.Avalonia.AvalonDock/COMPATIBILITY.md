@@ -1,12 +1,12 @@
 # Compatibility work and acceptance criteria
 
-> **Deferred pending upstream Avalonia APIs.** The adapter, generator, sample,
-> audit, and compatibility test projects are excluded from the normal solution;
-> adapter package generation and API metadata are disabled. Regular Dock uses
-> official Avalonia. [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186)
-> is the current reactivation checklist. All implementation and validation
-> evidence below describes the historical fork-based prototype and must be
-> revalidated after migration to the released upstream APIs.
+> **Full framework parity is deferred.** The source sample and its focused
+> headless tests build in the normal solution against official Avalonia using
+> public API substitutes. The historical parity suite, API audit, generated
+> resource factories, adapter API metadata, and package release remain deferred.
+> [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks the
+> remaining contracts. Full-parity evidence below describes the historical
+> fork-based prototype and must be revalidated after upstream migration.
 
 The objective remains complete AvalonDock C# and XAML API compatibility on
 Avalonia, using Dock's Avalonia models and docking implementation, a NuGet

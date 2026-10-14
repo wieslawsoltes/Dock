@@ -11,7 +11,7 @@ public partial class DockingManager
         AvaloniaProperty.RegisterDirect<DockingManager, LayoutAutoHideWindowControl?>(nameof(AutoHideWindow), manager => manager.AutoHideWindow);
     /// <summary>Identifies the idle delay in milliseconds before an inactive auto-hide preview closes.</summary>
     public static readonly StyledProperty<int> AutoHideWindowClosingTimerProperty =
-        AvaloniaProperty.Register<DockingManager, int>(name: nameof(AutoHideWindowClosingTimer), metadata: AvalonDockProperty.StyledMetadata<int>(defaultValue: 1500, coerce: static (_, value) => value < 0 ? 1500 : value));
+        AvaloniaProperty.Register<DockingManager, int>(name: nameof(AutoHideWindowClosingTimer), defaultValue: 1500, coerce: static (_, value) => value < 0 ? 1500 : value);
 
     private LayoutAutoHideWindowControl? _autoHideWindow;
     private readonly LayoutAutoHideController _autoHide;

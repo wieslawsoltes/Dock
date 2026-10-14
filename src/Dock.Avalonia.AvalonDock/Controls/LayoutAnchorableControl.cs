@@ -12,7 +12,7 @@ public class LayoutAnchorableControl : TemplatedControl
 {
     /// <summary>Defines the public tool model displayed by this control.</summary>
     public static readonly StyledProperty<LayoutAnchorable?> ModelProperty =
-        AvaloniaProperty.Register<LayoutAnchorableControl, LayoutAnchorable?>(name: nameof(Model), metadata: AvalonDockProperty.StyledMetadata<LayoutAnchorable?>());
+        AvaloniaProperty.Register<LayoutAnchorableControl, LayoutAnchorable?>(name: nameof(Model));
     /// <summary>Defines the manager's container for the displayed model.</summary>
     public static readonly DirectProperty<LayoutAnchorableControl, LayoutItem?> LayoutItemProperty =
         AvaloniaProperty.RegisterDirect<LayoutAnchorableControl, LayoutItem?>(nameof(LayoutItem), control => control.LayoutItem);

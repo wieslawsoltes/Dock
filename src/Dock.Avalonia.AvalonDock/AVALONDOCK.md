@@ -1,11 +1,19 @@
 # AvalonDock compatibility for Dock
 
-> **Deferred:** this prototype is excluded from Dock's normal solution, CI,
-> API documentation build, and package release. Dock uses official Avalonia
-> packages; the adapter requires framework APIs that have not shipped upstream.
-> [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks the
-> required contracts and reactivation work. The usage examples and test results
-> below describe the retained implementation and its historical fork-based validation.
+> **Source preview:** the sample builds and runs on official Avalonia through
+> public APIs and is covered by the normal solution and focused headless CI tests.
+> Full WPF framework parity, the historical parity suite, generated resource
+> factories, API metadata, and package release remain deferred in
+> [issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186).
+> Historical full-parity test results below used a framework fork; they do not
+> establish equivalent behavior on official Avalonia.
+
+Run `dotnet run --project samples/DockAvalonDockSample` from the repository root.
+Property bindings follow Avalonia's own lifetime rules. Public logical children
+are projected through `ILogical`; internal inheritance uses the framework's
+normal ownership. Floating initialization waits for its model, and drag capture
+uses a pointer received through input events. Native-root lifecycle parity and
+global capture before any pointer event remain upstream work.
 
 This package exposes the `AvalonDock`
 namespaces over `Dock.Model.Avalonia` and Dock's controls. Its XAML types are
@@ -25,8 +33,9 @@ the upstream WPF docking engine.
 The prototype was validated with a project-specific prerelease Avalonia fork.
 The [framework history](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
 links to the preserved source and build instructions at that revision. Normal
-Dock builds no longer use a framework bootstrap or private feed. The adapter
-must be migrated to released upstream APIs before it can be built and packaged again.
+Dock builds no longer use a framework bootstrap or private feed. The source
+sample uses public API substitutes; package publication remains deferred until
+the full compatibility release criteria are met.
 
 Runtime source
 [`77c15f965`](https://github.com/wieslawsoltes/Dock/commit/77c15f96566690a4f2f6f31078130d119337dc4f)

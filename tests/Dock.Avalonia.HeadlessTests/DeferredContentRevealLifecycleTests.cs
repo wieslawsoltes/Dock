@@ -11,6 +11,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using Dock.Controls.DeferredContentControl;
 using Xunit;
@@ -20,6 +21,112 @@ namespace Dock.Avalonia.HeadlessTests;
 // Shared with the Avalonia 11 suite; exercise the public controls and scheduling API.
 public class DeferredContentRevealLifecycleTests
 {
+    [AvaloniaTheory]
+    [InlineData(false, 0)]
+    [InlineData(true, 0)]
+    [InlineData(false, 1)]
+    [InlineData(true, 1)]
+    [InlineData(false, 2)]
+    [InlineData(true, 2)]
+    [InlineData(false, 3)]
+    [InlineData(true, 3)]
+    public async Task Every_Reveal_Fades_Up_To_The_Caller_Opacity(bool standardPresenter, int opacitySource)
+    {
+        DeferredContentControl host = CreateHost(standardPresenter);
+        Window window = CreateWindow(host, TimeSpan.FromMilliseconds(300));
+        IDisposable? binding = null;
+        try
+        {
+            window.Show();
+            Flush(window);
+            ContentPresenter presenter = Assert.IsAssignableFrom<ContentPresenter>(host.Presenter);
+            double opacity = opacitySource == 0 ? 1D : 0.6D;
+            if (opacitySource == 1)
+                presenter.Opacity = opacity;
+            else if (opacitySource == 2)
+                presenter.Styles.Add(new Style { Setters = { new Setter(Visual.OpacityProperty, opacity) } });
+            else if (opacitySource == 3)
+            {
+                Border source = new() { Opacity = opacity };
+                binding = presenter.Bind(Visual.OpacityProperty, source.GetObservable(Visual.OpacityProperty));
+            }
+            Flush(window);
+            int styleCount = presenter.Styles.Count;
+
+            for (int visit = 0; visit < 3; visit++)
+            {
+                host.Content = $"Visit {visit}";
+                Flush(window);
+                AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+                double start = presenter.Opacity;
+                Assert.InRange(start, opacity * 0.85D, opacity * 0.98D);
+                Assert.Equal(opacity, presenter.GetBaseValue(Visual.OpacityProperty).GetValueOrDefault(1D));
+
+                await Task.Delay(30);
+                AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+                Assert.InRange(presenter.Opacity, start, opacity);
+                await SettleAsync(window, presenter);
+                Assert.Equal(opacity, presenter.Opacity);
+                Assert.Equal(styleCount, presenter.Styles.Count);
+                Assert.Null(presenter.Transitions);
+            }
+        }
+        finally
+        {
+            binding?.Dispose();
+            window.Close();
+        }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Revealing_Content_Does_Not_Restart_A_Caller_Style_Animation(bool standardPresenter)
+    {
+        DeferredContentControl host = CreateHost(standardPresenter);
+        Window window = CreateWindow(host, TimeSpan.FromMilliseconds(40));
+        try
+        {
+            window.Show();
+            Flush(window);
+            ContentPresenter presenter = Assert.IsAssignableFrom<ContentPresenter>(host.Presenter);
+            presenter.Styles.Add(new Style
+            {
+                Animations =
+                {
+                    new Animation
+                    {
+                        Duration = TimeSpan.FromSeconds(2),
+                        Children =
+                        {
+                            new KeyFrame { Cue = new Cue(0), Setters = { new Setter(Control.WidthProperty, 100D) } },
+                            new KeyFrame { Cue = new Cue(1), Setters = { new Setter(Control.WidthProperty, 200D) } }
+                        }
+                    }
+                }
+            });
+            Flush(window);
+            for (int tick = 0; tick < 10; tick++)
+            {
+                AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+                await Task.Delay(10);
+            }
+            double previousWidth = presenter.Width;
+            Assert.InRange(previousWidth, 102D, 199D);
+
+            for (int visit = 0; visit < 3; visit++)
+            {
+                host.Content = $"Visit {visit}";
+                Flush(window);
+                AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+                Assert.InRange(presenter.Width, previousWidth, 200D);
+                previousWidth = presenter.Width;
+                await Task.Delay(10);
+            }
+        }
+        finally { window.Close(); }
+    }
+
     [AvaloniaTheory]
     [InlineData(false, false)]
     [InlineData(true, false)]

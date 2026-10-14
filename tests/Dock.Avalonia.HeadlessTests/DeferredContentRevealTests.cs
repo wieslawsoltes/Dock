@@ -53,7 +53,6 @@ public class DeferredContentRevealTests
             {
                 host.Content = visit % 2 == 0 ? "Second" : "First";
                 Flush(window, timeline);
-                Assert.NotNull(presenter.Transitions);
                 Assert.True(presenter.IsAnimating(Visual.OpacityProperty), "Content replacement must retain the reveal animation.");
                 await SettleAsync(window, presenter);
 

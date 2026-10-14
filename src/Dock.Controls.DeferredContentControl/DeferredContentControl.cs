@@ -1105,10 +1105,6 @@ internal static class DeferredContentPresentationTargetHelpers
     private const double RevealStartingOpacity = 0.85D;
     private static readonly CubicEaseOut s_revealEasing = new();
 
-    private sealed class DeferredRevealTransition : DoubleTransition
-    {
-    }
-
     private sealed class RevealAnimation : IDisposable
     {
         private CancellationTokenSource? _cancellation = new();
@@ -1192,16 +1188,14 @@ internal static class DeferredContentPresentationTargetHelpers
             return null;
         }
 
-        DoubleTransition transition = EnsureRevealTransition(control, revealDuration);
         double opacity = control.GetBaseValue(Visual.OpacityProperty)
             .GetValueOrDefault(Visual.OpacityProperty.GetDefaultValue(control));
-        // Animate only at animation priority. Completion must never write a local value:
-        // a caller can replace the base value or its binding while the reveal is running.
+        // Native animation priority leaves the caller's opacity value and binding intact.
+        // RunAsync avoids changing styles, which would restart unrelated style animations.
         Animation animation = new()
         {
-            Duration = transition.Duration,
-            Delay = transition.Delay,
-            Easing = transition.Easing,
+            Duration = revealDuration,
+            Easing = s_revealEasing,
             FillMode = FillMode.None,
             Children =
             {
@@ -1209,46 +1203,20 @@ internal static class DeferredContentPresentationTargetHelpers
                 new KeyFrame { Cue = new Cue(1), Setters = { new Setter(Visual.OpacityProperty, opacity) } }
             }
         };
-        return new RevealAnimation(animation, control);
-    }
-
-    private static DoubleTransition EnsureRevealTransition(Control control, TimeSpan revealDuration)
-    {
         if (control.Transitions is { } transitions)
         {
             foreach (var transition in transitions)
             {
-                if (transition is DeferredRevealTransition revealTransition)
-                {
-                    revealTransition.Duration = revealDuration;
-                    revealTransition.Easing = s_revealEasing;
-                    return revealTransition;
-                }
-
                 if (transition is DoubleTransition doubleTransition
                     && doubleTransition.Property == Visual.OpacityProperty)
                 {
-                    return doubleTransition;
+                    animation.Duration = doubleTransition.Duration;
+                    animation.Delay = doubleTransition.Delay;
+                    animation.Easing = doubleTransition.Easing;
+                    break;
                 }
             }
-
-            DeferredRevealTransition added = CreateRevealTransition(revealDuration);
-            transitions.Add(added);
-            return added;
         }
-
-        DeferredRevealTransition created = CreateRevealTransition(revealDuration);
-        control.Transitions = [created];
-        return created;
-    }
-
-    private static DeferredRevealTransition CreateRevealTransition(TimeSpan revealDuration)
-    {
-        return new DeferredRevealTransition
-        {
-            Property = Visual.OpacityProperty,
-            Duration = revealDuration,
-            Easing = s_revealEasing
-        };
+        return new RevealAnimation(animation, control);
     }
 }

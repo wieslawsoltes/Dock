@@ -28,6 +28,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
     <Compile Include="..\Dock.Avalonia.HeadlessTests\CapabilityPolicyBindingWarningsTests.cs" Link="CapabilityPolicyBindingWarningsTests.cs" />
-    <Compile Include="..\Dock.Avalonia.HeadlessTests\DockCapabilityBindingExtensionTests.cs" Link="DockCapabilityBindingExtensionTests.cs" />
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\CompiledCapabilityBindingTests.cs" Link="CompiledCapabilityBindingTests.cs" />
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\CapabilityBindingTestResources.axaml.cs" Link="CapabilityBindingTestResources.axaml.cs" />
+    <AvaloniaResource Include="..\Dock.Avalonia.HeadlessTests\CapabilityBindingTestResources.axaml" Link="CapabilityBindingTestResources.axaml" />
   </ItemGroup>
 </Project>

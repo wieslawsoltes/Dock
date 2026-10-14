@@ -78,12 +78,11 @@ Default Fluent menus and drag entry points use effective capability resolution, 
 
 Policies and overrides may remain `null`, including on docks created when floating a document. The built-in themes observe these optional values without logging null-path binding warnings. Replacing or clearing a policy updates the bindings; custom policies implementing `INotifyPropertyChanged` can also notify changes to individual capability properties.
 
-Custom templates can use `DockCapabilityBinding` from `Dock.Avalonia.Data` alongside the capability converters. It creates a one-way compiled binding and supports both Avalonia 11 and 12:
+Custom templates can use Avalonia's compiled bindings with the null-conditional `?.` operator alongside the capability converters:
 
 ```xml
 <MultiBinding xmlns="https://github.com/avaloniaui"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:data="using:Dock.Avalonia.Data"
               xmlns:core="using:Dock.Model.Core"
               xmlns:converters="using:Dock.Avalonia.Converters"
               x:DataType="core:IDockable"
@@ -91,12 +90,14 @@ Custom templates can use `DockCapabilityBinding` from `Dock.Avalonia.Data` along
               Converter="{x:Static converters:DockCapabilityConverters.CanDragMultiConverter}">
   <Binding />
   <Binding Path="CanDrag" />
-  <data:DockCapabilityBinding Capability="Drag" Source="DockableOverrides" />
-  <data:DockCapabilityBinding Capability="Drag" Source="OwnerDockPolicy" />
+  <Binding Path="DockCapabilityOverrides?.CanDrag" Mode="OneWay" />
+  <Binding Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrag" Mode="OneWay" />
 </MultiBinding>
 ```
 
-For a dock data context, use `DockPolicy` to observe its policy or `ActiveDockableOverrides` to observe its active dockable's overrides.
+For a dock data context, bind `DockCapabilityPolicy?.CanDrag` to observe its policy or `ActiveDockable?.DockCapabilityOverrides?.CanDrag` to observe its active dockable's overrides. The compiler validates these paths against the declared `x:DataType`; Avalonia owns their subscriptions and lifetime.
+
+Avalonia 11.3.22 still logs a `Value is null` diagnostic when `Owner` itself is null in the interface-cast path above. Null policies and overrides on an existing owner are handled without warnings. Avalonia 12.1.3 includes the upstream [null-conditional cast fix (#22174)](https://github.com/AvaloniaUI/Avalonia/pull/22174), so a null owner is also warning-free there. Dock leaves genuine binding errors visible rather than suppressing diagnostics.
 
 ## Sample
 

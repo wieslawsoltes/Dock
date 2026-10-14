@@ -3,7 +3,6 @@
                     xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core"
                     xmlns:converters="using:Dock.Avalonia.Converters"
-                    xmlns:data="using:Dock.Avalonia.Data"
                     x:CompileBindings="True"
                     x:DataType="dmc:IDocumentDock">
   <Design.PreviewWith>
@@ -148,8 +147,8 @@
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanDragMultiConverter}">
           <Binding />
           <Binding Path="CanDrag" />
-          <data:DockCapabilityBinding Capability="Drag" Source="DockableOverrides" />
-          <data:DockCapabilityBinding Capability="Drag" Source="OwnerDockPolicy" />
+          <Binding Path="DockCapabilityOverrides?.CanDrag" Mode="OneWay" />
+          <Binding Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrag" Mode="OneWay" />
         </MultiBinding>
       </Setter.Value>
     </Setter>
@@ -158,8 +157,8 @@
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanDropMultiConverter}">
           <Binding />
           <Binding Path="CanDrop" />
-          <data:DockCapabilityBinding Capability="Drop" Source="DockableOverrides" />
-          <data:DockCapabilityBinding Capability="Drop" Source="OwnerDockPolicy" />
+          <Binding Path="DockCapabilityOverrides?.CanDrop" Mode="OneWay" />
+          <Binding Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrop" Mode="OneWay" />
         </MultiBinding>
       </Setter.Value>
     </Setter>

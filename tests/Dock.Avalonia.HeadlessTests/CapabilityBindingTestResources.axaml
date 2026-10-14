@@ -1,0 +1,32 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:markup="using:Avalonia.Markup.Xaml.MarkupExtensions"
+                    xmlns:core="using:Dock.Model.Core"
+                    x:Class="Dock.Avalonia.HeadlessTests.CapabilityBindingTestResources"
+                    x:CompileBindings="True"
+                    x:DataType="core:IDockable">
+  <markup:CompiledBindingExtension x:Key="DockableOverridesClose" DataType="{x:Type core:IDockable}" Path="DockCapabilityOverrides?.CanClose" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockableOverridesPin" DataType="{x:Type core:IDockable}" Path="DockCapabilityOverrides?.CanPin" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockableOverridesFloat" DataType="{x:Type core:IDockable}" Path="DockCapabilityOverrides?.CanFloat" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockableOverridesDrag" DataType="{x:Type core:IDockable}" Path="DockCapabilityOverrides?.CanDrag" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockableOverridesDrop" DataType="{x:Type core:IDockable}" Path="DockCapabilityOverrides?.CanDrop" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockableOverridesDockAsDocument" DataType="{x:Type core:IDockable}" Path="DockCapabilityOverrides?.CanDockAsDocument" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="ActiveDockableOverridesClose" DataType="{x:Type core:IDock}" Path="ActiveDockable?.DockCapabilityOverrides?.CanClose" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="ActiveDockableOverridesPin" DataType="{x:Type core:IDock}" Path="ActiveDockable?.DockCapabilityOverrides?.CanPin" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="ActiveDockableOverridesFloat" DataType="{x:Type core:IDock}" Path="ActiveDockable?.DockCapabilityOverrides?.CanFloat" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="ActiveDockableOverridesDrag" DataType="{x:Type core:IDock}" Path="ActiveDockable?.DockCapabilityOverrides?.CanDrag" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="ActiveDockableOverridesDrop" DataType="{x:Type core:IDock}" Path="ActiveDockable?.DockCapabilityOverrides?.CanDrop" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="ActiveDockableOverridesDockAsDocument" DataType="{x:Type core:IDock}" Path="ActiveDockable?.DockCapabilityOverrides?.CanDockAsDocument" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockPolicyClose" DataType="{x:Type core:IDock}" Path="DockCapabilityPolicy?.CanClose" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockPolicyPin" DataType="{x:Type core:IDock}" Path="DockCapabilityPolicy?.CanPin" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockPolicyFloat" DataType="{x:Type core:IDock}" Path="DockCapabilityPolicy?.CanFloat" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockPolicyDrag" DataType="{x:Type core:IDock}" Path="DockCapabilityPolicy?.CanDrag" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockPolicyDrop" DataType="{x:Type core:IDock}" Path="DockCapabilityPolicy?.CanDrop" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="DockPolicyDockAsDocument" DataType="{x:Type core:IDock}" Path="DockCapabilityPolicy?.CanDockAsDocument" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="OwnerDockPolicyClose" DataType="{x:Type core:IDockable}" Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanClose" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="OwnerDockPolicyPin" DataType="{x:Type core:IDockable}" Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanPin" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="OwnerDockPolicyFloat" DataType="{x:Type core:IDockable}" Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanFloat" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="OwnerDockPolicyDrag" DataType="{x:Type core:IDockable}" Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrag" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="OwnerDockPolicyDrop" DataType="{x:Type core:IDockable}" Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrop" Mode="OneWay" />
+  <markup:CompiledBindingExtension x:Key="OwnerDockPolicyDockAsDocument" DataType="{x:Type core:IDockable}" Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDockAsDocument" Mode="OneWay" />
+</ResourceDictionary>

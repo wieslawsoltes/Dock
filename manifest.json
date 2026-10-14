@@ -644,6 +644,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Dock.Avalonia.Controls.IDockDragSourcePreviewProvider",
+      "Summary": "<p sourcefile=\"api/Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.yml\" sourcestartlinenumber=\"1\">Lets a factory preview source removal in a custom pane layout.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Dock.Avalonia.Controls.IDockTarget.yml",
       "output": {
         ".html": {

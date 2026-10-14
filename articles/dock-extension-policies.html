@@ -316,6 +316,20 @@ that owner, and source previews include tabs in external roots. Floating target
 adorners use the actual window owner, or the registered dock's window for an
 embedded root, and include both the docking viewport and target bounds. Hidden,
 detached, and unregistered surfaces do not participate in drop hit testing.</p>
+<h2 id="custom-source-layouts-while-dragging">Custom source layouts while dragging</h2>
+<p>Dock hides a dragged tab and selects a remaining tab while a move is in progress.
+For a pane or its last tab, the stock proportional layout also closes the vacated
+space. Ownership and collections change only when the drop commits.</p>
+<p>Factories whose views use another layout can implement
+<code>Dock.Avalonia.Controls.IDockDragSourcePreviewProvider</code>. Its
+<code>CreateDragSourcePreview(source, host)</code> method supplies a disposable presentation
+scope for a whole pane or its last item, including non-collapsible model panes.
+Individual tabs in multi-item panes keep Dock's built-in preview behavior.</p>
+<p>The scope must retain model ownership, collections, and saved sizes. Dispose it
+by removing temporary visual overrides without overwriting application changes.
+Dock owns disposal on cancellation, host detachment, before drop execution, and
+before replacing a stale preview after layout changes. Returning null opts out
+of pane reflow for that source; it does not fall back to proportional layout.</p>
 <h2 id="regression-coverage">Regression coverage</h2>
 <p>The native tests exercise these contracts without an adapter assembly:</p>
 <table>
@@ -345,6 +359,10 @@ detached, and unregistered surfaces do not participate in drop hit testing.</p>
 <tr>
 <td>Sizing and resource lifetime</td>
 <td><code>ProportionalStackPanelPolicyTests</code>, <code>ProportionalStackPanelSplitterSizingTests</code>, <code>PinnedDockSizingTests</code>, <code>ThemeCommandInteractionLeakTests</code></td>
+</tr>
+<tr>
+<td>Drag source presentation and cleanup</td>
+<td><code>CustomDragSourcePreviewTests</code>, <code>DockSourcePreviewTests</code>, <code>DockTabSourcePreviewTests</code></td>
 </tr>
 </tbody>
 </table>

@@ -4114,6 +4114,24 @@ references:
   commentId: Overload:Dock.Avalonia.Controls.IDockAdornerWindowFactory.CreateWindow
   fullName: Dock.Avalonia.Controls.IDockAdornerWindowFactory.CreateWindow
   nameWithType: IDockAdornerWindowFactory.CreateWindow
+- uid: Dock.Avalonia.Controls.IDockDragSourcePreviewProvider
+  name: IDockDragSourcePreviewProvider
+  href: api/Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.html
+  commentId: T:Dock.Avalonia.Controls.IDockDragSourcePreviewProvider
+  fullName: Dock.Avalonia.Controls.IDockDragSourcePreviewProvider
+  nameWithType: IDockDragSourcePreviewProvider
+- uid: Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.CreateDragSourcePreview(Dock.Model.Core.IDockable,Dock.Avalonia.Controls.DockControl)
+  name: CreateDragSourcePreview(IDockable, DockControl)
+  href: api/Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.html#Dock_Avalonia_Controls_IDockDragSourcePreviewProvider_CreateDragSourcePreview_Dock_Model_Core_IDockable_Dock_Avalonia_Controls_DockControl_
+  commentId: M:Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.CreateDragSourcePreview(Dock.Model.Core.IDockable,Dock.Avalonia.Controls.DockControl)
+  fullName: Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.CreateDragSourcePreview(Dock.Model.Core.IDockable, Dock.Avalonia.Controls.DockControl)
+  nameWithType: IDockDragSourcePreviewProvider.CreateDragSourcePreview(IDockable, DockControl)
+- uid: Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.CreateDragSourcePreview*
+  name: CreateDragSourcePreview
+  href: api/Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.html#Dock_Avalonia_Controls_IDockDragSourcePreviewProvider_CreateDragSourcePreview_
+  commentId: Overload:Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.CreateDragSourcePreview
+  fullName: Dock.Avalonia.Controls.IDockDragSourcePreviewProvider.CreateDragSourcePreview
+  nameWithType: IDockDragSourcePreviewProvider.CreateDragSourcePreview
 - uid: Dock.Avalonia.Controls.IDockTarget
   name: IDockTarget
   href: api/Dock.Avalonia.Controls.IDockTarget.html

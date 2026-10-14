@@ -59,7 +59,7 @@ internal sealed class TemplateHelper
                                 _cachedContent = content;
                             }
 
-                            return fallback;
+                            return fallback ?? existing;
                         }
                     }
 
@@ -84,7 +84,7 @@ internal sealed class TemplateHelper
                             _cachedContent = content;
                         }
 
-                        return fallback;
+                        return fallback ?? existing;
                     }
                 }
 
@@ -163,7 +163,7 @@ internal sealed class TemplateHelper
         var built = BuildFromTemplateContent(content);
         if (built is null)
         {
-            return existing;
+            return null;
         }
 
         if (ReferenceEquals(built, existing))
@@ -179,7 +179,7 @@ internal sealed class TemplateHelper
         var rebuilt = BuildFromTemplateContent(content);
         if (rebuilt is null)
         {
-            return existing;
+            return null;
         }
 
         if (ReferenceEquals(rebuilt, existing))
@@ -187,7 +187,7 @@ internal sealed class TemplateHelper
             return rebuilt;
         }
 
-        return TryDetachFromParent(rebuilt) ? rebuilt : existing;
+        return TryDetachFromParent(rebuilt) ? rebuilt : null;
     }
 
     private static Control? BuildFromTemplateContent(object? content)

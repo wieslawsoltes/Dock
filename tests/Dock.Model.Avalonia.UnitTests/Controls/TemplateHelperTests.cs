@@ -124,6 +124,45 @@ public class TemplateHelperTests
     }
 
     [AvaloniaTheory]
+    [InlineData(false, 0)]
+    [InlineData(false, 1)]
+    [InlineData(false, 2)]
+    [InlineData(true, 0)]
+    [InlineData(true, 1)]
+    [InlineData(true, 2)]
+    public void Unavailable_Replacement_Fallback_Does_Not_Cache_Previous_Content(bool tool, int failure)
+    {
+        var recycling = new ControlRecycling();
+        var owner = CreateTemplateOwner(tool, "owner", new Func<IServiceProvider, object>(_ => new TextBox()), recycling);
+        var template = (IRecyclingDataTemplate)owner;
+        var previous = template.Build(owner, null);
+        var unavailable = new TextBox();
+        var host = new UnsupportedParent(unavailable);
+        var attempts = 0;
+        var failedAttempts = failure == 0 ? 2 : 3;
+        SetContent(owner, new Func<IServiceProvider, object>(_ =>
+        {
+            attempts++;
+            if (attempts > failedAttempts)
+            {
+                return new TextBox { Text = "Replacement" };
+            }
+
+            return attempts == failedAttempts && failure != 2 ? null! : unavailable;
+        }));
+
+        Assert.Same(previous, template.Build(owner, previous));
+        Assert.Equal(failedAttempts, attempts);
+        Assert.Same(host, unavailable.GetVisualParent());
+
+        var replacement = Assert.IsType<TextBox>(template.Build(owner, null));
+        Assert.Equal("Replacement", replacement.Text);
+        Assert.NotSame(previous, replacement);
+        Assert.Equal(failedAttempts + 1, attempts);
+        Assert.Same(replacement, template.Build(owner, null));
+    }
+
+    [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
     public void Explicit_Id_Recycling_Reuses_Content_For_Replacement_Dockable(bool tool)
@@ -155,6 +194,14 @@ public class TemplateHelperTests
         else if (owner is Tool tool)
         {
             tool.Content = content;
+        }
+    }
+
+    private sealed class UnsupportedParent : Control
+    {
+        public UnsupportedParent(Control child)
+        {
+            VisualChildren.Add(child);
         }
     }
 

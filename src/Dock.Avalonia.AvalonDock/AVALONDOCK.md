@@ -87,6 +87,17 @@ For a compact caption/status preview, set the Avalonia extension
 drag and do not modify `DockSettings.ShowDockablePreviewOnDrag` for other Dock
 workspaces. Floating layouts follow their owning manager's setting.
 
+Dragging also hides the source tab and reveals a remaining tab. Whole tool panes,
+last tools, and document panes inside document groups vacate their grid space;
+the main document region remains an empty drop target. The adapter uses Dock's
+`IDockDragSourcePreviewProvider` lifetime with temporary grid overrides, preserving
+model ownership, saved dimensions, and application changes until drop. Cancelling
+restores the original presentation. WPF AvalonDock instead creates a real floating
+window and reparents content at drag start; this adapter retains Dock's reversible
+preview and emits the model/floating changes when the drop commits. See the
+[drag preview guide](../../docfx/articles/dock-avalondock.md#drag-previews) for the
+upstream comparison and integration details.
+
 Floating hosts default to `ShowInTaskbar="False"`. Overlay windows default to
 no activation, no taskbar entry, no decorations, and a transparent surface.
 These are property defaults, so they also apply before styling and with a custom

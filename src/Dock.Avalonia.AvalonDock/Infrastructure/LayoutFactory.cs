@@ -6,6 +6,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
+using Dock.Avalonia.Controls;
 
 namespace AvalonDock.Infrastructure;
 
@@ -13,7 +14,7 @@ namespace AvalonDock.Infrastructure;
 // Application-provided plain Dock hosts retain the native close/hide adapter.
 internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayoutFloatingPlacement floatingPlacement, IDockDropPolicy dropPolicy,
     ILayoutOperationEvents operations, Func<IDockable, LayoutItem?> getLayoutItem,
-    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockWindowClosePolicy, IDockItemDragPolicy, IDockDragPreviewPolicy, IDockDropPolicy, IDockSplitPolicy, IDockOuterSplitPolicy
+    Func<IDockable, LayoutElement> getLayoutElement) : Factory, IDockOperationObserver, IDockWindowHostFactory, IDockWindowClosePolicy, IDockItemDragPolicy, IDockDragPreviewPolicy, IDockDropPolicy, IDockSplitPolicy, IDockOuterSplitPolicy, IDockDragSourcePreviewProvider
 {
     private IDockWindow? _evaluatingClose;
     private IDock? _selectionOwner;
@@ -39,6 +40,9 @@ internal sealed class LayoutFactory(Func<IDockWindow, bool> closeWindow, ILayout
 
     bool IDockDragPreviewPolicy.ShowDockablePreviewOnDrag(IDockable dockable) =>
         getLayoutElement(dockable).Root?.Manager?.ShowDockablePreviewOnDrag ?? true;
+
+    IDisposable? IDockDragSourcePreviewProvider.CreateDragSourcePreview(IDockable source, DockControl host) =>
+        LayoutDragSourcePreview.Create(source, getLayoutElement(source), host);
 
     bool IDockDropPolicy.CanDrop(IDockable source, IDockable target, DockOperation operation) =>
         dropPolicy.CanDrop(source, target, operation);

@@ -22,6 +22,7 @@ public abstract class LayoutGridControl<T> : Grid, ILayoutControl, ILayoutGridVi
     private readonly LayoutGridControlBinding _binding;
     private readonly LayoutGridChildren _children;
     private readonly LayoutGridDefinitions _definitions;
+    private readonly LayoutGridSourcePreview _sourcePreview;
     private DockableControlTracker? _tracker;
     private LayoutSizingViews? _views;
     private Orientation _reportedOrientation;
@@ -40,6 +41,7 @@ public abstract class LayoutGridControl<T> : Grid, ILayoutControl, ILayoutGridVi
         _reportedOrientation = Orientation;
         _children = new(this, model);
         _definitions = new(this, (ILayoutOrientableGroup)model);
+        _sourcePreview = new(this, (ILayoutOrientableGroup)model);
         _binding = new(model, RequestLayout, RequestDefinitions);
     }
 
@@ -92,7 +94,9 @@ public abstract class LayoutGridControl<T> : Grid, ILayoutControl, ILayoutGridVi
         if (_definitionsPending)
         {
             _definitionsPending = false;
+            _sourcePreview.ClearOverrides();
             _definitions.Refresh();
+            _sourcePreview.Apply();
         }
         return base.MeasureOverride(availableSize);
     }
@@ -101,7 +105,7 @@ public abstract class LayoutGridControl<T> : Grid, ILayoutControl, ILayoutGridVi
     protected override Size ArrangeOverride(Size finalSize)
     {
         Size result = base.ArrangeOverride(finalSize);
-        _definitions.SynchronizeProportions(result);
+        if (!_sourcePreview.IsActive) _definitions.SynchronizeProportions(result);
         return result;
     }
 
@@ -141,6 +145,8 @@ public abstract class LayoutGridControl<T> : Grid, ILayoutControl, ILayoutGridVi
         _children.Clear();
         RequestLayout();
     }
+
+    void ILayoutGridView.SetDragSourcePreview(ILayoutPanelElement? pane) => _sourcePreview.SetPane(pane);
 
     private void RequestLayout()
     {

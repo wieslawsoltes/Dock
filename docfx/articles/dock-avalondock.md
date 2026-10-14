@@ -157,6 +157,29 @@ dimensions. To use a compact caption/status preview, set the Avalonia extension
 and floating content at the start of each drag; other managers and Dock's global
 `DockSettings.ShowDockablePreviewOnDrag` setting remain independent.
 
+The source also updates as soon as dragging begins. A dragged tab disappears
+and its pane shows a remaining tab. Dragging a whole tool pane or its last tool
+closes the vacated grid space, including empty nested tool groups. Document panes
+inside a document group also vacate their space; a main document region remains
+available as an empty drop target. Both split orientations use the same behavior.
+This source presentation applies to both full-content and compact previews.
+
+Dock owns the drag lifetime through `IDockDragSourcePreviewProvider`. The adapter
+temporarily overrides grid visibility and sizes; it does not remove live content
+or rewrite saved proportions. Escape, capture loss, and host detachment restore
+presentation. The scope ends before a successful drop changes ownership, and
+application size changes made during the drag survive cleanup.
+
+Original WPF AvalonDock starts a floating window when the pointer leaves the
+tab strip's drag buffer. Its `CreateFloatingWindowCore` removes content from the
+source pane before showing that window, and its whole-tool-pane path moves every
+child into a new pane. See the pinned upstream
+[tab drag code](https://github.com/xceedsoftware/wpftoolkit/blob/2c71faba5eecc1b6ae6cd3d269408e0df37715d8/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Controls/LayoutDocumentTabItem.cs#L139-L157)
+and [floating creation](https://github.com/xceedsoftware/wpftoolkit/blob/2c71faba5eecc1b6ae6cd3d269408e0df37715d8/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/DockingManager.cs#L2726-L2972).
+The adapter matches the visible source removal while retaining Dock's reversible
+preview. Public parent/collection changes and floating events therefore occur
+on drop, rather than at drag start; this is an explicit timing difference.
+
 ```xml
 <DockingManager ShowDockablePreviewOnDrag="True">
   <LayoutRoot>
@@ -3347,7 +3370,10 @@ The branch also includes the native drag and preview fixes from
 [PR #1153](https://github.com/wieslawsoltes/Dock/pull/1153) and
 [PR #1156](https://github.com/wieslawsoltes/Dock/pull/1156): adorner reuse,
 interrupted-drag cleanup, selector coordinates, Escape cancellation, tab previews,
-global split proportions, and display-scaling fixes. Exact projected layout
+global split proportions, and display-scaling fixes.
+[PR #1187](https://github.com/wieslawsoltes/Dock/pull/1187) adds a source-preview
+scope for custom layouts. The adapter uses it to reflow its public grids without
+mutating layout models. Exact projected destination layout
 previews remain disabled for the compatibility factory and its custom sizing
 panel. The existing AvalonDock indicators retain their documented geometry;
 an isolated factory alone cannot reproduce its layout policies and sizing.
@@ -3426,6 +3452,7 @@ flowchart TB
         TargetPresentation["Optional IDockTargetPresentation<br/>External selectors and preview state"]
         DragPolicy["Optional IDockItemDragPolicy<br/>Native tab drag and reorder checks"]
         DragPreview["Full-content drag previews<br/>IDockDragPreviewPolicy and content snapshots"]
+        SourcePreview["Drag source lifetime<br/>IDockDragSourcePreviewProvider"]
         DropPolicy["Optional IDockDropPolicy<br/>Target visibility and drop validation"]
         SplitPolicy["Optional IDockSplitPolicy<br/>Tool drops into typed document groups"]
     end
@@ -3439,6 +3466,9 @@ flowchart TB
     Manager --> PaneControls
     Manager -->|ShowDockablePreviewOnDrag| DragPreview
     Controls --> DragPreview
+    Controls --> SourcePreview
+    SourcePreview -->|Temporary grid visibility and sizes| GridControls
+    SourcePreview -->|Dispose on cancel or before drop| Sizing
     Controls --> OverlayFactory
     OverlayFactory --> Overlays
     ResourceThemes --> Overlays

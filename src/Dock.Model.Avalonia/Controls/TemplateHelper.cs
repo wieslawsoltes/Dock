@@ -1,6 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -14,14 +15,10 @@ namespace Dock.Model.Avalonia.Controls;
 
 internal sealed class TemplateHelper
 {
-    private object? _cachedContent;
-    private bool _hasBuiltContent;
+    private ConditionalWeakTable<Control, WeakReference<object>>? _cachedContents;
 
     internal Control? Build(object? content, AvaloniaObject parent, Control? existing)
     {
-        var canReuse = !_hasBuiltContent || ReferenceEquals(_cachedContent, content);
-        _hasBuiltContent = true;
-
         if (content is null)
         {
             return null;
@@ -43,10 +40,9 @@ internal sealed class TemplateHelper
         if (controlRecycling is not null)
         {
             var key = GetCacheKey(controlRecycling, parent);
-            object? control;
-            if (canReuse && controlRecycling.TryGetValue(key, out control))
+            if (controlRecycling.TryGetValue(key, out var cached) && CanReuse(cached, content))
             {
-                if (control is Control cachedControl)
+                if (cached is Control cachedControl)
                 {
                     if (!ReferenceEquals(existing, cachedControl))
                     {
@@ -56,32 +52,32 @@ internal sealed class TemplateHelper
                             if (fallback is not null)
                             {
                                 controlRecycling.Add(key, fallback);
-                                _cachedContent = content;
+                                RememberContent(fallback, content);
                             }
 
                             return fallback ?? existing;
                         }
                     }
 
-                    _cachedContent = content;
+                    RememberContent(cachedControl, content);
                     return cachedControl;
                 }
 
-                return control as Control;
+                return cached as Control;
             }
 
-            control = BuildFromTemplateContent(content);
+            var control = BuildFromTemplateContent(content);
             if (control is not null)
             {
-                if (control is Control builtControl && !ReferenceEquals(existing, builtControl))
+                if (!ReferenceEquals(existing, control))
                 {
-                    if (!TryDetachFromParent(builtControl))
+                    if (!TryDetachFromParent(control))
                     {
                         var fallback = BuildFallback(content, existing);
                         if (fallback is not null)
                         {
                             controlRecycling.Add(key, fallback);
-                            _cachedContent = content;
+                            RememberContent(fallback, content);
                         }
 
                         return fallback ?? existing;
@@ -89,13 +85,38 @@ internal sealed class TemplateHelper
                 }
 
                 controlRecycling.Add(key, control);
-                _cachedContent = content;
+                RememberContent(control, content);
             }
 
-            return control as Control;
+            return control;
         }
 
         return BuildFromTemplateContent(content);
+    }
+
+    private bool CanReuse(object? control, object content)
+    {
+        // A dockable can revisit several recycling scopes or IDs. Validate the
+        // actual cached view, rather than only the most recently built template.
+        return control is not Control cachedControl
+               || _cachedContents is null
+               || !_cachedContents.TryGetValue(cachedControl, out var cachedContent)
+               || (cachedContent.TryGetTarget(out var previous) && ReferenceEquals(previous, content));
+    }
+
+    private void RememberContent(Control control, object content)
+    {
+        // Neither replaced templates nor released views should be kept alive by
+        // this bookkeeping. Unknown views still support explicit-ID recycling.
+        var cachedContents = _cachedContents ??= new ConditionalWeakTable<Control, WeakReference<object>>();
+        if (cachedContents.TryGetValue(control, out var cachedContent))
+        {
+            cachedContent.SetTarget(content);
+        }
+        else
+        {
+            cachedContents.Add(control, new WeakReference<object>(content));
+        }
     }
 
     private static object GetCacheKey(IControlRecycling controlRecycling, AvaloniaObject parent)

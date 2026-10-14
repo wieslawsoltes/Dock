@@ -503,6 +503,7 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
+        _generatedSplitLayouts.Add(layout, new object());
         return layout;
     }
 
@@ -607,6 +608,7 @@ public abstract partial class FactoryBase : IFactory
 
                         if (TrySplitIntoTarget(dock, dockable, operation))
                         {
+                            ownerDock.ActiveDockable = dock;
                             return;
                         }
 

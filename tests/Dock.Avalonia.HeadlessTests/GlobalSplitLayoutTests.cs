@@ -21,6 +21,92 @@ namespace Dock.Avalonia.HeadlessTests;
 public class GlobalSplitLayoutTests
 {
     [AvaloniaFact]
+    public void Splitting_A_Constrained_Root_Region_Preserves_Its_Minimum_Width()
+    {
+        Factory factory = new();
+        Document document = new() { Title = "Document" };
+        DocumentDock documents = new()
+        {
+            VisibleDockables = factory.CreateList<IDockable>(document), ActiveDockable = document
+        };
+        ProportionalDock region = Assert.IsType<ProportionalDock>(factory.CreateSplitLayout(documents, new ToolDock(), DockOperation.Right));
+        region.VisibleDockables = factory.CreateList<IDockable>(documents);
+        region.ActiveDockable = documents;
+        region.DefaultDockable = documents;
+        region.MinWidth = 500;
+        RootDock root = new() { VisibleDockables = factory.CreateList<IDockable>(region), ActiveDockable = region };
+        factory.InitLayout(root);
+        Tool tool = new() { Title = "Incoming" };
+        ToolDock incoming = new() { VisibleDockables = factory.CreateList<IDockable>(tool), ActiveDockable = tool };
+        DockControl control = new() { Layout = root };
+        Window window = new() { Width = 800, Height = 600, Content = control };
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            // A different orientation requires the constrained region to become a pane.
+            region.Orientation = Orientation.Vertical;
+            factory.SplitToDock(region, incoming, DockOperation.Right);
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Control pane = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[documents]);
+            Assert.True(pane.Bounds.Width >= 500, $"The constrained region shrank to {pane.Bounds.Width} pixels.");
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public void Splitting_An_Inactive_Root_Region_Shows_The_New_Pane()
+    {
+        Factory factory = new();
+        Document oldDocument = new() { Title = "Previous" };
+        DocumentDock previous = new()
+        {
+            VisibleDockables = factory.CreateList<IDockable>(oldDocument), ActiveDockable = oldDocument
+        };
+        Document document = new() { Title = "Target" };
+        DocumentDock documents = new()
+        {
+            VisibleDockables = factory.CreateList<IDockable>(document), ActiveDockable = document
+        };
+        ProportionalDock target = new()
+        {
+            IsCollapsable = false, Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>(documents), ActiveDockable = documents
+        };
+        RootDock root = new()
+        {
+            VisibleDockables = factory.CreateList<IDockable>(previous, target),
+            ActiveDockable = previous, DefaultDockable = previous
+        };
+        factory.InitLayout(root);
+        Tool tool = new() { Title = "Incoming" };
+        ToolDock incoming = new() { VisibleDockables = factory.CreateList<IDockable>(tool), ActiveDockable = tool };
+        DockControl control = new() { Layout = root };
+        Window window = new() { Width = 800, Height = 600, Content = control };
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            factory.SplitToDock(target, incoming, DockOperation.Right);
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+
+            Assert.Same(target, root.ActiveDockable);
+            Assert.Same(previous, root.DefaultDockable);
+            Control pane = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[incoming]);
+            Assert.Same(window, pane.GetVisualRoot());
+            Assert.True(pane.Bounds.Width > 0 && pane.Bounds.Height > 0);
+            Assert.Contains(control.GetVisualDescendants().OfType<ToolControl>(), item => ReferenceEquals(item.DataContext, incoming));
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
     public void Alternating_Window_Edges_Keep_Rendered_Regions_And_Resizable_Splitters()
     {
         Factory factory = new();

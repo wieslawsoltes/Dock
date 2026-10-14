@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
@@ -148,7 +150,7 @@ public class GlobalSplitLayoutTests
     }
 
     [Fact]
-    public void Existing_Root_Wrapper_Chain_Is_Normalized_Before_Splitting()
+    public void Generated_Root_Wrapper_Chain_Is_Normalized_Before_Splitting()
     {
         Factory factory = new();
         DocumentDock documents = new();
@@ -161,11 +163,9 @@ public class GlobalSplitLayoutTests
         IDock child = main;
         for (int index = 0; index < 20; index++)
         {
-            ProportionalDock wrapper = new()
-            {
-                VisibleDockables = factory.CreateList<IDockable>(child), ActiveDockable = child, DefaultDockable = child,
-                Proportion = 0.7, CollapsedProportion = 0.8
-            };
+            ProportionalDock wrapper = CreateSingletonWrapper(factory, child);
+            wrapper.Proportion = 0.7;
+            wrapper.CollapsedProportion = 0.8;
             wrappers.Add(wrapper);
             child = wrapper;
         }
@@ -188,6 +188,210 @@ public class GlobalSplitLayoutTests
             Assert.Empty(wrapper.VisibleDockables!);
         }
         AssertTree(root, new HashSet<IDockable>());
+    }
+
+    [Fact]
+    public void Normalizing_Root_Wrappers_Preserves_Inherited_Docking_Group()
+    {
+        Factory factory = new();
+        Document document = new();
+        DocumentDock documents = new() { VisibleDockables = factory.CreateList<IDockable>(document) };
+        ProportionalDock wrapper = CreateSingletonWrapper(factory, documents);
+        wrapper.DockGroup = "editors";
+        RootDock root = new() { VisibleDockables = factory.CreateList<IDockable>(wrapper), ActiveDockable = wrapper };
+        factory.InitLayout(root);
+        Document sameGroup = new() { DockGroup = "editors" };
+        Document otherGroup = new() { DockGroup = "tools" };
+        Assert.True(DockGroupValidator.ValidateDockingGroups(sameGroup, document));
+        Assert.False(DockGroupValidator.ValidateDockingGroups(otherGroup, document));
+
+        factory.SplitToDock(wrapper, new ToolDock(), DockOperation.Bottom);
+
+        Assert.NotNull(wrapper.Owner);
+        Assert.Same(wrapper, documents.Owner);
+        Assert.Equal("editors", DockGroupValidator.GetEffectiveDockGroup(document));
+        Assert.True(DockGroupValidator.ValidateDockingGroups(sameGroup, document));
+        Assert.False(DockGroupValidator.ValidateDockingGroups(otherGroup, document));
+        AssertTree(root, new HashSet<IDockable>());
+    }
+
+    [Theory]
+    [InlineData(DockOperation.Left)]
+    [InlineData(DockOperation.Bottom)]
+    public void Reusing_Inactive_Root_Region_Activates_The_Split_Region(DockOperation operation)
+    {
+        Factory factory = new();
+        DocumentDock documents = new();
+        ProportionalDock target = new()
+        {
+            IsCollapsable = false,
+            Orientation = operation == DockOperation.Left ? Orientation.Horizontal : Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>(documents), ActiveDockable = documents
+        };
+        DocumentDock previous = new();
+        RootDock root = new()
+        {
+            VisibleDockables = factory.CreateList<IDockable>(previous, target),
+            ActiveDockable = previous, DefaultDockable = previous
+        };
+        factory.InitLayout(root);
+        ToolDock incoming = new();
+
+        factory.SplitToDock(target, incoming, operation);
+
+        Assert.Same(target, root.ActiveDockable);
+        Assert.Same(previous, root.DefaultDockable);
+        Assert.Same(incoming, target.ActiveDockable);
+        AssertTree(root, new HashSet<IDockable>());
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(6)]
+    [InlineData(7)]
+    [InlineData(8)]
+    [InlineData(9)]
+    [InlineData(10)]
+    public void Root_Regions_With_Constraints_Are_Not_Discarded(int policyKind)
+    {
+        Factory factory = new();
+        DocumentDock documents = new();
+        ProportionalDock region = CreateSingletonWrapper(factory, documents);
+        if (policyKind == 0) region.DockCapabilityPolicy = new DockCapabilityPolicy { CanDrop = false };
+        else if (policyKind == 1) region.DockCapabilityOverrides = new DockCapabilityOverrides { CanFloat = false };
+        else if (policyKind == 2) region.EnableGlobalDocking = false;
+        else if (policyKind == 3) region.MinWidth = 400;
+        else if (policyKind == 4) region.MaxWidth = 500;
+        else if (policyKind == 5) region.MinHeight = 300;
+        else if (policyKind == 6) region.MaxHeight = 400;
+        else if (policyKind == 7) region.CanDrop = false;
+        else if (policyKind == 8) region.CanDrag = false;
+        else if (policyKind == 9) region.AllowedDockOperations = DockOperationMask.Bottom;
+        else region.AllowedDropOperations = DockOperationMask.Bottom;
+        RootDock root = new() { VisibleDockables = factory.CreateList<IDockable>(region), ActiveDockable = region };
+        factory.InitLayout(root);
+
+        factory.SplitToDock(region, new ToolDock(), DockOperation.Bottom);
+
+        Assert.Same(region, documents.Owner);
+        Assert.NotNull(region.Owner);
+        AssertTree(root, new HashSet<IDockable>());
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Grouped_Window_Edge_Roundtrips_Keep_Inherited_Groups_And_A_Bounded_Tree(bool groupOnRoot)
+    {
+        Factory factory = new();
+        DocumentDock documents = new() { VisibleDockables = factory.CreateList<IDockable>(new Document()) };
+        Tool source = new();
+        ToolDock pane = new() { VisibleDockables = factory.CreateList<IDockable>(source) };
+        ProportionalDock region = new()
+        {
+            DockGroup = groupOnRoot ? null : "editors", IsCollapsable = false, Orientation = Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>(documents, new ProportionalDockSplitter(), pane)
+        };
+        RootDock root = new()
+        {
+            DockGroup = groupOnRoot ? "editors" : null,
+            VisibleDockables = factory.CreateList<IDockable>(region), ActiveDockable = region
+        };
+        factory.InitLayout(root);
+        DockService service = new();
+        for (int index = 0; index < 20; index++)
+        {
+            IDock target = Assert.IsAssignableFrom<IDock>(Assert.Single(root.VisibleDockables!));
+            Assert.True(DockGroupValidator.ValidateGlobalDocking(source, target));
+            Assert.True(service.SplitDockable(source, Assert.IsAssignableFrom<IDock>(source.Owner), target,
+                index % 2 == 0 ? DockOperation.Right : DockOperation.Bottom, true));
+            Assert.Equal("editors", DockGroupValidator.GetEffectiveDockGroup(documents));
+            Assert.Equal("editors", DockGroupValidator.GetEffectiveDockGroup(source));
+            HashSet<IDockable> visited = new();
+            AssertTree(root, visited);
+            int proportionalCount = 0;
+            foreach (IDockable dockable in visited)
+                if (dockable is IProportionalDock) proportionalCount++;
+            Assert.InRange(proportionalCount, 1, 2);
+        }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Application_And_Restored_Regions_Keep_Their_Identity_During_Future_Roundtrips(bool restored)
+    {
+        Factory factory = new();
+        DocumentDock documents = new() { VisibleDockables = factory.CreateList<IDockable>(new Document()) };
+        ProportionalDock region = restored
+            ? CreateSingletonWrapper(new Factory(), documents)
+            : new ProportionalDock { VisibleDockables = factory.CreateList<IDockable>(documents) };
+        region.Id = "ApplicationRegion";
+        region.Context = new object();
+        object context = region.Context;
+        region.Orientation = Orientation.Vertical;
+        region.ActiveDockable = documents;
+        region.DefaultDockable = documents;
+        RootDock root = new()
+        {
+            VisibleDockables = factory.CreateList<IDockable>(region), ActiveDockable = region, DefaultDockable = region
+        };
+        factory.InitLayout(root);
+        Tool tool = new();
+        ToolDock incoming = new() { VisibleDockables = factory.CreateList<IDockable>(tool), ActiveDockable = tool };
+        factory.SplitToDock(region, incoming, DockOperation.Right);
+        DockService service = new();
+
+        for (int index = 0; index < 20; index++)
+        {
+            Assert.Same(region, factory.FindDockable(root, dockable => dockable.Id == "ApplicationRegion"));
+            Assert.Same(context, region.Context);
+            Assert.Same(documents, region.DefaultDockable);
+            Assert.Same(region, documents.Owner);
+            HashSet<IDockable> visited = new();
+            AssertTree(root, visited);
+            int proportionalCount = 0;
+            foreach (IDockable dockable in visited)
+                if (dockable is IProportionalDock) proportionalCount++;
+            Assert.InRange(proportionalCount, 1, 2);
+            IDock target = Assert.IsAssignableFrom<IDock>(Assert.Single(root.VisibleDockables!));
+            Assert.True(service.SplitDockable(tool, Assert.IsAssignableFrom<IDock>(tool.Owner), target,
+                index % 2 == 0 ? DockOperation.Bottom : DockOperation.Right, true));
+        }
+    }
+
+    [Fact]
+    public void Factory_Does_Not_Retain_Unused_Generated_Wrappers()
+    {
+        Factory factory = new();
+        WeakReference wrapper = CreateUnusedSplit(factory);
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+        Assert.False(wrapper.IsAlive);
+        GC.KeepAlive(factory);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static WeakReference CreateUnusedSplit(Factory factory)
+    {
+        return new WeakReference(factory.CreateSplitLayout(new DocumentDock(), new ToolDock(), DockOperation.Right));
+    }
+
+    private static ProportionalDock CreateSingletonWrapper(Factory factory, IDock child)
+    {
+        ToolDock temporary = new();
+        ProportionalDock wrapper = Assert.IsType<ProportionalDock>(factory.CreateSplitLayout(child, temporary, DockOperation.Right));
+        wrapper.VisibleDockables = factory.CreateList<IDockable>(child);
+        wrapper.ActiveDockable = child;
+        wrapper.DefaultDockable = child;
+        temporary.Owner = null;
+        return wrapper;
     }
 
     private static void AssertTree(IDock dock, HashSet<IDockable> visited)

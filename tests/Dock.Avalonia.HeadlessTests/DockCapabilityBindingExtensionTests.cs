@@ -112,6 +112,86 @@ public class DockCapabilityBindingExtensionTests
         }
     }
 
+    [AvaloniaTheory]
+    [InlineData(DockCapabilityBindingSource.DockableOverrides)]
+    [InlineData(DockCapabilityBindingSource.ActiveDockableOverrides)]
+    [InlineData(DockCapabilityBindingSource.DockPolicy)]
+    [InlineData(DockCapabilityBindingSource.OwnerDockPolicy)]
+    public void DataContext_Replacement_Null_And_Disposal_Detach_Previous_Policies(DockCapabilityBindingSource source)
+    {
+        var first = CreateContext(source, true);
+        var second = CreateContext(source, false);
+        var control = new Border();
+        var previousSink = Logger.Sink;
+        var sink = new CapabilityPolicyBindingWarningsTests.CapabilityWarningSink();
+        Logger.Sink = sink;
+        try
+        {
+            var extension = new DockCapabilityBindingExtension { Source = source, Capability = DockCapability.Drag };
+            using var subscription = control.Bind(Control.TagProperty,
+                Assert.IsType<CapabilityBinding>(extension.ProvideValue(new EmptyServiceProvider())));
+            Assert.Null(control.Tag);
+
+            control.DataContext = first.Context;
+            Assert.Equal(true, control.Tag);
+            control.DataContext = second.Context;
+            Assert.Equal(false, control.Tag);
+            Assert.Equal(0, first.Policy.Subscribers);
+            first.Policy.Set(DockCapability.Drag, false);
+            first.Policy.Set(DockCapability.Drag, true);
+            Assert.Equal(false, control.Tag);
+
+            second.Policy.CanDrag = null;
+            second.Policy.Notify(string.Empty);
+            Assert.Null(control.Tag);
+            second.Policy.CanDrag = true;
+            second.Policy.Notify(null);
+            Assert.Equal(true, control.Tag);
+
+            control.DataContext = null;
+            Assert.Null(control.Tag);
+            Assert.Equal(0, second.Policy.Subscribers);
+            second.Policy.Set(DockCapability.Drag, false);
+            Assert.Null(control.Tag);
+            control.DataContext = first.Context;
+            Assert.Equal(true, control.Tag);
+            subscription.Dispose();
+            Assert.Equal(0, first.Policy.Subscribers);
+            Assert.Empty(sink.Warnings);
+        }
+        finally
+        {
+            Logger.Sink = previousSink;
+        }
+    }
+
+    [AvaloniaFact]
+    public void Real_Policy_Getter_Errors_Remain_Observable()
+    {
+        var control = new Border
+        {
+            DataContext = new Model.Mvvm.Controls.Tool { DockCapabilityOverrides = new ThrowingOverrides() }
+        };
+        var previousSink = Logger.Sink;
+        var sink = new CapabilityPolicyBindingWarningsTests.CapabilityWarningSink();
+        Logger.Sink = sink;
+        try
+        {
+            var extension = new DockCapabilityBindingExtension
+            {
+                Capability = DockCapability.Drag,
+                Source = DockCapabilityBindingSource.DockableOverrides
+            };
+            using var subscription = control.Bind(Control.TagProperty,
+                Assert.IsType<CapabilityBinding>(extension.ProvideValue(new EmptyServiceProvider())));
+            Assert.Contains(sink.Warnings, message => message.Contains("Policy getter failed", StringComparison.Ordinal));
+        }
+        finally
+        {
+            Logger.Sink = previousSink;
+        }
+    }
+
     [AvaloniaFact]
     public void Invalid_Capability_And_Source_Are_Rejected()
     {
@@ -134,6 +214,15 @@ public class DockCapabilityBindingExtensionTests
         Dispatcher.UIThread.RunJobs();
     }
 
+    private static (IDockable Context, NotifyingOverrides Policy) CreateContext(DockCapabilityBindingSource source, bool value)
+    {
+        var policy = new NotifyingOverrides { CanDrag = value };
+        var dock = new Model.Mvvm.Controls.ToolDock { DockCapabilityPolicy = policy };
+        var tool = new Model.Mvvm.Controls.Tool { Owner = dock, DockCapabilityOverrides = policy };
+        dock.ActiveDockable = tool;
+        return (source is DockCapabilityBindingSource.DockPolicy or DockCapabilityBindingSource.ActiveDockableOverrides ? dock : tool, policy);
+    }
+
     private sealed class EmptyServiceProvider : IServiceProvider
     {
         public object? GetService(Type serviceType) => null;
@@ -141,7 +230,13 @@ public class DockCapabilityBindingExtensionTests
 
     private sealed class NotifyingOverrides : DockCapabilityOverrides, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        private PropertyChangedEventHandler? _propertyChanged;
+        public int Subscribers { get; private set; }
+        public event PropertyChangedEventHandler? PropertyChanged
+        {
+            add { _propertyChanged += value; Subscribers++; }
+            remove { _propertyChanged -= value; Subscribers--; }
+        }
 
         public void Set(DockCapability capability, bool? value)
         {
@@ -156,8 +251,22 @@ public class DockCapabilityBindingExtensionTests
                 case DockCapability.DockAsDocument: CanDockAsDocument = value; propertyName = nameof(CanDockAsDocument); break;
                 default: throw new ArgumentOutOfRangeException(nameof(capability));
             }
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Notify(propertyName);
+        }
+
+        public void Notify(string? propertyName)
+        {
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             Dispatcher.UIThread.RunJobs();
+        }
+    }
+
+    private sealed class ThrowingOverrides : DockCapabilityOverrides, IDockCapabilityPolicy
+    {
+        bool? IDockCapabilityPolicy.CanDrag
+        {
+            get => throw new InvalidOperationException("Policy getter failed");
+            set => throw new NotSupportedException();
         }
     }
 }

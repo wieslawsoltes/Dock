@@ -14,13 +14,12 @@ namespace Dock.Model.Avalonia.Controls;
 
 internal sealed class TemplateHelper
 {
-    private object? _lastContent;
+    private object? _cachedContent;
     private bool _hasBuiltContent;
 
     internal Control? Build(object? content, AvaloniaObject parent, Control? existing)
     {
-        var canReuse = !_hasBuiltContent || ReferenceEquals(_lastContent, content);
-        _lastContent = content;
+        var canReuse = !_hasBuiltContent || ReferenceEquals(_cachedContent, content);
         _hasBuiltContent = true;
 
         if (content is null)
@@ -57,12 +56,14 @@ internal sealed class TemplateHelper
                             if (fallback is not null)
                             {
                                 controlRecycling.Add(key, fallback);
+                                _cachedContent = content;
                             }
 
                             return fallback;
                         }
                     }
 
+                    _cachedContent = content;
                     return cachedControl;
                 }
 
@@ -80,6 +81,7 @@ internal sealed class TemplateHelper
                         if (fallback is not null)
                         {
                             controlRecycling.Add(key, fallback);
+                            _cachedContent = content;
                         }
 
                         return fallback;
@@ -87,6 +89,7 @@ internal sealed class TemplateHelper
                 }
 
                 controlRecycling.Add(key, control);
+                _cachedContent = content;
             }
 
             return control as Control;

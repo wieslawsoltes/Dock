@@ -82,6 +82,50 @@ public class TemplateHelperTests
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
+    public void Empty_Replacement_Template_Does_Not_Revive_Previous_Content(bool tool)
+    {
+        var recycling = new ControlRecycling();
+        var owner = CreateTemplateOwner(tool, "owner", new Func<IServiceProvider, object>(_ => new TextBox()), recycling);
+        var template = (IRecyclingDataTemplate)owner;
+        var previous = template.Build(owner, null);
+        Assert.NotNull(previous);
+
+        SetContent(owner, new Func<IServiceProvider, object>(_ => null!));
+
+        Assert.Null(template.Build(owner, previous));
+        Assert.Null(template.Build(owner, null));
+        Assert.Null(template.Build(owner, null));
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Failed_Replacement_Template_Is_Retried_Instead_Of_Reviving_Previous_Content(bool tool)
+    {
+        var recycling = new ControlRecycling();
+        var owner = CreateTemplateOwner(tool, "owner", new Func<IServiceProvider, object>(_ => new TextBox()), recycling);
+        var template = (IRecyclingDataTemplate)owner;
+        var previous = template.Build(owner, null);
+        var attempts = 0;
+        SetContent(owner, new Func<IServiceProvider, object>(_ =>
+        {
+            if (++attempts == 1)
+            {
+                throw new InvalidOperationException("Template failed");
+            }
+            return new TextBox { Text = "Replacement" };
+        }));
+
+        Assert.Throws<InvalidOperationException>(() => template.Build(owner, previous));
+        var replacement = Assert.IsType<TextBox>(template.Build(owner, null));
+        Assert.Equal("Replacement", replacement.Text);
+        Assert.NotSame(previous, replacement);
+        Assert.Same(replacement, template.Build(owner, null));
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
     public void Explicit_Id_Recycling_Reuses_Content_For_Replacement_Dockable(bool tool)
     {
         var recycling = new ControlRecycling { TryToUseIdAsKey = true };

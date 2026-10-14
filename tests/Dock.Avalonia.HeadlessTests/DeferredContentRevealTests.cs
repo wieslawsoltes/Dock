@@ -58,7 +58,7 @@ public class DeferredContentRevealTests
                 await SettleAsync(window, presenter);
 
                 Assert.Equal(1D, presenter.Opacity);
-                Assert.Equal(1D, presenter.GetBaseValue(Visual.OpacityProperty).Value);
+                Assert.Equal(1D, presenter.GetBaseValue(Visual.OpacityProperty).GetValueOrDefault(1D));
                 if (suppliedTransition is not null)
                 {
                     Assert.Same(suppliedTransition, Assert.Single(presenter.Transitions!));
@@ -116,6 +116,96 @@ public class DeferredContentRevealTests
                 AssertMagentaPixel(window, presenter);
                 Assert.Equal(1D, presenter.Opacity);
             }
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, 0.4)]
+    [InlineData(true, 0.4)]
+    [InlineData(false, 0.85)]
+    [InlineData(true, 0.85)]
+    public async Task InFlight_Reveal_Does_Not_Overwrite_A_Newer_Opacity_Binding(bool detach, double opacity)
+    {
+        Border presenter = new() { Background = Brushes.Magenta };
+        Border opacitySource = new() { Opacity = opacity };
+        Window window = new() { Width = 200, Height = 100, Content = presenter };
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            using IDisposable? reveal = DeferredContentPresentationTargetHelpers.ApplyRevealAnimation(presenter, TimeSpan.FromMilliseconds(40), true);
+            if (detach) window.Content = null;
+            using IDisposable binding = presenter.Bind(Visual.OpacityProperty, opacitySource.GetObservable(Visual.OpacityProperty));
+            if (detach) window.Content = presenter;
+
+            Dispatcher.UIThread.RunJobs();
+
+            Assert.Equal(opacity, presenter.GetBaseValue(Visual.OpacityProperty).Value);
+            opacitySource.Opacity = 0.6;
+            Dispatcher.UIThread.RunJobs();
+            Assert.Equal(0.6, presenter.GetBaseValue(Visual.OpacityProperty).Value);
+            await SettleAsync(window, presenter);
+            Assert.Equal(0.6, presenter.Opacity);
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(0.3)]
+    [InlineData(0.85)]
+    public async Task InFlight_Reveal_Does_Not_Overwrite_A_Newer_Local_Opacity(double opacity)
+    {
+        Border presenter = new();
+        Window window = new() { Width = 200, Height = 100, Content = presenter };
+        try
+        {
+            window.Show();
+            using IDisposable? reveal = DeferredContentPresentationTargetHelpers.ApplyRevealAnimation(presenter, TimeSpan.FromMilliseconds(40), true);
+            presenter.Opacity = opacity;
+            Dispatcher.UIThread.RunJobs();
+            Assert.Equal(opacity, presenter.GetBaseValue(Visual.OpacityProperty).Value);
+            await SettleAsync(window, presenter);
+            Assert.Equal(opacity, presenter.Opacity);
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public async Task Clearing_An_InFlight_Reveal_Cancels_Its_Endpoint_And_Allows_Reuse()
+    {
+        DeferredContentPresentationTimeline timeline = new() { AutoSchedule = false, RevealDuration = TimeSpan.FromMilliseconds(40) };
+        DeferredContentControl host = new()
+        {
+            Content = "First", ContentTemplate = new FuncDataTemplate<string>((_, _) => new Border())
+        };
+        Window window = new() { Width = 200, Height = 100, Content = host };
+        DeferredContentScheduling.SetTimeline(window, timeline);
+        try
+        {
+            window.Show();
+            Flush(window, timeline);
+            Control presenter = Assert.IsAssignableFrom<Control>(host.Presenter);
+            host.Content = "Second";
+            timeline.FlushPendingBatchForTesting();
+            host.ClearPresentation();
+            presenter.Opacity = 0.4;
+            Dispatcher.UIThread.RunJobs();
+            Assert.Null(host.Presenter!.Child);
+            Assert.Equal(0.4, presenter.GetBaseValue(Visual.OpacityProperty).Value);
+
+            window.Content = null;
+            window.Content = host;
+            Flush(window, timeline);
+            host.Content = "Third";
+            timeline.FlushPendingBatchForTesting();
+            host.Content = "Fourth";
+            timeline.FlushPendingBatchForTesting();
+            Flush(window, timeline);
+            await SettleAsync(window, presenter);
+            Assert.Equal("Fourth", host.Presenter.Child!.DataContext);
+            Assert.Equal(0.4, presenter.Opacity);
+            Assert.Equal(0.4, presenter.GetBaseValue(Visual.OpacityProperty).Value);
         }
         finally { window.Close(); }
     }

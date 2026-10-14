@@ -150,7 +150,7 @@ public class GlobalSplitLayoutTests
     }
 
     [Fact]
-    public void Generated_Root_Wrapper_Chain_Is_Normalized_Before_Splitting()
+    public void Existing_Root_Wrapper_Chain_Does_Not_Grow_During_Further_Roundtrips()
     {
         Factory factory = new();
         DocumentDock documents = new();
@@ -172,26 +172,34 @@ public class GlobalSplitLayoutTests
         RootDock root = new() { VisibleDockables = factory.CreateList<IDockable>(child), ActiveDockable = child, DefaultDockable = child };
         factory.InitLayout(root);
 
-        factory.SplitToDock(child, new ToolDock(), DockOperation.Bottom);
+        Tool tool = new();
+        ToolDock incoming = new() { VisibleDockables = factory.CreateList<IDockable>(tool), ActiveDockable = tool };
+        factory.SplitToDock(child, incoming, DockOperation.Bottom);
+        DockService service = new();
 
-        Assert.Same(main, Assert.Single(root.VisibleDockables!));
-        Assert.Same(main, root.ActiveDockable);
-        Assert.Same(main, root.DefaultDockable);
-        Assert.Equal(0.7, main.Proportion);
-        Assert.Equal(0.8, main.CollapsedProportion);
-        Assert.Same(documents, main.DefaultDockable);
-        foreach (ProportionalDock wrapper in wrappers)
+        for (int iteration = 0; iteration < 20; iteration++)
         {
-            Assert.Null(wrapper.Owner);
-            Assert.Null(wrapper.ActiveDockable);
-            Assert.Null(wrapper.DefaultDockable);
-            Assert.Empty(wrapper.VisibleDockables!);
+            Assert.Same(child, Assert.Single(root.VisibleDockables!));
+            Assert.Same(child, root.ActiveDockable);
+            Assert.Same(child, root.DefaultDockable);
+            Assert.Equal(0.7, child.Proportion);
+            Assert.Equal(0.8, child.CollapsedProportion);
+            Assert.Same(documents, main.DefaultDockable);
+            HashSet<IDockable> visited = new();
+            AssertTree(root, visited);
+            Assert.All(wrappers, wrapper => Assert.Contains(wrapper, visited));
+            int proportionalCount = 0;
+            foreach (IDockable dockable in visited)
+                if (dockable is IProportionalDock) proportionalCount++;
+            Assert.Equal(21, proportionalCount);
+
+            Assert.True(service.SplitDockable(tool, Assert.IsAssignableFrom<IDock>(tool.Owner), child,
+                iteration % 2 == 0 ? DockOperation.Right : DockOperation.Bottom, true));
         }
-        AssertTree(root, new HashSet<IDockable>());
     }
 
     [Fact]
-    public void Normalizing_Root_Wrappers_Preserves_Inherited_Docking_Group()
+    public void Reusing_Root_Regions_Preserves_Inherited_Docking_Group()
     {
         Factory factory = new();
         Document document = new();

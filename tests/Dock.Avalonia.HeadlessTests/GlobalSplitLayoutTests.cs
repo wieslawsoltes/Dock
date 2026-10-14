@@ -20,8 +20,10 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class GlobalSplitLayoutTests
 {
-    [AvaloniaFact]
-    public void Splitting_A_Constrained_Root_Region_Preserves_Its_Minimum_Width()
+    [AvaloniaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Splitting_A_Constrained_Root_Region_Preserves_Its_Minimum_Width(bool isCollapsable)
     {
         Factory factory = new();
         Document document = new() { Title = "Document" };
@@ -34,6 +36,7 @@ public class GlobalSplitLayoutTests
         region.ActiveDockable = documents;
         region.DefaultDockable = documents;
         region.MinWidth = 500;
+        region.IsCollapsable = isCollapsable;
         RootDock root = new() { VisibleDockables = factory.CreateList<IDockable>(region), ActiveDockable = region };
         factory.InitLayout(root);
         Tool tool = new() { Title = "Incoming" };
@@ -45,14 +48,27 @@ public class GlobalSplitLayoutTests
             window.Show();
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
-            // A different orientation requires the constrained region to become a pane.
             region.Orientation = Orientation.Vertical;
             factory.SplitToDock(region, incoming, DockOperation.Right);
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
 
-            Control pane = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[documents]);
-            Assert.True(pane.Bounds.Width >= 500, $"The constrained region shrank to {pane.Bounds.Width} pixels.");
+            Control regionControl = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[region]);
+            Assert.True(regionControl.Bounds.Width >= 500, $"The constrained region shrank to {regionControl.Bounds.Width} pixels.");
+            Assert.Equal(500, region.MinWidth);
+            Assert.Same(region, documents.Owner);
+            if (isCollapsable)
+            {
+                Assert.Same(region, incoming.Owner);
+                Assert.Same(region, Assert.Single(root.VisibleDockables!));
+            }
+            else
+            {
+                Control pane = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[documents]);
+                Assert.True(pane.Bounds.Width >= 500, $"The original pane shrank to {pane.Bounds.Width} pixels.");
+                Assert.Equal(Orientation.Vertical, region.Orientation);
+                Assert.Same(region.Owner, incoming.Owner);
+            }
         }
         finally { window.Close(); }
     }

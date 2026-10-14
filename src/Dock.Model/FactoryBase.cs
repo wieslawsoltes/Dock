@@ -503,7 +503,6 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
-        _generatedSplitLayouts.Add(layout, new object());
         return layout;
     }
 
@@ -517,9 +516,6 @@ public abstract partial class FactoryBase : IFactory
             case DockOperation.Top:
             case DockOperation.Bottom:
             {
-                // Source removal intentionally leaves the root's current drop target in
-                // place. Normalize it here, where we can continue with its replacement.
-                dock = NormalizeRootSplitTarget(dock);
                 if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
                 {
                     var index = ownerDock.VisibleDockables.IndexOf(dock);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Logging;
 using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
@@ -117,6 +118,9 @@ public class CapabilityPolicyThemeBindingTests
 
     private static void AssertDragDropCapabilityBinding(Control control, IDockable dockable, IDock policyDock, DockThemeKind themeKind)
     {
+        var previousSink = Logger.Sink;
+        var sink = new CapabilityPolicyBindingWarningsTests.CapabilityWarningSink();
+        Logger.Sink = sink;
         var window = ShowWithTheme(control, themeKind);
 
         try
@@ -152,10 +156,12 @@ public class CapabilityPolicyThemeBindingTests
 
             Assert.False(control.GetValue(DockProperties.IsDragEnabledProperty));
             Assert.False(control.GetValue(DockProperties.IsDropEnabledProperty));
+            Assert.Empty(sink.Warnings);
         }
         finally
         {
             window.Close();
+            Logger.Sink = previousSink;
         }
     }
 

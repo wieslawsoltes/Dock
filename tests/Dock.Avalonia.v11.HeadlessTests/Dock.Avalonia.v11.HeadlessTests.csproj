@@ -6,6 +6,7 @@
     <IsTestProject>True</IsTestProject>
     <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
     <Nullable>enable</Nullable>
+    <DefineConstants>$(DefineConstants);AVALONIA_11</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,5 +24,10 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Browser.v11\Dock.Avalonia.Themes.Browser.v11.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent.v11\Dock.Avalonia.Themes.Fluent.v11.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Simple.v11\Dock.Avalonia.Themes.Simple.v11.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\CapabilityPolicyBindingWarningsTests.cs" Link="CapabilityPolicyBindingWarningsTests.cs" />
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\DockCapabilityBindingExtensionTests.cs" Link="DockCapabilityBindingExtensionTests.cs" />
   </ItemGroup>
 </Project>

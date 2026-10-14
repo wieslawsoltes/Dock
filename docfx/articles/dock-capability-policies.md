@@ -76,6 +76,28 @@ When an operation is rejected by capability policy, `IDockManager.LastCapability
 
 Default Fluent menus and drag entry points use effective capability resolution, so blocked actions are hidden/disabled consistently with runtime validation.
 
+Policies and overrides may remain `null`, including on docks created when floating a document. The built-in themes observe these optional values without logging null-path binding warnings. Replacing or clearing a policy updates the bindings; custom policies implementing `INotifyPropertyChanged` can also notify changes to individual capability properties.
+
+Custom templates can use `DockCapabilityBinding` from `Dock.Avalonia.Data` alongside the capability converters. It creates a one-way compiled binding and supports both Avalonia 11 and 12:
+
+```xml
+<MultiBinding xmlns="https://github.com/avaloniaui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:data="using:Dock.Avalonia.Data"
+              xmlns:core="using:Dock.Model.Core"
+              xmlns:converters="using:Dock.Avalonia.Converters"
+              x:DataType="core:IDockable"
+              x:CompileBindings="True"
+              Converter="{x:Static converters:DockCapabilityConverters.CanDragMultiConverter}">
+  <Binding />
+  <Binding Path="CanDrag" />
+  <data:DockCapabilityBinding Capability="Drag" Source="DockableOverrides" />
+  <data:DockCapabilityBinding Capability="Drag" Source="OwnerDockPolicy" />
+</MultiBinding>
+```
+
+For a dock data context, use `DockPolicy` to observe its policy or `ActiveDockableOverrides` to observe its active dockable's overrides.
+
 ## Sample
 
 `DockXamlReactiveUISample` includes:

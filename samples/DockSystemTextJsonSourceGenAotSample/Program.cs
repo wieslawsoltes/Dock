@@ -14,6 +14,7 @@ using Dock.Serializer.SystemTextJson;
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.RegisteredPayload))]
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.CollectionPayload))]
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.FieldPayload))]
+[assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.PolymorphicCollectionPayload))]
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.RegisteredList<int>))]
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.RegisteredList<string>))]
 [assembly: DockJsonSerializable(typeof(DockSystemTextJsonSourceGenAotSample.RegisteredList<long>))]
@@ -37,7 +38,8 @@ internal static class Program
         ValidateCollectionRoundTrip<List<int>, List<string>, List<long>>(typeof(List<>));
         ValidateCollectionRoundTrip<RegisteredList<int>, RegisteredList<string>, RegisteredList<long>>(typeof(RegisteredList<>));
         ValidateSuppliedCollectionFactories();
-        ValidateIncludedFields();
+        ValidateIncludedMembers();
+        ValidatePolymorphicCollections();
         Console.WriteLine("Dock Fluent bindings and source-generated AOT serialization round trip succeeded.");
         return 0;
     }
@@ -137,15 +139,36 @@ internal static class Program
             "Resolver-created collection values were not preserved.");
     }
 
-    private static void ValidateIncludedFields()
+    private static void ValidateIncludedMembers()
     {
         DockSerializer serializer = DockSystemTextJsonGenerated.CreateSerializer();
-        var source = new FieldPayload { Numbers = new List<double> { 1.5 }, BaseNumbers = new List<float> { 2.5f } };
+        var source = new FieldPayload
+        {
+            Numbers = new List<double> { 1.5 },
+            BaseNumbers = new List<float> { 2.5f },
+            Values = new List<decimal> { 3.75m },
+            BaseValues = new List<TimeSpan> { TimeSpan.FromMinutes(4) }
+        };
         FieldPayload restored = Require(serializer.Deserialize<FieldPayload>(serializer.Serialize(source)),
-            "Included field deserialization returned null.");
+            "Included member deserialization returned null.");
         Ensure(restored.Numbers is ObservableCollection<double> && restored.Numbers[0] == 1.5
             && restored.BaseNumbers is ObservableCollection<float> && restored.BaseNumbers[0] == 2.5f,
             "Included fields did not preserve values and configured collection types.");
+        Ensure(restored.Values is ObservableCollection<decimal> && restored.Values[0] == 3.75m
+            && restored.BaseValues is ObservableCollection<TimeSpan> && restored.BaseValues[0] == TimeSpan.FromMinutes(4),
+            "Included non-public properties did not preserve values and configured collection types.");
+    }
+
+    private static void ValidatePolymorphicCollections()
+    {
+        DockSerializer serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        PolymorphicCollectionPayload source = new DerivedCollectionPayload { Values = new List<short> { 3, 7 } };
+        DerivedCollectionPayload restored = RequireType<DerivedCollectionPayload>(
+            serializer.Deserialize<PolymorphicCollectionPayload>(serializer.Serialize(source)),
+            "Polymorphic collection payload did not preserve its derived type.");
+        Ensure(restored.Values is ObservableCollection<short> && restored.Values.Count == 2
+            && restored.Values[0] == 3 && restored.Values[1] == 7,
+            "Polymorphic collection payload did not preserve values and configured collection types.");
     }
 
     private static void VerifyLayout(SampleRootDock restored)
@@ -328,9 +351,21 @@ public sealed class RegisteredList<T> : Collection<T>
 public class FieldPayloadBase
 {
     [JsonInclude] public IList<float> BaseNumbers = new List<float>();
+    [JsonInclude] internal IList<TimeSpan> BaseValues { get; set; } = new List<TimeSpan>();
 }
 
 public sealed class FieldPayload : FieldPayloadBase
 {
     [JsonInclude] public IList<double> Numbers = new List<double>();
+    [JsonInclude] internal IList<decimal> Values { get; set; } = new List<decimal>();
+}
+
+[JsonDerivedType(typeof(DerivedCollectionPayload), "derived")]
+public class PolymorphicCollectionPayload
+{
+}
+
+public sealed class DerivedCollectionPayload : PolymorphicCollectionPayload
+{
+    public IList<short> Values { get; set; } = new List<short>();
 }

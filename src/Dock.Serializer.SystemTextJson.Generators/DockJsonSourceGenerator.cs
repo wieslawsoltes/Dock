@@ -783,6 +783,16 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                     continue;
                 }
 
+                foreach (AttributeData attribute in named.GetAttributes())
+                {
+                    if (attribute.AttributeClass?.ToDisplayString() == "System.Text.Json.Serialization.JsonDerivedTypeAttribute"
+                        && attribute.ConstructorArguments.Length > 0
+                        && attribute.ConstructorArguments[0].Value is ITypeSymbol derivedType)
+                    {
+                        pending.Enqueue(derivedType);
+                    }
+                }
+
                 foreach (IPropertySymbol property in GetAllPublicInstanceProperties(named))
                 {
                     if (!property.IsIndexer && !ShouldIgnoreProperty(property, symbols)
@@ -794,14 +804,24 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
 
                 for (INamedTypeSymbol? current = named; current is not null; current = current.BaseType)
                 {
-                    foreach (IFieldSymbol field in current.GetMembers().OfType<IFieldSymbol>())
+                    foreach (ISymbol member in current.GetMembers())
                     {
-                        if (!field.IsStatic && !IsJsonIgnoredMember(field)
-                            && compilation.IsSymbolAccessibleWithin(field, compilation.Assembly)
-                            && field.GetAttributes().Any(static attribute => attribute.AttributeClass?.ToDisplayString()
+                        if (member.IsStatic || IsJsonIgnoredMember(member)
+                            || !compilation.IsSymbolAccessibleWithin(member, compilation.Assembly)
+                            || !member.GetAttributes().Any(static attribute => attribute.AttributeClass?.ToDisplayString()
                                 == "System.Text.Json.Serialization.JsonIncludeAttribute"))
                         {
+                            continue;
+                        }
+
+                        if (member is IFieldSymbol field)
+                        {
                             pending.Enqueue(field.Type);
+                        }
+                        else if (member is IPropertySymbol property && !property.IsIndexer
+                            && !ShouldIgnoreProperty(property, symbols))
+                        {
+                            pending.Enqueue(property.Type);
                         }
                     }
                 }

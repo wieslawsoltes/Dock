@@ -9,6 +9,8 @@ using Xunit;
 
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.CollectionPayload))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.FieldPayload))]
+[assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.IncludedPropertyPayload))]
+[assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.PolymorphicCollectionPayload))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.RegisteredList<int>))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.RegisteredList<string>))]
 [assembly: DockJsonSerializable(typeof(Dock.Serializer.SystemTextJson.SourceGenTests.RegisteredList<long>))]
@@ -70,6 +72,37 @@ public class SourceGeneratedCollectionTests
 
         Assert.Equal(source.Numbers, Assert.IsType<ObservableCollection<double>>(restored!.Numbers));
         Assert.Equal(source.BaseNumbers, Assert.IsType<ObservableCollection<float>>(restored.BaseNumbers));
+    }
+
+    [Fact]
+    public void JsonInclude_NonPublic_Properties_Including_Base_Properties_Use_Configured_Lists()
+    {
+        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        var source = new IncludedPropertyPayload
+        {
+            Values = new List<decimal> { 1.25m, 2.5m },
+            BaseValues = new List<TimeSpan> { TimeSpan.FromMinutes(3) }
+        };
+
+        var restored = serializer.Deserialize<IncludedPropertyPayload>(serializer.Serialize(source));
+
+        Assert.Equal(source.Values, Assert.IsType<ObservableCollection<decimal>>(restored!.Values));
+        Assert.Equal(source.BaseValues, Assert.IsType<ObservableCollection<TimeSpan>>(restored.BaseValues));
+    }
+
+    [Fact]
+    public void JsonDerivedType_Payload_Properties_Use_Configured_Lists()
+    {
+        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        PolymorphicCollectionPayload source = new DerivedCollectionPayload
+        {
+            Values = new List<short> { 3, 7 }
+        };
+
+        var restored = Assert.IsType<DerivedCollectionPayload>(
+            serializer.Deserialize<PolymorphicCollectionPayload>(serializer.Serialize(source)));
+
+        Assert.Equal(new short[] { 3, 7 }, Assert.IsType<ObservableCollection<short>>(restored.Values));
     }
 
     [Fact]
@@ -230,4 +263,24 @@ public class FieldPayloadBase
 public sealed class FieldPayload : FieldPayloadBase
 {
     [JsonInclude] public IList<double> Numbers = new List<double>();
+}
+
+public class IncludedPropertyPayloadBase
+{
+    [JsonInclude] internal IList<TimeSpan> BaseValues { get; set; } = new List<TimeSpan>();
+}
+
+public sealed class IncludedPropertyPayload : IncludedPropertyPayloadBase
+{
+    [JsonInclude] internal IList<decimal> Values { get; set; } = new List<decimal>();
+}
+
+[JsonDerivedType(typeof(DerivedCollectionPayload), "derived")]
+public class PolymorphicCollectionPayload
+{
+}
+
+public sealed class DerivedCollectionPayload : PolymorphicCollectionPayload
+{
+    public IList<short> Values { get; set; } = new List<short>();
 }

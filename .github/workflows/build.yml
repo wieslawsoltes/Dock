@@ -18,20 +18,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
 jobs:
-  framework:
-    name: AvalonDock framework packages
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-dotnet@v4
-      with:
-        global-json-file: global.json
-    - uses: ./.github/actions/setup-avalondock-framework
-    - name: Test framework publishing checks
-      run: python3 -m unittest discover -s build/AvalonDock.Framework -p 'test_*.py'
-
   build:
-    needs: framework
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -43,8 +30,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Prepare AvalonDock framework
-      uses: ./.github/actions/setup-avalondock-framework
     - name: Build
       run: dotnet build -c Release
 
@@ -61,8 +46,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Prepare AvalonDock framework
-      uses: ./.github/actions/setup-avalondock-framework
     - name: Test
       run: dotnet test -c Release
 
@@ -76,8 +59,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Prepare AvalonDock framework
-      uses: ./.github/actions/setup-avalondock-framework
     - name: Install NativeAOT toolchain
       run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
     - name: Publish AOT sample
@@ -96,41 +77,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
-    - name: Prepare AvalonDock framework
-      uses: ./.github/actions/setup-avalondock-framework
     - name: Pack
       run: dotnet pack -c Release -o artifacts/nuget
-    - name: Restore AvalonDock package consumer
-      run: |
-        cat > "$RUNNER_TEMP/avalondock-consumer.config" <<EOF
-        <configuration>
-          <packageSources>
-            <clear />
-            <add key="local" value="$PWD/artifacts/nuget" />
-            <add key="framework" value="$PWD/artifacts/avalondock-framework/nuget" />
-            <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
-          </packageSources>
-          <packageSourceMapping>
-            <packageSource key="local">
-              <package pattern="Dock.*" />
-            </packageSource>
-            <packageSource key="framework">
-              <package pattern="Avalonia" />
-              <package pattern="Avalonia.Remote.Protocol" />
-            </packageSource>
-            <packageSource key="nuget.org"><package pattern="*" /></packageSource>
-          </packageSourceMapping>
-        </configuration>
-        EOF
-        dotnet restore tests/Dock.Avalonia.AvalonDock.PackageSmoke \
-          --configfile "$RUNNER_TEMP/avalondock-consumer.config" \
-          --packages "$RUNNER_TEMP/avalondock-consumer-packages"
-    - name: Build AvalonDock package consumer
-      run: dotnet build tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release --no-restore
-    - name: Run AvalonDock package consumer on supported runtimes
-      run: |
-        dotnet run --project tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release -f net8.0 --no-build --no-restore
-        dotnet run --project tests/Dock.Avalonia.AvalonDock.PackageSmoke -c Release -f net10.0 --no-build --no-restore
     - name: Upload NuGet artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -138,5 +86,3 @@ jobs:
         path: |
           artifacts/nuget/*.nupkg
           artifacts/nuget/*.snupkg
-          artifacts/avalondock-framework/nuget/*.nupkg
-          artifacts/avalondock-framework/nuget/*.snupkg

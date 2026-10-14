@@ -52,7 +52,7 @@
     href: dock-context-locator.md
 - name: Framework integration
   items:
-  - name: AvalonDock compatibility
+  - name: AvalonDock compatibility (deferred)
     href: dock-avalondock.md
   - name: MVVM guide
     href: dock-mvvm.md

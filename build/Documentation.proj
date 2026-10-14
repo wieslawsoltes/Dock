@@ -7,9 +7,10 @@
   <ItemGroup>
     <!-- The v11 and classic ReactiveUI packages share the primary API's names.
          Document the primary runtime assemblies once, including generated members.
-         Compiler analyzers target netstandard2.0 and are not runtime API inputs. -->
+         Compiler analyzers target netstandard2.0 and are not runtime API inputs.
+         AvalonDock compatibility is deferred until its framework APIs ship upstream. -->
     <DocumentationProject Include="$(MSBuildThisFileDirectory)../src/*/*.csproj"
-                          Exclude="$(MSBuildThisFileDirectory)../src/*.v11/*.csproj;$(MSBuildThisFileDirectory)../src/*.Reactive/*.csproj;$(MSBuildThisFileDirectory)../src/*.Generators/*.csproj" />
+                          Exclude="$(MSBuildThisFileDirectory)../src/*.v11/*.csproj;$(MSBuildThisFileDirectory)../src/*.Reactive/*.csproj;$(MSBuildThisFileDirectory)../src/*.Generators/*.csproj;$(MSBuildThisFileDirectory)../src/Dock.Avalonia.AvalonDock/*.csproj" />
   </ItemGroup>
 
   <Target Name="Restore">

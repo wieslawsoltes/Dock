@@ -23,8 +23,6 @@ jobs:
             8.0.x
             6.0.x
 
-      - name: Prepare AvalonDock framework
-        uses: ./.github/actions/setup-avalondock-framework
       - name: Restore local tools
         run: dotnet tool restore
 

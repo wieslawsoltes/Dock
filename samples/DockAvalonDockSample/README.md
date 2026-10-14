@@ -1,6 +1,11 @@
 # AvalonDock on Dock sample
 
-Run `dotnet run --project samples/DockAvalonDockSample` from the repository root.
+This sample is deferred and excluded from the normal solution until the required
+framework APIs ship in official Avalonia. See
+[#1186](https://github.com/wieslawsoltes/Dock/issues/1186) for the remaining work.
+The source and license attribution are retained for reactivation; the sample
+cannot currently be run against Dock's official Avalonia dependency.
+
 The sample adapts the Xceed Live Explorer 3.7.0 layout to Avalonia while keeping
 the AvalonDock layout names. It uses Avalonia's default XML namespace, so the
 layout types and `AvalonDockTheme` need no AvalonDock prefix. The original Xceed

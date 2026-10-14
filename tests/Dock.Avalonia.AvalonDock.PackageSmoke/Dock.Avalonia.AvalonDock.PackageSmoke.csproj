@@ -19,7 +19,7 @@
     <None Include="../Dock.Avalonia.AvalonDock.Tests/Assets/WpfContentActivationHooks.tsv" Link="Assets/WpfContentActivationHooks.tsv" CopyToOutputDirectory="PreserveNewest" />
     <AvaloniaResource Include="Assets/**" />
     <PackageReference Include="Dock.Avalonia.AvalonDock" Version="$(DockCompatibilityPackageVersion)" />
-    <PackageReference Include="Avalonia" Version="$(AvaloniaCoreVersion)" />
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
   </ItemGroup>

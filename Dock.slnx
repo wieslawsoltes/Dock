@@ -13,7 +13,6 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
     <File Path="global.json" />
-    <Project Path="build/AvalonDockApiAudit/AvalonDockApiAudit.csproj" />
     <Project Path="build/build/_build.csproj" />
   </Folder>
   <Folder Name="/build/git/">
@@ -49,7 +48,6 @@
     <File Path="build/XUnit.props" />
   </Folder>
   <Folder Name="/samples/">
-    <Project Path="samples/DockAvalonDockSample/DockAvalonDockSample.csproj" />
     <Project Path="samples/DockCodeOnlyMvvmSample/DockCodeOnlyMvvmSample.csproj" />
     <Project Path="samples/DockCodeOnlySample/DockCodeOnlySample.csproj" />
     <Project Path="samples/DockControlPanelsSample/DockControlPanelsSample.csproj" />
@@ -84,8 +82,6 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Dock.Avalonia.Diagnostics/Dock.Avalonia.Diagnostics.csproj" />
-    <Project Path="src/Dock.Avalonia.AvalonDock.Generators/Dock.Avalonia.AvalonDock.Generators.csproj" />
-    <Project Path="src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
     <Project Path="src/Dock.Avalonia.Diagnostics.v11/Dock.Avalonia.Diagnostics.v11.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Browser/Dock.Avalonia.Themes.Browser.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Browser.v11/Dock.Avalonia.Themes.Browser.v11.csproj" />
@@ -130,11 +126,6 @@
   <Folder Name="/tests/">
     <Project Path="tests/Dock.Avalonia.v11.PreviewTests/Dock.Avalonia.v11.PreviewTests.csproj" />
     <Project Path="tests/Dock.Avalonia.v11.HeadlessTests/Dock.Avalonia.v11.HeadlessTests.csproj" />
-    <Project Path="tests/Dock.Avalonia.AvalonDock.Tests/Dock.Avalonia.AvalonDock.Tests.csproj" />
-    <Project Path="tests/Dock.Avalonia.AvalonDock.CatalogFixtures/Dock.Avalonia.AvalonDock.CatalogFixtures.csproj" />
-    <Project Path="tests/Dock.Avalonia.AvalonDock.CatalogTests/Dock.Avalonia.AvalonDock.CatalogTests.csproj" />
-    <Project Path="tests/Dock.Avalonia.AvalonDock.Generators.Tests/Dock.Avalonia.AvalonDock.Generators.Tests.csproj" />
-    <Project Path="tests/Dock.Avalonia.AvalonDock.ImageTests/Dock.Avalonia.AvalonDock.ImageTests.csproj" />
     <Project Path="tests/Dock.Avalonia.Diagnostics.UnitTests/Dock.Avalonia.Diagnostics.UnitTests.csproj" />
     <Project Path="tests/Dock.Avalonia.LeakTests/Dock.Avalonia.LeakTests.csproj" />
     <Project Path="tests/Dock.Avalonia.HeadlessTests/Dock.Avalonia.HeadlessTests.csproj" />

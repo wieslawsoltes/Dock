@@ -1,5 +1,12 @@
 # AvalonDock compatibility
 
+> **Deferred:** the compatibility package and sample are excluded from Dock's
+> normal build, CI, API metadata, and release. Regular Dock uses official Avalonia
+> packages. [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks
+> the required upstream APIs and the work to re-enable compatibility.
+> This page preserves the prototype's usage and architecture; its validation
+> results apply to the historical custom-framework revision, not official Avalonia.
+
 `Dock.Avalonia.AvalonDock` lets an Avalonia application use the
 `AvalonDock` C# namespaces and layout names. The implementation wraps
 `Dock.Model.Avalonia` models and renders them through Dock's controls. The
@@ -12,18 +19,16 @@ The CLR namespaces are `AvalonDock.*`; update using directives and any explicit
 CLR namespace declarations when porting source from the WPF library. The
 assembly/package name remains `Dock.Avalonia.AvalonDock`.
 
-This branch requires the project-specific prerelease framework pinned in
-`build/AvalonDock.Framework/framework.json`, not an official Avalonia release.
-Source builds must run the bootstrap first; package consumers need both the
-generated framework feed and the Dock feed. The
-[framework build guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
-describes both workflows.
+The prototype required project-specific framework APIs. The
+[framework history](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
+records that dependency and links to the preserved implementation. Dock's normal
+restore, build, test, and release flows no longer require custom framework packages.
 
 Runtime source
 [`77c15f965`](https://github.com/wieslawsoltes/Dock/commit/77c15f96566690a4f2f6f31078130d119337dc4f)
-passes 3,954 adapter tests, 30 rendering tests, and isolated package consumers on
+passed 3,954 adapter tests, 30 rendering tests, and isolated package consumers on
 .NET 8 and .NET 10. Six catalog integration cases and 18 generator cases also
-pass. The framework source is pinned to
+passed. That validation used framework source
 [`57744b19b6`](https://github.com/wieslawsoltes/Avalonia/commit/57744b19b6ab8ff05edb3776474792467b9d545b).
 The acceptance checklist above records the validation scope and deferred desktop
 checks.
@@ -46,22 +51,16 @@ while identifier metadata itself does not raise property notifications.
 
 ## Reference the package and theme
 
-The project builds NuGet packages for .NET 8 and .NET 10. To try the package from
-this branch before publication, build it from the Dock repository:
+The retained project targets .NET 8 and .NET 10, but package generation is
+disabled while compatibility is deferred. The examples below describe the
+intended API after reactivation. Do not add `Dock.Avalonia.AvalonDock` to an
+application using official Avalonia until the release criteria in
+[#1186](https://github.com/wieslawsoltes/Dock/issues/1186) are complete.
 
-```sh
-python3 build/AvalonDock.Framework/bootstrap.py
-dotnet pack src/Dock.Avalonia.AvalonDock -c Release -o artifacts/avalondock-nuget
-```
-
-Add that directory as a local NuGet source in your consuming application and
-reference the generated `Dock.Avalonia.AvalonDock` package version. Keep your
-normal package sources configured for its dependencies. The package references
-Dock's Avalonia model and Fluent theme; use compatible Avalonia package versions.
-This branch also requires its pinned prerelease Avalonia framework packages from
-`artifacts/avalondock-framework/nuget`. Add both local feeds to a package consumer.
-The [framework build guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
-records the exact source revision, reproducible bootstrap, and supporting PR.
+For historical reproduction only, use the
+[validated revision's build guide](https://github.com/wieslawsoltes/Dock/blob/447653dbc589757eb6cbc6062dd3ffe0f79629ee/build/AvalonDock.Framework/README.md)
+in a separate checkout. Those instructions and custom packages do not apply to
+the current Dock build.
 
 In `App.axaml`, with the default `xmlns="https://github.com/avaloniaui"`, add:
 

@@ -1,5 +1,13 @@
 # Compatibility work and acceptance criteria
 
+> **Deferred pending upstream Avalonia APIs.** The adapter, generator, sample,
+> audit, and compatibility test projects are excluded from the normal solution;
+> adapter package generation and API metadata are disabled. Regular Dock uses
+> official Avalonia. [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186)
+> is the current reactivation checklist. All implementation and validation
+> evidence below describes the historical fork-based prototype and must be
+> revalidated after migration to the released upstream APIs.
+
 The objective remains complete AvalonDock C# and XAML API compatibility on
 Avalonia, using Dock's Avalonia models and docking implementation, a NuGet
 package, and a licensed adaptation of the Xceed sample. This document records
@@ -46,7 +54,8 @@ The pinned framework source
 [`57744b19b6`](https://github.com/wieslawsoltes/Avalonia/commit/57744b19b6ab8ff05edb3776474792467b9d545b)
 has 7,096 passing Base/Controls cases, 100 passing focused logical/weak-lifetime
 cases, and five passing compiled-resource-factory cases. Framework packaging and
-hash verification use the revision in `build/AvalonDock.Framework/framework.json`.
+hash verification used the specification preserved in the
+[validated revision](https://github.com/wieslawsoltes/Dock/blob/447653dbc589757eb6cbc6062dd3ffe0f79629ee/build/AvalonDock.Framework/framework.json).
 
 Fresh packages from the validated runtime pass the complete isolated consumer on
 both .NET 8 and .NET 10. Validation covers all 11 Dock packages, both framework

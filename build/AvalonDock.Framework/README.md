@@ -1,49 +1,37 @@
-# AvalonDock framework dependency
+# AvalonDock framework work (deferred)
 
-The compatibility branch uses opt-in Avalonia APIs for binding ownership, logical
-children, hosted native roots, initialization, pointer capture, and compiled
-resource factories. The supporting changes are reviewed in
-[Avalonia fork PR #9](https://github.com/wieslawsoltes/Avalonia/pull/9), based on
-the exact Avalonia 12.1.3 source commit. This is a prerelease dependency; these APIs
-are not part of the public 12.1.3 NuGet release.
+Regular Dock builds and releases use official Avalonia packages. The AvalonDock
+compatibility implementation is retained, but its projects are excluded from
+`Dock.slnx`, API documentation generation, CI, and package release until the
+required framework APIs are published upstream.
 
-Before restoring this branch, run from the repository root:
+[Dock issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks all
+required contracts, migration steps, validation, and release acceptance:
 
-```sh
-python3 build/AvalonDock.Framework/bootstrap.py
-dotnet build -c Release
-```
+- Opt-in property metadata for WPF-compatible binding ownership and current values.
+- Logical-child projections and weak inheritance with correct lifetime propagation.
+- Hosted native roots for auto-hide resources, styles, input, focus, and disposal.
+- Initialization deferral and primary-pointer capture for floating hosts.
+- Reflection-free factories for compiled XAML resources.
 
-The bootstrap checks out the source revision in `framework.json`, initializes its
-submodules, and uses Avalonia's own package merge, build-task rewriting, signing,
-and reference-assembly generation. It produces the `Avalonia` and
-`Avalonia.Remote.Protocol` packages and symbols in
-`artifacts/avalondock-framework/nuget`. `NuGet.Config` includes that local feed.
-The other Avalonia packages retain their published versions.
+The reference implementation is in
+[Avalonia fork PR #9](https://github.com/wieslawsoltes/Avalonia/pull/9).
+That fork PR is not an upstream AvaloniaUI merge or an official package release.
+Reactivation must use the accepted upstream equivalents and verify their
+availability in public NuGet packages.
 
-CI caches the four packages by the source specification and bootstrap script;
-the script verifies every package hash before reusing the cache. No official
-NuGet package is overwritten, and no reflection is added to the compatibility
-runtime. The source checkout and all bootstrap outputs are generated artifacts.
+## Historical reproduction
 
-`--source-tree <directory>` can reuse a clean checkout at the pinned revision.
-`--output <directory>` selects another feed directory. Package consumers need
-both the Dock packages and this framework feed until the required framework
-APIs have a published upstream release. CI includes both sets in its package
-artifacts; publishing the Dock package alone would leave an unresolved dependency.
+The full prototype was validated at Dock revision
+[`447653dbc589757eb6cbc6062dd3ffe0f79629ee`](https://github.com/wieslawsoltes/Dock/tree/447653dbc589757eb6cbc6062dd3ffe0f79629ee),
+using framework runtime revision
+[`57744b19b6ab8ff05edb3776474792467b9d545b`](https://github.com/wieslawsoltes/Avalonia/commit/57744b19b6ab8ff05edb3776474792467b9d545b)
+and custom package version `12.1.4-avalondock.4`, based on Avalonia 12.1.3.
+That custom version is distinct from official Avalonia 12.1.4.
 
-Release and nightly workflows provide downloadable bundles containing both Dock
-and framework packages. Extract the bundle into a local NuGet feed, or publish
-its packages to a private feed you control. The release bundle and GitHub release
-assets remain available when public-feed publishing is skipped.
-
-Before publishing Dock packages, CI checks that both exact framework package
-versions already exist at the destination feed. If either is missing, or the feed
-cannot be checked, CI skips that publishing step and records the reason in its
-summary. These workflows never publish `Avalonia` package IDs with Dock's NuGet
-credentials. Availability on nuget.org or another destination is an external
-dependency; a successful bundle build does not establish public-feed availability.
-
-Update the full commit and package version together when framework changes are
-required. Use a new prerelease version for each changed package build; do not
-replace a version already restored by a consumer.
+Use a separate checkout of the historical Dock revision and its
+[original build guide](https://github.com/wieslawsoltes/Dock/blob/447653dbc589757eb6cbc6062dd3ffe0f79629ee/build/AvalonDock.Framework/README.md)
+to reproduce those results. The bootstrap, custom feed, framework bundle, and
+unpublished-framework publishing gate have been removed from the current build.
+Historical prototype test results do not establish compatibility with official
+Avalonia packages.

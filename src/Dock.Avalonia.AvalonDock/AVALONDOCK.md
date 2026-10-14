@@ -1,5 +1,12 @@
 # AvalonDock compatibility for Dock
 
+> **Deferred:** this prototype is excluded from Dock's normal solution, CI,
+> API documentation build, and package release. Dock uses official Avalonia
+> packages; the adapter requires framework APIs that have not shipped upstream.
+> [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks the
+> required contracts and reactivation work. The usage examples and test results
+> below describe the retained implementation and its historical fork-based validation.
+
 This package exposes the `AvalonDock`
 namespaces over `Dock.Model.Avalonia` and Dock's controls. Its XAML types are
 available in Avalonia's default `https://github.com/avaloniaui` XML namespace
@@ -15,18 +22,17 @@ source at commit `2c71faba5eecc1b6ae6cd3d269408e0df37715d8`.
 The implementation is new MIT-licensed adapter code; it does not incorporate
 the upstream WPF docking engine.
 
-This branch requires the pinned prerelease Avalonia dependency described in the
-[framework build guide](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md).
-Run `python3 build/AvalonDock.Framework/bootstrap.py` before building the repository.
-Package consumers need the generated framework feed alongside the Dock feed.
-The version is pinned in `build/AvalonDock.Framework/framework.json`; it is a
-project-specific prerelease, not an official Avalonia release.
+The prototype was validated with a project-specific prerelease Avalonia fork.
+The [framework history](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
+links to the preserved source and build instructions at that revision. Normal
+Dock builds no longer use a framework bootstrap or private feed. The adapter
+must be migrated to released upstream APIs before it can be built and packaged again.
 
 Runtime source
 [`77c15f965`](https://github.com/wieslawsoltes/Dock/commit/77c15f96566690a4f2f6f31078130d119337dc4f)
-passes 3,954 adapter tests, 30 rendering tests, and isolated package consumers on
+passed 3,954 adapter tests, 30 rendering tests, and isolated package consumers on
 .NET 8 and .NET 10. Six catalog integration cases and 18 generator cases also
-pass. The framework source is pinned to
+passed. That validation used framework source
 [`57744b19b6`](https://github.com/wieslawsoltes/Avalonia/commit/57744b19b6ab8ff05edb3776474792467b9d545b).
 The [compatibility checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md)
 records the validation scope and deferred desktop checks.

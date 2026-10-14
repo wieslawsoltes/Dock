@@ -145,6 +145,71 @@ public class DockJsonSourceGeneratorTests
     }
 
     [Fact]
+    public void CollectionFactories_Follow_Payload_Graph_And_Deduplicate_Registered_BuiltIns()
+    {
+        const string source = """
+            using System.Collections.Generic;
+            using System.Collections.ObjectModel;
+            using Dock.Serializer.SystemTextJson;
+            [assembly: DockJsonSourceGeneration]
+            [assembly: DockJsonSerializable(typeof(Example.Payload))]
+            [assembly: DockJsonSerializable(typeof(List<int>))]
+            [assembly: DockJsonSerializable(typeof(ObservableCollection<int>))]
+            [assembly: DockJsonSerializable(typeof(Example.CustomList<string>))]
+            namespace Example;
+            public sealed class Payload
+            {
+                public IList<int> Numbers { get; set; } = new List<int>();
+                public Dictionary<string, Child> Children { get; set; } = new();
+            }
+            public sealed class Child { public IList<string> Names { get; set; } = new List<string>(); }
+            public sealed class CustomList<T> : Collection<T> { }
+            """;
+
+        CompilationRun run = Run(source);
+        string generated = GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs");
+        Assert.Single(generated.Split('\n'), line => line.Contains("CreateListFactory<global::System.Collections.Generic.List<int>>", StringComparison.Ordinal));
+        Assert.Single(generated.Split('\n'), line => line.Contains("CreateListFactory<global::System.Collections.ObjectModel.ObservableCollection<int>>", StringComparison.Ordinal));
+        Assert.Contains("CreateListFactory<global::System.Collections.Generic.List<string>>", generated);
+        Assert.Contains("CreateListFactory<global::Example.CustomList<string>>", generated);
+        AssertCompilesWithJsonGenerator(source);
+    }
+
+    [Fact]
+    public void CollectionFactories_Exclude_JsonIgnored_And_Inaccessible_Member_Types()
+    {
+        const string source = """
+            using System;
+            using System.Collections.Generic;
+            using System.Text.Json.Serialization;
+            using Dock.Serializer.SystemTextJson;
+            [assembly: DockJsonSourceGeneration]
+            [assembly: DockJsonSerializable(typeof(Example.Container.Payload))]
+            namespace Example;
+            public static class Container
+            {
+                private sealed class Hidden { }
+                private interface IHidden { IList<Hidden> Values { get; } }
+                public sealed class Payload : IHidden
+                {
+                    IList<Hidden> IHidden.Values => new List<Hidden>();
+                    [JsonIgnore] public IList<DayOfWeek>? Ignored { get; set; }
+                    [JsonIgnore(Condition = JsonIgnoreCondition.Always)] public IList<DateTimeOffset>? AlwaysIgnored { get; set; }
+                    [JsonIgnore(Condition = JsonIgnoreCondition.Never)] public IList<decimal>? Included { get; set; }
+                }
+            }
+            """;
+
+        CompilationRun run = Run(source);
+        string generated = GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs");
+        Assert.DoesNotContain("CreateListFactory<global::System.Collections.Generic.List<global::System.DayOfWeek>>", generated);
+        Assert.DoesNotContain("CreateListFactory<global::System.Collections.Generic.List<global::System.DateTimeOffset>>", generated);
+        Assert.DoesNotContain("CreateListFactory<global::System.Collections.Generic.List<global::Example.Container.Hidden>>", generated);
+        Assert.Contains("CreateListFactory<global::System.Collections.Generic.List<decimal>>", generated);
+        AssertCompilesWithJsonGenerator(source);
+    }
+
+    [Fact]
     public void ExplicitRegistration_IncludesObjectPayloadType()
     {
         const string source = """
@@ -339,6 +404,37 @@ public class DockJsonSourceGeneratorTests
 
         Diagnostic diagnostic = Assert.Single(result.Diagnostics.Where(x => x.Id == "DSTJ001"));
         Assert.Contains("int", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    private static void AssertCompilesWithJsonGenerator(string source)
+    {
+        string package = Path.Combine(Path.GetTempPath(), "dock-generator-" + Guid.NewGuid().ToString("N"));
+        string runtime = Path.Combine(package, "lib", "net10.0", "System.Text.Json.dll");
+        string analyzer = Path.Combine(package, "analyzers", "dotnet", "roslyn4.4", "cs", "System.Text.Json.SourceGeneration.dll");
+        Directory.CreateDirectory(Path.GetDirectoryName(runtime)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(analyzer)!);
+        try
+        {
+            File.Copy(typeof(global::System.Text.Json.JsonSerializer).Assembly.Location, runtime);
+            File.Copy(Path.Combine(AppContext.BaseDirectory, "analyzers", "roslyn4.4", "System.Text.Json.SourceGeneration.dll"), analyzer);
+            CSharpCompilation compilation = CreateCompilation("CollectionConsumer", source);
+            MetadataReference reference = Assert.Single(compilation.References,
+                x => x.Display?.EndsWith("System.Text.Json.dll", StringComparison.Ordinal) == true);
+            compilation = compilation.ReplaceReference(reference, MetadataReference.CreateFromFile(runtime));
+            GeneratorDriver driver = CSharpGeneratorDriver.Create(new[] { new DockJsonSourceGenerator().AsSourceGenerator() },
+                parseOptions: (CSharpParseOptions)compilation.SyntaxTrees[0].Options);
+            driver.RunGeneratorsAndUpdateCompilation(compilation, out Compilation output, out _, TestContext.Current.CancellationToken);
+            using var stream = new MemoryStream();
+            EmitResult emitted = output.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+            Assert.True(emitted.Success, string.Join(Environment.NewLine, emitted.Diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error)));
+        }
+        finally
+        {
+            // Loaded analyzer files can remain locked until the Windows test host exits.
+            try { Directory.Delete(package, recursive: true); }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+        }
     }
 
     private static string GetGeneratedSource(CompilationRun run, string hintName)

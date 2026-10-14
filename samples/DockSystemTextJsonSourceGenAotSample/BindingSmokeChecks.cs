@@ -82,11 +82,23 @@ internal static class BindingSmokeChecks
         var menu = (ContextMenu)resource!;
         var first = new DocumentDock { LayoutMode = DocumentLayoutMode.Mdi };
         var document = new Document { Owner = first, MdiState = MdiWindowState.Minimized };
-        first.VisibleDockables = new List<IDockable> { document };
+        var secondDocument = new Document { Owner = first, MdiState = MdiWindowState.Maximized };
+        first.VisibleDockables = new List<IDockable> { document, secondDocument };
+        first.SetVisibleBounds(0, 0, 800, 600);
         menu.DataContext = document;
         VerifyCommands(menu, first);
         FindMenuItem(menu, "Restore").Command!.Execute(null);
-        Ensure(document.MdiState == MdiWindowState.Normal, "Restore menu command did not restore the document.");
+        Ensure(document.MdiState == MdiWindowState.Normal && secondDocument.MdiState == MdiWindowState.Normal,
+            "Restore menu command did not restore the documents.");
+        FindMenuItem(menu, "Cascade").Command!.Execute(null);
+        Ensure(document.MdiBounds.Width > 0 && secondDocument.MdiBounds.X > document.MdiBounds.X
+            && secondDocument.MdiBounds.Y > document.MdiBounds.Y, "Cascade menu command did not arrange the documents.");
+        FindMenuItem(menu, "Tile Horizontal").Command!.Execute(null);
+        Ensure(document.MdiBounds.Width == 800 && document.MdiBounds.Height == 300
+            && secondDocument.MdiBounds.Y == 300, "Horizontal tile menu command did not arrange the documents.");
+        FindMenuItem(menu, "Tile Vertical").Command!.Execute(null);
+        Ensure(document.MdiBounds.Width == 400 && document.MdiBounds.Height == 600
+            && secondDocument.MdiBounds.X == 400, "Vertical tile menu command did not arrange the documents.");
 
         var replacement = new DocumentDock { LayoutMode = DocumentLayoutMode.Mdi };
         document.Owner = replacement;

@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <DockAotTargetFramework Condition="'$(DockAotTargetFramework)' == ''">net10.0</DockAotTargetFramework>
+    <TargetFramework>$(DockAotTargetFramework)</TargetFramework>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
@@ -12,6 +13,8 @@
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(RuntimeIdentifier)' != ''">
     <PublishAot>true</PublishAot>
+    <!-- Avalonia 12.1 XAML compilation needs the full build pipeline when publishing with .NET 11. -->
+    <UseOptimizedPublish>false</UseOptimizedPublish>
     <SelfContained>true</SelfContained>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>full</TrimMode>

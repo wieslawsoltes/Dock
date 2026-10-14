@@ -16,10 +16,15 @@ internal static class DockSerializerOptionsFactory
             throw new ArgumentNullException(nameof(listType));
         }
 
-        return Create(listType, new DockModelPolymorphicTypeResolver());
+        return Create(listType, new DockModelPolymorphicTypeResolver(), preserveSuppliedFactory: false);
     }
 
     public static JsonSerializerOptions Create(Type listType, IJsonTypeInfoResolver typeInfoResolver)
+    {
+        return Create(listType, typeInfoResolver, preserveSuppliedFactory: true);
+    }
+
+    private static JsonSerializerOptions Create(Type listType, IJsonTypeInfoResolver typeInfoResolver, bool preserveSuppliedFactory)
     {
         if (listType is null)
         {
@@ -37,7 +42,7 @@ internal static class DockSerializerOptionsFactory
             ReferenceHandler = ReferenceHandler.Preserve,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-            TypeInfoResolver = typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType))
+            TypeInfoResolver = typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType, typeInfoResolver as IDockJsonCollectionFactory, preserveSuppliedFactory))
         };
 
         return options;

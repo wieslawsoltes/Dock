@@ -516,6 +516,9 @@ public abstract partial class FactoryBase : IFactory
             case DockOperation.Top:
             case DockOperation.Bottom:
             {
+                // Source removal intentionally leaves the root's current drop target in
+                // place. Normalize it here, where we can continue with its replacement.
+                dock = NormalizeRootSplitTarget(dock);
                 if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
                 {
                     var index = ownerDock.VisibleDockables.IndexOf(dock);
@@ -600,6 +603,11 @@ public abstract partial class FactoryBase : IFactory
                                 OnDockableDocked(dockable, operation);
                                 return;
                             }
+                        }
+
+                        if (TrySplitIntoTarget(dock, dockable, operation))
+                        {
+                            return;
                         }
 
                         // Fallback to the original behavior when optimization is not applicable

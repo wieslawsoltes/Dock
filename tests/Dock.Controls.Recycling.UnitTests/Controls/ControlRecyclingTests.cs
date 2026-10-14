@@ -8,6 +8,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Xunit;
 
@@ -26,6 +27,86 @@ public class ControlRecyclingTests
         public string Id { get; } = id;
         public string Value { get; } = value;
         public string? GetControlRecyclingId() => Id;
+    }
+
+    private sealed class VersionedTemplate(string id) : IControlRecyclingIdProvider,
+        IControlRecyclingVersionProvider, ITemplate<Control?>
+    {
+        public string Id { get; set; } = id;
+        public ControlRecyclingVersion Version { get; set; } = new(new object(), 0);
+        public int BuildCount { get; private set; }
+        public string? GetControlRecyclingId() => Id;
+        public ControlRecyclingVersion GetControlRecyclingVersion() => Version;
+        public Control Build()
+        {
+            BuildCount++;
+            return new TextBox();
+        }
+        object? ITemplate.Build() => Build();
+    }
+
+    [AvaloniaFact]
+    public void Versioned_Add_And_Lookup_Use_The_Same_Id_And_Revision_As_Build()
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var data = new VersionedTemplate("document");
+        var control = new TextBox();
+        recycling.Add(data, control);
+
+        Assert.True(recycling.TryGetValue(data, out var cached));
+        Assert.Same(control, cached);
+        Assert.True(recycling.TryGetValue("document", out cached));
+        Assert.Same(control, cached);
+        Assert.Same(control, recycling.Build(data, null, null));
+        Assert.Equal(0, data.BuildCount);
+
+        data.Version = new ControlRecyclingVersion(data.Version.Source, 1);
+        Assert.False(recycling.TryGetValue(data, out cached));
+        Assert.Null(cached);
+        var updated = Assert.IsType<TextBox>(recycling.Build(data, null, null));
+        Assert.NotSame(control, updated);
+        Assert.Same(updated, recycling.Build(data, null, null));
+        Assert.Equal(1, data.BuildCount);
+        Assert.True(recycling.Remove(data));
+        Assert.False(recycling.TryGetValue("document", out _));
+    }
+
+    [AvaloniaFact]
+    public void Successful_Id_Handoff_Commits_The_New_Source_Revision()
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var original = new VersionedTemplate("same");
+        var replacement = new VersionedTemplate("same");
+        var control = recycling.Build(original, null, null);
+
+        Assert.Same(control, recycling.Build(replacement, null, null));
+        Assert.Equal(0, replacement.BuildCount);
+        replacement.Version = new ControlRecyclingVersion(replacement.Version.Source, 1);
+        Assert.NotSame(control, recycling.Build(replacement, null, null));
+        Assert.Equal(1, replacement.BuildCount);
+        recycling.Clear();
+        Assert.False(recycling.TryGetValue(replacement, out _));
+    }
+
+    [AvaloniaFact]
+    public void Invalidated_Version_Is_Rejected_After_Scope_And_Id_Roundtrips()
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var otherScope = new ControlRecycling { TryToUseIdAsKey = true };
+        var data = new VersionedTemplate("first");
+        var first = recycling.Build(data, null, null);
+        var other = otherScope.Build(data, null, null);
+        data.Id = "second";
+        var second = recycling.Build(data, null, null);
+        data.Id = "first";
+        Assert.Same(first, recycling.Build(data, null, null));
+        Assert.Same(other, otherScope.Build(data, null, null));
+
+        data.Version = new ControlRecyclingVersion(data.Version.Source, 1);
+        Assert.NotSame(first, recycling.Build(data, null, null));
+        Assert.NotSame(other, otherScope.Build(data, null, null));
+        data.Id = "second";
+        Assert.NotSame(second, recycling.Build(data, null, null));
     }
 
     private class TrackingRecyclingTemplate : IRecyclingDataTemplate

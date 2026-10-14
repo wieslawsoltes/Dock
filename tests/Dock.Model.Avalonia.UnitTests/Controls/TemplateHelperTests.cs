@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
@@ -182,6 +183,77 @@ public class TemplateHelperTests
     }
 
     [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Explicit_Id_Handoff_Uses_The_Replacement_Owners_Content_Revision(bool tool)
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var first = CreateTemplateOwner(tool, "persisted-id",
+            new Func<IServiceProvider, object>(_ => new TextBox()), recycling);
+        var replacement = CreateTemplateOwner(tool, "persisted-id",
+            new Func<IServiceProvider, object>(_ => new TextBox()), recycling);
+        var original = ((IDataTemplate)first).Build(first);
+        var template = (IRecyclingDataTemplate)replacement;
+        Assert.Same(original, template.Build(replacement, null));
+
+        SetContent(replacement, new Func<IServiceProvider, object>(_ => new TextBox { Text = "Changed after handoff" }));
+        var updated = Assert.IsType<TextBox>(template.Build(replacement, original));
+        Assert.NotSame(original, updated);
+        Assert.Equal("Changed after handoff", updated.Text);
+        Assert.Same(updated, template.Build(replacement, null));
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Content_Changed_During_Build_Does_Not_Label_The_Previous_View_As_Current(bool tool)
+    {
+        var recycling = new ControlRecycling();
+        var owner = CreateTemplateOwner(tool, "owner", new object(), recycling);
+        SetContent(owner, new Func<IServiceProvider, object>(_ =>
+        {
+            SetContent(owner, new Func<IServiceProvider, object>(_ => new TextBox { Text = "Current" }));
+            return new TextBox { Text = "Previous" };
+        }));
+        var template = (IRecyclingDataTemplate)owner;
+
+        var previous = Assert.IsType<TextBox>(template.Build(owner, null));
+        Assert.Equal("Previous", previous.Text);
+        var current = Assert.IsType<TextBox>(template.Build(owner, previous));
+        Assert.Equal("Current", current.Text);
+        Assert.NotSame(previous, current);
+        Assert.Same(current, template.Build(owner, null));
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Explicit_Id_Cache_Does_Not_Retain_The_Template_Owner(bool tool)
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var owner = BuildReleasedOwner(tool, recycling);
+        for (var attempt = 0; attempt < 10 && owner.IsAlive; attempt++)
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+
+        Assert.False(owner.IsAlive);
+        Assert.True(recycling.TryGetValue("released", out var control));
+        Assert.IsType<TextBox>(control);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static WeakReference BuildReleasedOwner(bool tool, ControlRecycling recycling)
+    {
+        var owner = CreateTemplateOwner(tool, "released",
+            new Func<IServiceProvider, object>(_ => new TextBox()), recycling);
+        Assert.NotNull(((IDataTemplate)owner).Build(owner));
+        return new WeakReference(owner);
+    }
+
+    [AvaloniaTheory]
     [InlineData(false, 0, false)]
     [InlineData(false, 0, true)]
     [InlineData(false, 1, false)]
@@ -345,6 +417,39 @@ public class TemplateHelperTests
         else if (owner is Tool tool)
         {
             tool.Content = content;
+        }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Custom_Recycling_Service_Owns_Its_Build_Policy(bool tool)
+    {
+        DockableBase owner = tool ? new Tool() : new Document();
+        SetContent(owner, new Func<IServiceProvider, object>(_ => throw new InvalidOperationException("Custom cache should create content")));
+        var recycling = new CustomControlRecycling();
+        ControlRecyclingDataTemplate.SetControlRecycling(owner, recycling);
+        var existing = new Border();
+
+        Assert.Same(recycling.Result, ((IRecyclingDataTemplate)owner).Build(owner, existing));
+        Assert.Same(owner, recycling.Data);
+        Assert.Same(existing, recycling.Existing);
+    }
+
+    private sealed class CustomControlRecycling : IControlRecycling
+    {
+        public bool TryToUseIdAsKey { get; set; }
+        public Control Result { get; } = new TextBox();
+        public object? Data { get; private set; }
+        public object? Existing { get; private set; }
+        public bool TryGetValue(object? data, out object? control) => throw new InvalidOperationException();
+        public void Add(object data, object control) => throw new InvalidOperationException();
+        public void Clear() { }
+        public object? Build(object? data, object? existing, object? parent)
+        {
+            Data = data;
+            Existing = existing;
+            return Result;
         }
     }
 

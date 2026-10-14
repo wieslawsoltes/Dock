@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
@@ -17,9 +18,24 @@ namespace Dock.Model.Avalonia.Controls;
 /// <summary>
 /// Document.
 /// </summary>
-public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<Control?>, IRecyclingDataTemplate, IDockingWindowState
+public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<Control?>, IRecyclingDataTemplate, IDockingWindowState, IControlRecyclingVersionProvider
 {
-    private TemplateHelper? _templateHelper;
+    private ControlRecyclingVersion? _contentVersion;
+
+    ControlRecyclingVersion IControlRecyclingVersionProvider.GetControlRecyclingVersion()
+    {
+        return _contentVersion ??= new ControlRecyclingVersion(new object(), 0);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        if (change.Property == ContentProperty && _contentVersion is { } version)
+        {
+            _contentVersion = new ControlRecyclingVersion(version.Source, unchecked(version.Revision + 1));
+        }
+        base.OnPropertyChanged(change);
+    }
 
     /// <summary>
     /// Defines the <see cref="Content"/> property.
@@ -225,6 +241,6 @@ public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        return (_templateHelper ??= new TemplateHelper()).Build(Content, this, existing);
+        return TemplateHelper.Build(Content, this, existing);
     }
 }

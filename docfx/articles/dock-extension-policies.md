@@ -188,6 +188,24 @@ adorners use the actual window owner, or the registered dock's window for an
 embedded root, and include both the docking viewport and target bounds. Hidden,
 detached, and unregistered surfaces do not participate in drop hit testing.
 
+## Custom source layouts while dragging
+
+Dock hides a dragged tab and selects a remaining tab while a move is in progress.
+For a pane or its last tab, the stock proportional layout also closes the vacated
+space. Ownership and collections change only when the drop commits.
+
+Factories whose views use another layout can implement
+`Dock.Avalonia.Controls.IDockDragSourcePreviewProvider`. Its
+`CreateDragSourcePreview(source, host)` method supplies a disposable presentation
+scope for a whole pane or its last item, including non-collapsible model panes.
+Individual tabs in multi-item panes keep Dock's built-in preview behavior.
+
+The scope must retain model ownership, collections, and saved sizes. Dispose it
+by removing temporary visual overrides without overwriting application changes.
+Dock owns disposal on cancellation, host detachment, before drop execution, and
+before replacing a stale preview after layout changes. Returning null opts out
+of pane reflow for that source; it does not fall back to proportional layout.
+
 ## Regression coverage
 
 The native tests exercise these contracts without an adapter assembly:
@@ -199,6 +217,7 @@ The native tests exercise these contracts without an adapter assembly:
 | Ownership, selection, and explicit operations | `DockableOwnerTests`, `FactorySelectionPolicyTests`, `FactoryExplicitOperationTests`, `FactoryPinnedRootTests` |
 | Pointer targets and geometry | `TabItemDragPolicyTests`, `OuterWindowDragTests`, `AdornerGeometryTests`, `AdornerWindowFactoryTests`, `ExternalNativeDockSurfaceTests` |
 | Sizing and resource lifetime | `ProportionalStackPanelPolicyTests`, `ProportionalStackPanelSplitterSizingTests`, `PinnedDockSizingTests`, `ThemeCommandInteractionLeakTests` |
+| Drag source presentation and cleanup | `CustomDragSourcePreviewTests`, `DockSourcePreviewTests`, `DockTabSourcePreviewTests` |
 
 Run the complete native solution validation with `dotnet build -c Release` and
 `dotnet test -c Release --no-build`. The solution also builds the linked Avalonia

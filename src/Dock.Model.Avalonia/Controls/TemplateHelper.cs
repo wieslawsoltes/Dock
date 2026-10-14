@@ -12,10 +12,17 @@ using Avalonia.VisualTree;
 
 namespace Dock.Model.Avalonia.Controls;
 
-internal static class TemplateHelper
+internal sealed class TemplateHelper
 {
-    internal static Control? Build(object? content, AvaloniaObject parent, Control? existing)
+    private object? _lastContent;
+    private bool _hasBuiltContent;
+
+    internal Control? Build(object? content, AvaloniaObject parent, Control? existing)
     {
+        var canReuse = !_hasBuiltContent || ReferenceEquals(_lastContent, content);
+        _lastContent = content;
+        _hasBuiltContent = true;
+
         if (content is null)
         {
             return null;
@@ -36,8 +43,9 @@ internal static class TemplateHelper
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(parent);
         if (controlRecycling is not null)
         {
-            var key = GetCacheKey(controlRecycling, parent, content);
-            if (controlRecycling.TryGetValue(key, out var control))
+            var key = GetCacheKey(controlRecycling, parent);
+            object? control;
+            if (canReuse && controlRecycling.TryGetValue(key, out control))
             {
                 if (control is Control cachedControl)
                 {
@@ -87,7 +95,7 @@ internal static class TemplateHelper
         return BuildFromTemplateContent(content);
     }
 
-    private static object GetCacheKey(IControlRecycling controlRecycling, AvaloniaObject parent, object content)
+    private static object GetCacheKey(IControlRecycling controlRecycling, AvaloniaObject parent)
     {
         if (controlRecycling.TryToUseIdAsKey && parent is IControlRecyclingIdProvider idProvider)
         {
@@ -98,7 +106,9 @@ internal static class TemplateHelper
             }
         }
 
-        return content;
+        // Template content is shared by all containers generated from ItemsSource.
+        // Cache its realized control per container so siblings never steal each other's views.
+        return parent;
     }
 
     private static bool TryDetachFromParent(Visual visual)

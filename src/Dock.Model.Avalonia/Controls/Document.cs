@@ -19,6 +19,8 @@ namespace Dock.Model.Avalonia.Controls;
 /// </summary>
 public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<Control?>, IRecyclingDataTemplate, IDockingWindowState
 {
+    private TemplateHelper? _templateHelper;
+
     /// <summary>
     /// Defines the <see cref="Content"/> property.
     /// </summary>
@@ -223,6 +225,6 @@ public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        return TemplateHelper.Build(Content, this, existing);
+        return (_templateHelper ??= new TemplateHelper()).Build(Content, this, existing);
     }
 }

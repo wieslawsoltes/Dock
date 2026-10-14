@@ -1,6 +1,8 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Recycling;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -14,6 +16,104 @@ namespace Dock.Model.Avalonia.UnitTests.Controls;
 
 public class TemplateHelperTests
 {
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Shared_Template_Caches_An_Independent_Control_Per_Dockable(bool tool, bool useIds)
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = useIds };
+        var builds = 0;
+        var content = new Func<IServiceProvider, object>(_ =>
+        {
+            builds++;
+            return new TextBox();
+        });
+        var first = CreateTemplateOwner(tool, "first", content, recycling);
+        var second = CreateTemplateOwner(tool, "second", content, recycling);
+
+        var firstControl = Assert.IsType<TextBox>(((IDataTemplate)first).Build(first));
+        firstControl.Text = "First editor state";
+        var secondControl = Assert.IsType<TextBox>(((IDataTemplate)second).Build(second));
+        secondControl.Text = "Second editor state";
+
+        Assert.NotSame(firstControl, secondControl);
+        Assert.Same(firstControl, ((IDataTemplate)first).Build(first));
+        Assert.Same(secondControl, ((IDataTemplate)second).Build(second));
+        Assert.Equal("First editor state", firstControl.Text);
+        Assert.Equal("Second editor state", secondControl.Text);
+        Assert.Equal(2, builds);
+        Assert.True(recycling.Remove(first));
+        Assert.NotSame(firstControl, ((IDataTemplate)first).Build(first));
+        Assert.Same(secondControl, ((IDataTemplate)second).Build(second));
+        Assert.Equal(3, builds);
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Replacing_Template_Content_Updates_The_Cached_Control(bool tool, bool useIds)
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = useIds };
+        var firstTemplate = new Func<IServiceProvider, object>(_ => new TextBox { Text = "first" });
+        var secondTemplate = new Func<IServiceProvider, object>(_ => new TextBox { Text = "second" });
+        var owner = CreateTemplateOwner(tool, "owner", firstTemplate, recycling);
+        var template = (IRecyclingDataTemplate)owner;
+        var first = Assert.IsType<TextBox>(template.Build(owner, null));
+
+        SetContent(owner, secondTemplate);
+        var second = Assert.IsType<TextBox>(template.Build(owner, first));
+        Assert.NotSame(first, second);
+        Assert.Equal("second", second.Text);
+        Assert.Same(second, template.Build(owner, null));
+
+        SetContent(owner, null);
+        Assert.Null(template.Build(owner, second));
+        SetContent(owner, firstTemplate);
+        var restored = Assert.IsType<TextBox>(template.Build(owner, null));
+        Assert.Equal("first", restored.Text);
+        Assert.NotSame(second, restored);
+        Assert.Same(restored, template.Build(owner, null));
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Explicit_Id_Recycling_Reuses_Content_For_Replacement_Dockable(bool tool)
+    {
+        var recycling = new ControlRecycling { TryToUseIdAsKey = true };
+        var content = new Func<IServiceProvider, object>(_ => new TextBox());
+        var first = CreateTemplateOwner(tool, "persisted-id", content, recycling);
+        var replacement = CreateTemplateOwner(tool, "persisted-id", content, recycling);
+
+        var control = ((IDataTemplate)first).Build(first);
+
+        Assert.Same(control, ((IDataTemplate)replacement).Build(replacement));
+    }
+
+    private static DockableBase CreateTemplateOwner(bool tool, string id, object content, ControlRecycling recycling)
+    {
+        DockableBase owner = tool ? new Tool { Id = id } : new Document { Id = id };
+        SetContent(owner, content);
+        ControlRecyclingDataTemplate.SetControlRecycling(owner, recycling);
+        return owner;
+    }
+
+    private static void SetContent(DockableBase owner, object? content)
+    {
+        if (owner is Document document)
+        {
+            document.Content = content;
+        }
+        else if (owner is Tool tool)
+        {
+            tool.Content = content;
+        }
+    }
+
     [AvaloniaFact]
     public void Document_Build_Detaches_Direct_Control_From_Parent()
     {

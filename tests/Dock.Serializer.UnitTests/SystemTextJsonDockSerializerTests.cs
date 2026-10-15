@@ -73,6 +73,21 @@ public class SystemTextJsonDockSerializerTests
     }
 
     [Fact]
+    public void CustomListType_Uses_Reflection_Fallback_On_Jit()
+    {
+        var serializer = new DockSerializer(typeof(CustomList<>));
+        var sample = new Sample { Numbers = new List<int> { 3, 8 } };
+
+        var result = serializer.Deserialize<Sample>(serializer.Serialize(sample));
+
+        Assert.Equal(sample.Numbers, Assert.IsType<CustomList<int>>(result!.Numbers));
+    }
+
+    public sealed class CustomList<T> : Collection<T>
+    {
+    }
+
+    [Fact]
     public void DockModelLists_UseAotSafeObservableCollections()
     {
         var serializer = new DockSerializer();

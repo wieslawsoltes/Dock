@@ -16,23 +16,23 @@ using Xunit;
 namespace Dock.Avalonia.UnitTests.Helpers;
 
 /// <summary>
-/// Unit tests for <see cref="DockDataTemplateHelper"/>.
+/// Unit tests for <see cref="DockDataTemplates"/>.
 /// </summary>
-public class DockDataTemplateHelperTests
+public class DockDataTemplatesTests
 {
     /// <summary>
     /// Tests that all expected dock types have corresponding DataTemplates.
     /// </summary>
     [Fact]
-    public void CreateDefaultDataTemplates_ShouldSupportAllDockTypes()
+    public void Templates_ShouldSupportAllDockTypes()
     {
         // Arrange - Automatically discover all dock-related interface types from assemblies
         var expectedTypes = GetAllDockInterfaceTypes();
 
         // Act
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var supportedTypes = templates
-            .Select(GetFuncDataTemplateType)
+            .Select(GetDataTemplateType)
             .Where(t => t != null)
             .ToHashSet();
 
@@ -45,7 +45,7 @@ public class DockDataTemplateHelperTests
         {
             var hasTemplate = supportedTypes.Contains(expectedType);
             Assert.True(hasTemplate, $"Missing DataTemplate for type {expectedType.Name}. " +
-                                    $"Add it to DockDataTemplateHelper.CreateDefaultDataTemplates()");
+                                    $"Add it to DockDataTemplates.axaml");
         }
         
         // Verify we don't have any unexpected templates
@@ -57,14 +57,14 @@ public class DockDataTemplateHelperTests
     /// Tests that no DataTemplate is created more than once.
     /// </summary>
     [Fact]
-    public void CreateDefaultDataTemplates_ShouldNotHaveDuplicateTemplates()
+    public void Templates_ShouldNotHaveDuplicateTemplates()
     {
         // Act
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
 
         // Assert
         var dataTypes = templates
-            .Select(GetFuncDataTemplateType)
+            .Select(GetDataTemplateType)
             .Where(t => t != null)
             .ToList();
 
@@ -74,31 +74,28 @@ public class DockDataTemplateHelperTests
     }
 
     /// <summary>
-    /// Tests that all templates are of the expected FuncDataTemplate type.
+    /// Tests that all templates declare the type they match.
     /// </summary>
     [Fact]
-    public void CreateDefaultDataTemplates_ShouldReturnFuncDataTemplates()
+    public void Templates_ShouldDeclareTheirDataTypes()
     {
         // Act
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
 
         // Assert
-        Assert.All(templates, template => 
-        {
-            Assert.True(IsFuncDataTemplate(template), $"Template is not a FuncDataTemplate: {template.GetType()}");
-        });
+        Assert.All(templates, template => Assert.NotNull(Assert.IsAssignableFrom<ITypedDataTemplate>(template).DataType));
     }
 
     /// <summary>
     /// Tests that ProportionalStackPanelSplitter is created correctly.
     /// </summary>
     [Fact]
-    public void CreateDefaultDataTemplates_ProportionalSplitter_ShouldCreateCorrectControl()
+    public void Templates_ProportionalSplitter_ShouldCreateCorrectControl()
     {
         // Act
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var proportionalTemplate = templates
-            .FirstOrDefault(t => GetFuncDataTemplateType(t) == typeof(IProportionalDockSplitter));
+            .FirstOrDefault(t => GetDataTemplateType(t) == typeof(IProportionalDockSplitter));
 
         // Assert
         Assert.NotNull(proportionalTemplate);
@@ -112,19 +109,18 @@ public class DockDataTemplateHelperTests
     /// Note: Control creation is skipped due to platform dependencies in unit tests.
     /// </summary>
     [Fact]
-    public void CreateDefaultDataTemplates_GridSplitter_ShouldHaveTemplate()
+    public void Templates_GridSplitter_ShouldHaveTemplate()
     {
         // Act
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var gridTemplate = templates
-            .FirstOrDefault(t => GetFuncDataTemplateType(t) == typeof(IGridDockSplitter));
+            .FirstOrDefault(t => GetDataTemplateType(t) == typeof(IGridDockSplitter));
 
         // Assert
         Assert.NotNull(gridTemplate);
         
         // Verify the template exists but don't create the control due to platform dependencies
-        Assert.True(IsFuncDataTemplate(gridTemplate));
-        Assert.Equal(typeof(IGridDockSplitter), GetFuncDataTemplateType(gridTemplate));
+        Assert.Equal(typeof(IGridDockSplitter), GetDataTemplateType(gridTemplate));
     }
 
     /// <summary>
@@ -133,9 +129,9 @@ public class DockDataTemplateHelperTests
     /// they are also added to the DataTemplate helper.
     /// </summary>
     [Fact]
-    public void CreateDefaultDataTemplates_ShouldCoverAllDockContentTypes()
+    public void Templates_ShouldCoverAllDockContentTypes()
     {
-        // This test is covered by CreateDefaultDataTemplates_ShouldSupportAllDockTypes
+        // This test is covered by Templates_ShouldSupportAllDockTypes
         // which automatically discovers types from assemblies.
         // Keeping this test for backwards compatibility and explicit coverage verification.
         
@@ -143,9 +139,9 @@ public class DockDataTemplateHelperTests
         var allDockContentTypes = GetAllDockInterfaceTypes();
 
         // Act
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var supportedTypes = templates
-            .Select(GetFuncDataTemplateType)
+            .Select(GetDataTemplateType)
             .Where(t => t != null)
             .ToHashSet();
 
@@ -159,35 +155,9 @@ public class DockDataTemplateHelperTests
         Assert.Equal(allDockContentTypes.Count, supportedTypes.Count);
     }
 
-    /// <summary>
-    /// Helper method to extract the type parameter from a FuncDataTemplate&lt;T&gt;.
-    /// </summary>
-    /// <param name="template">The template to examine.</param>
-    /// <returns>The type parameter T, or null if not a FuncDataTemplate.</returns>
-    private static Type? GetFuncDataTemplateType(IDataTemplate template)
+    private static Type? GetDataTemplateType(IDataTemplate template)
     {
-        var templateType = template.GetType();
-        
-        // Check if this is a FuncDataTemplate<T>
-        if (templateType.IsGenericType && 
-            templateType.GetGenericTypeDefinition() == typeof(FuncDataTemplate<>))
-        {
-            return templateType.GetGenericArguments()[0];
-        }
-        
-        return null;
-    }
-
-    /// <summary>
-    /// Helper method to check if a template is a FuncDataTemplate.
-    /// </summary>
-    /// <param name="template">The template to check.</param>
-    /// <returns>True if it's a FuncDataTemplate, false otherwise.</returns>
-    private static bool IsFuncDataTemplate(IDataTemplate template)
-    {
-        var templateType = template.GetType();
-        return templateType.IsGenericType && 
-               templateType.GetGenericTypeDefinition() == typeof(FuncDataTemplate<>);
+        return (template as ITypedDataTemplate)?.DataType;
     }
 
     /// <summary>

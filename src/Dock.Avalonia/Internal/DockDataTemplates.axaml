@@ -1,0 +1,53 @@
+<DataTemplates xmlns="https://github.com/avaloniaui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:controls="using:Dock.Avalonia.Controls"
+               xmlns:converters="using:Dock.Avalonia.Converters"
+               xmlns:model="using:Dock.Model.Controls"
+               xmlns:splitters="using:Dock.Controls.ProportionalStackPanel"
+               x:Class="Dock.Avalonia.Internal.DockDataTemplates"
+               x:ClassModifier="internal"
+               x:CompileBindings="True">
+  <DataTemplate DataType="model:IDocumentContent" x:DataType="model:IDocumentContent">
+    <controls:DocumentContentControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IToolContent" x:DataType="model:IToolContent">
+    <controls:ToolContentControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IProportionalDockSplitter" x:DataType="model:IProportionalDockSplitter">
+    <splitters:ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize, Mode=OneWay}"
+                                             PreviewResize="{Binding ResizePreview, Mode=OneWay}" />
+  </DataTemplate>
+  <DataTemplate DataType="model:IGridDockSplitter" x:DataType="model:IGridDockSplitter">
+    <GridSplitter ResizeDirection="{Binding ResizeDirection, Mode=OneWay, Converter={x:Static converters:GridResizeDirectionConverter.Instance}}" />
+  </DataTemplate>
+  <DataTemplate DataType="model:IDocumentDock" x:DataType="model:IDocumentDock">
+    <controls:DocumentDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IToolDock" x:DataType="model:IToolDock">
+    <controls:ToolDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:ISplitViewDock" x:DataType="model:ISplitViewDock">
+    <controls:SplitViewDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IProportionalDock" x:DataType="model:IProportionalDock">
+    <controls:ProportionalDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IStackDock" x:DataType="model:IStackDock">
+    <controls:StackDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IGridDock" x:DataType="model:IGridDock">
+    <controls:GridDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IWrapDock" x:DataType="model:IWrapDock">
+    <controls:WrapDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IUniformGridDock" x:DataType="model:IUniformGridDock">
+    <controls:UniformGridDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IDockDock" x:DataType="model:IDockDock">
+    <controls:DockDockControl />
+  </DataTemplate>
+  <DataTemplate DataType="model:IRootDock" x:DataType="model:IRootDock">
+    <controls:RootDockControl />
+  </DataTemplate>
+</DataTemplates>

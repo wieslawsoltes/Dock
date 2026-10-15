@@ -160,17 +160,13 @@
     </MenuItem>
     <Separator />
     <MenuItem Header="Cascade"
-              x:CompileBindings="False"
-              Command="{Binding Owner.CascadeDocuments}" />
+              Command="{Binding ((dmc:IDocumentDock)Owner).CascadeDocuments}" />
     <MenuItem Header="Tile Horizontal"
-              x:CompileBindings="False"
-              Command="{Binding Owner.TileDocumentsHorizontal}" />
+              Command="{Binding ((dmc:IDocumentDock)Owner).TileDocumentsHorizontal}" />
     <MenuItem Header="Tile Vertical"
-              x:CompileBindings="False"
-              Command="{Binding Owner.TileDocumentsVertical}" />
+              Command="{Binding ((dmc:IDocumentDock)Owner).TileDocumentsVertical}" />
     <MenuItem Header="Restore"
-              x:CompileBindings="False"
-              Command="{Binding Owner.RestoreDocuments}" />
+              Command="{Binding ((dmc:IDocumentDock)Owner).RestoreDocuments}" />
     <Separator />
     <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeString}">
       <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeTabbedString}"

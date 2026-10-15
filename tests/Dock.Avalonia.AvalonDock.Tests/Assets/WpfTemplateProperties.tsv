@@ -1,0 +1,248 @@
+property	scenario	stage	template	selector	bound	events
+DocumentHeader	local-base	initial	null	null	False	
+DocumentHeader	local-base	first-template	first	null	False	DocumentHeader:template
+DocumentHeader	local-base	set-selector	null	first	False	DocumentHeader:selector-enter>DocumentHeader:template>DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit>DocumentHeader:selector-exit
+DocumentHeader	local-base	second-template	null	first	False	
+DocumentHeader	local-base	replace-selector	null	second	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	local-base	clear-selector	null	null	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	local-base	explicit-coerce	second	null	False	DocumentHeader:template
+DocumentHeader	local-base	reassign-first	first	null	False	DocumentHeader:template
+DocumentHeader	binding-base	initial	null	null	False	
+DocumentHeader	binding-base	first-template	first	null	True	DocumentHeader:template
+DocumentHeader	binding-base	set-selector	null	first	False	DocumentHeader:selector-enter>DocumentHeader:template>DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit>DocumentHeader:selector-exit
+DocumentHeader	binding-base	second-template	null	first	False	
+DocumentHeader	binding-base	replace-selector	null	second	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	binding-base	clear-selector	null	null	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	binding-base	explicit-coerce	second	null	False	DocumentHeader:template
+DocumentHeader	binding-base	reassign-first	first	null	False	DocumentHeader:template
+DocumentHeader	style-base	initial	null	null	False	
+DocumentHeader	style-base	first-template	first	null	False	DocumentHeader:template
+DocumentHeader	style-base	set-selector	null	first	False	DocumentHeader:selector-enter>DocumentHeader:template>DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit>DocumentHeader:selector-exit
+DocumentHeader	style-base	second-template	null	first	False	
+DocumentHeader	style-base	replace-selector	null	second	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	style-base	clear-selector	null	null	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	style-base	explicit-coerce	second	null	False	DocumentHeader:template
+DocumentHeader	style-base	reassign-first	first	null	False	DocumentHeader:template
+DocumentHeader	local-override	initial	null	null	False	
+DocumentHeader	local-override	first-template	first	null	False	DocumentHeader:template
+DocumentHeader	local-override	set-selector	first	first	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	local-override	second-template	null	first	False	DocumentHeader:template
+DocumentHeader	local-override	replace-selector	null	second	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	local-override	clear-selector	null	null	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	local-override	explicit-coerce	second	null	False	DocumentHeader:template
+DocumentHeader	local-override	reassign-first	first	null	False	DocumentHeader:template
+DocumentHeader	binding-override	initial	null	null	False	
+DocumentHeader	binding-override	first-template	first	null	True	DocumentHeader:template
+DocumentHeader	binding-override	set-selector	first	first	True	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	binding-override	second-template	null	first	False	DocumentHeader:template
+DocumentHeader	binding-override	replace-selector	null	second	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	binding-override	clear-selector	null	null	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	binding-override	explicit-coerce	second	null	False	DocumentHeader:template
+DocumentHeader	binding-override	reassign-first	first	null	False	DocumentHeader:template
+DocumentHeader	style-override	initial	null	null	False	
+DocumentHeader	style-override	first-template	first	null	False	DocumentHeader:template
+DocumentHeader	style-override	set-selector	first	first	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	style-override	second-template	null	first	False	DocumentHeader:template
+DocumentHeader	style-override	replace-selector	null	second	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	style-override	clear-selector	null	null	False	DocumentHeader:selector-enter>DocumentHeader:selector-exit
+DocumentHeader	style-override	explicit-coerce	second	null	False	DocumentHeader:template
+DocumentHeader	style-override	reassign-first	first	null	False	DocumentHeader:template
+DocumentTitle	local-base	initial	null	null	False	
+DocumentTitle	local-base	first-template	first	null	False	DocumentTitle:template
+DocumentTitle	local-base	set-selector	null	first	False	DocumentTitle:selector-enter>DocumentTitle:template>DocumentTitle:selector-exit
+DocumentTitle	local-base	second-template	null	first	False	
+DocumentTitle	local-base	replace-selector	null	second	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	local-base	clear-selector	null	null	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	local-base	explicit-coerce	null	null	False	
+DocumentTitle	local-base	reassign-first	first	null	False	DocumentTitle:template
+DocumentTitle	binding-base	initial	null	null	False	
+DocumentTitle	binding-base	first-template	first	null	True	DocumentTitle:template
+DocumentTitle	binding-base	set-selector	null	first	False	DocumentTitle:selector-enter>DocumentTitle:template>DocumentTitle:selector-exit
+DocumentTitle	binding-base	second-template	null	first	False	
+DocumentTitle	binding-base	replace-selector	null	second	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	binding-base	clear-selector	null	null	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	binding-base	explicit-coerce	null	null	False	
+DocumentTitle	binding-base	reassign-first	first	null	False	DocumentTitle:template
+DocumentTitle	style-base	initial	null	null	False	
+DocumentTitle	style-base	first-template	first	null	False	DocumentTitle:template
+DocumentTitle	style-base	set-selector	null	first	False	DocumentTitle:selector-enter>DocumentTitle:template>DocumentTitle:selector-exit
+DocumentTitle	style-base	second-template	null	first	False	
+DocumentTitle	style-base	replace-selector	null	second	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	style-base	clear-selector	null	null	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	style-base	explicit-coerce	null	null	False	
+DocumentTitle	style-base	reassign-first	first	null	False	DocumentTitle:template
+DocumentTitle	local-override	initial	null	null	False	
+DocumentTitle	local-override	first-template	first	null	False	DocumentTitle:template
+DocumentTitle	local-override	set-selector	first	first	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	local-override	second-template	null	first	False	DocumentTitle:template
+DocumentTitle	local-override	replace-selector	null	second	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	local-override	clear-selector	null	null	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	local-override	explicit-coerce	second	null	False	DocumentTitle:template
+DocumentTitle	local-override	reassign-first	first	null	False	DocumentTitle:template
+DocumentTitle	binding-override	initial	null	null	False	
+DocumentTitle	binding-override	first-template	first	null	True	DocumentTitle:template
+DocumentTitle	binding-override	set-selector	first	first	True	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	binding-override	second-template	null	first	False	DocumentTitle:template
+DocumentTitle	binding-override	replace-selector	null	second	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	binding-override	clear-selector	null	null	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	binding-override	explicit-coerce	second	null	False	DocumentTitle:template
+DocumentTitle	binding-override	reassign-first	first	null	False	DocumentTitle:template
+DocumentTitle	style-override	initial	null	null	False	
+DocumentTitle	style-override	first-template	first	null	False	DocumentTitle:template
+DocumentTitle	style-override	set-selector	first	first	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	style-override	second-template	null	first	False	DocumentTitle:template
+DocumentTitle	style-override	replace-selector	null	second	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	style-override	clear-selector	null	null	False	DocumentTitle:selector-enter>DocumentTitle:selector-exit
+DocumentTitle	style-override	explicit-coerce	second	null	False	DocumentTitle:template
+DocumentTitle	style-override	reassign-first	first	null	False	DocumentTitle:template
+AnchorableHeader	local-base	initial	null	null	False	
+AnchorableHeader	local-base	first-template	first	null	False	AnchorableHeader:template
+AnchorableHeader	local-base	set-selector	null	first	False	AnchorableHeader:selector-enter>AnchorableHeader:template>AnchorableHeader:selector-exit
+AnchorableHeader	local-base	second-template	null	first	False	
+AnchorableHeader	local-base	replace-selector	null	second	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	local-base	clear-selector	null	null	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	local-base	explicit-coerce	null	null	False	
+AnchorableHeader	local-base	reassign-first	first	null	False	AnchorableHeader:template
+AnchorableHeader	binding-base	initial	null	null	False	
+AnchorableHeader	binding-base	first-template	first	null	True	AnchorableHeader:template
+AnchorableHeader	binding-base	set-selector	null	first	False	AnchorableHeader:selector-enter>AnchorableHeader:template>AnchorableHeader:selector-exit
+AnchorableHeader	binding-base	second-template	null	first	False	
+AnchorableHeader	binding-base	replace-selector	null	second	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	binding-base	clear-selector	null	null	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	binding-base	explicit-coerce	null	null	False	
+AnchorableHeader	binding-base	reassign-first	first	null	False	AnchorableHeader:template
+AnchorableHeader	style-base	initial	null	null	False	
+AnchorableHeader	style-base	first-template	first	null	False	AnchorableHeader:template
+AnchorableHeader	style-base	set-selector	null	first	False	AnchorableHeader:selector-enter>AnchorableHeader:template>AnchorableHeader:selector-exit
+AnchorableHeader	style-base	second-template	null	first	False	
+AnchorableHeader	style-base	replace-selector	null	second	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	style-base	clear-selector	null	null	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	style-base	explicit-coerce	null	null	False	
+AnchorableHeader	style-base	reassign-first	first	null	False	AnchorableHeader:template
+AnchorableHeader	local-override	initial	null	null	False	
+AnchorableHeader	local-override	first-template	first	null	False	AnchorableHeader:template
+AnchorableHeader	local-override	set-selector	first	first	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	local-override	second-template	null	first	False	AnchorableHeader:template
+AnchorableHeader	local-override	replace-selector	null	second	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	local-override	clear-selector	null	null	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	local-override	explicit-coerce	second	null	False	AnchorableHeader:template
+AnchorableHeader	local-override	reassign-first	first	null	False	AnchorableHeader:template
+AnchorableHeader	binding-override	initial	null	null	False	
+AnchorableHeader	binding-override	first-template	first	null	True	AnchorableHeader:template
+AnchorableHeader	binding-override	set-selector	first	first	True	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	binding-override	second-template	null	first	False	AnchorableHeader:template
+AnchorableHeader	binding-override	replace-selector	null	second	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	binding-override	clear-selector	null	null	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	binding-override	explicit-coerce	second	null	False	AnchorableHeader:template
+AnchorableHeader	binding-override	reassign-first	first	null	False	AnchorableHeader:template
+AnchorableHeader	style-override	initial	null	null	False	
+AnchorableHeader	style-override	first-template	first	null	False	AnchorableHeader:template
+AnchorableHeader	style-override	set-selector	first	first	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	style-override	second-template	null	first	False	AnchorableHeader:template
+AnchorableHeader	style-override	replace-selector	null	second	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	style-override	clear-selector	null	null	False	AnchorableHeader:selector-enter>AnchorableHeader:selector-exit
+AnchorableHeader	style-override	explicit-coerce	second	null	False	AnchorableHeader:template
+AnchorableHeader	style-override	reassign-first	first	null	False	AnchorableHeader:template
+AnchorableTitle	local-base	initial	null	null	False	
+AnchorableTitle	local-base	first-template	first	null	False	AnchorableTitle:template
+AnchorableTitle	local-base	set-selector	null	first	False	AnchorableTitle:selector-enter>AnchorableTitle:template>AnchorableTitle:selector-exit
+AnchorableTitle	local-base	second-template	null	first	False	
+AnchorableTitle	local-base	replace-selector	null	second	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	local-base	clear-selector	null	null	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	local-base	explicit-coerce	second	null	False	AnchorableTitle:template
+AnchorableTitle	local-base	reassign-first	first	null	False	AnchorableTitle:template
+AnchorableTitle	binding-base	initial	null	null	False	
+AnchorableTitle	binding-base	first-template	first	null	True	AnchorableTitle:template
+AnchorableTitle	binding-base	set-selector	null	first	False	AnchorableTitle:selector-enter>AnchorableTitle:template>AnchorableTitle:selector-exit
+AnchorableTitle	binding-base	second-template	null	first	False	
+AnchorableTitle	binding-base	replace-selector	null	second	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	binding-base	clear-selector	null	null	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	binding-base	explicit-coerce	second	null	False	AnchorableTitle:template
+AnchorableTitle	binding-base	reassign-first	first	null	False	AnchorableTitle:template
+AnchorableTitle	style-base	initial	null	null	False	
+AnchorableTitle	style-base	first-template	first	null	False	AnchorableTitle:template
+AnchorableTitle	style-base	set-selector	null	first	False	AnchorableTitle:selector-enter>AnchorableTitle:template>AnchorableTitle:selector-exit
+AnchorableTitle	style-base	second-template	null	first	False	
+AnchorableTitle	style-base	replace-selector	null	second	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	style-base	clear-selector	null	null	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	style-base	explicit-coerce	second	null	False	AnchorableTitle:template
+AnchorableTitle	style-base	reassign-first	first	null	False	AnchorableTitle:template
+AnchorableTitle	local-override	initial	null	null	False	
+AnchorableTitle	local-override	first-template	first	null	False	AnchorableTitle:template
+AnchorableTitle	local-override	set-selector	first	first	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	local-override	second-template	null	first	False	AnchorableTitle:template
+AnchorableTitle	local-override	replace-selector	null	second	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	local-override	clear-selector	null	null	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	local-override	explicit-coerce	second	null	False	AnchorableTitle:template
+AnchorableTitle	local-override	reassign-first	first	null	False	AnchorableTitle:template
+AnchorableTitle	binding-override	initial	null	null	False	
+AnchorableTitle	binding-override	first-template	first	null	True	AnchorableTitle:template
+AnchorableTitle	binding-override	set-selector	first	first	True	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	binding-override	second-template	null	first	False	AnchorableTitle:template
+AnchorableTitle	binding-override	replace-selector	null	second	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	binding-override	clear-selector	null	null	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	binding-override	explicit-coerce	second	null	False	AnchorableTitle:template
+AnchorableTitle	binding-override	reassign-first	first	null	False	AnchorableTitle:template
+AnchorableTitle	style-override	initial	null	null	False	
+AnchorableTitle	style-override	first-template	first	null	False	AnchorableTitle:template
+AnchorableTitle	style-override	set-selector	first	first	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	style-override	second-template	null	first	False	AnchorableTitle:template
+AnchorableTitle	style-override	replace-selector	null	second	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	style-override	clear-selector	null	null	False	AnchorableTitle:selector-enter>AnchorableTitle:selector-exit
+AnchorableTitle	style-override	explicit-coerce	second	null	False	AnchorableTitle:template
+AnchorableTitle	style-override	reassign-first	first	null	False	AnchorableTitle:template
+DocumentPaneMenuItemHeader	local-base	initial	null	null	False	
+DocumentPaneMenuItemHeader	local-base	first-template	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	local-base	set-selector	null	first	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:template>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	local-base	second-template	null	first	False	
+DocumentPaneMenuItemHeader	local-base	replace-selector	null	second	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	local-base	clear-selector	null	null	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	local-base	explicit-coerce	second	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	local-base	reassign-first	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	binding-base	initial	null	null	False	
+DocumentPaneMenuItemHeader	binding-base	first-template	first	null	True	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	binding-base	set-selector	null	first	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:template>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	binding-base	second-template	null	first	False	
+DocumentPaneMenuItemHeader	binding-base	replace-selector	null	second	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	binding-base	clear-selector	null	null	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	binding-base	explicit-coerce	second	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	binding-base	reassign-first	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	style-base	initial	null	null	False	
+DocumentPaneMenuItemHeader	style-base	first-template	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	style-base	set-selector	null	first	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:template>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	style-base	second-template	null	first	False	
+DocumentPaneMenuItemHeader	style-base	replace-selector	null	second	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	style-base	clear-selector	null	null	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	style-base	explicit-coerce	second	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	style-base	reassign-first	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	local-override	initial	null	null	False	
+DocumentPaneMenuItemHeader	local-override	first-template	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	local-override	set-selector	first	first	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	local-override	second-template	null	first	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	local-override	replace-selector	null	second	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	local-override	clear-selector	null	null	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	local-override	explicit-coerce	second	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	local-override	reassign-first	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	binding-override	initial	null	null	False	
+DocumentPaneMenuItemHeader	binding-override	first-template	first	null	True	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	binding-override	set-selector	first	first	True	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	binding-override	second-template	null	first	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	binding-override	replace-selector	null	second	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	binding-override	clear-selector	null	null	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	binding-override	explicit-coerce	second	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	binding-override	reassign-first	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	style-override	initial	null	null	False	
+DocumentPaneMenuItemHeader	style-override	first-template	first	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	style-override	set-selector	first	first	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	style-override	second-template	null	first	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	style-override	replace-selector	null	second	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	style-override	clear-selector	null	null	False	DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:selector-exit
+DocumentPaneMenuItemHeader	style-override	explicit-coerce	second	null	False	DocumentPaneMenuItemHeader:template
+DocumentPaneMenuItemHeader	style-override	reassign-first	first	null	False	DocumentPaneMenuItemHeader:template
+MenuFallback	base	initial	null	-	False	
+MenuFallback	base	set-header	null	-	False	DocumentHeader:template
+MenuFallback	base	set-menu-null	first	-	False	DocumentHeader:template>DocumentPaneMenuItemHeader:template
+MenuFallback	base	replace-header	first	-	False	DocumentHeader:template>DocumentPaneMenuItemHeader:template>DocumentHeader:template
+MenuFallback	base	set-menu-selector	second	-	False	DocumentHeader:template>DocumentPaneMenuItemHeader:template>DocumentHeader:template>DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:template>DocumentPaneMenuItemHeader:selector-exit
+MenuFallback	base	clear-header	second	-	False	DocumentHeader:template>DocumentPaneMenuItemHeader:template>DocumentHeader:template>DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:template>DocumentPaneMenuItemHeader:selector-exit>DocumentHeader:template
+MenuFallback	base	coerce-menu	null	-	False	DocumentHeader:template>DocumentPaneMenuItemHeader:template>DocumentHeader:template>DocumentPaneMenuItemHeader:selector-enter>DocumentPaneMenuItemHeader:template>DocumentPaneMenuItemHeader:selector-exit>DocumentHeader:template>DocumentPaneMenuItemHeader:template

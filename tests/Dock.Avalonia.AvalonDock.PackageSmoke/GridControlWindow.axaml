@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:PackageConsumer"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="PackageConsumer.GridControlWindow"
+        x:DataType="DockingManager" Width="1200" Height="720">
+  <Window.Styles>
+    <AvalonDockTheme />
+    <Style Selector="LayoutPanelControl" x:DataType="LayoutPanelControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+    <Style Selector="LayoutDocumentPaneGroupControl" x:DataType="LayoutDocumentPaneGroupControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+    <Style Selector="LayoutAnchorablePaneGroupControl" x:DataType="LayoutAnchorablePaneGroupControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+    <Style Selector="ad|LayoutPanelControl"><Setter Property="Background" Value="Transparent" /></Style>
+    <Style Selector="ad|LayoutDocumentPaneGroupControl"><Setter Property="Background" Value="Transparent" /></Style>
+    <Style Selector="ad|LayoutAnchorablePaneGroupControl"><Setter Property="Background" Value="Transparent" /></Style>
+  </Window.Styles>
+  <local:GridManagerProbe x:Name="Manager">
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutDocumentPaneGroup>
+          <LayoutDocumentPane DockWidth="200" DockHeight="125">
+            <LayoutDocument Title="First" ContentId="first"><TextBox Text="First editor" /></LayoutDocument>
+          </LayoutDocumentPane>
+          <LayoutDocumentPane DockWidth="2*" DockHeight="180">
+            <LayoutDocument Title="Second" ContentId="second"><TextBox Text="Second editor" /></LayoutDocument>
+          </LayoutDocumentPane>
+        </LayoutDocumentPaneGroup>
+        <LayoutAnchorablePaneGroup Orientation="Vertical" DockWidth="400">
+          <LayoutAnchorablePane DockHeight="Auto" DockWidth="140">
+            <LayoutAnchorable Title="Top" ContentId="top"><TextBox Text="Top tool" /></LayoutAnchorable>
+          </LayoutAnchorablePane>
+          <LayoutAnchorablePane DockHeight="2*" DockWidth="160">
+            <LayoutAnchorable Title="Bottom" ContentId="bottom"><TextBox Text="Bottom tool" /></LayoutAnchorable>
+          </LayoutAnchorablePane>
+        </LayoutAnchorablePaneGroup>
+      </LayoutPanel>
+    </LayoutRoot>
+  </local:GridManagerProbe>
+</Window>

@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.AnchorControlFixture"
+        x:DataType="DockingManager" Width="900" Height="650">
+  <Window.Resources>
+    <ControlTheme x:Key="AutoHideContent" TargetType="LayoutAnchorableControl"
+                  BasedOn="{StaticResource {x:Type LayoutAnchorableControl}}">
+      <Setter Property="Tag" Value="Styled preview" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyAutoHideContent" TargetType="ad:LayoutAnchorableControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutAnchorableControl}}">
+      <Setter Property="Tag" Value="Legacy styled preview" />
+    </ControlTheme>
+    <ControlTemplate x:Key="CustomAnchor" TargetType="LayoutAnchorControl" x:DataType="LayoutAnchorControl">
+      <Border Padding="10" Background="Transparent">
+        <TextBlock x:Name="CustomAnchorHeader" Text="{Binding ((LayoutAnchorable)Model).Title, RelativeSource={RelativeSource TemplatedParent}}" />
+      </Border>
+    </ControlTemplate>
+    <ControlTemplate x:Key="CustomSide" TargetType="ad:LayoutAnchorSideControl" x:DataType="ad:LayoutAnchorSideControl">
+      <ItemsControl x:Name="CustomSideItems" ItemsSource="{Binding Children, RelativeSource={RelativeSource TemplatedParent}}" />
+    </ControlTemplate>
+    <ControlTemplate x:Key="CustomGroup" TargetType="LayoutAnchorGroupControl" x:DataType="LayoutAnchorGroupControl">
+      <ItemsControl x:Name="CustomGroupItems" ItemsSource="{Binding Children, RelativeSource={RelativeSource TemplatedParent}}" />
+    </ControlTemplate>
+  </Window.Resources>
+  <Window.Styles>
+    <Style Selector="LayoutGridResizerControl" x:DataType="LayoutGridResizerControl">
+      <Setter Property="BackgroundWhileDragging" Value="Teal" />
+    </Style>
+    <Style Selector="ad|LayoutGridResizerControl" x:DataType="ad:LayoutGridResizerControl">
+      <Setter Property="OpacityWhileDragging" Value="0.35" />
+    </Style>
+    <Style Selector="LayoutAutoHideWindowControl" x:DataType="LayoutAutoHideWindowControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+    <Style Selector="ad|LayoutAutoHideWindowControl" x:DataType="ad:LayoutAutoHideWindowControl">
+      <Setter Property="Background" Value="Coral" />
+    </Style>
+    <Style Selector="LayoutAnchorSideControl" x:DataType="LayoutAnchorSideControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+    <Style Selector="ad|LayoutAnchorGroupControl" x:DataType="ad:LayoutAnchorGroupControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+    <Style Selector="LayoutAnchorControl" x:DataType="LayoutAnchorControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </Style>
+  </Window.Styles>
+  <DockingManager x:Name="Manager" AutoHideWindowClosingTimer="1500">
+    <LayoutRoot>
+      <LayoutPanel><LayoutDocumentPane><LayoutDocument ContentId="editor" Title="Editor" Content="Document" /></LayoutDocumentPane></LayoutPanel>
+      <LayoutRoot.LeftSide>
+        <LayoutAnchorSide><LayoutAnchorGroup>
+          <LayoutAnchorable ContentId="left-a" Title="Left A" Content="Left A content" />
+          <LayoutAnchorable ContentId="left-b" Title="Left B" Content="Left B content" />
+        </LayoutAnchorGroup></LayoutAnchorSide>
+      </LayoutRoot.LeftSide>
+      <LayoutRoot.TopSide>
+        <LayoutAnchorSide><LayoutAnchorGroup><LayoutAnchorable ContentId="top" Title="Top" Content="Top content" /></LayoutAnchorGroup></LayoutAnchorSide>
+      </LayoutRoot.TopSide>
+      <LayoutRoot.RightSide>
+        <LayoutAnchorSide><LayoutAnchorGroup><LayoutAnchorable ContentId="right" Title="Right" Content="Right content" /></LayoutAnchorGroup></LayoutAnchorSide>
+      </LayoutRoot.RightSide>
+      <LayoutRoot.BottomSide>
+        <LayoutAnchorSide><LayoutAnchorGroup><LayoutAnchorable ContentId="bottom" Title="Bottom" Content="Bottom content" /></LayoutAnchorGroup></LayoutAnchorSide>
+      </LayoutRoot.BottomSide>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

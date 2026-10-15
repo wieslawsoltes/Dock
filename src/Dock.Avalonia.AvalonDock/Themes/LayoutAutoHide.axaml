@@ -1,0 +1,20 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:models="using:Dock.Model.Controls"
+        xmlns:controls="using:AvalonDock.Controls">
+  <Style Selector=":is(ad|DockingManager) dock|PinnedDockControl, dock|DockControl.avalondock dock|PinnedDockControl, :is(Window).avalondock dock|PinnedDockControl"
+         x:DataType="models:IRootDock">
+    <Setter Property="Template" Value="{StaticResource AvalonDockPinnedLayout}" />
+    <Setter Property="MinimumPinnedWidth" Value="0" />
+    <Setter Property="MinimumPinnedHeight" Value="0" />
+    <Setter Property="UsePinnedDockWindow" Value="False" />
+    <Setter Property="MinimumRemainingContentSize" Value="0" />
+    <Setter Property="InitializePinnedBoundsOnLayout" Value="False" />
+  </Style>
+  <Style Selector="controls|LayoutAutoHideWindowControl controls|LayoutAnchorableControl"
+         x:DataType="controls:LayoutAnchorableControl">
+    <Setter Property="Theme" Value="{Binding $parent[controls:LayoutAutoHideWindowControl].AnchorableStyle}" />
+  </Style>
+</Styles>

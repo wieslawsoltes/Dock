@@ -52,6 +52,8 @@
     href: dock-context-locator.md
 - name: Framework integration
   items:
+  - name: AvalonDock compatibility (source preview)
+    href: dock-avalondock.md
   - name: MVVM guide
     href: dock-mvvm.md
   - name: Caliburn.Micro guide

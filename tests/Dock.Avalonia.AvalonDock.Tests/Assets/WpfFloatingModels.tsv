@@ -1,0 +1,181 @@
+case	stage	visible	closed	old-parent	old-root	new-parent	new-root	models	hosts	events
+document-none-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+document-none-clear-cancel0	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-none-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	document-changed>closing-enter:0>closing-exit:0>closed
+document-none-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+document-none-clear-cancel1	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-none-clear-cancel1	dispatched	1	0	floating	original	none	none	1	1	document-changed>closing-enter:0>closing-exit:1
+document-none-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+document-none-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-none-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-none-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+document-none-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-none-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-none-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+document-none-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-none-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	document-changed>document-changed>closing-enter:0>closing-exit:0>closed
+document-none-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+document-none-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-none-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed>document-changed>closing-enter:0>closing-exit:1
+document-child-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+document-child-clear-cancel0	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-child-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	document-changed>closing-enter:0>closing-exit:0>closed
+document-child-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+document-child-clear-cancel1	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-child-clear-cancel1	dispatched	1	0	floating	original	none	none	1	1	document-changed>closing-enter:0>closing-exit:1
+document-child-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+document-child-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-child-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-child-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+document-child-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-child-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-child-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+document-child-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-child-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	document-changed>document-changed>closing-enter:0>closing-exit:0>closed
+document-child-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+document-child-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-child-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed>document-changed>closing-enter:0>closing-exit:1
+document-validity-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+document-validity-clear-cancel0	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-validity-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	document-changed>closing-enter:0>closing-exit:0>closed
+document-validity-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+document-validity-clear-cancel1	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-validity-clear-cancel1	dispatched	1	0	floating	original	none	none	1	1	document-changed>closing-enter:0>closing-exit:1
+document-validity-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+document-validity-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-validity-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-validity-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+document-validity-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-validity-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-validity-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+document-validity-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-validity-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	document-changed>document-changed>closing-enter:0>closing-exit:0>closed
+document-validity-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+document-validity-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-validity-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed>document-changed>closing-enter:0>closing-exit:1
+document-visibility-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+document-visibility-clear-cancel0	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-visibility-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	document-changed>closing-enter:0>closing-exit:0>closed
+document-visibility-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+document-visibility-clear-cancel1	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-visibility-clear-cancel1	dispatched	1	0	floating	original	none	none	1	1	document-changed>closing-enter:0>closing-exit:1
+document-visibility-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+document-visibility-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-visibility-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-visibility-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+document-visibility-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-visibility-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-visibility-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+document-visibility-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-visibility-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	document-changed>document-changed>closing-enter:0>closing-exit:0>closed
+document-visibility-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+document-visibility-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-visibility-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed>document-changed>closing-enter:0>closing-exit:1
+document-all-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+document-all-clear-cancel0	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-all-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	document-changed>closing-enter:0>closing-exit:0>closed
+document-all-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+document-all-clear-cancel1	synchronous	1	0	floating	original	none	none	1	1	document-changed
+document-all-clear-cancel1	dispatched	1	0	floating	original	none	none	1	1	document-changed>closing-enter:0>closing-exit:1
+document-all-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+document-all-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-all-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-all-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+document-all-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed
+document-all-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed
+document-all-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+document-all-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-all-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	document-changed>document-changed>closing-enter:0>closing-exit:0>closed
+document-all-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+document-all-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	document-changed>document-changed
+document-all-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	document-changed>document-changed>closing-enter:0>closing-exit:1
+tool-none-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-none-clear-cancel0	synchronous	0	0	floating	original	none	none	1	1	
+tool-none-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	closing-enter:0>closing-exit:0>closed
+tool-none-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-none-clear-cancel1	synchronous	0	0	floating	original	none	none	1	1	
+tool-none-clear-cancel1	dispatched	0	0	floating	original	none	none	1	1	closing-enter:0>closing-exit:1
+tool-none-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-none-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-none-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	
+tool-none-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-none-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-none-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	
+tool-none-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-none-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-none-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	closing-enter:0>closing-exit:0>closed
+tool-none-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-none-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-none-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	closing-enter:0>closing-exit:1
+tool-child-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-child-clear-cancel0	synchronous	0	0	floating	original	none	none	1	1	
+tool-child-clear-cancel0	dispatched	0	0	floating	original	none	none	1	1	
+tool-child-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-child-clear-cancel1	synchronous	0	0	floating	original	none	none	1	1	
+tool-child-clear-cancel1	dispatched	0	0	floating	original	none	none	1	1	
+tool-child-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-child-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-child-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	
+tool-child-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-child-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-child-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	
+tool-child-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-child-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-child-clear-restore-cancel0	dispatched	1	0	floating	original	floating	original	1	1	
+tool-child-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-child-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-child-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	
+tool-validity-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-validity-clear-cancel0	synchronous	0	0	floating	original	none	none	1	1	
+tool-validity-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	closing-enter:0>closing-exit:0>closed
+tool-validity-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-validity-clear-cancel1	synchronous	0	0	floating	original	none	none	1	1	
+tool-validity-clear-cancel1	dispatched	0	0	floating	original	none	none	1	1	closing-enter:0>closing-exit:1
+tool-validity-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-validity-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-validity-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	
+tool-validity-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-validity-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-validity-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	
+tool-validity-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-validity-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-validity-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	closing-enter:0>closing-exit:0>closed
+tool-validity-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-validity-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-validity-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	closing-enter:0>closing-exit:1
+tool-visibility-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-visibility-clear-cancel0	synchronous	1	0	floating	original	none	none	1	1	
+tool-visibility-clear-cancel0	dispatched	0	1	floating	none	none	none	0	0	closing-enter:0>closing-exit:0>closed
+tool-visibility-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-visibility-clear-cancel1	synchronous	1	0	floating	original	none	none	1	1	
+tool-visibility-clear-cancel1	dispatched	1	0	floating	original	none	none	1	1	closing-enter:0>closing-exit:1
+tool-visibility-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-visibility-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-visibility-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	
+tool-visibility-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-visibility-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-visibility-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	
+tool-visibility-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-visibility-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-visibility-clear-restore-cancel0	dispatched	0	1	floating	none	floating	none	0	0	closing-enter:0>closing-exit:0>closed
+tool-visibility-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-visibility-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-visibility-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	closing-enter:0>closing-exit:1
+tool-all-clear-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-all-clear-cancel0	synchronous	1	0	floating	original	none	none	1	1	
+tool-all-clear-cancel0	dispatched	1	0	floating	original	none	none	1	1	
+tool-all-clear-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-all-clear-cancel1	synchronous	1	0	floating	original	none	none	1	1	
+tool-all-clear-cancel1	dispatched	1	0	floating	original	none	none	1	1	
+tool-all-replace-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-all-replace-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-all-replace-cancel0	dispatched	1	0	floating	original	floating	original	1	1	
+tool-all-replace-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-all-replace-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-all-replace-cancel1	dispatched	1	0	floating	original	floating	original	1	1	
+tool-all-clear-restore-cancel0	before	1	0	floating	original	none	none	1	1	
+tool-all-clear-restore-cancel0	synchronous	1	0	floating	original	floating	original	1	1	
+tool-all-clear-restore-cancel0	dispatched	1	0	floating	original	floating	original	1	1	
+tool-all-clear-restore-cancel1	before	1	0	floating	original	none	none	1	1	
+tool-all-clear-restore-cancel1	synchronous	1	0	floating	original	floating	original	1	1	
+tool-all-clear-restore-cancel1	dispatched	1	0	floating	original	floating	original	1	1	

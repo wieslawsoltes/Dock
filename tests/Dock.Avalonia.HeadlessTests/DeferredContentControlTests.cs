@@ -505,8 +505,6 @@ public class DeferredContentControlTests
 
             DeferredContentPresentationQueue.FlushPendingBatchForTesting();
 
-            var opacityTransition = Assert.Single(control.Presenter.Transitions!.OfType<DoubleTransition>());
-            Assert.Equal(TimeSpan.FromMilliseconds(50), opacityTransition.Duration);
             Assert.True(control.Presenter.Opacity > 0.5D);
 
             Dispatcher.UIThread.RunJobs();
@@ -514,6 +512,8 @@ public class DeferredContentControlTests
 
             var secondTextBlock = Assert.IsType<TextBlock>(control.Presenter.Child);
             Assert.Equal("Second", secondTextBlock.DataContext);
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            Assert.True(control.Presenter.IsAnimating(Visual.OpacityProperty));
             await CompleteRevealAsync(window, control.Presenter);
             Assert.Equal(1D, control.Presenter.Opacity);
         }

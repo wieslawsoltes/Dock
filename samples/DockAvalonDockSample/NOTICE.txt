@@ -1,0 +1,25 @@
+Xceed Live Explorer AvalonDock sample adaptation
+
+This sample's MainWindow.axaml is adapted from AvalonDockView.xaml in
+Xceed Extended WPF Toolkit 3.7.0, commit
+1e0b826e1fca8cdb2bb4640194c906ac23e53c2b:
+https://github.com/xceedsoftware/wpftoolkit/blob/3.7.0/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit.LiveExplorer/Samples/AvalonDock/Views/AvalonDockView.xaml
+
+Copyright (C) 2007-2019 Xceed Software Inc.
+The upstream sample and this adapted XAML file are distributed under the
+Microsoft Public License (Ms-PL), reproduced in LICENSE-XCEED.txt.
+Avalonia adaptation Copyright (c) Wiesław Šoltés 2026.
+
+The adaptation preserves the Properties, Documents, Alarms, Journal, Agenda,
+and Contacts layout and save/load actions. Avalonia controls replace WPF controls. ReactiveUI
+commands replace view event handlers. Xceed's PropertyGrid, RichTextBox,
+images, and docking implementation are not redistributed. Agenda and Contacts
+use the compatibility package's auto-hide side and group adapters.
+The adapted XAML uses Avalonia's default XML namespace for the AvalonDock types.
+
+Other new source files and the Dock compatibility library are licensed under
+the repository's MIT license. Xceed and AvalonDock are names belonging to
+their respective owners; this sample does not imply endorsement by Xceed.
+
+The sample baseline is pinned to 3.7.0, whose repository license and file
+notices are both Ms-PL. Later upstream releases use different license terms.

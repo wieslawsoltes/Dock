@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Wiesław Šoltés. Licensed under the MIT license. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="Anchorable_AutoHide" xml:space="preserve"><value>Nascondi automaticamente</value></data>
+  <data name="Anchorable_BtnAutoHide_Hint" xml:space="preserve"><value>Nascondi automaticamente</value></data>
+  <data name="Anchorable_BtnClose_Hint" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="Anchorable_CxMenu_Hint" xml:space="preserve"><value>Opzioni finestra</value></data>
+  <data name="Anchorable_Dock" xml:space="preserve"><value>Ancora</value></data>
+  <data name="Anchorable_DockAsDocument" xml:space="preserve"><value>Ancora come documento</value></data>
+  <data name="Anchorable_Float" xml:space="preserve"><value>Rendi mobile</value></data>
+  <data name="Anchorable_Hide" xml:space="preserve"><value>Nascondi</value></data>
+  <data name="Document_BtnPinned_Hint" xml:space="preserve"><value>Blocca documento</value></data>
+  <data name="Document_Close" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="Document_CloseAll" xml:space="preserve"><value>Chiudi tutti</value></data>
+  <data name="Document_CloseAllButThis" xml:space="preserve"><value>Chiudi gli altri</value></data>
+  <data name="Document_CxMenu_Hint" xml:space="preserve"><value>Opzioni documento</value></data>
+  <data name="Document_DockAsDocument" xml:space="preserve"><value>Ancora come documento</value></data>
+  <data name="Document_Float" xml:space="preserve"><value>Rendi mobile</value></data>
+  <data name="Document_MoveToNextTabGroup" xml:space="preserve"><value>Sposta nel gruppo di schede successivo</value></data>
+  <data name="Document_MoveToPreviousTabGroup" xml:space="preserve"><value>Sposta nel gruppo di schede precedente</value></data>
+  <data name="Document_NewHorizontalTabGroup" xml:space="preserve"><value>Nuovo gruppo orizzontale di schede</value></data>
+  <data name="Document_NewVerticalTabGroup" xml:space="preserve"><value>Nuovo gruppo verticale di schede</value></data>
+  <data name="Window_Maximize" xml:space="preserve"><value>Ingrandisci</value></data>
+  <data name="Window_Restore" xml:space="preserve"><value>Ripristina</value></data>
+</root>

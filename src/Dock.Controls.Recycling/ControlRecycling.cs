@@ -14,8 +14,10 @@ namespace Avalonia.Controls.Recycling;
 /// </summary>
 public class ControlRecycling : AvaloniaObject, IControlRecycling
 {
-    private readonly Dictionary<object, object> _cache = new();
+    private readonly Dictionary<object, CacheEntry> _cache = new();
     private bool _tryToUseIdAsKey;
+
+    private readonly record struct CacheEntry(object Control, ControlRecyclingVersion? Version);
 
     /// <summary>
     /// 
@@ -33,11 +35,12 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     }
 
     /// <summary>
-    /// 
+    /// Looks up a control using the data or its enabled recycling ID. A content
+    /// revision mismatch from the same source is a cache miss.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="control"></param>
-    /// <returns></returns>
+    /// <param name="data">The data, template owner, or explicit cache key.</param>
+    /// <param name="control">The cached control when the entry is current.</param>
+    /// <returns>Whether a current entry exists.</returns>
     public bool TryGetValue(object? data, out object? control)
     {
         if (data is null)
@@ -46,26 +49,42 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             return false;
         }
 
-        return _cache.TryGetValue(data, out control);
+        var version = (data as IControlRecyclingVersionProvider)?.GetControlRecyclingVersion();
+        if (_cache.TryGetValue(GetCacheKey(data), out var entry)
+            && !(entry.Version is { } previous && version is { } current
+                 && ReferenceEquals(previous.Source, current.Source)
+                 && previous.Revision != current.Revision))
+        {
+            control = entry.Control;
+            return true;
+        }
+
+        control = null;
+        return false;
     }
 
     /// <summary>
-    /// 
+    /// Stores a control under the data or its enabled recycling ID, recording
+    /// the current content revision when the data supplies one.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="control"></param>
+    /// <param name="data">The data, template owner, or explicit cache key.</param>
+    /// <param name="control">The successfully created or reused control.</param>
     public void Add(object data, object control)
     {
-        _cache[data] = control;
+        // A successful build or reuse commits the current source and revision.
+        // In particular, an explicit-ID handoff adopts the replacement source.
+        _cache[GetCacheKey(data)] = new CacheEntry(control,
+            (data as IControlRecyclingVersionProvider)?.GetControlRecyclingVersion());
     }
 
     /// <summary>
-    /// 
+    /// Reuses or creates content from a supplied control template, or from the
+    /// data template found on the parent. Only successful results enter the cache.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="existing"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
+    /// <param name="data">The data or an <see cref="ITemplate{T}"/> producing a control.</param>
+    /// <param name="existing">The control already presented by the caller.</param>
+    /// <param name="parent">The control used to locate a data template when needed.</param>
+    /// <returns>The realized content, or the existing control if template content cannot be reparented.</returns>
     public object? Build(object? data, object? existing, object? parent)
     {
         if (data is null)
@@ -73,17 +92,19 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             return null;
         }
 
+        // Capture before running template code: it may change its own content or ID.
         var key = GetCacheKey(data);
-
+        var version = (data as IControlRecyclingVersionProvider)?.GetControlRecyclingVersion();
+        var contentTemplate = data as ITemplate<Control?>;
         var parentControl = parent as Control;
 
-        if (TryGetValue(key, out var control))
+        if (TryGetValue(data, out var control))
         {
             if (control is Control cachedControl)
             {
                 var updatedControl = cachedControl;
 
-                if (parentControl is not null)
+                if (contentTemplate is null && parentControl is not null)
                 {
                     var template = parentControl.FindDataTemplate(data);
                     if (template is IRecyclingDataTemplate recyclingTemplate)
@@ -96,11 +117,6 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
                     }
                 }
 
-                if (!ReferenceEquals(updatedControl, cachedControl))
-                {
-                    Add(key!, updatedControl);
-                }
-
                 if (!ReferenceEquals(existing, updatedControl))
                 {
                     if (!TryDetachFromParent(updatedControl))
@@ -108,21 +124,27 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
                         var fallback = BuildFallback(parentControl, data, existing);
                         if (fallback is not null)
                         {
-                            Add(key!, fallback);
+                            _cache[key] = new CacheEntry(fallback, version);
                         }
 
-                        return fallback;
+                        return fallback ?? (contentTemplate is not null ? existing : null);
                     }
                 }
 
+                _cache[key] = new CacheEntry(updatedControl, version);
                 return updatedControl;
             }
 
+            _cache[key] = new CacheEntry(control!, version);
             return control;
         }
 
-        var dataTemplate = parentControl?.FindDataTemplate(data);
-        if (dataTemplate is IRecyclingDataTemplate recyclingDataTemplate)
+        var dataTemplate = contentTemplate is null ? parentControl?.FindDataTemplate(data) : null;
+        if (contentTemplate is not null)
+        {
+            control = contentTemplate.Build();
+        }
+        else if (dataTemplate is IRecyclingDataTemplate recyclingDataTemplate)
         {
             control = recyclingDataTemplate.Build(data, null);
         }
@@ -142,14 +164,14 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
                 var fallback = BuildFallback(parentControl, data, existing);
                 if (fallback is not null)
                 {
-                    Add(key!, fallback);
+                    _cache[key] = new CacheEntry(fallback, version);
                 }
 
-                return fallback;
+                return fallback ?? (contentTemplate is not null ? existing : null);
             }
         }
 
-        Add(key!, control);
+        _cache[key] = new CacheEntry(control, version);
 
         return control;
     }
@@ -242,6 +264,20 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
 
     private static object? BuildFallback(Control? parentControl, object? data, object? existing)
     {
+        if (data is ITemplate<Control?> contentTemplate)
+        {
+            var contentBuilt = contentTemplate.Build();
+            if (contentBuilt is null || ReferenceEquals(contentBuilt, existing) || TryDetachFromParent(contentBuilt))
+            {
+                return contentBuilt;
+            }
+
+            var rebuiltContent = contentTemplate.Build();
+            return rebuiltContent is not null && (ReferenceEquals(rebuiltContent, existing) || TryDetachFromParent(rebuiltContent))
+                ? rebuiltContent
+                : null;
+        }
+
         if (parentControl is null)
         {
             return null;

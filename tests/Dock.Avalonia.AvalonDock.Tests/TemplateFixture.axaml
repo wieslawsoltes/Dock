@@ -1,0 +1,35 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.TemplateFixture"
+        x:DataType="local:SourceViewModel" Width="700" Height="500">
+  <Window.Resources>
+    <DataTemplate x:Key="Primary" x:DataType="local:SourceContent">
+      <TextBlock Classes="primary-template" Text="{Binding Text}" />
+    </DataTemplate>
+    <DataTemplate x:Key="Replacement" x:DataType="local:SourceContent">
+      <TextBlock Classes="replacement-template" Text="{Binding Text}" />
+    </DataTemplate>
+    <DataTemplate x:Key="Alternate" x:DataType="local:AlternateContent">
+      <TextBox Classes="alternate-template" Text="{Binding Description}" />
+    </DataTemplate>
+    <DataTemplate x:Key="Inline" x:DataType="TextBox">
+      <TextBlock Classes="inline-template" Text="{Binding Text}" />
+    </DataTemplate>
+    <DataTemplate x:Key="Null" x:DataType="x:Object">
+      <TextBlock Classes="null-template" Text="Empty content" />
+    </DataTemplate>
+    <DataTemplateSelector x:Key="DefaultSelector" />
+    <local:ContentKindSelector x:Key="Selector" Primary="{StaticResource Primary}" Alternate="{StaticResource Alternate}" />
+  </Window.Resources>
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type local:SourceContent}" x:DataType="local:SourceContent">
+      <TextBlock Classes="fallback-template" Text="{Binding Text}" />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type x:String}" x:DataType="x:String">
+      <TextBlock Classes="string-template" Text="{Binding .}" />
+    </DataTemplate>
+  </Window.DataTemplates>
+  <DockingManager x:Name="Manager" DocumentsSource="{Binding Documents}" AnchorablesSource="{Binding Tools}"
+                  LayoutUpdateStrategy="{Binding Strategy}" LayoutItemTemplateSelector="{StaticResource Selector}" />
+</Window>

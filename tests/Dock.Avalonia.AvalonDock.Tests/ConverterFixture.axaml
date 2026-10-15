@@ -1,0 +1,48 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.ConverterFixture"
+        x:DataType="local:ConverterInputs" Width="800" Height="600">
+  <Window.Resources>
+    <ActivateCommandLayoutItemFromLayoutModelConverter x:Key="Activate" />
+    <HideCommandLayoutItemFromLayoutModelConverter x:Key="Hide" />
+    <AutoHideCommandLayoutItemFromLayoutModelConverter x:Key="AutoHide" />
+    <AnchorSideToAngleConverter x:Key="Angle" />
+    <AnchorSideToOrientationConverter x:Key="Orientation" />
+    <BoolToVisibilityConverter x:Key="Visible" />
+    <ad:InverseBoolToVisibilityConverter x:Key="Inverse" />
+    <NullToDoNothingConverter x:Key="Keep" />
+    <AnchorableContextMenuHideVisibilityConverter x:Key="HideVisible" />
+  </Window.Resources>
+  <Grid RowDefinitions="Auto,*">
+    <StackPanel Spacing="4">
+      <StackPanel Orientation="Horizontal">
+        <Button x:Name="ActivateButton" Content="Activate" Command="{Binding Value, Converter={StaticResource Activate}}" />
+        <Button x:Name="HideButton" Content="Hide" Command="{Binding Value, Converter={StaticResource Hide}}" />
+        <Button x:Name="AutoHideButton" Content="Auto Hide" Command="{Binding Value, Converter={StaticResource AutoHide}}" />
+      </StackPanel>
+      <TextBlock x:Name="KeptLabel" Text="{Binding Label, Converter={StaticResource Keep}}" />
+      <TextBlock x:Name="VisibleLabel" Text="Visible" IsVisible="{Binding Flag, Converter={StaticResource Visible}}" />
+      <TextBlock x:Name="InverseLabel" Text="Inverse" IsVisible="{Binding Flag, Converter={StaticResource Inverse}}" />
+      <TextBlock x:Name="HideEntry" Text="Hide entry">
+        <TextBlock.IsVisible>
+          <MultiBinding Converter="{StaticResource HideVisible}">
+            <Binding Path="Flag" />
+            <Binding Path="CanClose" />
+          </MultiBinding>
+        </TextBlock.IsVisible>
+      </TextBlock>
+      <ProgressBar x:Name="Angle" Maximum="100" Value="{Binding Side, Converter={StaticResource Angle}, Mode=OneWay}" />
+      <StackPanel x:Name="Oriented" Orientation="{Binding Side, Converter={StaticResource Orientation}}" />
+    </StackPanel>
+    <DockingManager x:Name="Manager" Grid.Row="1">
+      <LayoutRoot>
+        <LayoutPanel>
+          <LayoutDocumentPane><LayoutDocument Title="Document" ContentId="document" /></LayoutDocumentPane>
+          <LayoutAnchorablePane><LayoutAnchorable Title="Tool" ContentId="tool" /></LayoutAnchorablePane>
+        </LayoutPanel>
+      </LayoutRoot>
+    </DockingManager>
+  </Grid>
+</Window>

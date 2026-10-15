@@ -1,0 +1,19 @@
+<dock:HostWindow xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:dock="using:Dock.Avalonia.Controls"
+                 xmlns:models="using:Dock.Model.Avalonia.Controls"
+                 xmlns:themes="using:AvalonDock.Themes"
+                 xmlns:infrastructure="using:AvalonDock.Infrastructure"
+                 x:Class="AvalonDock.Infrastructure.LayoutHostWindow"
+                 x:DataType="models:RootDock"
+                 Classes="avalondock"
+                 Classes.avalondock-document-window="{Binding $self.Tag, Converter={x:Static ObjectConverters.IsNotNull}}">
+  <dock:HostWindow.Tag>
+    <Binding>
+      <Binding.Converter><infrastructure:LayoutDocumentWindowConverter /></Binding.Converter>
+    </Binding>
+  </dock:HostWindow.Tag>
+  <dock:HostWindow.Styles>
+    <themes:AvalonDockTheme />
+  </dock:HostWindow.Styles>
+</dock:HostWindow>

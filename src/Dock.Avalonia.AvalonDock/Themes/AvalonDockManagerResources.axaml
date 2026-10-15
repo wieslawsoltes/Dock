@@ -1,0 +1,49 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:fluent="using:Dock.Avalonia.Themes.Fluent"
+        xmlns:models="using:Dock.Model.Avalonia.Controls"
+        xmlns:layout="using:AvalonDock.Layout"
+        xmlns:controls="using:AvalonDock.Controls"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="ad:DockingManager">
+  <infrastructure:LayoutContentConverter x:Key="AvalonDockLayoutContent" />
+  <infrastructure:LayoutContentTemplate x:Key="AvalonDockContentTemplate">
+    <infrastructure:LayoutContentTemplate.DocumentControlTemplate>
+      <DataTemplate x:DataType="layout:LayoutContent">
+        <controls:LayoutDocumentControl />
+      </DataTemplate>
+    </infrastructure:LayoutContentTemplate.DocumentControlTemplate>
+    <infrastructure:LayoutContentTemplate.AnchorableControlTemplate>
+      <DataTemplate x:DataType="layout:LayoutAnchorable">
+        <controls:LayoutAnchorableControl />
+      </DataTemplate>
+    </infrastructure:LayoutContentTemplate.AnchorableControlTemplate>
+    <infrastructure:LayoutContentTemplate.DocumentTemplate>
+      <DataTemplate x:DataType="models:Document">
+        <ContentControl Classes="avalondock-content" Content="{Binding Content}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+      </DataTemplate>
+    </infrastructure:LayoutContentTemplate.DocumentTemplate>
+    <infrastructure:LayoutContentTemplate.ToolTemplate>
+      <DataTemplate x:DataType="models:Tool">
+        <ContentControl Classes="avalondock-content" Content="{Binding Content}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+      </DataTemplate>
+    </infrastructure:LayoutContentTemplate.ToolTemplate>
+  </infrastructure:LayoutContentTemplate>
+  <ControlTheme x:Key="{x:Type ad:DockingManager}" TargetType="ad:DockingManager"
+                x:DataType="ad:DockingManager">
+    <Setter Property="IconContentTemplate" Value="{StaticResource AvalonDockDefaultMenuIcon}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <dock:DockControl x:Name="PART_DockControl" Classes="avalondock"
+                          Layout="{TemplateBinding DockLayout}"
+                          Factory="{TemplateBinding DockFactory}"
+                          HostWindowFactory="{TemplateBinding DockHostWindowFactory}"
+                          infrastructure:LayoutSplitterSizing.Width="{TemplateBinding GridSplitterWidth}"
+                          infrastructure:LayoutSplitterSizing.Height="{TemplateBinding GridSplitterHeight}"
+                          InitializeFactory="True" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

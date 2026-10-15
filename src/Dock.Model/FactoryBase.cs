@@ -602,6 +602,12 @@ public abstract partial class FactoryBase : IFactory
                             }
                         }
 
+                        if (TrySplitIntoTarget(dock, dockable, operation))
+                        {
+                            ownerDock.ActiveDockable = dock;
+                            return;
+                        }
+
                         // Fallback to the original behavior when optimization is not applicable
                         var layout = CreateSplitLayout(dock, dockable, operation);
                         var wasDefaultDockable = ownerDock.DefaultDockable == dock;

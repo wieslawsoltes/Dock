@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AvaloniaVersion>12.1.3</AvaloniaVersion>
+    <AvaloniaVersion>12.1.4</AvaloniaVersion>
     <Avalonia11Version>11.3.22</Avalonia11Version>
     <ReactiveUIAvalonia11Version>11.4.13</ReactiveUIAvalonia11Version>
     <ReactiveUI23Version>23.2.28</ReactiveUI23Version>
@@ -17,7 +17,8 @@
     <PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+    <!-- DataGrid is released independently of the core Avalonia packages. -->
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
     <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
@@ -52,7 +53,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.102" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.402" />
     <PackageVersion Include="Nuke.Common" Version="10.1.0" />
     <PackageVersion Include="System.Runtime.Serialization.Formatters" Version="10.0.2" />
     <PackageVersion Include="protobuf-net" Version="3.2.56" />

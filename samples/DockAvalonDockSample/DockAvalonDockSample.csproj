@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <Import Project="../../build/Avalonia.Desktop.props" />
+  <Import Project="../../build/Avalonia.Themes.Fluent.props" />
+  <Import Project="../../build/Avalonia.ReactiveUI.props" />
+  <Import Project="../../src/Dock.Avalonia.AvalonDock/buildTransitive/Dock.Avalonia.AvalonDock.targets" />
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Dock.Avalonia.AvalonDock.Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DockAvalonDockSample.HeadlessTests</_Parameter1>
+    </AssemblyAttribute>
+    <PackageReference Include="ReactiveUI.SourceGenerators" />
+    <PackageReference Include="ReactiveUI.Reactive" />
+    <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
+    <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock.Generators/Dock.Avalonia.AvalonDock.Generators.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <None Include="LICENSE-XCEED.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="NOTICE.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

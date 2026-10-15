@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:AvalonDock.Controls"
+                    xmlns:layout="using:AvalonDock.Layout"
+                    xmlns:infrastructure="using:AvalonDock.Infrastructure">
+  <DataTemplate x:Key="AvalonDockDefaultAnchorableTitle" x:DataType="layout:LayoutContent">
+    <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+  </DataTemplate>
+  <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockAnchorableTitleContent" Kind="AnchorableTitle"
+                                       DefaultTemplate="{StaticResource AvalonDockDefaultAnchorableTitle}" />
+  <ControlTheme x:Key="{x:Type controls:AnchorablePaneTitle}" TargetType="controls:AnchorablePaneTitle"
+                x:DataType="controls:AnchorablePaneTitle">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter x:Name="PART_ContentPresenter" Background="Transparent"
+                          Content="{TemplateBinding LayoutItem}"
+                          ContentTemplate="{StaticResource AvalonDockAnchorableTitleContent}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

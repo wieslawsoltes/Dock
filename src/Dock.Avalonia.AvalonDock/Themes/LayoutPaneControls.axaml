@@ -1,0 +1,11 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
+        xmlns:dock="using:Dock.Avalonia.Controls">
+  <Style Selector=":is(ad|DockingManager) dock|DocumentDockControl:not(.avalondock-grid-body), dock|DockControl.avalondock dock|DocumentDockControl:not(.avalondock-grid-body), :is(Window).avalondock dock|DocumentDockControl:not(.avalondock-grid-body)">
+    <Setter Property="Template" Value="{StaticResource AvalonDockDocumentPaneTemplate}" />
+  </Style>
+  <Style Selector=":is(ad|DockingManager) dock|ToolDockControl:not(.avalondock-grid-body), dock|DockControl.avalondock dock|ToolDockControl:not(.avalondock-grid-body), :is(Window).avalondock dock|ToolDockControl:not(.avalondock-grid-body)">
+    <Setter Property="Template" Value="{StaticResource AvalonDockToolPaneTemplate}" />
+  </Style>
+</Styles>

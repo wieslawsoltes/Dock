@@ -1,0 +1,25 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:models="using:Dock.Model.Controls"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="models:IRootDock">
+  <Style Selector=":is(dock|HostWindow).avalondock-document-window">
+    <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+    <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
+    <Setter Property="WindowDecorations" Value="{OnPlatform Windows={x:Static WindowDecorations.Full}, Default={x:Static WindowDecorations.BorderOnly}}" />
+    <Setter Property="WindowDecorationsTheme" Value="{OnPlatform Windows={StaticResource AvalonDockContentWindowDecorations}, Default={x:Null}}" />
+    <Setter Property="ContentTemplate">
+      <DataTemplate x:DataType="models:IRootDock">
+        <Panel Margin="{Binding $parent[dock:HostWindow].OffScreenMargin}">
+          <Grid RowDefinitions="Auto,*" Margin="{Binding $parent[dock:HostWindow].WindowDecorationMargin}">
+            <infrastructure:LayoutDocumentWindowTitle DataContext="{Binding $parent[dock:HostWindow].Tag}" />
+            <OverlayHost Grid.Row="1" VisualTreeLifecycleBehavior.IsEnabled="True">
+              <dock:DockControl Layout="{Binding}" />
+            </OverlayHost>
+          </Grid>
+        </Panel>
+      </DataTemplate>
+    </Setter>
+  </Style>
+</Styles>

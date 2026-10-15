@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="Anchorable_AutoHide" xml:space="preserve"><value>Auto Hide</value></data>
+  <data name="Anchorable_BtnAutoHide_Hint" xml:space="preserve"><value>Auto Hide</value></data>
+  <data name="Anchorable_BtnClose_Hint" xml:space="preserve"><value>Close</value></data>
+  <data name="Anchorable_CxMenu_Hint" xml:space="preserve"><value>Window options</value></data>
+  <data name="Anchorable_Dock" xml:space="preserve"><value>Dock</value></data>
+  <data name="Anchorable_DockAsDocument" xml:space="preserve"><value>Dock as Document</value></data>
+  <data name="Anchorable_Float" xml:space="preserve"><value>Float</value></data>
+  <data name="Anchorable_Hide" xml:space="preserve"><value>Hide</value></data>
+  <data name="Document_BtnPinned_Hint" xml:space="preserve"><value>Pin document</value></data>
+  <data name="Document_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Document_CloseAll" xml:space="preserve"><value>Close All</value></data>
+  <data name="Document_CloseAllButThis" xml:space="preserve"><value>Close All But This</value></data>
+  <data name="Document_CxMenu_Hint" xml:space="preserve"><value>Document options</value></data>
+  <data name="Document_DockAsDocument" xml:space="preserve"><value>Dock as Document</value></data>
+  <data name="Document_Float" xml:space="preserve"><value>Float</value></data>
+  <data name="Document_MoveToNextTabGroup" xml:space="preserve"><value>Move to Next Tab Group</value></data>
+  <data name="Document_MoveToPreviousTabGroup" xml:space="preserve"><value>Move to Previous Tab Group</value></data>
+  <data name="Document_NewHorizontalTabGroup" xml:space="preserve"><value>New Horizontal Tab Group</value></data>
+  <data name="Document_NewVerticalTabGroup" xml:space="preserve"><value>New Vertical Tab Group</value></data>
+  <data name="Window_Maximize" xml:space="preserve"><value>Maximize</value></data>
+  <data name="Window_Restore" xml:space="preserve"><value>Restore</value></data>
+</root>

@@ -91,7 +91,10 @@ public class DocumentCreateButtonTests
             if (!rendered.IsCompleted) await Task.Delay(10);
         }
         Assert.True(rendered.IsCompletedSuccessfully, "The headless compositor did not finish its cleanup batch.");
-        for (int i = 0; i < 20; i++)
+        // Render-thread continuations can take longer to run on busy runners.
+        // Bound cleanup by elapsed time rather than a short iteration count.
+        deadline.Restart();
+        while (deadline.Elapsed < TimeSpan.FromSeconds(5))
         {
             Dispatcher.UIThread.RunJobs(); AvaloniaHeadlessPlatform.ForceRenderTimerTick();
             // A render commit can enqueue cleanup after the timer tick. Allow

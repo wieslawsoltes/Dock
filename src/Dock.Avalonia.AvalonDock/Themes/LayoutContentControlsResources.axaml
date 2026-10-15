@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:AvalonDock.Controls"
+                    xmlns:infrastructure="using:AvalonDock.Infrastructure">
+  <infrastructure:LayoutItemViewTemplate x:Key="AvalonDockLayoutItemView" />
+  <ControlTheme x:Key="{x:Type controls:LayoutDocumentControl}" TargetType="controls:LayoutDocumentControl"
+                x:DataType="controls:LayoutDocumentControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter x:Name="PART_ContentPresenter"
+                          Content="{TemplateBinding LayoutItem}"
+                          ContentTemplate="{StaticResource AvalonDockLayoutItemView}"
+                          HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+  <ControlTheme x:Key="{x:Type controls:LayoutAnchorableControl}" TargetType="controls:LayoutAnchorableControl"
+                x:DataType="controls:LayoutAnchorableControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter x:Name="PART_ContentPresenter"
+                          Content="{TemplateBinding LayoutItem}"
+                          ContentTemplate="{StaticResource AvalonDockLayoutItemView}"
+                          HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

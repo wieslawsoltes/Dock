@@ -1,0 +1,15 @@
+<LayoutFloatingWindowControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.FloatingResizeFixture"
+        x:DataType="LayoutFloatingWindowControl"
+        Width="420" Height="280" ResizeBorderThickness="4,6,8,12">
+  <LayoutFloatingWindowControl.Styles>
+    <Style Selector=":is(LayoutFloatingWindowControl).bound-resize">
+      <Setter Property="ResizeBorderThickness" Value="{Binding $self.BorderThickness}" />
+    </Style>
+  </LayoutFloatingWindowControl.Styles>
+  <Border Background="Transparent">
+    <Button x:Name="ContentButton" Content="Application content"
+            HorizontalAlignment="Center" VerticalAlignment="Center" />
+  </Border>
+</LayoutFloatingWindowControl>

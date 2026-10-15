@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:layout="using:AvalonDock.Layout"
+             xmlns:items="using:AvalonDock.Controls"
+             xmlns:core="using:Dock.Model.Core"
+             xmlns:dock="using:Dock.Avalonia.Controls"
+             xmlns:converters="using:Dock.Avalonia.Converters"
+             xmlns:infrastructure="using:AvalonDock.Infrastructure"
+             xmlns:properties="using:AvalonDock.Properties"
+             x:Class="AvalonDock.Infrastructure.LayoutDocumentWindowTitle"
+             x:DataType="layout:LayoutDocumentFloatingWindow"
+             infrastructure:LayoutDocumentTitleBehavior.IsEnabled="True">
+  <UserControl.Resources>
+    <DataTemplate x:Key="DefaultTitle" x:DataType="layout:LayoutDocument">
+      <TextBlock Classes="avalondock-default-document-title" Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+    </DataTemplate>
+    <infrastructure:LayoutHeaderTemplate x:Key="TitleTemplate" Kind="DocumentTitle" DefaultTemplate="{StaticResource DefaultTitle}" />
+  </UserControl.Resources>
+  <Border Background="{DynamicResource DockSurfaceHeaderBrush}" Padding="8,3,3,3">
+    <Grid ColumnDefinitions="*,Auto,Auto" MinHeight="22">
+      <ContentPresenter Classes="avalondock-document-title" Margin="0,0,8,0" VerticalAlignment="Center"
+                        Content="{Binding $parent[infrastructure:LayoutDocumentWindowTitle].((layout:LayoutDocumentFloatingWindow)DataContext).RootDocument}"
+                        ContentTemplate="{StaticResource TitleTemplate}" />
+      <Button Grid.Column="1" Classes="avalondock-document-maximize" Theme="{DynamicResource ChromeButton}"
+              Classes.maximized="{Binding $parent[dock:HostWindow].WindowState, Converter={x:Static converters:IsMaximizedConverter.Instance}}"
+              Command="{Binding $parent[infrastructure:LayoutDocumentWindowTitle].(infrastructure:LayoutDocumentTitleBehavior.MaximizeCommand)}">
+        <Button.Styles>
+          <Style Selector="Button">
+            <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Maximize}" />
+            <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Maximize}" />
+          </Style>
+          <Style Selector="Button.maximized">
+            <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Restore}" />
+            <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Restore}" />
+          </Style>
+        </Button.Styles>
+        <Path Width="10" Height="10" Stretch="Uniform" Fill="{DynamicResource DockTabForegroundBrush}"
+              Classes.maximized="{Binding $parent[dock:HostWindow].WindowState, Converter={x:Static converters:IsMaximizedConverter.Instance}}">
+          <Path.Styles>
+            <Style Selector="Path"><Setter Property="Data" Value="{DynamicResource DockIconMaximizeGeometry}" /></Style>
+            <Style Selector="Path.maximized"><Setter Property="Data" Value="{DynamicResource DockIconRestoreGeometry}" /></Style>
+          </Path.Styles>
+        </Path>
+      </Button>
+      <Button Grid.Column="2" Classes="avalondock-document-window-close" Theme="{DynamicResource ChromeButton}"
+              x:DataType="items:LayoutItem"
+              infrastructure:LayoutItemBinding.Model="{Binding $parent[infrastructure:LayoutDocumentWindowTitle].((layout:LayoutDocumentFloatingWindow)DataContext).RootDocument}"
+              DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
+              Command="{Binding CloseCommand}"
+              AutomationProperties.Name="{x:Static properties:Resources.Document_Close}"
+              ToolTip.Tip="{x:Static properties:Resources.Document_Close}">
+        <Button.IsVisible>
+          <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
+            <Binding Path="LayoutElement.DockModel" />
+            <Binding Path="LayoutElement.DockModel.CanClose" />
+            <Binding Path="LayoutElement.DockModel.DockCapabilityOverrides.CanClose" />
+            <Binding Path="LayoutElement.DockModel.((core:IDock)Owner).DockCapabilityPolicy.CanClose" />
+          </MultiBinding>
+        </Button.IsVisible>
+        <Path Width="10" Height="10" Stretch="Uniform" Fill="{DynamicResource DockTabForegroundBrush}"
+              Data="{DynamicResource DockIconCloseGeometry}" />
+      </Button>
+    </Grid>
+  </Border>
+</UserControl>

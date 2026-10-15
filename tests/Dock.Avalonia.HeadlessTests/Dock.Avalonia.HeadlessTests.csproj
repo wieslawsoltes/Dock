@@ -16,6 +16,7 @@
   <Import Project="..\..\build\SignAssembly.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\samples\DockQuickStartSample\DockQuickStartSample.csproj" />
     <ProjectReference Include="..\..\samples\BrowserTabTheme\BrowserTabTheme.csproj" />
     <PackageReference Include="Avalonia.Skia" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent\Dock.Avalonia.Themes.Fluent.csproj" />

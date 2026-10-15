@@ -1,0 +1,32 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:AvalonDock.Controls"
+                    xmlns:layout="using:AvalonDock.Layout"
+                    xmlns:infrastructure="using:AvalonDock.Infrastructure">
+  <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockDocumentTabContent" Kind="Document"
+                                       DefaultTemplate="{StaticResource AvalonDockDefaultDocumentHeader}" />
+  <infrastructure:LayoutHeaderTemplate x:Key="AvalonDockAnchorableTabContent" Kind="Anchorable"
+                                       DefaultTemplate="{StaticResource AvalonDockDefaultAnchorableHeader}" />
+  <ControlTheme x:Key="{x:Type controls:LayoutDocumentTabItem}" TargetType="controls:LayoutDocumentTabItem"
+                x:DataType="controls:LayoutDocumentTabItem">
+    <Setter Property="IsEnabled" Value="{Binding $self.Model.IsEnabled, FallbackValue=True}" />
+    <Setter Property="ToolTip.Tip" Value="{Binding $self.Model.ToolTip}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Background="Transparent" Content="{TemplateBinding LayoutItem}"
+                          ContentTemplate="{StaticResource AvalonDockDocumentTabContent}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+  <ControlTheme x:Key="{x:Type controls:LayoutAnchorableTabItem}" TargetType="controls:LayoutAnchorableTabItem"
+                x:DataType="controls:LayoutAnchorableTabItem">
+    <Setter Property="IsEnabled" Value="{Binding $self.Model.IsEnabled, FallbackValue=True}" />
+    <Setter Property="ToolTip.Tip" Value="{Binding $self.Model.ToolTip}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Background="Transparent" Content="{TemplateBinding LayoutItem}"
+                          ContentTemplate="{StaticResource AvalonDockAnchorableTabContent}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

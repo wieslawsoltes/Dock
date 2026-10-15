@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.FloatingKeyboardFixture"
+        x:DataType="local:FloatingKeyboardOptions" Width="800" Height="500">
+  <DockingManager x:Name="Manager" AllowMovingFloatingWindowWithKeyboard="{Binding Enabled}">
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutDocumentPane>
+          <LayoutDocument ContentId="document" Title="Document">
+            <Border Focusable="True" Background="Transparent" />
+          </LayoutDocument>
+        </LayoutDocumentPane>
+        <LayoutAnchorablePane>
+          <LayoutAnchorable ContentId="tool" Title="Tool">
+            <Border Focusable="True" Background="Transparent" />
+          </LayoutAnchorable>
+        </LayoutAnchorablePane>
+      </LayoutPanel>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

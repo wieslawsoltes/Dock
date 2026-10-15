@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.ThemeBindingFixture"
+        x:DataType="local:ThemeBindingViewModel" Width="640" Height="480">
+  <Window.Resources>
+    <ResourceInclude x:Key="GenericByUri" Source="avares://Dock.Avalonia.AvalonDock/Themes/Generic.axaml" />
+  </Window.Resources>
+  <StackPanel>
+    <local:ThemeNotificationsManager x:Name="BoundManager" Theme="{Binding Theme}" Height="160" />
+    <DockingManager x:Name="DefaultNamespaceManager" Height="160">
+      <DockingManager.Theme>
+        <GenericTheme />
+      </DockingManager.Theme>
+    </DockingManager>
+    <ad:DockingManager x:Name="AliasManager" Height="160">
+      <ad:DockingManager.Theme>
+        <ad:GenericTheme />
+      </ad:DockingManager.Theme>
+    </ad:DockingManager>
+  </StackPanel>
+</Window>

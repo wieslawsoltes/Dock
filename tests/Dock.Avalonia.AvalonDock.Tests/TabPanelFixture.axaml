@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.TabPanelFixture"
+        x:DataType="LayoutDocumentPane" Width="350" Height="200">
+  <Window.Resources>
+    <ItemsPanelTemplate x:Key="DocumentPanel"><DocumentPaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="LegacyDocumentPanel"><ad:DocumentPaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="ToolPanel"><AnchorablePaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="LegacyToolPanel"><ad:AnchorablePaneTabPanel /></ItemsPanelTemplate>
+    <DataTemplate x:Key="DocumentTabs" x:DataType="LayoutDocumentPane">
+      <ItemsControl ItemsSource="{Binding Children}" ItemsPanel="{StaticResource DocumentPanel}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="LayoutContent">
+            <LayoutDocumentTabItem Model="{Binding}" Width="100" Height="32" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </DataTemplate>
+  </Window.Resources>
+</Window>

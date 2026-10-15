@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.XamlFixture"
+        x:DataType="DockingManager" Width="800" Height="500">
+  <Window.Resources>
+    <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
+    <ad:LayoutItemFromLayoutModelConverter x:Key="LegacyItemFromModel" />
+    <DataTemplate x:Key="FloatingWindowCommands" x:DataType="LayoutAnchorableFloatingWindowControl">
+      <StackPanel>
+        <Button Classes="window-close" Content="Close tools" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding Model}" />
+        <Button Classes="window-hide" Content="Hide tools" Command="{Binding HideWindowCommand}" CommandParameter="{Binding Model}" />
+      </StackPanel>
+    </DataTemplate>
+  </Window.Resources>
+  <DockingManager x:Name="Manager">
+    <LayoutRoot>
+      <LayoutPanel Orientation="Horizontal">
+        <LayoutAnchorablePane>
+          <LayoutAnchorable Title="Properties" ContentId="properties" CanHide="False">
+            <TextBlock Text="Property inspector" />
+          </LayoutAnchorable>
+        </LayoutAnchorablePane>
+        <LayoutDocumentPaneGroup>
+          <LayoutDocumentPane>
+            <LayoutDocument Title="First document" ContentId="one">
+              <TextBox x:Name="Editor" Text="Editable document" AcceptsReturn="True" />
+            </LayoutDocument>
+            <LayoutDocument Title="Second document" ContentId="two">
+              <TextBlock Text="Second document content" />
+            </LayoutDocument>
+          </LayoutDocumentPane>
+        </LayoutDocumentPaneGroup>
+      </LayoutPanel>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

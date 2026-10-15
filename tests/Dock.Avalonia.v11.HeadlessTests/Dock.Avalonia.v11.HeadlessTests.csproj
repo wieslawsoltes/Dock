@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent.v11\Dock.Avalonia.Themes.Fluent.v11.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Simple.v11\Dock.Avalonia.Themes.Simple.v11.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\DeferredContentRevealLifecycleTests.cs" Link="DeferredContentRevealLifecycleTests.cs" />
+  </ItemGroup>
 </Project>

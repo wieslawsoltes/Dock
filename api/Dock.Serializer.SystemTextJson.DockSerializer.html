@@ -197,7 +197,9 @@ Class DockSerializer  <a class="header-action link-secondary" title="View source
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>typeInfoResolver</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.serialization.metadata.ijsontypeinforesolver">IJsonTypeInfoResolver</a></dt>
-    <dd><p>The resolver to use for generated metadata.</p>
+    <dd><p>The resolver to use for generated metadata. Dock collection factories
+honor the configured list type and retain compatible supplied instances. For other collection contracts,
+the resolver's existing CreateObject factory takes precedence over the configured list type.</p>
 </dd>
   </dl>
 
@@ -266,7 +268,9 @@ Class DockSerializer  <a class="header-action link-secondary" title="View source
     <dd><p>The type of list to use in the serialization process.</p>
 </dd>
     <dt><code>typeInfoResolver</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.serialization.metadata.ijsontypeinforesolver">IJsonTypeInfoResolver</a></dt>
-    <dd><p>The resolver to use for generated metadata.</p>
+    <dd><p>The resolver to use for generated metadata. Dock collection factories
+honor the configured list type and retain compatible supplied instances. For other collection contracts,
+the resolver's existing CreateObject factory takes precedence over the configured list type.</p>
 </dd>
   </dl>
 

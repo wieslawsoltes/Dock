@@ -10027,6 +10027,66 @@ references:
   commentId: F:Dock.Avalonia.Converters.EitherNotNullConverter.Instance
   fullName: Dock.Avalonia.Converters.EitherNotNullConverter.Instance
   nameWithType: EitherNotNullConverter.Instance
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter
+  name: GridResizeDirectionConverter
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html
+  commentId: T:Dock.Avalonia.Converters.GridResizeDirectionConverter
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter
+  nameWithType: GridResizeDirectionConverter
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter.#ctor
+  name: GridResizeDirectionConverter()
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html#Dock_Avalonia_Converters_GridResizeDirectionConverter__ctor
+  commentId: M:Dock.Avalonia.Converters.GridResizeDirectionConverter.#ctor
+  name.vb: New()
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter.GridResizeDirectionConverter()
+  fullName.vb: Dock.Avalonia.Converters.GridResizeDirectionConverter.New()
+  nameWithType: GridResizeDirectionConverter.GridResizeDirectionConverter()
+  nameWithType.vb: GridResizeDirectionConverter.New()
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter.#ctor*
+  name: GridResizeDirectionConverter
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html#Dock_Avalonia_Converters_GridResizeDirectionConverter__ctor_
+  commentId: Overload:Dock.Avalonia.Converters.GridResizeDirectionConverter.#ctor
+  name.vb: New
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter.GridResizeDirectionConverter
+  fullName.vb: Dock.Avalonia.Converters.GridResizeDirectionConverter.New
+  nameWithType: GridResizeDirectionConverter.GridResizeDirectionConverter
+  nameWithType.vb: GridResizeDirectionConverter.New
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: Convert(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html#Dock_Avalonia_Converters_GridResizeDirectionConverter_Convert_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.GridResizeDirectionConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: Convert(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter.Convert(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.GridResizeDirectionConverter.Convert(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: GridResizeDirectionConverter.Convert(object?, Type, object?, CultureInfo)
+  nameWithType.vb: GridResizeDirectionConverter.Convert(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter.Convert*
+  name: Convert
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html#Dock_Avalonia_Converters_GridResizeDirectionConverter_Convert_
+  commentId: Overload:Dock.Avalonia.Converters.GridResizeDirectionConverter.Convert
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter.Convert
+  nameWithType: GridResizeDirectionConverter.Convert
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name: ConvertBack(object?, Type, object?, CultureInfo)
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html#Dock_Avalonia_Converters_GridResizeDirectionConverter_ConvertBack_System_Object_System_Type_System_Object_System_Globalization_CultureInfo_
+  commentId: M:Dock.Avalonia.Converters.GridResizeDirectionConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)
+  name.vb: ConvertBack(Object, Type, Object, CultureInfo)
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter.ConvertBack(object?, System.Type, object?, System.Globalization.CultureInfo)
+  fullName.vb: Dock.Avalonia.Converters.GridResizeDirectionConverter.ConvertBack(Object, System.Type, Object, System.Globalization.CultureInfo)
+  nameWithType: GridResizeDirectionConverter.ConvertBack(object?, Type, object?, CultureInfo)
+  nameWithType.vb: GridResizeDirectionConverter.ConvertBack(Object, Type, Object, CultureInfo)
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter.ConvertBack*
+  name: ConvertBack
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html#Dock_Avalonia_Converters_GridResizeDirectionConverter_ConvertBack_
+  commentId: Overload:Dock.Avalonia.Converters.GridResizeDirectionConverter.ConvertBack
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter.ConvertBack
+  nameWithType: GridResizeDirectionConverter.ConvertBack
+- uid: Dock.Avalonia.Converters.GridResizeDirectionConverter.Instance
+  name: Instance
+  href: api/Dock.Avalonia.Converters.GridResizeDirectionConverter.html#Dock_Avalonia_Converters_GridResizeDirectionConverter_Instance
+  commentId: F:Dock.Avalonia.Converters.GridResizeDirectionConverter.Instance
+  fullName: Dock.Avalonia.Converters.GridResizeDirectionConverter.Instance
+  nameWithType: GridResizeDirectionConverter.Instance
 - uid: Dock.Avalonia.Converters.GripModeConverters
   name: GripModeConverters
   href: api/Dock.Avalonia.Converters.GripModeConverters.html
@@ -53549,6 +53609,27 @@ references:
   isSpec: "True"
   fullName: Dock.Serializer.SystemTextJson.Generators.DockJsonSourceGenerator.Initialize
   nameWithType: DockJsonSourceGenerator.Initialize
+- uid: Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory
+  name: IDockJsonCollectionFactory
+  href: api/Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.html
+  commentId: T:Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory
+  fullName: Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory
+  nameWithType: IDockJsonCollectionFactory
+- uid: Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.GetListFactory(System.Type,System.Type,System.Func{System.Object})
+  name: GetListFactory(Type, Type, Func<object>?)
+  href: api/Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.html#Dock_Serializer_SystemTextJson_IDockJsonCollectionFactory_GetListFactory_System_Type_System_Type_System_Func_System_Object__
+  commentId: M:Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.GetListFactory(System.Type,System.Type,System.Func{System.Object})
+  name.vb: GetListFactory(Type, Type, Func(Of Object))
+  fullName: Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.GetListFactory(System.Type, System.Type, System.Func<object>?)
+  fullName.vb: Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.GetListFactory(System.Type, System.Type, System.Func(Of Object))
+  nameWithType: IDockJsonCollectionFactory.GetListFactory(Type, Type, Func<object>?)
+  nameWithType.vb: IDockJsonCollectionFactory.GetListFactory(Type, Type, Func(Of Object))
+- uid: Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.GetListFactory*
+  name: GetListFactory
+  href: api/Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.html#Dock_Serializer_SystemTextJson_IDockJsonCollectionFactory_GetListFactory_
+  commentId: Overload:Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.GetListFactory
+  fullName: Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory.GetListFactory
+  nameWithType: IDockJsonCollectionFactory.GetListFactory
 - uid: Dock.Serializer.Xml
   name: Dock.Serializer.Xml
   href: api/Dock.Serializer.Xml.html

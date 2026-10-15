@@ -8269,6 +8269,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/dock-avalondock.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dock-avalondock.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/dock-caliburn-micro.md",
       "output": {
         ".html": {

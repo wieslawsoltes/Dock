@@ -98,7 +98,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Tool : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, ITool, IMdiDocument, IDocument, ILocalTarget, IToolContent, IDockable, IControlRecyclingIdProvider, ITemplate&lt;Control?&gt;, ITemplate, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;, IDockingWindowState</code></pre>
+    <pre><code class="lang-csharp hljs">public class Tool : DockableBase, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, INamed, IDockSelectorInfo, IDockableDockingRestrictions, IDockItemContainerMetadata, ITool, IMdiDocument, IDocument, ILocalTarget, IToolContent, IDockable, IControlRecyclingIdProvider, ITemplate&lt;Control?&gt;, ITemplate, IRecyclingDataTemplate, IDataTemplate, ITemplate&lt;object?, Control?&gt;, IDockingWindowState, IControlRecyclingVersionProvider</code></pre>
   </div>
 
 
@@ -147,6 +147,7 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
       <div><span class="xref">IDataTemplate</span></div>
       <div><span class="xref">ITemplate</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, <span class="xref">Control</span>&gt;</div>
       <div><a class="xref" href="Dock.Model.Core.IDockingWindowState.html">IDockingWindowState</a></div>
+      <div><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.html">IControlRecyclingVersionProvider</a></div>
     </dd>
   </dl>
 
@@ -495,9 +496,6 @@ Class Tool  <a class="header-action link-secondary" title="View source" href="ht
     </div>
     <div>
       <span class="xref">StyledElement.OnInitialized()</span>
-    </div>
-    <div>
-      <span class="xref">StyledElement.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)</span>
     </div>
     <div>
       <span class="xref">StyledElement.Name</span>
@@ -1363,6 +1361,39 @@ public int MdiZIndex { get; set; }</code></pre>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd></dd>
   </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Avalonia_Controls_Tool_OnPropertyChanged_" data-uid="Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged*"></a>
+
+  <h3 id="Dock_Model_Avalonia_Controls_Tool_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_" data-uid="Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)">
+  OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Avalonia/Controls/Tool.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when a avalonia property changes on the object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>change</code> <span class="xref">AvaloniaPropertyChangedEventArgs</span></dt>
+    <dd><p>The property change details.</p>
+</dd>
+  </dl>
+
 
 
 

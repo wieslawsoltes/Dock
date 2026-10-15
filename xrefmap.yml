@@ -241,6 +241,54 @@ references:
   commentId: N:Avalonia.Controls.Recycling.Model
   fullName: Avalonia.Controls.Recycling.Model
   nameWithType: Avalonia.Controls.Recycling.Model
+- uid: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion
+  name: ControlRecyclingVersion
+  href: api/Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html
+  commentId: T:Avalonia.Controls.Recycling.Model.ControlRecyclingVersion
+  fullName: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion
+  nameWithType: ControlRecyclingVersion
+- uid: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.#ctor(System.Object,System.Int64)
+  name: ControlRecyclingVersion(object, long)
+  href: api/Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html#Avalonia_Controls_Recycling_Model_ControlRecyclingVersion__ctor_System_Object_System_Int64_
+  commentId: M:Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.#ctor(System.Object,System.Int64)
+  name.vb: New(Object, Long)
+  fullName: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.ControlRecyclingVersion(object, long)
+  fullName.vb: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.New(Object, Long)
+  nameWithType: ControlRecyclingVersion.ControlRecyclingVersion(object, long)
+  nameWithType.vb: ControlRecyclingVersion.New(Object, Long)
+- uid: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.#ctor*
+  name: ControlRecyclingVersion
+  href: api/Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html#Avalonia_Controls_Recycling_Model_ControlRecyclingVersion__ctor_
+  commentId: Overload:Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.#ctor
+  name.vb: New
+  fullName: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.ControlRecyclingVersion
+  fullName.vb: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.New
+  nameWithType: ControlRecyclingVersion.ControlRecyclingVersion
+  nameWithType.vb: ControlRecyclingVersion.New
+- uid: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Revision
+  name: Revision
+  href: api/Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html#Avalonia_Controls_Recycling_Model_ControlRecyclingVersion_Revision
+  commentId: P:Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Revision
+  fullName: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Revision
+  nameWithType: ControlRecyclingVersion.Revision
+- uid: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Revision*
+  name: Revision
+  href: api/Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html#Avalonia_Controls_Recycling_Model_ControlRecyclingVersion_Revision_
+  commentId: Overload:Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Revision
+  fullName: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Revision
+  nameWithType: ControlRecyclingVersion.Revision
+- uid: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Source
+  name: Source
+  href: api/Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html#Avalonia_Controls_Recycling_Model_ControlRecyclingVersion_Source
+  commentId: P:Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Source
+  fullName: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Source
+  nameWithType: ControlRecyclingVersion.Source
+- uid: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Source*
+  name: Source
+  href: api/Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html#Avalonia_Controls_Recycling_Model_ControlRecyclingVersion_Source_
+  commentId: Overload:Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Source
+  fullName: Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.Source
+  nameWithType: ControlRecyclingVersion.Source
 - uid: Avalonia.Controls.Recycling.Model.IControlRecycling
   name: IControlRecycling
   href: api/Avalonia.Controls.Recycling.Model.IControlRecycling.html
@@ -334,6 +382,24 @@ references:
   commentId: Overload:Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.GetControlRecyclingId
   fullName: Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.GetControlRecyclingId
   nameWithType: IControlRecyclingIdProvider.GetControlRecyclingId
+- uid: Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider
+  name: IControlRecyclingVersionProvider
+  href: api/Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.html
+  commentId: T:Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider
+  fullName: Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider
+  nameWithType: IControlRecyclingVersionProvider
+- uid: Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.GetControlRecyclingVersion
+  name: GetControlRecyclingVersion()
+  href: api/Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.html#Avalonia_Controls_Recycling_Model_IControlRecyclingVersionProvider_GetControlRecyclingVersion
+  commentId: M:Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.GetControlRecyclingVersion
+  fullName: Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.GetControlRecyclingVersion()
+  nameWithType: IControlRecyclingVersionProvider.GetControlRecyclingVersion()
+- uid: Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.GetControlRecyclingVersion*
+  name: GetControlRecyclingVersion
+  href: api/Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.html#Avalonia_Controls_Recycling_Model_IControlRecyclingVersionProvider_GetControlRecyclingVersion_
+  commentId: Overload:Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.GetControlRecyclingVersion
+  fullName: Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.GetControlRecyclingVersion
+  nameWithType: IControlRecyclingVersionProvider.GetControlRecyclingVersion
 - uid: Avalonia.MarkupExtension
   name: Avalonia.MarkupExtension
   href: api/Avalonia.MarkupExtension.html
@@ -14773,6 +14839,18 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.Document.MdiZIndexProperty
   fullName: Dock.Model.Avalonia.Controls.Document.MdiZIndexProperty
   nameWithType: Document.MdiZIndexProperty
+- uid: Dock.Model.Avalonia.Controls.Document.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
+  commentId: M:Dock.Model.Avalonia.Controls.Document.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  fullName: Dock.Model.Avalonia.Controls.Document.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  nameWithType: Document.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+- uid: Dock.Model.Avalonia.Controls.Document.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Model.Avalonia.Controls.Document.html#Dock_Model_Avalonia_Controls_Document_OnPropertyChanged_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Document.OnPropertyChanged
+  fullName: Dock.Model.Avalonia.Controls.Document.OnPropertyChanged
+  nameWithType: Document.OnPropertyChanged
 - uid: Dock.Model.Avalonia.Controls.DocumentDock
   name: DocumentDock
   href: api/Dock.Model.Avalonia.Controls.DocumentDock.html
@@ -16213,6 +16291,18 @@ references:
   commentId: F:Dock.Model.Avalonia.Controls.Tool.MdiZIndexProperty
   fullName: Dock.Model.Avalonia.Controls.Tool.MdiZIndexProperty
   nameWithType: Tool.MdiZIndexProperty
+- uid: Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  name: OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_OnPropertyChanged_Avalonia_AvaloniaPropertyChangedEventArgs_
+  commentId: M:Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  fullName: Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs)
+  nameWithType: Tool.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)
+- uid: Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged*
+  name: OnPropertyChanged
+  href: api/Dock.Model.Avalonia.Controls.Tool.html#Dock_Model_Avalonia_Controls_Tool_OnPropertyChanged_
+  commentId: Overload:Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged
+  fullName: Dock.Model.Avalonia.Controls.Tool.OnPropertyChanged
+  nameWithType: Tool.OnPropertyChanged
 - uid: Dock.Model.Avalonia.Controls.ToolDock
   name: ToolDock
   href: api/Dock.Model.Avalonia.Controls.ToolDock.html

@@ -87,6 +87,14 @@
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
 
+    <h3 id="structs">
+Structs
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Avalonia.Controls.Recycling.Model.ControlRecyclingVersion.html">ControlRecyclingVersion</a></dt>
+      <dd><p>Identifies a revision of the content used to create a recycled control.</p>
+</dd>
+    </dl>
     <h3 id="interfaces">
 Interfaces
 </h3>
@@ -97,6 +105,13 @@ Interfaces
     <dl class="jumplist">
       <dt><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingIdProvider.html">IControlRecyclingIdProvider</a></dt>
       <dd></dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Avalonia.Controls.Recycling.Model.IControlRecyclingVersionProvider.html">IControlRecyclingVersionProvider</a></dt>
+      <dd><p>Optionally supplies content revisions to a recycling cache. A changed revision
+invalidates controls created by the same source. A replacement source sharing
+an explicit recycling ID can reuse the previous control.</p>
+</dd>
     </dl>
 
 

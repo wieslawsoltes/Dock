@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Dock.Avalonia.HeadlessTests"
+             xmlns:model="using:Dock.Model.Avalonia.Controls"
+             x:Class="Dock.Avalonia.HeadlessTests.GeneratedDocumentContentView"
+             x:DataType="model:Document"
+             x:CompileBindings="True">
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="local:GeneratedPageViewModel" x:DataType="local:GeneratedPageViewModel">
+      <TextBox Text="{Binding Text, Mode=TwoWay}" />
+    </DataTemplate>
+  </UserControl.DataTemplates>
+  <StackPanel DataContext="{Binding Context}">
+    <ContentControl x:DataType="local:GeneratedFileViewModel" Content="{Binding CurrentView}" />
+  </StackPanel>
+</UserControl>

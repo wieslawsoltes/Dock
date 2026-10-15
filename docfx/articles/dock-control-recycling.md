@@ -35,6 +35,16 @@ With this in place the controls generated for each dockable are kept in an inter
 
 This allows the same dockable to be recognized even if the instance itself changes, for example after deserializing a layout. Ensure `Id` values are stable and unique within a layout.
 
+## Template content and cache revisions
+
+Each Avalonia `Document` and `Tool` owns its cached view, including containers generated from a shared `DocumentTemplate`. Changing `Content` advances the container's content revision. `ControlRecycling` checks that revision before reusing a view, including when the container returns to a previous cache, ID, or ID mode. Moving a container without changing its content preserves each cache's existing view and editor state.
+
+When ID caching is enabled, a replacement container with the same ID can adopt the existing view. A successful reuse records the replacement container's revision, so later changes to its `Content` rebuild the view. Revisions use an opaque identity token that holds no reference to the container or template.
+
+Custom data can implement `IControlRecyclingVersionProvider` to supply a `ControlRecyclingVersion`. Keep its source token stable and advance the revision when the content used to create a control changes. `Add` records the current revision; `Build` captures it before invoking template code. Failed or unavailable builds do not mark a stale entry as current.
+
+Custom `IControlRecycling` services control their own creation and reuse policy through `Build`. For Avalonia documents and tools, that method receives the template owner as `data`, the caller's current control as `existing`, and no parent. The owner implements `ITemplate<Control?>`; call that interface's parameterless `Build()` to create its content. Calling its `IRecyclingDataTemplate.Build` instead would reenter the recycling service. The version-provider contract is optional and does not add members to `IControlRecycling`.
+
 ## Example
 
 The sample applications ship with recycling enabled. A minimal MVVM setup looks like this:

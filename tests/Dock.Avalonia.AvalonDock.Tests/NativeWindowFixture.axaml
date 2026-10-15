@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             x:Class="Dock.Avalonia.AvalonDock.Tests.NativeWindowFixture"
+             x:DataType="DockingManager">
+  <UserControl.Resources>
+    <DockingManager x:Key="DefaultNamespace" ShowSystemMenu="False" />
+    <ad:DockingManager x:Key="HistoricalNamespace" ShowSystemMenu="False" />
+  </UserControl.Resources>
+</UserControl>

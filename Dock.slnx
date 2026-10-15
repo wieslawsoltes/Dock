@@ -48,6 +48,7 @@
     <File Path="build/XUnit.props" />
   </Folder>
   <Folder Name="/samples/">
+    <Project Path="samples/DockAvalonDockSample/DockAvalonDockSample.csproj" />
     <Project Path="samples/DockCodeOnlyMvvmSample/DockCodeOnlyMvvmSample.csproj" />
     <Project Path="samples/DockCodeOnlySample/DockCodeOnlySample.csproj" />
     <Project Path="samples/DockControlPanelsSample/DockControlPanelsSample.csproj" />
@@ -124,6 +125,7 @@
     <Project Path="src/Dock.Settings.v11/Dock.Settings.v11.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/DockAvalonDockSample.HeadlessTests/DockAvalonDockSample.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Avalonia.v11.PreviewTests/Dock.Avalonia.v11.PreviewTests.csproj" />
     <Project Path="tests/Dock.Avalonia.v11.HeadlessTests/Dock.Avalonia.v11.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Avalonia.Diagnostics.UnitTests/Dock.Avalonia.Diagnostics.UnitTests.csproj" />

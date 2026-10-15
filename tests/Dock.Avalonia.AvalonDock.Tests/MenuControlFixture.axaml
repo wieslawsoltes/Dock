@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.MenuControlFixture"
+        x:DataType="LayoutItem" Width="600" Height="400">
+  <Window.Resources>
+    <DataTemplate x:Key="Icon" x:DataType="LayoutItem">
+      <TextBlock Text="{Binding Title}" Classes="menu-icon" />
+    </DataTemplate>
+    <DataTemplate x:Key="AlternateIcon" x:DataType="LayoutItem">
+      <TextBlock Text="{Binding Title, StringFormat='Icon: {0}'}" Classes="alternate-icon" />
+    </DataTemplate>
+    <DataTemplate x:Key="NestedContent" x:DataType="LayoutItem">
+      <Border><TextBlock Text="{Binding Title}" /></Border>
+    </DataTemplate>
+    <ContextMenuEx x:Key="SnapshotMenu" x:DataType="local:SnapshotMenuSource" ItemsSource="{Binding Entries}" />
+    <DataTemplate x:Key="Button" x:DataType="LayoutItem">
+      <local:UnprefixedMenuButton />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyButton" x:DataType="LayoutItem">
+      <ad:DropDownButton Content="Menu" Width="180" Height="40" DropDownContextMenuDataContext="{Binding}">
+        <ad:DropDownButton.DropDownContextMenu>
+          <ad:ContextMenuEx x:DataType="LayoutItem">
+            <ad:MenuItemEx Header="{Binding Title}" Command="{Binding ActivateCommand}" />
+          </ad:ContextMenuEx>
+        </ad:DropDownButton.DropDownContextMenu>
+      </ad:DropDownButton>
+    </DataTemplate>
+    <DataTemplate x:Key="Area" x:DataType="LayoutItem">
+      <DropDownControlArea Width="180" Height="40" DropDownContextMenuDataContext="{Binding}">
+        <DropDownControlArea.DropDownContextMenu>
+          <ContextMenuEx x:DataType="LayoutItem">
+            <MenuItemEx Header="{Binding Title}" Command="{Binding ActivateCommand}" />
+          </ContextMenuEx>
+        </DropDownControlArea.DropDownContextMenu>
+        <Border Background="Transparent"><TextBlock Text="{Binding Title}" /></Border>
+      </DropDownControlArea>
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyArea" x:DataType="LayoutItem">
+      <ad:DropDownControlArea Width="180" Height="40" DropDownContextMenuDataContext="{Binding}">
+        <ad:DropDownControlArea.DropDownContextMenu>
+          <ad:ContextMenuEx x:DataType="LayoutItem">
+            <ad:MenuItemEx Header="{Binding Title}" Command="{Binding ActivateCommand}" />
+          </ad:ContextMenuEx>
+        </ad:DropDownControlArea.DropDownContextMenu>
+        <Border Background="Transparent"><TextBlock Text="{Binding Title}" /></Border>
+      </ad:DropDownControlArea>
+    </DataTemplate>
+  </Window.Resources>
+</Window>

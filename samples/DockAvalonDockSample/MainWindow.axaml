@@ -1,0 +1,101 @@
+<!--
+  Adapted from Xceed Toolkit for WPF Live Explorer, AvalonDockView.xaml, v3.7.0.
+  Copyright (C) 2007-2019 Xceed Software Inc.
+  Licensed under the Microsoft Public License (Ms-PL). See LICENSE-XCEED.txt.
+  Avalonia adaptation Copyright (c) Wiesław Šoltés 2026, also under Ms-PL.
+  Source and adaptation details: NOTICE.txt.
+-->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DockAvalonDockSample.ViewModels"
+        x:Class="DockAvalonDockSample.MainWindow" x:DataType="vm:MainWindowViewModel"
+        Title="AvalonDock on Dock — Live Explorer" Width="1180" Height="760"
+        MinWidth="720" MinHeight="480">
+  <Grid RowDefinitions="Auto,*,Auto,Auto">
+    <Border Padding="16,12" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="3">
+          <TextBlock Text="AvalonDock on Dock" FontSize="22" FontWeight="SemiBold" />
+          <TextBlock Text="Xceed layout API · Avalonia controls · Dock engine" Opacity="0.65" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+          <Button Content="Save layout" Command="{Binding SaveLayout}" />
+          <Button Content="Load layout" Command="{Binding LoadLayout}" />
+          <Button Content="Hide Journal" Command="{Binding HideJournal}" />
+          <Button Content="Show Journal" Command="{Binding ShowJournal}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <DockingManager x:Name="DockManager" Grid.Row="1" Margin="8" ShowDockablePreviewOnDrag="True">
+      <DockingManager.Theme>
+        <GenericTheme />
+      </DockingManager.Theme>
+      <LayoutRoot>
+        <LayoutPanel Orientation="Horizontal">
+          <LayoutAnchorablePane DockWidth="230" DockMinWidth="180">
+            <LayoutAnchorable ContentId="properties" Title="Properties" CanHide="False" CanClose="False" AutoHideWidth="240">
+              <StackPanel Margin="16" Spacing="12">
+                <TextBlock Text="Workspace properties" FontWeight="SemiBold" />
+                <TextBlock Text="This tool stays open while you work with documents." TextWrapping="Wrap" />
+                <TextBlock Text="Font size" />
+                <NumericUpDown Value="14" Minimum="8" Maximum="48" />
+                <CheckBox Content="Show details" IsChecked="True" />
+                <TextBlock Text="Move a tab between panes, float it, or close a document. Save the layout to restore the workspace." TextWrapping="Wrap" Opacity="0.65" />
+              </StackPanel>
+            </LayoutAnchorable>
+          </LayoutAnchorablePane>
+          <LayoutDocumentPaneGroup>
+            <LayoutDocumentPane>
+              <LayoutDocument ContentId="document1" Title="Document 1">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+                  <TextBlock Text="Document 1" FontSize="28" />
+                  <TextBlock Text="An AvalonDock document rendered by Dock." />
+                </StackPanel>
+              </LayoutDocument>
+              <LayoutDocument ContentId="document2" Title="Document 2">
+                <TextBox x:Name="DocumentEditor" Text="Document 2 Content" AcceptsReturn="True"
+                         FontFamily="monospace" BorderThickness="0" Padding="16" />
+              </LayoutDocument>
+            </LayoutDocumentPane>
+          </LayoutDocumentPaneGroup>
+          <LayoutAnchorablePaneGroup DockWidth="230" DockMinWidth="160">
+            <LayoutAnchorablePane>
+              <LayoutAnchorable ContentId="alarms" Title="Alarms" CanClose="True">
+                <ListBox Margin="8">
+                  <ListBoxItem Content="Alarm 1" />
+                  <ListBoxItem Content="Alarm 2" />
+                  <ListBoxItem Content="Alarm 3" />
+                </ListBox>
+              </LayoutAnchorable>
+              <LayoutAnchorable ContentId="journal" Title="Journal">
+                <TextBox Text="This is the content of the Journal Pane." AcceptsReturn="True"
+                         TextWrapping="Wrap" BorderThickness="0" Padding="16" />
+              </LayoutAnchorable>
+            </LayoutAnchorablePane>
+          </LayoutAnchorablePaneGroup>
+        </LayoutPanel>
+        <LayoutRoot.LeftSide>
+          <LayoutAnchorSide>
+            <LayoutAnchorGroup>
+              <LayoutAnchorable Title="Agenda" ContentId="agenda" AutoHideWidth="260">
+                <TextBlock Text="Agenda Content" Margin="10" FontSize="18"
+                           FontWeight="Black" TextWrapping="Wrap" />
+              </LayoutAnchorable>
+              <LayoutAnchorable Title="Contacts" ContentId="contacts" AutoHideWidth="260">
+                <TextBlock Text="Contacts Content" Margin="10" FontSize="18"
+                           FontWeight="Black" TextWrapping="Wrap" />
+              </LayoutAnchorable>
+            </LayoutAnchorGroup>
+          </LayoutAnchorSide>
+        </LayoutRoot.LeftSide>
+      </LayoutRoot>
+    </DockingManager>
+
+    <Border Grid.Row="2" Padding="16,8" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+      <TextBlock Text="{Binding Status}" TextWrapping="Wrap" />
+    </Border>
+    <TextBlock Grid.Row="3" Margin="16,0,16,10" FontSize="11" Opacity="0.6"
+               Text="Based on Xceed Live Explorer 3.7.0 · Copyright © 2007–2019 Xceed Software Inc. · Ms-PL (see LICENSE-XCEED.txt)" />
+  </Grid>
+</Window>

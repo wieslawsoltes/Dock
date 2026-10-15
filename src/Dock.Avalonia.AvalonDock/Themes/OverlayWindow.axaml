@@ -1,0 +1,95 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dock="using:Dock.Avalonia.Controls"
+                    xmlns:controls="using:AvalonDock.Controls"
+                    x:CompileBindings="True">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/DockAdornerWindow.axaml" />
+  </ResourceDictionary.MergedDictionaries>
+  <ControlTheme x:Key="{x:Type controls:OverlayWindow}" TargetType="controls:OverlayWindow"
+                x:DataType="controls:OverlayWindow"
+                BasedOn="{StaticResource {x:Type dock:DockAdornerWindow}}">
+    <Setter Property="UseLayoutRounding" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate x:DataType="controls:OverlayWindow">
+        <Grid>
+          <ContentPresenter x:Name="PART_NativeTargetPresenter" Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" Opacity="0"
+                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+          <Canvas x:Name="PART_DropTargetsContainer">
+            <Path x:Name="PART_PreviewBox" Fill="{DynamicResource DockTargetIndicatorBrush}"
+                  Opacity="0.5" IsVisible="False" />
+            <Grid x:Name="PART_DockingManagerDropTargets" IsVisible="False">
+              <Image x:Name="PART_DockingManagerDropTargetLeft" Classes="overlay-selector" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center"
+                     Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableLeft.png" />
+              <Image x:Name="PART_DockingManagerDropTargetTop" Classes="overlay-selector" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top"
+                     Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableTop.png" />
+              <Image x:Name="PART_DockingManagerDropTargetRight" Classes="overlay-selector" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableRight.png" />
+              <Image x:Name="PART_DockingManagerDropTargetBottom" Classes="overlay-selector" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                     Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableBottom.png" />
+            </Grid>
+            <Grid x:Name="PART_AnchorablePaneDropTargets" IsVisible="False">
+              <Grid Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
+                <Image x:Name="PART_AnchorablePaneDropTargetLeft" Classes="overlay-selector" Grid.Row="1" Grid.Column="0"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableLeft.png" />
+                <Image x:Name="PART_AnchorablePaneDropTargetTop" Classes="overlay-selector" Grid.Row="0" Grid.Column="1"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableTop.png" />
+                <Image x:Name="PART_AnchorablePaneDropTargetRight" Classes="overlay-selector" Grid.Row="1" Grid.Column="2"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableRight.png" />
+                <Image x:Name="PART_AnchorablePaneDropTargetBottom" Classes="overlay-selector" Grid.Row="2" Grid.Column="1"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableBottom.png" />
+                <Image x:Name="PART_AnchorablePaneDropTargetInto" Classes="overlay-selector" Grid.Row="1" Grid.Column="1"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockDocumentInside.png" />
+              </Grid>
+            </Grid>
+            <Grid x:Name="PART_DocumentPaneDropTargets" IsVisible="False">
+              <Grid Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
+                <Image x:Name="PART_DocumentPaneDropTargetLeft" Classes="overlay-selector" Grid.Row="1" Grid.Column="0"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableLeft.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetTop" Classes="overlay-selector" Grid.Row="0" Grid.Column="1"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableTop.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetRight" Classes="overlay-selector" Grid.Row="1" Grid.Column="2"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableRight.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetBottom" Classes="overlay-selector" Grid.Row="2" Grid.Column="1"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableBottom.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetInto" Classes="overlay-selector" Grid.Row="1" Grid.Column="1"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockDocumentInside.png" />
+              </Grid>
+            </Grid>
+            <Grid x:Name="PART_DocumentPaneFullDropTargets" IsVisible="False">
+              <Grid Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*,*,*,*">
+                <Image x:Name="PART_DocumentPaneFullDropTargetLeft" Classes="overlay-selector" Grid.Row="2" Grid.Column="1"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableLeft.png" />
+                <Image x:Name="PART_DocumentPaneFullDropTargetTop" Classes="overlay-selector" Grid.Row="1" Grid.Column="2"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableTop.png" />
+                <Image x:Name="PART_DocumentPaneFullDropTargetRight" Classes="overlay-selector" Grid.Row="2" Grid.Column="3"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableRight.png" />
+                <Image x:Name="PART_DocumentPaneFullDropTargetBottom" Classes="overlay-selector" Grid.Row="3" Grid.Column="2"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableBottom.png" />
+                <Image x:Name="PART_DocumentPaneFullDropTargetInto" Classes="overlay-selector" Grid.Row="2" Grid.Column="2"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockDocumentInside.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetLeftAsAnchorablePane" Classes="overlay-selector" Grid.Row="2" Grid.Column="0"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableLeft.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetTopAsAnchorablePane" Classes="overlay-selector" Grid.Row="0" Grid.Column="2"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableTop.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetRightAsAnchorablePane" Classes="overlay-selector" Grid.Row="2" Grid.Column="4"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableRight.png" />
+                <Image x:Name="PART_DocumentPaneDropTargetBottomAsAnchorablePane" Classes="overlay-selector" Grid.Row="4" Grid.Column="2"
+                       Source="avares://Dock.Avalonia.Themes.Fluent/Assets/DockAnchorableBottom.png" />
+              </Grid>
+            </Grid>
+          </Canvas>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^ /template/ Image.overlay-selector">
+      <Setter Property="Width" Value="{DynamicResource DockTargetSelectorSize}" />
+      <Setter Property="Height" Value="{DynamicResource DockTargetSelectorSize}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

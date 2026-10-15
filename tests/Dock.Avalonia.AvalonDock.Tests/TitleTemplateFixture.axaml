@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.TitleTemplateFixture"
+        x:DataType="local:SourceViewModel" Width="1000" Height="600">
+  <Window.Resources>
+    <DataTemplate x:Key="ToolTitle" x:DataType="LayoutAnchorable">
+      <TextBlock Classes="tool-title" Background="Transparent" Text="{Binding Title, StringFormat='Title: {0}'}" />
+    </DataTemplate>
+    <DataTemplate x:Key="AlternateTitle" x:DataType="LayoutContent">
+      <TextBlock Classes="alternate-title" Text="{Binding ContentId, StringFormat='ID: {0}'}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolHeader" x:DataType="LayoutAnchorable">
+      <TextBlock Classes="tool-tab" Background="Transparent" Text="{Binding Title, StringFormat='Tab: {0}'}" />
+    </DataTemplate>
+    <local:HeaderKindSelector x:Key="Selector" ToolTemplate="{StaticResource ToolTitle}" />
+  </Window.Resources>
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type local:SourceContent}" x:DataType="local:SourceContent">
+      <TextBlock Text="{Binding Text}" />
+    </DataTemplate>
+  </Window.DataTemplates>
+  <DockingManager x:Name="Manager" DocumentsSource="{Binding Documents}" AnchorablesSource="{Binding Tools}"
+                  LayoutUpdateStrategy="{Binding Strategy}"
+                  AnchorableHeaderTemplate="{StaticResource ToolHeader}"
+                  AnchorableTitleTemplate="{StaticResource ToolTitle}" />
+</Window>

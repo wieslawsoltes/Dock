@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <Import Project="../../build/Avalonia.props" />
+  <Import Project="../../src/Dock.Avalonia.AvalonDock/buildTransitive/Dock.Avalonia.AvalonDock.targets" />
+  <ItemGroup>
+    <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
+    <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock.Generators/Dock.Avalonia.AvalonDock.Generators.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+</Project>

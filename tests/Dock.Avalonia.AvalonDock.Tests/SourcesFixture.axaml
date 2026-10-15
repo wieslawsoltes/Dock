@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.SourcesFixture"
+        x:DataType="local:SourceViewModel" Width="800" Height="500">
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type local:SourceContent}" x:DataType="local:SourceContent">
+      <TextBlock Classes="window-template" Text="{Binding Text}" />
+    </DataTemplate>
+  </Window.DataTemplates>
+  <ad:DockingManager x:Name="Manager" DocumentsSource="{Binding Documents}"
+                     AnchorablesSource="{Binding Tools}" LayoutUpdateStrategy="{Binding Strategy}">
+    <ad:DockingManager.DataTemplates>
+      <DataTemplate DataType="{x:Type local:SourceContent}" x:DataType="local:SourceContent">
+        <TextBlock Classes="manager-template" Text="{Binding Text}" Margin="12" />
+      </DataTemplate>
+    </ad:DockingManager.DataTemplates>
+  </ad:DockingManager>
+</Window>

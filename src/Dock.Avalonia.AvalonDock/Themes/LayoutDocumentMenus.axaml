@@ -1,0 +1,13 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:models="using:Dock.Model.Controls"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="models:IDocumentDock">
+
+  <Style Selector=":is(ad|DockingManager) dock|DocumentTabStrip, dock|DockControl.avalondock dock|DocumentTabStrip, :is(Window).avalondock dock|DocumentTabStrip">
+    <Setter Property="RightContent" Value="{Binding}" />
+    <Setter Property="RightContentTemplate" Value="{StaticResource AvalonDockDocumentMenu}" />
+  </Style>
+</Styles>

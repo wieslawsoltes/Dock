@@ -1,0 +1,53 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:AvalonDock.Controls"
+                    xmlns:layout="using:AvalonDock.Layout"
+                    xmlns:converters="using:AvalonDock.Converters"
+                    xmlns:dock="using:Dock.Avalonia.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:docking="using:Dock.Settings"
+                    xmlns:infrastructure="using:AvalonDock.Infrastructure">
+  <converters:AnchorSideToOrientationConverter x:Key="AvalonDockAnchorOrientation" />
+
+  <ControlTemplate x:Key="AvalonDockAnchorSide" TargetType="controls:LayoutAnchorSideControl" x:DataType="controls:LayoutAnchorSideControl">
+    <ItemsControl ItemsSource="{Binding Children, RelativeSource={RelativeSource TemplatedParent}}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="{Binding $parent[controls:LayoutAnchorSideControl].((layout:LayoutAnchorSide)Model).Side, Converter={StaticResource AvalonDockAnchorOrientation}}" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ItemsControl>
+  </ControlTemplate>
+  <ControlTemplate x:Key="AvalonDockAnchorGroup" TargetType="controls:LayoutAnchorGroupControl" x:DataType="controls:LayoutAnchorGroupControl">
+    <dock:ToolPinnedControl ItemsSource="{Binding Children, RelativeSource={RelativeSource TemplatedParent}}"
+        Orientation="{Binding Model.((layout:LayoutAnchorSide)Parent).Side, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AvalonDockAnchorOrientation}}" />
+  </ControlTemplate>
+  <ControlTemplate x:Key="AvalonDockAnchor" TargetType="controls:LayoutAnchorControl" x:DataType="core:IDockable">
+    <dock:DockableControl TrackingMode="Pinned">
+      <LayoutTransformControl x:Name="PART_LayoutTransformControl">
+        <Border Background="{TemplateBinding Background}" Padding="8,5"
+                docking:DockProperties.IsDragArea="True" docking:DockProperties.IsDropArea="True"
+                docking:DockProperties.IsDockTarget="True" docking:DockProperties.ShowDockIndicatorOnly="True"
+                docking:DockProperties.IndicatorDockOperation="Fill">
+          <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AvalonDockAnchorableHeader}" />
+        </Border>
+      </LayoutTransformControl>
+    </dock:DockableControl>
+  </ControlTemplate>
+
+  <ControlTheme x:Key="{x:Type controls:LayoutAnchorSideControl}" TargetType="controls:LayoutAnchorSideControl" />
+  <ControlTheme x:Key="{x:Type controls:LayoutAnchorGroupControl}" TargetType="controls:LayoutAnchorGroupControl" />
+  <ControlTheme x:Key="{x:Type controls:LayoutAnchorControl}" TargetType="controls:LayoutAnchorControl"
+                BasedOn="{StaticResource {x:Type dock:ToolPinItemControl}}" x:DataType="controls:LayoutAnchorControl">
+    <Setter Property="PinContextMenu" Value="{x:Null}" />
+    <Setter Property="IsEnabled" Value="{Binding $self.((layout:LayoutAnchorable)Model).IsEnabled}" />
+  </ControlTheme>
+
+  <ControlTemplate x:Key="AvalonDockPinnedStrip" TargetType="dock:ToolPinnedControl">
+    <infrastructure:LayoutAnchorSidePresenter>
+      <infrastructure:LayoutAnchorSidePresenter.Body>
+        <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />
+      </infrastructure:LayoutAnchorSidePresenter.Body>
+    </infrastructure:LayoutAnchorSidePresenter>
+  </ControlTemplate>
+</ResourceDictionary>

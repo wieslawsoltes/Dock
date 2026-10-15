@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.LayoutItemFixture"
+        x:DataType="LayoutItem" Width="400" Height="250">
+  <Window.Resources>
+    <LayoutDocumentItem x:Key="DocumentContainer" Description="Unprefixed container" />
+    <ad:LayoutAnchorableItem x:Key="ToolContainer" CanHide="False" />
+  </Window.Resources>
+  <StackPanel>
+    <TextBlock x:Name="TitleText" Text="{Binding Title}" />
+    <Button x:Name="FloatButton" Content="Float" Command="{Binding FloatCommand}" />
+    <ContentControl Content="{Binding View}" />
+  </StackPanel>
+</Window>

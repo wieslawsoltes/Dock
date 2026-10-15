@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:Class="Dock.Avalonia.AvalonDock.Tests.RegisteredThemeResources"
+                    x:DataType="x:Object"
+                    x:CompileBindings="True">
+  <SolidColorBrush x:Key="RegisteredBrush" Color="#2468AC" />
+</ResourceDictionary>

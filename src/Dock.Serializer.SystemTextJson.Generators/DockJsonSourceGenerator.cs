@@ -155,6 +155,11 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
         string TypeExpression,
         ImmutableArray<string> MemberNames);
 
+    private sealed record CollectionFactoryModel(
+        string CollectionTypeExpression,
+        string ListTypeExpression,
+        string ConcreteTypeExpression);
+
     private sealed record DockSymbols(
         INamedTypeSymbol IDockable,
         INamedTypeSymbol IDock,
@@ -175,7 +180,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
         ImmutableArray<GeneratedSourceArtifact> AdditionalSources,
         ImmutableArray<string> ContextTypes,
         ImmutableArray<PolymorphismModel> Polymorphisms,
-        ImmutableArray<IgnoredMembersModel> IgnoredMembers)
+        ImmutableArray<IgnoredMembersModel> IgnoredMembers,
+        ImmutableArray<CollectionFactoryModel> CollectionFactories)
     {
         public static GenerationModel Empty(ImmutableArray<Diagnostic> diagnostics)
         {
@@ -187,7 +193,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 AdditionalSources: ImmutableArray<GeneratedSourceArtifact>.Empty,
                 ContextTypes: ImmutableArray<string>.Empty,
                 Polymorphisms: ImmutableArray<PolymorphismModel>.Empty,
-                IgnoredMembers: ImmutableArray<IgnoredMembersModel>.Empty);
+                IgnoredMembers: ImmutableArray<IgnoredMembersModel>.Empty,
+                CollectionFactories: ImmutableArray<CollectionFactoryModel>.Empty);
         }
     }
 
@@ -251,7 +258,8 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
                 AdditionalSources: additionalSources,
                 ContextTypes: contextTypes,
                 Polymorphisms: polymorphisms,
-                IgnoredMembers: ignoredMembers);
+                IgnoredMembers: ignoredMembers,
+                CollectionFactories: BuildCollectionFactories(compilation, serializableTypes, dockSymbols!, cancellationToken));
         }
 
         private static string GetUniqueContextTypeName(
@@ -705,6 +713,185 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             return typeExpressions
                 .OrderBy(static x => x, StringComparer.Ordinal)
                 .ToImmutableArray();
+        }
+
+        private static ImmutableArray<CollectionFactoryModel> BuildCollectionFactories(
+            Compilation compilation,
+            ImmutableArray<SerializableTypeModel> serializableTypes,
+            DockSymbols symbols,
+            System.Threading.CancellationToken cancellationToken)
+        {
+            INamedTypeSymbol? listInterface = compilation.GetTypeByMetadataName("System.Collections.Generic.IList`1");
+            if (listInterface is null)
+            {
+                return ImmutableArray<CollectionFactoryModel>.Empty;
+            }
+
+            var elements = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default)
+            {
+                symbols.IDockable,
+                symbols.IDockWindow
+            };
+            var pending = new Queue<ITypeSymbol>(serializableTypes.Select(static type => type.Type));
+            var seen = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default);
+            var factories = new List<CollectionFactoryModel>();
+            while (pending.Count > 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                ITypeSymbol candidate = pending.Dequeue();
+                if (!seen.Add(candidate))
+                {
+                    continue;
+                }
+
+                if (candidate is IArrayTypeSymbol array)
+                {
+                    pending.Enqueue(array.ElementType);
+                    continue;
+                }
+
+                if (candidate is not INamedTypeSymbol named || HasOpenTypeParameters(named)
+                    || !compilation.IsSymbolAccessibleWithin(named, compilation.Assembly))
+                {
+                    continue;
+                }
+
+                foreach (ITypeSymbol argument in named.TypeArguments)
+                {
+                    pending.Enqueue(argument);
+                }
+
+                if (SymbolEqualityComparer.Default.Equals(named.OriginalDefinition, listInterface))
+                {
+                    elements.Add(named.TypeArguments[0]);
+                }
+
+                foreach (INamedTypeSymbol contract in named.AllInterfaces)
+                {
+                    if (SymbolEqualityComparer.Default.Equals(contract.OriginalDefinition, listInterface))
+                    {
+                        elements.Add(contract.TypeArguments[0]);
+                    }
+                }
+
+                // Framework types expose large unrelated property graphs. Their collection element
+                // arguments have already been visited; application payload properties are followed below.
+                if (named.SpecialType != SpecialType.None
+                    || (named.ContainingNamespace.ToDisplayString() == "System"
+                        || named.ContainingNamespace.ToDisplayString().StartsWith("System.", StringComparison.Ordinal)))
+                {
+                    continue;
+                }
+
+                foreach (AttributeData attribute in named.GetAttributes())
+                {
+                    if (attribute.AttributeClass?.ToDisplayString() == "System.Text.Json.Serialization.JsonDerivedTypeAttribute"
+                        && attribute.ConstructorArguments.Length > 0
+                        && attribute.ConstructorArguments[0].Value is ITypeSymbol derivedType)
+                    {
+                        pending.Enqueue(derivedType);
+                    }
+                }
+
+                foreach (IPropertySymbol property in GetAllPublicInstanceProperties(named))
+                {
+                    if (!property.IsIndexer && !ShouldIgnoreProperty(property, symbols)
+                        && !IsJsonIgnoredMember(property))
+                    {
+                        pending.Enqueue(property.Type);
+                    }
+                }
+
+                for (INamedTypeSymbol? current = named; current is not null; current = current.BaseType)
+                {
+                    foreach (ISymbol member in current.GetMembers())
+                    {
+                        if (member.IsStatic || IsJsonIgnoredMember(member)
+                            || !compilation.IsSymbolAccessibleWithin(member, compilation.Assembly)
+                            || !member.GetAttributes().Any(static attribute => attribute.AttributeClass?.ToDisplayString()
+                                == "System.Text.Json.Serialization.JsonIncludeAttribute"))
+                        {
+                            continue;
+                        }
+
+                        if (member is IFieldSymbol field)
+                        {
+                            pending.Enqueue(field.Type);
+                        }
+                        else if (member is IPropertySymbol property && !property.IsIndexer
+                            && !ShouldIgnoreProperty(property, symbols))
+                        {
+                            pending.Enqueue(property.Type);
+                        }
+                    }
+                }
+            }
+
+            foreach (ITypeSymbol element in elements)
+            {
+                if (!compilation.IsSymbolAccessibleWithin(element, compilation.Assembly))
+                {
+                    continue;
+                }
+
+                string elementType = element.ToDisplayString(s_fullyQualifiedFormat);
+                string contract = "global::System.Collections.Generic.IList<" + elementType + ">";
+                factories.Add(new CollectionFactoryModel(contract, "global::System.Collections.Generic.List<>",
+                    "global::System.Collections.Generic.List<" + elementType + ">"));
+                factories.Add(new CollectionFactoryModel(contract, "global::System.Collections.ObjectModel.ObservableCollection<>",
+                    "global::System.Collections.ObjectModel.ObservableCollection<" + elementType + ">"));
+            }
+
+            foreach (SerializableTypeModel registered in serializableTypes)
+            {
+                INamedTypeSymbol type = registered.Type;
+                if (type.Arity != 1 || type.IsAbstract
+                    || !type.InstanceConstructors.Any(static constructor => constructor.Parameters.Length == 0
+                        && constructor.DeclaredAccessibility == Accessibility.Public))
+                {
+                    continue;
+                }
+
+                foreach (INamedTypeSymbol contract in type.AllInterfaces)
+                {
+                    if (SymbolEqualityComparer.Default.Equals(contract.OriginalDefinition, listInterface))
+                    {
+                        factories.Add(new CollectionFactoryModel(
+                            contract.ToDisplayString(s_fullyQualifiedFormat),
+                            type.ConstructUnboundGenericType().ToDisplayString(s_fullyQualifiedFormat),
+                            registered.TypeExpression));
+                    }
+                }
+            }
+
+            return factories.Distinct()
+                .OrderBy(static factory => factory.CollectionTypeExpression, StringComparer.Ordinal)
+                .ThenBy(static factory => factory.ListTypeExpression, StringComparer.Ordinal)
+                .ToImmutableArray();
+        }
+
+        private static bool IsJsonIgnoredMember(ISymbol member)
+        {
+            foreach (AttributeData attribute in member.GetAttributes())
+            {
+                if (attribute.AttributeClass?.ToDisplayString() != "System.Text.Json.Serialization.JsonIgnoreAttribute")
+                {
+                    continue;
+                }
+
+                // JsonIgnore without a condition means Always. Conditional ignores still need metadata.
+                foreach (KeyValuePair<string, TypedConstant> argument in attribute.NamedArguments)
+                {
+                    if (argument.Key == "Condition")
+                    {
+                        return argument.Value.Value is 1;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private static ImmutableArray<string> GetIgnoredMembers(INamedTypeSymbol typeSymbol, DockSymbols symbols)
@@ -1309,7 +1496,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine();
             builder.AppendLine("namespace Dock.Serializer.SystemTextJson;");
             builder.AppendLine();
-            builder.AppendLine("internal sealed class DockSystemTextJsonResolver : global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver");
+            builder.AppendLine("internal sealed class DockSystemTextJsonResolver : global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver, global::Dock.Serializer.SystemTextJson.IDockJsonCollectionFactory");
             builder.AppendLine("{");
             builder.Append("    private static readonly global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver s_resolver = global::System.Text.Json.Serialization.Metadata.JsonTypeInfoResolver.WithAddedModifier(");
             builder.Append(model.ContextTypeName);
@@ -1322,6 +1509,27 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("    public global::System.Text.Json.Serialization.Metadata.JsonTypeInfo? GetTypeInfo(global::System.Type type, global::System.Text.Json.JsonSerializerOptions options)");
             builder.AppendLine("    {");
             builder.AppendLine("        return s_resolver.GetTypeInfo(type, options);");
+            builder.AppendLine("    }");
+            builder.AppendLine();
+            builder.AppendLine("    public global::System.Func<object>? GetListFactory(global::System.Type collectionType, global::System.Type listType, global::System.Func<object>? suppliedFactory = null)");
+            builder.AppendLine("    {");
+            foreach (CollectionFactoryModel factory in model.CollectionFactories)
+            {
+                builder.Append("        if (collectionType == typeof(");
+                builder.Append(factory.CollectionTypeExpression);
+                builder.Append(") && listType == typeof(");
+                builder.Append(factory.ListTypeExpression);
+                builder.AppendLine("))");
+                builder.Append("            return CreateListFactory<");
+                builder.Append(factory.ConcreteTypeExpression);
+                builder.AppendLine(">(suppliedFactory);");
+            }
+            builder.AppendLine("        return null;");
+            builder.AppendLine("    }");
+            builder.AppendLine();
+            builder.AppendLine("    private static global::System.Func<object> CreateListFactory<T>(global::System.Func<object>? suppliedFactory) where T : class, new()");
+            builder.AppendLine("    {");
+            builder.AppendLine("        return suppliedFactory is null ? static () => new T() : () => suppliedFactory() is T compatible ? compatible : new T();");
             builder.AppendLine("    }");
             builder.AppendLine();
             builder.AppendLine("    private static void ModifyTypeInfo(global::System.Text.Json.Serialization.Metadata.JsonTypeInfo jsonTypeInfo)");
@@ -1592,7 +1800,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("                writer.WriteEndObject();");
             builder.AppendLine("            }");
             builder.AppendLine();
-            builder.AppendLine("            return global::System.Text.Json.JsonSerializer.Deserialize(stream.ToArray(), payloadType, options);");
+            builder.AppendLine("            return global::System.Text.Json.JsonSerializer.Deserialize(stream.ToArray(), options.GetTypeInfo(payloadType));");
             builder.AppendLine("        }");
             builder.AppendLine();
             builder.AppendLine("        public override void Write(global::System.Text.Json.Utf8JsonWriter writer, object? value, global::System.Text.Json.JsonSerializerOptions options)");
@@ -1621,7 +1829,7 @@ public sealed class DockJsonSourceGenerator : IIncrementalGenerator
             builder.AppendLine("                throw new global::System.NotSupportedException($\"Dock source-generated object payload '{runtimeType.FullName ?? runtimeType.Name}' is not registered.\");");
             builder.AppendLine("            }");
             builder.AppendLine();
-            builder.AppendLine("            global::System.Text.Json.JsonElement element = global::System.Text.Json.JsonSerializer.SerializeToElement(value, runtimeType, options);");
+            builder.AppendLine("            global::System.Text.Json.JsonElement element = global::System.Text.Json.JsonSerializer.SerializeToElement(value, options.GetTypeInfo(runtimeType));");
             builder.AppendLine("            if (element.ValueKind != global::System.Text.Json.JsonValueKind.Object)");
             builder.AppendLine("            {");
             builder.AppendLine("                throw new global::System.NotSupportedException(\"Dock source-generated object payloads must serialize as JSON objects.\");");

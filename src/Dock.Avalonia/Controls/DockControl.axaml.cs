@@ -505,7 +505,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             return;
         }
 
-        // Create and add default DataTemplates using helper class
+        // Add the shared, compiled XAML templates.
         foreach (var template in DockDataTemplateHelper.CreateDefaultDataTemplates())
         {
             _contentControl.DataTemplates.Add(template);

@@ -227,7 +227,7 @@ public sealed class DockCommandBarManager
         IReadOnlyList<DockCommandBarDefinition> activeBars)
     {
         var merged = new List<DockCommandBarDefinition>();
-        foreach (DockCommandBarKind kind in Enum.GetValues(typeof(DockCommandBarKind)))
+        foreach (DockCommandBarKind kind in Enum.GetValues<DockCommandBarKind>())
         {
             merged.AddRange(MergeBarsForKind(kind, baseBars, activeBars));
         }

@@ -24,10 +24,11 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Browser.v11\Dock.Avalonia.Themes.Browser.v11.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent.v11\Dock.Avalonia.Themes.Fluent.v11.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Simple.v11\Dock.Avalonia.Themes.Simple.v11.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
+    <Compile Include="..\..\samples\DockSystemTextJsonSourceGenAotSample\BindingSmokeChecks.cs" Link="BindingSmokeChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
     <Compile Include="..\Dock.Avalonia.HeadlessTests\CapabilityPolicyBindingWarningsTests.cs" Link="CapabilityPolicyBindingWarningsTests.cs" />
     <Compile Include="..\Dock.Avalonia.HeadlessTests\CompiledCapabilityBindingTests.cs" Link="CompiledCapabilityBindingTests.cs" />
     <Compile Include="..\Dock.Avalonia.HeadlessTests\CapabilityBindingTestResources.axaml.cs" Link="CapabilityBindingTestResources.axaml.cs" />

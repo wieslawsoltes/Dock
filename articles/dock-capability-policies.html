@@ -148,6 +148,23 @@ explorer.DockCapabilityOverrides = new DockCapabilityOverrides
 </ul>
 <h2 id="ui-behavior">UI behavior</h2>
 <p>Default Fluent menus and drag entry points use effective capability resolution, so blocked actions are hidden/disabled consistently with runtime validation.</p>
+<p>Policies and overrides may remain <code>null</code>, including on docks created when floating a document. The built-in themes observe these optional values without logging null-path binding warnings. Replacing or clearing a policy updates the bindings; custom policies implementing <code>INotifyPropertyChanged</code> can also notify changes to individual capability properties.</p>
+<p>Custom templates can use Avalonia's compiled bindings with the null-conditional <code>?.</code> operator alongside the capability converters:</p>
+<pre><code class="lang-xml">&lt;MultiBinding xmlns=&quot;https://github.com/avaloniaui&quot;
+              xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+              xmlns:core=&quot;using:Dock.Model.Core&quot;
+              xmlns:converters=&quot;using:Dock.Avalonia.Converters&quot;
+              x:DataType=&quot;core:IDockable&quot;
+              x:CompileBindings=&quot;True&quot;
+              Converter=&quot;{x:Static converters:DockCapabilityConverters.CanDragMultiConverter}&quot;&gt;
+  &lt;Binding /&gt;
+  &lt;Binding Path=&quot;CanDrag&quot; /&gt;
+  &lt;Binding Path=&quot;DockCapabilityOverrides?.CanDrag&quot; Mode=&quot;OneWay&quot; /&gt;
+  &lt;Binding Path=&quot;((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrag&quot; Mode=&quot;OneWay&quot; /&gt;
+&lt;/MultiBinding&gt;
+</code></pre>
+<p>For a dock data context, bind <code>DockCapabilityPolicy?.CanDrag</code> to observe its policy or <code>ActiveDockable?.DockCapabilityOverrides?.CanDrag</code> to observe its active dockable's overrides. The compiler validates these paths against the declared <code>x:DataType</code>; Avalonia owns their subscriptions and lifetime.</p>
+<p>Avalonia 11.3.22 still logs a <code>Value is null</code> diagnostic when <code>Owner</code> itself is null in the interface-cast path above. Null policies and overrides on an existing owner are handled without warnings. Avalonia 12.1.3 includes the upstream <a href="https://github.com/AvaloniaUI/Avalonia/pull/22174">null-conditional cast fix (#22174)</a>, so a null owner is also warning-free there. Dock leaves genuine binding errors visible rather than suppressing diagnostics.</p>
 <h2 id="sample">Sample</h2>
 <p><code>DockXamlReactiveUISample</code> includes:</p>
 <ul>

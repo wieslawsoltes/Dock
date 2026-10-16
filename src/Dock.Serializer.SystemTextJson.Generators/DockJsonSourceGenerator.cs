@@ -602,11 +602,20 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
                 {
                     continue;
                 }
+                foreach (AttributeData attribute in candidate.GetAttributes())
+                {
+                    if (attribute.AttributeClass?.ToDisplayString() == "System.Text.Json.Serialization.JsonDerivedTypeAttribute"
+                        && attribute.ConstructorArguments.Length > 0
+                        && attribute.ConstructorArguments[0].Value is ITypeSymbol derivedType)
+                    {
+                        pending.Enqueue(derivedType);
+                    }
+                }
                 if (!candidate.IsAbstract && candidate.TypeKind is TypeKind.Class or TypeKind.Struct && seen.Add(candidate))
                 {
                     result.Add(CreateSerializableType(candidate, null, false, symbols));
                 }
-                foreach (ITypeSymbol memberType in GetSerializableMemberTypes(candidate, symbols))
+                foreach (ITypeSymbol memberType in GetSerializableMemberTypes(candidate, symbols, compilation))
                 {
                     pending.Enqueue(memberType);
                 }
@@ -617,7 +626,7 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
                 .ToImmutableArray();
         }
 
-        private static IEnumerable<ITypeSymbol> GetSerializableMemberTypes(INamedTypeSymbol type, DockSymbols symbols)
+        private static IEnumerable<ITypeSymbol> GetSerializableMemberTypes(INamedTypeSymbol type, DockSymbols symbols, Compilation compilation)
         {
             foreach (IPropertySymbol property in GetAllPublicInstanceProperties(type))
             {
@@ -635,6 +644,26 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
                 else if (member is IPropertySymbol property && !ShouldIgnoreProperty(property, symbols))
                 {
                     yield return property.Type;
+                }
+            }
+            for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
+            {
+                foreach (ISymbol member in current.GetMembers())
+                {
+                    if (member.IsStatic || IsJsonIgnoredMember(member)
+                        || !compilation.IsSymbolAccessibleWithin(member, compilation.Assembly)
+                        || LegacyMemberEmitter.Attribute(member, "System.Text.Json.Serialization.JsonIncludeAttribute") is null)
+                    {
+                        continue;
+                    }
+                    if (member is IFieldSymbol field)
+                    {
+                        yield return field.Type;
+                    }
+                    else if (member is IPropertySymbol property && !property.IsIndexer && !ShouldIgnoreProperty(property, symbols))
+                    {
+                        yield return property.Type;
+                    }
                 }
             }
         }
@@ -719,7 +748,7 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
                 {
                     continue;
                 }
-                foreach (ITypeSymbol memberType in GetSerializableMemberTypes(named, symbols))
+                foreach (ITypeSymbol memberType in GetSerializableMemberTypes(named, symbols, compilation))
                 {
                     pending.Enqueue(memberType);
                 }

@@ -120,6 +120,11 @@ Dynamically selected types still need generated metadata; the default path fails
 with a descriptive exception rather than falling back to reflection. AOT safety
 of custom constructors and converters remains the application's responsibility.
 
+System.Text.Json `[JsonInclude]` members and `[JsonDerivedType]` registrations also
+work with the default System.Text.Json constructor. String and integer discriminators,
+including a custom `[JsonPolymorphic]` discriminator property name, are preserved
+for root and nested payloads alongside legacy assembly-qualified `$type` names.
+
 The source-generated path:
 
 - Auto-discovers concrete Dock-derived types in the current compilation and referenced Dock model libraries.

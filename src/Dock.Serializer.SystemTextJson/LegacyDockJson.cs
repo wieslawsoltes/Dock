@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
 namespace Dock.Serializer.SystemTextJson;
@@ -29,10 +30,6 @@ internal sealed class LegacyDockJson
         }
         return stream.ToArray();
     }
-
-    internal Type GetRootType(JsonElement element, Type declaredType) => element.ValueKind == JsonValueKind.Object
-        ? ResolveConcreteType(element, declaredType)
-        : declaredType;
 
     private void ReadElement(Utf8JsonWriter writer, JsonElement element, Type type)
     {
@@ -69,14 +66,27 @@ internal sealed class LegacyDockJson
         {
             writer.WriteString("$id", id.GetString());
         }
-        if (element.TryGetProperty("$type", out _) && concreteType != type
-            && (declaredInfo.PolymorphismOptions is not null || type == typeof(object)))
+        string discriminatorName = declaredInfo.PolymorphismOptions?.TypeDiscriminatorPropertyName ?? "$type";
+        if (concreteType != type)
         {
-            writer.WriteString("$type", concreteType.FullName ?? concreteType.Name);
+            if (declaredInfo.PolymorphismOptions is { } polymorphism)
+            {
+                foreach (JsonDerivedType derived in polymorphism.DerivedTypes)
+                {
+                    if (derived.DerivedType != concreteType) continue;
+                    if (derived.TypeDiscriminator is string text) writer.WriteString(discriminatorName, text);
+                    else if (derived.TypeDiscriminator is int number) writer.WriteNumber(discriminatorName, number);
+                    break;
+                }
+            }
+            else if (type == typeof(object))
+            {
+                writer.WriteString("$type", concreteType.FullName ?? concreteType.Name);
+            }
         }
         foreach (JsonProperty property in element.EnumerateObject())
         {
-            if (property.NameEquals("$id") || property.NameEquals("$type"))
+            if (property.NameEquals("$id") || property.NameEquals("$type") || property.NameEquals(discriminatorName))
             {
                 continue;
             }
@@ -113,9 +123,28 @@ internal sealed class LegacyDockJson
 
     private Type ResolveConcreteType(JsonElement element, Type declaredType)
     {
-        if (!element.TryGetProperty("$type", out JsonElement discriminator))
+        JsonPolymorphismOptions? polymorphism = _options.GetTypeInfo(declaredType).PolymorphismOptions;
+        string discriminatorName = polymorphism?.TypeDiscriminatorPropertyName ?? "$type";
+        if (!element.TryGetProperty(discriminatorName, out JsonElement discriminator)
+            && (discriminatorName == "$type" || !element.TryGetProperty("$type", out discriminator)))
         {
             return declaredType;
+        }
+        if (polymorphism is not null)
+        {
+            foreach (JsonDerivedType derived in polymorphism.DerivedTypes)
+            {
+                if (derived.TypeDiscriminator is string text && discriminator.ValueKind == JsonValueKind.String && discriminator.GetString() == text
+                    || derived.TypeDiscriminator is int number && discriminator.ValueKind == JsonValueKind.Number
+                        && discriminator.TryGetInt32(out int value) && value == number)
+                {
+                    return derived.DerivedType;
+                }
+            }
+        }
+        if (discriminator.ValueKind != JsonValueKind.String)
+        {
+            throw new JsonException("The Dock type discriminator is not registered.");
         }
         string name = discriminator.GetString() ?? throw new JsonException("The Dock type discriminator must be a string.");
         Type concreteType = _resolver.ResolveName(name) ?? throw new JsonException($"Dock JSON type '{name}' was not generated.");

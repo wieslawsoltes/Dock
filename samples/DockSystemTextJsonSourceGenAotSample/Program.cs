@@ -44,7 +44,9 @@ internal static class Program
         ValidateCollectionRoundTrip<RegisteredList<int>, RegisteredList<string>, RegisteredList<long>>(typeof(RegisteredList<>));
         ValidateSuppliedCollectionFactories();
         ValidateIncludedMembers();
+        ValidateIncludedMembers(useDefaultConstructor: true);
         ValidatePolymorphicCollections();
+        ValidatePolymorphicCollections(useDefaultConstructor: true);
         Console.WriteLine("Dock Fluent bindings and source-generated AOT serialization round trip succeeded.");
         return 0;
     }
@@ -258,9 +260,9 @@ internal static class Program
             "Resolver-created collection values were not preserved.");
     }
 
-    private static void ValidateIncludedMembers()
+    private static void ValidateIncludedMembers(bool useDefaultConstructor = false)
     {
-        DockSerializer serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        DockSerializer serializer = useDefaultConstructor ? new DockSerializer() : DockSystemTextJsonGenerated.CreateSerializer();
         var source = new FieldPayload
         {
             Numbers = new List<double> { 1.5 },
@@ -278,9 +280,9 @@ internal static class Program
             "Included non-public properties did not preserve values and configured collection types.");
     }
 
-    private static void ValidatePolymorphicCollections()
+    private static void ValidatePolymorphicCollections(bool useDefaultConstructor = false)
     {
-        DockSerializer serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        DockSerializer serializer = useDefaultConstructor ? new DockSerializer() : DockSystemTextJsonGenerated.CreateSerializer();
         PolymorphicCollectionPayload source = new DerivedCollectionPayload { Values = new List<short> { 3, 7 } };
         DerivedCollectionPayload restored = RequireType<DerivedCollectionPayload>(
             serializer.Deserialize<PolymorphicCollectionPayload>(serializer.Serialize(source)),

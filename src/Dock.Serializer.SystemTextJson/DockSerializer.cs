@@ -103,10 +103,8 @@ public sealed class DockSerializer : IDockSerializer
             return JsonSerializer.Deserialize(text, (JsonTypeInfo<T>)_options.GetTypeInfo(typeof(T)));
         }
         using JsonDocument document = JsonDocument.Parse(text);
-        Type rootType = _legacy.GetRootType(document.RootElement, typeof(T));
-        byte[] normalized = _legacy.Read(document.RootElement, rootType);
-        object? value = JsonSerializer.Deserialize(normalized, _options.GetTypeInfo(rootType));
-        return value is null ? default : (T)value;
+        byte[] normalized = _legacy.Read(document.RootElement, typeof(T));
+        return JsonSerializer.Deserialize(normalized, (JsonTypeInfo<T>)_options.GetTypeInfo(typeof(T)));
     }
 
     /// <inheritdoc/>

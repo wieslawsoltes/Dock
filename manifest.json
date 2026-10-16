@@ -7948,7 +7948,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute",
-      "Summary": "<p sourcefile=\"api/Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute.yml\" sourcestartlinenumber=\"1\">Activates Dock source-generated <xref href=\"System.Text.Json\" data-throw-if-not-resolved=\"false\"></xref> serialization support for the current assembly.</p>\n"
+      "Summary": "<p sourcefile=\"api/Dock.Serializer.SystemTextJson.DockJsonSourceGenerationAttribute.yml\" sourcestartlinenumber=\"1\">Optional marker for Dock source-generated <xref href=\"System.Text.Json\" data-throw-if-not-resolved=\"false\"></xref> serialization support.\nMetadata is generated automatically for serializer consumers; this marker remains supported for compatibility.</p>\n"
     },
     {
       "type": "ManagedReference",

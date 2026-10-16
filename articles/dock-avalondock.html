@@ -84,9 +84,9 @@
 <h1 id="avalondock-compatibility">AvalonDock compatibility</h1>
 
 <blockquote>
-<p><strong>Source preview:</strong> the sample builds and runs on official Avalonia and is
-included in the normal solution and focused headless CI tests. Compatibility
-package publication, full WPF framework parity, the historical parity suite,
+<p><strong>Avalonia compatibility adapter:</strong> the package and sample use official Avalonia; the sample is
+included in the normal solution and focused headless CI tests.
+Full WPF framework parity, the historical parity suite,
 generated resource factories, and API metadata remain deferred in
 <a href="https://github.com/wieslawsoltes/Dock/issues/1186">issue #1186</a>.
 Full-parity results below apply to the historical custom-framework revision.</p>
@@ -100,7 +100,10 @@ initialization, and capture through pointer events. These paths support the
 sample without a framework fork; exact WPF binding ownership, weak inheritance,
 native-host lifecycle, and global capture remain upstream work. Compiled resource
 catalogs still need the upstream factory API; use explicit typed registrations
-and <code>AvalonDockGenerateCatalog=false</code> for custom dictionaries in the meantime.</p>
+in the meantime. Catalog generation defaults to <code>false</code>; applications without
+custom resource dictionaries can enable layout catalogs with
+<code>&lt;AvalonDockGenerateCatalog&gt;true&lt;/AvalonDockGenerateCatalog&gt;</code> and a partial
+<code>Application</code> class.</p>
 <p><code>Dock.Avalonia.AvalonDock</code> lets an Avalonia application use the
 <code>AvalonDock</code> C# namespaces and layout names. The implementation wraps
 <code>Dock.Model.Avalonia</code> models and renders them through Dock's controls. The
@@ -138,10 +141,12 @@ before content-recovery callbacks; an unset identifier is distinct from an empty
 one. Return-container assignments notify before initializing an unset pane ID,
 while identifier metadata itself does not raise property notifications.</p>
 <h2 id="reference-the-package-and-theme">Reference the package and theme</h2>
-<p>The retained project targets .NET 8 and .NET 10, but package generation is
-disabled while full compatibility is deferred. The examples below are available
-through source project references, as demonstrated by the runnable sample.
-NuGet publication remains subject to the release criteria in
+<p>The package targets .NET 8 and .NET 10 and uses official Avalonia packages:</p>
+<pre><code class="lang-sh">dotnet add package Dock.Avalonia.AvalonDock
+</code></pre>
+<p>Its analyzer and build targets are included automatically. Package-consumer tests
+validate XAML, themes, XML layout persistence, and opt-in layout catalogs before
+CI or release artifacts are uploaded. Full WPF parity remains tracked in
 <a href="https://github.com/wieslawsoltes/Dock/issues/1186">#1186</a>.</p>
 <p>For historical reproduction only, use the
 <a href="https://github.com/wieslawsoltes/Dock/blob/447653dbc589757eb6cbc6062dd3ffe0f79629ee/build/AvalonDock.Framework/README.md">validated revision's build guide</a>
@@ -2747,8 +2752,9 @@ dictionary. Applications can also include it directly in their merged resources:
 </code></pre>
 <p>The bundle includes Dock's base floating-window resources, so it also works when
 <code>AvalonDockTheme</code> is installed in a view's styles instead of application styles.</p>
-<p>The package's incremental generator discovers compiled <code>ResourceDictionary</code>
-<code>AvaloniaResource</code> items in the application and referenced libraries. A partial <code>Application</code>
+<p>The historical framework fork supports generated resource factories (this API
+is not available in official Avalonia). On that fork, the package's opt-in
+incremental generator discovers compiled <code>ResourceDictionary</code> <code>AvaloniaResource</code> items in the application and referenced libraries. A partial <code>Application</code>
 class receives an instance catalog; custom theme URIs matching an <code>avares://</code>
 resource load through direct compiled factory calls. Both classless dictionaries
 and dictionaries with <code>x:Class</code> are supported. No manual registration is needed
@@ -3091,8 +3097,8 @@ overrides can add attributes before calling base; content-only models may also
 add attributes after base. For groups, base writes children, so write attributes
 first. The traversal shares one XML writer and prepares return-container IDs
 once. A failing override is detected before a file overload opens its destination.</p>
-<p>The package's incremental generator discovers constructible custom layout
-classes during compilation. The application must be a non-nested, non-generic
+<p>With <code>&lt;AvalonDockGenerateCatalog&gt;true&lt;/AvalonDockGenerateCatalog&gt;</code>, the package's
+incremental generator discovers constructible custom layout classes during compilation. The application must be a non-nested, non-generic
 partial <code>Application</code> class. Its instance catalog composes factories emitted by
 referenced libraries, preserving custom document, tool, group, and floating-window
 types and their XML hooks without runtime assembly discovery. Concrete classes

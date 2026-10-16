@@ -4,12 +4,13 @@ Regular Dock builds and releases use official Avalonia packages. The AvalonDock
 compatibility source builds against public Avalonia APIs, and
 `samples/DockAvalonDockSample` plus its focused headless tests are included in
 `Dock.slnx` and CI. Run `dotnet run --project samples/DockAvalonDockSample`.
-Full framework parity, adapter API documentation generation, the historical
-parity suite, and compatibility package release remain deferred until the
-required upstream contracts are available.
+The compatibility package is published against official Avalonia with focused
+package-consumer validation. Full framework parity, adapter API documentation
+generation, and the historical parity suite remain deferred until the required
+upstream contracts are available.
 
 [Dock issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks all
-required contracts, migration steps, validation, and release acceptance:
+required contracts, migration steps, validation, and full-parity acceptance:
 
 - Opt-in property metadata for WPF-compatible binding ownership and current values.
 - Logical-child projections and weak inheritance with correct lifetime propagation.

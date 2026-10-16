@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TestGeneratedCatalog)' == 'true'">
+    <AvalonDockGenerateCatalog>true</AvalonDockGenerateCatalog>
+    <DefineConstants>$(DefineConstants);TEST_GENERATED_CATALOG</DefineConstants>
+  </PropertyGroup>
+  <Import Project="../../build/Avalonia.Headless.props" />
+  <Import Project="../../build/XUnit.props" />
+  <ItemGroup>
+    <PackageVersion Include="Dock.Avalonia.AvalonDock" Version="$(VersionPrefix)" />
+    <PackageReference Include="Dock.Avalonia.AvalonDock" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TestGeneratedCatalog)' == 'true'">
+    <!-- Official Avalonia supports layout catalogs but not generated resource factories. -->
+    <AvaloniaXaml Remove="ConsumerResources.axaml" />
+    <AvaloniaResource Remove="ConsumerResources.axaml" />
+  </ItemGroup>
+</Project>

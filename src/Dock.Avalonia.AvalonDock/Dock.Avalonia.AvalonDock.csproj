@@ -6,8 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <PackageId>Dock.Avalonia.AvalonDock</PackageId>
-    <!-- Deferred until the required framework APIs are available in official Avalonia. -->
-    <IsPackable>false</IsPackable>
+    <IsPackable>true</IsPackable>
     <Description>AvalonDock API adapters backed by Dock's Avalonia models and controls.</Description>
     <PackageReadmeFile>AVALONDOCK.md</PackageReadmeFile>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddAvalonDockGeneratorToPackage</TargetsForTfmSpecificContentInPackage>

@@ -109,6 +109,8 @@ jobs:
         global-json-file: global.json
     - name: Pack
       run: dotnet pack -c Release -o artifacts/nuget
+    - name: Validate AvalonDock package consumer
+      run: bash build/test-avalondock-package.sh
     - name: Upload NuGet artifacts
       uses: actions/upload-artifact@v4
       with:

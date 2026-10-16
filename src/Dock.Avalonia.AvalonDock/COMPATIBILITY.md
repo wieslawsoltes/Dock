@@ -3,7 +3,8 @@
 > **Full framework parity is deferred.** The source sample and its focused
 > headless tests build in the normal solution against official Avalonia using
 > public API substitutes. The historical parity suite, API audit, generated
-> resource factories, adapter API metadata, and package release remain deferred.
+> resource factories, and adapter API metadata remain deferred. The package is
+> published with these limitations and validated by focused package-consumer tests.
 > [Issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186) tracks the
 > remaining contracts. Full-parity evidence below describes the historical
 > fork-based prototype and must be revalidated after upstream migration.

@@ -1,4 +1,9 @@
 <Project>
+  <PropertyGroup>
+    <!-- Official Avalonia does not yet support generated compiled-resource factories.
+         Consumers can opt in for layout-only catalogs or use explicit typed registrations. -->
+    <AvalonDockGenerateCatalog Condition="'$(AvalonDockGenerateCatalog)' == ''">false</AvalonDockGenerateCatalog>
+  </PropertyGroup>
   <ItemGroup>
     <CompilerVisibleProperty Include="MSBuildProjectDirectory" />
     <CompilerVisibleProperty Include="AvalonDockGenerateCatalog" />

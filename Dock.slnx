@@ -82,6 +82,8 @@
     <Project Path="samples/Notepad/Notepad.csproj" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/Dock.Avalonia.AvalonDock.Generators/Dock.Avalonia.AvalonDock.Generators.csproj" />
+    <Project Path="src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
     <Project Path="src/Dock.Avalonia.Diagnostics/Dock.Avalonia.Diagnostics.csproj" />
     <Project Path="src/Dock.Avalonia.Diagnostics.v11/Dock.Avalonia.Diagnostics.v11.csproj" />
     <Project Path="src/Dock.Avalonia.Themes.Browser/Dock.Avalonia.Themes.Browser.csproj" />

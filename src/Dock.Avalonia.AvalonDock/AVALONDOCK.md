@@ -1,9 +1,9 @@
 # AvalonDock compatibility for Dock
 
-> **Source preview:** the sample builds and runs on official Avalonia through
+> **Avalonia compatibility adapter:** the package and sample use official Avalonia through
 > public APIs and is covered by the normal solution and focused headless CI tests.
 > Full WPF framework parity, the historical parity suite, generated resource
-> factories, API metadata, and package release remain deferred in
+> factories, and API metadata remain deferred in
 > [issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186).
 > Historical full-parity test results below used a framework fork; they do not
 > establish equivalent behavior on official Avalonia.
@@ -34,8 +34,8 @@ The prototype was validated with a project-specific prerelease Avalonia fork.
 The [framework history](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/build/AvalonDock.Framework/README.md)
 links to the preserved source and build instructions at that revision. Normal
 Dock builds no longer use a framework bootstrap or private feed. The source
-sample uses public API substitutes; package publication remains deferred until
-the full compatibility release criteria are met.
+sample and published package use public API substitutes; full WPF framework
+parity remains deferred.
 
 Runtime source
 [`77c15f965`](https://github.com/wieslawsoltes/Dock/commit/77c15f96566690a4f2f6f31078130d119337dc4f)
@@ -46,7 +46,20 @@ passed. That validation used framework source
 The [compatibility checklist](https://github.com/wieslawsoltes/Dock/blob/feature/avalondock-compatibility/src/Dock.Avalonia.AvalonDock/COMPATIBILITY.md)
 records the validation scope and deferred desktop checks.
 
-Reference this package and add the adapter theme alongside your Avalonia theme:
+Install the package, which targets .NET 8 and .NET 10:
+
+```sh
+dotnet add package Dock.Avalonia.AvalonDock
+```
+
+Catalog generation defaults to `false` because official Avalonia does not yet
+provide the compiled-resource factory API. Use explicit typed layout and theme
+registrations. Applications without custom resource dictionaries can opt in to
+layout catalogs with `<AvalonDockGenerateCatalog>true</AvalonDockGenerateCatalog>`;
+their `Application` class must be partial. The packaged analyzer and build targets
+are included automatically by the package reference.
+
+Add the adapter theme alongside your Avalonia theme:
 
 ```xml
 <Application.Styles>
@@ -1520,7 +1533,8 @@ or `GetResourceUri()` override closes a window during theme replacement. A
 canceled close keeps the window connected to the replacement and subsequent
 themes. `GenericTheme.GetResourceUri()` identifies the
 compiled `Themes/Generic.axaml` bundle, which also supports compiled
-`ResourceInclude` from consumer XAML. The package's incremental generator catalogs
+`ResourceInclude` from consumer XAML. Generated resource factories require the
+historical framework fork; on that fork, the opt-in incremental generator catalogs
 application and referenced-library `AvaloniaResource` dictionaries, including classless
 XAML, and emits direct compiled factories for their `avares://` URIs. A partial
 application class receives its own immutable catalog. Explicitly override a URI
@@ -1801,7 +1815,8 @@ Nested virtual `WriteXml` overrides participate in complete layout saves, includ
 hidden, pinned, and floating content. Write extra group attributes before calling
 base, because base writes the children. A shared writer prepares return-container
 IDs once, and a failing override leaves an existing save file untouched.
-Custom `IXmlSerializable` layout classes with accessible, non-file-local
+When catalog generation is explicitly enabled, custom `IXmlSerializable` layout
+classes with accessible, non-file-local
 declarations and public parameterless constructors receive generated typed factories. A non-nested, non-generic partial
 `Application` class composes the application and referenced-library catalogs.
 Whole-layout restoration invokes the custom `ReadXml` hooks without manual
@@ -1852,7 +1867,9 @@ their documented geometry. See the
 for the isolated factory, sizing, and template requirements for future projection
 support.
 
-At build time, the incremental generator discovers application layout types and
+The following architecture describes the historical framework-fork integration;
+resource factories and the framework hooks remain deferred on official Avalonia.
+When enabled at build time, the incremental generator discovers application layout types and
 resource paths and composes typed catalogs from referenced assemblies. Avalonia's
 XAML compiler replaces resource-factory stubs with compiled constructors. At
 runtime, the application exposes that immutable catalog through

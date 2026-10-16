@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.PackageTests.ConsumerWindow"
+        Width="800" Height="600">
+  <DockingManager x:Name="Manager">
+    <ad:LayoutRoot>
+      <ad:LayoutPanel>
+        <ad:LayoutAnchorablePane DockWidth="200">
+          <ad:LayoutAnchorable ContentId="tool" Title="Tool">
+            <TextBlock Text="Packaged tool" />
+          </ad:LayoutAnchorable>
+        </ad:LayoutAnchorablePane>
+        <ad:LayoutDocumentPane>
+          <ad:LayoutDocument ContentId="editor" Title="Editor">
+            <TextBox x:Name="Editor" Text="Packaged document" />
+          </ad:LayoutDocument>
+        </ad:LayoutDocumentPane>
+      </ad:LayoutPanel>
+    </ad:LayoutRoot>
+  </DockingManager>
+</Window>

@@ -72,6 +72,7 @@ Install-Package Dock.Controls.DeferredContentControl
 | NuGet | Package | Downloads |
 | --- | --- | --- |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.svg)](https://www.nuget.org/packages/Dock.Avalonia) | [`Dock.Avalonia`](https://www.nuget.org/packages/Dock.Avalonia) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.svg)](https://www.nuget.org/packages/Dock.Avalonia) |
+| [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.AvalonDock.svg)](https://www.nuget.org/packages/Dock.Avalonia.AvalonDock) | [`Dock.Avalonia.AvalonDock`](https://www.nuget.org/packages/Dock.Avalonia.AvalonDock) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.AvalonDock.svg)](https://www.nuget.org/packages/Dock.Avalonia.AvalonDock) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Diagnostics.svg)](https://www.nuget.org/packages/Dock.Avalonia.Diagnostics) | [`Dock.Avalonia.Diagnostics`](https://www.nuget.org/packages/Dock.Avalonia.Diagnostics) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Diagnostics.svg)](https://www.nuget.org/packages/Dock.Avalonia.Diagnostics) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [`Dock.Avalonia.Themes.Fluent`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Fluent.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Fluent) |
 | [![NuGet](https://img.shields.io/nuget/v/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [`Dock.Avalonia.Themes.Browser`](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) | [![Downloads](https://img.shields.io/nuget/dt/Dock.Avalonia.Themes.Browser.svg)](https://www.nuget.org/packages/Dock.Avalonia.Themes.Browser) |
@@ -145,12 +146,12 @@ Install-Package Dock.Avalonia.Themes.Browser -Pre
 
 ## Resources
 * [Documentation index](https://wieslawsoltes.github.io/Dock/)
-* [AvalonDock compatibility guide](docfx/articles/dock-avalondock.md) — runnable source sample; full compatibility release tracked in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186)
+* [AvalonDock compatibility guide](docfx/articles/dock-avalondock.md) — NuGet adapter and runnable sample; full framework parity tracked in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186)
 * [Extending docking operations and hosts](docfx/articles/dock-extension-policies.md)
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project:
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples
-  - **`DockAvalonDockSample`** - AvalonDock API prototype on official Avalonia; full framework parity and package release remain tracked in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186)
+  - **`DockAvalonDockSample`** - AvalonDock API adapter on official Avalonia; full framework parity remains tracked in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186)
   - **`DockMvvmSample`** - Full MVVM implementation
   - **`DockReactiveUISample`** - ReactiveUI patterns
   - **`DockDeferredContentSample`** - Deferred timeline scopes, delay, order, and presenter-host behavior

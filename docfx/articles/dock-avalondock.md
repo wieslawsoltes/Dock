@@ -1,8 +1,8 @@
 # AvalonDock compatibility
 
-> **Source preview:** the sample builds and runs on official Avalonia and is
-> included in the normal solution and focused headless CI tests. Compatibility
-> package publication, full WPF framework parity, the historical parity suite,
+> **Avalonia compatibility adapter:** the package and sample use official Avalonia; the sample is
+> included in the normal solution and focused headless CI tests.
+> Full WPF framework parity, the historical parity suite,
 > generated resource factories, and API metadata remain deferred in
 > [issue #1186](https://github.com/wieslawsoltes/Dock/issues/1186).
 > Full-parity results below apply to the historical custom-framework revision.
@@ -19,7 +19,10 @@ initialization, and capture through pointer events. These paths support the
 sample without a framework fork; exact WPF binding ownership, weak inheritance,
 native-host lifecycle, and global capture remain upstream work. Compiled resource
 catalogs still need the upstream factory API; use explicit typed registrations
-and `AvalonDockGenerateCatalog=false` for custom dictionaries in the meantime.
+in the meantime. Catalog generation defaults to `false`; applications without
+custom resource dictionaries can enable layout catalogs with
+`<AvalonDockGenerateCatalog>true</AvalonDockGenerateCatalog>` and a partial
+`Application` class.
 
 `Dock.Avalonia.AvalonDock` lets an Avalonia application use the
 `AvalonDock` C# namespaces and layout names. The implementation wraps
@@ -65,10 +68,15 @@ while identifier metadata itself does not raise property notifications.
 
 ## Reference the package and theme
 
-The retained project targets .NET 8 and .NET 10, but package generation is
-disabled while full compatibility is deferred. The examples below are available
-through source project references, as demonstrated by the runnable sample.
-NuGet publication remains subject to the release criteria in
+The package targets .NET 8 and .NET 10 and uses official Avalonia packages:
+
+```sh
+dotnet add package Dock.Avalonia.AvalonDock
+```
+
+Its analyzer and build targets are included automatically. Package-consumer tests
+validate XAML, themes, XML layout persistence, and opt-in layout catalogs before
+CI or release artifacts are uploaded. Full WPF parity remains tracked in
 [#1186](https://github.com/wieslawsoltes/Dock/issues/1186).
 
 For historical reproduction only, use the
@@ -2938,8 +2946,9 @@ dictionary. Applications can also include it directly in their merged resources:
 The bundle includes Dock's base floating-window resources, so it also works when
 `AvalonDockTheme` is installed in a view's styles instead of application styles.
 
-The package's incremental generator discovers compiled `ResourceDictionary`
-`AvaloniaResource` items in the application and referenced libraries. A partial `Application`
+The historical framework fork supports generated resource factories (this API
+is not available in official Avalonia). On that fork, the package's opt-in
+incremental generator discovers compiled `ResourceDictionary` `AvaloniaResource` items in the application and referenced libraries. A partial `Application`
 class receives an instance catalog; custom theme URIs matching an `avares://`
 resource load through direct compiled factory calls. Both classless dictionaries
 and dictionaries with `x:Class` are supported. No manual registration is needed
@@ -3307,8 +3316,8 @@ add attributes after base. For groups, base writes children, so write attributes
 first. The traversal shares one XML writer and prepares return-container IDs
 once. A failing override is detected before a file overload opens its destination.
 
-The package's incremental generator discovers constructible custom layout
-classes during compilation. The application must be a non-nested, non-generic
+With `<AvalonDockGenerateCatalog>true</AvalonDockGenerateCatalog>`, the package's
+incremental generator discovers constructible custom layout classes during compilation. The application must be a non-nested, non-generic
 partial `Application` class. Its instance catalog composes factories emitted by
 referenced libraries, preserving custom document, tool, group, and floating-window
 types and their XML hooks without runtime assembly discovery. Concrete classes

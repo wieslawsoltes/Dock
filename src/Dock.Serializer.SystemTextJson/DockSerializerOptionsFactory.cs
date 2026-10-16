@@ -16,7 +16,7 @@ internal static class DockSerializerOptionsFactory
             throw new ArgumentNullException(nameof(listType));
         }
 
-        return Create(listType, new DockModelPolymorphicTypeResolver(), preserveSuppliedFactory: false);
+        return Create(listType, DockJsonMetadata.CreateResolver(listType));
     }
 
     public static JsonSerializerOptions Create(Type listType, IJsonTypeInfoResolver typeInfoResolver)
@@ -39,11 +39,18 @@ internal static class DockSerializerOptionsFactory
         var options = new JsonSerializerOptions
         {
             WriteIndented = true,
-            ReferenceHandler = ReferenceHandler.Preserve,
+            ReferenceHandler = new DockReferenceHandler(),
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-            TypeInfoResolver = typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType, typeInfoResolver as IDockJsonCollectionFactory, preserveSuppliedFactory))
+            TypeInfoResolver = typeInfoResolver is DockJsonMetadata.MetadataResolver
+                ? typeInfoResolver
+                : typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType, typeInfoResolver as IDockJsonCollectionFactory, preserveSuppliedFactory))
         };
+
+        if (typeInfoResolver is DockJsonMetadata.MetadataResolver generated)
+        {
+            options.Converters.Add(new DockObjectJsonConverter(generated));
+        }
 
         return options;
     }

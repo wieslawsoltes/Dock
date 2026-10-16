@@ -58,10 +58,12 @@ public class SourceGeneratedCollectionTests
         Assert.IsType<RegisteredList<long>>(restored.Children["child"].Values);
     }
 
-    [Fact]
-    public void JsonInclude_Fields_Including_Base_Fields_Use_Configured_Lists()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void JsonInclude_Fields_Including_Base_Fields_Use_Configured_Lists(bool useDefaultConstructor)
     {
-        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        var serializer = useDefaultConstructor ? new DockSerializer() : DockSystemTextJsonGenerated.CreateSerializer();
         var source = new FieldPayload
         {
             Numbers = new List<double> { 1.5, 2.5 },
@@ -74,10 +76,12 @@ public class SourceGeneratedCollectionTests
         Assert.Equal(source.BaseNumbers, Assert.IsType<ObservableCollection<float>>(restored.BaseNumbers));
     }
 
-    [Fact]
-    public void JsonInclude_NonPublic_Properties_Including_Base_Properties_Use_Configured_Lists()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void JsonInclude_NonPublic_Properties_Including_Base_Properties_Use_Configured_Lists(bool useDefaultConstructor)
     {
-        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        var serializer = useDefaultConstructor ? new DockSerializer() : DockSystemTextJsonGenerated.CreateSerializer();
         var source = new IncludedPropertyPayload
         {
             Values = new List<decimal> { 1.25m, 2.5m },
@@ -90,10 +94,12 @@ public class SourceGeneratedCollectionTests
         Assert.Equal(source.BaseValues, Assert.IsType<ObservableCollection<TimeSpan>>(restored.BaseValues));
     }
 
-    [Fact]
-    public void JsonDerivedType_Payload_Properties_Use_Configured_Lists()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void JsonDerivedType_Payload_Properties_Use_Configured_Lists(bool useDefaultConstructor)
     {
-        var serializer = DockSystemTextJsonGenerated.CreateSerializer();
+        var serializer = useDefaultConstructor ? new DockSerializer() : DockSystemTextJsonGenerated.CreateSerializer();
         PolymorphicCollectionPayload source = new DerivedCollectionPayload
         {
             Values = new List<short> { 3, 7 }
@@ -103,6 +109,35 @@ public class SourceGeneratedCollectionTests
             serializer.Deserialize<PolymorphicCollectionPayload>(serializer.Serialize(source)));
 
         Assert.Equal(new short[] { 3, 7 }, Assert.IsType<ObservableCollection<short>>(restored.Values));
+    }
+
+    [Fact]
+    public void Default_Serializer_Preserves_Nested_Discriminators_And_Shared_References()
+    {
+        var serializer = new DockSerializer();
+        var item = new DerivedCollectionPayload { Values = new List<short> { 3, 7 } };
+        var source = new PolymorphicEnvelope { First = item, Second = item };
+
+        var restored = serializer.Deserialize<PolymorphicEnvelope>(serializer.Serialize(source))!;
+
+        var child = Assert.IsType<DerivedCollectionPayload>(restored.First);
+        Assert.Equal(new short[] { 3, 7 }, Assert.IsType<ObservableCollection<short>>(child.Values));
+        Assert.Same(restored.First, restored.Second);
+    }
+
+    [Fact]
+    public void Default_Serializer_Preserves_Numeric_Discriminators_With_Custom_Property_Name()
+    {
+        var serializer = new DockSerializer();
+        NumericPayload source = new NumericDerivedPayload { Name = "saved" };
+
+        var restored = Assert.IsType<NumericDerivedPayload>(serializer.Deserialize<NumericPayload>(serializer.Serialize(source)));
+
+        Assert.Equal("saved", restored.Name);
+        // Older Newtonsoft files still use assembly-qualified $type names.
+        var legacy = Assert.IsType<NumericDerivedPayload>(serializer.Deserialize<NumericPayload>(
+            "{\"$type\":\"Dock.Serializer.SystemTextJson.SourceGenTests.NumericDerivedPayload, Dock.Serializer.SystemTextJson.SourceGenTests\",\"Name\":\"legacy\"}"));
+        Assert.Equal("legacy", legacy.Name);
     }
 
     [Fact]
@@ -167,7 +202,7 @@ public class SourceGeneratedCollectionTests
     }
 
     [Fact]
-    public void Jit_Fallback_Constructs_Unregistered_Collections_When_Metadata_Has_No_Creator()
+    public void Registered_Factory_Constructs_Collections_When_External_Metadata_Has_No_Creator()
     {
         var resolver = ExternalCollectionContext.Default.WithAddedModifier(static info =>
         {
@@ -283,4 +318,21 @@ public class PolymorphicCollectionPayload
 public sealed class DerivedCollectionPayload : PolymorphicCollectionPayload
 {
     public IList<short> Values { get; set; } = new List<short>();
+}
+
+public sealed class PolymorphicEnvelope
+{
+    public PolymorphicCollectionPayload? First { get; set; }
+    public PolymorphicCollectionPayload? Second { get; set; }
+}
+
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "$kind")]
+[JsonDerivedType(typeof(NumericDerivedPayload), 7)]
+public class NumericPayload
+{
+}
+
+public sealed class NumericDerivedPayload : NumericPayload
+{
+    public string? Name { get; set; }
 }

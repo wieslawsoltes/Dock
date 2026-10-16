@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization.Metadata;
 using Dock.Model.Core;
 
@@ -46,18 +45,14 @@ internal static class DockListTypeInfoModifier
             return;
         }
 
-        // Keep the existing reflection fallback on JIT runtimes. Native AOT needs a registered
-        // constructor, and does not execute or retain this dynamic construction path.
-        if (!RuntimeFeature.IsDynamicCodeSupported)
+        if (DockJsonMetadata.TryGetCollectionCreator(type, listType, out Func<object>? creator))
         {
-            typeInfo.CreateObject = () => throw new NotSupportedException(
-                $"The list type '{listType}' for '{type}' has no factory. Register its closed collection type with DockJsonSerializable or supply collection metadata with CreateObject.");
+            typeInfo.CreateObject = creator;
             return;
         }
 
-        var elementType = type.GetGenericArguments()[0];
-        var concreteListType = listType.MakeGenericType(elementType);
-        typeInfo.CreateObject = () => Activator.CreateInstance(concreteListType)!;
+        typeInfo.CreateObject = () => throw new NotSupportedException(
+            $"The list type '{listType}' for '{type}' has no factory. Register its closed collection type with DockJsonSerializable or supply collection metadata with CreateObject.");
     }
 
     private static void AssignCreator<T>(JsonTypeInfo typeInfo) where T : class, new()

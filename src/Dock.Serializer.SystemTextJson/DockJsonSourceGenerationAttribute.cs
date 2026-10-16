@@ -5,7 +5,8 @@ using System;
 namespace Dock.Serializer.SystemTextJson;
 
 /// <summary>
-/// Activates Dock source-generated <see cref="System.Text.Json"/> serialization support for the current assembly.
+/// Optional marker for Dock source-generated <see cref="System.Text.Json"/> serialization support.
+/// Metadata is generated automatically for serializer consumers; this marker remains supported for compatibility.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
 public sealed class DockJsonSourceGenerationAttribute : Attribute

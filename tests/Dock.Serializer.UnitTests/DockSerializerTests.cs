@@ -10,7 +10,7 @@ namespace Dock.Serializer.UnitTests;
 
 public class DockSerializerTests
 {
-    private class Sample
+    internal class Sample
     {
         public string? Name { get; set; }
         public IList<int>? Numbers { get; set; }

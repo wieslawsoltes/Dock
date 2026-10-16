@@ -6,6 +6,7 @@
     <IsTestProject>True</IsTestProject>
     <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
     <Nullable>enable</Nullable>
+    <DefineConstants>$(DefineConstants);AVALONIA_11</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\CapabilityPolicyBindingWarningsTests.cs" Link="CapabilityPolicyBindingWarningsTests.cs" />
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\CompiledCapabilityBindingTests.cs" Link="CompiledCapabilityBindingTests.cs" />
+    <Compile Include="..\Dock.Avalonia.HeadlessTests\CapabilityBindingTestResources.axaml.cs" Link="CapabilityBindingTestResources.axaml.cs" />
+    <AvaloniaResource Include="..\Dock.Avalonia.HeadlessTests\CapabilityBindingTestResources.axaml" Link="CapabilityBindingTestResources.axaml" />
     <Compile Include="..\Dock.Avalonia.HeadlessTests\DeferredContentRevealLifecycleTests.cs" Link="DeferredContentRevealLifecycleTests.cs" />
   </ItemGroup>
 </Project>

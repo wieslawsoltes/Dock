@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using ReactiveUI.Avalonia.Reactive;
 using Dock.Serializer;
@@ -34,7 +35,13 @@ internal class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<IViewLocator, ViewLocator>();
+        services.AddSingleton<IViewLocator>(provider => new ViewLocator(
+            new Dictionary<Type, Func<IViewFor>>
+            {
+                [typeof(DocumentViewModel)] = () => provider.GetRequiredService<IViewFor<DocumentViewModel>>(),
+                [typeof(ToolViewModel)] = () => provider.GetRequiredService<IViewFor<ToolViewModel>>(),
+                [typeof(MainWindowViewModel)] = () => provider.GetRequiredService<IViewFor<MainWindowViewModel>>()
+            }));
         services.AddSingleton<DemoData>();
         services.AddTransient<DocumentViewModel>();
         services.AddTransient<ToolViewModel>();

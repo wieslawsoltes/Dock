@@ -279,7 +279,8 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual bool OnWindowClosing(IDockWindow? window)
     {
-        var canClose = window?.OnClose() ?? true;
+        var canClose = window is not null && this is IDockWindowClosePolicy policy &&
+            policy.PreserveLayoutOnHostClose(window) || (window?.OnClose() ?? true);
 
         var eventArgs = new WindowClosingEventArgs(window)
         {

@@ -103,7 +103,7 @@ Install-Package Dock.Controls.DeferredContentControl
 
 ### Avalonia 11 packages
 
-Applications that remain on Avalonia 11 should use the `.v11` package lane. These packages are source-linked from the current Dock implementation, target Avalonia 11.3.20, and must not be mixed with the unsuffixed Avalonia 12 Dock packages.
+Applications that remain on Avalonia 11 should use the `.v11` package lane. These packages are source-linked from the current Dock implementation, target Avalonia 11.3.22, and must not be mixed with the unsuffixed Avalonia 12 Dock packages.
 
 ```powershell
 Install-Package Dock.Avalonia.v11
@@ -145,9 +145,12 @@ Install-Package Dock.Avalonia.Themes.Browser -Pre
 
 ## Resources
 * [Documentation index](https://wieslawsoltes.github.io/Dock/)
+* [AvalonDock compatibility guide](docfx/articles/dock-avalondock.md) — runnable source sample; full compatibility release tracked in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186)
+* [Extending docking operations and hosts](docfx/articles/dock-extension-policies.md)
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project:
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples
+  - **`DockAvalonDockSample`** - AvalonDock API prototype on official Avalonia; full framework parity and package release remain tracked in [#1186](https://github.com/wieslawsoltes/Dock/issues/1186)
   - **`DockMvvmSample`** - Full MVVM implementation
   - **`DockReactiveUISample`** - ReactiveUI patterns
   - **`DockDeferredContentSample`** - Deferred timeline scopes, delay, order, and presenter-host behavior

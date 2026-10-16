@@ -13,6 +13,7 @@ internal class SplitterPreviewAdorner : Control
     public Orientation Orientation { get; set; }
     public double Thickness { get; set; }
     public double Offset { get; set; }
+    public IBrush? Background { get; set; }
 
     public override void Render(DrawingContext context)
     {
@@ -24,7 +25,7 @@ internal class SplitterPreviewAdorner : Control
             return;
         }
 
-        var brush = host.FindResource("DockApplicationAccentBrushIndicator") as IBrush ?? Brushes.Gray;
+        var brush = Background ?? host.FindResource("DockApplicationAccentBrushIndicator") as IBrush ?? Brushes.Gray;
         var rect = Orientation == Orientation.Vertical
             ? new Rect(0, Offset, host.Bounds.Width, Thickness)
             : new Rect(Offset, 0, Thickness, host.Bounds.Height);

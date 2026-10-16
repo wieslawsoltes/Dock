@@ -21,6 +21,11 @@ internal static class DockSerializerOptionsFactory
 
     public static JsonSerializerOptions Create(Type listType, IJsonTypeInfoResolver typeInfoResolver)
     {
+        return Create(listType, typeInfoResolver, preserveSuppliedFactory: true);
+    }
+
+    private static JsonSerializerOptions Create(Type listType, IJsonTypeInfoResolver typeInfoResolver, bool preserveSuppliedFactory)
+    {
         if (listType is null)
         {
             throw new ArgumentNullException(nameof(listType));
@@ -39,7 +44,7 @@ internal static class DockSerializerOptionsFactory
             NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
             TypeInfoResolver = typeInfoResolver is DockJsonMetadata.MetadataResolver
                 ? typeInfoResolver
-                : typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType))
+                : typeInfoResolver.WithAddedModifier(typeInfo => DockListTypeInfoModifier.Apply(typeInfo, listType, typeInfoResolver as IDockJsonCollectionFactory, preserveSuppliedFactory))
         };
 
         if (typeInfoResolver is DockJsonMetadata.MetadataResolver generated)

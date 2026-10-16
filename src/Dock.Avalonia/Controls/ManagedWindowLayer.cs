@@ -102,7 +102,7 @@ public sealed class ManagedWindowLayer : TemplatedControl
             return null;
         }
 
-        var dockControl = visual as DockControl ?? visual.FindAncestorOfType<DockControl>();
+        var dockControl = DockHelpers.ResolveDockControl(visual);
         if (dockControl is { })
         {
             var layer = dockControl.GetVisualDescendants().OfType<ManagedWindowLayer>().FirstOrDefault();

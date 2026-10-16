@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling;
-using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.VisualTree;
@@ -34,71 +33,9 @@ internal static class TemplateHelper
         }
 
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(parent);
-        if (controlRecycling is not null)
-        {
-            var key = GetCacheKey(controlRecycling, parent, content);
-            if (controlRecycling.TryGetValue(key, out var control))
-            {
-                if (control is Control cachedControl)
-                {
-                    if (!ReferenceEquals(existing, cachedControl))
-                    {
-                        if (!TryDetachFromParent(cachedControl))
-                        {
-                            var fallback = BuildFallback(content, existing);
-                            if (fallback is not null)
-                            {
-                                controlRecycling.Add(key, fallback);
-                            }
-
-                            return fallback;
-                        }
-                    }
-
-                    return cachedControl;
-                }
-
-                return control as Control;
-            }
-
-            control = BuildFromTemplateContent(content);
-            if (control is not null)
-            {
-                if (control is Control builtControl && !ReferenceEquals(existing, builtControl))
-                {
-                    if (!TryDetachFromParent(builtControl))
-                    {
-                        var fallback = BuildFallback(content, existing);
-                        if (fallback is not null)
-                        {
-                            controlRecycling.Add(key, fallback);
-                        }
-
-                        return fallback;
-                    }
-                }
-
-                controlRecycling.Add(key, control);
-            }
-
-            return control as Control;
-        }
-
-        return BuildFromTemplateContent(content);
-    }
-
-    private static object GetCacheKey(IControlRecycling controlRecycling, AvaloniaObject parent, object content)
-    {
-        if (controlRecycling.TryToUseIdAsKey && parent is IControlRecyclingIdProvider idProvider)
-        {
-            var id = idProvider.GetControlRecyclingId();
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                return id;
-            }
-        }
-
-        return content;
+        return controlRecycling is not null
+            ? controlRecycling.Build(parent, existing, null) as Control
+            : BuildFromTemplateContent(content);
     }
 
     private static bool TryDetachFromParent(Visual visual)
@@ -143,38 +80,6 @@ internal static class TemplateHelper
         presenter.UpdateChild();
 
         return visual.GetVisualParent() is null;
-    }
-
-    private static Control? BuildFallback(object? content, Control? existing)
-    {
-        var built = BuildFromTemplateContent(content);
-        if (built is null)
-        {
-            return existing;
-        }
-
-        if (ReferenceEquals(built, existing))
-        {
-            return built;
-        }
-
-        if (TryDetachFromParent(built))
-        {
-            return built;
-        }
-
-        var rebuilt = BuildFromTemplateContent(content);
-        if (rebuilt is null)
-        {
-            return existing;
-        }
-
-        if (ReferenceEquals(rebuilt, existing))
-        {
-            return rebuilt;
-        }
-
-        return TryDetachFromParent(rebuilt) ? rebuilt : existing;
     }
 
     private static Control? BuildFromTemplateContent(object? content)

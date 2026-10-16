@@ -14,19 +14,53 @@ namespace Dock.Serializer.SystemTextJson;
 /// </summary>
 internal static class DockListTypeInfoModifier
 {
-    public static void Apply(JsonTypeInfo typeInfo, Type listType)
+    public static void Apply(JsonTypeInfo typeInfo, Type listType, IDockJsonCollectionFactory? collectionFactory, bool preserveSuppliedFactory)
     {
         if (typeInfo.Kind != JsonTypeInfoKind.Enumerable)
         {
             return;
         }
 
-        if (DockJsonMetadata.TryGetCollectionCreator(typeInfo.Type, listType, out Func<object>? creator))
+        var type = typeInfo.Type;
+        if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(IList<>))
+        {
+            return;
+        }
+
+        if (collectionFactory?.GetListFactory(type, listType, typeInfo.CreateObject) is { } createObject)
+        {
+            typeInfo.CreateObject = createObject;
+            return;
+        }
+
+        if (TryAssignAotSafeCreator(typeInfo, type, listType))
+        {
+            return;
+        }
+
+        // External resolvers own their collection factories. In particular, generated contexts
+        // can supply scalar/custom lists without implementing Dock's optional factory contract.
+        if (preserveSuppliedFactory && typeInfo.CreateObject is not null)
+        {
+            return;
+        }
+
+        if (DockJsonMetadata.TryGetCollectionCreator(type, listType, out Func<object>? creator))
         {
             typeInfo.CreateObject = creator;
             return;
         }
-        TryAssignAotSafeCreator(typeInfo, typeInfo.Type, listType);
+
+        typeInfo.CreateObject = () => throw new NotSupportedException(
+            $"The list type '{listType}' for '{type}' has no factory. Register its closed collection type with DockJsonSerializable or supply collection metadata with CreateObject.");
+    }
+
+    private static void AssignCreator<T>(JsonTypeInfo typeInfo) where T : class, new()
+    {
+        Func<object>? suppliedFactory = typeInfo.CreateObject;
+        typeInfo.CreateObject = suppliedFactory is null
+            ? static () => new T()
+            : () => suppliedFactory() is T compatible ? compatible : new T();
     }
 
     private static bool TryAssignAotSafeCreator(JsonTypeInfo typeInfo, Type type, Type listType)
@@ -35,13 +69,13 @@ internal static class DockListTypeInfoModifier
         {
             if (type == typeof(IList<IDockable>))
             {
-                typeInfo.CreateObject = static () => new ObservableCollection<IDockable>();
+                AssignCreator<ObservableCollection<IDockable>>(typeInfo);
                 return true;
             }
 
             if (type == typeof(IList<IDockWindow>))
             {
-                typeInfo.CreateObject = static () => new ObservableCollection<IDockWindow>();
+                AssignCreator<ObservableCollection<IDockWindow>>(typeInfo);
                 return true;
             }
         }
@@ -50,13 +84,13 @@ internal static class DockListTypeInfoModifier
         {
             if (type == typeof(IList<IDockable>))
             {
-                typeInfo.CreateObject = static () => new List<IDockable>();
+                AssignCreator<List<IDockable>>(typeInfo);
                 return true;
             }
 
             if (type == typeof(IList<IDockWindow>))
             {
-                typeInfo.CreateObject = static () => new List<IDockWindow>();
+                AssignCreator<List<IDockWindow>>(typeInfo);
                 return true;
             }
         }

@@ -65,7 +65,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var isLocalValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
+        var isLocalValid = IsLocalTargetAvailable(point, dragAction, relativeTo, ValidateLocal);
         var isGlobalValid = ValidateGlobal(point, DockOperation.Fill, dragAction, relativeTo);
 
         AddAdorners(isLocalValid, isGlobalValid);
@@ -73,6 +73,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private void Over(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
@@ -103,6 +104,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private bool Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Window;
         var globalOperation = DockOperation.None;
 
@@ -323,6 +325,9 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                 var screenWindowPoint = _hostWindow.PointToScreen(new Point(0, 0));
                 var windowOffset = new PixelPoint(screenWindowPoint.X - _hostWindow.Position.X,
                     screenWindowPoint.Y - _hostWindow.Position.Y);
+                _context.End();
+                DropControl = null;
+                Leave();
                 _context.Start(point, _hostWindow.Position, windowOffset);
                 DropControl = null;
                 break;
@@ -479,6 +484,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             {
                 _context.End();
                 DropControl = null;
+                Leave();
                 break;
             }
             case EventType.WheelChanged:

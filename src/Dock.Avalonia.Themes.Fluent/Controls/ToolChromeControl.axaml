@@ -18,8 +18,8 @@
           <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanFloatMultiConverter}">
             <Binding Path="ActiveDockable" />
             <Binding Path="ActiveDockable.CanFloat" />
-            <Binding Path="ActiveDockable.DockCapabilityOverrides.CanFloat" />
-            <Binding Path="(core:IDock).DockCapabilityPolicy.CanFloat" />
+            <Binding Path="ActiveDockable?.DockCapabilityOverrides?.CanFloat" Mode="OneWay" />
+            <Binding Path="DockCapabilityPolicy?.CanFloat" Mode="OneWay" />
           </MultiBinding>
           <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
             <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
@@ -36,8 +36,8 @@
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">
           <Binding Path="ActiveDockable" />
           <Binding Path="ActiveDockable.CanPin" />
-          <Binding Path="ActiveDockable.DockCapabilityOverrides.CanPin" />
-          <Binding Path="(core:IDock).DockCapabilityPolicy.CanPin" />
+          <Binding Path="ActiveDockable?.DockCapabilityOverrides?.CanPin" Mode="OneWay" />
+          <Binding Path="DockCapabilityPolicy?.CanPin" Mode="OneWay" />
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
@@ -49,8 +49,8 @@
           <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanDockAsDocumentMultiConverter}">
             <Binding Path="ActiveDockable" />
             <Binding Path="ActiveDockable.CanDockAsDocument" />
-            <Binding Path="ActiveDockable.DockCapabilityOverrides.CanDockAsDocument" />
-            <Binding Path="(core:IDock).DockCapabilityPolicy.CanDockAsDocument" />
+            <Binding Path="ActiveDockable?.DockCapabilityOverrides?.CanDockAsDocument" Mode="OneWay" />
+            <Binding Path="DockCapabilityPolicy?.CanDockAsDocument" Mode="OneWay" />
           </MultiBinding>
           <Binding Path="ActiveDockable.Owner" Converter="{x:Static OwnerIsToolDockConverter.Instance}" />
         </MultiBinding>
@@ -65,8 +65,8 @@
           <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">
             <Binding Path="ActiveDockable" />
             <Binding Path="ActiveDockable.CanPin" />
-            <Binding Path="ActiveDockable.DockCapabilityOverrides.CanPin" />
-            <Binding Path="(core:IDock).DockCapabilityPolicy.CanPin" />
+            <Binding Path="ActiveDockable?.DockCapabilityOverrides?.CanPin" Mode="OneWay" />
+            <Binding Path="DockCapabilityPolicy?.CanPin" Mode="OneWay" />
           </MultiBinding>
           <Binding Path="$parent[ToolChromeControl].IsFloating" Converter="{x:Static BoolConverters.Not}" />
         </MultiBinding>
@@ -80,8 +80,8 @@
           <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
             <Binding Path="ActiveDockable" />
             <Binding Path="ActiveDockable.CanClose" />
-            <Binding Path="ActiveDockable.DockCapabilityOverrides.CanClose" />
-            <Binding Path="(core:IDock).DockCapabilityPolicy.CanClose" />
+            <Binding Path="ActiveDockable?.DockCapabilityOverrides?.CanClose" Mode="OneWay" />
+            <Binding Path="DockCapabilityPolicy?.CanClose" Mode="OneWay" />
           </MultiBinding>
           <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
             <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
@@ -114,8 +114,8 @@
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanDragMultiConverter}">
           <Binding />
           <Binding Path="CanDrag" />
-          <Binding Path="DockCapabilityOverrides.CanDrag" />
-          <Binding Path="(core:IDock).DockCapabilityPolicy.CanDrag" />
+          <Binding Path="DockCapabilityOverrides?.CanDrag" Mode="OneWay" />
+          <Binding Path="DockCapabilityPolicy?.CanDrag" Mode="OneWay" />
         </MultiBinding>
       </Setter.Value>
     </Setter>
@@ -124,8 +124,8 @@
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanDropMultiConverter}">
           <Binding />
           <Binding Path="CanDrop" />
-          <Binding Path="DockCapabilityOverrides.CanDrop" />
-          <Binding Path="(core:IDock).DockCapabilityPolicy.CanDrop" />
+          <Binding Path="DockCapabilityOverrides?.CanDrop" Mode="OneWay" />
+          <Binding Path="DockCapabilityPolicy?.CanDrop" Mode="OneWay" />
         </MultiBinding>
       </Setter.Value>
     </Setter>
@@ -188,8 +188,8 @@
                         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">
                           <Binding Path="ActiveDockable" />
                           <Binding Path="ActiveDockable.CanPin" />
-                          <Binding Path="ActiveDockable.DockCapabilityOverrides.CanPin" />
-                          <Binding Path="(core:IDock).DockCapabilityPolicy.CanPin" />
+                          <Binding Path="ActiveDockable?.DockCapabilityOverrides?.CanPin" Mode="OneWay" />
+                          <Binding Path="DockCapabilityPolicy?.CanPin" Mode="OneWay" />
                         </MultiBinding>
                         <TemplateBinding Property="IsFloating" Converter="{x:Static BoolConverters.Not}" />
                       </MultiBinding>
@@ -214,8 +214,8 @@
                         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
                           <Binding Path="ActiveDockable" />
                           <Binding Path="ActiveDockable.CanClose" />
-                          <Binding Path="ActiveDockable.DockCapabilityOverrides.CanClose" />
-                          <Binding Path="(core:IDock).DockCapabilityPolicy.CanClose" />
+                          <Binding Path="ActiveDockable?.DockCapabilityOverrides?.CanClose" Mode="OneWay" />
+                          <Binding Path="DockCapabilityPolicy?.CanClose" Mode="OneWay" />
                         </MultiBinding>
                         <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
                           <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />

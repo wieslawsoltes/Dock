@@ -1,0 +1,11 @@
+<NavigatorWindow xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+                 x:Class="Dock.Avalonia.AvalonDock.Tests.NavigatorFixture"
+                 x:DataType="NavigatorWindow" LayoutDocumentsLabel="Recent documents">
+  <NavigatorWindow.Styles>
+    <Style Selector=":is(ad|NavigatorWindow).bound-labels" x:DataType="ad:NavigatorWindow">
+      <Setter Property="LayoutAnchorablesLabel" Value="{Binding $self.LayoutDocumentsLabel, StringFormat='Tools for {0}'}" />
+    </Style>
+  </NavigatorWindow.Styles>
+</NavigatorWindow>

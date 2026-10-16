@@ -74,8 +74,8 @@
           <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
             <Binding />
             <Binding Path="CanClose" />
-            <Binding Path="DockCapabilityOverrides.CanClose" />
-            <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanClose" />
+            <Binding Path="DockCapabilityOverrides?.CanClose" Mode="OneWay" />
+            <Binding Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanClose" Mode="OneWay" />
           </MultiBinding>
           <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
             <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
@@ -177,7 +177,7 @@
                 </Border.Margin>
               </Border>
             </Panel>
-            <ContentControl x:Name="PART_CreateButtonHost"
+            <ContentPresenter x:Name="PART_CreateButtonHost"
                             Content="{Binding}"
                             IsVisible="{Binding CanCreateDocument}" />
             <Panel Name="PART_TrailingFill" />
@@ -186,7 +186,7 @@
       </ControlTemplate>
     </Setter>
 
-    <Style Selector="^/template/ ContentControl#PART_CreateButtonHost">
+    <Style Selector="^/template/ ContentPresenter#PART_CreateButtonHost">
       <Setter Property="ContentTemplate">
         <Binding Path="CreateButtonTemplate"
                  RelativeSource="{RelativeSource TemplatedParent}" />
@@ -211,13 +211,13 @@
       <Setter Property="(DockPanel.Dock)" Value="Left" />
     </Style>
     
-    <Style Selector="^[Orientation=Vertical]/template/ ContentControl#PART_CreateButtonHost">
+    <Style Selector="^[Orientation=Vertical]/template/ ContentPresenter#PART_CreateButtonHost">
       <Setter Property="(DockPanel.Dock)" Value="Bottom" />
       <Setter Property="Width" Value="NaN" />
       <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
-    <Style Selector="^[Orientation=Horizontal]/template/ ContentControl#PART_CreateButtonHost">
+    <Style Selector="^[Orientation=Horizontal]/template/ ContentPresenter#PART_CreateButtonHost">
       <Setter Property="(DockPanel.Dock)" Value="{DynamicResource DockDocumentTabStripHorizontalCreateButtonDock}" />
       <Setter Property="HorizontalAlignment" Value="{DynamicResource DockDocumentTabStripHorizontalCreateButtonAlignment}" />
       <Setter Property="VerticalAlignment" Value="Center" />

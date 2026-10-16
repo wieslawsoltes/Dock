@@ -1,0 +1,17 @@
+<DropDownButton xmlns="http://schemas.xceed.com/wpf/xaml/avalondock"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:av="https://github.com/avaloniaui"
+                x:Class="Dock.Avalonia.AvalonDock.Tests.UnprefixedMenuButton"
+                x:DataType="LayoutItem" Content="Menu" Width="180" Height="40"
+                DropDownContextMenuDataContext="{av:Binding}">
+  <DropDownButton.Resources>
+    <av:DataTemplate x:Key="Icon" x:DataType="LayoutItem">
+      <av:TextBlock Text="{av:Binding Title}" Classes="menu-icon" />
+    </av:DataTemplate>
+  </DropDownButton.Resources>
+  <DropDownButton.DropDownContextMenu>
+    <ContextMenuEx x:DataType="LayoutItem">
+      <MenuItemEx Header="{av:Binding Title}" Command="{av:Binding ActivateCommand}" IconTemplate="{av:StaticResource Icon}" />
+    </ContextMenuEx>
+  </DropDownButton.DropDownContextMenu>
+</DropDownButton>

@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Contract;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
@@ -18,7 +19,6 @@ internal abstract class DockManagerState : IDockManagerState
 {
     private readonly IDockManager _dockManager;
     private readonly IGlobalDockingService _globalDockingService;
-    private Control? _globalAdornerHost;
 
     protected IDockManager DockManager => _dockManager;
 
@@ -67,6 +67,18 @@ internal abstract class DockManagerState : IDockManagerState
     }
 
     protected IDock? ResolveGlobalTargetDock(Control? dropControl) => _globalDockingService.ResolveGlobalTargetDock(dropControl);
+
+    protected void UpdateAdornerGeometry() => LocalAdornerHelper.UpdateGeometry();
+
+    protected bool IsLocalTargetAvailable(Point point, DragAction action, Visual relativeTo, DockOperationHandler validate)
+    {
+        if (validate(point, DockOperation.Fill, action, relativeTo)) return true;
+        return DropControl?.DataContext is IDockable { Factory: IDockOuterSplitPolicy } &&
+            (validate(point, DockOperation.OuterLeft, action, relativeTo) ||
+             validate(point, DockOperation.OuterTop, action, relativeTo) ||
+             validate(point, DockOperation.OuterRight, action, relativeTo) ||
+             validate(point, DockOperation.OuterBottom, action, relativeTo));
+    }
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {
@@ -117,24 +129,8 @@ internal abstract class DockManagerState : IDockManagerState
                 $"Evaluating global adorners for drop control '{dropControlType}' (DataContext={dropDataContextType}) " +
                 $"with horizontal={horizontalGlobalDocking}, vertical={verticalGlobalDocking}.");
 
-            // Try to find DockControl ancestor - look through the visual tree more thoroughly
-            var dockControl = dropControl.FindAncestorOfType<DockControl>();
-            
-            // If not found directly, walk up the visual tree manually
-            if (dockControl is null)
-            {
-                var current = dropControl.GetVisualParent();
-                while (current is not null)
-                {
-                    if (current is DockControl dc)
-                    {
-                        dockControl = dc;
-                        break;
-                    }
-                    current = current.GetVisualParent();
-                }
-            }
-            
+            var dockControl = DockHelpers.ResolveDockControl(dropControl);
+
             var targetDock = ResolveGlobalTargetDock(dropControl);
             if (dockControl is not null && targetDock is not null)
             {
@@ -143,7 +139,6 @@ internal abstract class DockManagerState : IDockManagerState
                 {
                     var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(dropControl);
                     GlobalAdornerHelper.AddAdorner(dockControl, indicatorsOnly, horizontalGlobalDocking, verticalGlobalDocking);
-                    _globalAdornerHost = dockControl;
                     var dockControlName = dockControl.GetType().Name;
                     var targetDockTitle = targetDock.Title ?? targetDock.GetType().Name;
                     DockLogger.LogDebug(
@@ -169,75 +164,10 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected void RemoveAdorners()
     {
-        // Local dock target
-        if (DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
-        {
-            var host = DockProperties.GetDockAdornerHost(control) ?? control;
-            LocalAdornerHelper.RemoveAdorner(host);
-        }
-        LocalAdornerHelper.SetGlobalDockAvailability(false);
-        LocalAdornerHelper.SetGlobalDockActive(false);
-
-        // Global dock target
-        if (DropControl is { } dropControl)
-        {
-            // Try to find DockControl ancestor - look through the visual tree more thoroughly
-            var dockControl = dropControl.FindAncestorOfType<DockControl>();
-            
-            // If not found directly, walk up the visual tree manually
-            if (dockControl is null)
-            {
-                var current = dropControl.GetVisualParent();
-                while (current is not null)
-                {
-                    if (current is DockControl dc)
-                    {
-                        dockControl = dc;
-                        break;
-                    }
-                    current = current.GetVisualParent();
-                }
-            }
-            
-            if (dockControl is not null)
-            {
-                var dockControlName = dockControl.GetType().Name;
-                GlobalAdornerHelper.RemoveAdorner(dockControl);
-                if (ReferenceEquals(_globalAdornerHost, dockControl))
-                {
-                    _globalAdornerHost = null;
-                }
-                DockLogger.LogDebug(
-                    "GlobalAdorner",
-                    $"Removed global adorners from dock control '{dockControlName}'.");
-            }
-            else
-            {
-                var dropControlType = dropControl.GetType().Name;
-                if (_globalAdornerHost is { } cachedHost)
-                {
-                    GlobalAdornerHelper.RemoveAdorner(cachedHost);
-                    DockLogger.LogDebug(
-                        "GlobalAdorner",
-                        $"Used cached host '{cachedHost.GetType().Name}' to remove global adorners after drop control '{dropControlType}' was detached.");
-                    _globalAdornerHost = null;
-                }
-                else
-                {
-                    DockLogger.LogDebug(
-                        "GlobalAdorner",
-                        $"Drop control '{dropControlType}' no longer has a dock control ancestor and no cached host; global adorners may already be detached.");
-                }
-            }
-        }
-        else if (_globalAdornerHost is { } cachedHost)
-        {
-            GlobalAdornerHelper.RemoveAdorner(cachedHost);
-            DockLogger.LogDebug(
-                "GlobalAdorner",
-                $"Removed global adorners using cached host '{cachedHost.GetType().Name}' after DropControl was cleared.");
-            _globalAdornerHost = null;
-        }
+        // The helpers own their attachments. The drop control may already be
+        // detached, unmarked, or cleared when a drag is cancelled.
+        LocalAdornerHelper.RemoveAdorner();
+        GlobalAdornerHelper.RemoveAdorner();
     }
 
     protected virtual void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
@@ -426,7 +356,7 @@ internal abstract class DockManagerState : IDockManagerState
     {
         managedPoint = default;
 
-        var dockControl = relativeTo as DockControl ?? relativeTo.FindAncestorOfType<DockControl>();
+        var dockControl = DockHelpers.ResolveDockControl(relativeTo);
         if (dockControl?.Layout?.Factory is not { } factory)
         {
             return false;

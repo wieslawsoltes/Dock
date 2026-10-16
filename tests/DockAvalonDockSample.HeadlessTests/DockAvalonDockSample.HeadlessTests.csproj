@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <Import Project="../../build/Avalonia.Headless.props" />
+  <Import Project="../../build/XUnit.props" />
+  <ItemGroup>
+    <ProjectReference Include="../../samples/DockAvalonDockSample/DockAvalonDockSample.csproj" />
+    <Compile Include="../Dock.Avalonia.AvalonDock.Tests/SampleTests.cs" Link="SampleTests.cs" />
+  </ItemGroup>
+</Project>

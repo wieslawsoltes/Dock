@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <Import Project="../../build/Avalonia.Headless.props" />
+  <Import Project="../../build/XUnit.props" />
+  <ItemGroup>
+    <AvaloniaResource Include="../Dock.Avalonia.AvalonDock.Tests/Assets/converter.png" Link="Assets/converter.png" />
+    <PackageReference Include="Avalonia.Skia" />
+    <ProjectReference Include="../../src/Dock.Avalonia.AvalonDock/Dock.Avalonia.AvalonDock.csproj" />
+  </ItemGroup>
+</Project>

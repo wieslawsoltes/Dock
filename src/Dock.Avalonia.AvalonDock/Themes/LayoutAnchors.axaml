@@ -1,0 +1,13 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
+        xmlns:dock="using:Dock.Avalonia.Controls">
+  <Style Selector="ad|DockingManager">
+    <Setter Property="AnchorSideTemplate" Value="{StaticResource AvalonDockAnchorSide}" />
+    <Setter Property="AnchorGroupTemplate" Value="{StaticResource AvalonDockAnchorGroup}" />
+    <Setter Property="AnchorTemplate" Value="{StaticResource AvalonDockAnchor}" />
+  </Style>
+  <Style Selector=":is(ad|DockingManager) dock|ToolPinnedControl, dock|DockControl.avalondock dock|ToolPinnedControl, :is(Window).avalondock dock|ToolPinnedControl">
+    <Setter Property="Template" Value="{StaticResource AvalonDockPinnedStrip}" />
+  </Style>
+</Styles>

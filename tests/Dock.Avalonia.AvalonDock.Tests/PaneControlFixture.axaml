@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="Dock.Avalonia.AvalonDock.Tests.PaneControlFixture"
+        x:DataType="DockingManager" Width="1100" Height="650">
+  <Window.Resources>
+    <LayoutDocumentPane x:Key="HeaderlessDocuments" ShowHeader="False">
+      <LayoutDocument ContentId="headerless" Title="Headerless"><TextBox Text="Headerless editor" /></LayoutDocument>
+    </LayoutDocumentPane>
+    <ad:LayoutDocumentPane x:Key="LegacyHeaderlessDocuments" ShowHeader="False">
+      <ad:LayoutDocument ContentId="headerless" Title="Headerless"><TextBox Text="Headerless editor" /></ad:LayoutDocument>
+    </ad:LayoutDocumentPane>
+    <ControlTheme x:Key="DocumentPane" TargetType="LayoutDocumentPaneControl"
+                  BasedOn="{StaticResource {x:Type LayoutDocumentPaneControl}}" x:DataType="LayoutDocumentPaneControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+      <Setter Property="MinHeight" Value="100" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyDocumentPane" TargetType="ad:LayoutDocumentPaneControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutDocumentPaneControl}}" x:DataType="ad:LayoutDocumentPaneControl">
+      <Setter Property="MinHeight" Value="120" />
+    </ControlTheme>
+    <ControlTheme x:Key="ToolPane" TargetType="LayoutAnchorablePaneControl"
+                  BasedOn="{StaticResource {x:Type LayoutAnchorablePaneControl}}" x:DataType="LayoutAnchorablePaneControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+      <Setter Property="MinHeight" Value="90" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyToolPane" TargetType="ad:LayoutAnchorablePaneControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutAnchorablePaneControl}}" x:DataType="ad:LayoutAnchorablePaneControl">
+      <Setter Property="MinHeight" Value="110" />
+    </ControlTheme>
+    <DataTemplate x:Key="CachePane" x:DataType="LayoutDocumentPane"><LayoutCachePaneControl ItemsSource="{Binding Children}" /></DataTemplate>
+    <DataTemplate x:Key="LegacyCachePane" x:DataType="LayoutDocumentPane"><ad:LayoutCachePaneControl ItemsSource="{Binding Children}" /></DataTemplate>
+  </Window.Resources>
+  <DockingManager x:Name="Manager"
+                  DocumentPaneControlStyle="{StaticResource DocumentPane}"
+                  AnchorablePaneControlStyle="{StaticResource ToolPane}">
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutDocumentPane>
+          <LayoutDocument ContentId="first" Title="First"><TextBox Text="First editor" /></LayoutDocument>
+          <LayoutDocument ContentId="second" Title="Second"><TextBox Text="Second editor" /></LayoutDocument>
+        </LayoutDocumentPane>
+        <LayoutAnchorablePane>
+          <LayoutAnchorable ContentId="tool-first" Title="First tool"><TextBox Text="First tool editor" /></LayoutAnchorable>
+          <LayoutAnchorable ContentId="tool-second" Title="Second tool"><TextBox Text="Second tool editor" /></LayoutAnchorable>
+        </LayoutAnchorablePane>
+      </LayoutPanel>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

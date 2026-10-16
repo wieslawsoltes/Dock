@@ -1,0 +1,258 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:PackageConsumer"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        x:Class="PackageConsumer.ConsumerWindow" x:DataType="DockingManager"
+        Width="640" Height="480">
+  <Window.Resources>
+    <DockingManager x:Key="StyledManager">
+      <DockingManager.Styles>
+        <Style Selector="DockingManager.workspace" x:DataType="local:ManagerPropertyViewModel">
+          <Setter Property="LayoutUpdateStrategy" Value="{Binding Strategy}" />
+          <Setter Property="Layout" Value="{Binding Root}" />
+          <Setter Property="DocumentsSource" Value="{Binding Documents}" />
+          <Setter Property="AnchorablesSource" Value="{Binding Tools}" />
+        </Style>
+      </DockingManager.Styles>
+    </DockingManager>
+    <ad:DockingManager x:Key="LegacyStyledManager">
+      <ad:DockingManager.Styles>
+        <Style Selector="ad|DockingManager.workspace" x:DataType="local:ManagerPropertyViewModel">
+          <Setter Property="LayoutUpdateStrategy" Value="{Binding Strategy}" />
+          <Setter Property="Layout" Value="{Binding Root}" />
+          <Setter Property="DocumentsSource" Value="{Binding Documents}" />
+          <Setter Property="AnchorablesSource" Value="{Binding Tools}" />
+        </Style>
+      </ad:DockingManager.Styles>
+    </ad:DockingManager>
+    <LayoutGroupFloatingWindow x:Key="GroupedFloatingModel">
+      <LayoutDocumentPane><LayoutDocument ContentId="grouped-document" /></LayoutDocumentPane>
+      <LayoutAnchorablePane><LayoutAnchorable ContentId="grouped-tool" /></LayoutAnchorablePane>
+    </LayoutGroupFloatingWindow>
+    <ad:LayoutGroupFloatingWindow x:Key="LegacyGroupedFloatingModel">
+      <ad:LayoutDocumentPane><ad:LayoutDocument ContentId="legacy-grouped-document" /></ad:LayoutDocumentPane>
+      <ad:LayoutAnchorablePane><ad:LayoutAnchorable ContentId="legacy-grouped-tool" /></ad:LayoutAnchorablePane>
+    </ad:LayoutGroupFloatingWindow>
+    <DockingManager x:Key="SystemMenuOption" ShowSystemMenu="False" />
+    <ad:DockingManager x:Key="LegacySystemMenuOption" ShowSystemMenu="False" />
+    <DockingManager x:Key="CaptionPreview" ShowDockablePreviewOnDrag="False" />
+    <ad:DockingManager x:Key="LegacyCaptionPreview" ShowDockablePreviewOnDrag="False" />
+    <ControlTheme x:Key="Overlay" TargetType="OverlayWindow" x:DataType="OverlayWindow"
+                  BasedOn="{StaticResource {x:Type OverlayWindow}}">
+      <Setter Property="Tag" Value="{x:Static DropTargetType.DocumentPaneDockInside}" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyOverlay" TargetType="ad:OverlayWindow" x:DataType="ad:OverlayWindow"
+                  BasedOn="{StaticResource {x:Type ad:OverlayWindow}}">
+      <Setter Property="Tag" Value="{x:Static ad:OverlayWindowDropTargetType.DocumentPaneDockInside}" />
+    </ControlTheme>
+    <AnchorableContextMenuAutoHideHeaderConverter x:Key="AutoHideHeaderConverter" />
+    <ad:UriSourceToBitmapImageConverter x:Key="UriImageConverter" />
+    <DataTemplate x:Key="Resizer" x:DataType="x:Object">
+      <LayoutGridResizerControl BackgroundWhileDragging="Blue" OpacityWhileDragging="0.7" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyResizer" x:DataType="x:Object">
+      <ad:LayoutGridResizerControl BackgroundWhileDragging="Blue" OpacityWhileDragging="0.7" />
+    </DataTemplate>
+    <LayoutDocumentPane x:Key="HeaderlessPane" ShowHeader="False" />
+    <ad:LayoutDocumentPane x:Key="LegacyHeaderlessPane" ShowHeader="False" />
+    <ControlTheme x:Key="DocumentPaneStyle" TargetType="LayoutDocumentPaneControl"
+                  BasedOn="{StaticResource {x:Type LayoutDocumentPaneControl}}" x:DataType="LayoutDocumentPaneControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyDocumentPaneStyle" TargetType="ad:LayoutDocumentPaneControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutDocumentPaneControl}}" />
+    <ControlTheme x:Key="ToolPaneStyle" TargetType="LayoutAnchorablePaneControl"
+                  BasedOn="{StaticResource {x:Type LayoutAnchorablePaneControl}}" x:DataType="LayoutAnchorablePaneControl">
+      <Setter Property="Tag" Value="{Binding $self.Model}" />
+    </ControlTheme>
+    <ControlTheme x:Key="LegacyToolPaneStyle" TargetType="ad:LayoutAnchorablePaneControl"
+                  BasedOn="{StaticResource {x:Type ad:LayoutAnchorablePaneControl}}" />
+    <DataTemplate x:Key="CachePane" x:DataType="LayoutDocumentPane"><LayoutCachePaneControl ItemsSource="{Binding Children}" /></DataTemplate>
+    <DataTemplate x:Key="LegacyCachePane" x:DataType="LayoutDocumentPane"><ad:LayoutCachePaneControl ItemsSource="{Binding Children}" /></DataTemplate>
+    <ItemsPanelTemplate x:Key="DocumentPanel"><DocumentPaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="LegacyDocumentPanel"><ad:DocumentPaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="ToolPanel"><AnchorablePaneTabPanel /></ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="LegacyToolPanel"><ad:AnchorablePaneTabPanel /></ItemsPanelTemplate>
+    <DataTemplate x:Key="OverflowDocumentTabs" x:DataType="LayoutDocumentPane">
+      <ItemsControl ItemsSource="{Binding Children}" ItemsPanel="{StaticResource DocumentPanel}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="LayoutContent"><LayoutDocumentTabItem Model="{Binding}" Width="100" Height="30" /></DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </DataTemplate>
+    <DataTemplate x:Key="DocumentTabControl" x:DataType="LayoutContent">
+      <LayoutDocumentTabItem Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyDocumentTabControl" x:DataType="LayoutContent">
+      <ad:LayoutDocumentTabItem Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolTabControl" x:DataType="LayoutContent">
+      <LayoutAnchorableTabItem Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyToolTabControl" x:DataType="LayoutContent">
+      <ad:LayoutAnchorableTabItem Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="PackagedMenuIcon" x:DataType="LayoutItem">
+      <Border><TextBlock Text="{Binding Title}" /></Border>
+    </DataTemplate>
+    <DataTemplate x:Key="MenuButton" x:DataType="LayoutItem">
+      <local:MenuButton />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyMenuButton" x:DataType="LayoutItem">
+      <ad:DropDownButton Content="Actions" Width="180" Height="40" DropDownContextMenuDataContext="{Binding}">
+        <ad:DropDownButton.DropDownContextMenu>
+          <ad:ContextMenuEx x:DataType="LayoutItem">
+            <ad:MenuItemEx Header="{Binding Title}" Command="{Binding ActivateCommand}" IconTemplate="{StaticResource PackagedMenuIcon}" />
+          </ad:ContextMenuEx>
+        </ad:DropDownButton.DropDownContextMenu>
+      </ad:DropDownButton>
+    </DataTemplate>
+    <DataTemplate x:Key="MenuArea" x:DataType="LayoutItem">
+      <DropDownControlArea Width="180" Height="40" DropDownContextMenuDataContext="{Binding}">
+        <DropDownControlArea.DropDownContextMenu>
+          <ContextMenuEx x:DataType="LayoutItem">
+            <MenuItemEx Header="{Binding Title}" Command="{Binding ActivateCommand}" IconTemplate="{StaticResource PackagedMenuIcon}" />
+          </ContextMenuEx>
+        </DropDownControlArea.DropDownContextMenu>
+        <Border Background="Transparent"><TextBlock Text="{Binding Title}" /></Border>
+      </DropDownControlArea>
+    </DataTemplate>
+    <ResourceInclude x:Key="GenericByUri" Source="avares://Dock.Avalonia.AvalonDock/Themes/Generic.axaml" />
+    <DataTemplate x:Key="AnchorableTitleControl" x:DataType="LayoutAnchorable">
+      <AnchorablePaneTitle Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="LegacyAnchorableTitleControl" x:DataType="LayoutAnchorable">
+      <ad:AnchorablePaneTitle Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DocumentContentControl" x:DataType="LayoutContent">
+      <LayoutDocumentControl Model="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolContentControl" x:DataType="LayoutAnchorable">
+      <ad:LayoutAnchorableControl Model="{Binding}" />
+    </DataTemplate>
+    <Style x:Key="NavigatorLabels" Selector=":is(NavigatorWindow)" x:DataType="NavigatorWindow">
+      <Setter Property="LayoutDocumentsLabel" Value="Packaged documents" />
+      <Setter Property="LayoutAnchorablesLabel" Value="Packaged tools" />
+    </Style>
+    <Style x:Key="FloatingResizeStyle" Selector=":is(LayoutFloatingWindowControl)" x:DataType="LayoutFloatingWindowControl">
+      <Setter Property="ResizeBorderThickness" Value="4,6,8,12" />
+    </Style>
+    <LayoutItemFromLayoutModelConverter x:Key="ItemFromModel" />
+    <ActivateCommandLayoutItemFromLayoutModelConverter x:Key="ActivateFromModel" />
+    <HideCommandLayoutItemFromLayoutModelConverter x:Key="HideFromModel" />
+    <AutoHideCommandLayoutItemFromLayoutModelConverter x:Key="AutoHideFromModel" />
+    <AnchorSideToAngleConverter x:Key="SideAngle" />
+    <AnchorSideToOrientationConverter x:Key="SideOrientation" />
+    <BoolToVisibilityConverter x:Key="BoolVisible" />
+    <InverseBoolToVisibilityConverter x:Key="InverseVisible" />
+    <NullToDoNothingConverter x:Key="PreserveNull" />
+    <AnchorableContextMenuHideVisibilityConverter x:Key="HideVisible" />
+    <DataTemplate x:Key="ConvertedCommands" x:DataType="LayoutAnchorable">
+      <StackPanel>
+        <Button Classes="converted-activate" Content="Activate" Command="{Binding ., Converter={StaticResource ActivateFromModel}}" />
+        <Button Classes="converted-hide" Content="Hide" Command="{Binding ., Converter={StaticResource HideFromModel}}" />
+        <Button Classes="converted-auto-hide" Content="Auto Hide" Command="{Binding ., Converter={StaticResource AutoHideFromModel}}" />
+        <TextBlock Classes="converted-visible" Text="{Binding ToolTip, Converter={StaticResource PreserveNull}}"
+                   IsVisible="{Binding CanClose, Converter={StaticResource BoolVisible}}" />
+        <TextBlock Classes="converted-inverse" Text="Close unavailable" IsVisible="{Binding CanClose, Converter={StaticResource InverseVisible}}" />
+        <TextBlock Classes="converted-hide-visible" Text="Hide entry">
+          <TextBlock.IsVisible>
+            <MultiBinding Converter="{StaticResource HideVisible}">
+              <Binding Path="IsVisible" />
+              <Binding Path="CanClose" />
+            </MultiBinding>
+          </TextBlock.IsVisible>
+        </TextBlock>
+      </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="FloatingWindowCommands" x:DataType="LayoutAnchorableFloatingWindowControl">
+      <StackPanel>
+        <Button Classes="window-close" Content="Close tools" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding Model}" />
+        <Button Classes="window-hide" Content="Hide tools" Command="{Binding HideWindowCommand}" CommandParameter="{Binding Model}" />
+      </StackPanel>
+    </DataTemplate>
+    <LayoutDocumentItem x:Key="Container" Description="Unprefixed packaged container" />
+    <DataTemplate x:Key="ExplicitTemplate" x:DataType="x:Object">
+      <TextBlock Classes="explicit-package-template" Text="Explicit package template" />
+    </DataTemplate>
+    <DataTemplate x:Key="DocumentHeader" x:DataType="LayoutContent">
+      <TextBlock Classes="package-document-header" Text="{Binding Title, StringFormat='Tab: {0}'}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolHeader" x:DataType="LayoutAnchorable">
+      <TextBlock Classes="package-tool-header" Text="{Binding Title, StringFormat='Tool: {0}'}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ToolTitle" x:DataType="LayoutAnchorable">
+      <TextBlock Classes="package-tool-title" Text="{Binding Title, StringFormat='Title: {0}'}" />
+    </DataTemplate>
+    <ControlTheme x:Key="SourceContainerStyle" TargetType="LayoutDocumentItem" x:DataType="LayoutDocumentItem">
+      <Setter Property="Title" Value="{Binding Model, StringFormat='Styled: {0}'}" />
+      <Setter Property="CanFloat" Value="True" />
+    </ControlTheme>
+    <ControlTheme x:Key="ExplicitContainerStyle" TargetType="LayoutItem" x:DataType="LayoutItem">
+      <Setter Property="Title" Value="Explicit package container" />
+      <Setter Property="CanFloat" Value="False" />
+    </ControlTheme>
+    <StyleSelector x:Key="DefaultStyleSelector" />
+    <local:SourceStyleSelector x:Key="SourceStyleSelector" SourceStyle="{StaticResource SourceContainerStyle}" />
+  </Window.Resources>
+  <Window.Styles>
+    <AvalonDockTheme />
+  </Window.Styles>
+  <DockingManager x:Name="Manager" LayoutItemContainerStyleSelector="{StaticResource SourceStyleSelector}"
+                  AllowMovingFloatingWindowWithKeyboard="True"
+                  GridSplitterWidth="16" GridSplitterHeight="10"
+                  DocumentHeaderTemplate="{StaticResource DocumentHeader}"
+                  AnchorableHeaderTemplate="{StaticResource ToolHeader}"
+                  AnchorableTitleTemplate="{StaticResource ToolTitle}">
+    <DockingManager.Theme>
+      <GenericTheme />
+    </DockingManager.Theme>
+    <DockingManager.DocumentTitleTemplate>
+      <DataTemplate x:DataType="LayoutDocument">
+        <TextBlock Classes="package-document-title" Text="{Binding Title, StringFormat='Window: {0}'}" />
+      </DataTemplate>
+    </DockingManager.DocumentTitleTemplate>
+    <DockingManager.DocumentPaneMenuItemHeaderTemplate>
+      <DataTemplate x:DataType="LayoutContent">
+        <TextBlock Classes="package-menu-header" Text="{Binding Title, StringFormat='Document: {0}'}" />
+      </DataTemplate>
+    </DockingManager.DocumentPaneMenuItemHeaderTemplate>
+    <DockingManager.IconContentTemplate>
+      <DataTemplate x:DataType="LayoutContent">
+        <TextBlock Classes="package-menu-icon" Text="{Binding ContentId}" />
+      </DataTemplate>
+    </DockingManager.IconContentTemplate>
+    <DockingManager.DocumentContextMenu>
+      <ContextMenu x:DataType="LayoutItem">
+        <MenuItem Header="Close package document" Command="{Binding CloseCommand}" />
+      </ContextMenu>
+    </DockingManager.DocumentContextMenu>
+    <DockingManager.AnchorableContextMenu>
+      <ContextMenu x:DataType="LayoutAnchorableItem">
+        <MenuItem Header="Restore package tool" Command="{Binding AutoHideCommand}" />
+      </ContextMenu>
+    </DockingManager.AnchorableContextMenu>
+    <DockingManager.DataTemplates>
+      <DataTemplate DataType="{x:Type x:String}" x:DataType="x:String">
+        <TextBlock Classes="source-template" Text="{Binding .}" />
+      </DataTemplate>
+    </DockingManager.DataTemplates>
+    <LayoutRoot>
+      <LayoutPanel>
+        <LayoutDocumentPane>
+          <LayoutDocument Title="NuGet document" ContentId="document">
+            <TextBox Text="Package consumer" />
+          </LayoutDocument>
+        </LayoutDocumentPane>
+      </LayoutPanel>
+      <LayoutRoot.LeftSide>
+        <LayoutAnchorSide>
+          <LayoutAnchorGroup>
+            <LayoutAnchorable ContentId="agenda" Title="Agenda">
+              <TextBlock Text="Package auto-hide content" />
+            </LayoutAnchorable>
+          </LayoutAnchorGroup>
+        </LayoutAnchorSide>
+      </LayoutRoot.LeftSide>
+    </LayoutRoot>
+  </DockingManager>
+</Window>

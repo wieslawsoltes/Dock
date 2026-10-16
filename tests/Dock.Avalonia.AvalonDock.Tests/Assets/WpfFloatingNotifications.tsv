@@ -1,0 +1,301 @@
+scenario	stage	state	error	events
+document-none-default	before	none,0,0,0,-,-,none,none,-	none	
+document-none-default	after	none,0,0,0,-,-,none,none,-	none	
+document-none-set	before	none,0,0,0,-,-,none,none,-	none	
+document-none-set	after	first,1,1,1,-,-,floating,none,floating	none	changing:RootDocument@none,0,0,0,-,-,none,none,->first-parent-changing@first,1,1,1,-,-,none,none,none>first-parent-changed@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@first,1,1,1,-,-,floating,none,floating
+document-none-same	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-same	after	first,1,1,1,-,-,floating,none,floating	none	
+document-none-clear	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-clear	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-none-replace	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-replace	after	second,1,1,1,-,-,floating,floating,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating
+document-none-remove	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-remove	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-none-remove-other	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-remove-other	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-none-remove-null	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-remove-null	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-none-replace-null	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-replace-null	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-none-replace-wrong-type	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-replace-wrong-type	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-none-replace-other	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-replace-other	after	second,1,1,1,-,-,floating,floating,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating
+document-none-replace-empty	before	none,0,0,0,-,-,none,none,-	none	
+document-none-replace-empty	after	first,1,1,1,-,-,floating,none,floating	none	changing:RootDocument@none,0,0,0,-,-,none,none,->first-parent-changing@first,1,1,1,-,-,none,none,none>first-parent-changed@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@first,1,1,1,-,-,floating,none,floating
+document-none-read-empty	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-read-empty	after	first,1,1,1,-,-,floating,none,floating	none	
+document-none-read-empty-pair	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-read-empty-pair	after	first,1,1,1,-,-,floating,none,floating	none	
+document-none-read-empty-new	before	none,0,0,0,-,-,none,none,-	none	
+document-none-read-empty-new	after	none,0,0,0,-,-,none,none,-	none	
+document-none-read-empty-pair-new	before	none,0,0,0,-,-,none,none,-	none	
+document-none-read-empty-pair-new	after	none,0,0,0,-,-,none,none,-	none	
+document-none-read-child	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-read-child	after	other,1,1,1,-,-,floating,none,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@other,1,1,1,-,-,floating,none,floating>document-event@other,1,1,1,-,-,floating,none,floating
+document-none-restore-former	before	first,1,1,1,-,-,floating,none,floating	none	
+document-none-restore-former	after	first,1,1,1,-,-,floating,floating,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating>changing:RootDocument@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@first,1,1,1,-,-,floating,floating,floating>document-event@first,1,1,1,-,-,floating,floating,floating
+document-changing-default	before	none,0,0,0,-,-,none,none,-	none	
+document-changing-default	after	none,0,0,0,-,-,none,none,-	none	
+document-changing-set	before	none,0,0,0,-,-,none,none,-	none	
+document-changing-set	after	first,1,1,1,-,-,floating,none,floating	none	first-parent-changing@first,1,1,1,-,-,none,none,none>first-parent-changed@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@first,1,1,1,-,-,floating,none,floating
+document-changing-same	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-same	after	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-clear	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-clear	after	none,0,0,0,-,-,floating,none,-	none	changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-changing-replace	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-replace	after	second,1,1,1,-,-,floating,floating,floating	none	second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating
+document-changing-remove	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-remove	after	none,0,0,0,-,-,floating,none,-	none	changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-changing-remove-other	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-remove-other	after	none,0,0,0,-,-,floating,none,-	none	changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-changing-remove-null	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-remove-null	after	none,0,0,0,-,-,floating,none,-	none	changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-changing-replace-null	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-replace-null	after	none,0,0,0,-,-,floating,none,-	none	changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-changing-replace-wrong-type	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-replace-wrong-type	after	none,0,0,0,-,-,floating,none,-	none	changed:RootDocument@none,0,0,0,-,-,floating,none,->document-event@none,0,0,0,-,-,floating,none,-
+document-changing-replace-other	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-replace-other	after	second,1,1,1,-,-,floating,floating,floating	none	second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating
+document-changing-replace-empty	before	none,0,0,0,-,-,none,none,-	none	
+document-changing-replace-empty	after	first,1,1,1,-,-,floating,none,floating	none	first-parent-changing@first,1,1,1,-,-,none,none,none>first-parent-changed@first,1,1,1,-,-,floating,none,floating>changed:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@first,1,1,1,-,-,floating,none,floating
+document-changing-read-empty	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-read-empty	after	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-read-empty-pair	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-read-empty-pair	after	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-read-empty-new	before	none,0,0,0,-,-,none,none,-	none	
+document-changing-read-empty-new	after	none,0,0,0,-,-,none,none,-	none	
+document-changing-read-empty-pair-new	before	none,0,0,0,-,-,none,none,-	none	
+document-changing-read-empty-pair-new	after	none,0,0,0,-,-,none,none,-	none	
+document-changing-read-child	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-read-child	after	other,1,1,1,-,-,floating,none,floating	none	changed:RootDocument@other,1,1,1,-,-,floating,none,floating>document-event@other,1,1,1,-,-,floating,none,floating
+document-changing-restore-former	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changing-restore-former	after	first,1,1,1,-,-,floating,floating,floating	none	second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating>changed:RootDocument@first,1,1,1,-,-,floating,floating,floating>document-event@first,1,1,1,-,-,floating,floating,floating
+document-changed-default	before	none,0,0,0,-,-,none,none,-	none	
+document-changed-default	after	none,0,0,0,-,-,none,none,-	none	
+document-changed-set	before	none,0,0,0,-,-,none,none,-	none	
+document-changed-set	after	first,1,1,1,-,-,floating,none,floating	none	changing:RootDocument@none,0,0,0,-,-,none,none,->first-parent-changing@first,1,1,1,-,-,none,none,none>first-parent-changed@first,1,1,1,-,-,floating,none,floating>document-event@first,1,1,1,-,-,floating,none,floating
+document-changed-same	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-same	after	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-clear	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-clear	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@none,0,0,0,-,-,floating,none,-
+document-changed-replace	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-replace	after	second,1,1,1,-,-,floating,floating,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating
+document-changed-remove	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-remove	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@none,0,0,0,-,-,floating,none,-
+document-changed-remove-other	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-remove-other	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@none,0,0,0,-,-,floating,none,-
+document-changed-remove-null	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-remove-null	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@none,0,0,0,-,-,floating,none,-
+document-changed-replace-null	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-replace-null	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@none,0,0,0,-,-,floating,none,-
+document-changed-replace-wrong-type	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-replace-wrong-type	after	none,0,0,0,-,-,floating,none,-	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@none,0,0,0,-,-,floating,none,-
+document-changed-replace-other	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-replace-other	after	second,1,1,1,-,-,floating,floating,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating
+document-changed-replace-empty	before	none,0,0,0,-,-,none,none,-	none	
+document-changed-replace-empty	after	first,1,1,1,-,-,floating,none,floating	none	changing:RootDocument@none,0,0,0,-,-,none,none,->first-parent-changing@first,1,1,1,-,-,none,none,none>first-parent-changed@first,1,1,1,-,-,floating,none,floating>document-event@first,1,1,1,-,-,floating,none,floating
+document-changed-read-empty	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-read-empty	after	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-read-empty-pair	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-read-empty-pair	after	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-read-empty-new	before	none,0,0,0,-,-,none,none,-	none	
+document-changed-read-empty-new	after	none,0,0,0,-,-,none,none,-	none	
+document-changed-read-empty-pair-new	before	none,0,0,0,-,-,none,none,-	none	
+document-changed-read-empty-pair-new	after	none,0,0,0,-,-,none,none,-	none	
+document-changed-read-child	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-read-child	after	other,1,1,1,-,-,floating,none,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>document-event@other,1,1,1,-,-,floating,none,floating
+document-changed-restore-former	before	first,1,1,1,-,-,floating,none,floating	none	
+document-changed-restore-former	after	first,1,1,1,-,-,floating,floating,floating	none	changing:RootDocument@first,1,1,1,-,-,floating,none,floating>second-parent-changing@second,1,1,1,-,-,floating,none,none>second-parent-changed@second,1,1,1,-,-,floating,floating,floating>document-event@second,1,1,1,-,-,floating,floating,floating>changing:RootDocument@second,1,1,1,-,-,floating,floating,floating>document-event@first,1,1,1,-,-,floating,floating,floating
+tool-none-default	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-default	after	none,0,0,0,1,0,none,none,-	none	
+tool-none-set	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-set	after	first,1,1,1,1,1,floating,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->first-parent-changing@first,1,1,1,1,1,none,none,none>first-parent-changed@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating>changed:Children@first,1,1,1,1,1,floating,none,floating>changed:ChildrenCount@first,1,1,1,1,1,floating,none,floating
+tool-none-same	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-same	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-clear	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-clear	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changing:IsVisible@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-none-replace	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-replace	after	second,1,1,1,1,1,floating,floating,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@second,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@second,1,1,1,1,1,floating,floating,floating>changed:SinglePane@second,1,1,1,1,1,floating,floating,floating>changed:Children@second,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@second,1,1,1,1,1,floating,floating,floating
+tool-none-remove	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-remove	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changing:IsVisible@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-none-remove-other	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-remove-other	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changing:IsVisible@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-none-remove-null	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-remove-null	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changing:IsVisible@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-none-replace-null	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-replace-null	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changing:IsVisible@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-none-replace-wrong-type	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-replace-wrong-type	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changing:IsVisible@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-none-replace-other	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-replace-other	after	second,1,1,1,1,1,floating,floating,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@second,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@second,1,1,1,1,1,floating,floating,floating>changed:SinglePane@second,1,1,1,1,1,floating,floating,floating>changed:Children@second,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@second,1,1,1,1,1,floating,floating,floating
+tool-none-replace-empty	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-replace-empty	after	first,1,1,1,1,1,floating,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->first-parent-changing@first,1,1,1,1,1,none,none,none>first-parent-changed@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating>changed:Children@first,1,1,1,1,1,floating,none,floating>changed:ChildrenCount@first,1,1,1,1,1,floating,none,floating
+tool-none-read-empty	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-read-empty	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-read-empty-pair	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-read-empty-pair	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-read-empty-new	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-read-empty-new	after	none,0,0,0,0,0,none,none,-	none	changing:IsVisible@none,0,0,0,1,0,none,none,->changed:IsVisible@none,0,0,0,0,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-none-read-empty-pair-new	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-read-empty-pair-new	after	none,0,0,0,1,0,none,none,-	none	
+tool-none-read-child	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-read-child	after	other,1,1,1,1,1,floating,none,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@other,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@other,1,1,1,1,1,floating,none,floating>changed:SinglePane@other,1,1,1,1,1,floating,none,floating>changed:Children@other,1,1,1,1,1,floating,none,floating>changed:ChildrenCount@other,1,1,1,1,1,floating,none,floating
+tool-none-restore-former	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-restore-former	after	first,1,1,1,1,1,floating,floating,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@second,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@second,1,1,1,1,1,floating,floating,floating>changed:SinglePane@second,1,1,1,1,1,floating,floating,floating>changed:Children@second,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@second,1,1,1,1,1,floating,floating,floating>changing:RootPanel@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@first,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,floating,floating>changed:SinglePane@first,1,1,1,1,1,floating,floating,floating>changed:Children@first,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@first,1,1,1,1,1,floating,floating,floating
+tool-none-compute-empty	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-compute-empty	after	none,0,0,0,0,0,none,none,-	none	changing:IsVisible@none,0,0,0,1,0,none,none,->changed:IsVisible@none,0,0,0,0,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-none-compute-empty-repeat	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-compute-empty-repeat	after	none,0,0,0,0,0,none,none,-	none	changing:IsVisible@none,0,0,0,1,0,none,none,->changed:IsVisible@none,0,0,0,0,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-none-compute-visible	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-compute-visible	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-set-empty-group	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-set-empty-group	after	other,1,1,1,0,0,none,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->changing:IsVisible@other,1,1,1,1,0,none,none,floating>changed:IsVisible@other,1,1,1,0,0,none,none,floating>visibility-event@other,1,1,1,0,0,none,none,floating>changed:RootPanel@other,1,1,1,0,0,none,none,floating>changed:IsSinglePane@other,1,1,1,0,0,none,none,floating>changed:SinglePane@other,1,1,1,0,0,none,none,floating>changed:Children@other,1,1,1,0,0,none,none,floating>changed:ChildrenCount@other,1,1,1,0,0,none,none,floating
+tool-none-set-hidden-group	before	none,0,0,0,1,0,none,none,-	none	
+tool-none-set-hidden-group	after	other,1,1,1,0,0,none,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->changed:RootPanel@other,1,1,1,1,0,none,none,floating>changed:IsSinglePane@other,1,1,1,1,0,none,none,floating>changed:SinglePane@other,1,1,1,1,0,none,none,floating>changed:Children@other,1,1,1,1,0,none,none,floating>changed:ChildrenCount@other,1,1,1,1,0,none,none,floating>changing:IsVisible@other,1,1,1,1,0,none,none,floating>changed:IsVisible@other,1,1,1,0,0,none,none,floating>visibility-event@other,1,1,1,0,0,none,none,floating
+tool-none-replace-empty-group	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-replace-empty-group	after	other,1,1,1,0,0,floating,none,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@other,1,1,1,1,0,floating,none,floating>changed:IsVisible@other,1,1,1,0,0,floating,none,floating>visibility-event@other,1,1,1,0,0,floating,none,floating>changed:RootPanel@other,1,1,1,0,0,floating,none,floating>changed:IsSinglePane@other,1,1,1,0,0,floating,none,floating>changed:SinglePane@other,1,1,1,0,0,floating,none,floating>changed:Children@other,1,1,1,0,0,floating,none,floating>changed:ChildrenCount@other,1,1,1,0,0,floating,none,floating
+tool-none-child-clear	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-child-clear	after	first,1,1,1,0,0,floating,none,floating	none	changing:IsVisible@first,1,1,1,1,0,floating,none,floating>changed:IsVisible@first,1,1,1,0,0,floating,none,floating>visibility-event@first,1,1,1,0,0,floating,none,floating>changed:IsSinglePane@first,1,1,1,0,0,floating,none,floating>changed:SinglePane@first,1,1,1,0,0,floating,none,floating
+tool-none-child-clear-restore	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-child-clear-restore	after	first,1,1,1,1,1,floating,none,floating	none	changing:IsVisible@first,1,1,1,1,0,floating,none,floating>changed:IsVisible@first,1,1,1,0,0,floating,none,floating>visibility-event@first,1,1,1,0,0,floating,none,floating>changed:IsSinglePane@first,1,1,1,0,0,floating,none,floating>changed:SinglePane@first,1,1,1,0,0,floating,none,floating>changing:IsVisible@first,1,1,1,0,1,floating,none,floating>changed:IsVisible@first,1,1,1,1,1,floating,none,floating>visibility-event@first,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating
+tool-none-child-add-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-child-add-pane	after	first,1,1,1,1,0,floating,none,floating	none	changed:IsSinglePane@first,1,1,1,1,0,floating,none,floating>changed:SinglePane@first,1,1,1,1,0,floating,none,floating
+tool-none-child-remove-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-none-child-remove-pane	after	first,1,1,1,1,1,floating,none,floating	none	changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating
+tool-none-read-single-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-read-single-pane	after	first,1,1,1,1,1,floating,none,floating	none	pane-hosted-changed:1>pane-hosted-changed:1
+tool-none-read-is-single-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-read-is-single-pane	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-none-nested-single-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-none-nested-single-pane	after	first,1,1,1,1,0,floating,none,floating	none	
+tool-none-read-multiple-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-none-read-multiple-pane	after	first,1,1,1,1,0,floating,none,floating	none	
+tool-changing-default	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-default	after	none,0,0,0,1,0,none,none,-	none	
+tool-changing-set	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-set	after	first,1,1,1,1,1,floating,none,floating	none	first-parent-changing@first,1,1,1,1,1,none,none,none>first-parent-changed@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating>changed:Children@first,1,1,1,1,1,floating,none,floating>changed:ChildrenCount@first,1,1,1,1,1,floating,none,floating
+tool-changing-same	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-same	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-clear	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-clear	after	none,0,0,0,0,0,floating,none,-	none	changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changing-replace	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-replace	after	second,1,1,1,1,1,floating,floating,floating	none	second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@second,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@second,1,1,1,1,1,floating,floating,floating>changed:SinglePane@second,1,1,1,1,1,floating,floating,floating>changed:Children@second,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@second,1,1,1,1,1,floating,floating,floating
+tool-changing-remove	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-remove	after	none,0,0,0,0,0,floating,none,-	none	changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changing-remove-other	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-remove-other	after	none,0,0,0,0,0,floating,none,-	none	changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changing-remove-null	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-remove-null	after	none,0,0,0,0,0,floating,none,-	none	changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changing-replace-null	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-replace-null	after	none,0,0,0,0,0,floating,none,-	none	changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changing-replace-wrong-type	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-replace-wrong-type	after	none,0,0,0,0,0,floating,none,-	none	changed:RootPanel@none,0,0,0,1,0,floating,none,->changed:IsSinglePane@none,0,0,0,1,0,floating,none,->changed:SinglePane@none,0,0,0,1,0,floating,none,->changed:Children@none,0,0,0,1,0,floating,none,->changed:ChildrenCount@none,0,0,0,1,0,floating,none,->changed:IsVisible@none,0,0,0,0,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changing-replace-other	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-replace-other	after	second,1,1,1,1,1,floating,floating,floating	none	second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@second,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@second,1,1,1,1,1,floating,floating,floating>changed:SinglePane@second,1,1,1,1,1,floating,floating,floating>changed:Children@second,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@second,1,1,1,1,1,floating,floating,floating
+tool-changing-replace-empty	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-replace-empty	after	first,1,1,1,1,1,floating,none,floating	none	first-parent-changing@first,1,1,1,1,1,none,none,none>first-parent-changed@first,1,1,1,1,1,floating,none,floating>changed:RootPanel@first,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating>changed:Children@first,1,1,1,1,1,floating,none,floating>changed:ChildrenCount@first,1,1,1,1,1,floating,none,floating
+tool-changing-read-empty	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-read-empty	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-read-empty-pair	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-read-empty-pair	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-read-empty-new	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-read-empty-new	after	none,0,0,0,0,0,none,none,-	none	changed:IsVisible@none,0,0,0,0,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-changing-read-empty-pair-new	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-read-empty-pair-new	after	none,0,0,0,1,0,none,none,-	none	
+tool-changing-read-child	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-read-child	after	other,1,1,1,1,1,floating,none,floating	none	changed:RootPanel@other,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@other,1,1,1,1,1,floating,none,floating>changed:SinglePane@other,1,1,1,1,1,floating,none,floating>changed:Children@other,1,1,1,1,1,floating,none,floating>changed:ChildrenCount@other,1,1,1,1,1,floating,none,floating
+tool-changing-restore-former	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-restore-former	after	first,1,1,1,1,1,floating,floating,floating	none	second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@second,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@second,1,1,1,1,1,floating,floating,floating>changed:SinglePane@second,1,1,1,1,1,floating,floating,floating>changed:Children@second,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@second,1,1,1,1,1,floating,floating,floating>changed:RootPanel@first,1,1,1,1,1,floating,floating,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,floating,floating>changed:SinglePane@first,1,1,1,1,1,floating,floating,floating>changed:Children@first,1,1,1,1,1,floating,floating,floating>changed:ChildrenCount@first,1,1,1,1,1,floating,floating,floating
+tool-changing-compute-empty	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-compute-empty	after	none,0,0,0,0,0,none,none,-	none	changed:IsVisible@none,0,0,0,0,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-changing-compute-empty-repeat	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-compute-empty-repeat	after	none,0,0,0,0,0,none,none,-	none	changed:IsVisible@none,0,0,0,0,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-changing-compute-visible	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-compute-visible	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-set-empty-group	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-set-empty-group	after	other,1,1,1,0,0,none,none,floating	none	changed:IsVisible@other,1,1,1,0,0,none,none,floating>visibility-event@other,1,1,1,0,0,none,none,floating>changed:RootPanel@other,1,1,1,0,0,none,none,floating>changed:IsSinglePane@other,1,1,1,0,0,none,none,floating>changed:SinglePane@other,1,1,1,0,0,none,none,floating>changed:Children@other,1,1,1,0,0,none,none,floating>changed:ChildrenCount@other,1,1,1,0,0,none,none,floating
+tool-changing-set-hidden-group	before	none,0,0,0,1,0,none,none,-	none	
+tool-changing-set-hidden-group	after	other,1,1,1,0,0,none,none,floating	none	changed:RootPanel@other,1,1,1,1,0,none,none,floating>changed:IsSinglePane@other,1,1,1,1,0,none,none,floating>changed:SinglePane@other,1,1,1,1,0,none,none,floating>changed:Children@other,1,1,1,1,0,none,none,floating>changed:ChildrenCount@other,1,1,1,1,0,none,none,floating>changed:IsVisible@other,1,1,1,0,0,none,none,floating>visibility-event@other,1,1,1,0,0,none,none,floating
+tool-changing-replace-empty-group	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-replace-empty-group	after	other,1,1,1,0,0,floating,none,floating	none	changed:IsVisible@other,1,1,1,0,0,floating,none,floating>visibility-event@other,1,1,1,0,0,floating,none,floating>changed:RootPanel@other,1,1,1,0,0,floating,none,floating>changed:IsSinglePane@other,1,1,1,0,0,floating,none,floating>changed:SinglePane@other,1,1,1,0,0,floating,none,floating>changed:Children@other,1,1,1,0,0,floating,none,floating>changed:ChildrenCount@other,1,1,1,0,0,floating,none,floating
+tool-changing-child-clear	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-child-clear	after	first,1,1,1,0,0,floating,none,floating	none	changed:IsVisible@first,1,1,1,0,0,floating,none,floating>visibility-event@first,1,1,1,0,0,floating,none,floating>changed:IsSinglePane@first,1,1,1,0,0,floating,none,floating>changed:SinglePane@first,1,1,1,0,0,floating,none,floating
+tool-changing-child-clear-restore	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-child-clear-restore	after	first,1,1,1,1,1,floating,none,floating	none	changed:IsVisible@first,1,1,1,0,0,floating,none,floating>visibility-event@first,1,1,1,0,0,floating,none,floating>changed:IsSinglePane@first,1,1,1,0,0,floating,none,floating>changed:SinglePane@first,1,1,1,0,0,floating,none,floating>changed:IsVisible@first,1,1,1,1,1,floating,none,floating>visibility-event@first,1,1,1,1,1,floating,none,floating>changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating
+tool-changing-child-add-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-child-add-pane	after	first,1,1,1,1,0,floating,none,floating	none	changed:IsSinglePane@first,1,1,1,1,0,floating,none,floating>changed:SinglePane@first,1,1,1,1,0,floating,none,floating
+tool-changing-child-remove-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-changing-child-remove-pane	after	first,1,1,1,1,1,floating,none,floating	none	changed:IsSinglePane@first,1,1,1,1,1,floating,none,floating>changed:SinglePane@first,1,1,1,1,1,floating,none,floating
+tool-changing-read-single-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-read-single-pane	after	first,1,1,1,1,1,floating,none,floating	none	pane-hosted-changed:1>pane-hosted-changed:1
+tool-changing-read-is-single-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-read-is-single-pane	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changing-nested-single-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-changing-nested-single-pane	after	first,1,1,1,1,0,floating,none,floating	none	
+tool-changing-read-multiple-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-changing-read-multiple-pane	after	first,1,1,1,1,0,floating,none,floating	none	
+tool-changed-default	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-default	after	none,0,0,0,1,0,none,none,-	none	
+tool-changed-set	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-set	after	first,1,1,1,1,1,floating,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->first-parent-changing@first,1,1,1,1,1,none,none,none>first-parent-changed@first,1,1,1,1,1,floating,none,floating
+tool-changed-same	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-same	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-clear	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-clear	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@none,0,0,0,1,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changed-replace	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-replace	after	second,1,1,1,1,1,floating,floating,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating
+tool-changed-remove	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-remove	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@none,0,0,0,1,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changed-remove-other	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-remove-other	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@none,0,0,0,1,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changed-remove-null	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-remove-null	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@none,0,0,0,1,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changed-replace-null	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-replace-null	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@none,0,0,0,1,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changed-replace-wrong-type	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-replace-wrong-type	after	none,0,0,0,0,0,floating,none,-	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@none,0,0,0,1,0,floating,none,->visibility-event@none,0,0,0,0,0,floating,none,-
+tool-changed-replace-other	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-replace-other	after	second,1,1,1,1,1,floating,floating,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating
+tool-changed-replace-empty	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-replace-empty	after	first,1,1,1,1,1,floating,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->first-parent-changing@first,1,1,1,1,1,none,none,none>first-parent-changed@first,1,1,1,1,1,floating,none,floating
+tool-changed-read-empty	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-empty	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-empty-pair	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-empty-pair	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-empty-new	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-read-empty-new	after	none,0,0,0,0,0,none,none,-	none	changing:IsVisible@none,0,0,0,1,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-changed-read-empty-pair-new	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-read-empty-pair-new	after	none,0,0,0,1,0,none,none,-	none	
+tool-changed-read-child	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-child	after	other,1,1,1,1,1,floating,none,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating
+tool-changed-restore-former	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-restore-former	after	first,1,1,1,1,1,floating,floating,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>second-parent-changing@second,1,1,1,1,1,floating,none,none>second-parent-changed@second,1,1,1,1,1,floating,floating,floating>changing:RootPanel@second,1,1,1,1,1,floating,floating,floating
+tool-changed-compute-empty	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-compute-empty	after	none,0,0,0,0,0,none,none,-	none	changing:IsVisible@none,0,0,0,1,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-changed-compute-empty-repeat	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-compute-empty-repeat	after	none,0,0,0,0,0,none,none,-	none	changing:IsVisible@none,0,0,0,1,0,none,none,->visibility-event@none,0,0,0,0,0,none,none,-
+tool-changed-compute-visible	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-compute-visible	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-set-empty-group	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-set-empty-group	after	other,1,1,1,0,0,none,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->changing:IsVisible@other,1,1,1,1,0,none,none,floating>visibility-event@other,1,1,1,0,0,none,none,floating
+tool-changed-set-hidden-group	before	none,0,0,0,1,0,none,none,-	none	
+tool-changed-set-hidden-group	after	other,1,1,1,0,0,none,none,floating	none	changing:RootPanel@none,0,0,0,1,0,none,none,->changing:IsVisible@other,1,1,1,1,0,none,none,floating>visibility-event@other,1,1,1,0,0,none,none,floating
+tool-changed-replace-empty-group	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-replace-empty-group	after	other,1,1,1,0,0,floating,none,floating	none	changing:RootPanel@first,1,1,1,1,1,floating,none,floating>changing:IsVisible@other,1,1,1,1,0,floating,none,floating>visibility-event@other,1,1,1,0,0,floating,none,floating
+tool-changed-child-clear	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-child-clear	after	first,1,1,1,0,0,floating,none,floating	none	changing:IsVisible@first,1,1,1,1,0,floating,none,floating>visibility-event@first,1,1,1,0,0,floating,none,floating
+tool-changed-child-clear-restore	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-child-clear-restore	after	first,1,1,1,1,1,floating,none,floating	none	changing:IsVisible@first,1,1,1,1,0,floating,none,floating>visibility-event@first,1,1,1,0,0,floating,none,floating>changing:IsVisible@first,1,1,1,0,1,floating,none,floating>visibility-event@first,1,1,1,1,1,floating,none,floating
+tool-changed-child-add-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-child-add-pane	after	first,1,1,1,1,0,floating,none,floating	none	
+tool-changed-child-remove-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-changed-child-remove-pane	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-single-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-single-pane	after	first,1,1,1,1,1,floating,none,floating	none	pane-hosted-changed:1>pane-hosted-changed:1
+tool-changed-read-is-single-pane	before	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-read-is-single-pane	after	first,1,1,1,1,1,floating,none,floating	none	
+tool-changed-nested-single-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-changed-nested-single-pane	after	first,1,1,1,1,0,floating,none,floating	none	
+tool-changed-read-multiple-pane	before	first,1,1,1,1,0,floating,none,floating	none	
+tool-changed-read-multiple-pane	after	first,1,1,1,1,0,floating,none,floating	none	

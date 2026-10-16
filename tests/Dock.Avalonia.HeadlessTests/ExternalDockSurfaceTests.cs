@@ -143,6 +143,41 @@ public class ExternalDockSurfaceTests
         Assert.Null(externalSurface.DockControl);
     }
 
+    [AvaloniaTheory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    public void Hidden_Window_Surface_Or_Owner_Does_Not_Expose_An_External_Drop_Area(int hiddenElement)
+    {
+        DockControl dockControl = new() { Width = 120, Height = 80 };
+        TestExternalSurfaceControl surface = new()
+        {
+            Width = 140,
+            Height = 90,
+            Background = Brushes.Transparent
+        };
+        DockProperties.SetIsDropArea(surface, true);
+        Window window = ShowInSharedWindow(dockControl, surface);
+        try
+        {
+            dockControl.RegisterExternalDockSurface(surface);
+            Point point = dockControl.PointToClient(surface.PointToScreen(new Point(10, 10)));
+            Assert.Same(surface, DockHelpers.GetControlIncludingExternal(dockControl, point, DockProperties.IsDropAreaProperty));
+
+            if (hiddenElement == 0) window.Hide();
+            else if (hiddenElement == 1) surface.IsVisible = false;
+            else dockControl.IsVisible = false;
+            Assert.Null(DockHelpers.GetControlIncludingExternal(dockControl, point, DockProperties.IsDropAreaProperty));
+
+            if (hiddenElement == 0) window.Show();
+            else if (hiddenElement == 1) surface.IsVisible = true;
+            else dockControl.IsVisible = true;
+            window.UpdateLayout();
+            Assert.Same(surface, DockHelpers.GetControlIncludingExternal(dockControl, point, DockProperties.IsDropAreaProperty));
+        }
+        finally { window.Close(); }
+    }
+
     private static Window ShowInSharedWindow(DockControl dockControl, Control externalSurface)
     {
         var canvas = new Canvas

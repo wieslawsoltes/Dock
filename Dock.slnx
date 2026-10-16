@@ -48,6 +48,7 @@
     <File Path="build/XUnit.props" />
   </Folder>
   <Folder Name="/samples/">
+    <Project Path="samples/DockAvalonDockSample/DockAvalonDockSample.csproj" />
     <Project Path="samples/DockCodeOnlyMvvmSample/DockCodeOnlyMvvmSample.csproj" />
     <Project Path="samples/DockCodeOnlySample/DockCodeOnlySample.csproj" />
     <Project Path="samples/DockControlPanelsSample/DockControlPanelsSample.csproj" />
@@ -124,6 +125,8 @@
     <Project Path="src/Dock.Settings.v11/Dock.Settings.v11.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/DockAvalonDockSample.HeadlessTests/DockAvalonDockSample.HeadlessTests.csproj" />
+    <Project Path="tests/Dock.Avalonia.v11.PreviewTests/Dock.Avalonia.v11.PreviewTests.csproj" />
     <Project Path="tests/Dock.Avalonia.v11.HeadlessTests/Dock.Avalonia.v11.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Avalonia.Diagnostics.UnitTests/Dock.Avalonia.Diagnostics.UnitTests.csproj" />
     <Project Path="tests/Dock.Avalonia.LeakTests/Dock.Avalonia.LeakTests.csproj" />
@@ -143,6 +146,7 @@
     <Project Path="tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj" />
     <Project Path="tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj" />
     <Project Path="tests/Dock.Serializer.SystemTextJson.SourceGenSharedTypes/Dock.Serializer.SystemTextJson.SourceGenSharedTypes.csproj" />
+    <Project Path="tests/Dock.ReactiveUI.HeadlessTests/Dock.ReactiveUI.HeadlessTests.csproj" />
     <Project Path="tests/Dock.Serializer.SystemTextJson.Generators.UnitTests/Dock.Serializer.SystemTextJson.Generators.UnitTests.csproj" />
     <Project Path="tests/Dock.Serializer.SystemTextJson.SourceGenTests/Dock.Serializer.SystemTextJson.SourceGenTests.csproj" />
     <Project Path="tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj" />

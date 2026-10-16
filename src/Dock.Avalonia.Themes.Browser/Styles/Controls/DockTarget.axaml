@@ -1,0 +1,139 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
+  <ControlTheme x:Key="{x:Type DockTarget}" TargetType="DockTarget">
+
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <Grid x:Name="PART_IndicatorGrid" Margin="{TemplateBinding TargetMargin}" RowDefinitions="*,*" ColumnDefinitions="*,*">
+            <Panel x:Name="PART_TopIndicator"
+                   Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0"
+                   IsVisible="{TemplateBinding ShowVerticalTargets}"
+                   DockProperties.IndicatorDockOperation="Top" />
+            <Panel x:Name="PART_BottomIndicator"
+                   Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
+                   IsVisible="{TemplateBinding ShowVerticalTargets}"
+                   DockProperties.IndicatorDockOperation="Bottom" />
+            <Panel x:Name="PART_LeftIndicator"
+                   Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                   IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                   DockProperties.IndicatorDockOperation="Left" />
+            <Panel x:Name="PART_RightIndicator"
+                   Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                   IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                   DockProperties.IndicatorDockOperation="Right" />
+            <Panel x:Name="PART_CenterIndicator"
+                   Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                   DockProperties.IndicatorDockOperation="Fill" />
+            <Panel x:Name="PART_SelectorPanel"
+                   Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
+              <!-- Edge regions select splits; the center selects tab merging.
+                   Transparent controls perform hit testing without constructing Fluent icons. -->
+              <Grid x:Name="PART_SelectorGrid" RowDefinitions="*,2*,*" ColumnDefinitions="*,2*,*">
+                <Border x:Name="PART_TopSelector" Background="Transparent"
+                        Grid.Row="0" Grid.Column="1"
+                        IsVisible="{TemplateBinding ShowVerticalTargets}"
+                        DockProperties.IndicatorDockOperation="Top" />
+                <Border x:Name="PART_BottomSelector" Background="Transparent"
+                        Grid.Row="2" Grid.Column="1"
+                        IsVisible="{TemplateBinding ShowVerticalTargets}"
+                        DockProperties.IndicatorDockOperation="Bottom" />
+                <Border x:Name="PART_LeftSelector" Background="Transparent"
+                        Grid.Row="0" Grid.Column="0" Grid.RowSpan="3"
+                        IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                        DockProperties.IndicatorDockOperation="Left" />
+                <Border x:Name="PART_RightSelector" Background="Transparent"
+                        Grid.Row="0" Grid.Column="2" Grid.RowSpan="3"
+                        IsVisible="{TemplateBinding ShowHorizontalTargets}"
+                        DockProperties.IndicatorDockOperation="Right" />
+                <Border x:Name="PART_CenterSelector" Background="Transparent"
+                        Grid.Row="1" Grid.Column="1"
+                        DockProperties.IndicatorDockOperation="Fill" />
+              </Grid>
+            </Panel>
+          </Grid>
+          <Canvas IsHitTestVisible="False">
+            <Border x:Name="PART_PreviewIndicator" Opacity="0.5"
+                    Canvas.Left="{TemplateBinding PreviewX}" Canvas.Top="{TemplateBinding PreviewY}"
+                    Width="{TemplateBinding PreviewWidth}" Height="{TemplateBinding PreviewHeight}"
+                    Background="{DynamicResource DockTargetIndicatorBrush}" />
+          </Canvas>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^[ShowHorizontalTargets=False] /template/ Border#PART_CenterSelector">
+      <Setter Property="Grid.Column" Value="0" />
+      <Setter Property="Grid.ColumnSpan" Value="3" />
+    </Style>
+    <Style Selector="^[ShowHorizontalTargets=False] /template/ Border#PART_TopSelector">
+      <Setter Property="Grid.Column" Value="0" />
+      <Setter Property="Grid.ColumnSpan" Value="3" />
+    </Style>
+    <Style Selector="^[ShowHorizontalTargets=False] /template/ Border#PART_BottomSelector">
+      <Setter Property="Grid.Column" Value="0" />
+      <Setter Property="Grid.ColumnSpan" Value="3" />
+    </Style>
+    <Style Selector="^[ShowVerticalTargets=False] /template/ Border#PART_CenterSelector">
+      <Setter Property="Grid.Row" Value="0" />
+      <Setter Property="Grid.RowSpan" Value="3" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_TopIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockTargetIndicatorBrush}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_BottomIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockTargetIndicatorBrush}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_LeftIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockTargetIndicatorBrush}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_RightIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockTargetIndicatorBrush}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_CenterIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockTargetIndicatorBrush}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_SelectorPanel">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="^[ShowIndicatorsOnly=True] /template/ Panel#PART_SelectorPanel">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="^/template/ Border#PART_PreviewIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Border#PART_PreviewIndicator">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_TopIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_BottomIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_LeftIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_RightIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:preview /template/ Panel#PART_CenterIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+  </ControlTheme>
+
+</ResourceDictionary>

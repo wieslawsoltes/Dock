@@ -1,0 +1,13 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="using:AvalonDock"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:core="using:Dock.Model.Core"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="core:IDockable">
+  <Style Selector=":is(ad|DockingManager) dock|DocumentTabStripItem, :is(ad|DockingManager) dock|ToolTabStripItem, dock|DockControl.avalondock dock|DocumentTabStripItem, :is(Window).avalondock dock|DocumentTabStripItem, dock|DockControl.avalondock dock|ToolTabStripItem, :is(Window).avalondock dock|ToolTabStripItem">
+    <Setter Property="infrastructure:LayoutTabMetadata.Model" Value="{Binding Converter={StaticResource AvalonDockLayoutContent}}" />
+    <Setter Property="IsEnabled" Value="{Binding $self.(infrastructure:LayoutTabMetadata.Model).IsEnabled, FallbackValue=True}" />
+    <Setter Property="ToolTip.Tip" Value="{Binding $self.(infrastructure:LayoutTabMetadata.Model).ToolTip}" />
+  </Style>
+</Styles>

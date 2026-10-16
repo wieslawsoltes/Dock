@@ -9,11 +9,42 @@ DockSettings.UsePinnedDockWindow = true;
 
 When enabled the `PinnedDockControl` places the preview content inside a lightweight `PinnedDockWindow`. The window follows the host layout and closes automatically when the tool is hidden.
 
+`PinnedDockControl.UsePinnedDockWindow` overrides this setting for an individual
+control or a styled scope. Its default, `null`, follows the global setting.
+Set it to `false` when a custom template supplies its own embedded host; set it
+to `true` to use the configured native or managed window host. Changing or
+clearing the property moves an open preview between these presentations without
+unpinning the tool or changing its stored size. Inline previews stay in their
+template regardless of this setting.
+
+Activation can move between the owner and preview without closing the preview,
+so its editors can receive keyboard focus. Leaving both windows closes the
+preview through the factory. `KeepPinnedDockableVisible` preserves it across
+those activation changes.
+
 In managed window mode (`DockSettings.UseManagedWindows = true`), pinned windows render inside `ManagedWindowLayer` instead of a native window.
 
 ## Pinned preview layout
 
 Pinned previews can either overlay the main content or take real layout space. Configure the root dock with `PinnedDockDisplayMode` (`Overlay` or `Inline`) to pick the default behavior. Individual dockables can override this by setting `PinnedDockDisplayModeOverride` to force a specific mode for that tool or document.
+
+`PinnedDockControl.MinimumRemainingContentSize` reserves at least 50 layout units
+beside an overlay preview by default. Set it through a style or custom template
+to change that region; values must be finite and nonnegative. A custom resize
+behavior can set zero and enforce its own preview limits. Changes update an open
+preview immediately and do not affect inline layout or the stored pinned size.
+
+This is a minimum for the remaining grid region, not a maximum on pinned content.
+For example, a right-side preview 769 units wide with a 6-unit splitter needs a
+25-unit remaining region inside an 800-unit host. Setting the minimum to 25 or
+zero keeps that preview aligned to the host's right edge; retaining 50 makes the
+combined regions wider than the host.
+
+Layout normally initializes missing pinned bounds from the arranged content.
+Custom resizers can set `InitializePinnedBoundsOnLayout` to `False` to keep an
+unset model size until their own commit. This also preserves unset sizes through
+layout and canceled custom drags. Native `GridSplitter` input still records
+sizes, and setting the option back to `True` initializes an already open preview.
 
 ## Alignment and orientation
 

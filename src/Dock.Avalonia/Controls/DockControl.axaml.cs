@@ -23,6 +23,7 @@ using Dock.Avalonia.Internal;
 using Dock.Avalonia.Automation.Peers;
 using Dock.Avalonia.Selectors;
 using Dock.Avalonia.Services;
+using Dock.Controls.ProportionalStackPanel;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -34,7 +35,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="DockControl"/> xaml.
 /// </summary>
-[TemplatePart("PART_ContentControl", typeof(ContentControl))]
+[TemplatePart("PART_ContentControl", typeof(Control))]
 [TemplatePart("PART_CommandBarHost", typeof(DockCommandBarHost))]
 [TemplatePart("PART_SelectorOverlay", typeof(DockSelectorOverlay))]
 [TemplatePart("PART_ManagedWindowLayer", typeof(ManagedWindowLayer))]
@@ -45,7 +46,8 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     private readonly DockControlState _dockControlState;
     private readonly IDockControlFactoryService _factoryService;
     private bool _isInitialized;
-    private ContentControl? _contentControl;
+    private Control? _contentControl;
+    private ProportionalStackPanelSplitter? _previewSplitter;
     private ManagedWindowLayer? _managedWindowLayer;
     private DockCommandBarHost? _commandBarHost;
     private DockCommandBarManager? _commandBarManager;
@@ -439,7 +441,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
     {
         base.OnApplyTemplate(e);
 
-        _contentControl = e.NameScope.Find<ContentControl>("PART_ContentControl");
+        _contentControl = e.NameScope.Find<Control>("PART_ContentControl");
         _commandBarHost = e.NameScope.Find<DockCommandBarHost>("PART_CommandBarHost");
         _selectorOverlay = e.NameScope.Find<DockSelectorOverlay>("PART_SelectorOverlay");
         _managedWindowLayer = e.NameScope.Find<ManagedWindowLayer>("PART_ManagedWindowLayer");
@@ -455,6 +457,41 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
         InitializeCommandBars();
     }
 
+    internal double PreviewSplitterThickness
+    {
+        get
+        {
+            if (_previewSplitter is null)
+            {
+                // A logical child inherits theme/styles and observes later style changes, even
+                // before the layout contains its first splitter. It never enters the visual tree.
+                _previewSplitter = new ProportionalStackPanelSplitter();
+                LogicalChildren.Add(_previewSplitter);
+            }
+            _previewSplitter.ApplyStyling();
+            return _previewSplitter.Thickness;
+        }
+    }
+
+    internal void MeasurePreview(Control projection, Size size)
+    {
+        // Avalonia takes layout rounding from the visual root. Borrow that root
+        // synchronously so both framework rounding and the panel's own DIP-based
+        // allocation match the live layout. Remove the projection before rendering.
+        VisualChildren.Add(projection);
+        try
+        {
+            projection.Measure(size);
+            projection.Arrange(new Rect(size));
+        }
+        finally { VisualChildren.Remove(projection); }
+    }
+
+    internal Rect PreviewViewport => _contentControl is { } content
+        && content.TranslatePoint(default, this) is { } origin
+            ? new Rect(origin, content.Bounds.Size)
+            : new Rect(Bounds.Size);
+
     private void InitializeDefaultDataTemplates()
     {
         if (_contentControl?.DataTemplates is null)
@@ -468,7 +505,7 @@ public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
             return;
         }
 
-        // Create and add default DataTemplates using helper class
+        // Add the shared, compiled XAML templates.
         foreach (var template in DockDataTemplateHelper.CreateDefaultDataTemplates())
         {
             _contentControl.DataTemplates.Add(template);

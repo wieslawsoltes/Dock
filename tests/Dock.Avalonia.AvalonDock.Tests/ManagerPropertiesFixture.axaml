@@ -1,0 +1,14 @@
+<DockingManager xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:local="using:Dock.Avalonia.AvalonDock.Tests"
+                x:Class="Dock.Avalonia.AvalonDock.Tests.ManagerPropertiesFixture"
+                x:DataType="local:ManagerPropertiesViewModel">
+  <DockingManager.Styles>
+    <Style Selector="DockingManager.workspace" x:DataType="local:ManagerPropertiesViewModel">
+      <Setter Property="LayoutUpdateStrategy" Value="{Binding Strategy}" />
+      <Setter Property="Layout" Value="{Binding Root}" />
+      <Setter Property="DocumentsSource" Value="{Binding Documents}" />
+      <Setter Property="AnchorablesSource" Value="{Binding Tools}" />
+    </Style>
+  </DockingManager.Styles>
+</DockingManager>

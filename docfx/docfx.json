@@ -4,7 +4,8 @@
       "src": [
         {
           "files": [
-            "src/**/*.csproj"
+            "artifacts/documentation/api/*.dll",
+            "src/Dock.Serializer.SystemTextJson.Generators/*.csproj"
           ],
           "src": ".."
         }

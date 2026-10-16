@@ -1,0 +1,6 @@
+<ContentPresenter xmlns="https://github.com/avaloniaui"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:infrastructure="using:AvalonDock.Infrastructure"
+                  x:Class="AvalonDock.Infrastructure.LayoutHeaderPresenter"
+                  x:DataType="infrastructure:LayoutHeaderPresenter"
+                  Content="{Binding Item.LayoutElement, RelativeSource={RelativeSource Self}}" />

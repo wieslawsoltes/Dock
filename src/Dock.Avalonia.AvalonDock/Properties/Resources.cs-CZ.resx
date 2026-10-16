@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Wiesław Šoltés. Licensed under the MIT license. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="Anchorable_AutoHide" xml:space="preserve"><value>Automaticky skrývat</value></data>
+  <data name="Anchorable_BtnAutoHide_Hint" xml:space="preserve"><value>Automaticky skrývat</value></data>
+  <data name="Anchorable_BtnClose_Hint" xml:space="preserve"><value>Zavřít</value></data>
+  <data name="Anchorable_CxMenu_Hint" xml:space="preserve"><value>Možnosti okna</value></data>
+  <data name="Anchorable_Dock" xml:space="preserve"><value>Ukotvit</value></data>
+  <data name="Anchorable_DockAsDocument" xml:space="preserve"><value>Ukotvit jako dokument</value></data>
+  <data name="Anchorable_Float" xml:space="preserve"><value>Plovoucí</value></data>
+  <data name="Anchorable_Hide" xml:space="preserve"><value>Skrýt</value></data>
+  <data name="Document_BtnPinned_Hint" xml:space="preserve"><value>Připnout dokument</value></data>
+  <data name="Document_Close" xml:space="preserve"><value>Zavřít</value></data>
+  <data name="Document_CloseAll" xml:space="preserve"><value>Zavřít vše</value></data>
+  <data name="Document_CloseAllButThis" xml:space="preserve"><value>Zavřít ostatní</value></data>
+  <data name="Document_CxMenu_Hint" xml:space="preserve"><value>Možnosti dokumentu</value></data>
+  <data name="Document_DockAsDocument" xml:space="preserve"><value>Ukotvit jako dokument</value></data>
+  <data name="Document_Float" xml:space="preserve"><value>Plovoucí</value></data>
+  <data name="Document_MoveToNextTabGroup" xml:space="preserve"><value>Přesunout do další skupiny karet</value></data>
+  <data name="Document_MoveToPreviousTabGroup" xml:space="preserve"><value>Přesunout do předchozí skupiny karet</value></data>
+  <data name="Document_NewHorizontalTabGroup" xml:space="preserve"><value>Nová vodorovná skupina karet</value></data>
+  <data name="Document_NewVerticalTabGroup" xml:space="preserve"><value>Nová svislá skupina karet</value></data>
+  <data name="Window_Maximize" xml:space="preserve"><value>Maximalizovat</value></data>
+  <data name="Window_Restore" xml:space="preserve"><value>Obnovit</value></data>
+</root>

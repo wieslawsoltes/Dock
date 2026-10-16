@@ -1,0 +1,18 @@
+<DropDownButton xmlns="http://schemas.xceed.com/wpf/xaml/avalondock"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:av="https://github.com/avaloniaui"
+                x:Class="PackageConsumer.MenuButton" x:DataType="LayoutItem"
+                Content="Actions" Width="180" Height="40"
+                DropDownContextMenuDataContext="{av:Binding}">
+  <DropDownButton.DropDownContextMenu>
+    <ContextMenuEx x:DataType="LayoutItem">
+      <MenuItemEx Header="{av:Binding Title}" Command="{av:Binding ActivateCommand}">
+        <MenuItemEx.IconTemplate>
+          <av:DataTemplate x:DataType="LayoutItem">
+            <av:Border><av:TextBlock Text="{av:Binding Title}" /></av:Border>
+          </av:DataTemplate>
+        </MenuItemEx.IconTemplate>
+      </MenuItemEx>
+    </ContextMenuEx>
+  </DropDownButton.DropDownContextMenu>
+</DropDownButton>

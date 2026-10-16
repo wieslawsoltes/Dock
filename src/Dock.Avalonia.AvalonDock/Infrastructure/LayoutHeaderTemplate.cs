@@ -1,0 +1,40 @@
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+using AvalonDock.Controls;
+using AvalonDock.Layout;
+
+namespace AvalonDock.Infrastructure;
+
+internal enum LayoutHeaderKind { Document, Anchorable, AnchorableTitle, DocumentTitle, DocumentMenu }
+
+// Adapt native tab and title models without changing Dock's containers or input.
+internal sealed class LayoutHeaderTemplate : IRecyclingDataTemplate
+{
+    public LayoutHeaderKind Kind { get; set; }
+    public IDataTemplate? DefaultTemplate { get; set; }
+
+    public bool Match(object? data) => data is IDockable or LayoutContent or LayoutItem;
+    public Control? Build(object? data) => Build(data, null);
+    public Control? Build(object? data, Control? existing)
+    {
+        LayoutItem? item = data switch
+        {
+            LayoutItem container => container,
+            IDockable { Factory: LayoutFactory factory } model => factory.GetLayoutItem(model),
+            LayoutContent content => content.Root?.Manager?.GetLayoutItemFromModel(content),
+            _ => null
+        };
+        if (item is not null) return item.BuildHeader(Kind, DefaultTemplate, existing);
+        LayoutContent? pending = data switch
+        {
+            LayoutContent content => content,
+            IDockable { Factory: LayoutFactory factory } model => factory.GetLayoutContent(model),
+            _ => null
+        };
+        if (pending is null) return null;
+        LayoutHeaderPresenter view = new() { Kind = Kind, DefaultTemplate = DefaultTemplate };
+        view.WaitForItem(pending);
+        return view;
+    }
+}

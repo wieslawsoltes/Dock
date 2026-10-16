@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <DockCompatibilityPackageVersion Condition="'$(DockCompatibilityPackageVersion)' == ''">$(VersionPrefix)</DockCompatibilityPackageVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../build/AvalonDock.WpfTemplateOracle/FloatingNotificationProbe.cs" Link="Build/FloatingNotificationProbe.cs" />
+    <Compile Include="../../build/AvalonDock.WpfTemplateOracle/ActiveContentProbe.cs" Link="Build/ActiveContentProbe.cs" />
+    <Compile Include="../../build/AvalonDock.WpfTemplateOracle/ContentIdentifierProbe.cs" Link="Build/ContentIdentifierProbe.cs" />
+    <Compile Include="../../build/AvalonDock.WpfTemplateOracle/ContentActivationHookProbe.cs" Link="Build/ContentActivationHookProbe.cs" />
+    <None Include="../Dock.Avalonia.AvalonDock.Tests/Assets/WpfFloatingNotifications.tsv" Link="Assets/WpfFloatingNotifications.tsv" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../Dock.Avalonia.AvalonDock.Tests/Assets/WpfActiveContent.tsv" Link="Assets/WpfActiveContent.tsv" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../Dock.Avalonia.AvalonDock.Tests/Assets/WpfContentIdentifiers.tsv" Link="Assets/WpfContentIdentifiers.tsv" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../Dock.Avalonia.AvalonDock.Tests/Assets/WpfContentActivationHooks.tsv" Link="Assets/WpfContentActivationHooks.tsv" CopyToOutputDirectory="PreserveNewest" />
+    <AvaloniaResource Include="Assets/**" />
+    <PackageReference Include="Dock.Avalonia.AvalonDock" Version="$(DockCompatibilityPackageVersion)" />
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+  </ItemGroup>
+</Project>

@@ -212,15 +212,24 @@ internal class DragPreviewHelper
         }
     }
 
-    private static double GetWindowScaling(Window window)
+    private static double GetScreenCoordinateScaling(Window window)
     {
+        // Cocoa positions and sizes windows in logical points, even when their
+        // backing scale changes between Retina and non-Retina displays. Keeping
+        // a fixed pixel size here would halve/double the preview at that boundary
+        // and can repeatedly change which screen owns the straddling window.
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            return 1.0;
+        }
+
         var scaling = window.RenderScaling;
         return scaling > 0 ? scaling : 1.0;
     }
 
     private static void MaintainFrozenWindowSize(DragPreviewWindow window, DragPreviewControl control)
     {
-        var scaling = GetWindowScaling(window);
+        var scaling = GetScreenCoordinateScaling(window);
         if (Math.Abs(scaling - s_lastFrozenWindowScaling) < 0.0001)
         {
             return;
@@ -293,7 +302,7 @@ internal class DragPreviewHelper
 
             s_windowSizeFreezeRetryCount = 0;
             s_windowSizeFreezeAbandoned = false;
-            var scaling = GetWindowScaling(s_window);
+            var scaling = GetScreenCoordinateScaling(s_window);
             s_lastFrozenWindowScaling = scaling;
             s_frozenWindowWidthPixels = bounds.Width * scaling;
             s_frozenWindowHeightPixels = bounds.Height * scaling;
@@ -359,6 +368,7 @@ internal class DragPreviewHelper
                 s_control.PreviewContentHeight = double.NaN;
             }
 
+            ClearPreviewContent(s_control);
             s_control.PreviewContent = BuildDockablePreviewContent(dockable, showDockablePreview);
             s_window.DataContext = dockable;
             s_control.Status = string.Empty;
@@ -466,7 +476,8 @@ internal class DragPreviewHelper
                 s_managedLayer.HideOverlay("DragPreview");
                 if (s_managedControl is { })
                 {
-                    s_managedControl.PreviewContent = null;
+                    ClearPreviewContent(s_managedControl);
+                    s_managedControl.DataContext = null;
                 }
                 s_managedLayer = null;
                 s_managedControl = null;
@@ -495,6 +506,8 @@ internal class DragPreviewHelper
             s_frozenContentWidthPixels = double.NaN;
             s_frozenContentHeightPixels = double.NaN;
             s_lastFrozenWindowScaling = 1.0;
+            if (s_control is not null) ClearPreviewContent(s_control);
+            s_window.DataContext = null;
             s_window.Close();
             s_window = null;
             s_control = null;
@@ -610,6 +623,7 @@ internal class DragPreviewHelper
             s_managedControl.PreviewContentHeight = double.NaN;
         }
 
+        ClearPreviewContent(s_managedControl);
         s_managedControl.PreviewContent = BuildManagedPreviewContent(dockable, showDockablePreview);
 
         var localPosition = GetManagedPosition(layer, position, offset);
@@ -680,9 +694,11 @@ internal class DragPreviewHelper
         return local;
     }
 
-    private static bool ShouldShowPreviewContent(IDockable dockable)
+    internal static bool ShouldShowPreviewContent(IDockable? dockable)
     {
-        return DockSettings.ShowDockablePreviewOnDrag;
+        return dockable?.Factory is IDockDragPreviewPolicy policy
+            ? policy.ShowDockablePreviewOnDrag(dockable)
+            : DockSettings.ShowDockablePreviewOnDrag;
     }
 
     internal static Control? BuildDockablePreviewContent(IDockable dockable, bool showDockablePreview)
@@ -701,21 +717,27 @@ internal class DragPreviewHelper
         {
             factory.DocumentControls.TryGetValue(dockable, out registeredControl);
         }
+        else if (dockable is IDock)
+        {
+            // Whole-pane drags must retain their existing tabs, content and custom
+            // templates. Rebuilding the pane would also register duplicate controls.
+            if (factory.VisibleDockableControls.TryGetValue(dockable, out var paneControl))
+                registeredControl = paneControl;
+        }
 
         if (registeredControl is not Visual visual || visual.GetVisualRoot() is null)
         {
             return null;
         }
 
-        return new Border
-        {
-            Background = new VisualBrush
-            {
-                Visual = visual,
-                Stretch = Stretch.Uniform
-            },
-            ClipToBounds = true
-        };
+        return DragPreviewSnapshot.Capture(visual);
+    }
+
+    private static void ClearPreviewContent(DragPreviewControl control)
+    {
+        Control? previous = control.PreviewContent;
+        control.PreviewContent = null;
+        (previous as DragPreviewSnapshot)?.Dispose();
     }
 
     private static Control? BuildManagedPreviewContent(IDockable dockable, bool showDockablePreview)

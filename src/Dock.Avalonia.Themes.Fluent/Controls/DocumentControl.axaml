@@ -147,8 +147,8 @@
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanDragMultiConverter}">
           <Binding />
           <Binding Path="CanDrag" />
-          <Binding Path="DockCapabilityOverrides.CanDrag" />
-          <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanDrag" />
+          <Binding Path="DockCapabilityOverrides?.CanDrag" Mode="OneWay" />
+          <Binding Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrag" Mode="OneWay" />
         </MultiBinding>
       </Setter.Value>
     </Setter>
@@ -157,8 +157,8 @@
         <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanDropMultiConverter}">
           <Binding />
           <Binding Path="CanDrop" />
-          <Binding Path="DockCapabilityOverrides.CanDrop" />
-          <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanDrop" />
+          <Binding Path="DockCapabilityOverrides?.CanDrop" Mode="OneWay" />
+          <Binding Path="((core:IDock)Owner)?.DockCapabilityPolicy?.CanDrop" Mode="OneWay" />
         </MultiBinding>
       </Setter.Value>
     </Setter>

@@ -53,6 +53,22 @@ Primary dictionaries:
 - `avares://Dock.Avalonia.Themes.Browser/Styles/BrowserTabAccents.axaml`
 - `avares://Dock.Avalonia.Themes.Browser/Styles/Controls/AllResources.axaml`
 
+## Docking previews
+
+Browser uses its own local `DockTarget` template: transparent edge regions select
+left/right/top/bottom splits and the central region merges tabs. Only the proposed
+area is painted, using `DockTargetIndicatorBrush`; the Fluent PNG selector cross
+is not constructed. Document splitting remains enabled by default.
+
+For a tab strip that only merges tabs, set `DockProperties.ShowDockIndicatorOnly="True"`
+and `DockProperties.IndicatorDockOperation="Fill"`. This previews the whole target
+area without changing the application's allowed docking operations.
+
+This changes the Browser theme's local split affordance from small central icons
+to edge regions. Applications that intentionally prefer the Fluent selector can
+supply that `ControlTheme` through `DockTarget.TargetTheme`. Global docking targets
+continue to use the existing global theme.
+
 ## Related docs
 
 - [Fluent theme guide](dock-theme-fluent.md)

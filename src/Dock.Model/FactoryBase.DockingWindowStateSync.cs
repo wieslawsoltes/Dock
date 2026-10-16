@@ -430,17 +430,37 @@ public abstract partial class FactoryBase : IDockingWindowStateSync
                 windowState.IsOpen = isOpen;
             }
 
-            if (windowState.IsSelected != isSelected)
+            if (windowState.IsSelected != isSelected && ShouldSynchronizeDockingWindowSelection(dockable))
             {
                 windowState.IsSelected = isSelected;
             }
 
-            if (windowState.IsActive != isActive)
+            if (windowState.IsActive != isActive && ShouldSynchronizeDockingWindowActivation(dockable))
             {
                 windowState.IsActive = isActive;
             }
         }
     }
+
+    /// <summary>Determines whether native state synchronization updates a docking window's selected flag.</summary>
+    /// <param name="dockable">The docking window whose selected flag differs from the native pane selection.</param>
+    /// <returns>True to update the flag; false to preserve the value supplied by an external selection coordinator.</returns>
+    /// <remarks>
+    /// The default is true. This policy only controls layout-to-model selection synchronization;
+    /// activation, open state, docking state, tracking, and factory events retain their normal behavior.
+    /// Assigning a model's selected flag still requests a native selection change.
+    /// </remarks>
+    protected virtual bool ShouldSynchronizeDockingWindowSelection(IDockable dockable) => true;
+
+    /// <summary>Determines whether native state synchronization updates a docking window's active flag.</summary>
+    /// <param name="dockable">The docking window whose active flag differs from native focus.</param>
+    /// <returns>True to update the flag; false to preserve externally coordinated activation.</returns>
+    /// <remarks>
+    /// The default is true. This policy only controls layout-to-model activation synchronization;
+    /// focus, selection, open state, docking state, tracking, and factory events continue normally.
+    /// Assigning a model's active flag still requests native activation.
+    /// </remarks>
+    protected virtual bool ShouldSynchronizeDockingWindowActivation(IDockable dockable) => true;
 
     private void SynchronizeDockingWindowSelection(IDock owner)
     {

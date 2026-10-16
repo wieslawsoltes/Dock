@@ -1,9 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia.Controls;
-using Avalonia.VisualTree;
-using Dock.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Model;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
@@ -21,7 +20,7 @@ internal sealed class GlobalDockingService : IGlobalDockingService
                 return legacyDockable as IDock ?? legacyDockable.Owner as IDock;
             }
 
-            if (dropControl?.FindAncestorOfType<DockControl>()?.Layout?.ActiveDockable is IDock legacyActiveDock)
+            if (DockHelpers.ResolveDockControl(dropControl)?.Layout?.ActiveDockable is IDock legacyActiveDock)
             {
                 return legacyActiveDock;
             }
@@ -34,7 +33,7 @@ internal sealed class GlobalDockingService : IGlobalDockingService
             return ResolveOutermostGlobalTargetDock(dockable) ?? dockable as IDock ?? dockable.Owner as IDock;
         }
 
-        if (dropControl?.FindAncestorOfType<DockControl>()?.Layout?.ActiveDockable is IDock activeDock)
+        if (DockHelpers.ResolveDockControl(dropControl)?.Layout?.ActiveDockable is IDock activeDock)
         {
             return ResolveOutermostGlobalTargetDock(activeDock) ?? activeDock;
         }
@@ -64,14 +63,13 @@ internal sealed class GlobalDockingService : IGlobalDockingService
 
     public bool TryApplyGlobalDockingProportion(IDockable sourceDockable, IDockable? sourceRoot, IDockable? targetRoot, double proportion)
     {
-        if (sourceRoot is null || targetRoot is null || sourceDockable.Owner is null)
+        // Catalog tools can come from a rootless layout; the resulting target owner is what matters.
+        if (targetRoot is null || sourceDockable.Owner is null)
         {
             return false;
         }
 
-        sourceDockable.Owner.Proportion = proportion;
-        sourceDockable.Owner.CollapsedProportion = proportion;
-        return true;
+        return sourceDockable.Owner is IDock insertedDock && DockSplitProportion.Apply(insertedDock, proportion);
     }
 
     private static IDock? ResolveOutermostGlobalTargetDock(IDockable? dockable)

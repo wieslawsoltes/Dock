@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Wiesław Šoltés. Licensed under the MIT license. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="Anchorable_AutoHide" xml:space="preserve"><value>Automatisch ausblenden</value></data>
+  <data name="Anchorable_BtnAutoHide_Hint" xml:space="preserve"><value>Automatisch ausblenden</value></data>
+  <data name="Anchorable_BtnClose_Hint" xml:space="preserve"><value>Schließen</value></data>
+  <data name="Anchorable_CxMenu_Hint" xml:space="preserve"><value>Fensteroptionen</value></data>
+  <data name="Anchorable_Dock" xml:space="preserve"><value>Andocken</value></data>
+  <data name="Anchorable_DockAsDocument" xml:space="preserve"><value>Als Dokument andocken</value></data>
+  <data name="Anchorable_Float" xml:space="preserve"><value>Abdocken</value></data>
+  <data name="Anchorable_Hide" xml:space="preserve"><value>Ausblenden</value></data>
+  <data name="Document_BtnPinned_Hint" xml:space="preserve"><value>Dokument anheften</value></data>
+  <data name="Document_Close" xml:space="preserve"><value>Schließen</value></data>
+  <data name="Document_CloseAll" xml:space="preserve"><value>Alle schließen</value></data>
+  <data name="Document_CloseAllButThis" xml:space="preserve"><value>Alle anderen schließen</value></data>
+  <data name="Document_CxMenu_Hint" xml:space="preserve"><value>Dokumentoptionen</value></data>
+  <data name="Document_DockAsDocument" xml:space="preserve"><value>Als Dokument andocken</value></data>
+  <data name="Document_Float" xml:space="preserve"><value>Abdocken</value></data>
+  <data name="Document_MoveToNextTabGroup" xml:space="preserve"><value>In nächste Registerkartengruppe verschieben</value></data>
+  <data name="Document_MoveToPreviousTabGroup" xml:space="preserve"><value>In vorherige Registerkartengruppe verschieben</value></data>
+  <data name="Document_NewHorizontalTabGroup" xml:space="preserve"><value>Neue horizontale Registerkartengruppe</value></data>
+  <data name="Document_NewVerticalTabGroup" xml:space="preserve"><value>Neue vertikale Registerkartengruppe</value></data>
+  <data name="Window_Maximize" xml:space="preserve"><value>Maximieren</value></data>
+  <data name="Window_Restore" xml:space="preserve"><value>Wiederherstellen</value></data>
+</root>

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -13,8 +14,19 @@ namespace Dock.Controls.ProportionalStackPanel;
 /// <summary>
 /// A Panel that stacks controls either horizontally or vertically, with proportional resizing.
 /// </summary>
-public class ProportionalStackPanel : Panel
+public class ProportionalStackPanel : Panel, IProportionalSplitterHost
 {
+    Panel IProportionalSplitterHost.Panel => this;
+    private event EventHandler? SplitterOrientationChanged;
+    event EventHandler? IProportionalSplitterHost.OrientationChanged
+    {
+        add => SplitterOrientationChanged += value;
+        remove => SplitterOrientationChanged -= value;
+    }
+
+    void IProportionalSplitterHost.Resize(Control target, Control neighbor, double dragDelta, double minimumSize) =>
+        ResizeProportions(target, neighbor, dragDelta, minimumSize);
+
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
     /// </summary>
@@ -73,6 +85,16 @@ public class ProportionalStackPanel : Panel
             BindingMode.TwoWay);
 
     private bool _isAssigningProportions;
+    private IReadOnlyDictionary<Control, Rect>? _previewSlots;
+
+    // A drag layout arranges existing controls without writing transient proportions
+    // through the normal two-way model bindings.
+    internal void SetPreviewSlots(IReadOnlyDictionary<Control, Rect>? slots)
+    {
+        _previewSlots = slots;
+        InvalidateMeasure();
+        InvalidateArrange();
+    }
 
     /// <summary>
     /// Gets the value of the CollapsedProportion attached property on the specified control.
@@ -125,7 +147,7 @@ public class ProportionalStackPanel : Panel
 
             if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
             {
-                SetCollapsedProportion(sender, value);
+                sender.SetCurrentValue(CollapsedProportionProperty, value);
             }
 
             parent.InvalidateMeasure();
@@ -152,6 +174,10 @@ public class ProportionalStackPanel : Panel
 
         if (change.Property == OrientationProperty)
         {
+            SplitterOrientationChanged?.Invoke(this, EventArgs.Empty);
+            for (int i = 0; i < Children.Count; i++)
+                if (ProportionalStackPanelSplitter.IsSplitter(Children[i], out ProportionalStackPanelSplitter? splitter))
+                    splitter?.UpdateVisualState();
             InvalidateMeasure();
         }
     }
@@ -161,8 +187,7 @@ public class ProportionalStackPanel : Panel
         _isAssigningProportions = true;
         try
         {
-            var proportionManager = new ProportionManager(Children, size, splitterThickness, Orientation);
-            proportionManager.AssignProportions();
+            OnAssignProportions(size, splitterThickness);
         }
         finally
         {
@@ -170,16 +195,79 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-    /// <inheritdoc/>
-    protected override Size MeasureOverride(Size constraint)
+    /// <summary>Assigns child proportions before measuring or arranging the panel.</summary>
+    /// <param name="size">The space available for the panel.</param>
+    /// <param name="splitterThickness">The total thickness of its visible splitters.</param>
+    /// <remarks>The default policy normalizes proportions and applies child constraints.
+    /// Overrides can supply proportions from another sizing model while retaining native layout.</remarks>
+    protected virtual void OnAssignProportions(Size size, double splitterThickness)
     {
-        var horizontal = Orientation == Orientation.Horizontal;
+        var proportionManager = new ProportionManager(Children, size, splitterThickness, Orientation);
+        proportionManager.AssignProportions();
+    }
 
+    /// <summary>Gets the dimension used to convert child proportions to layout lengths.</summary>
+    /// <param name="size">The space available for the panel.</param>
+    /// <param name="splitterThickness">The total thickness of its visible splitters.</param>
+    /// <returns>The extent along the split axis, excluding splitter gaps.</returns>
+    protected virtual double GetProportionalDimension(Size size, double splitterThickness) =>
+        (Orientation == Orientation.Horizontal ? size.Width : size.Height) - splitterThickness;
+
+    /// <summary>Resolves the finite constraint used by proportional measurement.</summary>
+    /// <param name="constraint">The space offered by the parent.</param>
+    /// <param name="splitterThickness">The total thickness of visible splitters.</param>
+    /// <returns>The constraint used to assign proportions and measure children.</returns>
+    /// <remarks>The default rejects an infinite split-axis extent. A sizing policy
+    /// can measure intrinsic child lengths and return a finite extent instead.</remarks>
+    protected virtual Size GetMeasureConstraint(Size constraint, double splitterThickness)
+    {
+        bool horizontal = Orientation == Orientation.Horizontal;
         if (constraint == Size.Infinity
             || (horizontal && double.IsInfinity(constraint.Width))
             || (!horizontal && double.IsInfinity(constraint.Height)))
-        {
             throw new Exception("Proportional StackPanel cannot be inside a control that offers infinite space.");
+        return constraint;
+    }
+
+    /// <summary>Gets the constraint used to measure an individual pane.</summary>
+    /// <param name="child">The pane being measured.</param>
+    /// <param name="constraint">The pane's allocated proportional space.</param>
+    /// <returns>The child's measure constraint. The default returns the allocated space.</returns>
+    /// <remarks>An intrinsic sizing policy can leave its split axis unconstrained
+    /// while retaining finite pane allocation and native arrangement.</remarks>
+    protected virtual Size GetChildMeasureConstraint(Control child, Size constraint) => constraint;
+
+    /// <summary>Resizes a pair of panes in response to native splitter input.</summary>
+    /// <param name="target">The pane before the splitter.</param>
+    /// <param name="neighbor">The pane after the splitter.</param>
+    /// <param name="dragDelta">The pointer movement along the split axis in device-independent pixels.</param>
+    /// <param name="minimumSize">The splitter's configured minimum pane size.</param>
+    /// <remarks>The default implementation updates native proportions. Overrides can persist
+    /// sizes in an external model while reusing the splitter's input and preview lifecycle.</remarks>
+    protected internal virtual void ResizeProportions(Control target, Control neighbor, double dragDelta, double minimumSize)
+    {
+        var resizer = new ProportionResizer(this, target, neighbor, dragDelta, minimumSize);
+        resizer.ApplyResize();
+    }
+
+    /// <inheritdoc/>
+    protected override Size MeasureOverride(Size constraint)
+    {
+        if (_previewSlots is { } slots)
+        {
+            var previewWidth = 0.0;
+            var previewHeight = 0.0;
+            foreach (var child in Children)
+            {
+                var slot = slots.TryGetValue(child, out var bounds) ? bounds : default;
+                child.Measure(slot.Size);
+                previewWidth = Math.Max(previewWidth, slot.Right);
+                previewHeight = Math.Max(previewHeight, slot.Bottom);
+            }
+            // ScrollViewer and StackPanel can offer an unbounded cross axis.
+            // Keep bounded dimensions, but report finite preview extents there.
+            return new Size(double.IsInfinity(constraint.Width) ? previewWidth : constraint.Width,
+                double.IsInfinity(constraint.Height) ? previewHeight : constraint.Height);
         }
 
         var usedWidth = 0.0;
@@ -187,8 +275,10 @@ public class ProportionalStackPanel : Panel
         var maximumWidth = 0.0;
         var maximumHeight = 0.0;
         var splitterThickness = SplitterCalculator.GetTotalSplitterThickness(Children, GetIsCollapsed);
+        constraint = GetMeasureConstraint(constraint, splitterThickness);
 
         AssignProportions(constraint, splitterThickness);
+        double proportionalDimension = GetProportionalDimension(constraint, splitterThickness);
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;
@@ -222,18 +312,18 @@ public class ProportionalStackPanel : Panel
                 {
                     case Orientation.Horizontal:
                     {
-                        var width = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
+                        var width = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, proportionalDimension, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithWidth(width);
-                        control.Measure(size);
+                        control.Measure(GetChildMeasureConstraint(control, size));
                         break;
                     }
                     case Orientation.Vertical:
                     {
-                        var height = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
+                        var height = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, proportionalDimension, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithHeight(height);
-                        control.Measure(size);
+                        control.Measure(GetChildMeasureConstraint(control, size));
                         break;
                     }
                 }
@@ -268,7 +358,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedWidth += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
+                        usedWidth += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, proportionalDimension, proportion,
                             ref sumOfFractions);
                     }
 
@@ -284,7 +374,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedHeight += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
+                        usedHeight += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, proportionalDimension, proportion,
                             ref sumOfFractions);
                     }
 
@@ -302,6 +392,12 @@ public class ProportionalStackPanel : Panel
     /// <inheritdoc/>
     protected override Size ArrangeOverride(Size arrangeSize)
     {
+        if (_previewSlots is { } slots)
+        {
+            foreach (var child in Children)
+                child.Arrange(slots.TryGetValue(child, out var slot) ? slot : default);
+            return arrangeSize;
+        }
         var left = 0.0;
         var top = 0.0;
         var right = 0.0;
@@ -312,6 +408,7 @@ public class ProportionalStackPanel : Panel
         var index = 0;
 
         AssignProportions(arrangeSize, splitterThickness);
+        double proportionalDimension = GetProportionalDimension(arrangeSize, splitterThickness);
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;
@@ -369,7 +466,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var width = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, arrangeSize.Width - splitterThickness, proportion,
+                            var width = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, proportionalDimension, proportion,
                                 ref sumOfFractions);
                             remainingRect = remainingRect.WithWidth(width);
                             left += width;
@@ -387,7 +484,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var height = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, arrangeSize.Height - splitterThickness, proportion,
+                            var height = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, proportionalDimension, proportion,
                                 ref sumOfFractions);
                             remainingRect = remainingRect.WithHeight(height);
                             top += height;

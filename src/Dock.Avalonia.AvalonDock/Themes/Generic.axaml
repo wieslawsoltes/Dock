@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/HostWindow.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/ToolPinItemControl.axaml" />
+    <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeaderDefaults.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/AvalonDockManagerResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContentResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutPaneControlsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutContentControlsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutTitleControlsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutTabControlsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutHeadersResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutAnchorsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutAutoHideResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDocumentMenusResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutFloatingWindowControlsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutSizingResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutCommandsResources.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/NavigatorWindow.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/OverlayWindow.axaml" />
+    <ResourceInclude Source="avares://Dock.Avalonia.AvalonDock/Themes/LayoutDockTargetsResources.axaml" />
+  </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

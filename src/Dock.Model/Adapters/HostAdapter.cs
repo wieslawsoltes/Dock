@@ -10,6 +10,7 @@ namespace Dock.Model.Adapters;
 public class HostAdapter : IHostAdapter
 {
     private readonly IDockWindow _window;
+    private bool _exiting;
 
     /// <summary>
     /// Initializes new instance of the <see cref="HostAdapter"/> class.
@@ -47,7 +48,9 @@ public class HostAdapter : IHostAdapter
 
         if (_window.Host is null)
         {
-            _window.Host = _window.Factory?.GetHostWindow(_window.Id);
+            _window.Host = _window.Factory is IDockWindowHostFactory hostFactory
+                ? hostFactory.CreateHostWindow(_window)
+                : _window.Factory?.GetHostWindow(_window.Id);
             if (_window.Host is not null)
             {
                 _window.Host.Window = _window;
@@ -69,12 +72,42 @@ public class HostAdapter : IHostAdapter
     /// <inheritdoc/>
     public void Exit()
     {
-        if (_window.Host is not null)
+        if (_exiting || _window.Host is not { } host)
+        {
+            return;
+        }
+
+        bool wasTracked = host.IsTracked;
+        _exiting = true;
+        try
         {
             Save();
-            _window.Host.IsTracked = false;
-            _window.Host.Exit();
-            _window.Host = null;
+            host.IsTracked = false;
+            if (host is not IHostWindowCloseState { IsClosed: true })
+            {
+                host.Exit();
+            }
+
+            if (host is IHostWindowCloseState { IsClosed: false })
+            {
+                host.IsTracked = wasTracked;
+            }
+            else if (ReferenceEquals(_window.Host, host))
+            {
+                _window.Host = null;
+            }
+        }
+        catch
+        {
+            if (host is not IHostWindowCloseState { IsClosed: true })
+            {
+                host.IsTracked = wasTracked;
+            }
+            throw;
+        }
+        finally
+        {
+            _exiting = false;
         }
     }
 

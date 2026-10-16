@@ -298,13 +298,14 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var isLocalValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
+        var isLocalValid = IsLocalTargetAvailable(point, dragAction, relativeTo, ValidateLocal);
         var isGlobalValid = ValidateGlobal(point, DockOperation.Fill, dragAction, relativeTo);
         AddAdorners(isLocalValid, isGlobalValid);
     }
 
     private void Over(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
@@ -335,6 +336,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private bool Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
     {
+        UpdateAdornerGeometry();
         var localOperation = DockOperation.Window;
         var globalOperation = DockOperation.None;
 
@@ -495,7 +497,7 @@ internal sealed class ManagedHostWindowState : DockManagerState, IHostWindowStat
 
     private static bool ShouldShowManagedDragPreview(IDockable? dockable)
     {
-        return DockSettings.ShowDockablePreviewOnDrag && dockable is not ManagedDockWindowDocument;
+        return dockable is not ManagedDockWindowDocument && DragPreviewHelper.ShouldShowPreviewContent(dockable);
     }
 
     private static PixelPoint CalculateDragOffset(ManagedDockWindowDocument? document, PixelPoint pointerPosition)

@@ -52,6 +52,8 @@
     href: dock-context-locator.md
 - name: Framework integration
   items:
+  - name: AvalonDock compatibility (source preview)
+    href: dock-avalondock.md
   - name: MVVM guide
     href: dock-mvvm.md
   - name: Caliburn.Micro guide
@@ -176,6 +178,8 @@
     href: dock-architecture.md
   - name: Deep dive
     href: dock-deep-dive.md
+  - name: Extending docking operations and hosts
+    href: dock-extension-policies.md
   - name: Fluent API extensions
     href: dock-fluent-extensions.md
   - name: Advanced guide

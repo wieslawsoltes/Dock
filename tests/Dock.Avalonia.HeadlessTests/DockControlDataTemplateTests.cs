@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Controls.Presenters;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Internal;
 using Dock.Controls.ProportionalStackPanel;
@@ -18,6 +20,40 @@ namespace Dock.Avalonia.HeadlessTests;
 
 public class DockControlDataTemplateTests
 {
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Replacing_Content_Rebuilds_The_Control_And_Updates_Factory_Registration(bool tool)
+    {
+        var factory = new Factory();
+        IDockable first = tool ? new Tool { Factory = factory } : new Document { Factory = factory };
+        IDockable second = tool ? new Tool { Factory = factory } : new Document { Factory = factory };
+        var registrations = tool ? factory.ToolControls : factory.DocumentControls;
+        var presenter = new ContentPresenter { Content = first };
+        presenter.DataTemplates.AddRange(DockDataTemplateHelper.CreateDefaultDataTemplates());
+        var window = new Window { Content = presenter };
+        window.Show();
+        try
+        {
+            Dispatcher.UIThread.RunJobs();
+            var firstControl = presenter.Child;
+            Assert.NotNull(firstControl);
+            Assert.Same(firstControl, registrations[first]);
+
+            presenter.Content = second;
+            Dispatcher.UIThread.RunJobs();
+            Assert.NotNull(presenter.Child);
+            Assert.NotSame(firstControl, presenter.Child);
+            Assert.False(registrations.ContainsKey(first));
+            Assert.Same(presenter.Child, registrations[second]);
+        }
+        finally
+        {
+            window.Close();
+        }
+        Assert.Empty(registrations);
+    }
+
     [AvaloniaFact]
     public void DockControl_AutoCreateDataTemplates_Default_True()
     {
@@ -33,9 +69,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_CreateDefaultDataTemplates_ReturnsCorrectCount()
+    public void DockDataTemplates_ReturnsCorrectCount()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         
         // Should have templates for all the expected dock types
         Assert.NotEmpty(templates);
@@ -46,9 +82,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact] 
-    public void DockDataTemplateHelper_CreateDefaultDataTemplates_AllTemplatesHaveCorrectTypes()
+    public void DockDataTemplates_AllTemplatesHaveCorrectTypes()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var expectedTypes = GetAllExpectedDockTypes();
 
         // Verify we have a template for each expected type
@@ -60,9 +96,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_DocumentContentTemplate_CanCreateControl()
+    public void DockDataTemplates_DocumentContentTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var documentTemplate = FindTemplateForType<IDocumentContent>(templates);
         Assert.NotNull(documentTemplate);
 
@@ -74,9 +110,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_ToolContentTemplate_CanCreateControl()
+    public void DockDataTemplates_ToolContentTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var toolTemplate = FindTemplateForType<IToolContent>(templates);
         Assert.NotNull(toolTemplate);
 
@@ -88,9 +124,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_ProportionalSplitterTemplate_CanCreateControl()
+    public void DockDataTemplates_ProportionalSplitterTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IProportionalDockSplitter>(templates);
         Assert.NotNull(template);
 
@@ -102,9 +138,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_GridSplitterTemplate_CanCreateControl()
+    public void DockDataTemplates_GridSplitterTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IGridDockSplitter>(templates);
         Assert.NotNull(template);
 
@@ -124,9 +160,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_DocumentDockTemplate_CanCreateControl()
+    public void DockDataTemplates_DocumentDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IDocumentDock>(templates);
         Assert.NotNull(template);
 
@@ -138,9 +174,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_ToolDockTemplate_CanCreateControl()
+    public void DockDataTemplates_ToolDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IToolDock>(templates);
         Assert.NotNull(template);
 
@@ -152,9 +188,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_ProportionalDockTemplate_CanCreateControl()
+    public void DockDataTemplates_ProportionalDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IProportionalDock>(templates);
         Assert.NotNull(template);
 
@@ -166,9 +202,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_StackDockTemplate_CanCreateControl()
+    public void DockDataTemplates_StackDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IStackDock>(templates);
         Assert.NotNull(template);
 
@@ -180,9 +216,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_GridDockTemplate_CanCreateControl()
+    public void DockDataTemplates_GridDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IGridDock>(templates);
         Assert.NotNull(template);
 
@@ -194,9 +230,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_WrapDockTemplate_CanCreateControl()
+    public void DockDataTemplates_WrapDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IWrapDock>(templates);
         Assert.NotNull(template);
 
@@ -208,9 +244,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_UniformGridDockTemplate_CanCreateControl()
+    public void DockDataTemplates_UniformGridDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IUniformGridDock>(templates);
         Assert.NotNull(template);
 
@@ -222,9 +258,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_DockDockTemplate_CanCreateControl()
+    public void DockDataTemplates_DockDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IDockDock>(templates);
         Assert.NotNull(template);
 
@@ -236,9 +272,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_RootDockTemplate_CanCreateControl()
+    public void DockDataTemplates_RootDockTemplate_CanCreateControl()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var template = FindTemplateForType<IRootDock>(templates);
         Assert.NotNull(template);
 
@@ -250,9 +286,9 @@ public class DockControlDataTemplateTests
     }
 
     [AvaloniaFact]
-    public void DockDataTemplateHelper_CoversAllDockTypesFromAssembly()
+    public void DockDataTemplates_CoversAllDockTypesFromAssembly()
     {
-        var templates = DockDataTemplateHelper.CreateDefaultDataTemplates().ToList();
+        var templates = new DockDataTemplates().ToList();
         var expectedTypes = GetAllDockInterfaceTypesFromAssembly();
         var providedTypes = GetAllExpectedDockTypes();
         
@@ -298,13 +334,7 @@ public class DockControlDataTemplateTests
 
     private static bool IsTemplateForType(IDataTemplate template, Type type)
     {
-        if (template.GetType().IsGenericType && 
-            template.GetType().GetGenericTypeDefinition() == typeof(FuncDataTemplate<>))
-        {
-            var genericArgs = template.GetType().GetGenericArguments();
-            return genericArgs.Length == 1 && genericArgs[0] == type;
-        }
-        return false;
+        return template is ITypedDataTemplate typed && typed.DataType == type;
     }
 
     private static List<Type> GetAllExpectedDockTypes()

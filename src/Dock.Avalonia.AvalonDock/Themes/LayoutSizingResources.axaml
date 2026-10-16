@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:models="using:Dock.Model.Controls"
+        xmlns:docking="using:Dock.Settings"
+        xmlns:proportional="using:Dock.Controls.ProportionalStackPanel"
+        xmlns:converters="using:Dock.Avalonia.Converters"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        xmlns:controls="using:AvalonDock.Controls"
+        x:DataType="models:IProportionalDock">
+  <ControlTheme x:Key="{x:Type controls:LayoutGridResizerControl}" TargetType="controls:LayoutGridResizerControl"
+                BasedOn="{StaticResource {x:Type proportional:ProportionalStackPanelSplitter}}" />
+  <DataTemplate x:Key="AvalonDockGridSplitter" DataType="models:IProportionalDockSplitter" x:DataType="models:IProportionalDockSplitter">
+    <controls:LayoutGridResizerControl IsResizingEnabled="{Binding CanResize}" PreviewResize="{Binding ResizePreview}" />
+  </DataTemplate>
+  <ControlTemplate x:Key="AvalonDockProportionalLayout" TargetType="dock:ProportionalDockControl">
+    <ItemsControl x:Name="PART_ItemsControl" ItemsSource="{Binding VisibleDockables}">
+      <ItemsControl.Template>
+        <ControlTemplate>
+          <infrastructure:LayoutGridPresenter />
+        </ControlTemplate>
+      </ItemsControl.Template>
+    </ItemsControl>
+  </ControlTemplate>
+</ResourceDictionary>

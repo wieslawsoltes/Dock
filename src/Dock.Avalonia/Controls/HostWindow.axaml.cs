@@ -12,6 +12,7 @@ using Avalonia.Controls.Primitives;
 #endif
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 #if AVALONIA_11
 using Avalonia.VisualTree;
 #endif
@@ -31,7 +32,7 @@ namespace Dock.Avalonia.Controls;
 #if AVALONIA_11
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 #endif
-public class HostWindow : Window, IHostWindow
+public class HostWindow : Window, IHostWindow, IHostWindowCloseState
 {
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
@@ -39,10 +40,13 @@ public class HostWindow : Window, IHostWindow
     private HostWindowTitleBar? _hostWindowTitleBar;
 #endif
     private bool _mouseDown, _draggingWindow;
+    private bool _isClosed;
     private double _normalX = double.NaN;
     private double _normalY = double.NaN;
     private double _normalWidth = double.NaN;
     private double _normalHeight = double.NaN;
+
+    bool IHostWindowCloseState.IsClosed => _isClosed;
 
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
@@ -189,13 +193,16 @@ public class HostWindow : Window, IHostWindow
 
     private void EndWindowDrag(PointerEventArgs e)
     {
-        PseudoClasses.Set(":dragging", false);
-
-        Window?.Factory?.OnWindowMoveDragEnd(Window);
-        _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Released);
+        var wasDragging = _mouseDown;
         _mouseDown = false;
         _draggingWindow = false;
+        _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Released);
         WindowDragDockScope = WindowDragDockScope.FullWindow;
+        PseudoClasses.Set(":dragging", false);
+        if (wasDragging)
+        {
+            Window?.Factory?.OnWindowMoveDragEnd(Window);
+        }
     }
 
     internal bool TryBeginExternalWindowDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope)
@@ -210,11 +217,36 @@ public class HostWindow : Window, IHostWindow
 
     internal void CancelExternalWindowDrag()
     {
-        PseudoClasses.Set(":dragging", false);
-        Window?.Factory?.OnWindowMoveDragEnd(Window);
+        var wasDragging = _mouseDown;
         _mouseDown = false;
         _draggingWindow = false;
         WindowDragDockScope = WindowDragDockScope.FullWindow;
+        _hostWindowState.Process(default, EventType.CaptureLost);
+        PseudoClasses.Set(":dragging", false);
+        if (wasDragging)
+        {
+            Window?.Factory?.OnWindowMoveDragEnd(Window);
+        }
+    }
+
+    /// <summary>Starts a native window move while preserving Dock's drag tracking and drop targets.</summary>
+    /// <param name="e">The pointer press that initiated the drag.</param>
+    /// <param name="dockScope">The portion of the floating layout participating in docking.</param>
+    /// <returns>True when the factory accepted the drag; otherwise false.</returns>
+    public bool TryBeginMoveDrag(PointerPressedEventArgs e, WindowDragDockScope dockScope)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+        if (!TryBeginWindowDrag(e, dockScope, ownsPointerRelease: true)) return false;
+        try
+        {
+            BeginMoveDrag(e);
+            return true;
+        }
+        catch
+        {
+            CancelExternalWindowDrag();
+            throw;
+        }
     }
 
     private void MoveDrag(PointerPressedEventArgs e)
@@ -222,11 +254,7 @@ public class HostWindow : Window, IHostWindow
         if (!ToolChromeControlsWholeWindow)
             return;
 
-        if (!TryBeginWindowDrag(e, WindowDragDockScope.FullWindow, ownsPointerRelease: true))
-        {
-            return;
-        }
-        BeginMoveDrag(e);
+        TryBeginMoveDrag(e, WindowDragDockScope.FullWindow);
     }
 
     private void EndDrag(PointerEventArgs e)
@@ -465,13 +493,31 @@ public class HostWindow : Window, IHostWindow
     {
         base.OnOpened(e);
 
-        Window?.Factory?.HostWindows.Add(this);
+        if (Window?.Factory?.HostWindows is { } hosts && !hosts.Contains(this))
+        {
+            hosts.Add(this);
+        }
     }
 
     /// <inheritdoc/>
     protected override void OnClosed(EventArgs e)
     {
-        base.OnClosed(e);
+        IDockWindow? closingWindow = Window;
+        IFactory? closingFactory = closingWindow?.Factory;
+        bool preserveLayout = closingWindow is not null && closingFactory is IDockWindowClosePolicy policy &&
+            policy.PreserveLayoutOnHostClose(closingWindow);
+        _isClosed = true;
+        OnClosedCore(e, closingWindow);
+
+        if (preserveLayout)
+        {
+            closingFactory!.HostWindows.Remove(this);
+            IsTracked = false;
+            // A Closed subscriber can already have installed another host.
+            if (ReferenceEquals(closingWindow!.Host, this)) closingWindow.Host = null;
+            closingFactory.OnWindowClosed(closingWindow);
+            return;
+        }
 
         Window?.Factory?.HostWindows.Remove(this);
 
@@ -487,10 +533,39 @@ public class HostWindow : Window, IHostWindow
         }
     }
 
+    /// <summary>
+    /// Releases the host presentation and raises the framework Closed event.
+    /// </summary>
+    /// <param name="e">The arguments supplied by the native close lifecycle.</param>
+    /// <param name="closingWindow">The window model captured when closing began, or null for an unbound host.</param>
+    /// <remarks>
+    /// The host is already marked closed and its close policy has been captured.
+    /// An override can update its layout before Closed subscribers run without
+    /// losing the captured factory notification for a preserved layout.
+    /// Call the base implementation to release model references and raise Closed.
+    /// Factory notification and tracking cleanup follow this hook's successful return.
+    /// </remarks>
+    protected virtual void OnClosedCore(EventArgs e, IDockWindow? closingWindow)
+    {
+        HostWindowContentCleanup.ReleaseModels(this, Content as IDock ?? closingWindow?.Layout);
+        // Avalonia model implementations can be logical children of the content
+        // control. A retained layout must not keep this closed window as parent.
+        if (Content is IDock && Content is ILogical logicalLayout)
+        {
+            LogicalChildren.Remove(logicalLayout);
+        }
+        CancelExternalWindowDrag();
+        base.OnClosed(e);
+    }
+
     /// <inheritdoc/>
     protected override void OnClosing(WindowClosingEventArgs e)
     {
         base.OnClosing(e);
+        if (e.Cancel)
+        {
+            return;
+        }
 
         if (Window is { })
         {
@@ -505,7 +580,8 @@ public class HostWindow : Window, IHostWindow
         {
             Window.Save();
 
-            if (Window.Layout is IDock root)
+            if (!(Window.Factory is IDockWindowClosePolicy policy && policy.PreserveLayoutOnHostClose(Window)) &&
+                Window.Layout is IDock root)
             {
                 if (root.Close.CanExecute(null))
                 {
@@ -696,8 +772,8 @@ public class HostWindow : Window, IHostWindow
                 {
                     if (copyOwnerChrome)
                     {
-                        Title = ownerWindow.Title;
-                        Icon = ownerWindow.Icon;
+                        if (!IsSet(TitleProperty)) SetCurrentValue(TitleProperty, ownerWindow.Title);
+                        if (!IsSet(IconProperty)) SetCurrentValue(IconProperty, ownerWindow.Icon);
                     }
 
                     Show(ownerWindow);
@@ -713,17 +789,13 @@ public class HostWindow : Window, IHostWindow
     /// <inheritdoc/>
     public void Exit()
     {
-        if (Window is { })
+        // A factory evaluates OnClose inside the cancelable closing pipeline.
+        // Calling it here too can mutate content before a window handler vetoes.
+        if (Window is { Factory: null } window && !window.OnClose())
         {
-            if (Window.OnClose())
-            {
-                Close();
-            }
+            return;
         }
-        else
-        {
-            Close();
-        }
+        Close();
     }
 
     /// <inheritdoc/>

@@ -1,0 +1,224 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:ad="using:AvalonDock"
+        xmlns:core="using:Dock.Model.Core"
+        xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:deferred="using:Dock.Controls.DeferredContentControl"
+        xmlns:converters="using:Dock.Avalonia.Converters"
+        xmlns:items="using:AvalonDock.Controls"
+        xmlns:layout="using:AvalonDock.Layout"
+        xmlns:properties="using:AvalonDock.Properties"
+        xmlns:compatConverters="using:AvalonDock.Converters"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="core:IDockable">
+  <ResourceDictionary.MergedDictionaries>
+    <infrastructure:LayoutCommandResources />
+  </ResourceDictionary.MergedDictionaries>
+  <compatConverters:AnchorableContextMenuAutoHideHeaderConverter x:Key="AvalonDockAutoHideHeaderConverter" />
+  <infrastructure:LayoutToolCloseCommandConverter x:Key="AvalonDockToolCloseCommand" />
+  <infrastructure:LayoutAnchorableTitleTemplate x:Key="AvalonDockToolTitle">
+    <infrastructure:LayoutAnchorableTitleTemplate.TitleTemplate>
+      <DataTemplate x:DataType="layout:LayoutAnchorable">
+        <items:AnchorablePaneTitle />
+      </DataTemplate>
+    </infrastructure:LayoutAnchorableTitleTemplate.TitleTemplate>
+  </infrastructure:LayoutAnchorableTitleTemplate>
+  <ControlTheme x:Key="AvalonDockAutoHideMenuItem" TargetType="MenuItem" x:DataType="items:LayoutAnchorableItem"
+                BasedOn="{StaticResource {x:Type MenuItem}}">
+    <Setter Property="Header" Value="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden, Converter={StaticResource AvalonDockAutoHideHeaderConverter}}" />
+  </ControlTheme>
+  <DataTemplate x:Key="AvalonDockDocumentCloseTemplate" x:DataType="core:IDockable">
+    <Border>
+      <Border.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
+            <Binding />
+            <Binding Path="CanClose" />
+            <Binding Path="DockCapabilityOverrides.CanClose" />
+            <Binding Path="((core:IDock)Owner).DockCapabilityPolicy.CanClose" />
+          </MultiBinding>
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+          <MultiBinding Converter="{x:Static converters:DocumentCloseButtonVisibilityConverter.Instance}">
+            <Binding Path="((dmc:IDocumentDock)Owner).CloseButtonShowMode" FallbackValue="Always" />
+            <Binding Path="$parent[dock:DocumentTabStripItem].IsSelected" />
+          </MultiBinding>
+        </MultiBinding>
+      </Border.IsVisible>
+
+      <Button x:DataType="items:LayoutItem" Classes="avalondock-close"
+              ToolTip.Tip="{x:Static properties:Resources.Document_Close}"
+              infrastructure:LayoutItemBinding.Model="{Binding $parent[ContentPresenter].Content}"
+              DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
+              Command="{Binding CloseCommand}"
+              IsVisible="{Binding $self.IsEffectivelyEnabled}"
+              Theme="{Binding $parent[dock:DocumentTabStrip].CloseButtonTheme}">
+        <Path x:Name="PART_ClosePath">
+          <Path.Styles>
+            <Style Selector="Path">
+              <Setter Property="Margin" Value="{DynamicResource DockTabContentMargin}" />
+              <Setter Property="Stretch" Value="Uniform" />
+              <Setter Property="UseLayoutRounding" Value="False" />
+              <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
+              <Setter Property="Fill" Value="{Binding $parent[dock:DocumentTabStripItem].Foreground}" />
+            </Style>
+          </Path.Styles>
+        </Path>
+      </Button>
+    </Border>
+  </DataTemplate>
+  <ControlTemplate x:Key="AvalonDockToolChrome" TargetType="dock:ToolChromeControl" x:DataType="dmc:IToolDock">
+    <Grid RowDefinitions="Auto,*">
+      <deferred:DeferredContentPresenter x:Name="PART_ContentPresenter"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Padding="{TemplateBinding Padding}"
+                                Grid.Row="1" />
+      <Border x:Name="PART_Border"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              VerticalAlignment="Top"
+              ContextFlyout="{TemplateBinding ToolFlyout}"
+              Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}">
+        <Grid x:Name="PART_Grip">
+          <Grid ColumnDefinitions="*,Auto,Auto"
+                Margin="{DynamicResource DockToolChromeHeaderMargin}">
+            <Panel Grid.Column="0" HorizontalAlignment="Left">
+              <ContentPresenter x:Name="PART_Title"
+                                Content="{Binding $parent[dock:ToolChromeControl].((dmc:IToolDock)DataContext).ActiveDockable}"
+                                ContentTemplate="{StaticResource AvalonDockToolTitle}" />
+            </Panel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <Button x:Name="PART_MenuButton"
+                      ToolTip.Tip="{x:Static properties:Resources.Anchorable_CxMenu_Hint}"
+                      Theme="{TemplateBinding MenuButtonTheme}"
+                      Flyout="{TemplateBinding ToolFlyout}">
+                <Viewbox Margin="{DynamicResource DockToolChromeMenuIconMargin}">
+                  <Path x:Name="PART_MenuPath" />
+                </Viewbox>
+              </Button>
+              <Button x:Name="PART_PinButton" x:DataType="items:LayoutAnchorableItem"
+                      ToolTip.Tip="{Binding ((layout:LayoutAnchorable)LayoutElement).IsAutoHidden, Converter={StaticResource AvalonDockAutoHideHeaderConverter}}"
+                      infrastructure:LayoutItemBinding.Model="{Binding $parent[dock:ToolChromeControl].((dmc:IToolDock)DataContext).ActiveDockable}"
+                      DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
+                      Command="{Binding AutoHideCommand}"
+                      Theme="{TemplateBinding PinButtonTheme}">
+                <Button.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="$self.IsEffectivelyEnabled" />
+                    <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanPinMultiConverter}">
+                      <Binding Path="LayoutElement.DockModel" />
+                      <Binding Path="LayoutElement.DockModel.CanPin" />
+                      <Binding Path="LayoutElement.DockModel.DockCapabilityOverrides.CanPin" />
+                      <Binding Path="LayoutElement.DockModel.((core:IDock)Owner).DockCapabilityPolicy.CanPin" />
+                    </MultiBinding>
+                    <TemplateBinding Property="IsFloating" Converter="{x:Static BoolConverters.Not}" />
+                  </MultiBinding>
+                </Button.IsVisible>
+                <Viewbox>
+                  <Path x:Name="PART_PinPath" />
+                </Viewbox>
+              </Button>
+              <Button x:Name="PART_MaximizeRestoreButton"
+                      IsVisible="{TemplateBinding IsFloating}"
+                      Classes.maximized="{Binding $parent[dock:ToolChromeControl].IsMaximized}"
+                      Theme="{TemplateBinding MaximizeButtonTheme}">
+                <Button.Styles>
+                  <Style Selector="Button">
+                    <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Maximize}" />
+                    <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Maximize}" />
+                  </Style>
+                  <Style Selector="Button.maximized">
+                    <Setter Property="ToolTip.Tip" Value="{x:Static properties:Resources.Window_Restore}" />
+                    <Setter Property="AutomationProperties.Name" Value="{x:Static properties:Resources.Window_Restore}" />
+                  </Style>
+                </Button.Styles>
+                <Viewbox>
+                  <Path x:Name="PART_MaximizeRestorePath" />
+                </Viewbox>
+              </Button>
+              <Button x:Name="PART_CloseButton" x:DataType="items:LayoutAnchorableItem"
+                      ToolTip.Tip="{x:Static properties:Resources.Anchorable_BtnClose_Hint}"
+                      infrastructure:LayoutItemBinding.Model="{Binding $parent[dock:ToolChromeControl].((dmc:IToolDock)DataContext).ActiveDockable}"
+                      DataContext="{Binding $self.(infrastructure:LayoutItemBinding.Item)}"
+                      Theme="{TemplateBinding CloseButtonTheme}">
+                <Button.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="$self.IsEffectivelyEnabled" />
+                    <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                      <Binding Path="CanClose" Converter="{x:Static BoolConverters.Not}" />
+                      <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <MultiBinding Converter="{x:Static converters:DockCapabilityConverters.CanCloseMultiConverter}">
+                          <Binding Path="LayoutElement.DockModel" />
+                          <Binding Path="LayoutElement.DockModel.CanClose" />
+                          <Binding Path="LayoutElement.DockModel.DockCapabilityOverrides.CanClose" />
+                          <Binding Path="LayoutElement.DockModel.((core:IDock)Owner).DockCapabilityPolicy.CanClose" />
+                        </MultiBinding>
+                        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                          <Binding Path="LayoutElement.DockModel.((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+                          <Binding Path="LayoutElement.DockModel.((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+                        </MultiBinding>
+                      </MultiBinding>
+                    </MultiBinding>
+                  </MultiBinding>
+                </Button.IsVisible>
+                <Button.Command>
+                  <MultiBinding Converter="{StaticResource AvalonDockToolCloseCommand}">
+                    <Binding Path="CanClose" />
+                    <Binding Path="CloseCommand" />
+                    <Binding Path="HideCommand" />
+                  </MultiBinding>
+                </Button.Command>
+                <Viewbox>
+                  <Path x:Name="PART_ClosePath" />
+                </Viewbox>
+              </Button>
+            </StackPanel>
+            <Grid x:Name="PART_Grid" Grid.Column="1" />
+          </Grid>
+        </Grid>
+      </Border>
+      <Panel x:Name="PART_Panel"
+             Background="{TemplateBinding BorderBrush}"
+             Height="{DynamicResource DockToolChromeDividerThickness}"
+             VerticalAlignment="Top"
+             Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}" />
+    </Grid>
+  </ControlTemplate>
+  <Template x:Key="AvalonDockDocumentCommands">
+    <items:ContextMenuEx x:DataType="items:LayoutItem">
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}" Command="{Binding CloseAllButThisCommand}" />
+      <items:MenuItemEx Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}" Command="{Binding CloseAllCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlFloatString}" Command="{Binding FloatCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockNewHorizontalTabGroupString}" Command="{Binding NewHorizontalTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockNewVerticalTabGroupString}" Command="{Binding NewVerticalTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockMoveToNextTabGroupString}" Command="{Binding MoveToNextTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockMoveToPreviousTabGroupString}" Command="{Binding MoveToPreviousTabGroupCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+    </items:ContextMenuEx>
+  </Template>
+  <Template x:Key="AvalonDockToolCommands">
+    <items:ContextMenuEx x:DataType="items:LayoutAnchorableItem">
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlFloatString}" Command="{Binding FloatCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockString}" Command="{Binding DockCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlDockAsDocumentString}" Command="{Binding DockAsDocumentCommand}" />
+      <items:MenuItemEx Theme="{StaticResource AvalonDockAutoHideMenuItem}"
+                Command="{Binding AutoHideCommand}" />
+      <items:MenuItemEx Header="{DynamicResource ToolChromeControlCloseString}" Command="{Binding CloseCommand}" IsVisible="{Binding $self.IsEffectivelyEnabled}" />
+      <items:MenuItemEx Header="{DynamicResource AvalonDockHideString}" Command="{Binding HideCommand}">
+        <items:MenuItemEx.IsVisible>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="$self.IsEffectivelyEnabled" />
+            <Binding Path="CanClose" Converter="{x:Static BoolConverters.Not}" />
+          </MultiBinding>
+        </items:MenuItemEx.IsVisible>
+      </items:MenuItemEx>
+    </items:ContextMenuEx>
+  </Template>
+</ResourceDictionary>

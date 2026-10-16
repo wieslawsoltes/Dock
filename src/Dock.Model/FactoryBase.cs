@@ -591,6 +591,8 @@ public abstract partial class FactoryBase : IFactory
                                     }
                                 }
 
+                                InitDockable(splitter, proportionalOwner);
+
                                 // Clean up any orphaned splitters that might have been created
                                 CleanupOrphanedSplitters(proportionalOwner);
 
@@ -598,6 +600,12 @@ public abstract partial class FactoryBase : IFactory
                                 OnDockableDocked(dockable, operation);
                                 return;
                             }
+                        }
+
+                        if (TrySplitIntoTarget(dock, dockable, operation))
+                        {
+                            ownerDock.ActiveDockable = dock;
+                            return;
                         }
 
                         // Fallback to the original behavior when optimization is not applicable

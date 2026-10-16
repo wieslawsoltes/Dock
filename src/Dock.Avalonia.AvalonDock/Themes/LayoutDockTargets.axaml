@@ -1,0 +1,12 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="using:Dock.Avalonia.Controls"
+        xmlns:infrastructure="using:AvalonDock.Infrastructure"
+        x:DataType="dock:DockControl">
+  <Style Selector="dock|DockControl.avalondock">
+    <Setter Property="dock:DockTarget.TargetTheme" Value="{StaticResource AvalonDockLocalTargetTheme}" />
+    <Setter Property="dock:DockTarget.AdornerHostProvider">
+      <infrastructure:LayoutAdornerHostProvider />
+    </Setter>
+  </Style>
+</Styles>

@@ -40,7 +40,9 @@ public sealed class DockSerializer : IDockSerializer
     /// Initializes a new instance of the <see cref="DockSerializer"/> class with the specified list type and type info resolver.
     /// </summary>
     /// <param name="listType">The type of list to use in the serialization process.</param>
-    /// <param name="typeInfoResolver">The resolver to use for generated metadata.</param>
+    /// <param name="typeInfoResolver">The resolver to use for generated metadata. Dock collection factories
+    /// honor the configured list type and retain compatible supplied instances. For other collection contracts,
+    /// the resolver's existing CreateObject factory takes precedence over the configured list type.</param>
     public DockSerializer(Type listType, IJsonTypeInfoResolver typeInfoResolver)
         : this(DockSerializerOptionsFactory.Create(listType, typeInfoResolver))
     {
@@ -49,7 +51,9 @@ public sealed class DockSerializer : IDockSerializer
     /// <summary>
     /// Initializes a new instance of the <see cref="DockSerializer"/> class using <see cref="ObservableCollection{T}"/> as the list type and the specified type info resolver.
     /// </summary>
-    /// <param name="typeInfoResolver">The resolver to use for generated metadata.</param>
+    /// <param name="typeInfoResolver">The resolver to use for generated metadata. Dock collection factories
+    /// honor the configured list type and retain compatible supplied instances. For other collection contracts,
+    /// the resolver's existing CreateObject factory takes precedence over the configured list type.</param>
     public DockSerializer(IJsonTypeInfoResolver typeInfoResolver)
         : this(typeof(ObservableCollection<>), typeInfoResolver)
     {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Wiesław Šoltés. Licensed under the MIT license. -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="Anchorable_AutoHide" xml:space="preserve"><value>Masquer automatiquement</value></data>
+  <data name="Anchorable_BtnAutoHide_Hint" xml:space="preserve"><value>Masquer automatiquement</value></data>
+  <data name="Anchorable_BtnClose_Hint" xml:space="preserve"><value>Fermer</value></data>
+  <data name="Anchorable_CxMenu_Hint" xml:space="preserve"><value>Options de la fenêtre</value></data>
+  <data name="Anchorable_Dock" xml:space="preserve"><value>Ancrer</value></data>
+  <data name="Anchorable_DockAsDocument" xml:space="preserve"><value>Ancrer comme document</value></data>
+  <data name="Anchorable_Float" xml:space="preserve"><value>Détacher</value></data>
+  <data name="Anchorable_Hide" xml:space="preserve"><value>Masquer</value></data>
+  <data name="Document_BtnPinned_Hint" xml:space="preserve"><value>Épingler le document</value></data>
+  <data name="Document_Close" xml:space="preserve"><value>Fermer</value></data>
+  <data name="Document_CloseAll" xml:space="preserve"><value>Tout fermer</value></data>
+  <data name="Document_CloseAllButThis" xml:space="preserve"><value>Fermer les autres</value></data>
+  <data name="Document_CxMenu_Hint" xml:space="preserve"><value>Options du document</value></data>
+  <data name="Document_DockAsDocument" xml:space="preserve"><value>Ancrer comme document</value></data>
+  <data name="Document_Float" xml:space="preserve"><value>Détacher</value></data>
+  <data name="Document_MoveToNextTabGroup" xml:space="preserve"><value>Déplacer vers le groupe d’onglets suivant</value></data>
+  <data name="Document_MoveToPreviousTabGroup" xml:space="preserve"><value>Déplacer vers le groupe d’onglets précédent</value></data>
+  <data name="Document_NewHorizontalTabGroup" xml:space="preserve"><value>Nouveau groupe d’onglets horizontal</value></data>
+  <data name="Document_NewVerticalTabGroup" xml:space="preserve"><value>Nouveau groupe d’onglets vertical</value></data>
+  <data name="Window_Maximize" xml:space="preserve"><value>Agrandir</value></data>
+  <data name="Window_Restore" xml:space="preserve"><value>Rétablir</value></data>
+</root>

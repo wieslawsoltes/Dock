@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <PackageId>Dock.Avalonia.AvalonDock</PackageId>
+    <!-- Deferred until the required framework APIs are available in official Avalonia. -->
+    <IsPackable>false</IsPackable>
+    <Description>AvalonDock API adapters backed by Dock's Avalonia models and controls.</Description>
+    <PackageReadmeFile>AVALONDOCK.md</PackageReadmeFile>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddAvalonDockGeneratorToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+  <Import Project="../../build/SignAssembly.props" />
+  <Import Project="../../build/SourceLink.props" />
+  <Import Project="../../build/Avalonia.props" />
+  <ItemGroup>
+    <EmbeddedResource Update="Properties/Resources*.resx" ManifestResourceName="AvalonDock.Properties.%(Filename)" />
+    <PackageReference Include="ReactiveUI.Reactive" />
+    <ProjectReference Include="../Dock.Model.Avalonia/Dock.Model.Avalonia.csproj" />
+    <ProjectReference Include="../Dock.Avalonia.Themes.Fluent/Dock.Avalonia.Themes.Fluent.csproj" />
+    <ProjectReference Include="../Dock.Avalonia.AvalonDock.Generators/Dock.Avalonia.AvalonDock.Generators.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"
+                      GlobalPropertiesToRemove="RuntimeIdentifier;SelfContained;PublishAot;PublishTrimmed;TrimMode;InvariantGlobalization;StripSymbols"
+                      SetTargetFramework="TargetFramework=netstandard2.0" />
+    <None Include="AVALONDOCK.md" Pack="true" PackagePath="/" />
+    <None Include="COMPATIBILITY.md" Pack="true" PackagePath="/" />
+    <None Include="buildTransitive/Dock.Avalonia.AvalonDock.targets" Pack="true" PackagePath="buildTransitive/" />
+  </ItemGroup>
+  <Target Name="AddAvalonDockGeneratorToPackage" Condition="'$(TargetFramework)' == 'net8.0'">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(MSBuildProjectDirectory)/../Dock.Avalonia.AvalonDock.Generators/bin/$(Configuration)/netstandard2.0/Dock.Avalonia.AvalonDock.Generators.dll">
+        <PackagePath>analyzers/dotnet/cs/</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
+  </Target>
+</Project>

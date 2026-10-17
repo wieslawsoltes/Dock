@@ -126,8 +126,13 @@ not need to change:</p>
 <pre><code class="lang-csharp">var existingApi = new Dock.Serializer.DockSerializer();
 var jsonApi = new Dock.Serializer.SystemTextJson.DockSerializer();
 </code></pre>
-<p>The generator discovers accessible Dock types in the application and referenced
-Dock model libraries, types passed to <code>Serialize</code>, <code>Deserialize</code>, <code>Save</code>, or
+<p>Generation runs in assemblies that declare an accessible concrete Dock model,
+call a serializer operation, or explicitly opt in with <code>DockJsonSourceGeneration</code>
+or <code>DockJsonSerializable</code>. Merely referencing a model library does not emit another
+serializer into the consuming assembly, including when the library grants
+<code>InternalsVisibleTo</code> access. The model library registers its own generated metadata.</p>
+<p>Once activated, the generator discovers accessible Dock types in the application
+and referenced Dock model libraries, types passed to <code>Serialize</code>, <code>Deserialize</code>, <code>Save</code>, or
 <code>Load</code>, and statically created object-valued payloads. Add an assembly registration
 for a payload selected dynamically, for example by a factory or plugin:</p>
 <pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;

@@ -61,8 +61,14 @@ var existingApi = new Dock.Serializer.DockSerializer();
 var jsonApi = new Dock.Serializer.SystemTextJson.DockSerializer();
 ```
 
-The generator discovers accessible Dock types in the application and referenced
-Dock model libraries, types passed to `Serialize`, `Deserialize`, `Save`, or
+Generation runs in assemblies that declare an accessible concrete Dock model,
+call a serializer operation, or explicitly opt in with `DockJsonSourceGeneration`
+or `DockJsonSerializable`. Merely referencing a model library does not emit another
+serializer into the consuming assembly, including when the library grants
+`InternalsVisibleTo` access. The model library registers its own generated metadata.
+
+Once activated, the generator discovers accessible Dock types in the application
+and referenced Dock model libraries, types passed to `Serialize`, `Deserialize`, `Save`, or
 `Load`, and statically created object-valued payloads. Add an assembly registration
 for a payload selected dynamically, for example by a factory or plugin:
 

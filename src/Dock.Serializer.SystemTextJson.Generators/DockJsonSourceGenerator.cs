@@ -218,8 +218,8 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
         {
             var diagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
             ImmutableArray<RegistrationCandidate> registeredTypes = GetRegisteredTypes(compilation, diagnostics, cancellationToken);
-            // Metadata generation is automatic for serializer consumers. The activation
-            // attribute remains accepted for source compatibility.
+            // The runtime attribute identifies the serializer reference. Local inputs below
+            // decide whether this assembly needs its own generated metadata.
             if (compilation.GetTypeByMetadataName(MetadataNames.SourceGenerationAttribute) is null)
             {
                 return GenerationModel.Empty(diagnostics.ToImmutable());
@@ -238,14 +238,20 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
 
             registeredTypes = FilterRegisteredTypes(registeredTypes, dockSymbols!, diagnostics);
 
-            ImmutableArray<SerializableTypeModel> serializableTypes =
-                GetSerializableTypes(compilation, dockSymbols!, registeredTypes, cancellationToken);
-
-            if (serializableTypes.IsEmpty && !HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute)
+            // Referenced models contribute contracts only after this assembly has a
+            // local reason to generate. Otherwise a transitive consumer repeats its
+            // library's internal helpers (and conflicts when InternalsVisibleTo is used).
+            if (registeredTypes.IsEmpty
+                && !HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute)
+                && !EnumerateNamedTypes(compilation.Assembly.GlobalNamespace, cancellationToken)
+                    .Any(type => IsDiscoverableDockType(type, dockSymbols!, compilation.Assembly))
                 && !GetSerializerCallTypes(compilation).Any())
             {
                 return GenerationModel.Empty(diagnostics.ToImmutable());
             }
+
+            ImmutableArray<SerializableTypeModel> serializableTypes =
+                GetSerializableTypes(compilation, dockSymbols!, registeredTypes, cancellationToken);
 
             ImmutableArray<ITypeSymbol> collectionTypes = GetCollectionTypes(serializableTypes, dockSymbols!, compilation);
             ImmutableArray<IgnoredMembersModel> ignoredMembers =

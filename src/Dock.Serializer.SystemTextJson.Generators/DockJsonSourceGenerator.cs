@@ -218,8 +218,8 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
         {
             var diagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
             ImmutableArray<RegistrationCandidate> registeredTypes = GetRegisteredTypes(compilation, diagnostics, cancellationToken);
-            // Metadata generation is automatic for serializer consumers. The activation
-            // attribute remains accepted for source compatibility.
+            // The runtime attribute identifies the serializer reference. Local inputs below
+            // decide whether this assembly needs its own generated metadata.
             if (compilation.GetTypeByMetadataName(MetadataNames.SourceGenerationAttribute) is null)
             {
                 return GenerationModel.Empty(diagnostics.ToImmutable());
@@ -238,10 +238,27 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
 
             registeredTypes = FilterRegisteredTypes(registeredTypes, dockSymbols!, diagnostics);
 
+            bool explicitActivation = HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute);
+
+            // Referenced models contribute contracts only after this assembly has a
+            // local reason to generate. Otherwise a transitive consumer repeats its
+            // library's internal helpers (and conflicts when InternalsVisibleTo is used).
+            if (registeredTypes.IsEmpty
+                && !explicitActivation
+                && !EnumerateNamedTypes(compilation.Assembly.GlobalNamespace, cancellationToken)
+                    .Any(type => IsDiscoverableDockType(type, dockSymbols!, compilation.Assembly))
+                && !GetSerializerCallTypes(compilation, requireClosedAccessibleType: false).Any())
+            {
+                return GenerationModel.Empty(diagnostics.ToImmutable());
+            }
+
             ImmutableArray<SerializableTypeModel> serializableTypes =
                 GetSerializableTypes(compilation, dockSymbols!, registeredTypes, cancellationToken);
 
-            if (serializableTypes.IsEmpty && !HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute)
+            // An open generic wrapper needs metadata only when there are concrete
+            // contracts to register. Preserve the empty-contract guard for serializer
+            // infrastructure that merely forwards generic calls.
+            if (serializableTypes.IsEmpty && !explicitActivation
                 && !GetSerializerCallTypes(compilation).Any())
             {
                 return GenerationModel.Empty(diagnostics.ToImmutable());
@@ -775,7 +792,9 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
             return null;
         }
 
-        private static IEnumerable<ITypeSymbol> GetSerializerCallTypes(Compilation compilation)
+        private static IEnumerable<ITypeSymbol> GetSerializerCallTypes(
+            Compilation compilation,
+            bool requireClosedAccessibleType = true)
         {
             foreach (SyntaxTree tree in compilation.SyntaxTrees)
             {
@@ -786,7 +805,7 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
                         && method.TypeArguments.Length == 1
                         && method.Name is "Serialize" or "Deserialize" or "Save" or "Load"
                         && method.ContainingType.ToDisplayString().StartsWith("Dock.", StringComparison.Ordinal)
-                        && IsClosedAccessibleType(method.TypeArguments[0], compilation.Assembly))
+                        && (!requireClosedAccessibleType || IsClosedAccessibleType(method.TypeArguments[0], compilation.Assembly)))
                         yield return method.TypeArguments[0];
                 }
             }

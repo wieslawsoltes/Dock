@@ -252,6 +252,97 @@ public class DockJsonSourceGeneratorTests
     }
 
     [Fact]
+    public void ReferencedDockTypesAlone_DoNotActivateGeneration()
+    {
+        CompilationRun run = Run("namespace App; public sealed class Unrelated { }");
+
+        Assert.Empty(Assert.Single(run.RunResult.Results).GeneratedSources);
+        Assert.Empty(run.RunResult.Diagnostics);
+        AssertCompilesWithoutTypeConflicts(run.OutputCompilation);
+    }
+
+    [Fact]
+    public void GenericWrapperWithoutKnownContracts_DoesNotGenerateEmptyMetadata()
+    {
+        CSharpCompilation compilation = CreateCompilation("Wrapper", """
+            public static class Wrapper
+            {
+                public static string Save<T>(T value) => new Dock.Serializer.SystemTextJson.DockSerializer().Serialize(value);
+            }
+            """);
+        compilation = compilation.RemoveReferences(compilation.References.Where(reference =>
+            compilation.GetAssemblyOrModuleSymbol(reference) is IAssemblySymbol assembly
+            && assembly.Name.StartsWith("Dock.Model.", StringComparison.Ordinal)).ToArray());
+
+        CompilationRun run = Run(compilation);
+
+        Assert.Empty(Assert.Single(run.RunResult.Results).GeneratedSources);
+        Assert.Empty(run.RunResult.Diagnostics);
+        AssertCompilesWithoutTypeConflicts(run.OutputCompilation);
+    }
+
+    [Fact]
+    public void FriendLibrary_DoesNotGenerateDuplicateMetadataInReferencingApplication()
+    {
+        CompilationRun library = Run(CreateCompilation("Lib", """
+            using System.Runtime.CompilerServices;
+            [assembly: InternalsVisibleTo("App")]
+            namespace Lib;
+            public sealed class Note : Dock.Model.Inpc.Controls.Document { }
+            """));
+        Assert.NotEmpty(Assert.Single(library.RunResult.Results).GeneratedSources);
+        MetadataReference libraryReference = EmitReference(library.OutputCompilation);
+        CSharpCompilation application = CreateCompilation("App", """
+            internal static class Program
+            {
+                private static void Main() { }
+            }
+            """, libraryReference).WithOptions(new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+
+        CompilationRun app = Run(application);
+
+        Assert.Empty(Assert.Single(app.RunResult.Results).GeneratedSources);
+        Assert.Empty(app.RunResult.Diagnostics);
+        AssertCompilesWithoutTypeConflicts(app.OutputCompilation);
+    }
+
+    [Theory]
+    [InlineData("public sealed class LocalNote : Dock.Model.Inpc.Controls.Document { }")]
+    [InlineData("[assembly: Dock.Serializer.SystemTextJson.DockJsonSourceGeneration]")]
+    [InlineData("[assembly: Dock.Serializer.SystemTextJson.DockJsonSerializable(typeof(Lib.Note))]")]
+    [InlineData("public static class Usage { public static string Save(Lib.Note note) => new Dock.Serializer.SystemTextJson.DockSerializer().Serialize(note); }")]
+    [InlineData("public static class Usage { public static string Save<T>(T value) => new Dock.Serializer.SystemTextJson.DockSerializer().Serialize(value); }")]
+    public void LocalGenerationTriggers_StillIncludeReferencedDockModels(string source)
+    {
+        MetadataReference library = EmitReference(CreateCompilation("Dock.Model.Library", """
+            namespace Lib;
+            public sealed class Note : Dock.Model.Inpc.Controls.Document { }
+            """));
+
+        CompilationRun run = Run(source, library);
+
+        Assert.Contains("global::Lib.Note", GetGeneratedSource(run, "DockSystemTextJsonContext.g.cs"));
+        Assert.Contains("ModuleInitializer", GetGeneratedSource(run, "DockSystemTextJsonGenerated.g.cs"));
+        AssertCompilesWithoutTypeConflicts(run.OutputCompilation);
+    }
+
+    private static MetadataReference EmitReference(Compilation compilation)
+    {
+        using var stream = new MemoryStream();
+        EmitResult result = compilation.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+        return MetadataReference.CreateFromImage(stream.ToArray());
+    }
+
+    private static void AssertCompilesWithoutTypeConflicts(Compilation compilation)
+    {
+        using var stream = new MemoryStream();
+        EmitResult result = compilation.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+        Assert.DoesNotContain(result.Diagnostics, diagnostic => diagnostic.Id == "CS0436");
+    }
+
+    [Fact]
     public void DefaultSerializer_GeneratesAndRegistersMetadataWithoutActivation()
     {
         const string source = """
@@ -656,14 +747,19 @@ public class DockJsonSourceGeneratorTests
 
     private static CompilationRun Run(string source, params MetadataReference[] additionalReferences)
     {
-        // Roslyn's compiler host normally loads this analyzer. The in-process test
-        // host must also load it so emitted contexts can be compiled, not just inspected.
-        Assembly.LoadFile(Path.Combine(AppContext.BaseDirectory, "analyzers", "roslyn4.4", "System.Text.Json.SourceGeneration.dll"));
         CSharpCompilation compilation = CreateCompilation(
             assemblyName: "DockGeneratorConsumer",
             source: source,
             additionalReferences: additionalReferences);
 
+        return Run(compilation);
+    }
+
+    private static CompilationRun Run(CSharpCompilation compilation)
+    {
+        // Roslyn's compiler host normally loads this analyzer. The in-process test
+        // host must also load it so emitted contexts can be compiled, not just inspected.
+        Assembly.LoadFile(Path.Combine(AppContext.BaseDirectory, "analyzers", "roslyn4.4", "System.Text.Json.SourceGeneration.dll"));
         var parseOptions = (CSharpParseOptions)compilation.SyntaxTrees[0].Options;
         GeneratorDriver driver = CSharpGeneratorDriver.Create(
             generators: new[] { new DockJsonSourceGenerator().AsSourceGenerator() },
